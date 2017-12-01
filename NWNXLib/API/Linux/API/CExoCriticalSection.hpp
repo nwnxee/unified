@@ -1,0 +1,33 @@
+#pragma once
+
+#include <cstdint>
+
+namespace NWNXLib {
+
+namespace API {
+
+// Forward class declarations (defined in the source file)
+struct CExoCriticalSectionInternal;
+
+struct CExoCriticalSection
+{
+    CExoCriticalSectionInternal* m_pcExoCriticalSectionInternal;
+
+    // The below are auto generated stubs.
+    CExoCriticalSection(const CExoCriticalSection&);
+    CExoCriticalSection& operator=(const CExoCriticalSection&);
+
+    CExoCriticalSection();
+    ~CExoCriticalSection();
+    void EnterCriticalSection();
+    void LeaveCriticalSection();
+};
+
+void CExoCriticalSection__CExoCriticalSectionCtor(CExoCriticalSection* thisPtr);
+void CExoCriticalSection__CExoCriticalSectionDtor(CExoCriticalSection* thisPtr);
+void CExoCriticalSection__EnterCriticalSection(CExoCriticalSection* thisPtr);
+void CExoCriticalSection__LeaveCriticalSection(CExoCriticalSection* thisPtr);
+
+}
+
+}

@@ -1,0 +1,1 @@
+nwnxlib_add("Hooks.cpp")

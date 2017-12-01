@@ -1,0 +1,35 @@
+#pragma once
+
+#include <cstdint>
+
+#include "CNWSpell.hpp"
+
+namespace NWNXLib {
+
+namespace API {
+
+struct CNWSpellArray
+{
+    int32_t m_nNumSpells;
+    CNWSpell* m_pSpells;
+
+    // The below are auto generated stubs.
+    CNWSpellArray(const CNWSpellArray&);
+    CNWSpellArray& operator=(const CNWSpellArray&);
+
+    CNWSpellArray();
+    ~CNWSpellArray();
+    CNWSpell* GetSpell(int32_t);
+    void Load();
+    CNWSpell operator*(int32_t);
+};
+
+void CNWSpellArray__CNWSpellArrayCtor(CNWSpellArray* thisPtr);
+void CNWSpellArray__CNWSpellArrayDtor(CNWSpellArray* thisPtr);
+CNWSpell* CNWSpellArray__GetSpell(CNWSpellArray* thisPtr, int32_t);
+void CNWSpellArray__Load(CNWSpellArray* thisPtr);
+CNWSpell CNWSpellArray__OperatorMultiplication(CNWSpellArray* thisPtr, int32_t);
+
+}
+
+}

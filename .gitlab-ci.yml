@@ -1,0 +1,12 @@
+stages:
+  - build
+
+build:
+  stage: build
+  image: docker.nwnx.io:443/beamdog/nwnx_unified:builder
+  script:
+    - CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
+    - make all
+  artifacts:
+    paths:
+      - Binaries/NWNX_*.*

@@ -1,0 +1,31 @@
+#include "Targets/NetLayer.hpp"
+
+#include "API/Functions.hpp"
+#include "ProfilerMacros.hpp"
+#include "Services/Metrics/Metrics.hpp"
+#include "Services/Hooks/Hooks.hpp"
+
+namespace Profiler {
+
+using namespace NWNXLib;
+
+static ViewPtr<Services::MetricsProxy> g_metrics;
+
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerProcessReceivedFrames, void, API::CNetLayer*, int32_t);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerUpdateStatusLoop, int32_t, API::CNetLayer*, uint32_t);
+
+NetLayer::NetLayer(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
+    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+{
+    g_metrics = metrics;
+
+    DEFINE_PROFILER_TARGET(hooker,
+        NetLayerProcessReceivedFrames, API::Functions::CNetLayer__ProcessReceivedFrames,
+        void, API::CNetLayer*, int32_t);
+
+    DEFINE_PROFILER_TARGET(hooker,
+        NetLayerUpdateStatusLoop, API::Functions::CNetLayer__UpdateStatusLoop,
+        int32_t, API::CNetLayer*, uint32_t);
+}
+
+}

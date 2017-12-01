@@ -1,0 +1,36 @@
+#pragma once
+
+#include <cstdint>
+
+namespace NWNXLib {
+
+namespace API {
+
+// Forward class declarations (defined in the source file)
+struct CNWPlaceableSurfaceMesh;
+
+struct CNWPlaceMeshManager
+{
+    int32_t m_nArraySize;
+    CNWPlaceableSurfaceMesh** m_pSurfaceMeshLoaded;
+
+    // The below are auto generated stubs.
+    CNWPlaceMeshManager(const CNWPlaceMeshManager&);
+    CNWPlaceMeshManager& operator=(const CNWPlaceMeshManager&);
+
+    CNWPlaceMeshManager();
+    ~CNWPlaceMeshManager();
+    void ClearWalkMeshes();
+    CNWPlaceableSurfaceMesh* GetWalkMesh(int32_t);
+    void InitializeWalkMeshes(int32_t);
+};
+
+void CNWPlaceMeshManager__CNWPlaceMeshManagerCtor(CNWPlaceMeshManager* thisPtr);
+void CNWPlaceMeshManager__CNWPlaceMeshManagerDtor(CNWPlaceMeshManager* thisPtr);
+void CNWPlaceMeshManager__ClearWalkMeshes(CNWPlaceMeshManager* thisPtr);
+CNWPlaceableSurfaceMesh* CNWPlaceMeshManager__GetWalkMesh(CNWPlaceMeshManager* thisPtr, int32_t);
+void CNWPlaceMeshManager__InitializeWalkMeshes(CNWPlaceMeshManager* thisPtr, int32_t);
+
+}
+
+}

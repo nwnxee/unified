@@ -1,0 +1,32 @@
+#pragma once
+
+#include <cstdint>
+
+#include "pthread_mutex_t.hpp"
+
+namespace NWNXLib {
+
+namespace API {
+
+struct CExoCriticalSectionInternal
+{
+    pthread_mutex_t m_critSection;
+
+    // The below are auto generated stubs.
+    CExoCriticalSectionInternal(const CExoCriticalSectionInternal&);
+    CExoCriticalSectionInternal& operator=(const CExoCriticalSectionInternal&);
+
+    CExoCriticalSectionInternal();
+    ~CExoCriticalSectionInternal();
+    void EnterCriticalSection();
+    void LeaveCriticalSection();
+};
+
+void CExoCriticalSectionInternal__CExoCriticalSectionInternalCtor(CExoCriticalSectionInternal* thisPtr);
+void CExoCriticalSectionInternal__CExoCriticalSectionInternalDtor(CExoCriticalSectionInternal* thisPtr);
+void CExoCriticalSectionInternal__EnterCriticalSection(CExoCriticalSectionInternal* thisPtr);
+void CExoCriticalSectionInternal__LeaveCriticalSection(CExoCriticalSectionInternal* thisPtr);
+
+}
+
+}

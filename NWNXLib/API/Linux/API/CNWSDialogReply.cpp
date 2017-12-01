@@ -1,0 +1,13 @@
+#include "CNWSDialogReply.hpp"
+#include "API/Functions.hpp"
+#include "Platform/ASLR.hpp"
+
+#include "CNWSDialogLinkEntry.hpp"
+
+namespace NWNXLib {
+
+namespace API {
+
+}
+
+}

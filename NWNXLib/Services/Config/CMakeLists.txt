@@ -1,0 +1,1 @@
+nwnxlib_add("Config.cpp")
