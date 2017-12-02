@@ -1266,6 +1266,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetHenchman(int32_t a0, int32_t
     return CNWVirtualMachineCommands__ExecuteCommandGetHenchman(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetHiddenWhenEquipped(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetHiddenWhenEquipped(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetHitDice(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetHitDice(this, a0, a1);
@@ -2554,6 +2559,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandSetFootstepType(int32_t a0, int
 int32_t CNWVirtualMachineCommands::ExecuteCommandSetHardness(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandSetHardness(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandSetHiddenWhenEquipped(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandSetHiddenWhenEquipped(this, a0, a1);
 }
 
 int32_t CNWVirtualMachineCommands::ExecuteCommandSetIdentified(int32_t a0, int32_t a1)
@@ -4975,6 +4985,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetHenchman(CNWVirtualMachineCo
     return func(thisPtr, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetHiddenWhenEquipped(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetHiddenWhenEquipped);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHitDice(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
@@ -7035,6 +7053,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandSetHardness(CNWVirtualMachineCo
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetHardness);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetHiddenWhenEquipped(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetHiddenWhenEquipped);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }

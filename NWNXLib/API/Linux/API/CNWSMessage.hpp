@@ -329,6 +329,7 @@ struct CNWSMessage
     int32_t SendServerToPlayerUpdateCharResponse(CNWSPlayer*, unsigned char, CResRef);
     int32_t SendServerToPlayerUpdateFogAmount(unsigned char, unsigned char, uint32_t);
     int32_t SendServerToPlayerUpdateFogColor(uint32_t, uint32_t, uint32_t);
+    int32_t SendServerToPlayerUpdateItemHidden(CNWSPlayer*, CNWSItem*);
     int32_t SendServerToPlayerUpdateItemName(CNWSPlayer*, CNWSItem*);
     int32_t SendServerToPlayerUpdateSkyBox(int32_t, uint32_t);
     int32_t SendServerToPlayerVoiceChat_Play(CNWSPlayer*, uint32_t, unsigned char);
@@ -662,6 +663,7 @@ int32_t CNWSMessage__SendServerToPlayerUpdateBlackoutEffect(CNWSMessage* thisPtr
 int32_t CNWSMessage__SendServerToPlayerUpdateCharResponse(CNWSMessage* thisPtr, CNWSPlayer*, unsigned char, CResRef);
 int32_t CNWSMessage__SendServerToPlayerUpdateFogAmount(CNWSMessage* thisPtr, unsigned char, unsigned char, uint32_t);
 int32_t CNWSMessage__SendServerToPlayerUpdateFogColor(CNWSMessage* thisPtr, uint32_t, uint32_t, uint32_t);
+int32_t CNWSMessage__SendServerToPlayerUpdateItemHidden(CNWSMessage* thisPtr, CNWSPlayer*, CNWSItem*);
 int32_t CNWSMessage__SendServerToPlayerUpdateItemName(CNWSMessage* thisPtr, CNWSPlayer*, CNWSItem*);
 int32_t CNWSMessage__SendServerToPlayerUpdateSkyBox(CNWSMessage* thisPtr, int32_t, uint32_t);
 int32_t CNWSMessage__SendServerToPlayerVoiceChat_Play(CNWSMessage* thisPtr, CNWSPlayer*, uint32_t, unsigned char);

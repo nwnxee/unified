@@ -959,7 +959,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CNWDomain), 92> __attribute__((unused)) SIZE_CHECK_CNWDOMAIN;
     CheckSize<sizeof(NWNXLib::API::CNWDoorSurfaceMesh), 176> __attribute__((unused)) SIZE_CHECK_CNWDOORSURFACEMESH;
     CheckSize<sizeof(NWNXLib::API::CNWFeat), 128> __attribute__((unused)) SIZE_CHECK_CNWFEAT;
-    CheckSize<sizeof(NWNXLib::API::CNWItem), 16> __attribute__((unused)) SIZE_CHECK_CNWITEM;
+    CheckSize<sizeof(NWNXLib::API::CNWItem), 40> __attribute__((unused)) SIZE_CHECK_CNWITEM;
     CheckSize<sizeof(NWNXLib::API::CNWLevelStats), 268> __attribute__((unused)) SIZE_CHECK_CNWLEVELSTATS;
     CheckSize<sizeof(NWNXLib::API::CNWMessage), 80> __attribute__((unused)) SIZE_CHECK_CNWMESSAGE;
     CheckSize<sizeof(NWNXLib::API::CNWNameGen), 52> __attribute__((unused)) SIZE_CHECK_CNWNAMEGEN;
@@ -989,7 +989,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CNWSFaction), 36> __attribute__((unused)) SIZE_CHECK_CNWSFACTION;
     CheckSize<sizeof(NWNXLib::API::CNWSForcedAction), 28> __attribute__((unused)) SIZE_CHECK_CNWSFORCEDACTION;
     CheckSize<sizeof(NWNXLib::API::CNWSInventory), 76> __attribute__((unused)) SIZE_CHECK_CNWSINVENTORY;
-    CheckSize<sizeof(NWNXLib::API::CNWSItem), 704> __attribute__((unused)) SIZE_CHECK_CNWSITEM;
+    CheckSize<sizeof(NWNXLib::API::CNWSItem), 736> __attribute__((unused)) SIZE_CHECK_CNWSITEM;
     CheckSize<sizeof(NWNXLib::API::CNWSItemPropertyHandler), 12> __attribute__((unused)) SIZE_CHECK_CNWSITEMPROPERTYHANDLER;
     CheckSize<sizeof(NWNXLib::API::CNWSJournal), 16> __attribute__((unused)) SIZE_CHECK_CNWSJOURNAL;
     CheckSize<sizeof(NWNXLib::API::CNWSkill), 44> __attribute__((unused)) SIZE_CHECK_CNWSKILL;
@@ -1081,6 +1081,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::Matrix), 36> __attribute__((unused)) SIZE_CHECK_MATRIX;
     CheckSize<sizeof(NWNXLib::API::Plane), 16> __attribute__((unused)) SIZE_CHECK_PLANE;
     CheckSize<sizeof(NWNXLib::API::Quaternion), 16> __attribute__((unused)) SIZE_CHECK_QUATERNION;
+    CheckSize<sizeof(NWNXLib::API::SJournalEntry), 56> __attribute__((unused)) SIZE_CHECK_SJOURNALENTRY;
     CheckSize<sizeof(NWNXLib::API::STR_RES), 44> __attribute__((unused)) SIZE_CHECK_STR_RES;
     CheckSize<sizeof(NWNXLib::API::TLK_FILE_HEADER), 20> __attribute__((unused)) SIZE_CHECK_TLK_FILE_HEADER;
     CheckSize<sizeof(NWNXLib::API::Vector), 12> __attribute__((unused)) SIZE_CHECK_VECTOR;

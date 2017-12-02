@@ -1452,6 +1452,11 @@ int32_t CNWSMessage::SendServerToPlayerUpdateFogColor(uint32_t a0, uint32_t a1, 
     return CNWSMessage__SendServerToPlayerUpdateFogColor(this, a0, a1, a2);
 }
 
+int32_t CNWSMessage::SendServerToPlayerUpdateItemHidden(CNWSPlayer* a0, CNWSItem* a1)
+{
+    return CNWSMessage__SendServerToPlayerUpdateItemHidden(this, a0, a1);
+}
+
 int32_t CNWSMessage::SendServerToPlayerUpdateItemName(CNWSPlayer* a0, CNWSItem* a1)
 {
     return CNWSMessage__SendServerToPlayerUpdateItemName(this, a0, a1);
@@ -3951,6 +3956,14 @@ int32_t CNWSMessage__SendServerToPlayerUpdateFogColor(CNWSMessage* thisPtr, uint
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSMessage__SendServerToPlayerUpdateFogColor);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2);
+}
+
+int32_t CNWSMessage__SendServerToPlayerUpdateItemHidden(CNWSMessage* thisPtr, CNWSPlayer* a0, CNWSItem* a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSMessage*, CNWSPlayer*, CNWSItem*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSMessage__SendServerToPlayerUpdateItemHidden);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
 }
 
 int32_t CNWSMessage__SendServerToPlayerUpdateItemName(CNWSMessage* thisPtr, CNWSPlayer* a0, CNWSItem* a1)

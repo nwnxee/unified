@@ -60,6 +60,8 @@ struct CNWSItem
     uint16_t m_nRepositoryArrayIndex;
     uint8_t m_nVisualEffect;
     uint32_t m_oidBarterOwner;
+    int32_t m_bHidden;
+    int32_t m_bUpdateHidden;
 
     // The below are auto generated stubs.
     CNWSItem();

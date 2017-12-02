@@ -273,6 +273,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandGetHasSpell(int32_t, int32_t);
     int32_t ExecuteCommandGetHasSpellEffect(int32_t, int32_t);
     int32_t ExecuteCommandGetHenchman(int32_t, int32_t);
+    int32_t ExecuteCommandGetHiddenWhenEquipped(int32_t, int32_t);
     int32_t ExecuteCommandGetHitDice(int32_t, int32_t);
     int32_t ExecuteCommandGetHitpoints(int32_t, int32_t);
     int32_t ExecuteCommandGetIdentified(int32_t, int32_t);
@@ -531,6 +532,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandSetFogColor(int32_t, int32_t);
     int32_t ExecuteCommandSetFootstepType(int32_t, int32_t);
     int32_t ExecuteCommandSetHardness(int32_t, int32_t);
+    int32_t ExecuteCommandSetHiddenWhenEquipped(int32_t, int32_t);
     int32_t ExecuteCommandSetIdentified(int32_t, int32_t);
     int32_t ExecuteCommandSetImmortal(int32_t, int32_t);
     int32_t ExecuteCommandSetInfiniteFlag(int32_t, int32_t);
@@ -868,6 +870,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetHasSkill(CNWVirtualMachineCo
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHasSpell(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHasSpellEffect(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHenchman(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetHiddenWhenEquipped(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHitDice(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHitpoints(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetIdentified(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
@@ -1126,6 +1129,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandSetFogAmount(CNWVirtualMachineC
 int32_t CNWVirtualMachineCommands__ExecuteCommandSetFogColor(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandSetFootstepType(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandSetHardness(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetHiddenWhenEquipped(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandSetIdentified(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandSetImmortal(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandSetInfiniteFlag(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
