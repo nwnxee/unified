@@ -8,7 +8,6 @@ namespace API {
 
 struct ISteamApps
 {
-    char dummy[1];
 };
 
 }

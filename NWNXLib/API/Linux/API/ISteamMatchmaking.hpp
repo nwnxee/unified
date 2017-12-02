@@ -8,7 +8,6 @@ namespace API {
 
 struct ISteamMatchmaking
 {
-    char dummy[1];
 };
 
 }

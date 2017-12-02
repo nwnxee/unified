@@ -14,14 +14,14 @@ struct Vector
 
     void Normalize();
     Vector& operator*=(float);
-    void operator/=(float);
+    Vector& operator/=(float);
     Vector& operator+=(const Vector&);
     Vector& operator-=(const Vector&);
 };
 
 void Vector__Normalize(Vector* thisPtr);
 Vector& Vector__OperatorMultiplicationAssignment(Vector* thisPtr, float);
-void Vector__OperatorDivisionAssignment(Vector* thisPtr, float);
+Vector& Vector__OperatorDivisionAssignment(Vector* thisPtr, float);
 Vector& Vector__OperatorAdditionAssignment(Vector* thisPtr, const Vector&);
 Vector& Vector__OperatorSubtractionAssignment(Vector* thisPtr, const Vector&);
 

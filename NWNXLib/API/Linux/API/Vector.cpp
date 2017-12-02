@@ -16,7 +16,7 @@ Vector& Vector::operator*=(float a0)
     return Vector__OperatorMultiplicationAssignment(this, a0);
 }
 
-void Vector::operator/=(float a0)
+Vector& Vector::operator/=(float a0)
 {
     return Vector__OperatorDivisionAssignment(this, a0);
 }
@@ -47,12 +47,12 @@ Vector& Vector__OperatorMultiplicationAssignment(Vector* thisPtr, float a0)
     return func(thisPtr, a0);
 }
 
-void Vector__OperatorDivisionAssignment(Vector* thisPtr, float a0)
+Vector& Vector__OperatorDivisionAssignment(Vector* thisPtr, float a0)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(Vector*, float);
+    using FuncPtrType = Vector&(__attribute__((cdecl)) *)(Vector*, float);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::Vector__OperatorDivisionAssignment);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    func(thisPtr, a0);
+    return func(thisPtr, a0);
 }
 
 Vector& Vector__OperatorAdditionAssignment(Vector* thisPtr, const Vector& a0)
