@@ -83,7 +83,7 @@ Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
 
 Events::ArgumentStack SQL::OnExecuteQuery(Events::ArgumentStack&&)
 {
-    const int32_t queryId = m_nextQueryId++;
+    const int32_t queryId = ++m_nextQueryId;
 
     Maybe<ResultSet> query;
 
@@ -109,7 +109,7 @@ Events::ArgumentStack SQL::OnExecuteQuery(Events::ArgumentStack&&)
     const bool querySucceeded = query;
 
     Events::ArgumentStack stack;
-    Events::InsertArgument(stack, queryId);
+    Events::InsertArgument(stack, querySucceeded ? queryId : 0);
     m_activeResults = query.Extract(ResultSet());
 
     GetServices()->m_log->Info("%s SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
