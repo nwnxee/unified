@@ -13,7 +13,7 @@ uintptr_t ASLR::s_globalBaseAddress;
 void ASLR::CalculateBaseAddress()
 {
     // TODO: Export free-standing functions so we don't have to update manually.
-    const uintptr_t whatWeThinkItIs = 0x000300A0; NWNX_EXPECT_VERSION(8150);
+    const uintptr_t whatWeThinkItIs = 0x0002F7D0; NWNX_EXPECT_VERSION(8152);
     const uintptr_t whatItActuallyIs = DynamicLibraries::GetLoadedFuncAddr("NWNXEntryPoint");
     s_baseAddress = whatItActuallyIs - whatWeThinkItIs;
     const uintptr_t reportedAddr = reinterpret_cast<uintptr_t(*)()>(whatItActuallyIs)();

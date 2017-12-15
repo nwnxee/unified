@@ -1166,11 +1166,6 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionStrongestMember(int32
     return CNWVirtualMachineCommands__ExecuteCommandGetFactionStrongestMember(this, a0, a1);
 }
 
-int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionWeakestMember(int32_t a0, int32_t a1)
-{
-    return CNWVirtualMachineCommands__ExecuteCommandGetFactionWeakestMember(this, a0, a1);
-}
-
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionWorstAC(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetFactionWorstAC(this, a0, a1);
@@ -4821,14 +4816,6 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionStrongestMember(CNWVi
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetFactionStrongestMember);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
-}
-
-int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionWeakestMember(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
-{
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetFactionWeakestMember);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }

@@ -84,9 +84,9 @@ int32_t CNWArea::IntersectLineSegments(float a0, float a1, float a2, float a3, f
     return CNWArea__IntersectLineSegments(this, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9);
 }
 
-int32_t CNWArea::NoCreaturesOnLine(float a0, float a1, float a2, float a3, CPathfindInformation* a4)
+int32_t CNWArea::NoCreaturesOnLine(float a0, float a1, float a2, float a3, CPathfindInformation* a4, int32_t a5, int32_t a6, uint32_t* a7, int32_t a8)
 {
-    return CNWArea__NoCreaturesOnLine(this, a0, a1, a2, a3, a4);
+    return CNWArea__NoCreaturesOnLine(this, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
 int32_t CNWArea::NoNonWalkPolys(float a0, float a1, float a2, float a3, float a4, float a5, float a6, uint32_t a7)
@@ -238,12 +238,12 @@ int32_t CNWArea__IntersectLineSegments(CNWArea* thisPtr, float a0, float a1, flo
     return func(thisPtr, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9);
 }
 
-int32_t CNWArea__NoCreaturesOnLine(CNWArea* thisPtr, float a0, float a1, float a2, float a3, CPathfindInformation* a4)
+int32_t CNWArea__NoCreaturesOnLine(CNWArea* thisPtr, float a0, float a1, float a2, float a3, CPathfindInformation* a4, int32_t a5, int32_t a6, uint32_t* a7, int32_t a8)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWArea*, float, float, float, float, CPathfindInformation*);
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWArea*, float, float, float, float, CPathfindInformation*, int32_t, int32_t, uint32_t*, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWArea__NoCreaturesOnLine);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2, a3, a4);
+    return func(thisPtr, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 }
 
 int32_t CNWArea__NoNonWalkPolys(CNWArea* thisPtr, float a0, float a1, float a2, float a3, float a4, float a5, float a6, uint32_t a7)

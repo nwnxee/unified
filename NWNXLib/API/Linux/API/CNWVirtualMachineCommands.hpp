@@ -253,7 +253,6 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandGetFactionMostFrequentClass(int32_t, int32_t);
     int32_t ExecuteCommandGetFactionNthNearestMember(int32_t, int32_t);
     int32_t ExecuteCommandGetFactionStrongestMember(int32_t, int32_t);
-    int32_t ExecuteCommandGetFactionWeakestMember(int32_t, int32_t);
     int32_t ExecuteCommandGetFactionWorstAC(int32_t, int32_t);
     int32_t ExecuteCommandGetFamiliarCreatureType(int32_t, int32_t);
     int32_t ExecuteCommandGetFamiliarName(int32_t, int32_t);
@@ -850,7 +849,6 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionMostDamagedMember(CNW
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionMostFrequentClass(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionNthNearestMember(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionStrongestMember(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
-int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionWeakestMember(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionWorstAC(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFamiliarCreatureType(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFamiliarName(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);

@@ -75,7 +75,7 @@ struct CNWArea
     int32_t HandleTransparentDoors(float, float, float, float, float, float, float, uint32_t, uint32_t&, int32_t, CExoArrayListTemplatedCGameObjectPtr*, int32_t);
     void InitializeStaticObjects();
     int32_t IntersectLineSegments(float, float, float, float, float, float, float, float, float*, float*);
-    int32_t NoCreaturesOnLine(float, float, float, float, CPathfindInformation*);
+    int32_t NoCreaturesOnLine(float, float, float, float, CPathfindInformation*, int32_t, int32_t, uint32_t*, int32_t);
     int32_t NoNonWalkPolys(float, float, float, float, float, float, float, uint32_t);
     int32_t NoNonWalkPolysDetailed(float, float, float, float, float, float, float, uint32_t, uint32_t&, int32_t, CExoArrayListTemplatedCGameObjectPtr*, int32_t);
     int32_t NoNonWalkPolysInDoors(float, float, float, float, float, float, float, uint32_t, uint32_t&, int32_t, CExoArrayListTemplatedCGameObjectPtr*, int32_t);
@@ -100,7 +100,7 @@ void CNWArea__GrowStaticObjectVertices(CNWArea* thisPtr, int32_t);
 int32_t CNWArea__HandleTransparentDoors(CNWArea* thisPtr, float, float, float, float, float, float, float, uint32_t, uint32_t&, int32_t, CExoArrayListTemplatedCGameObjectPtr*, int32_t);
 void CNWArea__InitializeStaticObjects(CNWArea* thisPtr);
 int32_t CNWArea__IntersectLineSegments(CNWArea* thisPtr, float, float, float, float, float, float, float, float, float*, float*);
-int32_t CNWArea__NoCreaturesOnLine(CNWArea* thisPtr, float, float, float, float, CPathfindInformation*);
+int32_t CNWArea__NoCreaturesOnLine(CNWArea* thisPtr, float, float, float, float, CPathfindInformation*, int32_t, int32_t, uint32_t*, int32_t);
 int32_t CNWArea__NoNonWalkPolys(CNWArea* thisPtr, float, float, float, float, float, float, float, uint32_t);
 int32_t CNWArea__NoNonWalkPolysDetailed(CNWArea* thisPtr, float, float, float, float, float, float, float, uint32_t, uint32_t&, int32_t, CExoArrayListTemplatedCGameObjectPtr*, int32_t);
 int32_t CNWArea__NoNonWalkPolysInDoors(CNWArea* thisPtr, float, float, float, float, float, float, float, uint32_t, uint32_t&, int32_t, CExoArrayListTemplatedCGameObjectPtr*, int32_t);
