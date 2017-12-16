@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: org.nwnx.nwnx2.jvm
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.nwnx.nwnx2.jvm,
+ org.nwnx.nwnx2.jvm.constants
+Bundle-Name: org.nwnx.nwnx2.jvm API
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

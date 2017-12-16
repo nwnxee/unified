@@ -1,0 +1,203 @@
+package org.nwnx.nwnx2.jvm.constants;
+
+/**
+ * This class contains all unique constants beginning with "BASE".
+ * Non-distinct keys are filtered; only the LAST appearing was
+ * kept.
+*/
+public final class Base {
+  private Base() {}
+
+  public final static int ITEM_AMULET = 19;
+  public final static int ITEM_ARMOR = 16;
+  public final static int ITEM_ARROW = 20;
+  public final static int ITEM_BASTARDSWORD = 3;
+  public final static int ITEM_BATTLEAXE = 2;
+  public final static int ITEM_BELT = 21;
+  public final static int ITEM_BLANK_POTION = 101;
+  public final static int ITEM_BLANK_SCROLL = 102;
+  public final static int ITEM_BLANK_WAND = 103;
+  public final static int ITEM_BOLT = 25;
+  public final static int ITEM_BOOK = 74;
+  public final static int ITEM_BOOTS = 26;
+  public final static int ITEM_BRACER = 78;
+  public final static int ITEM_BULLET = 27;
+  public final static int ITEM_CBLUDGWEAPON = 71;
+  public final static int ITEM_CLOAK = 80;
+  public final static int ITEM_CLUB = 28;
+  public final static int ITEM_CPIERCWEAPON = 70;
+  public final static int ITEM_CRAFTMATERIALMED = 109;
+  public final static int ITEM_CRAFTMATERIALSML = 110;
+  public final static int ITEM_CREATUREITEM = 73;
+  public final static int ITEM_CSLASHWEAPON = 69;
+  public final static int ITEM_CSLSHPRCWEAP = 72;
+  public final static int ITEM_DAGGER = 22;
+  public final static int ITEM_DART = 31;
+  public final static int ITEM_DIREMACE = 32;
+  public final static int ITEM_DOUBLEAXE = 33;
+  public final static int ITEM_DWARVENWARAXE = 108;
+  public final static int ITEM_ENCHANTED_POTION = 104;
+  public final static int ITEM_ENCHANTED_SCROLL = 105;
+  public final static int ITEM_ENCHANTED_WAND = 106;
+  public final static int ITEM_GEM = 77;
+  public final static int ITEM_GLOVES = 36;
+  public final static int ITEM_GOLD = 76;
+  public final static int ITEM_GREATAXE = 18;
+  public final static int ITEM_GREATSWORD = 13;
+  public final static int ITEM_GRENADE = 81;
+  public final static int ITEM_HALBERD = 10;
+  public final static int ITEM_HANDAXE = 38;
+  public final static int ITEM_HEALERSKIT = 39;
+  public final static int ITEM_HEAVYCROSSBOW = 6;
+  public final static int ITEM_HEAVYFLAIL = 35;
+  public final static int ITEM_HELMET = 17;
+  public final static int ITEM_INVALID = 256;
+  public final static int ITEM_KAMA = 40;
+  public final static int ITEM_KATANA = 41;
+  public final static int ITEM_KEY = 65;
+  public final static int ITEM_KUKRI = 42;
+  public final static int ITEM_LARGEBOX = 66;
+  public final static int ITEM_LARGESHIELD = 56;
+  public final static int ITEM_LIGHTCROSSBOW = 7;
+  public final static int ITEM_LIGHTFLAIL = 4;
+  public final static int ITEM_LIGHTHAMMER = 37;
+  public final static int ITEM_LIGHTMACE = 9;
+  public final static int ITEM_LONGBOW = 8;
+  public final static int ITEM_LONGSWORD = 1;
+  public final static int ITEM_MAGICROD = 44;
+  public final static int ITEM_MAGICSTAFF = 45;
+  public final static int ITEM_MAGICWAND = 46;
+  public final static int ITEM_MISCLARGE = 34;
+  public final static int ITEM_MISCMEDIUM = 29;
+  public final static int ITEM_MISCSMALL = 24;
+  public final static int ITEM_MISCTALL = 43;
+  public final static int ITEM_MISCTHIN = 79;
+  public final static int ITEM_MISCWIDE = 68;
+  public final static int ITEM_MORNINGSTAR = 47;
+  public final static int ITEM_POTIONS = 49;
+  public final static int ITEM_QUARTERSTAFF = 50;
+  public final static int ITEM_RAPIER = 51;
+  public final static int ITEM_RING = 52;
+  public final static int ITEM_SCIMITAR = 53;
+  public final static int ITEM_SCROLL = 54;
+  public final static int ITEM_SCYTHE = 55;
+  public final static int ITEM_SHORTBOW = 11;
+  public final static int ITEM_SHORTSPEAR = 58;
+  public final static int ITEM_SHORTSWORD = 0;
+  public final static int ITEM_SHURIKEN = 59;
+  public final static int ITEM_SICKLE = 60;
+  public final static int ITEM_SLING = 61;
+  public final static int ITEM_SMALLSHIELD = 14;
+  public final static int ITEM_SPELLSCROLL = 75;
+  public final static int ITEM_THIEVESTOOLS = 62;
+  public final static int ITEM_THROWINGAXE = 63;
+  public final static int ITEM_TORCH = 15;
+  public final static int ITEM_TOWERSHIELD = 57;
+  public final static int ITEM_TRAPKIT = 64;
+  public final static int ITEM_TRIDENT = 95;
+  public final static int ITEM_TWOBLADEDSWORD = 12;
+  public final static int ITEM_WARHAMMER = 5;
+  public final static int ITEM_WHIP = 111;
+
+  public static String nameOf(int value) {
+    if (value == 19) return "Base.ITEM_AMULET";
+    if (value == 16) return "Base.ITEM_ARMOR";
+    if (value == 20) return "Base.ITEM_ARROW";
+    if (value == 3) return "Base.ITEM_BASTARDSWORD";
+    if (value == 2) return "Base.ITEM_BATTLEAXE";
+    if (value == 21) return "Base.ITEM_BELT";
+    if (value == 101) return "Base.ITEM_BLANK_POTION";
+    if (value == 102) return "Base.ITEM_BLANK_SCROLL";
+    if (value == 103) return "Base.ITEM_BLANK_WAND";
+    if (value == 25) return "Base.ITEM_BOLT";
+    if (value == 74) return "Base.ITEM_BOOK";
+    if (value == 26) return "Base.ITEM_BOOTS";
+    if (value == 78) return "Base.ITEM_BRACER";
+    if (value == 27) return "Base.ITEM_BULLET";
+    if (value == 71) return "Base.ITEM_CBLUDGWEAPON";
+    if (value == 80) return "Base.ITEM_CLOAK";
+    if (value == 28) return "Base.ITEM_CLUB";
+    if (value == 70) return "Base.ITEM_CPIERCWEAPON";
+    if (value == 109) return "Base.ITEM_CRAFTMATERIALMED";
+    if (value == 110) return "Base.ITEM_CRAFTMATERIALSML";
+    if (value == 73) return "Base.ITEM_CREATUREITEM";
+    if (value == 69) return "Base.ITEM_CSLASHWEAPON";
+    if (value == 72) return "Base.ITEM_CSLSHPRCWEAP";
+    if (value == 22) return "Base.ITEM_DAGGER";
+    if (value == 31) return "Base.ITEM_DART";
+    if (value == 32) return "Base.ITEM_DIREMACE";
+    if (value == 33) return "Base.ITEM_DOUBLEAXE";
+    if (value == 108) return "Base.ITEM_DWARVENWARAXE";
+    if (value == 104) return "Base.ITEM_ENCHANTED_POTION";
+    if (value == 105) return "Base.ITEM_ENCHANTED_SCROLL";
+    if (value == 106) return "Base.ITEM_ENCHANTED_WAND";
+    if (value == 77) return "Base.ITEM_GEM";
+    if (value == 36) return "Base.ITEM_GLOVES";
+    if (value == 76) return "Base.ITEM_GOLD";
+    if (value == 18) return "Base.ITEM_GREATAXE";
+    if (value == 13) return "Base.ITEM_GREATSWORD";
+    if (value == 81) return "Base.ITEM_GRENADE";
+    if (value == 10) return "Base.ITEM_HALBERD";
+    if (value == 38) return "Base.ITEM_HANDAXE";
+    if (value == 39) return "Base.ITEM_HEALERSKIT";
+    if (value == 6) return "Base.ITEM_HEAVYCROSSBOW";
+    if (value == 35) return "Base.ITEM_HEAVYFLAIL";
+    if (value == 17) return "Base.ITEM_HELMET";
+    if (value == 256) return "Base.ITEM_INVALID";
+    if (value == 40) return "Base.ITEM_KAMA";
+    if (value == 41) return "Base.ITEM_KATANA";
+    if (value == 65) return "Base.ITEM_KEY";
+    if (value == 42) return "Base.ITEM_KUKRI";
+    if (value == 66) return "Base.ITEM_LARGEBOX";
+    if (value == 56) return "Base.ITEM_LARGESHIELD";
+    if (value == 7) return "Base.ITEM_LIGHTCROSSBOW";
+    if (value == 4) return "Base.ITEM_LIGHTFLAIL";
+    if (value == 37) return "Base.ITEM_LIGHTHAMMER";
+    if (value == 9) return "Base.ITEM_LIGHTMACE";
+    if (value == 8) return "Base.ITEM_LONGBOW";
+    if (value == 1) return "Base.ITEM_LONGSWORD";
+    if (value == 44) return "Base.ITEM_MAGICROD";
+    if (value == 45) return "Base.ITEM_MAGICSTAFF";
+    if (value == 46) return "Base.ITEM_MAGICWAND";
+    if (value == 34) return "Base.ITEM_MISCLARGE";
+    if (value == 29) return "Base.ITEM_MISCMEDIUM";
+    if (value == 24) return "Base.ITEM_MISCSMALL";
+    if (value == 43) return "Base.ITEM_MISCTALL";
+    if (value == 79) return "Base.ITEM_MISCTHIN";
+    if (value == 68) return "Base.ITEM_MISCWIDE";
+    if (value == 47) return "Base.ITEM_MORNINGSTAR";
+    if (value == 49) return "Base.ITEM_POTIONS";
+    if (value == 50) return "Base.ITEM_QUARTERSTAFF";
+    if (value == 51) return "Base.ITEM_RAPIER";
+    if (value == 52) return "Base.ITEM_RING";
+    if (value == 53) return "Base.ITEM_SCIMITAR";
+    if (value == 54) return "Base.ITEM_SCROLL";
+    if (value == 55) return "Base.ITEM_SCYTHE";
+    if (value == 11) return "Base.ITEM_SHORTBOW";
+    if (value == 58) return "Base.ITEM_SHORTSPEAR";
+    if (value == 0) return "Base.ITEM_SHORTSWORD";
+    if (value == 59) return "Base.ITEM_SHURIKEN";
+    if (value == 60) return "Base.ITEM_SICKLE";
+    if (value == 61) return "Base.ITEM_SLING";
+    if (value == 14) return "Base.ITEM_SMALLSHIELD";
+    if (value == 75) return "Base.ITEM_SPELLSCROLL";
+    if (value == 62) return "Base.ITEM_THIEVESTOOLS";
+    if (value == 63) return "Base.ITEM_THROWINGAXE";
+    if (value == 15) return "Base.ITEM_TORCH";
+    if (value == 57) return "Base.ITEM_TOWERSHIELD";
+    if (value == 64) return "Base.ITEM_TRAPKIT";
+    if (value == 95) return "Base.ITEM_TRIDENT";
+    if (value == 12) return "Base.ITEM_TWOBLADEDSWORD";
+    if (value == 5) return "Base.ITEM_WARHAMMER";
+    if (value == 111) return "Base.ITEM_WHIP";
+    return "Base.(not found: " + value + ")";
+  }
+
+  public static String nameOf(float value) {
+    return "Base.(not found: " + value + ")";
+  }
+
+  public static String nameOf(String value) {
+    return "Base.(not found: " + value + ")";
+  }
+}
