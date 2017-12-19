@@ -4,6 +4,11 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSWaypoint.hpp"
+#include "API/CNWSDoor.hpp"
+#include "API/CNWSTrigger.hpp"
+#include "API/CNWSStore.hpp"
 #include "API/Constants.hpp"
 #include "API/CResGFF.hpp"
 #include "API/CResStruct.hpp"
@@ -68,38 +73,52 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
     API::CResGFF    resGff;
     API::CResStruct resStruct;
 
-    if (pObject->m_nObjectType == API::Constants::OBJECT_TYPE_CREATURE)
+    switch (pObject->m_nObjectType)
     {
-        API::CNWSCreature *pCreature = static_cast<API::CNWSCreature*>(pObject);
-        if (resGff.CreateGFFFile(&resStruct, "BIC ", "V2.0"))
+        case API::Constants::OBJECT_TYPE_CREATURE:
         {
-            int32_t bPlayerCharacter = 0, bIsPC = 0;
-            if (bStripPCFlags) {
-                std::swap(bPlayerCharacter, pCreature->m_bPlayerCharacter);
-                std::swap(bIsPC, pCreature->m_pStats->m_bIsPC);
-            }
+            API::CNWSCreature *pCreature = static_cast<API::CNWSCreature*>(pObject);
+            if (resGff.CreateGFFFile(&resStruct, "BIC ", "V2.0"))
+            {
+                int32_t bPlayerCharacter = 0, bIsPC = 0;
+                if (bStripPCFlags) {
+                    std::swap(bPlayerCharacter, pCreature->m_bPlayerCharacter);
+                    std::swap(bIsPC, pCreature->m_pStats->m_bIsPC);
+                }
 
-            if (pCreature->SaveCreature(&resGff, &resStruct, 0, 0, 0))
-                resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
+                if (pCreature->SaveCreature(&resGff, &resStruct, 0, 0, 0))
+                    resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
 
-            if (bStripPCFlags) {
-                std::swap(bPlayerCharacter, pCreature->m_bPlayerCharacter);
-                std::swap(bIsPC, pCreature->m_pStats->m_bIsPC);
+                if (bStripPCFlags) {
+                    std::swap(bPlayerCharacter, pCreature->m_bPlayerCharacter);
+                    std::swap(bIsPC, pCreature->m_pStats->m_bIsPC);
+                }
             }
+            break;
         }
-    }
-    else if (pObject->m_nObjectType == API::Constants::OBJECT_TYPE_ITEM)
-    {
-        API::CNWSItem *pItem = static_cast<API::CNWSItem*>(pObject);
-        if (resGff.CreateGFFFile(&resStruct, "UTI ", "V2.0"))
-        {
-            if (pItem->SaveItem(&resGff, &resStruct, 0))
-                resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
-        }
-    }
-    else
-    {
-        assert(!"SerializeGameObject only works on creatures and items");
+
+// These all use a common implementation, but unfortunately can't be called polymorphically.
+#define SERIALIZE(_type, _gff_header, ...)                                       \
+        do {                                                                     \
+            API::CNWS##_type *p = static_cast<API::CNWS##_type*>(pObject);       \
+            if (resGff.CreateGFFFile(&resStruct, _gff_header, "V2.0"))           \
+            {                                                                    \
+                if (p->Save##_type(&resGff, &resStruct, ##__VA_ARGS__))          \
+                    resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength); \
+            }                                                                    \
+        } while(0)
+
+        case API::Constants::OBJECT_TYPE_ITEM:      SERIALIZE(Item,      "UTI ", 0); break;
+        case API::Constants::OBJECT_TYPE_PLACEABLE: SERIALIZE(Placeable, "UTP ");    break;
+        case API::Constants::OBJECT_TYPE_WAYPOINT:  SERIALIZE(Waypoint,  "UTW ");    break;
+        case API::Constants::OBJECT_TYPE_STORE:     SERIALIZE(Store,     "UTM ");    break;
+        case API::Constants::OBJECT_TYPE_DOOR:      SERIALIZE(Door,      "UTD ");    break;
+        case API::Constants::OBJECT_TYPE_TRIGGER:   SERIALIZE(Trigger,   "UTT ");    break;
+#undef SERIALIZE
+
+        default:
+            assert(!"Invalid object type for SerializeGameObject");
+            break;
     }
 
     return std::vector<uint8_t>(pData, pData+dataLength);
@@ -138,21 +157,38 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
         }
         return static_cast<API::CGameObject*>(pCreature);
     }
+
+#define DESERIALIZE(_type, ...)                                                             \
+    do {                                                                                    \
+        API::CNWS##_type *p = reinterpret_cast<API::CNWS##_type*>(new uint8_t[sizeof(*p)]); \
+        memset(p, 0, sizeof(*p));                                                           \
+        API::CNWS##_type##__##CNWS##_type##Ctor(p, API::Constants::OBJECT_INVALID);         \
+        if (!p->Load##_type(&resGff, &resStruct, ##__VA_ARGS__))                            \
+        {                                                                                   \
+            delete p;                                                                       \
+            return nullptr;                                                                 \
+        }                                                                                   \
+        return static_cast<API::CGameObject*>(p);                                           \
+    } while(0)
+
     else if (sFileType == "UTI ")
-    {
-        API::CNWSItem *pItem = new API::CNWSItem(API::Constants::OBJECT_INVALID);
-        if (!pItem->LoadItem(&resGff, &resStruct, 0))
-        {
-            delete pItem;
-            return nullptr;
-        }
-        pItem->m_bDroppable = 1;
-        return static_cast<API::CGameObject*>(pItem);
-    }
+        DESERIALIZE(Item, 0);
+    else if (sFileType == "UTP ")
+        DESERIALIZE(Placeable, nullptr);
+    else if (sFileType == "UTW ")
+        DESERIALIZE(Waypoint, nullptr);
+    else if (sFileType == "UTM ")
+        DESERIALIZE(Store, nullptr);
+    else if (sFileType == "UTD ")
+        DESERIALIZE(Door);
+    else if (sFileType == "UTT ")
+        DESERIALIZE(Trigger);
     else
     {
         assert(!"Unknown file type for DeserializeGameObject()");
     }
+
+#undef DESERIALIZE
 
     return nullptr;
 }
