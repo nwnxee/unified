@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CERFString::CERFString(const CERFString&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CERFString& CERFString::operator=(const CERFString&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CERFString::CERFString()
 {
     CERFString__CERFStringCtor(this);

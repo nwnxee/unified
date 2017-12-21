@@ -22,9 +22,9 @@ struct CNWSItemPropertyHandler
     pfRIPCommands* m_pRemoveItemPropertyCommands;
 
     // The below are auto generated stubs.
-    CNWSItemPropertyHandler();
-    CNWSItemPropertyHandler(const CNWSItemPropertyHandler&);
-    CNWSItemPropertyHandler& operator=(const CNWSItemPropertyHandler&);
+    CNWSItemPropertyHandler() = default;
+    CNWSItemPropertyHandler(const CNWSItemPropertyHandler&) = default;
+    CNWSItemPropertyHandler& operator=(const CNWSItemPropertyHandler&) = default;
 
     ~CNWSItemPropertyHandler();
     int32_t ApplyAbilityBonus(CNWSItem*, CNWItemProperty*, CNWSCreature*, uint32_t, int32_t);

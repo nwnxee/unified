@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCNWSDialogPlayer
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCNWSDialogPlayer();
-    CExoLinkedListTemplatedCNWSDialogPlayer(const CExoLinkedListTemplatedCNWSDialogPlayer&);
-    CExoLinkedListTemplatedCNWSDialogPlayer& operator=(const CExoLinkedListTemplatedCNWSDialogPlayer&);
+    CExoLinkedListTemplatedCNWSDialogPlayer() = default;
+    CExoLinkedListTemplatedCNWSDialogPlayer(const CExoLinkedListTemplatedCNWSDialogPlayer&) = default;
+    CExoLinkedListTemplatedCNWSDialogPlayer& operator=(const CExoLinkedListTemplatedCNWSDialogPlayer&) = default;
 
     ~CExoLinkedListTemplatedCNWSDialogPlayer();
 };

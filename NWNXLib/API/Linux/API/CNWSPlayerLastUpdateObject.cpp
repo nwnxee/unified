@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSPlayerLastUpdateObject::CNWSPlayerLastUpdateObject(const CNWSPlayerLastUpdateObject&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayerLastUpdateObject& CNWSPlayerLastUpdateObject::operator=(const CNWSPlayerLastUpdateObject&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSPlayerLastUpdateObject::CNWSPlayerLastUpdateObject()
 {
     CNWSPlayerLastUpdateObject__CNWSPlayerLastUpdateObjectCtor(this);

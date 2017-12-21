@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNetLayerWindow::CNetLayerWindow(const CNetLayerWindow&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNetLayerWindow& CNetLayerWindow::operator=(const CNetLayerWindow&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNetLayerWindow::CNetLayerWindow()
 {
     CNetLayerWindow__CNetLayerWindowCtor(this);

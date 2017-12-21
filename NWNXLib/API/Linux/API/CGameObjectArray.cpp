@@ -9,21 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CGameObjectArray::CGameObjectArray()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CGameObjectArray::CGameObjectArray(const CGameObjectArray&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CGameObjectArray& CGameObjectArray::operator=(const CGameObjectArray&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CGameObjectArray::CGameObjectArray(int32_t a0)
 {
     CGameObjectArray__CGameObjectArrayCtor(this, a0);

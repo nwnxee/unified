@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedfloat::CExoArrayListTemplatedfloat()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedfloat::CExoArrayListTemplatedfloat(const CExoArrayListTemplatedfloat&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedfloat& CExoArrayListTemplatedfloat::operator=(const CExoArrayListTemplatedfloat&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoArrayListTemplatedfloat::~CExoArrayListTemplatedfloat()
 {
     CExoArrayListTemplatedfloat__CExoArrayListTemplatedfloatDtor(this);

@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSEffectListHandler::CNWSEffectListHandler()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSEffectListHandler::CNWSEffectListHandler(const CNWSEffectListHandler&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSEffectListHandler& CNWSEffectListHandler::operator=(const CNWSEffectListHandler&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSEffectListHandler::~CNWSEffectListHandler()
 {
     CNWSEffectListHandler__CNWSEffectListHandlerDtor__0(this);

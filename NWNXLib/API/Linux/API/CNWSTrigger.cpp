@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSTrigger::CNWSTrigger()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSTrigger::CNWSTrigger(const CNWSTrigger&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSTrigger& CNWSTrigger::operator=(const CNWSTrigger&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSTrigger::CNWSTrigger(uint32_t a0)
 {
     CNWSTrigger__CNWSTriggerCtor(this, a0);

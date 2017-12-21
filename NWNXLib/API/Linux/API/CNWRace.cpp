@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWRace::CNWRace(const CNWRace&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWRace& CNWRace::operator=(const CNWRace&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWRace::CNWRace()
 {
     CNWRace__CNWRaceCtor(this);

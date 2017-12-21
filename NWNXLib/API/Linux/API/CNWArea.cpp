@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWArea::CNWArea(const CNWArea&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWArea& CNWArea::operator=(const CNWArea&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWArea::CNWArea()
 {
     CNWArea__CNWAreaCtor(this);

@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedCNWItemProperty::CExoArrayListTemplatedCNWItemProperty()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCNWItemProperty::CExoArrayListTemplatedCNWItemProperty(const CExoArrayListTemplatedCNWItemProperty&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoArrayListTemplatedCNWItemProperty::~CExoArrayListTemplatedCNWItemProperty()
 {
     CExoArrayListTemplatedCNWItemProperty__CExoArrayListTemplatedCNWItemPropertyDtor(this);

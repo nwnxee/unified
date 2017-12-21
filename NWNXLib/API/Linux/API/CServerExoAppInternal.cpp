@@ -39,16 +39,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CServerExoAppInternal::CServerExoAppInternal(const CServerExoAppInternal&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CServerExoAppInternal& CServerExoAppInternal::operator=(const CServerExoAppInternal&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CServerExoAppInternal::CServerExoAppInternal()
 {
     CServerExoAppInternal__CServerExoAppInternalCtor(this);

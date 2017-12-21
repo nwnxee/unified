@@ -16,21 +16,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSModule::CNWSModule()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSModule::CNWSModule(const CNWSModule&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSModule& CNWSModule::operator=(const CNWSModule&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSModule::CNWSModule(CExoString a0, int32_t a1, int32_t a2)
 {
     CNWSModule__CNWSModuleCtor(this, a0, a1, a2);

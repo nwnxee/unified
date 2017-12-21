@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSPlayerStoreGUI::CNWSPlayerStoreGUI(const CNWSPlayerStoreGUI&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayerStoreGUI& CNWSPlayerStoreGUI::operator=(const CNWSPlayerStoreGUI&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSPlayerStoreGUI::CNWSPlayerStoreGUI()
 {
     CNWSPlayerStoreGUI__CNWSPlayerStoreGUICtor(this);

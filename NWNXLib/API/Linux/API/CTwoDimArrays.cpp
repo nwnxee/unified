@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CTwoDimArrays::CTwoDimArrays(const CTwoDimArrays&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CTwoDimArrays& CTwoDimArrays::operator=(const CTwoDimArrays&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CTwoDimArrays::CTwoDimArrays()
 {
     CTwoDimArrays__CTwoDimArraysCtor(this);

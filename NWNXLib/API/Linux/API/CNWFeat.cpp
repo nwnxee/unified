@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWFeat::CNWFeat(const CNWFeat&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWFeat& CNWFeat::operator=(const CNWFeat&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWFeat::CNWFeat()
 {
     CNWFeat__CNWFeatCtor(this);

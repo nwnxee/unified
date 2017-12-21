@@ -16,8 +16,8 @@ struct CResWOK
     uint8_t* m_pWOKData;
 
     // The below are auto generated stubs.
-    CResWOK(const CResWOK&);
-    CResWOK& operator=(const CResWOK&);
+    CResWOK(const CResWOK&) = default;
+    CResWOK& operator=(const CResWOK&) = default;
 
     CResWOK();
     ~CResWOK();

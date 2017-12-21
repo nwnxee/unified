@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCNWSObjectActionNode
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCNWSObjectActionNode();
-    CExoLinkedListTemplatedCNWSObjectActionNode(const CExoLinkedListTemplatedCNWSObjectActionNode&);
-    CExoLinkedListTemplatedCNWSObjectActionNode& operator=(const CExoLinkedListTemplatedCNWSObjectActionNode&);
+    CExoLinkedListTemplatedCNWSObjectActionNode() = default;
+    CExoLinkedListTemplatedCNWSObjectActionNode(const CExoLinkedListTemplatedCNWSObjectActionNode&) = default;
+    CExoLinkedListTemplatedCNWSObjectActionNode& operator=(const CExoLinkedListTemplatedCNWSObjectActionNode&) = default;
 
     ~CExoLinkedListTemplatedCNWSObjectActionNode();
 };

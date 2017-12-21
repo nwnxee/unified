@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWDoorSurfaceMesh::CNWDoorSurfaceMesh(const CNWDoorSurfaceMesh&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWDoorSurfaceMesh& CNWDoorSurfaceMesh::operator=(const CNWDoorSurfaceMesh&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWDoorSurfaceMesh::CNWDoorSurfaceMesh()
 {
     CNWDoorSurfaceMesh__CNWDoorSurfaceMeshCtor(this);

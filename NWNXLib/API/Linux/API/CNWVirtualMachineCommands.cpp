@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWVirtualMachineCommands::CNWVirtualMachineCommands()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWVirtualMachineCommands::CNWVirtualMachineCommands(const CNWVirtualMachineCommands&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWVirtualMachineCommands& CNWVirtualMachineCommands::operator=(const CNWVirtualMachineCommands&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWVirtualMachineCommands::~CNWVirtualMachineCommands()
 {
     CNWVirtualMachineCommands__CNWVirtualMachineCommandsDtor__0(this);

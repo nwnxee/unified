@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedCWorldJournalEntry::CExoArrayListTemplatedCWorldJournalEntry()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCWorldJournalEntry::CExoArrayListTemplatedCWorldJournalEntry(const CExoArrayListTemplatedCWorldJournalEntry&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCWorldJournalEntry& CExoArrayListTemplatedCWorldJournalEntry::operator=(const CExoArrayListTemplatedCWorldJournalEntry&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoArrayListTemplatedCWorldJournalEntry::~CExoArrayListTemplatedCWorldJournalEntry()
 {
     CExoArrayListTemplatedCWorldJournalEntry__CExoArrayListTemplatedCWorldJournalEntryDtor(this);

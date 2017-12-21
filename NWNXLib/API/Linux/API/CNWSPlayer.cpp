@@ -19,21 +19,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSPlayer::CNWSPlayer()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayer::CNWSPlayer(const CNWSPlayer&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayer& CNWSPlayer::operator=(const CNWSPlayer&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSPlayer::CNWSPlayer(uint32_t a0)
 {
     CNWSPlayer__CNWSPlayerCtor(this, a0);

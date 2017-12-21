@@ -13,16 +13,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResGFF::CResGFF(const CResGFF&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResGFF& CResGFF::operator=(const CResGFF&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResGFF::CResGFF()
 {
     CResGFF__CResGFFCtor__0(this);

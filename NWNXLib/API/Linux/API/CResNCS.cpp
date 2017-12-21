@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResNCS::CResNCS(const CResNCS&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResNCS& CResNCS::operator=(const CResNCS&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResNCS::CResNCS()
 {
     CResNCS__CResNCSCtor(this);

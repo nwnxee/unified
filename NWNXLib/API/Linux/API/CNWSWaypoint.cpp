@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSWaypoint::CNWSWaypoint()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSWaypoint::CNWSWaypoint(const CNWSWaypoint&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSWaypoint& CNWSWaypoint::operator=(const CNWSWaypoint&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSWaypoint::CNWSWaypoint(uint32_t a0)
 {
     CNWSWaypoint__CNWSWaypointCtor(this, a0);

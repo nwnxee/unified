@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWNameGen::CNWNameGen(const CNWNameGen&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWNameGen& CNWNameGen::operator=(const CNWNameGen&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWNameGen::CNWNameGen()
 {
     CNWNameGen__CNWNameGenCtor(this);

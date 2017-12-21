@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSCombatAttackData::CNWSCombatAttackData(const CNWSCombatAttackData&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCombatAttackData& CNWSCombatAttackData::operator=(const CNWSCombatAttackData&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSCombatAttackData::CNWSCombatAttackData()
 {
     CNWSCombatAttackData__CNWSCombatAttackDataCtor(this);

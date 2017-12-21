@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResIFO::CResIFO()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResIFO::CResIFO(const CResIFO&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResIFO& CResIFO::operator=(const CResIFO&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResIFO::~CResIFO()
 {
     CResIFO__CResIFODtor__0(this);

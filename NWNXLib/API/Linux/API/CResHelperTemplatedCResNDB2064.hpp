@@ -12,9 +12,9 @@ struct CResHelperTemplatedCResNDB2064
 {
 
     // The below are auto generated stubs.
-    CResHelperTemplatedCResNDB2064();
-    CResHelperTemplatedCResNDB2064(const CResHelperTemplatedCResNDB2064&);
-    CResHelperTemplatedCResNDB2064& operator=(const CResHelperTemplatedCResNDB2064&);
+    CResHelperTemplatedCResNDB2064() = default;
+    CResHelperTemplatedCResNDB2064(const CResHelperTemplatedCResNDB2064&) = default;
+    CResHelperTemplatedCResNDB2064& operator=(const CResHelperTemplatedCResNDB2064&) = default;
 
     ~CResHelperTemplatedCResNDB2064();
     void SetResRef(const CResRef&, int32_t);

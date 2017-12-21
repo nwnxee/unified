@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSDungeonMaster::CNWSDungeonMaster()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSDungeonMaster::CNWSDungeonMaster(const CNWSDungeonMaster&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSDungeonMaster& CNWSDungeonMaster::operator=(const CNWSDungeonMaster&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSDungeonMaster::CNWSDungeonMaster(uint32_t a0)
 {
     CNWSDungeonMaster__CNWSDungeonMasterCtor(this, a0);

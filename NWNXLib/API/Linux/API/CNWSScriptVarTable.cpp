@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSScriptVarTable::CNWSScriptVarTable()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSScriptVarTable::CNWSScriptVarTable(const CNWSScriptVarTable&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSScriptVarTable& CNWSScriptVarTable::operator=(const CNWSScriptVarTable&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSScriptVarTable::~CNWSScriptVarTable()
 {
     CNWSScriptVarTable__CNWSScriptVarTableDtor(this);

@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNetLayerPlayerCDKeyInfo::CNetLayerPlayerCDKeyInfo()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNetLayerPlayerCDKeyInfo::CNetLayerPlayerCDKeyInfo(const CNetLayerPlayerCDKeyInfo&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNetLayerPlayerCDKeyInfo& CNetLayerPlayerCDKeyInfo::operator=(const CNetLayerPlayerCDKeyInfo&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNetLayerPlayerCDKeyInfo::~CNetLayerPlayerCDKeyInfo()
 {
     CNetLayerPlayerCDKeyInfo__CNetLayerPlayerCDKeyInfoDtor(this);

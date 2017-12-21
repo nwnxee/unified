@@ -12,16 +12,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CAppManager::CAppManager(const CAppManager&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CAppManager& CAppManager::operator=(const CAppManager&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CAppManager::CAppManager()
 {
     CAppManager__CAppManagerCtor(this);

@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSDoor::CNWSDoor()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSDoor::CNWSDoor(const CNWSDoor&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSDoor& CNWSDoor::operator=(const CNWSDoor&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSDoor::CNWSDoor(uint32_t a0)
 {
     CNWSDoor__CNWSDoorCtor(this, a0);

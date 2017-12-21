@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResHelperTemplatedCResNDB2064::CResHelperTemplatedCResNDB2064()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResHelperTemplatedCResNDB2064::CResHelperTemplatedCResNDB2064(const CResHelperTemplatedCResNDB2064&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResHelperTemplatedCResNDB2064& CResHelperTemplatedCResNDB2064::operator=(const CResHelperTemplatedCResNDB2064&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResHelperTemplatedCResNDB2064::~CResHelperTemplatedCResNDB2064()
 {
     CResHelperTemplatedCResNDB2064__CResHelperTemplatedCResNDB2064Dtor__0(this);

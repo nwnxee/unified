@@ -101,9 +101,9 @@ struct CNWSArea
     CExoString m_sDisplayName;
 
     // The below are auto generated stubs.
-    CNWSArea();
-    CNWSArea(const CNWSArea&);
-    CNWSArea& operator=(const CNWSArea&);
+    CNWSArea() = default;
+    CNWSArea(const CNWSArea&) = default;
+    CNWSArea& operator=(const CNWSArea&) = default;
 
     CNWSArea(CResRef, int32_t, uint32_t);
     ~CNWSArea();

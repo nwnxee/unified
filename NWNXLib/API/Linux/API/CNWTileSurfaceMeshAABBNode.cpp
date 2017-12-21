@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWTileSurfaceMeshAABBNode::CNWTileSurfaceMeshAABBNode()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWTileSurfaceMeshAABBNode::CNWTileSurfaceMeshAABBNode(const CNWTileSurfaceMeshAABBNode&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWTileSurfaceMeshAABBNode& CNWTileSurfaceMeshAABBNode::operator=(const CNWTileSurfaceMeshAABBNode&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWTileSurfaceMeshAABBNode::~CNWTileSurfaceMeshAABBNode()
 {
     CNWTileSurfaceMeshAABBNode__CNWTileSurfaceMeshAABBNodeDtor(this);

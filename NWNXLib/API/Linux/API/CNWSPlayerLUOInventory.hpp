@@ -27,8 +27,8 @@ struct CNWSPlayerLUOInventory
     uint8_t m_nOldStoreCurrentPanel;
 
     // The below are auto generated stubs.
-    CNWSPlayerLUOInventory(const CNWSPlayerLUOInventory&);
-    CNWSPlayerLUOInventory& operator=(const CNWSPlayerLUOInventory&);
+    CNWSPlayerLUOInventory(const CNWSPlayerLUOInventory&) = default;
+    CNWSPlayerLUOInventory& operator=(const CNWSPlayerLUOInventory&) = default;
 
     CNWSPlayerLUOInventory();
     ~CNWSPlayerLUOInventory();

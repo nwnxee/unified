@@ -33,21 +33,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CGameObject::CGameObject()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CGameObject::CGameObject(const CGameObject&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CGameObject& CGameObject::operator=(const CGameObject&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CGameObject::CGameObject(unsigned char a0, uint32_t a1)
 {
     CGameObject__CGameObjectCtor(this, a0, a1);

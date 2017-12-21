@@ -34,21 +34,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSCreature::CNWSCreature()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCreature::CNWSCreature(const CNWSCreature&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCreature& CNWSCreature::operator=(const CNWSCreature&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSCreature::CNWSCreature(uint32_t a0, int32_t a1, int32_t a2)
 {
     CNWSCreature__CNWSCreatureCtor(this, a0, a1, a2);

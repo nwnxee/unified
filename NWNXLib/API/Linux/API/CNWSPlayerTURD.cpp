@@ -14,21 +14,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSPlayerTURD::CNWSPlayerTURD()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayerTURD::CNWSPlayerTURD(const CNWSPlayerTURD&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayerTURD& CNWSPlayerTURD::operator=(const CNWSPlayerTURD&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSPlayerTURD::CNWSPlayerTURD(uint32_t a0)
 {
     CNWSPlayerTURD__CNWSPlayerTURDCtor(this, a0);

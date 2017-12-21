@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoDebug::CExoDebug(const CExoDebug&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoDebug& CExoDebug::operator=(const CExoDebug&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoDebug::CExoDebug()
 {
     CExoDebug__CExoDebugCtor(this);

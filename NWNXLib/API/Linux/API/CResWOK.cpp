@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResWOK::CResWOK(const CResWOK&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResWOK& CResWOK::operator=(const CResWOK&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResWOK::CResWOK()
 {
     CResWOK__CResWOKCtor(this);

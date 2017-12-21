@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CLastUpdateObject::CLastUpdateObject(const CLastUpdateObject&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CLastUpdateObject& CLastUpdateObject::operator=(const CLastUpdateObject&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CLastUpdateObject::CLastUpdateObject()
 {
     CLastUpdateObject__CLastUpdateObjectCtor(this);

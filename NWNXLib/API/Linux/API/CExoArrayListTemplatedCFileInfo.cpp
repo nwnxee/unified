@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedCFileInfo::CExoArrayListTemplatedCFileInfo()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCFileInfo::CExoArrayListTemplatedCFileInfo(const CExoArrayListTemplatedCFileInfo&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCFileInfo& CExoArrayListTemplatedCFileInfo::operator=(const CExoArrayListTemplatedCFileInfo&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoArrayListTemplatedCFileInfo::~CExoArrayListTemplatedCFileInfo()
 {
     CExoArrayListTemplatedCFileInfo__CExoArrayListTemplatedCFileInfoDtor(this);

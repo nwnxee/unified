@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptParseTreeNode::CScriptParseTreeNode()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptParseTreeNode::CScriptParseTreeNode(const CScriptParseTreeNode&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptParseTreeNode& CScriptParseTreeNode::operator=(const CScriptParseTreeNode&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptParseTreeNode::~CScriptParseTreeNode()
 {
     CScriptParseTreeNode__CScriptParseTreeNodeDtor(this);

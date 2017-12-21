@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedunsignedshort::CExoLinkedListTemplatedunsignedshort()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedunsignedshort::CExoLinkedListTemplatedunsignedshort(const CExoLinkedListTemplatedunsignedshort&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedunsignedshort& CExoLinkedListTemplatedunsignedshort::operator=(const CExoLinkedListTemplatedunsignedshort&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedunsignedshort::~CExoLinkedListTemplatedunsignedshort()
 {
     CExoLinkedListTemplatedunsignedshort__CExoLinkedListTemplatedunsignedshortDtor(this);

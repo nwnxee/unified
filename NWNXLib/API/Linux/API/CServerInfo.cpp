@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CServerInfo::CServerInfo(const CServerInfo&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CServerInfo& CServerInfo::operator=(const CServerInfo&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CServerInfo::CServerInfo()
 {
     CServerInfo__CServerInfoCtor(this);

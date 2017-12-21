@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSForcedAction::CNWSForcedAction(const CNWSForcedAction&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSForcedAction& CNWSForcedAction::operator=(const CNWSForcedAction&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSForcedAction::CNWSForcedAction()
 {
     CNWSForcedAction__CNWSForcedActionCtor(this);

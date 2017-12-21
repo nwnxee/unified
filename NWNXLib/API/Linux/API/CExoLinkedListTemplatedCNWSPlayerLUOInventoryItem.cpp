@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem::CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem::CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem(const CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem& CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem::operator=(const CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem::~CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem()
 {
     CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem__CExoLinkedListTemplatedCNWSPlayerLUOInventoryItemDtor(this);

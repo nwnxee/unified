@@ -75,9 +75,9 @@ struct CNWSDoor
     uint16_t m_nLoadScreenID;
 
     // The below are auto generated stubs.
-    CNWSDoor();
-    CNWSDoor(const CNWSDoor&);
-    CNWSDoor& operator=(const CNWSDoor&);
+    CNWSDoor() = default;
+    CNWSDoor(const CNWSDoor&) = default;
+    CNWSDoor& operator=(const CNWSDoor&) = default;
 
     CNWSDoor(uint32_t);
     ~CNWSDoor();

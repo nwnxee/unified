@@ -18,8 +18,8 @@ struct CNWSExpressionNode
     CNWSExpressionNode* m_pAlternate;
 
     // The below are auto generated stubs.
-    CNWSExpressionNode(const CNWSExpressionNode&);
-    CNWSExpressionNode& operator=(const CNWSExpressionNode&);
+    CNWSExpressionNode(const CNWSExpressionNode&) = default;
+    CNWSExpressionNode& operator=(const CNWSExpressionNode&) = default;
 
     CNWSExpressionNode();
     ~CNWSExpressionNode();

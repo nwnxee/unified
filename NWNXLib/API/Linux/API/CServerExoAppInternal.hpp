@@ -119,8 +119,8 @@ struct CServerExoAppInternal
     int32_t m_bStickyCombatModesEnabled;
 
     // The below are auto generated stubs.
-    CServerExoAppInternal(const CServerExoAppInternal&);
-    CServerExoAppInternal& operator=(const CServerExoAppInternal&);
+    CServerExoAppInternal(const CServerExoAppInternal&) = default;
+    CServerExoAppInternal& operator=(const CServerExoAppInternal&) = default;
 
     CServerExoAppInternal();
     ~CServerExoAppInternal();

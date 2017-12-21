@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSExpression::CNWSExpression(const CNWSExpression&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSExpression& CNWSExpression::operator=(const CNWSExpression&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSExpression::CNWSExpression()
 {
     CNWSExpression__CNWSExpressionCtor(this);

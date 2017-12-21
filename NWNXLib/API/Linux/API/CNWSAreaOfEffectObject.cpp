@@ -10,21 +10,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSAreaOfEffectObject::CNWSAreaOfEffectObject()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSAreaOfEffectObject::CNWSAreaOfEffectObject(const CNWSAreaOfEffectObject&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSAreaOfEffectObject& CNWSAreaOfEffectObject::operator=(const CNWSAreaOfEffectObject&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSAreaOfEffectObject::CNWSAreaOfEffectObject(uint32_t a0)
 {
     CNWSAreaOfEffectObject__CNWSAreaOfEffectObjectCtor(this, a0);

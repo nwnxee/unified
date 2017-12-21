@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSkill::CNWSkill(const CNWSkill&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSkill& CNWSkill::operator=(const CNWSkill&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSkill::CNWSkill()
 {
     CNWSkill__CNWSkillCtor(this);

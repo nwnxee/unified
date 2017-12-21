@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedCERFString::CExoLinkedListTemplatedCERFString()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCERFString::CExoLinkedListTemplatedCERFString(const CExoLinkedListTemplatedCERFString&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCERFString& CExoLinkedListTemplatedCERFString::operator=(const CExoLinkedListTemplatedCERFString&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedCERFString::~CExoLinkedListTemplatedCERFString()
 {
     CExoLinkedListTemplatedCERFString__CExoLinkedListTemplatedCERFStringDtor(this);

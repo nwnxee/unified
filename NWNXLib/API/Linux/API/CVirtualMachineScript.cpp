@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CVirtualMachineScript::CVirtualMachineScript()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachineScript::CVirtualMachineScript(const CVirtualMachineScript&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachineScript& CVirtualMachineScript::operator=(const CVirtualMachineScript&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CVirtualMachineScript::~CVirtualMachineScript()
 {
     CVirtualMachineScript__CVirtualMachineScriptDtor(this);

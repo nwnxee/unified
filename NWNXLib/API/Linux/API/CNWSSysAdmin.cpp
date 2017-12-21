@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSSysAdmin::CNWSSysAdmin()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSSysAdmin::CNWSSysAdmin(const CNWSSysAdmin&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSSysAdmin& CNWSSysAdmin::operator=(const CNWSSysAdmin&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSSysAdmin::CNWSSysAdmin(uint32_t a0)
 {
     CNWSSysAdmin__CNWSSysAdminCtor(this, a0);

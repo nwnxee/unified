@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWBaseItem::CNWBaseItem(const CNWBaseItem&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWBaseItem& CNWBaseItem::operator=(const CNWBaseItem&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWBaseItem::CNWBaseItem()
 {
     CNWBaseItem__CNWBaseItemCtor(this);

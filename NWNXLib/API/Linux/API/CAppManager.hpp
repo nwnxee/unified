@@ -34,8 +34,8 @@ struct CAppManager
     int32_t m_bLogModelErrors;
 
     // The below are auto generated stubs.
-    CAppManager(const CAppManager&);
-    CAppManager& operator=(const CAppManager&);
+    CAppManager(const CAppManager&) = default;
+    CAppManager& operator=(const CAppManager&) = default;
 
     CAppManager();
     ~CAppManager();

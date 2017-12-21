@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWPlaceableSurfaceMesh::CNWPlaceableSurfaceMesh(const CNWPlaceableSurfaceMesh&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWPlaceableSurfaceMesh& CNWPlaceableSurfaceMesh::operator=(const CNWPlaceableSurfaceMesh&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWPlaceableSurfaceMesh::CNWPlaceableSurfaceMesh()
 {
     CNWPlaceableSurfaceMesh__CNWPlaceableSurfaceMeshCtor(this);

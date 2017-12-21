@@ -10,9 +10,9 @@ struct CExoLinkedListTemplatedunsignedshort
 {
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedunsignedshort();
-    CExoLinkedListTemplatedunsignedshort(const CExoLinkedListTemplatedunsignedshort&);
-    CExoLinkedListTemplatedunsignedshort& operator=(const CExoLinkedListTemplatedunsignedshort&);
+    CExoLinkedListTemplatedunsignedshort() = default;
+    CExoLinkedListTemplatedunsignedshort(const CExoLinkedListTemplatedunsignedshort&) = default;
+    CExoLinkedListTemplatedunsignedshort& operator=(const CExoLinkedListTemplatedunsignedshort&) = default;
 
     ~CExoLinkedListTemplatedunsignedshort();
 };

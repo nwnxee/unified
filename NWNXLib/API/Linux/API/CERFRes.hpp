@@ -15,8 +15,8 @@ struct CERFRes
     uint8_t* m_pData;
 
     // The below are auto generated stubs.
-    CERFRes(const CERFRes&);
-    CERFRes& operator=(const CERFRes&);
+    CERFRes(const CERFRes&) = default;
+    CERFRes& operator=(const CERFRes&) = default;
 
     CERFRes();
     ~CERFRes();

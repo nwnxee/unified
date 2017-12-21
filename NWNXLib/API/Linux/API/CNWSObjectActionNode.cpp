@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSObjectActionNode::CNWSObjectActionNode(const CNWSObjectActionNode&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSObjectActionNode& CNWSObjectActionNode::operator=(const CNWSObjectActionNode&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSObjectActionNode::CNWSObjectActionNode()
 {
     CNWSObjectActionNode__CNWSObjectActionNodeCtor(this);

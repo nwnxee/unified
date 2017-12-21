@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCExoKeyTable
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCExoKeyTable();
-    CExoLinkedListTemplatedCExoKeyTable(const CExoLinkedListTemplatedCExoKeyTable&);
-    CExoLinkedListTemplatedCExoKeyTable& operator=(const CExoLinkedListTemplatedCExoKeyTable&);
+    CExoLinkedListTemplatedCExoKeyTable() = default;
+    CExoLinkedListTemplatedCExoKeyTable(const CExoLinkedListTemplatedCExoKeyTable&) = default;
+    CExoLinkedListTemplatedCExoKeyTable& operator=(const CExoLinkedListTemplatedCExoKeyTable&) = default;
 
     ~CExoLinkedListTemplatedCExoKeyTable();
 };

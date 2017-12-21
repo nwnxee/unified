@@ -16,8 +16,8 @@ struct CResPWK
     uint8_t* m_pPWKData;
 
     // The below are auto generated stubs.
-    CResPWK(const CResPWK&);
-    CResPWK& operator=(const CResPWK&);
+    CResPWK(const CResPWK&) = default;
+    CResPWK& operator=(const CResPWK&) = default;
 
     CResPWK();
     ~CResPWK();

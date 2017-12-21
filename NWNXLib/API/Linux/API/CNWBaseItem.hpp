@@ -64,8 +64,8 @@ struct CNWBaseItem
     uint8_t m_nArcaneSpellFailure;
 
     // The below are auto generated stubs.
-    CNWBaseItem(const CNWBaseItem&);
-    CNWBaseItem& operator=(const CNWBaseItem&);
+    CNWBaseItem(const CNWBaseItem&) = default;
+    CNWBaseItem& operator=(const CNWBaseItem&) = default;
 
     CNWBaseItem();
     ~CNWBaseItem();

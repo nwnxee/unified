@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoTimersInternal::CExoTimersInternal(const CExoTimersInternal&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoTimersInternal& CExoTimersInternal::operator=(const CExoTimersInternal&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoTimersInternal::CExoTimersInternal()
 {
     CExoTimersInternal__CExoTimersInternalCtor(this);

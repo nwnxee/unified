@@ -21,9 +21,9 @@ struct CNWVirtualMachineCommands
     pfCVMCommands* m_pVirtualMachineCommands;
 
     // The below are auto generated stubs.
-    CNWVirtualMachineCommands();
-    CNWVirtualMachineCommands(const CNWVirtualMachineCommands&);
-    CNWVirtualMachineCommands& operator=(const CNWVirtualMachineCommands&);
+    CNWVirtualMachineCommands() = default;
+    CNWVirtualMachineCommands(const CNWVirtualMachineCommands&) = default;
+    CNWVirtualMachineCommands& operator=(const CNWVirtualMachineCommands&) = default;
 
     ~CNWVirtualMachineCommands();
     void* CopyGameDefinedStructure(int32_t, void*);

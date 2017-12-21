@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedCLastUpdatePartyObject::CExoLinkedListTemplatedCLastUpdatePartyObject()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCLastUpdatePartyObject::CExoLinkedListTemplatedCLastUpdatePartyObject(const CExoLinkedListTemplatedCLastUpdatePartyObject&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCLastUpdatePartyObject& CExoLinkedListTemplatedCLastUpdatePartyObject::operator=(const CExoLinkedListTemplatedCLastUpdatePartyObject&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedCLastUpdatePartyObject::~CExoLinkedListTemplatedCLastUpdatePartyObject()
 {
     CExoLinkedListTemplatedCLastUpdatePartyObject__CExoLinkedListTemplatedCLastUpdatePartyObjectDtor(this);

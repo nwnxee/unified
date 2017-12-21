@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CStoreCustomer::CStoreCustomer(const CStoreCustomer&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CStoreCustomer& CStoreCustomer::operator=(const CStoreCustomer&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CStoreCustomer::CStoreCustomer()
 {
     CStoreCustomer__CStoreCustomerCtor(this);

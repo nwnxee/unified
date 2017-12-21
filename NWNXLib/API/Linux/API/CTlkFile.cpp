@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CTlkFile::CTlkFile()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CTlkFile::CTlkFile(const CTlkFile&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CTlkFile& CTlkFile::operator=(const CTlkFile&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CTlkFile::CTlkFile(CExoString a0)
 {
     CTlkFile__CTlkFileCtor(this, a0);

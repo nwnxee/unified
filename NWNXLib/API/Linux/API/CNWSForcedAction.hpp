@@ -21,8 +21,8 @@ struct CNWSForcedAction
     uint32_t m_oidTarget;
 
     // The below are auto generated stubs.
-    CNWSForcedAction(const CNWSForcedAction&);
-    CNWSForcedAction& operator=(const CNWSForcedAction&);
+    CNWSForcedAction(const CNWSForcedAction&) = default;
+    CNWSForcedAction& operator=(const CNWSForcedAction&) = default;
 
     CNWSForcedAction();
     ~CNWSForcedAction();

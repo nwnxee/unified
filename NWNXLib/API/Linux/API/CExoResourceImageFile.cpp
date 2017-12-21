@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoResourceImageFile::CExoResourceImageFile(const CExoResourceImageFile&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoResourceImageFile& CExoResourceImageFile::operator=(const CExoResourceImageFile&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoResourceImageFile::CExoResourceImageFile()
 {
     CExoResourceImageFile__CExoResourceImageFileCtor(this);

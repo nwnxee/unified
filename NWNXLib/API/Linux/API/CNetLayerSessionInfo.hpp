@@ -32,8 +32,8 @@ struct CNetLayerSessionInfo
     CExoString m_sVisibleAddress;
 
     // The below are auto generated stubs.
-    CNetLayerSessionInfo(const CNetLayerSessionInfo&);
-    CNetLayerSessionInfo& operator=(const CNetLayerSessionInfo&);
+    CNetLayerSessionInfo(const CNetLayerSessionInfo&) = default;
+    CNetLayerSessionInfo& operator=(const CNetLayerSessionInfo&) = default;
 
     CNetLayerSessionInfo();
     ~CNetLayerSessionInfo();

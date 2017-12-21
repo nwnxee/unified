@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResNDB::CResNDB(const CResNDB&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResNDB& CResNDB::operator=(const CResNDB&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResNDB::CResNDB()
 {
     CResNDB__CResNDBCtor(this);

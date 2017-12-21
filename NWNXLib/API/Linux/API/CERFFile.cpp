@@ -11,16 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CERFFile::CERFFile(const CERFFile&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CERFFile& CERFFile::operator=(const CERFFile&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CERFFile::CERFFile()
 {
     CERFFile__CERFFileCtor(this);

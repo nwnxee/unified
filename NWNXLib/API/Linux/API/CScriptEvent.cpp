@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptEvent::CScriptEvent(const CScriptEvent&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptEvent& CScriptEvent::operator=(const CScriptEvent&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptEvent::CScriptEvent()
 {
     CScriptEvent__CScriptEventCtor(this);

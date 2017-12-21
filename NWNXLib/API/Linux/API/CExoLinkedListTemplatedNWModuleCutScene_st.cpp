@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedNWModuleCutScene_st::CExoLinkedListTemplatedNWModuleCutScene_st()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedNWModuleCutScene_st::CExoLinkedListTemplatedNWModuleCutScene_st(const CExoLinkedListTemplatedNWModuleCutScene_st&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedNWModuleCutScene_st& CExoLinkedListTemplatedNWModuleCutScene_st::operator=(const CExoLinkedListTemplatedNWModuleCutScene_st&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedNWModuleCutScene_st::~CExoLinkedListTemplatedNWModuleCutScene_st()
 {
     CExoLinkedListTemplatedNWModuleCutScene_st__CExoLinkedListTemplatedNWModuleCutScene_stDtor(this);

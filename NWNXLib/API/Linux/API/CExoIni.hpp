@@ -16,9 +16,9 @@ struct CExoIni
     CExoIniInternal* m_pcExoIniInternal;
 
     // The below are auto generated stubs.
-    CExoIni();
-    CExoIni(const CExoIni&);
-    CExoIni& operator=(const CExoIni&);
+    CExoIni() = default;
+    CExoIni(const CExoIni&) = default;
+    CExoIni& operator=(const CExoIni&) = default;
 
     CExoIni(CExoString);
     ~CExoIni();

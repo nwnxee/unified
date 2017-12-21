@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CPathfindInformation::CPathfindInformation(const CPathfindInformation&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CPathfindInformation& CPathfindInformation::operator=(const CPathfindInformation&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CPathfindInformation::CPathfindInformation()
 {
     CPathfindInformation__CPathfindInformationCtor(this);

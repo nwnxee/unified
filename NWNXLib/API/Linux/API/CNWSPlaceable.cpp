@@ -13,21 +13,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSPlaceable::CNWSPlaceable()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlaceable::CNWSPlaceable(const CNWSPlaceable&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlaceable& CNWSPlaceable::operator=(const CNWSPlaceable&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSPlaceable::CNWSPlaceable(uint32_t a0)
 {
     CNWSPlaceable__CNWSPlaceableCtor(this, a0);

@@ -22,8 +22,8 @@ struct CNWSExpression
     CExoString m_sParsedString;
 
     // The below are auto generated stubs.
-    CNWSExpression(const CNWSExpression&);
-    CNWSExpression& operator=(const CNWSExpression&);
+    CNWSExpression(const CNWSExpression&) = default;
+    CNWSExpression& operator=(const CNWSExpression&) = default;
 
     CNWSExpression();
     ~CNWSExpression();

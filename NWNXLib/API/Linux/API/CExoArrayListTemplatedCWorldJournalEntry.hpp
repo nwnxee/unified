@@ -15,9 +15,9 @@ struct CExoArrayListTemplatedCWorldJournalEntry
     int32_t array_size;
 
     // The below are auto generated stubs.
-    CExoArrayListTemplatedCWorldJournalEntry();
-    CExoArrayListTemplatedCWorldJournalEntry(const CExoArrayListTemplatedCWorldJournalEntry&);
-    CExoArrayListTemplatedCWorldJournalEntry& operator=(const CExoArrayListTemplatedCWorldJournalEntry&);
+    CExoArrayListTemplatedCWorldJournalEntry() = default;
+    CExoArrayListTemplatedCWorldJournalEntry(const CExoArrayListTemplatedCWorldJournalEntry&) = default;
+    CExoArrayListTemplatedCWorldJournalEntry& operator=(const CExoArrayListTemplatedCWorldJournalEntry&) = default;
 
     ~CExoArrayListTemplatedCWorldJournalEntry();
     void Add(CWorldJournalEntry);

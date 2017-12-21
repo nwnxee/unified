@@ -26,8 +26,8 @@ struct CResTGA
     ExoTGAHeader_st* m_pTGAHeader;
 
     // The below are auto generated stubs.
-    CResTGA(const CResTGA&);
-    CResTGA& operator=(const CResTGA&);
+    CResTGA(const CResTGA&) = default;
+    CResTGA& operator=(const CResTGA&) = default;
 
     CResTGA();
     ~CResTGA();

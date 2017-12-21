@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCERFString
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCERFString();
-    CExoLinkedListTemplatedCERFString(const CExoLinkedListTemplatedCERFString&);
-    CExoLinkedListTemplatedCERFString& operator=(const CExoLinkedListTemplatedCERFString&);
+    CExoLinkedListTemplatedCERFString() = default;
+    CExoLinkedListTemplatedCERFString(const CExoLinkedListTemplatedCERFString&) = default;
+    CExoLinkedListTemplatedCERFString& operator=(const CExoLinkedListTemplatedCERFString&) = default;
 
     ~CExoLinkedListTemplatedCERFString();
 };

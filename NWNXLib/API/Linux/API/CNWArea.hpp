@@ -59,8 +59,8 @@ struct CNWArea
     float m_fFogClipDistance;
 
     // The below are auto generated stubs.
-    CNWArea(const CNWArea&);
-    CNWArea& operator=(const CNWArea&);
+    CNWArea(const CNWArea&) = default;
+    CNWArea& operator=(const CNWArea&) = default;
 
     CNWArea();
     ~CNWArea();

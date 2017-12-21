@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoResFile::CExoResFile(const CExoResFile&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoResFile& CExoResFile::operator=(const CExoResFile&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoResFile::CExoResFile()
 {
     CExoResFile__CExoResFileCtor(this);

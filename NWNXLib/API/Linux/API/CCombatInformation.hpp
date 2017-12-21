@@ -43,7 +43,7 @@ struct CCombatInformation
     uint8_t m_nDamageDie;
 
     // The below are auto generated stubs.
-    CCombatInformation(const CCombatInformation&);
+    CCombatInformation(const CCombatInformation&) = default;
 
     CCombatInformation();
     ~CCombatInformation();

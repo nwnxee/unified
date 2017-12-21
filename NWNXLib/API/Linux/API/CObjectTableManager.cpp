@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CObjectTableManager::CObjectTableManager(const CObjectTableManager&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CObjectTableManager& CObjectTableManager::operator=(const CObjectTableManager&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CObjectTableManager::CObjectTableManager()
 {
     CObjectTableManager__CObjectTableManagerCtor(this);

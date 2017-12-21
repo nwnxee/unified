@@ -13,16 +13,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWTileSurfaceMesh::CNWTileSurfaceMesh(const CNWTileSurfaceMesh&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWTileSurfaceMesh& CNWTileSurfaceMesh::operator=(const CNWTileSurfaceMesh&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWTileSurfaceMesh::CNWTileSurfaceMesh()
 {
     CNWTileSurfaceMesh__CNWTileSurfaceMeshCtor(this);

@@ -12,21 +12,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSItemPropertyHandler::CNWSItemPropertyHandler()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSItemPropertyHandler::CNWSItemPropertyHandler(const CNWSItemPropertyHandler&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSItemPropertyHandler& CNWSItemPropertyHandler::operator=(const CNWSItemPropertyHandler&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSItemPropertyHandler::~CNWSItemPropertyHandler()
 {
     CNWSItemPropertyHandler__CNWSItemPropertyHandlerDtor__0(this);

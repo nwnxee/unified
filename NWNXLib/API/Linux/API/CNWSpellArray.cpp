@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSpellArray::CNWSpellArray(const CNWSpellArray&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSpellArray& CNWSpellArray::operator=(const CNWSpellArray&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSpellArray::CNWSpellArray()
 {
     CNWSpellArray__CNWSpellArrayCtor(this);

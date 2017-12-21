@@ -12,21 +12,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSItem::CNWSItem()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSItem::CNWSItem(const CNWSItem&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSItem& CNWSItem::operator=(const CNWSItem&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSItem::CNWSItem(uint32_t a0)
 {
     CNWSItem__CNWSItemCtor(this, a0);

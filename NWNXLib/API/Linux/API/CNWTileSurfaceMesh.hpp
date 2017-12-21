@@ -80,8 +80,8 @@ struct CNWTileSurfaceMesh
     CNWTileSurfaceMeshLocalInfo m_pcIntraTileGenSuccessorsLocalInfo;
 
     // The below are auto generated stubs.
-    CNWTileSurfaceMesh(const CNWTileSurfaceMesh&);
-    CNWTileSurfaceMesh& operator=(const CNWTileSurfaceMesh&);
+    CNWTileSurfaceMesh(const CNWTileSurfaceMesh&) = default;
+    CNWTileSurfaceMesh& operator=(const CNWTileSurfaceMesh&) = default;
 
     CNWTileSurfaceMesh();
     ~CNWTileSurfaceMesh();

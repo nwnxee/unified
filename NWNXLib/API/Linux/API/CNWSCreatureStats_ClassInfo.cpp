@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSCreatureStats_ClassInfo::CNWSCreatureStats_ClassInfo(const CNWSCreatureStats_ClassInfo&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCreatureStats_ClassInfo& CNWSCreatureStats_ClassInfo::operator=(const CNWSCreatureStats_ClassInfo&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSCreatureStats_ClassInfo::CNWSCreatureStats_ClassInfo()
 {
     CNWSCreatureStats_ClassInfo__CNWSCreatureStats_ClassInfoCtor(this);

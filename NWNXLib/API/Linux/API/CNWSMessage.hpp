@@ -44,8 +44,8 @@ struct CNWSMessage
 {
 
     // The below are auto generated stubs.
-    CNWSMessage(const CNWSMessage&);
-    CNWSMessage& operator=(const CNWSMessage&);
+    CNWSMessage(const CNWSMessage&) = default;
+    CNWSMessage& operator=(const CNWSMessage&) = default;
 
     CNWSMessage();
     ~CNWSMessage();

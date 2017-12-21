@@ -15,8 +15,8 @@ struct CExoArrayListTemplatedCNWItemProperty
     int32_t array_size;
 
     // The below are auto generated stubs.
-    CExoArrayListTemplatedCNWItemProperty();
-    CExoArrayListTemplatedCNWItemProperty(const CExoArrayListTemplatedCNWItemProperty&);
+    CExoArrayListTemplatedCNWItemProperty() = default;
+    CExoArrayListTemplatedCNWItemProperty(const CExoArrayListTemplatedCNWItemProperty&) = default;
 
     ~CExoArrayListTemplatedCNWItemProperty();
     void Add(CNWItemProperty);

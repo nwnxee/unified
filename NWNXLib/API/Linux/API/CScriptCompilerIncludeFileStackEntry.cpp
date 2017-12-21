@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptCompilerIncludeFileStackEntry::CScriptCompilerIncludeFileStackEntry()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptCompilerIncludeFileStackEntry::CScriptCompilerIncludeFileStackEntry(const CScriptCompilerIncludeFileStackEntry&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptCompilerIncludeFileStackEntry& CScriptCompilerIncludeFileStackEntry::operator=(const CScriptCompilerIncludeFileStackEntry&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptCompilerIncludeFileStackEntry::~CScriptCompilerIncludeFileStackEntry()
 {
     CScriptCompilerIncludeFileStackEntry__CScriptCompilerIncludeFileStackEntryDtor(this);

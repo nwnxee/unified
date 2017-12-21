@@ -12,16 +12,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNetLayerInternal::CNetLayerInternal(const CNetLayerInternal&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNetLayerInternal& CNetLayerInternal::operator=(const CNetLayerInternal&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNetLayerInternal::CNetLayerInternal()
 {
     CNetLayerInternal__CNetLayerInternalCtor(this);

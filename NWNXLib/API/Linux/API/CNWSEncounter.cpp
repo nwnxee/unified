@@ -12,21 +12,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSEncounter::CNWSEncounter()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSEncounter::CNWSEncounter(const CNWSEncounter&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSEncounter& CNWSEncounter::operator=(const CNWSEncounter&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSEncounter::CNWSEncounter(uint32_t a0)
 {
     CNWSEncounter__CNWSEncounterCtor(this, a0);

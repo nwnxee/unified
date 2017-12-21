@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedCNWSScriptVar::CExoArrayListTemplatedCNWSScriptVar()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCNWSScriptVar::CExoArrayListTemplatedCNWSScriptVar(const CExoArrayListTemplatedCNWSScriptVar&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCNWSScriptVar& CExoArrayListTemplatedCNWSScriptVar::operator=(const CExoArrayListTemplatedCNWSScriptVar&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoArrayListTemplatedCNWSScriptVar::~CExoArrayListTemplatedCNWSScriptVar()
 {
     CExoArrayListTemplatedCNWSScriptVar__CExoArrayListTemplatedCNWSScriptVarDtor(this);

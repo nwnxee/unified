@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CERFKey::CERFKey(const CERFKey&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CERFKey& CERFKey::operator=(const CERFKey&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CERFKey::CERFKey()
 {
     CERFKey__CERFKeyCtor(this);

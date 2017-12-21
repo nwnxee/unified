@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoEncapsulatedFile::CExoEncapsulatedFile(const CExoEncapsulatedFile&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoEncapsulatedFile& CExoEncapsulatedFile::operator=(const CExoEncapsulatedFile&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoEncapsulatedFile::CExoEncapsulatedFile()
 {
     CExoEncapsulatedFile__CExoEncapsulatedFileCtor(this);

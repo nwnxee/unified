@@ -9,11 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CCombatInformation::CCombatInformation(const CCombatInformation&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CCombatInformation::CCombatInformation()
 {
     CCombatInformation__CCombatInformationCtor(this);

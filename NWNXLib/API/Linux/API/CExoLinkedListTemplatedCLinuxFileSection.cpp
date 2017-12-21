@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedCLinuxFileSection::CExoLinkedListTemplatedCLinuxFileSection()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCLinuxFileSection::CExoLinkedListTemplatedCLinuxFileSection(const CExoLinkedListTemplatedCLinuxFileSection&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCLinuxFileSection& CExoLinkedListTemplatedCLinuxFileSection::operator=(const CExoLinkedListTemplatedCLinuxFileSection&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedCLinuxFileSection::~CExoLinkedListTemplatedCLinuxFileSection()
 {
     CExoLinkedListTemplatedCLinuxFileSection__CExoLinkedListTemplatedCLinuxFileSectionDtor(this);

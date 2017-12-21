@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CERFRes::CERFRes(const CERFRes&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CERFRes& CERFRes::operator=(const CERFRes&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CERFRes::CERFRes()
 {
     CERFRes__CERFResCtor(this);

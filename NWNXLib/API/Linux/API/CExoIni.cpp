@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoIni::CExoIni()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoIni::CExoIni(const CExoIni&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoIni& CExoIni::operator=(const CExoIni&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoIni::CExoIni(CExoString a0)
 {
     CExoIni__CExoIniCtor(this, a0);

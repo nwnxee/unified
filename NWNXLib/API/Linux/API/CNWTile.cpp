@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWTile::CNWTile(const CNWTile&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWTile& CNWTile::operator=(const CNWTile&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWTile::CNWTile()
 {
     CNWTile__CNWTileCtor(this);

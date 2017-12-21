@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-STR_RES::STR_RES(const STR_RES&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-STR_RES& STR_RES::operator=(const STR_RES&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 STR_RES::STR_RES()
 {
     STR_RES__STR_RESCtor(this);

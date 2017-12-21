@@ -90,8 +90,8 @@ struct CNetLayerInternal
     int32_t m_bValidateLoginWhileMasterServerIsNotResponding;
 
     // The below are auto generated stubs.
-    CNetLayerInternal(const CNetLayerInternal&);
-    CNetLayerInternal& operator=(const CNetLayerInternal&);
+    CNetLayerInternal(const CNetLayerInternal&) = default;
+    CNetLayerInternal& operator=(const CNetLayerInternal&) = default;
 
     CNetLayerInternal();
     ~CNetLayerInternal();

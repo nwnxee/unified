@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWTileData::CNWTileData(const CNWTileData&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWTileData& CNWTileData::operator=(const CNWTileData&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWTileData::CNWTileData()
 {
     CNWTileData__CNWTileDataCtor(this);

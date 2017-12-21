@@ -10,21 +10,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSBarter::CNWSBarter()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSBarter::CNWSBarter(const CNWSBarter&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSBarter& CNWSBarter::operator=(const CNWSBarter&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSBarter::CNWSBarter(CNWSCreature* a0)
 {
     CNWSBarter__CNWSBarterCtor(this, a0);

@@ -15,8 +15,8 @@ struct CNWPlaceMeshManager
     CNWPlaceableSurfaceMesh** m_pSurfaceMeshLoaded;
 
     // The below are auto generated stubs.
-    CNWPlaceMeshManager(const CNWPlaceMeshManager&);
-    CNWPlaceMeshManager& operator=(const CNWPlaceMeshManager&);
+    CNWPlaceMeshManager(const CNWPlaceMeshManager&) = default;
+    CNWPlaceMeshManager& operator=(const CNWPlaceMeshManager&) = default;
 
     CNWPlaceMeshManager();
     ~CNWPlaceMeshManager();

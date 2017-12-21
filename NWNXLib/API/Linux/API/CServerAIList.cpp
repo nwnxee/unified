@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CServerAIList::CServerAIList(const CServerAIList&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CServerAIList& CServerAIList::operator=(const CServerAIList&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CServerAIList::CServerAIList()
 {
     CServerAIList__CServerAIListCtor(this);

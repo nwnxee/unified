@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates::CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates::CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates(const CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates& CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates::operator=(const CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates::~CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates()
 {
     CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates__CExoArrayListTemplatedCNWSPlayerJournalQuestUpdatesDtor(this);

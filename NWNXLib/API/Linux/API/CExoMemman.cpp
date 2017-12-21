@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoMemman::CExoMemman()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoMemman::CExoMemman(const CExoMemman&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoMemman& CExoMemman::operator=(const CExoMemman&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoMemman::~CExoMemman()
 {
     CExoMemman__CExoMemmanDtor(this);

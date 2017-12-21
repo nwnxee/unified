@@ -269,9 +269,9 @@ struct CNWSCreature
     uint32_t m_nLastRestTimeOfDay;
 
     // The below are auto generated stubs.
-    CNWSCreature();
-    CNWSCreature(const CNWSCreature&);
-    CNWSCreature& operator=(const CNWSCreature&);
+    CNWSCreature() = default;
+    CNWSCreature(const CNWSCreature&) = default;
+    CNWSCreature& operator=(const CNWSCreature&) = default;
 
     CNWSCreature(uint32_t, int32_t, int32_t);
     ~CNWSCreature();

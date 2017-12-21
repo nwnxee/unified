@@ -18,16 +18,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CServerAIMaster::CServerAIMaster(const CServerAIMaster&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CServerAIMaster& CServerAIMaster::operator=(const CServerAIMaster&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CServerAIMaster::CServerAIMaster()
 {
     CServerAIMaster__CServerAIMasterCtor(this);

@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptSourceFile::CScriptSourceFile(const CScriptSourceFile&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptSourceFile& CScriptSourceFile::operator=(const CScriptSourceFile&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptSourceFile::CScriptSourceFile()
 {
     CScriptSourceFile__CScriptSourceFileCtor(this);

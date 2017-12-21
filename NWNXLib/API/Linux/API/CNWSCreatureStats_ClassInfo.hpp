@@ -27,8 +27,8 @@ struct CNWSCreatureStats_ClassInfo
     int32_t m_bHasLostClassAbilities;
 
     // The below are auto generated stubs.
-    CNWSCreatureStats_ClassInfo(const CNWSCreatureStats_ClassInfo&);
-    CNWSCreatureStats_ClassInfo& operator=(const CNWSCreatureStats_ClassInfo&);
+    CNWSCreatureStats_ClassInfo(const CNWSCreatureStats_ClassInfo&) = default;
+    CNWSCreatureStats_ClassInfo& operator=(const CNWSCreatureStats_ClassInfo&) = default;
 
     CNWSCreatureStats_ClassInfo();
     ~CNWSCreatureStats_ClassInfo();

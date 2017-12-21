@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResHelperTemplatedCResNSS2009::CResHelperTemplatedCResNSS2009(const CResHelperTemplatedCResNSS2009&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResHelperTemplatedCResNSS2009& CResHelperTemplatedCResNSS2009::operator=(const CResHelperTemplatedCResNSS2009&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResHelperTemplatedCResNSS2009::CResHelperTemplatedCResNSS2009()
 {
     CResHelperTemplatedCResNSS2009__CResHelperTemplatedCResNSS2009Ctor(this);

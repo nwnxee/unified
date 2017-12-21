@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo::CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo()
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo::CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo(const CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo&)
-{
-     // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo& CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo::operator=(const CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo&)
-{
-    return *this; // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo::~CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo()
 {
     CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo__CExoArrayListTemplatedCNetLayerPlayerCDKeyInfoDtor(this);
