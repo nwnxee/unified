@@ -8,12 +8,12 @@ namespace API {
 
 CNWSkill::CNWSkill(const CNWSkill&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSkill& CNWSkill::operator=(const CNWSkill&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSkill::CNWSkill()

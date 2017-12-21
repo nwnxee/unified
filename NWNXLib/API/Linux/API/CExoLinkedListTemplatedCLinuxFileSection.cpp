@@ -10,17 +10,17 @@ namespace API {
 
 CExoLinkedListTemplatedCLinuxFileSection::CExoLinkedListTemplatedCLinuxFileSection()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedCLinuxFileSection::CExoLinkedListTemplatedCLinuxFileSection(const CExoLinkedListTemplatedCLinuxFileSection&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedCLinuxFileSection& CExoLinkedListTemplatedCLinuxFileSection::operator=(const CExoLinkedListTemplatedCLinuxFileSection&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedCLinuxFileSection::~CExoLinkedListTemplatedCLinuxFileSection()

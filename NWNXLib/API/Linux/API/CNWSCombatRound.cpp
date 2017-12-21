@@ -15,17 +15,17 @@ namespace API {
 
 CNWSCombatRound::CNWSCombatRound()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCombatRound::CNWSCombatRound(const CNWSCombatRound&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCombatRound& CNWSCombatRound::operator=(const CNWSCombatRound&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCombatRound::CNWSCombatRound(CNWSCreature* a0)

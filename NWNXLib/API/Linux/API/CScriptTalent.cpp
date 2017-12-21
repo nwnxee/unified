@@ -11,12 +11,12 @@ namespace API {
 
 CScriptTalent::CScriptTalent(const CScriptTalent&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CScriptTalent& CScriptTalent::operator=(const CScriptTalent&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CScriptTalent::CScriptTalent()

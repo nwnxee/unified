@@ -36,17 +36,17 @@ namespace API {
 
 CNWSCreature::CNWSCreature()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreature::CNWSCreature(const CNWSCreature&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreature& CNWSCreature::operator=(const CNWSCreature&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreature::CNWSCreature(uint32_t a0, int32_t a1, int32_t a2)

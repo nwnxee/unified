@@ -10,17 +10,17 @@ namespace API {
 
 CNWTileSet::CNWTileSet()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSet::CNWTileSet(const CNWTileSet&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSet& CNWTileSet::operator=(const CNWTileSet&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSet::CNWTileSet(CResRef a0, int32_t a1)

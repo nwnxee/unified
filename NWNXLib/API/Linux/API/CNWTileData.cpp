@@ -11,12 +11,12 @@ namespace API {
 
 CNWTileData::CNWTileData(const CNWTileData&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileData& CNWTileData::operator=(const CNWTileData&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileData::CNWTileData()

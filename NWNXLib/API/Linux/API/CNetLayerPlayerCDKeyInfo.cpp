@@ -8,17 +8,17 @@ namespace API {
 
 CNetLayerPlayerCDKeyInfo::CNetLayerPlayerCDKeyInfo()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNetLayerPlayerCDKeyInfo::CNetLayerPlayerCDKeyInfo(const CNetLayerPlayerCDKeyInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNetLayerPlayerCDKeyInfo& CNetLayerPlayerCDKeyInfo::operator=(const CNetLayerPlayerCDKeyInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNetLayerPlayerCDKeyInfo::~CNetLayerPlayerCDKeyInfo()

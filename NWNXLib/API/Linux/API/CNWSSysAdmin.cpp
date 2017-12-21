@@ -8,17 +8,17 @@ namespace API {
 
 CNWSSysAdmin::CNWSSysAdmin()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSSysAdmin::CNWSSysAdmin(const CNWSSysAdmin&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSSysAdmin& CNWSSysAdmin::operator=(const CNWSSysAdmin&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSSysAdmin::CNWSSysAdmin(uint32_t a0)

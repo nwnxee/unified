@@ -8,12 +8,12 @@ namespace API {
 
 CScriptCompilerIdListEntry::CScriptCompilerIdListEntry(const CScriptCompilerIdListEntry&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CScriptCompilerIdListEntry& CScriptCompilerIdListEntry::operator=(const CScriptCompilerIdListEntry&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CScriptCompilerIdListEntry::CScriptCompilerIdListEntry()

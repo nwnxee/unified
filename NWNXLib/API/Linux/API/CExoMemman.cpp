@@ -10,17 +10,17 @@ namespace API {
 
 CExoMemman::CExoMemman()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoMemman::CExoMemman(const CExoMemman&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoMemman& CExoMemman::operator=(const CExoMemman&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoMemman::~CExoMemman()

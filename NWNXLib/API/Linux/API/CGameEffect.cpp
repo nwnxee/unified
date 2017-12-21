@@ -11,12 +11,12 @@ namespace API {
 
 CGameEffect::CGameEffect()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CGameEffect::CGameEffect(const CGameEffect&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CGameEffect::CGameEffect(int32_t a0)

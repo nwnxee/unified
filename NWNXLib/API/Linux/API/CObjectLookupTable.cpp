@@ -8,12 +8,12 @@ namespace API {
 
 CObjectLookupTable::CObjectLookupTable(const CObjectLookupTable&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CObjectLookupTable& CObjectLookupTable::operator=(const CObjectLookupTable&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CObjectLookupTable::CObjectLookupTable()

@@ -8,17 +8,17 @@ namespace API {
 
 CExoLinkedListTemplatedunsignedshort::CExoLinkedListTemplatedunsignedshort()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedunsignedshort::CExoLinkedListTemplatedunsignedshort(const CExoLinkedListTemplatedunsignedshort&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedunsignedshort& CExoLinkedListTemplatedunsignedshort::operator=(const CExoLinkedListTemplatedunsignedshort&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedunsignedshort::~CExoLinkedListTemplatedunsignedshort()

@@ -14,12 +14,12 @@ namespace API {
 
 CAppManager::CAppManager(const CAppManager&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CAppManager& CAppManager::operator=(const CAppManager&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CAppManager::CAppManager()

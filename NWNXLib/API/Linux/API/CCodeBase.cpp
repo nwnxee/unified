@@ -10,12 +10,12 @@ namespace API {
 
 CCodeBase::CCodeBase(const CCodeBase&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CCodeBase& CCodeBase::operator=(const CCodeBase&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CCodeBase::CCodeBase()

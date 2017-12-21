@@ -13,17 +13,17 @@ namespace API {
 
 CNWSEffectListHandler::CNWSEffectListHandler()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSEffectListHandler::CNWSEffectListHandler(const CNWSEffectListHandler&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSEffectListHandler& CNWSEffectListHandler::operator=(const CNWSEffectListHandler&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSEffectListHandler::~CNWSEffectListHandler()

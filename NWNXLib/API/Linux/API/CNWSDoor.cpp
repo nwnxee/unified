@@ -13,17 +13,17 @@ namespace API {
 
 CNWSDoor::CNWSDoor()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSDoor::CNWSDoor(const CNWSDoor&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSDoor& CNWSDoor::operator=(const CNWSDoor&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSDoor::CNWSDoor(uint32_t a0)

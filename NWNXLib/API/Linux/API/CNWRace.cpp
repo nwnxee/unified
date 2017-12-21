@@ -8,12 +8,12 @@ namespace API {
 
 CNWRace::CNWRace(const CNWRace&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWRace& CNWRace::operator=(const CNWRace&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWRace::CNWRace()

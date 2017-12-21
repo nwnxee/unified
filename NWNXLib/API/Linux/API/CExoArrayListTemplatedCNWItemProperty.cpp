@@ -8,12 +8,12 @@ namespace API {
 
 CExoArrayListTemplatedCNWItemProperty::CExoArrayListTemplatedCNWItemProperty()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCNWItemProperty::CExoArrayListTemplatedCNWItemProperty(const CExoArrayListTemplatedCNWItemProperty&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCNWItemProperty::~CExoArrayListTemplatedCNWItemProperty()

@@ -10,12 +10,12 @@ namespace API {
 
 CLastUpdateObject::CLastUpdateObject(const CLastUpdateObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CLastUpdateObject& CLastUpdateObject::operator=(const CLastUpdateObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CLastUpdateObject::CLastUpdateObject()

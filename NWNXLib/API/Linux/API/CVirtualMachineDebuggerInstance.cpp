@@ -10,12 +10,12 @@ namespace API {
 
 CVirtualMachineDebuggerInstance::CVirtualMachineDebuggerInstance(const CVirtualMachineDebuggerInstance&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineDebuggerInstance& CVirtualMachineDebuggerInstance::operator=(const CVirtualMachineDebuggerInstance&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineDebuggerInstance::CVirtualMachineDebuggerInstance()

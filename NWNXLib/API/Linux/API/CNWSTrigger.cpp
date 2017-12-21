@@ -13,17 +13,17 @@ namespace API {
 
 CNWSTrigger::CNWSTrigger()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSTrigger::CNWSTrigger(const CNWSTrigger&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSTrigger& CNWSTrigger::operator=(const CNWSTrigger&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSTrigger::CNWSTrigger(uint32_t a0)

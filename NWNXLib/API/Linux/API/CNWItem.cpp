@@ -8,12 +8,12 @@ namespace API {
 
 CNWItem::CNWItem(const CNWItem&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWItem& CNWItem::operator=(const CNWItem&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWItem::CNWItem()

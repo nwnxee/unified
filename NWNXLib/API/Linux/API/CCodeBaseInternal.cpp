@@ -11,12 +11,12 @@ namespace API {
 
 CCodeBaseInternal::CCodeBaseInternal(const CCodeBaseInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CCodeBaseInternal& CCodeBaseInternal::operator=(const CCodeBaseInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CCodeBaseInternal::CCodeBaseInternal()

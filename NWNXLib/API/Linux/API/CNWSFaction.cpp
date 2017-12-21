@@ -10,12 +10,12 @@ namespace API {
 
 CNWSFaction::CNWSFaction(const CNWSFaction&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSFaction& CNWSFaction::operator=(const CNWSFaction&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSFaction::CNWSFaction()

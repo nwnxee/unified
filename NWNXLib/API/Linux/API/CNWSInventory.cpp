@@ -10,12 +10,12 @@ namespace API {
 
 CNWSInventory::CNWSInventory(const CNWSInventory&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSInventory& CNWSInventory::operator=(const CNWSInventory&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSInventory::CNWSInventory()

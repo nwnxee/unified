@@ -8,17 +8,17 @@ namespace API {
 
 CExoArrayListTemplatedCFileInfo::CExoArrayListTemplatedCFileInfo()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCFileInfo::CExoArrayListTemplatedCFileInfo(const CExoArrayListTemplatedCFileInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCFileInfo& CExoArrayListTemplatedCFileInfo::operator=(const CExoArrayListTemplatedCFileInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCFileInfo::~CExoArrayListTemplatedCFileInfo()

@@ -8,12 +8,12 @@ namespace API {
 
 CResHelperTemplatedCResNCS2010::CResHelperTemplatedCResNCS2010(const CResHelperTemplatedCResNCS2010&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResNCS2010& CResHelperTemplatedCResNCS2010::operator=(const CResHelperTemplatedCResNCS2010&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResNCS2010::CResHelperTemplatedCResNCS2010()

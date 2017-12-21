@@ -8,12 +8,12 @@ namespace API {
 
 CResNCS::CResNCS(const CResNCS&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResNCS& CResNCS::operator=(const CResNCS&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResNCS::CResNCS()

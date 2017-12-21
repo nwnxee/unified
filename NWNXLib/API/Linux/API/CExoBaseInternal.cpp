@@ -11,12 +11,12 @@ namespace API {
 
 CExoBaseInternal::CExoBaseInternal(const CExoBaseInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoBaseInternal& CExoBaseInternal::operator=(const CExoBaseInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoBaseInternal::CExoBaseInternal()

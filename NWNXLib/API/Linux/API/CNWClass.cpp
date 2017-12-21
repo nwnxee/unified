@@ -12,12 +12,12 @@ namespace API {
 
 CNWClass::CNWClass(const CNWClass&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWClass& CNWClass::operator=(const CNWClass&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWClass::CNWClass()

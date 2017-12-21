@@ -14,17 +14,17 @@ namespace API {
 
 CNWSEncounter::CNWSEncounter()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSEncounter::CNWSEncounter(const CNWSEncounter&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSEncounter& CNWSEncounter::operator=(const CNWSEncounter&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSEncounter::CNWSEncounter(uint32_t a0)

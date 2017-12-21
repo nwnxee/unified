@@ -12,17 +12,17 @@ namespace API {
 
 CNWSAreaOfEffectObject::CNWSAreaOfEffectObject()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSAreaOfEffectObject::CNWSAreaOfEffectObject(const CNWSAreaOfEffectObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSAreaOfEffectObject& CNWSAreaOfEffectObject::operator=(const CNWSAreaOfEffectObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSAreaOfEffectObject::CNWSAreaOfEffectObject(uint32_t a0)

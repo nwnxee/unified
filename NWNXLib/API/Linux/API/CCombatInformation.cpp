@@ -11,7 +11,7 @@ namespace API {
 
 CCombatInformation::CCombatInformation(const CCombatInformation&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CCombatInformation::CCombatInformation()

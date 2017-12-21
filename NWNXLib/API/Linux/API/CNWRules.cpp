@@ -17,12 +17,12 @@ namespace API {
 
 CNWRules::CNWRules(const CNWRules&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWRules& CNWRules::operator=(const CNWRules&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWRules::CNWRules()

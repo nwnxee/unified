@@ -8,17 +8,17 @@ namespace API {
 
 CVirtualMachineCache::CVirtualMachineCache()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineCache::CVirtualMachineCache(const CVirtualMachineCache&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineCache& CVirtualMachineCache::operator=(const CVirtualMachineCache&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineCache::~CVirtualMachineCache()

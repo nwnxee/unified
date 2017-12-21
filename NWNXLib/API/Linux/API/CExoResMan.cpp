@@ -14,12 +14,12 @@ namespace API {
 
 CExoResMan::CExoResMan(const CExoResMan&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoResMan& CExoResMan::operator=(const CExoResMan&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoResMan::CExoResMan()

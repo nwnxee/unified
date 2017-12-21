@@ -8,12 +8,12 @@ namespace API {
 
 CNWLevelStats::CNWLevelStats(const CNWLevelStats&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWLevelStats& CNWLevelStats::operator=(const CNWLevelStats&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWLevelStats::CNWLevelStats()

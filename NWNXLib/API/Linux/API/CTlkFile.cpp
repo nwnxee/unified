@@ -8,17 +8,17 @@ namespace API {
 
 CTlkFile::CTlkFile()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CTlkFile::CTlkFile(const CTlkFile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CTlkFile& CTlkFile::operator=(const CTlkFile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CTlkFile::CTlkFile(CExoString a0)

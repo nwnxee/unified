@@ -41,12 +41,12 @@ namespace API {
 
 CServerExoAppInternal::CServerExoAppInternal(const CServerExoAppInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CServerExoAppInternal& CServerExoAppInternal::operator=(const CServerExoAppInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CServerExoAppInternal::CServerExoAppInternal()

@@ -8,17 +8,17 @@ namespace API {
 
 CWorldJournalEntry::CWorldJournalEntry()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CWorldJournalEntry::CWorldJournalEntry(const CWorldJournalEntry&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CWorldJournalEntry& CWorldJournalEntry::operator=(const CWorldJournalEntry&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CWorldJournalEntry::~CWorldJournalEntry()

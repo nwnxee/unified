@@ -8,17 +8,17 @@ namespace API {
 
 CNWSDungeonMaster::CNWSDungeonMaster()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSDungeonMaster::CNWSDungeonMaster(const CNWSDungeonMaster&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSDungeonMaster& CNWSDungeonMaster::operator=(const CNWSDungeonMaster&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSDungeonMaster::CNWSDungeonMaster(uint32_t a0)

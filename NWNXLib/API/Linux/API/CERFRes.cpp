@@ -8,12 +8,12 @@ namespace API {
 
 CERFRes::CERFRes(const CERFRes&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CERFRes& CERFRes::operator=(const CERFRes&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CERFRes::CERFRes()

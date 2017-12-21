@@ -8,12 +8,12 @@ namespace API {
 
 CNWSStats_Spell::CNWSStats_Spell(const CNWSStats_Spell&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSStats_Spell& CNWSStats_Spell::operator=(const CNWSStats_Spell&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSStats_Spell::CNWSStats_Spell()

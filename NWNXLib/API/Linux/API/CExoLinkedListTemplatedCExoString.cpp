@@ -10,17 +10,17 @@ namespace API {
 
 CExoLinkedListTemplatedCExoString::CExoLinkedListTemplatedCExoString()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedCExoString::CExoLinkedListTemplatedCExoString(const CExoLinkedListTemplatedCExoString&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedCExoString& CExoLinkedListTemplatedCExoString::operator=(const CExoLinkedListTemplatedCExoString&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoLinkedListTemplatedCExoString::~CExoLinkedListTemplatedCExoString()

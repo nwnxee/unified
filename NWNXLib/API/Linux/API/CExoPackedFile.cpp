@@ -10,12 +10,12 @@ namespace API {
 
 CExoPackedFile::CExoPackedFile(const CExoPackedFile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoPackedFile& CExoPackedFile::operator=(const CExoPackedFile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoPackedFile::CExoPackedFile()

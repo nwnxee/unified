@@ -8,17 +8,17 @@ namespace API {
 
 CrashReporter_Linux::CrashReporter_Linux()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CrashReporter_Linux::CrashReporter_Linux(const CrashReporter_Linux&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CrashReporter_Linux& CrashReporter_Linux::operator=(const CrashReporter_Linux&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CrashReporter_Linux::CrashReporter_Linux(void* a0)

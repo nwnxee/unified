@@ -13,17 +13,17 @@ namespace API {
 
 CNWSAmbientSound::CNWSAmbientSound()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSAmbientSound::CNWSAmbientSound(const CNWSAmbientSound&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSAmbientSound& CNWSAmbientSound::operator=(const CNWSAmbientSound&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSAmbientSound::CNWSAmbientSound(uint32_t a0)

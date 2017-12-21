@@ -10,12 +10,12 @@ namespace API {
 
 CExoDebug::CExoDebug(const CExoDebug&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoDebug& CExoDebug::operator=(const CExoDebug&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoDebug::CExoDebug()

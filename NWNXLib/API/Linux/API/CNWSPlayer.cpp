@@ -21,17 +21,17 @@ namespace API {
 
 CNWSPlayer::CNWSPlayer()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSPlayer::CNWSPlayer(const CNWSPlayer&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSPlayer& CNWSPlayer::operator=(const CNWSPlayer&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSPlayer::CNWSPlayer(uint32_t a0)

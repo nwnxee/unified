@@ -8,12 +8,12 @@ namespace API {
 
 CNetLayerPlayerInfo::CNetLayerPlayerInfo(const CNetLayerPlayerInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNetLayerPlayerInfo& CNetLayerPlayerInfo::operator=(const CNetLayerPlayerInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNetLayerPlayerInfo::CNetLayerPlayerInfo()

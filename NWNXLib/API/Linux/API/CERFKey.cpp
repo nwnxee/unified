@@ -8,12 +8,12 @@ namespace API {
 
 CERFKey::CERFKey(const CERFKey&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CERFKey& CERFKey::operator=(const CERFKey&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CERFKey::CERFKey()

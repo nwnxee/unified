@@ -10,12 +10,12 @@ namespace API {
 
 CResTGA::CResTGA(const CResTGA&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResTGA& CResTGA::operator=(const CResTGA&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResTGA::CResTGA()

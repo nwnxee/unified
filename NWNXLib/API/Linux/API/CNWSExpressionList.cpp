@@ -10,12 +10,12 @@ namespace API {
 
 CNWSExpressionList::CNWSExpressionList(const CNWSExpressionList&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSExpressionList& CNWSExpressionList::operator=(const CNWSExpressionList&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSExpressionList::CNWSExpressionList()

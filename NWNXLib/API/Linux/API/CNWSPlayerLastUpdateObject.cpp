@@ -10,12 +10,12 @@ namespace API {
 
 CNWSPlayerLastUpdateObject::CNWSPlayerLastUpdateObject(const CNWSPlayerLastUpdateObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSPlayerLastUpdateObject& CNWSPlayerLastUpdateObject::operator=(const CNWSPlayerLastUpdateObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSPlayerLastUpdateObject::CNWSPlayerLastUpdateObject()

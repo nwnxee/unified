@@ -35,17 +35,17 @@ namespace API {
 
 CGameObject::CGameObject()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CGameObject::CGameObject(const CGameObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CGameObject& CGameObject::operator=(const CGameObject&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CGameObject::CGameObject(unsigned char a0, uint32_t a1)

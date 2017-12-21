@@ -8,17 +8,17 @@ namespace API {
 
 CResHelperTemplatedCResLTR2036::CResHelperTemplatedCResLTR2036()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResLTR2036::CResHelperTemplatedCResLTR2036(const CResHelperTemplatedCResLTR2036&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResLTR2036& CResHelperTemplatedCResLTR2036::operator=(const CResHelperTemplatedCResLTR2036&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResLTR2036::~CResHelperTemplatedCResLTR2036()

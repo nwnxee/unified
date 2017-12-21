@@ -10,12 +10,12 @@ namespace API {
 
 CObjectTableManager::CObjectTableManager(const CObjectTableManager&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CObjectTableManager& CObjectTableManager::operator=(const CObjectTableManager&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CObjectTableManager::CObjectTableManager()

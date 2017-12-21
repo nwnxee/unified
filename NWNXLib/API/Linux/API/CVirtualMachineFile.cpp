@@ -8,12 +8,12 @@ namespace API {
 
 CVirtualMachineFile::CVirtualMachineFile(const CVirtualMachineFile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineFile& CVirtualMachineFile::operator=(const CVirtualMachineFile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineFile::CVirtualMachineFile()

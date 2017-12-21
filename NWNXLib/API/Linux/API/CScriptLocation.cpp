@@ -11,12 +11,12 @@ namespace API {
 
 CScriptLocation::CScriptLocation(const CScriptLocation&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CScriptLocation& CScriptLocation::operator=(const CScriptLocation&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CScriptLocation::CScriptLocation()

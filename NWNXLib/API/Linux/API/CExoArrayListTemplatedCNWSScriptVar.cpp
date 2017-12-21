@@ -10,17 +10,17 @@ namespace API {
 
 CExoArrayListTemplatedCNWSScriptVar::CExoArrayListTemplatedCNWSScriptVar()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCNWSScriptVar::CExoArrayListTemplatedCNWSScriptVar(const CExoArrayListTemplatedCNWSScriptVar&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCNWSScriptVar& CExoArrayListTemplatedCNWSScriptVar::operator=(const CExoArrayListTemplatedCNWSScriptVar&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCNWSScriptVar::~CExoArrayListTemplatedCNWSScriptVar()

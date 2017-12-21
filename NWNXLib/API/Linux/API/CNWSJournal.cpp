@@ -10,12 +10,12 @@ namespace API {
 
 CNWSJournal::CNWSJournal(const CNWSJournal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSJournal& CNWSJournal::operator=(const CNWSJournal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSJournal::CNWSJournal()

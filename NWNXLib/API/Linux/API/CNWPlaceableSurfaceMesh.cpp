@@ -8,12 +8,12 @@ namespace API {
 
 CNWPlaceableSurfaceMesh::CNWPlaceableSurfaceMesh(const CNWPlaceableSurfaceMesh&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWPlaceableSurfaceMesh& CNWPlaceableSurfaceMesh::operator=(const CNWPlaceableSurfaceMesh&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWPlaceableSurfaceMesh::CNWPlaceableSurfaceMesh()

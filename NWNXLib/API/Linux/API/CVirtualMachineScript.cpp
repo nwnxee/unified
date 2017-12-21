@@ -10,17 +10,17 @@ namespace API {
 
 CVirtualMachineScript::CVirtualMachineScript()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineScript::CVirtualMachineScript(const CVirtualMachineScript&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineScript& CVirtualMachineScript::operator=(const CVirtualMachineScript&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CVirtualMachineScript::~CVirtualMachineScript()

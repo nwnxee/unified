@@ -8,17 +8,17 @@ namespace API {
 
 SJournalEntry::SJournalEntry()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 SJournalEntry::SJournalEntry(const SJournalEntry&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 SJournalEntry& SJournalEntry::operator=(const SJournalEntry&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 SJournalEntry::~SJournalEntry()

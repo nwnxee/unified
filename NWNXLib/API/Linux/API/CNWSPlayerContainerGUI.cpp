@@ -10,12 +10,12 @@ namespace API {
 
 CNWSPlayerContainerGUI::CNWSPlayerContainerGUI(const CNWSPlayerContainerGUI&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSPlayerContainerGUI& CNWSPlayerContainerGUI::operator=(const CNWSPlayerContainerGUI&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSPlayerContainerGUI::CNWSPlayerContainerGUI()

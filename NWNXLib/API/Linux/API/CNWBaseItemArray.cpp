@@ -10,12 +10,12 @@ namespace API {
 
 CNWBaseItemArray::CNWBaseItemArray(const CNWBaseItemArray&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWBaseItemArray& CNWBaseItemArray::operator=(const CNWBaseItemArray&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWBaseItemArray::CNWBaseItemArray()

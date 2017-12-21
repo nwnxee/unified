@@ -8,12 +8,12 @@ namespace API {
 
 CResNDB::CResNDB(const CResNDB&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResNDB& CResNDB::operator=(const CResNDB&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResNDB::CResNDB()

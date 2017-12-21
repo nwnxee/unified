@@ -10,12 +10,12 @@ namespace API {
 
 CExoArrayListTemplatedCExoStringPtr::CExoArrayListTemplatedCExoStringPtr()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCExoStringPtr& CExoArrayListTemplatedCExoStringPtr::operator=(const CExoArrayListTemplatedCExoStringPtr&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCExoStringPtr::CExoArrayListTemplatedCExoStringPtr(const CExoArrayListTemplatedCExoStringPtr& a0)

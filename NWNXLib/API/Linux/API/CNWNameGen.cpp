@@ -8,12 +8,12 @@ namespace API {
 
 CNWNameGen::CNWNameGen(const CNWNameGen&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWNameGen& CNWNameGen::operator=(const CNWNameGen&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWNameGen::CNWNameGen()

@@ -8,17 +8,17 @@ namespace API {
 
 CNWTileSurfaceMeshAABBNode::CNWTileSurfaceMeshAABBNode()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSurfaceMeshAABBNode::CNWTileSurfaceMeshAABBNode(const CNWTileSurfaceMeshAABBNode&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSurfaceMeshAABBNode& CNWTileSurfaceMeshAABBNode::operator=(const CNWTileSurfaceMeshAABBNode&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSurfaceMeshAABBNode::~CNWTileSurfaceMeshAABBNode()

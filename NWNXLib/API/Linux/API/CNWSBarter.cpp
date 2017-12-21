@@ -12,17 +12,17 @@ namespace API {
 
 CNWSBarter::CNWSBarter()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSBarter::CNWSBarter(const CNWSBarter&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSBarter& CNWSBarter::operator=(const CNWSBarter&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSBarter::CNWSBarter(CNWSCreature* a0)

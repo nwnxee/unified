@@ -8,17 +8,17 @@ namespace API {
 
 CResHelperTemplatedCResSET2013::CResHelperTemplatedCResSET2013()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResSET2013::CResHelperTemplatedCResSET2013(const CResHelperTemplatedCResSET2013&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResSET2013& CResHelperTemplatedCResSET2013::operator=(const CResHelperTemplatedCResSET2013&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CResHelperTemplatedCResSET2013::~CResHelperTemplatedCResSET2013()

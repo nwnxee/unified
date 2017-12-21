@@ -8,17 +8,17 @@ namespace API {
 
 CExoIniInternal::CExoIniInternal()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoIniInternal::CExoIniInternal(const CExoIniInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoIniInternal& CExoIniInternal::operator=(const CExoIniInternal&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoIniInternal::CExoIniInternal(CExoString a0)

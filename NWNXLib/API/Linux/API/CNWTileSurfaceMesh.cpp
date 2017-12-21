@@ -15,12 +15,12 @@ namespace API {
 
 CNWTileSurfaceMesh::CNWTileSurfaceMesh(const CNWTileSurfaceMesh&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSurfaceMesh& CNWTileSurfaceMesh::operator=(const CNWTileSurfaceMesh&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTileSurfaceMesh::CNWTileSurfaceMesh()

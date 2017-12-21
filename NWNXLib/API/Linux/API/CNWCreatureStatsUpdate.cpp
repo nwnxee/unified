@@ -10,12 +10,12 @@ namespace API {
 
 CNWCreatureStatsUpdate::CNWCreatureStatsUpdate(const CNWCreatureStatsUpdate&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWCreatureStatsUpdate& CNWCreatureStatsUpdate::operator=(const CNWCreatureStatsUpdate&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWCreatureStatsUpdate::CNWCreatureStatsUpdate()

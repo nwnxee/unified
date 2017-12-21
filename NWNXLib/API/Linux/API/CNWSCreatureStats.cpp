@@ -22,17 +22,17 @@ namespace API {
 
 CNWSCreatureStats::CNWSCreatureStats()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreatureStats::CNWSCreatureStats(const CNWSCreatureStats&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreatureStats& CNWSCreatureStats::operator=(const CNWSCreatureStats&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreatureStats::CNWSCreatureStats(CNWSCreature* a0)

@@ -11,12 +11,12 @@ namespace API {
 
 CNetLayerWindow::CNetLayerWindow(const CNetLayerWindow&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNetLayerWindow& CNetLayerWindow::operator=(const CNetLayerWindow&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNetLayerWindow::CNetLayerWindow()

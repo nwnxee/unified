@@ -8,17 +8,17 @@ namespace API {
 
 CExoArrayListTemplatedCExoString::CExoArrayListTemplatedCExoString()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCExoString::CExoArrayListTemplatedCExoString(const CExoArrayListTemplatedCExoString&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCExoString& CExoArrayListTemplatedCExoString::operator=(const CExoArrayListTemplatedCExoString&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CExoArrayListTemplatedCExoString::~CExoArrayListTemplatedCExoString()

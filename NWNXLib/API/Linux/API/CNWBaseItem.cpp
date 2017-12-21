@@ -8,12 +8,12 @@ namespace API {
 
 CNWBaseItem::CNWBaseItem(const CNWBaseItem&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWBaseItem& CNWBaseItem::operator=(const CNWBaseItem&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWBaseItem::CNWBaseItem()

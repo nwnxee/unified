@@ -13,17 +13,17 @@ namespace API {
 
 CNWSWaypoint::CNWSWaypoint()
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSWaypoint::CNWSWaypoint(const CNWSWaypoint&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSWaypoint& CNWSWaypoint::operator=(const CNWSWaypoint&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSWaypoint::CNWSWaypoint(uint32_t a0)

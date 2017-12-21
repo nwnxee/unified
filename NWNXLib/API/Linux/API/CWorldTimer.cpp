@@ -8,12 +8,12 @@ namespace API {
 
 CWorldTimer::CWorldTimer(const CWorldTimer&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CWorldTimer& CWorldTimer::operator=(const CWorldTimer&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CWorldTimer::CWorldTimer()

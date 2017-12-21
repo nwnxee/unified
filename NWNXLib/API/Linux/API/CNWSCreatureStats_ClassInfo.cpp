@@ -10,12 +10,12 @@ namespace API {
 
 CNWSCreatureStats_ClassInfo::CNWSCreatureStats_ClassInfo(const CNWSCreatureStats_ClassInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreatureStats_ClassInfo& CNWSCreatureStats_ClassInfo::operator=(const CNWSCreatureStats_ClassInfo&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSCreatureStats_ClassInfo::CNWSCreatureStats_ClassInfo()

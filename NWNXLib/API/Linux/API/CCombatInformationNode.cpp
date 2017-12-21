@@ -8,7 +8,7 @@ namespace API {
 
 CCombatInformationNode::CCombatInformationNode(const CCombatInformationNode&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CCombatInformationNode::CCombatInformationNode()

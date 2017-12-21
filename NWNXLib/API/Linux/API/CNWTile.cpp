@@ -8,12 +8,12 @@ namespace API {
 
 CNWTile::CNWTile(const CNWTile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTile& CNWTile::operator=(const CNWTile&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWTile::CNWTile()

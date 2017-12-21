@@ -8,12 +8,12 @@ namespace API {
 
 CNWSRules::CNWSRules(const CNWSRules&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSRules& CNWSRules::operator=(const CNWSRules&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CNWSRules::CNWSRules()

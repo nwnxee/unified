@@ -11,12 +11,12 @@ namespace API {
 
 CTwoDimArrays::CTwoDimArrays(const CTwoDimArrays&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CTwoDimArrays& CTwoDimArrays::operator=(const CTwoDimArrays&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 CTwoDimArrays::CTwoDimArrays()

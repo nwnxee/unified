@@ -8,12 +8,12 @@ namespace API {
 
 C2DA::C2DA(const C2DA&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+     // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 C2DA& C2DA::operator=(const C2DA&)
 {
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
+    return *this; // This is an auto-generated stub. You probably shouldn't use it.
 }
 
 C2DA::C2DA()
