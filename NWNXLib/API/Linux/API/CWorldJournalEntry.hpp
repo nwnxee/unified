@@ -19,9 +19,9 @@ struct CWorldJournalEntry
     int32_t bIdIsStrref;
 
     // The below are auto generated stubs.
-    CWorldJournalEntry();
-    CWorldJournalEntry(const CWorldJournalEntry&);
-    CWorldJournalEntry& operator=(const CWorldJournalEntry&);
+    CWorldJournalEntry() = default;
+    CWorldJournalEntry(const CWorldJournalEntry&) = default;
+    CWorldJournalEntry& operator=(const CWorldJournalEntry&) = default;
 
     ~CWorldJournalEntry();
 };

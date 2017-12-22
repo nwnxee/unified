@@ -16,8 +16,8 @@ struct CNWSObjectActionNode
     int32_t m_bInterruptable;
 
     // The below are auto generated stubs.
-    CNWSObjectActionNode(const CNWSObjectActionNode&);
-    CNWSObjectActionNode& operator=(const CNWSObjectActionNode&);
+    CNWSObjectActionNode(const CNWSObjectActionNode&) = default;
+    CNWSObjectActionNode& operator=(const CNWSObjectActionNode&) = default;
 
     CNWSObjectActionNode();
     ~CNWSObjectActionNode();

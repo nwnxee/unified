@@ -21,8 +21,8 @@ struct CNWDoorSurfaceMesh
     Vector m_pvOpenLocations[3][2];
 
     // The below are auto generated stubs.
-    CNWDoorSurfaceMesh(const CNWDoorSurfaceMesh&);
-    CNWDoorSurfaceMesh& operator=(const CNWDoorSurfaceMesh&);
+    CNWDoorSurfaceMesh(const CNWDoorSurfaceMesh&) = default;
+    CNWDoorSurfaceMesh& operator=(const CNWDoorSurfaceMesh&) = default;
 
     CNWDoorSurfaceMesh();
     ~CNWDoorSurfaceMesh();

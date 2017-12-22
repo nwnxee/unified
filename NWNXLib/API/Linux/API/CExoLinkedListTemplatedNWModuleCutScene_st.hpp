@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedNWModuleCutScene_st
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedNWModuleCutScene_st();
-    CExoLinkedListTemplatedNWModuleCutScene_st(const CExoLinkedListTemplatedNWModuleCutScene_st&);
-    CExoLinkedListTemplatedNWModuleCutScene_st& operator=(const CExoLinkedListTemplatedNWModuleCutScene_st&);
+    CExoLinkedListTemplatedNWModuleCutScene_st() = default;
+    CExoLinkedListTemplatedNWModuleCutScene_st(const CExoLinkedListTemplatedNWModuleCutScene_st&) = default;
+    CExoLinkedListTemplatedNWModuleCutScene_st& operator=(const CExoLinkedListTemplatedNWModuleCutScene_st&) = default;
 
     ~CExoLinkedListTemplatedNWModuleCutScene_st();
 };

@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCERFKey
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCERFKey();
-    CExoLinkedListTemplatedCERFKey(const CExoLinkedListTemplatedCERFKey&);
-    CExoLinkedListTemplatedCERFKey& operator=(const CExoLinkedListTemplatedCERFKey&);
+    CExoLinkedListTemplatedCERFKey() = default;
+    CExoLinkedListTemplatedCERFKey(const CExoLinkedListTemplatedCERFKey&) = default;
+    CExoLinkedListTemplatedCERFKey& operator=(const CExoLinkedListTemplatedCERFKey&) = default;
 
     ~CExoLinkedListTemplatedCERFKey();
 };

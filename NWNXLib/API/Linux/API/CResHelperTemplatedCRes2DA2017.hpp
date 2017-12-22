@@ -12,8 +12,8 @@ struct CResHelperTemplatedCRes2DA2017
 {
 
     // The below are auto generated stubs.
-    CResHelperTemplatedCRes2DA2017(const CResHelperTemplatedCRes2DA2017&);
-    CResHelperTemplatedCRes2DA2017& operator=(const CResHelperTemplatedCRes2DA2017&);
+    CResHelperTemplatedCRes2DA2017(const CResHelperTemplatedCRes2DA2017&) = default;
+    CResHelperTemplatedCRes2DA2017& operator=(const CResHelperTemplatedCRes2DA2017&) = default;
 
     CResHelperTemplatedCRes2DA2017();
     ~CResHelperTemplatedCRes2DA2017();

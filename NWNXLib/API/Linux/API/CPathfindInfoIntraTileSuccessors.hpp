@@ -16,8 +16,8 @@ struct CPathfindInfoIntraTileSuccessors
     int32_t nNewTriangle;
 
     // The below are auto generated stubs.
-    CPathfindInfoIntraTileSuccessors(const CPathfindInfoIntraTileSuccessors&);
-    CPathfindInfoIntraTileSuccessors& operator=(const CPathfindInfoIntraTileSuccessors&);
+    CPathfindInfoIntraTileSuccessors(const CPathfindInfoIntraTileSuccessors&) = default;
+    CPathfindInfoIntraTileSuccessors& operator=(const CPathfindInfoIntraTileSuccessors&) = default;
 
     CPathfindInfoIntraTileSuccessors();
 };

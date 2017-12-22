@@ -15,9 +15,9 @@ struct CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates
     int32_t array_size;
 
     // The below are auto generated stubs.
-    CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates();
-    CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates(const CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates&);
-    CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates& operator=(const CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates&);
+    CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates() = default;
+    CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates(const CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates&) = default;
+    CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates& operator=(const CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates&) = default;
 
     ~CExoArrayListTemplatedCNWSPlayerJournalQuestUpdates();
     void Add(CNWSPlayerJournalQuestUpdates);

@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem();
-    CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem(const CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem&);
-    CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem& operator=(const CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem&);
+    CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem() = default;
+    CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem(const CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem&) = default;
+    CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem& operator=(const CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem&) = default;
 
     ~CExoLinkedListTemplatedCNWSPlayerLUOInventoryItem();
 };

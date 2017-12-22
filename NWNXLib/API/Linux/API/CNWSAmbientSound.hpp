@@ -20,9 +20,9 @@ struct CNWSAmbientSound
     uint32_t m_nArea;
 
     // The below are auto generated stubs.
-    CNWSAmbientSound();
-    CNWSAmbientSound(const CNWSAmbientSound&);
-    CNWSAmbientSound& operator=(const CNWSAmbientSound&);
+    CNWSAmbientSound() = default;
+    CNWSAmbientSound(const CNWSAmbientSound&) = default;
+    CNWSAmbientSound& operator=(const CNWSAmbientSound&) = default;
 
     CNWSAmbientSound(uint32_t);
     ~CNWSAmbientSound();

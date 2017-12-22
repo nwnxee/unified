@@ -19,9 +19,9 @@ struct CNWTileSurfaceMeshAABBNode
     CNWTileSurfaceMeshAABBNode* pRight;
 
     // The below are auto generated stubs.
-    CNWTileSurfaceMeshAABBNode();
-    CNWTileSurfaceMeshAABBNode(const CNWTileSurfaceMeshAABBNode&);
-    CNWTileSurfaceMeshAABBNode& operator=(const CNWTileSurfaceMeshAABBNode&);
+    CNWTileSurfaceMeshAABBNode() = default;
+    CNWTileSurfaceMeshAABBNode(const CNWTileSurfaceMeshAABBNode&) = default;
+    CNWTileSurfaceMeshAABBNode& operator=(const CNWTileSurfaceMeshAABBNode&) = default;
 
     ~CNWTileSurfaceMeshAABBNode();
 };

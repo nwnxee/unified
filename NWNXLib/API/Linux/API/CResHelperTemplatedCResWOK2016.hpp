@@ -12,9 +12,9 @@ struct CResHelperTemplatedCResWOK2016
 {
 
     // The below are auto generated stubs.
-    CResHelperTemplatedCResWOK2016();
-    CResHelperTemplatedCResWOK2016(const CResHelperTemplatedCResWOK2016&);
-    CResHelperTemplatedCResWOK2016& operator=(const CResHelperTemplatedCResWOK2016&);
+    CResHelperTemplatedCResWOK2016() = default;
+    CResHelperTemplatedCResWOK2016(const CResHelperTemplatedCResWOK2016&) = default;
+    CResHelperTemplatedCResWOK2016& operator=(const CResHelperTemplatedCResWOK2016&) = default;
 
     ~CResHelperTemplatedCResWOK2016();
     void SetResRef(const CResRef&, int32_t);

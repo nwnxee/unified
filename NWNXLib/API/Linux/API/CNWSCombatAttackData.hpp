@@ -52,8 +52,8 @@ struct CNWSCombatAttackData
     CExoArrayListTemplatedCNWCCMessageDataPtr m_alstPendingFeedback;
 
     // The below are auto generated stubs.
-    CNWSCombatAttackData(const CNWSCombatAttackData&);
-    CNWSCombatAttackData& operator=(const CNWSCombatAttackData&);
+    CNWSCombatAttackData(const CNWSCombatAttackData&) = default;
+    CNWSCombatAttackData& operator=(const CNWSCombatAttackData&) = default;
 
     CNWSCombatAttackData();
     ~CNWSCombatAttackData();

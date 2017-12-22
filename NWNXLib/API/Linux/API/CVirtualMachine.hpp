@@ -50,8 +50,8 @@ struct CVirtualMachine
     uint32_t m_nInstructionLimit;
 
     // The below are auto generated stubs.
-    CVirtualMachine(const CVirtualMachine&);
-    CVirtualMachine& operator=(const CVirtualMachine&);
+    CVirtualMachine(const CVirtualMachine&) = default;
+    CVirtualMachine& operator=(const CVirtualMachine&) = default;
 
     CVirtualMachine();
     ~CVirtualMachine();

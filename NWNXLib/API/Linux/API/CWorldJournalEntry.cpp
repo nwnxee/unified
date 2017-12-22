@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CWorldJournalEntry::CWorldJournalEntry()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CWorldJournalEntry::CWorldJournalEntry(const CWorldJournalEntry&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CWorldJournalEntry& CWorldJournalEntry::operator=(const CWorldJournalEntry&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CWorldJournalEntry::~CWorldJournalEntry()
 {
     CWorldJournalEntry__CWorldJournalEntryDtor(this);

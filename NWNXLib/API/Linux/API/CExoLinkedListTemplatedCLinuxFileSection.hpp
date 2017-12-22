@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCLinuxFileSection
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCLinuxFileSection();
-    CExoLinkedListTemplatedCLinuxFileSection(const CExoLinkedListTemplatedCLinuxFileSection&);
-    CExoLinkedListTemplatedCLinuxFileSection& operator=(const CExoLinkedListTemplatedCLinuxFileSection&);
+    CExoLinkedListTemplatedCLinuxFileSection() = default;
+    CExoLinkedListTemplatedCLinuxFileSection(const CExoLinkedListTemplatedCLinuxFileSection&) = default;
+    CExoLinkedListTemplatedCLinuxFileSection& operator=(const CExoLinkedListTemplatedCLinuxFileSection&) = default;
 
     ~CExoLinkedListTemplatedCLinuxFileSection();
 };

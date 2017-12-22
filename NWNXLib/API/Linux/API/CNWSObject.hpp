@@ -128,9 +128,9 @@ struct CNWSObject
     CNWSTransition m_pTransition;
 
     // The below are auto generated stubs.
-    CNWSObject();
-    CNWSObject(const CNWSObject&);
-    CNWSObject& operator=(const CNWSObject&);
+    CNWSObject() = default;
+    CNWSObject(const CNWSObject&) = default;
+    CNWSObject& operator=(const CNWSObject&) = default;
 
     CNWSObject(unsigned char, uint32_t, int32_t, int32_t);
     ~CNWSObject();

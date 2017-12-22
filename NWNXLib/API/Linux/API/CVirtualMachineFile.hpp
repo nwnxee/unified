@@ -14,8 +14,8 @@ struct CVirtualMachineFile
 {
 
     // The below are auto generated stubs.
-    CVirtualMachineFile(const CVirtualMachineFile&);
-    CVirtualMachineFile& operator=(const CVirtualMachineFile&);
+    CVirtualMachineFile(const CVirtualMachineFile&) = default;
+    CVirtualMachineFile& operator=(const CVirtualMachineFile&) = default;
 
     CVirtualMachineFile();
     ~CVirtualMachineFile();

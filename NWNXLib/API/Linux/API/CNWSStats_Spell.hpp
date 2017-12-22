@@ -14,8 +14,8 @@ struct CNWSStats_Spell
     int32_t m_bDomainSpell;
 
     // The below are auto generated stubs.
-    CNWSStats_Spell(const CNWSStats_Spell&);
-    CNWSStats_Spell& operator=(const CNWSStats_Spell&);
+    CNWSStats_Spell(const CNWSStats_Spell&) = default;
+    CNWSStats_Spell& operator=(const CNWSStats_Spell&) = default;
 
     CNWSStats_Spell();
 };

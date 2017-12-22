@@ -23,9 +23,9 @@ struct CItemRepository
     CExoLinkedListTemplatedlongunsignedint m_oidItems;
 
     // The below are auto generated stubs.
-    CItemRepository();
-    CItemRepository(const CItemRepository&);
-    CItemRepository& operator=(const CItemRepository&);
+    CItemRepository() = default;
+    CItemRepository(const CItemRepository&) = default;
+    CItemRepository& operator=(const CItemRepository&) = default;
 
     CItemRepository(uint32_t, unsigned char, unsigned char, uint32_t, int32_t);
     ~CItemRepository();

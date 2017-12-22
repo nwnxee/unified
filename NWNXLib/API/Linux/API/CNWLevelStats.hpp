@@ -22,8 +22,8 @@ struct CNWLevelStats
     int32_t m_bEpic;
 
     // The below are auto generated stubs.
-    CNWLevelStats(const CNWLevelStats&);
-    CNWLevelStats& operator=(const CNWLevelStats&);
+    CNWLevelStats(const CNWLevelStats&) = default;
+    CNWLevelStats& operator=(const CNWLevelStats&) = default;
 
     CNWLevelStats();
     ~CNWLevelStats();

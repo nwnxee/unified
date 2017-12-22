@@ -25,8 +25,8 @@ struct CExoDebugInternal
     int32_t m_bRotateLogFile;
 
     // The below are auto generated stubs.
-    CExoDebugInternal(const CExoDebugInternal&);
-    CExoDebugInternal& operator=(const CExoDebugInternal&);
+    CExoDebugInternal(const CExoDebugInternal&) = default;
+    CExoDebugInternal& operator=(const CExoDebugInternal&) = default;
 
     CExoDebugInternal();
     ~CExoDebugInternal();

@@ -10,9 +10,9 @@ struct CExoLinkedListTemplatedunsignedlong
 {
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedunsignedlong();
-    CExoLinkedListTemplatedunsignedlong(const CExoLinkedListTemplatedunsignedlong&);
-    CExoLinkedListTemplatedunsignedlong& operator=(const CExoLinkedListTemplatedunsignedlong&);
+    CExoLinkedListTemplatedunsignedlong() = default;
+    CExoLinkedListTemplatedunsignedlong(const CExoLinkedListTemplatedunsignedlong&) = default;
+    CExoLinkedListTemplatedunsignedlong& operator=(const CExoLinkedListTemplatedunsignedlong&) = default;
 
     ~CExoLinkedListTemplatedunsignedlong();
 };

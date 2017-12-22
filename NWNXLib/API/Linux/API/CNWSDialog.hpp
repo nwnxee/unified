@@ -47,8 +47,8 @@ struct CNWSDialog
     int32_t m_bDisableCameraZoom;
 
     // The below are auto generated stubs.
-    CNWSDialog(const CNWSDialog&);
-    CNWSDialog& operator=(const CNWSDialog&);
+    CNWSDialog(const CNWSDialog&) = default;
+    CNWSDialog& operator=(const CNWSDialog&) = default;
 
     CNWSDialog();
     ~CNWSDialog();

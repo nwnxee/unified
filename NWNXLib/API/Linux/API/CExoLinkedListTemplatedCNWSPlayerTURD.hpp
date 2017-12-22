@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCNWSPlayerTURD
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCNWSPlayerTURD();
-    CExoLinkedListTemplatedCNWSPlayerTURD(const CExoLinkedListTemplatedCNWSPlayerTURD&);
-    CExoLinkedListTemplatedCNWSPlayerTURD& operator=(const CExoLinkedListTemplatedCNWSPlayerTURD&);
+    CExoLinkedListTemplatedCNWSPlayerTURD() = default;
+    CExoLinkedListTemplatedCNWSPlayerTURD(const CExoLinkedListTemplatedCNWSPlayerTURD&) = default;
+    CExoLinkedListTemplatedCNWSPlayerTURD& operator=(const CExoLinkedListTemplatedCNWSPlayerTURD&) = default;
 
     ~CExoLinkedListTemplatedCNWSPlayerTURD();
 };

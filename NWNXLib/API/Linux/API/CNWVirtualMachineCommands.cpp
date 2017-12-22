@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWVirtualMachineCommands::CNWVirtualMachineCommands()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWVirtualMachineCommands::CNWVirtualMachineCommands(const CNWVirtualMachineCommands&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWVirtualMachineCommands& CNWVirtualMachineCommands::operator=(const CNWVirtualMachineCommands&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWVirtualMachineCommands::~CNWVirtualMachineCommands()
 {
     CNWVirtualMachineCommands__CNWVirtualMachineCommandsDtor__0(this);
@@ -1106,11 +1091,6 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionAverageLevel(int32_t 
     return CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageLevel(this, a0, a1);
 }
 
-int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionAverageReputation(int32_t a0, int32_t a1)
-{
-    return CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageReputation(this, a0, a1);
-}
-
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionAverageXP(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageXP(this, a0, a1);
@@ -1164,6 +1144,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionNthNearestMember(int3
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionStrongestMember(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetFactionStrongestMember(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionWeakestMember(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetFactionWeakestMember(this, a0, a1);
 }
 
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionWorstAC(int32_t a0, int32_t a1)
@@ -4724,14 +4709,6 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageLevel(CNWVirtu
     return func(thisPtr, a0, a1);
 }
 
-int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageReputation(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
-{
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageReputation);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
-}
-
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageXP(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
@@ -4816,6 +4793,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionStrongestMember(CNWVi
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetFactionStrongestMember);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionWeakestMember(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetFactionWeakestMember);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }

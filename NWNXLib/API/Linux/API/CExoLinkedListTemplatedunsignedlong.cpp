@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedunsignedlong::CExoLinkedListTemplatedunsignedlong()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedunsignedlong::CExoLinkedListTemplatedunsignedlong(const CExoLinkedListTemplatedunsignedlong&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedunsignedlong& CExoLinkedListTemplatedunsignedlong::operator=(const CExoLinkedListTemplatedunsignedlong&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedunsignedlong::~CExoLinkedListTemplatedunsignedlong()
 {
     CExoLinkedListTemplatedunsignedlong__CExoLinkedListTemplatedunsignedlongDtor(this);

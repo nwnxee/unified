@@ -12,8 +12,8 @@ struct CResHelperTemplatedCResNCS2010
 {
 
     // The below are auto generated stubs.
-    CResHelperTemplatedCResNCS2010(const CResHelperTemplatedCResNCS2010&);
-    CResHelperTemplatedCResNCS2010& operator=(const CResHelperTemplatedCResNCS2010&);
+    CResHelperTemplatedCResNCS2010(const CResHelperTemplatedCResNCS2010&) = default;
+    CResHelperTemplatedCResNCS2010& operator=(const CResHelperTemplatedCResNCS2010&) = default;
 
     CResHelperTemplatedCResNCS2010();
     ~CResHelperTemplatedCResNCS2010();

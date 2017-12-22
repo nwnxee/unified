@@ -19,9 +19,9 @@ struct CScriptCompilerIncludeFileStackEntry
     int32_t m_nTokenCharacters;
 
     // The below are auto generated stubs.
-    CScriptCompilerIncludeFileStackEntry();
-    CScriptCompilerIncludeFileStackEntry(const CScriptCompilerIncludeFileStackEntry&);
-    CScriptCompilerIncludeFileStackEntry& operator=(const CScriptCompilerIncludeFileStackEntry&);
+    CScriptCompilerIncludeFileStackEntry() = default;
+    CScriptCompilerIncludeFileStackEntry(const CScriptCompilerIncludeFileStackEntry&) = default;
+    CScriptCompilerIncludeFileStackEntry& operator=(const CScriptCompilerIncludeFileStackEntry&) = default;
 
     ~CScriptCompilerIncludeFileStackEntry();
 };

@@ -20,21 +20,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSObject::CNWSObject()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSObject::CNWSObject(const CNWSObject&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSObject& CNWSObject::operator=(const CNWSObject&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSObject::CNWSObject(unsigned char a0, uint32_t a1, int32_t a2, int32_t a3)
 {
     CNWSObject__CNWSObjectCtor(this, a0, a1, a2, a3);

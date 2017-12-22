@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCServerAIEventNode
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCServerAIEventNode();
-    CExoLinkedListTemplatedCServerAIEventNode(const CExoLinkedListTemplatedCServerAIEventNode&);
-    CExoLinkedListTemplatedCServerAIEventNode& operator=(const CExoLinkedListTemplatedCServerAIEventNode&);
+    CExoLinkedListTemplatedCServerAIEventNode() = default;
+    CExoLinkedListTemplatedCServerAIEventNode(const CExoLinkedListTemplatedCServerAIEventNode&) = default;
+    CExoLinkedListTemplatedCServerAIEventNode& operator=(const CExoLinkedListTemplatedCServerAIEventNode&) = default;
 
     ~CExoLinkedListTemplatedCServerAIEventNode();
 };

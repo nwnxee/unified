@@ -62,9 +62,9 @@ struct CNWSTrigger
     uint16_t m_nLoadScreenID;
 
     // The below are auto generated stubs.
-    CNWSTrigger();
-    CNWSTrigger(const CNWSTrigger&);
-    CNWSTrigger& operator=(const CNWSTrigger&);
+    CNWSTrigger() = default;
+    CNWSTrigger(const CNWSTrigger&) = default;
+    CNWSTrigger& operator=(const CNWSTrigger&) = default;
 
     CNWSTrigger(uint32_t);
     ~CNWSTrigger();

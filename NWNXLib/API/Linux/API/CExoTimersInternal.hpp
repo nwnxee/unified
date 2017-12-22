@@ -15,8 +15,8 @@ struct CExoTimersInternal
     double m_fQPCMicroSecFrequency;
 
     // The below are auto generated stubs.
-    CExoTimersInternal(const CExoTimersInternal&);
-    CExoTimersInternal& operator=(const CExoTimersInternal&);
+    CExoTimersInternal(const CExoTimersInternal&) = default;
+    CExoTimersInternal& operator=(const CExoTimersInternal&) = default;
 
     CExoTimersInternal();
     ~CExoTimersInternal();

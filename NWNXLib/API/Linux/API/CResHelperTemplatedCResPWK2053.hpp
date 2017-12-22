@@ -12,9 +12,9 @@ struct CResHelperTemplatedCResPWK2053
 {
 
     // The below are auto generated stubs.
-    CResHelperTemplatedCResPWK2053();
-    CResHelperTemplatedCResPWK2053(const CResHelperTemplatedCResPWK2053&);
-    CResHelperTemplatedCResPWK2053& operator=(const CResHelperTemplatedCResPWK2053&);
+    CResHelperTemplatedCResPWK2053() = default;
+    CResHelperTemplatedCResPWK2053(const CResHelperTemplatedCResPWK2053&) = default;
+    CResHelperTemplatedCResPWK2053& operator=(const CResHelperTemplatedCResPWK2053&) = default;
 
     ~CResHelperTemplatedCResPWK2053();
     void SetResRef(const CResRef&, int32_t);

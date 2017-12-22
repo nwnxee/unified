@@ -22,21 +22,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSArea::CNWSArea()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSArea::CNWSArea(const CNWSArea&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSArea& CNWSArea::operator=(const CNWSArea&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSArea::CNWSArea(CResRef a0, int32_t a1, uint32_t a2)
 {
     CNWSArea__CNWSAreaCtor(this, a0, a1, a2);

@@ -23,9 +23,9 @@ struct CVirtualMachineScript
     int32_t m_nLoadedFromSave;
 
     // The below are auto generated stubs.
-    CVirtualMachineScript();
-    CVirtualMachineScript(const CVirtualMachineScript&);
-    CVirtualMachineScript& operator=(const CVirtualMachineScript&);
+    CVirtualMachineScript() = default;
+    CVirtualMachineScript(const CVirtualMachineScript&) = default;
+    CVirtualMachineScript& operator=(const CVirtualMachineScript&) = default;
 
     ~CVirtualMachineScript();
 };

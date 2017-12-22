@@ -17,8 +17,8 @@ struct CExoDebug
     CExoDebugInternal* m_pcExoDebugInternal;
 
     // The below are auto generated stubs.
-    CExoDebug(const CExoDebug&);
-    CExoDebug& operator=(const CExoDebug&);
+    CExoDebug(const CExoDebug&) = default;
+    CExoDebug& operator=(const CExoDebug&) = default;
 
     CExoDebug();
     ~CExoDebug();

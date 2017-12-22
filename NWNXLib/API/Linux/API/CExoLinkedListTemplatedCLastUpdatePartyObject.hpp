@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCLastUpdatePartyObject
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCLastUpdatePartyObject();
-    CExoLinkedListTemplatedCLastUpdatePartyObject(const CExoLinkedListTemplatedCLastUpdatePartyObject&);
-    CExoLinkedListTemplatedCLastUpdatePartyObject& operator=(const CExoLinkedListTemplatedCLastUpdatePartyObject&);
+    CExoLinkedListTemplatedCLastUpdatePartyObject() = default;
+    CExoLinkedListTemplatedCLastUpdatePartyObject(const CExoLinkedListTemplatedCLastUpdatePartyObject&) = default;
+    CExoLinkedListTemplatedCLastUpdatePartyObject& operator=(const CExoLinkedListTemplatedCLastUpdatePartyObject&) = default;
 
     ~CExoLinkedListTemplatedCLastUpdatePartyObject();
 };

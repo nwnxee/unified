@@ -18,8 +18,8 @@ struct CStoreCustomer
     char m_nBonusMarkDown;
 
     // The below are auto generated stubs.
-    CStoreCustomer(const CStoreCustomer&);
-    CStoreCustomer& operator=(const CStoreCustomer&);
+    CStoreCustomer(const CStoreCustomer&) = default;
+    CStoreCustomer& operator=(const CStoreCustomer&) = default;
 
     CStoreCustomer();
 };

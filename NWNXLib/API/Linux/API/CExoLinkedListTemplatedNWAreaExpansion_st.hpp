@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedNWAreaExpansion_st
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedNWAreaExpansion_st();
-    CExoLinkedListTemplatedNWAreaExpansion_st(const CExoLinkedListTemplatedNWAreaExpansion_st&);
-    CExoLinkedListTemplatedNWAreaExpansion_st& operator=(const CExoLinkedListTemplatedNWAreaExpansion_st&);
+    CExoLinkedListTemplatedNWAreaExpansion_st() = default;
+    CExoLinkedListTemplatedNWAreaExpansion_st(const CExoLinkedListTemplatedNWAreaExpansion_st&) = default;
+    CExoLinkedListTemplatedNWAreaExpansion_st& operator=(const CExoLinkedListTemplatedNWAreaExpansion_st&) = default;
 
     ~CExoLinkedListTemplatedNWAreaExpansion_st();
 };

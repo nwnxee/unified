@@ -15,8 +15,8 @@ struct CObjectTableManager
     uint32_t m_dwMaxPlayerID;
 
     // The below are auto generated stubs.
-    CObjectTableManager(const CObjectTableManager&);
-    CObjectTableManager& operator=(const CObjectTableManager&);
+    CObjectTableManager(const CObjectTableManager&) = default;
+    CObjectTableManager& operator=(const CObjectTableManager&) = default;
 
     CObjectTableManager();
     ~CObjectTableManager();

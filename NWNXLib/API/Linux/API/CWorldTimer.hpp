@@ -24,8 +24,8 @@ struct CWorldTimer
     uint32_t m_nSecondsPerDay;
 
     // The below are auto generated stubs.
-    CWorldTimer(const CWorldTimer&);
-    CWorldTimer& operator=(const CWorldTimer&);
+    CWorldTimer(const CWorldTimer&) = default;
+    CWorldTimer& operator=(const CWorldTimer&) = default;
 
     CWorldTimer();
     ~CWorldTimer();

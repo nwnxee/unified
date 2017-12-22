@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedNWModuleExpansion_st
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedNWModuleExpansion_st();
-    CExoLinkedListTemplatedNWModuleExpansion_st(const CExoLinkedListTemplatedNWModuleExpansion_st&);
-    CExoLinkedListTemplatedNWModuleExpansion_st& operator=(const CExoLinkedListTemplatedNWModuleExpansion_st&);
+    CExoLinkedListTemplatedNWModuleExpansion_st() = default;
+    CExoLinkedListTemplatedNWModuleExpansion_st(const CExoLinkedListTemplatedNWModuleExpansion_st&) = default;
+    CExoLinkedListTemplatedNWModuleExpansion_st& operator=(const CExoLinkedListTemplatedNWModuleExpansion_st&) = default;
 
     ~CExoLinkedListTemplatedNWModuleExpansion_st();
 };

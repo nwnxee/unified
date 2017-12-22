@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResARE::CResARE()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResARE::CResARE(const CResARE&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResARE& CResARE::operator=(const CResARE&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResARE::~CResARE()
 {
     CResARE__CResAREDtor__0(this);

@@ -45,9 +45,9 @@ struct CNWSStore
     CExoArrayListTemplatedint m_lstWillOnlyBuy;
 
     // The below are auto generated stubs.
-    CNWSStore();
-    CNWSStore(const CNWSStore&);
-    CNWSStore& operator=(const CNWSStore&);
+    CNWSStore() = default;
+    CNWSStore(const CNWSStore&) = default;
+    CNWSStore& operator=(const CNWSStore&) = default;
 
     CNWSStore(uint32_t);
     ~CNWSStore();

@@ -16,8 +16,8 @@ struct CExoArrayListTemplatedCExoStringPtr
     int32_t array_size;
 
     // The below are auto generated stubs.
-    CExoArrayListTemplatedCExoStringPtr();
-    CExoArrayListTemplatedCExoStringPtr& operator=(const CExoArrayListTemplatedCExoStringPtr&);
+    CExoArrayListTemplatedCExoStringPtr() = default;
+    CExoArrayListTemplatedCExoStringPtr& operator=(const CExoArrayListTemplatedCExoStringPtr&) = default;
 
     CExoArrayListTemplatedCExoStringPtr(const CExoArrayListTemplatedCExoStringPtr&);
     void Add(CExoString*);

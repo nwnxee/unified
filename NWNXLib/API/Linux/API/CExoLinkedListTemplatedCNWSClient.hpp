@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCNWSClient
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCNWSClient();
-    CExoLinkedListTemplatedCNWSClient(const CExoLinkedListTemplatedCNWSClient&);
-    CExoLinkedListTemplatedCNWSClient& operator=(const CExoLinkedListTemplatedCNWSClient&);
+    CExoLinkedListTemplatedCNWSClient() = default;
+    CExoLinkedListTemplatedCNWSClient(const CExoLinkedListTemplatedCNWSClient&) = default;
+    CExoLinkedListTemplatedCNWSClient& operator=(const CExoLinkedListTemplatedCNWSClient&) = default;
 
     ~CExoLinkedListTemplatedCNWSClient();
 };

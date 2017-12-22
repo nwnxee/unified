@@ -21,8 +21,8 @@ struct CResSET
     char* m_sNullTerminated;
 
     // The below are auto generated stubs.
-    CResSET(const CResSET&);
-    CResSET& operator=(const CResSET&);
+    CResSET(const CResSET&) = default;
+    CResSET& operator=(const CResSET&) = default;
 
     CResSET();
     ~CResSET();

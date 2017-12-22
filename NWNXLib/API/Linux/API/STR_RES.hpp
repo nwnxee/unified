@@ -16,8 +16,8 @@ struct STR_RES
     float fSoundLength;
 
     // The below are auto generated stubs.
-    STR_RES(const STR_RES&);
-    STR_RES& operator=(const STR_RES&);
+    STR_RES(const STR_RES&) = default;
+    STR_RES& operator=(const STR_RES&) = default;
 
     STR_RES();
 };

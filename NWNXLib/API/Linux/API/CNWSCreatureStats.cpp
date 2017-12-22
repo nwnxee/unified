@@ -20,21 +20,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSCreatureStats::CNWSCreatureStats()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCreatureStats::CNWSCreatureStats(const CNWSCreatureStats&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCreatureStats& CNWSCreatureStats::operator=(const CNWSCreatureStats&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSCreatureStats::CNWSCreatureStats(CNWSCreature* a0)
 {
     CNWSCreatureStats__CNWSCreatureStatsCtor(this, a0);

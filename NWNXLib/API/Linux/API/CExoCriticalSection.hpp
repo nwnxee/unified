@@ -14,8 +14,8 @@ struct CExoCriticalSection
     CExoCriticalSectionInternal* m_pcExoCriticalSectionInternal;
 
     // The below are auto generated stubs.
-    CExoCriticalSection(const CExoCriticalSection&);
-    CExoCriticalSection& operator=(const CExoCriticalSection&);
+    CExoCriticalSection(const CExoCriticalSection&) = default;
+    CExoCriticalSection& operator=(const CExoCriticalSection&) = default;
 
     CExoCriticalSection();
     ~CExoCriticalSection();

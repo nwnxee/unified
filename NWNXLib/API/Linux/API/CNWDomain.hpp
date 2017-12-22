@@ -20,8 +20,8 @@ struct CNWDomain
     int32_t m_bCastableFeat;
 
     // The below are auto generated stubs.
-    CNWDomain(const CNWDomain&);
-    CNWDomain& operator=(const CNWDomain&);
+    CNWDomain(const CNWDomain&) = default;
+    CNWDomain& operator=(const CNWDomain&) = default;
 
     CNWDomain();
     ~CNWDomain();

@@ -16,7 +16,7 @@ struct CCombatInformationNode
     uint8_t m_nVersusRace;
 
     // The below are auto generated stubs.
-    CCombatInformationNode(const CCombatInformationNode&);
+    CCombatInformationNode(const CCombatInformationNode&) = default;
 
     CCombatInformationNode();
     int32_t operator!=(CCombatInformationNode&);

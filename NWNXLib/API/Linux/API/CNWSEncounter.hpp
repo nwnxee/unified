@@ -73,9 +73,9 @@ struct CNWSEncounter
     int32_t m_bPlayerTriggeredOnly;
 
     // The below are auto generated stubs.
-    CNWSEncounter();
-    CNWSEncounter(const CNWSEncounter&);
-    CNWSEncounter& operator=(const CNWSEncounter&);
+    CNWSEncounter() = default;
+    CNWSEncounter(const CNWSEncounter&) = default;
+    CNWSEncounter& operator=(const CNWSEncounter&) = default;
 
     CNWSEncounter(uint32_t);
     ~CNWSEncounter();

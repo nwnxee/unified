@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedCRes::CExoLinkedListTemplatedCRes()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCRes::CExoLinkedListTemplatedCRes(const CExoLinkedListTemplatedCRes&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCRes& CExoLinkedListTemplatedCRes::operator=(const CExoLinkedListTemplatedCRes&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedCRes::~CExoLinkedListTemplatedCRes()
 {
     CExoLinkedListTemplatedCRes__CExoLinkedListTemplatedCResDtor(this);

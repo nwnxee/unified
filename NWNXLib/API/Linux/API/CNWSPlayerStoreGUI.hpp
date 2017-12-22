@@ -19,8 +19,8 @@ struct CNWSPlayerStoreGUI
     Vector m_vOpenPosition;
 
     // The below are auto generated stubs.
-    CNWSPlayerStoreGUI(const CNWSPlayerStoreGUI&);
-    CNWSPlayerStoreGUI& operator=(const CNWSPlayerStoreGUI&);
+    CNWSPlayerStoreGUI(const CNWSPlayerStoreGUI&) = default;
+    CNWSPlayerStoreGUI& operator=(const CNWSPlayerStoreGUI&) = default;
 
     CNWSPlayerStoreGUI();
     void CloseStore(CNWSPlayer*, int32_t);
