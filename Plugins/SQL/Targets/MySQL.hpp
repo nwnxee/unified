@@ -16,11 +16,24 @@ public:
 
     virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) override;
     virtual bool IsConnected() override;
-    virtual NWNXLib::Maybe<ResultSet> ExecuteQuery(const Query& query) override;
+    virtual bool PrepareQuery(const Query& query) override;
+    virtual NWNXLib::Maybe<ResultSet> ExecuteQuery() override;
+    virtual void PrepareInt(int32_t position, int32_t value) override;
+    virtual void PrepareFloat(int32_t position, float value) override;
+    virtual void PrepareString(int32_t position, const std::string& value) override;
+
 
 private:
     NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> m_log;
     MYSQL m_mysql;
+    MYSQL_STMT *m_stmt;
+    std::vector<MYSQL_BIND> m_params;
+
+    // No std::variant available, and C++ really doesn't like strings in unions.
+    struct Variant { float f; int32_t n; std::string s;
+        Variant() { s = ""; }
+    };
+    std::vector<Variant> m_paramValues;
 };
 
 }

@@ -4,6 +4,11 @@
 #include "Services/Log/Log.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "ViewPtr.hpp"
+#include "Serialize.hpp"
+#include "API/Globals.hpp"
+#include "API/Constants.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
 #include <algorithm>
 #include <chrono>
 
@@ -42,6 +47,12 @@ SQL::SQL(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("READY_TO_READ_NEXT_ROW", std::bind(&SQL::OnReadyToReadNextRow, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_NEXT_ROW", std::bind(&SQL::OnReadNextRow, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_DATA_IN_ACTIVE_ROW", std::bind(&SQL::OnReadDataInActiveRow, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_INT", std::bind(&SQL::OnPreparedInt, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_STRING", std::bind(&SQL::OnPreparedString, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_FLOAT", std::bind(&SQL::OnPreparedFloat, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_ID", std::bind(&SQL::OnPreparedObjectId, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_FULL", std::bind(&SQL::OnPreparedObjectFull, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("READ_FULL_OBJECT_IN_ACTIVE_ROW", std::bind(&SQL::OnReadFullObjectInActiveRow, this, std::placeholders::_1));
 
     m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
 
@@ -76,9 +87,13 @@ SQL::~SQL()
 
 Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
 {
+    Events::ArgumentStack stack;
+
     m_activeQuery = Events::ExtractArgument<std::string>(args);
     m_activeResults = ResultSet();
-    return Events::ArgumentStack();
+
+    Events::InsertArgument(stack, static_cast<int32_t>(m_target->PrepareQuery(m_activeQuery)));
+    return stack;
 }
 
 Events::ArgumentStack SQL::OnExecuteQuery(Events::ArgumentStack&&)
@@ -90,7 +105,7 @@ Events::ArgumentStack SQL::OnExecuteQuery(Events::ArgumentStack&&)
     if (m_queryMetrics)
     {
         const auto timeBefore = std::chrono::high_resolution_clock::now();
-        query = m_target->ExecuteQuery(m_activeQuery);
+        query = m_target->ExecuteQuery();
         const auto timeAfter = std::chrono::high_resolution_clock::now();
 
         using namespace std::chrono;
@@ -103,7 +118,7 @@ Events::ArgumentStack SQL::OnExecuteQuery(Events::ArgumentStack&&)
     }
     else
     {
-        query = m_target->ExecuteQuery(m_activeQuery);
+        query = m_target->ExecuteQuery();
     }
 
     const bool querySucceeded = query;
@@ -150,5 +165,64 @@ Events::ArgumentStack SQL::OnReadDataInActiveRow(Events::ArgumentStack&& args)
     Events::InsertArgument(stack, m_activeRow[column]);
     return stack;
 }
+Events::ArgumentStack SQL::OnPreparedInt(Events::ArgumentStack&& args)
+{
+    int32_t position = Events::ExtractArgument<int32_t>(args);
+    int32_t value = Events::ExtractArgument<int32_t>(args);
+    m_target->PrepareInt(position, value);
+    return Events::ArgumentStack();
+}
+Events::ArgumentStack SQL::OnPreparedString(Events::ArgumentStack&& args)
+{
+    int32_t position = Events::ExtractArgument<int32_t>(args);
+    std::string value = Events::ExtractArgument<std::string>(args);
+    m_target->PrepareString(position, value);
+    return Events::ArgumentStack();
+}
+Events::ArgumentStack SQL::OnPreparedFloat(Events::ArgumentStack&& args)
+{
+    int32_t position = Events::ExtractArgument<int32_t>(args);
+    float value = Events::ExtractArgument<float>(args);
+    m_target->PrepareFloat(position, value);
+    return Events::ArgumentStack();
+}
+Events::ArgumentStack SQL::OnPreparedObjectId(Events::ArgumentStack&& args)
+{
+    int32_t position = Events::ExtractArgument<int32_t>(args);
+    API::Types::ObjectID value = Events::ExtractArgument<API::Types::ObjectID>(args);
+    m_target->PrepareInt(position, static_cast<int32_t>(value));
+    return Events::ArgumentStack();
+}
+Events::ArgumentStack SQL::OnPreparedObjectFull(Events::ArgumentStack&& args)
+{
+    int32_t position = Events::ExtractArgument<int32_t>(args);
+    API::Types::ObjectID value = Events::ExtractArgument<API::Types::ObjectID>(args);
+
+    API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
+    m_target->PrepareString(position, SerializeGameObjectB64(pObject));
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& args)
+{
+    const auto column = static_cast<size_t>(Events::ExtractArgument<int32_t>(args));
+
+    if (column >= m_activeRow.size())
+    {
+        throw std::runtime_error("Trying to access column outside of range.");
+    }
+
+    std::string serialized = m_activeRow[column];
+    API::Types::ObjectID retval = API::Constants::OBJECT_INVALID;
+    if (API::CGameObject *pObject = DeserializeGameObjectB64(serialized))
+    {
+        retval = static_cast<API::Types::ObjectID>(pObject->m_idSelf);
+        assert(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
+    }
+    Events::ArgumentStack stack;
+    Events::InsertArgument(stack, retval);
+    return stack;
+}
+
 
 }
