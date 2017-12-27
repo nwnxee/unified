@@ -16,9 +16,9 @@ struct CNetLayerPlayerCDKeyInfo
     uint32_t nExpansionPack;
 
     // The below are auto generated stubs.
-    CNetLayerPlayerCDKeyInfo();
-    CNetLayerPlayerCDKeyInfo(const CNetLayerPlayerCDKeyInfo&);
-    CNetLayerPlayerCDKeyInfo& operator=(const CNetLayerPlayerCDKeyInfo&);
+    CNetLayerPlayerCDKeyInfo() = default;
+    CNetLayerPlayerCDKeyInfo(const CNetLayerPlayerCDKeyInfo&) = default;
+    CNetLayerPlayerCDKeyInfo& operator=(const CNetLayerPlayerCDKeyInfo&) = default;
 
     ~CNetLayerPlayerCDKeyInfo();
 };

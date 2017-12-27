@@ -22,9 +22,9 @@ struct CNWSScriptVarTable
     CNWSCreature* m_pCreature;
 
     // The below are auto generated stubs.
-    CNWSScriptVarTable();
-    CNWSScriptVarTable(const CNWSScriptVarTable&);
-    CNWSScriptVarTable& operator=(const CNWSScriptVarTable&);
+    CNWSScriptVarTable() = default;
+    CNWSScriptVarTable(const CNWSScriptVarTable&) = default;
+    CNWSScriptVarTable& operator=(const CNWSScriptVarTable&) = default;
 
     ~CNWSScriptVarTable();
     void DeleteIndex(CExoString&, uint32_t);

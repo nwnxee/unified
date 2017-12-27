@@ -67,8 +67,8 @@ struct CNWSpell
     int32_t m_bHasProjectile;
 
     // The below are auto generated stubs.
-    CNWSpell(const CNWSpell&);
-    CNWSpell& operator=(const CNWSpell&);
+    CNWSpell(const CNWSpell&) = default;
+    CNWSpell& operator=(const CNWSpell&) = default;
 
     CNWSpell();
     ~CNWSpell();

@@ -100,8 +100,8 @@ struct CPathfindInformation
     uint8_t m_nTileSearchedCount;
 
     // The below are auto generated stubs.
-    CPathfindInformation(const CPathfindInformation&);
-    CPathfindInformation& operator=(const CPathfindInformation&);
+    CPathfindInformation(const CPathfindInformation&) = default;
+    CPathfindInformation& operator=(const CPathfindInformation&) = default;
 
     CPathfindInformation();
     ~CPathfindInformation();

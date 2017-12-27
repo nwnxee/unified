@@ -20,8 +20,8 @@ struct CRes2DA
     Exo2DAHeader_st* m_p2DAHeader;
 
     // The below are auto generated stubs.
-    CRes2DA(const CRes2DA&);
-    CRes2DA& operator=(const CRes2DA&);
+    CRes2DA(const CRes2DA&) = default;
+    CRes2DA& operator=(const CRes2DA&) = default;
 
     CRes2DA();
     ~CRes2DA();

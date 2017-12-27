@@ -16,8 +16,8 @@ struct CNWSExpressionList
     CNWSExpressionNode* m_pTail;
 
     // The below are auto generated stubs.
-    CNWSExpressionList(const CNWSExpressionList&);
-    CNWSExpressionList& operator=(const CNWSExpressionList&);
+    CNWSExpressionList(const CNWSExpressionList&) = default;
+    CNWSExpressionList& operator=(const CNWSExpressionList&) = default;
 
     CNWSExpressionList();
     ~CNWSExpressionList();

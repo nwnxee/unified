@@ -19,8 +19,8 @@ struct CExoResourceImageFile
     void* m_pResourceImage;
 
     // The below are auto generated stubs.
-    CExoResourceImageFile(const CExoResourceImageFile&);
-    CExoResourceImageFile& operator=(const CExoResourceImageFile&);
+    CExoResourceImageFile(const CExoResourceImageFile&) = default;
+    CExoResourceImageFile& operator=(const CExoResourceImageFile&) = default;
 
     CExoResourceImageFile();
     ~CExoResourceImageFile();

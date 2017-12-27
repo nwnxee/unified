@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCERFRes
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCERFRes();
-    CExoLinkedListTemplatedCERFRes(const CExoLinkedListTemplatedCERFRes&);
-    CExoLinkedListTemplatedCERFRes& operator=(const CExoLinkedListTemplatedCERFRes&);
+    CExoLinkedListTemplatedCERFRes() = default;
+    CExoLinkedListTemplatedCERFRes(const CExoLinkedListTemplatedCERFRes&) = default;
+    CExoLinkedListTemplatedCERFRes& operator=(const CExoLinkedListTemplatedCERFRes&) = default;
 
     ~CExoLinkedListTemplatedCERFRes();
 };

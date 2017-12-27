@@ -22,8 +22,8 @@ struct CExoEncapsulatedFile
     uint8_t m_nFileType;
 
     // The below are auto generated stubs.
-    CExoEncapsulatedFile(const CExoEncapsulatedFile&);
-    CExoEncapsulatedFile& operator=(const CExoEncapsulatedFile&);
+    CExoEncapsulatedFile(const CExoEncapsulatedFile&) = default;
+    CExoEncapsulatedFile& operator=(const CExoEncapsulatedFile&) = default;
 
     CExoEncapsulatedFile();
     ~CExoEncapsulatedFile();

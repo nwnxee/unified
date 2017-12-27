@@ -41,8 +41,8 @@ struct CExoResMan
     int32_t m_bOverrideAll;
 
     // The below are auto generated stubs.
-    CExoResMan(const CExoResMan&);
-    CExoResMan& operator=(const CExoResMan&);
+    CExoResMan(const CExoResMan&) = default;
+    CExoResMan& operator=(const CExoResMan&) = default;
 
     CExoResMan();
     ~CExoResMan();

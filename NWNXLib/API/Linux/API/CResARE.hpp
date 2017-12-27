@@ -13,9 +13,9 @@ struct CResARE
 {
 
     // The below are auto generated stubs.
-    CResARE();
-    CResARE(const CResARE&);
-    CResARE& operator=(const CResARE&);
+    CResARE() = default;
+    CResARE(const CResARE&) = default;
+    CResARE& operator=(const CResARE&) = default;
 
     ~CResARE();
 };

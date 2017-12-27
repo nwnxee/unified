@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CVirtualMachineDebugLoader::CVirtualMachineDebugLoader()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachineDebugLoader::CVirtualMachineDebugLoader(const CVirtualMachineDebugLoader&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachineDebugLoader& CVirtualMachineDebugLoader::operator=(const CVirtualMachineDebugLoader&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CVirtualMachineDebugLoader::~CVirtualMachineDebugLoader()
 {
     CVirtualMachineDebugLoader__CVirtualMachineDebugLoaderDtor__0(this);

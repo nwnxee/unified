@@ -14,8 +14,8 @@ struct CNWItem
     uint32_t m_nBaseItem;
 
     // The below are auto generated stubs.
-    CNWItem(const CNWItem&);
-    CNWItem& operator=(const CNWItem&);
+    CNWItem(const CNWItem&) = default;
+    CNWItem& operator=(const CNWItem&) = default;
 
     CNWItem();
     ~CNWItem();

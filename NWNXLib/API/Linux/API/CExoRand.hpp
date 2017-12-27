@@ -16,8 +16,8 @@ struct CExoRand
     CExoRandInternal* m_pcExoRandInternal;
 
     // The below are auto generated stubs.
-    CExoRand(const CExoRand&);
-    CExoRand& operator=(const CExoRand&);
+    CExoRand(const CExoRand&) = default;
+    CExoRand& operator=(const CExoRand&) = default;
 
     CExoRand();
     ~CExoRand();

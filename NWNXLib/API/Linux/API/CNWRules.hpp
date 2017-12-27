@@ -46,8 +46,8 @@ struct CNWRules
     uint8_t m_nDifficultyOptions[5][7];
 
     // The below are auto generated stubs.
-    CNWRules(const CNWRules&);
-    CNWRules& operator=(const CNWRules&);
+    CNWRules(const CNWRules&) = default;
+    CNWRules& operator=(const CNWRules&) = default;
 
     CNWRules();
     ~CNWRules();

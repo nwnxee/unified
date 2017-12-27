@@ -14,8 +14,8 @@ struct CNWTileSurfaceMeshHashTableEntry
     float m_fRecentAttemptedDepth;
 
     // The below are auto generated stubs.
-    CNWTileSurfaceMeshHashTableEntry(const CNWTileSurfaceMeshHashTableEntry&);
-    CNWTileSurfaceMeshHashTableEntry& operator=(const CNWTileSurfaceMeshHashTableEntry&);
+    CNWTileSurfaceMeshHashTableEntry(const CNWTileSurfaceMeshHashTableEntry&) = default;
+    CNWTileSurfaceMeshHashTableEntry& operator=(const CNWTileSurfaceMeshHashTableEntry&) = default;
 
     CNWTileSurfaceMeshHashTableEntry();
     float Fetch(int32_t);

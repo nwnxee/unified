@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedCNWSPlayerTURD::CExoLinkedListTemplatedCNWSPlayerTURD()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCNWSPlayerTURD::CExoLinkedListTemplatedCNWSPlayerTURD(const CExoLinkedListTemplatedCNWSPlayerTURD&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCNWSPlayerTURD& CExoLinkedListTemplatedCNWSPlayerTURD::operator=(const CExoLinkedListTemplatedCNWSPlayerTURD&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedCNWSPlayerTURD::~CExoLinkedListTemplatedCNWSPlayerTURD()
 {
     CExoLinkedListTemplatedCNWSPlayerTURD__CExoLinkedListTemplatedCNWSPlayerTURDDtor(this);

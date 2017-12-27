@@ -27,8 +27,8 @@ struct CNWTile
     uint8_t m_nAnimLoop3;
 
     // The below are auto generated stubs.
-    CNWTile(const CNWTile&);
-    CNWTile& operator=(const CNWTile&);
+    CNWTile(const CNWTile&) = default;
+    CNWTile& operator=(const CNWTile&) = default;
 
     CNWTile();
     ~CNWTile();

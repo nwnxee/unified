@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedCResRef
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedCResRef();
-    CExoLinkedListTemplatedCResRef(const CExoLinkedListTemplatedCResRef&);
-    CExoLinkedListTemplatedCResRef& operator=(const CExoLinkedListTemplatedCResRef&);
+    CExoLinkedListTemplatedCResRef() = default;
+    CExoLinkedListTemplatedCResRef(const CExoLinkedListTemplatedCResRef&) = default;
+    CExoLinkedListTemplatedCResRef& operator=(const CExoLinkedListTemplatedCResRef&) = default;
 
     ~CExoLinkedListTemplatedCResRef();
 };

@@ -62,8 +62,8 @@ struct CNetLayerWindow
     z_stream* m_pDecompressionStream;
 
     // The below are auto generated stubs.
-    CNetLayerWindow(const CNetLayerWindow&);
-    CNetLayerWindow& operator=(const CNetLayerWindow&);
+    CNetLayerWindow(const CNetLayerWindow&) = default;
+    CNetLayerWindow& operator=(const CNetLayerWindow&) = default;
 
     CNetLayerWindow();
     ~CNetLayerWindow();

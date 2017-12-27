@@ -24,9 +24,9 @@ struct SJournalEntry
     int32_t bUpdated;
 
     // The below are auto generated stubs.
-    SJournalEntry();
-    SJournalEntry(const SJournalEntry&);
-    SJournalEntry& operator=(const SJournalEntry&);
+    SJournalEntry() = default;
+    SJournalEntry(const SJournalEntry&) = default;
+    SJournalEntry& operator=(const SJournalEntry&) = default;
 
     ~SJournalEntry();
 };

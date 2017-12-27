@@ -14,9 +14,9 @@ struct CExoLinkedListTemplatedNWPlayerListItem_st
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
 
     // The below are auto generated stubs.
-    CExoLinkedListTemplatedNWPlayerListItem_st();
-    CExoLinkedListTemplatedNWPlayerListItem_st(const CExoLinkedListTemplatedNWPlayerListItem_st&);
-    CExoLinkedListTemplatedNWPlayerListItem_st& operator=(const CExoLinkedListTemplatedNWPlayerListItem_st&);
+    CExoLinkedListTemplatedNWPlayerListItem_st() = default;
+    CExoLinkedListTemplatedNWPlayerListItem_st(const CExoLinkedListTemplatedNWPlayerListItem_st&) = default;
+    CExoLinkedListTemplatedNWPlayerListItem_st& operator=(const CExoLinkedListTemplatedNWPlayerListItem_st&) = default;
 
     ~CExoLinkedListTemplatedNWPlayerListItem_st();
 };

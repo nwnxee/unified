@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResHelperTemplatedCResPWK2053::CResHelperTemplatedCResPWK2053()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResHelperTemplatedCResPWK2053::CResHelperTemplatedCResPWK2053(const CResHelperTemplatedCResPWK2053&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResHelperTemplatedCResPWK2053& CResHelperTemplatedCResPWK2053::operator=(const CResHelperTemplatedCResPWK2053&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResHelperTemplatedCResPWK2053::~CResHelperTemplatedCResPWK2053()
 {
     CResHelperTemplatedCResPWK2053__CResHelperTemplatedCResPWK2053Dtor__0(this);

@@ -25,9 +25,9 @@ struct CNWSBarter
     int32_t m_bDoReset;
 
     // The below are auto generated stubs.
-    CNWSBarter();
-    CNWSBarter(const CNWSBarter&);
-    CNWSBarter& operator=(const CNWSBarter&);
+    CNWSBarter() = default;
+    CNWSBarter(const CNWSBarter&) = default;
+    CNWSBarter& operator=(const CNWSBarter&) = default;
 
     CNWSBarter(CNWSCreature*);
     ~CNWSBarter();

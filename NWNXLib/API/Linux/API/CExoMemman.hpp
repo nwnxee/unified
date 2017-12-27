@@ -30,9 +30,9 @@ struct CExoMemman
     _IO_FILE* fp;
 
     // The below are auto generated stubs.
-    CExoMemman();
-    CExoMemman(const CExoMemman&);
-    CExoMemman& operator=(const CExoMemman&);
+    CExoMemman() = default;
+    CExoMemman(const CExoMemman&) = default;
+    CExoMemman& operator=(const CExoMemman&) = default;
 
     ~CExoMemman();
     void AddFreeRecord(uint32_t);

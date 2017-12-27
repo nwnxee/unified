@@ -26,8 +26,8 @@ struct CRes
     CExoLinkedListNode* m_pos;
 
     // The below are auto generated stubs.
-    CRes(const CRes&);
-    CRes& operator=(const CRes&);
+    CRes(const CRes&) = default;
+    CRes& operator=(const CRes&) = default;
 
     CRes();
     CRes(uint32_t);

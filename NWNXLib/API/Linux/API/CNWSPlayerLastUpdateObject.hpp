@@ -51,8 +51,8 @@ struct CNWSPlayerLastUpdateObject
     CExoArrayListTemplatedCNWSStats_SpellLikeAbility* m_pSpellLikeAbilityList;
 
     // The below are auto generated stubs.
-    CNWSPlayerLastUpdateObject(const CNWSPlayerLastUpdateObject&);
-    CNWSPlayerLastUpdateObject& operator=(const CNWSPlayerLastUpdateObject&);
+    CNWSPlayerLastUpdateObject(const CNWSPlayerLastUpdateObject&) = default;
+    CNWSPlayerLastUpdateObject& operator=(const CNWSPlayerLastUpdateObject&) = default;
 
     CNWSPlayerLastUpdateObject();
     ~CNWSPlayerLastUpdateObject();

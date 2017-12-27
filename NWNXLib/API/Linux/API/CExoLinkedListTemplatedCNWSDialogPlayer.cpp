@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListTemplatedCNWSDialogPlayer::CExoLinkedListTemplatedCNWSDialogPlayer()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCNWSDialogPlayer::CExoLinkedListTemplatedCNWSDialogPlayer(const CExoLinkedListTemplatedCNWSDialogPlayer&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListTemplatedCNWSDialogPlayer& CExoLinkedListTemplatedCNWSDialogPlayer::operator=(const CExoLinkedListTemplatedCNWSDialogPlayer&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListTemplatedCNWSDialogPlayer::~CExoLinkedListTemplatedCNWSDialogPlayer()
 {
     CExoLinkedListTemplatedCNWSDialogPlayer__CExoLinkedListTemplatedCNWSDialogPlayerDtor(this);

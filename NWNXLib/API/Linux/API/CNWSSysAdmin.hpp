@@ -13,9 +13,9 @@ struct CNWSSysAdmin
 {
 
     // The below are auto generated stubs.
-    CNWSSysAdmin();
-    CNWSSysAdmin(const CNWSSysAdmin&);
-    CNWSSysAdmin& operator=(const CNWSSysAdmin&);
+    CNWSSysAdmin() = default;
+    CNWSSysAdmin(const CNWSSysAdmin&) = default;
+    CNWSSysAdmin& operator=(const CNWSSysAdmin&) = default;
 
     CNWSSysAdmin(uint32_t);
     ~CNWSSysAdmin();

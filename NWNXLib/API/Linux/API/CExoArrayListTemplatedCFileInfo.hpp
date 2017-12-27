@@ -15,9 +15,9 @@ struct CExoArrayListTemplatedCFileInfo
     int32_t array_size;
 
     // The below are auto generated stubs.
-    CExoArrayListTemplatedCFileInfo();
-    CExoArrayListTemplatedCFileInfo(const CExoArrayListTemplatedCFileInfo&);
-    CExoArrayListTemplatedCFileInfo& operator=(const CExoArrayListTemplatedCFileInfo&);
+    CExoArrayListTemplatedCFileInfo() = default;
+    CExoArrayListTemplatedCFileInfo(const CExoArrayListTemplatedCFileInfo&) = default;
+    CExoArrayListTemplatedCFileInfo& operator=(const CExoArrayListTemplatedCFileInfo&) = default;
 
     ~CExoArrayListTemplatedCFileInfo();
     void Add(CFileInfo);

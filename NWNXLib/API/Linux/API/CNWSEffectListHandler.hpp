@@ -21,9 +21,9 @@ struct CNWSEffectListHandler
     pfRECommands* m_pRemoveEffectCommands;
 
     // The below are auto generated stubs.
-    CNWSEffectListHandler();
-    CNWSEffectListHandler(const CNWSEffectListHandler&);
-    CNWSEffectListHandler& operator=(const CNWSEffectListHandler&);
+    CNWSEffectListHandler() = default;
+    CNWSEffectListHandler(const CNWSEffectListHandler&) = default;
+    CNWSEffectListHandler& operator=(const CNWSEffectListHandler&) = default;
 
     ~CNWSEffectListHandler();
     void InitializeEffects();

@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CRes::CRes(const CRes&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CRes& CRes::operator=(const CRes&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CRes::CRes()
 {
     CRes__CResCtor__0(this);

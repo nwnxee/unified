@@ -42,9 +42,9 @@ struct CNWSSoundObject
     int32_t m_bRandom;
 
     // The below are auto generated stubs.
-    CNWSSoundObject();
-    CNWSSoundObject(const CNWSSoundObject&);
-    CNWSSoundObject& operator=(const CNWSSoundObject&);
+    CNWSSoundObject() = default;
+    CNWSSoundObject(const CNWSSoundObject&) = default;
+    CNWSSoundObject& operator=(const CNWSSoundObject&) = default;
 
     CNWSSoundObject(uint32_t);
     ~CNWSSoundObject();

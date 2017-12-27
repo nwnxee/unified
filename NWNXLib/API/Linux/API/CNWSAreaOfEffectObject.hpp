@@ -39,9 +39,9 @@ struct CNWSAreaOfEffectObject
     uint8_t m_nDurationType;
 
     // The below are auto generated stubs.
-    CNWSAreaOfEffectObject();
-    CNWSAreaOfEffectObject(const CNWSAreaOfEffectObject&);
-    CNWSAreaOfEffectObject& operator=(const CNWSAreaOfEffectObject&);
+    CNWSAreaOfEffectObject() = default;
+    CNWSAreaOfEffectObject(const CNWSAreaOfEffectObject&) = default;
+    CNWSAreaOfEffectObject& operator=(const CNWSAreaOfEffectObject&) = default;
 
     CNWSAreaOfEffectObject(uint32_t);
     ~CNWSAreaOfEffectObject();

@@ -14,8 +14,8 @@ struct CExoTimers
     CExoTimersInternal* m_pcExoTimersInternal;
 
     // The below are auto generated stubs.
-    CExoTimers(const CExoTimers&);
-    CExoTimers& operator=(const CExoTimers&);
+    CExoTimers(const CExoTimers&) = default;
+    CExoTimers& operator=(const CExoTimers&) = default;
 
     CExoTimers();
     ~CExoTimers();

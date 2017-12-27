@@ -16,9 +16,9 @@ struct CExoFile
     CExoFileInternal* m_pcExoFileInternal;
 
     // The below are auto generated stubs.
-    CExoFile();
-    CExoFile(const CExoFile&);
-    CExoFile& operator=(const CExoFile&);
+    CExoFile() = default;
+    CExoFile(const CExoFile&) = default;
+    CExoFile& operator=(const CExoFile&) = default;
 
     CExoFile(const CExoString&, uint16_t, const CExoString&);
     ~CExoFile();

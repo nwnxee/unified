@@ -159,8 +159,8 @@ struct CScriptCompiler
     CExoString m_sCapturedError;
 
     // The below are auto generated stubs.
-    CScriptCompiler(const CScriptCompiler&);
-    CScriptCompiler& operator=(const CScriptCompiler&);
+    CScriptCompiler(const CScriptCompiler&) = default;
+    CScriptCompiler& operator=(const CScriptCompiler&) = default;
 
     CScriptCompiler();
     ~CScriptCompiler();

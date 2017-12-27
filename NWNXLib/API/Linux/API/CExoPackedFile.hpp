@@ -26,8 +26,8 @@ struct CExoPackedFile
     int32_t m_bHeaderLoaded;
 
     // The below are auto generated stubs.
-    CExoPackedFile(const CExoPackedFile&);
-    CExoPackedFile& operator=(const CExoPackedFile&);
+    CExoPackedFile(const CExoPackedFile&) = default;
+    CExoPackedFile& operator=(const CExoPackedFile&) = default;
 
     CExoPackedFile();
     ~CExoPackedFile();

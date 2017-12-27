@@ -14,7 +14,7 @@ struct CResRef
     char m_resRef[16];
 
     // The below are auto generated stubs.
-    CResRef(const CResRef&);
+    CResRef(const CResRef&) = default;
 
     CResRef();
     CResRef(const CExoString&);
