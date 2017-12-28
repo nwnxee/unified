@@ -8,6 +8,10 @@ int NWNX_SQL_PrepareQuery(string query);
 // Returns the ID of this query if successful, else FALSE.
 int NWNX_SQL_ExecuteQuery();
 
+// Prepares and executes a query that has no parameters
+// Returns the ID of this query if successful, else FALSE.
+int NWNX_SQL_ExecuteDirect(string query);
+
 // Returns TRUE if one or more rows are ready, FALSE otherwise.
 int NWNX_SQL_ReadyToReadNextRow();
 
@@ -35,6 +39,10 @@ void NWNX_SQL_PreparedObjectFull(int position, object value);
 // The object is restored at the old location. Move it manually to the desired location/inventory.
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0);
 
+// Return number of rows affected by SQL statement (for non-row-based statements like INSERT, UPDATE, DELETE, etc.);
+// Returns -1 if the quere was not non-row-based.
+int NWNX_SQL_GetAffectedRows();
+
 int NWNX_SQL_PrepareQuery(string query)
 {
     NWNX_PushArgumentString("NWNX_SQL", "PREPARE_QUERY", query);
@@ -46,6 +54,14 @@ int NWNX_SQL_ExecuteQuery()
 {
     NWNX_CallFunction("NWNX_SQL", "EXECUTE_QUERY");
     return NWNX_GetReturnValueInt("NWNX_SQL", "EXECUTE_QUERY");
+}
+
+int NWNX_SQL_ExecuteDirect(string query) {
+    int q = NWNX_SQL_PrepareQuery(string query)
+    if (q) {
+        q = NWNX_SQL_ExecuteQuery();
+    }
+    return q;
 }
 
 int NWNX_SQL_ReadyToReadNextRow()
@@ -106,4 +122,9 @@ object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0)
     NWNX_PushArgumentInt("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", column);
     NWNX_CallFunction("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
     return NWNX_GetReturnValueObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
+}
+
+int NWNX_SQL_GetAffectedRows() {
+    NWNX_CallFunction("NWNX_SQL", "GET_AFFECTED_ROWS");
+    return NWNX_GetReturnValueInt("NWNX_SQL", "GET_AFFECTED_ROWS");
 }

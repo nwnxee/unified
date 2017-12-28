@@ -43,6 +43,9 @@ void main()
 
     b = NWNX_SQL_ExecuteQuery();
     report("Complex ExecuteQuery", b);
+    
+    b = NWNX_SQL_GetAffectedRows();
+    report("Affected Rows", b == 1);
 
     b = NWNX_SQL_PrepareQuery("SELECT * FROM sql_test;");
     report("Select PrepareQuery", b);
