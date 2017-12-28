@@ -21,8 +21,8 @@ void main()
     int b = NWNX_SQL_PrepareQuery(sCreate);
     report("PrepareQuery", b);
 
-    b = NWNX_SQL_ExecuteQuery();
-    report("ExecuteQuery", b);
+    b = NWNX_SQL_ExecutePreparedQuery();
+    report("ExecutePreparedQuery", b);
 
     object o = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
     if (!GetIsObjectValid(o))
@@ -41,13 +41,13 @@ void main()
     NWNX_SQL_PreparedObjectFull(4, o);
 
 
-    b = NWNX_SQL_ExecuteQuery();
-    report("Complex ExecuteQuery", b);
+    b = NWNX_SQL_ExecutePreparedQuery();
+    report("Complex ExecutePreparedQuery", b);
 
     b = NWNX_SQL_PrepareQuery("SELECT * FROM sql_test;");
     report("Select PrepareQuery", b);
-    b = NWNX_SQL_ExecuteQuery();
-    report("Select ExecuteQuery", b);
+    b = NWNX_SQL_ExecutePreparedQuery();
+    report("Select ExecutePreparedQuery", b);
 
     if (b)
     {
@@ -72,7 +72,7 @@ void main()
         }
     }
 
-    NWNX_SQL_PrepareQuery("DROP TABLE sql_test");
-    NWNX_SQL_ExecuteQuery();
+    b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
+    report("ExecuteQuery", b);
     WriteTimestampedLogEntry("NWNX_SQL unit test end.");
 }

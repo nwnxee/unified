@@ -15,7 +15,7 @@ public:
     virtual ~SQL();
 
     NWNXLib::Services::Events::ArgumentStack OnPrepareQuery(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnExecuteQuery(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnExecutePreparedQuery(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnReadyToReadNextRow(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnReadNextRow(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnReadDataInActiveRow(NWNXLib::Services::Events::ArgumentStack&& args);

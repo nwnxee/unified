@@ -43,7 +43,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     : Plugin(params), m_nextQueryId(0), m_queryMetrics(false)
 {
     GetServices()->m_events->RegisterEvent("PREPARE_QUERY", std::bind(&SQL::OnPrepareQuery, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("EXECUTE_QUERY", std::bind(&SQL::OnExecuteQuery, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("EXECUTE_PREPARED_QUERY", std::bind(&SQL::OnExecutePreparedQuery, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READY_TO_READ_NEXT_ROW", std::bind(&SQL::OnReadyToReadNextRow, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_NEXT_ROW", std::bind(&SQL::OnReadNextRow, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_DATA_IN_ACTIVE_ROW", std::bind(&SQL::OnReadDataInActiveRow, this, std::placeholders::_1));
@@ -96,7 +96,7 @@ Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
     return stack;
 }
 
-Events::ArgumentStack SQL::OnExecuteQuery(Events::ArgumentStack&&)
+Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
 {
     const int32_t queryId = ++m_nextQueryId;
 
