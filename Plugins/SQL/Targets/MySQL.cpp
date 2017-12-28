@@ -137,7 +137,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 
 void MySQL::PrepareInt(int32_t position, int32_t value)
 {
-    MYSQL_BIND *pBind = &m_params[--position];
+    MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
     m_paramValues[position].n = value;
@@ -147,7 +147,7 @@ void MySQL::PrepareInt(int32_t position, int32_t value)
 }
 void MySQL::PrepareFloat(int32_t position, float value)
 {
-    MYSQL_BIND *pBind = &m_params[--position];
+    MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
     m_paramValues[position].f = value;
@@ -157,7 +157,7 @@ void MySQL::PrepareFloat(int32_t position, float value)
 }
 void MySQL::PrepareString(int32_t position, const std::string& value)
 {
-    MYSQL_BIND *pBind = &m_params[--position];
+    MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
     m_paramValues[position].s = value.c_str();

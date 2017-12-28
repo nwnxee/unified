@@ -34,11 +34,11 @@ void main()
     b = NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(?,?,?,?,?);");
     report("Complex PrepareQuery", b);
 
-    NWNX_SQL_PreparedInt(1, 42);
-    NWNX_SQL_PreparedFloat(2, 0.42);
-    NWNX_SQL_PreparedString(3, "FourtyTwooo");
-    NWNX_SQL_PreparedObjectId(4, o);
-    NWNX_SQL_PreparedObjectFull(5, o);
+    NWNX_SQL_PreparedInt(0, 42);
+    NWNX_SQL_PreparedFloat(1, 0.42);
+    NWNX_SQL_PreparedString(2, "FourtyTwooo");
+    NWNX_SQL_PreparedObjectId(3, o);
+    NWNX_SQL_PreparedObjectFull(4, o);
 
 
     b = NWNX_SQL_ExecuteQuery();
