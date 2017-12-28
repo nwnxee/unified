@@ -144,11 +144,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
 
     if (sFileType == "BIC " || sFileType == "GFF ")
     {
-        // TODO: Clean up once traps are removed from the constructors...
-        //API::CNWSCreature *pCreature = new API::CNWSCreature(API::Constants::OBJECT_INVALID, 0, 1);
-        API::CNWSCreature *pCreature = reinterpret_cast<API::CNWSCreature*>(new uint8_t[sizeof(*pCreature)]);
-        memset(pCreature, 0, sizeof(*pCreature));
-        API::CNWSCreature__CNWSCreatureCtor(pCreature, API::Constants::OBJECT_INVALID, 0, 1);
+        API::CNWSCreature *pCreature = new API::CNWSCreature(API::Constants::OBJECT_INVALID, 0, 1);
 
         if (!pCreature->LoadCreature(&resGff, &resStruct, 0, 0, 0, 0))
         {
@@ -160,9 +156,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
 
 #define DESERIALIZE(_type, ...)                                                             \
     do {                                                                                    \
-        API::CNWS##_type *p = reinterpret_cast<API::CNWS##_type*>(new uint8_t[sizeof(*p)]); \
-        memset(p, 0, sizeof(*p));                                                           \
-        API::CNWS##_type##__##CNWS##_type##Ctor(p, API::Constants::OBJECT_INVALID);         \
+        API::CNWS##_type *p = new API::CNWS##_type(API::Constants::OBJECT_INVALID);         \
         if (!p->Load##_type(&resGff, &resStruct, ##__VA_ARGS__))                            \
         {                                                                                   \
             delete p;                                                                       \
