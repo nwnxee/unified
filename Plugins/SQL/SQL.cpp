@@ -43,18 +43,18 @@ namespace SQL {
 SQL::SQL(const Plugin::CreateParams& params)
     : Plugin(params), m_nextQueryId(0), m_queryMetrics(false)
 {
-    GetServices()->m_events->RegisterEvent("PREPARE_QUERY", std::bind(&SQL::OnPrepareQuery, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("EXECUTE_QUERY", std::bind(&SQL::OnExecuteQuery, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("READY_TO_READ_NEXT_ROW", std::bind(&SQL::OnReadyToReadNextRow, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("READ_NEXT_ROW", std::bind(&SQL::OnReadNextRow, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARE_QUERY",           std::bind(&SQL::OnPrepareQuery,        this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("EXECUTE_QUERY",           std::bind(&SQL::OnExecuteQuery,        this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("READY_TO_READ_NEXT_ROW",  std::bind(&SQL::OnReadyToReadNextRow,  this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("READ_NEXT_ROW",           std::bind(&SQL::OnReadNextRow,         this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_DATA_IN_ACTIVE_ROW", std::bind(&SQL::OnReadDataInActiveRow, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_INT", std::bind(&SQL::OnPreparedInt, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_STRING", std::bind(&SQL::OnPreparedString, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_FLOAT", std::bind(&SQL::OnPreparedFloat, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_ID", std::bind(&SQL::OnPreparedObjectId, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_FULL", std::bind(&SQL::OnPreparedObjectFull, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_INT",            std::bind(&SQL::OnPreparedInt,         this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_STRING",         std::bind(&SQL::OnPreparedString,      this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_FLOAT",          std::bind(&SQL::OnPreparedFloat,       this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_ID",      std::bind(&SQL::OnPreparedObjectId,    this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_FULL",    std::bind(&SQL::OnPreparedObjectFull,  this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_FULL_OBJECT_IN_ACTIVE_ROW", std::bind(&SQL::OnReadFullObjectInActiveRow, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_AFFECTED_ROWS", std::bind(&SQL::OnGetAffectedRows, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("GET_AFFECTED_ROWS",       std::bind(&SQL::OnGetAffectedRows,     this, std::placeholders::_1));
 
     m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
 
@@ -67,7 +67,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     std::string type = GetServices()->m_config->Get<std::string>("TYPE", "MYSQL");
     std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
 
-    GetServices()->m_log->Info("Connecting to type %s", type);
+    GetServices()->m_log->Info("Connecting to type %s", type.c_str());
 
     if (type == "MYSQL")
     {

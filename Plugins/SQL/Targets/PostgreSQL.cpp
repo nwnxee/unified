@@ -28,12 +28,17 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
     const std::string pass = "password=" + config->Require<std::string>("PASSWORD");
 
     const NWNXLib::Maybe<std::string> DB = config->Get<std::string>("DATABASE");
-    const std::string db   = DB ? "dbname=" + config->Get<std::string>("DATABASE") : nullptr;
+    if (DB) {
+        m_log->Debug("DB set to %s", (*DB).c_str());
+    }
+    const std::string db   = DB ? "dbname=" + (*DB) : nullptr;
 
     const std::string port = "port=" + config->Get<std::string>("PORT", "5432");
 
     // Build the m_connection string
     std::string m_connectstring = host + " " + port + " " + db + " " + user + " " + pass;
+
+    m_log->Info("Connect String:  %s\n", m_connectstring.c_str());
 
     // Connect attempt
     m_conn = PQconnectdb(m_connectstring.c_str());
@@ -52,43 +57,39 @@ bool PostgreSQL::IsConnected()
     return true;
 }
 
-int GetParamCount(std::string query)
+bool PostgreSQL::PrepareQuery(const Query& query)
 {
+	m_log->Info("Preparing query %s\n", query.c_str());
+
+    affectedRows = -1;
+
+    /* Determine the number of parameters in the query */
     std::regex words_regex("[^\\\\]\\$\\d+");
     auto words_begin = std::sregex_iterator(
         query.begin(), query.end(), words_regex);
     auto words_end = std::sregex_iterator();
 
-    return std::distance(words_begin, words_end);
-}
+    paramCount = std::distance(words_begin, words_end);
 
-bool PostgreSQL::PrepareQuery(const Query& query)
-{
-    affectedRows = -1;
-    paramCount = GetParamCount(query);
     m_params.resize(paramCount);
 
     PGresult *res = PQprepare(m_conn,    // connection
-                        "pqstmt",        // statement name
+                        "",              // statement name, can be blank
                         query.c_str(),   // query string
                         paramCount,      // param count
                         NULL);           // param types (can be null to infer)
 
-    std::cout << "PostgreSQL.cpp - 76" << std::endl;
     if (res == NULL) {
         m_log->Warning("Possible out of memory condition on DB server.");
         return false;
     }
 
-    std::cout << "PostgreSQL.cpp - 82" << std::endl;
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
         PQclear(res);
         m_log->Warning("Query '%s' failed due to error '%s'", query.c_str(), PQresultErrorMessage(res));
 
         return false;
     }
-
-    std::cout << "PostgreSQL.cpp - 89" << std::endl;
 
     return true;
 }
@@ -112,7 +113,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 
     PGresult *res = PQexecPrepared(
         m_conn,                                         // connection
-        "pqstmt",                                       // statement name (same as in the prepare above)
+        "",                                             // statement name (same as in the prepare above)
         paramCount,                                     // paramCount from previous
         (paramCount == 0) ? nullptr : paramValues,      // param data
         NULL,                                           // param lengths - only for binary data
@@ -171,7 +172,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     //        printed to the logs with a coherent message.
     //m_log->Warning("Query '%s' failed due to error '%s'", query.c_str(), error);
 
-    m_log->Warning("Some suery failed due to error '%s'", error);
+    m_log->Warning("Some query failed due to error '%s'", error);
 
     PQclear(res);
     return NWNXLib::Maybe<ResultSet>();
@@ -180,14 +181,17 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
     m_params[--position] = std::to_string(value);
+    std::cout << "Prepared Int = " << m_params[position] << std::endl;
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
 	m_params[--position] = std::to_string(value);
+    std::cout << "Prepared Float = " << m_params[position] << std::endl;
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
 	m_params[--position] = value;
+    std::cout << "Prepared String = " << m_params[position] << std::endl;
 }
 
 int PostgreSQL::GetAffectedRows() {

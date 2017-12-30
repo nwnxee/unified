@@ -24,7 +24,6 @@ public:
 
 private:
     NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> m_log;
-    int GetParamCount(std::string query);
     PGconn *m_conn;
     int affectedRows = -1;
     size_t paramCount = 0;
