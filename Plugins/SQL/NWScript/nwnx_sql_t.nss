@@ -9,14 +9,31 @@ void report(string func, int bSuccess)
     else
         WriteTimestampedLogEntry("NWNX_SQL: " + func + "() failed");
 }
+
+void cleanup() {
+    NWNX_SQL_PrepareQuery("DROP TABLE sql_test");
+    NWNX_SQL_ExecuteQuery();
+}
+
 void main()
 {
     WriteTimestampedLogEntry("NWNX_SQL unit test begin..");
 
+    /* Caution.. this create table statement is specific to MySQL and will fail in other DB systems */
     string sCreate = "CREATE TABLE sql_test (" +
                         "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
                         "colObjId INT, colObj TEXT(1000000) );";
 
+    string sInsert = "INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(?, ?, ?, ?, ?)";
+
+    /* PostgreSQL version */
+    /*
+    string sCreate = "CREATE TABLE sql_test (" +
+                        "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
+                        "colObjId INT, colObj TEXT );";
+
+    string sInsert = "INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES($1, $2, $3, $4, $5)";
+    */
 
     int b = NWNX_SQL_PrepareQuery(sCreate);
     report("PrepareQuery", b);
@@ -28,10 +45,11 @@ void main()
     if (!GetIsObjectValid(o))
     {
         WriteTimestampedLogEntry("NWNX_SQL test: Failed to create creature");
+        cleanup();
         return;
     }
 
-    b = NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(?,?,?,?,?);");
+    b = NWNX_SQL_PrepareQuery(sInsert);
     report("Complex PrepareQuery", b);
 
     NWNX_SQL_PreparedInt(1, 42);
@@ -60,7 +78,7 @@ void main()
             int n = StringToInt(NWNX_SQL_ReadDataInActiveRow(0));
             report("ReadInt", n == 42);
             float f = StringToFloat(NWNX_SQL_ReadDataInActiveRow(1));
-            report("ReadFloat", fabs(f - 42.0) > 0.01);
+            report("ReadFloat", fabs(f - 0.42) < 0.01);
             string s = NWNX_SQL_ReadDataInActiveRow(2);
             report("ReadString", s == "FourtyTwooo");
 
@@ -75,7 +93,6 @@ void main()
         }
     }
 
-    NWNX_SQL_PrepareQuery("DROP TABLE sql_test");
-    NWNX_SQL_ExecuteQuery();
+    cleanup();
     WriteTimestampedLogEntry("NWNX_SQL unit test end.");
 }
