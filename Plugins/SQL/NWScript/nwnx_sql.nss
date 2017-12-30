@@ -36,8 +36,10 @@ void NWNX_SQL_PreparedObjectFull(int position, object value);
 
 // Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
 // The object will be deserialized and created in the game. New object ID is returned.
-// The object is restored at the old location. Move it manually to the desired location/inventory.
-object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0);
+// If the deserialized object is an item, owner object must be specified:
+//    - If the owner is a placeable, creature or container, the item will be created in its inventory
+//    - If the owner is an area, the item will be created on the ground at Vector(x,y,z);
+object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0);
 
 int NWNX_SQL_PrepareQuery(string query)
 {
@@ -115,8 +117,12 @@ void NWNX_SQL_PreparedObjectFull(int position, object value)
     NWNX_CallFunction("NWNX_SQL", "PREPARED_OBJECT_FULL");
 }
 
-object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0)
+object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0)
 {
+    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", z);
+    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", y);
+    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", x);
+    NWNX_PushArgumentObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", owner);
     NWNX_PushArgumentInt("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", column);
     NWNX_CallFunction("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
     return NWNX_GetReturnValueObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");

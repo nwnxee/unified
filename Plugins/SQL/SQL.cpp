@@ -206,6 +206,10 @@ Events::ArgumentStack SQL::OnPreparedObjectFull(Events::ArgumentStack&& args)
 Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& args)
 {
     const auto column = static_cast<size_t>(Events::ExtractArgument<int32_t>(args));
+    const auto owner = Events::ExtractArgument<API::Types::ObjectID>(args);
+    const auto x = Events::ExtractArgument<float>(args);
+    const auto y = Events::ExtractArgument<float>(args);
+    const auto z = Events::ExtractArgument<float>(args);
 
     if (column >= m_activeRow.size())
     {
@@ -218,6 +222,15 @@ Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& a
     {
         retval = static_cast<API::Types::ObjectID>(pObject->m_idSelf);
         assert(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
+
+        if (pObject->m_nObjectType == API::Constants::OBJECT_TYPE_ITEM)
+        {
+            API::CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
+            if (!AcquireDeserializedItem(pObject, pOwner, x, y, z))
+            {
+                GetServices()->m_log->Warning("Failed to 'acquire' deserialized item %x", retval);
+            }
+        }
     }
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, retval);

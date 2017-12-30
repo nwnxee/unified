@@ -57,7 +57,7 @@ void main()
             int n = StringToInt(NWNX_SQL_ReadDataInActiveRow(0));
             report("ReadInt", n == 42);
             float f = StringToFloat(NWNX_SQL_ReadDataInActiveRow(1));
-            report("ReadFloat", fabs(f - 42.0) > 0.01);
+            report("ReadFloat", fabs(f - 0.42) < 0.01);
             string s = NWNX_SQL_ReadDataInActiveRow(2);
             report("ReadString", s == "FourtyTwooo");
 
@@ -70,6 +70,52 @@ void main()
             // Alternatively:
             // object o3 = NWNX_Object_Deserialize(NWNX_SQL_ReadDataInActiveRow(4));
         }
+    }
+
+    object oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_chestburd", GetStartingLocation());
+    object oItem = CreateObject(OBJECT_TYPE_ITEM, "x0_it_mring013", GetStartingLocation());
+    if (!GetIsObjectValid(oPlc) || !GetIsObjectValid(oItem))
+    {
+        WriteTimestampedLogEntry("NWNX_SQL test: Failed to create objects..");
+    }
+    else
+    {
+        object oTmp = GetFirstItemInInventory(oPlc);
+        while (GetIsObjectValid(oTmp))
+        {
+            WriteTimestampedLogEntry("NWNX_SQL Destroying auto created object " + GetTag(oTmp));
+            DestroyObject(oTmp);
+            oTmp = GetNextItemInInventory(oPlc);
+        }
+
+        NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,?)");
+        NWNX_SQL_PreparedObjectFull(0, oItem);
+        b = NWNX_SQL_ExecutePreparedQuery();
+        report("Insert item full", b);
+
+        b = NWNX_SQL_ExecuteQuery("SELECT colObj FROM sql_test WHERE colInt=1337;");
+        report("Select item", b);
+
+        if (NWNX_SQL_ReadyToReadNextRow())
+        {
+            NWNX_SQL_ReadNextRow();
+
+            object oItem2 = NWNX_SQL_ReadFullObjectInActiveRow(0, oPlc);
+            report("ReadFullObject Item", GetIsObjectValid(oItem2));
+            report("Deserialized to placeable's inventory", oItem2 == GetFirstItemInInventory(oPlc));
+            report("Deserialized to placeable's inventory - possessor", GetItemPossessor(oItem2) == oPlc);
+
+            object oItem3 = NWNX_SQL_ReadFullObjectInActiveRow(0, GetArea(oPlc));
+            report("Deserialized to area", GetArea(oItem3) == GetArea(oPlc));
+
+            object oItem4 = NWNX_SQL_ReadFullObjectInActiveRow(0, o);
+            report("Deserialized to creature's inventory - possessor", GetItemPossessor(oItem4) == o);
+        }
+        else
+        {
+            WriteTimestampedLogEntry("NWNX_SQL not ready to read item");
+        }
+
     }
 
     b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
