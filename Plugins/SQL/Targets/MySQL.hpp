@@ -21,7 +21,7 @@ public:
     virtual void PrepareInt(int32_t position, int32_t value) override;
     virtual void PrepareFloat(int32_t position, float value) override;
     virtual void PrepareString(int32_t position, const std::string& value) override;
-    virtual void GetAffectedRows() override;
+    virtual int  GetAffectedRows() override;
 
 
 private:

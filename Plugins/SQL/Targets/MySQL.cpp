@@ -118,7 +118,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
             return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
         }
         // Statement returned no rows (INSERT, UPDATE, DELETE, etc.)
-        affectedRows = mysql_affected_rows(&m_mysql)
+        affectedRows = mysql_affected_rows(&m_mysql);
         mysql_stmt_close(m_stmt);
         return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
     }

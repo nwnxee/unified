@@ -1,5 +1,6 @@
 #include "SQL.hpp"
 #include "Targets/MySQL.hpp"
+#include "Targets/PostgreSQL.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Log/Log.hpp"
 #include "Services/Metrics/Metrics.hpp"
@@ -65,6 +66,8 @@ SQL::SQL(const Plugin::CreateParams& params)
 
     std::string type = GetServices()->m_config->Get<std::string>("TYPE", "MYSQL");
     std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
+
+    GetServices()->m_log->Info("Connecting to type %s", type);
 
     if (type == "MYSQL")
     {
@@ -237,6 +240,7 @@ Events::ArgumentStack SQL::OnGetAffectedRows(Events::ArgumentStack&&)
 {
 	Events::ArgumentStack stack;
 	Events::InsertArgument(stack, m_target->GetAffectedRows());
+	return stack;
 }
 
 }
