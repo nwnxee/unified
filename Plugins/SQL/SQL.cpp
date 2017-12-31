@@ -9,6 +9,7 @@
 #include "API/Constants.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CNWSItem.hpp" // Needed for static_cast from CGameObject
 #include <algorithm>
 #include <chrono>
 
@@ -226,7 +227,7 @@ Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& a
         if (pObject->m_nObjectType == API::Constants::OBJECT_TYPE_ITEM)
         {
             API::CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
-            if (!AcquireDeserializedItem(pObject, pOwner, x, y, z))
+            if (!AcquireDeserializedItem(static_cast<API::CNWSItem*>(pObject), pOwner, x, y, z))
             {
                 GetServices()->m_log->Warning("Failed to 'acquire' deserialized item %x", retval);
             }

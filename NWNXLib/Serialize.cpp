@@ -201,13 +201,10 @@ API::CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
     return DeserializeGameObject(base64_decode(serializedB64));
 }
 
-bool AcquireDeserializedItem(API::CGameObject *pItemAsGameObject, API::CGameObject *pOwner, float x, float y, float z)
+bool AcquireDeserializedItem(API::CNWSItem *pItem, API::CGameObject *pOwner, float x, float y, float z)
 {
-    if (!pOwner || !pItemAsGameObject)
+    if (!pOwner || !pItem)
         return false;
-
-    // HACK - This cast doesn't work in SQL.cpp for some reason...
-    auto pItem = static_cast<API::CNWSItem*>(pItemAsGameObject);
 
     using namespace API::Constants;
     switch (pOwner->m_nObjectType)
