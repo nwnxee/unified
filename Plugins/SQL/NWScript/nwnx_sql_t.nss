@@ -9,17 +9,10 @@ void report(string func, int bSuccess)
     else
         WriteTimestampedLogEntry("NWNX_SQL: " + func + "() failed");
 }
-
-void cleanup() {
-    NWNX_SQL_PrepareQuery("DROP TABLE sql_test");
-    NWNX_SQL_ExecuteQuery();
-}
-
 void main()
 {
     WriteTimestampedLogEntry("NWNX_SQL unit test begin..");
 
-    /* Caution.. this create table statement is specific to MySQL and will fail in other DB systems */
     string sCreate = "CREATE TABLE sql_test (" +
                         "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
                         "colObjId INT, colObj TEXT(1000000) );";
@@ -38,37 +31,33 @@ void main()
     int b = NWNX_SQL_PrepareQuery(sCreate);
     report("PrepareQuery", b);
 
-    b = NWNX_SQL_ExecuteQuery();
-    report("ExecuteQuery", b);
+    b = NWNX_SQL_ExecutePreparedQuery();
+    report("ExecutePreparedQuery", b);
 
     object o = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
     if (!GetIsObjectValid(o))
     {
         WriteTimestampedLogEntry("NWNX_SQL test: Failed to create creature");
-        cleanup();
         return;
     }
 
     b = NWNX_SQL_PrepareQuery(sInsert);
     report("Complex PrepareQuery", b);
 
-    NWNX_SQL_PreparedInt(1, 42);
-    NWNX_SQL_PreparedFloat(2, 0.42);
-    NWNX_SQL_PreparedString(3, "FourtyTwooo");
-    NWNX_SQL_PreparedObjectId(4, o);
-    NWNX_SQL_PreparedObjectFull(5, o);
+    NWNX_SQL_PreparedInt(0, 42);
+    NWNX_SQL_PreparedFloat(1, 0.42);
+    NWNX_SQL_PreparedString(2, "FourtyTwooo");
+    NWNX_SQL_PreparedObjectId(3, o);
+    NWNX_SQL_PreparedObjectFull(4, o);
 
 
-    b = NWNX_SQL_ExecuteQuery();
-    report("Complex ExecuteQuery", b);
-    
-    b = NWNX_SQL_GetAffectedRows();
-    report("Affected Rows", b == 1);
+    b = NWNX_SQL_ExecutePreparedQuery();
+    report("Complex ExecutePreparedQuery", b);
 
     b = NWNX_SQL_PrepareQuery("SELECT * FROM sql_test;");
     report("Select PrepareQuery", b);
-    b = NWNX_SQL_ExecuteQuery();
-    report("Select ExecuteQuery", b);
+    b = NWNX_SQL_ExecutePreparedQuery();
+    report("Select ExecutePreparedQuery", b);
 
     if (b)
     {
@@ -93,6 +82,53 @@ void main()
         }
     }
 
-    cleanup();
+    object oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_chestburd", GetStartingLocation());
+    object oItem = CreateObject(OBJECT_TYPE_ITEM, "x0_it_mring013", GetStartingLocation());
+    if (!GetIsObjectValid(oPlc) || !GetIsObjectValid(oItem))
+    {
+        WriteTimestampedLogEntry("NWNX_SQL test: Failed to create objects..");
+    }
+    else
+    {
+        object oTmp = GetFirstItemInInventory(oPlc);
+        while (GetIsObjectValid(oTmp))
+        {
+            WriteTimestampedLogEntry("NWNX_SQL Destroying auto created object " + GetTag(oTmp));
+            DestroyObject(oTmp);
+            oTmp = GetNextItemInInventory(oPlc);
+        }
+
+        NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,?)");
+        NWNX_SQL_PreparedObjectFull(0, oItem);
+        b = NWNX_SQL_ExecutePreparedQuery();
+        report("Insert item full", b);
+
+        b = NWNX_SQL_ExecuteQuery("SELECT colObj FROM sql_test WHERE colInt=1337;");
+        report("Select item", b);
+
+        if (NWNX_SQL_ReadyToReadNextRow())
+        {
+            NWNX_SQL_ReadNextRow();
+
+            object oItem2 = NWNX_SQL_ReadFullObjectInActiveRow(0, oPlc);
+            report("ReadFullObject Item", GetIsObjectValid(oItem2));
+            report("Deserialized to placeable's inventory", oItem2 == GetFirstItemInInventory(oPlc));
+            report("Deserialized to placeable's inventory - possessor", GetItemPossessor(oItem2) == oPlc);
+
+            object oItem3 = NWNX_SQL_ReadFullObjectInActiveRow(0, GetArea(oPlc));
+            report("Deserialized to area", GetArea(oItem3) == GetArea(oPlc));
+
+            object oItem4 = NWNX_SQL_ReadFullObjectInActiveRow(0, o);
+            report("Deserialized to creature's inventory - possessor", GetItemPossessor(oItem4) == o);
+        }
+        else
+        {
+            WriteTimestampedLogEntry("NWNX_SQL not ready to read item");
+        }
+
+    }
+
+    b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
+    report("ExecuteQuery", b);
     WriteTimestampedLogEntry("NWNX_SQL unit test end.");
 }

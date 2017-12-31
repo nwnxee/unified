@@ -10,6 +10,7 @@
 #include "API/Constants.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CNWSItem.hpp" // Needed for static_cast from CGameObject
 #include <algorithm>
 #include <chrono>
 
@@ -43,18 +44,17 @@ namespace SQL {
 SQL::SQL(const Plugin::CreateParams& params)
     : Plugin(params), m_nextQueryId(0), m_queryMetrics(false)
 {
-    GetServices()->m_events->RegisterEvent("PREPARE_QUERY",           std::bind(&SQL::OnPrepareQuery,        this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("EXECUTE_QUERY",           std::bind(&SQL::OnExecuteQuery,        this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("READY_TO_READ_NEXT_ROW",  std::bind(&SQL::OnReadyToReadNextRow,  this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("READ_NEXT_ROW",           std::bind(&SQL::OnReadNextRow,         this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARE_QUERY", std::bind(&SQL::OnPrepareQuery, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("EXECUTE_PREPARED_QUERY", std::bind(&SQL::OnExecutePreparedQuery, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("READY_TO_READ_NEXT_ROW", std::bind(&SQL::OnReadyToReadNextRow, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("READ_NEXT_ROW", std::bind(&SQL::OnReadNextRow, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_DATA_IN_ACTIVE_ROW", std::bind(&SQL::OnReadDataInActiveRow, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_INT",            std::bind(&SQL::OnPreparedInt,         this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_STRING",         std::bind(&SQL::OnPreparedString,      this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_FLOAT",          std::bind(&SQL::OnPreparedFloat,       this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_ID",      std::bind(&SQL::OnPreparedObjectId,    this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_FULL",    std::bind(&SQL::OnPreparedObjectFull,  this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_INT", std::bind(&SQL::OnPreparedInt, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_STRING", std::bind(&SQL::OnPreparedString, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_FLOAT", std::bind(&SQL::OnPreparedFloat, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_ID", std::bind(&SQL::OnPreparedObjectId, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_FULL", std::bind(&SQL::OnPreparedObjectFull, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_FULL_OBJECT_IN_ACTIVE_ROW", std::bind(&SQL::OnReadFullObjectInActiveRow, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_AFFECTED_ROWS",       std::bind(&SQL::OnGetAffectedRows,     this, std::placeholders::_1));
 
     m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
 
@@ -68,7 +68,6 @@ SQL::SQL(const Plugin::CreateParams& params)
     std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
 
     GetServices()->m_log->Info("Connecting to type %s", type.c_str());
-
     if (type == "MYSQL")
     {
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
@@ -83,7 +82,6 @@ SQL::SQL(const Plugin::CreateParams& params)
 #else
         throw std::runtime_error("Targeting PostgreSQL, but no PostgreSQL support built in.");
 #endif
-
     }
     else
     {
@@ -108,7 +106,7 @@ Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
     return stack;
 }
 
-Events::ArgumentStack SQL::OnExecuteQuery(Events::ArgumentStack&&)
+Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
 {
     const int32_t queryId = ++m_nextQueryId;
 
@@ -218,6 +216,10 @@ Events::ArgumentStack SQL::OnPreparedObjectFull(Events::ArgumentStack&& args)
 Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& args)
 {
     const auto column = static_cast<size_t>(Events::ExtractArgument<int32_t>(args));
+    const auto owner = Events::ExtractArgument<API::Types::ObjectID>(args);
+    const auto x = Events::ExtractArgument<float>(args);
+    const auto y = Events::ExtractArgument<float>(args);
+    const auto z = Events::ExtractArgument<float>(args);
 
     if (column >= m_activeRow.size())
     {
@@ -230,17 +232,19 @@ Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& a
     {
         retval = static_cast<API::Types::ObjectID>(pObject->m_idSelf);
         assert(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
+        if (pObject->m_nObjectType == API::Constants::OBJECT_TYPE_ITEM)
+        {
+            API::CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
+            if (!AcquireDeserializedItem(static_cast<API::CNWSItem*>(pObject), pOwner, x, y, z))
+            {
+                GetServices()->m_log->Warning("Failed to 'acquire' deserialized item %x", retval);
+            }
+        }
     }
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, retval);
     return stack;
 }
 
-Events::ArgumentStack SQL::OnGetAffectedRows(Events::ArgumentStack&&)
-{
-	Events::ArgumentStack stack;
-	Events::InsertArgument(stack, m_target->GetAffectedRows());
-	return stack;
-}
 
 }

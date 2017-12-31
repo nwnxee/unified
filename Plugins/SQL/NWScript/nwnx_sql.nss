@@ -6,11 +6,11 @@ int NWNX_SQL_PrepareQuery(string query);
 
 // Executes a query which has been prepared.
 // Returns the ID of this query if successful, else FALSE.
-int NWNX_SQL_ExecuteQuery();
+int NWNX_SQL_ExecutePreparedQuery();
 
-// Prepares and executes a query that has no parameters
+// Directly execute an SQL query. Clears previously prepared query states.
 // Returns the ID of this query if successful, else FALSE.
-int NWNX_SQL_ExecuteDirect(string query);
+int NWNX_SQL_ExecuteQuery(string query);
 
 // Returns TRUE if one or more rows are ready, FALSE otherwise.
 int NWNX_SQL_ReadyToReadNextRow();
@@ -36,8 +36,10 @@ void NWNX_SQL_PreparedObjectFull(int position, object value);
 
 // Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
 // The object will be deserialized and created in the game. New object ID is returned.
-// The object is restored at the old location. Move it manually to the desired location/inventory.
-object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0);
+// If the deserialized object is an item, owner object must be specified:
+//    - If the owner is a placeable, creature or container, the item will be created in its inventory
+//    - If the owner is an area, the item will be created on the ground at Vector(x,y,z);
+object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0);
 
 // Return number of rows affected by SQL statement (for non-row-based statements like INSERT, UPDATE, DELETE, etc.);
 // Returns -1 if the quere was not non-row-based.
@@ -50,18 +52,18 @@ int NWNX_SQL_PrepareQuery(string query)
     return NWNX_GetReturnValueInt("NWNX_SQL", "PREPARE_QUERY");
 }
 
-int NWNX_SQL_ExecuteQuery()
+int NWNX_SQL_ExecutePreparedQuery()
 {
-    NWNX_CallFunction("NWNX_SQL", "EXECUTE_QUERY");
-    return NWNX_GetReturnValueInt("NWNX_SQL", "EXECUTE_QUERY");
+    NWNX_CallFunction("NWNX_SQL", "EXECUTE_PREPARED_QUERY");
+    return NWNX_GetReturnValueInt("NWNX_SQL", "EXECUTE_PREPARED_QUERY");
 }
+int NWNX_SQL_ExecuteQuery(string query)
+{
+    // Note: the implementation might change as support for more SQL targets arrives.
+    if (NWNX_SQL_PrepareQuery(query))
+        return NWNX_SQL_ExecutePreparedQuery();
 
-int NWNX_SQL_ExecuteDirect(string query) {
-    int q = NWNX_SQL_PrepareQuery(string query)
-    if (q) {
-        q = NWNX_SQL_ExecuteQuery();
-    }
-    return q;
+    return FALSE;
 }
 
 int NWNX_SQL_ReadyToReadNextRow()
@@ -117,8 +119,12 @@ void NWNX_SQL_PreparedObjectFull(int position, object value)
     NWNX_CallFunction("NWNX_SQL", "PREPARED_OBJECT_FULL");
 }
 
-object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0)
+object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0)
 {
+    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", z);
+    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", y);
+    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", x);
+    NWNX_PushArgumentObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", owner);
     NWNX_PushArgumentInt("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", column);
     NWNX_CallFunction("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
     return NWNX_GetReturnValueObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");

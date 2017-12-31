@@ -9,6 +9,7 @@
 #include "API/CNWSDoor.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSStore.hpp"
+#include "API/CNWSArea.hpp"
 #include "API/Constants.hpp"
 #include "API/CResGFF.hpp"
 #include "API/CResStruct.hpp"
@@ -132,6 +133,9 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     API::CResGFF    resGff;
     API::CResStruct resStruct;
 
+    if (serialized.size() < 14*4) // GFF header size
+        return nullptr;
+
     if (!resGff.GetDataFromPointer((void*)serialized.data(), serialized.size()))
         return nullptr;
 
@@ -196,4 +200,43 @@ API::CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
 {
     return DeserializeGameObject(base64_decode(serializedB64));
 }
+
+bool AcquireDeserializedItem(API::CNWSItem *pItem, API::CGameObject *pOwner, float x, float y, float z)
+{
+    if (!pOwner || !pItem)
+        return false;
+
+    using namespace API::Constants;
+    switch (pOwner->m_nObjectType)
+    {
+        case OBJECT_TYPE_CREATURE:
+        {
+            auto pCreature = static_cast<API::CNWSCreature*>(pOwner);
+            return pCreature->AcquireItem(&pItem, OBJECT_INVALID, OBJECT_INVALID, 0xFF, 0xFF, true, true);
+        }
+        case OBJECT_TYPE_PLACEABLE:
+        {
+            auto pPlaceable = static_cast<API::CNWSPlaceable*>(pOwner);
+            return pPlaceable->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
+        }
+        case OBJECT_TYPE_STORE:
+        {
+            auto pStore = static_cast<API::CNWSStore*>(pOwner);
+            return pStore->AcquireItem(pItem, true, 0xFF, 0xFF);
+        }
+        case OBJECT_TYPE_ITEM:
+        {
+            auto pItemOwner = static_cast<API::CNWSItem*>(pOwner);
+            return pItemOwner->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
+        }
+        case OBJECT_TYPE_AREA:
+        {
+            pItem->AddToArea(static_cast<API::CNWSArea*>(pOwner), x, y, z, true);
+            return true;
+        }
+    }
+    return false;
+}
+
+
 } // NWNXLib
