@@ -10,7 +10,7 @@ namespace SQL {
 class PostgreSQL final : public ITarget
 {
 public:
-	PostgreSQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log);
+    PostgreSQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log);
     ~PostgreSQL();
 
     virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) override;

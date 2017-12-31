@@ -55,7 +55,7 @@ bool MySQL::PrepareQuery(const Query& query)
 
 NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 {
-	affectedRows = -1;
+    affectedRows = -1;
 
     bool success = !mysql_stmt_bind_param(m_stmt, m_params.data());
     if (!success)
@@ -172,7 +172,7 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
 }
 
 int MySQL::GetAffectedRows() {
-	return affectedRows;
+    return affectedRows;
 }
 
 }

@@ -23,7 +23,7 @@ PostgreSQL::~PostgreSQL()
 
 void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 {
-	const std::string host = "host=" + config->Get<std::string>("HOST", "localhost");
+    const std::string host = "host=" + config->Get<std::string>("HOST", "localhost");
     const std::string user = "user=" + config->Require<std::string>("USERNAME");
     const std::string pass = "password=" + config->Require<std::string>("PASSWORD");
 
@@ -59,7 +59,7 @@ bool PostgreSQL::IsConnected()
 
 bool PostgreSQL::PrepareQuery(const Query& query)
 {
-	m_log->Info("Preparing query %s\n", query.c_str());
+    m_log->Info("Preparing query %s\n", query.c_str());
 
     affectedRows = -1;
 
@@ -97,19 +97,19 @@ bool PostgreSQL::PrepareQuery(const Query& query)
 NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 {
 
-	affectedRows = -1;
+    affectedRows = -1;
 
-	char *paramValues[m_params.size()];
+    char *paramValues[m_params.size()];
 
-	if (paramCount > 0) {
-		const unsigned int sz = m_params.size();
+    if (paramCount > 0) {
+        const unsigned int sz = m_params.size();
 
-		//std::array<std::string> temp_params = new std::array<std::string>(sz);
-		for (unsigned int i=0; i<sz; i++) {
-			paramValues[i] = (char *)malloc(m_params[i].size()+1);
-			strcpy(paramValues[i], m_params[i].c_str());
-		}
-	}
+        //std::array<std::string> temp_params = new std::array<std::string>(sz);
+        for (unsigned int i=0; i<sz; i++) {
+            paramValues[i] = (char *)malloc(m_params[i].size()+1);
+            strcpy(paramValues[i], m_params[i].c_str());
+        }
+    }
 
     PGresult *res = PQexecPrepared(
         m_conn,                                         // connection
@@ -180,22 +180,19 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
-    m_params[--position] = std::to_string(value);
-    std::cout << "Prepared Int = " << m_params[position] << std::endl;
+    m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
-	m_params[--position] = std::to_string(value);
-    std::cout << "Prepared Float = " << m_params[position] << std::endl;
+    m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
-	m_params[--position] = value;
-    std::cout << "Prepared String = " << m_params[position] << std::endl;
+    m_params[position] = value;
 }
 
 int PostgreSQL::GetAffectedRows() {
-	return affectedRows;
+    return affectedRows;
 }
 
 }

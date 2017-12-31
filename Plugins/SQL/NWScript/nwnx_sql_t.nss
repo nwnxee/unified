@@ -9,10 +9,17 @@ void report(string func, int bSuccess)
     else
         WriteTimestampedLogEntry("NWNX_SQL: " + func + "() failed");
 }
+
+void cleanup() {
+    int b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
+    report("ExecuteQuery", b);
+}
+
 void main()
 {
     WriteTimestampedLogEntry("NWNX_SQL unit test begin..");
 
+    /* MySQL version */
     string sCreate = "CREATE TABLE sql_test (" +
                         "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
                         "colObjId INT, colObj TEXT(1000000) );";
@@ -25,6 +32,8 @@ void main()
                         "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
                         "colObjId INT, colObj TEXT );";
 
+    // Even though we're using 0 based parameter numbers, PostgreSQL requires the parameter numbers in the 
+    // actual SQL string to be 1 based (e.g. $1, $2...  not $0, $1... )
     string sInsert = "INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES($1, $2, $3, $4, $5)";
     */
 
@@ -38,6 +47,7 @@ void main()
     if (!GetIsObjectValid(o))
     {
         WriteTimestampedLogEntry("NWNX_SQL test: Failed to create creature");
+        cleanup();
         return;
     }
 
@@ -98,12 +108,17 @@ void main()
             oTmp = GetNextItemInInventory(oPlc);
         }
 
+        // Insert statement for MySQL
         NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,?)");
+        
+        // Insert statement for PostgreSQL
+        // NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,$1)");        
+        
         NWNX_SQL_PreparedObjectFull(0, oItem);
         b = NWNX_SQL_ExecutePreparedQuery();
         report("Insert item full", b);
 
-        b = NWNX_SQL_ExecuteQuery("SELECT colObj FROM sql_test WHERE colInt=1337;");
+        b = NWNX_SQL_ExecuteQuery("SELECT colObj FROM sql_test WHERE colInt=1337");
         report("Select item", b);
 
         if (NWNX_SQL_ReadyToReadNextRow())
@@ -128,7 +143,6 @@ void main()
 
     }
 
-    b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
-    report("ExecuteQuery", b);
+    cleanup();
     WriteTimestampedLogEntry("NWNX_SQL unit test end.");
 }
