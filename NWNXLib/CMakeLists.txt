@@ -16,7 +16,7 @@ macro(nwnxlib_add)
     endif()
 endmacro()
 
-nwnxlib_add("Plugin.cpp")
+nwnxlib_add("Plugin.cpp" "Serialize.cpp")
 
 add_subdirectory(API)
 add_subdirectory(External)

@@ -15,10 +15,16 @@ public:
     virtual ~SQL();
 
     NWNXLib::Services::Events::ArgumentStack OnPrepareQuery(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnExecuteQuery(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnExecutePreparedQuery(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnReadyToReadNextRow(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnReadNextRow(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnReadDataInActiveRow(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnPreparedInt(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnPreparedString(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnPreparedFloat(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnPreparedObjectId(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnPreparedObjectFull(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnReadFullObjectInActiveRow(NWNXLib::Services::Events::ArgumentStack&& args);
 
 private:
     std::unique_ptr<ITarget> m_target;
@@ -30,3 +36,4 @@ private:
 };
 
 }
+

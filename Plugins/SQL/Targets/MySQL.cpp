@@ -4,6 +4,8 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Log/Log.hpp"
 
+#include <string.h>
+
 namespace SQL {
 
 MySQL::MySQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log)
@@ -35,45 +37,85 @@ bool MySQL::IsConnected()
     return mysql_query(&m_mysql, "SELECT 1") == 0;
 }
 
-NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery(const Query& query)
+bool MySQL::PrepareQuery(const Query& query)
 {
-    bool success = mysql_real_query(&m_mysql, query.c_str(), query.size()) == 0;
+    m_stmt = mysql_stmt_init(&m_mysql);
+    if (!m_stmt)
+        return false;
+
+    bool success = !mysql_stmt_prepare(m_stmt, query.c_str(), query.size());
+    if (success)
+    {
+        size_t paramCount = mysql_stmt_param_count(m_stmt);
+        m_params.resize(paramCount);
+        m_paramValues.resize(paramCount);
+    }
+    return success;
+}
+
+NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
+{
+    bool success = !mysql_stmt_bind_param(m_stmt, m_params.data());
+    if (!success)
+    {
+        m_log->Warning("Failed to bind params");
+        return NWNXLib::Maybe<ResultSet>(); // Failed query.
+    }
+
+    success = !mysql_stmt_execute(m_stmt);
+
+    // No longer need these
+    m_params.clear();
+    m_paramValues.clear();
 
     if (success)
     {
-        MYSQL_RES* mysqlResult = mysql_store_result(&m_mysql);
-        success = mysqlResult;
+        MYSQL_RES* mysqlResult = mysql_stmt_result_metadata(m_stmt);
 
-        if (success)
+        if (mysqlResult)
         {
             ResultSet results;
-            const size_t columns = mysql_num_fields(mysqlResult);
+            const unsigned columns = mysql_num_fields(mysqlResult);
+            mysql_stmt_store_result(m_stmt);
 
+            std::vector<char> buffer(64);
             while (true)
             {
                 ResultRow row;
                 row.reserve(columns);
 
-                MYSQL_ROW sqlRow = mysql_fetch_row(mysqlResult);
-                unsigned long* sqlLengths = mysql_fetch_lengths(mysqlResult);
+                MYSQL_BIND binds[columns];
+                memset(binds, 0, sizeof(binds));
+                unsigned long lengths[columns];
+                for (unsigned i = 0; i < columns; i++)
+                    binds[i].length = &lengths[i];
+                mysql_stmt_bind_result(m_stmt, binds);
 
-                if (!sqlRow || !sqlLengths)
-                {
+                int fetchResult = mysql_stmt_fetch(m_stmt);
+                if (fetchResult == MYSQL_NO_DATA) {
+                    break;
+                }
+                else if (fetchResult == 1) {
+                    m_log->Warning("Error executing mysql_stmt_fetch - error: '%s'", mysql_error(&m_mysql));
                     break;
                 }
 
-                for (size_t i = 0; i < columns; ++i)
+                for (unsigned i = 0; i < columns; i++)
                 {
-                    row.emplace_back(Result(sqlRow[i], sqlLengths[i]));
+                    buffer.reserve(lengths[i]);
+                    binds[i].buffer = buffer.data();
+                    binds[i].buffer_length = buffer.capacity();
+                    mysql_stmt_fetch_column(m_stmt, &binds[i], i, 0);
+                    row.emplace_back(Result(buffer.data(), lengths[i]));
                 }
-
                 results.push(row);
             }
-
             mysql_free_result(mysqlResult);
+            mysql_stmt_free_result(m_stmt);
+            mysql_stmt_close(m_stmt);
             return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
         }
-
+        mysql_stmt_close(m_stmt);
         return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
 
@@ -87,10 +129,42 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery(const Query& query)
             error = "Undefined/unknown";
         }
 
-        m_log->Warning("Query '%s' failed due to error '%s'", query.c_str(), error);
+        m_log->Warning("Query failed due to error '%s'", error);
     }
 
     return NWNXLib::Maybe<ResultSet>(); // Failed query.
+}
+
+void MySQL::PrepareInt(int32_t position, int32_t value)
+{
+    MYSQL_BIND *pBind = &m_params[position];
+    memset(pBind, 0, sizeof(*pBind));
+
+    m_paramValues[position].n = value;
+
+    pBind->buffer_type = MYSQL_TYPE_LONG;
+    pBind->buffer = &m_paramValues[position].n;
+}
+void MySQL::PrepareFloat(int32_t position, float value)
+{
+    MYSQL_BIND *pBind = &m_params[position];
+    memset(pBind, 0, sizeof(*pBind));
+
+    m_paramValues[position].f = value;
+
+    pBind->buffer_type = MYSQL_TYPE_FLOAT;
+    pBind->buffer = &m_paramValues[position].f;
+}
+void MySQL::PrepareString(int32_t position, const std::string& value)
+{
+    MYSQL_BIND *pBind = &m_params[position];
+    memset(pBind, 0, sizeof(*pBind));
+
+    m_paramValues[position].s = value.c_str();
+
+    pBind->buffer_type = MYSQL_TYPE_STRING;
+    pBind->buffer = (void*)m_paramValues[position].s.c_str();
+    pBind->buffer_length = m_paramValues[position].s.size();
 }
 
 }

@@ -24,6 +24,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
+#include "Serialize.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -68,6 +69,8 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetMaxHitPoints);
     REGISTER(GetPortrait);
     REGISTER(SetPortrait);
+    REGISTER(Serialize);
+    REGISTER(Deserialize);
 
 #undef REGISTER
 }
@@ -333,6 +336,36 @@ ArgumentStack Object::SetPortrait(ArgumentStack&& args)
             pObject->SetPortrait(resref);
     }
     */
+    return stack;
+}
+
+ArgumentStack Object::Serialize(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retval = "";
+    if (CGameObject *pObject = static_cast<CGameObject*>(object(args)))
+    {
+        retval = SerializeGameObjectB64(pObject);
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+// NOTE: Deserialize does not receive an object argument.
+ArgumentStack Object::Deserialize(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    Types::ObjectID retval = Constants::OBJECT_INVALID;
+
+    const auto serialized = Services::Events::ExtractArgument<std::string>(args);
+
+    if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
+    {
+        retval = static_cast<Types::ObjectID>(pObject->m_idSelf);
+        assert(Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
+    }
+
+    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 

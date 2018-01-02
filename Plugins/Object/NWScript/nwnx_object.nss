@@ -73,6 +73,15 @@ string NWNX_Object_GetPortrait(object obj);
 // than 15 characters long.
 void NWNX_Object_SetPortrait(object obj, string portrait);
 
+// Serialize the full object (including locals, inventory, etc) to base64 string
+// Only works on Creatures and Items currently.
+string NWNX_Object_Serialize(object obj);
+
+// Deserialize the object. The object will be created outside of the world and
+// needs to be manually positioned at a location/inventory.
+object NWNX_Object_Deserialize(string serialized);
+
+
 const string NWNX_Object = "NWNX_Object";
 
 
@@ -180,4 +189,25 @@ void NWNX_Object_SetPortrait(object creature, string portrait)
     NWNX_PushArgumentObject(NWNX_Object, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+
+string NWNX_Object_Serialize(object obj)
+{
+    string sFunc = "Serialize";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+object NWNX_Object_Deserialize(string serialized)
+{
+    string sFunc = "Deserialize";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, serialized);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
 }

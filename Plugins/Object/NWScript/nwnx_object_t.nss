@@ -59,5 +59,16 @@ void main()
     NWNX_Object_SetPortrait(o, "po_Badger_");
     report("SetPortrait", NWNX_Object_GetPortrait(o) == "po_Badger_");
 
+    string sSerialized = NWNX_Object_Serialize(o);
+    report("Serialize", sSerialized != "");
+    WriteTimestampedLogEntry("Serialized chicken: " + sSerialized);
+
+    object oDeserialized = NWNX_Object_Deserialize(sSerialized);
+    report("Deserialize", GetIsObjectValid(oDeserialized));
+
+    WriteTimestampedLogEntry("Deserialized " + GetName(oDeserialized) + " in " + GetName(GetArea(oDeserialized)));
+
+
+
     WriteTimestampedLogEntry("NWNX_Object unit test end.");
 }
