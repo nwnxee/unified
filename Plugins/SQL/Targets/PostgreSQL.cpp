@@ -106,7 +106,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 
         //std::array<std::string> temp_params = new std::array<std::string>(sz);
         for (unsigned int i=0; i<sz; i++) {
-            paramValues[i] = (char *)malloc(m_params[i].size()+1);
+            paramValues[i] = new char[m_params[i].size()+1];
             strcpy(paramValues[i], m_params[i].c_str());
         }
     }
@@ -122,6 +122,10 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 
 
     // done with parameters.
+    for (unsigned i = 0; i < m_params.size(); i++)
+    {
+        delete [] paramValues[i];
+    }
     m_params.clear();
 
     // Rows returned - collect and pass on
