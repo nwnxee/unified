@@ -25,8 +25,8 @@ public:
 private:
     NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> m_log;
     PGconn *m_conn;
-    int affectedRows = -1;
-    size_t paramCount = 0;
+    int m_affectedRows = -1;
+    size_t m_paramCount = 0;
     std::vector<std::string> m_params;
 };
 

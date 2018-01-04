@@ -28,7 +28,8 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
     const std::string pass = "password=" + config->Require<std::string>("PASSWORD");
 
     const NWNXLib::Maybe<std::string> DB = config->Get<std::string>("DATABASE");
-    if (DB) {
+    if (DB)
+    {
         m_log->Debug("DB set to %s", (*DB).c_str());
     }
     const std::string db   = DB ? "dbname=" + (*DB) : nullptr;
@@ -43,7 +44,8 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
     // Connect attempt
     m_conn = PQconnectdb(m_connectstring.c_str());
 
-    if (PQstatus(m_conn) != CONNECTION_OK) {
+    if (PQstatus(m_conn) != CONNECTION_OK)
+    {
         throw std::runtime_error("Error m_connecting to Postgres DB");
     }
 }
@@ -61,7 +63,7 @@ bool PostgreSQL::PrepareQuery(const Query& query)
 {
     m_log->Info("Preparing query %s\n", query.c_str());
 
-    affectedRows = -1;
+    m_affectedRows = -1;
 
     /* Determine the number of parameters in the query */
     std::regex words_regex("[^\\\\]\\$\\d+");
@@ -69,22 +71,24 @@ bool PostgreSQL::PrepareQuery(const Query& query)
         query.begin(), query.end(), words_regex);
     auto words_end = std::sregex_iterator();
 
-    paramCount = std::distance(words_begin, words_end);
+    m_paramCount = std::distance(words_begin, words_end);
 
-    m_params.resize(paramCount);
+    m_params.resize(m_paramCount);
 
-    PGresult *res = PQprepare(m_conn,    // connection
-                        "",              // statement name, can be blank
-                        query.c_str(),   // query string
-                        paramCount,      // param count
-                        NULL);           // param types (can be null to infer)
+    PGresult *res = PQprepare(m_conn,      // connection
+                        "",                // statement name, blank in this case.
+                        query.c_str(),     // query string
+                        m_paramCount,      // param count
+                        NULL);             // param types (can be null to infer)
 
-    if (res == NULL) {
+    if (res == NULL)
+    {
         m_log->Warning("Possible out of memory condition on DB server.");
         return false;
     }
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+    if (PQresultStatus(res) != PGRES_COMMAND_OK)
+    {
         PQclear(res);
         m_log->Warning("Query '%s' failed due to error '%s'", query.c_str(), PQresultErrorMessage(res));
 
@@ -97,28 +101,30 @@ bool PostgreSQL::PrepareQuery(const Query& query)
 NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 {
 
-    affectedRows = -1;
+    m_affectedRows = -1;
 
     char *paramValues[m_params.size()];
 
-    if (paramCount > 0) {
+    if (m_paramCount > 0)
+    {
         const unsigned int sz = m_params.size();
 
         //std::array<std::string> temp_params = new std::array<std::string>(sz);
-        for (unsigned int i=0; i<sz; i++) {
+        for (unsigned int i=0; i<sz; i++)
+        {
             paramValues[i] = new char[m_params[i].size()+1];
             strcpy(paramValues[i], m_params[i].c_str());
         }
     }
 
     PGresult *res = PQexecPrepared(
-        m_conn,                                         // connection
-        "",                                             // statement name (same as in the prepare above)
-        paramCount,                                     // paramCount from previous
-        (paramCount == 0) ? nullptr : paramValues,      // param data
-        NULL,                                           // param lengths - only for binary data
-        NULL,                                           // param formats - server will infer text
-        0);                                             // result format, 0=text, 1=binary
+        m_conn,                                           // connection
+        "",                                               // statement name (same as in the prepare above)
+        m_paramCount,                                     // m_paramCount from previous
+        (m_paramCount == 0) ? nullptr : paramValues,      // param data
+        NULL,                                             // param lengths - only for binary data
+        NULL,                                             // param formats - server will infer text
+        0);                                               // result format, 0=text, 1=binary
 
 
     // done with parameters.
@@ -157,7 +163,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
         const char *cnt = PQcmdTuples(res);
         if (*cnt != '\0')
         {
-            affectedRows = atoi(cnt);
+            m_affectedRows = atoi(cnt);
         }
         PQclear(res);
         return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
@@ -182,6 +188,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     return NWNXLib::Maybe<ResultSet>();
 }
 
+// Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
     m_params[position] = std::to_string(value);
@@ -196,7 +203,7 @@ void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 }
 
 int PostgreSQL::GetAffectedRows() {
-    return affectedRows;
+    return m_affectedRows;
 }
 
 }
