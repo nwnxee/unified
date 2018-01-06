@@ -6,16 +6,16 @@
 #>
 Param(
     # Clean build - remove Binaries and re-execute cmake
-    [switch]$FORCECLEAN = $false
+    [switch]$FORCECLEAN = $false,
     # Concurrent job count for the make command
-    [Int]$JOBS = 0
+    [parameter()][String]$JOBS = ""
 )
 
 if ($FORCECLEAN) {
     $CLEAN = "-c"
 }
 $MAKEJOBS = ""
-if ($JOBS > 0)
+if ($JOBS -ne "") {
     $MAKEJOBS = "-j " + $JOBS
 }
 
