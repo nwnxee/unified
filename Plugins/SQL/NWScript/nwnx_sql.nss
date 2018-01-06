@@ -41,6 +41,10 @@ void NWNX_SQL_PreparedObjectFull(int position, object value);
 //    - If the owner is an area, the item will be created on the ground at Vector(x,y,z);
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0);
 
+// Return number of rows affected by SQL statement (for non-row-based statements like INSERT, UPDATE, DELETE, etc.);
+// Returns -1 if the query was not non-row-based.
+int NWNX_SQL_GetAffectedRows();
+
 int NWNX_SQL_PrepareQuery(string query)
 {
     NWNX_PushArgumentString("NWNX_SQL", "PREPARE_QUERY", query);
@@ -62,7 +66,6 @@ int NWNX_SQL_ExecuteQuery(string query)
 
     return FALSE;
 }
-
 
 int NWNX_SQL_ReadyToReadNextRow()
 {
@@ -126,4 +129,10 @@ object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_
     NWNX_PushArgumentInt("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", column);
     NWNX_CallFunction("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
     return NWNX_GetReturnValueObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
+}
+
+int NWNX_SQL_GetAffectedRows() 
+{
+    NWNX_CallFunction("NWNX_SQL", "GET_AFFECTED_ROWS");
+    return NWNX_GetReturnValueInt("NWNX_SQL", "GET_AFFECTED_ROWS");
 }

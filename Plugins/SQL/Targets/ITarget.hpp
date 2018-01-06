@@ -25,7 +25,7 @@ struct ITarget
     virtual void PrepareInt(int32_t position, int32_t value) = 0;
     virtual void PrepareFloat(int32_t position, float value) = 0;
     virtual void PrepareString(int32_t position, const std::string& value) = 0;
-
+    virtual int  GetAffectedRows() = 0;
 
 };
 

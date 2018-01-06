@@ -55,6 +55,8 @@ bool MySQL::PrepareQuery(const Query& query)
 
 NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 {
+    affectedRows = -1;
+
     bool success = !mysql_stmt_bind_param(m_stmt, m_params.data());
     if (!success)
     {
@@ -115,6 +117,8 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
             mysql_stmt_close(m_stmt);
             return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
         }
+        // Statement returned no rows (INSERT, UPDATE, DELETE, etc.)
+        affectedRows = mysql_affected_rows(&m_mysql);
         mysql_stmt_close(m_stmt);
         return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
@@ -165,6 +169,11 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
     pBind->buffer_type = MYSQL_TYPE_STRING;
     pBind->buffer = (void*)m_paramValues[position].s.c_str();
     pBind->buffer_length = m_paramValues[position].s.size();
+}
+
+int MySQL::GetAffectedRows()
+{
+    return affectedRows;
 }
 
 }

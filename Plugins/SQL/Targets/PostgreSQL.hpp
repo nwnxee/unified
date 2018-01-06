@@ -1,18 +1,17 @@
 #pragma once
 
-#if defined(NWNX_SQL_MYSQL_SUPPORT)
+#if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
 
-#include "mysql/mysql.h"
-#include "mysql/errmsg.h"
+#include <libpq-fe.h>
 #include "Targets/ITarget.hpp"
 
 namespace SQL {
 
-class MySQL final : public ITarget
+class PostgreSQL final : public ITarget
 {
 public:
-    MySQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log);
-    ~MySQL();
+    PostgreSQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log);
+    ~PostgreSQL();
 
     virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) override;
     virtual bool IsConnected() override;
@@ -23,21 +22,15 @@ public:
     virtual void PrepareString(int32_t position, const std::string& value) override;
     virtual int  GetAffectedRows() override;
 
-
 private:
     NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> m_log;
-    MYSQL m_mysql;
-    MYSQL_STMT *m_stmt;
-    std::vector<MYSQL_BIND> m_params;
-
-    // No std::variant available, and C++ really doesn't like strings in unions.
-    struct Variant { float f; int32_t n; std::string s;
-        Variant() { s = ""; }
-    };
-    std::vector<Variant> m_paramValues;
-    int affectedRows;
+    PGconn *m_conn;
+    int m_affectedRows = -1;
+    size_t m_paramCount = 0;
+    std::vector<std::string> m_params;
 };
 
 }
 
 #endif
+
