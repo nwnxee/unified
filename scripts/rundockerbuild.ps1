@@ -7,10 +7,16 @@
 Param(
     # Clean build - remove Binaries and re-execute cmake
     [switch]$FORCECLEAN = $false
+    # Concurrent job count for the make command
+    [Int]$JOBS = 0
 )
 
 if ($FORCECLEAN) {
     $CLEAN = "-c"
 }
+$MAKEJOBS = ""
+if ($JOBS > 0)
+    $MAKEJOBS = "-j " + $JOBS
+}
 
-docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v ${PWD}:/nwnx/home docker.nwnx.io:443/nwnxee/unified:builder /nwnx/home/scripts/buildnwnx.sh $CLEAN
+docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v ${PWD}:/nwnx/home docker.nwnx.io:443/nwnxee/unified:builder /nwnx/home/scripts/buildnwnx.sh $CLEAN $JOBS

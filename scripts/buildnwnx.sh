@@ -3,11 +3,15 @@
 usage() { echo "$0 usage:" && grep " .)\ #" $0; exit 0; }
 
 CLEAN=1
+JOBS=""
 
-while getopts ":hc" o; do
+while getopts ":hcj:" o; do
     case "${o}" in
         c) # Clean build - remove Binaries and re-execute cmake
             CLEAN=0
+            ;;
+        j) # Concurrent job count for the make command
+            JOBS="-j $OPTARG"
             ;;
         h | *) # Display help
             usage
@@ -37,4 +41,4 @@ cd ./build-nwnx
 
 cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo ..
 
-make all
+make ${JOBS} all

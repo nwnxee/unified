@@ -4,10 +4,13 @@ usage() { echo "$0 usage:" && grep " .)\ #" $0; exit 0; }
 
 CLEAN=
 
-while getopts ":hc" o; do
+while getopts ":hcj:" o; do
     case "${o}" in
         c) # Clean build - remove Binaries and re-execute cmake
             CLEAN=-c
+            ;;
+        j) # Concurrent job count for the make command
+            JOBS="-j $OPTARG"
             ;;
         h | *) # Display help
             usage
@@ -17,4 +20,4 @@ while getopts ":hc" o; do
 done
 shift $((OPTIND-1))
 
-docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v $(pwd):/nwnx/home docker.nwnx.io:443/nwnxee/unified:builder ./scripts/buildnwnx.sh ${CLEAN}
+docker run --rm -w /nwnx/home --entrypoint "/bin/bash" -v $(pwd):/nwnx/home docker.nwnx.io:443/nwnxee/unified:builder ./scripts/buildnwnx.sh ${CLEAN} ${JOBS}
