@@ -202,7 +202,8 @@ void PostgreSQL::PrepareString(int32_t position, const std::string& value)
     m_params[position] = value;
 }
 
-int PostgreSQL::GetAffectedRows() {
+int PostgreSQL::GetAffectedRows()
+{
     return m_affectedRows;
 }
 

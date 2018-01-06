@@ -42,7 +42,7 @@ void NWNX_SQL_PreparedObjectFull(int position, object value);
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0);
 
 // Return number of rows affected by SQL statement (for non-row-based statements like INSERT, UPDATE, DELETE, etc.);
-// Returns -1 if the quere was not non-row-based.
+// Returns -1 if the query was not non-row-based.
 int NWNX_SQL_GetAffectedRows();
 
 int NWNX_SQL_PrepareQuery(string query)
@@ -57,6 +57,7 @@ int NWNX_SQL_ExecutePreparedQuery()
     NWNX_CallFunction("NWNX_SQL", "EXECUTE_PREPARED_QUERY");
     return NWNX_GetReturnValueInt("NWNX_SQL", "EXECUTE_PREPARED_QUERY");
 }
+
 int NWNX_SQL_ExecuteQuery(string query)
 {
     // Note: the implementation might change as support for more SQL targets arrives.
@@ -130,7 +131,8 @@ object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_
     return NWNX_GetReturnValueObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
 }
 
-int NWNX_SQL_GetAffectedRows() {
+int NWNX_SQL_GetAffectedRows() 
+{
     NWNX_CallFunction("NWNX_SQL", "GET_AFFECTED_ROWS");
     return NWNX_GetReturnValueInt("NWNX_SQL", "GET_AFFECTED_ROWS");
 }

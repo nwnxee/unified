@@ -77,7 +77,8 @@ SQL::SQL(const Plugin::CreateParams& params)
         throw std::runtime_error("Targeting MySQL, but no MySQL support built in.");
 #endif
     }
-    else if (type == "POSTGRESQL") {
+    else if (type == "POSTGRESQL")
+    {
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
         m_target = std::make_unique<PostgreSQL>(GetServices()->m_log);
 #else

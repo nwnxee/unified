@@ -10,7 +10,8 @@ void report(string func, int bSuccess)
         WriteTimestampedLogEntry("NWNX_SQL: " + func + "() failed");
 }
 
-void cleanup() {
+void cleanup() 
+{
     int b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
     report("ExecuteQuery", b);
 }

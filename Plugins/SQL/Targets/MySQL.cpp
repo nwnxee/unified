@@ -171,7 +171,8 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
     pBind->buffer_length = m_paramValues[position].s.size();
 }
 
-int MySQL::GetAffectedRows() {
+int MySQL::GetAffectedRows()
+{
     return affectedRows;
 }
 
