@@ -103,13 +103,16 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 
     m_affectedRows = -1;
 
-    char *paramValues[m_params.size()];
+    char** paramValues = nullptr;
 
+    //char *paramValues[m_params.size()];
+
+	// convert the m_params vector into a char ** required by Postgres.
     if (m_paramCount > 0)
     {
-        const unsigned int sz = m_params.size();
+    	paramValues = new char*[m_params.size()];
 
-        //std::array<std::string> temp_params = new std::array<std::string>(sz);
+        const unsigned int sz = m_params.size();
         for (unsigned int i=0; i<sz; i++)
         {
             paramValues[i] = new char[m_params[i].size()+1];
@@ -118,20 +121,23 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     }
 
     PGresult *res = PQexecPrepared(
-        m_conn,                                           // connection
-        "",                                               // statement name (same as in the prepare above)
-        m_paramCount,                                     // m_paramCount from previous
-        (m_paramCount == 0) ? nullptr : paramValues,      // param data
-        NULL,                                             // param lengths - only for binary data
-        NULL,                                             // param formats - server will infer text
-        0);                                               // result format, 0=text, 1=binary
+        m_conn,                                 // connection
+        "",                                     // statement name (same as in the prepare above)
+        m_paramCount,                           // m_paramCount from previous
+        paramValues,                            // param data (can be null)
+        NULL,                                   // param lengths - only for binary data
+        NULL,                                   // param formats - server will infer text
+        0);                                     // result format, 0=text, 1=binary
 
-
-    // done with parameters.
-    for (unsigned i = 0; i < m_params.size(); i++)
-    {
-        delete [] paramValues[i];
-    }
+	// done with parameters.
+    if (paramValues != nullptr)
+	{
+		for (unsigned i = 0; i < m_params.size(); i++)
+		{
+			delete [] paramValues[i];
+		}
+		delete [] paramValues;
+	}
     m_params.clear();
 
     // Rows returned - collect and pass on
