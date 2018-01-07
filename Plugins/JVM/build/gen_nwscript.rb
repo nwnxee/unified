@@ -267,6 +267,7 @@ RX = %r{ ( \n// .+? ) \n \s* #{TypeRXStr} \s+ (.+?) \s* \((.*?)\) \s* ; }xm
 $fun = {}
 
 $funs = []
+$funIds = {} # name => id
 
 File.open("build/nwscript.nss", "r") {|_f|
   ln = 0
@@ -277,6 +278,8 @@ File.open("build/nwscript.nss", "r") {|_f|
 
   s.gsub!('[0.0,0.0,0.0]', "_DEFAULT_VECTOR_")
 
+  fid = -1
+
   post = s
   while m = RX.match(post)
     post = m.post_match
@@ -284,6 +287,7 @@ File.open("build/nwscript.nss", "r") {|_f|
     comment = "line #{ln}: #{s}"
 
     doc, ret, function, params = $1.strip, $2.strip, $3.strip, $4.strip
+    fid += 1
 
     next if DontDoAtAll.index(function)
 
@@ -346,6 +350,7 @@ File.open("build/nwscript.nss", "r") {|_f|
       ret = ReturnRename[function] if ReturnRename[function]
 
       $funs << b = [ret, function, params, doc]
+      $funIds[function] = fid
     }
   end
 }
@@ -411,8 +416,10 @@ public class NWScript {
 EOF
   f.puts IO.read("build/Iterators.java")
 
-  $funs.each_with_index {|(ret,function,params, doc), fid|
+  $funs.each_with_index {|(ret,function,params,doc)|
     next unless ret
+
+    fid = $funIds[function] or raise "Function ID not registered."
 
     next if DontExport.index(function)
 
