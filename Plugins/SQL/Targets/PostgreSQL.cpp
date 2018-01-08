@@ -95,6 +95,7 @@ bool PostgreSQL::PrepareQuery(const Query& query)
         return false;
     }
 
+    PQclear(res);
     return true;
 }
 
@@ -104,8 +105,6 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     m_affectedRows = -1;
 
     char** paramValues = nullptr;
-
-    //char *paramValues[m_params.size()];
 
 	// convert the m_params vector into a char ** required by Postgres.
     if (m_paramCount > 0)
@@ -139,6 +138,11 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 		delete [] paramValues;
 	}
     m_params.clear();
+
+    // if this is a parameterized query, resize m_params for the next go-round.
+    if (m_paramCount > 0) {
+        m_params.resize(m_paramCount);
+    }
 
     // Rows returned - collect and pass on
     if (PQresultStatus(res) == PGRES_TUPLES_OK)
