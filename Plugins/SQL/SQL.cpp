@@ -56,6 +56,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("PREPARED_OBJECT_FULL", std::bind(&SQL::OnPreparedObjectFull, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("READ_FULL_OBJECT_IN_ACTIVE_ROW", std::bind(&SQL::OnReadFullObjectInActiveRow, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_AFFECTED_ROWS", std::bind(&SQL::OnGetAffectedRows, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("GET_DATABASE_TYPE", std::bind(&SQL::OnGetDatabaseType, this, std::placeholders::_1));
 
     m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
 
@@ -252,6 +253,13 @@ Events::ArgumentStack SQL::OnGetAffectedRows(Events::ArgumentStack&&)
 {
 	Events::ArgumentStack stack;
 	Events::InsertArgument(stack, m_target->GetAffectedRows());
+	return stack;
+}
+
+Events::ArgumentStack SQL::OnGetDatabaseType(Events::ArgumentStack&&)
+{
+	Events::ArgumentStack stack;
+	Events::InsertArgument(stack, GetServices()->m_config->Get<std::string>("TYPE", "MYSQL"));
 	return stack;
 }
 
