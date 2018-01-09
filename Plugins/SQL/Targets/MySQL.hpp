@@ -29,6 +29,7 @@ private:
     MYSQL m_mysql;
     MYSQL_STMT *m_stmt;
     std::vector<MYSQL_BIND> m_params;
+    size_t m_paramCount;
 
     // No std::variant available, and C++ really doesn't like strings in unions.
     struct Variant { float f; int32_t n; std::string s;

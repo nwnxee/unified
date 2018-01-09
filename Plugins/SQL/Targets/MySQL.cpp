@@ -46,9 +46,9 @@ bool MySQL::PrepareQuery(const Query& query)
     bool success = !mysql_stmt_prepare(m_stmt, query.c_str(), query.size());
     if (success)
     {
-        size_t paramCount = mysql_stmt_param_count(m_stmt);
-        m_params.resize(paramCount);
-        m_paramValues.resize(paramCount);
+        m_paramCount = mysql_stmt_param_count(m_stmt);
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
     }
     return success;
 }
@@ -141,6 +141,12 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 
 void MySQL::PrepareInt(int32_t position, int32_t value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
+    }
+
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
@@ -151,6 +157,11 @@ void MySQL::PrepareInt(int32_t position, int32_t value)
 }
 void MySQL::PrepareFloat(int32_t position, float value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
+    }
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
@@ -161,6 +172,11 @@ void MySQL::PrepareFloat(int32_t position, float value)
 }
 void MySQL::PrepareString(int32_t position, const std::string& value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
+    }
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
