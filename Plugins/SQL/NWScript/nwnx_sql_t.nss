@@ -10,7 +10,7 @@ void report(string func, int bSuccess)
         WriteTimestampedLogEntry("NWNX_SQL: " + func + "() failed");
 }
 
-void cleanup() 
+void cleanup()
 {
     int b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
     report("ExecuteQuery", b);
@@ -20,29 +20,36 @@ void main()
 {
     WriteTimestampedLogEntry("NWNX_SQL unit test begin..");
 
-    /* MySQL version */
-    string sCreate = "CREATE TABLE sql_test (" +
-                        "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
-                        "colObjId INT, colObj TEXT(1000000) );";
+    string db_type = NWNX_SQL_GetDatabaseType();
+    WriteTimestampedLogEntry("Testing database " + db_type);
 
-    string sInsert = "INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(?, ?, ?, ?, ?)";
+    string sCreate = "";
+    string sInsert = "";
+
+    /* MySQL version */
+    if (db_type == "MYSQL")
+    {
+        sCreate = "CREATE TABLE sql_test (" +
+                  "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
+                  "colObjId INT, colObj TEXT(1000000) );";
+
+        sInsert = "INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(?, ?, ?, ?, ?)";
+    }
 
     /* PostgreSQL version */
-    /*
-    string sCreate = "CREATE TABLE sql_test (" +
-                        "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
-                        "colObjId INT, colObj TEXT );";
+    if (db_type == "POSTGRESQL")
+    {
+        sCreate = "CREATE TABLE sql_test (" +
+                  "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
+                  "colObjId INT, colObj TEXT );";
 
-    // Even though we're using 0 based parameter numbers, PostgreSQL requires the parameter numbers in the 
-    // actual SQL string to be 1 based (e.g. $1, $2...  not $0, $1... )
-    string sInsert = "INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES($1, $2, $3, $4, $5)";
-    */
+        // Even though we're using 0 based parameter numbers, PostgreSQL requires the parameter
+        // numbers in the actual SQL string to be 1 based (e.g. $1, $2...  not $0, $1... )
+         sInsert = "INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES($1, $2, $3, $4, $5)";
+    }
 
-    int b = NWNX_SQL_PrepareQuery(sCreate);
-    report("PrepareQuery", b);
-
-    b = NWNX_SQL_ExecutePreparedQuery();
-    report("ExecutePreparedQuery", b);
+    int b = NWNX_SQL_ExecuteQuery(sCreate);
+    report("Create Table", b);
 
     object o = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
     if (!GetIsObjectValid(o))
@@ -61,14 +68,11 @@ void main()
     NWNX_SQL_PreparedObjectId(3, o);
     NWNX_SQL_PreparedObjectFull(4, o);
 
-
     b = NWNX_SQL_ExecutePreparedQuery();
     report("Complex ExecutePreparedQuery", b);
 
-    b = NWNX_SQL_PrepareQuery("SELECT * FROM sql_test;");
-    report("Select PrepareQuery", b);
-    b = NWNX_SQL_ExecutePreparedQuery();
-    report("Select ExecutePreparedQuery", b);
+    b = NWNX_SQL_ExecuteQuery("SELECT * FROM sql_test;");
+    report("Select ExecuteQuery", b);
 
     if (b)
     {
@@ -109,12 +113,18 @@ void main()
             oTmp = GetNextItemInInventory(oPlc);
         }
 
-        // Insert statement for MySQL
-        NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,?)");
-        
-        // Insert statement for PostgreSQL
-        // NWNX_SQL_PrepareQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,$1)");        
-        
+        string test2 = "";
+        if (db_type == "MYSQL")
+        {
+            test2="INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,?)";
+        }
+        if (db_type == "POSTGRESQL")
+        {
+            test2="INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,$1)";
+        }
+
+        NWNX_SQL_PrepareQuery(test2);
+
         NWNX_SQL_PreparedObjectFull(0, oItem);
         b = NWNX_SQL_ExecutePreparedQuery();
         report("Insert item full", b);
@@ -144,6 +154,50 @@ void main()
 
     }
 
+    int STRESS_CNT = 10;
+    
+    WriteTimestampedLogEntry("NWNX_SQL stress test.");
+    NWNX_SQL_ExecuteQuery("create table stress_test ( i_key int, i_int int, s_text varchar(8))");
+    int i;
+    // Brute force some inserts
+    for ( i=1 ; i<=STRESS_CNT ; i++ )  // Generate 1000 rows.
+    {
+        // Simulates the existing NWNX2 ODBC way of generating SQL.
+        NWNX_SQL_ExecuteQuery("insert into stress_test values ( " + IntToString(i) + ", " + IntToString(i*2) + ", '" + IntToString(i*100) + "')");
+    }
+    NWNX_SQL_ExecuteQuery("delete from stress_test where i_key > 0");
+    int res = NWNX_SQL_GetAffectedRows();
+    WriteTimestampedLogEntry("Deleted " + IntToString(res) + " rows.");
+    report ("Delete rows", res == STRESS_CNT);
+
+    // now do some elegant inserts
+    string test3 = "";
+    if (db_type == "MYSQL")
+    {
+        test3 = "insert into stress_test values ( ?, ?, ? )";
+    }
+    if (db_type == "POSTGRESQL")
+    {
+        test3 = "insert into stress_test values ( $1, $2, $3 )";
+    }
+    
+    NWNX_SQL_PrepareQuery(test3);
+    for ( i = 1 ; i <= STRESS_CNT ; i++ )
+    {
+        NWNX_SQL_PreparedInt(0, i);
+        NWNX_SQL_PreparedInt(1, i*2);
+        NWNX_SQL_PreparedString(2, IntToString(i*100));
+        b = NWNX_SQL_ExecutePreparedQuery();
+        report("Elegant Looping ExecutePreparedQuery", b);
+    }
+    NWNX_SQL_ExecuteQuery("delete from stress_test where i_key > 0");
+    res = NWNX_SQL_GetAffectedRows();
+    WriteTimestampedLogEntry("Deleted " + IntToString(res) + " rows.");
+    report ("Delete rows", res == STRESS_CNT);
+
+    NWNX_SQL_ExecuteQuery("drop table stress_test");
+
     cleanup();
-    WriteTimestampedLogEntry("NWNX_SQL unit test end.");
+    WriteTimestampedLogEntry("Testing database " + db_type + " complete.");
+    WriteTimestampedLogEntry("NWNX_SQL unit tests end.");
 }
