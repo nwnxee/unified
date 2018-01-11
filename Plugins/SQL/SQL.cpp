@@ -150,7 +150,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
             queryId, m_activeQuery.c_str(), m_activeResults.size());
         std::string lastError = m_target->GetLastError();
         GetServices()->m_log->Warning("Failure Message. Query ID: '%i', \"%s\"",
-        	queryId, lastError.c_str());
+            queryId, lastError.c_str());
     }
 
     return stack;
@@ -261,16 +261,16 @@ Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& a
 
 Events::ArgumentStack SQL::OnGetAffectedRows(Events::ArgumentStack&&)
 {
-	Events::ArgumentStack stack;
-	Events::InsertArgument(stack, m_target->GetAffectedRows());
-	return stack;
+    Events::ArgumentStack stack;
+    Events::InsertArgument(stack, m_target->GetAffectedRows());
+    return stack;
 }
 
 Events::ArgumentStack SQL::OnGetDatabaseType(Events::ArgumentStack&&)
 {
-	Events::ArgumentStack stack;
-	Events::InsertArgument(stack, GetServices()->m_config->Get<std::string>("TYPE", "MYSQL"));
-	return stack;
+    Events::ArgumentStack stack;
+    Events::InsertArgument(stack, GetServices()->m_config->Get<std::string>("TYPE", "MYSQL"));
+    return stack;
 }
 
 }

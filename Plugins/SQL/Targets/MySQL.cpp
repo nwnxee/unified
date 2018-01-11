@@ -196,12 +196,12 @@ int MySQL::GetAffectedRows()
 
 std::string MySQL::GetLastError()
 {
-	// MySQL error is returned by asking the server what the last error was.
-	// Convert it to a string and return.
-	const char *error = mysql_error(&m_mysql);
-	std::string lastError(error);
+    // MySQL error is returned by asking the server what the last error was.
+    // Convert it to a string and return.
+    const char *error = mysql_error(&m_mysql);
+    std::string lastError(error);
 
-	return lastError;
+    return lastError;
 }
 
 }

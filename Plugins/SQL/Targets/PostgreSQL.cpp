@@ -106,10 +106,10 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 
     char** paramValues = nullptr;
 
-	// convert the m_params vector into a char ** required by Postgres.
+    // convert the m_params vector into a char ** required by Postgres.
     if (m_paramCount > 0)
     {
-    	paramValues = new char*[m_params.size()];
+        paramValues = new char*[m_params.size()];
 
         const unsigned int sz = m_params.size();
         for (unsigned int i=0; i<sz; i++)
@@ -128,15 +128,15 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
         NULL,                                   // param formats - server will infer text
         0);                                     // result format, 0=text, 1=binary
 
-	// done with parameters.
+    // done with parameters.
     if (paramValues != nullptr)
-	{
-		for (unsigned i = 0; i < m_params.size(); i++)
-		{
-			delete [] paramValues[i];
-		}
-		delete [] paramValues;
-	}
+    {
+        for (unsigned i = 0; i < m_params.size(); i++)
+        {
+            delete [] paramValues[i];
+        }
+        delete [] paramValues;
+    }
     m_params.clear();
 
     // Rows returned - collect and pass on
@@ -195,9 +195,9 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 // Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
-	// after the execute, the parameteres are cleared.  If a new batch of parameters
-	// for another execute is loaded, make sure there is space to put them.
-	// (same for the other two Prepare* functions).
+    // after the execute, the parameteres are cleared.  If a new batch of parameters
+    // for another execute is loaded, make sure there is space to put them.
+    // (same for the other two Prepare* functions).
     if (m_params.size() < m_paramCount)
     {
         m_params.resize(m_paramCount);
@@ -228,11 +228,11 @@ int PostgreSQL::GetAffectedRows()
 
 std::string PostgreSQL::GetLastError()
 {
-	// This might be overkill, but copy the string  here so the class stored string can be cleared
-	// before returning.
-	std::string temp = m_lastError;
-	m_lastError.clear();
-	return temp;
+    // This might be overkill, but copy the string  here so the class stored string can be cleared
+    // before returning.
+    std::string temp = m_lastError;
+    m_lastError.clear();
+    return temp;
 }
 
 }
