@@ -61,6 +61,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
     if (!success)
     {
         m_log->Warning("Failed to bind params");
+        m_lastError.assign(mysql_error(&m_mysql));
         return NWNXLib::Maybe<ResultSet>(); // Failed query.
     }
 
@@ -99,6 +100,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
                 }
                 else if (fetchResult == 1) {
                     m_log->Warning("Error executing mysql_stmt_fetch - error: '%s'", mysql_error(&m_mysql));
+                    m_lastError.assign(mysql_error(&m_mysql));
                     break;
                 }
 
@@ -196,12 +198,11 @@ int MySQL::GetAffectedRows()
 
 std::string MySQL::GetLastError()
 {
-    // MySQL error is returned by asking the server what the last error was.
-    // Convert it to a string and return.
-    const char *error = mysql_error(&m_mysql);
-    std::string lastError(error);
-
-    return lastError;
+    // This might be overkill, but copy the string  here so the class stored string can be cleared
+    // before returning.
+    std::string temp = m_lastError;
+    m_lastError.clear();
+    return temp;
 }
 
 }
