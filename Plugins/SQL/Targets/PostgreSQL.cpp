@@ -177,17 +177,16 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     // Else.. something unexpected happened.
 
     const char* error = PQresultErrorField(res, PG_DIAG_MESSAGE_PRIMARY);
+
     if (*error == '\0')
     {
         // No valid error.
         error = "Undefined/unknown";
     }
 
-    // TODO:  Query should be saved between Prepare and Execute so if failures occur, it can be
-    //        printed to the logs with a coherent message.
-    //m_log->Warning("Query '%s' failed due to error '%s'", query.c_str(), error);
-
-    m_log->Warning("Some query failed due to error '%s'", error);
+    // Save a copy of the error.  In PgSQL, the error comes from the result we got from the server,
+    // which we're about to clear.
+    m_lastError.assign(error);
 
     PQclear(res);
     return NWNXLib::Maybe<ResultSet>();
@@ -225,6 +224,15 @@ void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 int PostgreSQL::GetAffectedRows()
 {
     return m_affectedRows;
+}
+
+std::string PostgreSQL::GetLastError()
+{
+	// This might be overkill, but copy the string  here so the class stored string can be cleared
+	// before returning.
+	std::string temp = m_lastError;
+	m_lastError.clear();
+	return temp;
 }
 
 }

@@ -119,7 +119,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
         }
         // Statement returned no rows (INSERT, UPDATE, DELETE, etc.)
         affectedRows = mysql_affected_rows(&m_mysql);
-        mysql_stmt_close(m_stmt);
+        //mysql_stmt_close(m_stmt);
         return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
 
@@ -134,6 +134,8 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
         }
 
         m_log->Warning("Query failed due to error '%s'", error);
+        m_lastError.assign(error);
+
     }
 
     return NWNXLib::Maybe<ResultSet>(); // Failed query.
@@ -190,6 +192,16 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
 int MySQL::GetAffectedRows()
 {
     return affectedRows;
+}
+
+std::string MySQL::GetLastError()
+{
+	// MySQL error is returned by asking the server what the last error was.
+	// Convert it to a string and return.
+	const char *error = mysql_error(&m_mysql);
+	std::string lastError(error);
+
+	return lastError;
 }
 
 }

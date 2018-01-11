@@ -140,8 +140,18 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
     Events::InsertArgument(stack, querySucceeded ? queryId : 0);
     m_activeResults = query.Extract(ResultSet());
 
-    GetServices()->m_log->Info("%s SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
-        querySucceeded ? "Succeeded" : "Failed", queryId, m_activeQuery.c_str(), m_activeResults.size());
+    if (querySucceeded) {
+        GetServices()->m_log->Info("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
+            queryId, m_activeQuery.c_str(), m_activeResults.size());
+    }
+    else
+    {
+        GetServices()->m_log->Warning("Failed SQL query. Query ID: '%i', Query: '%s'.",
+            queryId, m_activeQuery.c_str(), m_activeResults.size());
+        std::string lastError = m_target->GetLastError();
+        GetServices()->m_log->Warning("Failure Message. Query ID: '%i', \"%s\"",
+        	queryId, lastError.c_str());
+    }
 
     return stack;
 }
