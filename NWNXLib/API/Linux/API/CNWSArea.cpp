@@ -257,9 +257,9 @@ int32_t CNWSArea::InterTileDFSSoundPath(unsigned char* a0, int32_t a1, int32_t a
     return CNWSArea__InterTileDFSSoundPath(this, a0, a1, a2, a3, a4);
 }
 
-int32_t CNWSArea::LoadArea(int32_t a0)
+int32_t CNWSArea::LoadArea(int32_t a0, CResGFF* a1, CResStruct* a2)
 {
-    return CNWSArea__LoadArea(this, a0);
+    return CNWSArea__LoadArea(this, a0, a1, a2);
 }
 
 int32_t CNWSArea::LoadAreaEffects(CResGFF* a0, CResStruct* a1, int32_t a2)
@@ -402,44 +402,44 @@ void CNWSArea::SaveArea(CERFFile* a0, CExoString& a1)
     return CNWSArea__SaveArea(this, a0, a1);
 }
 
-void CNWSArea::SaveAreaEffects(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveAreaEffects(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveAreaEffects(this, a0, a1, a2);
+    return CNWSArea__SaveAreaEffects(this, a0, a1, a2, a3);
 }
 
-void CNWSArea::SaveCreatures(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveCreatures(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveCreatures(this, a0, a1, a2);
+    return CNWSArea__SaveCreatures(this, a0, a1, a2, a3);
 }
 
-void CNWSArea::SaveDoors(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveDoors(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveDoors(this, a0, a1, a2);
+    return CNWSArea__SaveDoors(this, a0, a1, a2, a3);
 }
 
-void CNWSArea::SaveEncounters(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveEncounters(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveEncounters(this, a0, a1, a2);
-}
-
-void CNWSArea::SaveGIT(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
-{
-    return CNWSArea__SaveGIT__0(this, a0, a1, a2);
+    return CNWSArea__SaveEncounters(this, a0, a1, a2, a3);
 }
 
 void CNWSArea::SaveGIT(CERFFile* a0, CExoString& a1, CExoArrayListTemplatedunsignedlong& a2)
 {
-    return CNWSArea__SaveGIT__1(this, a0, a1, a2);
+    return CNWSArea__SaveGIT__0(this, a0, a1, a2);
 }
 
-void CNWSArea::SaveItems(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveGIT(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveItems(this, a0, a1, a2);
+    return CNWSArea__SaveGIT__1(this, a0, a1, a2, a3);
 }
 
-void CNWSArea::SavePlaceables(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveItems(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SavePlaceables(this, a0, a1, a2);
+    return CNWSArea__SaveItems(this, a0, a1, a2, a3);
+}
+
+void CNWSArea::SavePlaceables(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
+{
+    return CNWSArea__SavePlaceables(this, a0, a1, a2, a3);
 }
 
 void CNWSArea::SaveProperties(CResGFF* a0, CResStruct* a1)
@@ -447,24 +447,24 @@ void CNWSArea::SaveProperties(CResGFF* a0, CResStruct* a1)
     return CNWSArea__SaveProperties(this, a0, a1);
 }
 
-void CNWSArea::SaveSounds(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveSounds(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveSounds(this, a0, a1, a2);
+    return CNWSArea__SaveSounds(this, a0, a1, a2, a3);
 }
 
-void CNWSArea::SaveStores(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveStores(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveStores(this, a0, a1, a2);
+    return CNWSArea__SaveStores(this, a0, a1, a2, a3);
 }
 
-void CNWSArea::SaveTriggers(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveTriggers(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveTriggers(this, a0, a1, a2);
+    return CNWSArea__SaveTriggers(this, a0, a1, a2, a3);
 }
 
-void CNWSArea::SaveWaypoints(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea::SaveWaypoints(CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    return CNWSArea__SaveWaypoints(this, a0, a1, a2);
+    return CNWSArea__SaveWaypoints(this, a0, a1, a2, a3);
 }
 
 void CNWSArea::SetCurrentWeather(unsigned char a0, int32_t a1)
@@ -898,12 +898,12 @@ int32_t CNWSArea__InterTileDFSSoundPath(CNWSArea* thisPtr, unsigned char* a0, in
     return func(thisPtr, a0, a1, a2, a3, a4);
 }
 
-int32_t CNWSArea__LoadArea(CNWSArea* thisPtr, int32_t a0)
+int32_t CNWSArea__LoadArea(CNWSArea* thisPtr, int32_t a0, CResGFF* a1, CResStruct* a2)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSArea*, int32_t);
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSArea*, int32_t, CResGFF*, CResStruct*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__LoadArea);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0);
+    return func(thisPtr, a0, a1, a2);
 }
 
 int32_t CNWSArea__LoadAreaEffects(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, int32_t a2)
@@ -1130,68 +1130,68 @@ void CNWSArea__SaveArea(CNWSArea* thisPtr, CERFFile* a0, CExoString& a1)
     return func(thisPtr, a0, a1);
 }
 
-void CNWSArea__SaveAreaEffects(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveAreaEffects(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveAreaEffects);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveCreatures(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveCreatures(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveCreatures);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveDoors(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveDoors(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveDoors);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveEncounters(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveEncounters(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveEncounters);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveGIT__0(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveGIT__0(CNWSArea* thisPtr, CERFFile* a0, CExoString& a1, CExoArrayListTemplatedunsignedlong& a2)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CERFFile*, CExoString&, CExoArrayListTemplatedunsignedlong&);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveGIT__0);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2);
 }
 
-void CNWSArea__SaveGIT__1(CNWSArea* thisPtr, CERFFile* a0, CExoString& a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveGIT__1(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CERFFile*, CExoString&, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveGIT__1);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveItems(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveItems(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveItems);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SavePlaceables(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SavePlaceables(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SavePlaceables);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
 void CNWSArea__SaveProperties(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1)
@@ -1202,36 +1202,36 @@ void CNWSArea__SaveProperties(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1)
     return func(thisPtr, a0, a1);
 }
 
-void CNWSArea__SaveSounds(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveSounds(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveSounds);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveStores(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveStores(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveStores);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveTriggers(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveTriggers(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveTriggers);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSArea__SaveWaypoints(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2)
+void CNWSArea__SaveWaypoints(CNWSArea* thisPtr, CResGFF* a0, CResStruct* a1, CExoArrayListTemplatedunsignedlong& a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSArea*, CResGFF*, CResStruct*, CExoArrayListTemplatedunsignedlong&, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSArea__SaveWaypoints);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
 void CNWSArea__SetCurrentWeather(CNWSArea* thisPtr, unsigned char a0, int32_t a1)

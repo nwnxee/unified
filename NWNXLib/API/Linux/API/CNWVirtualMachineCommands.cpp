@@ -236,6 +236,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandAttack(int32_t a0, int32_t a1)
     return CNWVirtualMachineCommands__ExecuteCommandAttack(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandAutoMapExplorationManagement(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandAutoMapExplorationManagement(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandBeginConversation(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandBeginConversation(this, a0, a1);
@@ -1091,6 +1096,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionAverageLevel(int32_t 
     return CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageLevel(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionAverageReputation(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageReputation(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetFactionAverageXP(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageXP(this, a0, a1);
@@ -1834,11 +1844,6 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetPosition(int32_t a0, int32_t
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetRacialType(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetRacialType(this, a0, a1);
-}
-
-int32_t CNWVirtualMachineCommands::ExecuteCommandGetReflexAdjustedDamage(int32_t a0, int32_t a1)
-{
-    return CNWVirtualMachineCommands__ExecuteCommandGetReflexAdjustedDamage(this, a0, a1);
 }
 
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetReflexSavingThrow(int32_t a0, int32_t a1)
@@ -2876,6 +2881,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandTestString(int32_t a0, int32_t 
     return CNWVirtualMachineCommands__ExecuteCommandTestString(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandTileExplorationManagement(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandTileExplorationManagement(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandTimeConversions(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandTimeConversions(this, a0, a1);
@@ -3337,6 +3347,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandAttack(CNWVirtualMachineCommand
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandAttack);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandAutoMapExplorationManagement(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandAutoMapExplorationManagement);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
@@ -4709,6 +4727,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageLevel(CNWVirtu
     return func(thisPtr, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageReputation(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageReputation);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetFactionAverageXP(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
@@ -5897,14 +5923,6 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetRacialType(CNWVirtualMachine
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetRacialType);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
-}
-
-int32_t CNWVirtualMachineCommands__ExecuteCommandGetReflexAdjustedDamage(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
-{
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetReflexAdjustedDamage);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
@@ -7561,6 +7579,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandTestString(CNWVirtualMachineCom
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandTestString);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandTileExplorationManagement(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandTileExplorationManagement);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
