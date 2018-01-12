@@ -140,7 +140,8 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
     Events::InsertArgument(stack, querySucceeded ? queryId : 0);
     m_activeResults = query.Extract(ResultSet());
 
-    if (querySucceeded) {
+    if (querySucceeded)
+    {
         GetServices()->m_log->Info("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
             queryId, m_activeQuery.c_str(), m_activeResults.size());
     }
