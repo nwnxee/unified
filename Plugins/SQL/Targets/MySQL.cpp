@@ -46,9 +46,9 @@ bool MySQL::PrepareQuery(const Query& query)
     bool success = !mysql_stmt_prepare(m_stmt, query.c_str(), query.size());
     if (success)
     {
-        size_t paramCount = mysql_stmt_param_count(m_stmt);
-        m_params.resize(paramCount);
-        m_paramValues.resize(paramCount);
+        m_paramCount = mysql_stmt_param_count(m_stmt);
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
     }
     return success;
 }
@@ -61,6 +61,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
     if (!success)
     {
         m_log->Warning("Failed to bind params");
+        m_lastError.assign(mysql_error(&m_mysql));
         return NWNXLib::Maybe<ResultSet>(); // Failed query.
     }
 
@@ -99,6 +100,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
                 }
                 else if (fetchResult == 1) {
                     m_log->Warning("Error executing mysql_stmt_fetch - error: '%s'", mysql_error(&m_mysql));
+                    m_lastError.assign(mysql_error(&m_mysql));
                     break;
                 }
 
@@ -119,7 +121,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
         }
         // Statement returned no rows (INSERT, UPDATE, DELETE, etc.)
         affectedRows = mysql_affected_rows(&m_mysql);
-        mysql_stmt_close(m_stmt);
+        //mysql_stmt_close(m_stmt);
         return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
 
@@ -134,6 +136,8 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
         }
 
         m_log->Warning("Query failed due to error '%s'", error);
+        m_lastError.assign(error);
+
     }
 
     return NWNXLib::Maybe<ResultSet>(); // Failed query.
@@ -141,6 +145,12 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 
 void MySQL::PrepareInt(int32_t position, int32_t value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
+    }
+
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
@@ -151,6 +161,11 @@ void MySQL::PrepareInt(int32_t position, int32_t value)
 }
 void MySQL::PrepareFloat(int32_t position, float value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
+    }
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
@@ -161,6 +176,11 @@ void MySQL::PrepareFloat(int32_t position, float value)
 }
 void MySQL::PrepareString(int32_t position, const std::string& value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+        m_paramValues.resize(m_paramCount);
+    }
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
@@ -174,6 +194,15 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
 int MySQL::GetAffectedRows()
 {
     return affectedRows;
+}
+
+std::string MySQL::GetLastError()
+{
+    // This might be overkill, but copy the string  here so the class stored string can be cleared
+    // before returning.
+    std::string temp = m_lastError;
+    m_lastError.clear();
+    return temp;
 }
 
 }

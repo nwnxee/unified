@@ -45,6 +45,9 @@ object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_
 // Returns -1 if the query was not non-row-based.
 int NWNX_SQL_GetAffectedRows();
 
+// Return the database type we're interacting with (same value as the value of NWNX_SQL_TYPE environment var)
+string NWNX_SQL_GetDatabaseType();
+
 int NWNX_SQL_PrepareQuery(string query)
 {
     NWNX_PushArgumentString("NWNX_SQL", "PREPARE_QUERY", query);
@@ -136,3 +139,11 @@ int NWNX_SQL_GetAffectedRows()
     NWNX_CallFunction("NWNX_SQL", "GET_AFFECTED_ROWS");
     return NWNX_GetReturnValueInt("NWNX_SQL", "GET_AFFECTED_ROWS");
 }
+
+string NWNX_SQL_GetDatabaseType()
+{
+    NWNX_CallFunction("NWNX_SQL", "GET_DATABASE_TYPE");
+    return NWNX_GetReturnValueString("NWNX_SQL", "GET_DATABASE_TYPE");
+}
+    
+

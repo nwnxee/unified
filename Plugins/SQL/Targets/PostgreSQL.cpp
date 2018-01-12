@@ -95,6 +95,7 @@ bool PostgreSQL::PrepareQuery(const Query& query)
         return false;
     }
 
+    PQclear(res);
     return true;
 }
 
@@ -103,13 +104,14 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 
     m_affectedRows = -1;
 
-    char *paramValues[m_params.size()];
+    char** paramValues = nullptr;
 
+    // convert the m_params vector into a char ** required by Postgres.
     if (m_paramCount > 0)
     {
-        const unsigned int sz = m_params.size();
+        paramValues = new char*[m_params.size()];
 
-        //std::array<std::string> temp_params = new std::array<std::string>(sz);
+        const unsigned int sz = m_params.size();
         for (unsigned int i=0; i<sz; i++)
         {
             paramValues[i] = new char[m_params[i].size()+1];
@@ -118,19 +120,22 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     }
 
     PGresult *res = PQexecPrepared(
-        m_conn,                                           // connection
-        "",                                               // statement name (same as in the prepare above)
-        m_paramCount,                                     // m_paramCount from previous
-        (m_paramCount == 0) ? nullptr : paramValues,      // param data
-        NULL,                                             // param lengths - only for binary data
-        NULL,                                             // param formats - server will infer text
-        0);                                               // result format, 0=text, 1=binary
-
+        m_conn,                                 // connection
+        "",                                     // statement name (same as in the prepare above)
+        m_paramCount,                           // m_paramCount from previous
+        paramValues,                            // param data (can be null)
+        NULL,                                   // param lengths - only for binary data
+        NULL,                                   // param formats - server will infer text
+        0);                                     // result format, 0=text, 1=binary
 
     // done with parameters.
-    for (unsigned i = 0; i < m_params.size(); i++)
+    if (paramValues != nullptr)
     {
-        delete [] paramValues[i];
+        for (unsigned i = 0; i < m_params.size(); i++)
+        {
+            delete [] paramValues[i];
+        }
+        delete [] paramValues;
     }
     m_params.clear();
 
@@ -172,17 +177,16 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     // Else.. something unexpected happened.
 
     const char* error = PQresultErrorField(res, PG_DIAG_MESSAGE_PRIMARY);
+
     if (*error == '\0')
     {
         // No valid error.
         error = "Undefined/unknown";
     }
 
-    // TODO:  Query should be saved between Prepare and Execute so if failures occur, it can be
-    //        printed to the logs with a coherent message.
-    //m_log->Warning("Query '%s' failed due to error '%s'", query.c_str(), error);
-
-    m_log->Warning("Some query failed due to error '%s'", error);
+    // Save a copy of the error.  In PgSQL, the error comes from the result we got from the server,
+    // which we're about to clear.
+    m_lastError.assign(error);
 
     PQclear(res);
     return NWNXLib::Maybe<ResultSet>();
@@ -191,20 +195,44 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 // Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
+    // after the execute, the parameteres are cleared.  If a new batch of parameters
+    // for another execute is loaded, make sure there is space to put them.
+    // (same for the other two Prepare* functions).
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+    }
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+    }
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
+    if (m_params.size() < m_paramCount)
+    {
+        m_params.resize(m_paramCount);
+    }
     m_params[position] = value;
 }
 
 int PostgreSQL::GetAffectedRows()
 {
     return m_affectedRows;
+}
+
+std::string PostgreSQL::GetLastError()
+{
+    // This might be overkill, but copy the string  here so the class stored string can be cleared
+    // before returning.
+    std::string temp = m_lastError;
+    m_lastError.clear();
+    return temp;
 }
 
 }

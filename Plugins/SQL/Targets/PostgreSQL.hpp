@@ -21,6 +21,7 @@ public:
     virtual void PrepareFloat(int32_t position, float value) override;
     virtual void PrepareString(int32_t position, const std::string& value) override;
     virtual int  GetAffectedRows() override;
+    virtual std::string GetLastError() override;
 
 private:
     NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> m_log;
@@ -28,6 +29,7 @@ private:
     int m_affectedRows = -1;
     size_t m_paramCount = 0;
     std::vector<std::string> m_params;
+    std::string m_lastError;
 };
 
 }
