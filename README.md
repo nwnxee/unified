@@ -1,4 +1,4 @@
-Current API: 8153 (Linux only - others 8152, update incoming soon)
+Current API: 8154
 
 Build instructions:
 
