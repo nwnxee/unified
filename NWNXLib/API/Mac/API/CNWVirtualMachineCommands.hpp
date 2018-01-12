@@ -21,9 +21,9 @@ struct CNWVirtualMachineCommands
     pfCVMCommands* m_pVirtualMachineCommands;
 
     // The below are auto generated stubs.
-    CNWVirtualMachineCommands();
-    CNWVirtualMachineCommands(const CNWVirtualMachineCommands&);
-    CNWVirtualMachineCommands& operator=(const CNWVirtualMachineCommands&);
+    CNWVirtualMachineCommands() = default;
+    CNWVirtualMachineCommands(const CNWVirtualMachineCommands&) = default;
+    CNWVirtualMachineCommands& operator=(const CNWVirtualMachineCommands&) = default;
 
     ~CNWVirtualMachineCommands();
     void* CopyGameDefinedStructure(int32_t, void*);
@@ -70,6 +70,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandAssignCommand(int32_t, int32_t);
     int32_t ExecuteCommandAssociateAccess(int32_t, int32_t);
     int32_t ExecuteCommandAttack(int32_t, int32_t);
+    int32_t ExecuteCommandAutoMapExplorationManagement(int32_t, int32_t);
     int32_t ExecuteCommandBeginConversation(int32_t, int32_t);
     int32_t ExecuteCommandBlackScreen(int32_t, int32_t);
     int32_t ExecuteCommandBootPC(int32_t, int32_t);
@@ -599,6 +600,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandTalent(int32_t, int32_t);
     int32_t ExecuteCommandTalentAccess(int32_t, int32_t);
     int32_t ExecuteCommandTestString(int32_t, int32_t);
+    int32_t ExecuteCommandTileExplorationManagement(int32_t, int32_t);
     int32_t ExecuteCommandTimeConversions(int32_t, int32_t);
     int32_t ExecuteCommandUnequipItem(int32_t, int32_t);
     int32_t ExecuteCommandUnpossessFamiliar(int32_t, int32_t);
@@ -667,6 +669,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandAreaManagement(CNWVirtualMachin
 int32_t CNWVirtualMachineCommands__ExecuteCommandAssignCommand(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandAssociateAccess(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandAttack(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandAutoMapExplorationManagement(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandBeginConversation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandBlackScreen(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandBootPC(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
@@ -1196,6 +1199,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandTakeGoldFromCreature(CNWVirtual
 int32_t CNWVirtualMachineCommands__ExecuteCommandTalent(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandTalentAccess(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandTestString(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandTileExplorationManagement(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandTimeConversions(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandUnequipItem(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandUnpossessFamiliar(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);

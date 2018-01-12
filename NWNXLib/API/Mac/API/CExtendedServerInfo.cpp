@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExtendedServerInfo::CExtendedServerInfo(const CExtendedServerInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExtendedServerInfo& CExtendedServerInfo::operator=(const CExtendedServerInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExtendedServerInfo::CExtendedServerInfo()
 {
     CExtendedServerInfo__CExtendedServerInfoCtor(this);

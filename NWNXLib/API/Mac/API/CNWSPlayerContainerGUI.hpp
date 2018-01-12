@@ -16,8 +16,8 @@ struct CNWSPlayerContainerGUI
     uint8_t m_nSelectedPanel;
 
     // The below are auto generated stubs.
-    CNWSPlayerContainerGUI(const CNWSPlayerContainerGUI&);
-    CNWSPlayerContainerGUI& operator=(const CNWSPlayerContainerGUI&);
+    CNWSPlayerContainerGUI(const CNWSPlayerContainerGUI&) = default;
+    CNWSPlayerContainerGUI& operator=(const CNWSPlayerContainerGUI&) = default;
 
     CNWSPlayerContainerGUI();
     void SetNextPage(CNWSPlayer*);

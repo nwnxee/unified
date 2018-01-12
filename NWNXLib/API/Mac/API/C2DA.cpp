@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-C2DA::C2DA(const C2DA&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-C2DA& C2DA::operator=(const C2DA&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 C2DA::C2DA()
 {
     C2DA__C2DACtor__0(this);

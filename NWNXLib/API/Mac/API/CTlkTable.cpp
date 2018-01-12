@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CTlkTable::CTlkTable(const CTlkTable&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CTlkTable& CTlkTable::operator=(const CTlkTable&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CTlkTable::CTlkTable()
 {
     CTlkTable__CTlkTableCtor__0(this);

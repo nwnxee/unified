@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSStats_SpellLikeAbility::CNWSStats_SpellLikeAbility(const CNWSStats_SpellLikeAbility&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSStats_SpellLikeAbility& CNWSStats_SpellLikeAbility::operator=(const CNWSStats_SpellLikeAbility&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSStats_SpellLikeAbility::CNWSStats_SpellLikeAbility()
 {
     CNWSStats_SpellLikeAbility__CNWSStats_SpellLikeAbilityCtor__0(this);

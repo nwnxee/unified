@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CRes2DA::CRes2DA(const CRes2DA&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CRes2DA& CRes2DA::operator=(const CRes2DA&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CRes2DA::CRes2DA()
 {
     CRes2DA__CRes2DACtor__0(this);

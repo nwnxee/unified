@@ -18,8 +18,8 @@ struct CNWSJournal
     CNWSCreature* m_pCreature;
 
     // The below are auto generated stubs.
-    CNWSJournal(const CNWSJournal&);
-    CNWSJournal& operator=(const CNWSJournal&);
+    CNWSJournal(const CNWSJournal&) = default;
+    CNWSJournal& operator=(const CNWSJournal&) = default;
 
     CNWSJournal();
     ~CNWSJournal();

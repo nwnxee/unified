@@ -16,8 +16,8 @@ struct CERFString
     char* m_pText;
 
     // The below are auto generated stubs.
-    CERFString(const CERFString&);
-    CERFString& operator=(const CERFString&);
+    CERFString(const CERFString&) = default;
+    CERFString& operator=(const CERFString&) = default;
 
     CERFString();
     ~CERFString();

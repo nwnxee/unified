@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLinkedListInternal::CExoLinkedListInternal()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListInternal::CExoLinkedListInternal(const CExoLinkedListInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLinkedListInternal& CExoLinkedListInternal::operator=(const CExoLinkedListInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLinkedListInternal::~CExoLinkedListInternal()
 {
     CExoLinkedListInternal__CExoLinkedListInternalDtor__0(this);

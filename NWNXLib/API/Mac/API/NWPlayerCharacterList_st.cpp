@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-NWPlayerCharacterList_st::NWPlayerCharacterList_st(const NWPlayerCharacterList_st&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-NWPlayerCharacterList_st& NWPlayerCharacterList_st::operator=(const NWPlayerCharacterList_st&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 NWPlayerCharacterList_st::NWPlayerCharacterList_st()
 {
     NWPlayerCharacterList_st__NWPlayerCharacterList_stCtor(this);

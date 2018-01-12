@@ -25,9 +25,9 @@ struct CNWSWaypoint
     CExoLocString m_sLocalizedName;
 
     // The below are auto generated stubs.
-    CNWSWaypoint();
-    CNWSWaypoint(const CNWSWaypoint&);
-    CNWSWaypoint& operator=(const CNWSWaypoint&);
+    CNWSWaypoint() = default;
+    CNWSWaypoint(const CNWSWaypoint&) = default;
+    CNWSWaypoint& operator=(const CNWSWaypoint&) = default;
 
     CNWSWaypoint(uint32_t);
     ~CNWSWaypoint();

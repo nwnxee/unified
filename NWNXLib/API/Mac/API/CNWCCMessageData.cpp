@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWCCMessageData::CNWCCMessageData(const CNWCCMessageData&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWCCMessageData& CNWCCMessageData::operator=(const CNWCCMessageData&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWCCMessageData::CNWCCMessageData()
 {
     CNWCCMessageData__CNWCCMessageDataCtor__0(this);

@@ -19,21 +19,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSPlayer::CNWSPlayer()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayer::CNWSPlayer(const CNWSPlayer&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayer& CNWSPlayer::operator=(const CNWSPlayer&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSPlayer::CNWSPlayer(uint32_t a0)
 {
     CNWSPlayer__CNWSPlayerCtor__0(this, a0);

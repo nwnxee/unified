@@ -35,9 +35,9 @@ struct CNWSPlayerTURD
     uint8_t** m_pAutoMapTileData;
 
     // The below are auto generated stubs.
-    CNWSPlayerTURD();
-    CNWSPlayerTURD(const CNWSPlayerTURD&);
-    CNWSPlayerTURD& operator=(const CNWSPlayerTURD&);
+    CNWSPlayerTURD() = default;
+    CNWSPlayerTURD(const CNWSPlayerTURD&) = default;
+    CNWSPlayerTURD& operator=(const CNWSPlayerTURD&) = default;
 
     CNWSPlayerTURD(uint32_t);
     ~CNWSPlayerTURD();

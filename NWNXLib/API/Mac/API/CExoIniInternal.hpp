@@ -13,9 +13,9 @@ struct CExoIniInternal
     CExoString* m_pFileNames;
 
     // The below are auto generated stubs.
-    CExoIniInternal();
-    CExoIniInternal(const CExoIniInternal&);
-    CExoIniInternal& operator=(const CExoIniInternal&);
+    CExoIniInternal() = default;
+    CExoIniInternal(const CExoIniInternal&) = default;
+    CExoIniInternal& operator=(const CExoIniInternal&) = default;
 
     CExoIniInternal(CExoString);
     ~CExoIniInternal();

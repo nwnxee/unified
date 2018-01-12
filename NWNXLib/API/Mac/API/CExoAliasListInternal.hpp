@@ -17,8 +17,8 @@ struct CExoAliasListInternal
     CExoAliasListInternal__CExoAlias* m_pHeadAlias;
 
     // The below are auto generated stubs.
-    CExoAliasListInternal(const CExoAliasListInternal&);
-    CExoAliasListInternal& operator=(const CExoAliasListInternal&);
+    CExoAliasListInternal(const CExoAliasListInternal&) = default;
+    CExoAliasListInternal& operator=(const CExoAliasListInternal&) = default;
 
     CExoAliasListInternal();
     ~CExoAliasListInternal();

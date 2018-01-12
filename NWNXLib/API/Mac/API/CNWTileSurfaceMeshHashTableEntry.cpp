@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWTileSurfaceMeshHashTableEntry::CNWTileSurfaceMeshHashTableEntry(const CNWTileSurfaceMeshHashTableEntry&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWTileSurfaceMeshHashTableEntry& CNWTileSurfaceMeshHashTableEntry::operator=(const CNWTileSurfaceMeshHashTableEntry&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWTileSurfaceMeshHashTableEntry::CNWTileSurfaceMeshHashTableEntry()
 {
     CNWTileSurfaceMeshHashTableEntry__CNWTileSurfaceMeshHashTableEntryCtor__0(this);

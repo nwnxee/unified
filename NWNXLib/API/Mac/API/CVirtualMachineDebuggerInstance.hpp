@@ -61,8 +61,8 @@ struct CVirtualMachineDebuggerInstance
     int32_t m_nActiveCallStackEntry;
 
     // The below are auto generated stubs.
-    CVirtualMachineDebuggerInstance(const CVirtualMachineDebuggerInstance&);
-    CVirtualMachineDebuggerInstance& operator=(const CVirtualMachineDebuggerInstance&);
+    CVirtualMachineDebuggerInstance(const CVirtualMachineDebuggerInstance&) = default;
+    CVirtualMachineDebuggerInstance& operator=(const CVirtualMachineDebuggerInstance&) = default;
 
     CVirtualMachineDebuggerInstance();
     ~CVirtualMachineDebuggerInstance();

@@ -32,8 +32,8 @@ struct CExoKeyTable
     CExoPackedFile** m_pExoPackedFile;
 
     // The below are auto generated stubs.
-    CExoKeyTable(const CExoKeyTable&);
-    CExoKeyTable& operator=(const CExoKeyTable&);
+    CExoKeyTable(const CExoKeyTable&) = default;
+    CExoKeyTable& operator=(const CExoKeyTable&) = default;
 
     CExoKeyTable();
     ~CExoKeyTable();

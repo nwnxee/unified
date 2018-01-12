@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoFileThread::CExoFileThread(const CExoFileThread&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoFileThread& CExoFileThread::operator=(const CExoFileThread&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoFileThread::CExoFileThread()
 {
     CExoFileThread__CExoFileThreadCtor__0(this);

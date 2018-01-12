@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptParseTreeNodeBlock::CScriptParseTreeNodeBlock(const CScriptParseTreeNodeBlock&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptParseTreeNodeBlock& CScriptParseTreeNodeBlock::operator=(const CScriptParseTreeNodeBlock&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptParseTreeNodeBlock::CScriptParseTreeNodeBlock()
 {
     CScriptParseTreeNodeBlock__CScriptParseTreeNodeBlockCtor(this);

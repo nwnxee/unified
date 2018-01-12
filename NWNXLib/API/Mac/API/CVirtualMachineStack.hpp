@@ -21,8 +21,8 @@ struct CVirtualMachineStack
     CVirtualMachine* m_pVMachine;
 
     // The below are auto generated stubs.
-    CVirtualMachineStack(const CVirtualMachineStack&);
-    CVirtualMachineStack& operator=(const CVirtualMachineStack&);
+    CVirtualMachineStack(const CVirtualMachineStack&) = default;
+    CVirtualMachineStack& operator=(const CVirtualMachineStack&) = default;
 
     CVirtualMachineStack();
     ~CVirtualMachineStack();

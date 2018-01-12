@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CObjectLookupTable::CObjectLookupTable(const CObjectLookupTable&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CObjectLookupTable& CObjectLookupTable::operator=(const CObjectLookupTable&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CObjectLookupTable::CObjectLookupTable()
 {
     CObjectLookupTable__CObjectLookupTableCtor__0(this);

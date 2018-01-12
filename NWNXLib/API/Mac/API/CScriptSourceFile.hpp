@@ -14,8 +14,8 @@ struct CScriptSourceFile
 {
 
     // The below are auto generated stubs.
-    CScriptSourceFile(const CScriptSourceFile&);
-    CScriptSourceFile& operator=(const CScriptSourceFile&);
+    CScriptSourceFile(const CScriptSourceFile&) = default;
+    CScriptSourceFile& operator=(const CScriptSourceFile&) = default;
 
     CScriptSourceFile();
     ~CScriptSourceFile();

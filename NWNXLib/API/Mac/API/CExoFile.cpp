@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoFile::CExoFile()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoFile::CExoFile(const CExoFile&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoFile& CExoFile::operator=(const CExoFile&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoFile::CExoFile(const CExoString& a0, uint16_t a1, const CExoString& a2)
 {
     CExoFile__CExoFileCtor__0(this, a0, a1, a2);

@@ -33,21 +33,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSCreature::CNWSCreature()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCreature::CNWSCreature(const CNWSCreature&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCreature& CNWSCreature::operator=(const CNWSCreature&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSCreature::CNWSCreature(uint32_t a0, int32_t a1, int32_t a2)
 {
     CNWSCreature__CNWSCreatureCtor__0(this, a0, a1, a2);
@@ -2118,9 +2103,9 @@ void CNWSCreature::SetStealthMode(unsigned char a0)
     return CNWSCreature__SetStealthMode(this, a0);
 }
 
-void CNWSCreature::SetTileExplored(uint32_t a0, int32_t a1, int32_t a2)
+void CNWSCreature::SetTileExplored(uint32_t a0, int32_t a1, int32_t a2, int32_t a3)
 {
-    return CNWSCreature__SetTileExplored(this, a0, a1, a2);
+    return CNWSCreature__SetTileExplored(this, a0, a1, a2, a3);
 }
 
 void CNWSCreature::SignalMeleeDamage(CNWSObject* a0, int32_t a1)
@@ -5665,12 +5650,12 @@ void CNWSCreature__SetStealthMode(CNWSCreature* thisPtr, unsigned char a0)
     return func(thisPtr, a0);
 }
 
-void CNWSCreature__SetTileExplored(CNWSCreature* thisPtr, uint32_t a0, int32_t a1, int32_t a2)
+void CNWSCreature__SetTileExplored(CNWSCreature* thisPtr, uint32_t a0, int32_t a1, int32_t a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreature*, uint32_t, int32_t, int32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreature*, uint32_t, int32_t, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSCreature__SetTileExplored);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2, a3);
 }
 
 void CNWSCreature__SignalMeleeDamage(CNWSCreature* thisPtr, CNWSObject* a0, int32_t a1)

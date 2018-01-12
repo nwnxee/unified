@@ -16,8 +16,8 @@ struct CResNDB
     uint8_t* m_pNDBData;
 
     // The below are auto generated stubs.
-    CResNDB(const CResNDB&);
-    CResNDB& operator=(const CResNDB&);
+    CResNDB(const CResNDB&) = default;
+    CResNDB& operator=(const CResNDB&) = default;
 
     CResNDB();
     ~CResNDB();

@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoLocStringInternal::CExoLocStringInternal(const CExoLocStringInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoLocStringInternal& CExoLocStringInternal::operator=(const CExoLocStringInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoLocStringInternal::CExoLocStringInternal()
 {
     CExoLocStringInternal__CExoLocStringInternalCtor__0(this);

@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CPathfindInfoIntraTileSuccessors::CPathfindInfoIntraTileSuccessors(const CPathfindInfoIntraTileSuccessors&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CPathfindInfoIntraTileSuccessors& CPathfindInfoIntraTileSuccessors::operator=(const CPathfindInfoIntraTileSuccessors&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CPathfindInfoIntraTileSuccessors::CPathfindInfoIntraTileSuccessors()
 {
     CPathfindInfoIntraTileSuccessors__CPathfindInfoIntraTileSuccessorsCtor__0(this);

@@ -16,9 +16,9 @@ struct CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo
     int32_t array_size;
 
     // The below are auto generated stubs.
-    CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo();
-    CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo(const CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo&);
-    CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo& operator=(const CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo&);
+    CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo() = default;
+    CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo(const CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo&) = default;
+    CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo& operator=(const CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo&) = default;
 
     ~CExoArrayListTemplatedCNetLayerPlayerCDKeyInfo();
     void Allocate(int32_t);

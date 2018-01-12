@@ -56,8 +56,8 @@ struct CResGFF
     int32_t m_bValidationFailed;
 
     // The below are auto generated stubs.
-    CResGFF(const CResGFF&);
-    CResGFF& operator=(const CResGFF&);
+    CResGFF(const CResGFF&) = default;
+    CResGFF& operator=(const CResGFF&) = default;
 
     CResGFF();
     CResGFF(uint16_t, char*, const CResRef&);

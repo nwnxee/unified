@@ -12,16 +12,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CFactionManager::CFactionManager(const CFactionManager&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CFactionManager& CFactionManager::operator=(const CFactionManager&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CFactionManager::CFactionManager()
 {
     CFactionManager__CFactionManagerCtor__0(this);

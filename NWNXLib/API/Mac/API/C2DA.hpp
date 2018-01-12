@@ -22,8 +22,8 @@ struct C2DA
     int32_t m_bLoaded;
 
     // The below are auto generated stubs.
-    C2DA(const C2DA&);
-    C2DA& operator=(const C2DA&);
+    C2DA(const C2DA&) = default;
+    C2DA& operator=(const C2DA&) = default;
 
     C2DA();
     C2DA(CResRef, int32_t);

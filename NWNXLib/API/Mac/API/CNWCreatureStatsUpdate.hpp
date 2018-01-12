@@ -55,8 +55,8 @@ struct CNWCreatureStatsUpdate
     char* m_lstSkillRanks;
 
     // The below are auto generated stubs.
-    CNWCreatureStatsUpdate(const CNWCreatureStatsUpdate&);
-    CNWCreatureStatsUpdate& operator=(const CNWCreatureStatsUpdate&);
+    CNWCreatureStatsUpdate(const CNWCreatureStatsUpdate&) = default;
+    CNWCreatureStatsUpdate& operator=(const CNWCreatureStatsUpdate&) = default;
 
     CNWCreatureStatsUpdate();
     ~CNWCreatureStatsUpdate();

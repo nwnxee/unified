@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoRandInternal::CExoRandInternal(const CExoRandInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoRandInternal& CExoRandInternal::operator=(const CExoRandInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoRandInternal::CExoRandInternal()
 {
     CExoRandInternal__CExoRandInternalCtor__0(this);

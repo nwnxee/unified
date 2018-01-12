@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWLevelStats::CNWLevelStats(const CNWLevelStats&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWLevelStats& CNWLevelStats::operator=(const CNWLevelStats&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWLevelStats::CNWLevelStats()
 {
     CNWLevelStats__CNWLevelStatsCtor__0(this);

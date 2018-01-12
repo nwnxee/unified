@@ -39,8 +39,8 @@ struct CScriptCompilerIdListEntry
     int32_t m_nBinaryDestinationFinish;
 
     // The below are auto generated stubs.
-    CScriptCompilerIdListEntry(const CScriptCompilerIdListEntry&);
-    CScriptCompilerIdListEntry& operator=(const CScriptCompilerIdListEntry&);
+    CScriptCompilerIdListEntry(const CScriptCompilerIdListEntry&) = default;
+    CScriptCompilerIdListEntry& operator=(const CScriptCompilerIdListEntry&) = default;
 
     CScriptCompilerIdListEntry();
     ~CScriptCompilerIdListEntry();

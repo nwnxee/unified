@@ -101,8 +101,8 @@ struct CLastUpdateObject
     CNWSPlayerLUOQuickbarItemButton* m_pQuickbarButton;
 
     // The below are auto generated stubs.
-    CLastUpdateObject(const CLastUpdateObject&);
-    CLastUpdateObject& operator=(const CLastUpdateObject&);
+    CLastUpdateObject(const CLastUpdateObject&) = default;
+    CLastUpdateObject& operator=(const CLastUpdateObject&) = default;
 
     CLastUpdateObject();
     ~CLastUpdateObject();

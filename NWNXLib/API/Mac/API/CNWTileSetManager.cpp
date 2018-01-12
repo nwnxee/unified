@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWTileSetManager::CNWTileSetManager(const CNWTileSetManager&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWTileSetManager& CNWTileSetManager::operator=(const CNWTileSetManager&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWTileSetManager::CNWTileSetManager()
 {
     CNWTileSetManager__CNWTileSetManagerCtor__0(this);

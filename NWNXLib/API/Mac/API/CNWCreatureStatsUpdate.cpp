@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWCreatureStatsUpdate::CNWCreatureStatsUpdate(const CNWCreatureStatsUpdate&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWCreatureStatsUpdate& CNWCreatureStatsUpdate::operator=(const CNWCreatureStatsUpdate&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWCreatureStatsUpdate::CNWCreatureStatsUpdate()
 {
     CNWCreatureStatsUpdate__CNWCreatureStatsUpdateCtor__0(this);

@@ -64,9 +64,9 @@ struct CNWSItem
     int32_t m_bUpdateHidden;
 
     // The below are auto generated stubs.
-    CNWSItem();
-    CNWSItem(const CNWSItem&);
-    CNWSItem& operator=(const CNWSItem&);
+    CNWSItem() = default;
+    CNWSItem(const CNWSItem&) = default;
+    CNWSItem& operator=(const CNWSItem&) = default;
 
     CNWSItem(uint32_t);
     ~CNWSItem();

@@ -55,9 +55,9 @@ struct CNWSCombatRound
     CNWSCreature* m_pBaseCreature;
 
     // The below are auto generated stubs.
-    CNWSCombatRound();
-    CNWSCombatRound(const CNWSCombatRound&);
-    CNWSCombatRound& operator=(const CNWSCombatRound&);
+    CNWSCombatRound() = default;
+    CNWSCombatRound(const CNWSCombatRound&) = default;
+    CNWSCombatRound& operator=(const CNWSCombatRound&) = default;
 
     CNWSCombatRound(CNWSCreature*);
     ~CNWSCombatRound();

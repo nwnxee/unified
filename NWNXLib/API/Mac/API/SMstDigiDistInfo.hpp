@@ -18,9 +18,9 @@ struct SMstDigiDistInfo
     uint8_t pbModuleDecryptCipher[41];
 
     // The below are auto generated stubs.
-    SMstDigiDistInfo();
-    SMstDigiDistInfo(const SMstDigiDistInfo&);
-    SMstDigiDistInfo& operator=(const SMstDigiDistInfo&);
+    SMstDigiDistInfo() = default;
+    SMstDigiDistInfo(const SMstDigiDistInfo&) = default;
+    SMstDigiDistInfo& operator=(const SMstDigiDistInfo&) = default;
 
     ~SMstDigiDistInfo();
 };

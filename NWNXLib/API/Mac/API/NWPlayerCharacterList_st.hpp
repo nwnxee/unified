@@ -21,8 +21,8 @@ struct NWPlayerCharacterList_st
     CExoArrayListTemplatedNWPlayerCharacterListClass_st lstClasses;
 
     // The below are auto generated stubs.
-    NWPlayerCharacterList_st(const NWPlayerCharacterList_st&);
-    NWPlayerCharacterList_st& operator=(const NWPlayerCharacterList_st&);
+    NWPlayerCharacterList_st(const NWPlayerCharacterList_st&) = default;
+    NWPlayerCharacterList_st& operator=(const NWPlayerCharacterList_st&) = default;
 
     NWPlayerCharacterList_st();
 };

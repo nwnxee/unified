@@ -25,8 +25,8 @@ struct CNWSCombatRoundAction
     uint8_t m_nRepositoryY;
 
     // The below are auto generated stubs.
-    CNWSCombatRoundAction(const CNWSCombatRoundAction&);
-    CNWSCombatRoundAction& operator=(const CNWSCombatRoundAction&);
+    CNWSCombatRoundAction(const CNWSCombatRoundAction&) = default;
+    CNWSCombatRoundAction& operator=(const CNWSCombatRoundAction&) = default;
 
     CNWSCombatRoundAction();
     ~CNWSCombatRoundAction();

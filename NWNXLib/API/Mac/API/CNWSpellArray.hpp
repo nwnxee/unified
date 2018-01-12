@@ -14,8 +14,8 @@ struct CNWSpellArray
     CNWSpell* m_pSpells;
 
     // The below are auto generated stubs.
-    CNWSpellArray(const CNWSpellArray&);
-    CNWSpellArray& operator=(const CNWSpellArray&);
+    CNWSpellArray(const CNWSpellArray&) = default;
+    CNWSpellArray& operator=(const CNWSpellArray&) = default;
 
     CNWSpellArray();
     ~CNWSpellArray();

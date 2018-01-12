@@ -29,9 +29,9 @@ struct CScriptParseTreeNode
     int32_t m_nStackPointer;
 
     // The below are auto generated stubs.
-    CScriptParseTreeNode();
-    CScriptParseTreeNode(const CScriptParseTreeNode&);
-    CScriptParseTreeNode& operator=(const CScriptParseTreeNode&);
+    CScriptParseTreeNode() = default;
+    CScriptParseTreeNode(const CScriptParseTreeNode&) = default;
+    CScriptParseTreeNode& operator=(const CScriptParseTreeNode&) = default;
 
     ~CScriptParseTreeNode();
     void Clean();

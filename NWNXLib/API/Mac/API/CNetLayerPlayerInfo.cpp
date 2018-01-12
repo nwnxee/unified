@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNetLayerPlayerInfo::CNetLayerPlayerInfo(const CNetLayerPlayerInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNetLayerPlayerInfo& CNetLayerPlayerInfo::operator=(const CNetLayerPlayerInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNetLayerPlayerInfo::CNetLayerPlayerInfo()
 {
     CNetLayerPlayerInfo__CNetLayerPlayerInfoCtor__0(this);

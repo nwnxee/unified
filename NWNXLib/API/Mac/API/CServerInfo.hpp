@@ -39,8 +39,8 @@ struct CServerInfo
     CServerOptionLookup m_pOptionsTable[50];
 
     // The below are auto generated stubs.
-    CServerInfo(const CServerInfo&);
-    CServerInfo& operator=(const CServerInfo&);
+    CServerInfo(const CServerInfo&) = default;
+    CServerInfo& operator=(const CServerInfo&) = default;
 
     CServerInfo();
     ~CServerInfo();

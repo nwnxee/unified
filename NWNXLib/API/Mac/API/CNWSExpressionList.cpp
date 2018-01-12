@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSExpressionList::CNWSExpressionList(const CNWSExpressionList&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSExpressionList& CNWSExpressionList::operator=(const CNWSExpressionList&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSExpressionList::CNWSExpressionList()
 {
     CNWSExpressionList__CNWSExpressionListCtor__0(this);

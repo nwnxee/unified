@@ -19,8 +19,8 @@ struct CNWTileSetManager
     CNWTilePathNode* m_apTileNodes[50][4];
 
     // The below are auto generated stubs.
-    CNWTileSetManager(const CNWTileSetManager&);
-    CNWTileSetManager& operator=(const CNWTileSetManager&);
+    CNWTileSetManager(const CNWTileSetManager&) = default;
+    CNWTileSetManager& operator=(const CNWTileSetManager&) = default;
 
     CNWTileSetManager();
     ~CNWTileSetManager();

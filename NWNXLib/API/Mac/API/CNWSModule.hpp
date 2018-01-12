@@ -125,9 +125,9 @@ struct CNWSModule
     uint8_t m_nLastPlayerChatType;
 
     // The below are auto generated stubs.
-    CNWSModule();
-    CNWSModule(const CNWSModule&);
-    CNWSModule& operator=(const CNWSModule&);
+    CNWSModule() = default;
+    CNWSModule(const CNWSModule&) = default;
+    CNWSModule& operator=(const CNWSModule&) = default;
 
     CNWSModule(CExoString, int32_t, int32_t);
     ~CNWSModule();

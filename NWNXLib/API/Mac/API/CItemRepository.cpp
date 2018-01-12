@@ -10,21 +10,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CItemRepository::CItemRepository()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CItemRepository::CItemRepository(const CItemRepository&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CItemRepository& CItemRepository::operator=(const CItemRepository&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CItemRepository::CItemRepository(uint32_t a0, unsigned char a1, unsigned char a2, uint32_t a3, int32_t a4)
 {
     CItemRepository__CItemRepositoryCtor__0(this, a0, a1, a2, a3, a4);

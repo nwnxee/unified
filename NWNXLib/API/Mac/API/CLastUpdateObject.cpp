@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CLastUpdateObject::CLastUpdateObject(const CLastUpdateObject&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CLastUpdateObject& CLastUpdateObject::operator=(const CLastUpdateObject&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CLastUpdateObject::CLastUpdateObject()
 {
     CLastUpdateObject__CLastUpdateObjectCtor__0(this);

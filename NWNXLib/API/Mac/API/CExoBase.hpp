@@ -30,9 +30,9 @@ struct CExoBase
     CExoString m_sUserDirectory;
 
     // The below are auto generated stubs.
-    CExoBase();
-    CExoBase(const CExoBase&);
-    CExoBase& operator=(const CExoBase&);
+    CExoBase() = default;
+    CExoBase(const CExoBase&) = default;
+    CExoBase& operator=(const CExoBase&) = default;
 
     CExoBase(CExoString);
     ~CExoBase();

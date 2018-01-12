@@ -45,8 +45,8 @@ struct CServerAIMaster
     CExoArrayListTemplatedint* m_pHelpRepAdj;
 
     // The below are auto generated stubs.
-    CServerAIMaster(const CServerAIMaster&);
-    CServerAIMaster& operator=(const CServerAIMaster&);
+    CServerAIMaster(const CServerAIMaster&) = default;
+    CServerAIMaster& operator=(const CServerAIMaster&) = default;
 
     CServerAIMaster();
     ~CServerAIMaster();

@@ -33,8 +33,8 @@ struct CNetLayerPlayerInfo
     uint16_t m_nExpansionPacks;
 
     // The below are auto generated stubs.
-    CNetLayerPlayerInfo(const CNetLayerPlayerInfo&);
-    CNetLayerPlayerInfo& operator=(const CNetLayerPlayerInfo&);
+    CNetLayerPlayerInfo(const CNetLayerPlayerInfo&) = default;
+    CNetLayerPlayerInfo& operator=(const CNetLayerPlayerInfo&) = default;
 
     CNetLayerPlayerInfo();
     ~CNetLayerPlayerInfo();

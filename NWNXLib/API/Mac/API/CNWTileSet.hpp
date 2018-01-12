@@ -32,9 +32,9 @@ struct CNWTileSet
     CExoString m_sGrassTexture;
 
     // The below are auto generated stubs.
-    CNWTileSet();
-    CNWTileSet(const CNWTileSet&);
-    CNWTileSet& operator=(const CNWTileSet&);
+    CNWTileSet() = default;
+    CNWTileSet(const CNWTileSet&) = default;
+    CNWTileSet& operator=(const CNWTileSet&) = default;
 
     CNWTileSet(CResRef, int32_t);
     ~CNWTileSet();

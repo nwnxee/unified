@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoCriticalSection::CExoCriticalSection(const CExoCriticalSection&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoCriticalSection& CExoCriticalSection::operator=(const CExoCriticalSection&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoCriticalSection::CExoCriticalSection()
 {
     CExoCriticalSection__CExoCriticalSectionCtor__0(this);

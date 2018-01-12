@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResSET::CResSET(const CResSET&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResSET& CResSET::operator=(const CResSET&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResSET::CResSET()
 {
     CResSET__CResSETCtor__0(this);

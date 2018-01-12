@@ -17,8 +17,8 @@ struct CNWNameGen
     uint8_t m_nTableNameType;
 
     // The below are auto generated stubs.
-    CNWNameGen(const CNWNameGen&);
-    CNWNameGen& operator=(const CNWNameGen&);
+    CNWNameGen(const CNWNameGen&) = default;
+    CNWNameGen& operator=(const CNWNameGen&) = default;
 
     CNWNameGen();
     ~CNWNameGen();

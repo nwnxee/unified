@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CVirtualMachineFile::CVirtualMachineFile(const CVirtualMachineFile&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachineFile& CVirtualMachineFile::operator=(const CVirtualMachineFile&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CVirtualMachineFile::CVirtualMachineFile()
 {
     CVirtualMachineFile__CVirtualMachineFileCtor__0(this);

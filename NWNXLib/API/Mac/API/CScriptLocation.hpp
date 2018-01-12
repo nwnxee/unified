@@ -19,8 +19,8 @@ struct CScriptLocation
     uint32_t m_oArea;
 
     // The below are auto generated stubs.
-    CScriptLocation(const CScriptLocation&);
-    CScriptLocation& operator=(const CScriptLocation&);
+    CScriptLocation(const CScriptLocation&) = default;
+    CScriptLocation& operator=(const CScriptLocation&) = default;
 
     CScriptLocation();
     ~CScriptLocation();

@@ -21,9 +21,9 @@ struct CGameObjectArray
     uint32_t m_nArraySize;
 
     // The below are auto generated stubs.
-    CGameObjectArray();
-    CGameObjectArray(const CGameObjectArray&);
-    CGameObjectArray& operator=(const CGameObjectArray&);
+    CGameObjectArray() = default;
+    CGameObjectArray(const CGameObjectArray&) = default;
+    CGameObjectArray& operator=(const CGameObjectArray&) = default;
 
     CGameObjectArray(int32_t);
     ~CGameObjectArray();

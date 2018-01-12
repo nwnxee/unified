@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWDomain::CNWDomain(const CNWDomain&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWDomain& CNWDomain::operator=(const CNWDomain&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWDomain::CNWDomain()
 {
     CNWDomain__CNWDomainCtor__0(this);

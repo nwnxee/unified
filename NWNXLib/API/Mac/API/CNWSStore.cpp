@@ -15,21 +15,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSStore::CNWSStore()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSStore::CNWSStore(const CNWSStore&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSStore& CNWSStore::operator=(const CNWSStore&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSStore::CNWSStore(uint32_t a0)
 {
     CNWSStore__CNWSStoreCtor__0(this, a0);

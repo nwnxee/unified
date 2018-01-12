@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResNSS::CResNSS(const CResNSS&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResNSS& CResNSS::operator=(const CResNSS&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResNSS::CResNSS()
 {
     CResNSS__CResNSSCtor__0(this);

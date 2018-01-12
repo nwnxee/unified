@@ -15,8 +15,8 @@ struct CNWSInventory
     uint32_t m_pEquipSlot[18];
 
     // The below are auto generated stubs.
-    CNWSInventory(const CNWSInventory&);
-    CNWSInventory& operator=(const CNWSInventory&);
+    CNWSInventory(const CNWSInventory&) = default;
+    CNWSInventory& operator=(const CNWSInventory&) = default;
 
     CNWSInventory();
     ~CNWSInventory();

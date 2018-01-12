@@ -12,16 +12,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoKeyTable::CExoKeyTable(const CExoKeyTable&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoKeyTable& CExoKeyTable::operator=(const CExoKeyTable&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoKeyTable::CExoKeyTable()
 {
     CExoKeyTable__CExoKeyTableCtor__0(this);

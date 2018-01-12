@@ -27,8 +27,8 @@ struct CFactionManager
     CExoArrayListTemplatedCNWSFactionPtr* m_pFactionList;
 
     // The below are auto generated stubs.
-    CFactionManager(const CFactionManager&);
-    CFactionManager& operator=(const CFactionManager&);
+    CFactionManager(const CFactionManager&) = default;
+    CFactionManager& operator=(const CFactionManager&) = default;
 
     CFactionManager();
     ~CFactionManager();

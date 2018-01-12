@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CCodeBaseInternal::CCodeBaseInternal(const CCodeBaseInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CCodeBaseInternal& CCodeBaseInternal::operator=(const CCodeBaseInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CCodeBaseInternal::CCodeBaseInternal()
 {
     CCodeBaseInternal__CCodeBaseInternalCtor__0(this);

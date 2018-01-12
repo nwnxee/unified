@@ -28,8 +28,8 @@ struct CNWSDialogEntry
     uint32_t m_nQuestId;
 
     // The below are auto generated stubs.
-    CNWSDialogEntry(const CNWSDialogEntry&);
-    CNWSDialogEntry& operator=(const CNWSDialogEntry&);
+    CNWSDialogEntry(const CNWSDialogEntry&) = default;
+    CNWSDialogEntry& operator=(const CNWSDialogEntry&) = default;
 
     CNWSDialogEntry();
 };

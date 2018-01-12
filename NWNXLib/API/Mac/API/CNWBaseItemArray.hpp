@@ -15,8 +15,8 @@ struct CNWBaseItemArray
     CNWBaseItem* m_pBaseItems;
 
     // The below are auto generated stubs.
-    CNWBaseItemArray(const CNWBaseItemArray&);
-    CNWBaseItemArray& operator=(const CNWBaseItemArray&);
+    CNWBaseItemArray(const CNWBaseItemArray&) = default;
+    CNWBaseItemArray& operator=(const CNWBaseItemArray&) = default;
 
     CNWBaseItemArray();
     ~CNWBaseItemArray();

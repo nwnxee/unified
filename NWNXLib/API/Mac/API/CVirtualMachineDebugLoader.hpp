@@ -17,9 +17,9 @@ struct CVirtualMachineDebugLoader
     int32_t m_bLoaded;
 
     // The below are auto generated stubs.
-    CVirtualMachineDebugLoader();
-    CVirtualMachineDebugLoader(const CVirtualMachineDebugLoader&);
-    CVirtualMachineDebugLoader& operator=(const CVirtualMachineDebugLoader&);
+    CVirtualMachineDebugLoader() = default;
+    CVirtualMachineDebugLoader(const CVirtualMachineDebugLoader&) = default;
+    CVirtualMachineDebugLoader& operator=(const CVirtualMachineDebugLoader&) = default;
 
     ~CVirtualMachineDebugLoader();
     int32_t DemandDebugInfo(CExoString*);

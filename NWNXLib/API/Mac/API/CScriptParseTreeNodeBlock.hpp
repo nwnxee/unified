@@ -14,8 +14,8 @@ struct CScriptParseTreeNodeBlock
     CScriptParseTreeNodeBlock* m_pNextBlock;
 
     // The below are auto generated stubs.
-    CScriptParseTreeNodeBlock(const CScriptParseTreeNodeBlock&);
-    CScriptParseTreeNodeBlock& operator=(const CScriptParseTreeNodeBlock&);
+    CScriptParseTreeNodeBlock(const CScriptParseTreeNodeBlock&) = default;
+    CScriptParseTreeNodeBlock& operator=(const CScriptParseTreeNodeBlock&) = default;
 
     CScriptParseTreeNodeBlock();
 };

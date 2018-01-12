@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSDialogEntry::CNWSDialogEntry(const CNWSDialogEntry&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSDialogEntry& CNWSDialogEntry::operator=(const CNWSDialogEntry&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSDialogEntry::CNWSDialogEntry()
 {
     CNWSDialogEntry__CNWSDialogEntryCtor(this);

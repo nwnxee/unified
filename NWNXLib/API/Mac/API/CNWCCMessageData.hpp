@@ -25,8 +25,8 @@ struct CNWCCMessageData
     CExoArrayListTemplatedlongunsignedint m_oidParamObjectID;
 
     // The below are auto generated stubs.
-    CNWCCMessageData(const CNWCCMessageData&);
-    CNWCCMessageData& operator=(const CNWCCMessageData&);
+    CNWCCMessageData(const CNWCCMessageData&) = default;
+    CNWCCMessageData& operator=(const CNWCCMessageData&) = default;
 
     CNWCCMessageData();
     ~CNWCCMessageData();

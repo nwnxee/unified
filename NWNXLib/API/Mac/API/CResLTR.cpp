@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResLTR::CResLTR(const CResLTR&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResLTR& CResLTR::operator=(const CResLTR&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResLTR::CResLTR()
 {
     CResLTR__CResLTRCtor__0(this);

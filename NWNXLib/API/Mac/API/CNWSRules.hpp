@@ -13,8 +13,8 @@ struct CNWSRules
 {
 
     // The below are auto generated stubs.
-    CNWSRules(const CNWSRules&);
-    CNWSRules& operator=(const CNWSRules&);
+    CNWSRules(const CNWSRules&) = default;
+    CNWSRules& operator=(const CNWSRules&) = default;
 
     CNWSRules();
     ~CNWSRules();

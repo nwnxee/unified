@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSRules::CNWSRules(const CNWSRules&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSRules& CNWSRules::operator=(const CNWSRules&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSRules::CNWSRules()
 {
     CNWSRules__CNWSRulesCtor__0(this);

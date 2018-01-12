@@ -46,8 +46,8 @@ struct CServerExoApp
     CServerExoAppInternal* m_pcExoAppInternal;
 
     // The below are auto generated stubs.
-    CServerExoApp(const CServerExoApp&);
-    CServerExoApp& operator=(const CServerExoApp&);
+    CServerExoApp(const CServerExoApp&) = default;
+    CServerExoApp& operator=(const CServerExoApp&) = default;
 
     CServerExoApp();
     ~CServerExoApp();

@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CVirtualMachineCache::CVirtualMachineCache()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachineCache::CVirtualMachineCache(const CVirtualMachineCache&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachineCache& CVirtualMachineCache::operator=(const CVirtualMachineCache&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CVirtualMachineCache::~CVirtualMachineCache()
 {
     CVirtualMachineCache__CVirtualMachineCacheDtor__0(this);

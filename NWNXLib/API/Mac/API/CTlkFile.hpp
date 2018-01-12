@@ -16,9 +16,9 @@ struct CTlkFile
     TLK_FILE_HEADER m_header;
 
     // The below are auto generated stubs.
-    CTlkFile();
-    CTlkFile(const CTlkFile&);
-    CTlkFile& operator=(const CTlkFile&);
+    CTlkFile() = default;
+    CTlkFile(const CTlkFile&) = default;
+    CTlkFile& operator=(const CTlkFile&) = default;
 
     CTlkFile(CExoString);
     int32_t ReadHeader();

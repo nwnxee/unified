@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSJournal::CNWSJournal(const CNWSJournal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSJournal& CNWSJournal::operator=(const CNWSJournal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSJournal::CNWSJournal()
 {
     CNWSJournal__CNWSJournalCtor__0(this);

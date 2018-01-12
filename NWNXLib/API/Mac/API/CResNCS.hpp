@@ -16,8 +16,8 @@ struct CResNCS
     uint8_t* m_pNCSData;
 
     // The below are auto generated stubs.
-    CResNCS(const CResNCS&);
-    CResNCS& operator=(const CResNCS&);
+    CResNCS(const CResNCS&) = default;
+    CResNCS& operator=(const CResNCS&) = default;
 
     CResNCS();
     ~CResNCS();

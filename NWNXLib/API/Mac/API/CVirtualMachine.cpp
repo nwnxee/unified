@@ -13,16 +13,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CVirtualMachine::CVirtualMachine(const CVirtualMachine&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CVirtualMachine& CVirtualMachine::operator=(const CVirtualMachine&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CVirtualMachine::CVirtualMachine()
 {
     CVirtualMachine__CVirtualMachineCtor__0(this);

@@ -27,8 +27,8 @@ struct CTlkTable
     int32_t m_bRemove;
 
     // The below are auto generated stubs.
-    CTlkTable(const CTlkTable&);
-    CTlkTable& operator=(const CTlkTable&);
+    CTlkTable(const CTlkTable&) = default;
+    CTlkTable& operator=(const CTlkTable&) = default;
 
     CTlkTable();
     ~CTlkTable();

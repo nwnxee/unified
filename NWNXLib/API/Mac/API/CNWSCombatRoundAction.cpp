@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSCombatRoundAction::CNWSCombatRoundAction(const CNWSCombatRoundAction&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCombatRoundAction& CNWSCombatRoundAction::operator=(const CNWSCombatRoundAction&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSCombatRoundAction::CNWSCombatRoundAction()
 {
     CNWSCombatRoundAction__CNWSCombatRoundActionCtor__0(this);

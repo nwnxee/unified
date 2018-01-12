@@ -13,8 +13,8 @@ struct CExoCriticalSectionInternal
     pthread_mutex_t m_critSection;
 
     // The below are auto generated stubs.
-    CExoCriticalSectionInternal(const CExoCriticalSectionInternal&);
-    CExoCriticalSectionInternal& operator=(const CExoCriticalSectionInternal&);
+    CExoCriticalSectionInternal(const CExoCriticalSectionInternal&) = default;
+    CExoCriticalSectionInternal& operator=(const CExoCriticalSectionInternal&) = default;
 
     CExoCriticalSectionInternal();
     ~CExoCriticalSectionInternal();

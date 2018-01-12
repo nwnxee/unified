@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSStats_Spell::CNWSStats_Spell(const CNWSStats_Spell&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSStats_Spell& CNWSStats_Spell::operator=(const CNWSStats_Spell&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSStats_Spell::CNWSStats_Spell()
 {
     CNWSStats_Spell__CNWSStats_SpellCtor__0(this);

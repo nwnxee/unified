@@ -19,8 +19,8 @@ struct CExoResFile
     BiffFileVarResEntry_st* m_pBiffVarResEntry;
 
     // The below are auto generated stubs.
-    CExoResFile(const CExoResFile&);
-    CExoResFile& operator=(const CExoResFile&);
+    CExoResFile(const CExoResFile&) = default;
+    CExoResFile& operator=(const CExoResFile&) = default;
 
     CExoResFile();
     ~CExoResFile();

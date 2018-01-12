@@ -18,16 +18,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptCompiler::CScriptCompiler(const CScriptCompiler&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptCompiler& CScriptCompiler::operator=(const CScriptCompiler&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptCompiler::CScriptCompiler()
 {
     CScriptCompiler__CScriptCompilerCtor__0(this);

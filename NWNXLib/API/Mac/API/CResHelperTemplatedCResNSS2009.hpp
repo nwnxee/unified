@@ -12,9 +12,9 @@ struct CResHelperTemplatedCResNSS2009
 {
 
     // The below are auto generated stubs.
-    CResHelperTemplatedCResNSS2009();
-    CResHelperTemplatedCResNSS2009(const CResHelperTemplatedCResNSS2009&);
-    CResHelperTemplatedCResNSS2009& operator=(const CResHelperTemplatedCResNSS2009&);
+    CResHelperTemplatedCResNSS2009() = default;
+    CResHelperTemplatedCResNSS2009(const CResHelperTemplatedCResNSS2009&) = default;
+    CResHelperTemplatedCResNSS2009& operator=(const CResHelperTemplatedCResNSS2009&) = default;
 
     ~CResHelperTemplatedCResNSS2009();
     void SetResRef(const CResRef&, int32_t);

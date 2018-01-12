@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSFaction::CNWSFaction(const CNWSFaction&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSFaction& CNWSFaction::operator=(const CNWSFaction&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSFaction::CNWSFaction()
 {
     CNWSFaction__CNWSFactionCtor__0(this);

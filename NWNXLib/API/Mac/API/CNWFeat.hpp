@@ -47,8 +47,8 @@ struct CNWFeat
     int32_t m_bRequiresAction;
 
     // The below are auto generated stubs.
-    CNWFeat(const CNWFeat&);
-    CNWFeat& operator=(const CNWFeat&);
+    CNWFeat(const CNWFeat&) = default;
+    CNWFeat& operator=(const CNWFeat&) = default;
 
     CNWFeat();
     ~CNWFeat();

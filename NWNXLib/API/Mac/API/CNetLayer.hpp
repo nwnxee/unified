@@ -19,8 +19,8 @@ struct CNetLayer
     CNetLayerInternal* m_pcNetLayerInternal;
 
     // The below are auto generated stubs.
-    CNetLayer(const CNetLayer&);
-    CNetLayer& operator=(const CNetLayer&);
+    CNetLayer(const CNetLayer&) = default;
+    CNetLayer& operator=(const CNetLayer&) = default;
 
     CNetLayer();
     ~CNetLayer();

@@ -18,8 +18,8 @@ struct CCodeBase
     CCodeBaseInternal* m_cbInternal;
 
     // The below are auto generated stubs.
-    CCodeBase(const CCodeBase&);
-    CCodeBase& operator=(const CCodeBase&);
+    CCodeBase(const CCodeBase&) = default;
+    CCodeBase& operator=(const CCodeBase&) = default;
 
     CCodeBase();
     ~CCodeBase();

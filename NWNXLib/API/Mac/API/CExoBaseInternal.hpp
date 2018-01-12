@@ -19,8 +19,8 @@ struct CExoBaseInternal
     CExoString* m_psResTypeNames;
 
     // The below are auto generated stubs.
-    CExoBaseInternal(const CExoBaseInternal&);
-    CExoBaseInternal& operator=(const CExoBaseInternal&);
+    CExoBaseInternal(const CExoBaseInternal&) = default;
+    CExoBaseInternal& operator=(const CExoBaseInternal&) = default;
 
     CExoBaseInternal();
     ~CExoBaseInternal();

@@ -21,8 +21,8 @@ struct CScriptTalent
     uint8_t m_nMetaType;
 
     // The below are auto generated stubs.
-    CScriptTalent(const CScriptTalent&);
-    CScriptTalent& operator=(const CScriptTalent&);
+    CScriptTalent(const CScriptTalent&) = default;
+    CScriptTalent& operator=(const CScriptTalent&) = default;
 
     CScriptTalent();
     ~CScriptTalent();

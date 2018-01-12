@@ -28,8 +28,8 @@ struct CExoFileThread
     void* m_pFile_Buffer;
 
     // The below are auto generated stubs.
-    CExoFileThread(const CExoFileThread&);
-    CExoFileThread& operator=(const CExoFileThread&);
+    CExoFileThread(const CExoFileThread&) = default;
+    CExoFileThread& operator=(const CExoFileThread&) = default;
 
     CExoFileThread();
     ~CExoFileThread();

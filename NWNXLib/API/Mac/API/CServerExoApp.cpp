@@ -32,16 +32,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CServerExoApp::CServerExoApp(const CServerExoApp&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CServerExoApp& CServerExoApp::operator=(const CServerExoApp&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CServerExoApp::CServerExoApp()
 {
     CServerExoApp__CServerExoAppCtor__0(this);

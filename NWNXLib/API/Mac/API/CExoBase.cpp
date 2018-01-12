@@ -15,21 +15,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoBase::CExoBase()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoBase::CExoBase(const CExoBase&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoBase& CExoBase::operator=(const CExoBase&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoBase::CExoBase(CExoString a0)
 {
     CExoBase__CExoBaseCtor__0(this, a0);

@@ -115,8 +115,8 @@ struct CTwoDimArrays
     uint8_t m_nUser2daCacheSize;
 
     // The below are auto generated stubs.
-    CTwoDimArrays(const CTwoDimArrays&);
-    CTwoDimArrays& operator=(const CTwoDimArrays&);
+    CTwoDimArrays(const CTwoDimArrays&) = default;
+    CTwoDimArrays& operator=(const CTwoDimArrays&) = default;
 
     CTwoDimArrays();
     ~CTwoDimArrays();

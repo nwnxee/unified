@@ -9,21 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSClient::CNWSClient()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSClient::CNWSClient(const CNWSClient&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSClient& CNWSClient::operator=(const CNWSClient&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSClient::CNWSClient(uint32_t a0)
 {
     CNWSClient__CNWSClientCtor__0(this, a0);

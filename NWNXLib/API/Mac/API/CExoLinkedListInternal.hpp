@@ -16,9 +16,9 @@ struct CExoLinkedListInternal
     uint32_t m_nCount;
 
     // The below are auto generated stubs.
-    CExoLinkedListInternal();
-    CExoLinkedListInternal(const CExoLinkedListInternal&);
-    CExoLinkedListInternal& operator=(const CExoLinkedListInternal&);
+    CExoLinkedListInternal() = default;
+    CExoLinkedListInternal(const CExoLinkedListInternal&) = default;
+    CExoLinkedListInternal& operator=(const CExoLinkedListInternal&) = default;
 
     ~CExoLinkedListInternal();
     CExoLinkedListNode* AddAfter(void*, CExoLinkedListNode*);

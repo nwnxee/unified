@@ -31,8 +31,8 @@ struct CExtendedServerInfo
     int32_t m_bItemRestrict;
 
     // The below are auto generated stubs.
-    CExtendedServerInfo(const CExtendedServerInfo&);
-    CExtendedServerInfo& operator=(const CExtendedServerInfo&);
+    CExtendedServerInfo(const CExtendedServerInfo&) = default;
+    CExtendedServerInfo& operator=(const CExtendedServerInfo&) = default;
 
     CExtendedServerInfo();
     ~CExtendedServerInfo();

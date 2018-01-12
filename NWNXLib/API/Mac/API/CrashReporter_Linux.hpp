@@ -14,9 +14,9 @@ struct CrashReporter_Linux
 {
 
     // The below are auto generated stubs.
-    CrashReporter_Linux();
-    CrashReporter_Linux(const CrashReporter_Linux&);
-    CrashReporter_Linux& operator=(const CrashReporter_Linux&);
+    CrashReporter_Linux() = default;
+    CrashReporter_Linux(const CrashReporter_Linux&) = default;
+    CrashReporter_Linux& operator=(const CrashReporter_Linux&) = default;
 
     CrashReporter_Linux(void*);
     ~CrashReporter_Linux();

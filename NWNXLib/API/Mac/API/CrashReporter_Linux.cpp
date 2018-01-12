@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CrashReporter_Linux::CrashReporter_Linux()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CrashReporter_Linux::CrashReporter_Linux(const CrashReporter_Linux&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CrashReporter_Linux& CrashReporter_Linux::operator=(const CrashReporter_Linux&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CrashReporter_Linux::CrashReporter_Linux(void* a0)
 {
     CrashReporter_Linux__CrashReporter_LinuxCtor__0(this, a0);

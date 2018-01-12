@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNetLayerSessionInfo::CNetLayerSessionInfo(const CNetLayerSessionInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNetLayerSessionInfo& CNetLayerSessionInfo::operator=(const CNetLayerSessionInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNetLayerSessionInfo::CNetLayerSessionInfo()
 {
     CNetLayerSessionInfo__CNetLayerSessionInfoCtor__0(this);

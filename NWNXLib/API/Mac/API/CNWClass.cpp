@@ -10,16 +10,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWClass::CNWClass(const CNWClass&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWClass& CNWClass::operator=(const CNWClass&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWClass::CNWClass()
 {
     CNWClass__CNWClassCtor__0(this);

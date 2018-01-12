@@ -31,8 +31,8 @@ struct CNWSTile
     int32_t m_bHasPlaceableWithWalkMesh;
 
     // The below are auto generated stubs.
-    CNWSTile(const CNWSTile&);
-    CNWSTile& operator=(const CNWSTile&);
+    CNWSTile(const CNWSTile&) = default;
+    CNWSTile& operator=(const CNWSTile&) = default;
 
     CNWSTile();
     ~CNWSTile();

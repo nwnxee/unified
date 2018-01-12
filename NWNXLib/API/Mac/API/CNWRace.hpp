@@ -31,8 +31,8 @@ struct CNWRace
     uint16_t m_nDefaultAppearance;
 
     // The below are auto generated stubs.
-    CNWRace(const CNWRace&);
-    CNWRace& operator=(const CNWRace&);
+    CNWRace(const CNWRace&) = default;
+    CNWRace& operator=(const CNWRace&) = default;
 
     CNWRace();
     ~CNWRace();

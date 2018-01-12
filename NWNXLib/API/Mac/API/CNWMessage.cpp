@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWMessage::CNWMessage(const CNWMessage&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWMessage& CNWMessage::operator=(const CNWMessage&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWMessage::CNWMessage()
 {
     CNWMessage__CNWMessageCtor__0(this);

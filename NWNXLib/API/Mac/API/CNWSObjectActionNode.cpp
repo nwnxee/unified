@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSObjectActionNode::CNWSObjectActionNode(const CNWSObjectActionNode&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSObjectActionNode& CNWSObjectActionNode::operator=(const CNWSObjectActionNode&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSObjectActionNode::CNWSObjectActionNode()
 {
     CNWSObjectActionNode__CNWSObjectActionNodeCtor__0(this);

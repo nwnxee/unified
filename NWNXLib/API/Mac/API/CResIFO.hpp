@@ -13,9 +13,9 @@ struct CResIFO
 {
 
     // The below are auto generated stubs.
-    CResIFO();
-    CResIFO(const CResIFO&);
-    CResIFO& operator=(const CResIFO&);
+    CResIFO() = default;
+    CResIFO(const CResIFO&) = default;
+    CResIFO& operator=(const CResIFO&) = default;
 
     ~CResIFO();
 };

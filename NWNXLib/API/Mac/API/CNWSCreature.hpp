@@ -95,9 +95,9 @@ struct CNWSCreature
     CNWActionNode m_pActionQueue[10];
     uint8_t m_nAmbientAnimationState;
     CExoString m_sModelType;
-    uint8_t** m_nAutoMapTileData;
     CExoArrayListTemplatedlongunsignedint m_oidAutoMapAreaList;
-    int32_t m_nNumAreas;
+    uint8_t** m_nAutoMapTileData;
+    int32_t m_bAutoMapAutoExplores;
     uint8_t m_nLastExploredTileX;
     uint8_t m_nLastExploredTileY;
     uint32_t oidLastExploredArea;
@@ -269,9 +269,9 @@ struct CNWSCreature
     uint32_t m_nLastRestTimeOfDay;
 
     // The below are auto generated stubs.
-    CNWSCreature();
-    CNWSCreature(const CNWSCreature&);
-    CNWSCreature& operator=(const CNWSCreature&);
+    CNWSCreature() = default;
+    CNWSCreature(const CNWSCreature&) = default;
+    CNWSCreature& operator=(const CNWSCreature&) = default;
 
     CNWSCreature(uint32_t, int32_t, int32_t);
     ~CNWSCreature();
@@ -687,7 +687,7 @@ struct CNWSCreature
     void SetQuickbarButton_SpellLikeAbility(unsigned char, uint32_t, unsigned char);
     void SetStandardFactionReputation(int32_t, int32_t);
     void SetStealthMode(unsigned char);
-    void SetTileExplored(uint32_t, int32_t, int32_t);
+    void SetTileExplored(uint32_t, int32_t, int32_t, int32_t);
     void SignalMeleeDamage(CNWSObject*, int32_t);
     void SignalRangedDamage(CNWSObject*, int32_t);
     void SpawnInHeartbeatPerception(int32_t);
@@ -1150,7 +1150,7 @@ void CNWSCreature__SetQuickbarButton_Spell(CNWSCreature* thisPtr, unsigned char,
 void CNWSCreature__SetQuickbarButton_SpellLikeAbility(CNWSCreature* thisPtr, unsigned char, uint32_t, unsigned char);
 void CNWSCreature__SetStandardFactionReputation(CNWSCreature* thisPtr, int32_t, int32_t);
 void CNWSCreature__SetStealthMode(CNWSCreature* thisPtr, unsigned char);
-void CNWSCreature__SetTileExplored(CNWSCreature* thisPtr, uint32_t, int32_t, int32_t);
+void CNWSCreature__SetTileExplored(CNWSCreature* thisPtr, uint32_t, int32_t, int32_t, int32_t);
 void CNWSCreature__SignalMeleeDamage(CNWSCreature* thisPtr, CNWSObject*, int32_t);
 void CNWSCreature__SignalRangedDamage(CNWSCreature* thisPtr, CNWSObject*, int32_t);
 void CNWSCreature__SpawnInHeartbeatPerception(CNWSCreature* thisPtr, int32_t);

@@ -20,8 +20,8 @@ struct CNWSPlayerInventoryGUI
     CNWSPlayerContainerGUI* m_pContainerGUI;
 
     // The below are auto generated stubs.
-    CNWSPlayerInventoryGUI(const CNWSPlayerInventoryGUI&);
-    CNWSPlayerInventoryGUI& operator=(const CNWSPlayerInventoryGUI&);
+    CNWSPlayerInventoryGUI(const CNWSPlayerInventoryGUI&) = default;
+    CNWSPlayerInventoryGUI& operator=(const CNWSPlayerInventoryGUI&) = default;
 
     CNWSPlayerInventoryGUI();
     ~CNWSPlayerInventoryGUI();

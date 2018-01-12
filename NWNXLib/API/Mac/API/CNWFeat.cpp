@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWFeat::CNWFeat(const CNWFeat&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWFeat& CNWFeat::operator=(const CNWFeat&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWFeat::CNWFeat()
 {
     CNWFeat__CNWFeatCtor__0(this);

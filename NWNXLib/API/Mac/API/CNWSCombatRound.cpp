@@ -13,21 +13,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSCombatRound::CNWSCombatRound()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCombatRound::CNWSCombatRound(const CNWSCombatRound&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSCombatRound& CNWSCombatRound::operator=(const CNWSCombatRound&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSCombatRound::CNWSCombatRound(CNWSCreature* a0)
 {
     CNWSCombatRound__CNWSCombatRoundCtor__0(this, a0);

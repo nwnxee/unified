@@ -10,16 +10,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSPlayerInventoryGUI::CNWSPlayerInventoryGUI(const CNWSPlayerInventoryGUI&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSPlayerInventoryGUI& CNWSPlayerInventoryGUI::operator=(const CNWSPlayerInventoryGUI&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSPlayerInventoryGUI::CNWSPlayerInventoryGUI()
 {
     CNWSPlayerInventoryGUI__CNWSPlayerInventoryGUICtor__0(this);

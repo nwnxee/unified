@@ -17,9 +17,9 @@ struct CNWSClient
     int32_t m_nLanguage;
 
     // The below are auto generated stubs.
-    CNWSClient();
-    CNWSClient(const CNWSClient&);
-    CNWSClient& operator=(const CNWSClient&);
+    CNWSClient() = default;
+    CNWSClient(const CNWSClient&) = default;
+    CNWSClient& operator=(const CNWSClient&) = default;
 
     CNWSClient(uint32_t);
     ~CNWSClient();

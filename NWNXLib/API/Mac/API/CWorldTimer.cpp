@@ -6,16 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CWorldTimer::CWorldTimer(const CWorldTimer&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CWorldTimer& CWorldTimer::operator=(const CWorldTimer&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CWorldTimer::CWorldTimer()
 {
     CWorldTimer__CWorldTimerCtor__0(this);

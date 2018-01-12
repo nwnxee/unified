@@ -22,8 +22,8 @@ struct CNWSkill
     int32_t m_bAllClassesCanUse;
 
     // The below are auto generated stubs.
-    CNWSkill(const CNWSkill&);
-    CNWSkill& operator=(const CNWSkill&);
+    CNWSkill(const CNWSkill&) = default;
+    CNWSkill& operator=(const CNWSkill&) = default;
 
     CNWSkill();
     ~CNWSkill();

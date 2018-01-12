@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptTalent::CScriptTalent(const CScriptTalent&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptTalent& CScriptTalent::operator=(const CScriptTalent&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptTalent::CScriptTalent()
 {
     CScriptTalent__CScriptTalentCtor__0(this);

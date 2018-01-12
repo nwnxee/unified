@@ -11,21 +11,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSSoundObject::CNWSSoundObject()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSSoundObject::CNWSSoundObject(const CNWSSoundObject&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSSoundObject& CNWSSoundObject::operator=(const CNWSSoundObject&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSSoundObject::CNWSSoundObject(uint32_t a0)
 {
     CNWSSoundObject__CNWSSoundObjectCtor__0(this, a0);

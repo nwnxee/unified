@@ -31,8 +31,8 @@ struct CNWTileData
     CExoString m_sEdgeRight;
 
     // The below are auto generated stubs.
-    CNWTileData(const CNWTileData&);
-    CNWTileData& operator=(const CNWTileData&);
+    CNWTileData(const CNWTileData&) = default;
+    CNWTileData& operator=(const CNWTileData&) = default;
 
     CNWTileData();
     ~CNWTileData();

@@ -21,8 +21,8 @@ struct CCodeBaseInternal
     CExoArrayListTemplatedSCodeBaseDataPtr m_lstDataFiles;
 
     // The below are auto generated stubs.
-    CCodeBaseInternal(const CCodeBaseInternal&);
-    CCodeBaseInternal& operator=(const CCodeBaseInternal&);
+    CCodeBaseInternal(const CCodeBaseInternal&) = default;
+    CCodeBaseInternal& operator=(const CCodeBaseInternal&) = default;
 
     CCodeBaseInternal();
     ~CCodeBaseInternal();

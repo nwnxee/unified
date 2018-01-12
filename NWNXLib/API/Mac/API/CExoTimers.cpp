@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoTimers::CExoTimers(const CExoTimers&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoTimers& CExoTimers::operator=(const CExoTimers&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoTimers::CExoTimers()
 {
     CExoTimers__CExoTimersCtor__0(this);

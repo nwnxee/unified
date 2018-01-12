@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResTGA::CResTGA(const CResTGA&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CResTGA& CResTGA::operator=(const CResTGA&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResTGA::CResTGA()
 {
     CResTGA__CResTGACtor__0(this);

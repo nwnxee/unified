@@ -9,16 +9,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CScriptLocation::CScriptLocation(const CScriptLocation&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CScriptLocation& CScriptLocation::operator=(const CScriptLocation&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CScriptLocation::CScriptLocation()
 {
     CScriptLocation__CScriptLocationCtor__0(this);

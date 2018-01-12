@@ -15,16 +15,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWRules::CNWRules(const CNWRules&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWRules& CNWRules::operator=(const CNWRules&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWRules::CNWRules()
 {
     CNWRules__CNWRulesCtor__0(this);

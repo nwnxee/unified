@@ -37,8 +37,8 @@ struct CGameEffect
     CExoString m_sCustomTag;
 
     // The below are auto generated stubs.
-    CGameEffect();
-    CGameEffect(const CGameEffect&);
+    CGameEffect() = default;
+    CGameEffect(const CGameEffect&) = default;
 
     CGameEffect(int32_t);
     CGameEffect(CGameEffect*, int32_t);

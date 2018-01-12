@@ -34,8 +34,8 @@ struct CNWMessage
     uint32_t m_dwPlayerID;
 
     // The below are auto generated stubs.
-    CNWMessage(const CNWMessage&);
-    CNWMessage& operator=(const CNWMessage&);
+    CNWMessage(const CNWMessage&) = default;
+    CNWMessage& operator=(const CNWMessage&) = default;
 
     CNWMessage();
     ~CNWMessage();

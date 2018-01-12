@@ -13,16 +13,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSDialog::CNWSDialog(const CNWSDialog&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSDialog& CNWSDialog::operator=(const CNWSDialog&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSDialog::CNWSDialog()
 {
     CNWSDialog__CNWSDialogCtor__0(this);

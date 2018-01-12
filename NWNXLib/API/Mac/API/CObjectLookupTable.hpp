@@ -14,8 +14,8 @@ struct CObjectLookupTable
     int32_t m_bUpdateRequired;
 
     // The below are auto generated stubs.
-    CObjectLookupTable(const CObjectLookupTable&);
-    CObjectLookupTable& operator=(const CObjectLookupTable&);
+    CObjectLookupTable(const CObjectLookupTable&) = default;
+    CObjectLookupTable& operator=(const CObjectLookupTable&) = default;
 
     CObjectLookupTable();
     ~CObjectLookupTable();

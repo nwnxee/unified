@@ -159,9 +159,9 @@ struct CNWSCreatureStats
     CExoString m_sDeity;
 
     // The below are auto generated stubs.
-    CNWSCreatureStats();
-    CNWSCreatureStats(const CNWSCreatureStats&);
-    CNWSCreatureStats& operator=(const CNWSCreatureStats&);
+    CNWSCreatureStats() = default;
+    CNWSCreatureStats(const CNWSCreatureStats&) = default;
+    CNWSCreatureStats& operator=(const CNWSCreatureStats&) = default;
 
     CNWSCreatureStats(CNWSCreature*);
     ~CNWSCreatureStats();

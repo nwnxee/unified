@@ -6,11 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CResRef::CResRef(const CResRef&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CResRef::CResRef()
 {
     CResRef__CResRefCtor__0(this);

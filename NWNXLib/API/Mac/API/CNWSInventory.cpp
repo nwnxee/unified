@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSInventory::CNWSInventory(const CNWSInventory&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSInventory& CNWSInventory::operator=(const CNWSInventory&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSInventory::CNWSInventory()
 {
     CNWSInventory__CNWSInventoryCtor__0(this);

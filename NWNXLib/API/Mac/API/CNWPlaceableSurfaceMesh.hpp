@@ -21,8 +21,8 @@ struct CNWPlaceableSurfaceMesh
     Vector m_pvActionPoints[2];
 
     // The below are auto generated stubs.
-    CNWPlaceableSurfaceMesh(const CNWPlaceableSurfaceMesh&);
-    CNWPlaceableSurfaceMesh& operator=(const CNWPlaceableSurfaceMesh&);
+    CNWPlaceableSurfaceMesh(const CNWPlaceableSurfaceMesh&) = default;
+    CNWPlaceableSurfaceMesh& operator=(const CNWPlaceableSurfaceMesh&) = default;
 
     CNWPlaceableSurfaceMesh();
     ~CNWPlaceableSurfaceMesh();

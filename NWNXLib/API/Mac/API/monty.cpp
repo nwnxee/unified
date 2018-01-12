@@ -6,21 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-monty::monty()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-monty::monty(const monty&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-monty& monty::operator=(const monty&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 monty::~monty()
 {
     monty__montyDtor(this);

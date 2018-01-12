@@ -29,8 +29,8 @@ struct CResLTR
     int32_t m_bLoaded;
 
     // The below are auto generated stubs.
-    CResLTR(const CResLTR&);
-    CResLTR& operator=(const CResLTR&);
+    CResLTR(const CResLTR&) = default;
+    CResLTR& operator=(const CResLTR&) = default;
 
     CResLTR();
     ~CResLTR();

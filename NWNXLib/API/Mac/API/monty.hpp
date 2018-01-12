@@ -19,9 +19,9 @@ struct monty
     uint32_t N;
 
     // The below are auto generated stubs.
-    monty();
-    monty(const monty&);
-    monty& operator=(const monty&);
+    monty() = default;
+    monty(const monty&) = default;
+    monty& operator=(const monty&) = default;
 
     ~monty();
 };

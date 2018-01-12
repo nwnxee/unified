@@ -25,8 +25,8 @@ struct CScriptEvent
     CExoArrayListTemplatedlongunsignedint m_oidParamObjectID;
 
     // The below are auto generated stubs.
-    CScriptEvent(const CScriptEvent&);
-    CScriptEvent& operator=(const CScriptEvent&);
+    CScriptEvent(const CScriptEvent&) = default;
+    CScriptEvent& operator=(const CScriptEvent&) = default;
 
     CScriptEvent();
     ~CScriptEvent();

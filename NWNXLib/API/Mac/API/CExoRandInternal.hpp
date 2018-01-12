@@ -44,8 +44,8 @@ struct CExoRandInternal
     uint32_t m_nEvent5;
 
     // The below are auto generated stubs.
-    CExoRandInternal(const CExoRandInternal&);
-    CExoRandInternal& operator=(const CExoRandInternal&);
+    CExoRandInternal(const CExoRandInternal&) = default;
+    CExoRandInternal& operator=(const CExoRandInternal&) = default;
 
     CExoRandInternal();
     ~CExoRandInternal();

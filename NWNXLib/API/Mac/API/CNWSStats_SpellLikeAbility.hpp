@@ -13,8 +13,8 @@ struct CNWSStats_SpellLikeAbility
     uint8_t m_nCasterLevel;
 
     // The below are auto generated stubs.
-    CNWSStats_SpellLikeAbility(const CNWSStats_SpellLikeAbility&);
-    CNWSStats_SpellLikeAbility& operator=(const CNWSStats_SpellLikeAbility&);
+    CNWSStats_SpellLikeAbility(const CNWSStats_SpellLikeAbility&) = default;
+    CNWSStats_SpellLikeAbility& operator=(const CNWSStats_SpellLikeAbility&) = default;
 
     CNWSStats_SpellLikeAbility();
 };

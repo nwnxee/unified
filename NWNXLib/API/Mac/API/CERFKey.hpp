@@ -17,8 +17,8 @@ struct CERFKey
     uint8_t m_nUnused[2];
 
     // The below are auto generated stubs.
-    CERFKey(const CERFKey&);
-    CERFKey& operator=(const CERFKey&);
+    CERFKey(const CERFKey&) = default;
+    CERFKey& operator=(const CERFKey&) = default;
 
     CERFKey();
     ~CERFKey();

@@ -16,9 +16,9 @@ struct CExoFileInternal
     uint32_t m_nFileSize;
 
     // The below are auto generated stubs.
-    CExoFileInternal();
-    CExoFileInternal(const CExoFileInternal&);
-    CExoFileInternal& operator=(const CExoFileInternal&);
+    CExoFileInternal() = default;
+    CExoFileInternal(const CExoFileInternal&) = default;
+    CExoFileInternal& operator=(const CExoFileInternal&) = default;
 
     CExoFileInternal(const CExoString&, uint16_t, const CExoString&);
     ~CExoFileInternal();

@@ -51,8 +51,8 @@ struct CNWClass
     uint8_t m_nEpicLevel;
 
     // The below are auto generated stubs.
-    CNWClass(const CNWClass&);
-    CNWClass& operator=(const CNWClass&);
+    CNWClass(const CNWClass&) = default;
+    CNWClass& operator=(const CNWClass&) = default;
 
     CNWClass();
     ~CNWClass();

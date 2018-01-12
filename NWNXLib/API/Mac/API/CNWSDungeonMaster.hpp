@@ -15,9 +15,9 @@ struct CNWSDungeonMaster
     uint8_t m_nPossessState;
 
     // The below are auto generated stubs.
-    CNWSDungeonMaster();
-    CNWSDungeonMaster(const CNWSDungeonMaster&);
-    CNWSDungeonMaster& operator=(const CNWSDungeonMaster&);
+    CNWSDungeonMaster() = default;
+    CNWSDungeonMaster(const CNWSDungeonMaster&) = default;
+    CNWSDungeonMaster& operator=(const CNWSDungeonMaster&) = default;
 
     CNWSDungeonMaster(uint32_t);
     ~CNWSDungeonMaster();

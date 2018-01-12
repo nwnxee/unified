@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWPlaceMeshManager::CNWPlaceMeshManager(const CNWPlaceMeshManager&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWPlaceMeshManager& CNWPlaceMeshManager::operator=(const CNWPlaceMeshManager&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWPlaceMeshManager::CNWPlaceMeshManager()
 {
     CNWPlaceMeshManager__CNWPlaceMeshManagerCtor__0(this);

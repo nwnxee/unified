@@ -22,8 +22,8 @@ struct CNWSFaction
     int32_t m_bGlobalReaction;
 
     // The below are auto generated stubs.
-    CNWSFaction(const CNWSFaction&);
-    CNWSFaction& operator=(const CNWSFaction&);
+    CNWSFaction(const CNWSFaction&) = default;
+    CNWSFaction& operator=(const CNWSFaction&) = default;
 
     CNWSFaction();
     CNWSFaction(uint32_t);

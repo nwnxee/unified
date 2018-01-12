@@ -8,21 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-SMstDigiDistInfo::SMstDigiDistInfo()
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-SMstDigiDistInfo::SMstDigiDistInfo(const SMstDigiDistInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-SMstDigiDistInfo& SMstDigiDistInfo::operator=(const SMstDigiDistInfo&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 SMstDigiDistInfo::~SMstDigiDistInfo()
 {
     SMstDigiDistInfo__SMstDigiDistInfoDtor(this);

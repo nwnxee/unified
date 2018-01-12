@@ -14,9 +14,9 @@ struct CVirtualMachineCache
     CExoArrayListTemplatedCVirtualMachineFilePtr m_aFiles;
 
     // The below are auto generated stubs.
-    CVirtualMachineCache();
-    CVirtualMachineCache(const CVirtualMachineCache&);
-    CVirtualMachineCache& operator=(const CVirtualMachineCache&);
+    CVirtualMachineCache() = default;
+    CVirtualMachineCache(const CVirtualMachineCache&) = default;
+    CVirtualMachineCache& operator=(const CVirtualMachineCache&) = default;
 
     ~CVirtualMachineCache();
     void ClearAllFiles();

@@ -16,8 +16,8 @@ struct CExoLocStringInternal
     uint32_t m_nStringCount;
 
     // The below are auto generated stubs.
-    CExoLocStringInternal(const CExoLocStringInternal&);
-    CExoLocStringInternal& operator=(const CExoLocStringInternal&);
+    CExoLocStringInternal(const CExoLocStringInternal&) = default;
+    CExoLocStringInternal& operator=(const CExoLocStringInternal&) = default;
 
     CExoLocStringInternal();
     ~CExoLocStringInternal();

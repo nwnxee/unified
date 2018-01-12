@@ -32,8 +32,8 @@ struct CERFFile
     uint32_t m_nCurEntries;
 
     // The below are auto generated stubs.
-    CERFFile(const CERFFile&);
-    CERFFile& operator=(const CERFFile&);
+    CERFFile(const CERFFile&) = default;
+    CERFFile& operator=(const CERFFile&) = default;
 
     CERFFile();
     ~CERFFile();

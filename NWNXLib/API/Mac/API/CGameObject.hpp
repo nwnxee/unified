@@ -41,9 +41,9 @@ struct CGameObject
     uint8_t m_nObjectType;
 
     // The below are auto generated stubs.
-    CGameObject();
-    CGameObject(const CGameObject&);
-    CGameObject& operator=(const CGameObject&);
+    CGameObject() = default;
+    CGameObject(const CGameObject&) = default;
+    CGameObject& operator=(const CGameObject&) = default;
 
     CGameObject(unsigned char, uint32_t);
     ~CGameObject();

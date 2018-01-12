@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoRand::CExoRand(const CExoRand&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoRand& CExoRand::operator=(const CExoRand&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoRand::CExoRand()
 {
     CExoRand__CExoRandCtor__0(this);

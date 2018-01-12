@@ -13,9 +13,9 @@ struct CExoArrayListTemplatedfloat
     int32_t array_size;
 
     // The below are auto generated stubs.
-    CExoArrayListTemplatedfloat();
-    CExoArrayListTemplatedfloat(const CExoArrayListTemplatedfloat&);
-    CExoArrayListTemplatedfloat& operator=(const CExoArrayListTemplatedfloat&);
+    CExoArrayListTemplatedfloat() = default;
+    CExoArrayListTemplatedfloat(const CExoArrayListTemplatedfloat&) = default;
+    CExoArrayListTemplatedfloat& operator=(const CExoArrayListTemplatedfloat&) = default;
 
     ~CExoArrayListTemplatedfloat();
 };

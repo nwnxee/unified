@@ -10,16 +10,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CNWSTile::CNWSTile(const CNWSTile&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CNWSTile& CNWSTile::operator=(const CNWSTile&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CNWSTile::CNWSTile()
 {
     CNWSTile__CNWSTileCtor__0(this);

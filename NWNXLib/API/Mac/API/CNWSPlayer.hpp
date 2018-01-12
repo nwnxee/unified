@@ -59,9 +59,9 @@ struct CNWSPlayer
     int32_t m_bCutsceneState;
 
     // The below are auto generated stubs.
-    CNWSPlayer();
-    CNWSPlayer(const CNWSPlayer&);
-    CNWSPlayer& operator=(const CNWSPlayer&);
+    CNWSPlayer() = default;
+    CNWSPlayer(const CNWSPlayer&) = default;
+    CNWSPlayer& operator=(const CNWSPlayer&) = default;
 
     CNWSPlayer(uint32_t);
     ~CNWSPlayer();

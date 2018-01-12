@@ -17,8 +17,8 @@ struct CServerAIList
     int32_t m_nPosition;
 
     // The below are auto generated stubs.
-    CServerAIList(const CServerAIList&);
-    CServerAIList& operator=(const CServerAIList&);
+    CServerAIList(const CServerAIList&) = default;
+    CServerAIList& operator=(const CServerAIList&) = default;
 
     CServerAIList();
     ~CServerAIList();

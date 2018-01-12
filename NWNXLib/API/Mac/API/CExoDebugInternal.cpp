@@ -8,16 +8,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoDebugInternal::CExoDebugInternal(const CExoDebugInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
-CExoDebugInternal& CExoDebugInternal::operator=(const CExoDebugInternal&)
-{
-    __builtin_trap(); // This is an auto-generated stub. You probably shouldn't use it.
-}
-
 CExoDebugInternal::CExoDebugInternal()
 {
     CExoDebugInternal__CExoDebugInternalCtor__0(this);

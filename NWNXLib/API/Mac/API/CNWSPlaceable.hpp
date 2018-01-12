@@ -95,9 +95,9 @@ struct CNWSPlaceable
     int32_t m_bNeverMakeIntoStaticObject;
 
     // The below are auto generated stubs.
-    CNWSPlaceable();
-    CNWSPlaceable(const CNWSPlaceable&);
-    CNWSPlaceable& operator=(const CNWSPlaceable&);
+    CNWSPlaceable() = default;
+    CNWSPlaceable(const CNWSPlaceable&) = default;
+    CNWSPlaceable& operator=(const CNWSPlaceable&) = default;
 
     CNWSPlaceable(uint32_t);
     ~CNWSPlaceable();
