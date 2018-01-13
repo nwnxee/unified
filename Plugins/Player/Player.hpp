@@ -17,6 +17,8 @@ public:
 
 private:
     ArgumentStack ForcePlaceableExamineWindow(ArgumentStack&& args);
+    ArgumentStack StartGuiTimingBar             (ArgumentStack&& args);
+    ArgumentStack StopGuiTimingBar              (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

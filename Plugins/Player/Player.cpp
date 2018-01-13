@@ -54,6 +54,8 @@ Player::Player(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Player::func, this, std::placeholders::_1))
 
     REGISTER(ForcePlaceableExamineWindow);
+    REGISTER(StartGuiTimingBar);
+    REGISTER(StopGuiTimingBar);
 
 #undef REGISTER
 }
@@ -96,6 +98,47 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
         {
             GetServices()->m_log->Error("Unable to get CNWSMessage");
         }
+    }
+
+    return stack;
+}
+
+ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if(auto *pPlayer = player(args))
+    {
+        const uint32_t seconds = static_cast<uint32_t>(Services::Events::ExtractArgument<int32_t>(args));
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if(pMessage)
+        {
+            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, 10, seconds * 1000); // NWN method expects milliseconds.            
+        }
+        else 
+        {
+            GetServices()->m_log->Error("Unable to get CNWSMessage");
+        }
+    }
+
+    return stack;
+}
+
+ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if(auto *pPlayer = player(args))
+    {
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if(pMessage)
+        {
+            pMessage->HandlePlayerToServerInputCancelGuiTimingEvent(pPlayer);
+        }
+        else 
+        {
+            GetServices()->m_log->Error("Unable to get CNWSMessage");
+        }
+        
     }
 
     return stack;
