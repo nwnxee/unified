@@ -57,6 +57,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("READ_FULL_OBJECT_IN_ACTIVE_ROW", std::bind(&SQL::OnReadFullObjectInActiveRow, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_AFFECTED_ROWS", std::bind(&SQL::OnGetAffectedRows, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_DATABASE_TYPE", std::bind(&SQL::OnGetDatabaseType, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("DESTROY_PREPARED_QUERY", std::bind(&SQL::OnDestroyPreparedQuery, this, std::placeholders::_1));
 
     m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
 
@@ -193,28 +194,60 @@ Events::ArgumentStack SQL::OnPreparedInt(Events::ArgumentStack&& args)
 {
     int32_t position = Events::ExtractArgument<int32_t>(args);
     int32_t value = Events::ExtractArgument<int32_t>(args);
-    m_target->PrepareInt(position, value);
+    if (position >= m_target->GetPreparedQueryParamCount())
+    {
+        GetServices()->m_log->Warning("Prepared argument (pos:%d, value:0x%08x) out of bounds",
+            position, value);
+    }
+    else
+    {
+        m_target->PrepareInt(position, value);
+    }
     return Events::ArgumentStack();
 }
 Events::ArgumentStack SQL::OnPreparedString(Events::ArgumentStack&& args)
 {
     int32_t position = Events::ExtractArgument<int32_t>(args);
     std::string value = Events::ExtractArgument<std::string>(args);
-    m_target->PrepareString(position, value);
+    if (position >= m_target->GetPreparedQueryParamCount())
+    {
+        GetServices()->m_log->Warning("Prepared argument (pos:%d, value:'%s') out of bounds",
+            position, value.c_str());
+    }
+    else
+    {
+        m_target->PrepareString(position, value);
+    }
     return Events::ArgumentStack();
 }
 Events::ArgumentStack SQL::OnPreparedFloat(Events::ArgumentStack&& args)
 {
     int32_t position = Events::ExtractArgument<int32_t>(args);
     float value = Events::ExtractArgument<float>(args);
-    m_target->PrepareFloat(position, value);
+    if (position >= m_target->GetPreparedQueryParamCount())
+    {
+        GetServices()->m_log->Warning("Prepared argument (pos:%d, value:'%f') out of bounds",
+            position, value);
+    }
+    else
+    {
+        m_target->PrepareFloat(position, value);
+    }
     return Events::ArgumentStack();
 }
 Events::ArgumentStack SQL::OnPreparedObjectId(Events::ArgumentStack&& args)
 {
     int32_t position = Events::ExtractArgument<int32_t>(args);
     API::Types::ObjectID value = Events::ExtractArgument<API::Types::ObjectID>(args);
-    m_target->PrepareInt(position, static_cast<int32_t>(value));
+    if (position >= m_target->GetPreparedQueryParamCount())
+    {
+        GetServices()->m_log->Warning("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds",
+            position, static_cast<int32_t>(value));
+    }
+    else
+    {
+        m_target->PrepareInt(position, static_cast<int32_t>(value));
+    }
     return Events::ArgumentStack();
 }
 Events::ArgumentStack SQL::OnPreparedObjectFull(Events::ArgumentStack&& args)
@@ -222,8 +255,16 @@ Events::ArgumentStack SQL::OnPreparedObjectFull(Events::ArgumentStack&& args)
     int32_t position = Events::ExtractArgument<int32_t>(args);
     API::Types::ObjectID value = Events::ExtractArgument<API::Types::ObjectID>(args);
 
-    API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
-    m_target->PrepareString(position, SerializeGameObjectB64(pObject));
+    if (position >= m_target->GetPreparedQueryParamCount())
+    {
+        GetServices()->m_log->Warning("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds",
+            position, static_cast<int32_t>(value));
+    }
+    else
+    {
+        API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
+        m_target->PrepareString(position, SerializeGameObjectB64(pObject));
+    }
     return Events::ArgumentStack();
 }
 
@@ -272,6 +313,12 @@ Events::ArgumentStack SQL::OnGetDatabaseType(Events::ArgumentStack&&)
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, GetServices()->m_config->Get<std::string>("TYPE", "MYSQL"));
     return stack;
+}
+
+Events::ArgumentStack SQL::OnDestroyPreparedQuery(Events::ArgumentStack&&)
+{
+    m_target->DestroyPreparedQuery();
+    return Events::ArgumentStack();
 }
 
 }

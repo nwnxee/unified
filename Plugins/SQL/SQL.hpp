@@ -27,6 +27,7 @@ public:
     NWNXLib::Services::Events::ArgumentStack OnReadFullObjectInActiveRow(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetAffectedRows(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetDatabaseType(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnDestroyPreparedQuery(NWNXLib::Services::Events::ArgumentStack&& args);
 private:
     std::unique_ptr<ITarget> m_target;
     Query m_activeQuery;

@@ -23,6 +23,8 @@ public:
     virtual void PrepareString(int32_t position, const std::string& value) override;
     virtual int  GetAffectedRows() override;
     virtual std::string GetLastError() override;
+    virtual int32_t GetPreparedQueryParamCount() override;
+    virtual void DestroyPreparedQuery() override;
 
 
 private:
