@@ -149,7 +149,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
     else
     {
         GetServices()->m_log->Warning("Failed SQL query. Query ID: '%i', Query: '%s'.",
-            queryId, m_activeQuery.c_str(), m_activeResults.size());
+            queryId, m_activeQuery.c_str());
         std::string lastError = m_target->GetLastError();
         GetServices()->m_log->Warning("Failure Message. Query ID: '%i', \"%s\"",
             queryId, lastError.c_str());
