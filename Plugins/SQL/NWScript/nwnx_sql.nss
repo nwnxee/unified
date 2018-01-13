@@ -48,6 +48,10 @@ int NWNX_SQL_GetAffectedRows();
 // Return the database type we're interacting with (same value as the value of NWNX_SQL_TYPE environment var)
 string NWNX_SQL_GetDatabaseType();
 
+// Free any resources attached to an existing prepared query.
+// Resources are automatically freed when a new query is prepared, so calling this isn't necessary.
+void NWNX_SQL_DestroyPreparedQuery();
+
 int NWNX_SQL_PrepareQuery(string query)
 {
     NWNX_PushArgumentString("NWNX_SQL", "PREPARE_QUERY", query);
@@ -65,7 +69,11 @@ int NWNX_SQL_ExecuteQuery(string query)
 {
     // Note: the implementation might change as support for more SQL targets arrives.
     if (NWNX_SQL_PrepareQuery(query))
-        return NWNX_SQL_ExecutePreparedQuery();
+    {
+        int ret = NWNX_SQL_ExecutePreparedQuery();
+        NWNX_SQL_DestroyPreparedQuery();
+        return ret;
+    }
 
     return FALSE;
 }
@@ -134,7 +142,7 @@ object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_
     return NWNX_GetReturnValueObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
 }
 
-int NWNX_SQL_GetAffectedRows() 
+int NWNX_SQL_GetAffectedRows()
 {
     NWNX_CallFunction("NWNX_SQL", "GET_AFFECTED_ROWS");
     return NWNX_GetReturnValueInt("NWNX_SQL", "GET_AFFECTED_ROWS");
@@ -145,5 +153,9 @@ string NWNX_SQL_GetDatabaseType()
     NWNX_CallFunction("NWNX_SQL", "GET_DATABASE_TYPE");
     return NWNX_GetReturnValueString("NWNX_SQL", "GET_DATABASE_TYPE");
 }
-    
+
+void NWNX_SQL_DestroyPreparedQuery()
+{
+    NWNX_CallFunction("NWNX_SQL", "DESTROY_PREPARED_QUERY");
+}
 
