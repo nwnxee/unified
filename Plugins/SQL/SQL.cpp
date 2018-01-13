@@ -58,6 +58,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("GET_AFFECTED_ROWS", std::bind(&SQL::OnGetAffectedRows, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_DATABASE_TYPE", std::bind(&SQL::OnGetDatabaseType, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("DESTROY_PREPARED_QUERY", std::bind(&SQL::OnDestroyPreparedQuery, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("GET_LAST_ERROR", std::bind(&SQL::OnGetLastError, this, std::placeholders::_1));
 
     m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
 
@@ -319,6 +320,13 @@ Events::ArgumentStack SQL::OnDestroyPreparedQuery(Events::ArgumentStack&&)
 {
     m_target->DestroyPreparedQuery();
     return Events::ArgumentStack();
+}
+
+Events::ArgumentStack SQL::OnGetLastError(Events::ArgumentStack&&)
+{
+    Events::ArgumentStack stack;
+    Events::InsertArgument(stack, m_target->GetLastError());
+    return stack;
 }
 
 }
