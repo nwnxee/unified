@@ -5,7 +5,7 @@ void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable);
 
 // Starts displaying a timing bar.
 // Will run a script at the end of the timing bar, if specified.
-void NWNX_Player_StartGuiTimingBar(object player, int seconds, string script = "");
+void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "");
 
 // Stops displaying a timing bar.
 // Runs a script if specified.
@@ -22,15 +22,15 @@ void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_StartGuiTimingBar(object player, int seconds, string script = "")
+void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "")
 {
     string sFunc = "StartGuiTimingBar";
-    NWNX_PushArgumentInt(NWNX_Player, sFunc, seconds);
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, seconds);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
 
-    DelayCommand(IntToFloat(seconds), NWNX_Player_StopGuiTimingBar(player, script));
+    DelayCommand(seconds, NWNX_Player_StopGuiTimingBar(player, script));
 }
 
 void NWNX_Player_StopGuiTimingBar(object player, string script = "")

@@ -108,12 +108,13 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
     ArgumentStack stack;
     if(auto *pPlayer = player(args))
     {
-        const uint32_t seconds = static_cast<uint32_t>(Services::Events::ExtractArgument<int32_t>(args));
+        const float seconds = Services::Events::ExtractArgument<float>(args);
+        const uint32_t milliseconds = static_cast<uint32_t>(seconds * 1000.0f); // NWN expects milliseconds.
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if(pMessage)
         {
-            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, 10, seconds * 1000); // NWN method expects milliseconds.            
+            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, 10, milliseconds);
         }
         else 
         {
@@ -132,7 +133,7 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if(pMessage)
         {
-            pMessage->HandlePlayerToServerInputCancelGuiTimingEvent(pPlayer);
+            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
         }
         else 
         {
