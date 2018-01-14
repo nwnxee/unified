@@ -9,7 +9,7 @@ void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script =
 
 // Stops displaying a timing bar.
 // Runs a script if specified.
-void NWNX_Player_StopGuiTimingBar(object player, string script = "");
+void NWNX_Player_StopGuiTimingBar(object player, string script = "", int id = -1);
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -24,17 +24,36 @@ void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 
 void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "")
 {
+    // only one timing bar at a time!
+    if (GetLocalInt(player, "GUI_TIMING_ACTIVE"))
+        return;
+
     string sFunc = "StartGuiTimingBar";
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, seconds);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
 
-    DelayCommand(seconds, NWNX_Player_StopGuiTimingBar(player, script));
+    int id = GetLocalInt(player, "GUI_TIMING_ID") + 1;
+    SetLocalInt(player, "GUI_TIMING_ACTIVE", id);
+    SetLocalInt(player, "GUI_TIMING_ID", id);
+
+    DelayCommand(seconds, NWNX_Player_StopGuiTimingBar(player, script, id));
 }
 
-void NWNX_Player_StopGuiTimingBar(object player, string script = "")
+void NWNX_Player_StopGuiTimingBar(object player, string script = "", int id = -1)
 {
+    int activeId = GetLocalInt(player, "GUI_TIMING_ACTIVE");
+    // Either the timing event was never started, or it already finished.
+    if (activeId == 0)
+        return;
+
+    // If id != -1, we ended up here through DelayCommand. Make sure it's for the right ID
+    if (id != -1 && id != activeId)
+        return;
+
+    DeleteLocalInt(player, "GUI_TIMING_ACTIVE");
+
     string sFunc = "StopGuiTimingBar";
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
     NWNX_CallFunction(NWNX_Player, sFunc);
