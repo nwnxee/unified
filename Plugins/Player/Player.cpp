@@ -9,6 +9,11 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
+#include "API/CNWSObject.hpp"
+#include "API/CGameObject.hpp"
+#include "API/CNWSScriptVar.hpp"
+#include "API/CNWSScriptVarTable.hpp"
+#include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
 //#include "API/CNWSCreatureStats.hpp"
 //#include "API/CNWLevelStats.hpp"
 //#include "API/CNWSStats_Spell.hpp"
@@ -16,6 +21,7 @@
 //#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/Functions.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
@@ -58,6 +64,11 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(StopGuiTimingBar);
 
 #undef REGISTER
+
+    GetServices()->m_hooks->RequestSharedHook
+        <Functions::CNWSMessage__HandlePlayerToServerInputCancelGuiTimingEvent,
+            void, CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerInputCancelGuiTimingEventHook);
+
 }
 
 Player::~Player()
@@ -145,4 +156,23 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
     return stack;
 }
 
+
+void Player::HandlePlayerToServerInputCancelGuiTimingEventHook(Services::Hooks::CallType type, CNWSMessage* pMessage, CNWSPlayer* pPlayer)
+{
+    // Before or after doesn't matter, just pick one so it happens only once
+    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    {
+        CNWSObject *pGameObject = static_cast<CNWSObject*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(pPlayer->m_oidPCObject));
+
+        CExoString varName = "GUI_TIMING_ACTIVE";
+        int32_t id = pGameObject->m_ScriptVars.GetInt(varName);
+
+        if (id > 0)
+        {
+            g_plugin->GetServices()->m_log->Debug("Cancelling GUI timing event id %d...", id);
+            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
+            pGameObject->m_ScriptVars.DestroyInt(varName);
+        }
+    }
+}
 }
