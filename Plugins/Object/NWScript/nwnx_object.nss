@@ -106,6 +106,8 @@ string NWNX_Object_Serialize(object obj);
 // needs to be manually positioned at a location/inventory.
 object NWNX_Object_Deserialize(string serialized);
 
+// Returns the dialog resref of the object.
+object NWNX_Object_GetDialogResref(object obj);
 
 const string NWNX_Object = "NWNX_Object";
 
@@ -235,4 +237,15 @@ object NWNX_Object_Deserialize(string serialized)
 
     NWNX_CallFunction(NWNX_Object, sFunc);
     return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
+}
+
+
+string NWNX_Object_GetDialogResref(object obj)
+{
+    string sFunc = "GetDialogResref";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
 }

@@ -71,6 +71,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetPortrait);
     REGISTER(Serialize);
     REGISTER(Deserialize);
+    REGISTER(GetDialogResref);
 
 #undef REGISTER
 }
@@ -369,4 +370,22 @@ ArgumentStack Object::Deserialize(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retval = "";
+    if (auto *pObject = object(args))
+    {    
+        if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
+            retval = static_cast<CNWSCreature*>(pObject)->GetDialogResref().GetResRefStr();
+        else if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
+            retval = static_cast<CNWSPlaceable*>(pObject)->GetDialogResref().GetResRefStr();
+        else if(pObject->m_nObjectType == Constants::OBJECT_TYPE_DOOR)
+            retval = static_cast<CNWSDoor*>(pObject)->GetDialogResref().GetResRefStr();
+        else
+            retval = pObject->GetDialogResref().GetResRefStr();
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
 }

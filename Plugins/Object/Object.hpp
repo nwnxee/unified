@@ -28,6 +28,7 @@ private:
     ArgumentStack SetPortrait          (ArgumentStack&& args);
     ArgumentStack Serialize            (ArgumentStack&& args);
     ArgumentStack Deserialize          (ArgumentStack&& args);
+    ArgumentStack GetDialogResref      (ArgumentStack&& args);
 
     NWNXLib::API::CNWSObject *object(ArgumentStack& args);
 
