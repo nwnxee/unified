@@ -63,6 +63,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     REGISTER("GET_DATABASE_TYPE",              OnGetDatabaseType);
     REGISTER("DESTROY_PREPARED_QUERY",         OnDestroyPreparedQuery);
     REGISTER("GET_LAST_ERROR",                 OnGetLastError);
+    REGISTER("GET_PREPARED_QUERY_PARAM_COUNT", OnGetPreparedQueryParamCount);
 #undef REGISTER
 
     m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
@@ -341,6 +342,14 @@ Events::ArgumentStack SQL::OnGetLastError(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, m_target->GetLastError());
+    return stack;
+}
+
+
+Events::ArgumentStack SQL::OnGetPreparedQueryParamCount(Events::ArgumentStack&&)
+{
+    Events::ArgumentStack stack;
+    Events::InsertArgument(stack, m_queryPrepared ? m_target->GetPreparedQueryParamCount() : -1);
     return stack;
 }
 

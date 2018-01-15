@@ -62,6 +62,7 @@ void main()
 
     b = NWNX_SQL_PrepareQuery(sInsert);
     report("Complex PrepareQuery", b);
+    report("GetPreparedQueryParamCount", NWNX_SQL_GetPreparedQueryParamCount() == 5);
 
     NWNX_SQL_PreparedInt(0, 42);
     NWNX_SQL_PreparedFloat(1, 0.42);
