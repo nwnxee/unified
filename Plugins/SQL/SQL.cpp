@@ -107,12 +107,22 @@ Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
     m_activeQuery = Events::ExtractArgument<std::string>(args);
     m_activeResults = ResultSet();
 
-    Events::InsertArgument(stack, static_cast<int32_t>(m_target->PrepareQuery(m_activeQuery)));
+    m_queryPrepared = m_target->PrepareQuery(m_activeQuery);
+    Events::InsertArgument(stack, static_cast<int32_t>(m_queryPrepared));
     return stack;
 }
 
 Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
 {
+    Events::ArgumentStack stack;
+
+    if (!m_queryPrepared)
+    {
+        GetServices()->m_log->Warning("Trying to execute prepared query without successful PrepareQuery() call");
+        Events::InsertArgument(stack, 0);
+        return stack;
+    }
+
     const int32_t queryId = ++m_nextQueryId;
 
     Maybe<ResultSet> query;
@@ -138,7 +148,6 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
 
     const bool querySucceeded = query;
 
-    Events::ArgumentStack stack;
     Events::InsertArgument(stack, querySucceeded ? queryId : 0);
     m_activeResults = query.Extract(ResultSet());
 
@@ -319,6 +328,7 @@ Events::ArgumentStack SQL::OnGetDatabaseType(Events::ArgumentStack&&)
 Events::ArgumentStack SQL::OnDestroyPreparedQuery(Events::ArgumentStack&&)
 {
     m_target->DestroyPreparedQuery();
+    m_queryPrepared = false;
     return Events::ArgumentStack();
 }
 

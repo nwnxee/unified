@@ -36,6 +36,7 @@ private:
     ResultRow m_activeRow;
     int32_t m_nextQueryId;
     bool m_queryMetrics;
+    bool m_queryPrepared;
 };
 
 }
