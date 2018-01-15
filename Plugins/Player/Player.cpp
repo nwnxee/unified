@@ -164,7 +164,7 @@ void Player::HandlePlayerToServerInputCancelGuiTimingEventHook(Services::Hooks::
     {
         CNWSObject *pGameObject = static_cast<CNWSObject*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(pPlayer->m_oidPCObject));
 
-        CExoString varName = "GUI_TIMING_ACTIVE";
+        CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
         int32_t id = pGameObject->m_ScriptVars.GetInt(varName);
 
         if (id > 0)
