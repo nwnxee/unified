@@ -37,8 +37,12 @@ if [ ${CLEAN} == 0 ]; then
 fi
 
 mkdir ./build-nwnx
-cd ./build-nwnx
+pushd ./build-nwnx
 
 cmake -D CMAKE_BUILD_TYPE=RelWithDebInfo ..
 
 make ${JOBS} all
+
+popd
+
+./Scripts/packageNWScript.sh
