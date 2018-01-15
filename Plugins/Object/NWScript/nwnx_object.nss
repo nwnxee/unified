@@ -1,5 +1,30 @@
 #include "nwnx"
 
+// Area event handlers
+const int NWNX_OBJECT_SCRIPT_AREA_ON_HEARTBEAT                  = 0;
+const int NWNX_OBJECT_SCRIPT_AREA_ON_USER_DEFINED               = 1;
+const int NWNX_OBJECT_SCRIPT_AREA_ON_ENTER                      = 2;
+const int NWNX_OBJECT_SCRIPT_AREA_ON_EXIT                       = 3;
+
+// Module event handlers
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_HEARTBEAT                = 0;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_USER_DEFINED             = 1;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_LOAD                     = 2;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_ENTER                    = 4;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_LEAVE                    = 5;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_ACTIVATE                 = 6;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_ACQUIRE                  = 7;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_UNACQUIRE                = 8;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_DEATH                    = 9;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_DYING                    = 10;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_RESPAWN                  = 11;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_REST                     = 12;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_LEVEL_UP                 = 13;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_CUTSCENE_ABORT           = 14;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_EQUIP_ITEM               = 15;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_UNEQUIP_ITEM             = 16;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_PLAYER_CHAT              = 17;
+
 // Creature event handlers
 const int NWNX_OBJECT_SCRIPT_CREATURE_ON_HEARTBEAT              = 0;
 const int NWNX_OBJECT_SCRIPT_CREATURE_ON_NOTICE                 = 1;
@@ -81,6 +106,8 @@ string NWNX_Object_Serialize(object obj);
 // needs to be manually positioned at a location/inventory.
 object NWNX_Object_Deserialize(string serialized);
 
+// Returns the dialog resref of the object.
+object NWNX_Object_GetDialogResref(object obj);
 
 const string NWNX_Object = "NWNX_Object";
 
@@ -210,4 +237,15 @@ object NWNX_Object_Deserialize(string serialized)
 
     NWNX_CallFunction(NWNX_Object, sFunc);
     return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
+}
+
+
+string NWNX_Object_GetDialogResref(object obj)
+{
+    string sFunc = "GetDialogResref";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
 }
