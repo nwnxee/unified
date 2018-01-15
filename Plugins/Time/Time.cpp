@@ -66,10 +66,10 @@ ArgumentStack Time::GetTimeStamp(ArgumentStack&& args)
     ArgumentStack stack;
 
     auto now = std::chrono::system_clock::now();
-	auto dur = now.time_since_epoch();
+    auto dur = now.time_since_epoch();
 
-	auto seconds = std::chrono::duration_cast<std::chrono::seconds>(dur).count();
-	
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(dur).count();
+    
 
     Services::Events::InsertArgument(stack, (int)seconds);
     return stack;
