@@ -27,6 +27,8 @@ struct ITarget
     virtual void PrepareString(int32_t position, const std::string& value) = 0;
     virtual int  GetAffectedRows() = 0;
     virtual std::string GetLastError() = 0;
+    virtual int32_t GetPreparedQueryParamCount() = 0;
+    virtual void DestroyPreparedQuery() = 0;
 
 };
 

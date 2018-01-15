@@ -137,7 +137,6 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
         }
         delete [] paramValues;
     }
-    m_params.clear();
 
     // Rows returned - collect and pass on
     if (PQresultStatus(res) == PGRES_TUPLES_OK)
@@ -195,29 +194,14 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 // Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
-    // after the execute, the parameteres are cleared.  If a new batch of parameters
-    // for another execute is loaded, make sure there is space to put them.
-    // (same for the other two Prepare* functions).
-    if (m_params.size() < m_paramCount)
-    {
-        m_params.resize(m_paramCount);
-    }
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
-    if (m_params.size() < m_paramCount)
-    {
-        m_params.resize(m_paramCount);
-    }
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
-    if (m_params.size() < m_paramCount)
-    {
-        m_params.resize(m_paramCount);
-    }
     m_params[position] = value;
 }
 
@@ -233,6 +217,20 @@ std::string PostgreSQL::GetLastError()
     std::string temp = m_lastError;
     m_lastError.clear();
     return temp;
+}
+
+int32_t MySQL::GetPreparedQueryParamCount()
+{
+    return m_paramCount;
+}
+
+void PostgreSQL::DestroyPreparedQuery()
+{
+    // No way or need to deallocate the anonymous prepared statement in PgSQL.
+
+    // Force deallocation
+    std::vector<std::string>().swap(m_params);
+    m_paramCount = 0;
 }
 
 }

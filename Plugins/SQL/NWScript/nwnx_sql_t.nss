@@ -12,15 +12,16 @@ void report(string func, int bSuccess)
 
 void cleanup()
 {
-    int b = NWNX_SQL_ExecuteQuery("DROP TABLE sql_test");
-    report("ExecuteQuery", b);
+    report("Cleanup sql_test",    NWNX_SQL_ExecuteQuery("DROP TABLE sql_test"));
+    report("Cleanup stress_test", NWNX_SQL_ExecuteQuery("DROP TABLE stress_test"));
+    report("Cleanup error_test",  NWNX_SQL_ExecuteQuery("DROP TABLE error_test"));
 }
 
 void main()
 {
     WriteTimestampedLogEntry("NWNX_SQL unit test begin..");
 
-    string db_type = NWNX_SQL_GetDatabaseType();
+    string db_type = GetStringUpperCase(NWNX_SQL_GetDatabaseType());
     WriteTimestampedLogEntry("Testing database " + db_type);
 
     string sCreate = "";
@@ -61,6 +62,7 @@ void main()
 
     b = NWNX_SQL_PrepareQuery(sInsert);
     report("Complex PrepareQuery", b);
+    report("GetPreparedQueryParamCount", NWNX_SQL_GetPreparedQueryParamCount() == 5);
 
     NWNX_SQL_PreparedInt(0, 42);
     NWNX_SQL_PreparedFloat(1, 0.42);
@@ -155,7 +157,7 @@ void main()
     }
 
     int STRESS_CNT = 10;
-    
+
     WriteTimestampedLogEntry("NWNX_SQL stress test.");
     NWNX_SQL_ExecuteQuery("create table stress_test ( i_key int, i_int int, s_text varchar(8))");
     int i;
@@ -180,7 +182,7 @@ void main()
     {
         test3 = "insert into stress_test values ( $1, $2, $3 )";
     }
-    
+
     NWNX_SQL_PrepareQuery(test3);
     for ( i = 1 ; i <= STRESS_CNT ; i++ )
     {
@@ -195,7 +197,33 @@ void main()
     WriteTimestampedLogEntry("Deleted " + IntToString(res) + " rows.");
     report ("Delete rows", res == STRESS_CNT);
 
-    NWNX_SQL_ExecuteQuery("drop table stress_test");
+    // Test some error output.
+    b = NWNX_SQL_ExecuteQuery("create table error_test (col varchar(10))");
+    report ("Test Table Create", b);
+
+    b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcdefghij')");
+    report ("good insert", b);
+
+    b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcde000fghij')");
+    report ("bad insert", !b);
+    if (!b) {
+       WriteTimestampedLogEntry("There should be an error a couple rows up.");
+    }
+
+    string test4 = "";
+    if (db_type == "MYSQL")
+    {
+        test3 = "insert into error_test values ( ? )";
+    }
+    if (db_type == "POSTGRESQL")
+    {
+        test3 = "insert into error_test values ( $1 )";
+    }
+    NWNX_SQL_PrepareQuery(test3);
+    NWNX_SQL_PreparedString(100, "lala"); // out of bounds, must not crash.
+
+    report("Negative prepare query", NWNX_SQL_PrepareQuery("not a valid query!") == 0);
+    report("GetLastError", NWNX_SQL_GetLastError() != "");
 
     cleanup();
     WriteTimestampedLogEntry("Testing database " + db_type + " complete.");

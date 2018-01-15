@@ -27,6 +27,9 @@ public:
     NWNXLib::Services::Events::ArgumentStack OnReadFullObjectInActiveRow(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetAffectedRows(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetDatabaseType(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnDestroyPreparedQuery(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnGetLastError(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnGetPreparedQueryParamCount(NWNXLib::Services::Events::ArgumentStack&& args);
 private:
     std::unique_ptr<ITarget> m_target;
     Query m_activeQuery;
@@ -34,6 +37,7 @@ private:
     ResultRow m_activeRow;
     int32_t m_nextQueryId;
     bool m_queryMetrics;
+    bool m_queryPrepared;
 };
 
 }
