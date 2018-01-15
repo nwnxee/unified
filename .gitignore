@@ -26,4 +26,5 @@ CTestTestfile.cmake
 *.app
 .idea/
 .vscode/
-*.zip
+Binaries/
+build-nwnx/
