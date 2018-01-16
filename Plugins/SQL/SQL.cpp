@@ -124,7 +124,9 @@ bool SQL::Reconnect(int32_t attempts)
         {
             GetServices()->m_log->Error("Reconnect attempt %d out of %d failed: %s",
                 i+1, attempts, e.what());
-            std::this_thread::sleep_for(std::chrono::milliseconds(1 << i));
+
+            if (i != attempts - 1)
+                std::this_thread::sleep_for(std::chrono::milliseconds(1 << i));
         }
     }
     return m_target->IsConnected();
