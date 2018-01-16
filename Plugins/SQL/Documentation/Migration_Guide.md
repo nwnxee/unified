@@ -66,8 +66,8 @@ int SomeUsefulFunction(object oPC, object oBoard)
     string sFeedback = "Kill list\n";
     int i = 0;
     
-    // ExecuteQuery returns boolean success/failure.  On failure, you should not attempt to 
-    // do anything further with that query (binding, reading rows, testing for text rows, etc.).
+    // ExecuteQuery returns boolean success/failure.  Checking for failure is optional, but 
+    // gives you the opportunity to recover from the failrue.
     int ret = NWNX_SQL_ExecuteQuery(sql);
     if (ret) {
         while (NWNX_SQL_ReadyToReadNextRow())
@@ -79,6 +79,9 @@ int SomeUsefulFunction(object oPC, object oBoard)
             sFeedback += NWNX_SQL_ReadDataInActiveRow(0) + " \n";
             i++;
         }
+    }
+    else {
+        // report failure?  log message, broadcast to DMs, etc.
     }
 
     if (i == 0) 
@@ -107,7 +110,8 @@ int SomeUsefulFunction(object oPC, object oBoard)
     // returns boolean success/failure.
     int ret = NWNX_SQL_PrepareQuery(sql);
     if (ret) {
-        // if the prepare fails, continuting on with binding and execution can cause bad things to happen.
+        // if the prepare fails, continuting on with binding and execution should not cause a server abort
+        // but checking return codes gives you the option to recover and/or report the failure.
         NWNX_SQL_PreparedString(0, sPlayerAccount);
         NWNX_SQL_PreparedString(1, sPCName);
         ret = NWNX_SQL_ExecutePreparedQuery();
@@ -122,6 +126,12 @@ int SomeUsefulFunction(object oPC, object oBoard)
                 i++;
             }
         }
+        else {
+            // execute failed?  report or handle as necessary.
+        }
+    }
+    else {
+        // report/log failure?
     }
 
     if (i == 0) 
@@ -141,12 +151,14 @@ void main()
 {
     WriteTimestampedLogEntry("Multi-Platform example..");
 
-    //GetDatabaseType returns the same name used in the NWNX_SQL_TYPE environment variable.
-    string db_type = NWNX_SQL_GetDatabaseType();
+    // GetDatabaseType returns the same name used in the NWNX_SQL_TYPE environment variable.
+    // Environment var is not case sensitive, so normalize to upper case.
+    string db_type = GetStringUpperCase(NWNX_SQL_GetDatabaseType());
 
     /* MySQL version */
     if (db_type == "MYSQL")
     {
+        // text column definition differs slightly
         sCreate = "CREATE TABLE sql_test (" +
                   "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
                   "colObjId INT, colObj TEXT(1000000) );";
@@ -157,6 +169,7 @@ void main()
     /* PostgreSQL version */
     if (db_type == "POSTGRESQL")
     {
+        // text column definition differs slightly
         sCreate = "CREATE TABLE sql_test (" +
                   "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
                   "colObjId INT, colObj TEXT );";
