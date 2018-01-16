@@ -26,4 +26,13 @@ export NWNX_SQL_SKIP=N
 
 ## Plugin Log Level
 
-TBD
+The defult plugin log level is the same as the overall Core logging level.
+
+It can be changed, however, by assinging a value to ``NWNX_<x>_LOG_LEVEL`` (where <x> is the plugin name in all caps) in the same manner as the Core logging level.
+See the Core documentation for a description of available logging levels.
+
+__Example__
+```
+# Set the sql plugin to warning and above (warning, error, and fatal only)
+export NWNX_SQL_LOG_LEVEL=4
+```
