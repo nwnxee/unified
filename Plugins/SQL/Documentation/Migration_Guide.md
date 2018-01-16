@@ -132,7 +132,7 @@ int SomeUsefulFunction(object oPC, object oBoard)
 
 ```
 
-###Multi-Platform Support
+### Multi-Platform Support
 
 There is a function to retrieve the specfic database type to enable multi-platform support through conditional logic.
 
@@ -172,17 +172,12 @@ void main()
         return;
     }
     
-    object o = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
-    if (!GetIsObjectValid(o))
-    {
-        WriteTimestampedLogEntry("No chicken for you");
-        NWNX_SQL_ExecuteQuery("drop table sql_test");
-        return;
-    }
-
     b = NWNX_SQL_PrepareQuery(sInsert);
-    report("Complex PrepareQuery", b);
-
+    if (!b) {
+        WriteTimestampedLogEntry("Object insert failed.");
+        // cleanup if necessary.
+    }
+    
     ...
     // etc., etc.
     
