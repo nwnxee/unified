@@ -13,6 +13,7 @@
 #include "API/CNWSItem.hpp" // Needed for static_cast from CGameObject
 #include <algorithm>
 #include <chrono>
+#include <thread>
 #include <cstring>
 
 using namespace NWNXLib;
@@ -107,12 +108,39 @@ SQL::~SQL()
 {
 }
 
+bool SQL::Reconnect(int32_t attempts)
+{
+    GetServices()->m_log->Warning("Database connection lost. Reconnecting..");
+
+    for (int32_t i = 0; i < attempts; i++)
+    {
+        try
+        {
+            m_target->Connect(GetServices()->m_config);
+            GetServices()->m_log->Notice("Reconnect successful.");
+        }
+        catch (std::runtime_error& e)
+        {
+            GetServices()->m_log->Error("Reconnect attempt %d out of %d failed: %s",
+                i+1, attempts, e.what());
+            std::this_thread::sleep_for(std::chrono::milliseconds(1 << i));
+        }
+    }
+    return m_target->IsConnected();
+}
+
 Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
 
     m_activeQuery = Events::ExtractArgument<std::string>(args);
     m_activeResults = ResultSet();
+
+    if (!m_target->IsConnected() && !Reconnect(3))
+    {
+        Events::InsertArgument(stack, 0);
+        return stack;
+    }
 
     m_queryPrepared = m_target->PrepareQuery(m_activeQuery);
     Events::InsertArgument(stack, static_cast<int32_t>(m_queryPrepared));
@@ -128,6 +156,29 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
         GetServices()->m_log->Warning("Trying to execute prepared query without successful PrepareQuery() call");
         Events::InsertArgument(stack, 0);
         return stack;
+    }
+
+    if (!m_target->IsConnected())
+    {
+        if (!Reconnect())
+        {
+            GetServices()->m_log->Warning("Database connection lost. Aborting.");
+            Events::InsertArgument(stack, 0);
+            return stack;
+        }
+        else
+        {
+            // Prepared queries are lost on reconnect.
+            // Prepared arguments are not, however, so we can still recover
+            if (!m_target->PrepareQuery(m_activeQuery))
+            {
+                GetServices()->m_log->Error("Recovery PrepareQuery() failed: %s",
+                    m_target->GetLastError());
+                Events::InsertArgument(stack, 0);
+                return stack;
+            }
+
+        }
     }
 
     const int32_t queryId = ++m_nextQueryId;

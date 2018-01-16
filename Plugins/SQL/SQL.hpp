@@ -31,6 +31,8 @@ public:
     NWNXLib::Services::Events::ArgumentStack OnGetLastError(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetPreparedQueryParamCount(NWNXLib::Services::Events::ArgumentStack&& args);
 private:
+    bool Reconnect(int32_t attempts = 1);
+
     std::unique_ptr<ITarget> m_target;
     Query m_activeQuery;
     ResultSet m_activeResults;
