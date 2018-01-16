@@ -395,7 +395,7 @@ Events::ArgumentStack SQL::OnDestroyPreparedQuery(Events::ArgumentStack&&)
 Events::ArgumentStack SQL::OnGetLastError(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
-    Events::InsertArgument(stack, m_target->GetLastError());
+    Events::InsertArgument(stack, m_target->GetLastError(true));
     return stack;
 }
 

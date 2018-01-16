@@ -188,12 +188,13 @@ int MySQL::GetAffectedRows()
     return affectedRows;
 }
 
-std::string MySQL::GetLastError()
+std::string MySQL::GetLastError(bool bClear)
 {
     // This might be overkill, but copy the string  here so the class stored string can be cleared
     // before returning.
     std::string temp = m_lastError;
-    m_lastError.clear();
+    if (bClear)
+        m_lastError.clear();
     return temp;
 }
 
