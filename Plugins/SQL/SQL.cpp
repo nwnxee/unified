@@ -13,6 +13,7 @@
 #include "API/CNWSItem.hpp" // Needed for static_cast from CGameObject
 #include <algorithm>
 #include <chrono>
+#include <cstring>
 
 using namespace NWNXLib;
 
@@ -255,14 +256,16 @@ Events::ArgumentStack SQL::OnPreparedObjectId(Events::ArgumentStack&& args)
 {
     int32_t position = Events::ExtractArgument<int32_t>(args);
     API::Types::ObjectID value = Events::ExtractArgument<API::Types::ObjectID>(args);
+    int32_t valInt;
+    std::memcpy(&valInt, &value, sizeof(valInt)); static_assert(sizeof(valInt) == sizeof(value));
     if (position >= m_target->GetPreparedQueryParamCount())
     {
         GetServices()->m_log->Warning("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds",
-            position, static_cast<int32_t>(value));
+            position, valInt);
     }
     else
     {
-        m_target->PrepareInt(position, static_cast<int32_t>(value));
+        m_target->PrepareInt(position, valInt);
     }
     return Events::ArgumentStack();
 }
