@@ -118,6 +118,7 @@ bool SQL::Reconnect(int32_t attempts)
         {
             m_target->Connect(GetServices()->m_config);
             GetServices()->m_log->Notice("Reconnect successful.");
+            break;
         }
         catch (std::runtime_error& e)
         {
@@ -138,6 +139,7 @@ Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
 
     if (!m_target->IsConnected() && !Reconnect(3))
     {
+        GetServices()->m_log->Error("Database connection lost. Aborting.");
         Events::InsertArgument(stack, 0);
         return stack;
     }
@@ -162,7 +164,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
     {
         if (!Reconnect())
         {
-            GetServices()->m_log->Warning("Database connection lost. Aborting.");
+            GetServices()->m_log->Error("Database connection lost. Aborting.");
             Events::InsertArgument(stack, 0);
             return stack;
         }
