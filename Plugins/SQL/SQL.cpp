@@ -125,6 +125,11 @@ bool SQL::Reconnect(int32_t attempts)
             GetServices()->m_log->Error("Reconnect attempt %d out of %d failed: %s",
                 i+1, attempts, e.what());
 
+            // NOTE: We are on the main thread and cannot sleep for to long, as
+            // it will stall the entire server. If a reconnect fails here, the
+            // user requested operation will fail as well. It is then up to the
+            // user to retry later (e.g. Use DelayCommand()), and another
+            // reconnect attempt will be triggered automatically.
             if (i != attempts - 1)
                 std::this_thread::sleep_for(std::chrono::milliseconds(1 << i));
         }
@@ -162,6 +167,10 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
         return stack;
     }
 
+    // NOTE: There is a time-of-check-to-time-of-use race condition here.
+    // The target may be there at the check, but will go away afterwards.
+    // In these cases the reconnect will not be attempted, and the call will fail.
+    // It is up to the user to check the return value, and repeat the query if needed.
     if (!m_target->IsConnected())
     {
         if (!Reconnect())
