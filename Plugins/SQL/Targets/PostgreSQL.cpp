@@ -52,11 +52,14 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
 bool PostgreSQL::IsConnected()
 {
-    if (PQstatus(m_conn) != CONNECTION_OK)
+    bool connected = true;
+    PGresult *res = PQexec(m_conn, "");
+    if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
-        return false;
+        connected = false;
     }
-    return true;
+    PQclear(res);
+    return connected;
 }
 
 bool PostgreSQL::PrepareQuery(const Query& query)
@@ -219,7 +222,7 @@ std::string PostgreSQL::GetLastError()
     return temp;
 }
 
-int32_t MySQL::GetPreparedQueryParamCount()
+int32_t PostgreSQL::GetPreparedQueryParamCount()
 {
     return m_paramCount;
 }
