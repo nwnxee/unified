@@ -34,7 +34,12 @@ void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 
 bool MySQL::IsConnected()
 {
-    return mysql_query(&m_mysql, "SELECT 1") == 0;
+    bool bConnected = mysql_query(&m_mysql, "SELECT 1") == 0;
+
+    // Need to read the result before running any other queries.
+    mysql_free_result(mysql_store_result(&m_mysql));
+
+    return bConnected;
 }
 
 bool MySQL::PrepareQuery(const Query& query)
@@ -46,7 +51,7 @@ bool MySQL::PrepareQuery(const Query& query)
     if (!m_stmt)
     {
         m_lastError.assign(mysql_error(&m_mysql));
-        m_log->Warning("Failed to prepare statement: %s", m_lastError.c_str());
+        m_log->Warning("Failed to initialize statement: %s", m_lastError.c_str());
         return false;
     }
 
@@ -188,12 +193,13 @@ int MySQL::GetAffectedRows()
     return affectedRows;
 }
 
-std::string MySQL::GetLastError()
+std::string MySQL::GetLastError(bool bClear)
 {
     // This might be overkill, but copy the string  here so the class stored string can be cleared
     // before returning.
     std::string temp = m_lastError;
-    m_lastError.clear();
+    if (bClear)
+        m_lastError.clear();
     return temp;
 }
 
