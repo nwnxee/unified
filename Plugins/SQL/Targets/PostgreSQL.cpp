@@ -210,16 +210,17 @@ int PostgreSQL::GetAffectedRows()
     return m_affectedRows;
 }
 
-std::string PostgreSQL::GetLastError()
+std::string PostgreSQL::GetLastError(bool bClear)
 {
     // This might be overkill, but copy the string  here so the class stored string can be cleared
     // before returning.
     std::string temp = m_lastError;
-    m_lastError.clear();
+    if (bClear)
+        m_lastError.clear();
     return temp;
 }
 
-int32_t MySQL::GetPreparedQueryParamCount()
+int32_t PostgreSQL::GetPreparedQueryParamCount()
 {
     return m_paramCount;
 }

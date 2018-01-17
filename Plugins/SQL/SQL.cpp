@@ -13,6 +13,8 @@
 #include "API/CNWSItem.hpp" // Needed for static_cast from CGameObject
 #include <algorithm>
 #include <chrono>
+#include <thread>
+#include <cstring>
 
 using namespace NWNXLib;
 
@@ -106,12 +108,48 @@ SQL::~SQL()
 {
 }
 
+bool SQL::Reconnect(int32_t attempts)
+{
+    GetServices()->m_log->Warning("Database connection lost. Reconnecting..");
+
+    for (int32_t i = 0; i < attempts; i++)
+    {
+        try
+        {
+            m_target->Connect(GetServices()->m_config);
+            GetServices()->m_log->Notice("Reconnect successful.");
+            break;
+        }
+        catch (std::runtime_error& e)
+        {
+            GetServices()->m_log->Error("Reconnect attempt %d out of %d failed: %s",
+                i+1, attempts, e.what());
+
+            // NOTE: We are on the main thread and cannot sleep for to long, as
+            // it will stall the entire server. If a reconnect fails here, the
+            // user requested operation will fail as well. It is then up to the
+            // user to retry later (e.g. Use DelayCommand()), and another
+            // reconnect attempt will be triggered automatically.
+            if (i != attempts - 1)
+                std::this_thread::sleep_for(std::chrono::milliseconds(1 << i));
+        }
+    }
+    return m_target->IsConnected();
+}
+
 Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
 
     m_activeQuery = Events::ExtractArgument<std::string>(args);
     m_activeResults = ResultSet();
+
+    if (!m_target->IsConnected() && !Reconnect(3))
+    {
+        GetServices()->m_log->Error("Database connection lost. Aborting.");
+        Events::InsertArgument(stack, 0);
+        return stack;
+    }
 
     m_queryPrepared = m_target->PrepareQuery(m_activeQuery);
     Events::InsertArgument(stack, static_cast<int32_t>(m_queryPrepared));
@@ -127,6 +165,33 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
         GetServices()->m_log->Warning("Trying to execute prepared query without successful PrepareQuery() call");
         Events::InsertArgument(stack, 0);
         return stack;
+    }
+
+    // NOTE: There is a time-of-check-to-time-of-use race condition here.
+    // The target may be there at the check, but will go away afterwards.
+    // In these cases the reconnect will not be attempted, and the call will fail.
+    // It is up to the user to check the return value, and repeat the query if needed.
+    if (!m_target->IsConnected())
+    {
+        if (!Reconnect())
+        {
+            GetServices()->m_log->Error("Database connection lost. Aborting.");
+            Events::InsertArgument(stack, 0);
+            return stack;
+        }
+        else
+        {
+            // Prepared queries are lost on reconnect.
+            // Prepared arguments are not, however, so we can still recover
+            if (!m_target->PrepareQuery(m_activeQuery))
+            {
+                GetServices()->m_log->Error("Recovery PrepareQuery() failed: %s",
+                    m_target->GetLastError());
+                Events::InsertArgument(stack, 0);
+                return stack;
+            }
+
+        }
     }
 
     const int32_t queryId = ++m_nextQueryId;
@@ -255,14 +320,16 @@ Events::ArgumentStack SQL::OnPreparedObjectId(Events::ArgumentStack&& args)
 {
     int32_t position = Events::ExtractArgument<int32_t>(args);
     API::Types::ObjectID value = Events::ExtractArgument<API::Types::ObjectID>(args);
+    int32_t valInt;
+    std::memcpy(&valInt, &value, sizeof(valInt)); static_assert(sizeof(valInt) == sizeof(value));
     if (position >= m_target->GetPreparedQueryParamCount())
     {
         GetServices()->m_log->Warning("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds",
-            position, static_cast<int32_t>(value));
+            position, valInt);
     }
     else
     {
-        m_target->PrepareInt(position, static_cast<int32_t>(value));
+        m_target->PrepareInt(position, valInt);
     }
     return Events::ArgumentStack();
 }
@@ -341,7 +408,7 @@ Events::ArgumentStack SQL::OnDestroyPreparedQuery(Events::ArgumentStack&&)
 Events::ArgumentStack SQL::OnGetLastError(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
-    Events::InsertArgument(stack, m_target->GetLastError());
+    Events::InsertArgument(stack, m_target->GetLastError(true));
     return stack;
 }
 
