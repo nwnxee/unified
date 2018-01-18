@@ -105,6 +105,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
                 MYSQL_BIND binds[columns];
                 memset(binds, 0, sizeof(binds));
                 unsigned long lengths[columns];
+                memset(lengths, 0, sizeof(lengths));
                 for (unsigned i = 0; i < columns; i++)
                     binds[i].length = &lengths[i];
                 mysql_stmt_bind_result(m_stmt, binds);
