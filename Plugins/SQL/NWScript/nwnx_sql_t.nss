@@ -225,6 +225,26 @@ void main()
     report("Negative prepare query", NWNX_SQL_PrepareQuery("not a valid query!") == 0);
     report("GetLastError", NWNX_SQL_GetLastError() != "");
 
+    // Test with null values
+    NWNX_SQL_ExecuteQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(5121, null, null, null, null)");
+    report("Select null", NWNX_SQL_ExecuteQuery("SELECT * FROM sql_test WHERE colInt=5121"));
+    if (NWNX_SQL_ReadyToReadNextRow())
+    {
+        NWNX_SQL_ReadNextRow();
+        int n = StringToInt(NWNX_SQL_ReadDataInActiveRow(0));
+        report("ReadInt", n == 5121);
+        float f = StringToFloat(NWNX_SQL_ReadDataInActiveRow(1));
+        report("ReadFloat", f == 0.0);
+        string s = NWNX_SQL_ReadDataInActiveRow(2);
+        report("ReadString", s == "");
+
+        string sObjId = NWNX_SQL_ReadDataInActiveRow(3); // In base 10
+        report("ReadObjectId", sObjId == "");
+
+        object obj = NWNX_SQL_ReadFullObjectInActiveRow(4);
+        report("ReadFullObject", obj == OBJECT_INVALID);
+    }
+
     cleanup();
     WriteTimestampedLogEntry("Testing database " + db_type + " complete.");
     WriteTimestampedLogEntry("NWNX_SQL unit tests end.");
