@@ -90,7 +90,7 @@ Events::Events(const Plugin::CreateParams& params)
         m_itemEvents = std::make_unique<ItemEvents>(GetServices()->m_hooks);
     }
 
-    if (GetServices()->m_config->Get<bool>("ENABLE_ITEM_EVENTS", true))
+    if (GetServices()->m_config->Get<bool>("ENABLE_FEAT_EVENTS", true))
     {
         m_featEvents = std::make_unique<FeatEvents>(GetServices()->m_hooks);
     }
