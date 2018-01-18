@@ -14,6 +14,8 @@
 //     NWNX_ON_EXAMINE_OBJECT_AFTER
 //     NWNX_ON_USE_ITEM_BEFORE
 //     NWNX_ON_USE_ITEM_AFTER
+//     NWNX_ON_USE_FEAT_BEFORE
+//     NWNX_ON_USE_FEAT_AFTER
 //     NWNX_ON_DM_GIVE_GOLD (TODO: Upgrade - Currently disabled)
 //     NWNX_ON_DM_SET_EXP (TODO: Upgrade - Currently disabled)
 //     NWNX_ON_CLIENT_DISCONNECT_BEFORE

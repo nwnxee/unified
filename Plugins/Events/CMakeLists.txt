@@ -5,5 +5,6 @@ add_plugin(Events
     "Events/ClientEvents.cpp"
     # "Events/DMActionEvents.cpp" TODO: Upgrade
     "Events/ExamineEvents.cpp"
+    "Events/FeatEvents.cpp"
     "Events/ItemEvents.cpp"
     "Events/StealthEvents.cpp")

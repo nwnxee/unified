@@ -7,6 +7,7 @@
 #include "Events/ClientEvents.hpp"
 #include "Events/DMActionEvents.hpp"
 #include "Events/ExamineEvents.hpp"
+#include "Events/FeatEvents.hpp"
 #include "Events/ItemEvents.hpp"
 #include "Events/StealthEvents.hpp"
 #include "Services/Config/Config.hpp"
@@ -87,6 +88,11 @@ Events::Events(const Plugin::CreateParams& params)
     if (GetServices()->m_config->Get<bool>("ENABLE_ITEM_EVENTS", true))
     {
         m_itemEvents = std::make_unique<ItemEvents>(GetServices()->m_hooks);
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_FEAT_EVENTS", true))
+    {
+        m_featEvents = std::make_unique<FeatEvents>(GetServices()->m_hooks);
     }
 
     if (GetServices()->m_config->Get<bool>("ENABLE_STEALTH_EVENTS", true))
