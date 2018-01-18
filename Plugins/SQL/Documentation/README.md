@@ -1,5 +1,9 @@
 # SQL Plugin Reference
 
+## Description
+
+General data access, storage and manipulation of persistent data in a database.
+
 ## Environment Variables
 
 ### NWNX_SQL_TYPE
