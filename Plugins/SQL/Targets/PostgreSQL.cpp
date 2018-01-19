@@ -41,7 +41,7 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
     // hide the password in the log file
     m_log->Info("Connect String:  %s password=xxxxxxxx\n", m_connectString.c_str());
-    m_log->Debug("              : %s", pass); // but add it if we're in debug logging.
+    m_log->Debug("              :  %s", pass.c_str()); // but add it if we're in debug logging.
 
     m_connectString += " " + pass;
 
