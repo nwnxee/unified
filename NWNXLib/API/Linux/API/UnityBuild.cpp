@@ -75,7 +75,6 @@
 #include "CExoLinkedListTemplatedCExoKeyTable.cpp"
 #include "CExoLinkedListTemplatedCExoString.cpp"
 #include "CExoLinkedListTemplatedCKeyTableInfo.cpp"
-#include "CExoLinkedListTemplatedCLastUpdatePartyObject.cpp"
 #include "CExoLinkedListTemplatedCLinuxFileSection.cpp"
 #include "CExoLinkedListTemplatedCNWSClient.cpp"
 #include "CExoLinkedListTemplatedCNWSDialogPlayer.cpp"
@@ -327,6 +326,7 @@
 #include "CExoArrayListTemplatedSSubNetProfilePtr.cpp"
 #include "CExoLinkedListNode.cpp"
 #include "CExoLinkedListTemplatedCLastUpdateObject.cpp"
+#include "CExoLinkedListTemplatedCLastUpdatePartyObject.cpp"
 #include "CExoLinkedListTemplatedCLinuxFileKey.cpp"
 #include "CExoLinkedListTemplatedCNWSCombatRoundAction.cpp"
 #include "CExoLinkedListTemplatedCNWSPlayer.cpp"
@@ -796,7 +796,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CExoRand), 4> __attribute__((unused)) SIZE_CHECK_CEXORAND;
     CheckSize<sizeof(NWNXLib::API::CExoRandInternal), 144> __attribute__((unused)) SIZE_CHECK_CEXORANDINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CExoResFile), 56> __attribute__((unused)) SIZE_CHECK_CEXORESFILE;
-    CheckSize<sizeof(NWNXLib::API::CExoResMan), 72> __attribute__((unused)) SIZE_CHECK_CEXORESMAN;
+    CheckSize<sizeof(NWNXLib::API::CExoResMan), 68> __attribute__((unused)) SIZE_CHECK_CEXORESMAN;
     CheckSize<sizeof(NWNXLib::API::CExoResourceImageFile), 52> __attribute__((unused)) SIZE_CHECK_CEXORESOURCEIMAGEFILE;
     CheckSize<sizeof(NWNXLib::API::CExoString), 8> __attribute__((unused)) SIZE_CHECK_CEXOSTRING;
     CheckSize<sizeof(NWNXLib::API::CExoStringList), 20> __attribute__((unused)) SIZE_CHECK_CEXOSTRINGLIST;

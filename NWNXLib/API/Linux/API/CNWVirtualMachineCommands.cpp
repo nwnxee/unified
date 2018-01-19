@@ -151,11 +151,6 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandActionSit(int32_t a0, int32_t a
     return CNWVirtualMachineCommands__ExecuteCommandActionSit(this, a0, a1);
 }
 
-int32_t CNWVirtualMachineCommands::ExecuteCommandActionStartConversation(int32_t a0, int32_t a1)
-{
-    return CNWVirtualMachineCommands__ExecuteCommandActionStartConversation(this, a0, a1);
-}
-
 int32_t CNWVirtualMachineCommands::ExecuteCommandActionUseFeat(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandActionUseFeat(this, a0, a1);
@@ -1846,6 +1841,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetRacialType(int32_t a0, int32
     return CNWVirtualMachineCommands__ExecuteCommandGetRacialType(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetReflexAdjustedDamage(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetReflexAdjustedDamage(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetReflexSavingThrow(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetReflexSavingThrow(this, a0, a1);
@@ -3211,14 +3211,6 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandActionSit(CNWVirtualMachineComm
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandActionSit);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
-}
-
-int32_t CNWVirtualMachineCommands__ExecuteCommandActionStartConversation(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
-{
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandActionStartConversation);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
@@ -5923,6 +5915,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetRacialType(CNWVirtualMachine
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetRacialType);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetReflexAdjustedDamage(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetReflexAdjustedDamage);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }

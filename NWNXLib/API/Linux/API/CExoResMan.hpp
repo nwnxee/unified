@@ -24,7 +24,6 @@ struct CExoResMan
     int32_t m_nTotalPhysicalMemory;
     int32_t m_nTotalAvailableMemory;
     int32_t m_nAvailableMemory;
-    CExoKeyTable* m_pKeyTable;
     CExoLinkedListTemplatedCExoKeyTable m_lstFixedKeyTables;
     CExoLinkedListTemplatedCExoKeyTable m_lstDirectoryKeyTables;
     CExoLinkedListTemplatedCExoKeyTable m_lstEncapsulatedKeyTables;
@@ -98,7 +97,7 @@ struct CExoResMan
     int32_t ServiceFromImageRaw(CRes*, int32_t, char*);
     int32_t ServiceFromResFile(CRes*, int32_t);
     int32_t ServiceFromResFileRaw(CRes*, int32_t, char*);
-    void SetResObject(const CResRef&, uint16_t, CRes*);
+    int32_t SetResObject(const CResRef&, uint16_t, CRes*);
     int32_t SetTotalResourceMemory(int32_t);
     void SuspendServicing();
     void Update(uint32_t);
@@ -163,7 +162,7 @@ int32_t CExoResMan__ServiceFromImage(CExoResMan* thisPtr, CRes*, int32_t);
 int32_t CExoResMan__ServiceFromImageRaw(CExoResMan* thisPtr, CRes*, int32_t, char*);
 int32_t CExoResMan__ServiceFromResFile(CExoResMan* thisPtr, CRes*, int32_t);
 int32_t CExoResMan__ServiceFromResFileRaw(CExoResMan* thisPtr, CRes*, int32_t, char*);
-void CExoResMan__SetResObject(CExoResMan* thisPtr, const CResRef&, uint16_t, CRes*);
+int32_t CExoResMan__SetResObject(CExoResMan* thisPtr, const CResRef&, uint16_t, CRes*);
 int32_t CExoResMan__SetTotalResourceMemory(CExoResMan* thisPtr, int32_t);
 void CExoResMan__SuspendServicing(CExoResMan* thisPtr);
 void CExoResMan__Update(CExoResMan* thisPtr, uint32_t);

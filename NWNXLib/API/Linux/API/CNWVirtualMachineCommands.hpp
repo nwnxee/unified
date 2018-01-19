@@ -53,7 +53,6 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandActionRest(int32_t, int32_t);
     int32_t ExecuteCommandActionResumeConversation(int32_t, int32_t);
     int32_t ExecuteCommandActionSit(int32_t, int32_t);
-    int32_t ExecuteCommandActionStartConversation(int32_t, int32_t);
     int32_t ExecuteCommandActionUseFeat(int32_t, int32_t);
     int32_t ExecuteCommandActionUseSkill(int32_t, int32_t);
     int32_t ExecuteCommandActionUseTalent(int32_t, int32_t);
@@ -392,6 +391,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandGetPortraitResRef(int32_t, int32_t);
     int32_t ExecuteCommandGetPosition(int32_t, int32_t);
     int32_t ExecuteCommandGetRacialType(int32_t, int32_t);
+    int32_t ExecuteCommandGetReflexAdjustedDamage(int32_t, int32_t);
     int32_t ExecuteCommandGetReflexSavingThrow(int32_t, int32_t);
     int32_t ExecuteCommandGetReputation(int32_t, int32_t);
     int32_t ExecuteCommandGetResRef(int32_t, int32_t);
@@ -651,7 +651,6 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandActionRandomWalk(CNWVirtualMach
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionRest(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionResumeConversation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionSit(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
-int32_t CNWVirtualMachineCommands__ExecuteCommandActionStartConversation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionUseFeat(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionUseSkill(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionUseTalent(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
@@ -990,6 +989,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetPortraitId(CNWVirtualMachine
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPortraitResRef(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPosition(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetRacialType(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetReflexAdjustedDamage(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetReflexSavingThrow(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetReputation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetResRef(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
