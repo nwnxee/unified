@@ -49,12 +49,6 @@ CNWRules* Rules()
     return *ptr;
 }
 
-CExoString* BuildNumber()
-{
-    CExoString* ptr = reinterpret_cast<CExoString*>(Platform::ASLR::GetRelocatedGlobalAddress(g_buildNumberAddr));
-    return ptr;
-}
-
 }
 
 }

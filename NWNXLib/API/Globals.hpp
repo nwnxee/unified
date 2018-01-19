@@ -29,8 +29,6 @@ constexpr uintptr_t g_scriptCompilerAddr = 0x004707D4; NWNX_EXPECT_VERSION(8155)
 constexpr uintptr_t g_appManagerAddr     = 0x004707D0; NWNX_EXPECT_VERSION(8155);
 constexpr uintptr_t g_tlkTableAddr       = 0x004707CC; NWNX_EXPECT_VERSION(8155);
 constexpr uintptr_t g_nwRulesAddr        = 0x004707C8; NWNX_EXPECT_VERSION(8155);
-constexpr uintptr_t g_buildNumberAddr    = 0x004707BC; NWNX_EXPECT_VERSION(8155); // Deprecated - removed in next release.
-
 
 extern CExoBase*        ExoBase();
 extern CExoResMan*      ExoResMan();
@@ -39,7 +37,6 @@ extern CScriptCompiler* ScriptCompiler();
 extern CAppManager*     AppManager();
 extern CTlkTable*       TlkTable();
 extern CNWRules*        Rules();
-extern CExoString*      BuildNumber(); // Deprecated - removed in next release.
 
 }
 
