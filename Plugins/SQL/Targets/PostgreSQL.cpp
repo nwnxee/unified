@@ -27,6 +27,8 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
     const std::string user = "user=" + config->Require<std::string>("USERNAME");
     const std::string pass = "password=" + config->Require<std::string>("PASSWORD");
 
+    // Database technically is optional.  If not given, it will connect to the default
+    // database of the given USERNAME.
     const NWNXLib::Maybe<std::string> DB = config->Get<std::string>("DATABASE");
     if (DB)
     {
@@ -36,12 +38,13 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
     const std::string port = "port=" + config->Get<std::string>("PORT", "5432");
 
-    // Build the m_connection string - this is used later in the PQping.
+    // Build the m_connection string - this is used later in the PQping (PQping doesn't need the password).
     m_connectString = host + " " + port + " " + db + " " + user ;
 
     // hide the password in the log file
-    m_log->Info("Connect String:  %s password=xxxxxxxx\n", m_connectString.c_str());
-    m_log->Debug("              :  %s", pass.c_str()); // but add it if we're in debug logging.
+    m_log->Info("Connect String:  %s password=xxxxxxxx", m_connectString.c_str());
+    // but add it if we're in debug logging.
+    m_log->Debug("              :  %s", pass.c_str());
 
     m_connectString += " " + pass;
 
@@ -50,7 +53,7 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
     if (PQstatus(m_conn) != CONNECTION_OK)
     {
-        throw std::runtime_error("Error m_connecting to Postgres DB");
+        throw std::runtime_error("Error connecting to Postgres DB");
     }
 }
 
@@ -63,29 +66,38 @@ bool PostgreSQL::IsConnected()
      *
      * PQping is simpler, but probably less robust.  It does actively ping the server, though.
      */
-    bool connected = true;
+    bool bConnected = true;
 
     PGPing ping = PQping(m_connectString.c_str());
     if (ping != PQPING_OK)
     {
-        connected = false;
+        m_log->Warning("Disconnected state identified.");
+        bConnected = false;
     }
-    return connected;
+    return bConnected;
 }
 
 bool PostgreSQL::PrepareQuery(const Query& query)
 {
-    m_log->Info("Preparing query %s\n", query.c_str());
+    m_log->Debug("Preparing query %s\n", query.c_str());
 
     m_affectedRows = -1;
 
-    /* Determine the number of parameters in the query */
+    /*
+     * Determine the number of parameters in the query.
+     *
+     * Note this is kind of a hack.  Postgres doesn't support a "get number of bind parameters"
+     * function like MySQL does, so we're counting the things in the query that, to the parser
+     * should also look like bind parameters:  non-escaped dollar digit combinations.
+     * */
     std::regex words_regex("[^\\\\]\\$\\d+");
     auto words_begin = std::sregex_iterator(
         query.begin(), query.end(), words_regex);
     auto words_end = std::sregex_iterator();
 
     m_paramCount = std::distance(words_begin, words_end);
+
+    m_log->Debug("Detected %d parameters.", m_paramCount);
 
     m_params.resize(m_paramCount);
 
@@ -123,6 +135,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     // convert the m_params vector into a char ** required by Postgres.
     if (m_paramCount > 0)
     {
+        m_log->Debug("Preparing query with %d parameters", m_paramCount);
         paramValues = new char*[m_params.size()];
 
         const unsigned int sz = m_params.size();
@@ -158,6 +171,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
         ResultSet results;
         const size_t rows = PQntuples(res);
         const size_t cols = PQnfields(res);
+        m_log->Debug("Returning %d rows of %d columns.", rows, cols);
 
         for(int i=0; i<(int)rows; i++)
         {
@@ -178,6 +192,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     // Capture the rows affected if applicable.
     if (PQresultStatus(res) == PGRES_COMMAND_OK)
     {
+        m_log->Debug("Fetching rows affected by command.");
         const char *cnt = PQcmdTuples(res);
         if (*cnt != '\0')
         {
@@ -208,14 +223,17 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 // Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
+    m_log->Debug("Assigning position %d to value '%d'", position, value);
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
+    m_log->Debug("Assigning position %d to value '%f'", position, value);
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
+    m_log->Debug("Assigning position %d to value '%s'", position, value.c_str());
     m_params[position] = value;
 }
 
@@ -226,7 +244,7 @@ int PostgreSQL::GetAffectedRows()
 
 std::string PostgreSQL::GetLastError(bool bClear)
 {
-    // This might be overkill, but copy the string  here so the class stored string can be cleared
+    // This might be overkill, but copy the string here so the class stored string can be cleared
     // before returning.
     std::string temp = m_lastError;
     if (bClear)

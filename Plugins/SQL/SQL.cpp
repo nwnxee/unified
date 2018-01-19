@@ -225,8 +225,19 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
 
     if (querySucceeded)
     {
-        GetServices()->m_log->Info("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
-            queryId, m_activeQuery.c_str(), m_activeResults.size());
+        // queries that execute commands return the number of affected rows.
+        // queries that fetch results return a results size.
+        if (m_target->GetAffectedRows() >= 0)
+        {
+            // this was not a result set type query
+            GetServices()->m_log->Info("Successful SQL query. Query ID: '%i', Query: '%s', Rows affected: '%u'.",
+                queryId, m_activeQuery.c_str(), m_target->GetAffectedRows());
+        }
+        else
+        {
+            GetServices()->m_log->Info("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
+                queryId, m_activeQuery.c_str(), m_activeResults.size());
+        }
     }
     else
     {
