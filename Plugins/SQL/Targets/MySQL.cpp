@@ -25,6 +25,13 @@ void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     const std::string username = config->Require<std::string>("USERNAME");
     const std::string password = config->Require<std::string>("PASSWORD");
     const NWNXLib::Maybe<std::string> database = config->Get<std::string>("DATABASE");
+    if (database)
+    {
+        m_log->Debug("DB set to %s", (*database).c_str());
+    }
+
+    m_log->Info("Connection info:  host=%s username=%s", host.c_str(), username.c_str());
+    m_log->Debug("               :  password=%s", password.c_str());
 
     if (!mysql_real_connect(&m_mysql, host.c_str(), username.c_str(), password.c_str(), database ? (*database).c_str() : nullptr, 0, nullptr, 0))
     {
@@ -39,11 +46,17 @@ bool MySQL::IsConnected()
     // Need to read the result before running any other queries.
     mysql_free_result(mysql_store_result(&m_mysql));
 
+    if (!bConnected)
+    {
+        m_log->Warning("Disconnected state identified.");
+    }
     return bConnected;
 }
 
 bool MySQL::PrepareQuery(const Query& query)
 {
+    m_log->Debug("Preparing query %s\n", query.c_str());
+
     if (m_stmt)
         mysql_stmt_close(m_stmt);
 
@@ -59,6 +72,7 @@ bool MySQL::PrepareQuery(const Query& query)
     if (success)
     {
         m_paramCount = mysql_stmt_param_count(m_stmt);
+        m_log->Debug("Detected %d parameters.", m_paramCount);
         m_params.resize(m_paramCount);
         m_paramValues.resize(m_paramCount);
     }
@@ -159,6 +173,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 
 void MySQL::PrepareInt(int32_t position, int32_t value)
 {
+    m_log->Debug("Assigning position %d to value '%d'", position, value);
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
@@ -169,6 +184,7 @@ void MySQL::PrepareInt(int32_t position, int32_t value)
 }
 void MySQL::PrepareFloat(int32_t position, float value)
 {
+    m_log->Debug("Assigning position %d to value '%f'", position, value);
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
@@ -179,6 +195,7 @@ void MySQL::PrepareFloat(int32_t position, float value)
 }
 void MySQL::PrepareString(int32_t position, const std::string& value)
 {
+    m_log->Debug("Assigning position %d to value '%s'", position, value.c_str());
     MYSQL_BIND *pBind = &m_params[position];
     memset(pBind, 0, sizeof(*pBind));
 
