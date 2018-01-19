@@ -66,7 +66,8 @@ bool PostgreSQL::IsConnected()
     bool connected = true;
 
     PGPing ping = PQping(m_connectString.c_str());
-    if (ping != PQPING_OK) {
+    if (ping != PQPING_OK)
+    {
         connected = false;
     }
     return connected;
