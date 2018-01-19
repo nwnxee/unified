@@ -168,14 +168,22 @@ void NWNXCore::InitialSetupHooks()
 
 void NWNXCore::InitialVersionCheck()
 {
-    const char* versionAsStr = API::Globals::BuildNumber()->m_sString;
-    g_log->Info("Server is running version %s.", versionAsStr);
-
-    const uint32_t version = std::stoi(versionAsStr);
-
-    if (version != NWNX_TARGET_NWN_BUILD)
+    const uintptr_t buildNumberAddr = Platform::DynamicLibraries::GetLoadedFuncAddr("GetBuildNumber");
+    if (buildNumberAddr)
     {
-        throw std::runtime_error("Core version mismatch -- has the server updated?");
+        API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
+        g_log->Info("Server is running version %s.", versionAsStr->m_sString);
+
+        const uint32_t version = std::stoi(versionAsStr->m_sString);
+
+        if (version != NWNX_TARGET_NWN_BUILD)
+        {
+            throw std::runtime_error("Core version mismatch -- has the server updated?");
+        }
+    }
+    else
+    {
+        throw std::runtime_error("Unable to resolve GetBuildNumber from the NWN binary. Old version?");
     }
 }
 
