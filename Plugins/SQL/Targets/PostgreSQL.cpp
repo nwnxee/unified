@@ -36,13 +36,17 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
     const std::string port = "port=" + config->Get<std::string>("PORT", "5432");
 
-    // Build the m_connection string
-    std::string m_connectstring = host + " " + port + " " + db + " " + user + " " + pass;
+    // Build the m_connection string - this is used later in the PQping.
+    m_connectString = host + " " + port + " " + db + " " + user ;
 
-    m_log->Info("Connect String:  %s\n", m_connectstring.c_str());
+    // hide the password in the log file
+    m_log->Info("Connect String:  %s password=xxxxxxxx\n", m_connectString.c_str());
+    m_log->Debug("              : %s", pass); // but add it if we're in debug logging.
+
+    m_connectString += " " + pass;
 
     // Connect attempt
-    m_conn = PQconnectdb(m_connectstring.c_str());
+    m_conn = PQconnectdb(m_connectString.c_str());
 
     if (PQstatus(m_conn) != CONNECTION_OK)
     {
@@ -52,13 +56,19 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
 bool PostgreSQL::IsConnected()
 {
+    /*
+     * Executing a query between a unmamed prepare and execute apparently resets the
+     * unnamed query.  Using a named query forces you to execute a DEALLOCATE after you're
+     * done or old queries will pile up forever.
+     *
+     * PQping is simpler, but probably less robust.  It does actively ping the server, though.
+     */
     bool connected = true;
-    PGresult *res = PQexec(m_conn, "");
-    if (PQresultStatus(res) != PGRES_COMMAND_OK)
-    {
+
+    PGPing ping = PQping(m_connectString.c_str());
+    if (ping != PQPING_OK) {
         connected = false;
     }
-    PQclear(res);
     return connected;
 }
 

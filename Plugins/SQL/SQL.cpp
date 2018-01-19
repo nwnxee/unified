@@ -173,6 +173,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
     // It is up to the user to check the return value, and repeat the query if needed.
     if (!m_target->IsConnected())
     {
+        GetServices()->m_log->Debug("Not Connected");
         if (!Reconnect())
         {
             GetServices()->m_log->Error("Database connection lost. Aborting.");

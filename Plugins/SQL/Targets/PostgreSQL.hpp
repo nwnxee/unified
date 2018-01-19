@@ -32,6 +32,7 @@ private:
     size_t m_paramCount = 0;
     std::vector<std::string> m_params;
     std::string m_lastError;
+    std::string m_connectString;
 };
 
 }
