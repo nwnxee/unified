@@ -20,6 +20,8 @@
 //     NWNX_ON_DM_SET_EXP (TODO: Upgrade - Currently disabled)
 //     NWNX_ON_CLIENT_DISCONNECT_BEFORE
 //     NWNX_ON_CLIENT_DISCONNECT_AFTER
+//     NWNX_ON_CAST_SPELL_BEFORE
+//     NWNX_ON_CAST_SPELL_AFTER
 //
 
 // Scripts can subscribe to events.
