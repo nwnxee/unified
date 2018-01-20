@@ -5,8 +5,9 @@ usage() { echo "$0 usage:" && grep " .)\ #" $0; exit 0; }
 CLEAN=1
 JOBS=""
 BUILD_TYPE="RelWithDebInfo"
+SANITIZE=""
 
-while getopts "hcj:d" o; do
+while getopts "hcj:ds" o; do
     case "${o}" in
         c) # Clean build - remove Binaries and re-execute cmake
             CLEAN=0
@@ -16,6 +17,9 @@ while getopts "hcj:d" o; do
             ;;
         d) # Build debug configuration
             BUILD_TYPE="Debug"
+            ;;
+        s) # Enable the address and undefined behaviour sanitisers
+            SANITIZE="-DSANITIZE_ADDRESS=On -DSANITIZE_UNDEFINED=On"
             ;;
         h | *) # Display help
             usage
@@ -43,7 +47,7 @@ fi
 mkdir ./build-nwnx
 pushd ./build-nwnx
 
-cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE ..
+cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE $SANITIZE ..
 
 make ${JOBS} all
 
