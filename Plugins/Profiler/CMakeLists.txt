@@ -1,5 +1,3 @@
-return() # TODO Upgrade - Random segfaults
-
 add_plugin(Profiler
    "Profiler.cpp"
    "Timing.cpp"
