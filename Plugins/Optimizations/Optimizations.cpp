@@ -1,7 +1,6 @@
 #include "Optimizations.hpp"
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
-#include "Optimizations/AIMasterOptimizations.hpp"
 #include "Optimizations/BroadcastCombatStateToPartyOptimization.hpp"
 #include "Optimizations/CGameObjectArrayOptimization.hpp"
 #include "Optimizations/GetClientObjectByObjectIdOptimization.hpp"
@@ -44,11 +43,6 @@ using namespace NWNXLib::Services;
 Optimizations::Optimizations(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    if (GetServices()->m_config->Get<bool>("ENABLE_AI_MASTER_OPTIMIZATIONS", true))
-    {
-        m_aiMasterOptimizations = std::make_unique<AIMasterOptimizations>(GetServices()->m_hooks, GetServices()->m_patching);
-    }
-
     if (GetServices()->m_config->Get<bool>("ENABLE_BROADCAST_COMBAT_STATE_OPTIMIZATION", true))
     {
         m_broadcastCombatStateToPartyOptimization = std::make_unique<BroadcastCombatStateToPartyOptimization>(GetServices()->m_patching);
@@ -69,18 +63,6 @@ Optimizations::Optimizations(const Plugin::CreateParams& params)
     {
         m_getClientObjectByObjectIdOptimization = std::make_unique<GetClientObjectByObjectIdOptimization>(GetServices()->m_hooks);
     }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_HAS_FEAT_OPTIMIZATION", true))
-    {
-        // We remove the object lookup for expansion pack check here by replacing the call with a jump to the failure case.
-        // This is a signficant performance win (25%->35% server perf under heavy load with all other optimizations applies).
-        using namespace NWNXLib::Platform::Assembly;
-        GetServices()->m_patching->PatchWithInstructions(0x08153BE9,
-            AddRegImmByteInstruction(Register::ESP, 16),
-            JmpRelInstruction(0x8153C2C)
-        ); NWNX_EXPECT_VERSION(8109);
-    }
-
     if (GetServices()->m_config->Get<bool>("ENABLE_HRT_OPTIMIZATION", true))
     {
         const uint32_t flushCount = GetServices()->m_config->Get<uint32_t>("HRT_FLUSH_COUNT", 8);
