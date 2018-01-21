@@ -8,7 +8,7 @@ Usage:
   commands.rb [options]
 
 Options:
-  --prefix=<prefix>         Prefix all commands with a string [default: ]
+  --prefix=<prefix>         Prefix all commands with a string [default: NWNX_Redis_]
   --postfix=<postfix>       Postfix commands [default: ].
   -c --cast=<cast>          Cast types to nwscript natives [default: true]
 HEREDOC
