@@ -102,6 +102,17 @@ private:
     const Register m_source;
 };
 
+// 'MOV destination, value'
+struct MovRegImmInstruction final : public IInstruction
+{
+    MovRegImmInstruction(const Register destination, const uint32_t value) : m_destination(destination), m_value(value) { }
+    virtual std::vector<uint8_t> ToBytes(const uintptr_t address = 0) const override;
+
+private:
+    const Register m_destination;
+    const uint32_t m_value;
+};
+
 // 'NOOP'
 struct NoopInstruction final : public IInstruction
 {
@@ -117,7 +128,6 @@ struct PopRegInstruction final : public IInstruction
 private:
     const Register m_register;
 };
-
 
 // 'PUSH value'
 struct PushImmInstruction final : public IInstruction
@@ -200,6 +210,7 @@ std::vector<uint8_t> ChainOperationsFromAddr(const uintptr_t address, First firs
 
 void CorrectRelativeAddresses(const uintptr_t address, const uintptr_t originalAddress, const uintptr_t length);
 uintptr_t GetSmallestLengthToFitInstruction(const uintptr_t address, const uintptr_t instLen);
+void RewriteGCCThunks(uint8_t* data, uintptr_t originalAddress, uintptr_t length);
 
 #include "Assembly.inl"
 

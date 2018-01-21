@@ -80,16 +80,25 @@ void FunctionHook::RestoreFast() const
 
 void FunctionHook::CopyOriginal()
 {
-    memcpy(m_oldFunction.data(), reinterpret_cast<uint8_t*>(m_info.originalAddr), m_length);
+    FillWithNoops(m_oldFunction.data(), MAX_LENGTH);
+    memcpy(m_oldFunction.data(), reinterpret_cast<void*>(m_info.originalAddr), m_length);
 }
 
 void FunctionHook::ConstructTrampoline()
 {
     // Copy the old function into the trampline.
+    FillWithNoops(m_trampoline.begin(), TRAMPOLINE_SIZE);
     std::copy(m_oldFunction.begin(), m_oldFunction.end(), m_trampoline.begin());
 
     // Correct relative addresses.
     Assembly::CorrectRelativeAddresses(reinterpret_cast<uintptr_t>(m_trampoline.data()), m_info.originalAddr, TRAMPOLINE_SIZE);
+
+#ifdef _WIN32
+    // TODO: Windows
+    static_assert(false, "Windows is not suported - fix me.");
+#else
+    Assembly::RewriteGCCThunks(m_trampoline.data(), m_info.originalAddr, TRAMPOLINE_SIZE);
+#endif
 
     // Generate the assembly.
     auto assembly = Assembly::ChainOperations(Assembly::PushImmInstruction(m_info.originalAddr + m_length), Assembly::RetInstruction());
@@ -99,6 +108,13 @@ void FunctionHook::ConstructTrampoline()
 
     // We'll set the trampoline page to executable.
     Memory::ProtectAddress(reinterpret_cast<uintptr_t>(m_trampoline.data()), MAX_LENGTH, Memory::MemoryProtectionFlags::READ_WRITE_EXECUTE);
+}
+
+void FunctionHook::FillWithNoops(uint8_t* arr, int size)
+{
+    auto assembly = Assembly::NoopInstruction().ToBytes();
+    assert(assembly.size() == 1);
+    memset(arr, assembly[0], size);
 }
 
 }
