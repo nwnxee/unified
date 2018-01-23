@@ -12,6 +12,7 @@ namespace Events {
 
 class AssociateEvents;
 class ClientEvents;
+class CombatEvents;
 class DMActionEvents;
 class ExamineEvents;
 class FeatEvents;
@@ -48,6 +49,7 @@ private:
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
     std::unique_ptr<ClientEvents> m_clientEvents;
+    std::unique_ptr<CombatEvents> m_combatEvents;
     std::unique_ptr<DMActionEvents> m_dmActionEvents;
     std::unique_ptr<ExamineEvents> m_examineEvents;
     std::unique_ptr<FeatEvents> m_featEvents;
