@@ -42,13 +42,19 @@ namespace Administration {
 Administration::Administration(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    GetServices()->m_events->RegisterEvent("GET_PLAYER_PASSWORD", std::bind(&Administration::OnGetPlayerPassword, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("SET_PLAYER_PASSWORD", std::bind(&Administration::OnSetPlayerPassword, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("CLEAR_PLAYER_PASSWORD", std::bind(&Administration::OnClearPlayerPassword, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_DM_PASSWORD", std::bind(&Administration::OnGetDMPassword, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("SET_DM_PASSWORD", std::bind(&Administration::OnSetDMPassword, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("SHUTDOWN_SERVER", std::bind(&Administration::OnShutdownServer, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("BOOT_PC_WITH_MESSAGE", std::bind(&Administration::OnBootPCWithMessage, this, std::placeholders::_1));
+
+#define REGISTER(name, func) \
+    GetServices()->m_events->RegisterEvent(name, std::bind(&Administration::func, this, std::placeholders::_1))
+
+    REGISTER("GET_PLAYER_PASSWORD",   OnGetPlayerPassword);
+    REGISTER("SET_PLAYER_PASSWORD",   OnSetPlayerPassword);
+    REGISTER("CLEAR_PLAYER_PASSWORD", OnClearPlayerPassword);
+    REGISTER("GET_DM_PASSWORD",       OnGetDMPassword);
+    REGISTER("SET_DM_PASSWORD",       OnSetDMPassword);
+    REGISTER("SHUTDOWN_SERVER",       OnShutdownServer);
+    REGISTER("BOOT_PC_WITH_MESSAGE",  OnBootPCWithMessage);
+
+#undef REGISTER
 }
 
 Administration::~Administration()
