@@ -34,7 +34,9 @@ std::string GetCurExecutablePath();
 std::string StripExtensionFromFileName(const std::string& fileName);
 std::string RemoveFileNameFromPath(const std::string& path);
 std::string CombinePaths(const std::string& pathOne, const std::string& pathTwo);
-
+bool FileExists(const std::string& fileName);
+void RemoveFile(const std::string& fileName);
+void RenameFile(const std::string& oldName, const std::string& newName);
 }
 
 }

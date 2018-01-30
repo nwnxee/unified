@@ -2,7 +2,7 @@
 
 #include <array>
 #include <cassert>
-
+#include <stdio.h>
 #ifdef _WIN32
     #include "Windows.h"
     #include <thread>
@@ -156,6 +156,32 @@ std::string CombinePaths(const std::string& pathOne, const std::string& pathTwo)
 
     const bool hasSeparator = std::equal(separator.begin(), separator.end(), pathOne.rbegin());
     return hasSeparator ? pathOne + pathTwo : pathOne + separator + pathTwo;
+}
+
+
+bool FileExists(const std::string& fileName)
+{
+#ifdef _WIN32
+    DWORD dwAttrib = GetFileAttributes(szPath);
+    return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+#else
+    return access(fileName.c_str(), F_OK) == 0;
+#endif
+}
+
+void RemoveFile(const std::string& fileName)
+{
+#ifdef _WIN32
+    DeleteFile(fileName.c_str());
+#else
+    unlink(fileName.c_str());
+#endif
+}
+void RenameFile(const std::string& oldName, const std::string& newName)
+{
+    if (FileExists(newName))
+        RemoveFile(newName);
+    rename(oldName.c_str(), newName.c_str());
 }
 
 }
