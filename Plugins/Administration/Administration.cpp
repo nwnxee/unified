@@ -2,13 +2,18 @@
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CNetLayer.hpp"
+#include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CExoBase.hpp"
+#include "API/CExoAliasList.hpp"
+#include "API/CResRef.hpp"
 #include "API/Globals.hpp"
 #include "API/Types.hpp"
 #include "API/Version.hpp"
 #include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
+#include "Platform/FileSystem.hpp"
 #include <cstdlib>
 
 using namespace NWNXLib;
@@ -46,13 +51,14 @@ Administration::Administration(const Plugin::CreateParams& params)
 #define REGISTER(name, func) \
     GetServices()->m_events->RegisterEvent(name, std::bind(&Administration::func, this, std::placeholders::_1))
 
-    REGISTER("GET_PLAYER_PASSWORD",   OnGetPlayerPassword);
-    REGISTER("SET_PLAYER_PASSWORD",   OnSetPlayerPassword);
-    REGISTER("CLEAR_PLAYER_PASSWORD", OnClearPlayerPassword);
-    REGISTER("GET_DM_PASSWORD",       OnGetDMPassword);
-    REGISTER("SET_DM_PASSWORD",       OnSetDMPassword);
-    REGISTER("SHUTDOWN_SERVER",       OnShutdownServer);
-    REGISTER("BOOT_PC_WITH_MESSAGE",  OnBootPCWithMessage);
+    REGISTER("GET_PLAYER_PASSWORD",           OnGetPlayerPassword);
+    REGISTER("SET_PLAYER_PASSWORD",           OnSetPlayerPassword);
+    REGISTER("CLEAR_PLAYER_PASSWORD",         OnClearPlayerPassword);
+    REGISTER("GET_DM_PASSWORD",               OnGetDMPassword);
+    REGISTER("SET_DM_PASSWORD",               OnSetDMPassword);
+    REGISTER("SHUTDOWN_SERVER",               OnShutdownServer);
+    REGISTER("BOOT_PC_WITH_MESSAGE",          OnBootPCWithMessage);
+    REGISTER("DELETE_PLAYER_CHARACTER",       OnDeletePlayerCharacter);
 
 #undef REGISTER
 }
@@ -123,6 +129,50 @@ Events::ArgumentStack Administration::OnBootPCWithMessage(Events::ArgumentStack&
 
     g_plugin->GetServices()->m_log->Notice("Booting player '0x%08x' for strref '%i'.", player->m_nPlayerID, strref);
     exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, strref, 1);
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentStack&& args)
+{
+    const auto objectId = Events::ExtractArgument<Types::ObjectID>(args);
+    const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
+
+    CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
+    CNWSPlayer* player = exoApp->GetClientObjectByObjectId(objectId);
+
+    if (!player)
+    {
+        g_plugin->GetServices()->m_log->Error("Attempted to delete invalid player");
+        return Events::ArgumentStack();
+    }
+    std::string bicname     = player->m_resFileName.GetResRefStr();
+    std::string servervault = CExoString(Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT", 0)).CStr();
+    std::string cdkey       = exoApp->GetNetLayer()->GetPlayerInfo(player->m_nPlayerID)->GetPublicCDKey(0).CStr();
+
+    std::string filename = servervault + cdkey + "/" + bicname + ".bic";
+
+    g_plugin->GetServices()->m_log->Notice("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
+
+    // Will show "Delete Character" message to PC. Best match from dialog.tlk
+    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, 10392, 1);
+
+    if (!Platform::FileSystem::FileExists(filename))
+    {
+        g_plugin->GetServices()->m_log->Error("File %s not found.", filename.c_str());
+        return Events::ArgumentStack();
+    }
+    if (bPreserveBackup)
+    {
+        std::string backup = filename + ".deleted";
+        int i = 0;
+        while (Platform::FileSystem::FileExists(backup + std::to_string(i)))
+            i++;
+        Platform::FileSystem::RenameFile(filename, backup + std::to_string(i));
+    }
+    else
+    {
+        Platform::FileSystem::RemoveFile(filename);
+    }
     return Events::ArgumentStack();
 }
 
