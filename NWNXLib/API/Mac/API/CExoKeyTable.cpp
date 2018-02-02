@@ -7,6 +7,7 @@
 #include "CExoStringList.hpp"
 #include "CKeyTableEntry.hpp"
 #include "CRes.hpp"
+#include "CResRef.hpp"
 
 namespace NWNXLib {
 

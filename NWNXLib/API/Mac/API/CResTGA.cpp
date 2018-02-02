@@ -2,6 +2,7 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "CExoString.hpp"
 #include "ExoTGAHeader_st.hpp"
 
 namespace NWNXLib {

@@ -3,6 +3,9 @@
 #include "Platform/ASLR.hpp"
 
 #include "CCodeBaseInternal.hpp"
+#include "CExoString.hpp"
+#include "CScriptLocation.hpp"
+#include "Vector.hpp"
 
 namespace NWNXLib {
 

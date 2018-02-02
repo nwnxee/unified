@@ -7,6 +7,7 @@
 #include "CExoArrayListTemplatedCNWSPersonalReputation.hpp"
 #include "CExoArrayListTemplatedint.hpp"
 #include "CExoArrayListTemplatedunsignedlong.hpp"
+#include "CExoLocString.hpp"
 #include "CGameEffect.hpp"
 #include "CItemRepository.hpp"
 #include "CNWCCMessageData.hpp"

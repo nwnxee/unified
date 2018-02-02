@@ -2,6 +2,7 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "CExoFile.hpp"
 #include "CResGFFField.hpp"
 #include "CResGFFFileHeader.hpp"
 #include "CResGFFLabel.hpp"

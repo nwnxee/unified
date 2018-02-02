@@ -3,11 +3,13 @@
 #include <cstdint>
 
 #include "CExoString.hpp"
-#include "CNetLayerSessionInfo.hpp"
 
 namespace NWNXLib {
 
 namespace API {
+
+// Forward class declarations (defined in the source file)
+struct CNetLayerSessionInfo;
 
 struct CExtendedServerInfo
 {

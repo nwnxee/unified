@@ -2,6 +2,8 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "CResRef.hpp"
+
 namespace NWNXLib {
 
 namespace API {

@@ -2,12 +2,14 @@
 
 #include <cstdint>
 
-#include "CExoString.hpp"
 #include "CResHelperTemplatedCResNCS2010u.hpp"
 
 namespace NWNXLib {
 
 namespace API {
+
+// Forward class declarations (defined in the source file)
+struct CExoString;
 
 struct CVirtualMachineFile
     : CResHelperTemplatedCResNCS2010u

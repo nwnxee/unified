@@ -3,7 +3,6 @@
 #include <cstdint>
 
 #include "CExoArrayListTemplatedCScriptLogPtr.hpp"
-#include "CExoString.hpp"
 #include "CVirtualMachineFile.hpp"
 #include "CVirtualMachineScript.hpp"
 #include "CVirtualMachineStack.hpp"
@@ -14,6 +13,7 @@ namespace NWNXLib {
 namespace API {
 
 // Forward class declarations (defined in the source file)
+struct CExoString;
 struct CResGFF;
 struct CResStruct;
 struct CScriptLog;

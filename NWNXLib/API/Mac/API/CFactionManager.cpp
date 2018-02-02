@@ -4,6 +4,7 @@
 
 #include "CExoArrayListTemplatedCNWSFactionPtr.hpp"
 #include "CExoArrayListTemplatedint.hpp"
+#include "CExoString.hpp"
 #include "CNWSFaction.hpp"
 #include "CResGFF.hpp"
 #include "CResList.hpp"
