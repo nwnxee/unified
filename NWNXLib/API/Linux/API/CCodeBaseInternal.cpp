@@ -2,8 +2,11 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "CExoString.hpp"
 #include "CODE4St.hpp"
+#include "CScriptLocation.hpp"
 #include "SCodeBaseData.hpp"
+#include "Vector.hpp"
 
 namespace NWNXLib {
 

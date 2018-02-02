@@ -6,7 +6,6 @@
 #include "CExoArrayListTemplatedCGameEffectPtr.hpp"
 #include "CExoArrayListTemplatedCNWVisibilityNodePtr.hpp"
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
-#include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CNWActionNode.hpp"
 #include "CNWSCreatureAppearanceInfo.hpp"
@@ -24,6 +23,7 @@ struct CExoArrayListTemplatedCNWSPVPEntry;
 struct CExoArrayListTemplatedCNWSPersonalReputation;
 struct CExoArrayListTemplatedint;
 struct CExoArrayListTemplatedunsignedlong;
+struct CExoLocString;
 struct CGameEffect;
 struct CItemRepository;
 struct CNWCCMessageData;

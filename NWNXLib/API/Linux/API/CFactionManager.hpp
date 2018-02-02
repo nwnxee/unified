@@ -2,8 +2,6 @@
 
 #include <cstdint>
 
-#include "CExoString.hpp"
-
 namespace NWNXLib {
 
 namespace API {
@@ -11,6 +9,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CExoArrayListTemplatedCNWSFactionPtr;
 struct CExoArrayListTemplatedint;
+struct CExoString;
 struct CNWSFaction;
 struct CResGFF;
 struct CResList;

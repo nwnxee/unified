@@ -2,7 +2,6 @@
 
 #include <cstdint>
 
-#include "CExoFile.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CRes.hpp"
@@ -13,6 +12,7 @@ namespace NWNXLib {
 namespace API {
 
 // Forward class declarations (defined in the source file)
+struct CExoFile;
 struct CResGFFField;
 struct CResGFFFileHeader;
 struct CResGFFLabel;

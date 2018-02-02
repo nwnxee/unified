@@ -3,6 +3,7 @@
 #include "Platform/ASLR.hpp"
 
 #include "CExoFileInternal.hpp"
+#include "CExoString.hpp"
 
 namespace NWNXLib {
 

@@ -5,6 +5,7 @@
 #include "CERFRes.hpp"
 #include "CERFString.hpp"
 #include "CExoFile.hpp"
+#include "CExoString.hpp"
 #include "CRes.hpp"
 
 namespace NWNXLib {

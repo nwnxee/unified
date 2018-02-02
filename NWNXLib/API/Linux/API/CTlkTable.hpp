@@ -3,8 +3,6 @@
 #include <cstdint>
 
 #include "CExoString.hpp"
-#include "CTlkTableToken.hpp"
-#include "STR_RES.hpp"
 
 namespace NWNXLib {
 
@@ -12,7 +10,9 @@ namespace API {
 
 // Forward class declarations (defined in the source file)
 struct CTlkFile;
+struct CTlkTableToken;
 struct CTlkTableTokenCustom;
+struct STR_RES;
 
 struct CTlkTable
 {

@@ -3,7 +3,6 @@
 #include <cstdint>
 
 #include "CBaseExoApp.hpp"
-#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
@@ -15,6 +14,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CCodeBase;
 struct CExoArrayListTemplatedCExoString;
+struct CExoArrayListTemplatedunsignedlong;
 struct CExoLinkedListTemplatedunsignedlong;
 struct CExtendedServerInfo;
 struct CGameObject;

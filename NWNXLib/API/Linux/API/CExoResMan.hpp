@@ -6,7 +6,6 @@
 #include "CExoLinkedListTemplatedCRes.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
-#include "CResRef.hpp"
 
 namespace NWNXLib {
 
@@ -18,6 +17,7 @@ struct CExoKeyTable;
 struct CExoStringList;
 struct CKeyTableEntry;
 struct CRes;
+struct CResRef;
 
 struct CExoResMan
 {
