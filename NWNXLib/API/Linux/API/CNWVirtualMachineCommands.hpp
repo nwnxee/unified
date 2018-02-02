@@ -53,6 +53,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandActionRest(int32_t, int32_t);
     int32_t ExecuteCommandActionResumeConversation(int32_t, int32_t);
     int32_t ExecuteCommandActionSit(int32_t, int32_t);
+    int32_t ExecuteCommandActionStartConversation(int32_t, int32_t);
     int32_t ExecuteCommandActionUseFeat(int32_t, int32_t);
     int32_t ExecuteCommandActionUseSkill(int32_t, int32_t);
     int32_t ExecuteCommandActionUseTalent(int32_t, int32_t);
@@ -265,6 +266,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandGetGoingToBeAttackedBy(int32_t, int32_t);
     int32_t ExecuteCommandGetGold(int32_t, int32_t);
     int32_t ExecuteCommandGetGoldPieceValue(int32_t, int32_t);
+    int32_t ExecuteCommandGetGroundHeight(int32_t, int32_t);
     int32_t ExecuteCommandGetHardness(int32_t, int32_t);
     int32_t ExecuteCommandGetHasFeat(int32_t, int32_t);
     int32_t ExecuteCommandGetHasFeatEffect(int32_t, int32_t);
@@ -417,6 +419,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandGetStrRefSoundDuration(int32_t, int32_t);
     int32_t ExecuteCommandGetSubRace(int32_t, int32_t);
     int32_t ExecuteCommandGetSubString(int32_t, int32_t);
+    int32_t ExecuteCommandGetSurfaceMaterial(int32_t, int32_t);
     int32_t ExecuteCommandGetTag(int32_t, int32_t);
     int32_t ExecuteCommandGetTileLightColor(int32_t, int32_t);
     int32_t ExecuteCommandGetTimeHour(int32_t, int32_t);
@@ -651,6 +654,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandActionRandomWalk(CNWVirtualMach
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionRest(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionResumeConversation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionSit(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandActionStartConversation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionUseFeat(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionUseSkill(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandActionUseTalent(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
@@ -863,6 +867,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetGameDifficulty(CNWVirtualMac
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetGoingToBeAttackedBy(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetGold(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetGoldPieceValue(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetGroundHeight(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHardness(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHasFeat(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHasFeatEffect(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
@@ -1015,6 +1020,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetStringUpperCase(CNWVirtualMa
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetStrRefSoundDuration(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetSubRace(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetSubString(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetSurfaceMaterial(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetTag(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetTileLightColor(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetTimeHour(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
