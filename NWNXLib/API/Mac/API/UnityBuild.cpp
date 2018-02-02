@@ -26,6 +26,7 @@
 #include "CExoArrayListTemplatedCWorldJournalEntry.cpp"
 #include "CExoArrayListTemplatedfloat.cpp"
 #include "CExoArrayListTemplatedSJournalEntry.cpp"
+#include "CExoArrayListTemplatedunsignedlong.cpp"
 #include "CExoBase.cpp"
 #include "CExoBaseInternal.cpp"
 #include "CExoCriticalSection.cpp"
@@ -57,6 +58,7 @@
 #include "CExoTimersInternal.cpp"
 #include "CExtendedServerInfo.cpp"
 #include "CFactionManager.cpp"
+#include "CFriendInfo.cpp"
 #include "CGameEffect.cpp"
 #include "CGameObject.cpp"
 #include "CGameObjectArray.cpp"
@@ -339,6 +341,8 @@
 #include "CFeatUseListEntry.cpp"
 #include "CFileInfo.cpp"
 #include "CGameEffectApplierRemover.cpp"
+#include "CGameID.cpp"
+#include "CGameID__GameID_t.cpp"
 #include "CGameObjectArrayNode.cpp"
 #include "Chunk.cpp"
 #include "CItemPropertyApplierRemover.cpp"
@@ -498,6 +502,7 @@
 #include "FILE4St.cpp"
 #include "flex_unit.cpp"
 #include "flock.cpp"
+#include "FriendGameInfo_t.cpp"
 #include "func_t.cpp"
 #include "funcs.cpp"
 #include "GL_FBOList.cpp"
@@ -522,6 +527,7 @@
 #include "input_id.cpp"
 #include "ISteamApps.cpp"
 #include "ISteamClient.cpp"
+#include "ISteamFriends.cpp"
 #include "ISteamMatchmaking.cpp"
 #include "ISteamNetworking.cpp"
 #include "ISteamUser.cpp"
@@ -799,6 +805,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CExoTimersInternal), 32> __attribute__((unused)) SIZE_CHECK_CEXOTIMERSINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CExtendedServerInfo), 72> __attribute__((unused)) SIZE_CHECK_CEXTENDEDSERVERINFO;
     CheckSize<sizeof(NWNXLib::API::CFactionManager), 32> __attribute__((unused)) SIZE_CHECK_CFACTIONMANAGER;
+    CheckSize<sizeof(NWNXLib::API::CFriendInfo), 16> __attribute__((unused)) SIZE_CHECK_CFRIENDINFO;
     CheckSize<sizeof(NWNXLib::API::CGameEffect), 160> __attribute__((unused)) SIZE_CHECK_CGAMEEFFECT;
     CheckSize<sizeof(NWNXLib::API::CGameObject), 12> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CGameObjectArray), 36> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECTARRAY;
@@ -807,7 +814,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CLoopingVisualEffect), 12> __attribute__((unused)) SIZE_CHECK_CLOOPINGVISUALEFFECT;
     CheckSize<sizeof(NWNXLib::API::CMemRecord), 224> __attribute__((unused)) SIZE_CHECK_CMEMRECORD;
     CheckSize<sizeof(NWNXLib::API::CNetLayer), 4> __attribute__((unused)) SIZE_CHECK_CNETLAYER;
-    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 499816> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 499856> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerCDKeyInfo), 24> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERCDKEYINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerInfo), 120> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerSessionInfo), 100> __attribute__((unused)) SIZE_CHECK_CNETLAYERSESSIONINFO;

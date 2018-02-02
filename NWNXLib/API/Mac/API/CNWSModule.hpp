@@ -7,6 +7,7 @@
 #include "CExoArrayListTemplatedCWorldJournalEntry.hpp"
 #include "CExoArrayListTemplatedNWPlayerCharacterList_stPtr.hpp"
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExoLinkedListTemplatedCNWSPlayerTURD.hpp"
 #include "CExoLinkedListTemplatedCResRef.hpp"
 #include "CExoLinkedListTemplatedNWModuleCutScene_st.hpp"
@@ -19,7 +20,6 @@
 #include "CResHelperTemplatedCResIFO2014u.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 

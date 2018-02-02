@@ -3,10 +3,10 @@
 #include <cstdint>
 
 #include "CBaseExoApp.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 #include "unknown_CExoLinkedListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {

@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "CResRef.hpp"
+
 namespace NWNXLib {
 
 namespace API {
@@ -15,6 +17,7 @@ struct CExoString
     CExoString(int32_t);
     CExoString(const CExoString&);
     CExoString(const char*);
+    CExoString(const CResRef&);
     CExoString(const char*, int32_t);
     ~CExoString();
     float AsFLOAT();
@@ -57,7 +60,8 @@ void CExoString__CExoStringCtor__0(CExoString* thisPtr);
 void CExoString__CExoStringCtor__2(CExoString* thisPtr, int32_t);
 void CExoString__CExoStringCtor__4(CExoString* thisPtr, const CExoString&);
 void CExoString__CExoStringCtor__6(CExoString* thisPtr, const char*);
-void CExoString__CExoStringCtor__8(CExoString* thisPtr, const char*, int32_t);
+void CExoString__CExoStringCtor__8(CExoString* thisPtr, const CResRef&);
+void CExoString__CExoStringCtor__10(CExoString* thisPtr, const char*, int32_t);
 void CExoString__CExoStringDtor__0(CExoString* thisPtr);
 float CExoString__AsFLOAT(CExoString* thisPtr);
 int32_t CExoString__AsINT(CExoString* thisPtr);

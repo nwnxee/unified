@@ -1,10 +1,14 @@
 #pragma once
 
+#include <cstdint>
+
 namespace NWNXLib {
 
 namespace API {
 
-class CExoArrayListTemplatedunsignedlong { };
+struct ISteamFriends
+{
+};
 
 }
 

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExoLinkedListTemplatedNWAreaExpansion_st.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
@@ -12,7 +13,6 @@
 #include "CResHelperTemplatedCResARE2012u.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 

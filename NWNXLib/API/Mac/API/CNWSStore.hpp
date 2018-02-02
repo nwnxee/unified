@@ -73,7 +73,7 @@ struct CNWSStore
     void RemoveFromArea();
     void RemoveItem(CNWSItem*);
     int32_t RemoveItemFromInventory(CNWSItem*, unsigned char);
-    int32_t SaveStore(CResGFF*, CResStruct*);
+    int32_t SaveStore(CResGFF*, CResStruct*, int32_t);
     int32_t SellItem(CNWSItem*, CNWSCreature*, unsigned char, unsigned char);
 };
 
@@ -101,7 +101,7 @@ void CNWSStore__RemoveCustomer(CNWSStore* thisPtr, CNWSPlayer*);
 void CNWSStore__RemoveFromArea(CNWSStore* thisPtr);
 void CNWSStore__RemoveItem(CNWSStore* thisPtr, CNWSItem*);
 int32_t CNWSStore__RemoveItemFromInventory(CNWSStore* thisPtr, CNWSItem*, unsigned char);
-int32_t CNWSStore__SaveStore(CNWSStore* thisPtr, CResGFF*, CResStruct*);
+int32_t CNWSStore__SaveStore(CNWSStore* thisPtr, CResGFF*, CResStruct*, int32_t);
 int32_t CNWSStore__SellItem(CNWSStore* thisPtr, CNWSItem*, CNWSCreature*, unsigned char, unsigned char);
 
 }

@@ -158,9 +158,9 @@ int32_t CNWSPlaceable::RemoveItem(CNWSItem* a0, int32_t a1)
     return CNWSPlaceable__RemoveItem(this, a0, a1);
 }
 
-int32_t CNWSPlaceable::SavePlaceable(CResGFF* a0, CResStruct* a1)
+int32_t CNWSPlaceable::SavePlaceable(CResGFF* a0, CResStruct* a1, int32_t a2)
 {
-    return CNWSPlaceable__SavePlaceable(this, a0, a1);
+    return CNWSPlaceable__SavePlaceable(this, a0, a1, a2);
 }
 
 void CNWSPlaceable::SetEffectSpellId(uint32_t a0)
@@ -410,12 +410,12 @@ int32_t CNWSPlaceable__RemoveItem(CNWSPlaceable* thisPtr, CNWSItem* a0, int32_t 
     return func(thisPtr, a0, a1);
 }
 
-int32_t CNWSPlaceable__SavePlaceable(CNWSPlaceable* thisPtr, CResGFF* a0, CResStruct* a1)
+int32_t CNWSPlaceable__SavePlaceable(CNWSPlaceable* thisPtr, CResGFF* a0, CResStruct* a1, int32_t a2)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSPlaceable*, CResGFF*, CResStruct*);
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSPlaceable*, CResGFF*, CResStruct*, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSPlaceable__SavePlaceable);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
+    return func(thisPtr, a0, a1, a2);
 }
 
 void CNWSPlaceable__SetEffectSpellId(CNWSPlaceable* thisPtr, uint32_t a0)
