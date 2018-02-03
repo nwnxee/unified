@@ -3,17 +3,17 @@
 #include <cstdint>
 
 #include "CExoArrayListTemplatedSCodeBaseDataPtr.hpp"
-#include "CExoString.hpp"
-#include "CScriptLocation.hpp"
-#include "Vector.hpp"
 
 namespace NWNXLib {
 
 namespace API {
 
 // Forward class declarations (defined in the source file)
+struct CExoString;
 struct CODE4St;
+struct CScriptLocation;
 struct SCodeBaseData;
+struct Vector;
 
 struct CCodeBaseInternal
 {

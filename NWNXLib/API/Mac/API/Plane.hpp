@@ -2,12 +2,14 @@
 
 #include <cstdint>
 
-#include "Quaternion.hpp"
 #include "Vector.hpp"
 
 namespace NWNXLib {
 
 namespace API {
+
+// Forward class declarations (defined in the source file)
+struct Quaternion;
 
 struct Plane
 {

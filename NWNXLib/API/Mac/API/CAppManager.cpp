@@ -3,6 +3,7 @@
 #include "Platform/ASLR.hpp"
 
 #include "CClientExoApp.hpp"
+#include "CExoString.hpp"
 #include "CNWReentrantServerStats.hpp"
 #include "CNWTileSetManager.hpp"
 #include "CObjectTableManager.hpp"

@@ -4,7 +4,6 @@
 
 #include "CExoLinkedListTemplatedCNWSDialogPlayer.hpp"
 #include "CExoLocString.hpp"
-#include "CExoString.hpp"
 #include "CResRef.hpp"
 
 namespace NWNXLib {
@@ -12,6 +11,7 @@ namespace NWNXLib {
 namespace API {
 
 // Forward class declarations (defined in the source file)
+struct CExoString;
 struct CNWSDialogEntry;
 struct CNWSDialogLinkEntry;
 struct CNWSDialogReply;

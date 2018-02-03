@@ -2,6 +2,8 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "Quaternion.hpp"
+
 namespace NWNXLib {
 
 namespace API {

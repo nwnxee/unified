@@ -4,6 +4,7 @@
 
 #include "CExoArrayListTemplatedCEffectIconObjectPtr.hpp"
 #include "CExoArrayListTemplatedCLoopingVisualEffectPtr.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExoLinkedListNode.hpp"
 #include "CGameObject.hpp"
 #include "CGameObjectArray.hpp"

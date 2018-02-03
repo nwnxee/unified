@@ -135,9 +135,9 @@ int32_t CNWSStore::RemoveItemFromInventory(CNWSItem* a0, unsigned char a1)
     return CNWSStore__RemoveItemFromInventory(this, a0, a1);
 }
 
-int32_t CNWSStore::SaveStore(CResGFF* a0, CResStruct* a1)
+int32_t CNWSStore::SaveStore(CResGFF* a0, CResStruct* a1, int32_t a2)
 {
-    return CNWSStore__SaveStore(this, a0, a1);
+    return CNWSStore__SaveStore(this, a0, a1, a2);
 }
 
 int32_t CNWSStore::SellItem(CNWSItem* a0, CNWSCreature* a1, unsigned char a2, unsigned char a3)
@@ -337,12 +337,12 @@ int32_t CNWSStore__RemoveItemFromInventory(CNWSStore* thisPtr, CNWSItem* a0, uns
     return func(thisPtr, a0, a1);
 }
 
-int32_t CNWSStore__SaveStore(CNWSStore* thisPtr, CResGFF* a0, CResStruct* a1)
+int32_t CNWSStore__SaveStore(CNWSStore* thisPtr, CResGFF* a0, CResStruct* a1, int32_t a2)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSStore*, CResGFF*, CResStruct*);
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSStore*, CResGFF*, CResStruct*, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSStore__SaveStore);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
+    return func(thisPtr, a0, a1, a2);
 }
 
 int32_t CNWSStore__SellItem(CNWSStore* thisPtr, CNWSItem* a0, CNWSCreature* a1, unsigned char a2, unsigned char a3)

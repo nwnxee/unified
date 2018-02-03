@@ -3,7 +3,9 @@
 #include "Platform/ASLR.hpp"
 
 #include "CTlkFile.hpp"
+#include "CTlkTableToken.hpp"
 #include "CTlkTableTokenCustom.hpp"
+#include "STR_RES.hpp"
 
 namespace NWNXLib {
 

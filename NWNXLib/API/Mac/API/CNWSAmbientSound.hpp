@@ -3,13 +3,13 @@
 #include <cstdint>
 
 #include "CNWAmbientSound.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
 namespace API {
 
 // Forward class declarations (defined in the source file)
+struct CExoArrayListTemplatedunsignedlong;
 struct CNWSMessage;
 struct CResGFF;
 struct CResStruct;

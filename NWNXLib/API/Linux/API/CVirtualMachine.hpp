@@ -3,7 +3,6 @@
 #include <cstdint>
 
 #include "CExoArrayListTemplatedCScriptLogPtr.hpp"
-#include "CExoString.hpp"
 #include "CVirtualMachineFile.hpp"
 #include "CVirtualMachineScript.hpp"
 #include "CVirtualMachineStack.hpp"
@@ -14,6 +13,7 @@ namespace NWNXLib {
 namespace API {
 
 // Forward class declarations (defined in the source file)
+struct CExoString;
 struct CResGFF;
 struct CResStruct;
 struct CScriptLog;
@@ -66,7 +66,7 @@ struct CVirtualMachine
     int32_t PopInstructionPtr(int32_t*);
     int32_t PushInstructionPtr(int32_t);
     int32_t ReadScriptFile(CExoString*);
-    int32_t RunScript(CExoString*, uint32_t, int32_t);
+    void RunScript(CExoString*, uint32_t, int32_t);
     int32_t RunScriptFile(int32_t);
     int32_t RunScriptSituation(void*, uint32_t, int32_t);
     int32_t SaveScriptSituation_Internal(CVirtualMachineScript*, CResGFF*, CResStruct*);
@@ -102,7 +102,7 @@ int32_t CVirtualMachine__LoadScriptSituation_Internal(CVirtualMachine* thisPtr, 
 int32_t CVirtualMachine__PopInstructionPtr(CVirtualMachine* thisPtr, int32_t*);
 int32_t CVirtualMachine__PushInstructionPtr(CVirtualMachine* thisPtr, int32_t);
 int32_t CVirtualMachine__ReadScriptFile(CVirtualMachine* thisPtr, CExoString*);
-int32_t CVirtualMachine__RunScript(CVirtualMachine* thisPtr, CExoString*, uint32_t, int32_t);
+void CVirtualMachine__RunScript(CVirtualMachine* thisPtr, CExoString*, uint32_t, int32_t);
 int32_t CVirtualMachine__RunScriptFile(CVirtualMachine* thisPtr, int32_t);
 int32_t CVirtualMachine__RunScriptSituation(CVirtualMachine* thisPtr, void*, uint32_t, int32_t);
 int32_t CVirtualMachine__SaveScriptSituation_Internal(CVirtualMachine* thisPtr, CVirtualMachineScript*, CResGFF*, CResStruct*);

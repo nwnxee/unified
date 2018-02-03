@@ -2,6 +2,8 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "CResRef.hpp"
+
 namespace NWNXLib {
 
 namespace API {
@@ -26,9 +28,14 @@ CExoString::CExoString(const char* a0)
     CExoString__CExoStringCtor__3(this, a0);
 }
 
+CExoString::CExoString(const CResRef& a0)
+{
+    CExoString__CExoStringCtor__4(this, a0);
+}
+
 CExoString::CExoString(const char* a0, int32_t a1)
 {
-    CExoString__CExoStringCtor__4(this, a0, a1);
+    CExoString__CExoStringCtor__5(this, a0, a1);
 }
 
 CExoString::~CExoString()
@@ -238,10 +245,18 @@ void CExoString__CExoStringCtor__3(CExoString* thisPtr, const char* a0)
     func(thisPtr, a0);
 }
 
-void CExoString__CExoStringCtor__4(CExoString* thisPtr, const char* a0, int32_t a1)
+void CExoString__CExoStringCtor__4(CExoString* thisPtr, const CResRef& a0)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoString*, const CResRef&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__CExoStringCtor__4);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    func(thisPtr, a0);
+}
+
+void CExoString__CExoStringCtor__5(CExoString* thisPtr, const char* a0, int32_t a1)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CExoString*, const char*, int32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__CExoStringCtor__4);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__CExoStringCtor__5);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr, a0, a1);
 }

@@ -6,7 +6,6 @@
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 #include "unknown_CExoLinkedListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
@@ -16,6 +15,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CCodeBase;
 struct CExoArrayListTemplatedCExoString;
+struct CExoArrayListTemplatedunsignedlong;
 struct CExtendedServerInfo;
 struct CGameObject;
 struct CGameObjectArray;

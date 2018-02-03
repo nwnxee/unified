@@ -12,6 +12,9 @@ MySQL::MySQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log)
     : m_log(log)
 {
     mysql_init(&m_mysql);
+    m_stmt = 0;
+    m_lastError = "";
+    m_paramCount = 0;
 }
 
 MySQL::~MySQL()

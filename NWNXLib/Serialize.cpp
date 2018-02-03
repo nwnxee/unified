@@ -87,7 +87,7 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
                     std::swap(bIsPC, pCreature->m_pStats->m_bIsPC);
                 }
 
-                if (pCreature->SaveCreature(&resGff, &resStruct, 0, 0, 0))
+                if (pCreature->SaveCreature(&resGff, &resStruct, 0, 0, 0, 0))
                     resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
 
                 if (bStripPCFlags) {
@@ -110,9 +110,9 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
         } while(0)
 
         case API::Constants::OBJECT_TYPE_ITEM:      SERIALIZE(Item,      "UTI ", 0); break;
-        case API::Constants::OBJECT_TYPE_PLACEABLE: SERIALIZE(Placeable, "UTP ");    break;
+        case API::Constants::OBJECT_TYPE_PLACEABLE: SERIALIZE(Placeable, "UTP ", 0);    break;
         case API::Constants::OBJECT_TYPE_WAYPOINT:  SERIALIZE(Waypoint,  "UTW ");    break;
-        case API::Constants::OBJECT_TYPE_STORE:     SERIALIZE(Store,     "UTM ");    break;
+        case API::Constants::OBJECT_TYPE_STORE:     SERIALIZE(Store,     "UTM ", 0);    break;
         case API::Constants::OBJECT_TYPE_DOOR:      SERIALIZE(Door,      "UTD ");    break;
         case API::Constants::OBJECT_TYPE_TRIGGER:   SERIALIZE(Trigger,   "UTT ");    break;
 #undef SERIALIZE

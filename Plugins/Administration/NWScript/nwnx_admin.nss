@@ -17,6 +17,13 @@ void NWNX_Administration_ShutdownServer();
 // Boots the provided player from the server with the provided strref as message.
 void NWNX_Administration_BootPCWithMessage(object pc, int strref);
 
+// Deletes the player character from the servervault
+//    bPreserveBackup - if true, it will leave the file on server,
+//                      only appending ".deleted0" to the bic filename.
+// The PC will be immediately booted from the game with a "Delete Character" message
+void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup = TRUE);
+
+
 string NWNX_Administration_GetPlayerPassword()
 {
     NWNX_CallFunction("NWNX_Administration", "GET_PLAYER_PASSWORD");
@@ -56,4 +63,11 @@ void NWNX_Administration_BootPCWithMessage(object pc, int strref)
     NWNX_PushArgumentInt("NWNX_Administration", "BOOT_PC_WITH_MESSAGE", strref);
     NWNX_PushArgumentObject("NWNX_Administration", "BOOT_PC_WITH_MESSAGE", pc);
     NWNX_CallFunction("NWNX_Administration", "BOOT_PC_WITH_MESSAGE");
+}
+
+void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup = TRUE)
+{
+    NWNX_PushArgumentInt("NWNX_Administration", "DELETE_PLAYER_CHARACTER", bPreserveBackup);
+    NWNX_PushArgumentObject("NWNX_Administration", "DELETE_PLAYER_CHARACTER", pc);
+    NWNX_CallFunction("NWNX_Administration", "DELETE_PLAYER_CHARACTER");
 }

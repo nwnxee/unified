@@ -5,7 +5,6 @@
 #include "CExoArrayListTemplatedCExoString.hpp"
 #include "CExoArrayListTemplatedCNWSTagNode.hpp"
 #include "CExoArrayListTemplatedCWorldJournalEntry.hpp"
-#include "CExoArrayListTemplatedNWPlayerCharacterList_stPtr.hpp"
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
 #include "CExoLinkedListTemplatedCNWSPlayerTURD.hpp"
 #include "CExoLinkedListTemplatedCResRef.hpp"
@@ -19,7 +18,6 @@
 #include "CResHelperTemplatedCResIFO2014u.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -27,6 +25,8 @@ namespace API {
 
 // Forward class declarations (defined in the source file)
 struct CERFFile;
+struct CExoArrayListTemplatedNWPlayerCharacterList_stPtr;
+struct CExoArrayListTemplatedunsignedlong;
 struct CNWSArea;
 struct CNWSPlayer;
 struct CNWSPlayerTURD;

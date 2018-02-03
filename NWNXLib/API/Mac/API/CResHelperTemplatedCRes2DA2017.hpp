@@ -2,11 +2,12 @@
 
 #include <cstdint>
 
-#include "CResRef.hpp"
-
 namespace NWNXLib {
 
 namespace API {
+
+// Forward class declarations (defined in the source file)
+struct CResRef;
 
 struct CResHelperTemplatedCRes2DA2017
 {

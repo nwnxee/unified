@@ -128,7 +128,7 @@ struct CNWSPlaceable
     void PostProcess();
     void RemoveFromArea();
     int32_t RemoveItem(CNWSItem*, int32_t);
-    int32_t SavePlaceable(CResGFF*, CResStruct*);
+    int32_t SavePlaceable(CResGFF*, CResStruct*, int32_t);
     void SetEffectSpellId(uint32_t);
     void SetLightIsOn(int32_t);
     void SetOrientation(Vector);
@@ -163,7 +163,7 @@ void CNWSPlaceable__OpenInventory(CNWSPlaceable* thisPtr, uint32_t);
 void CNWSPlaceable__PostProcess(CNWSPlaceable* thisPtr);
 void CNWSPlaceable__RemoveFromArea(CNWSPlaceable* thisPtr);
 int32_t CNWSPlaceable__RemoveItem(CNWSPlaceable* thisPtr, CNWSItem*, int32_t);
-int32_t CNWSPlaceable__SavePlaceable(CNWSPlaceable* thisPtr, CResGFF*, CResStruct*);
+int32_t CNWSPlaceable__SavePlaceable(CNWSPlaceable* thisPtr, CResGFF*, CResStruct*, int32_t);
 void CNWSPlaceable__SetEffectSpellId(CNWSPlaceable* thisPtr, uint32_t);
 void CNWSPlaceable__SetLightIsOn(CNWSPlaceable* thisPtr, int32_t);
 void CNWSPlaceable__SetOrientation(CNWSPlaceable* thisPtr, Vector);

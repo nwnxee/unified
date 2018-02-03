@@ -3,7 +3,6 @@
 #include <cstdint>
 
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
-#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExoLinkedListTemplatedNWAreaExpansion_st.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
@@ -21,6 +20,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CERFFile;
 struct CExoArrayListTemplatedCGameObjectPtr;
+struct CExoArrayListTemplatedunsignedlong;
 struct CGameEffect;
 struct CNWSAmbientSound;
 struct CNWSAreaGridSuccessors;

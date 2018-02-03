@@ -5,7 +5,6 @@
 #include "CExoLinkedListTemplatedCERFKey.hpp"
 #include "CExoLinkedListTemplatedCERFRes.hpp"
 #include "CExoLinkedListTemplatedCERFString.hpp"
-#include "CExoString.hpp"
 #include "NWERFHeader_st.hpp"
 
 namespace NWNXLib {
@@ -16,6 +15,7 @@ namespace API {
 struct CERFRes;
 struct CERFString;
 struct CExoFile;
+struct CExoString;
 struct CRes;
 
 struct CERFFile

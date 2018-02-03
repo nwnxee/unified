@@ -6,6 +6,8 @@
 #include "CExoArrayListTemplatedCNWSPVPEntry.hpp"
 #include "CExoArrayListTemplatedCNWSPersonalReputation.hpp"
 #include "CExoArrayListTemplatedint.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
+#include "CExoLocString.hpp"
 #include "CGameEffect.hpp"
 #include "CItemRepository.hpp"
 #include "CNWCCMessageData.hpp"
@@ -1843,9 +1845,9 @@ int32_t CNWSCreature::RunUnequip(uint32_t a0, uint32_t a1, unsigned char a2, uns
     return CNWSCreature__RunUnequip(this, a0, a1, a2, a3, a4, a5);
 }
 
-void CNWSCreature::SaveAssociateList(CResGFF* a0, CResStruct* a1)
+void CNWSCreature::SaveAssociateList(CResGFF* a0, CResStruct* a1, int32_t a2)
 {
-    return CNWSCreature__SaveAssociateList(this, a0, a1);
+    return CNWSCreature__SaveAssociateList(this, a0, a1, a2);
 }
 
 void CNWSCreature::SaveAutoMapData(CResGFF* a0, CResStruct* a1)
@@ -1853,9 +1855,9 @@ void CNWSCreature::SaveAutoMapData(CResGFF* a0, CResStruct* a1)
     return CNWSCreature__SaveAutoMapData(this, a0, a1);
 }
 
-int32_t CNWSCreature::SaveCreature(CResGFF* a0, CResStruct* a1, int32_t a2, int32_t a3, int32_t a4)
+int32_t CNWSCreature::SaveCreature(CResGFF* a0, CResStruct* a1, int32_t a2, int32_t a3, int32_t a4, int32_t a5)
 {
-    return CNWSCreature__SaveCreature(this, a0, a1, a2, a3, a4);
+    return CNWSCreature__SaveCreature(this, a0, a1, a2, a3, a4, a5);
 }
 
 void CNWSCreature::SavePersonalReputationList(CResGFF* a0, CResStruct* a1)
@@ -5234,12 +5236,12 @@ int32_t CNWSCreature__RunUnequip(CNWSCreature* thisPtr, uint32_t a0, uint32_t a1
     return func(thisPtr, a0, a1, a2, a3, a4, a5);
 }
 
-void CNWSCreature__SaveAssociateList(CNWSCreature* thisPtr, CResGFF* a0, CResStruct* a1)
+void CNWSCreature__SaveAssociateList(CNWSCreature* thisPtr, CResGFF* a0, CResStruct* a1, int32_t a2)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreature*, CResGFF*, CResStruct*);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreature*, CResGFF*, CResStruct*, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSCreature__SaveAssociateList);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
+    return func(thisPtr, a0, a1, a2);
 }
 
 void CNWSCreature__SaveAutoMapData(CNWSCreature* thisPtr, CResGFF* a0, CResStruct* a1)
@@ -5250,12 +5252,12 @@ void CNWSCreature__SaveAutoMapData(CNWSCreature* thisPtr, CResGFF* a0, CResStruc
     return func(thisPtr, a0, a1);
 }
 
-int32_t CNWSCreature__SaveCreature(CNWSCreature* thisPtr, CResGFF* a0, CResStruct* a1, int32_t a2, int32_t a3, int32_t a4)
+int32_t CNWSCreature__SaveCreature(CNWSCreature* thisPtr, CResGFF* a0, CResStruct* a1, int32_t a2, int32_t a3, int32_t a4, int32_t a5)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSCreature*, CResGFF*, CResStruct*, int32_t, int32_t, int32_t);
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWSCreature*, CResGFF*, CResStruct*, int32_t, int32_t, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSCreature__SaveCreature);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2, a3, a4);
+    return func(thisPtr, a0, a1, a2, a3, a4, a5);
 }
 
 void CNWSCreature__SavePersonalReputationList(CNWSCreature* thisPtr, CResGFF* a0, CResStruct* a1)

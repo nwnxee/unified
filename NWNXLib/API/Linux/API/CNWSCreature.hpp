@@ -6,7 +6,6 @@
 #include "CExoArrayListTemplatedCGameEffectPtr.hpp"
 #include "CExoArrayListTemplatedCNWVisibilityNodePtr.hpp"
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
-#include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CNWActionNode.hpp"
 #include "CNWSCreatureAppearanceInfo.hpp"
@@ -24,6 +23,7 @@ struct CExoArrayListTemplatedCNWSPVPEntry;
 struct CExoArrayListTemplatedCNWSPersonalReputation;
 struct CExoArrayListTemplatedint;
 struct CExoArrayListTemplatedunsignedlong;
+struct CExoLocString;
 struct CGameEffect;
 struct CItemRepository;
 struct CNWCCMessageData;
@@ -635,9 +635,9 @@ struct CNWSCreature
     void RestorePolymorphToOutputCreature(CNWSCreRestorePolymorphData*);
     int32_t RunEquip(uint32_t, uint32_t, uint32_t);
     int32_t RunUnequip(uint32_t, uint32_t, unsigned char, unsigned char, int32_t, uint32_t);
-    void SaveAssociateList(CResGFF*, CResStruct*);
+    void SaveAssociateList(CResGFF*, CResStruct*, int32_t);
     void SaveAutoMapData(CResGFF*, CResStruct*);
-    int32_t SaveCreature(CResGFF*, CResStruct*, int32_t, int32_t, int32_t);
+    int32_t SaveCreature(CResGFF*, CResStruct*, int32_t, int32_t, int32_t, int32_t);
     void SavePersonalReputationList(CResGFF*, CResStruct*);
     void SaveQuickBarHack(CExoString);
     void SaveQuickButtons(CResGFF*, CResStruct*);
@@ -1098,9 +1098,9 @@ void CNWSCreature__RestoreItemPropertiesInRepository(CNWSCreature* thisPtr, CIte
 void CNWSCreature__RestorePolymorphToOutputCreature(CNWSCreature* thisPtr, CNWSCreRestorePolymorphData*);
 int32_t CNWSCreature__RunEquip(CNWSCreature* thisPtr, uint32_t, uint32_t, uint32_t);
 int32_t CNWSCreature__RunUnequip(CNWSCreature* thisPtr, uint32_t, uint32_t, unsigned char, unsigned char, int32_t, uint32_t);
-void CNWSCreature__SaveAssociateList(CNWSCreature* thisPtr, CResGFF*, CResStruct*);
+void CNWSCreature__SaveAssociateList(CNWSCreature* thisPtr, CResGFF*, CResStruct*, int32_t);
 void CNWSCreature__SaveAutoMapData(CNWSCreature* thisPtr, CResGFF*, CResStruct*);
-int32_t CNWSCreature__SaveCreature(CNWSCreature* thisPtr, CResGFF*, CResStruct*, int32_t, int32_t, int32_t);
+int32_t CNWSCreature__SaveCreature(CNWSCreature* thisPtr, CResGFF*, CResStruct*, int32_t, int32_t, int32_t, int32_t);
 void CNWSCreature__SavePersonalReputationList(CNWSCreature* thisPtr, CResGFF*, CResStruct*);
 void CNWSCreature__SaveQuickBarHack(CNWSCreature* thisPtr, CExoString);
 void CNWSCreature__SaveQuickButtons(CNWSCreature* thisPtr, CResGFF*, CResStruct*);

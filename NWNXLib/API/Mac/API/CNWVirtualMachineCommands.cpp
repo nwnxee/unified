@@ -1216,6 +1216,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetGoldPieceValue(int32_t a0, i
     return CNWVirtualMachineCommands__ExecuteCommandGetGoldPieceValue(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetGroundHeight(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetGroundHeight(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetHardness(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetHardness(this, a0, a1);
@@ -1974,6 +1979,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetSubRace(int32_t a0, int32_t 
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetSubString(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetSubString(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetSurfaceMaterial(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetSurfaceMaterial(this, a0, a1);
 }
 
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetTag(int32_t a0, int32_t a1)
@@ -4924,6 +4934,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetGoldPieceValue(CNWVirtualMac
     return func(thisPtr, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetGroundHeight(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetGroundHeight);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetHardness(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
@@ -6136,6 +6154,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetSubString(CNWVirtualMachineC
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetSubString);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetSurfaceMaterial(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetSurfaceMaterial);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }

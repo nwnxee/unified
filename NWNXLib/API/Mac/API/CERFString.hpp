@@ -2,12 +2,14 @@
 
 #include <cstdint>
 
-#include "CExoFile.hpp"
 #include "CExoString.hpp"
 
 namespace NWNXLib {
 
 namespace API {
+
+// Forward class declarations (defined in the source file)
+struct CExoFile;
 
 struct CERFString
 {

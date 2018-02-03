@@ -3,7 +3,6 @@
 #include <cstdint>
 
 #include "CExoString.hpp"
-#include "CResRef.hpp"
 
 namespace NWNXLib {
 
@@ -15,6 +14,7 @@ struct CExoPackedFile;
 struct CExoStringList;
 struct CKeyTableEntry;
 struct CRes;
+struct CResRef;
 
 struct CExoKeyTable
 {

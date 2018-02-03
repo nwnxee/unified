@@ -1,8 +1,7 @@
-return() # TODO: Upgrade Most of these are unnecessary now. Will we delete this plugin?
+return() # TODO: Make these work when the release schedule is less nuts
 
 add_plugin(Optimizations
     "Optimizations.cpp"
-    "Optimizations/AIMasterOptimizations.cpp"
     "Optimizations/BroadcastCombatStateToPartyOptimization.cpp"
     "Optimizations/CGameObjectArrayOptimization.cpp"
     "Optimizations/GetClientObjectByObjectIdOptimization.cpp"

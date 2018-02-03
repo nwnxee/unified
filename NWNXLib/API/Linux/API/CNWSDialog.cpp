@@ -2,6 +2,7 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "CExoString.hpp"
 #include "CNWSDialogEntry.hpp"
 #include "CNWSDialogLinkEntry.hpp"
 #include "CNWSDialogReply.hpp"
