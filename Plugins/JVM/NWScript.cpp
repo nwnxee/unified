@@ -190,8 +190,8 @@ jobject JNIEXPORT JNICALL Internal::NWScriptPopItemProperty(JNIEnv* env, jobject
         throw std::runtime_error("Cannot pop itemproperty off the VM stack.");
 
     g_internal->TouchEffectAddress(pRetVal);
-    auto r = JNICHECKED(env, CallStaticObjectMethod(g_internal->m_jclassNWEffect,
-        g_internal->m_jmethodNWEffectCreate, (long) pRetVal));
+    auto r = JNICHECKED(env, CallStaticObjectMethod(g_internal->m_jclassNWItemProperty,
+        g_internal->m_jmethodNWItemPropertyCreate, (long) pRetVal));
     return r;
 }
 
@@ -200,7 +200,7 @@ void JNIEXPORT JNICALL Internal::NWScriptPushItemProperty(JNIEnv* env, jobject o
     jint jid = JNICHECKED(env, CallIntMethod(value, g_internal->m_jmethodNWItemPropertygetOid));
     CGameEffect* ptr = reinterpret_cast<CGameEffect*>(jid);
     if (!g_internal->IsEffectTouched(ptr)) {
-        JNICHECKED(env, ThrowNew(g_internal->m_jclassNWInvalidEffectException, "Do not reuse itemproperties from past context switches."));
+        JNICHECKED(env, ThrowNew(g_internal->m_jclassNWInvalidItemPropertyException, "Do not reuse itemproperties from past context switches."));
         return;
     }
 
