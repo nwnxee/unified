@@ -3,6 +3,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
+#include "API/CNWSCombatRound.hpp"
 #include "Events.hpp"
 #include "Helpers.hpp"
 #include "Services/Log/Log.hpp"
@@ -35,15 +36,9 @@ void CombatEvents::StartCombatRoundHook(
 {
     const bool before = type == Hooks::CallType::BEFORE_ORIGINAL;
 
-    if (before)
-    {
-        //Events::SignalEvent("NWNX_ON_START_COMBAT_ROUND_BEFORE" , oid);
-    }
-    else
-    {
-        //Events::SignalEvent("NWNX_ON_START_COMBAT_ROUND_AFTER", oid);
-    }
 
+    Events::PushEventData("TARGET_OBJECT_ID", Helpers::ObjectIDToString(thisPtr->m_pBaseCreature->m_oidAttemptedAttackTarget));
+    Events::SignalEvent(before ? "NWNX_ON_START_COMBAT_ROUND_BEFORE" : "NWNX_ON_START_COMBAT_ROUND_AFTER" , thisPtr->m_pBaseCreature->m_idSelf);
 }
 
 }
