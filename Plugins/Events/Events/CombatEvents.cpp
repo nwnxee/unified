@@ -32,12 +32,12 @@ CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker)
 void CombatEvents::StartCombatRoundHook(
     Hooks::CallType type, 
     API::CNWSCombatRound* thisPtr,
-    uint32_t val)
+    uint32_t oidTarget)
 {
     const bool before = type == Hooks::CallType::BEFORE_ORIGINAL;
 
 
-    Events::PushEventData("TARGET_OBJECT_ID", Helpers::ObjectIDToString(thisPtr->m_pBaseCreature->m_oidAttemptedAttackTarget));
+    Events::PushEventData("TARGET_OBJECT_ID", Helpers::ObjectIDToString(oidTarget));
     Events::SignalEvent(before ? "NWNX_ON_START_COMBAT_ROUND_BEFORE" : "NWNX_ON_START_COMBAT_ROUND_AFTER" , thisPtr->m_pBaseCreature->m_idSelf);
 }
 
