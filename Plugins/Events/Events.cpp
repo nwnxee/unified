@@ -5,6 +5,7 @@
 #include "API/Version.hpp"
 #include "Events/AssociateEvents.hpp"
 #include "Events/ClientEvents.hpp"
+#include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
 #include "Events/ExamineEvents.hpp"
 #include "Events/FeatEvents.hpp"
@@ -73,6 +74,11 @@ Events::Events(const Plugin::CreateParams& params)
     if (GetServices()->m_config->Get<bool>("ENABLE_CLIENT_EVENTS", true))
     {
         m_clientEvents = std::make_unique<ClientEvents>(GetServices()->m_hooks);
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_COMBAT_EVENTS", true))
+    {
+        m_combatEvents = std::make_unique<CombatEvents>(GetServices()->m_hooks);
     }
 
     if (GetServices()->m_config->Get<bool>("ENABLE_DM_ACTION_EVENTS", true))

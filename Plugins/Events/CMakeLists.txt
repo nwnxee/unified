@@ -3,6 +3,7 @@ add_plugin(Events
     "Helpers.cpp"
     "Events/AssociateEvents.cpp"
     "Events/ClientEvents.cpp"
+    "Events/CombatEvents.cpp"
     # "Events/DMActionEvents.cpp" TODO: Upgrade
     "Events/ExamineEvents.cpp"
     "Events/FeatEvents.cpp"
