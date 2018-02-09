@@ -38,6 +38,7 @@ struct CExoBase
     ~CExoBase();
     int32_t CheckForCD(uint32_t);
     int32_t GetAugmentedDirectoryList(CExoArrayListTemplatedCFileInfo*, CExoString, uint16_t, int32_t);
+    int32_t GetDirectoryAndWorkshopList(CExoArrayListTemplatedCExoString*, CExoString, uint16_t, int32_t, int32_t);
     int32_t GetDirectoryList(CExoArrayListTemplatedCExoString*, CExoString, uint16_t, int32_t, int32_t);
     const CExoString& GetResourceExtension(uint16_t);
     uint16_t GetResTypeFromExtension(const CExoString&);
@@ -50,6 +51,7 @@ void CExoBase__CExoBaseCtor(CExoBase* thisPtr, CExoString);
 void CExoBase__CExoBaseDtor(CExoBase* thisPtr);
 int32_t CExoBase__CheckForCD(CExoBase* thisPtr, uint32_t);
 int32_t CExoBase__GetAugmentedDirectoryList(CExoBase* thisPtr, CExoArrayListTemplatedCFileInfo*, CExoString, uint16_t, int32_t);
+int32_t CExoBase__GetDirectoryAndWorkshopList(CExoBase* thisPtr, CExoArrayListTemplatedCExoString*, CExoString, uint16_t, int32_t, int32_t);
 int32_t CExoBase__GetDirectoryList(CExoBase* thisPtr, CExoArrayListTemplatedCExoString*, CExoString, uint16_t, int32_t, int32_t);
 const CExoString& CExoBase__GetResourceExtension(CExoBase* thisPtr, uint16_t);
 uint16_t CExoBase__GetResTypeFromExtension(CExoBase* thisPtr, const CExoString&);

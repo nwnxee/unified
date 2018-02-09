@@ -82,9 +82,9 @@ int32_t CNetLayerInternal::DisconnectFromSession()
     return CNetLayerInternal__DisconnectFromSession(this);
 }
 
-int32_t CNetLayerInternal::DisconnectPlayer(uint32_t a0, uint32_t a1, int32_t a2, int32_t a3)
+int32_t CNetLayerInternal::DisconnectPlayer(uint32_t a0, uint32_t a1, int32_t a2, int32_t a3, const CExoString& a4)
 {
-    return CNetLayerInternal__DisconnectPlayer(this, a0, a1, a2, a3);
+    return CNetLayerInternal__DisconnectPlayer(this, a0, a1, a2, a3, a4);
 }
 
 int32_t CNetLayerInternal::DropConnectionToServer()
@@ -437,9 +437,9 @@ void CNetLayerInternal::SendBNDMMessage()
     return CNetLayerInternal__SendBNDMMessage(this);
 }
 
-void CNetLayerInternal::SendBNDPMessage(uint32_t a0, uint32_t a1)
+void CNetLayerInternal::SendBNDPMessage(uint32_t a0, uint32_t a1, const CExoString& a2)
 {
-    return CNetLayerInternal__SendBNDPMessage(this, a0, a1);
+    return CNetLayerInternal__SendBNDPMessage(this, a0, a1, a2);
 }
 
 int32_t CNetLayerInternal::SendBNDSMessage(uint32_t a0)
@@ -552,9 +552,9 @@ int32_t CNetLayerInternal::ShutDown()
     return CNetLayerInternal__ShutDown(this);
 }
 
-void CNetLayerInternal::ShutDownClientInterfaceWithReason(uint32_t a0)
+void CNetLayerInternal::ShutDownClientInterfaceWithReason(uint32_t a0, const CExoString& a1)
 {
-    return CNetLayerInternal__ShutDownClientInterfaceWithReason(this, a0);
+    return CNetLayerInternal__ShutDownClientInterfaceWithReason(this, a0, a1);
 }
 
 int32_t CNetLayerInternal::StartConnectToSession(uint32_t a0, const CExoString& a1, int32_t a2, int32_t a3, const CExoString& a4, uint32_t a5, uint32_t a6, const CExoString& a7, const CExoString& a8)
@@ -724,12 +724,12 @@ int32_t CNetLayerInternal__DisconnectFromSession(CNetLayerInternal* thisPtr)
     return func(thisPtr);
 }
 
-int32_t CNetLayerInternal__DisconnectPlayer(CNetLayerInternal* thisPtr, uint32_t a0, uint32_t a1, int32_t a2, int32_t a3)
+int32_t CNetLayerInternal__DisconnectPlayer(CNetLayerInternal* thisPtr, uint32_t a0, uint32_t a1, int32_t a2, int32_t a3, const CExoString& a4)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t, uint32_t, int32_t, int32_t);
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t, uint32_t, int32_t, int32_t, const CExoString&);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayerInternal__DisconnectPlayer);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2, a3);
+    return func(thisPtr, a0, a1, a2, a3, a4);
 }
 
 int32_t CNetLayerInternal__DropConnectionToServer(CNetLayerInternal* thisPtr)
@@ -1292,12 +1292,12 @@ void CNetLayerInternal__SendBNDMMessage(CNetLayerInternal* thisPtr)
     return func(thisPtr);
 }
 
-void CNetLayerInternal__SendBNDPMessage(CNetLayerInternal* thisPtr, uint32_t a0, uint32_t a1)
+void CNetLayerInternal__SendBNDPMessage(CNetLayerInternal* thisPtr, uint32_t a0, uint32_t a1, const CExoString& a2)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t, uint32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t, uint32_t, const CExoString&);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayerInternal__SendBNDPMessage);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
+    return func(thisPtr, a0, a1, a2);
 }
 
 int32_t CNetLayerInternal__SendBNDSMessage(CNetLayerInternal* thisPtr, uint32_t a0)
@@ -1476,12 +1476,12 @@ int32_t CNetLayerInternal__ShutDown(CNetLayerInternal* thisPtr)
     return func(thisPtr);
 }
 
-void CNetLayerInternal__ShutDownClientInterfaceWithReason(CNetLayerInternal* thisPtr, uint32_t a0)
+void CNetLayerInternal__ShutDownClientInterfaceWithReason(CNetLayerInternal* thisPtr, uint32_t a0, const CExoString& a1)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t, const CExoString&);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayerInternal__ShutDownClientInterfaceWithReason);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0);
+    return func(thisPtr, a0, a1);
 }
 
 int32_t CNetLayerInternal__StartConnectToSession(CNetLayerInternal* thisPtr, uint32_t a0, const CExoString& a1, int32_t a2, int32_t a3, const CExoString& a4, uint32_t a5, uint32_t a6, const CExoString& a7, const CExoString& a8)

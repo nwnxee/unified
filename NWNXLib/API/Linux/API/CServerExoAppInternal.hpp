@@ -117,6 +117,12 @@ struct CServerExoAppInternal
     int32_t m_bCreatureDeathLoggingEnabled;
     uint32_t m_nClientsRequiredToDisableCPUSleep;
     int32_t m_bStickyCombatModesEnabled;
+    int32_t m_AttackBonusLimit;
+    int32_t m_DamageBonusLimit;
+    int32_t m_SavingThrowBonusLimit;
+    int32_t m_AbilityBonusLimit;
+    int32_t m_AbilityPenaltyLimit;
+    int32_t m_SkillBonusLimit;
 
     // The below are auto generated stubs.
     CServerExoAppInternal(const CServerExoAppInternal&) = default;

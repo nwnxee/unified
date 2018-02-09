@@ -297,8 +297,12 @@
 #include "CCallbackTemplatedCSteamInternalLobbyEnter_tfalse.cpp"
 #include "CCallbackTemplatedCSteamInternalLobbyMatchList_tfalse.cpp"
 #include "CCallbackTemplatedCSteamInternalP2PSessionRequest_tfalse.cpp"
+#include "CCallResultTemplatedCSteamInternalCreateItemResult_t.cpp"
 #include "CCallResultTemplatedCSteamInternalEncryptedAppTicketResponse_t.cpp"
 #include "CCallResultTemplatedCSteamInternalLobbyEnter_t.cpp"
+#include "CCallResultTemplatedCSteamInternalSteamUGCQueryCompleted_t.cpp"
+#include "CCallResultTemplatedCSteamInternalSteamUGCRequestUGCDetailsResult_t.cpp"
+#include "CCallResultTemplatedCSteamInternalSubmitItemUpdateResult_t.cpp"
 #include "CClientExoApp.cpp"
 #include "CConnectionLib.cpp"
 #include "CConnectionLib__RoomListEntry.cpp"
@@ -414,6 +418,7 @@
 #include "CPersistantWorldOptions.cpp"
 #include "CPlayOptions.cpp"
 #include "CrashReporterData.cpp"
+#include "CreateItemResult_t.cpp"
 #include "CResetOption.cpp"
 #include "CResGFFField.cpp"
 #include "CResGFFFileHeader.cpp"
@@ -450,6 +455,7 @@
 #include "CSteamID.cpp"
 #include "CSteamID__SteamID_t__SteamIDComponent_t.cpp"
 #include "CSteamInternal.cpp"
+#include "CSteamInternal__SubscribedItems.cpp"
 #include "ct_data_s.cpp"
 #include "CTlkTableToken.cpp"
 #include "CTlkTableTokenCustom.cpp"
@@ -532,6 +538,7 @@
 #include "ISteamFriends.cpp"
 #include "ISteamMatchmaking.cpp"
 #include "ISteamNetworking.cpp"
+#include "ISteamUGC.cpp"
 #include "ISteamUser.cpp"
 #include "joystick_hwdata.cpp"
 #include "KeyFileHeader_st.cpp"
@@ -623,9 +630,13 @@
 #include "stat.cpp"
 #include "statfs.cpp"
 #include "static_tree_desc_s.cpp"
+#include "SteamUGCDetails_t.cpp"
+#include "SteamUGCQueryCompleted_t.cpp"
+#include "SteamUGCRequestUGCDetailsResult_t.cpp"
 #include "STR_RES_HEADER.cpp"
 #include "STR_RES_HEADER_OLD.cpp"
 #include "STRUCT_B4NODE.cpp"
+#include "SubmitItemUpdateResult_t.cpp"
 #include "SW_RenderData.cpp"
 #include "sysinfo.cpp"
 #include "T4HEADER.cpp"
@@ -809,7 +820,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CExoTimersInternal), 32> __attribute__((unused)) SIZE_CHECK_CEXOTIMERSINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CExtendedServerInfo), 72> __attribute__((unused)) SIZE_CHECK_CEXTENDEDSERVERINFO;
     CheckSize<sizeof(NWNXLib::API::CFactionManager), 32> __attribute__((unused)) SIZE_CHECK_CFACTIONMANAGER;
-    CheckSize<sizeof(NWNXLib::API::CFriendInfo), 16> __attribute__((unused)) SIZE_CHECK_CFRIENDINFO;
+    CheckSize<sizeof(NWNXLib::API::CFriendInfo), 24> __attribute__((unused)) SIZE_CHECK_CFRIENDINFO;
     CheckSize<sizeof(NWNXLib::API::CGameEffect), 160> __attribute__((unused)) SIZE_CHECK_CGAMEEFFECT;
     CheckSize<sizeof(NWNXLib::API::CGameObject), 12> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CGameObjectArray), 36> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECTARRAY;
@@ -818,7 +829,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CLoopingVisualEffect), 12> __attribute__((unused)) SIZE_CHECK_CLOOPINGVISUALEFFECT;
     CheckSize<sizeof(NWNXLib::API::CMemRecord), 224> __attribute__((unused)) SIZE_CHECK_CMEMRECORD;
     CheckSize<sizeof(NWNXLib::API::CNetLayer), 4> __attribute__((unused)) SIZE_CHECK_CNETLAYER;
-    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 499856> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 499864> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerCDKeyInfo), 24> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERCDKEYINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerInfo), 120> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerSessionInfo), 100> __attribute__((unused)) SIZE_CHECK_CNETLAYERSESSIONINFO;
@@ -935,7 +946,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CServerAIList), 16> __attribute__((unused)) SIZE_CHECK_CSERVERAILIST;
     CheckSize<sizeof(NWNXLib::API::CServerAIMaster), 148> __attribute__((unused)) SIZE_CHECK_CSERVERAIMASTER;
     CheckSize<sizeof(NWNXLib::API::CServerExoApp), 8> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPP;
-    CheckSize<sizeof(NWNXLib::API::CServerExoAppInternal), 65912> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPPINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CServerExoAppInternal), 65936> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPPINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CServerInfo), 1180> __attribute__((unused)) SIZE_CHECK_CSERVERINFO;
     CheckSize<sizeof(NWNXLib::API::CStoreCustomer), 24> __attribute__((unused)) SIZE_CHECK_CSTORECUSTOMER;
     CheckSize<sizeof(NWNXLib::API::CTlkFile), 24> __attribute__((unused)) SIZE_CHECK_CTLKFILE;

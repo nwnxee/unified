@@ -1636,6 +1636,36 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetLeavingObject(int32_t a0, in
     return CNWVirtualMachineCommands__ExecuteCommandGetLeavingObject(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetLimitAbilityBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetLimitAbilityBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetLimitAbilityPenalty(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetLimitAbilityPenalty(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetLimitAttackBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetLimitAttackBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetLimitDamageBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetLimitDamageBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetLimitSavingThrowBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetLimitSavingThrowBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetLimitSkillBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetLimitSkillBonus(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetLocation(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetLocation(this, a0, a1);
@@ -2609,6 +2639,36 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandSetKeyRequiredFeedbackMessage(i
 int32_t CNWVirtualMachineCommands::ExecuteCommandSetLike(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandSetLike(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandSetLimitAbilityBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandSetLimitAbilityBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandSetLimitAbilityPenalty(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandSetLimitAbilityPenalty(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandSetLimitAttackBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandSetLimitAttackBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandSetLimitDamageBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandSetLimitDamageBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandSetLimitSavingThrowBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandSetLimitSavingThrowBonus(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandSetLimitSkillBonus(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandSetLimitSkillBonus(this, a0, a1);
 }
 
 int32_t CNWVirtualMachineCommands::ExecuteCommandSetListening(int32_t a0, int32_t a1)
@@ -5606,6 +5666,54 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetLeavingObject(CNWVirtualMach
     return func(thisPtr, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetLimitAbilityBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetLimitAbilityBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetLimitAbilityPenalty(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetLimitAbilityPenalty);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetLimitAttackBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetLimitAttackBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetLimitDamageBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetLimitDamageBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetLimitSavingThrowBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetLimitSavingThrowBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetLimitSkillBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetLimitSkillBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetLocation(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
@@ -7162,6 +7270,54 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandSetLike(CNWVirtualMachineComman
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetLike);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetLimitAbilityBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetLimitAbilityBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetLimitAbilityPenalty(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetLimitAbilityPenalty);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetLimitAttackBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetLimitAttackBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetLimitDamageBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetLimitDamageBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetLimitSavingThrowBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetLimitSavingThrowBonus);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandSetLimitSkillBonus(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandSetLimitSkillBonus);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
