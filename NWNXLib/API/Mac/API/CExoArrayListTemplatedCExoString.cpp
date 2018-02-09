@@ -21,6 +21,11 @@ void CExoArrayListTemplatedCExoString::Insert(CExoString a0, int32_t a1)
     return CExoArrayListTemplatedCExoString__Insert(this, a0, a1);
 }
 
+CExoArrayListTemplatedCExoString& CExoArrayListTemplatedCExoString::operator=(const CExoArrayListTemplatedCExoString& a0)
+{
+    return CExoArrayListTemplatedCExoString__OperatorAssignment(this, a0);
+}
+
 void CExoArrayListTemplatedCExoString::SetSize(int32_t a0)
 {
     return CExoArrayListTemplatedCExoString__SetSize(this, a0);
@@ -48,6 +53,14 @@ void CExoArrayListTemplatedCExoString__Insert(CExoArrayListTemplatedCExoString* 
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoArrayListTemplatedCExoString__Insert);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
+}
+
+CExoArrayListTemplatedCExoString& CExoArrayListTemplatedCExoString__OperatorAssignment(CExoArrayListTemplatedCExoString* thisPtr, const CExoArrayListTemplatedCExoString& a0)
+{
+    using FuncPtrType = CExoArrayListTemplatedCExoString&(__attribute__((cdecl)) *)(CExoArrayListTemplatedCExoString*, const CExoArrayListTemplatedCExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoArrayListTemplatedCExoString__OperatorAssignment);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
 }
 
 void CExoArrayListTemplatedCExoString__SetSize(CExoArrayListTemplatedCExoString* thisPtr, int32_t a0)

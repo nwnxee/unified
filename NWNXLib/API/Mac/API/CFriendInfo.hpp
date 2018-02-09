@@ -11,8 +11,9 @@ namespace API {
 struct CFriendInfo
 {
     CExoString name;
-    int32_t address;
-    int32_t port;
+    uint32_t address;
+    uint16_t port;
+    uint64_t lobby;
 
     void Sanitize();
 };

@@ -35,6 +35,11 @@ int32_t CExoBase::GetAugmentedDirectoryList(CExoArrayListTemplatedCFileInfo* a0,
     return CExoBase__GetAugmentedDirectoryList(this, a0, a1, a2, a3);
 }
 
+int32_t CExoBase::GetDirectoryAndWorkshopList(CExoArrayListTemplatedCExoString* a0, CExoString a1, uint16_t a2, int32_t a3, int32_t a4)
+{
+    return CExoBase__GetDirectoryAndWorkshopList(this, a0, a1, a2, a3, a4);
+}
+
 int32_t CExoBase::GetDirectoryList(CExoArrayListTemplatedCExoString* a0, CExoString a1, uint16_t a2, int32_t a3, int32_t a4)
 {
     return CExoBase__GetDirectoryList(this, a0, a1, a2, a3, a4);
@@ -95,6 +100,14 @@ int32_t CExoBase__GetAugmentedDirectoryList(CExoBase* thisPtr, CExoArrayListTemp
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoBase__GetAugmentedDirectoryList);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2, a3);
+}
+
+int32_t CExoBase__GetDirectoryAndWorkshopList(CExoBase* thisPtr, CExoArrayListTemplatedCExoString* a0, CExoString a1, uint16_t a2, int32_t a3, int32_t a4)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoBase*, CExoArrayListTemplatedCExoString*, CExoString, uint16_t, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoBase__GetDirectoryAndWorkshopList);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1, a2, a3, a4);
 }
 
 int32_t CExoBase__GetDirectoryList(CExoBase* thisPtr, CExoArrayListTemplatedCExoString* a0, CExoString a1, uint16_t a2, int32_t a3, int32_t a4)
