@@ -128,7 +128,7 @@ Events::ArgumentStack Administration::OnBootPCWithMessage(Events::ArgumentStack&
     }
 
     g_plugin->GetServices()->m_log->Notice("Booting player '0x%08x' for strref '%i'.", player->m_nPlayerID, strref);
-    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, strref, 1);
+    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, strref, 1, "");
     return Events::ArgumentStack();
 }
 
@@ -154,7 +154,7 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
     g_plugin->GetServices()->m_log->Notice("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
 
     // Will show "Delete Character" message to PC. Best match from dialog.tlk
-    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, 10392, 1);
+    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, 10392, 1, "");
 
     if (!Platform::FileSystem::FileExists(filename))
     {
