@@ -57,7 +57,6 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER("GET_DM_PASSWORD",               OnGetDMPassword);
     REGISTER("SET_DM_PASSWORD",               OnSetDMPassword);
     REGISTER("SHUTDOWN_SERVER",               OnShutdownServer);
-    REGISTER("BOOT_PC_WITH_MESSAGE",          OnBootPCWithMessage);
     REGISTER("DELETE_PLAYER_CHARACTER",       OnDeletePlayerCharacter);
 
 #undef REGISTER
@@ -112,24 +111,6 @@ Events::ArgumentStack Administration::OnShutdownServer(Events::ArgumentStack&&)
 {
     GetServices()->m_log->Notice("Shutting down the server!");
     std::quick_exit(0);
-}
-
-Events::ArgumentStack Administration::OnBootPCWithMessage(Events::ArgumentStack&& args)
-{
-    const auto objectId = Events::ExtractArgument<Types::ObjectID>(args);
-    const auto strref = static_cast<uint32_t>(Events::ExtractArgument<int32_t>(args));
-
-    CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
-    CNWSPlayer* player = exoApp->GetClientObjectByObjectId(objectId);
-
-    if (!player)
-    {
-        throw std::runtime_error("Attempted to boot invalid player.");
-    }
-
-    g_plugin->GetServices()->m_log->Notice("Booting player '0x%08x' for strref '%i'.", player->m_nPlayerID, strref);
-    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, strref, 1, "");
-    return Events::ArgumentStack();
 }
 
 Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentStack&& args)
