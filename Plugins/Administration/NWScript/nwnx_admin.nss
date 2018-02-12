@@ -14,6 +14,7 @@ void NWNX_Administration_SetDMPassword(string password);
 // Signals the server to immediately shut down.
 void NWNX_Administration_ShutdownServer();
 
+// DEPRECATED: Use BootPC() native function
 // Boots the provided player from the server with the provided strref as message.
 void NWNX_Administration_BootPCWithMessage(object pc, int strref);
 
@@ -60,9 +61,8 @@ void NWNX_Administration_ShutdownServer()
 
 void NWNX_Administration_BootPCWithMessage(object pc, int strref)
 {
-    NWNX_PushArgumentInt("NWNX_Administration", "BOOT_PC_WITH_MESSAGE", strref);
-    NWNX_PushArgumentObject("NWNX_Administration", "BOOT_PC_WITH_MESSAGE", pc);
-    NWNX_CallFunction("NWNX_Administration", "BOOT_PC_WITH_MESSAGE");
+    WriteTimestampedLogEntry("NWNX_Administration: BootPCWithMessage() is deprecated. Use native BootPC() instead");
+    BootPC(pc, GetStringByStrRef(strref));
 }
 
 void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup = TRUE)
