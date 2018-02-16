@@ -22,13 +22,13 @@ struct CExoString;
 
 namespace Globals {
 
-constexpr uintptr_t g_exoBaseAddr        = 0x004777E0; NWNX_EXPECT_VERSION(8158);
-constexpr uintptr_t g_exoResManAddr      = 0x004777DC; NWNX_EXPECT_VERSION(8158);
-constexpr uintptr_t g_virtualMachineAddr = 0x004777D8; NWNX_EXPECT_VERSION(8158);
-constexpr uintptr_t g_scriptCompilerAddr = 0x004777D4; NWNX_EXPECT_VERSION(8158);
-constexpr uintptr_t g_appManagerAddr     = 0x004777D0; NWNX_EXPECT_VERSION(8158);
-constexpr uintptr_t g_tlkTableAddr       = 0x004777CC; NWNX_EXPECT_VERSION(8158);
-constexpr uintptr_t g_nwRulesAddr        = 0x004777C8; NWNX_EXPECT_VERSION(8158);
+constexpr uintptr_t g_exoBaseAddr        = 0x00480800; NWNX_EXPECT_VERSION(8159);
+constexpr uintptr_t g_exoResManAddr      = 0x004807FC; NWNX_EXPECT_VERSION(8159);
+constexpr uintptr_t g_virtualMachineAddr = 0x004807F8; NWNX_EXPECT_VERSION(8159);
+constexpr uintptr_t g_scriptCompilerAddr = 0x004807F4; NWNX_EXPECT_VERSION(8159);
+constexpr uintptr_t g_appManagerAddr     = 0x004807F0; NWNX_EXPECT_VERSION(8159);
+constexpr uintptr_t g_tlkTableAddr       = 0x004807EC; NWNX_EXPECT_VERSION(8159);
+constexpr uintptr_t g_nwRulesAddr        = 0x004807E8; NWNX_EXPECT_VERSION(8159);
 
 extern CExoBase*        ExoBase();
 extern CExoResMan*      ExoResMan();
