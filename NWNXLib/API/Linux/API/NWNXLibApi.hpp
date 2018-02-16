@@ -113,6 +113,7 @@ struct CExoTimersInternal;
 struct CExtendedServerInfo;
 struct CFactionManager;
 struct CFriendInfo;
+struct CFriendPresenceInfo;
 struct CGameEffect;
 struct CGameObject;
 struct CGameObjectArray;
