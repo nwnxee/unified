@@ -12,7 +12,7 @@ namespace API {
 struct json_object_t
 {
     json_t json;
-    hashtable hashtable;
+    hashtable _hashtable;
     int32_t visited;
 };
 
