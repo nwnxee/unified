@@ -24,6 +24,7 @@ struct CExtendedServerInfo
     int32_t m_bMultiplayerEnabled;
     uint8_t m_nPVPSetting;
     uint8_t m_nExpansionPacksRequired;
+    CExoString m_sServerName;
     CExoString m_sModuleDescription;
     CExoString m_sGameDetails;
     CExoString m_sBuild;

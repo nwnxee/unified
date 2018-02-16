@@ -59,6 +59,7 @@
 #include "CExtendedServerInfo.cpp"
 #include "CFactionManager.cpp"
 #include "CFriendInfo.cpp"
+#include "CFriendPresenceInfo.cpp"
 #include "CGameEffect.cpp"
 #include "CGameObject.cpp"
 #include "CGameObjectArray.cpp"
@@ -229,6 +230,9 @@
 #include "BiffFileHeader_st.cpp"
 #include "BiffFileVarResEntry_st.cpp"
 #include "blit_table.cpp"
+#include "buffer.cpp"
+#include "buffer_data_t.cpp"
+#include "callback_data_t.cpp"
 #include "CAutoSave.cpp"
 #include "CBaseExoApp.cpp"
 #include "CBWCBase.cpp"
@@ -519,6 +523,10 @@
 #include "haptic_effect.cpp"
 #include "haptic_hwdata.cpp"
 #include "haptic_hweffect.cpp"
+#include "hashtable.cpp"
+#include "hashtable_bucket.cpp"
+#include "hashtable_list.cpp"
+#include "hashtable_pair.cpp"
 #include "hostent.cpp"
 #include "hwdata_ball.cpp"
 #include "hwdata_hat.cpp"
@@ -539,6 +547,13 @@
 #include "ISteamUGC.cpp"
 #include "ISteamUser.cpp"
 #include "joystick_hwdata.cpp"
+#include "json_array_t.cpp"
+#include "json_error_t.cpp"
+#include "json_integer_t.cpp"
+#include "json_object_t.cpp"
+#include "json_real_t.cpp"
+#include "json_string_t.cpp"
+#include "json_t.cpp"
 #include "KeyFileHeader_st.cpp"
 #include "KeyFileKeyEntry_st.cpp"
 #include "KeyFileResFileName_st.cpp"
@@ -546,6 +561,7 @@
 #include "l4linkSt.cpp"
 #include "L4LOGICAL.cpp"
 #include "ldiv_t.cpp"
+#include "lex_t.cpp"
 #include "LIST4.cpp"
 #include "ListTemplatedVector.cpp"
 #include "lldiv_t.cpp"
@@ -631,6 +647,9 @@
 #include "STR_RES.cpp"
 #include "STR_RES_HEADER.cpp"
 #include "STR_RES_HEADER_OLD.cpp"
+#include "strbuffer_t.cpp"
+#include "stream_t.cpp"
+#include "string_data_t.cpp"
 #include "STRUCT_B4NODE.cpp"
 #include "SubmitItemUpdateResult_t.cpp"
 #include "SW_RenderData.cpp"
@@ -814,9 +833,10 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CExoStringList), 20> __attribute__((unused)) SIZE_CHECK_CEXOSTRINGLIST;
     CheckSize<sizeof(NWNXLib::API::CExoTimers), 4> __attribute__((unused)) SIZE_CHECK_CEXOTIMERS;
     CheckSize<sizeof(NWNXLib::API::CExoTimersInternal), 32> __attribute__((unused)) SIZE_CHECK_CEXOTIMERSINTERNAL;
-    CheckSize<sizeof(NWNXLib::API::CExtendedServerInfo), 72> __attribute__((unused)) SIZE_CHECK_CEXTENDEDSERVERINFO;
+    CheckSize<sizeof(NWNXLib::API::CExtendedServerInfo), 80> __attribute__((unused)) SIZE_CHECK_CEXTENDEDSERVERINFO;
     CheckSize<sizeof(NWNXLib::API::CFactionManager), 32> __attribute__((unused)) SIZE_CHECK_CFACTIONMANAGER;
     CheckSize<sizeof(NWNXLib::API::CFriendInfo), 24> __attribute__((unused)) SIZE_CHECK_CFRIENDINFO;
+    CheckSize<sizeof(NWNXLib::API::CFriendPresenceInfo), 104> __attribute__((unused)) SIZE_CHECK_CFRIENDPRESENCEINFO;
     CheckSize<sizeof(NWNXLib::API::CGameEffect), 160> __attribute__((unused)) SIZE_CHECK_CGAMEEFFECT;
     CheckSize<sizeof(NWNXLib::API::CGameObject), 12> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CGameObjectArray), 36> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECTARRAY;

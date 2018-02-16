@@ -167,6 +167,7 @@ struct CServerExoAppInternal
     int32_t GetFactionOfObject(uint32_t, int32_t*);
     uint32_t GetFirstPCObject();
     CGameObject* GetGameObject(uint32_t);
+    CExoString GetHostedPublicInternetAddressAndPort();
     int32_t GetIsCDKeyOnBannedList(CExoString);
     int32_t GetIsIPOnBannedList(CExoString);
     int32_t GetIsPlayerNameOnBannedList(CExoString);
@@ -304,6 +305,7 @@ void CServerExoAppInternal__GetExtendedServerInfo(CServerExoAppInternal* thisPtr
 int32_t CServerExoAppInternal__GetFactionOfObject(CServerExoAppInternal* thisPtr, uint32_t, int32_t*);
 uint32_t CServerExoAppInternal__GetFirstPCObject(CServerExoAppInternal* thisPtr);
 CGameObject* CServerExoAppInternal__GetGameObject(CServerExoAppInternal* thisPtr, uint32_t);
+CExoString CServerExoAppInternal__GetHostedPublicInternetAddressAndPort(CServerExoAppInternal* thisPtr);
 int32_t CServerExoAppInternal__GetIsCDKeyOnBannedList(CServerExoAppInternal* thisPtr, CExoString);
 int32_t CServerExoAppInternal__GetIsIPOnBannedList(CServerExoAppInternal* thisPtr, CExoString);
 int32_t CServerExoAppInternal__GetIsPlayerNameOnBannedList(CServerExoAppInternal* thisPtr, CExoString);

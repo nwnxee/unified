@@ -233,6 +233,11 @@ CGameObject* CServerExoAppInternal::GetGameObject(uint32_t a0)
     return CServerExoAppInternal__GetGameObject(this, a0);
 }
 
+CExoString CServerExoAppInternal::GetHostedPublicInternetAddressAndPort()
+{
+    return CServerExoAppInternal__GetHostedPublicInternetAddressAndPort(this);
+}
+
 int32_t CServerExoAppInternal::GetIsCDKeyOnBannedList(CExoString a0)
 {
     return CServerExoAppInternal__GetIsCDKeyOnBannedList(this, a0);
@@ -1023,6 +1028,14 @@ CGameObject* CServerExoAppInternal__GetGameObject(CServerExoAppInternal* thisPtr
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__GetGameObject);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
+}
+
+CExoString CServerExoAppInternal__GetHostedPublicInternetAddressAndPort(CServerExoAppInternal* thisPtr)
+{
+    using FuncPtrType = CExoString(__attribute__((cdecl)) *)(CServerExoAppInternal*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__GetHostedPublicInternetAddressAndPort);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr);
 }
 
 int32_t CServerExoAppInternal__GetIsCDKeyOnBannedList(CServerExoAppInternal* thisPtr, CExoString a0)

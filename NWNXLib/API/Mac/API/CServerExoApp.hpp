@@ -97,6 +97,7 @@ struct CServerExoApp
     float GetFPS();
     CGameObject* GetGameObject(uint32_t);
     int32_t GetGameSpyEnabled();
+    CExoString GetHostedPublicInternetAddressAndPort();
     int32_t GetImportingChar();
     int32_t GetIsCDKeyOnBannedList(CExoString);
     int32_t GetIsControlledByPlayer(uint32_t);
@@ -265,6 +266,7 @@ uint32_t CServerExoApp__GetFirstPCObject(CServerExoApp* thisPtr);
 float CServerExoApp__GetFPS(CServerExoApp* thisPtr);
 CGameObject* CServerExoApp__GetGameObject(CServerExoApp* thisPtr, uint32_t);
 int32_t CServerExoApp__GetGameSpyEnabled(CServerExoApp* thisPtr);
+CExoString CServerExoApp__GetHostedPublicInternetAddressAndPort(CServerExoApp* thisPtr);
 int32_t CServerExoApp__GetImportingChar(CServerExoApp* thisPtr);
 int32_t CServerExoApp__GetIsCDKeyOnBannedList(CServerExoApp* thisPtr, CExoString);
 int32_t CServerExoApp__GetIsControlledByPlayer(CServerExoApp* thisPtr, uint32_t);

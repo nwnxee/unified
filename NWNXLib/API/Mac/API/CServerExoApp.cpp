@@ -273,6 +273,11 @@ int32_t CServerExoApp::GetGameSpyEnabled()
     return CServerExoApp__GetGameSpyEnabled(this);
 }
 
+CExoString CServerExoApp::GetHostedPublicInternetAddressAndPort()
+{
+    return CServerExoApp__GetHostedPublicInternetAddressAndPort(this);
+}
+
 int32_t CServerExoApp::GetImportingChar()
 {
     return CServerExoApp__GetImportingChar(this);
@@ -1243,6 +1248,14 @@ int32_t CServerExoApp__GetGameSpyEnabled(CServerExoApp* thisPtr)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CServerExoApp*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GetGameSpyEnabled);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr);
+}
+
+CExoString CServerExoApp__GetHostedPublicInternetAddressAndPort(CServerExoApp* thisPtr)
+{
+    using FuncPtrType = CExoString(__attribute__((cdecl)) *)(CServerExoApp*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GetHostedPublicInternetAddressAndPort);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
 }
