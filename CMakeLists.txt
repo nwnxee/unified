@@ -63,6 +63,11 @@ else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")
 endif()
 
+if (UNIX)
+	# Make nwnxee work on modern 64 bit file systems that don't support 32bit syscalls anymore.
+	add_definitions(-D_FILE_OFFSET_BITS=64)
+endif()
+
 add_definitions(-DNWNX_PLUGIN_PREFIX="${PLUGIN_PREFIX}")
 add_definitions(-DNWNX_TARGET_NWN_BUILD=${TARGET_NWN_BUILD})
 
