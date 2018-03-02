@@ -121,6 +121,11 @@ uint32_t CNetLayer::GetDisconnectStrref()
     return CNetLayer__GetDisconnectStrref(this);
 }
 
+int32_t CNetLayer::GetEnumerateSpecificOverRelay()
+{
+    return CNetLayer__GetEnumerateSpecificOverRelay(this);
+}
+
 CBaseExoApp* CNetLayer::GetExoApp()
 {
     return CNetLayer__GetExoApp(this);
@@ -191,6 +196,11 @@ int32_t CNetLayer::GetPlayerAddressData(uint32_t a0, uint32_t* a1, unsigned char
     return CNetLayer__GetPlayerAddressData(this, a0, a1, a2, a3, a4);
 }
 
+int32_t CNetLayer::GetPlayerAddressRelayed(uint32_t a0)
+{
+    return CNetLayer__GetPlayerAddressRelayed(this, a0);
+}
+
 CNetLayerPlayerInfo* CNetLayer::GetPlayerInfo(uint32_t a0)
 {
     return CNetLayer__GetPlayerInfo(this, a0);
@@ -204,6 +214,11 @@ CExoString CNetLayer::GetPlayerPassword()
 uint32_t CNetLayer::GetPortBySessionId(uint32_t a0)
 {
     return CNetLayer__GetPortBySessionId(this, a0);
+}
+
+CExoString CNetLayer::GetRouterPortMapDescription()
+{
+    return CNetLayer__GetRouterPortMapDescription(this);
 }
 
 uint32_t CNetLayer::GetSendUDPSocket()
@@ -329,6 +344,11 @@ void CNetLayer::SetDisconnectReason(const CExoString& a0)
 void CNetLayer::SetDisconnectStrref(uint32_t a0)
 {
     return CNetLayer__SetDisconnectStrref(this, a0);
+}
+
+void CNetLayer::SetEnumerateSpecificOverRelay(int32_t a0, const char* a1)
+{
+    return CNetLayer__SetEnumerateSpecificOverRelay(this, a0, a1);
 }
 
 void CNetLayer::SetExpansionPackReqd(uint16_t a0)
@@ -627,6 +647,14 @@ uint32_t CNetLayer__GetDisconnectStrref(CNetLayer* thisPtr)
     return func(thisPtr);
 }
 
+int32_t CNetLayer__GetEnumerateSpecificOverRelay(CNetLayer* thisPtr)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__GetEnumerateSpecificOverRelay);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr);
+}
+
 CBaseExoApp* CNetLayer__GetExoApp(CNetLayer* thisPtr)
 {
     using FuncPtrType = CBaseExoApp*(__attribute__((cdecl)) *)(CNetLayer*);
@@ -739,6 +767,14 @@ int32_t CNetLayer__GetPlayerAddressData(CNetLayer* thisPtr, uint32_t a0, uint32_
     return func(thisPtr, a0, a1, a2, a3, a4);
 }
 
+int32_t CNetLayer__GetPlayerAddressRelayed(CNetLayer* thisPtr, uint32_t a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*, uint32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__GetPlayerAddressRelayed);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
 CNetLayerPlayerInfo* CNetLayer__GetPlayerInfo(CNetLayer* thisPtr, uint32_t a0)
 {
     using FuncPtrType = CNetLayerPlayerInfo*(__attribute__((cdecl)) *)(CNetLayer*, uint32_t);
@@ -761,6 +797,14 @@ uint32_t CNetLayer__GetPortBySessionId(CNetLayer* thisPtr, uint32_t a0)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__GetPortBySessionId);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
+}
+
+CExoString CNetLayer__GetRouterPortMapDescription(CNetLayer* thisPtr)
+{
+    using FuncPtrType = CExoString(__attribute__((cdecl)) *)(CNetLayer*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__GetRouterPortMapDescription);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr);
 }
 
 uint32_t CNetLayer__GetSendUDPSocket(CNetLayer* thisPtr)
@@ -961,6 +1005,14 @@ void CNetLayer__SetDisconnectStrref(CNetLayer* thisPtr, uint32_t a0)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__SetDisconnectStrref);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
+}
+
+void CNetLayer__SetEnumerateSpecificOverRelay(CNetLayer* thisPtr, int32_t a0, const char* a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayer*, int32_t, const char*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__SetEnumerateSpecificOverRelay);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
 }
 
 void CNetLayer__SetExpansionPackReqd(CNetLayer* thisPtr, uint16_t a0)

@@ -202,6 +202,11 @@ int32_t CNetLayerInternal::GetPlayerAddressData(uint32_t a0, uint32_t* a1, unsig
     return CNetLayerInternal__GetPlayerAddressData(this, a0, a1, a2, a3, a4);
 }
 
+int32_t CNetLayerInternal::GetPlayerAddressRelayed(uint32_t a0)
+{
+    return CNetLayerInternal__GetPlayerAddressRelayed(this, a0);
+}
+
 CExoString CNetLayerInternal::GetPlayerPassword()
 {
     return CNetLayerInternal__GetPlayerPassword(this);
@@ -210,6 +215,11 @@ CExoString CNetLayerInternal::GetPlayerPassword()
 uint32_t CNetLayerInternal::GetPortBySessionId(uint32_t a0)
 {
     return CNetLayerInternal__GetPortBySessionId(this, a0);
+}
+
+CExoString CNetLayerInternal::GetRouterPortMapDescription()
+{
+    return CNetLayerInternal__GetRouterPortMapDescription(this);
 }
 
 uint32_t CNetLayerInternal::GetSendUDPSocket()
@@ -497,9 +507,9 @@ void CNetLayerInternal::SetMasterServerInternetAddress(const unsigned char* a0, 
     return CNetLayerInternal__SetMasterServerInternetAddress(this, a0, a1);
 }
 
-uint32_t CNetLayerInternal::SetNetworkAddressData(uint32_t a0, unsigned char* a1, unsigned char* a2, uint32_t a3)
+uint32_t CNetLayerInternal::SetNetworkAddressData(uint32_t a0, unsigned char* a1, unsigned char* a2, uint32_t a3, RelayModeChange a4, const char* a5)
 {
-    return CNetLayerInternal__SetNetworkAddressData(this, a0, a1, a2, a3);
+    return CNetLayerInternal__SetNetworkAddressData(this, a0, a1, a2, a3, a4, a5);
 }
 
 void CNetLayerInternal::SetPlayerConnected(uint32_t a0)
@@ -916,6 +926,14 @@ int32_t CNetLayerInternal__GetPlayerAddressData(CNetLayerInternal* thisPtr, uint
     return func(thisPtr, a0, a1, a2, a3, a4);
 }
 
+int32_t CNetLayerInternal__GetPlayerAddressRelayed(CNetLayerInternal* thisPtr, uint32_t a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayerInternal__GetPlayerAddressRelayed);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
 CExoString CNetLayerInternal__GetPlayerPassword(CNetLayerInternal* thisPtr)
 {
     using FuncPtrType = CExoString(__attribute__((cdecl)) *)(CNetLayerInternal*);
@@ -930,6 +948,14 @@ uint32_t CNetLayerInternal__GetPortBySessionId(CNetLayerInternal* thisPtr, uint3
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayerInternal__GetPortBySessionId);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
+}
+
+CExoString CNetLayerInternal__GetRouterPortMapDescription(CNetLayerInternal* thisPtr)
+{
+    using FuncPtrType = CExoString(__attribute__((cdecl)) *)(CNetLayerInternal*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayerInternal__GetRouterPortMapDescription);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr);
 }
 
 uint32_t CNetLayerInternal__GetSendUDPSocket(CNetLayerInternal* thisPtr)
@@ -1388,12 +1414,12 @@ void CNetLayerInternal__SetMasterServerInternetAddress(CNetLayerInternal* thisPt
     return func(thisPtr, a0, a1);
 }
 
-uint32_t CNetLayerInternal__SetNetworkAddressData(CNetLayerInternal* thisPtr, uint32_t a0, unsigned char* a1, unsigned char* a2, uint32_t a3)
+uint32_t CNetLayerInternal__SetNetworkAddressData(CNetLayerInternal* thisPtr, uint32_t a0, unsigned char* a1, unsigned char* a2, uint32_t a3, RelayModeChange a4, const char* a5)
 {
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t, unsigned char*, unsigned char*, uint32_t);
+    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CNetLayerInternal*, uint32_t, unsigned char*, unsigned char*, uint32_t, RelayModeChange, const char*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayerInternal__SetNetworkAddressData);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2, a3);
+    return func(thisPtr, a0, a1, a2, a3, a4, a5);
 }
 
 void CNetLayerInternal__SetPlayerConnected(CNetLayerInternal* thisPtr, uint32_t a0)

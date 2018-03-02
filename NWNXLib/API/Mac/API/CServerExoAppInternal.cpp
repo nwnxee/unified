@@ -558,6 +558,11 @@ int32_t CServerExoAppInternal::SendExitingStartNewModuleMessage(int32_t a0)
     return CServerExoAppInternal__SendExitingStartNewModuleMessage(this, a0);
 }
 
+int32_t CServerExoAppInternal::SendHeartbeatToRelay()
+{
+    return CServerExoAppInternal__SendHeartbeatToRelay(this);
+}
+
 int32_t CServerExoAppInternal::SendStartStallEvent(uint32_t a0)
 {
     return CServerExoAppInternal__SendStartStallEvent(this, a0);
@@ -1548,6 +1553,14 @@ int32_t CServerExoAppInternal__SendExitingStartNewModuleMessage(CServerExoAppInt
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__SendExitingStartNewModuleMessage);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
+}
+
+int32_t CServerExoAppInternal__SendHeartbeatToRelay(CServerExoAppInternal* thisPtr)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CServerExoAppInternal*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__SendHeartbeatToRelay);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr);
 }
 
 int32_t CServerExoAppInternal__SendStartStallEvent(CServerExoAppInternal* thisPtr, uint32_t a0)

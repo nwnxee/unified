@@ -394,6 +394,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandGetPhenoType(int32_t, int32_t);
     int32_t ExecuteCommandGetPickpocketableFlag(int32_t, int32_t);
     int32_t ExecuteCommandGetPlaceableIllumination(int32_t, int32_t);
+    int32_t ExecuteCommandGetPlayerConnectionRelayed(int32_t, int32_t);
     int32_t ExecuteCommandGetPlotFlag(int32_t, int32_t);
     int32_t ExecuteCommandGetPortraitId(int32_t, int32_t);
     int32_t ExecuteCommandGetPortraitResRef(int32_t, int32_t);
@@ -1007,6 +1008,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetPCSpeaker(CNWVirtualMachineC
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPhenoType(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPickpocketableFlag(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPlaceableIllumination(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetPlayerConnectionRelayed(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPlotFlag(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPortraitId(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandGetPortraitResRef(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);

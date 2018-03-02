@@ -6,6 +6,7 @@
 #include "CExoString.hpp"
 #include "CNetLayerPlayerInfo.hpp"
 #include "CNetLayerWindow.hpp"
+#include "unknown_RelayModeChange.hpp"
 
 namespace NWNXLib {
 
@@ -38,6 +39,8 @@ struct CNetLayerInternal
     uint32_t m_nSessionMaxPlayers;
     int32_t m_bEnumerateSessions;
     int32_t m_bEnumerateSpecific;
+    int32_t m_bEnumerateSpecificOverRelay;
+    char m_pEnumerateSpecificOverRelayToken[6];
     int32_t m_bEnumerateLocal;
     uint32_t m_nLastEnumerateSessions;
     uint32_t m_nLastEnumerateSessionsList;
@@ -136,8 +139,10 @@ struct CNetLayerInternal
     int32_t GetPasswordRequired();
     CExoString GetPlayerAddress(uint32_t);
     int32_t GetPlayerAddressData(uint32_t, uint32_t*, unsigned char**, unsigned char**, uint32_t*);
+    int32_t GetPlayerAddressRelayed(uint32_t);
     CExoString GetPlayerPassword();
     uint32_t GetPortBySessionId(uint32_t);
+    CExoString GetRouterPortMapDescription();
     uint32_t GetSendUDPSocket();
     CExoString GetServerAdminPassword();
     int32_t GetServerConnected();
@@ -195,7 +200,7 @@ struct CNetLayerInternal
     int32_t SendMessageToStandardConnection(int32_t, char*, int32_t);
     int32_t SetGameMasterPassword(CExoString);
     void SetMasterServerInternetAddress(const unsigned char*, uint32_t);
-    uint32_t SetNetworkAddressData(uint32_t, unsigned char*, unsigned char*, uint32_t);
+    uint32_t SetNetworkAddressData(uint32_t, unsigned char*, unsigned char*, uint32_t, RelayModeChange, const char*);
     void SetPlayerConnected(uint32_t);
     int32_t SetPlayerPassword(CExoString);
     int32_t SetServerAdminPassword(CExoString);
@@ -258,8 +263,10 @@ int32_t CNetLayerInternal__GetNumberLocalAdapters(CNetLayerInternal* thisPtr, ui
 int32_t CNetLayerInternal__GetPasswordRequired(CNetLayerInternal* thisPtr);
 CExoString CNetLayerInternal__GetPlayerAddress(CNetLayerInternal* thisPtr, uint32_t);
 int32_t CNetLayerInternal__GetPlayerAddressData(CNetLayerInternal* thisPtr, uint32_t, uint32_t*, unsigned char**, unsigned char**, uint32_t*);
+int32_t CNetLayerInternal__GetPlayerAddressRelayed(CNetLayerInternal* thisPtr, uint32_t);
 CExoString CNetLayerInternal__GetPlayerPassword(CNetLayerInternal* thisPtr);
 uint32_t CNetLayerInternal__GetPortBySessionId(CNetLayerInternal* thisPtr, uint32_t);
+CExoString CNetLayerInternal__GetRouterPortMapDescription(CNetLayerInternal* thisPtr);
 uint32_t CNetLayerInternal__GetSendUDPSocket(CNetLayerInternal* thisPtr);
 CExoString CNetLayerInternal__GetServerAdminPassword(CNetLayerInternal* thisPtr);
 int32_t CNetLayerInternal__GetServerConnected(CNetLayerInternal* thisPtr);
@@ -317,7 +324,7 @@ int32_t CNetLayerInternal__SendMessageToPlayer(CNetLayerInternal* thisPtr, uint3
 int32_t CNetLayerInternal__SendMessageToStandardConnection(CNetLayerInternal* thisPtr, int32_t, char*, int32_t);
 int32_t CNetLayerInternal__SetGameMasterPassword(CNetLayerInternal* thisPtr, CExoString);
 void CNetLayerInternal__SetMasterServerInternetAddress(CNetLayerInternal* thisPtr, const unsigned char*, uint32_t);
-uint32_t CNetLayerInternal__SetNetworkAddressData(CNetLayerInternal* thisPtr, uint32_t, unsigned char*, unsigned char*, uint32_t);
+uint32_t CNetLayerInternal__SetNetworkAddressData(CNetLayerInternal* thisPtr, uint32_t, unsigned char*, unsigned char*, uint32_t, RelayModeChange, const char*);
 void CNetLayerInternal__SetPlayerConnected(CNetLayerInternal* thisPtr, uint32_t);
 int32_t CNetLayerInternal__SetPlayerPassword(CNetLayerInternal* thisPtr, CExoString);
 int32_t CNetLayerInternal__SetServerAdminPassword(CNetLayerInternal* thisPtr, CExoString);

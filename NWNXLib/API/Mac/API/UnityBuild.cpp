@@ -1,7 +1,9 @@
 #include "C2DA.cpp"
 #include "CAppManager.cpp"
 #include "CCallbackImplTemplated12.cpp"
+#include "CCallbackImplTemplated16.cpp"
 #include "CCallbackImplTemplated20.cpp"
+#include "CCallbackImplTemplated264.cpp"
 #include "CCallbackImplTemplated28.cpp"
 #include "CCallbackImplTemplated4.cpp"
 #include "CCallbackImplTemplated8.cpp"
@@ -242,12 +244,16 @@
 #include "CBWCMD5.cpp"
 #include "CCallbackBase.cpp"
 #include "CCallbackHandlerBase.cpp"
+#include "CCallbackManualTemplatedCSteamInternalGameLobbyJoinRequested_tfalse.cpp"
+#include "CCallbackManualTemplatedCSteamInternalGameRichPresenceJoinRequested_tfalse.cpp"
 #include "CCallbackManualTemplatedCSteamInternalLobbyChatUpdate_tfalse.cpp"
 #include "CCallbackManualTemplatedCSteamInternalLobbyCreated_tfalse.cpp"
 #include "CCallbackManualTemplatedCSteamInternalLobbyDataUpdate_tfalse.cpp"
 #include "CCallbackManualTemplatedCSteamInternalLobbyEnter_tfalse.cpp"
 #include "CCallbackManualTemplatedCSteamInternalLobbyMatchList_tfalse.cpp"
 #include "CCallbackManualTemplatedCSteamInternalP2PSessionRequest_tfalse.cpp"
+#include "CCallbackTemplatedCSteamInternalGameLobbyJoinRequested_tfalse.cpp"
+#include "CCallbackTemplatedCSteamInternalGameRichPresenceJoinRequested_tfalse.cpp"
 #include "CCallbackTemplatedCSteamInternalLobbyChatUpdate_tfalse.cpp"
 #include "CCallbackTemplatedCSteamInternalLobbyCreated_tfalse.cpp"
 #include "CCallbackTemplatedCSteamInternalLobbyDataUpdate_tfalse.cpp"
@@ -515,6 +521,8 @@
 #include "FriendGameInfo_t.cpp"
 #include "func_t.cpp"
 #include "funcs.cpp"
+#include "GameLobbyJoinRequested_t.cpp"
+#include "GameRichPresenceJoinRequested_t.cpp"
 #include "GL_FBOList.cpp"
 #include "GL_RenderData.cpp"
 #include "GL_ShaderContext.cpp"
@@ -845,7 +853,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CLoopingVisualEffect), 12> __attribute__((unused)) SIZE_CHECK_CLOOPINGVISUALEFFECT;
     CheckSize<sizeof(NWNXLib::API::CMemRecord), 224> __attribute__((unused)) SIZE_CHECK_CMEMRECORD;
     CheckSize<sizeof(NWNXLib::API::CNetLayer), 4> __attribute__((unused)) SIZE_CHECK_CNETLAYER;
-    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 499864> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 499876> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerCDKeyInfo), 24> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERCDKEYINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerInfo), 120> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerSessionInfo), 100> __attribute__((unused)) SIZE_CHECK_CNETLAYERSESSIONINFO;
