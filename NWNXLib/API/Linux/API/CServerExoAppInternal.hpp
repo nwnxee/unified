@@ -232,6 +232,7 @@ struct CServerExoAppInternal
     int32_t SendEnhancedHeartbeatToMasterServer();
     int32_t SendEnteringStartNewModuleMessage();
     int32_t SendExitingStartNewModuleMessage(int32_t);
+    int32_t SendHeartbeatToRelay();
     int32_t SendStartStallEvent(uint32_t);
     void SetEstimatedSaveSize(const CExoString&, uint16_t);
     void SetGameSpyReporting(int32_t);
@@ -370,6 +371,7 @@ int32_t CServerExoAppInternal__SendCharacterQuery(CServerExoAppInternal* thisPtr
 int32_t CServerExoAppInternal__SendEnhancedHeartbeatToMasterServer(CServerExoAppInternal* thisPtr);
 int32_t CServerExoAppInternal__SendEnteringStartNewModuleMessage(CServerExoAppInternal* thisPtr);
 int32_t CServerExoAppInternal__SendExitingStartNewModuleMessage(CServerExoAppInternal* thisPtr, int32_t);
+int32_t CServerExoAppInternal__SendHeartbeatToRelay(CServerExoAppInternal* thisPtr);
 int32_t CServerExoAppInternal__SendStartStallEvent(CServerExoAppInternal* thisPtr, uint32_t);
 void CServerExoAppInternal__SetEstimatedSaveSize(CServerExoAppInternal* thisPtr, const CExoString&, uint16_t);
 void CServerExoAppInternal__SetGameSpyReporting(CServerExoAppInternal* thisPtr, int32_t);

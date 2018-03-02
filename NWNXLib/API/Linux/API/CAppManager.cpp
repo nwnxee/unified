@@ -3,7 +3,6 @@
 #include "Platform/ASLR.hpp"
 
 #include "CClientExoApp.hpp"
-#include "CExoString.hpp"
 #include "CNWReentrantServerStats.hpp"
 #include "CNWTileSetManager.hpp"
 #include "CObjectTableManager.hpp"
@@ -21,6 +20,11 @@ CAppManager::CAppManager()
 CAppManager::~CAppManager()
 {
     CAppManager__CAppManagerDtor(this);
+}
+
+void CAppManager::ConnectToServer(CExoString a0, int32_t a1)
+{
+    return CAppManager__ConnectToServer(this, a0, a1);
 }
 
 void CAppManager::CreateServer()
@@ -97,6 +101,14 @@ void CAppManager__CAppManagerDtor(CAppManager* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CAppManager__CAppManagerDtor);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr, 2);
+}
+
+void CAppManager__ConnectToServer(CAppManager* thisPtr, CExoString a0, int32_t a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CAppManager*, CExoString, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CAppManager__ConnectToServer);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
 }
 
 void CAppManager__CreateServer(CAppManager* thisPtr)

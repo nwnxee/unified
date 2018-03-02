@@ -2,13 +2,14 @@
 
 #include <cstdint>
 
+#include "CExoString.hpp"
+
 namespace NWNXLib {
 
 namespace API {
 
 // Forward class declarations (defined in the source file)
 struct CClientExoApp;
-struct CExoString;
 struct CNWReentrantServerStats;
 struct CNWTileSetManager;
 struct CObjectTableManager;
@@ -38,6 +39,7 @@ struct CAppManager
 
     CAppManager();
     ~CAppManager();
+    void ConnectToServer(CExoString, int32_t);
     void CreateServer();
     void DestroyScriptDebuggerPopup();
     void DestroyServer();
@@ -54,6 +56,7 @@ struct CAppManager
 
 void CAppManager__CAppManagerCtor(CAppManager* thisPtr);
 void CAppManager__CAppManagerDtor(CAppManager* thisPtr);
+void CAppManager__ConnectToServer(CAppManager* thisPtr, CExoString, int32_t);
 void CAppManager__CreateServer(CAppManager* thisPtr);
 void CAppManager__DestroyScriptDebuggerPopup(CAppManager* thisPtr);
 void CAppManager__DestroyServer(CAppManager* thisPtr);

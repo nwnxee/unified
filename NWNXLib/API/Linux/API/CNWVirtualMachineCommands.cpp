@@ -1856,6 +1856,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandGetPlaceableIllumination(int32_
     return CNWVirtualMachineCommands__ExecuteCommandGetPlaceableIllumination(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandGetPlayerConnectionRelayed(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandGetPlayerConnectionRelayed(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandGetPlotFlag(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandGetPlotFlag(this, a0, a1);
@@ -6014,6 +6019,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandGetPlaceableIllumination(CNWVir
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetPlaceableIllumination);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandGetPlayerConnectionRelayed(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandGetPlayerConnectionRelayed);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
