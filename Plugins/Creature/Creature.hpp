@@ -54,6 +54,7 @@ private:
     ArgumentStack GetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSkillRank                  (ArgumentStack&& args);
+    ArgumentStack SetClassByPosition            (ArgumentStack&& args);
 
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);

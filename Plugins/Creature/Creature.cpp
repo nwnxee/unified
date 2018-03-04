@@ -91,6 +91,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetSoundset);
     REGISTER(SetSoundset);
     REGISTER(SetSkillRank);
+    REGISTER(SetClassByPosition);
 
 #undef REGISTER
 }
@@ -859,4 +860,20 @@ ArgumentStack Creature::SetSkillRank(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::SetClassByPosition(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto position = Services::Events::ExtractArgument<int32_t>(args);
+        const auto classID = Services::Events::ExtractArgument<int32_t>(args);
+        assert(skill >= 0);
+        assert(skill <= 2);
+        assert(classID >= 0);
+        assert(classID <= 255);
+
+        pCreature->m_pStats->SetClass(static_cast<uint8_t>(position), static_cast<uint8_t>(classID));
+    }
+    return stack;
+}
 }
