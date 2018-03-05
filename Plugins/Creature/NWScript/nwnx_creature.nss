@@ -351,13 +351,7 @@ int NWNX_Creature_GetBaseAC(object creature)
 void NWNX_Creature_SetAbilityScore(object creature, int ability, int value)
 {
     WriteTimestampedLogEntry("NWNX_Creature: SetAbilityScore() is deprecated. Use native NWNX_Creature_SetRawAbilityScore() instead");
-    string sFunc = "SetRawAbilityScore";
-
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, value);
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
+    NWNX_Creature_SetRawAbilityScore(creature, ability, value);
 }
 
 void NWNX_Creature_SetRawAbilityScore(object creature, int ability, int value)
