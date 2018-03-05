@@ -867,8 +867,8 @@ ArgumentStack Creature::SetClassByPosition(ArgumentStack&& args)
     {
         const auto position = Services::Events::ExtractArgument<int32_t>(args);
         const auto classID = Services::Events::ExtractArgument<int32_t>(args);
-        assert(skill >= 0);
-        assert(skill <= 2);
+        assert(position >= 0);
+        assert(position <= 2);
         assert(classID >= 0);
         assert(classID <= 255);
 
