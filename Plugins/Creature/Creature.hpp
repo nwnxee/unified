@@ -33,7 +33,9 @@ private:
     ArgumentStack GetClassByLevel               (ArgumentStack&& args);
     ArgumentStack SetBaseAC                     (ArgumentStack&& args);
     ArgumentStack GetBaseAC                     (ArgumentStack&& args);
-    ArgumentStack SetAbilityScore               (ArgumentStack&& args);
+    ArgumentStack SetRawAbilityScore            (ArgumentStack&& args);
+    ArgumentStack GetRawAbilityScore            (ArgumentStack&& args);
+    ArgumentStack ModifyRawAbilityScore         (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpell             (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpellCountByLevel (ArgumentStack&& args);
     ArgumentStack SetMemorisedSpell             (ArgumentStack&& args);

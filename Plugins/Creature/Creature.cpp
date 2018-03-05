@@ -70,7 +70,9 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetClassByLevel);
     REGISTER(SetBaseAC);
     REGISTER(GetBaseAC);
-    REGISTER(SetAbilityScore);
+    REGISTER(SetRawAbilityScore);
+    REGISTER(GetRawAbilityScore);
+    REGISTER(ModifyRawAbilityScore);
     REGISTER(GetMemorisedSpell);
     REGISTER(GetMemorisedSpellCountByLevel);
     REGISTER(SetMemorisedSpell);
@@ -421,7 +423,7 @@ ArgumentStack Creature::GetBaseAC(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::SetAbilityScore(ArgumentStack&& args)
+ArgumentStack Creature::SetRawAbilityScore(ArgumentStack&& args)
 {
     ArgumentStack stack;
     if (auto *pCreature = creature(args))
@@ -450,7 +452,83 @@ ArgumentStack Creature::SetAbilityScore(ArgumentStack&& args)
                 pCreature->m_pStats->SetCHABase(static_cast<uint8_t>(value));
                 break;
             default:
-                GetServices()->m_log->Notice("Calling NWNX_Creature_SetAbilityScore with invalid ability ID:%d", ability);
+                GetServices()->m_log->Notice("Calling NWNX_Creature_SetRawAbilityScore with invalid ability ID:%d", ability);
+                assert(0);
+                break;
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetRawAbilityScore(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto ability = Services::Events::ExtractArgument<int32_t>(args);
+
+        switch (ability)
+        {
+            case Constants::ABILITY_STRENGTH:
+                retval = pCreature->m_pStats->m_nStrengthBase;
+                break;
+            case Constants::ABILITY_DEXTERITY:
+                retval = pCreature->m_pStats->m_nDexterityBase;
+                break;
+            case Constants::ABILITY_CONSTITUTION:
+                retval = pCreature->m_pStats->m_nConstitutionBase;
+                break;
+            case Constants::ABILITY_INTELLIGENCE:
+                retval = pCreature->m_pStats->m_nIntelligenceBase;
+                break;
+            case Constants::ABILITY_WISDOM:
+                retval = pCreature->m_pStats->m_nWisdomBase;
+                break;
+            case Constants::ABILITY_CHARISMA:
+                retval = pCreature->m_pStats->m_nCharismaBase;
+                break;
+            default:
+                GetServices()->m_log->Notice("Calling NWNX_Creature_GetRawAbilityScore with invalid ability ID:%d", ability);
+                assert(0);
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::ModifyRawAbilityScore(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto ability = Services::Events::ExtractArgument<int32_t>(args);
+        const auto offset  = Services::Events::ExtractArgument<int32_t>(args); assert(value <= 255);
+
+        switch (ability)
+        {
+            case Constants::ABILITY_STRENGTH:
+                pCreature->m_pStats->SetSTRBase(static_cast<uint8_t>(pCreature->m_pStats->m_nStrengthBase + offset));
+                break;
+            case Constants::ABILITY_DEXTERITY:
+                pCreature->m_pStats->SetDEXBase(static_cast<uint8_t>(pCreature->m_pStats->m_nDexterityBase + offset));
+                break;
+            case Constants::ABILITY_CONSTITUTION:
+                pCreature->m_pStats->SetCONBase(static_cast<uint8_t>(pCreature->m_pStats->m_nConstitutionBase + offset), 1/*bRecalculateHP*/);
+                break;
+            case Constants::ABILITY_INTELLIGENCE:
+                pCreature->m_pStats->SetINTBase(static_cast<uint8_t>(pCreature->m_pStats->m_nIntelligenceBase + offset));
+                break;
+            case Constants::ABILITY_WISDOM:
+                pCreature->m_pStats->SetWISBase(static_cast<uint8_t>(pCreature->m_pStats->m_nWisdomBase + offset));
+                break;
+            case Constants::ABILITY_CHARISMA:
+                pCreature->m_pStats->SetCHABase(static_cast<uint8_t>(pCreature->m_pStats->m_nCharismaBase + offset));
+                break;
+            default:
+                GetServices()->m_log->Notice("Calling NWNX_Creature_ModifyRawAbilityScore with invalid ability ID:%d", ability);
                 assert(0);
                 break;
         }
@@ -858,5 +936,4 @@ ArgumentStack Creature::SetSkillRank(ArgumentStack&& args)
     }
     return stack;
 }
-
 }

@@ -81,8 +81,18 @@ void NWNX_Creature_SetBaseAC(object creature, int ac);
 // Returns the base AC for the provided creature.
 int NWNX_Creature_GetBaseAC(object creature);
 
-// Sets the provided ability of provided creature's to the provided value.
+// DEPRECATED. Please use NWNX_Creature_SetRawAbilityScore now. This will be removed in future NWNX releases.
+// Sets the provided ability score of provided creature to the provided value.
 void NWNX_Creature_SetAbilityScore(object creature, int ability, int value);
+
+// Sets the provided ability score of provided creature to the provided value. Does not apply racial bonuses/penalties.
+void NWNX_Creature_SetRawAbilityScore(object creature, int ability, int value);
+
+// Gets the provided ability score of provided creature. Does not apply racial bonuses/penalties.
+int NWNX_Creature_GetRawAbilityScore(object creature, int ability);
+
+// Adjusts the provided ability score of a provided creature. Does not apply racial bonuses/penalties.
+void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modifier);
 
 // Gets the memorised spell of the provided creature for the provided class, level, and index.
 // Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
@@ -144,6 +154,7 @@ void NWNX_Creature_SetSoundset(object creature, int soundset);
 
 // Set the base ranks in a skill for creature
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
+
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -339,9 +350,42 @@ int NWNX_Creature_GetBaseAC(object creature)
 
 void NWNX_Creature_SetAbilityScore(object creature, int ability, int value)
 {
-    string sFunc = "SetAbilityScore";
+    string sFunc = "SetRawAbilityScore";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetRawAbilityScore(object creature, int ability, int value)
+{
+    string sFunc = "SetRawAbilityScore";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetRawAbilityScore(object creature, int ability)
+{
+    string sFunc = "GetRawAbilityScore";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modifier)
+{
+    string sFunc = "ModifyRawAbilityScore";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, modifier);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
