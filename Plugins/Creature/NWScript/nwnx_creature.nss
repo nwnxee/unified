@@ -155,6 +155,10 @@ void NWNX_Creature_SetSoundset(object creature, int soundset);
 // Set the base ranks in a skill for creature
 void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 
+// Set the class ID in a particular position for a creature.
+// Position should be 0, 1, or 2.
+// ClassID should be a valid ID number in classes.2da and be between 0 and 255.
+void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -617,6 +621,16 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank)
     string sFunc = "SetSkillRank";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, rank);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, skill);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetClassByPosition(object creature, int position, int classID)
+{
+    string sFunc = "SetClassByPosition";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, classID);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, position);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
