@@ -9,7 +9,7 @@ RUN apt-get install -y --no-install-recommends  \
   gcc-6 g++-6
 
 # NWNX_SQL
-RUN apt-get install -y default-libmysqlclient-dev
+RUN apt-get install -y default-libmysqlclient-dev libpq-dev
 
 # NWNX_SECCOMP
 RUN apt-get install -y libseccomp-dev

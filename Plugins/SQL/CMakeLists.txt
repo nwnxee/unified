@@ -11,6 +11,9 @@ else (MYSQL_FOUND)
     message(WARNING "Not compiling with MYSQL support, not found")
 endif (MYSQL_FOUND)
 
+set(PostgreSQL_INCLUDE_DIR "/usr/include/postgresql")
+set(PostgreSQL_LIBRARY_DIR "/usr/lib/i386-linux-gnu")
+
 find_package(PostgreSQL)
 if (POSTGRESQL_FOUND)
     add_definitions(-DNWNX_SQL_POSTGRESQL_SUPPORT)
