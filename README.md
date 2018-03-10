@@ -14,11 +14,15 @@ NWNX:EE is not just for plugin developers. Module creators can use plugins creat
 
 ## What platforms are supported?
 
-Only Linux is currently supported. It is possible to run NWNX:EE using Docker to emulate a Linux server environment. Refer to the sections below to find out how. There are plans to bring native Windows support to NWNX:EE but these plans currently lack a concrete schedule.
+Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. There are plans to bring native Windows support to NWNX:EE but these plans currently lack a concrete schedule.
 
 ## How do I use it?
 
-First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, see the compiling section below. Otherwise, you can download the binaries by clicking on the CircleCI link at the top of the GitHub repository page, log in, then navigate to the build list and choose artifacts.
+First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the CircleCI link at the top of the GitHub repository page, log in, then navigate to the build list and choose artifacts.
+
+## Integrating NWNX:EE into your module
+
+The built binaries (when built using the build script or downloaded as artifacts) will contain a folder in which all of the script files associated with NWNX:EE live. Simply import these into your module and call the functions as you would any other scripting function. Some may not compile with the default compiler - it is safe to delete these scripts if you do not need to use the associated plugins.
 
 ## Running the server (native)
 
