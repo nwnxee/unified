@@ -7,13 +7,15 @@ T ArrayImpl<T>::At(const NWNXLib::API::Types::ObjectID oid, const std::string& t
     std::vector<T>& collection = m_store[oid][tag];
 
     const int32_t size = static_cast<int32_t>(collection.size());
+    assert(index < size && index >= 0);
+
     if (index >= size || index < 0)
     {
         Array::m_log->Error("Index %i (size %i) out of bounds for array %s, returning default value.", index, size, tag.c_str());
         return T();
     }
 
-    return collection[index];
+    return collection[static_cast<size_t>(index)];
 }
 
 template <typename T>
@@ -55,8 +57,8 @@ template <typename T>
 void ArrayImpl<T>::Insert(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t index, T&& element)
 {
     std::vector<T>& collection = m_store[oid][tag];
-    assert(index < static_cast<int32_t>(collection.size()));
-    collection[index] = std::forward<T>(element);
+    assert(index >= 0 && index < static_cast<int32_t>(collection.size()));
+    collection[static_cast<size_t>(index)] = std::forward<T>(element);
 }
 
 template <typename T>
@@ -68,7 +70,8 @@ void ArrayImpl<T>::PushBack(const NWNXLib::API::Types::ObjectID oid, const std::
 template <typename T>
 void ArrayImpl<T>::Resize(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t size)
 {
-    m_store[oid][tag].resize(size);
+    assert(size >= 0);
+    m_store[oid][tag].resize(static_cast<size_t>(size));
 }
 
 template <typename T>

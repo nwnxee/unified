@@ -9,7 +9,7 @@ namespace Time {
 
 Date ConstructDateFromSystemTime()
 {
-    time_t now = std::time(0);
+    time_t now = std::time(nullptr);
     tm* timeinfo = std::localtime(&now);
 
     return

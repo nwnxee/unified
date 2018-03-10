@@ -67,7 +67,7 @@ private:
     void CopyOriginal();
     void ConstructTrampoline();
 
-    static void FillWithNoops(uint8_t* arr, int size);
+    static void FillWithNoops(uint8_t* arr, size_t size);
 };
 
 #include "FunctionHook.inl"

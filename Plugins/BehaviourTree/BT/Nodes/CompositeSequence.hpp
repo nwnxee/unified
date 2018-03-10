@@ -10,7 +10,7 @@ public:
     template <typename ... Args>
     CompositeSequence(Args ... args) : IComposite(args ...) { }
 
-    virtual ~CompositeSequence() {};
+    virtual ~CompositeSequence() override {}
 
 protected:
     virtual TaskStatus Run() override
@@ -28,7 +28,7 @@ protected:
         return TaskStatus::SUCCESS;
     }
 
-    virtual void End(TaskStatus status)
+    virtual void End(TaskStatus) override
     {
         for (auto& child : m_children)
         {

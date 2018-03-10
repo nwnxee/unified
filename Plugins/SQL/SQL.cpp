@@ -187,7 +187,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
             if (!m_target->PrepareQuery(m_activeQuery))
             {
                 GetServices()->m_log->Error("Recovery PrepareQuery() failed: %s",
-                    m_target->GetLastError());
+                    m_target->GetLastError().c_str());
                 Events::InsertArgument(stack, 0);
                 return stack;
             }

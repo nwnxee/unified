@@ -9,7 +9,7 @@ class LeafSleep : public ILeaf
 {
 public:
     LeafSleep(std::chrono::milliseconds interval) : m_interval(interval) { }
-    virtual ~LeafSleep() {};
+    virtual ~LeafSleep() override {}
 
 protected:
     std::chrono::milliseconds m_interval;

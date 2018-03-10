@@ -20,8 +20,8 @@ NWNXLib::ViewPtr<NWNXLib::Hooking::FunctionHook> CombatEvents::m_hook;
 CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker)
 {
     hooker->RequestSharedHook<
-        API::Functions::CNWSCombatRound__StartCombatRound, 
-        int32_t, 
+        API::Functions::CNWSCombatRound__StartCombatRound,
+        int32_t,
         API::CNWSCombatRound*,
         uint32_t>
         (
@@ -30,7 +30,7 @@ CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker)
 }
 
 void CombatEvents::StartCombatRoundHook(
-    Hooks::CallType type, 
+    Hooks::CallType type,
     API::CNWSCombatRound* thisPtr,
     uint32_t oidTarget)
 {

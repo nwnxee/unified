@@ -8,7 +8,7 @@ class LeafAlwaysSucceed : public ILeaf
 {
 public:
     LeafAlwaysSucceed() {}
-    virtual ~LeafAlwaysSucceed() {};
+    virtual ~LeafAlwaysSucceed() override {}
 
 protected:
     virtual TaskStatus Run() override

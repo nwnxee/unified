@@ -174,7 +174,7 @@ void NWNXCore::InitialVersionCheck()
         API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
         g_log->Info("Server is running version %s.", versionAsStr->m_sString);
 
-        const uint32_t version = std::stoi(versionAsStr->m_sString);
+        const uint32_t version = std::stoul(versionAsStr->m_sString);
 
         if (version != NWNX_TARGET_NWN_BUILD)
         {

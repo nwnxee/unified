@@ -21,7 +21,7 @@ class ITask
 {
 public:
     ITask() : m_init(false) {}
-    virtual ~ITask() {};
+    virtual ~ITask() {}
 
     // Tick should, in most cases, be called, rather than calling the various interface functions directly.
     // This handles calling Init, Run, and End automatically.
@@ -54,7 +54,7 @@ protected:
 
     // End is called whenever the task returns success or failure.
     // This function is optional.
-    virtual void End(TaskStatus status) {}
+    virtual void End(TaskStatus) {}
 
     // Reset is called whenever the parent task returns success or failure.
     // This function is optional.

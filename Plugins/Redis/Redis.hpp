@@ -4,6 +4,8 @@
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
+#include <functional>
+
 namespace cpp_redis
 {
 class redis_client;

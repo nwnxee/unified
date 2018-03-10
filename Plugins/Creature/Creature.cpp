@@ -109,7 +109,7 @@ CNWSCreature *Creature::creature(ArgumentStack& args)
     if (creatureId == Constants::OBJECT_INVALID)
     {
         GetServices()->m_log->Notice("NWNX_Creature function called on OBJECT_INVALID");
-        return 0;
+        return nullptr;
     }
 
     return Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
@@ -252,7 +252,7 @@ ArgumentStack Creature::GetMeetsFeatRequirements(ArgumentStack&& args)
     {
         const auto feat = Services::Events::ExtractArgument<int32_t>(args);  assert(feat <= 65535);
         // TODO: Need to clean up these templated arraylist APIs
-        CExoArrayListTemplatedshortunsignedint unused = {0};
+        CExoArrayListTemplatedshortunsignedint unused = {};
 
         retval = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat),
                     reinterpret_cast<CExoArrayListTemplatedunsignedshort*>(&unused));
@@ -313,6 +313,9 @@ ArgumentStack Creature::AddSpecialAbility(ArgumentStack&& args)
         const auto ready = Services::Events::ExtractArgument<int32_t>(args);
         const auto id    = Services::Events::ExtractArgument<int32_t>(args);
 
+        assert(level >= 0);
+        assert(id >= 0);
+
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
         assert(pAbilities);
 
@@ -321,9 +324,9 @@ ArgumentStack Creature::AddSpecialAbility(ArgumentStack&& args)
         {
             if (pAbilities->element[i].m_nSpellId == ~0u)
             {
-                pAbilities->element[i].m_nSpellId     = id;
+                pAbilities->element[i].m_nSpellId     = static_cast<uint32_t>(id);
                 pAbilities->element[i].m_bReadied     = ready;
-                pAbilities->element[i].m_nCasterLevel = level;
+                pAbilities->element[i].m_nCasterLevel = static_cast<uint8_t>(level);
                 return stack;
             }
         }
@@ -333,9 +336,9 @@ ArgumentStack Creature::AddSpecialAbility(ArgumentStack&& args)
             pAbilities->Allocate(pAbilities->array_size + 1);
         }
         assert(pAbilities->array_size > pAbilities->num);
-        pAbilities->element[pAbilities->num].m_nSpellId     = id;
+        pAbilities->element[pAbilities->num].m_nSpellId     = static_cast<uint32_t>(id);
         pAbilities->element[pAbilities->num].m_bReadied     = ready;
-        pAbilities->element[pAbilities->num].m_nCasterLevel = level;
+        pAbilities->element[pAbilities->num].m_nCasterLevel = static_cast<uint8_t>(level);
         pAbilities->num++;
     }
     return stack;
@@ -368,13 +371,16 @@ ArgumentStack Creature::SetSpecialAbility(ArgumentStack&& args)
         const auto ready = Services::Events::ExtractArgument<int32_t>(args);
         const auto id    = Services::Events::ExtractArgument<int32_t>(args);
 
+        assert(level >= 0);
+        assert(id >= 0);
+
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
         assert(pAbilities);
         if (index < pAbilities->num)
         {
-            pAbilities->element[index].m_nSpellId     = id;
+            pAbilities->element[index].m_nSpellId     = static_cast<uint32_t>(id);
             pAbilities->element[index].m_bReadied     = ready;
-            pAbilities->element[index].m_nCasterLevel = level;
+            pAbilities->element[index].m_nCasterLevel = static_cast<uint8_t>(level);
         }
     }
     return stack;
@@ -407,7 +413,7 @@ ArgumentStack Creature::SetBaseAC(ArgumentStack&& args)
     {
         const auto ac = Services::Events::ExtractArgument<int32_t>(args); assert(ac <= 255);
 
-        pCreature->m_pStats->m_nACNaturalBase = static_cast<uint8_t>(ac);
+        pCreature->m_pStats->m_nACNaturalBase = static_cast<char>(ac);
     }
     return stack;
 }
@@ -506,7 +512,7 @@ ArgumentStack Creature::ModifyRawAbilityScore(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto ability = Services::Events::ExtractArgument<int32_t>(args);
-        const auto offset  = Services::Events::ExtractArgument<int32_t>(args); assert(value <= 255);
+        const auto offset  = Services::Events::ExtractArgument<int32_t>(args); assert(offset <= 255);
 
         switch (ability)
         {
@@ -553,9 +559,10 @@ ArgumentStack Creature::GetMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(level, index))
+                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(static_cast<unsigned char>(level),
+                                                                            static_cast<unsigned char>(index)))
                 {
-                    id     = pSpell->m_nSpellId;
+                    id     = static_cast<int32_t>(pSpell->m_nSpellId);
                     ready  = pSpell->m_bReadied;
                     meta   = pSpell->m_nMetaType;
                     domain = pSpell->m_bDomainSpell;
@@ -585,7 +592,7 @@ ArgumentStack Creature::GetMemorisedSpellCountByLevel(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retval = classInfo.GetNumberMemorizedSpellSlots(level);
+                retval = classInfo.GetNumberMemorizedSpellSlots(static_cast<unsigned char>(level));
                 break;
             }
         }
@@ -613,8 +620,16 @@ ArgumentStack Creature::SetMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.SetMemorizedSpellSlot(level, index, id, domain, meta);
-                classInfo.SetMemorizedSpellInSlotReady(level, index, ready);
+                classInfo.SetMemorizedSpellSlot(static_cast<unsigned char>(level),
+                                                static_cast<unsigned char>(index),
+                                                static_cast<uint32_t>(id),
+                                                domain,
+                                                static_cast<unsigned char>(meta));
+
+                classInfo.SetMemorizedSpellInSlotReady(static_cast<unsigned char>(level),
+                                                       static_cast<unsigned char>(index),
+                                                       ready);
+
                 break;
             }
         }
@@ -636,7 +651,7 @@ ArgumentStack Creature::GetRemainingSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retval = classInfo.GetSpellsPerDayLeft(level);
+                retval = classInfo.GetSpellsPerDayLeft(static_cast<unsigned char>(level));
                 break;
             }
         }
@@ -659,7 +674,7 @@ ArgumentStack Creature::SetRemainingSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.SetSpellsPerDayLeft(level, slots);
+                classInfo.SetSpellsPerDayLeft(static_cast<unsigned char>(level), static_cast<unsigned char>(slots));
                 break;
             }
         }
@@ -681,7 +696,7 @@ ArgumentStack Creature::GetMaxSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retval = classInfo.GetMaxSpellsPerDayLeft(level);
+                retval = classInfo.GetMaxSpellsPerDayLeft(static_cast<unsigned char>(level));
                 break;
             }
         }
@@ -705,7 +720,9 @@ ArgumentStack Creature::GetKnownSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retval = classInfo.GetKnownSpell(level, index);
+                retval = static_cast<int32_t>(classInfo.GetKnownSpell(
+                        static_cast<unsigned char>(level),
+                        static_cast<unsigned char>(index)));
                 break;
             }
         }
@@ -728,7 +745,7 @@ ArgumentStack Creature::GetKnownSpellCount(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retval = classInfo.GetNumberKnownSpells(level);
+                retval = classInfo.GetNumberKnownSpells(static_cast<unsigned char>(level));
                 break;
             }
         }
@@ -751,7 +768,7 @@ ArgumentStack Creature::RemoveKnownSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.RemoveKnownSpell(level, spellId);
+                classInfo.RemoveKnownSpell(static_cast<unsigned char>(level), static_cast<uint32_t>(spellId));
                 break;
             }
         }
@@ -773,7 +790,7 @@ ArgumentStack Creature::AddKnownSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.AddKnownSpell(level, spellId);
+                classInfo.AddKnownSpell(static_cast<unsigned char>(level), static_cast<uint32_t>(spellId));
                 break;
             }
         }
@@ -813,7 +830,7 @@ ArgumentStack Creature::SetMaxHitPointsByLevel(ArgumentStack&& args)
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
             assert(pLevelStats);
 
-            pLevelStats->m_nHitDie = value;
+            pLevelStats->m_nHitDie = static_cast<uint8_t>(value);
         }
     }
     return stack;
@@ -838,7 +855,7 @@ ArgumentStack Creature::SetAlignmentGoodEvil(ArgumentStack&& args)
         const auto value = Services::Events::ExtractArgument<int32_t>(args);
         assert(value <= 32767);
         assert(value >= -32768);
-        pCreature->m_pStats->m_nAlignmentGoodEvil = value;
+        pCreature->m_pStats->m_nAlignmentGoodEvil = static_cast<int16_t>(value);
     }
     return stack;
 }
@@ -851,7 +868,7 @@ ArgumentStack Creature::SetAlignmentLawChaos(ArgumentStack&& args)
         const auto value = Services::Events::ExtractArgument<int32_t>(args);
         assert(value <= 32767);
         assert(value >= -32768);
-        pCreature->m_pStats->m_nAlignmentLawChaos = value;
+        pCreature->m_pStats->m_nAlignmentLawChaos = static_cast<int16_t>(value);
     }
     return stack;
 }
@@ -890,7 +907,7 @@ ArgumentStack Creature::SetWizardSpecialization(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == Constants::CLASS_TYPE_WIZARD)
             {
-                classInfo.m_nSchool = school;
+                classInfo.m_nSchool = static_cast<uint8_t>(school);
                 break;
             }
         }
@@ -916,7 +933,7 @@ ArgumentStack Creature::SetSoundset(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto soundset = Services::Events::ExtractArgument<int32_t>(args);
-        pCreature->m_nSoundSet = soundset;
+        pCreature->m_nSoundSet = static_cast<uint16_t>(soundset);
     }
     return stack;
 }

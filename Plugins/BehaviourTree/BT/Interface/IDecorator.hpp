@@ -9,7 +9,7 @@ class IDecorator : public ITask
 {
 public:
     IDecorator(ITask* task) : m_child(task) {}
-    virtual ~IDecorator() {};
+    virtual ~IDecorator() {}
 
 protected:
     std::unique_ptr<ITask> m_child;

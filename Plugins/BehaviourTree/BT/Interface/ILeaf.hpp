@@ -8,7 +8,7 @@ class ILeaf : public ITask
 {
 public:
     ILeaf() {}
-    virtual ~ILeaf() {};
+    virtual ~ILeaf() {}
 
 protected:
     virtual TaskStatus Run() = 0;

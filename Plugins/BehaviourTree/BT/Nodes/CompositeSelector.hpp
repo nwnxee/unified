@@ -10,7 +10,7 @@ public:
     template <typename ... Args>
     CompositeSelector(Args ... args) : IComposite(args ...) { }
 
-    virtual ~CompositeSelector() {};
+    virtual ~CompositeSelector() override {}
 
 protected:
     virtual TaskStatus Run() override
@@ -28,7 +28,7 @@ protected:
         return TaskStatus::FAILURE;
     }
 
-    virtual void End(TaskStatus status)
+    virtual void End(TaskStatus) override
     {
         for (auto& child : m_children)
         {

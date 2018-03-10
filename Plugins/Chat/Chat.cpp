@@ -119,28 +119,25 @@ Events::ArgumentStack Chat::OnSendMessage(Events::ArgumentStack&& args)
         bool sentMessage = false;
         CNWSMessage* messageDispatch = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
 
-        if (hasManualPlayerId && (channel != ChatChannel::PLAYER_TELL || channel != ChatChannel::DM_TELL))
+        if (hasManualPlayerId)
         {
-            // We have a custom target but we're not in the tell channel. We have to call the functions directly.
-            switch (channel)
+            // This means we're sending this to one player only.
+            // The normal function broadcasts in an area for talk, shout, and whisper, therefore
+            // we need to call these functions directly if we are in those categories.
+            if (channel == ChatChannel::PLAYER_TALK || channel == ChatChannel::DM_TALK)
             {
-                case ChatChannel::PLAYER_TALK:
-                    messageDispatch->SendServerToPlayerChat_Talk(playerId, speaker, message.c_str());
-                    sentMessage = true;
-                    break;
-
-                case ChatChannel::PLAYER_SHOUT:
-                    messageDispatch->SendServerToPlayerChat_Shout(playerId, speaker, message.c_str());
-                    sentMessage = true;
-                    break;
-
-                case ChatChannel::PLAYER_WHISPER:
-                    messageDispatch->SendServerToPlayerChat_Whisper(playerId, speaker, message.c_str());
-                    sentMessage = true;
-                    break;
-
-                default:
-                    break;
+                messageDispatch->SendServerToPlayerChat_Talk(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == ChatChannel::PLAYER_SHOUT || channel == ChatChannel::DM_SHOUT)
+            {
+                messageDispatch->SendServerToPlayerChat_Shout(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == ChatChannel::PLAYER_WHISPER || channel == ChatChannel::DM_WHISPER)
+            {
+                messageDispatch->SendServerToPlayerChat_Whisper(playerId, speaker, message.c_str());
+                sentMessage = true;
             }
         }
 

@@ -27,7 +27,7 @@ public:
         }
     }
 
-    virtual ~IComposite() {};
+    virtual ~IComposite() {}
 
 protected:
     std::vector<std::unique_ptr<ITask>> m_children;

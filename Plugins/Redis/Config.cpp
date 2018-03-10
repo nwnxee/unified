@@ -18,9 +18,10 @@ std::unique_ptr<cpp_redis::redis_client> Redis::PoolMakeFunc()
     std::lock_guard<std::mutex> lock(m_internal->m_config_mtx);
 
     assert(!m_internal->m_config.m_host.empty());
+    assert(m_internal->m_config.m_port >= 0);
 
     auto p = std::make_unique<cpp_redis::redis_client>();
-    (*p).connect(m_internal->m_config.m_host, m_internal->m_config.m_port);
+    (*p).connect(m_internal->m_config.m_host, static_cast<size_t>(m_internal->m_config.m_port));
     return p;
 }
 
@@ -48,7 +49,7 @@ void Redis::Reconfigure()
             GetServices()->m_log->Notice("Error while reconfiguring pubsub client: %s", e.what());
         }
         m_internal->m_connection_pubsub.connect(
-            m_internal->m_config.m_host, m_internal->m_config.m_port);
+            m_internal->m_config.m_host, static_cast<size_t>(m_internal->m_config.m_port));
 
         auto bound = std::bind(&Redis::OnPubsub, this, _1, _2);
         for (auto& ch : m_internal->m_config.m_pubsub_channels) {

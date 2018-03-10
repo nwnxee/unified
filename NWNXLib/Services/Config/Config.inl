@@ -1,4 +1,5 @@
 template<> Maybe<std::string> ConfigProxy::Get<std::string>(const std::string&) const;
+template<> Maybe<bool> ConfigProxy::Get<bool>(const std::string&) const;
 template<> Maybe<int64_t> ConfigProxy::Get<int64_t>(const std::string&) const;
 template<> Maybe<int32_t> ConfigProxy::Get<int32_t>(const std::string&) const;
 template<> Maybe<uint64_t> ConfigProxy::Get<uint64_t>(const std::string&) const;
@@ -6,6 +7,7 @@ template<> Maybe<uint32_t> ConfigProxy::Get<uint32_t>(const std::string&) const;
 template<> Maybe<float> ConfigProxy::Get<float>(const std::string&) const;
 template<> Maybe<double> ConfigProxy::Get<double>(const std::string&) const;
 template<> Maybe<double> ConfigProxy::Get<double>(const std::string&) const;
+
 
 template<typename T>
 T ConfigProxy::Get(const std::string& key, T&& def) const

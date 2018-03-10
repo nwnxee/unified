@@ -149,10 +149,9 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     {
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
-            [this](const std::vector<std::string> message)
+            [this, sum](const std::vector<std::string> message)
             {
                 assert(message.size() == 1);
-                Services::Resamplers::ResamplerFuncPtr sum = &Services::Resamplers::template Sum<int64_t>;
                 GetServices()->m_metrics->SetResampler(message[0], sum, std::chrono::seconds(1));
             });
 
@@ -177,7 +176,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
             });
 
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_POP_PERF_SCOPE",
-            [this](const std::vector<std::string> message)
+            [](const std::vector<std::string>)
             {
                 assert(s_timerScope);
                 delete s_timerScope;

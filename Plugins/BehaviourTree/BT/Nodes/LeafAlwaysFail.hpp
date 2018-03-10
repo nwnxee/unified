@@ -8,7 +8,7 @@ class LeafAlwaysFail : public ILeaf
 {
 public:
     LeafAlwaysFail() {}
-    virtual ~LeafAlwaysFail() {};
+    virtual ~LeafAlwaysFail() override {}
 
 protected:
     virtual TaskStatus Run() override

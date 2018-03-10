@@ -91,7 +91,7 @@ Maybe<int64_t> ConfigProxy::Get<int64_t>(const std::string& key) const
 
     auto v = may.Extract();
     auto base = (v.substr(0, 2) == "0x") ? 16 : 10;
-    return Maybe<int64_t>(std::strtoll(v.c_str(), NULL, base));
+    return Maybe<int64_t>(std::strtoll(v.c_str(), nullptr, base));
 }
 
 template<>
@@ -106,7 +106,7 @@ Maybe<int32_t> ConfigProxy::Get<int32_t>(const std::string& key) const
 
     auto v = may.Extract();
     auto base = (v.substr(0, 2) == "0x") ? 16 : 10;
-    return Maybe<int32_t>(std::strtol(v.c_str(), NULL, base));
+    return Maybe<int32_t>(std::strtol(v.c_str(), nullptr, base));
 }
 
 template<> Maybe<uint64_t> ConfigProxy::Get<uint64_t>(const std::string& key) const
@@ -120,7 +120,7 @@ template<> Maybe<uint64_t> ConfigProxy::Get<uint64_t>(const std::string& key) co
 
     auto v = may.Extract();
     auto base = (v.substr(0, 2) == "0x") ? 16 : 10;
-    return Maybe<uint64_t>(std::strtoull(v.c_str(), NULL, base));
+    return Maybe<uint64_t>(std::strtoull(v.c_str(), nullptr, base));
 }
 
 template<> Maybe<uint32_t> ConfigProxy::Get<uint32_t>(const std::string& key) const
@@ -134,7 +134,7 @@ template<> Maybe<uint32_t> ConfigProxy::Get<uint32_t>(const std::string& key) co
 
     auto v = may.Extract();
     auto base = (v.substr(0, 2) == "0x") ? 16 : 10;
-    return Maybe<uint32_t>(std::strtoul(v.c_str(), NULL, base));
+    return Maybe<uint32_t>(std::strtoul(v.c_str(), nullptr, base));
 }
 
 template<>
@@ -148,7 +148,7 @@ Maybe<float> ConfigProxy::Get<float>(const std::string& key) const
     }
 
     auto v = may.Extract();
-    return Maybe<float>(std::strtof(v.c_str(), NULL));
+    return Maybe<float>(std::strtof(v.c_str(), nullptr));
 }
 
 template<>
@@ -162,7 +162,7 @@ Maybe<double> ConfigProxy::Get<double>(const std::string& key) const
     }
 
     auto v = may.Extract();
-    return Maybe<double>(std::strtod(v.c_str(), NULL));
+    return Maybe<double>(std::strtod(v.c_str(), nullptr));
 }
 
 }

@@ -8,7 +8,7 @@ class DecoratorInvert : public IDecorator
 {
 public:
     DecoratorInvert(ITask* task) : IDecorator(task)  {}
-    virtual ~DecoratorInvert() { }
+    virtual ~DecoratorInvert() override { }
 
 protected:
     virtual TaskStatus Run() override

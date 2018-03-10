@@ -19,7 +19,7 @@ public:
         if (f) f(); // must not throw
     }
 
-    void dismiss() throw()
+    void dismiss() noexcept
     {
         f = nullptr;
     }

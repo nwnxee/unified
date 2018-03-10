@@ -82,7 +82,7 @@ CNWSPlayer *Player::player(ArgumentStack& args)
     if (playerId == Constants::OBJECT_INVALID)
     {
         GetServices()->m_log->Notice("NWNX_Player function called on OBJECT_INVALID");
-        return 0;
+        return nullptr;
     }
 
     auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(playerId);
@@ -127,7 +127,7 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
         {
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, 10, milliseconds);
         }
-        else 
+        else
         {
             GetServices()->m_log->Error("Unable to get CNWSMessage");
         }
@@ -146,11 +146,11 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
         {
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
         }
-        else 
+        else
         {
             GetServices()->m_log->Error("Unable to get CNWSMessage");
         }
-        
+
     }
 
     return stack;

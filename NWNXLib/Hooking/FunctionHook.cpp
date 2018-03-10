@@ -110,7 +110,7 @@ void FunctionHook::ConstructTrampoline()
     Memory::ProtectAddress(reinterpret_cast<uintptr_t>(m_trampoline.data()), MAX_LENGTH, Memory::MemoryProtectionFlags::READ_WRITE_EXECUTE);
 }
 
-void FunctionHook::FillWithNoops(uint8_t* arr, int size)
+void FunctionHook::FillWithNoops(uint8_t* arr, size_t size)
 {
     auto assembly = Assembly::NoopInstruction().ToBytes();
     assert(assembly.size() == 1);

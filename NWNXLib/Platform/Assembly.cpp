@@ -78,7 +78,7 @@ std::vector<uint8_t> MovRegRegMemInstruction::ToBytes(const uintptr_t) const
     return { opcode, extended };
 }
 
-std::vector<uint8_t> MovRegImmInstruction::ToBytes(const uintptr_t address) const
+std::vector<uint8_t> MovRegImmInstruction::ToBytes(const uintptr_t) const
 {
     const uint8_t opcode = 0xB8 + static_cast<uint8_t>(m_destination); // MOV r32, imm32
     std::vector<uint8_t> encoded;

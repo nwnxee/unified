@@ -101,7 +101,7 @@ bool IsHandleValid(HandleType handle)
 #ifdef _WIN32
     valid = handle != NULL;
 #else
-    valid = handle != NULL;
+    valid = handle != nullptr;
 #endif
 
     return valid;

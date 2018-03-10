@@ -53,14 +53,14 @@ Events::Events(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("GET_EVENT_DATA", std::bind(&Events::OnGetEventData, this, std::placeholders::_1));
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
-        [this](const std::vector<std::string> message)
+        [](const std::vector<std::string> message)
         {
             assert(message.size() == 2);
             SignalEvent(message[0], std::strtoul(message[1].c_str(), nullptr, 16));
         });
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_PUSH_EVENT_DATA",
-        [this](const std::vector<std::string> message)
+        [](const std::vector<std::string> message)
         {
             assert(message.size() == 2);
             PushEventData(message[0], message[1]);

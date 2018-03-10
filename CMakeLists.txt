@@ -52,9 +52,9 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
 # Clang/GCC/Intel/Others
 else()
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        set(WARNING_FLAGS_CXX "-Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-packed -Wno-old-style-cast -Wno-reserved-id-macro -Wno-format-nonliteral -Wno-format-security -Wno-gnu-zero-variadic-macro-arguments -Wno-global-constructors -Wno-exit-time-destructors -Wno-missing-prototypes -Wno-unused-function -Wno-weak-vtables -Wno-missing-noreturn -Wno-non-virtual-dtor")
+        set(WARNING_FLAGS_CXX "-Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded -Wno-packed -Wno-old-style-cast -Wno-reserved-id-macro -Wno-format-nonliteral -Wno-format-security -Wno-gnu-zero-variadic-macro-arguments -Wno-global-constructors -Wno-exit-time-destructors -Wno-missing-prototypes -Wno-unused-function -Wno-weak-vtables -Wno-missing-noreturn -Wno-non-virtual-dtor -Wno-double-promotion -Wno-covered-switch-default")
     else()
-        set(WARNING_FLAGS_CXX "-Wall")
+        set(WARNING_FLAGS_CXX "-Wall -Wextra")
     endif()
 
     set(NWNX_STANDARD_FLAGS "-m32 -march=pentium4 -fdiagnostics-show-option -fno-omit-frame-pointer")

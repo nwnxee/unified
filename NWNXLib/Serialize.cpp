@@ -44,16 +44,16 @@ static std::vector<uint8_t> base64_decode(const std::string &in)
 
     std::vector<int> T(256,-1);
     for (int i=0; i<64; i++)
-        T[base64_key[i]] = i;
+        T[(size_t)(base64_key[i])] = i;
 
     int val=0, valb=-8;
-    for (uint8_t c : in) {
-        if (T[c] == -1)
+    for (char c : in) {
+        if (T[(size_t)c] == -1)
             break;
-        val = (val<<6) + T[c];
+        val = (val<<6) + T[(size_t)c];
         valb += 6;
         if (valb>=0) {
-            out.push_back(char((val>>valb)&0xFF));
+            out.push_back(uint8_t((val>>valb)&0xFF));
             valb-=8;
         }
     }
@@ -118,7 +118,7 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
 #undef SERIALIZE
 
         default:
-            assert(!"Invalid object type for SerializeGameObject");
+            assert(false); // Invalid object type for SerializeGameObject
             break;
     }
 
@@ -136,7 +136,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     if (serialized.size() < 14*4) // GFF header size
         return nullptr;
 
-    if (!resGff.GetDataFromPointer((void*)serialized.data(), serialized.size()))
+    if (!resGff.GetDataFromPointer((void*)serialized.data(), (int32_t)serialized.size()))
         return nullptr;
 
     resGff.InitializeForWriting();
@@ -183,7 +183,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
         DESERIALIZE(Trigger);
     else
     {
-        assert(!"Unknown file type for DeserializeGameObject()");
+        assert(false); // Unknown file type for DeserializeGameObject()
     }
 
 #undef DESERIALIZE

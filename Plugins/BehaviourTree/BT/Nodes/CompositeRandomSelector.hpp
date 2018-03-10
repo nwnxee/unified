@@ -12,7 +12,7 @@ public:
     template <typename ... Args>
     CompositeRandomSelector(Args ... args) : CompositeSelector(args ...) { }
 
-    virtual ~CompositeRandomSelector() {};
+    virtual ~CompositeRandomSelector() override {}
 
 protected:
     virtual void Init() override { Reset(); }

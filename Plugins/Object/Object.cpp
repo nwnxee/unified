@@ -87,7 +87,7 @@ CNWSObject *Object::object(ArgumentStack& args)
     if (objectId == Constants::OBJECT_INVALID)
     {
         GetServices()->m_log->Notice("NWNX_Object function called on OBJECT_INVALID");
-        return 0;
+        return nullptr;
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
@@ -115,56 +115,56 @@ static inline CExoString *_getScriptList(CGameObject *pObject, int32_t *pSize)
         case Constants::OBJECT_TYPE_AREA:
         {
             CNWSArea *pArea = static_cast<CNWSArea*>(pObject);
-            *pSize = std::size(pArea->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pArea->m_sScripts));
             return pArea->m_sScripts;
         }
         case Constants::OBJECT_TYPE_MODULE:
         {
             CNWSModule *pModule = static_cast<CNWSModule*>(pObject);
-            *pSize = std::size(pModule->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pModule->m_sScripts));
             return pModule->m_sScripts;
         }
         case Constants::OBJECT_TYPE_CREATURE:
         {
             CNWSCreature *pCreature = static_cast<CNWSCreature*>(pObject);
-            *pSize = std::size(pCreature->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pCreature->m_sScripts));
             return pCreature->m_sScripts;
         }
         case Constants::OBJECT_TYPE_PLACEABLE:
         {
             CNWSPlaceable *pPlaceable = static_cast<CNWSPlaceable*>(pObject);
-            *pSize = std::size(pPlaceable->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pPlaceable->m_sScripts));
             return pPlaceable->m_sScripts;
         }
         case Constants::OBJECT_TYPE_TRIGGER:
         {
             CNWSTrigger *pTrigger = static_cast<CNWSTrigger*>(pObject);
-            *pSize = std::size(pTrigger->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pTrigger->m_sScripts));
             return pTrigger->m_sScripts;
         }
         case Constants::OBJECT_TYPE_ENCOUNTER:
         {
             CNWSEncounter *pEncounter = static_cast<CNWSEncounter*>(pObject);
-            *pSize = std::size(pEncounter->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pEncounter->m_sScripts));
             return pEncounter->m_sScripts;
         }
         case Constants::OBJECT_TYPE_AREA_OF_EFFECT:
         {
             CNWSAreaOfEffectObject *pAreaOfEffectObject = static_cast<CNWSAreaOfEffectObject*>(pObject);
-            *pSize = std::size(pAreaOfEffectObject->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pAreaOfEffectObject->m_sScripts));
             return pAreaOfEffectObject->m_sScripts;
         }
         case Constants::OBJECT_TYPE_DOOR:
         {
             CNWSDoor *pDoor = static_cast<CNWSDoor*>(pObject);
-            *pSize = std::size(pDoor->m_sScripts);
+            *pSize = static_cast<int32_t>(std::size(pDoor->m_sScripts));
             return pDoor->m_sScripts;
         }
 
         default:
-            assert(!"Object does not have any scripts");
+            assert(false); // "Object does not have any scripts"
             *pSize = 0;
-            return 0;
+            return nullptr;
     }
 }
 
@@ -193,7 +193,7 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
         auto *pVarTable = _getScriptVarTable(pObject);
         if (index < pVarTable->m_lVarList.num)
         {
-            type = pVarTable->m_lVarList.element[index].m_nType;
+            type = static_cast<int>(pVarTable->m_lVarList.element[index].m_nType);
             key  = pVarTable->m_lVarList.element[index].m_sName.CStr();
         }
     }
@@ -208,7 +208,7 @@ ArgumentStack Object::StringToObject(ArgumentStack&& args)
     ArgumentStack stack;
 
     const auto id = Services::Events::ExtractArgument<std::string>(args);
-    Types::ObjectID retval = static_cast<Types::ObjectID>(stoul(id, 0, 16));
+    Types::ObjectID retval = static_cast<Types::ObjectID>(stoul(id, nullptr, 16));
 
     if (!Globals::AppManager()->m_pServerExoApp->GetGameObject(retval))
         retval = Constants::OBJECT_INVALID;
@@ -317,7 +317,7 @@ ArgumentStack Object::GetPortrait(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::SetPortrait(ArgumentStack&& args)
+ArgumentStack Object::SetPortrait(ArgumentStack&&)
 {
     ArgumentStack stack;
 
@@ -375,7 +375,7 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     ArgumentStack stack;
     std::string retval = "";
     if (auto *pObject = object(args))
-    {    
+    {
         if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
             retval = static_cast<CNWSCreature*>(pObject)->GetDialogResref().GetResRefStr();
         else if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
