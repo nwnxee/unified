@@ -15,8 +15,10 @@ StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
 void StealthEvents::SetStealthModeHook(Services::Hooks::CallType type, API::CNWSCreature* thisPtr, uint8_t mode)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    const bool currentlyStealthed = thisPtr->m_nStealthMode != 0;
     const bool willBeStealthed = mode != 0;
+
+    static bool currentlyStealthed;
+    currentlyStealthed = before ? thisPtr->m_nStealthMode != 0 : currentlyStealthed;
 
     if (!currentlyStealthed && willBeStealthed)
     {
