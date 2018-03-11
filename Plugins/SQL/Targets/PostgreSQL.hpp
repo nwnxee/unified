@@ -11,7 +11,7 @@ class PostgreSQL final : public ITarget
 {
 public:
     PostgreSQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log);
-    ~PostgreSQL();
+    virtual ~PostgreSQL() override;
 
     virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) override;
     virtual bool IsConnected() override;

@@ -62,7 +62,7 @@ class Internal {
     }
 
     void DoAttached(std::function<void(JavaVM* vm, JNIEnv* env)> cb) {
-        if (m_contextDepth == 0 && this->m_vm->AttachCurrentThread((void**) & (this->m_env), NULL) < 0) {
+        if (m_contextDepth == 0 && this->m_vm->AttachCurrentThread((void**) & (this->m_env), nullptr) < 0) {
             m_parent->GetServices()->m_log->Debug("Attaching current thread; depth: %d.\n", m_contextDepth);
             this->m_env->FatalError("Attaching native NWN thread to JVM failed.");
         }

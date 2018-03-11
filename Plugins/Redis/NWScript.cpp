@@ -14,7 +14,8 @@ using namespace NWNXLib::Services;
 
 int RedisReplyTypeToInt(const cpp_redis::reply::type& t)
 {
-    switch (t) {
+    switch (t)
+    {
         case cpp_redis::reply::type::array: return 1;
         case cpp_redis::reply::type::bulk_string: return 2;
         case cpp_redis::reply::type::error: return 3;
@@ -34,9 +35,11 @@ void Redis::RegisterWithNWScript()
     // NWScript: Executes a raw redis command with a variable argument list.
     // Returns the reply type (as a constant, see RedisReplyTypeToInt).
     GetServices()->m_events->RegisterEvent("RawCommand",
-    [&](Events::ArgumentStack && arg) {
+    [&](Events::ArgumentStack && arg)
+    {
         std::vector<std::string> v;
-        while (!arg.empty()) {
+        while (!arg.empty())
+        {
             // be ignorant about type and just strip it, since we take
             // raw values (integers, strings) and shove them as strings straight
             // to redis.
@@ -59,7 +62,8 @@ void Redis::RegisterWithNWScript()
     // NWScript: Returns the last query result as a string.
     // Values returned: last reply as a string
     GetServices()->m_events->RegisterEvent("GetLastReplyAsString",
-    [&](Events::ArgumentStack && arg) {
+    [&](Events::ArgumentStack &&)
+    {
         Events::ArgumentStack st;
         Events::InsertArgument(st, m_last_nwscript_reply.as_string());
         return st;
@@ -71,7 +75,8 @@ void Redis::RegisterWithNWScript()
     // NWScript: Get the last pubsub message.
     // Values returned: channel, message
     GetServices()->m_events->RegisterEvent("GetPubSubData",
-    [&](Events::ArgumentStack && arg) {
+    [&](Events::ArgumentStack &&)
+    {
         Events::ArgumentStack st;
         Events::InsertArgument(st, m_internal->m_last_pubsub_channel);
         Events::InsertArgument(st, m_internal->m_last_pubsub_message);

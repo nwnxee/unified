@@ -17,15 +17,6 @@
 #include <cmath>
 #include <jni.h>
 
-#define ENGINE_STRUCTURE_EFFECT 0
-#define ENGINE_STRUCTURE_EVENT 1
-#define ENGINE_STRUCTURE_LOCATION 2
-#define ENGINE_STRUCTURE_TALENT 3
-#define ENGINE_STRUCTURE_ITEMPROPERTY 4
-
-#define STRREF_CVIRTUALMACHINE_ERROR_STACK_OVERFLOW                 -638
-#define STRREF_CVIRTUALMACHINE_ERROR_STACK_UNDERFLOW                -639
-
 namespace JVM
 {
 
@@ -64,7 +55,8 @@ void* Internal::OnRCO(CCodeBase* thisptr, CExoString &sDatabase, CExoString &sVa
 
             if (ret != nullptr) { // No data from java side.
                 nDataLength = JNICHECKED(env, GetArrayLength(ret));
-                returnVal = (void*) new char[nDataLength];
+                assert(nDataLength >= 0);
+                returnVal = (void*) new char[static_cast<size_t>(nDataLength)];
                 JNICHECKED(env, GetByteArrayRegion(ret, 0, nDataLength, (jbyte*) returnVal));
             }
         });

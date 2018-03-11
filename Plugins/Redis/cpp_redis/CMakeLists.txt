@@ -72,7 +72,6 @@ ELSE ()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -W -Wall -Wextra -O3")
 ENDIF (WIN32)
 
-
 ###
 # variables
 ###

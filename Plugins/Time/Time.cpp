@@ -52,7 +52,7 @@ Time::Time(const Plugin::CreateParams& params)
     REGISTER(GetSystemDate);
     REGISTER(GetSystemTime);
     REGISTER(GetTimeStamp);
-    
+
 
 #undef REGISTER
 }
@@ -61,7 +61,7 @@ Time::~Time()
 {
 }
 
-ArgumentStack Time::GetTimeStamp(ArgumentStack&& args)
+ArgumentStack Time::GetTimeStamp(ArgumentStack&&)
 {
     ArgumentStack stack;
 
@@ -69,13 +69,13 @@ ArgumentStack Time::GetTimeStamp(ArgumentStack&& args)
     auto dur = now.time_since_epoch();
 
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(dur).count();
-    
+
 
     Services::Events::InsertArgument(stack, (int)seconds);
     return stack;
 }
 
-ArgumentStack Time::GetSystemDate(ArgumentStack&& args)
+ArgumentStack Time::GetSystemDate(ArgumentStack&&)
 {
     ArgumentStack stack;
 
@@ -83,13 +83,13 @@ ArgumentStack Time::GetSystemDate(ArgumentStack&& args)
     auto in_time_t = std::chrono::system_clock::to_time_t(now);
 
     std::stringstream ss;
-    ss << std::put_time(std::localtime(&in_time_t), "%m/%d/%Y"); 
+    ss << std::put_time(std::localtime(&in_time_t), "%m/%d/%Y");
 
     Services::Events::InsertArgument(stack, ss.str());
     return stack;
 }
 
-ArgumentStack Time::GetSystemTime(ArgumentStack&& args)
+ArgumentStack Time::GetSystemTime(ArgumentStack&&)
 {
     ArgumentStack stack;
 
@@ -97,7 +97,7 @@ ArgumentStack Time::GetSystemTime(ArgumentStack&& args)
     auto in_time_t = std::chrono::system_clock::to_time_t(now);
 
     std::stringstream ss;
-    ss << std::put_time(std::localtime(&in_time_t), "%H:%M:%S"); 
+    ss << std::put_time(std::localtime(&in_time_t), "%H:%M:%S");
 
     Services::Events::InsertArgument(stack, ss.str());
     return stack;

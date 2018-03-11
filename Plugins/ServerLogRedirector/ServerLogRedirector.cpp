@@ -88,7 +88,7 @@ inline std::string TrimMessage(CExoString* message)
 }
 
 void ServerLogRedirector::WriteToLogFileHook(Hooks::CallType type,
-    CExoDebugInternal* pthis, CExoString* message)
+    CExoDebugInternal*, CExoString* message)
 {
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {
@@ -98,7 +98,7 @@ void ServerLogRedirector::WriteToLogFileHook(Hooks::CallType type,
 }
 
 void ServerLogRedirector::WriteToErrorFileHook(Hooks::CallType type,
-    CExoDebugInternal* pthis, CExoString* message)
+    CExoDebugInternal*, CExoString* message)
 {
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {

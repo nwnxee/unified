@@ -74,7 +74,7 @@ JNIEXPORT void JNICALL Internal::NWScriptPushString(JNIEnv* env, jobject obj, js
 {
     jbyteArray toNative = (jbyteArray) JNICHECKED(env, CallStaticObjectMethod(g_internal->m_jclassConv,
         g_internal->m_jmethodConvToNative, value));
-    jbyte* converted = (jbyte*) JNICHECKED(env, GetByteArrayElements(toNative, 0));
+    jbyte* converted = (jbyte*) JNICHECKED(env, GetByteArrayElements(toNative, nullptr));
     int32_t len = JNICHECKED(env, GetArrayLength(toNative));
     assert(len >= 0);
 
@@ -90,7 +90,7 @@ JNIEXPORT void JNICALL Internal::NWScriptPushObject(JNIEnv* env, jobject obj, jo
     if (value != nullptr)
         oid = JNICHECKED(env, CallIntMethod(value, g_internal->m_jmethodNWObjectgetOid));
 
-    Globals::VirtualMachine()->StackPushObject(oid);
+    Globals::VirtualMachine()->StackPushObject(static_cast<uint32_t>(oid));
 }
 
 JNIEXPORT jobject JNICALL Internal::NWScriptPopObject(JNIEnv* env, jobject obj)
@@ -130,7 +130,7 @@ jobject JNIEXPORT JNICALL Internal::NWScriptPopLocation(JNIEnv* env, jobject obj
         throw std::runtime_error("Cannot pop a Location off the VM stack.");
     jobject ret_area = JNICHECKED(env, CallStaticObjectMethod(g_internal->m_jclassNWObject,
         g_internal->m_jmethodNWObjectCreate, pRetVal->m_oArea));
-    float facing = std::atan2(pRetVal->m_vOrientation.y, pRetVal->m_vOrientation.x) * (180 / 3.1415927);
+    float facing = static_cast<float>(std::atan2(pRetVal->m_vOrientation.y, pRetVal->m_vOrientation.x) * (180 / 3.1415927));
     while (facing > 360.0)
         facing -= 360.0;
     while (facing < 0.0)

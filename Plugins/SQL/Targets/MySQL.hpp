@@ -12,7 +12,7 @@ class MySQL final : public ITarget
 {
 public:
     MySQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log);
-    ~MySQL();
+    virtual ~MySQL() override;
 
     virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) override;
     virtual bool IsConnected() override;

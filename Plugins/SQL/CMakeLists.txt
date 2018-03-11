@@ -22,3 +22,7 @@ if (POSTGRESQL_FOUND)
 else (POSTGRESQL_FOUND)
     message(WARNING "Not compiling with PostgreSQL support, not found")
 endif (POSTGRESQL_FOUND)
+
+# The code likes to use variable length arrays which technically compile but aren't a
+# C++ feature. This will probably need to be refactored for Windows support.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-vla -Wno-vla-extension")

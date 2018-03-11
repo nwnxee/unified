@@ -12,7 +12,7 @@ MySQL::MySQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log)
     : m_log(log)
 {
     mysql_init(&m_mysql);
-    m_stmt = 0;
+    m_stmt = nullptr;
     m_lastError = "";
     m_paramCount = 0;
 }
@@ -84,7 +84,7 @@ bool MySQL::PrepareQuery(const Query& query)
         m_lastError.assign(mysql_stmt_error(m_stmt));
         m_log->Warning("Failed to prepare statement: %s", m_lastError.c_str());
         mysql_stmt_close(m_stmt);
-        m_stmt = 0;
+        m_stmt = nullptr;
     }
     return success;
 }
@@ -152,7 +152,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
             return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
         }
         // Statement returned no rows (INSERT, UPDATE, DELETE, etc.)
-        affectedRows = mysql_affected_rows(&m_mysql);
+        affectedRows = static_cast<int>(mysql_affected_rows(&m_mysql));
         return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
 
@@ -177,36 +177,48 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 void MySQL::PrepareInt(int32_t position, int32_t value)
 {
     m_log->Debug("Assigning position %d to value '%d'", position, value);
-    MYSQL_BIND *pBind = &m_params[position];
+
+    assert(position >= 0);
+    size_t pos = static_cast<size_t>(position);
+
+    MYSQL_BIND *pBind = &m_params[pos];
     memset(pBind, 0, sizeof(*pBind));
 
-    m_paramValues[position].n = value;
+    m_paramValues[pos].n = value;
 
     pBind->buffer_type = MYSQL_TYPE_LONG;
-    pBind->buffer = &m_paramValues[position].n;
+    pBind->buffer = &m_paramValues[pos].n;
 }
 void MySQL::PrepareFloat(int32_t position, float value)
 {
     m_log->Debug("Assigning position %d to value '%f'", position, value);
-    MYSQL_BIND *pBind = &m_params[position];
+
+    assert(position >= 0);
+    size_t pos = static_cast<size_t>(position);
+
+    MYSQL_BIND *pBind = &m_params[pos];
     memset(pBind, 0, sizeof(*pBind));
 
-    m_paramValues[position].f = value;
+    m_paramValues[pos].f = value;
 
     pBind->buffer_type = MYSQL_TYPE_FLOAT;
-    pBind->buffer = &m_paramValues[position].f;
+    pBind->buffer = &m_paramValues[pos].f;
 }
 void MySQL::PrepareString(int32_t position, const std::string& value)
 {
     m_log->Debug("Assigning position %d to value '%s'", position, value.c_str());
-    MYSQL_BIND *pBind = &m_params[position];
+
+    assert(position >= 0);
+    size_t pos = static_cast<size_t>(position);
+
+    MYSQL_BIND *pBind = &m_params[pos];
     memset(pBind, 0, sizeof(*pBind));
 
-    m_paramValues[position].s = value.c_str();
+    m_paramValues[pos].s = value.c_str();
 
     pBind->buffer_type = MYSQL_TYPE_STRING;
-    pBind->buffer = (void*)m_paramValues[position].s.c_str();
-    pBind->buffer_length = m_paramValues[position].s.size();
+    pBind->buffer = (void*)m_paramValues[pos].s.c_str();
+    pBind->buffer_length = m_paramValues[pos].s.size();
 }
 
 int MySQL::GetAffectedRows()
@@ -226,7 +238,7 @@ std::string MySQL::GetLastError(bool bClear)
 
 int32_t MySQL::GetPreparedQueryParamCount()
 {
-    return m_paramCount;
+    return static_cast<int32_t>(m_paramCount);
 }
 
 void MySQL::DestroyPreparedQuery()
@@ -234,7 +246,7 @@ void MySQL::DestroyPreparedQuery()
     if (m_stmt)
     {
         mysql_stmt_close(m_stmt);
-        m_stmt = 0;
+        m_stmt = nullptr;
 
         // Force deallocation
         std::vector<MYSQL_BIND>().swap(m_params);

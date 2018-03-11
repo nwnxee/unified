@@ -18,6 +18,10 @@ if (JAVA_FOUND)
     SCORCO.cpp
   )
 
+  # We disable this here because this particular plugin has a ton of these harmless warnings
+  # and I don't really have the patience to fix them right now.
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-parameter -Wno-header-hygiene -Wno-cast-qual")
+
   # target_link_libraries(JVM ${JAVA_JVM_LIBRARY})
   target_link_libraries(JVM /usr/lib/jvm/java-8-openjdk-i386/jre/lib/i386/server/libjvm.so)
 

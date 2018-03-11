@@ -52,7 +52,7 @@ Internal::Internal(JVM* parent) : m_parent(parent)
         throw std::runtime_error("Cannot initialise Java VM.");
     }
 
-    DoAttached([&](JavaVM* vm, JNIEnv* env) {
+    DoAttached([&](JavaVM*, JNIEnv* env) {
         m_parent->GetServices()->m_log->Info("%s", "Looking up required class and method IDs.");
 
         m_jclassInitListener                     = (jclass) NewGlobalClassRef(env, m_parent->m_config.m_classname_initListener);
@@ -124,7 +124,7 @@ Internal::Internal(JVM* parent) : m_parent(parent)
 
 Internal::~Internal()
 {
-    DoAttached([&](JavaVM* vm, JNIEnv* env) {
+    DoAttached([&](JavaVM*, JNIEnv* env) {
         JNICHECKED(env, CallStaticVoidMethod(m_jclassInitListener, m_jmethodJavaShutdown));
     });
 
@@ -151,7 +151,7 @@ ArgumentStack Internal::EntryPoint(jmethodID method, ArgumentStack& args)
     if (!method)
         throw std::runtime_error("Cannot divine method to call. Event not hooked up properly.");
 
-    DoAttached([&](JavaVM* vm, JNIEnv* env) {
+    DoAttached([&](JavaVM*, JNIEnv* env) {
         jobject objSelf = JNICHECKED(env, CallStaticObjectMethod(m_jclassNWObject, m_jmethodNWObjectCreate, arg_oid));
 
         jstring event = JNICHECKED(env, NewStringUTF(arg_event.c_str())); // TODO: convert to utf-8? unlikely to be needed.

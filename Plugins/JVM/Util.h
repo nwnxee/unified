@@ -25,5 +25,5 @@ inline uint64_t Measure(Lambda code)
 
     // assert(diff >= 0);
 
-    return diff;
+    return static_cast<uint64_t>(diff);
 }

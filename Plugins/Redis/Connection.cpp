@@ -100,7 +100,7 @@ void Redis::RawAsync(const std::vector<std::string>& v,
         c.send(v, [&](auto & r) {
             const auto end = steady_clock::now();
             const auto diff = duration_cast<nanoseconds>(end - start).count();
-            this->LogQuery(v, r, diff);
+            this->LogQuery(v, r, static_cast<uint64_t>(diff));
 
             results(r);
         }).commit();
@@ -116,7 +116,7 @@ cpp_redis::reply Redis::RawSync(const std::vector<std::string>& v)
         c.send(v, [&](auto & r) {
             const auto end = steady_clock::now();
             const auto diff = duration_cast<nanoseconds>(end - start).count();
-            this->LogQuery(v, r, diff);
+            this->LogQuery(v, r, static_cast<uint64_t>(diff));
 
             rt = r;
         }).sync_commit();
