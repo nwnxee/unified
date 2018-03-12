@@ -6,12 +6,10 @@
 
 #include "PostgreSQL.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Log/Log.hpp"
 
 namespace SQL {
 
-PostgreSQL::PostgreSQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log)
-    : m_log(log)
+PostgreSQL::PostgreSQL()
 {
     // Not sure if we need to do anything here.
 }
@@ -32,7 +30,7 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
     const NWNXLib::Maybe<std::string> DB = config->Get<std::string>("DATABASE");
     if (DB)
     {
-        m_log->Debug("DB set to %s", (*DB).c_str());
+        TRACE_DEBUG("DB set to %s", (*DB).c_str());
     }
     const std::string db   = DB ? "dbname=" + (*DB) : nullptr;
 
@@ -42,9 +40,9 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
     m_connectString = host + " " + port + " " + db + " " + user ;
 
     // hide the password in the log file
-    m_log->Info("Connect String:  %s password=xxxxxxxx", m_connectString.c_str());
+    TRACE_INFO("Connect String:  %s password=xxxxxxxx", m_connectString.c_str());
     // but add it if we're in debug logging.
-    m_log->Debug("              :  %s", pass.c_str());
+    TRACE_DEBUG("              :  %s", pass.c_str());
 
     m_connectString += " " + pass;
 
@@ -71,7 +69,7 @@ bool PostgreSQL::IsConnected()
     PGPing ping = PQping(m_connectString.c_str());
     if (ping != PQPING_OK)
     {
-        m_log->Warning("Disconnected state identified.");
+        TRACE_WARNING("Disconnected state identified.");
         bConnected = false;
     }
     return bConnected;
@@ -79,7 +77,7 @@ bool PostgreSQL::IsConnected()
 
 bool PostgreSQL::PrepareQuery(const Query& query)
 {
-    m_log->Debug("Preparing query %s\n", query.c_str());
+    TRACE_DEBUG("Preparing query %s\n", query.c_str());
 
     m_affectedRows = -1;
 
@@ -97,7 +95,7 @@ bool PostgreSQL::PrepareQuery(const Query& query)
 
     m_paramCount = std::distance(words_begin, words_end);
 
-    m_log->Debug("Detected %d parameters.", m_paramCount);
+    TRACE_DEBUG("Detected %d parameters.", m_paramCount);
 
     m_params.resize(m_paramCount);
 
@@ -109,14 +107,14 @@ bool PostgreSQL::PrepareQuery(const Query& query)
 
     if (res == NULL)
     {
-        m_log->Warning("Possible out of memory condition on DB server.");
+        TRACE_WARNING("Possible out of memory condition on DB server.");
         return false;
     }
 
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
         PQclear(res);
-        m_log->Warning("Query '%s' failed due to error '%s'", query.c_str(), PQresultErrorMessage(res));
+        TRACE_WARNING("Query '%s' failed due to error '%s'", query.c_str(), PQresultErrorMessage(res));
 
         return false;
     }
@@ -135,7 +133,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     // convert the m_params vector into a char ** required by Postgres.
     if (m_paramCount > 0)
     {
-        m_log->Debug("Preparing query with %d parameters", m_paramCount);
+        TRACE_DEBUG("Preparing query with %d parameters", m_paramCount);
         paramValues = new char*[m_params.size()];
 
         const unsigned int sz = m_params.size();
@@ -171,7 +169,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
         ResultSet results;
         const size_t rows = PQntuples(res);
         const size_t cols = PQnfields(res);
-        m_log->Debug("Returning %d rows of %d columns.", rows, cols);
+        TRACE_DEBUG("Returning %d rows of %d columns.", rows, cols);
 
         for(int i=0; i<(int)rows; i++)
         {
@@ -192,7 +190,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     // Capture the rows affected if applicable.
     if (PQresultStatus(res) == PGRES_COMMAND_OK)
     {
-        m_log->Debug("Fetching rows affected by command.");
+        TRACE_DEBUG("Fetching rows affected by command.");
         const char *cnt = PQcmdTuples(res);
         if (*cnt != '\0')
         {
@@ -223,17 +221,17 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
 // Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.
 void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
-    m_log->Debug("Assigning position %d to value '%d'", position, value);
+    TRACE_DEBUG("Assigning position %d to value '%d'", position, value);
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
-    m_log->Debug("Assigning position %d to value '%f'", position, value);
+    TRACE_DEBUG("Assigning position %d to value '%f'", position, value);
     m_params[position] = std::to_string(value);
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
-    m_log->Debug("Assigning position %d to value '%s'", position, value.c_str());
+    TRACE_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
     m_params[position] = value;
 }
 

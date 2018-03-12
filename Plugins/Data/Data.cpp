@@ -31,7 +31,7 @@ namespace Data {
 Data::Data(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    m_arrayProvider = std::make_unique<Array>(*GetServices()->m_events, *GetServices()->m_log);
+    m_arrayProvider = std::make_unique<Array>(*GetServices()->m_events);
 }
 
 Data::~Data()

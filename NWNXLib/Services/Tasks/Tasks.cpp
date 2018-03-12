@@ -1,7 +1,6 @@
 #include "Services/Tasks/Tasks.hpp"
 
 #include <algorithm>
-#include <cassert>
 #include <chrono>
 
 namespace NWNXLib {
@@ -42,8 +41,7 @@ void AsyncWorkerThread::ThreadFunc(ViewPtr<AsyncWorkerThread> owner)
     owner->m_finished = true;
 }
 
-Tasks::Tasks(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Tasks::Tasks()
 {
     for (size_t i = 0; i < WORKER_COUNT; ++i)
     {

@@ -4,7 +4,6 @@
 #include "Maybe.hpp"
 #include "Services/Services.hpp"
 
-#include <cassert>
 #include <cstdint>
 #include <functional>
 #include <tuple>
@@ -35,7 +34,7 @@ public: // Structures
     };
 
 public:
-    Events(std::shared_ptr<LogProxy> log);
+    Events();
     ~Events();
 
     void OnSetLocalString(std::string&& index, std::string&& value);

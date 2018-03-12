@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Services/Log/Types.hpp"
+#include "Trace.hpp"
 
 #include <string>
 
@@ -11,7 +11,7 @@ namespace Platform {
 namespace Syslog {
 
 // Emits a syslog message. Right now, only local on UNIX is supported.
-void Emit(const Services::LogSeverity sev, std::string progName, const std::string& message);
+void Emit(const Trace::Channel::Enum sev, std::string progName, const std::string& message);
 
 }
 

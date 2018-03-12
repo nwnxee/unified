@@ -11,7 +11,7 @@ namespace SQL {
 class MySQL final : public ITarget
 {
 public:
-    MySQL(NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> log);
+    MySQL();
     virtual ~MySQL() override;
 
     virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) override;
@@ -28,7 +28,6 @@ public:
 
 
 private:
-    NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> m_log;
     MYSQL m_mysql;
     MYSQL_STMT *m_stmt;
     std::vector<MYSQL_BIND> m_params;

@@ -1,8 +1,8 @@
 #include "Platform/Assembly.hpp"
 #include "API/Version.hpp"
+#include "Assert.hpp"
 #include "Platform/ASLR.hpp"
 #include "External/BeaEngine/include/BeaEngine.h"
-#include <cassert>
 #include <cstring>
 #include <unordered_map>
 
@@ -162,7 +162,7 @@ std::vector<uint8_t> SubRegImmDwordInstruction::ToBytes(const uintptr_t) const
 
 void CorrectRelativeAddresses(const uintptr_t address, const uintptr_t originalAddress, const uintptr_t length)
 {
-    assert(length > 0);
+    ASSERT(length > 0);
 
     DISASM disassembler = {};
     disassembler.EIP = address;
@@ -202,7 +202,7 @@ void CorrectRelativeAddresses(const uintptr_t address, const uintptr_t originalA
 
             case RELATIVE_SHORT_JMP:
             {
-                assert(false); // No short jmp support yet!
+                ASSERT_FAIL_MSG("No short jmp support");
                 break;
             }
         }
@@ -215,7 +215,7 @@ void CorrectRelativeAddresses(const uintptr_t address, const uintptr_t originalA
 
 uintptr_t GetSmallestLengthToFitInstruction(const uintptr_t address, const uintptr_t instLen)
 {
-    assert(instLen > 0);
+    ASSERT(instLen > 0);
 
     DISASM disassembler = {};
     disassembler.EIP = address;
@@ -246,7 +246,7 @@ uintptr_t GetSmallestLengthToFitInstruction(const uintptr_t address, const uintp
 
 void RewriteGCCThunks(uint8_t* data, uintptr_t originalAddress, uintptr_t length)
 {
-    assert(length > 0);
+    ASSERT(length > 0);
 
     std::unordered_map<uintptr_t, Register> thunkMap =
     {
@@ -278,7 +278,7 @@ void RewriteGCCThunks(uint8_t* data, uintptr_t originalAddress, uintptr_t length
 
         if (disassembler.Instruction.Opcode == RELATIVE_CALL)
         {
-            assert(lengthChecked == 5);
+            ASSERT(lengthChecked == 5);
 
             // The address to the argument of the call instruction.
             uint8_t* offsetAddr = (data + bytesChecked + 1);
@@ -295,7 +295,7 @@ void RewriteGCCThunks(uint8_t* data, uintptr_t originalAddress, uintptr_t length
                 // We're calling a thunk, so replace with a move.
                 uintptr_t nextInstAddr = originalAddress + bytesChecked + lengthChecked;
                 auto assembly = MovRegImmInstruction(thunkRegister->second, nextInstAddr).ToBytes();
-                assert(assembly.size() == 5);
+                ASSERT(assembly.size() == 5);
 
                 memcpy(data + bytesChecked, assembly.data(), lengthChecked);
             }

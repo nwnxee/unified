@@ -33,14 +33,15 @@ private: // Structures
             const NWNXLib::Services::Plugins::RegistrationToken&)>>;
 
 private:
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_createServerHook;
     std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
     PluginProxyServiceMap m_pluginProxyServiceMap;
 
     std::unique_ptr<NWNXLib::Services::ServiceList> ConstructCoreServices();
-    std::unique_ptr<NWNXLib::Services::ProxyServiceList> ConstructProxyServices(const std::string plugin);
+    std::unique_ptr<NWNXLib::Services::ProxyServiceList> ConstructProxyServices(const std::string& plugin);
 
-    void ConfigureLogProxy(NWNXLib::Services::LogProxy& proxy, const NWNXLib::Services::ConfigProxy& config);
+    void ConfigureLogLevel(const std::string& plugin, const NWNXLib::Services::ConfigProxy& config);
 
     void InitialSetupHooks();
     void InitialVersionCheck();
@@ -53,7 +54,7 @@ private:
     void UnloadServices();
     void Shutdown();
 
-    static void CreateServerHandler(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CAppManager*);
+    static void CreateServerHandler(NWNXLib::API::CAppManager*);
     static void DestroyServerHandler(NWNXLib::API::CAppManager*);
     static void MainLoopInternalHandler(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CServerExoAppInternal*);
 };

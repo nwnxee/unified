@@ -4,7 +4,6 @@
 #include "API/Globals.hpp"
 #include "Events.hpp"
 #include "Helpers.hpp"
-#include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
 #include "API/Vector.hpp"
 

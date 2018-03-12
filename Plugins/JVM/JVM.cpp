@@ -1,7 +1,6 @@
 #include "JVM.hpp"
 #include "Internal.hpp"
 
-#include "Services/Log/Log.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Tasks/Tasks.hpp"

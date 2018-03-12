@@ -1,7 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Log/Log.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Tasks/Tasks.hpp"
@@ -24,8 +23,7 @@ using namespace NWNXLib::API;
 
 void Redis::OnPubsub(const std::string& channel, const std::string& message)
 {
-    GetServices()->m_log->Debug("PubSub: channel='%s' message='%s'",
-                                channel.c_str(), message.c_str());
+    TRACE_DEBUG("PubSub: channel='%s' message='%s'", channel.c_str(), message.c_str());
 
     m_internal->m_last_pubsub_channel = channel;
     m_internal->m_last_pubsub_message = message;
@@ -34,7 +32,7 @@ void Redis::OnPubsub(const std::string& channel, const std::string& message)
 
     {
         std::lock_guard<std::mutex> lock(m_internal->m_config_mtx);
-        assert(!m_internal->m_config.m_pubsub_script.empty());
+        ASSERT(!m_internal->m_config.m_pubsub_script.empty());
         scr = m_internal->m_config.m_pubsub_script;
     }
 

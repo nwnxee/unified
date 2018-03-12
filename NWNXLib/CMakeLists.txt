@@ -16,7 +16,7 @@ macro(nwnxlib_add)
     endif()
 endmacro()
 
-nwnxlib_add("Plugin.cpp" "Serialize.cpp")
+nwnxlib_add("Assert.cpp" "Plugin.cpp" "Trace.cpp" "Serialize.cpp")
 
 add_subdirectory(API)
 add_subdirectory(External)
@@ -26,6 +26,8 @@ add_subdirectory(Services)
 
 add_library(NWNXLib STATIC "${NWNXLIB_SOURCE}")
 add_sanitizers(NWNXLib)
+
+target_compile_definitions(NWNXLib PRIVATE "-DPLUGIN_NAME=\"NWNXLib\"")
 
 message(${APIDIR})
 

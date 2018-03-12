@@ -1,8 +1,6 @@
 #include "Platform/FileSystem.hpp"
+#include "Assert.hpp"
 
-#include <array>
-#include <cassert>
-#include <stdio.h>
 #ifdef _WIN32
     #include "Windows.h"
     #include <thread>
@@ -63,7 +61,7 @@ FileMap GetAllFilesInDirectory(std::string directory)
             if (directoryEntry->d_type == DT_UNKNOWN || directoryEntry->d_type == DT_REG)
             {
                 FileName name = directoryEntry->d_name;
-                assert(files.find(name) == files.end());
+                ASSERT(files.find(name) == files.end());
 
                 const std::string fullFilePath = CombinePaths(directory, name);
                 struct stat fileStatistics;

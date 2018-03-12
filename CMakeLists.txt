@@ -26,6 +26,7 @@ function(add_plugin target)
     target_link_libraries(${target} Core)
     set_target_properties(${target} PROPERTIES PREFIX "${PLUGIN_PREFIX}")
     target_include_directories(${target} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
+    target_compile_definitions(${target} PRIVATE "-DPLUGIN_NAME=\"${PLUGIN_PREFIX}${target}\"")
 endfunction()
 
 # Helper to add a linux-specific plugin.
@@ -72,6 +73,14 @@ if (UNIX)
 	# Make nwnxee work on modern 64 bit file systems that don't support 32bit syscalls anymore.
 	add_definitions(-D_FILE_OFFSET_BITS=64)
 endif()
+
+# Define targets.
+# TAR_RELEASE_FINAL: Shipping version.
+# TAR_RELEASE: Fast testing version.
+# TAR_DEUBG: Slow testing version.
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTAR_RELEASE_FINAL=1 -DTAR_RELEASE=1 -DTAR_DEBUG=0")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTAR_RELEASE_FINAL=0 -DTAR_RELEASE=1 -DTAR_DEBUG=1")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTAR_RELEASE_FINAL=0 -DTAR_RELEASE=0 -DTAR_DEBUG=1")
 
 add_definitions(-DNWNX_PLUGIN_PREFIX="${PLUGIN_PREFIX}")
 add_definitions(-DNWNX_TARGET_NWN_BUILD=${TARGET_NWN_BUILD})

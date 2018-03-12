@@ -6,8 +6,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-Config::Config(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Config::Config()
 {
 }
 

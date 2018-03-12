@@ -33,7 +33,7 @@ public: // Structures
     };
 
 public:
-    Metrics(std::shared_ptr<LogProxy> log);
+    Metrics();
     ~Metrics();
 
     // These functions push raw metric data and COMPLETELY BYPASSES RESAMPLERS.

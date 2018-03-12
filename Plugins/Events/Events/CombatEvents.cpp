@@ -6,7 +6,6 @@
 #include "API/CNWSCombatRound.hpp"
 #include "Events.hpp"
 #include "Helpers.hpp"
-#include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
 
 namespace Events {

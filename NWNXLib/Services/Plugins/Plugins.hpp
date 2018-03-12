@@ -55,7 +55,7 @@ private: // Structures
     using PluginMap = std::map<PluginID, PluginDataInternal>;
 
 public:
-    Plugins(std::shared_ptr<LogProxy> log);
+    Plugins();
     ~Plugins();
 
     RegistrationToken LoadPlugin(const std::string& path, Plugin::CreateParams&& params);

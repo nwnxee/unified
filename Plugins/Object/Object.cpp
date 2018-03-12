@@ -22,7 +22,6 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
-#include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
 #include "Serialize.hpp"
 
@@ -86,7 +85,7 @@ CNWSObject *Object::object(ArgumentStack& args)
 
     if (objectId == Constants::OBJECT_INVALID)
     {
-        GetServices()->m_log->Notice("NWNX_Object function called on OBJECT_INVALID");
+        TRACE_NOTICE("NWNX_Object function called on OBJECT_INVALID");
         return nullptr;
     }
 
@@ -96,7 +95,7 @@ CNWSObject *Object::object(ArgumentStack& args)
 
 static inline CNWSScriptVarTable *_getScriptVarTable(CGameObject *pObject)
 {
-    assert(pObject);
+    ASSERT(pObject);
     switch (pObject->m_nObjectType)
     {
         case Constants::OBJECT_TYPE_AREA:
@@ -109,7 +108,7 @@ static inline CNWSScriptVarTable *_getScriptVarTable(CGameObject *pObject)
 }
 static inline CExoString *_getScriptList(CGameObject *pObject, int32_t *pSize)
 {
-    assert(pObject);
+    ASSERT(pObject);
     switch (pObject->m_nObjectType)
     {
         case Constants::OBJECT_TYPE_AREA:
@@ -162,7 +161,7 @@ static inline CExoString *_getScriptList(CGameObject *pObject, int32_t *pSize)
         }
 
         default:
-            assert(false); // "Object does not have any scripts"
+            ASSERT(false); // "Object does not have any scripts"
             *pSize = 0;
             return nullptr;
     }
@@ -233,8 +232,8 @@ ArgumentStack Object::GetEventHandler(ArgumentStack&& args)
         }
         else
         {
-            GetServices()->m_log->Notice("Invalid script handler id (%d) for object type %s",
-                                         handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
+            TRACE_NOTICE("Invalid script handler id (%d) for object type %s",
+                         handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
         }
     }
     Services::Events::InsertArgument(stack, retval);
@@ -258,8 +257,8 @@ ArgumentStack Object::SetEventHandler(ArgumentStack&& args)
         }
         else
         {
-            GetServices()->m_log->Notice("Invalid script handler id (%d) for object type %s",
-                                         handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
+            TRACE_NOTICE("Invalid script handler id (%d) for object type %s",
+                         handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
         }
     }
     return stack;
@@ -321,8 +320,8 @@ ArgumentStack Object::SetPortrait(ArgumentStack&&)
 {
     ArgumentStack stack;
 
-    GetServices()->m_log->Error("Cannot do SetPortrait: CResRef copy constructor results in a trap");
-    GetServices()->m_log->Notice("SetPortrait-TODO: Update portrait directly");
+    TRACE_ERROR("Cannot do SetPortrait: CResRef copy constructor results in a trap");
+    TRACE_NOTICE("SetPortrait-TODO: Update portrait directly");
 
     /*
     if (auto *pObject = object(args))
@@ -363,7 +362,7 @@ ArgumentStack Object::Deserialize(ArgumentStack&& args)
     if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
     {
         retval = static_cast<Types::ObjectID>(pObject->m_idSelf);
-        assert(Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
+        ASSERT(Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
     }
 
     Services::Events::InsertArgument(stack, retval);

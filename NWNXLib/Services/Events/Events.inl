@@ -62,7 +62,7 @@ std::tuple<Params ...> Events::ExtractArguments(Events::ArgumentStack&& argument
     }
 
     auto data = MakeTupleFromArgs<Params ...>(arguments);
-    assert(arguments.empty()); // Logically, arguments should now be empty.
+    ASSERT(arguments.empty()); // Logically, arguments should now be empty.
 
     if (!data)
     {

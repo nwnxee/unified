@@ -1,7 +1,6 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
-#include "Services/Log/Log.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/MetricData.hpp"
 
@@ -80,9 +79,13 @@ void Redis::LogQuery(const std::vector<std::string>& v, const cpp_redis::reply& 
     auto rstr = r.as_string();
 
     if (r.is_error())
-        GetServices()->m_log->Error("Query failed: '%s' -> '%s'", qstr.c_str(), rstr.c_str());
+    {
+        TRACE_ERROR("Query failed: '%s' -> '%s'", qstr.c_str(), rstr.c_str());
+    }
     else
-        GetServices()->m_log->Debug("Query: '%s' -> '%s'", qstr.c_str(), rstr.c_str());
+    {
+        TRACE_DEBUG("Query: '%s' -> '%s'", qstr.c_str(), rstr.c_str());
+    }
 }
 
 template <typename Ret>

@@ -7,7 +7,6 @@
 #include "ViewPtr.hpp"
 
 #include <algorithm>
-#include <cassert>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -55,7 +54,7 @@ private: // Structures
     using GenericHookMap = std::unordered_map<uintptr_t, std::unique_ptr<HookStorage>>;
 
 public:
-    Hooks(std::shared_ptr<LogProxy> log);
+    Hooks();
     ~Hooks();
 
     template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>

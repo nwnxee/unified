@@ -12,7 +12,7 @@ namespace Services {
 class Config : public ServiceBase
 {
 public:
-    Config(std::shared_ptr<LogProxy> log);
+    Config();
 
     // Retrieves a configuration value. Note that key is case-insensitive, but
     // configuration is expected to be defined all-upcase in ENV.

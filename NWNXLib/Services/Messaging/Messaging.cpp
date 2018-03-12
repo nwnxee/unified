@@ -6,8 +6,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-Messaging::Messaging(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Messaging::Messaging()
 {
 }
 
