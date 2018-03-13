@@ -90,7 +90,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     else if (type == "POSTGRESQL")
     {
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
-        m_target = std::make_unique<PostgreSQL>(GetServices()->m_log);
+        m_target = std::make_unique<PostgreSQL>();
 #else
         throw std::runtime_error("Targeting PostgreSQL, but no PostgreSQL support built in.");
 #endif
