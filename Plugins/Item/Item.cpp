@@ -24,7 +24,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
         "Item",
         "Functions exposing additional item properties",
         "Various / sherincall / Bhaal",
-        "bhaal@marcaargentea.net",
+        "marca.argentea at gmail.com",
         1,
         true
     };
@@ -40,43 +40,63 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 namespace Item {
 
 Item::Item(const Plugin::CreateParams& params)
-    : Plugin(params)
+     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Item::func, this, std::placeholders::_1))
-
-    REGISTER(SetWeight);
-
+   GetServices()->m_events->RegisterEvent(#func, std::bind(&Item::func, this, std::placeholders::_1))
+	  
+   REGISTER(SetWeight);
+   REGISTER(SetGoldPieceValue);
+	  
 #undef REGISTER
 }
-
+   
 Item::~Item()
 {
 }
 
 CNWSItem *Item::item(ArgumentStack& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-
-    if (objectId == Constants::OBJECT_INVALID)
-    {
+   const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+   
+   if (objectId == Constants::OBJECT_INVALID)
+     {
         GetServices()->m_log->Notice("NWNX_Item function called on OBJECT_INVALID");
         return nullptr;
-    }
-
-    auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    return static_cast<CNWSItem*>(pGameObject);
+     }
+     
+   
+   auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+   if(pGameObject==nullptr || pGameObject->m_nObjectType!=Constants::OBJECT_TYPE_ITEM)
+     {
+	GetServices()->m_log->Notice("NWNX_Item function called on non item object");
+	return nullptr;	
+     }
+   
+   return static_cast<CNWSItem*>(pGameObject);
 }
 
 
 ArgumentStack Item::SetWeight(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-    if (auto *pItem = item(args))
-    {
+   ArgumentStack stack;
+   if (auto *pItem = item(args))
+     {
         const auto w = Services::Events::ExtractArgument<int32_t>(args);
         pItem->m_nWeight = w;
-    }
-    return stack;
+     }
+   return stack;
 }
+
+ArgumentStack Item::SetGoldPieceValue(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   if (auto *pItem = item(args))
+     {
+        const auto g = Services::Events::ExtractArgument<int32_t>(args);
+        pItem->m_nBaseUnitCost = g;
+     }
+   return stack;
+}
+
 }

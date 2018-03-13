@@ -12,13 +12,14 @@ namespace Item {
 class Item : public NWNXLib::Plugin
 {
 public:
-    Item(const Plugin::CreateParams& params);
-    virtual ~Item();
+   Item(const Plugin::CreateParams& params);
+   virtual ~Item();
 
 private:
-    ArgumentStack SetWeight      (ArgumentStack&& args);
+   ArgumentStack SetWeight         (ArgumentStack&& args);
+   ArgumentStack SetGoldPieceValue (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSItem *item(ArgumentStack& args);
+   NWNXLib::API::CNWSItem *item(ArgumentStack& args);
 };
 
 }
