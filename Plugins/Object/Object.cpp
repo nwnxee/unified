@@ -161,7 +161,7 @@ static inline CExoString *_getScriptList(CGameObject *pObject, int32_t *pSize)
         }
 
         default:
-            ASSERT(false); // "Object does not have any scripts"
+            ASSERT_FAIL_MSG("Object does not have any scripts");
             *pSize = 0;
             return nullptr;
     }
