@@ -160,6 +160,14 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 // ClassID should be a valid ID number in classes.2da and be between 0 and 255.
 void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
 
+// Set creature's base attack bonus (BAB)
+// Modifying the BAB will also affect the creature's attacks per round and its
+// eligability for feats, prestige classes, etc.
+// The BAB value should be between 0 and 254.
+// NOTE: The base game has a function SetBaseAttackBonus(), which actually sets
+//       the bonus attacks per round for a creature, not the BAB.
+void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -631,6 +639,15 @@ void NWNX_Creature_SetClassByPosition(object creature, int position, int classID
     string sFunc = "SetClassByPosition";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, classID);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, position);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetBaseAttackBonus(object creature, int bab)
+{
+    string sFunc = "SetBaseAttackBonus";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bab);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);

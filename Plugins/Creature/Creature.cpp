@@ -94,6 +94,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSoundset);
     REGISTER(SetSkillRank);
     REGISTER(SetClassByPosition);
+    REGISTER(SetBaseAttackBonus);
 
 #undef REGISTER
 }
@@ -968,6 +969,21 @@ ArgumentStack Creature::SetClassByPosition(ArgumentStack&& args)
         assert(classID <= 255);
 
         pCreature->m_pStats->SetClass(static_cast<uint8_t>(position), static_cast<uint8_t>(classID));
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetBaseAttackBonus(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto bab = Services::Events::ExtractArgument<int32_t>(args);
+        assert(bab >= 0);
+        assert(bab <= 254);
+
+        pCreature->m_pStats->m_nBaseAttackBonus = static_cast<uint8_t>(bab);
+        assert(pCreature->m_pStats->GetBaseAttackBonus(false) == bab);
     }
     return stack;
 }
