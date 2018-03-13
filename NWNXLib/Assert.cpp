@@ -62,7 +62,7 @@ void Fail(const char* condition, const char* file, int line, const char* message
             std::strcat(buffer, backtraceBuffer);
         }
     }
-#endif // OS_WINDOWS
+#endif // _WIN32
 
     std::fprintf(stderr, buffer);
 
@@ -87,7 +87,7 @@ void Fail(const char* condition, const char* file, int line, const char* message
     default: // Crash and break
         break;
     }
-#endif // OS_WINDOWS
+#endif // _WIN32
 
     if (!skipBreak)
     {
