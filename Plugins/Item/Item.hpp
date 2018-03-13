@@ -18,7 +18,9 @@ public:
 private:
    ArgumentStack SetWeight         (ArgumentStack&& args);
    ArgumentStack SetGoldPieceValue (ArgumentStack&& args);
-
+   ArgumentStack SetBaseItemType   (ArgumentStack&& args);
+   ArgumentStack SetItemColor      (ArgumentStack&& args);   
+   
    NWNXLib::API::CNWSItem *item(ArgumentStack& args);
 };
 

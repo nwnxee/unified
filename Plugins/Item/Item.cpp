@@ -25,7 +25,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
         "Functions exposing additional item properties",
         "Various / sherincall / Bhaal",
         "marca.argentea at gmail.com",
-        1,
+        2,
         true
     };
 }
@@ -47,7 +47,9 @@ Item::Item(const Plugin::CreateParams& params)
 	  
    REGISTER(SetWeight);
    REGISTER(SetGoldPieceValue);
-	  
+   REGISTER(SetBaseItemType);
+   REGISTER(SetItemColor);
+
 #undef REGISTER
 }
    
@@ -99,4 +101,32 @@ ArgumentStack Item::SetGoldPieceValue(ArgumentStack&& args)
    return stack;
 }
 
+ArgumentStack Item::SetBaseItemType(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   if (auto *pItem = item(args))
+     {
+        const auto bt = Services::Events::ExtractArgument<int32_t>(args);
+        pItem->m_nBaseItem = bt;
+     }
+   return stack;
+}
+   
+ArgumentStack Item::SetItemColor(ArgumentStack&& args)
+{   
+   ArgumentStack stack;
+   if (auto *pItem = item(args))
+     {
+	
+	const auto idx = Services::Events::ExtractArgument<int32_t>(args);
+	const auto val = Services::Events::ExtractArgument<int32_t>(args);
+	
+	if(idx >= 0 && idx < 6 && val >=0  && val < 256)
+	  {
+	     pItem->m_nLayeredTextureColors[idx] = val;
+	  }	
+     }   
+   return stack;
+}
+   
 }
