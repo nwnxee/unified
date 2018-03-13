@@ -16,7 +16,7 @@ macro(nwnxlib_add)
     endif()
 endmacro()
 
-nwnxlib_add("Assert.cpp" "Plugin.cpp" "Trace.cpp" "Serialize.cpp")
+nwnxlib_add("Assert.cpp" "Log.cpp" "Plugin.cpp" "Serialize.cpp")
 
 add_subdirectory(API)
 add_subdirectory(External)

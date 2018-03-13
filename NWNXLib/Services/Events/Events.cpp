@@ -55,14 +55,14 @@ void Events::OnSetLocalString(std::string&& index, std::string&& value)
             switch (command.m_function)
             {
                 case BuiltInFunction::CALL_FUNCTION:
-                    TRACE_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
+                    LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
                         command.m_eventData->m_data.m_eventName.c_str(),
                         command.m_eventData->m_data.m_pluginName.c_str());
                     command.m_eventData->m_returns = command.m_eventData->m_callback(std::move(command.m_eventData->m_arguments));
                     break;
 
                 case BuiltInFunction::PUSH_ARGUMENT:
-                    TRACE_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
+                    LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
                         value.c_str(),
                         command.m_eventData->m_data.m_eventName.c_str(),
                         command.m_eventData->m_data.m_pluginName.c_str());
@@ -77,7 +77,7 @@ void Events::OnSetLocalString(std::string&& index, std::string&& value)
     }
     catch (const std::runtime_error& err)
     {
-        TRACE_ERROR("SetLocalString encountered error '%s' for input '%s' and value '%s'.", err.what(), index.c_str(), value.c_str());
+        LOG_ERROR("SetLocalString encountered error '%s' for input '%s' and value '%s'.", err.what(), index.c_str(), value.c_str());
         return;
     }
 }
@@ -120,7 +120,7 @@ Maybe<std::string> Events::OnGetLocalString(std::string&& index)
                     // Strip typeinfo
                     retVal = retVal.substr(2);
 
-                    TRACE_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
+                    LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
                         retVal.c_str(),
                         command.m_eventData->m_data.m_eventName.c_str(),
                         command.m_eventData->m_data.m_pluginName.c_str());
@@ -137,7 +137,7 @@ Maybe<std::string> Events::OnGetLocalString(std::string&& index)
     }
     catch (const std::runtime_error& err)
     {
-        TRACE_ERROR("GetLocalString encountered error '%s' for input '%s'.", err.what(), index.c_str());
+        LOG_ERROR("GetLocalString encountered error '%s' for input '%s'.", err.what(), index.c_str());
     }
 
     return Maybe<std::string>();

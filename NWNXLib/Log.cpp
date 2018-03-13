@@ -1,4 +1,4 @@
-#include "Trace.hpp"
+#include "Log.hpp"
 #include "Assert.hpp"
 
 #ifdef _WIN32
@@ -10,7 +10,7 @@
 
 namespace NWNXLib {
 
-namespace Trace {
+namespace Log {
 
 void InternalOutputDebugString(const char* str)
 {

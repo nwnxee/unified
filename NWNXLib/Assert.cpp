@@ -53,7 +53,7 @@ void Fail(const char* condition, const char* file, int line, const char* message
 
     if (numCapturedFrames)
     {
-        char** resolvedFrames = backtrace_symbols(stackTrace, 20);
+        char** resolvedFrames = backLOG_symbols(stackTrace, 20);
         std::strcat(buffer, "\n  Backtrace:\n");
         for (int i = 0; i < numCapturedFrames; ++i)
         {

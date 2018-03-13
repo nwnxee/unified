@@ -124,7 +124,7 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Servi
 
     if (logLevel)
     {
-        Trace::SetLogLevel(plugin.c_str(), static_cast<Trace::Channel::Enum>(*logLevel));
+        Log::SetLogLevel(plugin.c_str(), static_cast<Log::Channel::Enum>(*logLevel));
     }
 }
 
@@ -151,7 +151,7 @@ void NWNXCore::InitialVersionCheck()
     if (buildNumberAddr)
     {
         API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
-        TRACE_INFO("Server is running version %s.", versionAsStr->m_sString);
+        LOG_INFO("Server is running version %s.", versionAsStr->m_sString);
 
         const uint32_t version = std::stoul(versionAsStr->m_sString);
 
@@ -175,7 +175,7 @@ void NWNXCore::InitialSetupPlugins()
 
     const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
 
-    TRACE_INFO("Loading plugins from: %s", pluginDir.c_str());
+    LOG_INFO("Loading plugins from: %s", pluginDir.c_str());
 
     std::vector<std::string> sortedDynamicLibraries;
 
@@ -203,21 +203,21 @@ void NWNXCore::InitialSetupPlugins()
 
         if (services->m_config->Get<bool>("SKIP", false))
         {
-            TRACE_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
+            LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
             continue;
         }
 
         try
         {
-            TRACE_DEBUG("Loading plugin %s", pluginName.c_str());
+            LOG_DEBUG("Loading plugin %s", pluginName.c_str());
             auto registrationToken = m_services->m_plugins->LoadPlugin(CombinePaths(pluginDir, pluginName), std::move(params));
             auto data = *m_services->m_plugins->FindPluginById(registrationToken.m_id);
-            TRACE_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name.c_str(), data.m_info->m_version, data.m_info->m_author.c_str());
+            LOG_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name.c_str(), data.m_info->m_version, data.m_info->m_author.c_str());
             m_pluginProxyServiceMap.insert(std::make_pair(std::move(registrationToken), std::move(services)));
         }
         catch (const std::runtime_error& err)
         {
-            TRACE_ERROR("Failed to load plugin (%s) because '%s'.", pluginName.c_str(), err.what());
+            LOG_ERROR("Failed to load plugin (%s) because '%s'.", pluginName.c_str(), err.what());
             throw;
         }
     }
@@ -252,11 +252,11 @@ void NWNXCore::UnloadPlugin(std::pair<Services::Plugins::RegistrationToken,
     try
     {
         m_services->m_plugins->UnloadPlugin(std::forward<Plugins::RegistrationToken>(plugin.first), Plugin::UnloadReason::SHUTTING_DOWN);
-        TRACE_INFO("Unloaded plugin %d (%s).", pluginId, pluginName.c_str());
+        LOG_INFO("Unloaded plugin %d (%s).", pluginId, pluginName.c_str());
     }
     catch (const std::runtime_error& err)
     {
-        TRACE_ERROR("Received error '%s' when unloading plugin %d (%s).", err.what(), pluginId, pluginName.c_str());
+        LOG_ERROR("Received error '%s' when unloading plugin %d (%s).", err.what(), pluginId, pluginName.c_str());
     }
 }
 
@@ -327,11 +327,11 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     g_core->m_coreServices = g_core->ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
 
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
-    Trace::SetLogLevel("NWNXLib", Trace::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
+    Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
 
     if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
-        TRACE_INFO("Not loading NWNX due to configuration.");
+        LOG_INFO("Not loading NWNX due to configuration.");
         return;
     }
 
@@ -343,7 +343,7 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     }
     catch (const std::runtime_error& ex)
     {
-        TRACE_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
     }
 
     g_core->m_createServerHook.reset();

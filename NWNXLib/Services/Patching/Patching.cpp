@@ -92,7 +92,7 @@ void Patching::ClearPatch(RegistrationToken&& token)
     }
 
     WriteDataToAddress((*patch)->m_address, (*patch)->m_original);
-    TRACE_DEBUG("Cleared patch at address %x", (*patch)->m_address);
+    LOG_DEBUG("Cleared patch at address %x", (*patch)->m_address);
     m_memoryPatches.erase(patch);
 }
 
@@ -136,7 +136,7 @@ Patching::RegistrationToken Patching::ApplyPatch(std::unique_ptr<PatchData>&& pa
     }
 
     WriteDataToAddress(address, patchData->m_modified);
-    TRACE_DEBUG("Applied patch to address %x", address);
+    LOG_DEBUG("Applied patch to address %x", address);
     m_memoryPatches.emplace_back(std::move(patchData));
 
     std::sort(std::begin(m_memoryPatches), std::end(m_memoryPatches),

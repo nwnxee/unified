@@ -183,7 +183,7 @@ void Plugins::UnloadPluginInternal(PluginMap::iterator plugin, const Plugin::Unl
         }
         catch (const std::runtime_error& err)
         {
-            TRACE_ERROR("Encountered error when unloading plugin: '%s'", err.what());
+            LOG_ERROR("Encountered error when unloading plugin: '%s'", err.what());
         }
     }
 

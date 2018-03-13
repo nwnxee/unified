@@ -40,7 +40,7 @@ void Redis::Reconfigure()
         m_internal->m_config.m_pubsub_channels = str_explode(GetServices()->m_config->
                 Get<std::string>("PUBSUB_CHANNELS", ""), ',');
 
-        TRACE_INFO("Reconfiguring for redis at %s:%d",
+        LOG_INFO("Reconfiguring for redis at %s:%d",
                                    m_internal->m_config.m_host.c_str(),
                                    m_internal->m_config.m_port);
 
@@ -50,7 +50,7 @@ void Redis::Reconfigure()
         }
         catch (cpp_redis::redis_error& e)
         {
-            TRACE_NOTICE("Error while reconfiguring pubsub client: %s", e.what());
+            LOG_NOTICE("Error while reconfiguring pubsub client: %s", e.what());
         }
         m_internal->m_connection_pubsub.connect(
             m_internal->m_config.m_host, static_cast<size_t>(m_internal->m_config.m_port));
@@ -58,12 +58,12 @@ void Redis::Reconfigure()
         auto bound = std::bind(&Redis::OnPubsub, this, _1, _2);
         for (auto& ch : m_internal->m_config.m_pubsub_channels)
         {
-            TRACE_INFO("PubSub: Subscribing to %s", ch.c_str());
+            LOG_INFO("PubSub: Subscribing to %s", ch.c_str());
             m_internal->m_connection_pubsub.psubscribe(ch, bound);
         }
         m_internal->m_connection_pubsub.commit();
 
-        TRACE_INFO("%s", "Connected!");
+        LOG_INFO("%s", "Connected!");
     }
 
     m_internal->m_redis_pool.Clean();

@@ -5,25 +5,25 @@
 
 namespace NWNXLib {
 
-namespace Trace {
+namespace Log {
 
-#define TRACE_DEBUG(format, ...) \
-    ::NWNXLib::Trace::Trace(::NWNXLib::Trace::Channel::SEV_DEBUG, PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#define LOG_DEBUG(format, ...) \
+    ::NWNXLib::Log::Trace(::NWNXLib::Log::Channel::SEV_DEBUG, PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
 
-#define TRACE_INFO(format, ...) \
-    ::NWNXLib::Trace::Trace((::NWNXLib::Trace::Channel::SEV_INFO), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#define LOG_INFO(format, ...) \
+    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_INFO), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
 
-#define TRACE_NOTICE(format, ...) \
-    ::NWNXLib::Trace::Trace((::NWNXLib::Trace::Channel::SEV_NOTICE), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#define LOG_NOTICE(format, ...) \
+    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_NOTICE), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
 
-#define TRACE_WARNING(format, ...) \
-    ::NWNXLib::Trace::Trace((::NWNXLib::Trace::Channel::SEV_WARNING), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#define LOG_WARNING(format, ...) \
+    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_WARNING), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
 
-#define TRACE_ERROR(format, ...) \
-    ::NWNXLib::Trace::Trace((::NWNXLib::Trace::Channel::SEV_ERROR), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#define LOG_ERROR(format, ...) \
+    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_ERROR), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
 
-#define TRACE_FATAL(format, ...) \
-    ::NWNXLib::Trace::Trace((::NWNXLib::Trace::Channel::SEV_FATAL), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#define LOG_FATAL(format, ...) \
+    ::NWNXLib::Log::Trace((::NWNXLib::Log::Channel::SEV_FATAL), PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
 
 struct Channel
 {
@@ -70,7 +70,7 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
 Channel::Enum GetLogLevel(const char* plugin);
 void SetLogLevel(const char* plugin, Channel::Enum logLevel);
 
-#include "Trace.inl"
+#include "Log.inl"
 
 }
 

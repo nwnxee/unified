@@ -78,7 +78,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     std::string type = GetServices()->m_config->Get<std::string>("TYPE", "MYSQL");
     std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
 
-    TRACE_INFO("Connecting to type %s", type.c_str());
+    LOG_INFO("Connecting to type %s", type.c_str());
     if (type == "MYSQL")
     {
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
@@ -109,19 +109,19 @@ SQL::~SQL()
 
 bool SQL::Reconnect(int32_t attempts)
 {
-    TRACE_WARNING("Database connection lost. Reconnecting..");
+    LOG_WARNING("Database connection lost. Reconnecting..");
 
     for (int32_t i = 0; i < attempts; i++)
     {
         try
         {
             m_target->Connect(GetServices()->m_config);
-            TRACE_NOTICE("Reconnect successful.");
+            LOG_NOTICE("Reconnect successful.");
             break;
         }
         catch (std::runtime_error& e)
         {
-            TRACE_ERROR("Reconnect attempt %d out of %d failed: %s",
+            LOG_ERROR("Reconnect attempt %d out of %d failed: %s",
                 i+1, attempts, e.what());
 
             // NOTE: We are on the main thread and cannot sleep for to long, as
@@ -145,7 +145,7 @@ Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
 
     if (!m_target->IsConnected() && !Reconnect(3))
     {
-        TRACE_ERROR("Database connection lost. Aborting.");
+        LOG_ERROR("Database connection lost. Aborting.");
         Events::InsertArgument(stack, 0);
         return stack;
     }
@@ -161,7 +161,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
 
     if (!m_queryPrepared)
     {
-        TRACE_WARNING("Trying to execute prepared query without successful PrepareQuery() call");
+        LOG_WARNING("Trying to execute prepared query without successful PrepareQuery() call");
         Events::InsertArgument(stack, 0);
         return stack;
     }
@@ -172,10 +172,10 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
     // It is up to the user to check the return value, and repeat the query if needed.
     if (!m_target->IsConnected())
     {
-        TRACE_DEBUG("Not Connected");
+        LOG_DEBUG("Not Connected");
         if (!Reconnect())
         {
-            TRACE_ERROR("Database connection lost. Aborting.");
+            LOG_ERROR("Database connection lost. Aborting.");
             Events::InsertArgument(stack, 0);
             return stack;
         }
@@ -185,7 +185,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
             // Prepared arguments are not, however, so we can still recover
             if (!m_target->PrepareQuery(m_activeQuery))
             {
-                TRACE_ERROR("Recovery PrepareQuery() failed: %s", m_target->GetLastError().c_str());
+                LOG_ERROR("Recovery PrepareQuery() failed: %s", m_target->GetLastError().c_str());
                 Events::InsertArgument(stack, 0);
                 return stack;
             }
@@ -228,20 +228,20 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
         if (m_target->GetAffectedRows() >= 0)
         {
             // this was not a result set type query
-            TRACE_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Rows affected: '%u'.",
+            LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Rows affected: '%u'.",
                 queryId, m_activeQuery.c_str(), m_target->GetAffectedRows());
         }
         else
         {
-            TRACE_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
+            LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
                 queryId, m_activeQuery.c_str(), m_activeResults.size());
         }
     }
     else
     {
-        TRACE_WARNING("Failed SQL query. Query ID: '%i', Query: '%s'.", queryId, m_activeQuery.c_str());
+        LOG_WARNING("Failed SQL query. Query ID: '%i', Query: '%s'.", queryId, m_activeQuery.c_str());
         std::string lastError = m_target->GetLastError();
-        TRACE_WARNING("Failure Message. Query ID: '%i', \"%s\"", queryId, lastError.c_str());
+        LOG_WARNING("Failure Message. Query ID: '%i', \"%s\"", queryId, lastError.c_str());
     }
 
     return stack;
@@ -285,7 +285,7 @@ Events::ArgumentStack SQL::OnPreparedInt(Events::ArgumentStack&& args)
     int32_t value = Events::ExtractArgument<int32_t>(args);
     if (position >= m_target->GetPreparedQueryParamCount())
     {
-        TRACE_WARNING("Prepared argument (pos:%d, value:0x%08x) out of bounds", position, value);
+        LOG_WARNING("Prepared argument (pos:%d, value:0x%08x) out of bounds", position, value);
     }
     else
     {
@@ -299,7 +299,7 @@ Events::ArgumentStack SQL::OnPreparedString(Events::ArgumentStack&& args)
     std::string value = Events::ExtractArgument<std::string>(args);
     if (position >= m_target->GetPreparedQueryParamCount())
     {
-        TRACE_WARNING("Prepared argument (pos:%d, value:'%s') out of bounds", position, value.c_str());
+        LOG_WARNING("Prepared argument (pos:%d, value:'%s') out of bounds", position, value.c_str());
     }
     else
     {
@@ -313,7 +313,7 @@ Events::ArgumentStack SQL::OnPreparedFloat(Events::ArgumentStack&& args)
     float value = Events::ExtractArgument<float>(args);
     if (position >= m_target->GetPreparedQueryParamCount())
     {
-        TRACE_WARNING("Prepared argument (pos:%d, value:'%f') out of bounds", position, value);
+        LOG_WARNING("Prepared argument (pos:%d, value:'%f') out of bounds", position, value);
     }
     else
     {
@@ -329,7 +329,7 @@ Events::ArgumentStack SQL::OnPreparedObjectId(Events::ArgumentStack&& args)
     std::memcpy(&valInt, &value, sizeof(valInt)); static_assert(sizeof(valInt) == sizeof(value));
     if (position >= m_target->GetPreparedQueryParamCount())
     {
-        TRACE_WARNING("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds", position, valInt);
+        LOG_WARNING("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds", position, valInt);
     }
     else
     {
@@ -344,7 +344,7 @@ Events::ArgumentStack SQL::OnPreparedObjectFull(Events::ArgumentStack&& args)
 
     if (position >= m_target->GetPreparedQueryParamCount())
     {
-        TRACE_WARNING("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds", position, static_cast<int32_t>(value));
+        LOG_WARNING("Prepared argument (pos:%d, value:ObjID-%08x) out of bounds", position, static_cast<int32_t>(value));
     }
     else
     {
@@ -378,7 +378,7 @@ Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& a
             API::CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
             if (!AcquireDeserializedItem(static_cast<API::CNWSItem*>(pObject), pOwner, x, y, z))
             {
-                TRACE_WARNING("Failed to 'acquire' deserialized item %x", retval);
+                LOG_WARNING("Failed to 'acquire' deserialized item %x", retval);
             }
         }
     }

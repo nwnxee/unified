@@ -80,14 +80,14 @@ CNWSPlayer *Player::player(ArgumentStack& args)
 
     if (playerId == Constants::OBJECT_INVALID)
     {
-        TRACE_NOTICE("NWNX_Player function called on OBJECT_INVALID");
+        LOG_NOTICE("NWNX_Player function called on OBJECT_INVALID");
         return nullptr;
     }
 
     auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(playerId);
     if (!pPlayer)
     {
-        TRACE_NOTICE("NWNX_Player function called on non-player object %x", playerId);
+        LOG_NOTICE("NWNX_Player function called on non-player object %x", playerId);
     }
     return pPlayer;
 }
@@ -106,7 +106,7 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
         }
         else
         {
-            TRACE_ERROR("Unable to get CNWSMessage");
+            LOG_ERROR("Unable to get CNWSMessage");
         }
     }
 
@@ -128,7 +128,7 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
         }
         else
         {
-            TRACE_ERROR("Unable to get CNWSMessage");
+            LOG_ERROR("Unable to get CNWSMessage");
         }
     }
 
@@ -147,7 +147,7 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
         }
         else
         {
-            TRACE_ERROR("Unable to get CNWSMessage");
+            LOG_ERROR("Unable to get CNWSMessage");
         }
 
     }
@@ -168,7 +168,7 @@ void Player::HandlePlayerToServerInputCancelGuiTimingEventHook(Services::Hooks::
 
         if (id > 0)
         {
-            TRACE_DEBUG("Cancelling GUI timing event id %d...", id);
+            LOG_DEBUG("Cancelling GUI timing event id %d...", id);
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
             pGameObject->m_ScriptVars.DestroyInt(varName);
         }

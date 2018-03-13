@@ -85,7 +85,7 @@ CNWSObject *Object::object(ArgumentStack& args)
 
     if (objectId == Constants::OBJECT_INVALID)
     {
-        TRACE_NOTICE("NWNX_Object function called on OBJECT_INVALID");
+        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
         return nullptr;
     }
 
@@ -232,7 +232,7 @@ ArgumentStack Object::GetEventHandler(ArgumentStack&& args)
         }
         else
         {
-            TRACE_NOTICE("Invalid script handler id (%d) for object type %s",
+            LOG_NOTICE("Invalid script handler id (%d) for object type %s",
                          handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
         }
     }
@@ -257,7 +257,7 @@ ArgumentStack Object::SetEventHandler(ArgumentStack&& args)
         }
         else
         {
-            TRACE_NOTICE("Invalid script handler id (%d) for object type %s",
+            LOG_NOTICE("Invalid script handler id (%d) for object type %s",
                          handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
         }
     }
@@ -320,8 +320,8 @@ ArgumentStack Object::SetPortrait(ArgumentStack&&)
 {
     ArgumentStack stack;
 
-    TRACE_ERROR("Cannot do SetPortrait: CResRef copy constructor results in a trap");
-    TRACE_NOTICE("SetPortrait-TODO: Update portrait directly");
+    LOG_ERROR("Cannot do SetPortrait: CResRef copy constructor results in a trap");
+    LOG_NOTICE("SetPortrait-TODO: Update portrait directly");
 
     /*
     if (auto *pObject = object(args))

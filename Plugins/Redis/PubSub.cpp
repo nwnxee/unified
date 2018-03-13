@@ -23,7 +23,7 @@ using namespace NWNXLib::API;
 
 void Redis::OnPubsub(const std::string& channel, const std::string& message)
 {
-    TRACE_DEBUG("PubSub: channel='%s' message='%s'", channel.c_str(), message.c_str());
+    LOG_DEBUG("PubSub: channel='%s' message='%s'", channel.c_str(), message.c_str());
 
     m_internal->m_last_pubsub_channel = channel;
     m_internal->m_last_pubsub_message = message;

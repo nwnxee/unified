@@ -122,7 +122,7 @@ void Events::PushEventData(const std::string tag, const std::string data)
         g_plugin->m_eventData.push(std::unordered_map<std::string, std::string>());
     }
 
-    TRACE_DEBUG("Pushing event data: '%s' -> '%s'.", tag.c_str(), data.c_str());
+    LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag.c_str(), data.c_str());
     g_plugin->m_eventData.top()[tag] = std::move(data);
 }
 
@@ -132,7 +132,7 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
 
     for (const auto& script : scripts)
     {
-        TRACE_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName.c_str(), script.c_str());
+        LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName.c_str(), script.c_str());
         API::CExoString scriptExoStr = script.c_str();
         ++g_plugin->m_eventDepth;
         API::Globals::VirtualMachine()->RunScript(&scriptExoStr, target, 1);
@@ -159,7 +159,7 @@ Services::Events::ArgumentStack Events::OnSubscribeEvent(Services::Events::Argum
         throw std::runtime_error("Attempted to subscribe to an event with a script that already subscribed!");
     }
 
-    TRACE_INFO("Script '%s' subscribed to event '%s'.", script.c_str(), event.c_str());
+    LOG_INFO("Script '%s' subscribed to event '%s'.", script.c_str(), event.c_str());
     eventVector.emplace_back(std::move(script));
 
     return Services::Events::ArgumentStack();

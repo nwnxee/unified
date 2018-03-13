@@ -68,7 +68,7 @@ Administration::~Administration()
 Events::ArgumentStack Administration::OnGetPlayerPassword(Events::ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerPassword();
-    TRACE_DEBUG("Returned player password '%s'.", password.m_sString);
+    LOG_DEBUG("Returned player password '%s'.", password.m_sString);
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, std::string(password.m_sString));
     return stack;
@@ -77,14 +77,14 @@ Events::ArgumentStack Administration::OnGetPlayerPassword(Events::ArgumentStack&
 Events::ArgumentStack Administration::OnSetPlayerPassword(Events::ArgumentStack&& args)
 {
     const auto newPass = Events::ExtractArgument<std::string>(args);
-    TRACE_NOTICE("Set player password to '%s'.", newPass.c_str());
+    LOG_NOTICE("Set player password to '%s'.", newPass.c_str());
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword(newPass.c_str());
     return Events::ArgumentStack();
 }
 
 Events::ArgumentStack Administration::OnClearPlayerPassword(Events::ArgumentStack&&)
 {
-    TRACE_NOTICE("Cleared player password.");
+    LOG_NOTICE("Cleared player password.");
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword("");
     return Events::ArgumentStack();
 }
@@ -92,7 +92,7 @@ Events::ArgumentStack Administration::OnClearPlayerPassword(Events::ArgumentStac
 Events::ArgumentStack Administration::OnGetDMPassword(Events::ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetGameMasterPassword();
-    TRACE_DEBUG("Returned DM password '%s'.", password.m_sString);
+    LOG_DEBUG("Returned DM password '%s'.", password.m_sString);
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, std::string(password.m_sString));
     return stack;
@@ -101,14 +101,14 @@ Events::ArgumentStack Administration::OnGetDMPassword(Events::ArgumentStack&&)
 Events::ArgumentStack Administration::OnSetDMPassword(Events::ArgumentStack&& args)
 {
     const auto newPass = Events::ExtractArgument<std::string>(args);
-    TRACE_NOTICE("Set DM password to '%s'.", newPass.c_str());
+    LOG_NOTICE("Set DM password to '%s'.", newPass.c_str());
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetGameMasterPassword(newPass.c_str());
     return Events::ArgumentStack();
 }
 
 Events::ArgumentStack Administration::OnShutdownServer(Events::ArgumentStack&&)
 {
-    TRACE_NOTICE("Shutting down the server!");
+    LOG_NOTICE("Shutting down the server!");
     std::quick_exit(0);
 }
 
@@ -122,7 +122,7 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
 
     if (!player)
     {
-        TRACE_ERROR("Attempted to delete invalid player");
+        LOG_ERROR("Attempted to delete invalid player");
         return Events::ArgumentStack();
     }
     std::string bicname     = player->m_resFileName.GetResRefStr();
@@ -131,14 +131,14 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
 
     std::string filename = servervault + cdkey + "/" + bicname + ".bic";
 
-    TRACE_NOTICE("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
+    LOG_NOTICE("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
 
     // Will show "Delete Character" message to PC. Best match from dialog.tlk
     exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, 10392, 1, "");
 
     if (!Platform::FileSystem::FileExists(filename))
     {
-        TRACE_ERROR("File %s not found.", filename.c_str());
+        LOG_ERROR("File %s not found.", filename.c_str());
         return Events::ArgumentStack();
     }
     if (bPreserveBackup)

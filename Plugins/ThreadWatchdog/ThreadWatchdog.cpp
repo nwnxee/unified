@@ -70,7 +70,7 @@ void ThreadWatchdog::MainLoopUpdate(Services::Hooks::CallType, API::CServerExoAp
                     // We have to do a few things here.
 
                     // First, we write to the log.
-                    TRACE_WARNING("ThreadWatchdog detected a LongStall.");
+                    LOG_WARNING("ThreadWatchdog detected a LongStall.");
 
                     // Next we push a metric indicating that a long stall has been detected.
                     g_plugin->GetServices()->m_metrics->Push("LongStall", { { "Count", "1" } });

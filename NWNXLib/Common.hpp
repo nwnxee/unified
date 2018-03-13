@@ -2,7 +2,7 @@
 
 #include "API/NWNXLibApi.hpp"
 #include "Assert.hpp"
-#include "Trace.hpp"
+#include "Log.hpp"
 
 namespace NWNXLib {
 

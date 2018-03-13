@@ -107,7 +107,7 @@ CNWSCreature *Creature::creature(ArgumentStack& args)
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
-        TRACE_NOTICE("NWNX_Creature function called on OBJECT_INVALID");
+        LOG_NOTICE("NWNX_Creature function called on OBJECT_INVALID");
         return nullptr;
     }
 
@@ -458,7 +458,7 @@ ArgumentStack Creature::SetRawAbilityScore(ArgumentStack&& args)
                 pCreature->m_pStats->SetCHABase(static_cast<uint8_t>(value));
                 break;
             default:
-                TRACE_NOTICE("Calling NWNX_Creature_SetRawAbilityScore with invalid ability ID:%d", ability);
+                LOG_NOTICE("Calling NWNX_Creature_SetRawAbilityScore with invalid ability ID:%d", ability);
                 ASSERT_FAIL();
                 break;
         }
@@ -496,7 +496,7 @@ ArgumentStack Creature::GetRawAbilityScore(ArgumentStack&& args)
                 retval = pCreature->m_pStats->m_nCharismaBase;
                 break;
             default:
-                TRACE_NOTICE("Calling NWNX_Creature_GetRawAbilityScore with invalid ability ID:%d", ability);
+                LOG_NOTICE("Calling NWNX_Creature_GetRawAbilityScore with invalid ability ID:%d", ability);
                 ASSERT_FAIL();
                 break;
         }
@@ -534,7 +534,7 @@ ArgumentStack Creature::ModifyRawAbilityScore(ArgumentStack&& args)
                 pCreature->m_pStats->SetCHABase(static_cast<uint8_t>(pCreature->m_pStats->m_nCharismaBase + offset));
                 break;
             default:
-                TRACE_NOTICE("Calling NWNX_Creature_ModifyRawAbilityScore with invalid ability ID:%d", ability);
+                LOG_NOTICE("Calling NWNX_Creature_ModifyRawAbilityScore with invalid ability ID:%d", ability);
                 ASSERT_FAIL();
                 break;
         }
