@@ -1,4 +1,5 @@
 #include "Trace.hpp"
+#include "Assert.hpp"
 
 #ifdef _WIN32
     #include "Windows.h"
@@ -56,7 +57,8 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
 
     if (channel == Channel::SEV_FATAL)
     {
-        std::exit(1);
+        ASSERT_FAIL();
+        std::abort();
     }
 }
 
