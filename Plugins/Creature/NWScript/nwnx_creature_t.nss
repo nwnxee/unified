@@ -115,5 +115,9 @@ void main()
     NWNX_Creature_SetGender(oCreature, !nGender);
     report("SetGender", GetGender(oCreature) != nGender);
 
+    int nSize = GetCreatureSize(oCreature);
+    NWNX_Creature_SetSize(oCreature, nSize + 1);
+    report("SetSize", GetCreatureSize(oCreature) != nSize);
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

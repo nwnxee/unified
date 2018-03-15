@@ -190,6 +190,9 @@ void NWNX_Creature_RestoreSpells(object creature, int level = -1);
 // Restore uses for all items carried by the creature
 void NWNX_Creature_RestoreItems(object creature);
 
+// Sets the creature size. Use CREATURE_SIZE_* constants
+void NWNX_Creature_SetSize(object creature, int size);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -722,6 +725,15 @@ void NWNX_Creature_RestoreSpells(object creature, int level = -1)
 void NWNX_Creature_RestoreItems(object creature)
 {
     string sFunc = "RestoreItems";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetSize(object creature, int size)
+{
+    string sFunc = "SetSize";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, size);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);

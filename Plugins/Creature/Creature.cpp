@@ -101,6 +101,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(RestoreSpecialAbilities);
     REGISTER(RestoreSpells);
     REGISTER(RestoreItems);
+    REGISTER(SetSize);
 
 #undef REGISTER
 }
@@ -1069,6 +1070,18 @@ ArgumentStack Creature::RestoreItems(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         pCreature->RestoreItemProperties();
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetSize(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto size = Services::Events::ExtractArgument<int32_t>(args);
+
+        pCreature->m_nCreatureSize = size;
     }
     return stack;
 }

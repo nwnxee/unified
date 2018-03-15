@@ -64,6 +64,7 @@ private:
     ArgumentStack RestoreSpecialAbilities       (ArgumentStack&& args);
     ArgumentStack RestoreSpells                 (ArgumentStack&& args);
     ArgumentStack RestoreItems                  (ArgumentStack&& args);
+    ArgumentStack SetSize                       (ArgumentStack&& args);
 
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
