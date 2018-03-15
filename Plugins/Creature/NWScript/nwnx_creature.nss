@@ -172,7 +172,7 @@ void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
 // bBaseAPR - If true, will return the base attacks per round, based on BAB and
 //            equipped weapons, regardless of overrides set by
 //            calls to SetBaseAttackBonus() builtin function.
-void NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
+int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
 
 const string NWNX_Creature = "NWNX_Creature";
 
