@@ -95,6 +95,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSkillRank);
     REGISTER(SetClassByPosition);
     REGISTER(SetBaseAttackBonus);
+    REGISTER(GetAttacksPerRound);
 
 #undef REGISTER
 }
@@ -987,4 +988,22 @@ ArgumentStack Creature::SetBaseAttackBonus(ArgumentStack&& args)
     }
     return stack;
 }
+
+ArgumentStack Creature::GetAttacksPerRound(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        const auto bBaseAPR = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (bBaseAPR || pCreature->m_pStats->m_nOverrideBaseAttackBonus == 0)
+            retval = pCreature->m_pStats->GetAttacksPerRound();
+        else
+            retval = pCreature->m_pStats->m_nOverrideBaseAttackBonus;
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
 }

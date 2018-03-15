@@ -168,6 +168,12 @@ void NWNX_Creature_SetClassByPosition(object creature, int position, int classID
 //       the bonus attacks per round for a creature, not the BAB.
 void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
 
+// Gets the creatures current attacks per round (using equipped weapon)
+// bBaseAPR - If true, will return the base attacks per round, based on BAB and
+//            equipped weapons, regardless of overrides set by 
+//            calls to SetBaseAttackBonus() builtin function..
+void NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -651,4 +657,14 @@ void NWNX_Creature_SetBaseAttackBonus(object creature, int bab)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR)
+{
+    string sFunc = "GetAttacksPerRound";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bBaseAPR);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
