@@ -15,14 +15,14 @@ namespace Assert {
     #define ASSERT(condition) \
         do \
         { \
-            if (!(condition)) ::NWNXLib::Assert::Fail((#condition), __FILE__, __LINE__, nullptr) \
-        } while (0);
+            if (!(condition)) ::NWNXLib::Assert::Fail((#condition), __FILE__, __LINE__, nullptr); \
+        } while (0)
 
     #define ASSERT_MSG(condition, format, ...) \
         do \
         { \
-            if (!(condition)) ::NWNXLib::Assert::Fail((#condition), __FILE__, __LINE__, (format), ##__VA_ARGS__) \
-        } while (0);
+            if (!(condition)) ::NWNXLib::Assert::Fail((#condition), __FILE__, __LINE__, (format), ##__VA_ARGS__); \
+        } while (0)
 
     #define ASSERT_FAIL() \
         ::NWNXLib::Assert::Fail(nullptr, __FILE__, __LINE__, nullptr)
