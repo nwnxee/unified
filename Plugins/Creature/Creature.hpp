@@ -57,7 +57,16 @@ private:
     ArgumentStack SetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSkillRank                  (ArgumentStack&& args);
     ArgumentStack SetClassByPosition            (ArgumentStack&& args);
-
+    ArgumentStack SetBaseAttackBonus            (ArgumentStack&& args);
+    ArgumentStack GetAttacksPerRound            (ArgumentStack&& args);
+    ArgumentStack SetGender                     (ArgumentStack&& args);
+    ArgumentStack RestoreFeats                  (ArgumentStack&& args);
+    ArgumentStack RestoreSpecialAbilities       (ArgumentStack&& args);
+    ArgumentStack RestoreSpells                 (ArgumentStack&& args);
+    ArgumentStack RestoreItems                  (ArgumentStack&& args);
+    ArgumentStack SetSize                       (ArgumentStack&& args);
+    ArgumentStack GetSkillPointsRemaining       (ArgumentStack&& args);
+    ArgumentStack SetSkillPointsRemaining       (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 

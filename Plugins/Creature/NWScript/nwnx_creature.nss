@@ -160,6 +160,45 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 // ClassID should be a valid ID number in classes.2da and be between 0 and 255.
 void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
 
+// Set creature's base attack bonus (BAB)
+// Modifying the BAB will also affect the creature's attacks per round and its
+// eligability for feats, prestige classes, etc.
+// The BAB value should be between 0 and 254.
+// NOTE: The base game has a function SetBaseAttackBonus(), which actually sets
+//       the bonus attacks per round for a creature, not the BAB.
+void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
+
+// Gets the creatures current attacks per round (using equipped weapon)
+// bBaseAPR - If true, will return the base attacks per round, based on BAB and
+//            equipped weapons, regardless of overrides set by
+//            calls to SetBaseAttackBonus() builtin function.
+int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
+
+// Sets the creature gender
+void NWNX_Creature_SetGender(object creature, int gender);
+
+// Restore all creature feat uses
+void NWNX_Creature_RestoreFeats(object creature);
+
+// Restore all creature special ability uses
+void NWNX_Creature_RestoreSpecialAbilities(object creature);
+
+// Restore all creature spells per day for given level.
+// If level is -1, all spells are restored
+void NWNX_Creature_RestoreSpells(object creature, int level = -1);
+
+// Restore uses for all items carried by the creature
+void NWNX_Creature_RestoreItems(object creature);
+
+// Sets the creature size. Use CREATURE_SIZE_* constants
+void NWNX_Creature_SetSize(object creature, int size);
+
+// Gets the creature's remaining unspent skill points
+int NWNX_Creature_GetSkillPointsRemaining(object creature);
+
+// sets the creature's remaining unspent skill points
+void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -631,6 +670,95 @@ void NWNX_Creature_SetClassByPosition(object creature, int position, int classID
     string sFunc = "SetClassByPosition";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, classID);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, position);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetBaseAttackBonus(object creature, int bab)
+{
+    string sFunc = "SetBaseAttackBonus";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bab);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE)
+{
+    string sFunc = "GetAttacksPerRound";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bBaseAPR);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetGender(object creature, int gender)
+{
+    string sFunc = "SetGender";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, gender);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreFeats(object creature)
+{
+    string sFunc = "RestoreFeats";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreSpecialAbilities(object creature)
+{
+    string sFunc = "RestoreSpecialAbilities";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreSpells(object creature, int level = -1)
+{
+    string sFunc = "RestoreSpells";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreItems(object creature)
+{
+    string sFunc = "RestoreItems";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetSize(object creature, int size)
+{
+    string sFunc = "SetSize";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, size);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetSkillPointsRemaining(object creature)
+{
+    string sFunc = "GetSkillPointsRemaining";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+
+void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints)
+{
+    string sFunc = "SetSkillPointsRemaining";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, skillpoints);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
