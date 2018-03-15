@@ -107,7 +107,7 @@ string NWNX_Object_Serialize(object obj);
 object NWNX_Object_Deserialize(string serialized);
 
 // Returns the dialog resref of the object.
-object NWNX_Object_GetDialogResref(object obj);
+string NWNX_Object_GetDialogResref(object obj);
 
 const string NWNX_Object = "NWNX_Object";
 

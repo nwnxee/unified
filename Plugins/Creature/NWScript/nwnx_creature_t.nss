@@ -101,6 +101,28 @@ void main()
     NWNX_Creature_SetSkillRank(oCreature, SKILL_LISTEN, nSkillRanks + 5);
     report("SetSkillRank", GetSkillRank(SKILL_LISTEN, oCreature, TRUE) > nSkillRanks);
 
+    int nBAB = GetBaseAttackBonus(oCreature);
+    NWNX_Creature_SetBaseAttackBonus(oCreature, 6);
+    report("SetBaseAttackBonus", GetBaseAttackBonus(oCreature) == 6);
+    SetBaseAttackBonus(4, oCreature);
+    report("GetAttacksPerRound - base", NWNX_Creature_GetAttacksPerRound(oCreature, TRUE) == 2);
+    report("GetAttacksPerRound - override", NWNX_Creature_GetAttacksPerRound(oCreature, FALSE) == 4);
+    RestoreBaseAttackBonus(oCreature);
+    report("GetAttacksPerRound - base", NWNX_Creature_GetAttacksPerRound(oCreature, TRUE) == 2);
+    report("GetAttacksPerRound - override", NWNX_Creature_GetAttacksPerRound(oCreature, FALSE) == 2);
+
+    int nGender = GetGender(oCreature);
+    NWNX_Creature_SetGender(oCreature, !nGender);
+    report("SetGender", GetGender(oCreature) != nGender);
+
+    int nSize = GetCreatureSize(oCreature);
+    NWNX_Creature_SetSize(oCreature, nSize + 1);
+    report("SetSize", GetCreatureSize(oCreature) != nSize);
+
+    int nSkillPointsRemaining = NWNX_Creature_GetSkillPointsRemaining(oCreature);
+    report("GetSkillPointsRemaining", nSkillPointsRemaining >= 0);
+    NWNX_Creature_SetSkillPointsRemaining(oCreature, nSkillPointsRemaining+1);
+    report("SetSkillPointsRemaining", NWNX_Creature_GetSkillPointsRemaining(oCreature) == nSkillPointsRemaining+1);
 
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

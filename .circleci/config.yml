@@ -1,18 +1,35 @@
+defaults: &defaults
+  working_directory: ~/nwnxee
+
 version: 2
 jobs:
   build:
+    <<: *defaults
     docker:
       - image: nwnxee/builder
     steps:
+      - attach_workspace:
+          at: ~/nwnxee
       - checkout
       - run: CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
       - run: make all
       - run: Scripts/packageNWScript.sh
       - run: zip Binaries/NWNX-EE.zip Binaries/NWNX_*.so
       - run: rm Binaries/NWNX_*.so
+      - persist_to_workspace:
+          root: .
+          paths:
+            - Binaries
       - store_artifacts:
           path: Binaries
-
+  deploy:
+    <<: *defaults
+    machine: true
+    steps:
+      - attach_workspace:
+          at: ~/nwnxee
+      - run: go get -u github.com/tcnksm/ghr
+      - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG ~/nwnxee/Binaries/
 
 workflows:
   version: 2
@@ -22,3 +39,11 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/

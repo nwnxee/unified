@@ -93,6 +93,16 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSoundset);
     REGISTER(SetSkillRank);
     REGISTER(SetClassByPosition);
+    REGISTER(SetBaseAttackBonus);
+    REGISTER(GetAttacksPerRound);
+    REGISTER(SetGender);
+    REGISTER(RestoreFeats);
+    REGISTER(RestoreSpecialAbilities);
+    REGISTER(RestoreSpells);
+    REGISTER(RestoreItems);
+    REGISTER(SetSize);
+    REGISTER(GetSkillPointsRemaining);
+    REGISTER(SetSkillPointsRemaining);
 
 #undef REGISTER
 }
@@ -970,4 +980,136 @@ ArgumentStack Creature::SetClassByPosition(ArgumentStack&& args)
     }
     return stack;
 }
+
+ArgumentStack Creature::SetBaseAttackBonus(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto bab = Services::Events::ExtractArgument<int32_t>(args);
+        assert(bab >= 0);
+        assert(bab <= 254);
+
+        pCreature->m_pStats->m_nBaseAttackBonus = static_cast<uint8_t>(bab);
+        assert(pCreature->m_pStats->GetBaseAttackBonus(false) == bab);
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetAttacksPerRound(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        const auto bBaseAPR = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (bBaseAPR || pCreature->m_pStats->m_nOverrideBaseAttackBonus == 0)
+            retval = pCreature->m_pStats->GetAttacksPerRound();
+        else
+            retval = pCreature->m_pStats->m_nOverrideBaseAttackBonus;
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetGender(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto gender = Services::Events::ExtractArgument<int32_t>(args);
+
+        pCreature->m_pStats->m_nGender = gender;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::RestoreFeats(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        pCreature->m_pStats->ResetFeatRemainingUses();
+    }
+    return stack;
+}
+
+ArgumentStack Creature::RestoreSpecialAbilities(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        pCreature->m_pStats->ResetSpellLikeAbilities();
+    }
+    return stack;
+}
+
+ArgumentStack Creature::RestoreSpells(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto level = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (level >= 0 && level <= 9)
+        {
+            pCreature->m_pStats->ReadySpellLevel(level);
+        }
+        else
+        {
+            for (int i = 0; i <= 9; i++)
+               pCreature->m_pStats->ReadySpellLevel(i);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Creature::RestoreItems(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        pCreature->RestoreItemProperties();
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetSize(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto size = Services::Events::ExtractArgument<int32_t>(args);
+
+        pCreature->m_nCreatureSize = size;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetSkillPointsRemaining(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retval = pCreature->m_pStats->m_nSkillPointsRemaining;
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetSkillPointsRemaining(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto points = Services::Events::ExtractArgument<int32_t>(args);
+        assert(points >= 0); assert(points <= 65535);
+
+        pCreature->m_pStats->m_nSkillPointsRemaining = static_cast<uint16_t>(points);
+    }
+    return stack;
+}
+
 }
