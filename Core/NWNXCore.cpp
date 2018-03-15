@@ -9,13 +9,11 @@
 #include "Platform/FileSystem.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
-#include "Services/Log/Log.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Patching/Patching.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
-#include <cassert>
 #include <cstring>
 
 using namespace NWNXLib;
@@ -33,7 +31,6 @@ bool IsStringPrefixedWithNWNX(const API::CExoString* str)
 namespace Core {
 
 static NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
-static Services::LogProxy* g_log = nullptr;
 
 }
 
@@ -66,20 +63,12 @@ NWNXCore::NWNXCore()
 {
     g_core = this;
 
-    m_services = ConstructCoreServices();
-    m_coreServices = ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
-    g_log = m_coreServices->m_log.get();
-
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 
-    if (m_coreServices->m_config->Get<bool>("SKIP", false))
-    {
-        g_log->Info("Not loading NWNX due to configuration.");
-        return;
-    }
-
-    m_services->m_hooks->RequestSharedHook<API::Functions::CAppManager__CreateServer, void>(&CreateServerHandler);
+    m_createServerHook = std::make_unique<FunctionHook>("CreateServer",
+        Platform::ASLR::GetRelocatedAddress(API::Functions::CAppManager__CreateServer),
+        reinterpret_cast<uintptr_t>(&CreateServerHandler));
 }
 
 NWNXCore::~NWNXCore()
@@ -92,31 +81,22 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     using namespace NWNXLib::Services;
     std::unique_ptr<ServiceList> services = std::make_unique<ServiceList>();
 
-    services->m_log = std::make_unique<Log>();
-
-    // Make a log proxy for all the core services to use.
-    auto logProxy = std::make_shared<LogProxy>(*services->m_log, NWNX_CORE_PLUGIN_NAME, LogSeverity::SEV_INFO);
-
-    services->m_events = std::make_unique<Events>(logProxy);
-    services->m_hooks = std::make_unique<Hooks>(logProxy);
-    services->m_plugins = std::make_unique<Plugins>(logProxy);
-    services->m_tasks = std::make_unique<Tasks>(logProxy);
-    services->m_metrics = std::make_unique<Metrics>(logProxy);
-    services->m_patching = std::make_unique<Patching>(logProxy);
-    services->m_config = std::make_unique<Config>(logProxy);
-    services->m_messaging = std::make_unique<Messaging>(logProxy);
-
-    // Make a config proxy temporarily so we can configure the log proxy.
-    ConfigureLogProxy(*logProxy, ConfigProxy(*services->m_config, NWNX_CORE_PLUGIN_NAME));
+    services->m_events = std::make_unique<Events>();
+    services->m_hooks = std::make_unique<Hooks>();
+    services->m_plugins = std::make_unique<Plugins>();
+    services->m_tasks = std::make_unique<Tasks>();
+    services->m_metrics = std::make_unique<Metrics>();
+    services->m_patching = std::make_unique<Patching>();
+    services->m_config = std::make_unique<Config>();
+    services->m_messaging = std::make_unique<Messaging>();
 
     return services;
 }
 
-std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(const std::string plugin)
+std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(const std::string& plugin)
 {
     std::unique_ptr<Services::ProxyServiceList> proxyServices = std::make_unique<Services::ProxyServiceList>();
 
-    proxyServices->m_log = std::make_unique<Services::LogProxy>(*m_services->m_log, plugin, Services::LogSeverity::SEV_INFO);
     proxyServices->m_events = std::make_unique<Services::EventsProxy>(*m_services->m_events, plugin);
     proxyServices->m_hooks = std::make_unique<Services::HooksProxy>(*m_services->m_hooks);
     proxyServices->m_plugins = std::make_unique<Services::PluginsProxy>(*m_services->m_plugins);
@@ -126,12 +106,12 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
 
-    ConfigureLogProxy(*proxyServices->m_log, *proxyServices->m_config);
+    ConfigureLogLevel(plugin, *proxyServices->m_config);
 
     return proxyServices;
 }
 
-void NWNXCore::ConfigureLogProxy(NWNXLib::Services::LogProxy& proxy, const NWNXLib::Services::ConfigProxy& config)
+void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Services::ConfigProxy& config)
 {
     // Setup the log level. We do this first by checking if NWNX_<PLUGIN>_LOG_LEVEL is set.
     auto logLevel = config.Get<uint32_t>("LOG_LEVEL");
@@ -144,8 +124,7 @@ void NWNXCore::ConfigureLogProxy(NWNXLib::Services::LogProxy& proxy, const NWNXL
 
     if (logLevel)
     {
-        // If neither of these are set, it will use the default (which is SEV_INFO, set above).
-        proxy.SetLogLevel(static_cast<Services::LogSeverity>(*logLevel));
+        Log::SetLogLevel(plugin.c_str(), static_cast<Log::Channel::Enum>(*logLevel));
     }
 }
 
@@ -172,7 +151,7 @@ void NWNXCore::InitialVersionCheck()
     if (buildNumberAddr)
     {
         API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
-        g_log->Info("Server is running version %s.", versionAsStr->m_sString);
+        LOG_INFO("Server is running version %s.", versionAsStr->m_sString);
 
         const uint32_t version = std::stoul(versionAsStr->m_sString);
 
@@ -196,7 +175,7 @@ void NWNXCore::InitialSetupPlugins()
 
     const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
 
-    g_log->Info("Loading plugins from: %s", pluginDir.c_str());
+    LOG_INFO("Loading plugins from: %s", pluginDir.c_str());
 
     std::vector<std::string> sortedDynamicLibraries;
 
@@ -224,20 +203,21 @@ void NWNXCore::InitialSetupPlugins()
 
         if (services->m_config->Get<bool>("SKIP", false))
         {
-            g_log->Info("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
+            LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
             continue;
         }
 
         try
         {
+            LOG_DEBUG("Loading plugin %s", pluginName.c_str());
             auto registrationToken = m_services->m_plugins->LoadPlugin(CombinePaths(pluginDir, pluginName), std::move(params));
             auto data = *m_services->m_plugins->FindPluginById(registrationToken.m_id);
-            g_log->Info("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name.c_str(), data.m_info->m_version, data.m_info->m_author.c_str());
+            LOG_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name.c_str(), data.m_info->m_version, data.m_info->m_author.c_str());
             m_pluginProxyServiceMap.insert(std::make_pair(std::move(registrationToken), std::move(services)));
         }
         catch (const std::runtime_error& err)
         {
-            g_log->Error("Failed to load plugin (%s) because '%s'.", pluginName.c_str(), err.what());
+            LOG_ERROR("Failed to load plugin (%s) because '%s'.", pluginName.c_str(), err.what());
             throw;
         }
     }
@@ -272,11 +252,11 @@ void NWNXCore::UnloadPlugin(std::pair<Services::Plugins::RegistrationToken,
     try
     {
         m_services->m_plugins->UnloadPlugin(std::forward<Plugins::RegistrationToken>(plugin.first), Plugin::UnloadReason::SHUTTING_DOWN);
-        g_log->Info("Unloaded plugin %d (%s).", pluginId, pluginName.c_str());
+        LOG_INFO("Unloaded plugin %d (%s).", pluginId, pluginName.c_str());
     }
     catch (const std::runtime_error& err)
     {
-        g_log->Error("Received error '%s' when unloading plugin %d (%s).", err.what(), pluginId, pluginName.c_str());
+        LOG_ERROR("Received error '%s' when unloading plugin %d (%s).", err.what(), pluginId, pluginName.c_str());
     }
 }
 
@@ -284,7 +264,6 @@ void NWNXCore::UnloadServices()
 {
     m_coreServices.reset();
     m_services.reset();
-    g_log = nullptr;
 }
 
 void NWNXCore::Shutdown()
@@ -342,10 +321,17 @@ API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API
     return g_getStringHook->CallOriginal<API::CExoString>(thisPtr, index);
 }
 
-void NWNXCore::CreateServerHandler(Services::Hooks::CallType type, API::CAppManager*)
+void NWNXCore::CreateServerHandler(API::CAppManager* app)
 {
-    if (type != Services::Hooks::CallType::AFTER_ORIGINAL)
+    g_core->m_services = g_core->ConstructCoreServices();
+    g_core->m_coreServices = g_core->ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
+
+    // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
+    Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
+
+    if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
+        LOG_INFO("Not loading NWNX due to configuration.");
         return;
     }
 
@@ -357,8 +343,11 @@ void NWNXCore::CreateServerHandler(Services::Hooks::CallType type, API::CAppMana
     }
     catch (const std::runtime_error& ex)
     {
-        g_log->Fatal("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
     }
+
+    g_core->m_createServerHook.reset();
+    app->CreateServer();
 }
 
 void NWNXCore::DestroyServerHandler(API::CAppManager* app)

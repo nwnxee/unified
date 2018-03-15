@@ -29,7 +29,7 @@ public: // Structures
     };
 
 public:
-    Patching(std::shared_ptr<LogProxy> log);
+    Patching();
     ~Patching();
 
     // Patches data.size() with the provided data.

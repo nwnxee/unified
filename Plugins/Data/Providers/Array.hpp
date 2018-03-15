@@ -2,7 +2,6 @@
 
 #include "API/Types.hpp"
 #include "Common.hpp"
-#include "Services/Log/Log.hpp"
 #include "Services/Events/Events.hpp"
 #include <algorithm>
 #include <string>
@@ -38,7 +37,7 @@ private:
 class Array
 {
 public:
-    Array(NWNXLib::Services::EventsProxy& events, NWNXLib::Services::LogProxy& log);
+    Array(NWNXLib::Services::EventsProxy& events);
 
 private:
     static NWNXLib::Services::Events::ArgumentStack OnArrayAt(NWNXLib::Services::Events::ArgumentStack&& args);
@@ -59,8 +58,6 @@ private:
     friend class ArrayImpl<int32_t>;
     friend class ArrayImpl<NWNXLib::API::Types::ObjectID>;
     friend class ArrayImpl<std::string>;
-
-    static NWNXLib::ViewPtr<NWNXLib::Services::LogProxy> m_log;
 };
 
 #include "Providers/Array.inl"

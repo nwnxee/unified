@@ -11,7 +11,6 @@
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Patching/Patching.hpp"
 #include "ViewPtr.hpp"
-#include <cassert>
 
 using namespace NWNXLib;
 

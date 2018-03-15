@@ -1,7 +1,7 @@
 #include "Hooking/FunctionHook.hpp"
+#include "Assert.hpp"
 #include "Platform/Assembly.hpp"
 #include "Platform/Memory.hpp"
-#include <cassert>
 #include <cstring>
 
 namespace NWNXLib {
@@ -21,7 +21,7 @@ FunctionHook::FunctionHook(const std::string& hookName, uintptr_t originalFuncti
     uintptr_t newFunction, const RetSizeType length)
     : m_oldFunction(), m_trampoline(), m_length(length)
 {
-    assert(m_length >= MIN_RET_SIZE && m_length < MAX_LENGTH);
+    ASSERT(m_length >= MIN_RET_SIZE && m_length < MAX_LENGTH);
 
     m_info.hookName = hookName;
     m_info.originalAddr = originalFunction;
@@ -113,7 +113,7 @@ void FunctionHook::ConstructTrampoline()
 void FunctionHook::FillWithNoops(uint8_t* arr, size_t size)
 {
     auto assembly = Assembly::NoopInstruction().ToBytes();
-    assert(assembly.size() == 1);
+    ASSERT(assembly.size() == 1);
     memset(arr, assembly[0], size);
 }
 

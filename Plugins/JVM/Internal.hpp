@@ -6,8 +6,6 @@
 
 #include "JVM.hpp"
 
-#include "Services/Log/Log.hpp"
-
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
@@ -63,7 +61,7 @@ class Internal {
 
     void DoAttached(std::function<void(JavaVM* vm, JNIEnv* env)> cb) {
         if (m_contextDepth == 0 && this->m_vm->AttachCurrentThread((void**) & (this->m_env), nullptr) < 0) {
-            m_parent->GetServices()->m_log->Debug("Attaching current thread; depth: %d.\n", m_contextDepth);
+            LOG_DEBUG("Attaching current thread; depth: %d.\n", m_contextDepth);
             this->m_env->FatalError("Attaching native NWN thread to JVM failed.");
         }
 
@@ -78,13 +76,13 @@ class Internal {
         }
 
         if (m_contextDepth == 0 && this->m_vm->DetachCurrentThread() < 0) {
-            m_parent->GetServices()->m_log->Debug("%s", "Detaching current thread.\n");
+            LOG_DEBUG("%s", "Detaching current thread.\n");
             this->m_env->FatalError("Detaching native NWN thread from JVM failed.");
         }
     }
 
     jobject NewGlobalClassRef(JNIEnv* env, const std::string& clz) {
-        m_parent->GetServices()->m_log->Info("Looking up class: %s", clz.c_str());
+        LOG_INFO("Looking up class: %s", clz.c_str());
         jclass local = JNICHECKED(env, FindClass(clz.c_str()));
         if (!local)
             throw std::runtime_error("Class not found: " + clz);
@@ -93,7 +91,7 @@ class Internal {
     }
 
     jmethodID FindClassMethod(JNIEnv* env, jclass clz, const std::string& meth, const std::string& sig) {
-        m_parent->GetServices()->m_log->Info("Looking up static method: %s", meth.c_str());
+        LOG_INFO("Looking up static method: %s", meth.c_str());
         jmethodID ret = JNICHECKED(env, GetStaticMethodID(clz, meth.c_str(), sig.c_str()));
         if (!ret)
             throw std::runtime_error("Static method not found: " + meth);
@@ -101,7 +99,7 @@ class Internal {
     }
 
     jmethodID FindMethod(JNIEnv* env, jclass clz, const std::string& meth, const std::string& sig) {
-        m_parent->GetServices()->m_log->Info("Looking up method: %s", meth.c_str());
+        LOG_INFO("Looking up method: %s", meth.c_str());
         jmethodID ret = JNICHECKED(env, GetMethodID(clz, meth.c_str(), sig.c_str()));
         if (!ret)
             throw std::runtime_error("Method not found: " + meth);

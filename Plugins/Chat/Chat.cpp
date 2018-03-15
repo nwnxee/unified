@@ -12,7 +12,6 @@
 #include "API/Globals.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
 
 using namespace NWNXLib;
@@ -85,7 +84,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, ChatChannel chann
         --plugin.m_depth;
     }
 
-    plugin.GetServices()->m_log->Debug("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
+    LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
         plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
 
     if (!plugin.m_skipMessage)

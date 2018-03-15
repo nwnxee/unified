@@ -30,7 +30,7 @@ CGameObjectArrayOptimization::CGameObjectArrayOptimization(const uint32_t starti
     : m_nextObjectId(FIRST_OBJ_ID),
       m_nextCharacterId(LAST_CHAR_ID)
 {
-    assert(g_opt == nullptr);
+    ASSERT(g_opt == nullptr);
     g_opt = this;
     g_hooker = hooker;
 

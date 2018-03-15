@@ -3,7 +3,6 @@
 #include "Util.h"
 #include "ScopeGuard.hpp"
 
-#include "Services/Log/Log.hpp"
 #include "Services/Events/Events.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
@@ -55,7 +54,7 @@ void* Internal::OnRCO(CCodeBase* thisptr, CExoString &sDatabase, CExoString &sVa
 
             if (ret != nullptr) { // No data from java side.
                 nDataLength = JNICHECKED(env, GetArrayLength(ret));
-                assert(nDataLength >= 0);
+                ASSERT(nDataLength >= 0);
                 returnVal = (void*) new char[static_cast<size_t>(nDataLength)];
                 JNICHECKED(env, GetByteArrayRegion(ret, 0, nDataLength, (jbyte*) returnVal));
             }

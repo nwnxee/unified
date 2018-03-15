@@ -14,7 +14,7 @@ namespace Platform {
 
 namespace Syslog {
 
-void Emit(const Services::LogSeverity sev, std::string pn, const std::string& message)
+void Emit(Log::Channel::Enum sev, std::string pn, const std::string& message)
 {
     std::transform(std::begin(pn), std::end(pn), std::begin(pn), ::tolower);
 

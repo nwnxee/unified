@@ -6,8 +6,7 @@ namespace Services {
 
 Hooks* HooksImpl::g_hooks;
 
-Hooks::Hooks(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Hooks::Hooks()
 {
     HooksImpl::g_hooks = this;
 }
@@ -39,7 +38,7 @@ void Hooks::ClearHook(Hooks::RegistrationToken&& token)
             {
                 // Shared needs the callback removed, and erased if all callbacks are gone.
                 std::vector<uintptr_t>& subscribers = storage->m_subscribers;
-                assert(subscribers.size() > 0);
+                ASSERT(subscribers.size() > 0);
 
                 auto addrInSubscribers = std::find(subscribers.begin(), subscribers.end(), token.m_newAddress);
 

@@ -1,10 +1,7 @@
 #include "JVM.hpp"
 #include "Internal.hpp"
 
-#include "Services/Log/Log.hpp"
 #include "Services/Config/Config.hpp"
-
-#include "Util.h"
 
 namespace JVM
 {

@@ -23,7 +23,6 @@
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
 #include "Services/Events/Events.hpp"
-#include "Services/Log/Log.hpp"
 #include "ViewPtr.hpp"
 
 using namespace NWNXLib;
@@ -81,14 +80,14 @@ CNWSPlayer *Player::player(ArgumentStack& args)
 
     if (playerId == Constants::OBJECT_INVALID)
     {
-        GetServices()->m_log->Notice("NWNX_Player function called on OBJECT_INVALID");
+        LOG_NOTICE("NWNX_Player function called on OBJECT_INVALID");
         return nullptr;
     }
 
     auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(playerId);
     if (!pPlayer)
     {
-        GetServices()->m_log->Notice("NWNX_Player function called on non-player object %x", playerId);
+        LOG_NOTICE("NWNX_Player function called on non-player object %x", playerId);
     }
     return pPlayer;
 }
@@ -107,7 +106,7 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
         }
         else
         {
-            GetServices()->m_log->Error("Unable to get CNWSMessage");
+            LOG_ERROR("Unable to get CNWSMessage");
         }
     }
 
@@ -129,7 +128,7 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
         }
         else
         {
-            GetServices()->m_log->Error("Unable to get CNWSMessage");
+            LOG_ERROR("Unable to get CNWSMessage");
         }
     }
 
@@ -148,7 +147,7 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
         }
         else
         {
-            GetServices()->m_log->Error("Unable to get CNWSMessage");
+            LOG_ERROR("Unable to get CNWSMessage");
         }
 
     }
@@ -169,7 +168,7 @@ void Player::HandlePlayerToServerInputCancelGuiTimingEventHook(Services::Hooks::
 
         if (id > 0)
         {
-            g_plugin->GetServices()->m_log->Debug("Cancelling GUI timing event id %d...", id);
+            LOG_DEBUG("Cancelling GUI timing event id %d...", id);
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
             pGameObject->m_ScriptVars.DestroyInt(varName);
         }

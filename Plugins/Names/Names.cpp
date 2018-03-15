@@ -21,7 +21,6 @@
 #include "ViewPtr.hpp"
 
 #include <algorithm>
-#include <cassert>
 
 using namespace NWNXLib;
 

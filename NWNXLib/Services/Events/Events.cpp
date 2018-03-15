@@ -1,6 +1,5 @@
 #include "Services/Events/Events.hpp"
 #include "API/CExoString.hpp"
-#include "Services/Log/Log.hpp"
 
 #include <algorithm>
 #include <array>
@@ -32,8 +31,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-Events::Events(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Events::Events()
 {
 }
 
@@ -57,14 +55,14 @@ void Events::OnSetLocalString(std::string&& index, std::string&& value)
             switch (command.m_function)
             {
                 case BuiltInFunction::CALL_FUNCTION:
-                    m_log->Debug("Calling event handler. Event '%s', Plugin: '%s'.",
+                    LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
                         command.m_eventData->m_data.m_eventName.c_str(),
                         command.m_eventData->m_data.m_pluginName.c_str());
                     command.m_eventData->m_returns = command.m_eventData->m_callback(std::move(command.m_eventData->m_arguments));
                     break;
 
                 case BuiltInFunction::PUSH_ARGUMENT:
-                    m_log->Debug("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
+                    LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
                         value.c_str(),
                         command.m_eventData->m_data.m_eventName.c_str(),
                         command.m_eventData->m_data.m_pluginName.c_str());
@@ -79,7 +77,7 @@ void Events::OnSetLocalString(std::string&& index, std::string&& value)
     }
     catch (const std::runtime_error& err)
     {
-        m_log->Error("SetLocalString encountered error '%s' for input '%s' and value '%s'.", err.what(), index.c_str(), value.c_str());
+        LOG_ERROR("SetLocalString encountered error '%s' for input '%s' and value '%s'.", err.what(), index.c_str(), value.c_str());
         return;
     }
 }
@@ -122,7 +120,7 @@ Maybe<std::string> Events::OnGetLocalString(std::string&& index)
                     // Strip typeinfo
                     retVal = retVal.substr(2);
 
-                    m_log->Debug("Returning value '%s'. Event '%s', Plugin: '%s'.",
+                    LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
                         retVal.c_str(),
                         command.m_eventData->m_data.m_eventName.c_str(),
                         command.m_eventData->m_data.m_pluginName.c_str());
@@ -139,7 +137,7 @@ Maybe<std::string> Events::OnGetLocalString(std::string&& index)
     }
     catch (const std::runtime_error& err)
     {
-        m_log->Error("GetLocalString encountered error '%s' for input '%s'.", err.what(), index.c_str());
+        LOG_ERROR("GetLocalString encountered error '%s' for input '%s'.", err.what(), index.c_str());
     }
 
     return Maybe<std::string>();
@@ -218,7 +216,7 @@ Events::BuiltInFunction Events::FromString(const std::string& str)
     }
     else
     {
-        assert(false);
+        ASSERT_FAIL();
         return BuiltInFunction::INVALID;
     }
 }
@@ -233,7 +231,7 @@ std::string Events::ToString(const Events::BuiltInFunction func)
         case BuiltInFunction::INVALID: break;
     }
 
-    assert(false);
+    ASSERT_FAIL();
     return "";
 }
 

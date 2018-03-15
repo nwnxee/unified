@@ -1,5 +1,6 @@
 #include "Serialize.hpp"
 
+#include "Assert.hpp"
 #include "API/Types.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
@@ -14,7 +15,6 @@
 #include "API/CResGFF.hpp"
 #include "API/CResStruct.hpp"
 
-#include <assert.h>
 #include <string.h>
 
 static const char base64_key[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -118,7 +118,7 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
 #undef SERIALIZE
 
         default:
-            assert(false); // Invalid object type for SerializeGameObject
+            ASSERT_FAIL_MSG("Invalid object type for SerializeGameObject");
             break;
     }
 
@@ -183,7 +183,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
         DESERIALIZE(Trigger);
     else
     {
-        assert(false); // Unknown file type for DeserializeGameObject()
+        ASSERT_FAIL_MSG("Unknown file type for DeserializeGameObject()");
     }
 
 #undef DESERIALIZE

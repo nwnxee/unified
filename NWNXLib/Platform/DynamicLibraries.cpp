@@ -1,5 +1,5 @@
 #include "Platform/DynamicLibraries.hpp"
-#include <cassert>
+#include "Assert.hpp"
 
 #ifndef _WIN32
     #include <dlfcn.h>
@@ -35,7 +35,7 @@ bool CloseDll(HandleType handle)
 
 std::string GetErrorFromHandle(HandleType handle)
 {
-    assert(!IsHandleValid(handle));
+    ASSERT(!IsHandleValid(handle));
 
     std::string error;
 
@@ -51,7 +51,7 @@ std::string GetErrorFromHandle(HandleType handle)
 
 uintptr_t GetFuncAddrInDll(const std::string& symbol, HandleType handle)
 {
-    assert(IsHandleValid(handle));
+    ASSERT(IsHandleValid(handle));
     uintptr_t pointer;
 
 #ifdef _WIN32

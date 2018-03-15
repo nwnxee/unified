@@ -1,10 +1,8 @@
 #include "Services/Patching/Patching.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Memory.hpp"
-#include "Services/Log/Log.hpp"
 
 #include <algorithm>
-#include <cassert>
 
 using namespace NWNXLib::Platform;
 
@@ -12,8 +10,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-Patching::Patching(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Patching::Patching()
 {
 }
 
@@ -45,7 +42,7 @@ Patching::RegistrationToken Patching::PatchWithTrampoline(const uintptr_t addres
 
     std::unique_ptr<PatchData> newPatch = std::make_unique<PatchData>();
     newPatch->m_address = address;
-    assert(toFill >= JMP_LENGTH);
+    ASSERT(toFill >= JMP_LENGTH);
     newPatch->m_length = toFill;
     newPatch->m_original.resize(newPatch->m_length);
 
@@ -95,7 +92,7 @@ void Patching::ClearPatch(RegistrationToken&& token)
     }
 
     WriteDataToAddress((*patch)->m_address, (*patch)->m_original);
-    m_log->Debug("Cleared patch at address %x", (*patch)->m_address);
+    LOG_DEBUG("Cleared patch at address %x", (*patch)->m_address);
     m_memoryPatches.erase(patch);
 }
 
@@ -139,7 +136,7 @@ Patching::RegistrationToken Patching::ApplyPatch(std::unique_ptr<PatchData>&& pa
     }
 
     WriteDataToAddress(address, patchData->m_modified);
-    m_log->Debug("Applied patch to address %x", address);
+    LOG_DEBUG("Applied patch to address %x", address);
     m_memoryPatches.emplace_back(std::move(patchData));
 
     std::sort(std::begin(m_memoryPatches), std::end(m_memoryPatches),
@@ -193,7 +190,7 @@ void PatchingProxy::PatchWithJmp(const uintptr_t address, const uintptr_t toFill
     std::vector<uint8_t> jmp = Assembly::JmpRelInstruction(targetAddress).ToBytes(address);
 
     const intptr_t noopLen = static_cast<intptr_t>(toFill) - static_cast<intptr_t>(jmp.size());
-    assert(noopLen >= 0);
+    ASSERT(noopLen >= 0);
 
     if (noopLen > 0)
     {
@@ -209,7 +206,7 @@ void PatchingProxy::PatchWithCall(const uintptr_t address, const uintptr_t toFil
     std::vector<uint8_t> call = Assembly::CallRelInstruction(targetAddress).ToBytes(address);
 
     const intptr_t noopLen = static_cast<intptr_t>(toFill) - static_cast<intptr_t>(call.size());
-    assert(noopLen >= 0);
+    ASSERT(noopLen >= 0);
 
     if (noopLen > 0)
     {
@@ -252,10 +249,10 @@ void PatchingProxy::ClearPatch(const uintptr_t address)
 
 std::vector<uint8_t> PatchingProxy::GetNoopToFill(const uint32_t length)
 {
-    assert(length > 0);
+    ASSERT(length > 0);
 
     std::vector<uint8_t> noop = Assembly::NoopInstruction().ToBytes();
-    assert(noop.size() == 1);
+    ASSERT(noop.size() == 1);
 
     if (length > 1)
     {

@@ -2,7 +2,6 @@
 #include "Internal.hpp"
 #include "Util.h"
 
-#include "Services/Log/Log.hpp"
 #include "Services/Events/Events.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
@@ -76,7 +75,7 @@ JNIEXPORT void JNICALL Internal::NWScriptPushString(JNIEnv* env, jobject obj, js
         g_internal->m_jmethodConvToNative, value));
     jbyte* converted = (jbyte*) JNICHECKED(env, GetByteArrayElements(toNative, nullptr));
     int32_t len = JNICHECKED(env, GetArrayLength(toNative));
-    assert(len >= 0);
+    ASSERT(len >= 0);
 
     CExoString toPush((char*) converted, len);
     Globals::VirtualMachine()->StackPushString(toPush);

@@ -1,13 +1,10 @@
 #include "Services/Plugins/Plugins.hpp"
-#include "Services/Log/Log.hpp"
-#include <cassert>
 
 namespace NWNXLib {
 
 namespace Services {
 
-Plugins::Plugins(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Plugins::Plugins()
 {
 }
 
@@ -175,7 +172,7 @@ std::vector<Plugins::PluginData> Plugins::GetPlugins() const
 
 void Plugins::UnloadPluginInternal(PluginMap::iterator plugin, const Plugin::UnloadReason reason)
 {
-    assert(plugin != m_plugins.end());
+    ASSERT(plugin != m_plugins.end());
     PluginDataInternal::PluginUnloadFuncPtr unloadFunc = plugin->second.m_pluginUnloadFunc;
 
     if (unloadFunc)
@@ -186,7 +183,7 @@ void Plugins::UnloadPluginInternal(PluginMap::iterator plugin, const Plugin::Unl
         }
         catch (const std::runtime_error& err)
         {
-            m_log->Error("Encountered error when unloading plugin: '%s'", err.what());
+            LOG_ERROR("Encountered error when unloading plugin: '%s'", err.what());
         }
     }
 

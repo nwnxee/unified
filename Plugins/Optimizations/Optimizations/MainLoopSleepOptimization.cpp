@@ -10,7 +10,6 @@
 #include "Services/Patching/Patching.hpp"
 
 #include <algorithm>
-#include <cassert>
 #include <chrono>
 #include <numeric>
 #include <thread>
@@ -28,7 +27,7 @@ MainLoopSleepOptimization::MainLoopSleepOptimization(
     ViewPtr<PatchingProxy> patcher)
     : m_config(std::forward<MainLoopSleepOptimization::Configuration>(config))
 {
-    assert(g_opt == nullptr);
+    ASSERT(g_opt == nullptr);
     g_opt = this;
 
 #ifdef _WIN32

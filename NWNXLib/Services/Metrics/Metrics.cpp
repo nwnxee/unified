@@ -7,8 +7,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-Metrics::Metrics(std::shared_ptr<LogProxy> log)
-    : ServiceBase(log)
+Metrics::Metrics()
 {
 }
 

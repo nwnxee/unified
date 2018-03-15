@@ -2,7 +2,6 @@
 #include "API/Version.hpp"
 #include "API/Functions.hpp"
 #include "API/CExoString.hpp"
-#include "Services/Log/Log.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "ViewPtr.hpp"
@@ -93,7 +92,7 @@ void ServerLogRedirector::WriteToLogFileHook(Hooks::CallType type,
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {
         std::string str = TrimMessage(message);
-        g_plugin->GetServices()->m_log->Info("(Server) %s", str.c_str());
+        LOG_INFO("(Server) %s", str.c_str());
     }
 }
 
@@ -103,7 +102,7 @@ void ServerLogRedirector::WriteToErrorFileHook(Hooks::CallType type,
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {
         std::string str = TrimMessage(message);
-        g_plugin->GetServices()->m_log->Info("(Error) %s", str.c_str());
+        LOG_INFO("(Error) %s", str.c_str());
     }
 }
 

@@ -9,9 +9,6 @@
 #include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Log/Log.hpp"
-#include "ViewPtr.hpp"
 #include <chrono>
 #include <sstream>
 #include <iomanip>

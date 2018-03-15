@@ -69,7 +69,7 @@ BehaviourTree::BehaviourTree(const Plugin::CreateParams& params)
         const ObjectID oid = Events::ExtractArgument<ObjectID>(args);
         const std::string name = Events::ExtractArgument<std::string>(args);
         const int32_t childId = Events::ExtractArgument<int32_t>(args);
-        assert(childId >= 0);
+        ASSERT(childId >= 0);
         profilePerf("CreateBT", [&]() { m_trees[oid][name] = std::unique_ptr<BT::ITask>(s_stagingTasks[static_cast<size_t>(childId)]); });
         s_stagingTasks.clear();
         return Events::ArgumentStack();
@@ -100,7 +100,7 @@ BehaviourTree::BehaviourTree(const Plugin::CreateParams& params)
         for (size_t i = 0; i < childCount; ++i)
         {
             const int32_t childId = Events::ExtractArgument<int32_t>(args);
-            assert(childId >= 0);
+            ASSERT(childId >= 0);
             children.push_back(s_stagingTasks[static_cast<size_t>(childId)]);
         }
 
@@ -143,7 +143,7 @@ BehaviourTree::BehaviourTree(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("CREATE_DECORATOR_INVERT", [](Events::ArgumentStack&& args)
     {
         const int32_t childId = Events::ExtractArgument<int32_t>(args);
-        assert(childId >= 0);
+        ASSERT(childId >= 0);
         Events::ArgumentStack stack;
         Events::InsertArgument(stack, CreateNode<BT::DecoratorInvert>(s_stagingTasks[static_cast<size_t>(childId)]));
         return stack;

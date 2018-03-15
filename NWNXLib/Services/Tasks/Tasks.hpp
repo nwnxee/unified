@@ -45,7 +45,7 @@ public: // Structures
     using ThreadWorkToken = std::future<void>;
 
 public:
-    Tasks(std::shared_ptr<LogProxy> log);
+    Tasks();
     ~Tasks();
 
     ThreadWorkToken QueueOnMainThread(ThreadWorkItem&& work);

@@ -1,11 +1,7 @@
 #include "Ruby.hpp"
 #include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Log/Log.hpp"
 #include "Services/Metrics/Metrics.hpp"
-#include "ViewPtr.hpp"
-
-#include <chrono>
 
 #include "ruby.h" // Included last because ruby redefines snprintf for reasons.
 
@@ -126,8 +122,7 @@ NWNXLib::Services::Events::ArgumentStack Ruby::OnEvaluate(NWNXLib::Services::Eve
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, std::string(retString));
 
-    GetServices()->m_log->Info("Evaluated Ruby. Ruby ID: '%i', code: '%s', got return value '%s'.",
-        evaluationId, code.c_str(), retString);
+    LOG_INFO("Evaluated Ruby. Ruby ID: '%i', code: '%s', got return value '%s'.", evaluationId, code.c_str(), retString);
 
     return stack;
 }
@@ -152,8 +147,7 @@ void Ruby::HandleError(const int errCode)
     const std::string errClassAsStr = StringValueCStr(errClass);
     const std::string errMsgAsStr = StringValueCStr(errMsg);
 
-    GetServices()->m_log->Error("Encountered error code: '%i', class: '%s', msg: '%s'.",
-        errCode, errClassAsStr.c_str(), errMsgAsStr.c_str());
+    LOG_ERROR("Encountered error code: '%i', class: '%s', msg: '%s'.", errCode, errClassAsStr.c_str(), errMsgAsStr.c_str());
 }
 
 }

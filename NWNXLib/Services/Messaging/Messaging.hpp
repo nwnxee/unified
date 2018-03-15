@@ -21,7 +21,7 @@ public: // Structures
     using HandlerId = uint32_t;
 
 public:
-    Messaging(std::shared_ptr<LogProxy> log);
+    Messaging();
     ~Messaging();
 
     HandlerId SubscribeMessage(const Tag& tag, const Handler& handler);
