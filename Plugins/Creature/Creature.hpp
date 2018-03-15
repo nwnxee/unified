@@ -59,6 +59,7 @@ private:
     ArgumentStack SetClassByPosition            (ArgumentStack&& args);
     ArgumentStack SetBaseAttackBonus            (ArgumentStack&& args);
     ArgumentStack GetAttacksPerRound            (ArgumentStack&& args);
+    ArgumentStack SetGender                     (ArgumentStack&& args);
 
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);

@@ -174,6 +174,9 @@ void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
 //            calls to SetBaseAttackBonus() builtin function.
 int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
 
+// Sets the creature gender
+void NWNX_Creature_SetGender(object creature, int gender);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -667,4 +670,13 @@ int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetGender(object creature, int gender)
+{
+    string sFunc = "SetGender";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, gender);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }

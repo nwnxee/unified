@@ -96,6 +96,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetClassByPosition);
     REGISTER(SetBaseAttackBonus);
     REGISTER(GetAttacksPerRound);
+    REGISTER(SetGender);
 
 #undef REGISTER
 }
@@ -1003,6 +1004,18 @@ ArgumentStack Creature::GetAttacksPerRound(ArgumentStack&& args)
             retval = pCreature->m_pStats->m_nOverrideBaseAttackBonus;
     }
     Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetGender(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto gender = Services::Events::ExtractArgument<int32_t>(args);
+
+        pCreature->m_pStats->m_nGender = gender;
+    }
     return stack;
 }
 

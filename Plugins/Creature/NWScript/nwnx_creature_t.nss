@@ -111,5 +111,9 @@ void main()
     report("GetAttacksPerRound - base", NWNX_Creature_GetAttacksPerRound(oCreature, TRUE) == 2);
     report("GetAttacksPerRound - override", NWNX_Creature_GetAttacksPerRound(oCreature, FALSE) == 2);
 
+    int nGender = GetGender(oCreature);
+    NWNX_Creature_SetGender(oCreature, !nGender);
+    report("SetGender", GetGender(oCreature) != nGender);
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
