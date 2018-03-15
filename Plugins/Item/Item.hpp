@@ -17,9 +17,11 @@ public:
   
 private:
   ArgumentStack SetWeight               (ArgumentStack&& args);
-  ArgumentStack SetGoldPieceValue       (ArgumentStack&& args);
+  ArgumentStack SetBaseGoldPieceValue   (ArgumentStack&& args);
+  ArgumentStack GetBaseGoldPieceValue   (ArgumentStack&& args);
+  ArgumentStack SetAddGoldPieceValue    (ArgumentStack&& args);
+  ArgumentStack GetAddGoldPieceValue    (ArgumentStack&& args);
   ArgumentStack SetBaseItemType         (ArgumentStack&& args);
-  ArgumentStack SetItemColor            (ArgumentStack&& args);
   ArgumentStack SetItemAppearance       (ArgumentStack&& args);
   ArgumentStack GetEntireItemAppearance (ArgumentStack&& args);
   ArgumentStack RestoreItemAppearance   (ArgumentStack&& args);

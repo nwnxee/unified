@@ -47,9 +47,11 @@ Item::Item(const Plugin::CreateParams& params)
   GetServices()->m_events->RegisterEvent(#func, std::bind(&Item::func, this, std::placeholders::_1))
   
   REGISTER(SetWeight);
-  REGISTER(SetGoldPieceValue);
+  REGISTER(SetBaseGoldPieceValue);
+  REGISTER(SetAddGoldPieceValue);
+  REGISTER(GetBaseGoldPieceValue);
+  REGISTER(GetAddGoldPieceValue);
   REGISTER(SetBaseItemType);
-  REGISTER(SetItemColor);
   REGISTER(SetItemAppearance);
   REGISTER(GetEntireItemAppearance);
   REGISTER(RestoreItemAppearance);
@@ -94,7 +96,7 @@ ArgumentStack Item::SetWeight(ArgumentStack&& args)
   return stack;
 }
   
-ArgumentStack Item::SetGoldPieceValue(ArgumentStack&& args)
+ArgumentStack Item::SetBaseGoldPieceValue(ArgumentStack&& args)
 {
   ArgumentStack stack;
   if (auto *pItem = item(args))
@@ -104,7 +106,42 @@ ArgumentStack Item::SetGoldPieceValue(ArgumentStack&& args)
     }
   return stack;
 }
+
+ArgumentStack Item::SetAddGoldPieceValue(ArgumentStack&& args)
+{
+  ArgumentStack stack;
+  if (auto *pItem = item(args))
+    {
+      const auto g = Services::Events::ExtractArgument<int32_t>(args);
+      pItem->m_nAdditionalCost = g;
+    }
+  return stack;
+}  
   
+ArgumentStack Item::GetBaseGoldPieceValue(ArgumentStack&& args)
+{
+  ArgumentStack stack;
+  int32_t retval = -1; 
+  if (auto *pItem = item(args))
+    {
+      retval = pItem->m_nBaseUnitCost;
+    }
+  Services::Events::InsertArgument(stack, retval);
+  return stack;
+}
+
+ArgumentStack Item::GetAddGoldPieceValue(ArgumentStack&& args)
+{
+  ArgumentStack stack;
+  int32_t retval = -1; 
+  if (auto *pItem = item(args))
+    {
+      retval = pItem->m_nAdditionalCost;
+    }
+  Services::Events::InsertArgument(stack, retval);
+  return stack;
+}  
+
 ArgumentStack Item::SetBaseItemType(ArgumentStack&& args)
 {
   ArgumentStack stack;
@@ -116,23 +153,6 @@ ArgumentStack Item::SetBaseItemType(ArgumentStack&& args)
   return stack;
 }
   
-ArgumentStack Item::SetItemColor(ArgumentStack&& args)
-{   
-  ArgumentStack stack;
-  if (auto *pItem = item(args))
-    {
-      
-      const auto idx = Services::Events::ExtractArgument<int32_t>(args);
-      const auto val = Services::Events::ExtractArgument<int32_t>(args);
-      
-      if(idx >= 0 && idx < 6 && val >=0  && val < 256)
-	{
-	  pItem->m_nLayeredTextureColors[idx] = val;
-	}	
-    }   
-  return stack;
-}
-
 ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
 {   
   ArgumentStack stack;
@@ -142,24 +162,22 @@ ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
       const auto idx = Services::Events::ExtractArgument<int32_t>(args);
       const auto val = Services::Events::ExtractArgument<int32_t>(args);
       
-      if(idx >= Constants::ITEM_APPR_COLOR_LEATHER_1 &&
-	 idx <= Constants::ITEM_APPR_ARMOR_MODEL_ROBE &&
-	 val >=0  && val <= 255)
+      if(idx >= 0  && idx <= 28 && val >=0 && val <= 255)
 	{
-	  //Color appearance starts at -9 and ends at -4 
-	  if(idx <= -4) 
+	  //Color appearance starts at 0 and ends at 5 
+	  if(idx <= 5) 
 	    {
-	      pItem->m_nLayeredTextureColors[idx + 9] = val;
+	      pItem->m_nLayeredTextureColors[idx] = val;
 	    }
-	  //Item appearance starts at -3 and ends at -1
-          else if(idx <= -1) 
+	  //Item appearance starts at 6 and ends at 8
+          else if(idx <= 8) 
 	    {
-	      pItem->m_nModelPart[idx + 3] = val;
+	      pItem->m_nModelPart[idx - 6] = val;
 	    }
-	  //Armor appearance starts at 0 and ends at 18
+	  //Armor appearance starts at 9 and ends at 28
 	  else 
 	    {
-	       pItem->m_nArmorModelPart[idx] = val;
+	       pItem->m_nArmorModelPart[idx - 9] = val;
 	    }
 	}   
     }   
@@ -227,7 +245,5 @@ ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
       
     }   
   return stack;
-}
-  
-  
+}  
 }
