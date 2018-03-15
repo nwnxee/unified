@@ -102,6 +102,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(RestoreSpells);
     REGISTER(RestoreItems);
     REGISTER(SetSize);
+    REGISTER(GetSkillPointsRemaining);
+    REGISTER(SetSkillPointsRemaining);
 
 #undef REGISTER
 }
@@ -1086,6 +1088,29 @@ ArgumentStack Creature::SetSize(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::GetSkillPointsRemaining(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retval = pCreature->m_pStats->m_nSkillPointsRemaining;
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
 
+ArgumentStack Creature::SetSkillPointsRemaining(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto points = Services::Events::ExtractArgument<int32_t>(args);
+        assert(points >= 0); assert(points <= 65535);
+
+        pCreature->m_pStats->m_nSkillPointsRemaining = static_cast<uint16_t>(points);
+    }
+    return stack;
+}
 
 }

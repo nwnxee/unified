@@ -193,6 +193,12 @@ void NWNX_Creature_RestoreItems(object creature);
 // Sets the creature size. Use CREATURE_SIZE_* constants
 void NWNX_Creature_SetSize(object creature, int size);
 
+// Gets the creature's remaining unspent skill points
+int NWNX_Creature_GetSkillPointsRemaining(object creature);
+
+// sets the creature's remaining unspent skill points
+void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -734,6 +740,25 @@ void NWNX_Creature_SetSize(object creature, int size)
 {
     string sFunc = "SetSize";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, size);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetSkillPointsRemaining(object creature)
+{
+    string sFunc = "GetSkillPointsRemaining";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+
+void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints)
+{
+    string sFunc = "SetSkillPointsRemaining";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, skillpoints);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);

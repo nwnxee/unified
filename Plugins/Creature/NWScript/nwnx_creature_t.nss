@@ -119,5 +119,10 @@ void main()
     NWNX_Creature_SetSize(oCreature, nSize + 1);
     report("SetSize", GetCreatureSize(oCreature) != nSize);
 
+    int nSkillPointsRemaining = NWNX_Creature_GetSkillPointsRemaining(oCreature);
+    report("GetSkillPointsRemaining", nSkillPointsRemaining >= 0);
+    NWNX_Creature_SetSkillPointsRemaining(oCreature, nSkillPointsRemaining+1);
+    report("SetSkillPointsRemaining", NWNX_Creature_GetSkillPointsRemaining(oCreature) == nSkillPointsRemaining+1);
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
