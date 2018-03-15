@@ -987,11 +987,11 @@ ArgumentStack Creature::SetBaseAttackBonus(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto bab = Services::Events::ExtractArgument<int32_t>(args);
-        assert(bab >= 0);
-        assert(bab <= 254);
+        ASSERT(bab >= 0);
+        ASSERT(bab <= 254);
 
         pCreature->m_pStats->m_nBaseAttackBonus = static_cast<uint8_t>(bab);
-        assert(pCreature->m_pStats->GetBaseAttackBonus(false) == bab);
+        ASSERT(pCreature->m_pStats->GetBaseAttackBonus(false) == bab);
     }
     return stack;
 }
@@ -1105,7 +1105,7 @@ ArgumentStack Creature::SetSkillPointsRemaining(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto points = Services::Events::ExtractArgument<int32_t>(args);
-        assert(points >= 0); assert(points <= 65535);
+        ASSERT(points >= 0); ASSERT(points <= 65535);
 
         pCreature->m_pStats->m_nSkillPointsRemaining = static_cast<uint16_t>(points);
     }
