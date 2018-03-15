@@ -97,6 +97,9 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetBaseAttackBonus);
     REGISTER(GetAttacksPerRound);
     REGISTER(SetGender);
+    REGISTER(RestoreFeats);
+    REGISTER(RestoreSpecialAbilities);
+    REGISTER(RestoreSpells);
 
 #undef REGISTER
 }
@@ -1018,5 +1021,46 @@ ArgumentStack Creature::SetGender(ArgumentStack&& args)
     }
     return stack;
 }
+
+ArgumentStack Creature::RestoreFeats(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        pCreature->m_pStats->ResetFeatRemainingUses();
+    }
+    return stack;
+}
+
+ArgumentStack Creature::RestoreSpecialAbilities(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        pCreature->m_pStats->ResetSpellLikeAbilities();
+    }
+    return stack;
+}
+
+ArgumentStack Creature::RestoreSpells(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto level = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (level >= 0 && level <= 9)
+        {
+            pCreature->m_pStats->ReadySpellLevel(level);
+        }
+        else
+        {
+            for (int i = 0; i <= 9; i++)
+               pCreature->m_pStats->ReadySpellLevel(i);
+        }
+    }
+    return stack;
+}
+
 
 }

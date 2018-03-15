@@ -177,6 +177,16 @@ int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
 // Sets the creature gender
 void NWNX_Creature_SetGender(object creature, int gender);
 
+// Restore all creature feat uses
+void NWNX_Creature_RestoreFeats(object creature);
+
+// Restore all creature special ability uses
+void NWNX_Creature_RestoreSpecialAbilities(object creature);
+
+// Restore all creature spells per day for given level.
+// If level is -1, all spells are restored
+void NWNX_Creature_RestoreSpells(object creature, int level = -1);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -676,6 +686,31 @@ void NWNX_Creature_SetGender(object creature, int gender)
 {
     string sFunc = "SetGender";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, gender);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreFeats(object creature)
+{
+    string sFunc = "RestoreFeats";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreSpecialAbilities(object creature)
+{
+    string sFunc = "RestoreSpecialAbilities";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreSpells(object creature, int level = -1)
+{
+    string sFunc = "RestoreSpells";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);

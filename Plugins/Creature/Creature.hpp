@@ -60,6 +60,9 @@ private:
     ArgumentStack SetBaseAttackBonus            (ArgumentStack&& args);
     ArgumentStack GetAttacksPerRound            (ArgumentStack&& args);
     ArgumentStack SetGender                     (ArgumentStack&& args);
+    ArgumentStack RestoreFeats                  (ArgumentStack&& args);
+    ArgumentStack RestoreSpecialAbilities       (ArgumentStack&& args);
+    ArgumentStack RestoreSpells                 (ArgumentStack&& args);
 
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
