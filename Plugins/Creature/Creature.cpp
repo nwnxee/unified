@@ -100,6 +100,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(RestoreFeats);
     REGISTER(RestoreSpecialAbilities);
     REGISTER(RestoreSpells);
+    REGISTER(RestoreItems);
 
 #undef REGISTER
 }
@@ -1061,6 +1062,17 @@ ArgumentStack Creature::RestoreSpells(ArgumentStack&& args)
     }
     return stack;
 }
+
+ArgumentStack Creature::RestoreItems(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        pCreature->RestoreItemProperties();
+    }
+    return stack;
+}
+
 
 
 }

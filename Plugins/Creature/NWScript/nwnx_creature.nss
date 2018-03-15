@@ -187,6 +187,9 @@ void NWNX_Creature_RestoreSpecialAbilities(object creature);
 // If level is -1, all spells are restored
 void NWNX_Creature_RestoreSpells(object creature, int level = -1);
 
+// Restore uses for all items carried by the creature
+void NWNX_Creature_RestoreItems(object creature);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -711,6 +714,14 @@ void NWNX_Creature_RestoreSpells(object creature, int level = -1)
 {
     string sFunc = "RestoreSpells";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_RestoreItems(object creature)
+{
+    string sFunc = "RestoreItems";
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
