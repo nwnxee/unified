@@ -10,6 +10,12 @@ const int NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST = 6;
 const int NWNX_CREATURE_MOVEMENT_RATE_DEFAULT   = 7;
 const int NWNX_CREATURE_MOVEMENT_RATE_DM_FAST   = 8;
 
+const int NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY      = 0;
+const int NWNX_CREATURE_MOVEMENT_TYPE_WALK            = 1;
+const int NWNX_CREATURE_MOVEMENT_TYPE_RUN             = 2;
+const int NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP        = 3;
+const int NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
+
 struct NWNX_Creature_SpecialAbility
 {
     int id;
@@ -198,6 +204,12 @@ int NWNX_Creature_GetSkillPointsRemaining(object creature);
 
 // sets the creature's remaining unspent skill points
 void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
+
+// Returns true if the creature is currently running
+int NWNX_Creature_GetIsRunning(object creature);
+
+// Returns the creature's current movement type (NWNX_CREATURE_MOVEMENT_TYPE_*)
+int NWNX_Creature_GetMovementType(object creature);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -763,3 +775,13 @@ void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
+
+int NWNX_Creature_GetMovementType(object creature)
+{
+    string sFunc = "GetMovementType";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+

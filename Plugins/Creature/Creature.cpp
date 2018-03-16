@@ -103,6 +103,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSize);
     REGISTER(GetSkillPointsRemaining);
     REGISTER(SetSkillPointsRemaining);
+    REGISTER(GetMovementType);
 
 #undef REGISTER
 }
@@ -1112,4 +1113,43 @@ ArgumentStack Creature::SetSkillPointsRemaining(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::GetMovementType(ArgumentStack&& args)
+{
+    const int MOVEMENT_TYPE_STATIONARY      = 0;
+    const int MOVEMENT_TYPE_WALK            = 1;
+    const int MOVEMENT_TYPE_RUN             = 2;
+    const int MOVEMENT_TYPE_SIDESTEP        = 3;
+    const int MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
+
+    ArgumentStack stack;
+    int retval = MOVEMENT_TYPE_STATIONARY;
+    if (auto *pCreature = creature(args))
+    {
+
+        switch (pCreature->m_nAnimation)
+        {
+            case 2:  // walk
+            case 84: // walk forward left
+            case 85: // walk forward right
+                retval = MOVEMENT_TYPE_WALK;
+                break;
+            case 3:  // walk backwards
+                retval = MOVEMENT_TYPE_WALK_BACKWARDS;
+                break;
+            case 4:  // run
+            case 86: // run forward left
+            case 87: // run forward right
+                retval = MOVEMENT_TYPE_RUN;
+                break;
+            case 78: // walk left
+            case 79: // walk right
+                retval = MOVEMENT_TYPE_SIDESTEP;
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
 }
+
+}
+

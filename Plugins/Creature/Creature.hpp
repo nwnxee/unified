@@ -67,6 +67,7 @@ private:
     ArgumentStack SetSize                       (ArgumentStack&& args);
     ArgumentStack GetSkillPointsRemaining       (ArgumentStack&& args);
     ArgumentStack SetSkillPointsRemaining       (ArgumentStack&& args);
+    ArgumentStack GetMovementType               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
