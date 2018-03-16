@@ -681,6 +681,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandEventConversation(int32_t a0, i
     return CNWVirtualMachineCommands__ExecuteCommandEventConversation(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandEventScriptManagement(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandEventScriptManagement(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandEventSpellCastAt(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandEventSpellCastAt(this, a0, a1);
@@ -4139,6 +4144,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandEventConversation(CNWVirtualMac
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandEventConversation);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandEventScriptManagement(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandEventScriptManagement);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
