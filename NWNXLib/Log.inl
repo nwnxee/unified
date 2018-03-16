@@ -11,8 +11,9 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
         return;
     }
 
-    char formatBuffer[1536];
-    std::sprintf(formatBuffer, format, args ...);
+    // 128k should be the VM boundary, so largest message we'd need to print.
+    static char formatBuffer[128*1024];
+    std::snprintf(formatBuffer, sizeof(formatBuffer), format, args ...);
 
     InternalTrace(channel, allowedChannel, plugin, file, line, formatBuffer);
 }

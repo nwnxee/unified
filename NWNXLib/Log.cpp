@@ -47,13 +47,15 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     }
 
     char buffer[2048];
-    std::sprintf(buffer, "%s [%02d:%02d:%02d] [%s:%d] %s: %s\n",
+    std::sprintf(buffer, "%s [%02d:%02d:%02d] [%s:%d] %s: ",
             SEVERITY_NAMES[static_cast<size_t>(channel)],
             date.m_hour, date.m_minute, date.m_second,
-            filename, line, plugin, message);
+            filename, line, plugin);
 
-    std::printf(buffer);
+    std::printf("%s%s\n", buffer, message);
     InternalOutputDebugString(buffer);
+    InternalOutputDebugString(message);
+    InternalOutputDebugString("\n");
 
     if (channel == Channel::SEV_FATAL)
     {
