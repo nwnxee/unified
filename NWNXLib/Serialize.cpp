@@ -44,13 +44,13 @@ static std::vector<uint8_t> base64_decode(const std::string &in)
 
     std::vector<int> T(256,-1);
     for (int i=0; i<64; i++)
-        T[(size_t)(base64_key[i])] = i;
+        T[(uint8_t)(base64_key[i])] = i;
 
     int val=0, valb=-8;
     for (char c : in) {
-        if (T[(size_t)c] == -1)
+        if (T[(uint8_t)c] == -1)
             break;
-        val = (val<<6) + T[(size_t)c];
+        val = (val<<6) + T[(uint8_t)c];
         valb += 6;
         if (valb>=0) {
             out.push_back(uint8_t((val>>valb)&0xFF));
