@@ -340,17 +340,18 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
         LOG_INFO("Not loading NWNX due to configuration.");
-        return;
     }
-
-    try
+    else
     {
-        g_core->InitialSetupHooks();
-        g_core->InitialSetupPlugins();
-    }
-    catch (const std::runtime_error& ex)
-    {
-        LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        try
+        {
+            g_core->InitialSetupHooks();
+            g_core->InitialSetupPlugins();
+        }
+        catch (const std::runtime_error& ex)
+        {
+            LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        }
     }
 
     g_core->m_createServerHook.reset();
