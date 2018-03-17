@@ -63,6 +63,8 @@ NWNXCore::NWNXCore()
 {
     g_core = this;
 
+    InitialVersionCheck();
+
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 
@@ -157,12 +159,16 @@ void NWNXCore::InitialVersionCheck()
 
         if (version != NWNX_TARGET_NWN_BUILD)
         {
-            throw std::runtime_error("Core version mismatch -- has the server updated?");
+            std::fprintf(stderr, "NWNX: Expected build version %u, got build version %u", NWNX_TARGET_NWN_BUILD, version);
+            std::fflush(stderr);
+            std::abort();
         }
     }
     else
     {
-        throw std::runtime_error("Unable to resolve GetBuildNumber from the NWN binary. Old version?");
+        std::fprintf(stderr, "NWNX: Could not determine build version.");
+        std::fflush(stderr);
+        std::abort();
     }
 }
 
@@ -338,7 +344,6 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     try
     {
         g_core->InitialSetupHooks();
-        g_core->InitialVersionCheck();
         g_core->InitialSetupPlugins();
     }
     catch (const std::runtime_error& ex)
