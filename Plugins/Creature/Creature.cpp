@@ -103,7 +103,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSize);
     REGISTER(GetSkillPointsRemaining);
     REGISTER(SetSkillPointsRemaining);
-
+    REGISTER(SetRacialType);
+   
 #undef REGISTER
 }
 
@@ -1108,6 +1109,18 @@ ArgumentStack Creature::SetSkillPointsRemaining(ArgumentStack&& args)
         ASSERT(points >= 0); ASSERT(points <= 65535);
 
         pCreature->m_pStats->m_nSkillPointsRemaining = static_cast<uint16_t>(points);
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetRacialType(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto race = Services::Events::ExtractArgument<int32_t>(args); ASSERT(race <= 65535);
+
+        pCreature->m_pStats->m_nRace = static_cast<uint16_t>(race);
     }
     return stack;
 }
