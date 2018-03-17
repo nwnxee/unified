@@ -1,5 +1,6 @@
 #include "Log.hpp"
 #include "Assert.hpp"
+#include "Platform/FileSystem.hpp"
 
 #ifdef _WIN32
     #include "Windows.h"
@@ -53,6 +54,23 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
             filename, line, plugin);
 
     std::printf("%s%s\n", buffer, message);
+
+    // Also write to a file - this could be done in a much nicer way but I just want to retain the old functionality
+    // for now. We can change this later if we want or need to.
+    using namespace Platform::FileSystem;
+
+    // TODO: This needs to grab the userdirectory and write it there. Doing this is not correct.
+    static std::string logPath = CombinePaths(CombinePaths(GetCurExecutablePath(), std::string("logs.0")), "nwnx.txt");
+
+    // TODO: Is this thread safe? This needs to be thread safe
+    FILE* logFile = std::fopen(logPath.c_str(), "a+");
+
+    if (logFile)
+    {
+        std::fprintf(logFile, "%s%s\n", buffer, message);
+        std::fclose(logFile);
+    }
+
     InternalOutputDebugString(buffer);
     InternalOutputDebugString(message);
     InternalOutputDebugString("\n");
@@ -71,6 +89,7 @@ static std::unordered_map<std::string, Channel::Enum> s_LogLevelMap;
 
 Channel::Enum GetLogLevel(const char* plugin)
 {
+    // TODO: Is this thread safe? I think so if we're just looking up but I don't know.
     auto entry = s_LogLevelMap.find(plugin);
     return entry == std::end(s_LogLevelMap) ? Channel::SEV_DEBUG : entry->second;
 }
