@@ -63,7 +63,9 @@ NWNXCore::NWNXCore()
 {
     g_core = this;
 
-    InitialVersionCheck();
+    // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
+    // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
+    // crash before the version check happens.
 
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
@@ -153,8 +155,6 @@ void NWNXCore::InitialVersionCheck()
     if (buildNumberAddr)
     {
         API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
-        LOG_INFO("Server is running version %s.", versionAsStr->m_sString);
-
         const uint32_t version = std::stoul(versionAsStr->m_sString);
 
         if (version != NWNX_TARGET_NWN_BUILD)
@@ -329,6 +329,8 @@ API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API
 
 void NWNXCore::CreateServerHandler(API::CAppManager* app)
 {
+    g_core->InitialVersionCheck();
+
     g_core->m_services = g_core->ConstructCoreServices();
     g_core->m_coreServices = g_core->ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
 
