@@ -196,8 +196,12 @@ void NWNX_Creature_SetSize(object creature, int size);
 // Gets the creature's remaining unspent skill points
 int NWNX_Creature_GetSkillPointsRemaining(object creature);
 
-// sets the creature's remaining unspent skill points
+// Sets the creature's remaining unspent skill points
 void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
+
+// Sets the creature's racial type 
+void NWNX_Creature_SetRacialType(object creature, int racialtype);
+
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -759,6 +763,15 @@ void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints)
 {
     string sFunc = "SetSkillPointsRemaining";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, skillpoints);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetRacialType(object creature, int racialtype)
+{
+    string sFunc = "SetRacialType";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, racialtype);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
