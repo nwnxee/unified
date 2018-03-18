@@ -3,6 +3,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSMessage.hpp"
 #include "API/Types.hpp"
 #include "API/Version.hpp"
 #include "API/Constants.hpp"
@@ -19,6 +20,12 @@ DMActionEvents::DMActionEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> h
 {
     hooker->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerDungeonMasterMessage, int32_t,
         CNWSMessage*, CNWSPlayer*, uint8_t, int32_t>(&HandleDMMessageHook);
+}
+template <typename T>
+static T& PeekMessage(CNWSMessage *pMessage, int32_t offset)
+{
+    uint8_t *ptr = pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset;
+    return *(T*)ptr;
 }
 
 void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
@@ -108,12 +115,18 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             break;
         case 0x60:
             event += "GIVE_XP";
+            Events::PushEventData("AMOUNT", std::to_string(PeekMessage<int32_t>(thisPtr, 0)));
+            Events::PushEventData("TARGET", Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4)));
             break;
         case 0x61:
+            Events::PushEventData("NUM_LEVELS", std::to_string(PeekMessage<int32_t>(thisPtr, 0)));
+            Events::PushEventData("TARGET", Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4)));
             event += "GIVE_LEVEL";
             break;
         case 0x62:
             event += "GIVE_GOLD";
+            Events::PushEventData("AMOUNT", std::to_string(PeekMessage<int32_t>(thisPtr, 0)));
+            Events::PushEventData("TARGET", Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4)));
             break;
         case 0x63:
         case 0x64: // Not a typo.
