@@ -6,5 +6,6 @@ add_subdirectory(Patching)
 add_subdirectory(Plugins)
 add_subdirectory(Tasks)
 add_subdirectory(Messaging)
+add_subdirectory(PerObjectStorage)
 
 nwnxlib_scope()

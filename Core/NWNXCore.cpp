@@ -13,6 +13,7 @@
 #include "Services/Patching/Patching.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 #include <cstring>
 
@@ -89,6 +90,7 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_patching = std::make_unique<Patching>();
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
+    services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
 
     return services;
 }
@@ -105,6 +107,7 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_patching = std::make_unique<Services::PatchingProxy>(*m_services->m_patching);
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
+    proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
 
@@ -139,6 +142,8 @@ void NWNXCore::InitialSetupHooks()
 
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);
+
+    m_services->m_hooks->RequestSharedHook<API::Functions::CGameObject__CGameObjectDtor__0, void>(&Services::PerObjectStorage::CGameObject_dtor_hook);
 
     g_setStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__SetString);
     g_getStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetString);

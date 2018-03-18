@@ -7,6 +7,7 @@
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Plugins/Plugins.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 #include <functional>
 #include <map>
