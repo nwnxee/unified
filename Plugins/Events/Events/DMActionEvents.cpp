@@ -104,6 +104,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             event += "TOGGLE_IMMORTAL";
             break;
         case 0x50:
+            event += "JUMP_TO_POINT";
             break;
         case 0x60:
             event += "GIVE_XP";
@@ -115,11 +116,10 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             event += "GIVE_GOLD";
             break;
         case 0x63:
-        case 0x64:
+        case 0x64: // Not a typo.
             event += "SET_FACTION";
             break;
         case 0x80:
-            event += "GIVE_ITEM";
             event += "GIVE_ITEM";
             break;
         case 0x81:
