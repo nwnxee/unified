@@ -215,7 +215,8 @@ Events::ArgumentStack Administration::OnGetBannedList(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
 
-    Events::InsertArgument(stack, Globals::AppManager()->m_pServerExoApp->GetBannedListString().CStr());
+    std::string list = Globals::AppManager()->m_pServerExoApp->GetBannedListString().CStr();
+    Events::InsertArgument(stack, list);
     return stack;
 }
 

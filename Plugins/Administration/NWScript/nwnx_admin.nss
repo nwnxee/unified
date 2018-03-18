@@ -89,32 +89,32 @@ void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup = 
 
 void NWNX_Administration_AddBannedIP(string ip)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_IP", ip)
+    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_IP", ip);
     NWNX_CallFunction("NWNX_Administration", "ADD_BANNED_IP");
 }
 void NWNX_Administration_RemoveBannedIP(string ip)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_IP", ip)
+    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_IP", ip);
     NWNX_CallFunction("NWNX_Administration", "REMOVE_BANNED_IP");
 }
 void NWNX_Administration_AddBannedCDKey(string key)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_CDKEY", key)
+    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_CDKEY", key);
     NWNX_CallFunction("NWNX_Administration", "ADD_BANNED_CDKEY");
 }
 void NWNX_Administration_RemoveBannedCDKey(string key)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_CDKEY", key)
+    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_CDKEY", key);
     NWNX_CallFunction("NWNX_Administration", "REMOVE_BANNED_CDKEY");
 }
 void NWNX_Administration_AddBannedPlayerName(string playername)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_PLAYER_NAME", playername)
+    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_PLAYER_NAME", playername);
     NWNX_CallFunction("NWNX_Administration", "ADD_BANNED_PLAYER_NAME");
 }
 void NWNX_Administration_RemoveBannedPlayerName(string playername)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_PLAYER_NAME", playername)
+    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_PLAYER_NAME", playername);
     NWNX_CallFunction("NWNX_Administration", "REMOVE_BANNED_PLAYER_NAME");
 }
 string NWNX_Administration_GetBannedList()
