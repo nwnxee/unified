@@ -143,7 +143,7 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);
 
-    m_services->m_hooks->RequestSharedHook<API::Functions::CGameObject__CGameObjectDtor__0, void>(&Services::PerObjectStorage::CGameObject_dtor_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::CGameObjectArray__Delete__1, void>(&Services::PerObjectStorage::CGameObjectArray__Delete__1_hook);
 
     g_setStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__SetString);
     g_getStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetString);

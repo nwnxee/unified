@@ -7,13 +7,23 @@ namespace Services {
 
 std::unordered_map<API::Types::ObjectID, std::unique_ptr<PerObjectStorage::ObjectStorage>> PerObjectStorage::g_objectStorage;
 
+PerObjectStorage::ObjectStorage& PerObjectStorage::GetObjectStorage(API::Types::ObjectID object)
+{
+    auto it = g_objectStorage.find(object);
+    if (it != g_objectStorage.end())
+        return *it->second;
+
+    return *g_objectStorage.emplace(object, std::make_unique<PerObjectStorage::ObjectStorage>(object)).first->second;
+}
+
+
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, int value)
 {
     // TODO: check if the object is actually valid
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    g_objectStorage[object]->GetIntMap().emplace(key, value);
+    GetObjectStorage(object).GetIntMap().emplace(key, value);
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, float value)
 {
@@ -21,7 +31,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, float v
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    g_objectStorage[object]->GetFloatMap().emplace(key, value);
+    GetObjectStorage(object).GetFloatMap().emplace(key, value);
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, std::string value)
 {
@@ -29,7 +39,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, std::st
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    g_objectStorage[object]->GetStringMap().emplace(key, value);
+    GetObjectStorage(object).GetStringMap().emplace(key, value);
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, void *value, CleanupFunc cleanup)
 {
@@ -37,7 +47,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, void *v
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    g_objectStorage[object]->GetPointerMap().emplace(key, std::make_pair<>(value, cleanup));
+    GetObjectStorage(object).GetPointerMap().emplace(key, std::make_pair<>(value, cleanup));
 }
 
 
@@ -47,10 +57,15 @@ void PerObjectStorage::Remove(API::Types::ObjectID object, std::string key)
     auto it = g_objectStorage.find(object);
     if (it != g_objectStorage.end())
     {
-        it->second->GetStringMap().erase(key);
-        it->second->GetIntMap().erase(key);
-        it->second->GetFloatMap().erase(key);
-        it->second->GetPointerMap().erase(key);
+        // Ugly, but GetXxxMap will create it if missing.
+        if (it->second->m_StringMap)
+            it->second->m_StringMap->erase(key);
+        if (it->second->m_IntMap)
+            it->second->m_IntMap->erase(key);
+        if (it->second->m_FloatMap)
+            it->second->m_FloatMap->erase(key);
+        if (it->second->m_PointerMap)
+            it->second->m_PointerMap->erase(key);
     }
 }
 
@@ -94,11 +109,14 @@ PerObjectStorage::ObjectStorage::ObjectStorage(API::Types::ObjectID owner)
 }
 PerObjectStorage::ObjectStorage::~ObjectStorage()
 {
-    for (auto it: *m_PointerMap)
+    if (m_PointerMap)
     {
-        auto ptr = it.second.first;
-        auto cleanup = it.second.second;
-        cleanup(ptr);
+        for (auto it: *m_PointerMap)
+        {
+            auto ptr = it.second.first;
+            auto cleanup = it.second.second;
+            cleanup(ptr);
+        }
     }
 }
 
@@ -136,12 +154,6 @@ void PerObjectStorageProxy::Remove(API::Types::ObjectID object, std::string key)
     m_proxyBase.Remove(object, m_pluginName + "!" + key);
 }
 
-
-
-template <> Maybe<int> PerObjectStorage::Get<int>(API::Types::ObjectID object, std::string key);
-template <> Maybe<float> PerObjectStorage::Get<float>(API::Types::ObjectID object, std::string key);
-template <> Maybe<std::string> PerObjectStorage::Get<std::string>(API::Types::ObjectID object, std::string key);
-template <> Maybe<void*> PerObjectStorage::Get<void*>(API::Types::ObjectID object, std::string key);
 
 template <> Maybe<int> PerObjectStorage::Get<int>(API::Types::ObjectID object, std::string key)
 {
@@ -193,12 +205,18 @@ template <> Maybe<void*> PerObjectStorage::Get<void*>(API::Types::ObjectID objec
     return Maybe<void*>();
 }
 
-void PerObjectStorage::CGameObject_dtor_hook(Services::Hooks::CallType type, API::CGameObject *thisPtr)
+void PerObjectStorage::CGameObjectArray__Delete__1_hook(Services::Hooks::CallType type, API::CGameObjectArray* thisPtr, uint32_t id, API::CGameObject **ptr)
 {
-    if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+    // unreferenced variables
+    (void)(sizeof(thisPtr), sizeof(ptr));
+
+    if (type != Services::Hooks::CallType::AFTER_ORIGINAL)
         return;
 
-    g_objectStorage.erase(thisPtr->m_idSelf);
+    id &= 0x7FFFFFFF;
+    LOG_DEBUG("Destroying object storage for objectId:0x%08x", id);
+
+    g_objectStorage.erase(id);
 }
 
 

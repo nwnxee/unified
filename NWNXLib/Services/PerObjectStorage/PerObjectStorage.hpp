@@ -1,7 +1,7 @@
 #pragma once
 
 #include "API/Types.hpp"
-#include "API/CGameObject.hpp"
+#include "API/CGameObjectArray.hpp"
 #include "Maybe.hpp"
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
@@ -34,7 +34,8 @@ public:
     PerObjectStorage();
     ~PerObjectStorage();
 
-    static void CGameObject_dtor_hook(Services::Hooks::CallType type, API::CGameObject *thisPtr);
+    // Should really hook the CGameObject destructor, but that doesn't work currently..
+    static void CGameObjectArray__Delete__1_hook(Services::Hooks::CallType type, API::CGameObjectArray* thisPtr, uint32_t, API::CGameObject**);
 private:
 
     class ObjectStorage
@@ -61,6 +62,7 @@ private:
         std::unique_ptr<PointerMap> m_PointerMap;
     };
 
+    static ObjectStorage& GetObjectStorage(API::Types::ObjectID object);
     static std::unordered_map<API::Types::ObjectID, std::unique_ptr<ObjectStorage>> g_objectStorage;
 };
 
