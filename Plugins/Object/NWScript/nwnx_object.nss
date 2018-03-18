@@ -9,8 +9,7 @@ const int NWNX_OBJECT_SCRIPT_AREA_ON_EXIT                       = 3;
 // Module event handlers
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_HEARTBEAT                = 0;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_USER_DEFINED             = 1;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_LOAD
-= 2;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_LOAD                     = 2;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_ENTER                    = 4;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_LEAVE                    = 5;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_ACTIVATE                 = 6;
