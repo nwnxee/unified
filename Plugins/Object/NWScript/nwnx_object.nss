@@ -9,7 +9,8 @@ const int NWNX_OBJECT_SCRIPT_AREA_ON_EXIT                       = 3;
 // Module event handlers
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_HEARTBEAT                = 0;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_USER_DEFINED             = 1;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_LOAD                     = 2;
+const int NWNX_OBJECT_SCRIPT_MODULE_ON_LOAD
+= 2;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_ENTER                    = 4;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_LEAVE                    = 5;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_ACTIVATE                 = 6;
@@ -109,12 +110,12 @@ object NWNX_Object_Deserialize(string serialized);
 // Returns the dialog resref of the object.
 string NWNX_Object_GetDialogResref(object obj);
 
-// Set plac's appearance. Will not update for PCs until they
+// Set obj's appearance. Will not update for PCs until they
 // re-enter the area.
-void NWNX_Object_SetPlaceableAppearance(object plac, int app);
+void NWNX_Object_SetAppearance(object obj, int app);
 
-// Get plac's appearance
-int NWNX_Object_GetPlaceableAppearance(object plac);
+// Get obj's appearance
+int NWNX_Object_GetAppearance(object obj);
 
 
 const string NWNX_Object = "NWNX_Object";
@@ -258,21 +259,21 @@ string NWNX_Object_GetDialogResref(object obj)
     return NWNX_GetReturnValueString(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPlaceableAppearance(object plac, int app)
+void NWNX_Object_SetAppearance(object obj, int app)
 {
-    string sFunc = "SetPlaceableAppearance";
+    string sFunc = "SetAppearance";
 
     NWNX_PushArgumentInt(NWNX_Object, sFunc, app);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, plac);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-int NWNX_Object_GetPlaceableAppearance(object plac)
+int NWNX_Object_GetAppearance(object obj)
 {
-    string sFunc = "GetPlaceableAppearance";
+    string sFunc = "GetAppearance";
 
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, plac);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);

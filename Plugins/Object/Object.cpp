@@ -71,8 +71,8 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(Serialize);
     REGISTER(Deserialize);
     REGISTER(GetDialogResref);
-    REGISTER(SetPlaceableAppearance);
-    REGISTER(GetPlaceableAppearance);   
+    REGISTER(SetAppearance);
+    REGISTER(GetAppearance);   
 
 #undef REGISTER
 }
@@ -391,7 +391,7 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
 }
 
 
-ArgumentStack Object::GetPlaceableAppearance(ArgumentStack&& args)
+ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 {	  
     ArgumentStack stack;
     int32_t retval = 0;
@@ -407,7 +407,7 @@ ArgumentStack Object::GetPlaceableAppearance(ArgumentStack&& args)
    return stack;
 }     
    
-ArgumentStack Object::SetPlaceableAppearance(ArgumentStack&& args)
+ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 {	
    ArgumentStack stack;
    if (auto *pObject = object(args))
