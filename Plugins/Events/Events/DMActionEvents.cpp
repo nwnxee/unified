@@ -34,7 +34,8 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
     // unused variabes
     (void)(sizeof(thisPtr) & sizeof(bGroup));
 
-    const char *suffix = (type == Services::Hooks::CallType::BEFORE_ORIGINAL) ? "_BEFORE" : "_AFTER";
+    const bool before = (type == Services::Hooks::CallType::BEFORE_ORIGINAL);
+    const char *suffix = before ? "_BEFORE" : "_AFTER";
     std::string event = "NWNX_ON_";
 
     Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
@@ -114,20 +115,47 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             event += "JUMP_TO_POINT";
             break;
         case 0x60:
+        {
             event += "GIVE_XP";
-            Events::PushEventData("AMOUNT", std::to_string(PeekMessage<int32_t>(thisPtr, 0)));
-            Events::PushEventData("TARGET", Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4)));
+            static std::string amount;
+            static std::string target;
+            if (before) // Need to persist for AFTER as well
+            {
+                amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+                target = Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+            }
+            Events::PushEventData("AMOUNT", amount);
+            Events::PushEventData("TARGET", target);
             break;
+        }
         case 0x61:
-            Events::PushEventData("NUM_LEVELS", std::to_string(PeekMessage<int32_t>(thisPtr, 0)));
-            Events::PushEventData("TARGET", Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4)));
+        {
             event += "GIVE_LEVEL";
+            static std::string numLevels;
+            static std::string target;
+            if (before) // Need to persist for AFTER as well
+            {
+                numLevels = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+                target = Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+            }
+            Events::PushEventData("NUM_LEVELS", numLevels);
+            Events::PushEventData("TARGET", target);
             break;
+        }
         case 0x62:
+        {
             event += "GIVE_GOLD";
-            Events::PushEventData("AMOUNT", std::to_string(PeekMessage<int32_t>(thisPtr, 0)));
-            Events::PushEventData("TARGET", Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4)));
+            static std::string amount;
+            static std::string target;
+            if (before) // Need to persist for AFTER as well
+            {
+                amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+                target = Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+            }
+            Events::PushEventData("AMOUNT", amount);
+            Events::PushEventData("TARGET", target);
             break;
+        }
         case 0x63:
         case 0x64: // Not a typo.
             event += "SET_FACTION";
