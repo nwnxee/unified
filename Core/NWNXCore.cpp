@@ -64,6 +64,10 @@ NWNXCore::NWNXCore()
 {
     g_core = this;
 
+    // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
+    // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
+    // crash before the version check happens.
+
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 
@@ -156,18 +160,20 @@ void NWNXCore::InitialVersionCheck()
     if (buildNumberAddr)
     {
         API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
-        LOG_INFO("Server is running version %s.", versionAsStr->m_sString);
-
         const uint32_t version = std::stoul(versionAsStr->m_sString);
 
         if (version != NWNX_TARGET_NWN_BUILD)
         {
-            throw std::runtime_error("Core version mismatch -- has the server updated?");
+            std::fprintf(stderr, "NWNX: Expected build version %u, got build version %u", NWNX_TARGET_NWN_BUILD, version);
+            std::fflush(stderr);
+            std::abort();
         }
     }
     else
     {
-        throw std::runtime_error("Unable to resolve GetBuildNumber from the NWN binary. Old version?");
+        std::fprintf(stderr, "NWNX: Could not determine build version.");
+        std::fflush(stderr);
+        std::abort();
     }
 }
 
@@ -328,6 +334,8 @@ API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API
 
 void NWNXCore::CreateServerHandler(API::CAppManager* app)
 {
+    g_core->InitialVersionCheck();
+
     g_core->m_services = g_core->ConstructCoreServices();
     g_core->m_coreServices = g_core->ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
 
@@ -337,18 +345,18 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
         LOG_INFO("Not loading NWNX due to configuration.");
-        return;
     }
-
-    try
+    else
     {
-        g_core->InitialSetupHooks();
-        g_core->InitialVersionCheck();
-        g_core->InitialSetupPlugins();
-    }
-    catch (const std::runtime_error& ex)
-    {
-        LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        try
+        {
+            g_core->InitialSetupHooks();
+            g_core->InitialSetupPlugins();
+        }
+        catch (const std::runtime_error& ex)
+        {
+            LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        }
     }
 
     g_core->m_createServerHook.reset();
