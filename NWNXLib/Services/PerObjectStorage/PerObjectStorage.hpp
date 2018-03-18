@@ -61,7 +61,7 @@ private:
         std::unique_ptr<PointerMap> m_PointerMap;
     };
 
-    static std::unordered_map<API::Types::ObjectID, std::unique_ptr<ObjectStorage>> m_objectStorage;
+    static std::unordered_map<API::Types::ObjectID, std::unique_ptr<ObjectStorage>> g_objectStorage;
 };
 
 class PerObjectStorageProxy : public ServiceProxy<PerObjectStorage>

@@ -5,6 +5,7 @@ namespace NWNXLib {
 
 namespace Services {
 
+std::unordered_map<API::Types::ObjectID, std::unique_ptr<PerObjectStorage::ObjectStorage>> PerObjectStorage::g_objectStorage;
 
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, int value)
 {
@@ -12,7 +13,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, int val
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    m_objectStorage[object]->GetIntMap().emplace(key, value);
+    g_objectStorage[object]->GetIntMap().emplace(key, value);
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, float value)
 {
@@ -20,7 +21,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, float v
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    m_objectStorage[object]->GetFloatMap().emplace(key, value);
+    g_objectStorage[object]->GetFloatMap().emplace(key, value);
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, std::string value)
 {
@@ -28,7 +29,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, std::st
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    m_objectStorage[object]->GetStringMap().emplace(key, value);
+    g_objectStorage[object]->GetStringMap().emplace(key, value);
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, void *value, CleanupFunc cleanup)
 {
@@ -36,15 +37,15 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, void *v
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    m_objectStorage[object]->GetPointerMap().emplace(key, std::make_pair<>(value, cleanup));
+    g_objectStorage[object]->GetPointerMap().emplace(key, std::make_pair<>(value, cleanup));
 }
 
 
 
 void PerObjectStorage::Remove(API::Types::ObjectID object, std::string key)
 {
-    auto it = m_objectStorage.find(object);
-    if (it != m_objectStorage.end())
+    auto it = g_objectStorage.find(object);
+    if (it != g_objectStorage.end())
     {
         it->second->GetStringMap().erase(key);
         it->second->GetIntMap().erase(key);
@@ -144,8 +145,8 @@ template <> Maybe<void*> PerObjectStorage::Get<void*>(API::Types::ObjectID objec
 
 template <> Maybe<int> PerObjectStorage::Get<int>(API::Types::ObjectID object, std::string key)
 {
-    auto it = m_objectStorage.find(object);
-    if (it != m_objectStorage.end())
+    auto it = g_objectStorage.find(object);
+    if (it != g_objectStorage.end())
     {
         auto map = it->second->GetIntMap();
         auto it2 = map.find(key);
@@ -156,8 +157,8 @@ template <> Maybe<int> PerObjectStorage::Get<int>(API::Types::ObjectID object, s
 }
 template <> Maybe<float> PerObjectStorage::Get<float>(API::Types::ObjectID object, std::string key)
 {
-    auto it = m_objectStorage.find(object);
-    if (it != m_objectStorage.end())
+    auto it = g_objectStorage.find(object);
+    if (it != g_objectStorage.end())
     {
         auto map = it->second->GetFloatMap();
         auto it2 = map.find(key);
@@ -168,8 +169,8 @@ template <> Maybe<float> PerObjectStorage::Get<float>(API::Types::ObjectID objec
 }
 template <> Maybe<std::string> PerObjectStorage::Get<std::string>(API::Types::ObjectID object, std::string key)
 {
-    auto it = m_objectStorage.find(object);
-    if (it != m_objectStorage.end())
+    auto it = g_objectStorage.find(object);
+    if (it != g_objectStorage.end())
     {
         auto map = it->second->GetStringMap();
         auto it2 = map.find(key);
@@ -181,8 +182,8 @@ template <> Maybe<std::string> PerObjectStorage::Get<std::string>(API::Types::Ob
 
 template <> Maybe<void*> PerObjectStorage::Get<void*>(API::Types::ObjectID object, std::string key)
 {
-    auto it = m_objectStorage.find(object);
-    if (it != m_objectStorage.end())
+    auto it = g_objectStorage.find(object);
+    if (it != g_objectStorage.end())
     {
         auto map = it->second->GetPointerMap();
         auto it2 = map.find(key);
@@ -197,7 +198,7 @@ void PerObjectStorage::CGameObject_dtor_hook(Services::Hooks::CallType type, API
     if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
         return;
 
-    m_objectStorage.erase(thisPtr->m_idSelf);
+    g_objectStorage.erase(thisPtr->m_idSelf);
 }
 
 
