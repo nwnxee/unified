@@ -16,20 +16,22 @@ public:
     virtual ~Object();
 
 private:
-    ArgumentStack GetLocalVariableCount(ArgumentStack&& args);
-    ArgumentStack GetLocalVariable     (ArgumentStack&& args);
-    ArgumentStack StringToObject       (ArgumentStack&& args);
-    ArgumentStack GetEventHandler      (ArgumentStack&& args);
-    ArgumentStack SetEventHandler      (ArgumentStack&& args);
-    ArgumentStack SetPosition          (ArgumentStack&& args);
-    ArgumentStack SetCurrentHitPoints  (ArgumentStack&& args);
-    ArgumentStack SetMaxHitPoints      (ArgumentStack&& args);
-    ArgumentStack GetPortrait          (ArgumentStack&& args);
-    ArgumentStack SetPortrait          (ArgumentStack&& args);
-    ArgumentStack Serialize            (ArgumentStack&& args);
-    ArgumentStack Deserialize          (ArgumentStack&& args);
-    ArgumentStack GetDialogResref      (ArgumentStack&& args);
-
+    ArgumentStack GetLocalVariableCount (ArgumentStack&& args);
+    ArgumentStack GetLocalVariable      (ArgumentStack&& args);
+    ArgumentStack StringToObject        (ArgumentStack&& args);
+    ArgumentStack GetEventHandler       (ArgumentStack&& args);
+    ArgumentStack SetEventHandler       (ArgumentStack&& args);
+    ArgumentStack SetPosition           (ArgumentStack&& args);
+    ArgumentStack SetCurrentHitPoints   (ArgumentStack&& args);
+    ArgumentStack SetMaxHitPoints       (ArgumentStack&& args);
+    ArgumentStack GetPortrait           (ArgumentStack&& args);
+    ArgumentStack SetPortrait           (ArgumentStack&& args);
+    ArgumentStack Serialize             (ArgumentStack&& args);
+    ArgumentStack Deserialize           (ArgumentStack&& args);
+    ArgumentStack GetDialogResref       (ArgumentStack&& args);
+    ArgumentStack SetPlaceableAppearance(ArgumentStack&& args);   
+    ArgumentStack GetPlaceableAppearance(ArgumentStack&& args);   
+   
     NWNXLib::API::CNWSObject *object(ArgumentStack& args);
 
 };

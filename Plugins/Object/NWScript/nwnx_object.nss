@@ -109,6 +109,14 @@ object NWNX_Object_Deserialize(string serialized);
 // Returns the dialog resref of the object.
 string NWNX_Object_GetDialogResref(object obj);
 
+// Set plac's appearance. Will not update for PCs until they
+// re-enter the area.
+void NWNX_Object_SetPlaceableAppearance(object plac, int app);
+
+// Get plac's appearance
+int NWNX_Object_GetPlaceableAppearance(object plac);
+
+
 const string NWNX_Object = "NWNX_Object";
 
 
@@ -248,4 +256,24 @@ string NWNX_Object_GetDialogResref(object obj)
 
     NWNX_CallFunction(NWNX_Object, sFunc);
     return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetPlaceableAppearance(object plac, int app)
+{
+    string sFunc = "SetPlaceableAppearance";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, app);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, plac);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetPlaceableAppearance(object plac)
+{
+    string sFunc = "GetPlaceableAppearance";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, plac);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
