@@ -208,7 +208,7 @@ template <> Maybe<void*> PerObjectStorage::Get<void*>(API::Types::ObjectID objec
 void PerObjectStorage::CGameObjectArray__Delete__1_hook(Services::Hooks::CallType type, API::CGameObjectArray* thisPtr, uint32_t id, API::CGameObject **ptr)
 {
     // unreferenced variables
-    (void)(sizeof(thisPtr), sizeof(ptr));
+    (void)(sizeof(thisPtr) & sizeof(ptr));
 
     if (type != Services::Hooks::CallType::AFTER_ORIGINAL)
         return;

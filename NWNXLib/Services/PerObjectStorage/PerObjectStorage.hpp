@@ -54,7 +54,7 @@ private:
 
         ObjectStorage(API::Types::ObjectID owner);
         ~ObjectStorage();
-    private:
+
         API::Types::ObjectID        m_oidOwner;
         std::unique_ptr<IntMap>     m_IntMap;
         std::unique_ptr<FloatMap>   m_FloatMap;
