@@ -22,10 +22,13 @@ DMActionEvents::DMActionEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> h
         CNWSMessage*, CNWSPlayer*, uint8_t, int32_t>(&HandleDMMessageHook);
 }
 template <typename T>
-static T& PeekMessage(CNWSMessage *pMessage, int32_t offset)
+static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
 {
+    static_assert(std::is_pod<T>::value);
+    T value;
     uint8_t *ptr = pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset;
-    return *(T*)ptr;
+    std::memcpy(&value, ptr, sizeof(T));
+    return value;
 }
 
 void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
