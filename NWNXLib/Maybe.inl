@@ -5,7 +5,7 @@ Maybe<T>::Maybe()
 
 template <typename T>
 Maybe<T>::Maybe(T&& data)
-    : m_hasValue(true), m_data(data)
+    : m_hasValue(true), m_data(std::forward<T>(data))
 { }
 
 template <typename T>
