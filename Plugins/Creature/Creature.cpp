@@ -106,7 +106,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetSkillPointsRemaining);
     REGISTER(SetSkillPointsRemaining);
     REGISTER(SetRacialType);
-   
+
 #undef REGISTER
 }
 
@@ -918,8 +918,8 @@ ArgumentStack Creature::SetClericDomain(ArgumentStack&& args)
         ASSERT(index >= 1);
         ASSERT(index <= 2);
         const auto domain = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT(school <= 255);
-        ASSERT(school >= 0);
+        ASSERT(domain <= 255);
+        ASSERT(domain >= 0);
 
         for (int32_t i = 0; i < 3; i++)
         {
