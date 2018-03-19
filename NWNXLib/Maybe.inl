@@ -4,6 +4,11 @@ Maybe<T>::Maybe()
 { }
 
 template <typename T>
+Maybe<T>::Maybe(T const& data)
+    : m_hasValue(true), m_data(data)
+{ }
+
+template <typename T>
 Maybe<T>::Maybe(T&& data)
     : m_hasValue(true), m_data(std::forward<T>(data))
 { }
