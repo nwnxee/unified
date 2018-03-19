@@ -71,6 +71,8 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(Serialize);
     REGISTER(Deserialize);
     REGISTER(GetDialogResref);
+    REGISTER(SetAppearance);
+    REGISTER(GetAppearance);   
 
 #undef REGISTER
 }
@@ -387,4 +389,37 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, retval);
     return stack;
 }
+
+
+ArgumentStack Object::GetAppearance(ArgumentStack&& args)
+{	  
+    ArgumentStack stack;
+    int32_t retval = 0;
+    if (auto *pObject = object(args))
+    {	       
+        if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
+	{
+	   retval = static_cast<CNWSPlaceable*>(pObject)->m_nAppearance;
+	}
+    }
+   
+   Services::Events::InsertArgument(stack, retval);
+   return stack;
+}     
+   
+ArgumentStack Object::SetAppearance(ArgumentStack&& args)
+{	
+   ArgumentStack stack;
+   if (auto *pObject = object(args))
+   {
+       const auto app = Services::Events::ExtractArgument<int32_t>(args);  ASSERT(app <= 65535);
+       if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
+       {		  
+           static_cast<CNWSPlaceable*>(pObject)->m_nAppearance=app;
+       }
+	     
+   }	
+   return stack;
+}
+   
 }
