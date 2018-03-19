@@ -76,10 +76,12 @@ object NWNX_Object_StringToObject(string id);
 
 // Gets the provided event handler for the provided object.
 // The constant used here will very depending on what type obj is. See NWNX_OBJECT_SCRIPT_* constants.
+// DEPRECATED - Use GetEventScript() built-in function instead
 string NWNX_Object_GetEventHandler(object obj, int handler);
 
 // Sets the provided event handler for the provided object to the provided script.
 // The constant used here will very depending on what type obj is. See NWNX_OBJECT_SCRIPT_* constants.
+// DEPRECATED - Use SetEventScript() built-in function instead
 void NWNX_Object_SetEventHandler(object obj, int handler, string script);
 
 // Set the provided object's position to the provided vector.
@@ -147,24 +149,48 @@ object NWNX_Object_StringToObject(string id)
 
 string NWNX_Object_GetEventHandler(object obj, int handler)
 {
-    string sFunc = "GetEventHandler";
-
-    NWNX_PushArgumentInt(NWNX_Object, sFunc, handler);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
-    NWNX_CallFunction(NWNX_Object, sFunc);
-
-    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+    WriteTimestampedLogEntry("NWNX_Object: GetEventHandler() is deprecated. Use native GetEventScript() instead");
+    switch (GetObjectType(obj))
+    {
+        case OBJECT_TYPE_CREATURE:       handler += 5000;  break;
+        case OBJECT_TYPE_TRIGGER:        handler += 7000;  break;
+        case OBJECT_TYPE_DOOR:           handler += 10000; break;
+        case OBJECT_TYPE_AREA_OF_EFFECT: handler += 11000; break;
+        case OBJECT_TYPE_PLACEABLE:      handler += 9000;  break;
+        case OBJECT_TYPE_STORE:          handler += 14000; break;
+        case OBJECT_TYPE_ENCOUNTER:      handler += 13000; break;
+        default:
+            if (obj == GetModule())
+                handler += 3000;
+            else if (GetIsAreaNatural(obj) != AREA_INVALID)
+                handler += 4000;
+            else
+                return "";
+    }
+    return GetEventScript(obj, handler);
 }
 
 void NWNX_Object_SetEventHandler(object obj, int handler, string script)
 {
-    string sFunc = "SetEventHandler";
-
-    NWNX_PushArgumentString(NWNX_Object, sFunc, script);
-    NWNX_PushArgumentInt(NWNX_Object, sFunc, handler);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
-    NWNX_CallFunction(NWNX_Object, sFunc);
-
+    WriteTimestampedLogEntry("NWNX_Object: SetEventHandler() is deprecated. Use native SetEventScript() instead");
+    switch (GetObjectType(obj))
+    {
+        case OBJECT_TYPE_CREATURE:       handler += 5000;  break;
+        case OBJECT_TYPE_TRIGGER:        handler += 7000;  break;
+        case OBJECT_TYPE_DOOR:           handler += 10000; break;
+        case OBJECT_TYPE_AREA_OF_EFFECT: handler += 11000; break;
+        case OBJECT_TYPE_PLACEABLE:      handler += 9000;  break;
+        case OBJECT_TYPE_STORE:          handler += 14000; break;
+        case OBJECT_TYPE_ENCOUNTER:      handler += 13000; break;
+        default:
+            if (obj == GetModule())
+                handler += 3000;
+            else if (GetIsAreaNatural(obj) != AREA_INVALID)
+                handler += 4000;
+            else
+                return;
+    }
+    SetEventScript(obj, handler, script);
 }
 
 void NWNX_Object_SetPosition(object obj, vector pos)
