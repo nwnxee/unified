@@ -57,6 +57,13 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER("SET_DM_PASSWORD",               OnSetDMPassword);
     REGISTER("SHUTDOWN_SERVER",               OnShutdownServer);
     REGISTER("DELETE_PLAYER_CHARACTER",       OnDeletePlayerCharacter);
+    REGISTER("ADD_BANNED_IP",                 OnAddBannedIP);
+    REGISTER("REMOVE_BANNED_IP",              OnRemoveBannedIP);
+    REGISTER("ADD_BANNED_CDKEY",              OnAddBannedCDKey);
+    REGISTER("REMOVE_BANNED_CDKEY",           OnRemoveBannedCDKey);
+    REGISTER("ADD_BANNED_PLAYER_NAME",        OnAddBannedPlayerName);
+    REGISTER("REMOVE_BANNED_PLAYER_NAME",     OnRemoveBannedPlayerName);
+    REGISTER("GET_BANNED_LIST",               OnGetBannedList);
 
 #undef REGISTER
 }
@@ -155,5 +162,64 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
     }
     return Events::ArgumentStack();
 }
+
+Events::ArgumentStack Administration::OnAddBannedIP(Events::ArgumentStack&& args)
+{
+    const auto ip = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Banning IP %s", ip.c_str());
+    Globals::AppManager()->m_pServerExoApp->AddIPToBannedList(ip.c_str());
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnRemoveBannedIP(Events::ArgumentStack&& args)
+{
+    const auto ip = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Unbanning IP %s", ip.c_str());
+    Globals::AppManager()->m_pServerExoApp->RemoveIPFromBannedList(ip.c_str());
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnAddBannedCDKey(Events::ArgumentStack&& args)
+{
+    const auto key = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Banning CDKey %s", key.c_str());
+    Globals::AppManager()->m_pServerExoApp->AddCDKeyToBannedList(key.c_str());
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnRemoveBannedCDKey(Events::ArgumentStack&& args)
+{
+    const auto key = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Unbanning CDKey %s", key.c_str());
+    Globals::AppManager()->m_pServerExoApp->RemoveCDKeyFromBannedList(key.c_str());
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnAddBannedPlayerName(Events::ArgumentStack&& args)
+{
+    const auto playername = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Banning Player name %s", playername.c_str());
+    Globals::AppManager()->m_pServerExoApp->AddPlayerNameToBannedList(playername.c_str());
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnRemoveBannedPlayerName(Events::ArgumentStack&& args)
+{
+    const auto playername = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Unbanning Player name %s", playername.c_str());
+    Globals::AppManager()->m_pServerExoApp->RemovePlayerNameFromBannedList(playername.c_str());
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnGetBannedList(Events::ArgumentStack&&)
+{
+    Events::ArgumentStack stack;
+
+    std::string list = Globals::AppManager()->m_pServerExoApp->GetBannedListString().CStr();
+    Events::InsertArgument(stack, list);
+    return stack;
+}
+
+
 
 }
