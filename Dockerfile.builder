@@ -20,6 +20,7 @@ RUN apt-get install -y ruby-dev
 # NWNX_JVM
 RUN mkdir -p /usr/share/man/man1
 RUN apt-get install -y openjdk-8-jdk-headless
+RUN apt-get install -y ant
 
 # slim down the image again.
 RUN rm -r /var/lib/apt/lists /var/cache/apt

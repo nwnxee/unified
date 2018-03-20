@@ -14,8 +14,9 @@ jobs:
       - run: CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
       - run: make all
       - run: Scripts/packageNWScript.sh
-      - run: zip Binaries/NWNX-EE.zip Binaries/NWNX_*.so
-      - run: rm Binaries/NWNX_*.so
+      - run: Scripts/packageJarFile.sh
+      - run: zip Binaries/NWNX-EE.zip Binaries/NWNX_*.so Binaries/*.jar
+      - run: rm Binaries/NWNX_*.so Binaries/*.jar
       - persist_to_workspace:
           root: .
           paths:
