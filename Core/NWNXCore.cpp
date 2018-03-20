@@ -344,10 +344,12 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
     if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
-        LOG_INFO("Not loading NWNX due to configuration.");
+        LOG_NOTICE("Not loading NWNX due to configuration.");
     }
     else
     {
+        LOG_NOTICE("Loading NWNX.");
+
         try
         {
             g_core->InitialSetupHooks();
@@ -365,6 +367,7 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
 void NWNXCore::DestroyServerHandler(API::CAppManager* app)
 {
+    LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();
 
     // At this point, the hook has been reset. We should call the original again to let NWN carry on.
