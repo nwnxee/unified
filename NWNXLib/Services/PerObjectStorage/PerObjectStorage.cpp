@@ -163,7 +163,7 @@ template <> Maybe<int> PerObjectStorage::Get<int>(API::Types::ObjectID object, s
         auto map = it->second->GetIntMap();
         auto it2 = map.find(key);
         if (it2 != map.end())
-            return Maybe<int>(std::move(it2->second));
+            return Maybe<int>(it2->second);
     }
     return Maybe<int>();
 }
@@ -175,7 +175,7 @@ template <> Maybe<float> PerObjectStorage::Get<float>(API::Types::ObjectID objec
         auto map = it->second->GetFloatMap();
         auto it2 = map.find(key);
         if (it2 != map.end())
-            return Maybe<float>(std::move(it2->second));
+            return Maybe<float>(it2->second);
     }
     return Maybe<float>();
 }
@@ -187,7 +187,7 @@ template <> Maybe<std::string> PerObjectStorage::Get<std::string>(API::Types::Ob
         auto map = it->second->GetStringMap();
         auto it2 = map.find(key);
         if (it2 != map.end())
-            return Maybe<std::string>(std::move(it2->second));
+            return Maybe<std::string>(it2->second);
     }
     return Maybe<std::string>();
 }
@@ -200,7 +200,7 @@ template <> Maybe<void*> PerObjectStorage::Get<void*>(API::Types::ObjectID objec
         auto map = it->second->GetPointerMap();
         auto it2 = map.find(key);
         if (it2 != map.end())
-            return Maybe<void*>(std::move(it2->second.first));
+            return Maybe<void*>(it2->second.first);
     }
     return Maybe<void*>();
 }
