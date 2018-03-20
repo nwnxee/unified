@@ -21,6 +21,7 @@ struct ServiceList
     std::unique_ptr<Patching> m_patching;
     std::unique_ptr<Config> m_config;
     std::unique_ptr<Messaging> m_messaging;
+    std::unique_ptr<PerObjectStorage> m_perObjectStorage;
 };
 
 // Contains proxies through which the services should be accessed.
@@ -34,6 +35,7 @@ struct ProxyServiceList
     std::unique_ptr<PatchingProxy> m_patching;
     std::unique_ptr<ConfigProxy> m_config;
     std::unique_ptr<MessagingProxy> m_messaging;
+    std::unique_ptr<PerObjectStorageProxy> m_perObjectStorage;
 };
 
 struct ServiceBase
