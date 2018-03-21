@@ -228,12 +228,12 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
         if (m_target->GetAffectedRows() >= 0)
         {
             // this was not a result set type query
-            LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Rows affected: '%u'.",
+            LOG_DEBUG("Successful SQL query. Query ID: '%i', Query: '%s', Rows affected: '%u'.",
                 queryId, m_activeQuery.c_str(), m_target->GetAffectedRows());
         }
         else
         {
-            LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
+            LOG_DEBUG("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
                 queryId, m_activeQuery.c_str(), m_activeResults.size());
         }
     }
