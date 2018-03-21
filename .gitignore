@@ -5,6 +5,7 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
+cmake-build-debug
 
 *.d
 *.slo
