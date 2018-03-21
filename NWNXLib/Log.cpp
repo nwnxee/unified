@@ -91,7 +91,7 @@ Channel::Enum GetLogLevel(const char* plugin)
 {
     // TODO: Is this thread safe? I think so if we're just looking up but I don't know.
     auto entry = s_LogLevelMap.find(plugin);
-    return entry == std::end(s_LogLevelMap) ? Channel::SEV_NOTICE : entry->second;
+    return entry == std::end(s_LogLevelMap) ? Channel::SEV_INFO : entry->second;
 }
 
 void SetLogLevel(const char* plugin, Channel::Enum logLevel)
