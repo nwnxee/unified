@@ -262,6 +262,7 @@
 #include "CWorldJournalEntry.cpp"
 #include "CWorldTimer.cpp"
 #include "ICrashReporter.cpp"
+#include "ListTemplatedCExoString.cpp"
 #include "Matrix.cpp"
 #include "Plane.cpp"
 #include "Quaternion.cpp"
@@ -654,6 +655,7 @@
 #include "stat.cpp"
 #include "statfs.cpp"
 #include "static_tree_desc_s.cpp"
+#include "SteamParamStringArray_t.cpp"
 #include "SteamUGCDetails_t.cpp"
 #include "SteamUGCQueryCompleted_t.cpp"
 #include "SteamUGCRequestUGCDetailsResult_t.cpp"
@@ -839,7 +841,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CExoRand), 4> __attribute__((unused)) SIZE_CHECK_CEXORAND;
     CheckSize<sizeof(NWNXLib::API::CExoRandInternal), 144> __attribute__((unused)) SIZE_CHECK_CEXORANDINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CExoResFile), 56> __attribute__((unused)) SIZE_CHECK_CEXORESFILE;
-    CheckSize<sizeof(NWNXLib::API::CExoResMan), 68> __attribute__((unused)) SIZE_CHECK_CEXORESMAN;
+    CheckSize<sizeof(NWNXLib::API::CExoResMan), 72> __attribute__((unused)) SIZE_CHECK_CEXORESMAN;
     CheckSize<sizeof(NWNXLib::API::CExoResourceImageFile), 52> __attribute__((unused)) SIZE_CHECK_CEXORESOURCEIMAGEFILE;
     CheckSize<sizeof(NWNXLib::API::CExoString), 8> __attribute__((unused)) SIZE_CHECK_CEXOSTRING;
     CheckSize<sizeof(NWNXLib::API::CExoStringList), 20> __attribute__((unused)) SIZE_CHECK_CEXOSTRINGLIST;

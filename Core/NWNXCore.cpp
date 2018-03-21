@@ -13,6 +13,7 @@
 #include "Services/Patching/Patching.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 #include <cstring>
 
@@ -63,6 +64,10 @@ NWNXCore::NWNXCore()
 {
     g_core = this;
 
+    // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
+    // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
+    // crash before the version check happens.
+
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 
@@ -89,6 +94,7 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_patching = std::make_unique<Patching>();
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
+    services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
 
     return services;
 }
@@ -105,6 +111,7 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_patching = std::make_unique<Services::PatchingProxy>(*m_services->m_patching);
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
+    proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
 
@@ -140,6 +147,8 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);
 
+    m_services->m_hooks->RequestSharedHook<API::Functions::CGameObjectArray__Delete__1, void>(&Services::PerObjectStorage::CGameObjectArray__Delete__1_hook);
+
     g_setStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__SetString);
     g_getStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetString);
     g_getObjectHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetObject);
@@ -151,18 +160,20 @@ void NWNXCore::InitialVersionCheck()
     if (buildNumberAddr)
     {
         API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
-        LOG_INFO("Server is running version %s.", versionAsStr->m_sString);
-
         const uint32_t version = std::stoul(versionAsStr->m_sString);
 
         if (version != NWNX_TARGET_NWN_BUILD)
         {
-            throw std::runtime_error("Core version mismatch -- has the server updated?");
+            std::fprintf(stderr, "NWNX: Expected build version %u, got build version %u", NWNX_TARGET_NWN_BUILD, version);
+            std::fflush(stderr);
+            std::abort();
         }
     }
     else
     {
-        throw std::runtime_error("Unable to resolve GetBuildNumber from the NWN binary. Old version?");
+        std::fprintf(stderr, "NWNX: Could not determine build version.");
+        std::fflush(stderr);
+        std::abort();
     }
 }
 
@@ -323,6 +334,8 @@ API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API
 
 void NWNXCore::CreateServerHandler(API::CAppManager* app)
 {
+    g_core->InitialVersionCheck();
+
     g_core->m_services = g_core->ConstructCoreServices();
     g_core->m_coreServices = g_core->ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
 
@@ -331,19 +344,21 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
     if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
-        LOG_INFO("Not loading NWNX due to configuration.");
-        return;
+        LOG_NOTICE("Not loading NWNX due to configuration.");
     }
+    else
+    {
+        LOG_NOTICE("Loading NWNX.");
 
-    try
-    {
-        g_core->InitialSetupHooks();
-        g_core->InitialVersionCheck();
-        g_core->InitialSetupPlugins();
-    }
-    catch (const std::runtime_error& ex)
-    {
-        LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        try
+        {
+            g_core->InitialSetupHooks();
+            g_core->InitialSetupPlugins();
+        }
+        catch (const std::runtime_error& ex)
+        {
+            LOG_FATAL("The server encountered a fatal error '%s' during setup and must now terminate.", ex.what());
+        }
     }
 
     g_core->m_createServerHook.reset();
@@ -352,6 +367,7 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
 void NWNXCore::DestroyServerHandler(API::CAppManager* app)
 {
+    LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();
 
     // At this point, the hook has been reset. We should call the original again to let NWN carry on.

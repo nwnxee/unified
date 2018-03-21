@@ -51,6 +51,8 @@ private:
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
+    ArgumentStack GetClericDomain               (ArgumentStack&& args);
+    ArgumentStack SetClericDomain               (ArgumentStack&& args);
     ArgumentStack GetWizardSpecialization       (ArgumentStack&& args);
     ArgumentStack SetWizardSpecialization       (ArgumentStack&& args);
     ArgumentStack GetSoundset                   (ArgumentStack&& args);
@@ -67,6 +69,7 @@ private:
     ArgumentStack SetSize                       (ArgumentStack&& args);
     ArgumentStack GetSkillPointsRemaining       (ArgumentStack&& args);
     ArgumentStack SetSkillPointsRemaining       (ArgumentStack&& args);
+    ArgumentStack SetRacialType                 (ArgumentStack&& args);
     ArgumentStack GetMovementType               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);

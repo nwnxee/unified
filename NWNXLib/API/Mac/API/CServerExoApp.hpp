@@ -187,6 +187,7 @@ struct CServerExoApp
     void SetAttackBonusLimit(int32_t);
     void SetAutoSavePending(int32_t);
     void SetDamageBonusLimit(int32_t);
+    int32_t SetDDCipherForModule(CExoString);
     void SetDebugMode(int32_t);
     void SetEndGamePending(int32_t);
     void SetEndGameString(CExoString&);
@@ -356,6 +357,7 @@ void CServerExoApp__SetApplicationIdsMatch(CServerExoApp* thisPtr, int32_t);
 void CServerExoApp__SetAttackBonusLimit(CServerExoApp* thisPtr, int32_t);
 void CServerExoApp__SetAutoSavePending(CServerExoApp* thisPtr, int32_t);
 void CServerExoApp__SetDamageBonusLimit(CServerExoApp* thisPtr, int32_t);
+int32_t CServerExoApp__SetDDCipherForModule(CServerExoApp* thisPtr, CExoString);
 void CServerExoApp__SetDebugMode(CServerExoApp* thisPtr, int32_t);
 void CServerExoApp__SetEndGamePending(CServerExoApp* thisPtr, int32_t);
 void CServerExoApp__SetEndGameString(CServerExoApp* thisPtr, CExoString&);

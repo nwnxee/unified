@@ -1,5 +1,6 @@
 #include "Log.hpp"
 #include "Assert.hpp"
+#include "Platform/FileSystem.hpp"
 
 #ifdef _WIN32
     #include "Windows.h"
@@ -47,13 +48,32 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     }
 
     char buffer[2048];
-    std::sprintf(buffer, "%s [%02d:%02d:%02d] [%s:%d] %s: %s\n",
+    std::sprintf(buffer, "%s [%02d:%02d:%02d] [%s:%d] %s: ",
             SEVERITY_NAMES[static_cast<size_t>(channel)],
             date.m_hour, date.m_minute, date.m_second,
-            filename, line, plugin, message);
+            filename, line, plugin);
 
-    std::printf(buffer);
+    std::printf("%s%s\n", buffer, message);
+
+    // Also write to a file - this could be done in a much nicer way but I just want to retain the old functionality
+    // for now. We can change this later if we want or need to.
+    using namespace Platform::FileSystem;
+
+    // TODO: This needs to grab the userdirectory and write it there. Doing this is not correct.
+    static std::string logPath = CombinePaths(CombinePaths(GetCurExecutablePath(), std::string("logs.0")), "nwnx.txt");
+
+    // TODO: Is this thread safe? This needs to be thread safe
+    FILE* logFile = std::fopen(logPath.c_str(), "a+");
+
+    if (logFile)
+    {
+        std::fprintf(logFile, "%s%s\n", buffer, message);
+        std::fclose(logFile);
+    }
+
     InternalOutputDebugString(buffer);
+    InternalOutputDebugString(message);
+    InternalOutputDebugString("\n");
 
     if (channel == Channel::SEV_FATAL)
     {
@@ -69,8 +89,9 @@ static std::unordered_map<std::string, Channel::Enum> s_LogLevelMap;
 
 Channel::Enum GetLogLevel(const char* plugin)
 {
+    // TODO: Is this thread safe? I think so if we're just looking up but I don't know.
     auto entry = s_LogLevelMap.find(plugin);
-    return entry == std::end(s_LogLevelMap) ? Channel::SEV_DEBUG : entry->second;
+    return entry == std::end(s_LogLevelMap) ? Channel::SEV_NOTICE : entry->second;
 }
 
 void SetLogLevel(const char* plugin, Channel::Enum logLevel)

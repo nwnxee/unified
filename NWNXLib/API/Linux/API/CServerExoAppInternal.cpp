@@ -569,6 +569,11 @@ int32_t CServerExoAppInternal::SendStartStallEvent(uint32_t a0)
     return CServerExoAppInternal__SendStartStallEvent(this, a0);
 }
 
+int32_t CServerExoAppInternal::SetDDCipherForModule(CExoString a0)
+{
+    return CServerExoAppInternal__SetDDCipherForModule(this, a0);
+}
+
 void CServerExoAppInternal::SetEstimatedSaveSize(const CExoString& a0, uint16_t a1)
 {
     return CServerExoAppInternal__SetEstimatedSaveSize(this, a0, a1);
@@ -1568,6 +1573,14 @@ int32_t CServerExoAppInternal__SendStartStallEvent(CServerExoAppInternal* thisPt
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CServerExoAppInternal*, uint32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__SendStartStallEvent);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
+int32_t CServerExoAppInternal__SetDDCipherForModule(CServerExoAppInternal* thisPtr, CExoString a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CServerExoAppInternal*, CExoString);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__SetDDCipherForModule);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
 }

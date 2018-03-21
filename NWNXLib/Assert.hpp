@@ -6,12 +6,7 @@ namespace NWNXLib {
 
 namespace Assert {
 
-#if TAR_RELEASE
-    #define ASSERT(condition) (void)0
-    #define ASSERT_MSG(condition, format, ...) (void)0
-    #define ASSERT_FAIL() (void)0
-    #define ASSERT_FAIL_MSG(format, ...) (void)0
-#else
+#if TAR_DEBUG
     #define ASSERT(condition) \
         do \
         { \
@@ -29,6 +24,11 @@ namespace Assert {
 
     #define ASSERT_FAIL_MSG(format, ...) \
         ::NWNXLib::Assert::Fail(nullptr, __FILE__, __LINE__, (format), ##__VA_ARGS__)
+#else
+    #define ASSERT(condition) (void)0
+    #define ASSERT_MSG(condition, format, ...) (void)0
+    #define ASSERT_FAIL() (void)0
+    #define ASSERT_FAIL_MSG(format, ...) (void)0
 #endif
 
 void Fail(const char* condition, const char* file, int line, const char* message);

@@ -283,7 +283,7 @@ int32_t CExoResMan::ServiceFromResFileRaw(CRes* a0, int32_t a1, char* a2)
     return CExoResMan__ServiceFromResFileRaw(this, a0, a1, a2);
 }
 
-int32_t CExoResMan::SetResObject(const CResRef& a0, uint16_t a1, CRes* a2)
+void CExoResMan::SetResObject(const CResRef& a0, uint16_t a1, CRes* a2)
 {
     return CExoResMan__SetResObject(this, a0, a1, a2);
 }
@@ -760,9 +760,9 @@ int32_t CExoResMan__ServiceFromResFileRaw(CExoResMan* thisPtr, CRes* a0, int32_t
     return func(thisPtr, a0, a1, a2);
 }
 
-int32_t CExoResMan__SetResObject(CExoResMan* thisPtr, const CResRef& a0, uint16_t a1, CRes* a2)
+void CExoResMan__SetResObject(CExoResMan* thisPtr, const CResRef& a0, uint16_t a1, CRes* a2)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoResMan*, const CResRef&, uint16_t, CRes*);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoResMan*, const CResRef&, uint16_t, CRes*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__SetResObject);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2);

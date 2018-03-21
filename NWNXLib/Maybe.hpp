@@ -9,6 +9,7 @@ class Maybe
 {
 public:
     explicit Maybe();
+    explicit Maybe(T const& data);
     explicit Maybe(T&& data);
 
     Maybe(Maybe<T>&& other) = default;

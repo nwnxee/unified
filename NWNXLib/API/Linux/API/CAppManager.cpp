@@ -72,6 +72,11 @@ unsigned char CAppManager::ReadProgressFromINI(unsigned char a0)
     return CAppManager__ReadProgressFromINI(this, a0);
 }
 
+int32_t CAppManager::SetDDCipherForModule(CExoString a0)
+{
+    return CAppManager__SetDDCipherForModule(this, a0);
+}
+
 void CAppManager::SetDungeonMasterEXERunning(int32_t a0)
 {
     return CAppManager__SetDungeonMasterEXERunning(this, a0);
@@ -179,6 +184,14 @@ unsigned char CAppManager__ReadProgressFromINI(CAppManager* thisPtr, unsigned ch
 {
     using FuncPtrType = unsigned char(__attribute__((cdecl)) *)(CAppManager*, unsigned char);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CAppManager__ReadProgressFromINI);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
+int32_t CAppManager__SetDDCipherForModule(CAppManager* thisPtr, CExoString a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CAppManager*, CExoString);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CAppManager__SetDDCipherForModule);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
 }

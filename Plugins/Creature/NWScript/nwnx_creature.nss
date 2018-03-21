@@ -16,6 +16,26 @@ const int NWNX_CREATURE_MOVEMENT_TYPE_RUN             = 2;
 const int NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP        = 3;
 const int NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
 
+const int NWNX_CREATURE_CLERIC_DOMAIN_AIR         = 0;
+const int NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL      = 1;
+const int NWNX_CREATURE_CLERIC_DOMAIN_DEATH       = 3;
+const int NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION = 4;
+const int NWNX_CREATURE_CLERIC_DOMAIN_EARTH       = 5;
+const int NWNX_CREATURE_CLERIC_DOMAIN_EVIL        = 6;
+const int NWNX_CREATURE_CLERIC_DOMAIN_FIRE        = 7;
+const int NWNX_CREATURE_CLERIC_DOMAIN_GOOD        = 8;
+const int NWNX_CREATURE_CLERIC_DOMAIN_HEALING     = 9;
+const int NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE   = 10;
+const int NWNX_CREATURE_CLERIC_DOMAIN_MAGIC       = 13;
+const int NWNX_CREATURE_CLERIC_DOMAIN_PLANT       = 14;
+const int NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION  = 15;
+const int NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH    = 16;
+const int NWNX_CREATURE_CLERIC_DOMAIN_SUN         = 17;
+const int NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL      = 18;
+const int NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY    = 19;
+const int NWNX_CREATURE_CLERIC_DOMAIN_WAR         = 20;
+const int NWNX_CREATURE_CLERIC_DOMAIN_WATER       = 21;
+
 struct NWNX_Creature_SpecialAbility
 {
     int id;
@@ -146,6 +166,12 @@ void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value);
 // Set creature's raw law/chaos alignment value.
 void NWNX_Creature_SetAlignmentLawChaos(object creature, int value);
 
+// Gets one of creature's cleric domains (either 1 or 2).
+int NWNX_Creature_GetClericDomain(object creature, int index);
+
+// Sets one of creature's cleric domains (either 1 or 2).
+void NWNX_Creature_SetClericDomain(object creature, int index, int domain);
+
 // Gets whether or not creature has a specialist school of wizardry.
 int NWNX_Creature_GetWizardSpecialization(object creature);
 
@@ -202,11 +228,11 @@ void NWNX_Creature_SetSize(object creature, int size);
 // Gets the creature's remaining unspent skill points
 int NWNX_Creature_GetSkillPointsRemaining(object creature);
 
-// sets the creature's remaining unspent skill points
+// Sets the creature's remaining unspent skill points
 void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
 
-// Returns true if the creature is currently running
-int NWNX_Creature_GetIsRunning(object creature);
+// Sets the creature's racial type 
+void NWNX_Creature_SetRacialType(object creature, int racialtype);
 
 // Returns the creature's current movement type (NWNX_CREATURE_MOVEMENT_TYPE_*)
 int NWNX_Creature_GetMovementType(object creature);
@@ -627,6 +653,28 @@ void NWNX_Creature_SetAlignmentLawChaos(object creature, int value)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
+int NWNX_Creature_GetClericDomain(object creature, int index)
+{
+    string sFunc = "GetClericDomain";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, index);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetClericDomain(object creature, int index, int domain)
+{
+    string sFunc = "SetClericDomain";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, domain);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, index);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}            
+
 int NWNX_Creature_GetWizardSpecialization(object creature)
 {
     string sFunc = "GetWizardSpecialization";
@@ -776,6 +824,15 @@ void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
+void NWNX_Creature_SetRacialType(object creature, int racialtype)
+{
+    string sFunc = "SetRacialType";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, racialtype);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
 int NWNX_Creature_GetMovementType(object creature)
 {
     string sFunc = "GetMovementType";
@@ -784,4 +841,3 @@ int NWNX_Creature_GetMovementType(object creature)
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
-

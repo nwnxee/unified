@@ -723,6 +723,11 @@ void CServerExoApp::SetDamageBonusLimit(int32_t a0)
     return CServerExoApp__SetDamageBonusLimit(this, a0);
 }
 
+int32_t CServerExoApp::SetDDCipherForModule(CExoString a0)
+{
+    return CServerExoApp__SetDDCipherForModule(this, a0);
+}
+
 void CServerExoApp::SetDebugMode(int32_t a0)
 {
     return CServerExoApp__SetDebugMode(this, a0);
@@ -1968,6 +1973,14 @@ void CServerExoApp__SetDamageBonusLimit(CServerExoApp* thisPtr, int32_t a0)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__SetDamageBonusLimit);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
+int32_t CServerExoApp__SetDDCipherForModule(CServerExoApp* thisPtr, CExoString a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CServerExoApp*, CExoString);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__SetDDCipherForModule);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
 }

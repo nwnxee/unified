@@ -81,8 +81,7 @@ Events::Events(const Plugin::CreateParams& params)
 
     if (GetServices()->m_config->Get<bool>("ENABLE_DM_ACTION_EVENTS", true))
     {
-        // TODO: Upgrade
-        //m_dmActionEvents = std::make_unique<DMActionEvents>(GetServices()->m_patching); Disabled for 8141 compat
+        m_dmActionEvents = std::make_unique<DMActionEvents>(GetServices()->m_hooks);
     }
 
     if (GetServices()->m_config->Get<bool>("ENABLE_EXAMINE_EVENTS", true))

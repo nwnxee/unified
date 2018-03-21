@@ -159,6 +159,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandEquipItem(int32_t, int32_t);
     int32_t ExecuteCommandEventActivateItem(int32_t, int32_t);
     int32_t ExecuteCommandEventConversation(int32_t, int32_t);
+    int32_t ExecuteCommandEventScriptManagement(int32_t, int32_t);
     int32_t ExecuteCommandEventSpellCastAt(int32_t, int32_t);
     int32_t ExecuteCommandEventUserDefined(int32_t, int32_t);
     int32_t ExecuteCommandExecuteScript(int32_t, int32_t);
@@ -773,6 +774,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandEndGame(CNWVirtualMachineComman
 int32_t CNWVirtualMachineCommands__ExecuteCommandEquipItem(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandEventActivateItem(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandEventConversation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandEventScriptManagement(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandEventSpellCastAt(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandEventUserDefined(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandExecuteScript(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);

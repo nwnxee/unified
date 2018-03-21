@@ -234,6 +234,7 @@ struct CServerExoAppInternal
     int32_t SendExitingStartNewModuleMessage(int32_t);
     int32_t SendHeartbeatToRelay();
     int32_t SendStartStallEvent(uint32_t);
+    int32_t SetDDCipherForModule(CExoString);
     void SetEstimatedSaveSize(const CExoString&, uint16_t);
     void SetGameSpyReporting(int32_t);
     int32_t SetNetworkAddressBan(uint32_t, CExoString, int32_t);
@@ -373,6 +374,7 @@ int32_t CServerExoAppInternal__SendEnteringStartNewModuleMessage(CServerExoAppIn
 int32_t CServerExoAppInternal__SendExitingStartNewModuleMessage(CServerExoAppInternal* thisPtr, int32_t);
 int32_t CServerExoAppInternal__SendHeartbeatToRelay(CServerExoAppInternal* thisPtr);
 int32_t CServerExoAppInternal__SendStartStallEvent(CServerExoAppInternal* thisPtr, uint32_t);
+int32_t CServerExoAppInternal__SetDDCipherForModule(CServerExoAppInternal* thisPtr, CExoString);
 void CServerExoAppInternal__SetEstimatedSaveSize(CServerExoAppInternal* thisPtr, const CExoString&, uint16_t);
 void CServerExoAppInternal__SetGameSpyReporting(CServerExoAppInternal* thisPtr, int32_t);
 int32_t CServerExoAppInternal__SetNetworkAddressBan(CServerExoAppInternal* thisPtr, uint32_t, CExoString, int32_t);
