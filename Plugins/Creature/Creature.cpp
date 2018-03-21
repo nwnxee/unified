@@ -1212,7 +1212,7 @@ ArgumentStack Creature::GetMovementType(ArgumentStack&& args)
         }
     }
     Services::Events::InsertArgument(stack, retval);
-
+    return stack;
 }
 
 }
