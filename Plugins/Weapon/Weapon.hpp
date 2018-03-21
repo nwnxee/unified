@@ -1,6 +1,6 @@
 #pragma once
 
-#include <unordered_map>
+#include <map>
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
@@ -26,7 +26,7 @@ private:
 
    static int32_t GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
       
-   std::unordered_map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
+   std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
 };
  
 }

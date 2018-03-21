@@ -21,7 +21,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
    return new Plugin::Info
      {
 	"Weapon",
-	  "Weaponsrealted functions",
+	  "Weapons related functions",
 	  "Bhaal",
 	  "marca.argentea at gmail.com",
 	  1,
@@ -65,38 +65,40 @@ ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
    const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
    
    if(w_bitem>0 && feat >0)
-     {
-	m_WeaponFocusMap.insert({w_bitem, feat});
-     }
+   {
+      m_WeaponFocusMap.insert({w_bitem, feat});
+   }
    
    return stack;
 }
 
 int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
 {
-   uint32_t feat=0;
+   int32_t feat=-1;
    Weapon& plugin = *g_plugin;
-     
+   
    
    if(pWeapon==nullptr) 
-     {
-	feat = plugin.m_WeaponFocusMap[Constants::BASE_ITEM_GLOVES];
-     }
+   {
+      auto w = plugin.m_WeaponFocusMap.find(Constants::BASE_ITEM_GLOVES);
+      feat =  (w == plugin.m_WeaponFocusMap.end()) ? -1 : w->second;
+   }
    else
-     {
-	feat = plugin.m_WeaponFocusMap[pWeapon->m_nBaseItem];
-     }
+   {
+      auto w = plugin.m_WeaponFocusMap.find(pWeapon->m_nBaseItem);
+      feat =  (w == plugin.m_WeaponFocusMap.end()) ? -1 : w->second;
+   }
    
    if (feat == Constants::FEAT_WEAPON_FOCUS_CREATURE && 
-       CNWSCreatureStats__HasFeat(pStats, Constants::FEAT_WEAPON_FOCUS_UNARMED_STRIKE))
-     {
-	return 1;
-     }
+       pStats->HasFeat(Constants::FEAT_WEAPON_FOCUS_UNARMED_STRIKE))
+   {
+      return 1;
+   }
    
-   if(feat>0)
-     {	
-	return 1;
-     }
+   if(feat>-1)
+   {	
+      return 1;
+   }
    
    return  plugin.m_GetWeaponFocusHook->CallOriginal<int32_t>(pStats, pWeapon);
 
