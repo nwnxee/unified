@@ -95,13 +95,8 @@ int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib:
       return 1;
    }
    
-   if(feat>-1)
-   {	
-      return 1;
-   }
    
-   return  plugin.m_GetWeaponFocusHook->CallOriginal<int32_t>(pStats, pWeapon);
-
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetWeaponFocusHook->CallOriginal<int32_t>(pStats, pWeapon)); 
 }
 
 }

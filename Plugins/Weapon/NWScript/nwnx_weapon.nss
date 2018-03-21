@@ -3,9 +3,9 @@
 const string NWNX_Weapon = "NWNX_Weapon";
 
 // Set nFeat as weapon focus feat for nBaseItem
-int NWNX_Weapon_SetWeaponFocusFeat (int nBaseItem, int nFeat);
+void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat);
 
-void NWNX_Item_SetWeight(int nBaseItem, int nFeat)
+void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
 {
     string sFunc = "SetWeaponFocusFeat";
     
