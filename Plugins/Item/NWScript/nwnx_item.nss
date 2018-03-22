@@ -46,7 +46,7 @@ void NWNX_Item_SetArmorColor(object oItem, int nIndex, int nColor);
 // Set a color value on a weapon. This will not be visible to PCs until
 // the item is refreshed for them (e.g. by logging out and back in).
 // nIndex: ITEM_APPR_WEAPON_COLOR_*
-// nColor range: 1-4
+// nColor range: 0-255
 void NWNX_Item_SetWeaponColor(object oItem, int nIndex, int nColor);
 
 // Set an appearance value on a weapon. This will not be visible to PCs until
