@@ -22,9 +22,13 @@ using namespace NWNXLib::Hooking;
 
 namespace {
 
-bool IsStringPrefixedWithNWNX(const API::CExoString* str)
+static const char NWNX_PREFIX[]        = "NWNXEE!";
+static const char NWNX_LEGACY_PREFIX[] = "NWNX!";
+
+bool CompareStringPrefix(const API::CExoString* str, const char *prefix)
 {
-    return str && str->m_sString && str->m_nBufferLength >= 5 && std::strncmp("NWNX!", str->m_sString, 5) == 0;
+    auto len = std::strlen(prefix);
+    return str && str->m_sString && str->m_nBufferLength >= len && std::strncmp(prefix, str->m_sString, len) == 0;
 }
 
 }
@@ -261,11 +265,16 @@ void NWNXCore::Shutdown()
 
 void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index, API::CExoString* value)
 {
-    if (IsStringPrefixedWithNWNX(index))
+    if (CompareStringPrefix(index, NWNX_PREFIX))
     {
-        std::string keyAsStr = std::string(index->m_sString + 5);
+        std::string keyAsStr = std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1);
         std::string valueAsStr = value->m_sString ? std::string(value->m_sString) : std::string("");
         return g_core->m_services->m_events->OnSetLocalString(std::move(keyAsStr), std::move(valueAsStr));
+    }
+    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
+    {
+        LOG_NOTICE("Legacy NWNX call detected: \"%s\" - ignored", index);
+        LOG_NOTICE("  This is likely due to legacy 1.69 code in the module, or you didn't recompile scripts including \"nwnx.nss\"");
     }
 
     g_setStringHook->CallOriginal<void>(thisPtr, index, value);
@@ -273,10 +282,15 @@ void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoStrin
 
 API::Types::ObjectID NWNXCore::GetObjectHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
 {
-    if (IsStringPrefixedWithNWNX(index))
+    if (CompareStringPrefix(index, NWNX_PREFIX))
     {
-        Maybe<API::Types::ObjectID> eventRet = g_core->m_services->m_events->OnGetLocalObject(std::string(index->m_sString + 5));
+        Maybe<API::Types::ObjectID> eventRet = g_core->m_services->m_events->OnGetLocalObject(std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1));
         return eventRet ? eventRet.Extract() : API::Constants::OBJECT_INVALID;
+    }
+    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
+    {
+        LOG_NOTICE("Legacy NWNX call detected: \"%s\" - ignored", index);
+        LOG_NOTICE("  This is likely due to legacy 1.69 code in the module, or you didn't recompile scripts including \"nwnx.nss\"");
     }
 
     return g_getObjectHook->CallOriginal<API::Types::ObjectID>(thisPtr, index);
@@ -284,11 +298,16 @@ API::Types::ObjectID NWNXCore::GetObjectHandler(API::CNWSScriptVarTable* thisPtr
 
 API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
 {
-    if (IsStringPrefixedWithNWNX(index))
+    if (CompareStringPrefix(index, NWNX_PREFIX))
     {
-        Maybe<std::string> eventRet = g_core->m_services->m_events->OnGetLocalString(std::string(index->m_sString + 5));
+        Maybe<std::string> eventRet = g_core->m_services->m_events->OnGetLocalString(std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1));
 
         return eventRet ? eventRet.Extract().c_str() : "";
+    }
+    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
+    {
+        LOG_NOTICE("Legacy NWNX call detected: \"%s\" - ignored", index);
+        LOG_NOTICE("  This is likely due to legacy 1.69 code in the module, or you didn't recompile scripts including \"nwnx.nss\"");
     }
 
     return g_getStringHook->CallOriginal<API::CExoString>(thisPtr, index);

@@ -88,20 +88,20 @@ string NWNX_GetReturnValueString(string pluginName, string functionName)
 
 void NWNX_INTERNAL_CallFunction(string pluginName, string functionName)
 {
-    SetLocalString(GetModule(), "NWNX!CALL_FUNCTION!" + pluginName + "!" + functionName, "1");
+    SetLocalString(GetModule(), "NWNXEE!CALL_FUNCTION!" + pluginName + "!" + functionName, "1");
 }
 
 void NWNX_INTERNAL_PushArgument(string pluginName, string functionName, string value)
 {
-    SetLocalString(GetModule(), "NWNX!PUSH_ARGUMENT!" + pluginName + "!" + functionName, value);
+    SetLocalString(GetModule(), "NWNXEE!PUSH_ARGUMENT!" + pluginName + "!" + functionName, value);
 }
 
 string NWNX_INTERNAL_GetReturnValueString(string pluginName, string functionName, string type)
 {
-    return GetLocalString(GetModule(), "NWNX!GET_RETURN_VALUE!" + pluginName + "!" + functionName + "!" + type);
+    return GetLocalString(GetModule(), "NWNXEE!GET_RETURN_VALUE!" + pluginName + "!" + functionName + "!" + type);
 }
 
 object NWNX_INTERNAL_GetReturnValueObject(string pluginName, string functionName, string type)
 {
-    return GetLocalObject(GetModule(), "NWNX!GET_RETURN_VALUE!" + pluginName + "!" + functionName + "!" + type);
+    return GetLocalObject(GetModule(), "NWNXEE!GET_RETURN_VALUE!" + pluginName + "!" + functionName + "!" + type);
 }
