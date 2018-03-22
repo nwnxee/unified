@@ -13,6 +13,7 @@
 #include "Services/Patching/Patching.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 #include <cstring>
 
@@ -93,6 +94,7 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_patching = std::make_unique<Patching>();
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
+    services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
 
     return services;
 }
@@ -109,6 +111,7 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_patching = std::make_unique<Services::PatchingProxy>(*m_services->m_patching);
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
+    proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
 
@@ -143,6 +146,8 @@ void NWNXCore::InitialSetupHooks()
 
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);
+
+    m_services->m_hooks->RequestSharedHook<API::Functions::CGameObjectArray__Delete__1, void>(&Services::PerObjectStorage::CGameObjectArray__Delete__1_hook);
 
     g_setStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__SetString);
     g_getStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetString);
@@ -339,10 +344,12 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
     if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
-        LOG_INFO("Not loading NWNX due to configuration.");
+        LOG_NOTICE("Not loading NWNX due to configuration.");
     }
     else
     {
+        LOG_NOTICE("Loading NWNX.");
+
         try
         {
             g_core->InitialSetupHooks();
@@ -360,6 +367,7 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
 void NWNXCore::DestroyServerHandler(API::CAppManager* app)
 {
+    LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();
 
     // At this point, the hook has been reset. We should call the original again to let NWN carry on.

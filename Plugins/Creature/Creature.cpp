@@ -87,6 +87,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetMovementRate);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
+    REGISTER(GetClericDomain);
+    REGISTER(SetClericDomain);
     REGISTER(GetWizardSpecialization);
     REGISTER(SetWizardSpecialization);
     REGISTER(GetSoundset);
@@ -104,7 +106,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetSkillPointsRemaining);
     REGISTER(SetSkillPointsRemaining);
     REGISTER(SetRacialType);
-   
+
 #undef REGISTER
 }
 
@@ -879,6 +881,55 @@ ArgumentStack Creature::SetAlignmentLawChaos(ArgumentStack&& args)
         ASSERT(value <= 32767);
         ASSERT(value >= -32768);
         pCreature->m_pStats->m_nAlignmentLawChaos = static_cast<int16_t>(value);
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetClericDomain(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(index >= 1);
+        ASSERT(index <= 2);
+
+        for (int32_t i = 0; i < 3; i++)
+        {
+            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
+            if (classInfo.m_nClass == Constants::CLASS_TYPE_CLERIC)
+            {
+                retval = classInfo.m_nDomain[index - 1];
+                break;
+            }
+        }
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetClericDomain(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(index >= 1);
+        ASSERT(index <= 2);
+        const auto domain = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(domain <= 255);
+        ASSERT(domain >= 0);
+
+        for (int32_t i = 0; i < 3; i++)
+        {
+            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
+            if (classInfo.m_nClass == Constants::CLASS_TYPE_CLERIC)
+            {
+                classInfo.m_nDomain[index - 1] = static_cast<uint8_t>(domain);
+                break;
+            }
+        }
     }
     return stack;
 }

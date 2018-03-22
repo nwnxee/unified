@@ -16,6 +16,7 @@ class Metrics;
 class Patching;
 class Config;
 class Messaging;
+class PerObjectStorage;
 
 class EventsProxy;
 class HooksProxy;
@@ -25,6 +26,7 @@ class MetricsProxy;
 class PatchingProxy;
 class ConfigProxy;
 class MessagingProxy;
+class PerObjectStorageProxy;
 
 }
 

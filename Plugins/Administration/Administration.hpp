@@ -18,6 +18,14 @@ public:
     NWNXLib::Services::Events::ArgumentStack OnSetDMPassword(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnShutdownServer(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnDeletePlayerCharacter(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnAddBannedIP(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnRemoveBannedIP(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnAddBannedCDKey(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnRemoveBannedCDKey(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnAddBannedPlayerName(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnRemoveBannedPlayerName(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnGetBannedList(NWNXLib::Services::Events::ArgumentStack&& args);
+
 };
 
 }
