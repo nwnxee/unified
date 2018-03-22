@@ -1230,8 +1230,9 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
             {
                 float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
 
-                auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pThis->m_idSelf, "WALK_RATE_CAP");
+                auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis->m_idSelf, "WALK_RATE_CAP");
                 return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
+
             });
         pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__GetWalkRate);
     }
