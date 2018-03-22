@@ -8,6 +8,7 @@
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
 #include "API/CResRef.hpp"
+#include "API/CServerInfo.hpp"
 #include "API/Globals.hpp"
 #include "API/Types.hpp"
 #include "API/Version.hpp"
@@ -134,9 +135,17 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
     }
     std::string bicname     = player->m_resFileName.GetResRefStr();
     std::string servervault = CExoString(Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT", 0)).CStr();
-    std::string cdkey       = exoApp->GetNetLayer()->GetPlayerInfo(player->m_nPlayerID)->GetPublicCDKey(0).CStr();
+    std::string playerdir;
+    if (exoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
+    {
+        playerdir = player->GetPlayerName().CStr();
+    }
+    else
+    {
+        playerdir = exoApp->GetNetLayer()->GetPlayerInfo(player->m_nPlayerID)->GetPublicCDKey(0).CStr();
+    }
 
-    std::string filename = servervault + cdkey + "/" + bicname + ".bic";
+    std::string filename = servervault + playerdir + "/" + bicname + ".bic";
 
     LOG_NOTICE("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
 
