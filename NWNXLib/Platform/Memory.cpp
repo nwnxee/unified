@@ -67,22 +67,11 @@ void ProtectAddress(uintptr_t address, uint32_t length, const MemoryProtectionFl
         platformFlags = PROT_READ | PROT_WRITE | PROT_EXEC;
     }
 
-    const uintptr_t pageSize = static_cast<uintptr_t>(getpagesize());
+    const uintptr_t pageSize          = static_cast<uintptr_t>(getpagesize());
+    const uintptr_t currentPage       = address & ~(pageSize - 1);
+    const size_t    lengthWithPadding = length + (address - currentPage);
 
-    while (true)
-    {
-        const uintptr_t currentPage = address & ~(pageSize - 1);
-        mprotect(reinterpret_cast<void*>(currentPage), length, platformFlags);
-        uintptr_t toNextPage = (currentPage + pageSize) - address;
-
-        if (toNextPage >= length)
-        {
-            break;
-        }
-
-        length -= toNextPage;
-        address += pageSize;
-    }
+    mprotect(reinterpret_cast<void*>(currentPage), lengthWithPadding, platformFlags);
 #endif
 }
 
