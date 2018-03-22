@@ -39,7 +39,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
 
     const bool before = (type == Services::Hooks::CallType::BEFORE_ORIGINAL);
     const char *suffix = before ? "_BEFORE" : "_AFTER";
-    std::string event = "NWNX_ON_";
+    std::string event = "NWNX_ON_DM_";
 
     Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
 
