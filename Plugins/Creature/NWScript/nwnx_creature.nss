@@ -10,6 +10,12 @@ const int NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST = 6;
 const int NWNX_CREATURE_MOVEMENT_RATE_DEFAULT   = 7;
 const int NWNX_CREATURE_MOVEMENT_RATE_DM_FAST   = 8;
 
+const int NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY      = 0;
+const int NWNX_CREATURE_MOVEMENT_TYPE_WALK            = 1;
+const int NWNX_CREATURE_MOVEMENT_TYPE_RUN             = 2;
+const int NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP        = 3;
+const int NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
+
 const int NWNX_CREATURE_CLERIC_DOMAIN_AIR         = 0;
 const int NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL      = 1;
 const int NWNX_CREATURE_CLERIC_DOMAIN_DEATH       = 3;
@@ -228,6 +234,14 @@ void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
 // Sets the creature's racial type 
 void NWNX_Creature_SetRacialType(object creature, int racialtype);
 
+// Returns the creature's current movement type (NWNX_CREATURE_MOVEMENT_TYPE_*)
+int NWNX_Creature_GetMovementType(object creature);
+
+// Sets the maximum movement rate a creature can have while walking (not running)
+// This allows a creature with movement speed enhancemens to walk at a normal rate.
+// Setting the value to -1.0 will remove the cap.
+// Default value is 2000.0, which is the base human walk speed.
+void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -820,6 +834,24 @@ void NWNX_Creature_SetRacialType(object creature, int racialtype)
 {
     string sFunc = "SetRacialType";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, racialtype);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetMovementType(object creature)
+{
+    string sFunc = "GetMovementType";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f)
+{
+    string sFunc = "SetWalkRateCap";
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fWalkRate);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);

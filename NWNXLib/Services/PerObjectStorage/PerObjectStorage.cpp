@@ -23,7 +23,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, int val
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    GetObjectStorage(object).GetIntMap().emplace(key, value);
+    GetObjectStorage(object).GetIntMap()[key] = value;
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, float value)
 {
@@ -31,7 +31,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, float v
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    GetObjectStorage(object).GetFloatMap().emplace(key, value);
+    GetObjectStorage(object).GetFloatMap()[key] = value;
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, std::string value)
 {
@@ -39,7 +39,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, std::st
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    GetObjectStorage(object).GetStringMap().emplace(key, value);
+    GetObjectStorage(object).GetStringMap()[key] = value;
 }
 void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, void *value, CleanupFunc cleanup)
 {
@@ -47,7 +47,7 @@ void PerObjectStorage::Set(API::Types::ObjectID object, std::string key, void *v
     if (object == API::Constants::OBJECT_INVALID)
         return;
 
-    GetObjectStorage(object).GetPointerMap().emplace(key, std::make_pair<>(value, cleanup));
+    GetObjectStorage(object).GetPointerMap()[key] = std::make_pair<>(value, cleanup);
 }
 
 

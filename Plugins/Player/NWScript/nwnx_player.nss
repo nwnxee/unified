@@ -11,6 +11,10 @@ void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script =
 // Runs a script if specified.
 void NWNX_Player_StopGuiTimingBar(object player, string script = "");
 
+// Sets whether the player should always walk when given movement commands.
+// If true, clicking on the ground or using WASD will trigger walking instead of running.
+void NWNX_Player_SetAlwaysWalk(object player, int bWalk=TRUE);
+
 const string NWNX_Player = "NWNX_Player";
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -67,4 +71,13 @@ void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script =
 void NWNX_Player_StopGuiTimingBar(object player, string script = "")
 {
     NWNX_Player_INTERNAL_StopGuiTimingBar(player, script, -1);
+}
+
+void NWNX_Player_SetAlwaysWalk(object player, int bWalk=TRUE)
+{
+    string sFunc = "SetAlwaysWalk";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, bWalk);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }
