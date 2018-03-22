@@ -1230,7 +1230,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
             {
                 float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
 
-                auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis->m_idSelf, "WALK_RATE_CAP");
+                auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "WALK_RATE_CAP");
                 return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
 
             });
@@ -1243,11 +1243,11 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
 
         if (fWalkRateCap < 0.0) // remove the override
         {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature->m_idSelf, "WALK_RATE_CAP");
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "WALK_RATE_CAP");
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature->m_idSelf, "WALK_RATE_CAP", fWalkRateCap);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "WALK_RATE_CAP", fWalkRateCap);
         }
     }
 
