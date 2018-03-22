@@ -33,28 +33,6 @@ namespace Core {
 
 static NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
-}
-
-// If NWNX_LEGACY_SUPPORT is defined, we expose two additional symbols: NWNXLegacySetString and NWNXLegacyGetObject.
-// The old NWNX core will call these if it decides not to handle an event.
-// This allows us to run the new core for selective plugins while still using new functionality.
-#if defined(NWNX_LEGACY_SUPPORT)
-extern "C"
-{
-    void NWNXLegacySetString(NWNXLib::API::CExoString* index, NWNXLib::API::CExoString* value)
-    {
-        Core::g_core->SetStringHandler(nullptr, index, value);
-    }
-
-    NWNXLib::API::Types::ObjectID NWNXLegacyGetObject(NWNXLib::API::CExoString* index)
-    {
-        return Core::g_core->GetObjectHandler(nullptr, index);
-    }
-}
-#endif
-
-namespace Core {
-
 static Hooking::FunctionHook* g_setStringHook = nullptr;
 static Hooking::FunctionHook* g_getStringHook = nullptr;
 static Hooking::FunctionHook* g_getObjectHook = nullptr;
@@ -137,11 +115,8 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Servi
 
 void NWNXCore::InitialSetupHooks()
 {
-#if !defined(NWNX_LEGACY_SUPPORT)
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__SetString>(&SetStringHandler);
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__GetObject>(&GetObjectHandler);
-#endif
-
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__GetString>(&GetStringHandler);
 
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
@@ -293,11 +268,7 @@ void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoStrin
         return g_core->m_services->m_events->OnSetLocalString(std::move(keyAsStr), std::move(valueAsStr));
     }
 
-#if defined(NWNX_LEGACY_SUPPORT)
-    (void)thisPtr; // Suppress unused variable warning.
-#else
     g_setStringHook->CallOriginal<void>(thisPtr, index, value);
-#endif
 }
 
 API::Types::ObjectID NWNXCore::GetObjectHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
@@ -308,12 +279,7 @@ API::Types::ObjectID NWNXCore::GetObjectHandler(API::CNWSScriptVarTable* thisPtr
         return eventRet ? eventRet.Extract() : API::Constants::OBJECT_INVALID;
     }
 
-#if defined(NWNX_LEGACY_SUPPORT)
-    (void)thisPtr; // Suppress unused variable warning.
-    return API::Constants::OBJECT_INVALID;
-#else
     return g_getObjectHook->CallOriginal<API::Types::ObjectID>(thisPtr, index);
-#endif
 }
 
 API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
@@ -322,11 +288,7 @@ API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API
     {
         Maybe<std::string> eventRet = g_core->m_services->m_events->OnGetLocalString(std::string(index->m_sString + 5));
 
-#if defined(NWNX_LEGACY_SUPPORT)
-        if (eventRet) return eventRet.Extract().c_str();
-#else
         return eventRet ? eventRet.Extract().c_str() : "";
-#endif
     }
 
     return g_getStringHook->CallOriginal<API::CExoString>(thisPtr, index);

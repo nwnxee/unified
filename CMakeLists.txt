@@ -13,7 +13,6 @@ find_package(Sanitizers)
 
 set(TARGET_NWN_BUILD 8164)
 set(PLUGIN_PREFIX NWNX_)
-set(TARGET_LEGACY FALSE)
 
 # Disables PIC which plays havoc with our absolute address function jumps.
 set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
@@ -83,10 +82,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTAR_RELEASE_FINAL=0 -DTAR_
 
 add_definitions(-DNWNX_PLUGIN_PREFIX="${PLUGIN_PREFIX}")
 add_definitions(-DNWNX_TARGET_NWN_BUILD=${TARGET_NWN_BUILD})
-
-if (TARGET_LEGACY)
-    add_definitions(-DNWNX_LEGACY_SUPPORT)
-endif()
 
 # Windows specific loader to inject the core library.
 if(WIN32)
