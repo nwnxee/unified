@@ -25,7 +25,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 	"Functions exposing additional item properties",
 	"Various / sherincall / Bhaal",
 	"marca.argentea at gmail.com",
-	2,
+	3,
 	true
     };
 }
@@ -155,40 +155,67 @@ ArgumentStack Item::SetBaseItemType(ArgumentStack&& args)
 ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
 {
   ArgumentStack stack;
-  if (auto *pItem = item(args))
-    {
-
-      const auto idx = Services::Events::ExtractArgument<int32_t>(args);
-      const auto val = Services::Events::ExtractArgument<int32_t>(args);
-
-      if(idx >= 0  && idx <= 28 && val >=0 && val <= 255)
-	{
-	  //Color appearance starts at 0 and ends at 5
-	  if(idx <= 5)
-	    {
-	      pItem->m_nLayeredTextureColors[idx] = val;
-	    }
-	  //Item appearance starts at 6 and ends at 8
-          else if(idx <= 8)
-	    {
-	      pItem->m_nModelPart[idx - 6] = val;
-	    }
-	  //Armor appearance starts at 9 and ends at 28
-	  else
-	    {
-	       pItem->m_nArmorModelPart[idx - 9] = val;
-	    }
-	}
-    }
-  return stack;
+  if(auto *pItem = item(args))
+     {
+        const auto type = Services::Events::ExtractArgument<int32_t>(args);
+        const auto idx   = Services::Events::ExtractArgument<int32_t>(args);
+        const auto val   = Services::Events::ExtractArgument<int32_t>(args);
+	
+        switch(type)
+          {
+	   case Constants::ITEM_APPR_TYPE_SIMPLE_MODEL :
+	     if(val>0)
+	       {		  
+		  pItem->m_nModelPart[0] = val;
+	       }	     
+	     break;
+	     
+	   case Constants::ITEM_APPR_TYPE_WEAPON_COLOR :
+	     if(val>=0 && val <= 255 && idx>=0 && idx<= 5)
+	       {
+		  pItem->m_nLayeredTextureColors[idx] = val;
+	       }
+	     break;
+	   case Constants::ITEM_APPR_TYPE_WEAPON_MODEL :
+	     if(val>=0 && idx>=0 && idx<= 2)
+	       {
+		  pItem->m_nModelPart[idx] = val;
+	       }
+	     break;
+	   case Constants::ITEM_APPR_TYPE_ARMOR_MODEL :
+	     if(val>=0 && idx>=0 && idx<= 18)
+	       {
+		  pItem->m_nArmorModelPart[idx] = val;
+	       }
+	     break;
+	   case Constants::ITEM_APPR_TYPE_ARMOR_COLOR :
+	     if(val>=0 && val<=255 && idx>=0 && idx<= 119)
+	       {
+		  if(idx<=5) //1.69 colors 
+		    {
+		       pItem->m_nLayeredTextureColors[idx]=val;
+		    }
+		  else //per-part coloring
+		    {
+		       char part = (char)((idx-6)/6);
+		       char texture = (char)(idx-6-part*6);
+		       pItem->SetLayeredTextureColorPerPart(texture, part, val);
+		    }
+	       }
+	     break;
+	  }
+     }
+   return stack;
 }
-
+   
 ArgumentStack Item::GetEntireItemAppearance(ArgumentStack&& args)
 {
   ArgumentStack stack;
   std::stringstream retval;
   char buf[4];
-  int idx;
+  int idx; 
+  char part, texture;
+   
 
   if (auto *pItem = item(args))
     {
@@ -208,7 +235,14 @@ ArgumentStack Item::GetEntireItemAppearance(ArgumentStack&& args)
 	  sprintf(buf, "%02X", pItem->m_nArmorModelPart[idx]);
 	  retval << buf;
 	}
-
+      for(texture=0; texture<6; texture++)
+	 {
+	    for(part=0; part<19; part++)
+	      {
+		 sprintf(buf, "%02X", pItem->GetLayeredTextureColorPerPart(texture, part));
+		 retval << buf;
+	      }
+	 }  
     }
 
   Services::Events::InsertArgument(stack, retval.str());
@@ -217,32 +251,48 @@ ArgumentStack Item::GetEntireItemAppearance(ArgumentStack&& args)
 
 ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
 {
-  ArgumentStack stack;
+   ArgumentStack stack;
 
-  if (auto *pItem = item(args))
-    {
-      const auto sAppString = Services::Events::ExtractArgument<std::string>(args);
-      int idx;
-      int stringPos=0;
-
-      for(idx = 0; idx < 6; idx++)
-	{
-          pItem->m_nLayeredTextureColors[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
-	  stringPos+=2;
-	}
-
-      for(idx = 0; idx < 3; idx++)
-	{
-          pItem->m_nModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
-	  stringPos+=2;
-	}
-      for(idx = 0; idx < 19; idx++)
-	{
-	  pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
-	  stringPos+=2;
-	}
-
-    }
-  return stack;
+   if (auto *pItem = item(args))
+     {
+	const auto sAppString = Services::Events::ExtractArgument<std::string>(args);
+	int idx;
+	int stringPos=0;
+	char texture, part;
+	
+	if(sAppString.length()==2*142)
+	  {
+	     for(idx = 0; idx < 6; idx++)
+	       {
+		  pItem->m_nLayeredTextureColors[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+		  stringPos+=2;
+	       }
+	     
+	     for(idx = 0; idx < 3; idx++)
+	       {
+		  pItem->m_nModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+		  stringPos+=2;
+	       }
+	     for(idx = 0; idx < 19; idx++)
+	       {
+		  pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
+		  stringPos+=2;
+	       }       
+	     for(texture=0, idx=0; texture<6; texture++)
+	       {
+		  for(part=0; part<19; part++, idx++)
+		    {
+		       pItem->SetLayeredTextureColorPerPart(texture, part, std::stoul(sAppString.substr(stringPos,2), nullptr, 16));
+		       stringPos+=2;
+		    }
+	       }
+	  }
+     }
+   else
+     {
+	LOG_NOTICE("RestoreItemAppearance: invalid string length, must be 284");
+     }
+   return stack;
 }
+   
 }

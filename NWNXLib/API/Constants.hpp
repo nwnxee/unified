@@ -604,6 +604,15 @@ constexpr int32_t ITEM_APPR_ARMOR_MODEL_RHAND =                        16;
 constexpr int32_t ITEM_APPR_ARMOR_MODEL_LHAND =                        17;
 constexpr int32_t ITEM_APPR_ARMOR_MODEL_ROBE =                         18;
 
+
+constexpr int32_t ITEM_APPR_TYPE_SIMPLE_MODEL =                         0;
+constexpr int32_t ITEM_APPR_TYPE_WEAPON_COLOR =                         1;
+constexpr int32_t ITEM_APPR_TYPE_WEAPON_MODEL =                         2;
+constexpr int32_t ITEM_APPR_TYPE_ARMOR_MODEL =                          3;
+constexpr int32_t ITEM_APPR_TYPE_ARMOR_COLOR =                          4;
+constexpr int32_t ITEM_APPR_NUM_TYPES =                                 5;
+
+
 constexpr uint32_t FEAT_ALERTNESS =                                     0;    /* FEAT_0000 */
 constexpr uint32_t FEAT_AMBIDEXTERITY =                                 1;    /* FEAT_0001 */
 constexpr uint32_t FEAT_ARMOR_PROFICIENCY_HEAVY =                       2;    /* FEAT_0002 */
