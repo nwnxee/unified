@@ -17,7 +17,6 @@ set(TARGET_LEGACY FALSE)
 
 # Disables PIC which plays havoc with our absolute address function jumps.
 set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
-string(REGEX REPLACE "-fPIC" "" CMAKE_SHARED_LIBRARY_CXX_FLAGS ${CMAKE_SHARED_LIBRARY_CXX_FLAGS})
 
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
 function(add_plugin target)
@@ -63,7 +62,7 @@ else()
         set(WARNING_FLAGS_CXX "-Wall -Wextra")
     endif()
 
-    set(NWNX_STANDARD_FLAGS "-m32 -march=pentium4 -fdiagnostics-show-option -fno-omit-frame-pointer")
+    set(NWNX_STANDARD_FLAGS "-m32 -march=pentium4 -fdiagnostics-show-option -fno-omit-frame-pointer -fno-pic")
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")
