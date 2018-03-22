@@ -71,6 +71,7 @@ private:
     ArgumentStack SetSkillPointsRemaining       (ArgumentStack&& args);
     ArgumentStack SetRacialType                 (ArgumentStack&& args);
     ArgumentStack GetMovementType               (ArgumentStack&& args);
+    ArgumentStack SetWalkRateCap                (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 

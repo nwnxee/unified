@@ -16,7 +16,10 @@
 #include "API/CExoArrayListTemplatedshortunsignedint.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/Functions.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/Hooks/Hooks.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "ViewPtr.hpp"
 
 using namespace NWNXLib;
@@ -107,6 +110,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSkillPointsRemaining);
     REGISTER(SetRacialType);
     REGISTER(GetMovementType);
+    REGISTER(SetWalkRateCap);
 
 #undef REGISTER
 }
@@ -1212,6 +1216,41 @@ ArgumentStack Creature::GetMovementType(ArgumentStack&& args)
         }
     }
     Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
+{
+    static NWNXLib::Hooking::FunctionHook* pGetWalkRate_hook;
+
+    if (!pGetWalkRate_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__GetWalkRate>(
+            +[](CNWSCreature *pThis) -> float
+            {
+                float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
+
+                auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pThis->m_idSelf, "WALK_RATE_CAP");
+                return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
+            });
+        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__GetWalkRate);
+    }
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto fWalkRateCap = Services::Events::ExtractArgument<float>(args);
+
+        if (fWalkRateCap < 0.0) // remove the override
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature->m_idSelf, "WALK_RATE_CAP");
+        }
+        else
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature->m_idSelf, "WALK_RATE_CAP", fWalkRateCap);
+        }
+    }
+
+    ArgumentStack stack;
     return stack;
 }
 

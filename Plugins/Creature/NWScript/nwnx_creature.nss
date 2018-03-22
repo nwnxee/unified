@@ -237,6 +237,12 @@ void NWNX_Creature_SetRacialType(object creature, int racialtype);
 // Returns the creature's current movement type (NWNX_CREATURE_MOVEMENT_TYPE_*)
 int NWNX_Creature_GetMovementType(object creature);
 
+// Sets the maximum movement rate a creature can have while walking (not running)
+// This allows a creature with movement speed enhancemens to walk at a normal rate.
+// Setting the value to -1.0 will remove the cap.
+// Default value is 2000.0, which is the base human walk speed.
+void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -840,4 +846,13 @@ int NWNX_Creature_GetMovementType(object creature)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f)
+{
+    string sFunc = "SetWalkRateCap";
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fWalkRate);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }
