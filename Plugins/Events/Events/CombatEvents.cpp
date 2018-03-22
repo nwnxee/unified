@@ -5,7 +5,7 @@
 #include "API/Globals.hpp"
 #include "API/CNWSCombatRound.hpp"
 #include "Events.hpp"
-#include "Helpers.hpp"
+#include "Utils.hpp"
 #include "ViewPtr.hpp"
 
 namespace Events {
@@ -36,7 +36,7 @@ void CombatEvents::StartCombatRoundHook(
     const bool before = type == Hooks::CallType::BEFORE_ORIGINAL;
 
 
-    Events::PushEventData("TARGET_OBJECT_ID", Helpers::ObjectIDToString(oidTarget));
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
     Events::SignalEvent(before ? "NWNX_ON_START_COMBAT_ROUND_BEFORE" : "NWNX_ON_START_COMBAT_ROUND_AFTER" , thisPtr->m_pBaseCreature->m_idSelf);
 }
 

@@ -8,7 +8,6 @@
 #include "API/Globals.hpp"
 #include "API/Version.hpp"
 #include "Events.hpp"
-#include "Helpers.hpp"
 #include "Services/Patching/Patching.hpp"
 
 namespace Events {
