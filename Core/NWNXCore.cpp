@@ -14,6 +14,7 @@
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Utils.hpp"
 
 #include <cstring>
 
@@ -29,6 +30,22 @@ bool CompareStringPrefix(const API::CExoString* str, const char *prefix)
 {
     auto len = std::strlen(prefix);
     return str && str->m_sString && str->m_nBufferLength >= len && std::strncmp(prefix, str->m_sString, len) == 0;
+}
+
+void NotifyLegacyCall(const char* str)
+{
+    LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript().c_str());
+    const char *cmd = str + sizeof(NWNX_LEGACY_PREFIX) - 1;
+    if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
+        !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||
+        !std::strncmp(cmd, "GET_RETURN_VALUE", std::strlen("GET_RETURN_VALUE")))
+    {
+        LOG_NOTICE("  Please recompile all scripts that include \"nwnx.nss\"");
+    }
+    else
+    {
+        LOG_NOTICE("  This is a leftover from 1.69 nwnx2 scripts.");
+    }
 }
 
 }
@@ -273,8 +290,7 @@ void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoStrin
     }
     else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
     {
-        LOG_NOTICE("Legacy NWNX call detected: \"%s\" - ignored", index);
-        LOG_NOTICE("  This is likely due to legacy 1.69 code in the module, or you didn't recompile scripts including \"nwnx.nss\"");
+        NotifyLegacyCall(index->CStr());
     }
 
     g_setStringHook->CallOriginal<void>(thisPtr, index, value);
@@ -289,8 +305,7 @@ API::Types::ObjectID NWNXCore::GetObjectHandler(API::CNWSScriptVarTable* thisPtr
     }
     else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
     {
-        LOG_NOTICE("Legacy NWNX call detected: \"%s\" - ignored", index);
-        LOG_NOTICE("  This is likely due to legacy 1.69 code in the module, or you didn't recompile scripts including \"nwnx.nss\"");
+        NotifyLegacyCall(index->CStr());
     }
 
     return g_getObjectHook->CallOriginal<API::Types::ObjectID>(thisPtr, index);
@@ -306,8 +321,7 @@ API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API
     }
     else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
     {
-        LOG_NOTICE("Legacy NWNX call detected: \"%s\" - ignored", index);
-        LOG_NOTICE("  This is likely due to legacy 1.69 code in the module, or you didn't recompile scripts including \"nwnx.nss\"");
+        NotifyLegacyCall(index->CStr());
     }
 
     return g_getStringHook->CallOriginal<API::CExoString>(thisPtr, index);
