@@ -1,4 +1,3 @@
-
 // Log currently generates warnings when no arguments are given to format string
 // TODO: Should really clean up the log so it doesn't warn in these cases
 #pragma GCC diagnostic ignored "-Wformat-security"
@@ -278,9 +277,9 @@ ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
 		  pItem->m_nArmorModelPart[idx] = std::stoul(sAppString.substr(stringPos,2), nullptr, 16);
 		  stringPos+=2;
 	       }       
-	     for(texture=0, idx=0; texture<6; texture++)
+	     for(texture=0; texture<6; texture++)
 	       {
-		  for(part=0; part<19; part++, idx++)
+		  for(part=0; part<19; part++)
 		    {
 		       pItem->SetLayeredTextureColorPerPart(texture, part, std::stoul(sAppString.substr(stringPos,2), nullptr, 16));
 		       stringPos+=2;
