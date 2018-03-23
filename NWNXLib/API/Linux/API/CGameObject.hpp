@@ -39,6 +39,7 @@ struct CGameObject
     void** m_vtable;
     uint32_t m_idSelf;
     uint8_t m_nObjectType;
+    void* m_pNwnxData;
 
     // The below are auto generated stubs.
     CGameObject() = default;
