@@ -1,6 +1,5 @@
 add_plugin(Events
     "Events.cpp"
-    "Helpers.cpp"
     "Events/AssociateEvents.cpp"
     "Events/ClientEvents.cpp"
     "Events/CombatEvents.cpp"

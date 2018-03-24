@@ -9,7 +9,7 @@
 #include "API/Constants.hpp"
 #include "Events.hpp"
 #include "Services/Patching/Patching.hpp"
-#include "Helpers.hpp"
+#include "Utils.hpp"
 namespace Events {
 
 using namespace NWNXLib;
@@ -39,7 +39,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
 
     const bool before = (type == Services::Hooks::CallType::BEFORE_ORIGINAL);
     const char *suffix = before ? "_BEFORE" : "_AFTER";
-    std::string event = "NWNX_ON_";
+    std::string event = "NWNX_ON_DM_";
 
     Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
 
@@ -125,7 +125,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             if (before) // Need to persist for AFTER as well
             {
                 amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
             }
             Events::PushEventData("AMOUNT", amount);
             Events::PushEventData("TARGET", target);
@@ -139,7 +139,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             if (before) // Need to persist for AFTER as well
             {
                 numLevels = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
             }
             Events::PushEventData("NUM_LEVELS", numLevels);
             Events::PushEventData("TARGET", target);
@@ -153,7 +153,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             if (before) // Need to persist for AFTER as well
             {
                 amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Helpers::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
             }
             Events::PushEventData("AMOUNT", amount);
             Events::PushEventData("TARGET", target);

@@ -1,8 +1,3 @@
-
-// Log currently generates warnings when no arguments are given to format string
-// TODO: Should really clean up the log so it doesn't warn in these cases
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 #include "Creature.hpp"
 
 #include "API/CAppManager.hpp"
@@ -16,7 +11,10 @@
 #include "API/CExoArrayListTemplatedshortunsignedint.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/Functions.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/Hooks/Hooks.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "ViewPtr.hpp"
 
 using namespace NWNXLib;
@@ -106,6 +104,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetSkillPointsRemaining);
     REGISTER(SetSkillPointsRemaining);
     REGISTER(SetRacialType);
+    REGISTER(GetMovementType);
+    REGISTER(SetWalkRateCap);
 
 #undef REGISTER
 }
@@ -1173,6 +1173,80 @@ ArgumentStack Creature::SetRacialType(ArgumentStack&& args)
 
         pCreature->m_pStats->m_nRace = static_cast<uint16_t>(race);
     }
+    return stack;
+}
+
+ArgumentStack Creature::GetMovementType(ArgumentStack&& args)
+{
+    const int MOVEMENT_TYPE_STATIONARY      = 0;
+    const int MOVEMENT_TYPE_WALK            = 1;
+    const int MOVEMENT_TYPE_RUN             = 2;
+    const int MOVEMENT_TYPE_SIDESTEP        = 3;
+    const int MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
+
+    ArgumentStack stack;
+    int retval = MOVEMENT_TYPE_STATIONARY;
+    if (auto *pCreature = creature(args))
+    {
+
+        switch (pCreature->m_nAnimation)
+        {
+            case 2:  // walk
+            case 84: // walk forward left
+            case 85: // walk forward right
+                retval = MOVEMENT_TYPE_WALK;
+                break;
+            case 3:  // walk backwards
+                retval = MOVEMENT_TYPE_WALK_BACKWARDS;
+                break;
+            case 4:  // run
+            case 86: // run forward left
+            case 87: // run forward right
+                retval = MOVEMENT_TYPE_RUN;
+                break;
+            case 78: // walk left
+            case 79: // walk right
+                retval = MOVEMENT_TYPE_SIDESTEP;
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
+{
+    static NWNXLib::Hooking::FunctionHook* pGetWalkRate_hook;
+
+    if (!pGetWalkRate_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__GetWalkRate>(
+            +[](CNWSCreature *pThis) -> float
+            {
+                float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
+
+                auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "WALK_RATE_CAP");
+                return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
+
+            });
+        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__GetWalkRate);
+    }
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto fWalkRateCap = Services::Events::ExtractArgument<float>(args);
+
+        if (fWalkRateCap < 0.0) // remove the override
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "WALK_RATE_CAP");
+        }
+        else
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "WALK_RATE_CAP", fWalkRateCap);
+        }
+    }
+
+    ArgumentStack stack;
     return stack;
 }
 

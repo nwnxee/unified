@@ -1,8 +1,3 @@
-
-// Log currently generates warnings when no arguments are given to format string
-// TODO: Should really clean up the log so it doesn't warn in these cases
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 #include "Player.hpp"
 
 #include "API/CAppManager.hpp"
@@ -14,7 +9,7 @@
 #include "API/CNWSScriptVar.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
-//#include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSCreature.hpp"
 //#include "API/CNWLevelStats.hpp"
 //#include "API/CNWSStats_Spell.hpp"
 //#include "API/CNWSStats_SpellLikeAbility.hpp"
@@ -23,6 +18,7 @@
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "ViewPtr.hpp"
 
 using namespace NWNXLib;
@@ -61,6 +57,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(ForcePlaceableExamineWindow);
     REGISTER(StartGuiTimingBar);
     REGISTER(StopGuiTimingBar);
+    REGISTER(SetAlwaysWalk);
 
 #undef REGISTER
 
@@ -174,4 +171,60 @@ void Player::HandlePlayerToServerInputCancelGuiTimingEventHook(Services::Hooks::
         }
     }
 }
+
+ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
+{
+    static NWNXLib::Hooking::FunctionHook* pAddMoveToPointAction_hook;
+
+    if (!pAddMoveToPointAction_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__AddMoveToPointAction>(
+            +[](
+                    CNWSCreature *pThis,
+                    uint16_t nGroupId,
+                    Vector vNewWalkPosition,
+                    uint32_t oidNewWalkArea,
+                    uint32_t oidObjectMovingTo,
+                    int32_t bRunToPoint,
+                    float fRange,
+                    float fTimeout,
+                    int32_t bClientMoving,
+                    int32_t nClientPathNumber,
+                    int32_t nMoveToPosition,
+                    int32_t nMoveMode,
+                    int32_t bStraightLine,
+                    int32_t bCheckedActionPoint
+            ) -> int32_t
+            {
+                auto walk = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pThis->m_idSelf, "ALWAYS_WALK");
+                if (walk && *walk)
+                    bRunToPoint = 0;
+
+                return pAddMoveToPointAction_hook->CallOriginal<int32_t>
+                        (pThis,nGroupId,vNewWalkPosition,oidNewWalkArea,
+                         oidObjectMovingTo,bRunToPoint,fRange,fTimeout,
+                         bClientMoving,nClientPathNumber,nMoveToPosition,
+                         nMoveMode,bStraightLine,bCheckedActionPoint);
+            });
+        pAddMoveToPointAction_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__AddMoveToPointAction);
+    }
+
+    if (auto *pPlayer = player(args))
+    {
+        const auto bSetCap = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (bSetCap)
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "ALWAYS_WALK", 1);
+        }
+        else // remove the override
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "ALWAYS_WALK");
+        }
+    }
+
+    ArgumentStack stack;
+    return stack;
+}
+
 }

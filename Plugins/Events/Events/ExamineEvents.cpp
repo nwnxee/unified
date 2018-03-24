@@ -2,7 +2,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Helpers.hpp"
+#include "Utils.hpp"
 
 namespace Events {
 
@@ -24,7 +24,7 @@ void ExamineEvents::HandleExamine(Services::Hooks::CallType type, API::Types::Ob
     API::Types::ObjectID examinee)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    Events::PushEventData("EXAMINEE_OBJECT_ID", Helpers::ObjectIDToString(examinee));
+    Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));
     Events::SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner);
 }
 

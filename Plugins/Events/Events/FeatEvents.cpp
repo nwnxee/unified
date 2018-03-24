@@ -3,7 +3,7 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
-#include "Helpers.hpp"
+#include "Utils.hpp"
 #include "ViewPtr.hpp"
 #include "API/Vector.hpp"
 
@@ -42,8 +42,8 @@ void FeatEvents::UseFeatHook
     Events::PushEventData("FEAT_ID", std::to_string(featID));
     Events::PushEventData("SUBFEAT_ID", std::to_string(subFeatID));
 
-    Events::PushEventData("TARGET_OBJECT_ID", Helpers::ObjectIDToString(oidTarget));
-    Events::PushEventData("AREA_OBJECT_ID", Helpers::ObjectIDToString(oidArea));
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
+    Events::PushEventData("AREA_OBJECT_ID", Utils::ObjectIDToString(oidArea));
 
     Events::PushEventData("TARGET_POSITION_X", pvTarget ? std::to_string(pvTarget->x) : "0.0");
     Events::PushEventData("TARGET_POSITION_Y", pvTarget ? std::to_string(pvTarget->y) : "0.0");

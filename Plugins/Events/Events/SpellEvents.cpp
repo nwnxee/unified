@@ -2,7 +2,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Helpers.hpp"
+#include "Utils.hpp"
 
 namespace Events {
 
@@ -47,9 +47,9 @@ void SpellEvents::CastSpellHook
     Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
     Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));
 
-    Events::PushEventData("TARGET_OBJECT_ID", Helpers::ObjectIDToString(oidTarget));
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
     Events::PushEventData("MULTI_CLASS", std::to_string(multiClass));
-    Events::PushEventData("ITEM_OBJECT_ID", Helpers::ObjectIDToString(oidItem));
+    Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(oidItem));
     Events::PushEventData("SPELL_COUNTERED", std::to_string(spellCountered));
     Events::PushEventData("COUNTERING_SPELL", std::to_string(counteringSpell));
     Events::PushEventData("PROJECTILE_PATH_TYPE", std::to_string(projectilePathType));

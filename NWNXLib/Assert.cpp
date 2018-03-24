@@ -64,7 +64,7 @@ void Fail(const char* condition, const char* file, int line, const char* message
     }
 #endif // _WIN32
 
-    std::fprintf(stderr, buffer);
+    std::fputs(buffer, stderr);
     std::fflush(stderr);
 
     bool skipCrash = false;

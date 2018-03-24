@@ -20,9 +20,10 @@ private:
     static void HandlePlayerToServerInputCancelGuiTimingEventHook(NWNXLib::Services::Hooks::CallType type,
         NWNXLib::API::CNWSMessage* pMessage, NWNXLib::API::CNWSPlayer* pPlayer);
 
-    ArgumentStack ForcePlaceableExamineWindow(ArgumentStack&& args);
+    ArgumentStack ForcePlaceableExamineWindow   (ArgumentStack&& args);
     ArgumentStack StartGuiTimingBar             (ArgumentStack&& args);
     ArgumentStack StopGuiTimingBar              (ArgumentStack&& args);
+    ArgumentStack SetAlwaysWalk                 (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

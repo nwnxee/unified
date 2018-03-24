@@ -2,7 +2,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
 #include "Events.hpp"
-#include "Helpers.hpp"
+#include "Utils.hpp"
 
 namespace Events {
 
@@ -25,8 +25,8 @@ void ItemEvents::UseItemHook(
     API::Types::ObjectID)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    Events::PushEventData("ITEM_OBJECT_ID", Helpers::ObjectIDToString(item));
-    Events::PushEventData("TARGET_OBJECT_ID", Helpers::ObjectIDToString(target));
+    Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
     Events::PushEventData("ITEM_PROPERTY_INDEX", std::to_string(propIndex));
     Events::SignalEvent(before ? "NWNX_ON_USE_ITEM_BEFORE" : "NWNX_ON_USE_ITEM_AFTER", thisPtr->m_idSelf);
 }

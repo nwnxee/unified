@@ -19,8 +19,6 @@ private:
     ArgumentStack GetLocalVariableCount(ArgumentStack&& args);
     ArgumentStack GetLocalVariable     (ArgumentStack&& args);
     ArgumentStack StringToObject       (ArgumentStack&& args);
-    ArgumentStack GetEventHandler      (ArgumentStack&& args);
-    ArgumentStack SetEventHandler      (ArgumentStack&& args);
     ArgumentStack SetPosition          (ArgumentStack&& args);
     ArgumentStack SetCurrentHitPoints  (ArgumentStack&& args);
     ArgumentStack SetMaxHitPoints      (ArgumentStack&& args);

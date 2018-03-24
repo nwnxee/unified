@@ -1,8 +1,3 @@
-
-// Log currently generates warnings when no arguments are given to format string
-// TODO: Should really clean up the log so it doesn't warn in these cases
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 #include "Object.hpp"
 
 #include "API/CAppManager.hpp"
@@ -61,8 +56,6 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetLocalVariableCount);
     REGISTER(GetLocalVariable);
     REGISTER(StringToObject);
-    REGISTER(GetEventHandler);
-    REGISTER(SetEventHandler);
     REGISTER(SetPosition);
     REGISTER(SetCurrentHitPoints);
     REGISTER(SetMaxHitPoints);
@@ -108,67 +101,6 @@ static inline CNWSScriptVarTable *_getScriptVarTable(CGameObject *pObject)
             return &static_cast<CNWSObject*>(pObject)->m_ScriptVars;
     }
 }
-static inline CExoString *_getScriptList(CGameObject *pObject, int32_t *pSize)
-{
-    ASSERT(pObject);
-    switch (pObject->m_nObjectType)
-    {
-        case Constants::OBJECT_TYPE_AREA:
-        {
-            CNWSArea *pArea = static_cast<CNWSArea*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pArea->m_sScripts));
-            return pArea->m_sScripts;
-        }
-        case Constants::OBJECT_TYPE_MODULE:
-        {
-            CNWSModule *pModule = static_cast<CNWSModule*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pModule->m_sScripts));
-            return pModule->m_sScripts;
-        }
-        case Constants::OBJECT_TYPE_CREATURE:
-        {
-            CNWSCreature *pCreature = static_cast<CNWSCreature*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pCreature->m_sScripts));
-            return pCreature->m_sScripts;
-        }
-        case Constants::OBJECT_TYPE_PLACEABLE:
-        {
-            CNWSPlaceable *pPlaceable = static_cast<CNWSPlaceable*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pPlaceable->m_sScripts));
-            return pPlaceable->m_sScripts;
-        }
-        case Constants::OBJECT_TYPE_TRIGGER:
-        {
-            CNWSTrigger *pTrigger = static_cast<CNWSTrigger*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pTrigger->m_sScripts));
-            return pTrigger->m_sScripts;
-        }
-        case Constants::OBJECT_TYPE_ENCOUNTER:
-        {
-            CNWSEncounter *pEncounter = static_cast<CNWSEncounter*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pEncounter->m_sScripts));
-            return pEncounter->m_sScripts;
-        }
-        case Constants::OBJECT_TYPE_AREA_OF_EFFECT:
-        {
-            CNWSAreaOfEffectObject *pAreaOfEffectObject = static_cast<CNWSAreaOfEffectObject*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pAreaOfEffectObject->m_sScripts));
-            return pAreaOfEffectObject->m_sScripts;
-        }
-        case Constants::OBJECT_TYPE_DOOR:
-        {
-            CNWSDoor *pDoor = static_cast<CNWSDoor*>(pObject);
-            *pSize = static_cast<int32_t>(std::size(pDoor->m_sScripts));
-            return pDoor->m_sScripts;
-        }
-
-        default:
-            ASSERT_FAIL_MSG("Object does not have any scripts");
-            *pSize = 0;
-            return nullptr;
-    }
-}
-
 
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
 {
@@ -215,54 +147,6 @@ ArgumentStack Object::StringToObject(ArgumentStack&& args)
         retval = Constants::OBJECT_INVALID;
 
     Services::Events::InsertArgument(stack, retval);
-    return stack;
-}
-
-ArgumentStack Object::GetEventHandler(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    std::string retval = "";
-    if (auto *pObject = object(args))
-    {
-        const auto handler = Services::Events::ExtractArgument<int32_t>(args);
-        int32_t size;
-
-        auto *pScripts = _getScriptList(pObject, &size);
-        if (handler >= 0 && handler < size)
-        {
-            retval = pScripts[handler].CStr();
-        }
-        else
-        {
-            LOG_NOTICE("Invalid script handler id (%d) for object type %s",
-                         handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
-        }
-    }
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
-}
-
-ArgumentStack Object::SetEventHandler(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    if (auto *pObject = object(args))
-    {
-        const auto handler = Services::Events::ExtractArgument<int32_t>(args);
-        const auto script  = Services::Events::ExtractArgument<std::string>(args);
-
-        int32_t size;
-
-        auto *pScripts = _getScriptList(pObject, &size);
-        if (handler >= 0 && handler < size)
-        {
-            pScripts[handler] = script.c_str();
-        }
-        else
-        {
-            LOG_NOTICE("Invalid script handler id (%d) for object type %s",
-                         handler, Constants::ObjectTypeToString(pObject->m_nObjectType));
-        }
-    }
     return stack;
 }
 

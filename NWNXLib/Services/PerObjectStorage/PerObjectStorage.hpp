@@ -1,6 +1,7 @@
 #pragma once
 
 #include "API/Types.hpp"
+#include "API/CGameObject.hpp"
 #include "API/CGameObjectArray.hpp"
 #include "Maybe.hpp"
 #include "Services/Services.hpp"
@@ -86,6 +87,36 @@ public:
 
     // Removes without cleanup
     void Remove(API::Types::ObjectID object, std::string key);
+
+    //
+    // Interfaces using CGameObject pointer directly:
+    //
+    void Set(API::CGameObject *pGameObject, std::string key, int value)
+    {
+        return Set(pGameObject->m_idSelf, key, value);
+    }
+    void Set(API::CGameObject *pGameObject, std::string key, float value)
+    {
+        return Set(pGameObject->m_idSelf, key, value);
+    }
+    void Set(API::CGameObject *pGameObject, std::string key, std::string value)
+    {
+        return Set(pGameObject->m_idSelf, key, value);
+    }
+    void Set(API::CGameObject *pGameObject, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
+    {
+        return Set(pGameObject->m_idSelf, key, value, cleanup);
+    }
+    template <typename T> Maybe<T>
+    Get(API::CGameObject *pGameObject, std::string key)
+    {
+        return Get<T>(pGameObject->m_idSelf, key);
+    }
+    void Remove(API::CGameObject *pGameObject, std::string key)
+    {
+        return Remove(pGameObject->m_idSelf, key);
+    }
+
 
 private:
     std::string m_pluginName;
