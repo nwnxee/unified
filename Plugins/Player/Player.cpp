@@ -10,7 +10,7 @@
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
 #include "API/CNWSCreature.hpp"
-//#include "API/CNWLevelStats.hpp"
+#include "API/CNWSQuickbarButton.hpp"
 //#include "API/CNWSStats_Spell.hpp"
 //#include "API/CNWSStats_SpellLikeAbility.hpp"
 //#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
@@ -58,6 +58,8 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(StartGuiTimingBar);
     REGISTER(StopGuiTimingBar);
     REGISTER(SetAlwaysWalk);
+    REGISTER(GetQuickBarSlot);
+    REGISTER(SetQuickBarSlot);
 
 #undef REGISTER
 
@@ -224,6 +226,71 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
     }
 
     ArgumentStack stack;
+    return stack;
+}
+
+
+ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    CNWSQuickbarButton qbs;
+    if (auto *pPlayer = player(args))
+    {
+        auto slot = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(slot < 36);
+
+        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        if (!pCreature->m_pQuickbarButton)
+            pCreature->InitializeQuickbar();
+
+        qbs = pCreature->m_pQuickbarButton[slot];
+    }
+
+    Services::Events::InsertArgument(stack, (Types::ObjectID)qbs.m_oidItem);
+    Services::Events::InsertArgument(stack, (Types::ObjectID)qbs.m_oidSecondaryItem);
+    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nObjectType);
+    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nMultiClass);
+    Services::Events::InsertArgument(stack, std::string(qbs.m_cResRef.GetResRefStr()));
+    Services::Events::InsertArgument(stack, std::string(qbs.m_sCommandLabel.CStr()));
+    Services::Events::InsertArgument(stack, std::string(qbs.m_sCommandLine.CStr()));
+    Services::Events::InsertArgument(stack, std::string(qbs.m_sToolTip.CStr()));
+    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nINTParam1);
+    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nMetaType);
+    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nDomainLevel);
+    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nAssociateType);
+    Services::Events::InsertArgument(stack, (Types::ObjectID)qbs.m_oidAssociate);
+    return stack;
+}
+
+ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        auto slot = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(slot < 36);
+
+        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        if (!pCreature->m_pQuickbarButton)
+            pCreature->InitializeQuickbar();
+
+        pCreature->m_pQuickbarButton[slot].m_oidAssociate     = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        pCreature->m_pQuickbarButton[slot].m_nAssociateType   = Services::Events::ExtractArgument<int32_t>(args);
+        pCreature->m_pQuickbarButton[slot].m_nDomainLevel     = Services::Events::ExtractArgument<int32_t>(args);
+        pCreature->m_pQuickbarButton[slot].m_nMetaType        = Services::Events::ExtractArgument<int32_t>(args);
+        pCreature->m_pQuickbarButton[slot].m_nINTParam1       = Services::Events::ExtractArgument<int32_t>(args);
+        pCreature->m_pQuickbarButton[slot].m_sToolTip         = Services::Events::ExtractArgument<std::string>(args).c_str();
+        pCreature->m_pQuickbarButton[slot].m_sCommandLine     = Services::Events::ExtractArgument<std::string>(args).c_str();
+        pCreature->m_pQuickbarButton[slot].m_sCommandLabel    = Services::Events::ExtractArgument<std::string>(args).c_str();
+        pCreature->m_pQuickbarButton[slot].m_cResRef          = Services::Events::ExtractArgument<std::string>(args).c_str();
+        pCreature->m_pQuickbarButton[slot].m_nMultiClass      = Services::Events::ExtractArgument<int32_t>(args);
+        pCreature->m_pQuickbarButton[slot].m_nObjectType      = Services::Events::ExtractArgument<int32_t>(args);
+        pCreature->m_pQuickbarButton[slot].m_oidSecondaryItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        pCreature->m_pQuickbarButton[slot].m_oidItem          = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        pMessage->SendServerToPlayerGuiQuickbar_SetButton(pPlayer, slot, 0);
+    }
     return stack;
 }
 

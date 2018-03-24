@@ -24,6 +24,8 @@ private:
     ArgumentStack StartGuiTimingBar             (ArgumentStack&& args);
     ArgumentStack StopGuiTimingBar              (ArgumentStack&& args);
     ArgumentStack SetAlwaysWalk                 (ArgumentStack&& args);
+    ArgumentStack GetQuickBarSlot               (ArgumentStack&& args);
+    ArgumentStack SetQuickBarSlot               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
