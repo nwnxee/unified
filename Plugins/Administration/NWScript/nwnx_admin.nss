@@ -83,28 +83,12 @@ void NWNX_Administration_BootPCWithMessage(object pc, int strref)
     BootPC(pc, GetStringByStrRef(strref));
 }
 
-void NWNX_Administration_INTERNAL_DeletePlayerCharacter(object pc, int bPreserveBackup)
+void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup)
 {
     NWNX_PushArgumentInt("NWNX_Administration", "DELETE_PLAYER_CHARACTER", bPreserveBackup);
     NWNX_PushArgumentObject("NWNX_Administration", "DELETE_PLAYER_CHARACTER", pc);
     NWNX_CallFunction("NWNX_Administration", "DELETE_PLAYER_CHARACTER");
 }
-
-void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup = TRUE)
-{
-    if (pc == GetPCSpeaker())
-    {
-        // Deleting the PC boots them, resulting in an invalid object running the script
-        SetCommandable(FALSE, pc);
-        AssignCommand(pc, ClearAllActions());
-        DelayCommand(0.1, NWNX_Administration_INTERNAL_DeletePlayerCharacter(pc, bPreserveBackup));
-    }
-    else
-    {
-        NWNX_Administration_INTERNAL_DeletePlayerCharacter(pc, bPreserveBackup);
-    }
-}
-
 
 void NWNX_Administration_AddBannedIP(string ip)
 {

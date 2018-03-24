@@ -15,6 +15,7 @@
 #include "API/Version.hpp"
 #include "ViewPtr.hpp"
 #include "Platform/FileSystem.hpp"
+#include "Services/Tasks/Tasks.hpp"
 #include <cstdlib>
 
 using namespace NWNXLib;
@@ -136,6 +137,8 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
         LOG_ERROR("Attempted to delete invalid player");
         return Events::ArgumentStack();
     }
+    API::Types::PlayerID playerId = player->m_nPlayerID;
+
     std::string bicname     = player->m_resFileName.GetResRefStr();
     std::string servervault = CExoString(Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT", 0)).CStr();
     std::string playerdir;
@@ -145,33 +148,39 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
     }
     else
     {
-        playerdir = exoApp->GetNetLayer()->GetPlayerInfo(player->m_nPlayerID)->GetPublicCDKey(0).CStr();
+        playerdir = exoApp->GetNetLayer()->GetPlayerInfo(playerId)->GetPublicCDKey(0).CStr();
     }
 
     std::string filename = servervault + playerdir + "/" + bicname + ".bic";
 
     LOG_NOTICE("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
 
-    // Will show "Delete Character" message to PC. Best match from dialog.tlk
-    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, 10392, 1, "");
-
     if (!Platform::FileSystem::FileExists(filename))
     {
         LOG_ERROR("File %s not found.", filename.c_str());
         return Events::ArgumentStack();
     }
-    if (bPreserveBackup)
-    {
-        std::string backup = filename + ".deleted";
-        int i = 0;
-        while (Platform::FileSystem::FileExists(backup + std::to_string(i)))
-            i++;
-        Platform::FileSystem::RenameFile(filename, backup + std::to_string(i));
-    }
-    else
-    {
-        Platform::FileSystem::RemoveFile(filename);
-    }
+
+    GetServices()->m_tasks->QueueOnMainThread(
+        [filename, playerId, bPreserveBackup]
+        {
+            // Will show "Delete Character" message to PC. Best match from dialog.tlk
+            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, "");
+
+            if (bPreserveBackup)
+            {
+                std::string backup = filename + ".deleted";
+                int i = 0;
+                while (Platform::FileSystem::FileExists(backup + std::to_string(i)))
+                    i++;
+                Platform::FileSystem::RenameFile(filename, backup + std::to_string(i));
+            }
+            else
+            {
+                Platform::FileSystem::RemoveFile(filename);
+            }
+        });
+
     return Events::ArgumentStack();
 }
 
