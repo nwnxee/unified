@@ -37,6 +37,10 @@ void NWNX_Administration_RemoveBannedPlayerName(string playername);
 // Get a list of all banned IPs/Keys/names as a string
 string NWNX_Administration_GetBannedList();
 
+// Set the module's name as shown to the serverlist
+void NWNX_Administration_SetModuleName(string name);
+// Set the server's name as shown to the serverlist
+void NWNX_Administration_SetServerName(string name);
 
 
 string NWNX_Administration_GetPlayerPassword()
@@ -79,13 +83,12 @@ void NWNX_Administration_BootPCWithMessage(object pc, int strref)
     BootPC(pc, GetStringByStrRef(strref));
 }
 
-void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup = TRUE)
+void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup)
 {
     NWNX_PushArgumentInt("NWNX_Administration", "DELETE_PLAYER_CHARACTER", bPreserveBackup);
     NWNX_PushArgumentObject("NWNX_Administration", "DELETE_PLAYER_CHARACTER", pc);
     NWNX_CallFunction("NWNX_Administration", "DELETE_PLAYER_CHARACTER");
 }
-
 
 void NWNX_Administration_AddBannedIP(string ip)
 {
@@ -121,4 +124,17 @@ string NWNX_Administration_GetBannedList()
 {
     NWNX_CallFunction("NWNX_Administration", "GET_BANNED_LIST");
     return NWNX_GetReturnValueString("NWNX_Administration", "GET_BANNED_LIST");
+}
+
+
+void NWNX_Administration_SetModuleName(string name)
+{
+    NWNX_PushArgumentString("NWNX_Administration", "SET_MODULE_NAME", name);
+    NWNX_CallFunction("NWNX_Administration", "SET_MODULE_NAME");
+}
+
+void NWNX_Administration_SetServerName(string name)
+{
+    NWNX_PushArgumentString("NWNX_Administration", "SET_SERVER_NAME", name);
+    NWNX_CallFunction("NWNX_Administration", "SET_SERVER_NAME");
 }

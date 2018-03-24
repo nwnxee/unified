@@ -5,14 +5,17 @@
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
 #include "API/CResRef.hpp"
+#include "API/CServerInfo.hpp"
 #include "API/Globals.hpp"
 #include "API/Types.hpp"
 #include "API/Version.hpp"
 #include "ViewPtr.hpp"
 #include "Platform/FileSystem.hpp"
+#include "Services/Tasks/Tasks.hpp"
 #include <cstdlib>
 
 using namespace NWNXLib;
@@ -64,6 +67,8 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER("ADD_BANNED_PLAYER_NAME",        OnAddBannedPlayerName);
     REGISTER("REMOVE_BANNED_PLAYER_NAME",     OnRemoveBannedPlayerName);
     REGISTER("GET_BANNED_LIST",               OnGetBannedList);
+    REGISTER("SET_MODULE_NAME",               OnSetModuleName);
+    REGISTER("SET_SERVER_NAME",               OnSetServereName);
 
 #undef REGISTER
 }
@@ -132,34 +137,50 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
         LOG_ERROR("Attempted to delete invalid player");
         return Events::ArgumentStack();
     }
+    API::Types::PlayerID playerId = player->m_nPlayerID;
+
     std::string bicname     = player->m_resFileName.GetResRefStr();
     std::string servervault = CExoString(Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT", 0)).CStr();
-    std::string cdkey       = exoApp->GetNetLayer()->GetPlayerInfo(player->m_nPlayerID)->GetPublicCDKey(0).CStr();
+    std::string playerdir;
+    if (exoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
+    {
+        playerdir = player->GetPlayerName().CStr();
+    }
+    else
+    {
+        playerdir = exoApp->GetNetLayer()->GetPlayerInfo(playerId)->GetPublicCDKey(0).CStr();
+    }
 
-    std::string filename = servervault + cdkey + "/" + bicname + ".bic";
+    std::string filename = servervault + playerdir + "/" + bicname + ".bic";
 
     LOG_NOTICE("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
-
-    // Will show "Delete Character" message to PC. Best match from dialog.tlk
-    exoApp->GetNetLayer()->DisconnectPlayer(player->m_nPlayerID, 10392, 1, "");
 
     if (!Platform::FileSystem::FileExists(filename))
     {
         LOG_ERROR("File %s not found.", filename.c_str());
         return Events::ArgumentStack();
     }
-    if (bPreserveBackup)
-    {
-        std::string backup = filename + ".deleted";
-        int i = 0;
-        while (Platform::FileSystem::FileExists(backup + std::to_string(i)))
-            i++;
-        Platform::FileSystem::RenameFile(filename, backup + std::to_string(i));
-    }
-    else
-    {
-        Platform::FileSystem::RemoveFile(filename);
-    }
+
+    GetServices()->m_tasks->QueueOnMainThread(
+        [filename, playerId, bPreserveBackup]
+        {
+            // Will show "Delete Character" message to PC. Best match from dialog.tlk
+            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, "");
+
+            if (bPreserveBackup)
+            {
+                std::string backup = filename + ".deleted";
+                int i = 0;
+                while (Platform::FileSystem::FileExists(backup + std::to_string(i)))
+                    i++;
+                Platform::FileSystem::RenameFile(filename, backup + std::to_string(i));
+            }
+            else
+            {
+                Platform::FileSystem::RemoveFile(filename);
+            }
+        });
+
     return Events::ArgumentStack();
 }
 
@@ -220,6 +241,20 @@ Events::ArgumentStack Administration::OnGetBannedList(Events::ArgumentStack&&)
     return stack;
 }
 
+Events::ArgumentStack Administration::OnSetModuleName(Events::ArgumentStack&& args)
+{
+    const auto newName = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Set module name to '%s'.", newName.c_str());
+    Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pServerInfo->m_sModuleName = newName.c_str();
+    return Events::ArgumentStack();
+}
 
+Events::ArgumentStack Administration::OnSetServereName(Events::ArgumentStack&& args)
+{
+    const auto newName = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Set server name to '%s'.", newName.c_str());
+    Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetSessionName(CExoString(newName.c_str()));
+    return Events::ArgumentStack();
+}
 
 }
