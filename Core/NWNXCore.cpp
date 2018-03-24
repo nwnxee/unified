@@ -17,11 +17,46 @@
 #include "Utils.hpp"
 
 #include <cstring>
+#include <csignal>
 
 using namespace NWNXLib;
 using namespace NWNXLib::Hooking;
 
+static void (*nwn_crash_handler)(int);
+extern "C" void nwnx_signal_handler(int sig)
+{
+    const char *err;
+    switch (sig)
+    {
+        case SIGABRT:  err = "Program aborted";          break;
+        case SIGFPE:   err = "Floating point exception"; break;
+        case SIGSEGV:  err = "Segmentation fault";       break;
+        default:       err = "Unknown error";            break;
+    }
+
+    ASSERT_FAIL_MSG(" NWNX Signal Handler:\n"
+        "==============================================================\n"
+        " NWNX has crashed. Fatal error: %s (%d).\n"
+        " Please file a bug at https://github.com/nwnxee/unified/issues\n"
+        "==============================================================\n",
+        err, sig);
+    nwn_crash_handler(sig);
+}
+
 namespace {
+
+void InitCrashHandlers()
+{
+    nwn_crash_handler = std::signal(SIGABRT, nwnx_signal_handler);
+    std::signal(SIGFPE,  nwnx_signal_handler);
+    std::signal(SIGSEGV, nwnx_signal_handler);
+}
+void RestoreCrashHandlers()
+{
+    std::signal(SIGABRT, nwn_crash_handler);
+    std::signal(SIGFPE,  nwn_crash_handler);
+    std::signal(SIGSEGV, nwn_crash_handler);
+}
 
 static const char NWNX_PREFIX[]        = "NWNXEE!";
 static const char NWNX_LEGACY_PREFIX[] = "NWNX!";
@@ -362,6 +397,7 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
         }
     }
 
+    InitCrashHandlers();
     g_core->m_createServerHook.reset();
     app->CreateServer();
 }
@@ -373,6 +409,7 @@ void NWNXCore::DestroyServerHandler(API::CAppManager* app)
 
     // At this point, the hook has been reset. We should call the original again to let NWN carry on.
     app->DestroyServer();
+    RestoreCrashHandlers();
 }
 
 void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CServerExoAppInternal*)
