@@ -1,10 +1,8 @@
 #include "Log.hpp"
 #include "Assert.hpp"
 #include "Platform/FileSystem.hpp"
+#include "Platform/Debug.hpp"
 
-#ifdef _WIN32
-    #include "Windows.h"
-#endif
 
 #include <cstring>
 #include <unordered_map>
@@ -13,14 +11,6 @@ namespace NWNXLib {
 
 namespace Log {
 
-void InternalOutputDebugString(const char* str)
-{
-#ifdef _WIN32
-    OutputDebugStringA(str);
-#else
-    (void)str;
-#endif
-}
 
 void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* message)
 {
@@ -71,9 +61,9 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
         std::fclose(logFile);
     }
 
-    InternalOutputDebugString(buffer);
-    InternalOutputDebugString(message);
-    InternalOutputDebugString("\n");
+    Platform::Debug::OutputDebugString(buffer);
+    Platform::Debug::OutputDebugString(message);
+    Platform::Debug::OutputDebugString("\n");
 
     if (channel == Channel::SEV_FATAL)
     {

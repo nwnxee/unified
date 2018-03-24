@@ -1,4 +1,5 @@
 #include "Assert.hpp"
+#include "Platform/Debug.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -14,61 +15,42 @@ namespace NWNXLib {
 
 namespace Assert {
 
+#if TAR_DEBUG && !TAR_RELEASE
+static bool crashOnFailure = true;
+#else
+static bool crashOnFailure = false;
+#endif
+
+void SetCrashOnFailure(bool crash)
+{
+    crashOnFailure = crash;
+}
+
 void Fail(const char* condition, const char* file, int line, const char* message)
 {
-    char buffer[2048];
+    char buffer[64*1024];
 
     if (condition)
     {
-        std::sprintf(buffer, "ASSERTION FAILURE\n  Summary: (%s) failed at (%s:%d)", condition, file, line);
+        std::snprintf(buffer, sizeof(buffer), "ASSERTION FAILURE\n  Summary: (%s) failed at (%s:%d)", condition, file, line);
     }
     else
     {
-        std::sprintf(buffer, "ASSERTION FAILURE\n  Summary: Failed at (%s:%d)", file, line);
+        std::snprintf(buffer, sizeof(buffer), "ASSERTION FAILURE\n  Summary: Failed at (%s:%d)", file, line);
     }
 
     if (message)
     {
-        std::strcat(buffer, "\n  Message: ");
-        std::strcat(buffer, message);
+        std::strncat(buffer, "\n  Message: ", sizeof(buffer)-1);
+        std::strncat(buffer, message, sizeof(buffer)-1);
     }
 
-#ifdef _WIN32
-    void* stackTrace[20];
-    int numCapturedFrames = CaptureStackBackTrace(0, 20, stackTrace, NULL);
-
-    if (numCapturedFrames)
-    {
-        std::strcat(buffer, "\n  Backtrace:\n");
-        for (int i = 0; i < numCapturedFrames; ++i)
-        {
-            char backtraceBuffer[32];
-            std::sprintf(backtraceBuffer, "    [0x%p]\n", stackTrace[i]);
-            std::strcat(buffer, backtraceBuffer);
-        }
-    }
-#else
-    void* stackTrace[20];
-    int numCapturedFrames = backtrace(stackTrace, 20);
-
-    if (numCapturedFrames)
-    {
-        char** resolvedFrames = backtrace_symbols(stackTrace, 20);
-        std::strcat(buffer, "\n  Backtrace:\n");
-        for (int i = 0; i < numCapturedFrames; ++i)
-        {
-            char backtraceBuffer[256];
-            std::sprintf(backtraceBuffer, "    %s\n", resolvedFrames[i]);
-            std::strcat(buffer, backtraceBuffer);
-        }
-    }
-#endif // _WIN32
-
+    std::strncat(buffer, Platform::Debug::GetStackTrace(20).c_str(), sizeof(buffer)-1);
     std::fputs(buffer, stderr);
     std::fflush(stderr);
 
-    bool skipCrash = false;
-    bool skipBreak = false;
+    bool skipCrash = !crashOnFailure;
+    bool skipBreak = !Platform::Debug::IsDebuggerPresent();
 
 #ifdef _WIN32
     int response = MessageBox(GetActiveWindow(), buffer, "ASSERTION FAILURE", MB_ABORTRETRYIGNORE);

@@ -49,20 +49,21 @@ void OutputDebugString(const char *str)
 
 std::string GetStackTrace(uint8_t levels)
 {
-    char buffer[2048] = {};
+    char buffer[64*1024];
     void* stackTrace[256];
 
+    buffer[0] = 0;
 #ifdef _WIN32
     int numCapturedFrames = CaptureStackBackTrace(0, levels, stackTrace, NULL);
 
     if (numCapturedFrames)
     {
-        std::strcat(buffer, "\n  Backtrace:\n");
+        std::strncat(buffer, "\n  Backtrace:\n", sizeof(buffer)-1);
         for (int i = 0; i < numCapturedFrames; ++i)
         {
             char backtraceBuffer[32];
-            std::sprintf(backtraceBuffer, "    [0x%p]\n", stackTrace[i]);
-            std::strcat(buffer, backtraceBuffer);
+            std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    [0x%p]\n", stackTrace[i]);
+            std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
     }
 #else
@@ -71,12 +72,12 @@ std::string GetStackTrace(uint8_t levels)
     if (numCapturedFrames)
     {
         char** resolvedFrames = backtrace_symbols(stackTrace, levels);
-        std::strcat(buffer, "\n  Backtrace:\n");
+        std::strncat(buffer, "\n  Backtrace:\n", sizeof(buffer)-1);
         for (int i = 0; i < numCapturedFrames; ++i)
         {
-            char backtraceBuffer[256];
-            std::sprintf(backtraceBuffer, "    %s\n", resolvedFrames[i]);
-            std::strcat(buffer, backtraceBuffer);
+            char backtraceBuffer[2048];
+            std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
+            std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
     }
 #endif // _WIN32
