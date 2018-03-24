@@ -337,6 +337,12 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
 
+    Maybe<bool> crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
+    if (crashOnAssertFailure)
+    {
+        Assert::SetCrashOnFailure(*crashOnAssertFailure);
+    }
+
     if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
     {
         LOG_NOTICE("Not loading NWNX due to configuration.");
