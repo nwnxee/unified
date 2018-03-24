@@ -5,6 +5,7 @@
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
 #include "API/CResRef.hpp"
@@ -65,6 +66,8 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER("ADD_BANNED_PLAYER_NAME",        OnAddBannedPlayerName);
     REGISTER("REMOVE_BANNED_PLAYER_NAME",     OnRemoveBannedPlayerName);
     REGISTER("GET_BANNED_LIST",               OnGetBannedList);
+    REGISTER("SET_MODULE_NAME",               OnSetModuleName);
+    REGISTER("SET_SERVER_NAME",               OnSetServereName);
 
 #undef REGISTER
 }
@@ -229,6 +232,20 @@ Events::ArgumentStack Administration::OnGetBannedList(Events::ArgumentStack&&)
     return stack;
 }
 
+Events::ArgumentStack Administration::OnSetModuleName(Events::ArgumentStack&& args)
+{
+    const auto newName = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Set module name to '%s'.", newName.c_str());
+    Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pServerInfo->m_sModuleName = newName.c_str();
+    return Events::ArgumentStack();
+}
 
+Events::ArgumentStack Administration::OnSetServereName(Events::ArgumentStack&& args)
+{
+    const auto newName = Events::ExtractArgument<std::string>(args);
+    LOG_NOTICE("Set server name to '%s'.", newName.c_str());
+    Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetSessionName(CExoString(newName.c_str()));
+    return Events::ArgumentStack();
+}
 
 }
