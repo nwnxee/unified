@@ -1,3 +1,22 @@
+////////////////////////////////////////////////////////
+//
+//  NWScript
+//
+//  The list of actions and pre-defined constants.
+//
+//  (c) BioWare Corp, 1999
+//
+////////////////////////////////////////////////////////
+
+#define ENGINE_NUM_STRUCTURES   5
+#define ENGINE_STRUCTURE_0      effect
+#define ENGINE_STRUCTURE_1      event
+#define ENGINE_STRUCTURE_2      location
+#define ENGINE_STRUCTURE_3      talent
+#define ENGINE_STRUCTURE_4      itemproperty
+
+// Constants
+
 int    NUM_INVENTORY_SLOTS      = 18;
 
 int    TRUE                     = 1;
@@ -1164,14 +1183,14 @@ int VFX_IMP_MIRV_ELECTRIC              = 503;
 int VFX_COM_CHUNK_RED_BALLISTA         = 504;
 int VFX_DUR_INFERNO_NO_SOUND           = 505;
 int VFX_DUR_AURA_PULSE_RED_WHITE       = 512;
-int VFX_DUR_AURA_PULSE_BLUE_WHITE      = 513;
-int VFX_DUR_AURA_PULSE_GREEN_WHITE     = 514;
-int VFX_DUR_AURA_PULSE_YELLOW_WHITE    = 515;
-int VFX_DUR_AURA_PULSE_MAGENTA_WHITE   = 516;
-int VFX_DUR_AURA_PULSE_CYAN_WHITE      = 517;
-int VFX_DUR_AURA_PULSE_ORANGE_WHITE    = 518;
-int VFX_DUR_AURA_PULSE_BROWN_WHITE     = 519;
-int VFX_DUR_AURA_PULSE_PURPLE_WHITE    = 520;
+int VFX_DUR_AURA_PULSE_BLUE_WHITE      = 513;      
+int VFX_DUR_AURA_PULSE_GREEN_WHITE     = 514;     
+int VFX_DUR_AURA_PULSE_YELLOW_WHITE    = 515;   
+int VFX_DUR_AURA_PULSE_MAGENTA_WHITE   = 516;  
+int VFX_DUR_AURA_PULSE_CYAN_WHITE      = 517;   
+int VFX_DUR_AURA_PULSE_ORANGE_WHITE    = 518;   
+int VFX_DUR_AURA_PULSE_BROWN_WHITE     = 519;   
+int VFX_DUR_AURA_PULSE_PURPLE_WHITE    = 520;  
 int VFX_DUR_AURA_PULSE_GREY_WHITE      = 521;
 int VFX_DUR_AURA_PULSE_GREY_BLACK      = 522;
 int VFX_DUR_AURA_PULSE_BLUE_GREEN      = 523;
@@ -5700,12 +5719,12 @@ int CREATURE_PART_PELVIS                        = 6;
 int CREATURE_PART_TORSO                         = 7;
 int CREATURE_PART_BELT                          = 8;
 int CREATURE_PART_NECK                          = 9;
-int CREATURE_PART_RIGHT_FOREARM                 = 10;
-int CREATURE_PART_LEFT_FOREARM                  = 11;
-int CREATURE_PART_RIGHT_BICEP                   = 12;
+int CREATURE_PART_RIGHT_FOREARM                 = 10;   
+int CREATURE_PART_LEFT_FOREARM                  = 11;  
+int CREATURE_PART_RIGHT_BICEP                   = 12; 
 int CREATURE_PART_LEFT_BICEP                    = 13;
-int CREATURE_PART_RIGHT_SHOULDER                = 14;
-int CREATURE_PART_LEFT_SHOULDER                 = 15;
+int CREATURE_PART_RIGHT_SHOULDER                = 14;    
+int CREATURE_PART_LEFT_SHOULDER                 = 15;   
 int CREATURE_PART_RIGHT_HAND                    = 16;
 int CREATURE_PART_LEFT_HAND                     = 17;
 int CREATURE_PART_HEAD                          = 20;
@@ -5765,3 +5784,96 @@ int NAME_LAST_HALFORC           = 19;
 int NAME_FIRST_HUMAN_MALE       = 20;
 int NAME_FIRST_HUMAN_FEMALE     = 21;
 int NAME_LAST_HUMAN             = 22;
+
+int EVENT_SCRIPT_MODULE_ON_HEARTBEAT                     = 3000;
+int EVENT_SCRIPT_MODULE_ON_USER_DEFINED_EVENT            = 3001;
+int EVENT_SCRIPT_MODULE_ON_MODULE_LOAD                   = 3002;
+int EVENT_SCRIPT_MODULE_ON_MODULE_START                  = 3003;
+int EVENT_SCRIPT_MODULE_ON_CLIENT_ENTER                  = 3004;
+int EVENT_SCRIPT_MODULE_ON_CLIENT_EXIT                   = 3005;
+int EVENT_SCRIPT_MODULE_ON_ACTIVATE_ITEM                 = 3006;
+int EVENT_SCRIPT_MODULE_ON_ACQUIRE_ITEM                  = 3007;
+int EVENT_SCRIPT_MODULE_ON_LOSE_ITEM                     = 3008;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_DEATH                  = 3009;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_DYING                  = 3010;
+int EVENT_SCRIPT_MODULE_ON_RESPAWN_BUTTON_PRESSED        = 3011;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_REST                   = 3012;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_LEVEL_UP               = 3013;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_CANCEL_CUTSCENE        = 3014;
+int EVENT_SCRIPT_MODULE_ON_EQUIP_ITEM                    = 3015;
+int EVENT_SCRIPT_MODULE_ON_UNEQUIP_ITEM                  = 3016;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_CHAT                   = 3017;
+
+int EVENT_SCRIPT_AREA_ON_HEARTBEAT                       = 4000;
+int EVENT_SCRIPT_AREA_ON_USER_DEFINED_EVENT              = 4001;
+int EVENT_SCRIPT_AREA_ON_ENTER                           = 4002;
+int EVENT_SCRIPT_AREA_ON_EXIT                            = 4003;
+
+int EVENT_SCRIPT_AREAOFEFFECT_ON_HEARTBEAT               = 11000;
+int EVENT_SCRIPT_AREAOFEFFECT_ON_USER_DEFINED_EVENT      = 11001;
+int EVENT_SCRIPT_AREAOFEFFECT_ON_OBJECT_ENTER            = 11002;
+int EVENT_SCRIPT_AREAOFEFFECT_ON_OBJECT_EXIT             = 11003;
+
+int EVENT_SCRIPT_CREATURE_ON_HEARTBEAT                   = 5000;
+int EVENT_SCRIPT_CREATURE_ON_NOTICE                      = 5001;
+int EVENT_SCRIPT_CREATURE_ON_SPELLCASTAT                 = 5002;
+int EVENT_SCRIPT_CREATURE_ON_MELEE_ATTACKED              = 5003;
+int EVENT_SCRIPT_CREATURE_ON_DAMAGED                     = 5004;
+int EVENT_SCRIPT_CREATURE_ON_DISTURBED                   = 5005;
+int EVENT_SCRIPT_CREATURE_ON_END_COMBATROUND             = 5006;
+int EVENT_SCRIPT_CREATURE_ON_DIALOGUE                    = 5007;
+int EVENT_SCRIPT_CREATURE_ON_SPAWN_IN                    = 5008;
+int EVENT_SCRIPT_CREATURE_ON_RESTED                      = 5009;
+int EVENT_SCRIPT_CREATURE_ON_DEATH                       = 5010;
+int EVENT_SCRIPT_CREATURE_ON_USER_DEFINED_EVENT          = 5011;
+int EVENT_SCRIPT_CREATURE_ON_BLOCKED_BY_DOOR             = 5012;
+
+int EVENT_SCRIPT_TRIGGER_ON_HEARTBEAT                    = 7000;
+int EVENT_SCRIPT_TRIGGER_ON_OBJECT_ENTER                 = 7001;
+int EVENT_SCRIPT_TRIGGER_ON_OBJECT_EXIT                  = 7002;
+int EVENT_SCRIPT_TRIGGER_ON_USER_DEFINED_EVENT           = 7003;
+int EVENT_SCRIPT_TRIGGER_ON_TRAPTRIGGERED                = 7004;
+int EVENT_SCRIPT_TRIGGER_ON_DISARMED                     = 7005;
+int EVENT_SCRIPT_TRIGGER_ON_CLICKED                      = 7006;
+
+int EVENT_SCRIPT_PLACEABLE_ON_CLOSED                     = 9000;
+int EVENT_SCRIPT_PLACEABLE_ON_DAMAGED                    = 9001;
+int EVENT_SCRIPT_PLACEABLE_ON_DEATH                      = 9002;
+int EVENT_SCRIPT_PLACEABLE_ON_DISARM                     = 9003;
+int EVENT_SCRIPT_PLACEABLE_ON_HEARTBEAT                  = 9004;
+int EVENT_SCRIPT_PLACEABLE_ON_INVENTORYDISTURBED         = 9005;
+int EVENT_SCRIPT_PLACEABLE_ON_LOCK                       = 9006;
+int EVENT_SCRIPT_PLACEABLE_ON_MELEEATTACKED              = 9007;
+int EVENT_SCRIPT_PLACEABLE_ON_OPEN                       = 9008;
+int EVENT_SCRIPT_PLACEABLE_ON_SPELLCASTAT                = 9009;
+int EVENT_SCRIPT_PLACEABLE_ON_TRAPTRIGGERED              = 9010;
+int EVENT_SCRIPT_PLACEABLE_ON_UNLOCK                     = 9011;
+int EVENT_SCRIPT_PLACEABLE_ON_USED                       = 9012;
+int EVENT_SCRIPT_PLACEABLE_ON_USER_DEFINED_EVENT         = 9013;
+int EVENT_SCRIPT_PLACEABLE_ON_DIALOGUE                   = 9014;
+int EVENT_SCRIPT_PLACEABLE_ON_LEFT_CLICK                 = 9015;
+
+int EVENT_SCRIPT_DOOR_ON_OPEN                            = 10000;
+int EVENT_SCRIPT_DOOR_ON_CLOSE                           = 10001;
+int EVENT_SCRIPT_DOOR_ON_DAMAGE                          = 10002;
+int EVENT_SCRIPT_DOOR_ON_DEATH                           = 10003;
+int EVENT_SCRIPT_DOOR_ON_DISARM                          = 10004;
+int EVENT_SCRIPT_DOOR_ON_HEARTBEAT                       = 10005;
+int EVENT_SCRIPT_DOOR_ON_LOCK                            = 10006;
+int EVENT_SCRIPT_DOOR_ON_MELEE_ATTACKED                  = 10007;
+int EVENT_SCRIPT_DOOR_ON_SPELLCASTAT                     = 10008;
+int EVENT_SCRIPT_DOOR_ON_TRAPTRIGGERED                   = 10009;
+int EVENT_SCRIPT_DOOR_ON_UNLOCK                          = 10010;
+int EVENT_SCRIPT_DOOR_ON_USERDEFINED                     = 10011;
+int EVENT_SCRIPT_DOOR_ON_CLICKED                         = 10012;
+int EVENT_SCRIPT_DOOR_ON_DIALOGUE                        = 10013;
+int EVENT_SCRIPT_DOOR_ON_FAIL_TO_OPEN                    = 10014;
+
+int EVENT_SCRIPT_ENCOUNTER_ON_OBJECT_ENTER               = 13000;
+int EVENT_SCRIPT_ENCOUNTER_ON_OBJECT_EXIT                = 13001;
+int EVENT_SCRIPT_ENCOUNTER_ON_HEARTBEAT                  = 13002;
+int EVENT_SCRIPT_ENCOUNTER_ON_ENCOUNTER_EXHAUSTED        = 13003;
+int EVENT_SCRIPT_ENCOUNTER_ON_USER_DEFINED_EVENT         = 13004;
+
+int EVENT_SCRIPT_STORE_ON_OPEN                           = 14000;
+int EVENT_SCRIPT_STORE_ON_CLOSE                          = 14001;
