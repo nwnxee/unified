@@ -697,7 +697,7 @@ ArgumentStack Creature::SetRemainingSpellSlots(ArgumentStack&& args)
 ArgumentStack Creature::GetMaxSpellSlots(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    int32_t retval = 0;
+    int32_t retval = -1;
     if (auto *pCreature = creature(args))
     {
         const auto classId = Services::Events::ExtractArgument<int32_t>(args); ASSERT(classId >= 0 && classId <= 255);
@@ -708,7 +708,7 @@ ArgumentStack Creature::GetMaxSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retval = classInfo.GetMaxSpellsPerDayLeft(static_cast<unsigned char>(level));
+                retval = pCreature->m_pStats->GetSpellGainWithBonus(i, level) + classInfo.m_nBonusSpellsList[level];
                 break;
             }
         }
