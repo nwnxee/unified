@@ -25,42 +25,6 @@ int NWNX_Item_GetAddGoldPieceValue(object oItem);
 // and back in).
 void NWNX_Item_SetBaseItemType(object oItem, int nBaseItem);
 
-// Set a color value on an armor. This will not be visible to PCs until
-// the item is refreshed for them (e.g. by logging out and back in).
-// nIndex: ITEM_APPR_ARMOR_COLOR_*    [0]
-// nColor range: 0-255                [1]
-// 
-// [0] Alternatively, if per-part coloring is desired, the following equation can be used 
-// for nIndex to achieve that: 
-//
-//   ITEM_APPR_ARMOR_NUM_COLORS + (ITEM_APPR_ARMOR_MODEL_ * ITEM_APPR_ARMOR_NUM_COLORS) + ITEM_APPR_ARMOR_COLOR_
-//
-// For example, to change the CLOTH1 channel of the torso, nIndex would be:
-//
-//   6 + (7 * 6) + 2 = 50
-//
-// [1] When specifying per-part coloring, the value 255 corresponds with the logical
-// function 'clear colour override', which clears the per-part override for that part.
-void NWNX_Item_SetArmorColor(object oItem, int nIndex, int nColor);
-
-// Set a color value on a weapon. This will not be visible to PCs until
-// the item is refreshed for them (e.g. by logging out and back in).
-// nIndex: ITEM_APPR_WEAPON_COLOR_*
-// nColor range: 0-255
-void NWNX_Item_SetWeaponColor(object oItem, int nIndex, int nColor);
-
-// Set an appearance value on a weapon. This will not be visible to PCs until
-// the item is refreshed for them (e.g. by logging out and back in).
-// nIndex: ITEM_APPR_WEAPON_MODEL_* 
-// nValue range: 0-255
-void NWNX_Item_SetWeaponAppearance(object oItem, int nIndex, int nValue);
-
-// Set an appearance value on an armor. This will not be visible to PCs until
-// the item is refreshed for them (e.g. by logging out and back in).
-// nIndex: ITEM_APPR_ARMOR_MODEL_* 
-// nValue range: 0-255
-void NWNX_Item_SetArmorAppearance(object oItem, int nIndex, int nValue);
-
 // Make a single change to the appearance of an item. This will not be visible to PCs until
 // the item is refreshed for them (e.g. by logging out and back in).
 // Helmet models and simple items ignore iIndex.
@@ -149,45 +113,6 @@ void NWNX_Item_SetBaseItemType(object oItem, int nBaseItem)
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
     
     NWNX_CallFunction(NWNX_Item, sFunc);
-}
-    
-void NWNX_Item_SetArmorColor(object oItem, int nIndex, int nColor)
-{
-    if(nIndex>=0 && nIndex<126 &&
-       nColor>=0 && nColor<=255)
-    {
-        NWNX_Item_SetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_COLOR, nIndex, nColor);
-    }
-}
-
-void NWNX_Item_SetWeaponColor(object oItem, int nIndex, int nColor)
-{
-    if(nIndex>=ITEM_APPR_WEAPON_COLOR_BOTTOM &&
-       nIndex<=ITEM_APPR_WEAPON_COLOR_TOP &&
-       nColor>=0 && nColor<=255)
-    {
-        NWNX_Item_SetItemAppearance(oItem, ITEM_APPR_TYPE_WEAPON_COLOR, nIndex, nColor);
-    }
-}
-
-void NWNX_Item_SetWeaponAppearance(object oItem, int nIndex, int nValue)
-{
-    if(nIndex>=ITEM_APPR_WEAPON_MODEL_BOTTOM &&
-       nIndex<=ITEM_APPR_WEAPON_MODEL_TOP &&
-       nValue>=0)
-    {
-        NWNX_Item_SetItemAppearance(oItem, ITEM_APPR_TYPE_WEAPON_MODEL, nIndex, nValue);
-    }  
-}
-
-void NWNX_Item_SetArmorAppearance(object oItem, int nIndex, int nValue)
-{
-    if(nIndex>=ITEM_APPR_ARMOR_MODEL_RFOOT &&
-       nIndex<=ITEM_APPR_ARMOR_MODEL_ROBE
-       nValue>=0)
-    {
-        NWNX_Item_SetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL, nIndex, nValue);
-    }  
 }
 
 void NWNX_Item_SetItemAppearance(object oItem, int nType, int nIndex, int nValue)
