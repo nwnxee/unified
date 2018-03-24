@@ -196,6 +196,8 @@ void NWNX_Creature_SetClassByPosition(object creature, int position, int classID
 // Modifying the BAB will also affect the creature's attacks per round and its
 // eligability for feats, prestige classes, etc.
 // The BAB value should be between 0 and 254.
+// Setting BAB to 0 will cause the creature to revert to its original BAB based
+// on its classes and levels. A creature can never have an actual BAB of zero.
 // NOTE: The base game has a function SetBaseAttackBonus(), which actually sets
 //       the bonus attacks per round for a creature, not the BAB.
 void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
