@@ -1043,7 +1043,6 @@ ArgumentStack Creature::SetBaseAttackBonus(ArgumentStack&& args)
         ASSERT(bab <= 254);
 
         pCreature->m_pStats->m_nBaseAttackBonus = static_cast<uint8_t>(bab);
-        ASSERT(pCreature->m_pStats->GetBaseAttackBonus(false) == bab);
     }
     return stack;
 }
