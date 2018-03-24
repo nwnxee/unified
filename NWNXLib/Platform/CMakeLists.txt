@@ -5,4 +5,5 @@ nwnxlib_add(
     "FileSystem.cpp"
     "Memory.cpp"
     "Syslog.cpp"
-    "Time.cpp")
+    "Time.cpp"
+    "Debug.cpp")
