@@ -47,6 +47,7 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    REGISTER(SetWeaponFinesseSize);
    REGISTER(SetWeaponUnarmed);
    REGISTER(SetWeaponImprovedCriticalFeat);
+   REGISTER(SetWeaponSpecializationFeat);
 
 #undef REGISTER
    
@@ -56,8 +57,10 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponFinesse>(&Weapon::GetWeaponFinesse);
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponImprovedCritical>(&Weapon::GetWeaponImprovedCritical);
-   m_GetWeaponImprovedCritical = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponImprovedCritical);
+   m_GetWeaponImprovedCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponImprovedCritical);
 
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponSpecialization>(&Weapon::GetWeaponSpecialization);
+   m_GetWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponSpecialization);
 }
 
 Weapon::~Weapon()
@@ -123,6 +126,21 @@ ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
    return stack;   
 }
 
+ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_WeaponSpecializationMap.insert({w_bitem, feat});
+   }
+   
+   return stack;   
+}
+
 int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
 {
    int32_t feat=-1;
@@ -173,7 +191,26 @@ int32_t Weapon::GetWeaponImprovedCritical(NWNXLib::API::CNWSCreatureStats* pStat
       feat =  (w == plugin.m_WeaponImprovedCriticalMap.end()) ? -1 : w->second;
    }
     
-   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetWeaponImprovedCritical->CallOriginal<int32_t>(pStats, pWeapon)); 
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetWeaponImprovedCriticalHook->CallOriginal<int32_t>(pStats, pWeapon)); 
+}
+
+int32_t Weapon::GetWeaponSpecialization(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   
+   if(pWeapon==nullptr) 
+   {
+      auto w = plugin.m_WeaponSpecializationMap.find(Constants::BASE_ITEM_GLOVES);
+      feat =  (w == plugin.m_WeaponSpecializationMap.end()) ? -1 : w->second;
+   }
+   else
+   {
+      auto w = plugin.m_WeaponSpecializationMap.find(pWeapon->m_nBaseItem);
+      feat =  (w == plugin.m_WeaponSpecializationMap.end()) ? -1 : w->second;
+   }
+    
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetWeaponSpecializationHook->CallOriginal<int32_t>(pStats, pWeapon)); 
 }
 
 bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse)

@@ -14,6 +14,9 @@ void NWNX_Weapon_SetWeaponUnarmed(int nBaseItem);
 // Set nFeat as weapon improved critical feat for nBaseItem
 void NWNX_Weapon_SetWeaponImprovedCriticalFeat(int nBaseItem, int nFeat);
 
+// Set nFeat as weapon specialization feat for nBaseItem
+void NWNX_Weapon_SetWeaponSpecializationFeat(int nBaseItem, int nFeat);
+
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
 {
     string sFunc = "SetWeaponFocusFeat";
@@ -46,6 +49,16 @@ void NWNX_Weapon_SetWeaponUnarmed(int nBaseItem)
 void NWNX_Weapon_SetWeaponImprovedCriticalFeat(int nBaseItem, int nFeat)
 {
     string sFunc = "SetWeaponImprovedCriticalFeat";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+void NWNX_Weapon_SetWeaponSpecializationFeat(int nBaseItem, int nFeat)
+{
+    string sFunc = "SetWeaponSpecializationFeat";
 
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);

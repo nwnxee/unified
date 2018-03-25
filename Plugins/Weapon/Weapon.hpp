@@ -26,17 +26,21 @@ class Weapon : public NWNXLib::Plugin
       ArgumentStack SetWeaponFinesseSize         (ArgumentStack&& args);
       ArgumentStack SetWeaponUnarmed             (ArgumentStack&& args);
       ArgumentStack SetWeaponImprovedCriticalFeat(ArgumentStack&& args);
-
+      ArgumentStack SetWeaponSpecializationFeat  (ArgumentStack&& args);
+      
       NWNXLib::Hooking::FunctionHook* m_GetWeaponFocusHook;
-      NWNXLib::Hooking::FunctionHook* m_GetWeaponImprovedCritical;      
+      NWNXLib::Hooking::FunctionHook* m_GetWeaponImprovedCriticalHook;      
+      NWNXLib::Hooking::FunctionHook* m_GetWeaponSpecializationHook;
 
       static int32_t GetWeaponFocus           (NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
       static int32_t GetWeaponFinesse         (NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
       static int32_t GetWeaponImprovedCritical(NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
+      static int32_t GetWeaponSpecialization  (NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
 
       std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
       std::map<std::uint32_t, std::uint8_t>  m_WeaponFinesseSizeMap;
       std::map<std::uint32_t, std::uint32_t> m_WeaponImprovedCriticalMap;
+      std::map<std::uint32_t, std::uint32_t> m_WeaponSpecializationMap;      
       
       std::set<std::uint32_t>  m_WeaponUnarmedSet;
 
