@@ -22,19 +22,21 @@ class Weapon : public NWNXLib::Plugin
       virtual ~Weapon();
 
    private:
-      ArgumentStack SetWeaponFocusFeat  (ArgumentStack&& args);
-      ArgumentStack SetWeaponFinesseSize(ArgumentStack&& args);
-      ArgumentStack SetWeaponUnarmed    (ArgumentStack&& args);
+      ArgumentStack SetWeaponFocusFeat           (ArgumentStack&& args);
+      ArgumentStack SetWeaponFinesseSize         (ArgumentStack&& args);
+      ArgumentStack SetWeaponUnarmed             (ArgumentStack&& args);
+      ArgumentStack SetWeaponImprovedCriticalFeat(ArgumentStack&& args);
 
       NWNXLib::Hooking::FunctionHook* m_GetWeaponFocusHook;
-      NWNXLib::Hooking::FunctionHook* m_GetWeaponFinesseHook;
+      NWNXLib::Hooking::FunctionHook* m_GetWeaponImprovedCritical;      
 
-
-      static int32_t GetWeaponFocus  (NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
-      static int32_t GetWeaponFinesse(NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
+      static int32_t GetWeaponFocus           (NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
+      static int32_t GetWeaponFinesse         (NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
+      static int32_t GetWeaponImprovedCritical(NWNXLib::API::CNWSCreatureStats* thisPtr, NWNXLib::API::CNWSItem* pItem);
 
       std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
       std::map<std::uint32_t, std::uint8_t>  m_WeaponFinesseSizeMap;
+      std::map<std::uint32_t, std::uint32_t> m_WeaponImprovedCriticalMap;
       
       std::set<std::uint32_t>  m_WeaponUnarmedSet;
 

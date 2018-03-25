@@ -46,6 +46,7 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    REGISTER(SetWeaponFocusFeat);
    REGISTER(SetWeaponFinesseSize);
    REGISTER(SetWeaponUnarmed);
+   REGISTER(SetWeaponImprovedCriticalFeat);
 
 #undef REGISTER
    
@@ -53,7 +54,9 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    m_GetWeaponFocusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponFocus);
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponFinesse>(&Weapon::GetWeaponFinesse);
-   m_GetWeaponFinesseHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponFinesse);   
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponImprovedCritical>(&Weapon::GetWeaponImprovedCritical);
+   m_GetWeaponImprovedCritical = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponImprovedCritical);
 
 }
 
@@ -105,6 +108,21 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
    return stack;
 }
 
+ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_WeaponImprovedCriticalMap.insert({w_bitem, feat});
+   }
+   
+   return stack;   
+}
+
 int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
 {
    int32_t feat=-1;
@@ -137,6 +155,25 @@ int32_t Weapon::GetWeaponFinesse(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLi
       return 0;
 
    return plugin.GetIsWeaponLight(pStats, pWeapon, true) ? 1 : 0;
+}
+
+int32_t Weapon::GetWeaponImprovedCritical(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   
+   if(pWeapon==nullptr) 
+   {
+      auto w = plugin.m_WeaponImprovedCriticalMap.find(Constants::BASE_ITEM_GLOVES);
+      feat =  (w == plugin.m_WeaponImprovedCriticalMap.end()) ? -1 : w->second;
+   }
+   else
+   {
+      auto w = plugin.m_WeaponImprovedCriticalMap.find(pWeapon->m_nBaseItem);
+      feat =  (w == plugin.m_WeaponImprovedCriticalMap.end()) ? -1 : w->second;
+   }
+    
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetWeaponImprovedCritical->CallOriginal<int32_t>(pStats, pWeapon)); 
 }
 
 bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse)

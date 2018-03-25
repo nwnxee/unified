@@ -11,31 +11,44 @@ void NWNX_Weapon_SetWeaponFinesseSize(int nBaseItem, int nSize);
 // Set weapon nBaseItem to be considered as unarmed for weapon finesse feat
 void NWNX_Weapon_SetWeaponUnarmed(int nBaseItem);
 
+// Set nFeat as weapon improved critical feat for nBaseItem
+void NWNX_Weapon_SetWeaponImprovedCriticalFeat(int nBaseItem, int nFeat);
+
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
 {
     string sFunc = "SetWeaponFocusFeat";
-    
+
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
-    
+
     NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
 
 void NWNX_Weapon_SetWeaponFinesseSize(int nBaseItem, int nSize)
 {
-    string sFunc = "SetWeaponFinessSize";
-    
+    string sFunc = "SetWeaponFinesseSize";
+
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nSize);
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
-    
+
     NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
 
 void NWNX_Weapon_SetWeaponUnarmed(int nBaseItem)
 {
     string sFunc = "SetWeaponUnarmed";
-    
+
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
-    
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+void NWNX_Weapon_SetWeaponImprovedCriticalFeat(int nBaseItem, int nFeat)
+{
+    string sFunc = "SetWeaponImprovedCriticalFeat";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
+
     NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
