@@ -44,15 +44,23 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    GetServices()->m_events->RegisterEvent(#func, std::bind(&Weapon::func, this, std::placeholders::_1))
 
    REGISTER(SetWeaponFocusFeat);
+   REGISTER(SetEpicWeaponFocusFeat);
    REGISTER(SetWeaponFinesseSize);
    REGISTER(SetWeaponUnarmed);
    REGISTER(SetWeaponImprovedCriticalFeat);
    REGISTER(SetWeaponSpecializationFeat);
+   REGISTER(SetEpicWeaponSpecializationFeat);
+   REGISTER(SetEpicWeaponOverwhelmingCriticalFeat);
+   REGISTER(SetEpicWeaponDevastatingCriticalFeat);
+   REGISTER(SetWeaponOfChoiceFeat);
 
 #undef REGISTER
    
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponFocus>(&Weapon::GetWeaponFocus);
    m_GetWeaponFocusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponFocus);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetEpicWeaponFocus>(&Weapon::GetEpicWeaponFocus);
+   m_GetEpicWeaponFocusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetEpicWeaponFocus);
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponFinesse>(&Weapon::GetWeaponFinesse);
 
@@ -61,6 +69,19 @@ Weapon::Weapon(const Plugin::CreateParams& params)
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetWeaponSpecialization>(&Weapon::GetWeaponSpecialization);
    m_GetWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetWeaponSpecialization);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetEpicWeaponSpecialization>(&Weapon::GetEpicWeaponSpecialization);
+   m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetEpicWeaponSpecialization);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetEpicWeaponOverwhelmingCritical>(&Weapon::GetEpicWeaponOverwhelmingCritical);
+   m_GetEpicWeaponOverwhelmingCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetEpicWeaponOverwhelmingCritical);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetEpicWeaponDevastatingCritical>(&Weapon::GetEpicWeaponDevastatingCritical);
+   m_GetEpicWeaponDevastatingCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetEpicWeaponDevastatingCritical);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetIsWeaponOfChoice>(&Weapon::GetIsWeaponOfChoice);
+   m_GetIsWeaponOfChoiceHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetIsWeaponOfChoice);
+
 }
 
 Weapon::~Weapon()
@@ -77,6 +98,21 @@ ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_WeaponFocusMap.insert({w_bitem, feat});
+   }
+   
+   return stack;   
+}
+
+ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_EpicWeaponFocusMap.insert({w_bitem, feat});
    }
    
    return stack;   
@@ -141,6 +177,66 @@ ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
    return stack;   
 }
 
+ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_EpicWeaponSpecializationMap.insert({w_bitem, feat});
+   }
+   
+   return stack;   
+}
+
+ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_EpicWeaponOverwhelmingCriticalMap.insert({w_bitem, feat});
+   }
+   
+   return stack;   
+}
+
+ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_EpicWeaponDevastatingCriticalMap.insert({w_bitem, feat});
+   }
+   
+   return stack;   
+}
+
+ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_WeaponOfChoiceMap.insert({w_bitem, feat});
+   }
+   
+   return stack;   
+}
+
 int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
 {
    int32_t feat=-1;
@@ -163,6 +259,30 @@ int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib:
       return 1;
    }   
    return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetWeaponFocusHook->CallOriginal<int32_t>(pStats, pWeapon)); 
+}
+
+int32_t Weapon::GetEpicWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   
+   if(pWeapon==nullptr) 
+   {
+      auto w = plugin.m_EpicWeaponFocusMap.find(Constants::BASE_ITEM_GLOVES);
+      feat =  (w == plugin.m_EpicWeaponFocusMap.end()) ? -1 : w->second;
+   }
+   else
+   {
+      auto w = plugin.m_EpicWeaponFocusMap.find(pWeapon->m_nBaseItem);
+      feat =  (w == plugin.m_EpicWeaponFocusMap.end()) ? -1 : w->second;
+   }
+   
+   if (feat == Constants::FEAT_EPIC_WEAPON_FOCUS_CREATURE && 
+       pStats->HasFeat(Constants::FEAT_EPIC_WEAPON_FOCUS_UNARMED))
+   {
+      return 1;
+   }   
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetEpicWeaponFocusHook->CallOriginal<int32_t>(pStats, pWeapon)); 
 }
 
 int32_t Weapon::GetWeaponFinesse(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
@@ -211,6 +331,74 @@ int32_t Weapon::GetWeaponSpecialization(NWNXLib::API::CNWSCreatureStats* pStats,
    }
     
    return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetWeaponSpecializationHook->CallOriginal<int32_t>(pStats, pWeapon)); 
+}
+
+int32_t Weapon::GetEpicWeaponSpecialization(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   
+   if(pWeapon==nullptr) 
+   {
+      auto w = plugin.m_EpicWeaponSpecializationMap.find(Constants::BASE_ITEM_GLOVES);
+      feat =  (w == plugin.m_EpicWeaponSpecializationMap.end()) ? -1 : w->second;
+   }
+   else
+   {
+      auto w = plugin.m_EpicWeaponSpecializationMap.find(pWeapon->m_nBaseItem);
+      feat =  (w == plugin.m_EpicWeaponSpecializationMap.end()) ? -1 : w->second;
+   }
+    
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetEpicWeaponSpecializationHook->CallOriginal<int32_t>(pStats, pWeapon)); 
+}
+
+int32_t Weapon::GetEpicWeaponOverwhelmingCritical(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   
+   if(pWeapon==nullptr) 
+   {
+      auto w = plugin.m_EpicWeaponOverwhelmingCriticalMap.find(Constants::BASE_ITEM_GLOVES);
+      feat =  (w == plugin.m_EpicWeaponOverwhelmingCriticalMap.end()) ? -1 : w->second;
+   }
+   else
+   {
+      auto w = plugin.m_EpicWeaponOverwhelmingCriticalMap.find(pWeapon->m_nBaseItem);
+      feat =  (w == plugin.m_EpicWeaponOverwhelmingCriticalMap.end()) ? -1 : w->second;
+   }
+    
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetEpicWeaponOverwhelmingCriticalHook->CallOriginal<int32_t>(pStats, pWeapon)); 
+}
+
+int32_t Weapon::GetEpicWeaponDevastatingCritical(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   
+   if(pWeapon==nullptr) 
+   {
+      auto w = plugin.m_EpicWeaponDevastatingCriticalMap.find(Constants::BASE_ITEM_GLOVES);
+      feat =  (w == plugin.m_EpicWeaponDevastatingCriticalMap.end()) ? -1 : w->second;
+   }
+   else
+   {
+      auto w = plugin.m_EpicWeaponDevastatingCriticalMap.find(pWeapon->m_nBaseItem);
+      feat =  (w == plugin.m_EpicWeaponDevastatingCriticalMap.end()) ? -1 : w->second;
+   }
+    
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetEpicWeaponDevastatingCriticalHook->CallOriginal<int32_t>(pStats, pWeapon)); 
+}
+
+int32_t Weapon::GetIsWeaponOfChoice(NWNXLib::API::CNWSCreatureStats* pStats, uint32_t nBaseItem)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   
+   auto w = plugin.m_WeaponOfChoiceMap.find(nBaseItem);
+   feat =  (w == plugin.m_WeaponOfChoiceMap.end()) ? -1 : w->second;
+      
+   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetIsWeaponOfChoiceHook->CallOriginal<int32_t>(pStats, nBaseItem)); 
 }
 
 bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse)
