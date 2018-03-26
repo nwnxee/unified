@@ -12,7 +12,7 @@ build:
     - zip Binaries/NWNX-EE.zip Binaries/NWNX_*.so Binaries/*.jar
     - rm Binaries/NWNX_*.so Binaries/*.jar
   artifacts:
-    name: "NWNXEE_$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    name: "NWNXEE_$CI_COMMIT_SHA-$CI_COMMIT_REF_NAME"
     paths:
       - Binaries/NWNX-EE.zip
       - Binaries/NWScript.zip
