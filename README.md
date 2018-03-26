@@ -12,6 +12,10 @@ Using NWNX:EE, developers can make plugins to do anything they want, including b
 
 NWNX:EE is not just for plugin developers. Module creators can use plugins created by the NWNX:EE contributors to expand the scripting and systems functionality of their modules.
 
+## What versions of the server are supported?
+
+The most recent build of NWN:EE that is supported can be discovered at the top of this file. Please note that we do NOT support any server binaries other than the one in the dedicated server package. We support neither the binary released through the Beamdog client nor the one released through the Steam client. We release an update for each new version of the dedicated server package, which can be found here: https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support/p1
+
 ## What platforms are supported?
 
 Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. There are plans to bring native Windows support to NWNX:EE but these plans currently lack a concrete schedule.
