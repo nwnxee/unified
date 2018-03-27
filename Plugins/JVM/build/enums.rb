@@ -291,5 +291,11 @@ Enums = {
     9 => 'Custom7PhenoType', 10 => 'Custom8PhenoType', 11 => 'Custom9PhenoType', 12 => 'Custom10PhenoType',
     13 => 'Custom11PhenoType', 14 => 'Custom12PhenoType', 15 => 'Custom13PhenoType', 16 => 'Custom14PhenoType',
     17 => 'Custom15PhenoType', 18 => 'Custom16PhenoType', 19 => 'Custom17PhenoType', 20 => 'Custom18PhenoType',
+  },
+
+  # Changes for 1.74
+  'ExploredType' => {
+    -1 => 'InvalidAreaOrCreature', 0 => 'TileNotExplored', 1 => 'TileExplored' 
   }
 }
+

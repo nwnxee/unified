@@ -183,7 +183,13 @@ ReturnRename = {
   'getCutsceneMode' => 'bool',
   'getActionMode' => 'bool',
 
-  'getHiddenWhenEquipped' => 'bool'
+  'getHiddenWhenEquipped' => 'bool',
+
+  # Changes for 1.74
+  'SetCreatureExploresMinimap' => 'bool',
+  'GetCreatureExploresMinimap' => 'bool',
+  'GetIsPlayerConnectionRelayed' => 'bool',
+  'SetEventScript' => 'bool'
 }
 DisabledReturnRenames = {
 
@@ -224,6 +230,10 @@ DisabledReturnRenames = {
   'getAlignmentLawChaos' => 'Alignment',
   'getAlignmentGoodEvil' => 'Alignment',
   'getAILevel' => 'AILevel',
+
+  # Changes for 1.74
+  'SetTileExplored' => 'ExploredType',
+  'GetTileExplored' => 'ExploredType'
 }
 
 ArgumentTypeDef.clear

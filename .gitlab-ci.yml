@@ -3,12 +3,16 @@ stages:
 
 build:
   stage: build
-  image: docker.nwnx.io:443/nwnxee/unified:builder
+  image: nwnxee/builder
   script:
     - CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
     - make all
     - Scripts/packageNWScript.sh
+    - Scripts/packageJarFile.sh
+    - zip Binaries/NWNX-EE.zip Binaries/NWNX_*.so Binaries/*.jar
+    - rm Binaries/NWNX_*.so Binaries/*.jar
   artifacts:
+    name: "NWNXEE_$CI_COMMIT_SHA-$CI_COMMIT_REF_NAME"
     paths:
-      - Binaries/NWNX_*.*
+      - Binaries/NWNX-EE.zip
       - Binaries/NWScript.zip

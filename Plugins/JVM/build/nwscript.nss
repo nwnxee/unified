@@ -1183,14 +1183,14 @@ int VFX_IMP_MIRV_ELECTRIC              = 503;
 int VFX_COM_CHUNK_RED_BALLISTA         = 504;
 int VFX_DUR_INFERNO_NO_SOUND           = 505;
 int VFX_DUR_AURA_PULSE_RED_WHITE       = 512;
-int VFX_DUR_AURA_PULSE_BLUE_WHITE      = 513;
-int VFX_DUR_AURA_PULSE_GREEN_WHITE     = 514;
-int VFX_DUR_AURA_PULSE_YELLOW_WHITE    = 515;
-int VFX_DUR_AURA_PULSE_MAGENTA_WHITE   = 516;
-int VFX_DUR_AURA_PULSE_CYAN_WHITE      = 517;
-int VFX_DUR_AURA_PULSE_ORANGE_WHITE    = 518;
-int VFX_DUR_AURA_PULSE_BROWN_WHITE     = 519;
-int VFX_DUR_AURA_PULSE_PURPLE_WHITE    = 520;
+int VFX_DUR_AURA_PULSE_BLUE_WHITE      = 513;      
+int VFX_DUR_AURA_PULSE_GREEN_WHITE     = 514;     
+int VFX_DUR_AURA_PULSE_YELLOW_WHITE    = 515;   
+int VFX_DUR_AURA_PULSE_MAGENTA_WHITE   = 516;  
+int VFX_DUR_AURA_PULSE_CYAN_WHITE      = 517;   
+int VFX_DUR_AURA_PULSE_ORANGE_WHITE    = 518;   
+int VFX_DUR_AURA_PULSE_BROWN_WHITE     = 519;   
+int VFX_DUR_AURA_PULSE_PURPLE_WHITE    = 520;  
 int VFX_DUR_AURA_PULSE_GREY_WHITE      = 521;
 int VFX_DUR_AURA_PULSE_GREY_BLACK      = 522;
 int VFX_DUR_AURA_PULSE_BLUE_GREEN      = 523;
@@ -5719,12 +5719,12 @@ int CREATURE_PART_PELVIS                        = 6;
 int CREATURE_PART_TORSO                         = 7;
 int CREATURE_PART_BELT                          = 8;
 int CREATURE_PART_NECK                          = 9;
-int CREATURE_PART_RIGHT_FOREARM                 = 10;
-int CREATURE_PART_LEFT_FOREARM                  = 11;
-int CREATURE_PART_RIGHT_BICEP                   = 12;
+int CREATURE_PART_RIGHT_FOREARM                 = 10;   
+int CREATURE_PART_LEFT_FOREARM                  = 11;  
+int CREATURE_PART_RIGHT_BICEP                   = 12; 
 int CREATURE_PART_LEFT_BICEP                    = 13;
-int CREATURE_PART_RIGHT_SHOULDER                = 14;
-int CREATURE_PART_LEFT_SHOULDER                 = 15;
+int CREATURE_PART_RIGHT_SHOULDER                = 14;    
+int CREATURE_PART_LEFT_SHOULDER                 = 15;   
 int CREATURE_PART_RIGHT_HAND                    = 16;
 int CREATURE_PART_LEFT_HAND                     = 17;
 int CREATURE_PART_HEAD                          = 20;
@@ -5784,6 +5784,99 @@ int NAME_LAST_HALFORC           = 19;
 int NAME_FIRST_HUMAN_MALE       = 20;
 int NAME_FIRST_HUMAN_FEMALE     = 21;
 int NAME_LAST_HUMAN             = 22;
+
+int EVENT_SCRIPT_MODULE_ON_HEARTBEAT                     = 3000;
+int EVENT_SCRIPT_MODULE_ON_USER_DEFINED_EVENT            = 3001;
+int EVENT_SCRIPT_MODULE_ON_MODULE_LOAD                   = 3002;
+int EVENT_SCRIPT_MODULE_ON_MODULE_START                  = 3003;
+int EVENT_SCRIPT_MODULE_ON_CLIENT_ENTER                  = 3004;
+int EVENT_SCRIPT_MODULE_ON_CLIENT_EXIT                   = 3005;
+int EVENT_SCRIPT_MODULE_ON_ACTIVATE_ITEM                 = 3006;
+int EVENT_SCRIPT_MODULE_ON_ACQUIRE_ITEM                  = 3007;
+int EVENT_SCRIPT_MODULE_ON_LOSE_ITEM                     = 3008;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_DEATH                  = 3009;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_DYING                  = 3010;
+int EVENT_SCRIPT_MODULE_ON_RESPAWN_BUTTON_PRESSED        = 3011;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_REST                   = 3012;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_LEVEL_UP               = 3013;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_CANCEL_CUTSCENE        = 3014;
+int EVENT_SCRIPT_MODULE_ON_EQUIP_ITEM                    = 3015;
+int EVENT_SCRIPT_MODULE_ON_UNEQUIP_ITEM                  = 3016;
+int EVENT_SCRIPT_MODULE_ON_PLAYER_CHAT                   = 3017;
+
+int EVENT_SCRIPT_AREA_ON_HEARTBEAT                       = 4000;
+int EVENT_SCRIPT_AREA_ON_USER_DEFINED_EVENT              = 4001;
+int EVENT_SCRIPT_AREA_ON_ENTER                           = 4002;
+int EVENT_SCRIPT_AREA_ON_EXIT                            = 4003;
+
+int EVENT_SCRIPT_AREAOFEFFECT_ON_HEARTBEAT               = 11000;
+int EVENT_SCRIPT_AREAOFEFFECT_ON_USER_DEFINED_EVENT      = 11001;
+int EVENT_SCRIPT_AREAOFEFFECT_ON_OBJECT_ENTER            = 11002;
+int EVENT_SCRIPT_AREAOFEFFECT_ON_OBJECT_EXIT             = 11003;
+
+int EVENT_SCRIPT_CREATURE_ON_HEARTBEAT                   = 5000;
+int EVENT_SCRIPT_CREATURE_ON_NOTICE                      = 5001;
+int EVENT_SCRIPT_CREATURE_ON_SPELLCASTAT                 = 5002;
+int EVENT_SCRIPT_CREATURE_ON_MELEE_ATTACKED              = 5003;
+int EVENT_SCRIPT_CREATURE_ON_DAMAGED                     = 5004;
+int EVENT_SCRIPT_CREATURE_ON_DISTURBED                   = 5005;
+int EVENT_SCRIPT_CREATURE_ON_END_COMBATROUND             = 5006;
+int EVENT_SCRIPT_CREATURE_ON_DIALOGUE                    = 5007;
+int EVENT_SCRIPT_CREATURE_ON_SPAWN_IN                    = 5008;
+int EVENT_SCRIPT_CREATURE_ON_RESTED                      = 5009;
+int EVENT_SCRIPT_CREATURE_ON_DEATH                       = 5010;
+int EVENT_SCRIPT_CREATURE_ON_USER_DEFINED_EVENT          = 5011;
+int EVENT_SCRIPT_CREATURE_ON_BLOCKED_BY_DOOR             = 5012;
+
+int EVENT_SCRIPT_TRIGGER_ON_HEARTBEAT                    = 7000;
+int EVENT_SCRIPT_TRIGGER_ON_OBJECT_ENTER                 = 7001;
+int EVENT_SCRIPT_TRIGGER_ON_OBJECT_EXIT                  = 7002;
+int EVENT_SCRIPT_TRIGGER_ON_USER_DEFINED_EVENT           = 7003;
+int EVENT_SCRIPT_TRIGGER_ON_TRAPTRIGGERED                = 7004;
+int EVENT_SCRIPT_TRIGGER_ON_DISARMED                     = 7005;
+int EVENT_SCRIPT_TRIGGER_ON_CLICKED                      = 7006;
+
+int EVENT_SCRIPT_PLACEABLE_ON_CLOSED                     = 9000;
+int EVENT_SCRIPT_PLACEABLE_ON_DAMAGED                    = 9001;
+int EVENT_SCRIPT_PLACEABLE_ON_DEATH                      = 9002;
+int EVENT_SCRIPT_PLACEABLE_ON_DISARM                     = 9003;
+int EVENT_SCRIPT_PLACEABLE_ON_HEARTBEAT                  = 9004;
+int EVENT_SCRIPT_PLACEABLE_ON_INVENTORYDISTURBED         = 9005;
+int EVENT_SCRIPT_PLACEABLE_ON_LOCK                       = 9006;
+int EVENT_SCRIPT_PLACEABLE_ON_MELEEATTACKED              = 9007;
+int EVENT_SCRIPT_PLACEABLE_ON_OPEN                       = 9008;
+int EVENT_SCRIPT_PLACEABLE_ON_SPELLCASTAT                = 9009;
+int EVENT_SCRIPT_PLACEABLE_ON_TRAPTRIGGERED              = 9010;
+int EVENT_SCRIPT_PLACEABLE_ON_UNLOCK                     = 9011;
+int EVENT_SCRIPT_PLACEABLE_ON_USED                       = 9012;
+int EVENT_SCRIPT_PLACEABLE_ON_USER_DEFINED_EVENT         = 9013;
+int EVENT_SCRIPT_PLACEABLE_ON_DIALOGUE                   = 9014;
+int EVENT_SCRIPT_PLACEABLE_ON_LEFT_CLICK                 = 9015;
+
+int EVENT_SCRIPT_DOOR_ON_OPEN                            = 10000;
+int EVENT_SCRIPT_DOOR_ON_CLOSE                           = 10001;
+int EVENT_SCRIPT_DOOR_ON_DAMAGE                          = 10002;
+int EVENT_SCRIPT_DOOR_ON_DEATH                           = 10003;
+int EVENT_SCRIPT_DOOR_ON_DISARM                          = 10004;
+int EVENT_SCRIPT_DOOR_ON_HEARTBEAT                       = 10005;
+int EVENT_SCRIPT_DOOR_ON_LOCK                            = 10006;
+int EVENT_SCRIPT_DOOR_ON_MELEE_ATTACKED                  = 10007;
+int EVENT_SCRIPT_DOOR_ON_SPELLCASTAT                     = 10008;
+int EVENT_SCRIPT_DOOR_ON_TRAPTRIGGERED                   = 10009;
+int EVENT_SCRIPT_DOOR_ON_UNLOCK                          = 10010;
+int EVENT_SCRIPT_DOOR_ON_USERDEFINED                     = 10011;
+int EVENT_SCRIPT_DOOR_ON_CLICKED                         = 10012;
+int EVENT_SCRIPT_DOOR_ON_DIALOGUE                        = 10013;
+int EVENT_SCRIPT_DOOR_ON_FAIL_TO_OPEN                    = 10014;
+
+int EVENT_SCRIPT_ENCOUNTER_ON_OBJECT_ENTER               = 13000;
+int EVENT_SCRIPT_ENCOUNTER_ON_OBJECT_EXIT                = 13001;
+int EVENT_SCRIPT_ENCOUNTER_ON_HEARTBEAT                  = 13002;
+int EVENT_SCRIPT_ENCOUNTER_ON_ENCOUNTER_EXHAUSTED        = 13003;
+int EVENT_SCRIPT_ENCOUNTER_ON_USER_DEFINED_EVENT         = 13004;
+
+int EVENT_SCRIPT_STORE_ON_OPEN                           = 14000;
+int EVENT_SCRIPT_STORE_ON_CLOSE                          = 14001;
 
 string sLanguage = "nwscript";
 
@@ -5981,14 +6074,14 @@ object CreateItemOnObject(string sItemTemplate, object oTarget=OBJECT_SELF, int 
 // * No return value, but if an error occurs the log file will contain
 //   "ActionEquipItem failed."
 //
-// Note:
-//       If the creature already has an item equipped in the slot specified, it will be
+// Note: 
+//       If the creature already has an item equipped in the slot specified, it will be 
 //       unequipped automatically by the call to ActionEquipItem.
-//
+//     
 //       In order for ActionEquipItem to succeed the creature must be able to equip the
 //       item oItem normally. This means that:
 //       1) The item is in the creature's inventory.
-//       2) The item must already be identified (if magical).
+//       2) The item must already be identified (if magical). 
 //       3) The creature has the level required to equip the item (if magical and ILR is on).
 //       4) The creature possesses the required feats to equip the item (such as weapon proficiencies).
 void ActionEquipItem(object oItem, int nInventorySlot);
@@ -6173,7 +6266,7 @@ string InsertString(string sDestination, string sString, int nPosition);
 string GetSubString(string sString, int nStart, int nCount);
 
 // Find the position of sSubstring inside sString
-// - nStart: The character position to start searching at (from the left end of the string).
+// - nStart: The character position to start searching at (from the left end of the string). 
 // * Return value on error: -1
 int FindSubString(string sString, string sSubString, int nStart=0);
 
@@ -6424,7 +6517,7 @@ int GetAC(object oObject, int nForFutureUse=0);
 //          SAVING_THROW_ALL
 //          SAVING_THROW_FORT
 //          SAVING_THROW_REFLEX
-//          SAVING_THROW_WILL
+//          SAVING_THROW_WILL 
 // - nValue: size of the Saving Throw increase
 // - nSaveType: SAVING_THROW_TYPE_* (e.g. SAVING_THROW_TYPE_ACID )
 effect EffectSavingThrowIncrease(int nSave, int nValue, int nSaveType=SAVING_THROW_TYPE_ALL);
@@ -6544,10 +6637,10 @@ effect EffectEntangle();
 //    EventActivateItem() - This creates an OnActivateItem module event. The script for handling
 //                          this event can be set in Module Properties on the Event Tab.
 //    EventConversation() - This creates on OnConversation creature event. The script for handling
-//                          this event can be set by viewing the Creature Properties on a
+//                          this event can be set by viewing the Creature Properties on a 
 //                          creature and then clicking on the Scripts Tab.
 //    EventSpellCastAt()  - This creates an OnSpellCastAt event. The script for handling this
-//                          event can be set in the Scripts Tab of the Properties menu
+//                          event can be set in the Scripts Tab of the Properties menu 
 //                          for the object.
 //    EventUserDefined()  - This creates on OnUserDefined event. The script for handling this event
 //                          can be set in the Scripts Tab of the Properties menu for the object/area/module.
@@ -6909,7 +7002,7 @@ object GetObjectByTag(string sTag, int nNth=0);
 //          then if nShift is 15, the law/chaos value will become 50 and the
 //          good/evil value will become 55
 // - nShift: this is the desired shift in alignment
-// - bAllPartyMembers: when TRUE the alignment shift of oSubject also has a
+// - bAllPartyMembers: when TRUE the alignment shift of oSubject also has a 
 //                     diminished affect all members of oSubject's party (if oSubject is a Player).
 //                     When FALSE the shift only affects oSubject.
 // * No return value
@@ -6972,7 +7065,7 @@ int GetReputation(object oSource, object oTarget);
 //       as oSourceFactionMember in the following call will fail:
 //       AdjustReputation(oNPC,oPC,-100);
 //       Instead you should pass in the PC object as the first
-//       parameter as in the following call which should succeed:
+//       parameter as in the following call which should succeed: 
 //       AdjustReputation(oPC,oNPC,-100);
 // Note: Will fail if oSourceFactionMember is a plot object.
 void AdjustReputation(object oTarget, object oSourceFactionMember, int nAdjustment);
@@ -7153,7 +7246,7 @@ object CreateObject(int nObjectType, string sTemplate, location lLocation, int b
 // when the event is signaled on an object, the object will use its OnSpellCastAt script
 // to react to the spell being cast.
 //
-// To specify the OnSpellCastAt script that should run, view the Object's Properties
+// To specify the OnSpellCastAt script that should run, view the Object's Properties 
 // and click on the Scripts Tab. Then specify a script for the OnSpellCastAt event.
 // From inside the OnSpellCastAt script call:
 //     GetLastSpellCaster() to get the object that cast the spell (oCaster).
@@ -7725,8 +7818,8 @@ void AddJournalQuestEntry(string szPlotID, int nState, object oCreature, int bAl
 void RemoveJournalQuestEntry(string szPlotID, object oCreature, int bAllPartyMembers=TRUE, int bAllPlayers=FALSE);
 
 // Get the public part of the CD Key that oPlayer used when logging in.
-// - nSinglePlayerCDKey: If set to TRUE, the player's public CD Key will
-//   be returned when the player is playing in single player mode
+// - nSinglePlayerCDKey: If set to TRUE, the player's public CD Key will 
+//   be returned when the player is playing in single player mode 
 //   (otherwise returns an empty string in single player mode).
 string GetPCPublicCDKey(object oPlayer, int nSinglePlayerCDKey=FALSE);
 
@@ -8110,7 +8203,7 @@ effect EffectMovementSpeedDecrease(int nPercentChange);
 //          SAVING_THROW_ALL
 //          SAVING_THROW_FORT
 //          SAVING_THROW_REFLEX
-//          SAVING_THROW_WILL
+//          SAVING_THROW_WILL 
 // - nValue: size of the Saving Throw decrease
 // - nSaveType: SAVING_THROW_TYPE_* (e.g. SAVING_THROW_TYPE_ACID )
 effect EffectSavingThrowDecrease(int nSave, int nValue, int nSaveType=SAVING_THROW_TYPE_ALL);
@@ -8707,7 +8800,8 @@ void SendMessageToAllDMs(string szMessage);
 void EndGame(string sEndMovie);
 
 // Remove oPlayer from the server.
-void BootPC(object oPlayer);
+// You can optionally specify a reason to override the text shown to the player.
+void BootPC(object oPlayer, string sReason = "");
 
 // Counterspell oCounterSpellTarget.
 void ActionCounterSpell(object oCounterSpellTarget);
@@ -8764,12 +8858,12 @@ int GetDefensiveCastingMode(object oCreature);
 int GetAppearanceType(object oCreature);
 
 // SpawnScriptDebugger() will cause the script debugger to be executed
-// after this command is executed!
+// after this command is executed!  
 // In order to compile the script for debugging go to Tools->Options->Script Editor
 // and check the box labeled "Generate Debug Information When Compiling Scripts"
 // After you have checked the above box, recompile the script that you want to debug.
 // If the script file isn't compiled for debugging, this command will do nothing.
-// Remove any SpawnScriptDebugger() calls once you have finished
+// Remove any SpawnScriptDebugger() calls once you have finished 
 // debugging the script.
 void SpawnScriptDebugger();
 
@@ -10229,7 +10323,7 @@ int GetCutsceneMode(object oCreature=OBJECT_SELF);
 int GetSkyBox(object oArea=OBJECT_INVALID);
 
 // Gets the fog color in the area specified.
-// nFogType specifies wether the Sun, or Moon fog type is returned.
+// nFogType specifies wether the Sun, or Moon fog type is returned. 
 //    Valid values for nFogType are FOG_TYPE_SUN or FOG_TYPE_MOON.
 // If no valid area (or object) is specified, it uses the area of caller.
 // If an object other than an area is specified, will use the area that the object is currently in.
@@ -10243,7 +10337,7 @@ int GetFogColor(int nFogType, object oArea=OBJECT_INVALID);
 void SetFogAmount(int nFogType, int nFogAmount, object oArea=OBJECT_INVALID);
 
 // Gets the fog amount in the area specified.
-// nFogType = nFogType specifies wether the Sun, or Moon fog type is returned.
+// nFogType = nFogType specifies wether the Sun, or Moon fog type is returned. 
 //    Valid values for nFogType are FOG_TYPE_SUN or FOG_TYPE_MOON.
 // If no valid area (or object) is specified, it uses the area of caller.
 // If an object other than an area is specified, will use the area that the object is currently in.
@@ -10311,8 +10405,8 @@ int GetCreatureWingType(object oCreature=OBJECT_SELF);
 //      CREATURE_WING_TYPE_BUTTERFLY
 //      CREATURE_WING_TYPE_BIRD
 // - oCreature: the creature to change the wing type for.
-// Note: Only two creature model types will support wings.
-// The MODELTYPE for the part based (playable races) 'P'
+// Note: Only two creature model types will support wings. 
+// The MODELTYPE for the part based (playable races) 'P' 
 // and MODELTYPE 'W'in the appearance.2da
 void SetCreatureWingType(int nWingType, object oCreature=OBJECT_SELF);
 
@@ -10321,7 +10415,7 @@ void SetCreatureWingType(int nWingType, object oCreature=OBJECT_SELF);
 // armor (i.e. whether or not the creature is wearing armor does not affect
 // the return value).
 // Note: Only works on part based creatures, which is typically restricted to
-// the playable races (unless some new part based custom content has been
+// the playable races (unless some new part based custom content has been 
 // added to the module).
 //
 // returns CREATURE_PART_INVALID if used on a non-creature object,
@@ -10379,7 +10473,7 @@ int GetCreatureBodyPart(int nPart, object oCreature=OBJECT_SELF);
 //      CREATURE_MODEL_TYPE_TATTOO (for body parts that support tattoos, i.e. not heads/feet/hands).
 //      CREATURE_MODEL_TYPE_UNDEAD (undead model only exists for the right arm parts).
 // - oCreature: the creature to change the body part for.
-// Note: Only part based creature appearance types are supported.
+// Note: Only part based creature appearance types are supported. 
 // i.e. The model types for the playable races ('P') in the appearance.2da
 void SetCreatureBodyPart(int nPart, int nModelNumber, object oCreature=OBJECT_SELF);
 
@@ -10400,8 +10494,8 @@ int GetCreatureTailType(object oCreature=OBJECT_SELF);
 //      CREATURE_TAIL_TYPE_BONE
 //      CREATURE_TAIL_TYPE_DEVIL
 // - oCreature: the creature to change the Tail type for.
-// Note: Only two creature model types will support Tails.
-// The MODELTYPE for the part based (playable) races 'P'
+// Note: Only two creature model types will support Tails. 
+// The MODELTYPE for the part based (playable) races 'P' 
 // and MODELTYPE 'T'in the appearance.2da
 void SetCreatureTailType(int nTailType, object oCreature=OBJECT_SELF);
 
@@ -10594,7 +10688,7 @@ void SetTrapActive(object oTrapObject, int nActive=TRUE);
 
 // Locks the player's camera pitch to its current pitch setting,
 // or unlocks the player's camera pitch.
-// Stops the player from tilting their camera angle.
+// Stops the player from tilting their camera angle. 
 // - oPlayer: A player object.
 // - bLocked: TRUE/FALSE.
 void LockCameraPitch(object oPlayer, int bLocked=TRUE);
@@ -10666,7 +10760,7 @@ int GetPortraitId(object oTarget=OBJECT_SELF);
 
 // Change the portrait of oTarget to use the Portrait Id specified.
 // - oTarget: the object for which you are changing the portrait.
-// - nPortraitId: The Id of the new portrait to use.
+// - nPortraitId: The Id of the new portrait to use. 
 //                nPortraitId refers to a row in the Portraits.2da
 // Note: Not all portrait Ids are suitable for use with all object types.
 //       Setting the portrait Id will also cause the portrait ResRef
@@ -10681,7 +10775,7 @@ string GetPortraitResRef(object oTarget=OBJECT_SELF);
 
 // Change the portrait of oTarget to use the Portrait ResRef specified.
 // - oTarget: the object for which you are changing the portrait.
-// - sPortraitResRef: The ResRef of the new portrait to use.
+// - sPortraitResRef: The ResRef of the new portrait to use. 
 //                    The ResRef should not include any trailing size letter ( e.g. po_el_f_09_ ).
 // Note: Not all portrait ResRefs are suitable for use with all object types.
 //       Setting the portrait ResRef will also cause the portrait Id
@@ -10693,7 +10787,7 @@ void SetPortraitResRef(object oTarget, string sPortraitResRef);
 void SetUseableFlag(object oPlaceable, int nUseableFlag);
 
 // Get the description of oObject.
-// - oObject: the object from which you are obtaining the description.
+// - oObject: the object from which you are obtaining the description. 
 //            Can be a creature, item, placeable, door, trigger or module object.
 // - bOriginalDescription:  if set to true any new description specified via a SetDescription scripting command
 //                   is ignored and the original object's description is returned instead.
@@ -10703,7 +10797,7 @@ void SetUseableFlag(object oPlaceable, int nUseableFlag);
 string GetDescription(object oObject, int bOriginalDescription=FALSE, int bIdentifiedDescription=TRUE);
 
 // Set the description of oObject.
-// - oObject: the object for which you are changing the description
+// - oObject: the object for which you are changing the description 
 //            Can be a creature, placeable, item, door, or trigger.
 // - sNewDescription: the new description that the object will use.
 // - bIdentified: If oObject is an item, setting this to TRUE will set the identified description,
@@ -10742,7 +10836,7 @@ int GetPCChatVolume();
 // Set the last player chat(text) message before it gets sent to other players.
 // - sNewChatMessage: The new chat text to be sent onto other players.
 //                    Setting the player chat message to an empty string "",
-//                    will cause the chat message to be discarded
+//                    will cause the chat message to be discarded 
 //                    (i.e. it will not be sent to other players).
 // Note: The new chat message gets sent after the OnPlayerChat script exits.
 void SetPCChatMessage(string sNewChatMessage="");
@@ -10759,7 +10853,7 @@ void SetPCChatMessage(string sNewChatMessage="");
 void SetPCChatVolume(int nTalkVolume=TALKVOLUME_TALK);
 
 // Get the Color of oObject from the color channel specified.
-// - oObject: the object from which you are obtaining the color.
+// - oObject: the object from which you are obtaining the color. 
 //            Can be a creature that has color information (i.e. the playable races).
 // - nColorChannel: The color channel that you want to get the color value of.
 //                   COLOR_CHANNEL_SKIN
@@ -10902,3 +10996,116 @@ void SetHiddenWhenEquipped(object oItem, int nValue);
 
 // Returns whether the provided item is hidden when equipped.
 int GetHiddenWhenEquipped(object oItem);
+
+// Sets if the given creature has explored tile at x, y of the given area.
+// Note that creature needs to be a player- or player-possessed creature.
+//
+// Keep in mind that tile exploration also controls object visibility in areas
+// and the fog of war for interior and underground areas.
+//
+// Return values:
+//  -1: Area or creature invalid.
+//   0: Tile was not explored before setting newState.
+//   1: Tile was explored before setting newState.
+int SetTileExplored(object creature, object area, int x, int y, int newState);
+
+// Returns whether the given tile at x, y, for the given creature in the stated
+// area is visible on the map.
+// Note that creature needs to be a player- or player-possessed creature.
+//
+// Keep in mind that tile exploration also controls object visibility in areas
+// and the fog of war for interior and underground areas.
+//
+// Return values:
+//  -1: Area or creature invalid.
+//   0: Tile is not explored yet.
+//   1: Tile is explored.
+int GetTileExplored(object creature, object area, int x, int y);
+
+// Sets the creature to auto-explore the map as it walks around.
+//
+// Keep in mind that tile exploration also controls object visibility in areas
+// and the fog of war for interior and underground areas.
+//
+// This means that if you turn off auto exploration, it falls to you to manage this
+// through SetTileExplored(); otherwise, the player will not be able to see anything.
+//
+// Valid arguments: TRUE and FALSE.
+// Does nothing for non-creatures.
+// Returns the previous state (or -1 if non-creature).
+int SetCreatureExploresMinimap(object creature, int newState);
+
+// Returns TRUE if the creature is set to auto-explore the map as it walks around (on by default).
+// Returns FALSE if creature is not actually a creature.
+int GetCreatureExploresMinimap(object creature);
+
+// Get the surface material at the given location. (This is
+// equivalent to the walkmesh type).
+// Returns 0 if the location is invalid or has no surface type.
+int GetSurfaceMaterial(location at);
+
+// Returns the z-offset at which the walkmesh is at the given location.
+// Returns -6.0 for invalid locations.
+float GetGroundHeight(location at);
+
+// Gets the attack bonus limit.
+// - The default value is 20.
+int GetAttackBonusLimit();
+
+// Gets the damage bonus limit.
+// - The default value is 100.
+int GetDamageBonusLimit();
+
+// Gets the saving throw bonus limit.
+// - The default value is 20.
+int GetSavingThrowBonusLimit();
+
+// Gets the ability bonus limit.
+// - The default value is 12.
+int GetAbilityBonusLimit();
+
+// Gets the ability penalty limit.
+// - The default value is 30.
+int GetAbilityPenaltyLimit();
+
+// Gets the skill bonus limit.
+// - The default value is 50.
+int GetSkillBonusLimit();
+
+// Sets the attack bonus limit.
+// - The minimum value is 0.
+void SetAttackBonusLimit(int nNewLimit);
+
+// Sets the damage bonus limit.
+// - The minimum value is 0.
+void SetDamageBonusLimit(int nNewLimit);
+
+// Sets the saving throw bonus limit.
+// - The minimum value is 0.
+void SetSavingThrowBonusLimit(int nNewLimit);
+
+// Sets the ability bonus limit.
+// - The minimum value is 0.
+void SetAbilityBonusLimit(int nNewLimit);
+
+// Sets the ability penalty limit.
+// - The minimum value is 0.
+void SetAbilityPenaltyLimit(int nNewLimit);
+
+// Sets the skill bonus limit.
+// - The minimum value is 0.
+void SetSkillBonusLimit(int nNewLimit);
+
+// Get if oPlayer is currently connected over a relay (instead of directly).
+// Returns FALSE for any other object, including OBJECT_INVALID.
+int GetIsPlayerConnectionRelayed(object oPlayer);
+
+// Returns the event script for the given object and handler.
+// Will return "" if unset, the object is invalid, or the object cannot
+// have the requested handler.
+string GetEventScript(object oObject, int nHandler);
+
+// Sets the given event script for the given object and handler.
+// Returns 1 on success, 0 on failure.
+// Will fail if oObject is invalid or does not have the requested handler.
+int SetEventScript(object oObject, int nHandler, string sScript);
