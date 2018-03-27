@@ -21,3 +21,17 @@ int FEAT_WEAPON_FOCUS_KATAR = 3000;
 int BASE_ITEM_KATAR = 310;
 NWNX_Weapon_SetWeaponFocusFeat(BASE_ITEM_KATAR, FEAT_WEAPON_FOCUS_KATAR);
 ```
+## Available functions
+
+Script function | Description  
+----------------|-------------
+NWNX_Weapon_SetWeaponFocusFeat | Associate a weapon focus feat to a weapon 
+NWNX_Weapon_SetWeaponFinesseSize | Define the required creature size for a weapon in order to be finessable
+NWNX_Weapon_SetWeaponUnarmed | Set the weapon to be considered unarmed regarding the finesse feat
+NWNX_Weapon_SetWeaponImprovedCriticalFeat | Associate a weapon improved critical feat to a weapon 
+NWNX_Weapon_SetWeaponSpecializationFeat | Associate a weapon specialization feat to a weapon 
+NWNX_Weapon_SetEpicWeaponFocusFeat | Associate an epic weapon focus feat to a weapon 
+NWNX_Weapon_SetEpicWeaponSpecializationFeat | Associate an epic weapon specialization feat to a weapon 
+NWNX_Weapon_SetEpicWeaponOverwhelmingCriticalFeat | Associate an epic weapon overwhelming critical feat to a weapon 
+NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat | Associate an epic weapon devastating critical feat to a weapon 
+NWNX_Weapon_SetWeaponOfChoiceFeat | Associate a weapon of choice feat to a weapon 
