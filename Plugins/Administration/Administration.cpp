@@ -16,6 +16,7 @@
 #include "ViewPtr.hpp"
 #include "Platform/FileSystem.hpp"
 #include "Services/Tasks/Tasks.hpp"
+#include "Services/Patching/Patching.hpp"
 #include <cstdlib>
 
 using namespace NWNXLib;
@@ -71,6 +72,9 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER("SET_SERVER_NAME",               OnSetServereName);
 
 #undef REGISTER
+
+    // HACK! Allow player names up to 127 characters in length. Temporary until fixed in base game.
+    GetServices()->m_patching->PatchWithValue(0x5651f, (uint8_t)0x7F); NWNX_EXPECT_VERSION(8166);
 }
 
 Administration::~Administration()
