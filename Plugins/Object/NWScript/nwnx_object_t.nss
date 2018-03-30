@@ -26,6 +26,7 @@ void main()
 
     struct NWNX_Object_LocalVariable lv = NWNX_Object_GetLocalVariable(o, nVarCount);
     report("GetLocalVariable", lv.key == "nwnx_object_test");
+    report("GetLocalVariable", lv.type == NWNX_OBJECT_LOCALVAR_TYPE_INT);
 
     string sObj = ObjectToString(o);
     report("StringToObject", NWNX_Object_StringToObject(sObj) == o);
