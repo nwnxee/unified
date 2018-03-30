@@ -71,7 +71,7 @@ struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Empty(int type = NWNX_PLAYER_QBS
     qbs.oAssociate     = OBJECT_INVALID;
 
     return qbs;
-};
+}
 
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseItem(object oItem, int nPropertyID = 0)
 {
