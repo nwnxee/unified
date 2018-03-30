@@ -19,7 +19,14 @@ std::string ObjectIDToString(const API::Types::ObjectID id)
 std::string GetCurrentScript()
 {
     auto *pVM = API::Globals::VirtualMachine();
-    return std::string(pVM->m_pVirtualMachineScript[pVM->m_nRecursionLevel].m_sScriptName.CStr());
+    if (!pVM || !pVM->m_pVirtualMachineScript || pVM->m_nRecursionLevel < 0)
+        return std::string("");
+
+    auto script = pVM->m_pVirtualMachineScript[pVM->m_nRecursionLevel];
+    if (script.m_sScriptName.IsEmpty())
+        return std::string("");
+
+    return std::string(script.m_sScriptName.CStr());
 }
 void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner)
 {
