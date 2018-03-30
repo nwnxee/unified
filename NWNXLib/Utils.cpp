@@ -22,7 +22,7 @@ std::string GetCurrentScript()
     if (!pVM || !pVM->m_pVirtualMachineScript || pVM->m_nRecursionLevel < 0)
         return std::string("");
 
-    auto script = pVM->m_pVirtualMachineScript[pVM->m_nRecursionLevel];
+    auto& script = pVM->m_pVirtualMachineScript[pVM->m_nRecursionLevel];
     if (script.m_sScriptName.IsEmpty())
         return std::string("");
 
