@@ -33,7 +33,7 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
 {
     if (GetServices()->m_config->Get<bool>("HIDE_CLASSES_ON_CHAR_LIST", false))
     {
-        LOG_INFO("Hiding characters of character list.");
+        LOG_INFO("Hiding the display of classes on the character list.");
         m_HideClassesOnCharlist = std::make_unique<HideClassesOnCharList>(GetServices()->m_hooks.get());
     }
 }
