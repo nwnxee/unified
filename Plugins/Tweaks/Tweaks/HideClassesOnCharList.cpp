@@ -51,7 +51,7 @@ int32_t HideClassesOnCharList::SendServerToPlayerPlayModuleCharacterListResponse
         }
     }
 
-    unsigned char* message;
+    uint8_t* message;
     uint32_t size;
     if (!thisPtr->GetWriteMessage(&message, &size))
     {
