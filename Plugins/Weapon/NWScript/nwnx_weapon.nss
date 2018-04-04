@@ -32,6 +32,12 @@ void NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat(int nBaseItem, int nFeat);
 // Set nFeat as weapon of choice feat for nBaseItem
 void NWNX_Weapon_SetWeaponOfChoiceFeat(int nBaseItem, int nFeat);
 
+// Set nFeat as greater weapon specialization feat for nBaseItem
+void NWNX_Weapon_SetGreaterWeaponSpecializationFeat(int nBaseItem, int nFeat);
+
+// Set nFeat as greater weapon focus feat for nBaseItem
+void NWNX_Weapon_SetGreaterWeaponFocusFeat(int nBaseItem, int nFeat);
+
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
 {
     string sFunc = "SetWeaponFocusFeat";
@@ -45,6 +51,16 @@ void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
 void NWNX_Weapon_SetEpicWeaponFocusFeat(int nBaseItem, int nFeat)
 {
     string sFunc = "SetEpicWeaponFocusFeat";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+void NWNX_Weapon_SetGreaterWeaponFocusFeat(int nBaseItem, int nFeat)
+{
+    string sFunc = "SetGreaterWeaponFocusFeat";
 
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
@@ -84,6 +100,16 @@ void NWNX_Weapon_SetWeaponImprovedCriticalFeat(int nBaseItem, int nFeat)
 void NWNX_Weapon_SetWeaponSpecializationFeat(int nBaseItem, int nFeat)
 {
     string sFunc = "SetWeaponSpecializationFeat";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+void NWNX_Weapon_SetGreaterWeaponSpecializationFeat(int nBaseItem, int nFeat)
+{
+    string sFunc = "SetGreaterWeaponSpecializationFeat";
 
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nFeat);
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
