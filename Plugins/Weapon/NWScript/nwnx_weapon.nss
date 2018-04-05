@@ -2,6 +2,10 @@
 
 const string NWNX_Weapon = "NWNX_Weapon";
 
+// Otpions constants to be used with NWNX_Weapon_SetOption function
+const int NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS = 0; // Greater Focus AB bonus
+const int NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS = 1; // Greater Spec. DAM bonus
+
 // Set nFeat as weapon focus feat for nBaseItem
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat);
 
@@ -37,6 +41,13 @@ void NWNX_Weapon_SetGreaterWeaponSpecializationFeat(int nBaseItem, int nFeat);
 
 // Set nFeat as greater weapon focus feat for nBaseItem
 void NWNX_Weapon_SetGreaterWeaponFocusFeat(int nBaseItem, int nFeat);
+
+// Set nBaseItem as monk weapon
+void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem);
+
+// Set plugin options
+void NWNX_Weapon_SetOption(int nOption, int nVal);
+
 
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
 {
@@ -81,6 +92,15 @@ void NWNX_Weapon_SetWeaponFinesseSize(int nBaseItem, int nSize)
 void NWNX_Weapon_SetWeaponUnarmed(int nBaseItem)
 {
     string sFunc = "SetWeaponUnarmed";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem)
+{
+    string sFunc = "SetWeaponIsMonkWeapon";
 
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nBaseItem);
 
@@ -157,4 +177,12 @@ void NWNX_Weapon_SetWeaponOfChoiceFeat(int nBaseItem, int nFeat)
     NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
 
+void NWNX_Weapon_SetOption(int nOption, int nVal)
+{
+    string sFunc = "SetOption";
 
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nVal);
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nOption);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
