@@ -1,5 +1,6 @@
 #include "Tweaks.hpp"
 #include "Tweaks/HideClassesOnCharList.hpp"
+#include "Tweaks/PlayerDyingHitPointLimit.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -35,6 +36,13 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Hiding the display of classes on the character list.");
         m_HideClassesOnCharlist = std::make_unique<HideClassesOnCharList>(GetServices()->m_hooks.get());
+    }
+
+    int32_t hplimit = GetServices()->m_config->Get<int32_t>("PLAYER_DYING_HP_LIMIT", -10);
+    if (hplimit != -10)
+    {
+        LOG_INFO("Setting the player dying HP limit to %d", hplimit);
+        m_PlayerDyingHitPointLimit = std::make_unique<PlayerDyingHitPointLimit>(GetServices()->m_hooks.get(), hplimit);
     }
 }
 
