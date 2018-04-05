@@ -10,6 +10,8 @@
 #include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/CNWSInventory.hpp"
+#include "API/CNWSCombatRound.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -53,6 +55,8 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    REGISTER(SetEpicWeaponOverwhelmingCriticalFeat);
    REGISTER(SetEpicWeaponDevastatingCriticalFeat);
    REGISTER(SetWeaponOfChoiceFeat);
+   REGISTER(SetGreaterWeaponSpecializationFeat);
+   REGISTER(SetGreaterWeaponFocusFeat);
 
 #undef REGISTER
    
@@ -82,6 +86,24 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetIsWeaponOfChoice>(&Weapon::GetIsWeaponOfChoice);
    m_GetIsWeaponOfChoiceHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetIsWeaponOfChoice);
 
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetMeleeDamageBonus>(&Weapon::GetMeleeDamageBonus);
+   m_GetMeleeDamageBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetMeleeDamageBonus);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetDamageBonus>(&Weapon::GetDamageBonus);
+   m_GetDamageBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetDamageBonus);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetRangedDamageBonus>(&Weapon::GetRangedDamageBonus);
+   m_GetRangedDamageBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetRangedDamageBonus);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetAttackModifierVersus>(&Weapon::GetAttackModifierVersus);
+   m_GetAttackModifierVersusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetAttackModifierVersus);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetMeleeAttackBonus>(&Weapon::GetMeleeAttackBonus);
+   m_GetMeleeAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetMeleeAttackBonus);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetRangedAttackBonus>(&Weapon::GetRangedAttackBonus);
+   m_GetRangedAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetRangedAttackBonus);
+
 }
 
 Weapon::~Weapon()
@@ -98,8 +120,25 @@ ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_WeaponFocusMap.insert({w_bitem, feat});
+      LOG_DEBUG("Weapon Focus Feat %d added for Base Item Type %d", feat, w_bitem);
    }
+
+   return stack;   
+}
+
+ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
    
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_GreaterWeaponFocusMap.insert({w_bitem, feat});
+      LOG_DEBUG("Greater Weapon Focus Feat %d added for Base Item Type %d", feat, w_bitem);
+   }
+
    return stack;   
 }
 
@@ -113,6 +152,7 @@ ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_EpicWeaponFocusMap.insert({w_bitem, feat});
+      LOG_DEBUG("Epic Weapon Focus Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
    return stack;   
@@ -128,6 +168,7 @@ ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
    if(w_bitem>0 && size >0 && size <= 255)
    {
       m_WeaponFinesseSizeMap.insert({w_bitem, size});
+      LOG_DEBUG("Weapon Finesse Size %d added for Base Item Type %d", size, w_bitem);
    }
    
    return stack;
@@ -142,6 +183,7 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
    if(w_bitem>0)
    {
       m_WeaponUnarmedSet.insert(w_bitem);
+      LOG_DEBUG("Base Item Type %d set as unarmed weapon", w_bitem);
    }
    
    return stack;
@@ -157,6 +199,7 @@ ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_WeaponImprovedCriticalMap.insert({w_bitem, feat});
+      LOG_DEBUG("Improved Critical Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
    return stack;   
@@ -172,6 +215,23 @@ ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_WeaponSpecializationMap.insert({w_bitem, feat});
+      LOG_DEBUG("Weapon Specialization Feat %d added for Base Item Type %d", feat, w_bitem);
+   }
+   
+   return stack;   
+}
+
+ArgumentStack Weapon::SetGreaterWeaponSpecializationFeat(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto feat     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0 && feat >0)
+   {
+      m_GreaterWeaponSpecializationMap.insert({w_bitem, feat});
+      LOG_DEBUG("Greater Weapon Specialization Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
    return stack;   
@@ -187,6 +247,7 @@ ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_EpicWeaponSpecializationMap.insert({w_bitem, feat});
+      LOG_DEBUG("Epic Weapon Specialization Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
    return stack;   
@@ -202,6 +263,7 @@ ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args
    if(w_bitem>0 && feat >0)
    {
       m_EpicWeaponOverwhelmingCriticalMap.insert({w_bitem, feat});
+      LOG_DEBUG("Overwhelming Critical Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
    return stack;   
@@ -217,6 +279,7 @@ ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_EpicWeaponDevastatingCriticalMap.insert({w_bitem, feat});
+      LOG_DEBUG("Devastating Critical Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
    return stack;   
@@ -232,6 +295,7 @@ ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
    if(w_bitem>0 && feat >0)
    {
       m_WeaponOfChoiceMap.insert({w_bitem, feat});
+      LOG_DEBUG("Weapon of Choice Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
    return stack;   
@@ -400,6 +464,236 @@ int32_t Weapon::GetIsWeaponOfChoice(NWNXLib::API::CNWSCreatureStats* pStats, uin
       
    return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetIsWeaponOfChoiceHook->CallOriginal<int32_t>(pStats, nBaseItem)); 
 }
+
+//This one is required for correctly update PC sheet 
+int32_t Weapon::GetMeleeDamageBonus(NWNXLib::API::CNWSCreatureStats* pStats, int32_t bOffHand, uint8_t nCreatureWeaponIndex)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   NWNXLib::API::CNWSItem* pWeapon=nullptr;
+   uint32_t nBaseItem;
+
+   int nBonus = plugin.m_GetMeleeDamageBonusHook->CallOriginal<int32_t>(pStats, bOffHand, nCreatureWeaponIndex);
+
+   if(nCreatureWeaponIndex==255)
+   {  
+      if(bOffHand)
+      {  
+    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND);
+      }
+      else
+      {
+    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+      }
+   }
+   
+   if(pWeapon==nullptr)
+   {
+      nBaseItem = Constants::BASE_ITEM_GLOVES;   
+   }
+   else
+   {
+      nBaseItem = pWeapon->m_nBaseItem;
+   }   
+   
+   auto w = plugin.m_GreaterWeaponSpecializationMap.find(nBaseItem);
+   feat =  (w == plugin.m_GreaterWeaponSpecializationMap.end()) ? -1 : w->second;
+
+   if(feat>-1 && pStats->HasFeat(feat))
+   {
+      return nBonus+=plugin.m_GreaterWeaponSpecializationDamageBonus;
+   }
+
+   return nBonus;
+}
+
+int32_t Weapon::GetDamageBonus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSCreature *pCreature, int32_t bOffHand)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   NWNXLib::API::CNWSItem* pWeapon=nullptr;
+   uint32_t nBaseItem;
+
+   int nBonus = plugin.m_GetDamageBonusHook->CallOriginal<int32_t>(pStats, pCreature, bOffHand);
+
+   if(bOffHand)
+   {  
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND);
+   }
+   else
+   {
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+   }
+   
+   if(pWeapon==nullptr)
+   {
+      nBaseItem = Constants::BASE_ITEM_GLOVES;   
+   }
+   else
+   {
+      nBaseItem = pWeapon->m_nBaseItem;
+   }   
+   
+   auto w = plugin.m_GreaterWeaponSpecializationMap.find(nBaseItem);
+   feat =  (w == plugin.m_GreaterWeaponSpecializationMap.end()) ? -1 : w->second;
+
+   if(feat>-1 && pStats->HasFeat(feat))
+   {
+      return nBonus+=plugin.m_GreaterWeaponSpecializationDamageBonus;
+   }
+
+   return nBonus;
+}
+
+//This one is required for correctly update PC sheet 
+int32_t Weapon::GetRangedDamageBonus(NWNXLib::API::CNWSCreatureStats* pStats)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   NWNXLib::API::CNWSItem* pWeapon=nullptr;
+   uint32_t nBaseItem;
+
+   int nBonus = plugin.m_GetRangedDamageBonusHook->CallOriginal<int32_t>(pStats);
+
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+   
+   if(pWeapon==nullptr)
+   {
+      return nBonus;
+   }
+   else
+   {
+      nBaseItem = pWeapon->m_nBaseItem;
+   }   
+   
+   auto w = plugin.m_GreaterWeaponSpecializationMap.find(nBaseItem);
+   feat =  (w == plugin.m_GreaterWeaponSpecializationMap.end()) ? -1 : w->second;
+
+   if(feat>-1 && pStats->HasFeat(feat))
+   {
+      return nBonus+=plugin.m_GreaterWeaponSpecializationDamageBonus;
+   }
+
+   return nBonus;
+}
+
+
+int32_t Weapon::GetAttackModifierVersus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSCreature* pCreature)
+{
+   Weapon& plugin = *g_plugin;   
+   CNWSCombatRound* pCombatRound;
+   NWNXLib::API::CNWSItem* pWeapon=nullptr;
+   uint32_t nBaseItem;
+   int32_t feat=-1;
+   
+   int nMod = plugin.m_GetAttackModifierVersusHook->CallOriginal<int32_t>(pStats, pCreature);
+   
+   pCombatRound = pStats->m_pBaseCreature->m_pcCombatRound;
+   if(pCombatRound==nullptr)
+   {
+      return nMod;
+   } 
+   
+   pWeapon = pCombatRound->GetCurrentAttackWeapon(pCombatRound->GetWeaponAttackType());
+   if(pWeapon==nullptr)
+   {
+      return nMod;
+   }
+   else
+   {
+      nBaseItem = pWeapon->m_nBaseItem;
+   }   
+   
+   auto w = plugin.m_GreaterWeaponFocusMap.find(nBaseItem);
+   feat =  (w == plugin.m_GreaterWeaponFocusMap.end()) ? -1 : w->second;
+
+   if(feat>-1 && pStats->HasFeat(feat))
+   {
+      return nMod+=plugin.m_GreaterFocusAttackBonus;
+   }
+   
+   return nMod;
+}
+
+//This one is required for correctly update PC sheet 
+int32_t Weapon::GetMeleeAttackBonus(NWNXLib::API::CNWSCreatureStats* pStats, bool bOffHand, bool bIncludeBase, bool bTouchAttack)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   NWNXLib::API::CNWSItem* pWeapon=nullptr;
+   uint32_t nBaseItem;
+
+   int nBonus = plugin.m_GetMeleeAttackBonusHook->CallOriginal<int32_t>(pStats, bOffHand, bIncludeBase, bTouchAttack);
+    
+   if(bTouchAttack) 
+   {
+      return nBonus;
+   }
+
+   if(bOffHand)
+   {
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND);
+   }
+   else
+   {
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);  
+   }
+   
+   if(pWeapon==nullptr)
+   {
+      nBaseItem = Constants::BASE_ITEM_GLOVES;
+   }
+   else
+   {
+      nBaseItem = pWeapon->m_nBaseItem;
+   }   
+   
+   auto w = plugin.m_GreaterWeaponFocusMap.find(nBaseItem);
+   feat =  (w == plugin.m_GreaterWeaponFocusMap.end()) ? -1 : w->second;
+
+   if(feat>-1 && pStats->HasFeat(feat))
+   {
+      return nBonus+=plugin.m_GreaterFocusAttackBonus;
+   }
+   
+   return nBonus;
+}
+
+//This one is required for correctly update PC sheet 
+int32_t Weapon::GetRangedAttackBonus(NWNXLib::API::CNWSCreatureStats* pStats, bool bIncludeBase, bool bTouchAttack)
+{
+   int32_t feat=-1;
+   Weapon& plugin = *g_plugin;   
+   NWNXLib::API::CNWSItem* pWeapon=nullptr;
+   uint32_t nBaseItem;
+
+   int nBonus = plugin.m_GetRangedAttackBonusHook->CallOriginal<int32_t>(pStats, bIncludeBase, bTouchAttack);
+    
+   if(bTouchAttack) 
+   {
+      return nBonus;
+   }
+
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);  
+   
+   if(pWeapon==nullptr)
+   {
+      return nBonus;
+   }
+   
+   nBaseItem = pWeapon->m_nBaseItem;   
+   
+   auto w = plugin.m_GreaterWeaponFocusMap.find(nBaseItem);
+   feat =  (w == plugin.m_GreaterWeaponFocusMap.end()) ? -1 : w->second;
+
+   if(feat>-1 && pStats->HasFeat(feat))
+   {
+      return nBonus+=plugin.m_GreaterFocusAttackBonus;
+   }
+   
+   return nBonus;
+}
+
 
 bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse)
 {
