@@ -57,6 +57,8 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    REGISTER(SetWeaponOfChoiceFeat);
    REGISTER(SetGreaterWeaponSpecializationFeat);
    REGISTER(SetGreaterWeaponFocusFeat);
+   REGISTER(SetWeaponIsMonkWeapon);
+   REGISTER(SetOption);
 
 #undef REGISTER
    
@@ -103,6 +105,8 @@ Weapon::Weapon(const Plugin::CreateParams& params)
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetRangedAttackBonus>(&Weapon::GetRangedAttackBonus);
    m_GetRangedAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetRangedAttackBonus);
+
+   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetUseMonkAttackTables>(&Weapon::GetUseMonkAttackTables);
 
 }
 
@@ -184,6 +188,21 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
    {
       m_WeaponUnarmedSet.insert(w_bitem);
       LOG_DEBUG("Base Item Type %d set as unarmed weapon", w_bitem);
+   }
+   
+   return stack;
+}
+
+ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
+   
+   if(w_bitem>0)
+   {
+      m_MonkWeaponSet.insert(w_bitem);
+      LOG_DEBUG("Base Item Type %d set as monk weapon", w_bitem);
    }
    
    return stack;
@@ -298,6 +317,27 @@ ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
       LOG_DEBUG("Weapon of Choice Feat %d added for Base Item Type %d", feat, w_bitem);
    }
    
+   return stack;   
+}
+
+ArgumentStack Weapon::SetOption(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   const auto nOption  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto nVal     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   switch(nOption)
+   {
+      case NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS:
+         m_GreaterFocusAttackBonus = nVal;
+         LOG_DEBUG("Set NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS to %d", nVal);
+         break;
+      case NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS:
+         m_GreaterWeaponSpecializationDamageBonus = nVal;
+         LOG_DEBUG("Set NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS to %d", nVal);
+         break;
+   }
    return stack;   
 }
 
@@ -695,7 +735,55 @@ int32_t Weapon::GetRangedAttackBonus(NWNXLib::API::CNWSCreatureStats* pStats, bo
 }
 
 
-bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse)
+int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, bool bForceUnarmed)
+{
+   Weapon& plugin = *g_plugin;
+   NWNXLib::API::CNWSItem* pWeapon;    
+   int nMonk = plugin.GetLevelByClass(pStats, Constants::CLASS_TYPE_MONK);
+
+   if(nMonk<1 || pStats->m_nACArmorBase>0 || pStats->m_nACShieldBase>0)
+   {
+      return 0;
+   }
+
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+   
+   if(pWeapon==nullptr)
+   {
+      return 1;
+   }
+
+   if(bForceUnarmed)
+   {
+      return 0;
+   }
+
+   auto w = plugin.m_MonkWeaponSet.find(pWeapon->m_nBaseItem);
+   if (w == plugin.m_MonkWeaponSet.end() && pWeapon->m_nBaseItem!=Constants::BASE_ITEM_KAMA)
+   {
+      return 0;
+   }
+   
+   // Right hand weapon is correct, now check left hand
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND); 
+   if(pWeapon==nullptr)
+   {
+      return 1;
+   }
+
+   w = plugin.m_MonkWeaponSet.find(pWeapon->m_nBaseItem);
+   if (w == plugin.m_MonkWeaponSet.end() && 
+      pWeapon->m_nBaseItem!=Constants::BASE_ITEM_KAMA && 
+      pWeapon->m_nBaseItem!=Constants::BASE_ITEM_TORCH)
+   {
+      return 0;
+   } 
+
+   return 1;
+}
+
+
+bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse)
 {
    Weapon& plugin = *g_plugin;
 
@@ -704,9 +792,9 @@ bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::A
       return true;
    }
 
-   if (pInfo->m_pBaseCreature == nullptr ||
-      pInfo->m_pBaseCreature->m_nCreatureSize < (int32_t) Constants::CREATURE_SIZE_TINY ||
-      pInfo->m_pBaseCreature->m_nCreatureSize > (int32_t) Constants::CREATURE_SIZE_HUGE)
+   if (pStats->m_pBaseCreature == nullptr ||
+      pStats->m_pBaseCreature->m_nCreatureSize < (int32_t) Constants::CREATURE_SIZE_TINY ||
+      pStats->m_pBaseCreature->m_nCreatureSize > (int32_t) Constants::CREATURE_SIZE_HUGE)
    {
       return false;
    }
@@ -716,17 +804,17 @@ bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::A
       auto w = plugin.m_WeaponFinesseSizeMap.find(pWeapon->m_nBaseItem);
       int iSize =  (w == plugin.m_WeaponFinesseSizeMap.end()) ? Constants::CREATURE_SIZE_HUGE + 1 : w->second;
       
-      if(pInfo->m_pBaseCreature->m_nCreatureSize >= iSize) 
+      if(pStats->m_pBaseCreature->m_nCreatureSize >= iSize) 
       {
          return true;
       }
    }
 
-   int rel =  pInfo->m_pBaseCreature->GetRelativeWeaponSize(pWeapon); 
+   int rel =  pStats->m_pBaseCreature->GetRelativeWeaponSize(pWeapon); 
 
    // Ensure small creatures can finesse small weapons
    if (bFinesse && 
-      (uint32_t) (pInfo->m_pBaseCreature->m_nCreatureSize) <= Constants::CREATURE_SIZE_SMALL)
+      (uint32_t) (pStats->m_pBaseCreature->m_nCreatureSize) <= Constants::CREATURE_SIZE_SMALL)
    {
       return (rel <= 0);
    }
@@ -755,6 +843,18 @@ bool Weapon::GetIsUnarmedWeapon(NWNXLib::API::CNWSItem* pWeapon)
    // Check if weapon should be considered unarmed
    auto w = plugin.m_WeaponUnarmedSet.find(pWeapon->m_nBaseItem);
    return (w == plugin.m_WeaponUnarmedSet.end()) ? false : true;
+}
+
+int Weapon::GetLevelByClass(NWNXLib::API::CNWSCreatureStats *pStats, uint32_t nClassType)
+{
+    int i;
+
+    for (i = 0; i < pStats->m_nNumMultiClasses; i++) {
+        if (pStats->m_ClassInfo[i].m_nClass == nClassType)
+            return pStats->m_ClassInfo[i].m_nLevel;
+    }
+
+    return 0;
 }
 
 }

@@ -35,5 +35,9 @@ NWNX_Weapon_SetEpicWeaponSpecializationFeat | Associate an epic weapon specializ
 NWNX_Weapon_SetEpicWeaponOverwhelmingCriticalFeat | Associate an epic weapon overwhelming critical feat to a weapon 
 NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat | Associate an epic weapon devastating critical feat to a weapon 
 NWNX_Weapon_SetWeaponOfChoiceFeat | Associate a weapon of choice feat to a weapon 
-NWNX_Weapon_SetGreaterWeaponFocusFeat | Associate a greater weapon focus feat (+1 attack bonus) to a weapon
-NWNX_Weapon_SetGreaterWeaponSpecializationFeat | Associate a greater weapon specialization feat (+2 damage bonus) to a weapon
+NWNX_Weapon_SetGreaterWeaponFocusFeat | Associate a greater weapon focus feat (default: +1 attack bonus) to a weapon
+NWNX_Weapon_SetGreaterWeaponSpecializationFeat | Associate a greater weapon specialization feat (default: +2 damage bonus) to a weapon
+NWNX_Weapon_SetWeaponIsMonkWeapon | Set the weapon to be considered a monk weapon
+NWNX_Weapon_SetOption | Set different options of the plugin
+
+The NWNX_Weapon_SetOption function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively. 

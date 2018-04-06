@@ -10,6 +10,8 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
 
+#define NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS 0
+#define NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS 1
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -34,6 +36,8 @@ class Weapon : public NWNXLib::Plugin
       ArgumentStack SetWeaponOfChoiceFeat                (ArgumentStack&& args);
       ArgumentStack SetGreaterWeaponSpecializationFeat   (ArgumentStack&& args);
       ArgumentStack SetGreaterWeaponFocusFeat            (ArgumentStack&& args);
+      ArgumentStack SetWeaponIsMonkWeapon                (ArgumentStack&& args);
+      ArgumentStack SetOption                            (ArgumentStack&& args);
       
       NWNXLib::Hooking::FunctionHook* m_GetWeaponFocusHook;
       NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponFocusHook;
@@ -50,7 +54,6 @@ class Weapon : public NWNXLib::Plugin
       NWNXLib::Hooking::FunctionHook* m_GetRangedAttackBonusHook;
       NWNXLib::Hooking::FunctionHook* m_GetAttackModifierVersusHook;
 
-
       static int32_t GetWeaponFocus                   (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
       static int32_t GetEpicWeaponFocus               (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
       static int32_t GetWeaponFinesse                 (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
@@ -65,7 +68,8 @@ class Weapon : public NWNXLib::Plugin
       static int32_t GetDamageBonus                   (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSCreature *pCreature, int32_t bOffHand);
       static int32_t GetMeleeAttackBonus              (NWNXLib::API::CNWSCreatureStats *pStats, bool bOffHand, bool bIncludeBase, bool bTouchAttack);
       static int32_t GetRangedAttackBonus             (NWNXLib::API::CNWSCreatureStats *pStats, bool bIncludeBase, bool bTouchAttack);
-      static int32_t GetAttackModifierVersus          (NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSCreature* pCreature);
+      static int32_t GetAttackModifierVersus          (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSCreature* pCreature);
+      static int32_t GetUseMonkAttackTables           (NWNXLib::API::CNWSCreatureStats *pStats, bool bForceUnarmed);
       
       std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
       std::map<std::uint32_t, std::uint32_t> m_EpicWeaponFocusMap;
@@ -80,9 +84,11 @@ class Weapon : public NWNXLib::Plugin
       std::map<std::uint32_t, std::uint32_t> m_GreaterWeaponFocusMap;
 
       std::set<std::uint32_t>  m_WeaponUnarmedSet;
+      std::set<std::uint32_t>  m_MonkWeaponSet;
 
       bool GetIsWeaponLight  (NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse);
       bool GetIsUnarmedWeapon(NWNXLib::API::CNWSItem* pWeapon);
+      int  GetLevelByClass   (NWNXLib::API::CNWSCreatureStats* pStats, uint32_t nClassType);
 
       int m_GreaterFocusAttackBonus=1;
       int m_GreaterWeaponSpecializationDamageBonus=2;
