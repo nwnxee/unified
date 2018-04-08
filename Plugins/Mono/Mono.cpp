@@ -5,6 +5,9 @@
 #include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
 
+#include <cstring>
+#include <stack>
+#include <vector>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-config.h>
 
@@ -32,9 +35,6 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
     return g_plugin;
 }
 
-static bool s_InScriptContext = false;
-static uint32_t s_PushedCount = 0;
-
 namespace {
 
 CVirtualMachine* GetVm()
@@ -47,13 +47,15 @@ CNWVirtualMachineCommands* GetVmCommands()
     return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
 }
 
-template <typename T>
-void StackPushGameDefinedStructure(int id, uintptr_t value)
-{
-    ASSERT(s_InScriptContext);
+static uint32_t s_PushedCount = 0;
 
-    T* ptr = reinterpret_cast<T*>(value);
-    if (GetVm()->StackPushEngineStructure(id, ptr))
+template <typename T>
+void StackPushGameDefinedStructure(int id, T value)
+{
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
+
+    T gameStruct = reinterpret_cast<T>(value);
+    if (GetVm()->StackPushEngineStructure(id, gameStruct))
     {
         ++s_PushedCount;
     }
@@ -64,20 +66,53 @@ void StackPushGameDefinedStructure(int id, uintptr_t value)
     }
 }
 
+struct GameDefinedStructure
+{
+    int m_Id;
+    void* m_Ptr;
+};
+
+static std::stack<std::vector<GameDefinedStructure>> s_StructureFreeList;
+
+template <typename T>
+T StackPopGameDefinedStructure(int id)
+{
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
+
+    void* value;
+    if (!GetVm()->StackPopEngineStructure(id, &value))
+    {
+        LOG_WARNING("Failed to pop game defined structure %i - recursion level %i.",
+            id, GetVm()->m_nRecursionLevel);
+        return nullptr;
+    }
+
+    // Every single time we pop a game defined structure, we now have a copy floating around.
+    // We will collect these in a big list - and at the end of the script context, we will
+    // handle freeing them, else we will leak memory.
+
+    GameDefinedStructure gameDefStruct;
+    gameDefStruct.m_Id = id;
+    gameDefStruct.m_Ptr = value;
+    s_StructureFreeList.top().emplace_back(gameDefStruct);
+
+    return reinterpret_cast<T>(value);
+}
+
 }
 
 extern "C" {
 
 void CallBuiltIn(int32_t id)
 {
-    ASSERT(s_InScriptContext);
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
     GetVmCommands()->ExecuteCommand(id, s_PushedCount);
     s_PushedCount = 0;
 }
 
-void StackPushInt(int32_t value)
+void StackPushInteger(int32_t value)
 {
-    ASSERT(s_InScriptContext);
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushInteger(value))
     {
@@ -92,7 +127,7 @@ void StackPushInt(int32_t value)
 
 void StackPushFloat(float value)
 {
-    ASSERT(s_InScriptContext);
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushFloat(value))
     {
@@ -107,7 +142,7 @@ void StackPushFloat(float value)
 
 void StackPushString(const char* value)
 {
-    ASSERT(s_InScriptContext);
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     CExoString str(value);
     if (GetVm()->StackPushString(str))
@@ -123,7 +158,7 @@ void StackPushString(const char* value)
 
 void StackPushObject(int32_t value)
 {
-    ASSERT(s_InScriptContext);
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushObject(value))
     {
@@ -138,7 +173,7 @@ void StackPushObject(int32_t value)
 
 void StackPushVector(Vector value)
 {
-    ASSERT(s_InScriptContext);
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushVector(value))
     {
@@ -151,41 +186,127 @@ void StackPushVector(Vector value)
     }
 }
 
-void StackPushEffect(uintptr_t value)
+void StackPushEffect(CGameEffect* value)
 {
-    StackPushGameDefinedStructure<CGameEffect*>(0, value);
+    StackPushGameDefinedStructure(0, value);
 }
 
-void StackPushEvent(uintptr_t value)
+void StackPushEvent(CScriptEvent* value)
 {
-    StackPushGameDefinedStructure<CScriptEvent*>(1, value);
+    StackPushGameDefinedStructure(1, value);
 }
 
-void StackPushLocation(uintptr_t value)
+void StackPushLocation(CScriptLocation* value)
 {
-    StackPushGameDefinedStructure<CScriptLocation*>(2, value);
+    StackPushGameDefinedStructure(2, value);
 }
 
-void StackPushTalent(uintptr_t value)
+void StackPushTalent(CScriptTalent* value)
 {
-    StackPushGameDefinedStructure<CScriptTalent*>(3, value);
+    StackPushGameDefinedStructure(3, value);
 }
 
-void StackPushItemProperty(uintptr_t value)
+void StackPushItemProperty(CGameEffect* value)
 {
-    StackPushGameDefinedStructure<CGameEffect*>(4, value);
+    StackPushGameDefinedStructure(4, value);
 }
 
-int32_t StackPopInt();
-float StackPopFloat();
-const char* StackPopString();
-int32_t StackPopObject();
-Vector StackPopVector();
-uintptr_t StackPopEffect();
-uintptr_t StackPopEvent();
-uintptr_t StackPopLocation();
-uintptr_t StackPopTalent();
-uintptr_t StackPopItemProperty();
+int32_t StackPopInteger()
+{
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
+
+    int32_t value;
+    if (!GetVm()->StackPopInteger(&value))
+    {
+        LOG_WARNING("Failed to pop integer - recursion level %i.", GetVm()->m_nRecursionLevel);
+        return -1;
+    }
+
+    return value;
+}
+
+float StackPopFloat()
+{
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
+
+    float value;
+    if (!GetVm()->StackPopFloat(&value))
+    {
+        LOG_WARNING("Failed to pop float - recursion level %i.", GetVm()->m_nRecursionLevel);
+        return 0.0f;
+    }
+
+    return value;
+}
+
+const char* StackPopString()
+{
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
+
+    CExoString value;
+    if (!GetVm()->StackPopString(&value))
+    {
+        LOG_WARNING("Failed to pop string - recursion level %i.", GetVm()->m_nRecursionLevel);
+        return "";
+    }
+
+    static char s_StrBuf[128*1024];
+    strcpy(s_StrBuf, value.m_sString);
+    return s_StrBuf;
+}
+
+int32_t StackPopObject()
+{
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
+
+    uint32_t value;
+    if (!GetVm()->StackPopObject(&value))
+    {
+        LOG_WARNING("Failed to pop object - recursion level %i.", GetVm()->m_nRecursionLevel);
+        return Constants::OBJECT_INVALID;
+    }
+
+    return value;
+}
+
+Vector StackPopVector()
+{
+    ASSERT(GetVm()->m_nRecursionLevel >= 0);
+
+    Vector value;
+    if (!GetVm()->StackPopVector(&value))
+    {
+        LOG_WARNING("Failed to pop vector - recursion level %i.", GetVm()->m_nRecursionLevel);
+        return value;
+    }
+
+    return value;
+}
+
+CGameEffect* StackPopEffect()
+{
+    return StackPopGameDefinedStructure<CGameEffect*>(0);
+}
+
+CScriptEvent* StackPopEvent()
+{
+    return StackPopGameDefinedStructure<CScriptEvent*>(1);
+}
+
+CScriptLocation* StackPopLocation()
+{
+    return StackPopGameDefinedStructure<CScriptLocation*>(2);
+}
+
+CScriptTalent* StackPopTalent()
+{
+    return StackPopGameDefinedStructure<CScriptTalent*>(3);
+}
+
+CGameEffect* StackPopItemProperty()
+{
+    return StackPopGameDefinedStructure<CGameEffect*>(4);
+}
 
 }
 
@@ -219,7 +340,7 @@ Mono::~Mono()
     }
 }
 
-bool Mono::RunMonoScript(const char* scriptName)
+bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool valid)
 {
     auto iter = m_ScriptMap.find(scriptName);
     if (iter == std::end(m_ScriptMap))
@@ -235,12 +356,37 @@ bool Mono::RunMonoScript(const char* scriptName)
 
     LOG_DEBUG("Invoking NWN.Scripts.%s::Main.", scriptName);
 
-    MonoObject* ex = nullptr;
-    mono_runtime_invoke(method, nullptr, nullptr, &ex);
+    { // PREPARE VM
+        GetVm()->m_nRecursionLevel += 1;
+        GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = objId;
+        GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = valid;
+        GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+        GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
 
-    if (ex)
-    {
-        LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main.", scriptName);
+        s_StructureFreeList.emplace();
+    }
+
+    { // RUN C# SCRIPT
+        MonoObject* ex = nullptr;
+        mono_runtime_invoke(method, nullptr, nullptr, &ex);
+
+        if (ex)
+        {
+            LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main.", scriptName);
+        }
+    }
+
+    { // CLEANUP VM
+        GetVm()->m_nRecursionLevel -= 1;
+        GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+        GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
+
+        for (GameDefinedStructure& gameDefStruct : s_StructureFreeList.top())
+        {
+            GetVmCommands()->DestroyGameDefinedStructure(gameDefStruct.m_Id, gameDefStruct.m_Ptr);
+        }
+
+        s_StructureFreeList.pop();
     }
 
     return true;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Plugin.hpp"
+#include "API/Constants.hpp"
+#include "API/Types.hpp"
 #include <mono/jit/jit.h>
 
 namespace Mono {
@@ -17,7 +19,10 @@ private:
 
     std::unordered_map<std::string, MonoMethod*> m_ScriptMap;
 
-    bool RunMonoScript(const char* scriptName);
+    bool RunMonoScript(const char* scriptName,
+        NWNXLib::API::Types::ObjectID objId = NWNXLib::API::Constants::OBJECT_INVALID,
+        bool valid = true);
+
     MonoMethod* GetScriptEntryFromClass(const char* className);
 };
 
