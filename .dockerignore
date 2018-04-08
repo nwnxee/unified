@@ -1,0 +1,3 @@
+# Prevent running COPY layer on Dockerfile changes
+Dockerfile
+.dockerignore
