@@ -32,10 +32,22 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
     return g_plugin;
 }
 
-static bool s_InScriptContext;
-static uint32_t s_PushedCount;
-static CVirtualMachine* s_Vm;
-static CNWVirtualMachineCommands* s_Cmds;
+namespace {
+
+CVirtualMachine* GetVm()
+{
+    return Globals::VirtualMachine();
+}
+
+CNWVirtualMachineCommands* GetVmCommands()
+{
+    return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
+}
+
+}
+
+static bool s_InScriptContext = false;
+static uint32_t s_PushedCount = 0;
 
 extern "C" {
 
@@ -49,7 +61,7 @@ struct Vector
 void CallBuiltIn(int32_t id)
 {
     ASSERT(s_InScriptContext);
-    s_Cmds->ExecuteCommand(id, s_PushedCount);
+    GetVmCommands()->ExecuteCommand(id, s_PushedCount);
     s_PushedCount = 0;
 }
 
@@ -57,13 +69,13 @@ void StackPushInt(int32_t id)
 {
     ASSERT(s_InScriptContext);
 
-    if (s_Vm->StackPushInteger(id))
+    if (GetVm()->StackPushInteger(id))
     {
         ++s_PushedCount;
     }
     else
     {
-        LOG_WARNING("Failed to push integer %s - recursion level %i", id, s_Vm->m_nRecursionLevel);
+        LOG_WARNING("Failed to push integer %s - recursion level %i.", id, GetVm()->m_nRecursionLevel);
     }
 }
 
@@ -97,9 +109,6 @@ namespace Mono {
 Mono::Mono(const Plugin::CreateParams& params)
     : Plugin(params), m_Domain(nullptr)
 {
-    s_Vm = Globals::VirtualMachine();
-    s_Cmds = static_cast<CNWVirtualMachineCommands*>(s_Vm->m_pCmdImplementer);
-
     Maybe<std::string> configPath = GetServices()->m_config->Get<std::string>("CONFIG_PATH");
     mono_config_parse(configPath ? configPath->c_str() : nullptr);
 
@@ -176,6 +185,5 @@ MonoMethod* Mono::GetScriptEntryFromClass(const char* className)
 
     return method;
 }
-
 
 }
