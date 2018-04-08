@@ -32,6 +32,9 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
     return g_plugin;
 }
 
+static bool s_InScriptContext = false;
+static uint32_t s_PushedCount = 0;
+
 namespace {
 
 CVirtualMachine* GetVm()
@@ -44,19 +47,26 @@ CNWVirtualMachineCommands* GetVmCommands()
     return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
 }
 
+template <typename T>
+void StackPushGameDefinedStructure(int id, uintptr_t value)
+{
+    ASSERT(s_InScriptContext);
+
+    T* ptr = reinterpret_cast<T*>(value);
+    if (GetVm()->StackPushEngineStructure(id, ptr))
+    {
+        ++s_PushedCount;
+    }
+    else
+    {
+        LOG_WARNING("Failed to push game defined structure %i at 0x%x - recursion level %i.",
+            id, value, GetVm()->m_nRecursionLevel);
+    }
 }
 
-static bool s_InScriptContext = false;
-static uint32_t s_PushedCount = 0;
+}
 
 extern "C" {
-
-struct Vector
-{
-    float m_X;
-    float m_Y;
-    float m_Z;
-};
 
 void CallBuiltIn(int32_t id)
 {
@@ -65,35 +75,112 @@ void CallBuiltIn(int32_t id)
     s_PushedCount = 0;
 }
 
-void StackPushInt(int32_t id)
+void StackPushInt(int32_t value)
 {
     ASSERT(s_InScriptContext);
 
-    if (GetVm()->StackPushInteger(id))
+    if (GetVm()->StackPushInteger(value))
     {
         ++s_PushedCount;
     }
     else
     {
-        LOG_WARNING("Failed to push integer %s - recursion level %i.", id, GetVm()->m_nRecursionLevel);
+        LOG_WARNING("Failed to push integer %s - recursion level %i.",
+            value, GetVm()->m_nRecursionLevel);
     }
 }
 
-void StackPushFloat(float id);
-void StackPushString(const char* str);
-void StackPushObject(int32_t objId);
-void StackPushVector(::Vector* vec);
-void StackPushEffect(uintptr_t effect);
-void StackPushEvent(uintptr_t event);
-void StackPushLocation(uintptr_t location);
-void StackPushTalent(uintptr_t event);
-void StackPushItemProperty(uintptr_t itemProperty);
+void StackPushFloat(float value)
+{
+    ASSERT(s_InScriptContext);
+
+    if (GetVm()->StackPushFloat(value))
+    {
+        ++s_PushedCount;
+    }
+    else
+    {
+        LOG_WARNING("Failed to push float %f - recursion level %i.",
+            value, GetVm()->m_nRecursionLevel);
+    }
+}
+
+void StackPushString(const char* value)
+{
+    ASSERT(s_InScriptContext);
+
+    CExoString str(value);
+    if (GetVm()->StackPushString(str))
+    {
+        ++s_PushedCount;
+    }
+    else
+    {
+        LOG_WARNING("Failed to push string '%s' - recursion level %i.",
+            str.m_sString, GetVm()->m_nRecursionLevel);
+    }
+}
+
+void StackPushObject(int32_t value)
+{
+    ASSERT(s_InScriptContext);
+
+    if (GetVm()->StackPushObject(value))
+    {
+        ++s_PushedCount;
+    }
+    else
+    {
+        LOG_WARNING("Failed to push object 0x%x - recursion level %i.",
+            value, GetVm()->m_nRecursionLevel);
+    }
+}
+
+void StackPushVector(Vector value)
+{
+    ASSERT(s_InScriptContext);
+
+    if (GetVm()->StackPushVector(value))
+    {
+        ++s_PushedCount;
+    }
+    else
+    {
+        LOG_WARNING("Failed to push vector { %f, %f, %f } - recursion level %i.",
+            value.x, value.y, value.z, GetVm()->m_nRecursionLevel);
+    }
+}
+
+void StackPushEffect(uintptr_t value)
+{
+    StackPushGameDefinedStructure<CGameEffect*>(0, value);
+}
+
+void StackPushEvent(uintptr_t value)
+{
+    StackPushGameDefinedStructure<CScriptEvent*>(1, value);
+}
+
+void StackPushLocation(uintptr_t value)
+{
+    StackPushGameDefinedStructure<CScriptLocation*>(2, value);
+}
+
+void StackPushTalent(uintptr_t value)
+{
+    StackPushGameDefinedStructure<CScriptTalent*>(3, value);
+}
+
+void StackPushItemProperty(uintptr_t value)
+{
+    StackPushGameDefinedStructure<CGameEffect*>(4, value);
+}
 
 int32_t StackPopInt();
 float StackPopFloat();
 const char* StackPopString();
 int32_t StackPopObject();
-::Vector StackPopVector();
+Vector StackPopVector();
 uintptr_t StackPopEffect();
 uintptr_t StackPopEvent();
 uintptr_t StackPopLocation();
