@@ -54,6 +54,7 @@ static uint32_t s_PushedCount = 0;
 template <typename T>
 void StackPushGameDefinedStructure(int id, T value)
 {
+    LOG_DEBUG("Pushing game defined structure %i at 0x%x.", id, value);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     T gameStruct = reinterpret_cast<T>(value);
@@ -79,6 +80,7 @@ static std::stack<std::vector<GameDefinedStructure>> s_StructureFreeList;
 template <typename T>
 T StackPopGameDefinedStructure(int id)
 {
+    LOG_DEBUG("Popping game defined structure.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     void* value;
@@ -107,6 +109,7 @@ extern "C" {
 
 void CallBuiltIn(int32_t id)
 {
+    LOG_DEBUG("Calling BuiltIn %i.", id);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
     GetVmCommands()->ExecuteCommand(id, s_PushedCount);
     s_PushedCount = 0;
@@ -114,6 +117,7 @@ void CallBuiltIn(int32_t id)
 
 void StackPushInteger(int32_t value)
 {
+    LOG_DEBUG("Pushing integer %i.", value);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushInteger(value))
@@ -129,6 +133,7 @@ void StackPushInteger(int32_t value)
 
 void StackPushFloat(float value)
 {
+    LOG_DEBUG("Pushing float %f.", value);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushFloat(value))
@@ -144,6 +149,7 @@ void StackPushFloat(float value)
 
 void StackPushString(const char* value)
 {
+    LOG_DEBUG("Pushing string %s.", value);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     CExoString str(value);
@@ -158,8 +164,9 @@ void StackPushString(const char* value)
     }
 }
 
-void StackPushObject(int32_t value)
+void StackPushObject(uint32_t value)
 {
+    LOG_DEBUG("Pushing object 0x%x.", value);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushObject(value))
@@ -175,6 +182,7 @@ void StackPushObject(int32_t value)
 
 void StackPushVector(Vector value)
 {
+    LOG_DEBUG("Pushing vector { %f, %f, %f }.", value.x, value.y, value.z);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     if (GetVm()->StackPushVector(value))
@@ -215,6 +223,7 @@ void StackPushItemProperty(CGameEffect* value)
 
 int32_t StackPopInteger()
 {
+    LOG_DEBUG("Popping integer.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     int32_t value;
@@ -229,6 +238,7 @@ int32_t StackPopInteger()
 
 float StackPopFloat()
 {
+    LOG_DEBUG("Popping float.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     float value;
@@ -243,6 +253,7 @@ float StackPopFloat()
 
 const char* StackPopString()
 {
+    LOG_DEBUG("Popping string.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     CExoString value;
@@ -257,8 +268,9 @@ const char* StackPopString()
     return s_StrBuf;
 }
 
-int32_t StackPopObject()
+uint32_t StackPopObject()
 {
+    LOG_DEBUG("Popping object.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     uint32_t value;
@@ -273,6 +285,7 @@ int32_t StackPopObject()
 
 Vector StackPopVector()
 {
+    LOG_DEBUG("Popping vector.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     Vector value;
@@ -335,13 +348,15 @@ Mono::Mono(const Plugin::CreateParams& params)
         throw std::logic_error("Could not open the mono assembly.");
     }
 
+    m_PushScriptContext = GetInternalHandler("PushScriptContext", 1);
+    m_PopScriptContext = GetInternalHandler("PopScriptContext", 1);
+
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, void>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
         {
             bool skip = script->m_sString && g_plugin->RunMonoScript(script->m_sString, objId, !!valid);
             if (!skip)
             {
-                LOG_DEBUG("Passing original through - %s", script->m_sString ? script->m_sString : "(unknown)");
                 s_RunScriptHook->CallOriginal<void>(thisPtr, script, objId, valid);
             }
         }
@@ -372,7 +387,6 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
         return false;
     }
 
-    LOG_DEBUG("Invoking NWN.Scripts.%s::Main.", scriptName);
 
     { // PREPARE VM
         GetVm()->m_nRecursionLevel += 1;
@@ -386,7 +400,27 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
 
     { // RUN C# SCRIPT
         MonoObject* ex = nullptr;
-        mono_runtime_invoke(method, nullptr, nullptr, &ex);
+
+        LOG_DEBUG("Invoking NWN.Scripts.%s::Main on OID 0x%x.", scriptName, objId);
+
+        do
+        {
+            void* args[1] = { &objId };
+
+            mono_runtime_invoke(m_PushScriptContext, nullptr, args, &ex);
+            if (ex)
+            {
+                // If we fail to push, we can't possible continue - so bail.
+                break;
+            }
+
+            // Even if we fail the actual method, we still need to pop.
+            mono_runtime_invoke(method, nullptr, nullptr, &ex);
+
+            // If we failed the actual method, we discard this exception and only report actual method.
+            mono_runtime_invoke(m_PopScriptContext, nullptr, args, ex ? nullptr : &ex);
+        }
+        while (false);
 
         if (ex)
         {
@@ -436,6 +470,29 @@ MonoMethod* Mono::GetScriptEntryFromClass(const char* className)
         LOG_WARNING("Failed to resolve NWN.Scripts.%s::Main - ill-formed script?", className);
     }
 
+    return method;
+}
+
+MonoMethod* Mono::GetInternalHandler(const char* handler, int paramCount)
+{
+    MonoImage* image = mono_assembly_get_image(m_Assembly);
+    ASSERT(image);
+
+    MonoClass* cls = mono_class_from_name(image, "NWN", "Internal");
+
+    if (!cls)
+    {
+        throw std::logic_error("Failed to resolve NWN.Internal.");
+    }
+
+    MonoMethod* method = mono_class_get_method_from_name(cls, handler, paramCount);
+
+    if (!method)
+    {
+        throw std::logic_error("Failed to resolve NWN.Internal.");
+    }
+
+    LOG_INFO("Resolved NWN.Internal::%s.", handler);
     return method;
 }
 

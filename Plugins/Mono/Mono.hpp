@@ -17,6 +17,9 @@ private:
     MonoDomain* m_Domain;
     MonoAssembly* m_Assembly;
 
+    MonoMethod* m_PushScriptContext;
+    MonoMethod* m_PopScriptContext;
+
     std::unordered_map<std::string, MonoMethod*> m_ScriptMap;
 
     bool RunMonoScript(const char* scriptName,
@@ -24,6 +27,7 @@ private:
         bool valid = true);
 
     MonoMethod* GetScriptEntryFromClass(const char* className);
+    MonoMethod* GetInternalHandler(const char* handler, int paramCount);
 };
 
 }
