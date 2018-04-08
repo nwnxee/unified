@@ -1,9 +1,11 @@
 #include "Mono.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
+#include "Services/Hooks/Hooks.hpp"
 
 #include <cstring>
 #include <stack>
@@ -314,6 +316,8 @@ using namespace NWNXLib::Services;
 
 namespace Mono {
 
+static Hooking::FunctionHook* s_RunScriptHook;
+
 Mono::Mono(const Plugin::CreateParams& params)
     : Plugin(params), m_Domain(nullptr)
 {
@@ -330,6 +334,20 @@ Mono::Mono(const Plugin::CreateParams& params)
     {
         throw std::logic_error("Could not open the mono assembly.");
     }
+
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, void>(
+        +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
+        {
+            bool skip = script->m_sString && g_plugin->RunMonoScript(script->m_sString, objId, !!valid);
+            if (!skip)
+            {
+                LOG_DEBUG("Passing original through - %s", script->m_sString ? script->m_sString : "(unknown)");
+                s_RunScriptHook->CallOriginal<void>(thisPtr, script, objId, valid);
+            }
+        }
+    );
+
+    s_RunScriptHook = GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScript);
 }
 
 Mono::~Mono()
@@ -372,7 +390,9 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
 
         if (ex)
         {
-            LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main.", scriptName);
+            char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
+            LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main: %s", scriptName, exMsg);
+            mono_free(exMsg);
         }
     }
 
