@@ -9,9 +9,7 @@
 
 #include <algorithm>
 #include <cstring>
-#include <stack>
 #include <string>
-#include <vector>
 
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-config.h>
