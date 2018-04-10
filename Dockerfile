@@ -1,4 +1,4 @@
-FROM jakkn/unified:builder as builder
+FROM jakkn/nwnxee-builder:latest as builder
 WORKDIR /nwnx
 COPY ./ .
 WORKDIR /nwnx/build
