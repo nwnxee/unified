@@ -387,7 +387,6 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
         return false;
     }
 
-
     { // PREPARE VM
         GetVm()->m_nRecursionLevel += 1;
         GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = objId;
@@ -432,8 +431,12 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
 
     { // CLEANUP VM
         GetVm()->m_nRecursionLevel -= 1;
-        GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
-        GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
+
+        if (GetVm()->m_nRecursionLevel != -1)
+        {
+            GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+            GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
+        }
 
         for (GameDefinedStructure& gameDefStruct : s_StructureFreeList.top())
         {
