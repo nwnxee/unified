@@ -10,18 +10,29 @@ namespace NWN
 
         public static NWN.Object OBJECT_SELF { get; private set; }
 
-        private static Stack<NWN.Object> s_ObjSelfStack = new Stack<NWN.Object>();
-
-        static void PushScriptContext(uint objId)
+        // Disables "is never assigned to, and will always have its default value" -
+        // this is called by reflection in C++ code.
+        #pragma warning disable 0649
+        private struct ScriptContext
         {
-            s_ObjSelfStack.Push(new NWN.Object { m_ObjId = objId });
-            OBJECT_SELF = s_ObjSelfStack.Peek();
+            // NOTE! This needs to be in sync with Mono.cpp.
+            public uint m_Oid;
+            public IntPtr m_FreeList;
+        }
+        #pragma warning restore 0649
+
+        private static Stack<ScriptContext> s_ScriptContexts = new Stack<ScriptContext>();
+
+        static void PushScriptContext(ScriptContext ctx)
+        {
+            s_ScriptContexts.Push(ctx);
+            OBJECT_SELF = ctx.m_Oid;
         }
 
-        static void PopScriptContext(uint objId)
+        static void PopScriptContext()
         {
-            s_ObjSelfStack.Pop();
-            OBJECT_SELF = s_ObjSelfStack.Count == 0 ? null : s_ObjSelfStack.Peek();
+            s_ScriptContexts.Pop();
+            OBJECT_SELF = s_ScriptContexts.Count == 0 ? OBJECT_INVALID : s_ScriptContexts.Peek().m_Oid;
         }
 
         [DllImport("NWNX_Mono.so")]
@@ -123,43 +134,43 @@ namespace NWN
         public extern static NWN.Vector StackPopVector();
 
         [DllImport("NWNX_Mono.so", EntryPoint = "StackPopEffect")]
-        public extern static IntPtr StackPopEffect_Native();
+        public extern static IntPtr StackPopEffect_Native(IntPtr freeList);
 
         public static NWN.Effect StackPopEffect()
         {
-            return new NWN.Effect { m_Handle = StackPopEffect_Native() };
+            return new NWN.Effect { m_Handle = StackPopEffect_Native(s_ScriptContexts.Peek().m_FreeList) };
         }
 
         [DllImport("NWNX_Mono.so", EntryPoint = "StackPopEvent")]
-        public extern static IntPtr StackPopEvent_Native();
+        public extern static IntPtr StackPopEvent_Native(IntPtr freeList);
 
         public static NWN.Event StackPopEvent()
         {
-            return new NWN.Event { m_Handle = StackPopEvent_Native() };
+            return new NWN.Event { m_Handle = StackPopEvent_Native(s_ScriptContexts.Peek().m_FreeList) };
         }
 
         [DllImport("NWNX_Mono.so", EntryPoint = "StackPopLocation")]
-        public extern static IntPtr StackPopLocation_Native();
+        public extern static IntPtr StackPopLocation_Native(IntPtr freeList);
 
         public static NWN.Location StackPopLocation()
         {
-            return new NWN.Location { m_Handle = StackPopLocation_Native() };
+            return new NWN.Location { m_Handle = StackPopLocation_Native(s_ScriptContexts.Peek().m_FreeList) };
         }
 
         [DllImport("NWNX_Mono.so", EntryPoint = "StackPopTalent")]
-        public extern static IntPtr StackPopTalent_Native();
+        public extern static IntPtr StackPopTalent_Native(IntPtr freeList);
 
         public static NWN.Talent StackPopTalent()
         {
-            return new NWN.Talent { m_Handle = StackPopTalent_Native() };
+            return new NWN.Talent { m_Handle = StackPopTalent_Native(s_ScriptContexts.Peek().m_FreeList) };
         }
 
         [DllImport("NWNX_Mono.so", EntryPoint = "StackPopItemProperty")]
-        public extern static IntPtr StackPopItemProperty_Native();
+        public extern static IntPtr StackPopItemProperty_Native(IntPtr freeList);
 
         public static NWN.ItemProperty StackPopItemProperty()
         {
-            return new NWN.ItemProperty { m_Handle = StackPopItemProperty_Native() };
+            return new NWN.ItemProperty { m_Handle = StackPopItemProperty_Native(s_ScriptContexts.Peek().m_FreeList) };
         }
     }
 }

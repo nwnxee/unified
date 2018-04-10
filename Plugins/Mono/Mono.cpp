@@ -7,9 +7,12 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
+#include <algorithm>
 #include <cstring>
 #include <stack>
+#include <string>
 #include <vector>
+
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-config.h>
 
@@ -69,16 +72,8 @@ void StackPushGameDefinedStructure(int id, T value)
     }
 }
 
-struct GameDefinedStructure
-{
-    int m_Id;
-    void* m_Ptr;
-};
-
-static std::stack<std::vector<GameDefinedStructure>> s_StructureFreeList;
-
 template <typename T>
-T StackPopGameDefinedStructure(int id)
+T StackPopGameDefinedStructure(int id, Mono::FreeList* freeList)
 {
     LOG_DEBUG("Popping game defined structure.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
@@ -94,11 +89,10 @@ T StackPopGameDefinedStructure(int id)
     // Every single time we pop a game defined structure, we now have a copy floating around.
     // We will collect these in a big list - and at the end of the script context, we will
     // handle freeing them, else we will leak memory.
-
-    GameDefinedStructure gameDefStruct;
+    Mono::GameDefinedStructure gameDefStruct;
     gameDefStruct.m_Id = id;
     gameDefStruct.m_Ptr = value;
-    s_StructureFreeList.top().emplace_back(gameDefStruct);
+    freeList->top().emplace_back(gameDefStruct);
 
     return reinterpret_cast<T>(value);
 }
@@ -298,29 +292,29 @@ Vector StackPopVector()
     return value;
 }
 
-CGameEffect* StackPopEffect()
+CGameEffect* StackPopEffect(Mono::FreeList* freeList)
 {
-    return StackPopGameDefinedStructure<CGameEffect*>(0);
+    return StackPopGameDefinedStructure<CGameEffect*>(0, freeList);
 }
 
-CScriptEvent* StackPopEvent()
+CScriptEvent* StackPopEvent(Mono::FreeList* freeList)
 {
-    return StackPopGameDefinedStructure<CScriptEvent*>(1);
+    return StackPopGameDefinedStructure<CScriptEvent*>(1, freeList);
 }
 
-CScriptLocation* StackPopLocation()
+CScriptLocation* StackPopLocation(Mono::FreeList* freeList)
 {
-    return StackPopGameDefinedStructure<CScriptLocation*>(2);
+    return StackPopGameDefinedStructure<CScriptLocation*>(2, freeList);
 }
 
-CScriptTalent* StackPopTalent()
+CScriptTalent* StackPopTalent(Mono::FreeList* freeList)
 {
-    return StackPopGameDefinedStructure<CScriptTalent*>(3);
+    return StackPopGameDefinedStructure<CScriptTalent*>(3, freeList);
 }
 
-CGameEffect* StackPopItemProperty()
+CGameEffect* StackPopItemProperty(Mono::FreeList* freeList)
 {
-    return StackPopGameDefinedStructure<CGameEffect*>(4);
+    return StackPopGameDefinedStructure<CGameEffect*>(4, freeList);
 }
 
 }
@@ -349,7 +343,7 @@ Mono::Mono(const Plugin::CreateParams& params)
     }
 
     m_PushScriptContext = GetInternalHandler("PushScriptContext", 1);
-    m_PopScriptContext = GetInternalHandler("PopScriptContext", 1);
+    m_PopScriptContext = GetInternalHandler("PopScriptContext", 0);
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, void>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
@@ -373,12 +367,23 @@ Mono::~Mono()
     }
 }
 
+struct ScriptContext
+{
+    // NOTE! This needs to be in sync with Internal.cs.
+    Types::ObjectID m_Oid;
+    FreeList* m_FreeList;
+};
+
 bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool valid)
 {
-    auto iter = m_ScriptMap.find(scriptName);
+    std::string scriptNameAsLower = scriptName;
+    std::transform(std::begin(scriptNameAsLower), std::end(scriptNameAsLower), std::begin(scriptNameAsLower), ::tolower);
+
+    auto iter = m_ScriptMap.find(scriptNameAsLower);
     if (iter == std::end(m_ScriptMap))
     {
-        iter = m_ScriptMap.insert(std::make_pair(scriptName, GetScriptEntryFromClass(scriptName))).first;
+        MonoMethod* method = GetScriptEntryFromClass(scriptNameAsLower.c_str());
+        iter = m_ScriptMap.insert(std::make_pair(std::move(scriptNameAsLower), method)).first;
     }
 
     MonoMethod* method = iter->second;
@@ -393,8 +398,7 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
         GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = valid;
         GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
         GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
-
-        s_StructureFreeList.emplace();
+        m_StructureFreeList.emplace();
     }
 
     { // RUN C# SCRIPT
@@ -404,9 +408,13 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
 
         do
         {
-            void* args[1] = { &objId };
+            ScriptContext ctx;
+            ctx.m_Oid = objId;
+            ctx.m_FreeList = &m_StructureFreeList;
 
-            mono_runtime_invoke(m_PushScriptContext, nullptr, args, &ex);
+            void* pushArgs[1] = { &ctx };
+
+            mono_runtime_invoke(m_PushScriptContext, nullptr, pushArgs, &ex);
             if (ex)
             {
                 // If we fail to push, we can't possible continue - so bail.
@@ -417,7 +425,7 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
             mono_runtime_invoke(method, nullptr, nullptr, &ex);
 
             // If we failed the actual method, we discard this exception and only report actual method.
-            mono_runtime_invoke(m_PopScriptContext, nullptr, args, ex ? nullptr : &ex);
+            mono_runtime_invoke(m_PopScriptContext, nullptr, nullptr, ex ? nullptr : &ex);
         }
         while (false);
 
@@ -438,12 +446,12 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
             GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
         }
 
-        for (GameDefinedStructure& gameDefStruct : s_StructureFreeList.top())
+        for (GameDefinedStructure& gameDefStruct : m_StructureFreeList.top())
         {
             GetVmCommands()->DestroyGameDefinedStructure(gameDefStruct.m_Id, gameDefStruct.m_Ptr);
         }
 
-        s_StructureFreeList.pop();
+        m_StructureFreeList.pop();
     }
 
     return true;
