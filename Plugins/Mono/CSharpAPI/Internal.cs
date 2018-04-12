@@ -181,7 +181,6 @@ namespace NWN
             if (closure.m_Delay != 0.0f)
             {
                 closure.m_AddedAt = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-
             }
 
             m_Closures.Add(closure);
@@ -206,6 +205,7 @@ namespace NWN
                     }
                 }
 
+                OBJECT_SELF = closure.m_Object;
                 BeginClosure(closure.m_Object.m_ObjId);
                 closure.m_Func();
             }
