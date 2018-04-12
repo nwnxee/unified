@@ -197,7 +197,7 @@ namespace NWN
                 if (closure.m_Delay != 0.0f)
                 {
                     long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    if (now - closure.m_AddedAt > closure.m_Delay * 1000)
+                    if (now - closure.m_AddedAt < closure.m_Delay * 1000)
                     {
                         // Not ready yet.
                         m_Closures.Add(closure);
