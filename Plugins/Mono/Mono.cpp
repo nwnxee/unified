@@ -54,6 +54,8 @@ Mono::Mono(const Plugin::CreateParams& params)
     g_Domain = mono_jit_init("nwnx");
 
     m_ScriptMetrics = GetServices()->m_config->Get<bool>("SCRIPT_METRICS", true);
+    m_ClosureMetrics = GetServices()->m_config->Get<bool>("CLOSURE_METRICS", true);
+
     std::string assembly = GetServices()->m_config->Require<std::string>("ASSEMBLY");
 
     LOG_INFO("Loading assembly %s.", assembly.c_str());
@@ -112,6 +114,21 @@ Mono::Mono(const Plugin::CreateParams& params)
     );
 
     s_RunScriptHook = GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScript);
+
+    GetServices()->m_hooks->RequestSharedHook<Functions::CServerExoAppInternal__MainLoop, int32_t>(
+        +[](Services::Hooks::CallType type, CServerExoAppInternal*)
+        {
+            if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+            {
+                return;
+            }
+
+            g_plugin->ExecuteClosures();
+        }
+    );
+
+    Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
+    metrics->SetResampler("Closures", resampler, std::chrono::seconds(1));
 }
 
 Mono::~Mono()
@@ -173,14 +190,7 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
                 mono_free(exMsg);
             }
 
-            mono_runtime_invoke(m_ExecuteClosures, nullptr, nullptr, &ex);
-
-            if (ex)
-            {
-                char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
-                LOG_WARNING("Caught unhandled exception when invoking closures: %s", exMsg);
-                mono_free(exMsg);
-            }
+            ExecuteClosures();
         };
 
         if (m_ScriptMetrics)
@@ -265,6 +275,38 @@ MonoMethod* Mono::GetInternalHandler(const char* handler, int paramCount)
 
     LOG_INFO("Resolved NWN.Internal::%s.", handler);
     return method;
+}
+
+void Mono::ExecuteClosures()
+{
+    auto execClosures = [&]()
+    {
+        MonoObject* ex = nullptr;
+        mono_runtime_invoke(m_ExecuteClosures, nullptr, nullptr, &ex);
+
+        if (ex)
+        {
+            char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
+            LOG_WARNING("Caught unhandled exception when invoking closures: %s", exMsg);
+            mono_free(exMsg);
+        }
+    };
+
+    if (m_ClosureMetrics)
+    {
+        const auto timeBefore = std::chrono::high_resolution_clock::now();
+        execClosures();
+        const auto timeAfter = std::chrono::high_resolution_clock::now();
+
+        using namespace std::chrono;
+        nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
+
+        GetServices()->m_metrics->Push("Closures", { { "ns", std::to_string(dur.count()) } });
+    }
+    else
+    {
+        execClosures();
+    }
 }
 
 }

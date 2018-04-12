@@ -21,6 +21,7 @@ private:
     MonoMethod* m_ExecuteClosures;
 
     bool m_ScriptMetrics;
+    bool m_ClosureMetrics;
 
     std::unordered_map<std::string, MonoMethod*> m_ScriptMap;
 
@@ -30,6 +31,7 @@ private:
 
     MonoMethod* GetScriptEntryFromClass(const char* className);
     MonoMethod* GetInternalHandler(const char* handler, int paramCount);
+    void ExecuteClosures();
 };
 
 }
