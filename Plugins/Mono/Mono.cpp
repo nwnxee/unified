@@ -404,28 +404,21 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
 
         LOG_DEBUG("Invoking NWN.Scripts.%s::Main on OID 0x%x.", scriptName, objId);
 
-        do
+        ScriptContext ctx;
+        ctx.m_Oid = objId;
+        ctx.m_FreeList = &m_StructureFreeList;
+
+        void* pushArgs[1] = { &ctx };
+
+        mono_runtime_invoke(m_PushScriptContext, nullptr, pushArgs, &ex);
+        if (!ex)
         {
-            ScriptContext ctx;
-            ctx.m_Oid = objId;
-            ctx.m_FreeList = &m_StructureFreeList;
-
-            void* pushArgs[1] = { &ctx };
-
-            mono_runtime_invoke(m_PushScriptContext, nullptr, pushArgs, &ex);
-            if (ex)
-            {
-                // If we fail to push, we can't possible continue - so bail.
-                break;
-            }
-
             // Even if we fail the actual method, we still need to pop.
             mono_runtime_invoke(method, nullptr, nullptr, &ex);
 
             // If we failed the actual method, we discard this exception and only report actual method.
             mono_runtime_invoke(m_PopScriptContext, nullptr, nullptr, ex ? nullptr : &ex);
         }
-        while (false);
 
         if (ex)
         {
