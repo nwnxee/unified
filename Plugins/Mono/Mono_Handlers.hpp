@@ -11,14 +11,6 @@
 
 namespace Mono {
 
-struct GameDefinedStructure
-{
-    int m_Id;
-    void* m_Ptr;
-};
-
-using FreeList = std::stack<std::vector<GameDefinedStructure>>;
-extern FreeList g_StructureFreeList;
 extern MonoDomain* g_Domain;
 extern MonoAssembly* g_Assembly;
 
@@ -48,5 +40,13 @@ NWNXLib::API::CScriptEvent* StackPopEvent();
 NWNXLib::API::CScriptLocation* StackPopLocation();
 NWNXLib::API::CScriptTalent* StackPopTalent();
 NWNXLib::API::CGameEffect* StackPopItemProperty();
+
+void BeginClosure(uint32_t value);
+
+void FreeEffect(void* ptr);
+void FreeEvent(void* ptr);
+void FreeLocation(void* ptr);
+void FreeTalent(void* ptr);
+void FreeItemProperty(void* ptr);
 
 }

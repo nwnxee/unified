@@ -11,7 +11,6 @@ using namespace NWNXLib::API;
 
 namespace Mono {
 
-FreeList g_StructureFreeList;
 MonoDomain* g_Domain;
 MonoAssembly* g_Assembly;
 
@@ -59,14 +58,6 @@ T StackPopGameDefinedStructure(int id)
         return nullptr;
     }
 
-    // Every single time we pop a game defined structure, we now have a copy floating around.
-    // We will collect these in a big list - and at the end of the script context, we will
-    // handle freeing them, else we will leak memory.
-    Mono::GameDefinedStructure gameDefStruct;
-    gameDefStruct.m_Id = id;
-    gameDefStruct.m_Ptr = value;
-    g_StructureFreeList.top().emplace_back(gameDefStruct);
-
     return reinterpret_cast<T>(value);
 }
 
@@ -112,10 +103,10 @@ void StackPushFloat(float value)
 
 void StackPushString(MonoString* value)
 {
-    LOG_DEBUG("Pushing string %s.", value);
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     char* valueAsCStr = mono_string_to_utf8(value);
+    LOG_DEBUG("Pushing string %s.", valueAsCStr);
     CExoString str(valueAsCStr);
     mono_free(valueAsCStr);
 
@@ -285,6 +276,57 @@ CScriptTalent* StackPopTalent()
 CGameEffect* StackPopItemProperty()
 {
     return StackPopGameDefinedStructure<CGameEffect*>(4);
+}
+
+void BeginClosure(uint32_t value)
+{
+    GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = value;
+    GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = 1;
+}
+
+void FreeEffect(void* ptr)
+{
+    if (ptr)
+    {
+        LOG_DEBUG("Freeing effect 0x%x", ptr);
+        GetVmCommands()->DestroyGameDefinedStructure(0, ptr);
+    }
+}
+
+void FreeEvent(void* ptr)
+{
+    if (ptr)
+    {
+        LOG_DEBUG("Freeing event 0x%x", ptr);
+        GetVmCommands()->DestroyGameDefinedStructure(1, ptr);
+    }
+}
+
+void FreeLocation(void* ptr)
+{
+    if (ptr)
+    {
+        LOG_DEBUG("Freeing location 0x%x", ptr);
+        GetVmCommands()->DestroyGameDefinedStructure(2, ptr);
+    }
+}
+
+void FreeTalent(void* ptr)
+{
+    if (ptr)
+    {
+        LOG_DEBUG("Freeing talent 0x%x", ptr);
+        GetVmCommands()->DestroyGameDefinedStructure(3, ptr);
+    }
+}
+
+void FreeItemProperty(void* ptr)
+{
+    if (ptr)
+    {
+        LOG_DEBUG("Freeing item property 0x%x", ptr);
+        GetVmCommands()->DestroyGameDefinedStructure(4, ptr);
+    }
 }
 
 }

@@ -51,31 +51,35 @@ namespace NWN
         }
     }
 
-    public struct Effect
+    public class Effect
     {
         public IntPtr m_Handle;
+        ~Effect() { Internal.FreeEffect(m_Handle); }
     }
 
-    public struct Event
+    public class Event
     {
         public IntPtr m_Handle;
+        ~Event() { Internal.FreeEvent(m_Handle); }
     }
 
-    public struct Location
+    public class Location
     {
         public IntPtr m_Handle;
+        ~Location() { Internal.FreeLocation(m_Handle); }
     }
 
-    public struct Talent
+    public class Talent
     {
         public IntPtr m_Handle;
+        ~Talent() { Internal.FreeTalent(m_Handle); }
     }
 
-    public struct ItemProperty
+    public class ItemProperty
     {
         public IntPtr m_Handle;
+        ~ItemProperty() { Internal.FreeItemProperty(m_Handle); }
     }
 
-    public class Action
-    { }
+    delegate void ActionDelegate();
 }

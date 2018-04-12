@@ -1,6 +1,6 @@
 namespace NWN
 {
-    class NWScript
+    partial class NWScript
     {
         //  Constants
         public const int NUM_INVENTORY_SLOTS = 18;

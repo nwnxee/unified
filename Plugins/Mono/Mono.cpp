@@ -62,6 +62,7 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     m_PushScriptContext = GetInternalHandler("PushScriptContext", 1);
     m_PopScriptContext = GetInternalHandler("PopScriptContext", 0);
+    m_ExecuteClosures = GetInternalHandler("ExecuteClosures", 0);
 
     mono_add_internal_call("NWN.Internal::CallBuiltIn", reinterpret_cast<const void*>(&CallBuiltIn));
 
@@ -86,6 +87,14 @@ Mono::Mono(const Plugin::CreateParams& params)
     mono_add_internal_call("NWN.Internal::StackPopLocation_Native", reinterpret_cast<const void*>(&StackPopLocation));
     mono_add_internal_call("NWN.Internal::StackPopTalent_Native", reinterpret_cast<const void*>(&StackPopTalent));
     mono_add_internal_call("NWN.Internal::StackPopItemProperty_Native", reinterpret_cast<const void*>(&StackPopItemProperty));
+
+    mono_add_internal_call("NWN.Internal::BeginClosure", reinterpret_cast<const void*>(&BeginClosure));
+
+    mono_add_internal_call("NWN.Internal::FreeEffect", reinterpret_cast<const void*>(&FreeEffect));
+    mono_add_internal_call("NWN.Internal::FreeEvent", reinterpret_cast<const void*>(&FreeEvent));
+    mono_add_internal_call("NWN.Internal::FreeLocation", reinterpret_cast<const void*>(&FreeLocation));
+    mono_add_internal_call("NWN.Internal::FreeTalent", reinterpret_cast<const void*>(&FreeTalent));
+    mono_add_internal_call("NWN.Internal::FreeItemProperty", reinterpret_cast<const void*>(&FreeItemProperty));
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, void>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
@@ -134,7 +143,6 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
         GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = valid;
         GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
         GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
-        g_StructureFreeList.emplace();
     }
 
     { // RUN C# SCRIPT
@@ -159,6 +167,15 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
             LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main: %s", scriptName, exMsg);
             mono_free(exMsg);
         }
+
+        mono_runtime_invoke(m_ExecuteClosures, nullptr, nullptr, &ex);
+
+        if (ex)
+        {
+            char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
+            LOG_WARNING("Caught unhandled exception when invoking closures: %s", exMsg);
+            mono_free(exMsg);
+        }
     }
 
     { // CLEANUP VM
@@ -169,13 +186,6 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
             GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
             GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
         }
-
-        for (GameDefinedStructure& gameDefStruct : g_StructureFreeList.top())
-        {
-            GetVmCommands()->DestroyGameDefinedStructure(gameDefStruct.m_Id, gameDefStruct.m_Ptr);
-        }
-
-        g_StructureFreeList.pop();
     }
 
     return true;

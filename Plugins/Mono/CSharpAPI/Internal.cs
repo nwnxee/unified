@@ -13,13 +13,13 @@ namespace NWN
 
         private static Stack<NWN.Object> s_ScriptContexts = new Stack<NWN.Object>();
 
-        static void PushScriptContext(uint oid)
+        private static void PushScriptContext(uint oid)
         {
             s_ScriptContexts.Push(oid);
             OBJECT_SELF = oid;
         }
 
-        static void PopScriptContext()
+        private static void PopScriptContext()
         {
             s_ScriptContexts.Pop();
             OBJECT_SELF = s_ScriptContexts.Count == 0 ? OBJECT_INVALID : s_ScriptContexts.Peek();
@@ -162,5 +162,68 @@ namespace NWN
         {
             return new NWN.ItemProperty { m_Handle = StackPopItemProperty_Native() };
         }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void BeginClosure(uint oid);
+
+        public struct Closure
+        {
+            public NWN.Object m_Object;
+            public float m_Delay;
+            public long m_AddedAt;
+            public ActionDelegate m_Func;
+        }
+
+        private static List<Closure> m_Closures = new List<Closure>();
+
+        public static void EnqueueClosure(Closure closure)
+        {
+            if (closure.m_Delay != 0.0f)
+            {
+                closure.m_AddedAt = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
+            }
+
+            m_Closures.Add(closure);
+        }
+
+        private static void ExecuteClosures()
+        {
+            // Take copy in case a closure adds more closures ...
+            List<Closure> closuresCopy = new List<Closure>(m_Closures);
+            m_Closures.Clear();
+
+            foreach (Closure closure in closuresCopy)
+            {
+                if (closure.m_Delay != 0.0f)
+                {
+                    long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                    if (now - closure.m_AddedAt > closure.m_Delay * 1000)
+                    {
+                        // Not ready yet.
+                        m_Closures.Add(closure);
+                        continue;
+                    }
+                }
+
+                BeginClosure(closure.m_Object.m_ObjId);
+                closure.m_Func();
+            }
+        }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void FreeEffect(IntPtr ptr);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void FreeEvent(IntPtr ptr);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void FreeLocation(IntPtr ptr);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void FreeTalent(IntPtr ptr);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void FreeItemProperty(IntPtr ptr);
     }
 }

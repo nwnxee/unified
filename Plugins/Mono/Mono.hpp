@@ -18,6 +18,7 @@ public:
 private:
     MonoMethod* m_PushScriptContext;
     MonoMethod* m_PopScriptContext;
+    MonoMethod* m_ExecuteClosures;
 
     std::unordered_map<std::string, MonoMethod*> m_ScriptMap;
 
