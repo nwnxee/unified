@@ -128,7 +128,7 @@ Mono::Mono(const Plugin::CreateParams& params)
     );
 
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
-    metrics->SetResampler("Closures", resampler, std::chrono::seconds(1));
+    GetServices()->m_metrics->SetResampler("Closures", resampler, std::chrono::seconds(1));
 }
 
 Mono::~Mono()
@@ -281,6 +281,8 @@ void Mono::ExecuteClosures()
 {
     auto execClosures = [&]()
     {
+        GetVm()->m_nRecursionLevel += 1;
+
         MonoObject* ex = nullptr;
         mono_runtime_invoke(m_ExecuteClosures, nullptr, nullptr, &ex);
 
@@ -290,6 +292,8 @@ void Mono::ExecuteClosures()
             LOG_WARNING("Caught unhandled exception when invoking closures: %s", exMsg);
             mono_free(exMsg);
         }
+
+        GetVm()->m_nRecursionLevel -= 1;
     };
 
     if (m_ClosureMetrics)
