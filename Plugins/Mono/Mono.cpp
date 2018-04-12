@@ -5,9 +5,11 @@
 #include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
+#include "Services/Metrics/Metrics.hpp"
 
 #include <algorithm>
 #include <cstring>
+#include <chrono>
 #include <string>
 
 #include <mono/metadata/assembly.h>
@@ -51,7 +53,9 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     g_Domain = mono_jit_init("nwnx");
 
+    m_ScriptMetrics = GetServices()->m_config->Get<bool>("SCRIPT_METRICS", true);
     std::string assembly = GetServices()->m_config->Require<std::string>("ASSEMBLY");
+
     LOG_INFO("Loading assembly %s.", assembly.c_str());
     g_Assembly = mono_domain_assembly_open(g_Domain, assembly.c_str());
 
@@ -146,35 +150,57 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
     }
 
     { // RUN C# SCRIPT
-        MonoObject* ex = nullptr;
-
-        LOG_DEBUG("Invoking NWN.Scripts.%s::Main on OID 0x%x.", scriptName, objId);
-
-        void* pushArgs[1] = { &objId };
-        mono_runtime_invoke(m_PushScriptContext, nullptr, pushArgs, &ex);
-        if (!ex)
+        auto runScripts = [&]()
         {
-            // Even if we fail the actual method, we still need to pop.
-            mono_runtime_invoke(method, nullptr, nullptr, &ex);
+            LOG_DEBUG("Invoking NWN.Scripts.%s::Main on OID 0x%x.", scriptNameAsLower.c_str(), objId);
 
-            // If we failed the actual method, we discard this exception and only report actual method.
-            mono_runtime_invoke(m_PopScriptContext, nullptr, nullptr, ex ? nullptr : &ex);
+            MonoObject* ex = nullptr;
+            void* pushArgs[1] = { &objId };
+            mono_runtime_invoke(m_PushScriptContext, nullptr, pushArgs, &ex);
+            if (!ex)
+            {
+                // Even if we fail the actual method, we still need to pop.
+                mono_runtime_invoke(method, nullptr, nullptr, &ex);
+
+                // If we failed the actual method, we discard this exception and only report actual method.
+                mono_runtime_invoke(m_PopScriptContext, nullptr, nullptr, ex ? nullptr : &ex);
+            }
+
+            if (ex)
+            {
+                char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
+                LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main: %s", scriptNameAsLower.c_str(), exMsg);
+                mono_free(exMsg);
+            }
+
+            mono_runtime_invoke(m_ExecuteClosures, nullptr, nullptr, &ex);
+
+            if (ex)
+            {
+                char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
+                LOG_WARNING("Caught unhandled exception when invoking closures: %s", exMsg);
+                mono_free(exMsg);
+            }
+        };
+
+        if (m_ScriptMetrics)
+        {
+            const auto timeBefore = std::chrono::high_resolution_clock::now();
+            runScripts();
+            const auto timeAfter = std::chrono::high_resolution_clock::now();
+
+            using namespace std::chrono;
+            nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
+            LOG_DEBUG("Run took %f ms.", dur.count() / 1000.0f / 1000.0f);
+
+            GetServices()->m_metrics->Push(
+                "Script",
+                { { "ns", std::to_string(dur.count()) } },
+                { { "Script", scriptNameAsLower.c_str() } });
         }
-
-        if (ex)
+        else
         {
-            char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
-            LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main: %s", scriptName, exMsg);
-            mono_free(exMsg);
-        }
-
-        mono_runtime_invoke(m_ExecuteClosures, nullptr, nullptr, &ex);
-
-        if (ex)
-        {
-            char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
-            LOG_WARNING("Caught unhandled exception when invoking closures: %s", exMsg);
-            mono_free(exMsg);
+            runScripts();
         }
     }
 

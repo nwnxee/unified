@@ -20,6 +20,8 @@ private:
     MonoMethod* m_PopScriptContext;
     MonoMethod* m_ExecuteClosures;
 
+    bool m_ScriptMetrics;
+
     std::unordered_map<std::string, MonoMethod*> m_ScriptMap;
 
     bool RunMonoScript(const char* scriptName,
