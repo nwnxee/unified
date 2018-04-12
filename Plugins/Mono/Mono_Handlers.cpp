@@ -235,6 +235,8 @@ uint32_t StackPopObject()
         return Constants::OBJECT_INVALID;
     }
 
+    LOG_DEBUG("Popped 0x%x", value);
+
     return value;
 }
 
@@ -280,8 +282,11 @@ CGameEffect* StackPopItemProperty()
 
 void BeginClosure(uint32_t value)
 {
+    LOG_DEBUG("Setting closure object to 0x%x", value);
     GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = value;
     GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = 1;
+    GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+    GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
 }
 
 void FreeEffect(void* ptr)
