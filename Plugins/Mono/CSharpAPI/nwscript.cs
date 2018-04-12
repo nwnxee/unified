@@ -5938,7 +5938,7 @@ namespace NWN
 
         //  Get the position of oTarget
         //  * Return value on error: vector (0.0f, 0.0f, 0.0f)
-        public static NWN.Vector? GetPosition(NWN.Object oTarget)
+        public static NWN.Vector GetPosition(NWN.Object oTarget)
         {
             NWN.Internal.StackPushObject(oTarget, false);
             NWN.Internal.CallBuiltIn(27);
@@ -7188,7 +7188,7 @@ namespace NWN
         }
 
         //  Normalize vVector
-        public static NWN.Vector? VectorNormalize(NWN.Vector? vVector)
+        public static NWN.Vector VectorNormalize(NWN.Vector? vVector)
         {
             NWN.Internal.StackPushVector(vVector);
             NWN.Internal.CallBuiltIn(137);
@@ -7248,7 +7248,7 @@ namespace NWN
         }
 
         //  Create a vector with the specified values for x, y and z
-        public static NWN.Vector? Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
+        public static NWN.Vector Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
         {
             NWN.Internal.StackPushFloat(z);
             NWN.Internal.StackPushFloat(y);
@@ -7265,7 +7265,7 @@ namespace NWN
         }
 
         //  Convert fAngle to a vector
-        public static NWN.Vector? AngleToVector(float fAngle)
+        public static NWN.Vector AngleToVector(float fAngle)
         {
             NWN.Internal.StackPushFloat(fAngle);
             NWN.Internal.CallBuiltIn(144);
@@ -8083,7 +8083,7 @@ namespace NWN
         }
 
         //  Get the position vector from lLocation.
-        public static NWN.Vector? GetPositionFromLocation(NWN.Location lLocation)
+        public static NWN.Vector GetPositionFromLocation(NWN.Location lLocation)
         {
             NWN.Internal.StackPushLocation(lLocation);
             NWN.Internal.CallBuiltIn(223);
@@ -11847,7 +11847,7 @@ namespace NWN
         //  The database name IS case sensitive and it must be the same for both set and get functions.
         //  The var name must be unique across the entire database, regardless of the variable type.
         //  If you want a variable to pertain to a specific player in the game, provide a player object.
-        public static NWN.Vector? GetCampaignVector(string sCampaignName, string sVarName, NWN.Object oPlayer = null)
+        public static NWN.Vector GetCampaignVector(string sCampaignName, string sVarName, NWN.Object oPlayer = null)
         {
             NWN.Internal.StackPushObject(oPlayer, false);
             NWN.Internal.StackPushString(sVarName);
