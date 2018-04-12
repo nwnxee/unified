@@ -189,8 +189,6 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
                 LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main: %s", scriptNameAsLower.c_str(), exMsg);
                 mono_free(exMsg);
             }
-
-            ExecuteClosures();
         };
 
         if (m_ScriptMetrics)
@@ -212,6 +210,8 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
         {
             runScripts();
         }
+
+        ExecuteClosures();
     }
 
     { // CLEANUP VM
