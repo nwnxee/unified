@@ -1,9 +1,15 @@
 #include "Mono_Handlers.hpp"
 #include "Assert.hpp"
-#include "API/Constants.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CNWSObject.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
+#include "API/Constants.hpp"
+#include "API/CServerAIMaster.hpp"
+#include "API/CServerExoApp.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CWorldTimer.hpp"
 #include "API/Globals.hpp"
+
 #include "Log.hpp"
 
 using namespace NWNXLib;
@@ -22,6 +28,24 @@ CVirtualMachine* GetVm()
 CNWVirtualMachineCommands* GetVmCommands()
 {
     return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
+}
+
+CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
+{
+    CVirtualMachineScript* script = new CVirtualMachineScript();
+    script->m_nCodeSize = 0;
+    script->m_pCode = NULL;
+    script->m_nLoadedFromSave = 0;
+    script->m_nSecondaryInstructPtr = 0;
+    script->m_nInstructPtr = 0;
+    script->m_nStackSize = 0;
+    script->m_pStack = new CVirtualMachineStack();
+
+    char buff[128];
+    sprintf(buff, "%s %llu", "NWNX_MONO_INTERNAL", eventId);
+    script->m_sScriptName = CExoString(buff);
+
+    return script;
 }
 
 static uint32_t s_PushedCount = 0;
@@ -280,15 +304,6 @@ CGameEffect* StackPopItemProperty()
     return StackPopGameDefinedStructure<CGameEffect*>(4);
 }
 
-void BeginClosure(uint32_t value)
-{
-    LOG_DEBUG("Setting closure object to 0x%x", value);
-    GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = value;
-    GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = 1;
-    GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
-    GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
-}
-
 void FreeEffect(void* ptr)
 {
     if (ptr)
@@ -332,6 +347,56 @@ void FreeItemProperty(void* ptr)
         LOG_DEBUG("Freeing item property 0x%x", ptr);
         GetVmCommands()->DestroyGameDefinedStructure(4, ptr);
     }
+}
+
+void BeginClosure(uint32_t value)
+{
+    LOG_DEBUG("Setting closure object to 0x%x", value);
+    GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = value;
+    GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = 1;
+    GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+    GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
+}
+
+int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId)
+{
+    CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
+    if (obj)
+    {
+        CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        ai->AddEventDeltaTime(0, 0, oid, oid, 1, CreateScriptForClosure(eventId));
+        return 1;
+    }
+
+    return 0;
+}
+
+int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
+{
+    CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
+    if (obj)
+    {
+        int32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
+        int32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
+
+        CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        ai->AddEventDeltaTime(days, time, oid, oid, 1, CreateScriptForClosure(eventId));
+        return 1;
+    }
+
+    return 0;
+}
+
+int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
+{
+    CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
+    if (obj && obj->m_nObjectType > Constants::OBJECT_TYPE_AREA)
+    {
+        ((CNWSObject*)obj)->AddDoCommandAction(CreateScriptForClosure(eventId));
+        return 1;
+    }
+
+    return 0;
 }
 
 }

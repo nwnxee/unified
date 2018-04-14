@@ -163,52 +163,58 @@ namespace NWN
             return new NWN.ItemProperty { m_Handle = StackPopItemProperty_Native() };
         }
 
-        [MethodImplAttribute(MethodImplOptions.InternalCall)]
-        public extern static void BeginClosure(uint oid);
-
-        public struct Closure
+        private struct Closure
         {
             public NWN.Object m_Object;
-            public float m_Delay;
-            public long m_AddedAt;
             public ActionDelegate m_Func;
         }
 
-        private static List<Closure> m_Closures = new List<Closure>();
+        private static ulong m_NextEventId = 0;
+        private static Dictionary<ulong, Closure> m_Closures = new Dictionary<ulong, Closure>();
 
-        public static void EnqueueClosure(Closure closure)
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        public extern static void BeginClosure(uint oid);
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static int ClosureAssignCommand_Native(uint oid, ulong eventId);
+
+        public static void ClosureAssignCommand(NWN.Object obj, ActionDelegate func)
         {
-            if (closure.m_Delay != 0.0f)
+            if (ClosureAssignCommand_Native(obj.m_ObjId, m_NextEventId) != 0)
             {
-                closure.m_AddedAt = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                m_Closures.Add(m_NextEventId++, new Closure { m_Object = obj, m_Func = func });
             }
-
-            m_Closures.Add(closure);
         }
 
-        private static void ExecuteClosures()
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static int ClosureDelayCommand_Native(uint oid, float duration, ulong eventId);
+
+        public static void ClosureDelayCommand(NWN.Object obj, float duration, ActionDelegate func)
         {
-            // Take copy in case a closure adds more closures ...
-            List<Closure> closuresCopy = new List<Closure>(m_Closures);
-            m_Closures.Clear();
-
-            foreach (Closure closure in closuresCopy)
+            if (ClosureDelayCommand_Native(obj.m_ObjId, duration, m_NextEventId) != 0)
             {
-                if (closure.m_Delay != 0.0f)
-                {
-                    long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    if (now - closure.m_AddedAt < closure.m_Delay * 1000)
-                    {
-                        // Not ready yet.
-                        m_Closures.Add(closure);
-                        continue;
-                    }
-                }
-
-                OBJECT_SELF = closure.m_Object;
-                BeginClosure(closure.m_Object.m_ObjId);
-                closure.m_Func();
+                m_Closures.Add(m_NextEventId++, new Closure { m_Object = obj, m_Func = func });
             }
+        }
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        private extern static int ClosureActionDoCommand_Native(uint oid, ulong eventId);
+
+        public static void ClosureActionDoCommand(NWN.Object obj, ActionDelegate func)
+        {
+            if (ClosureActionDoCommand_Native(obj.m_ObjId, m_NextEventId) != 0)
+            {
+                m_Closures.Add(m_NextEventId++, new Closure { m_Object = obj, m_Func = func });
+            }
+        }
+
+        private static void ExecuteClosure(ulong eventId)
+        {
+            Closure closure = m_Closures[eventId];
+            OBJECT_SELF = closure.m_Object;
+            BeginClosure(closure.m_Object.m_ObjId);
+            closure.m_Func();
+            m_Closures.Remove(eventId);
         }
 
         [MethodImplAttribute(MethodImplOptions.InternalCall)]

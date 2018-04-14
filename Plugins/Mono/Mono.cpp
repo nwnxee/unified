@@ -1,6 +1,7 @@
 #include "Mono.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CVirtualMachineScript.hpp"
 #include "API/Functions.hpp"
 #include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
@@ -44,6 +45,7 @@ using namespace NWNXLib::Services;
 namespace Mono {
 
 static Hooking::FunctionHook* s_RunScriptHook;
+static Hooking::FunctionHook* s_RunScriptSituationHook;
 
 Mono::Mono(const Plugin::CreateParams& params)
     : Plugin(params)
@@ -68,7 +70,7 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     m_PushScriptContext = GetInternalHandler("PushScriptContext", 1);
     m_PopScriptContext = GetInternalHandler("PopScriptContext", 0);
-    m_ExecuteClosures = GetInternalHandler("ExecuteClosures", 0);
+    m_ExecuteClosure = GetInternalHandler("ExecuteClosure", 1);
 
     mono_add_internal_call("NWN.Internal::CallBuiltIn", reinterpret_cast<const void*>(&CallBuiltIn));
 
@@ -94,13 +96,16 @@ Mono::Mono(const Plugin::CreateParams& params)
     mono_add_internal_call("NWN.Internal::StackPopTalent_Native", reinterpret_cast<const void*>(&StackPopTalent));
     mono_add_internal_call("NWN.Internal::StackPopItemProperty_Native", reinterpret_cast<const void*>(&StackPopItemProperty));
 
-    mono_add_internal_call("NWN.Internal::BeginClosure", reinterpret_cast<const void*>(&BeginClosure));
-
     mono_add_internal_call("NWN.Internal::FreeEffect", reinterpret_cast<const void*>(&FreeEffect));
     mono_add_internal_call("NWN.Internal::FreeEvent", reinterpret_cast<const void*>(&FreeEvent));
     mono_add_internal_call("NWN.Internal::FreeLocation", reinterpret_cast<const void*>(&FreeLocation));
     mono_add_internal_call("NWN.Internal::FreeTalent", reinterpret_cast<const void*>(&FreeTalent));
     mono_add_internal_call("NWN.Internal::FreeItemProperty", reinterpret_cast<const void*>(&FreeItemProperty));
+
+    mono_add_internal_call("NWN.Internal::BeginClosure", reinterpret_cast<const void*>(&BeginClosure));
+    mono_add_internal_call("NWN.Internal::ClosureAssignCommand_Native", reinterpret_cast<const void*>(&ClosureAssignCommand));
+    mono_add_internal_call("NWN.Internal::ClosureDelayCommand_Native", reinterpret_cast<const void*>(&ClosureDelayCommand));
+    mono_add_internal_call("NWN.Internal::ClosureActionDoCommand_Native", reinterpret_cast<const void*>(&ClosureActionDoCommand));
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, void>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
@@ -115,17 +120,26 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     s_RunScriptHook = GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScript);
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::CServerExoAppInternal__MainLoop, int32_t>(
-        +[](Services::Hooks::CallType type, CServerExoAppInternal*)
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScriptSituation, int32_t>(
+        +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID oid, int32_t oidValid)
         {
-            if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+            if (strstr(script->m_sScriptName.m_sString, "NWNX_MONO_INTERNAL"))
             {
-                return;
+                // We can locate the eventId inside the string after the first space.
+                char* eventIdStr = strstr(script->m_sScriptName.m_sString, " ");
+                ASSERT(eventIdStr);
+                if (eventIdStr)
+                {
+                    g_plugin->ExecuteClosure(strtoull(eventIdStr, nullptr, 10));
+                    return 1;
+                }
             }
 
-            g_plugin->ExecuteClosures();
+            return s_RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, oid, oidValid);
         }
     );
+
+    s_RunScriptSituationHook = GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScriptSituation);
 
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
     GetServices()->m_metrics->SetResampler("Closures", resampler, std::chrono::seconds(1));
@@ -210,8 +224,6 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
         {
             runScripts();
         }
-
-        ExecuteClosures();
     }
 
     { // CLEANUP VM
@@ -277,14 +289,17 @@ MonoMethod* Mono::GetInternalHandler(const char* handler, int paramCount)
     return method;
 }
 
-void Mono::ExecuteClosures()
+void Mono::ExecuteClosure(uint64_t eventId)
 {
     auto execClosures = [&]()
     {
+        LOG_DEBUG("Executing closure %llu.", eventId);
+
         GetVm()->m_nRecursionLevel += 1;
 
         MonoObject* ex = nullptr;
-        mono_runtime_invoke(m_ExecuteClosures, nullptr, nullptr, &ex);
+        void* closureArgs[1] = { &eventId };
+        mono_runtime_invoke(m_ExecuteClosure, nullptr, closureArgs, &ex);
 
         if (ex)
         {

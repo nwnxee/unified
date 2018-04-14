@@ -41,12 +41,15 @@ NWNXLib::API::CScriptLocation* StackPopLocation();
 NWNXLib::API::CScriptTalent* StackPopTalent();
 NWNXLib::API::CGameEffect* StackPopItemProperty();
 
-void BeginClosure(uint32_t value);
-
 void FreeEffect(void* ptr);
 void FreeEvent(void* ptr);
 void FreeLocation(void* ptr);
 void FreeTalent(void* ptr);
 void FreeItemProperty(void* ptr);
+
+void BeginClosure(uint32_t value);
+int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId);
+int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId);
+int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId);
 
 }

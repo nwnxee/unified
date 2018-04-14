@@ -18,7 +18,7 @@ public:
 private:
     MonoMethod* m_PushScriptContext;
     MonoMethod* m_PopScriptContext;
-    MonoMethod* m_ExecuteClosures;
+    MonoMethod* m_ExecuteClosure;
 
     bool m_ScriptMetrics;
     bool m_ClosureMetrics;
@@ -31,7 +31,7 @@ private:
 
     MonoMethod* GetScriptEntryFromClass(const char* className);
     MonoMethod* GetInternalHandler(const char* handler, int paramCount);
-    void ExecuteClosures();
+    void ExecuteClosure(uint64_t eventId);
 };
 
 }
