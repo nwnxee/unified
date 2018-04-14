@@ -57,6 +57,7 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     m_ScriptMetrics = GetServices()->m_config->Get<bool>("SCRIPT_METRICS", true);
     m_ClosureMetrics = GetServices()->m_config->Get<bool>("CLOSURE_METRICS", true);
+    m_MainLoopMetrics = GetServices()->m_config->Get<bool>("MAIN_LOOP_METRICS", true);
 
     std::string assembly = GetServices()->m_config->Require<std::string>("ASSEMBLY");
 
@@ -68,9 +69,10 @@ Mono::Mono(const Plugin::CreateParams& params)
         throw std::logic_error("Could not open the mono assembly.");
     }
 
-    m_PushScriptContext = GetInternalHandler("PushScriptContext", 1);
-    m_PopScriptContext = GetInternalHandler("PopScriptContext", 0);
-    m_ExecuteClosure = GetInternalHandler("ExecuteClosure", 1);
+    m_PushScriptContext = GetHandler("Internal", "PushScriptContext", 1);
+    m_PopScriptContext = GetHandler("Internal", "PopScriptContext", 0);
+    m_ExecuteClosure = GetHandler("Internal", "ExecuteClosure", 1);
+    m_OnMainLoopTick = GetHandler("Events", "OnMainLoopTick", 1);
 
     mono_add_internal_call("NWN.Internal::CallBuiltIn", reinterpret_cast<const void*>(&CallBuiltIn));
 
@@ -141,8 +143,22 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     s_RunScriptSituationHook = GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScriptSituation);
 
+    GetServices()->m_hooks->RequestSharedHook<Functions::CServerExoAppInternal__MainLoop, int32_t>(
+        +[](Services::Hooks::CallType type, CServerExoAppInternal*)
+        {
+            if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+            {
+                return;
+            }
+
+            static uint64_t s_Frame = 0;
+            g_plugin->ExecuteMainLoopTick(s_Frame++);
+        }
+    );
+
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
-    GetServices()->m_metrics->SetResampler("Closures", resampler, std::chrono::seconds(1));
+    GetServices()->m_metrics->SetResampler("Closure", resampler, std::chrono::seconds(1));
+    GetServices()->m_metrics->SetResampler("MainLoop", resampler, std::chrono::seconds(1));
 }
 
 Mono::~Mono()
@@ -266,26 +282,26 @@ MonoMethod* Mono::GetScriptEntryFromClass(const char* className)
     return method;
 }
 
-MonoMethod* Mono::GetInternalHandler(const char* handler, int paramCount)
+MonoMethod* Mono::GetHandler(const char* clsName, const char* handler, int paramCount)
 {
     MonoImage* image = mono_assembly_get_image(g_Assembly);
     ASSERT(image);
 
-    MonoClass* cls = mono_class_from_name(image, "NWN", "Internal");
+    MonoClass* cls = mono_class_from_name(image, "NWN", clsName);
 
     if (!cls)
     {
-        throw std::logic_error("Failed to resolve NWN.Internal.");
+        LOG_FATAL("Failed to resolve NWN.%s", clsName);
     }
 
     MonoMethod* method = mono_class_get_method_from_name(cls, handler, paramCount);
 
     if (!method)
     {
-        throw std::logic_error("Failed to resolve NWN.Internal.");
+        LOG_FATAL("Failed to resolve NWN.%s::%s", clsName, handler);
     }
 
-    LOG_INFO("Resolved NWN.Internal::%s.", handler);
+    LOG_INFO("Resolved NWN.%s::%s.", clsName, handler);
     return method;
 }
 
@@ -320,11 +336,48 @@ void Mono::ExecuteClosure(uint64_t eventId)
         using namespace std::chrono;
         nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
 
-        GetServices()->m_metrics->Push("Closures", { { "ns", std::to_string(dur.count()) } });
+        GetServices()->m_metrics->Push("Closure", { { "ns", std::to_string(dur.count()) } });
     }
     else
     {
         execClosures();
+    }
+}
+
+void Mono::ExecuteMainLoopTick(uint64_t frame)
+{
+    auto execMainLoop = [&]()
+    {
+        GetVm()->m_nRecursionLevel += 1;
+
+        MonoObject* ex = nullptr;
+        void* mainLoopArgs[1] = { &frame };
+        mono_runtime_invoke(m_OnMainLoopTick, nullptr, mainLoopArgs, &ex);
+
+        if (ex)
+        {
+            char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
+            LOG_WARNING("Caught unhandled exception when ticking the main loop: %s", exMsg);
+            mono_free(exMsg);
+        }
+
+        GetVm()->m_nRecursionLevel -= 1;
+    };
+
+    if (m_MainLoopMetrics)
+    {
+        const auto timeBefore = std::chrono::high_resolution_clock::now();
+        execMainLoop();
+        const auto timeAfter = std::chrono::high_resolution_clock::now();
+
+        using namespace std::chrono;
+        nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
+
+        GetServices()->m_metrics->Push("MainLoop", { { "ns", std::to_string(dur.count()) } });
+    }
+    else
+    {
+        execMainLoop();
     }
 }
 

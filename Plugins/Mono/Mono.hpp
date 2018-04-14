@@ -19,9 +19,11 @@ private:
     MonoMethod* m_PushScriptContext;
     MonoMethod* m_PopScriptContext;
     MonoMethod* m_ExecuteClosure;
+    MonoMethod* m_OnMainLoopTick;
 
     bool m_ScriptMetrics;
     bool m_ClosureMetrics;
+    bool m_MainLoopMetrics;
 
     std::unordered_map<std::string, MonoMethod*> m_ScriptMap;
 
@@ -30,8 +32,9 @@ private:
         bool valid = true);
 
     MonoMethod* GetScriptEntryFromClass(const char* className);
-    MonoMethod* GetInternalHandler(const char* handler, int paramCount);
+    MonoMethod* GetHandler(const char* clsName, const char* handler, int paramCount);
     void ExecuteClosure(uint64_t eventId);
+    void ExecuteMainLoopTick(uint64_t frame);
 };
 
 }

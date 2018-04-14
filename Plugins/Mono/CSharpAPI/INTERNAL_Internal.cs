@@ -9,7 +9,7 @@ namespace NWN
     {
         public const uint OBJECT_INVALID = 0x7F000000;
 
-        public static NWN.Object OBJECT_SELF { get; private set; }
+        public static NWN.Object OBJECT_SELF { get; private set; } = OBJECT_INVALID;
 
         private static Stack<NWN.Object> s_ScriptContexts = new Stack<NWN.Object>();
 
