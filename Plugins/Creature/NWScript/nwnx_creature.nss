@@ -131,10 +131,6 @@ int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int 
 // Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
 void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int index, struct NWNX_Creature_MemorisedSpell spell);
 
-// Clear the memorised spell of the provided creature for the provided class, level and index. */
-// Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
-void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
-
 // Gets the remaining spell slots (innate casting) for the provided creature for the provided class and level.
 int NWNX_Creature_GetRemainingSpellSlots(object creature, int class, int level);
 
@@ -154,6 +150,10 @@ void NWNX_Creature_RemoveKnownSpell(object creature, int class, int level, int s
 
 // Add a new spell to creature's spellbook for class.
 void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spellId);
+
+// Clear the memorised spell of the provided creature for the provided class, level and index. */
+// Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
+void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
 
 // Gets the maximum hit points for creature for level.
 int NWNX_Creature_GetMaxHitPointsByLevel(object creature, int level);
@@ -528,14 +528,6 @@ void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index)
-{
-    struct NWNX_Creature_MemorisedSpell spell;
-    spell.id = -1;
-
-    NWNX_Creature_SetMemorisedSpell(creature, class, level, index, spell);
-}
-
 int NWNX_Creature_GetRemainingSpellSlots(object creature, int class, int level)
 {
     string sFunc = "GetRemainingSpellSlots";
@@ -602,6 +594,18 @@ void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spel
     string sFunc = "AddKnownSpell";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, spellId);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, class);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index)
+{
+    string sFunc = "ClearMemorisedSpell";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, index);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, class);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);

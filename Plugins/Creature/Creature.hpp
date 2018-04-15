@@ -46,6 +46,7 @@ private:
     ArgumentStack GetKnownSpellCount            (ArgumentStack&& args);
     ArgumentStack RemoveKnownSpell              (ArgumentStack&& args);
     ArgumentStack AddKnownSpell                 (ArgumentStack&& args);
+    ArgumentStack ClearMemorisedSpell           (ArgumentStack&& args);
     ArgumentStack GetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
