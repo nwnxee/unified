@@ -22,6 +22,13 @@ Allow users to see sharp. More specifically, this plugin enables developers to w
         }
     }
 
+- This also works for StartingConditionals. Just give your main function a return value as such, and return NWScript.TRUE or NWScript.FALSE.
+
+    static int Main()
+    {
+        return NWScript.GetLevelByClass(NWScript.CLASS_TYPE_CLERIC, NWScript.GetPCSpeaker()) != 0 ? NWScript.TRUE : NWScript.FALSE;
+    }
+
 - If you want to use the nwscript API, make sure to compile the various INTERNAL_*.cs files in the CSharpAPI folder. Here are some examples of using the API:
 
     NWScript.SendMessageToPC(NWScript.GetFirstPC(), "Rawr! It is me! Mario");
@@ -37,7 +44,7 @@ Allow users to see sharp. More specifically, this plugin enables developers to w
 
 ## Limitations
 
-There is no support for StartingConditional scripts yet or hotloading.
+There is no support for hotloading yet.
 
 ## Environment Variables
 

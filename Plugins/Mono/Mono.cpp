@@ -109,14 +109,11 @@ Mono::Mono(const Plugin::CreateParams& params)
     mono_add_internal_call("NWN.Internal::ClosureDelayCommand_Native", reinterpret_cast<const void*>(&ClosureDelayCommand));
     mono_add_internal_call("NWN.Internal::ClosureActionDoCommand_Native", reinterpret_cast<const void*>(&ClosureActionDoCommand));
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, void>(
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, int32_t>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
         {
             bool skip = script->m_sString && g_plugin->RunMonoScript(script->m_sString, objId, !!valid);
-            if (!skip)
-            {
-                s_RunScriptHook->CallOriginal<void>(thisPtr, script, objId, valid);
-            }
+            return skip ? 1 : s_RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
 
@@ -196,6 +193,15 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
     }
 
     { // PREPARE VM
+        if (GetVm()->m_nRecursionLevel == -1)
+        {
+            GetVm()->m_cRunTimeStack.InitializeStack();
+            GetVm()->m_cRunTimeStack.m_pVMachine = GetVm();
+        }
+
+        GetVm()->m_nReturnValueParameterType = 0;
+        GetVm()->m_pReturnValue = nullptr;
+
         GetVm()->m_nRecursionLevel += 1;
         GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = objId;
         GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = valid;
@@ -213,8 +219,27 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
             mono_runtime_invoke(m_PushScriptContext, nullptr, pushArgs, &ex);
             if (!ex)
             {
-                // Even if we fail the actual method, we still need to pop.
-                mono_runtime_invoke(method, nullptr, nullptr, &ex);
+                int spBefore = GetVm()->m_cRunTimeStack.GetStackPointer();
+                MonoObject* ret = mono_runtime_invoke(method, nullptr, nullptr, &ex);
+                int spAfter = GetVm()->m_cRunTimeStack.GetStackPointer();
+
+                if (spBefore != spAfter)
+                {
+                    LOG_WARNING("The stack pointer before (%d) and after (%d) were different "
+                        "- stack over/underflow in script NWN.Scripts.%s::Main?",
+                        spBefore, spAfter, scriptNameAsLower.c_str());
+                }
+
+                if (ret)
+                {
+                    // We have a return value - we're going to assume it's an int.
+                    int retval = *reinterpret_cast<int*>(mono_object_unbox(ret));
+                    LOG_DEBUG("Got return value %d", retval);
+
+                    // Then we set up the pointers to the correct place in the stack.
+                    GetVm()->m_nReturnValueParameterType = 0x03;
+                    GetVm()->m_pReturnValue = reinterpret_cast<void*>(retval);
+                }
 
                 // If we failed the actual method, we discard this exception and only report actual method.
                 mono_runtime_invoke(m_PopScriptContext, nullptr, nullptr, ex ? nullptr : &ex);
