@@ -131,6 +131,10 @@ int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int 
 // Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
 void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int index, struct NWNX_Creature_MemorisedSpell spell);
 
+// Clear the memorised spell of the provided creature for the provided class, level and index. */
+// Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
+void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
+
 // Gets the remaining spell slots (innate casting) for the provided creature for the provided class and level.
 int NWNX_Creature_GetRemainingSpellSlots(object creature, int class, int level);
 
@@ -522,6 +526,14 @@ void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int 
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index)
+{
+    struct NWNX_Creature_MemorisedSpell spell;
+    spell.id = -1;
+
+    NWNX_Creature_SetMemorisedSpell(creature, class, level, index, spell);
 }
 
 int NWNX_Creature_GetRemainingSpellSlots(object creature, int class, int level)
