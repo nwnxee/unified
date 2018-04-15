@@ -71,7 +71,6 @@ void StackPushGameDefinedStructure(int id, T value)
 template <typename T>
 T StackPopGameDefinedStructure(int id)
 {
-    LOG_DEBUG("Popping game defined structure.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     void* value;
@@ -82,6 +81,7 @@ T StackPopGameDefinedStructure(int id)
         return nullptr;
     }
 
+    LOG_DEBUG("Popped game defined structure %i at 0x%x.", id, value);
     return reinterpret_cast<T>(value);
 }
 
@@ -130,7 +130,7 @@ void StackPushString(MonoString* value)
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     char* valueAsCStr = mono_string_to_utf8(value);
-    LOG_DEBUG("Pushing string %s.", valueAsCStr);
+    LOG_DEBUG("Pushing string '%s'.", valueAsCStr);
     CExoString str(valueAsCStr);
     mono_free(valueAsCStr);
 
@@ -204,7 +204,6 @@ void StackPushItemProperty(CGameEffect* value)
 
 int32_t StackPopInteger()
 {
-    LOG_DEBUG("Popping integer.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     int32_t value;
@@ -214,12 +213,12 @@ int32_t StackPopInteger()
         return -1;
     }
 
+    LOG_DEBUG("Popped integer %d.", value);
     return value;
 }
 
 float StackPopFloat()
 {
-    LOG_DEBUG("Popping float.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     float value;
@@ -229,12 +228,12 @@ float StackPopFloat()
         return 0.0f;
     }
 
+    LOG_DEBUG("Popped float %f.", value);
     return value;
 }
 
 MonoString* StackPopString()
 {
-    LOG_DEBUG("Popping string.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     CExoString value;
@@ -244,12 +243,12 @@ MonoString* StackPopString()
         return mono_string_new(g_Domain, "");
     }
 
+    LOG_DEBUG("Popped string '%s'.", value.m_sString);
     return mono_string_new(g_Domain, value.m_sString);
 }
 
 uint32_t StackPopObject()
 {
-    LOG_DEBUG("Popping object.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     uint32_t value;
@@ -259,14 +258,12 @@ uint32_t StackPopObject()
         return Constants::OBJECT_INVALID;
     }
 
-    LOG_DEBUG("Popped 0x%x", value);
-
+    LOG_DEBUG("Popped object 0x%x.", value);
     return value;
 }
 
 Vector StackPopVector()
 {
-    LOG_DEBUG("Popping vector.");
     ASSERT(GetVm()->m_nRecursionLevel >= 0);
 
     Vector value;
@@ -276,6 +273,7 @@ Vector StackPopVector()
         return value;
     }
 
+    LOG_DEBUG("Popping vector { %f, %f, %f }.", value.x, value.y, value.z);
     return value;
 }
 
@@ -308,7 +306,7 @@ void FreeEffect(void* ptr)
 {
     if (ptr)
     {
-        LOG_DEBUG("Freeing effect 0x%x", ptr);
+        LOG_DEBUG("Freeing effect at 0x%x", ptr);
         GetVmCommands()->DestroyGameDefinedStructure(0, ptr);
     }
 }
@@ -317,7 +315,7 @@ void FreeEvent(void* ptr)
 {
     if (ptr)
     {
-        LOG_DEBUG("Freeing event 0x%x", ptr);
+        LOG_DEBUG("Freeing event at 0x%x", ptr);
         GetVmCommands()->DestroyGameDefinedStructure(1, ptr);
     }
 }
@@ -326,7 +324,7 @@ void FreeLocation(void* ptr)
 {
     if (ptr)
     {
-        LOG_DEBUG("Freeing location 0x%x", ptr);
+        LOG_DEBUG("Freeing location at 0x%x", ptr);
         GetVmCommands()->DestroyGameDefinedStructure(2, ptr);
     }
 }
@@ -335,7 +333,7 @@ void FreeTalent(void* ptr)
 {
     if (ptr)
     {
-        LOG_DEBUG("Freeing talent 0x%x", ptr);
+        LOG_DEBUG("Freeing talent at 0x%x", ptr);
         GetVmCommands()->DestroyGameDefinedStructure(3, ptr);
     }
 }
@@ -344,14 +342,13 @@ void FreeItemProperty(void* ptr)
 {
     if (ptr)
     {
-        LOG_DEBUG("Freeing item property 0x%x", ptr);
+        LOG_DEBUG("Freeing item property at 0x%x", ptr);
         GetVmCommands()->DestroyGameDefinedStructure(4, ptr);
     }
 }
 
 void BeginClosure(uint32_t value)
 {
-    LOG_DEBUG("Setting closure object to 0x%x", value);
     GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = value;
     GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = 1;
     GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
