@@ -38,10 +38,10 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     }
 
     char buffer[2048];
-    std::sprintf(buffer, "%s [%02d:%02d:%02d] [%s:%d] %s: ",
+    std::sprintf(buffer, "%s [%02d:%02d:%02d] [%s] [%s:%d] ",
             SEVERITY_NAMES[static_cast<size_t>(channel)],
             date.m_hour, date.m_minute, date.m_second,
-            filename, line, plugin);
+            plugin, filename, line);
 
     std::printf("%s%s\n", buffer, message);
 
