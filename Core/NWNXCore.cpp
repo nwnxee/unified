@@ -34,12 +34,15 @@ extern "C" void nwnx_signal_handler(int sig)
         default:       err = "Unknown error";            break;
     }
 
-    ASSERT_FAIL_MSG(" NWNX Signal Handler:\n"
+    std::fprintf(stderr, " NWNX Signal Handler:\n"
         "==============================================================\n"
         " NWNX has crashed. Fatal error: %s (%d).\n"
         " Please file a bug at https://github.com/nwnxee/unified/issues\n"
         "==============================================================\n",
         err, sig);
+
+    std::fflush(stderr);
+
     nwn_crash_handler(sig);
 }
 
