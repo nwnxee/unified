@@ -186,7 +186,7 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
     if (iter == std::end(m_ScriptMap))
     {
         MonoMethod* method = GetScriptEntryFromClass(scriptNameAsLower.c_str());
-        iter = m_ScriptMap.insert(std::make_pair(std::move(scriptNameAsLower), method)).first;
+        iter = m_ScriptMap.insert(std::make_pair(scriptNameAsLower, method)).first;
     }
 
     MonoMethod* method = iter->second;
