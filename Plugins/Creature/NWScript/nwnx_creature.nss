@@ -151,6 +151,9 @@ void NWNX_Creature_RemoveKnownSpell(object creature, int class, int level, int s
 // Add a new spell to creature's spellbook for class.
 void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spellId);
 
+// Clear a specific spell from the creature's spellbook for class
+void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spellId);
+
 // Clear the memorised spell of the provided creature for the provided class, level and index. */
 // Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
 void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
@@ -595,6 +598,17 @@ void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spel
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, spellId);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, class);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spellId)
+{
+    string sFunc = "ClearMemorisedKnownSpells";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, spellId);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, class);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
