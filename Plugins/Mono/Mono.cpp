@@ -133,6 +133,13 @@ Mono::Mono(const Plugin::CreateParams& params)
                 if (eventIdStr)
                 {
                     g_plugin->ExecuteClosure(strtoull(eventIdStr, nullptr, 10));
+
+                    // We manually call the dtor then call free here, rather than using delete.
+                    // This is necessary because the API will try to double free otherwise -
+                    // it will call CExoString's dtor, as will the original dtor when we later jump to it.
+                    CVirtualMachineScript__CVirtualMachineScriptDtor(script);
+                    free(script);
+
                     return 1;
                 }
             }
