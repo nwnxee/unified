@@ -1,7 +1,8 @@
 #include "WebHook.hpp"
 #include "API/Version.hpp"
-
 #include "External/httplib.h"
+#include <memory>
+#include <unordered_map>
 
 using namespace NWNXLib;
 
@@ -58,8 +59,16 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
 
     message = "{\"text\":\"" + message + "\"}";
 
-    httplib::SSLClient cli(host.c_str(), 443);
-    auto res = cli.post(path.c_str(), message, "application/json");
+    static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;
+    auto cli = s_ClientCache.find(host);
+
+    if (cli == std::end(s_ClientCache))
+    {
+        LOG_DEBUG("Creating new SSL client for host %s.", host.c_str());
+        cli = s_ClientCache.insert(std::make_pair(host, std::make_unique<httplib::SSLClient>(host.c_str(), 443))).first;
+    }
+
+    auto res = cli->second->post(path.c_str(), message, "application/json");
 
     if (res)
     {
