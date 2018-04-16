@@ -80,6 +80,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetKnownSpellCount);
     REGISTER(RemoveKnownSpell);
     REGISTER(AddKnownSpell);
+    REGISTER(ClearMemorisedKnownSpells);
     REGISTER(ClearMemorisedSpell);
     REGISTER(GetMaxHitPointsByLevel);
     REGISTER(SetMaxHitPointsByLevel);
@@ -804,6 +805,27 @@ ArgumentStack Creature::AddKnownSpell(ArgumentStack&& args)
             if (classInfo.m_nClass == classId)
             {
                 classInfo.AddKnownSpell(static_cast<unsigned char>(level), static_cast<uint32_t>(spellId));
+                break;
+            }
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Creature::ClearMemorisedKnownSpells(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args); ASSERT(classId >= 0 && classId <= 255);
+        const auto id      = Services::Events::ExtractArgument<int32_t>(args);
+
+        for (int32_t i = 0; i < 3; i++)
+        {
+            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
+            if (classInfo.m_nClass == classId)
+            {
+                classInfo.ClearMemorizedKnownSpells(static_cast<uint32_t>(id));
                 break;
             }
         }
