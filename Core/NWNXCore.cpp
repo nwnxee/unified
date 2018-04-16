@@ -6,6 +6,7 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "Platform/ASLR.hpp"
+#include "Platform/Debug.hpp"
 #include "Platform/FileSystem.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
@@ -40,6 +41,8 @@ extern "C" void nwnx_signal_handler(int sig)
         " Please file a bug at https://github.com/nwnxee/unified/issues\n"
         "==============================================================\n",
         err, sig);
+
+    std::fputs(NWNXLib::Platform::Debug::GetStackTrace(20).c_str(), stderr);
 
     std::fflush(stderr);
 
