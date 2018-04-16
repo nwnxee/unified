@@ -408,6 +408,7 @@ void NWNX_Creature_SetSpecialAbility(object creature, int index, struct NWNX_Cre
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability.id);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability.ready);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability.level);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, index);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
