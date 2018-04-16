@@ -70,8 +70,8 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
         }
         else
         {
-            LOG_WARNING("Status code %d when seding '%s' to '%s%s'.",
-                res->status, message.c_str(), host.c_str(), path.c_str());
+            LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.",
+                message.c_str(), host.c_str(), path.c_str(), res->status);
         }
     }
     else
