@@ -6,6 +6,14 @@ const string NWNX_Weapon = "NWNX_Weapon";
 const int NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS = 0; // Greater Focus AB bonus
 const int NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS = 1; // Greater Spec. DAM bonus
 
+// Get Event Data Constants
+const int NWNX_WEAPON_GETDATA_DC_WEAPON = 0; // Get Devastating Critical Weapon
+const int NWNX_WEAPON_GETDATA_DC_TARGET = 1; // Get Devastating Critical Target
+const int NWNX_WEAPON_GETDATA_DC_DAMAGE = 2; // Get Devastating Critical Damage
+
+// Set Event Data Constants
+const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0; // Set Devastating Critical Bypass
+
 // Set nFeat as weapon focus feat for nBaseItem
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat);
 
@@ -47,6 +55,21 @@ void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem);
 
 // Set plugin options
 void NWNX_Weapon_SetOption(int nOption, int nVal);
+
+// Set Devastating Critical Event Script
+void NWNX_Weapon_SetDevastatingCritalEventScript(string sScript);
+
+// Get Devastating Critical Event Weapon (to use only on Devastating Crital Event Script)
+object NWNX_Weapon_GetDevastatingCritalEventWeapon();
+
+// Get Devastating Critical Event Target (to use only on Devastating Crital Event Script)
+object NWNX_Weapon_GetDevastatingCritalEventTarget();
+
+// Get Devastating Critical Event Damage (to use only on Devastating Crital Event Script)
+int NWNX_Weapon_GetDevastatingCritalEventDamage();
+
+// Bypass Devastating Crtical (to use only on Devastating Crital Event Script)
+void NWNX_Weapon_BypassDevastatingCritical();
 
 
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
@@ -185,4 +208,55 @@ void NWNX_Weapon_SetOption(int nOption, int nVal)
     NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nOption);
 
     NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+void NWNX_Weapon_SetDevastatingCritalEventScript(string sScript)
+{
+    string sFunc = "SetDevastatingCritalEventScript";
+
+    NWNX_PushArgumentString(NWNX_Weapon, sFunc, sScript);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+void NWNX_Weapon_BypassDevastatingCritical()
+{
+    string sFunc = "SetEventData";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, 1);
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_SETDATA_DC_BYPASS);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+}
+
+object NWNX_Weapon_GetDevastatingCritalEventWeapon()
+{
+    string sFunc = "GetEventData";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_GETDATA_DC_WEAPON);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+    return NWNX_GetReturnValueObject(NWNX_Weapon, sFunc);
+}
+
+object NWNX_Weapon_GetDevastatingCritalEventTarget()
+{
+    string sFunc = "GetEventData";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_GETDATA_DC_TARGET);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Weapon, sFunc);
+}
+
+int NWNX_Weapon_GetDevastatingCritalEventDamage()
+{
+    string sFunc = "GetEventData";
+
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_GETDATA_DC_DAMAGE);
+
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Weapon, sFunc);
 }
