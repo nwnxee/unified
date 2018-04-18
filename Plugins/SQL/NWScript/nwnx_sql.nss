@@ -36,9 +36,10 @@ void NWNX_SQL_PreparedObjectFull(int position, object value);
 
 // Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
 // The object will be deserialized and created in the game. New object ID is returned.
-// If the deserialized object is an item, owner object must be specified:
-//    - If the owner is a placeable, creature or container, the item will be created in its inventory
-//    - If the owner is an area, the item will be created on the ground at Vector(x,y,z);
+// The exact behavior depends on type of deserialized object and owner object:
+//    - If object is an item, and owner if placeable, creature or container, the item will be created in its inventory
+//    - If owner is an area, the object will be created on the ground at Vector(x,y,z)
+//    - Otherwise, the object will be created outside the world and needs to be ported manually.
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0);
 
 // Return number of rows affected by SQL statement (for non-row-based statements like INSERT, UPDATE, DELETE, etc.);
