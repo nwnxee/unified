@@ -10,20 +10,20 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
 
-#define NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS 0
-#define NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS 1
+const int NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS = 0;
+const int NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS = 1;
 
-#define NWNX_WEAPON_GETDATA_DC_WEAPON  0
-#define NWNX_WEAPON_GETDATA_DC_TARGET  1
-#define NWNX_WEAPON_GETDATA_DC_DAMAGE  2
+const int NWNX_WEAPON_GETDATA_DC_WEAPON = 0;
+const int NWNX_WEAPON_GETDATA_DC_TARGET = 1;
+const int NWNX_WEAPON_GETDATA_DC_DAMAGE = 2;
 
-#define NWNX_WEAPON_SETDATA_DC_BYPASS  0
+const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0;
 
 struct DevastatingCriticalDataStr
 {
    uint32_t oidWeapon;
    uint32_t oidTarget;
-   int32_t nDamage;
+   int32_t  nDamage;
    bool     bBypass;
 };
 

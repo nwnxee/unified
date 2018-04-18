@@ -12,7 +12,7 @@
 #include "API/Globals.hpp"
 #include "API/CNWSInventory.hpp"
 #include "API/CNWSCombatRound.hpp"
-#include "API/CVirtualMachine.hpp"
+#include "Utils.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -353,7 +353,7 @@ ArgumentStack Weapon::SetDevastatingCritalEventScript(ArgumentStack&& args)
    ArgumentStack stack;
    
    m_DCScript = Services::Events::ExtractArgument<std::string>(args);
-   LOG_DEBUG("Set DevastatingCritalEventScript to %s", m_DCScript.c_str());
+   LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript.c_str());
    
    return stack;   
 }
@@ -564,12 +564,8 @@ int32_t Weapon::GetEpicWeaponDevastatingCritical(NWNXLib::API::CNWSCreatureStats
       plugin.m_DCData.nDamage   = pAttackData->GetTotalDamage(1); 
       plugin.m_DCData.bBypass   = false;
       
-      NWNXLib::API::CExoString script = plugin.m_DCScript.c_str();
+      Utils::ExecuteScript(plugin.m_DCScript, pCreature->m_idSelf);      
 
-      LOG_DEBUG("Devastating Critical Event Prev Call Script %s", plugin.m_DCScript.c_str());
-      Globals::VirtualMachine()->RunScript(&script, pCreature->m_idSelf, 1);
-      
-      LOG_DEBUG("Devastating Critical Event After Call Script %s", plugin.m_DCScript.c_str());
       if(plugin.m_DCData.bBypass)
       { 
          pAttackData->m_bKillingBlow=0;

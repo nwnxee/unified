@@ -14,6 +14,9 @@ const int NWNX_WEAPON_GETDATA_DC_DAMAGE = 2; // Get Devastating Critical Damage
 // Set Event Data Constants
 const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0; // Set Devastating Critical Bypass
 
+
+struct
+
 // Set nFeat as weapon focus feat for nBaseItem
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat);
 
