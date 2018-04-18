@@ -172,7 +172,7 @@ bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y
     switch (pObject->m_nObjectType)
     {
         case OBJECT_TYPE_CREATURE:
-            AsNWSCreature(pObject)->AddToArea(pArea, x, y, z, false); // bForceAdd, not bRunScripts
+            AsNWSCreature(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case OBJECT_TYPE_PLACEABLE:
             AsNWSPlaceable(pObject)->AddToArea(pArea, x, y, z, true);
