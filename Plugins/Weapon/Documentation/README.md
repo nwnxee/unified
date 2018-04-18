@@ -39,5 +39,8 @@ NWNX_Weapon_SetGreaterWeaponFocusFeat | Associate a greater weapon focus feat (d
 NWNX_Weapon_SetGreaterWeaponSpecializationFeat | Associate a greater weapon specialization feat (default: +2 damage bonus) to a weapon
 NWNX_Weapon_SetWeaponIsMonkWeapon | Set the weapon to be considered a monk weapon
 NWNX_Weapon_SetOption | Set different options of the plugin
+NWNX_Weapon_SetDevastatingCritalEventScript | Set a script to be caled when a devastating critical event occurs
+NWNX_Weapon_GetDevastatingCritalEventData | Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)
+NWNX_Weapon_BypassDevastatingCritical | Must be called inside the devastating critical event script. If called, no devastating critical will occur.
 
 The NWNX_Weapon_SetOption function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively. 
