@@ -60,6 +60,8 @@ void main()
         return;
     }
 
+    vector v = Vector(5.0, 5.0, 0.0); // slightly different location.
+
     b = NWNX_SQL_PrepareQuery(sInsert);
     report("Complex PrepareQuery", b);
     report("GetPreparedQueryParamCount", NWNX_SQL_GetPreparedQueryParamCount() == 5);
@@ -92,12 +94,13 @@ void main()
             object o2 = NWNX_Object_StringToObject(IntToHexString(StringToInt(sObjId)));
             report("ReadObjectId", o == o2);
 
-            object o3 = NWNX_SQL_ReadFullObjectInActiveRow(4);
+            object o3 = NWNX_SQL_ReadFullObjectInActiveRow(4, GetArea(o), v.x, v.y, v.z);
             report("ReadFullObject", GetIsObjectValid(o3));
             // Alternatively:
             // object o3 = NWNX_Object_Deserialize(NWNX_SQL_ReadDataInActiveRow(4));
         }
     }
+
 
     object oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_chestburd", GetStartingLocation());
     object oItem = CreateObject(OBJECT_TYPE_ITEM, "x0_it_mring013", GetStartingLocation());
@@ -143,7 +146,7 @@ void main()
             report("Deserialized to placeable's inventory", oItem2 == GetFirstItemInInventory(oPlc));
             report("Deserialized to placeable's inventory - possessor", GetItemPossessor(oItem2) == oPlc);
 
-            object oItem3 = NWNX_SQL_ReadFullObjectInActiveRow(0, GetArea(oPlc));
+            object oItem3 = NWNX_SQL_ReadFullObjectInActiveRow(0, GetArea(oPlc), v.x, v.y, v.z);
             report("Deserialized to area", GetArea(oItem3) == GetArea(oPlc));
 
             object oItem4 = NWNX_SQL_ReadFullObjectInActiveRow(0, o);
