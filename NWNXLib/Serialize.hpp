@@ -24,6 +24,4 @@ std::string SerializeGameObjectB64(API::CGameObject *pObject, bool bStripPCFlags
 API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized);
 API::CGameObject *DeserializeGameObjectB64(const std::string& serializedB64);
 
-bool AcquireDeserializedItem(API::CNWSItem *pItem, API::CGameObject *pOwner, float x, float y, float z);
-
 } // NWNXLib

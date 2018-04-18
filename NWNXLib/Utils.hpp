@@ -29,6 +29,10 @@ API::CNWSStore*              AsNWSStore(API::CGameObject* obj);
 API::CNWSTrigger*            AsNWSTrigger(API::CGameObject* obj);
 API::CNWSWaypoint*           AsNWSWaypoint(API::CGameObject* obj);
 
+// Wrappers around non-virtual methods repeated for all NWS types
+bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner);
+bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y, float z);
+
 }
 
 }
