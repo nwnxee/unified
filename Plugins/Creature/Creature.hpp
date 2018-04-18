@@ -74,6 +74,7 @@ private:
     ArgumentStack SetRacialType                 (ArgumentStack&& args);
     ArgumentStack GetMovementType               (ArgumentStack&& args);
     ArgumentStack SetWalkRateCap                (ArgumentStack&& args);
+    ArgumentStack SetGold                       (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 

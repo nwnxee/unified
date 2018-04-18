@@ -252,6 +252,9 @@ int NWNX_Creature_GetMovementType(object creature);
 // Default value is 2000.0, which is the base human walk speed.
 void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f);
 
+// Sets the creature's gold without sending a feedback message
+void NWNX_Creature_SetGold(object creature, int gold);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -885,6 +888,15 @@ void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f)
 {
     string sFunc = "SetWalkRateCap";
     NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fWalkRate);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetGold(object creature, int gold)
+{
+    string sFunc = "SetGold";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, gold);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
