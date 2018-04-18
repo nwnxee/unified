@@ -108,6 +108,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetRacialType);
     REGISTER(GetMovementType);
     REGISTER(SetWalkRateCap);
+    REGISTER(SetGold);
 
 #undef REGISTER
 }
@@ -1295,5 +1296,18 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
     ArgumentStack stack;
     return stack;
 }
+
+ArgumentStack Creature::SetGold(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto gold = Services::Events::ExtractArgument<int32_t>(args);
+
+        pCreature->SetGold(gold);
+    }
+    return stack;
+}
+
 
 }

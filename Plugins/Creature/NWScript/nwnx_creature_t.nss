@@ -124,5 +124,9 @@ void main()
     NWNX_Creature_SetSkillPointsRemaining(oCreature, nSkillPointsRemaining+1);
     report("SetSkillPointsRemaining", NWNX_Creature_GetSkillPointsRemaining(oCreature) == nSkillPointsRemaining+1);
 
+    int nGold = GetGold(oCreature);
+    NWNX_Creature_SetGold(oCreature, nGold + 100);
+    report("SetGold", GetGold(oCreature) == (nGold+100));
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
