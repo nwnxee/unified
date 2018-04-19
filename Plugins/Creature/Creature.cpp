@@ -109,6 +109,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetMovementType);
     REGISTER(SetWalkRateCap);
     REGISTER(SetGold);
+    REGISTER(SetCorpseDecayTime);
 
 #undef REGISTER
 }
@@ -1309,5 +1310,15 @@ ArgumentStack Creature::SetGold(ArgumentStack&& args)
     return stack;
 }
 
-
+ArgumentStack Creature::SetCorpseDecayTime(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto nDecayTime = Services::Events::ExtractArgument<int32_t>(args); ASSERT(nDecayTime >= 0);
+        pCreature->m_nDecayTime = nDecayTime;
+    }
+    return stack;
+}
+   
 }

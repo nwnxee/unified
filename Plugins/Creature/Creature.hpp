@@ -75,7 +75,7 @@ private:
     ArgumentStack GetMovementType               (ArgumentStack&& args);
     ArgumentStack SetWalkRateCap                (ArgumentStack&& args);
     ArgumentStack SetGold                       (ArgumentStack&& args);
-
+    ArgumentStack SetCorpseDecayTime            (ArgumentStack&& args);
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
 };
