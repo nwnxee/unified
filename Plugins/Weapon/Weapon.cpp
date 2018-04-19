@@ -365,17 +365,10 @@ ArgumentStack Weapon::GetEventData(ArgumentStack&& args)
    
    switch(nOption)
    {
-      case NWNX_WEAPON_GETDATA_DC_WEAPON:
-         LOG_DEBUG("Get NWNX_WEAPON_GETDATA_DC_WEAPON to %d", m_DCData.oidWeapon); 
-         Services::Events::InsertArgument(stack, m_DCData.oidWeapon);
-         break;
-      case NWNX_WEAPON_GETDATA_DC_TARGET:
-         LOG_DEBUG("Get NWNX_WEAPON_GETDATA_DC_TARGET to %d", m_DCData.oidTarget);  
-         Services::Events::InsertArgument(stack, m_DCData.oidTarget);
-         break;
-      case NWNX_WEAPON_GETDATA_DC_DAMAGE:
-         LOG_DEBUG("Get NWNX_WEAPON_GETDATA_DC_DAMAGE to %d", m_DCData.nDamage);  
+      case NWNX_WEAPON_GETDATA_DC:         
          Services::Events::InsertArgument(stack, m_DCData.nDamage);
+         Services::Events::InsertArgument(stack, m_DCData.oidTarget);
+         Services::Events::InsertArgument(stack, m_DCData.oidWeapon);
          break;
    }
    

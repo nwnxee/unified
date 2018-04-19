@@ -7,9 +7,10 @@ const int NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS = 0; // Greater Focus AB bonus
 const int NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS = 1; // Greater Spec. DAM bonus
 
 // Get Event Data Constants
-const int NWNX_WEAPON_GETDATA_DC_WEAPON = 0; // Get Devastating Critical Weapon
-const int NWNX_WEAPON_GETDATA_DC_TARGET = 1; // Get Devastating Critical Target
-const int NWNX_WEAPON_GETDATA_DC_DAMAGE = 2; // Get Devastating Critical Damage
+const int NWNX_WEAPON_GETDATA_DC = 0; // Get Devastating Critical Data
+
+// Set Event Data Constants
+const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0; // Set Devastating Critical Bypass
 
 struct NWNX_Weapon_DevastatingCriticalEvent_Data // Devastating critical event data
 {
@@ -17,9 +18,6 @@ struct NWNX_Weapon_DevastatingCriticalEvent_Data // Devastating critical event d
     object oTarget;
     int nDamage;
 };
-
-// Set Event Data Constants
-const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0; // Set Devastating Critical Bypass
 
 // Set nFeat as weapon focus feat for nBaseItem
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat);
@@ -235,16 +233,11 @@ struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCrita
     string sFunc = "GetEventData";
     struct NWNX_Weapon_DevastatingCriticalEvent_Data data;
 
-    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_GETDATA_DC_WEAPON);
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_GETDATA_DC);
     NWNX_CallFunction(NWNX_Weapon, sFunc);
+    
     data.oWeapon = NWNX_GetReturnValueObject(NWNX_Weapon, sFunc);
-
-    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_GETDATA_DC_TARGET);
-    NWNX_CallFunction(NWNX_Weapon, sFunc);
     data.oTarget = NWNX_GetReturnValueObject(NWNX_Weapon, sFunc);
-
-    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, NWNX_WEAPON_GETDATA_DC_DAMAGE);
-    NWNX_CallFunction(NWNX_Weapon, sFunc);
     data.nDamage = NWNX_GetReturnValueInt(NWNX_Weapon, sFunc);
 
     return data;
