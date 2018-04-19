@@ -62,12 +62,12 @@ void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem);
 void NWNX_Weapon_SetOption(int nOption, int nVal);
 
 // Set Devastating Critical Event Script
-void NWNX_Weapon_SetDevastatingCritalEventScript(string sScript);
+void NWNX_Weapon_SetDevastatingCriticalEventScript(string sScript);
 
-// Get Devastating Critical Event Data (to use only on Devastating Crital Event Script)
-struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCritalEventData();
+// Get Devastating Critical Event Data (to use only on Devastating Critical Event Script)
+struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriticallEventData();
 
-// Bypass Devastating Crtical (to use only on Devastating Crital Event Script)
+// Bypass Devastating Crtical (to use only on Devastating Critical Event Script)
 void NWNX_Weapon_BypassDevastatingCritical();
 
 
@@ -209,9 +209,9 @@ void NWNX_Weapon_SetOption(int nOption, int nVal)
     NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
 
-void NWNX_Weapon_SetDevastatingCritalEventScript(string sScript)
+void NWNX_Weapon_SetDevastatingCriticalEventScript(string sScript)
 {
-    string sFunc = "SetDevastatingCritalEventScript";
+    string sFunc = "SetDevastatingCriticalEventScript";
 
     NWNX_PushArgumentString(NWNX_Weapon, sFunc, sScript);
 
@@ -228,7 +228,7 @@ void NWNX_Weapon_BypassDevastatingCritical()
     NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
 
-struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCritalEventData()
+struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriticalEventData()
 {
     string sFunc = "GetEventData";
     struct NWNX_Weapon_DevastatingCriticalEvent_Data data;
