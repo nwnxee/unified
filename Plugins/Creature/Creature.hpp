@@ -46,6 +46,8 @@ private:
     ArgumentStack GetKnownSpellCount            (ArgumentStack&& args);
     ArgumentStack RemoveKnownSpell              (ArgumentStack&& args);
     ArgumentStack AddKnownSpell                 (ArgumentStack&& args);
+    ArgumentStack ClearMemorisedKnownSpells     (ArgumentStack&& args);
+    ArgumentStack ClearMemorisedSpell           (ArgumentStack&& args);
     ArgumentStack GetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
@@ -72,7 +74,8 @@ private:
     ArgumentStack SetRacialType                 (ArgumentStack&& args);
     ArgumentStack GetMovementType               (ArgumentStack&& args);
     ArgumentStack SetWalkRateCap                (ArgumentStack&& args);
-
+    ArgumentStack SetGold                       (ArgumentStack&& args);
+    ArgumentStack SetCorpseDecayTime            (ArgumentStack&& args);
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
 };

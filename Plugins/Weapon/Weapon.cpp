@@ -12,6 +12,7 @@
 #include "API/Globals.hpp"
 #include "API/CNWSInventory.hpp"
 #include "API/CNWSCombatRound.hpp"
+#include "Utils.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -59,6 +60,9 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    REGISTER(SetGreaterWeaponFocusFeat);
    REGISTER(SetWeaponIsMonkWeapon);
    REGISTER(SetOption);
+   REGISTER(SetDevastatingCritalEventScript);
+   REGISTER(GetEventData);
+   REGISTER(SetEventData);
 
 #undef REGISTER
    
@@ -107,7 +111,10 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    m_GetRangedAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetRangedAttackBonus);
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetUseMonkAttackTables>(&Weapon::GetUseMonkAttackTables);
+   
+   m_WeaponFinesseSizeMap.insert({Constants::BASE_ITEM_RAPIER, (uint8_t) Constants::CREATURE_SIZE_MEDIUM});
 
+   m_DCScript="";
 }
 
 Weapon::~Weapon()
@@ -341,6 +348,52 @@ ArgumentStack Weapon::SetOption(ArgumentStack&& args)
    return stack;   
 }
 
+ArgumentStack Weapon::SetDevastatingCritalEventScript(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   
+   m_DCScript = Services::Events::ExtractArgument<std::string>(args);
+   LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript.c_str());
+   
+   return stack;   
+}
+
+ArgumentStack Weapon::GetEventData(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   const auto nOption  = Services::Events::ExtractArgument<int32_t>(args);
+   
+   switch(nOption)
+   {
+      case NWNX_WEAPON_GETDATA_DC:         
+         Services::Events::InsertArgument(stack, m_DCData.nDamage);
+         Services::Events::InsertArgument(stack, m_DCData.oidTarget);
+         Services::Events::InsertArgument(stack, m_DCData.oidWeapon);
+         break;
+   }
+   
+   
+   return stack;   
+}
+
+ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
+{
+   ArgumentStack stack;
+   const auto nOption  = Services::Events::ExtractArgument<int32_t>(args);
+   const auto nVal     = Services::Events::ExtractArgument<int32_t>(args);
+   
+   switch(nOption)
+   {
+      case NWNX_WEAPON_SETDATA_DC_BYPASS:
+         LOG_DEBUG("Set NWNX_WEAPON_SETDATA_DC_BYPASS to %d", nVal);  
+         m_DCData.bBypass = nVal;
+         break;
+   }   
+   
+   return stack;   
+}
+
+
 int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::API::CNWSItem* pWeapon)
 {
    int32_t feat=-1;
@@ -479,6 +532,7 @@ int32_t Weapon::GetEpicWeaponDevastatingCritical(NWNXLib::API::CNWSCreatureStats
 {
    int32_t feat=-1;
    Weapon& plugin = *g_plugin;   
+   bool bFlag=false;
    
    if(pWeapon==nullptr) 
    {
@@ -489,9 +543,30 @@ int32_t Weapon::GetEpicWeaponDevastatingCritical(NWNXLib::API::CNWSCreatureStats
    {
       auto w = plugin.m_EpicWeaponDevastatingCriticalMap.find(pWeapon->m_nBaseItem);
       feat =  (w == plugin.m_EpicWeaponDevastatingCriticalMap.end()) ? -1 : w->second;
+   }    
+   bFlag = feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetEpicWeaponDevastatingCriticalHook->CallOriginal<int32_t>(pStats, pWeapon);
+
+   if(bFlag && !plugin.m_DCScript.empty()) 
+   {
+      NWNXLib::API::CNWSCreature         *pCreature    = pStats->m_pBaseCreature;
+      NWNXLib::API::CNWSCombatRound      *pCombatRound = pCreature->m_pcCombatRound;
+      NWNXLib::API::CNWSCombatAttackData *pAttackData  = pCombatRound->GetAttack(pCombatRound->m_nCurrentAttack);
+       
+      plugin.m_DCData.oidWeapon = pWeapon->m_idSelf;
+      plugin.m_DCData.oidTarget = pCreature->m_oidAttackTarget;
+      plugin.m_DCData.nDamage   = pAttackData->GetTotalDamage(1); 
+      plugin.m_DCData.bBypass   = false;
+      
+      Utils::ExecuteScript(plugin.m_DCScript, pCreature->m_idSelf);      
+
+      if(plugin.m_DCData.bBypass)
+      { 
+         pAttackData->m_bKillingBlow=0;
+         return 0;
+      } 
+      
    }
-    
-   return (feat>-1 ? pStats->HasFeat(feat) : plugin.m_GetEpicWeaponDevastatingCriticalHook->CallOriginal<int32_t>(pStats, pWeapon)); 
+   return bFlag; 
 }
 
 int32_t Weapon::GetIsWeaponOfChoice(NWNXLib::API::CNWSCreatureStats* pStats, uint32_t nBaseItem)
@@ -856,5 +931,6 @@ int Weapon::GetLevelByClass(NWNXLib::API::CNWSCreatureStats *pStats, uint32_t nC
 
     return 0;
 }
+
 
 }

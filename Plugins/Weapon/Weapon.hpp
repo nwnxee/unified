@@ -10,8 +10,20 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
 
-#define NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS 0
-#define NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS 1
+const int NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS = 0;
+const int NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS = 1;
+
+const int NWNX_WEAPON_GETDATA_DC = 0;
+
+const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0;
+
+struct DevastatingCriticalDataStr
+{
+   uint32_t oidWeapon;
+   uint32_t oidTarget;
+   int32_t  nDamage;
+   bool     bBypass;
+};
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -38,6 +50,9 @@ class Weapon : public NWNXLib::Plugin
       ArgumentStack SetGreaterWeaponFocusFeat            (ArgumentStack&& args);
       ArgumentStack SetWeaponIsMonkWeapon                (ArgumentStack&& args);
       ArgumentStack SetOption                            (ArgumentStack&& args);
+      ArgumentStack SetDevastatingCritalEventScript      (ArgumentStack&& args);
+      ArgumentStack GetEventData                         (ArgumentStack&& args);
+      ArgumentStack SetEventData                         (ArgumentStack&& args);
       
       NWNXLib::Hooking::FunctionHook* m_GetWeaponFocusHook;
       NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponFocusHook;
@@ -70,6 +85,7 @@ class Weapon : public NWNXLib::Plugin
       static int32_t GetRangedAttackBonus             (NWNXLib::API::CNWSCreatureStats *pStats, bool bIncludeBase, bool bTouchAttack);
       static int32_t GetAttackModifierVersus          (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSCreature* pCreature);
       static int32_t GetUseMonkAttackTables           (NWNXLib::API::CNWSCreatureStats *pStats, bool bForceUnarmed);
+
       
       std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
       std::map<std::uint32_t, std::uint32_t> m_EpicWeaponFocusMap;
@@ -89,6 +105,10 @@ class Weapon : public NWNXLib::Plugin
       bool GetIsWeaponLight  (NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse);
       bool GetIsUnarmedWeapon(NWNXLib::API::CNWSItem* pWeapon);
       int  GetLevelByClass   (NWNXLib::API::CNWSCreatureStats* pStats, uint32_t nClassType);
+
+      // Devastating Critical data
+      DevastatingCriticalDataStr m_DCData;
+      std::string                m_DCScript;
 
       int m_GreaterFocusAttackBonus=1;
       int m_GreaterWeaponSpecializationDamageBonus=2;

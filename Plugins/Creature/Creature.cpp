@@ -80,6 +80,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetKnownSpellCount);
     REGISTER(RemoveKnownSpell);
     REGISTER(AddKnownSpell);
+    REGISTER(ClearMemorisedKnownSpells);
+    REGISTER(ClearMemorisedSpell);
     REGISTER(GetMaxHitPointsByLevel);
     REGISTER(SetMaxHitPointsByLevel);
     REGISTER(SetMovementRate);
@@ -106,6 +108,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetRacialType);
     REGISTER(GetMovementType);
     REGISTER(SetWalkRateCap);
+    REGISTER(SetGold);
+    REGISTER(SetCorpseDecayTime);
 
 #undef REGISTER
 }
@@ -810,6 +814,51 @@ ArgumentStack Creature::AddKnownSpell(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::ClearMemorisedKnownSpells(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args); ASSERT(classId >= 0 && classId <= 255);
+        const auto id      = Services::Events::ExtractArgument<int32_t>(args);
+
+        for (int32_t i = 0; i < 3; i++)
+        {
+            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
+            if (classInfo.m_nClass == classId)
+            {
+                classInfo.ClearMemorizedKnownSpells(static_cast<uint32_t>(id));
+                break;
+            }
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Creature::ClearMemorisedSpell(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args); ASSERT(classId >= 0 && classId <= 255);
+        const auto level   = Services::Events::ExtractArgument<int32_t>(args); ASSERT(level < 10);
+        const auto index   = Services::Events::ExtractArgument<int32_t>(args);
+
+        for (int32_t i = 0; i < 3; i++)
+        {
+            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
+            if (classInfo.m_nClass == classId)
+            {
+                classInfo.ClearMemorizedSpellSlot(static_cast<unsigned char>(level),
+                                                  static_cast<unsigned char>(index));
+
+                break;
+            }
+        }
+    }
+    return stack;
+}
+
 ArgumentStack Creature::GetMaxHitPointsByLevel(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -1249,4 +1298,27 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::SetGold(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto gold = Services::Events::ExtractArgument<int32_t>(args);
+
+        pCreature->SetGold(gold);
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetCorpseDecayTime(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto nDecayTime = Services::Events::ExtractArgument<int32_t>(args); ASSERT(nDecayTime >= 0);
+        pCreature->m_nDecayTime = nDecayTime;
+    }
+    return stack;
+}
+   
 }

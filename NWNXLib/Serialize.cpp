@@ -146,7 +146,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     API::CExoString sFileType, sFileVersion;
     resGff.GetGFFFileInfo(&sFileType, &sFileVersion);
 
-    if (sFileType == "BIC " || sFileType == "GFF ")
+    if (sFileType == "BIC " || sFileType == "GFF " || sFileType == "UTC ")
     {
         API::CNWSCreature *pCreature = new API::CNWSCreature(API::Constants::OBJECT_INVALID, 0, 1);
 
@@ -200,43 +200,5 @@ API::CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
 {
     return DeserializeGameObject(base64_decode(serializedB64));
 }
-
-bool AcquireDeserializedItem(API::CNWSItem *pItem, API::CGameObject *pOwner, float x, float y, float z)
-{
-    if (!pOwner || !pItem)
-        return false;
-
-    using namespace API::Constants;
-    switch (pOwner->m_nObjectType)
-    {
-        case OBJECT_TYPE_CREATURE:
-        {
-            auto pCreature = static_cast<API::CNWSCreature*>(pOwner);
-            return pCreature->AcquireItem(&pItem, OBJECT_INVALID, OBJECT_INVALID, 0xFF, 0xFF, true, true);
-        }
-        case OBJECT_TYPE_PLACEABLE:
-        {
-            auto pPlaceable = static_cast<API::CNWSPlaceable*>(pOwner);
-            return pPlaceable->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
-        }
-        case OBJECT_TYPE_STORE:
-        {
-            auto pStore = static_cast<API::CNWSStore*>(pOwner);
-            return pStore->AcquireItem(pItem, true, 0xFF, 0xFF);
-        }
-        case OBJECT_TYPE_ITEM:
-        {
-            auto pItemOwner = static_cast<API::CNWSItem*>(pOwner);
-            return pItemOwner->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
-        }
-        case OBJECT_TYPE_AREA:
-        {
-            pItem->AddToArea(static_cast<API::CNWSArea*>(pOwner), x, y, z, true);
-            return true;
-        }
-    }
-    return false;
-}
-
 
 } // NWNXLib

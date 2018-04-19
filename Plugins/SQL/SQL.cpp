@@ -5,6 +5,7 @@
 #include "Services/Metrics/Metrics.hpp"
 #include "ViewPtr.hpp"
 #include "Serialize.hpp"
+#include "Utils.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
 #include "API/CAppManager.hpp"
@@ -373,13 +374,21 @@ Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& a
     {
         retval = static_cast<API::Types::ObjectID>(pObject->m_idSelf);
         ASSERT(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
-        if (pObject->m_nObjectType == API::Constants::OBJECT_TYPE_ITEM)
+
+        API::CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
+        if (auto *pArea = Utils::AsNWSArea(pOwner))
         {
-            API::CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
-            if (!AcquireDeserializedItem(static_cast<API::CNWSItem*>(pObject), pOwner, x, y, z))
-            {
-                LOG_WARNING("Failed to 'acquire' deserialized item %x", retval);
-            }
+            if (!Utils::AddToArea(pObject, pArea, x, y, z))
+                LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", retval, owner, x, y, z);
+        }
+        else if (auto *pItem = Utils::AsNWSItem(pObject))
+        {
+            if (!Utils::AcquireItem(pItem, pOwner))
+                LOG_WARNING("Failed to 'acquire' deserialized item %x by owner %x", retval, owner);
+        }
+        else
+        {
+            LOG_INFO("No valid owner given, object %x deserialized outside world bounds", retval);
         }
     }
     Events::ArgumentStack stack;
