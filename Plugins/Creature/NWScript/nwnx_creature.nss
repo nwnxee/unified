@@ -255,8 +255,10 @@ void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f);
 // Sets the creature's gold without sending a feedback message
 void NWNX_Creature_SetGold(object creature, int gold);
 
-const string NWNX_Creature = "NWNX_Creature";
+// Sets corpse decay time in milliseconds
+void NWNX_Creature_SetCorpseDecayTime(object creature, int nDecayTime);
 
+const string NWNX_Creature = "NWNX_Creature";
 
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -897,6 +899,15 @@ void NWNX_Creature_SetGold(object creature, int gold)
 {
     string sFunc = "SetGold";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, gold);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetCorpseDecayTime(object creature, int nDecayTime)
+{
+    string sFunc = "SetCorpseDecayTime";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nDecayTime);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
