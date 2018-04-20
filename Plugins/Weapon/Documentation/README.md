@@ -39,8 +39,34 @@ NWNX_Weapon_SetGreaterWeaponFocusFeat | Associate a greater weapon focus feat (d
 NWNX_Weapon_SetGreaterWeaponSpecializationFeat | Associate a greater weapon specialization feat (default: +2 damage bonus) to a weapon
 NWNX_Weapon_SetWeaponIsMonkWeapon | Set the weapon to be considered a monk weapon
 NWNX_Weapon_SetOption | Set different options of the plugin
-NWNX_Weapon_SetDevastatingCritalEventScript | Set a script to be called when a devastating critical event occurs
-NWNX_Weapon_GetDevastatingCritalEventData | Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)
+NWNX_Weapon_SetDevastatingCriticalEventScript | Set a script to be called when a devastating critical event occurs
+NWNX_Weapon_GetDevastatingCriticalEventData | Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)
 NWNX_Weapon_BypassDevastatingCritical | Must be called inside the devastating critical event script. If called, no devastating critical will occur.
 
 The NWNX_Weapon_SetOption function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively. 
+
+## Example for Critical Event Script
+
+This script just print some info to the log and then bypass the devastating critcial 50% of the time. You have to set your script with NWNX_Weapon_SetDevastatingCriticalEventScript("name_of_your_script") (in the OnModuleLoad script for example)
+
+```#include "nwnx_weapon"
+
+void main()
+{
+   struct NWNX_Weapon_DevastatingCriticalEvent_Data data = NWNX_Weapon_GetDevastatingCriticalEventData();
+   object oAttacker = OBJECT_SELF;
+   object oWeapon = data.oWeapon;
+   object oTarget = data.oTarget;
+   int nDamage = data.nDamage;
+
+   WriteTimestampedLogEntry("Devastating Critical Event: Attaker: " + GetName(oAttacker) +
+      ", Weapon: "+ GetName(oWeapon) +
+      ", Target: "+ GetName(oTarget) +
+      ", Damage: " + IntToString(nDamage));
+
+   if(d100()>50)
+   {
+      NWNX_Weapon_BypassDevastatingCritical();
+      WriteTimestampedLogEntry("Devastating Critical Bypassed");
+   }
+}```
