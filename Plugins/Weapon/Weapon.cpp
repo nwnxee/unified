@@ -60,7 +60,7 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    REGISTER(SetGreaterWeaponFocusFeat);
    REGISTER(SetWeaponIsMonkWeapon);
    REGISTER(SetOption);
-   REGISTER(SetDevastatingCritalEventScript);
+   REGISTER(SetDevastatingCriticalEventScript);
    REGISTER(GetEventData);
    REGISTER(SetEventData);
 
@@ -348,7 +348,7 @@ ArgumentStack Weapon::SetOption(ArgumentStack&& args)
    return stack;   
 }
 
-ArgumentStack Weapon::SetDevastatingCritalEventScript(ArgumentStack&& args)
+ArgumentStack Weapon::SetDevastatingCriticalEventScript(ArgumentStack&& args)
 {
    ArgumentStack stack;
    

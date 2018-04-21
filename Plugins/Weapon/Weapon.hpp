@@ -50,7 +50,7 @@ class Weapon : public NWNXLib::Plugin
       ArgumentStack SetGreaterWeaponFocusFeat            (ArgumentStack&& args);
       ArgumentStack SetWeaponIsMonkWeapon                (ArgumentStack&& args);
       ArgumentStack SetOption                            (ArgumentStack&& args);
-      ArgumentStack SetDevastatingCritalEventScript      (ArgumentStack&& args);
+      ArgumentStack SetDevastatingCriticalEventScript    (ArgumentStack&& args);
       ArgumentStack GetEventData                         (ArgumentStack&& args);
       ArgumentStack SetEventData                         (ArgumentStack&& args);
       
