@@ -2,6 +2,7 @@
 #include "API/Version.hpp"
 #include "External/httplib.h"
 #include "Services/Config/Config.hpp"
+#include "Services/Tasks/Tasks.hpp"
 #include <memory>
 #include <unordered_map>
 
@@ -82,35 +83,38 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
     } 
 
     
-    static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;
-    auto cli = s_ClientCache.find(host);
-
-    if (cli == std::end(s_ClientCache))
+    plugin.GetServices()->m_tasks->QueueOnAsyncThread([message, host, path]()
     {
-        LOG_DEBUG("Creating new SSL client for host %s.", host.c_str());
-        cli = s_ClientCache.insert(std::make_pair(host, std::make_unique<httplib::SSLClient>(host.c_str(), 443))).first;
-    }
+        static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;
+        auto cli = s_ClientCache.find(host);
 
-    auto res = cli->second->post(path.c_str(), message, "application/json");
-
-    if (res)
-    {
-        if (res->status == 200)
+        if (cli == std::end(s_ClientCache))
         {
-            LOG_INFO("Sent webhook '%s' to '%s%s'.",
-                message.c_str(), host.c_str(), path.c_str());
+            LOG_DEBUG("Creating new SSL client for host %s.", host.c_str());
+            cli = s_ClientCache.insert(std::make_pair(host, std::make_unique<httplib::SSLClient>(host.c_str(), 443))).first;
+        }
+
+        auto res = cli->second->post(path.c_str(), message, "application/json");
+
+        if (res)
+        {
+            if (res->status == 200)
+            {
+                LOG_INFO("Sent webhook '%s' to '%s%s'.",
+                    message.c_str(), host.c_str(), path.c_str());
+            }
+            else
+            {
+                LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.",
+                    message.c_str(), host.c_str(), path.c_str(), res->status);
+            }
         }
         else
         {
-            LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.",
-                message.c_str(), host.c_str(), path.c_str(), res->status);
+            LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.",
+                host.c_str(), path.c_str());
         }
-    }
-    else
-    {
-        LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.",
-            host.c_str(), path.c_str());
-    }
+    });
 
     return Events::ArgumentStack();
 }
