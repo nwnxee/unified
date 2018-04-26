@@ -59,20 +59,20 @@ Spell::~Spell()
 }
 void Spell::Init(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 {
-    Spell::handle = dlopen("libhunspell-1.4.so", RTLD_LAZY);
-
+    Spell::handle = dlopen("libhunspell.so", RTLD_LAZY);
+    
     if(!handle)
     {
         throw std::runtime_error("Dynamic link handler error");
     }
-
+    
     Spell::setcreate = reinterpret_cast<Spell::Create_Exp>(dlsym(handle, "Hunspell_create"));
-
+    
     if (!setcreate) 
     { 
         throw std::runtime_error("Dynamic link symbol error");
     }
-
+    
     Spell::spell_e = reinterpret_cast<Spell::Spell_Exp>(dlsym(handle, "Hunspell_spell"));
     if (!spell_e) 
     { 
@@ -89,7 +89,7 @@ void Spell::Init(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     { 
         throw std::runtime_error("Dynamic link symbol error");
     }
-
+    
     Spell::free_e = reinterpret_cast<Spell::Free_Exp>(dlsym(handle, "Hunspell_free_list"));
     if (!free_e) 
     { 
@@ -97,13 +97,13 @@ void Spell::Init(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     }
     Spell::dic = config->Get<std::string>("PATH_DIC", "/usr/share/hunspell/en_US.dic");
     Spell::aff = config->Get<std::string>("PATH_AFF", "/usr/share/hunspell/en_US.aff");
-
+    
     Spell::created = setcreate(Spell::aff.c_str(), Spell::dic.c_str());
 }
 ArgumentStack Spell::GetSpell(ArgumentStack&& args)
 {
     ArgumentStack stack;
-
+    
     Spell::Init(GetServices()->m_config);
 
 
@@ -134,7 +134,7 @@ ArgumentStack Spell::GetSpell(ArgumentStack&& args)
 
         
     }
-
+  
     Spell::dest_e(Spell::created);
     dlclose(Spell::handle);
     Services::Events::InsertArgument(stack, output);    
@@ -144,11 +144,11 @@ ArgumentStack Spell::GetSpell(ArgumentStack&& args)
 ArgumentStack Spell::GetSuggest(ArgumentStack&& args)
 {
     ArgumentStack stack;
-
-
-
+    
+   
+  
     Spell::Init(GetServices()->m_config);
-
+ 
     std::string word = Services::Events::ExtractArgument<std::string>(args);
 
     const char* cword;
@@ -169,9 +169,9 @@ ArgumentStack Spell::GetSuggest(ArgumentStack&& args)
             output += "\n";
             Spell::free_e(Spell::created, &wlst, ns);
         }
-
+    
     }
-
+  
     Spell::dest_e(Spell::created);
     dlclose(Spell::handle);
     Services::Events::InsertArgument(stack, output);    
