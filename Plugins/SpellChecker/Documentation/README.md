@@ -1,4 +1,4 @@
-# Spell Plugin Reference
+# SpellChecker Plugin Reference
 
 ## Description
 
@@ -32,6 +32,7 @@ Example for Debian:
 sudo ln -s /usr/lib/i386-linux-gnu/libhunspell-1.4.so.0 /usr/lib/i386-linux-gnu/libhunspell.so
 
 You can also use the above method to update hunspell to a newer version (may not be supported)
+
 
 ## Environment Variables
 
