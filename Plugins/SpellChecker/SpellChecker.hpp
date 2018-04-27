@@ -1,0 +1,45 @@
+#pragma once
+
+#include "Plugin.hpp"
+#include "Services/Events/Events.hpp"
+#include "API/Types.hpp"
+#include <iostream>
+#include "Platform/DynamicLibraries.hpp"
+
+
+using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using HandleType = NWNXLib::Platform::DynamicLibraries::HandleType;
+
+namespace SpellChecker {
+
+class SpellChecker : public NWNXLib::Plugin
+{
+    typedef struct SplHandle SplHandle;
+    typedef SplHandle* (*Create_Exp)(const char*, const char*);
+    typedef int (*Spell_Exp)(SplHandle* e, const char*);
+    typedef int (*Suggest_Exp)(SplHandle* e, char***, const char*);
+    typedef void (*Des_Exp)(SplHandle* e);
+    typedef void (*Free_Exp)(SplHandle* e, char***, int);
+
+public:
+    SpellChecker(const Plugin::CreateParams& params);
+    virtual ~SpellChecker();
+
+
+private:
+    ArgumentStack FindMisspell                      (ArgumentStack&& args);
+    ArgumentStack GetSuggestSpell                   (ArgumentStack&& args);
+    std::string dic;
+    std::string aff;
+    void Init(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config);
+    uintptr_t EstbSymFunction(const std::string& symbol);
+    Create_Exp setcreate;
+    SplHandle* created;
+    Spell_Exp spell_e;
+    Suggest_Exp suggest_e;
+    Des_Exp dest_e;
+    Free_Exp free_e;
+    HandleType handle;
+};
+
+}
