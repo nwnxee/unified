@@ -1,5 +1,6 @@
 #include "nwnx"
-
+// The functions below can be performance heavy, do limit how many calls and/or how long of a sentence is passed
+// Make use of delaycommands and assign commands
 
 // Returns the spelling mistakes in sentence, comma delimited
 // Returns blank if no errors or if .so file is improperly installed

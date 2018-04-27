@@ -60,15 +60,15 @@ SpellChecker::SpellChecker(const Plugin::CreateParams& params)
 
 SpellChecker::~SpellChecker()
 {
-    CloseDll(SpellChecker::handle);
     SpellChecker::dest_e(SpellChecker::created);
+    CloseDll(SpellChecker::handle);
 }
 
 uintptr_t SpellChecker::EstbSymFunction(const std::string& symbol)
 {
-    uintptr_t var = reinterpret_cast<uintptr_t>(dlsym(SpellChecker::handle, symbol.c_str()));
+    uintptr_t var = reinterpret_cast<uintptr_t>(GetFuncAddrInDll(symbol.c_str(), SpellChecker::handle));
 
-    if (!var)
+    if (!IsFuncAddrFromDllValid(var))
     {
         throw std::runtime_error("Dynamic link symbol error");
     }
@@ -105,29 +105,28 @@ ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
 
 
     std::string sentence = Services::Events::ExtractArgument<std::string>(args);
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), ','), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), ':'), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), ';'), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), '"'), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), '('), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), ')'), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), ')'), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), '*'), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), '['), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), ']'), sentence.end());
-    sentence.erase(std::remove(sentence.begin(), sentence.end(), '\n'), sentence.end());
-    std::istringstream iss(sentence);
+
     std::string  word;
+    std::vector <std::string> list;
+    for(char& c : sentence) {
+        if(isalpha(c) ||  c == '.' || c == '-' || c == '\'')
+            word += c;
+        else if(c == ' ' && !word.empty()) {
+            list.push_back(word);
+            word = "";
+        }
+    }
+    if(!word.empty())
+        list.push_back(word);
     std::string output = "";
     int sc;
-    while (getline( iss, word, ' ' ))
+
+    for(uint i=0; i<list.size(); i++)
     {
-        if(!word.empty())
-        {
-            sc = SpellChecker::spell_e(SpellChecker::created, word.c_str());
-            if(sc == 0)
-              output += word + ",";
-        }
+        sc = SpellChecker::spell_e(SpellChecker::created, list[i].c_str());
+        if(sc == 0)
+            output += list[i] + ",";
+
 
 
     }
@@ -139,7 +138,7 @@ ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
 ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    SpellChecker::created = setcreate(SpellChecker::aff.c_str(), SpellChecker::dic.c_str());
+
     std::string word = Services::Events::ExtractArgument<std::string>(args);
 
     const char* cword;
@@ -157,7 +156,6 @@ ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
                 output += (std::string)wlst[i]  + ",";
             }
 
-            output += "\n";
             SpellChecker::free_e(SpellChecker::created, &wlst, ns);
         }
 
