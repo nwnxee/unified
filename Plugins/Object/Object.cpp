@@ -202,17 +202,12 @@ ArgumentStack Object::GetPortrait(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::SetPortrait(ArgumentStack&&)
+ArgumentStack Object::SetPortrait(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
-    LOG_ERROR("Cannot do SetPortrait: CResRef copy constructor results in a trap");
-    LOG_NOTICE("SetPortrait-TODO: Update portrait directly");
-
-    /*
     if (auto *pObject = object(args))
     {
-
         const auto portrait = Services::Events::ExtractArgument<std::string>(args);
 
         CResRef resref = CResRef(portrait.c_str());
@@ -221,7 +216,6 @@ ArgumentStack Object::SetPortrait(ArgumentStack&&)
         else
             pObject->SetPortrait(resref);
     }
-    */
     return stack;
 }
 
