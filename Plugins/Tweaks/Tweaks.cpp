@@ -1,6 +1,7 @@
 #include "Tweaks.hpp"
 #include "Tweaks/HideClassesOnCharList.hpp"
 #include "Tweaks/PlayerDyingHitPointLimit.hpp"
+#include "Tweaks/DisablePause.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -43,6 +44,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Setting the player dying HP limit to %d", hplimit);
         m_PlayerDyingHitPointLimit = std::make_unique<PlayerDyingHitPointLimit>(GetServices()->m_hooks.get(), hplimit);
+    }
+
+    if (GetServices()->m_config->Get<bool>("DISABLE_PAUSE", false))
+    {
+        LOG_INFO("Disabling pausing of the server");
+        m_DisablePause = std::make_unique<DisablePause>(GetServices()->m_hooks.get());
     }
 }
 
