@@ -7,6 +7,7 @@
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSPlaceable.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSModule.hpp"
@@ -19,6 +20,7 @@
 #include "Services/Events/Events.hpp"
 #include "ViewPtr.hpp"
 #include "Serialize.hpp"
+#include "Utils.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -64,6 +66,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(Serialize);
     REGISTER(Deserialize);
     REGISTER(GetDialogResref);
+    REGISTER(SetDialogResref);
     REGISTER(SetAppearance);
     REGISTER(GetAppearance);
 
@@ -267,6 +270,28 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, retval);
     return stack;
 }
+
+ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retval = "";
+    if (auto *pObject = object(args))
+    {
+        const auto dialog = Services::Events::ExtractArgument<std::string>(args);
+        CResRef resref = CResRef(dialog.c_str());
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            pCreature->m_pStats->m_cDialog = resref;
+        else if(auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pPlaceable->m_cDialog = resref;
+        else if(auto *pDoor = Utils::AsNWSDoor(pObject))
+            pDoor->m_cDialog = resref;
+    }
+
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
 
 
 ArgumentStack Object::GetAppearance(ArgumentStack&& args)
