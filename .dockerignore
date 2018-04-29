@@ -1,3 +1,9 @@
 # Prevent running COPY layer on Dockerfile changes
 Dockerfile
 .dockerignore
+
+# Skip everything not needed to build NWNX
+LICENSE
+*.md
+.git*
+.circleci
