@@ -1,11 +1,11 @@
-FROM jakkn/nwnxee-builder:latest as builder
+FROM jakkn/nwnxee-builder as builder
 WORKDIR /nwnx
 COPY ./ .
 WORKDIR /nwnx/build
 # compile nwnx
 RUN CC="gcc -m32" CXX="g++ -m32" cmake .. && make
 
-FROM beamdog/nwserver:latest
+FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/Binaries/* /nwn/nwnx/
 # Install plugin run dependencies
