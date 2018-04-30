@@ -10,8 +10,15 @@ RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/Binaries/* /nwn/nwnx/
 # Install plugin run dependencies
 RUN mkdir -p /usr/share/man/man1
-RUN apt-get update \
-    && apt-get -y install --no-install-recommends openjdk-8-jdk-headless libssl1.1 \
+RUN runDeps="openjdk-8-jdk-headless \
+    hunspell \
+    libmono-2.0-1 \
+    libmariadbclient18 \
+    libpq-dev \
+    libruby2.3 \
+    libssl1.1" \
+    && apt-get update \
+    && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
 # Configure nwserver to run with nwnx 
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
@@ -31,9 +38,11 @@ ENV NWNX_ADMINISTRATION_SKIP=y \
     NWNX_ITEM_SKIP=y \
     NWNX_JVM_SKIP=y \
     NWNX_METRICS_INFLUXDB_SKIP=y \
+    NWNX_MONO_SKIP=y \
     NWNX_OBJECT_SKIP=y \
     NWNX_PLAYER_SKIP=y \
     NWNX_PROFILER_SKIP=y \
+    NWNX_SPELLCHECKER_SKIP=y \
     NWNX_REDIS_SKIP=y \
     NWNX_RUBY_SKIP=y \
     NWNX_SQL_SKIP=y \
