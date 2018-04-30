@@ -8,6 +8,11 @@ RUN CC="gcc -m32" CXX="g++ -m32" cmake .. && make
 FROM beamdog/nwserver:latest
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/Binaries/* /nwn/nwnx/
+# Install plugin run dependencies
+RUN mkdir -p /usr/share/man/man1
+RUN apt-get update \
+    && apt-get -y install --no-install-recommends openjdk-8-jdk-headless \
+    && rm -r /var/cache/apt /var/lib/apt/lists
 # Configure nwserver to run with nwnx 
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
 ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"
