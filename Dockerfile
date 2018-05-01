@@ -1,9 +1,8 @@
 FROM jakkn/nwnxee-builder as builder
 WORKDIR /nwnx/home
 COPY ./ .
-WORKDIR /nwnx/build
 # compile nwnx
-RUN CC="gcc -m32" CXX="g++ -m32" cmake .. && make
+RUN Scripts/buildnwnx.sh
 
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
