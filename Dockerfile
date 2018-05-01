@@ -1,5 +1,5 @@
 FROM jakkn/nwnxee-builder as builder
-WORKDIR /nwnx
+WORKDIR /nwnx/home
 COPY ./ .
 WORKDIR /nwnx/build
 # compile nwnx
@@ -7,7 +7,7 @@ RUN CC="gcc -m32" CXX="g++ -m32" cmake .. && make
 
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
-COPY --from=builder /nwnx/Binaries/* /nwn/nwnx/
+COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 # Install plugin run dependencies
 RUN mkdir -p /usr/share/man/man1
 RUN runDeps="openjdk-8-jdk-headless \
