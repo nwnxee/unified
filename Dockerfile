@@ -1,16 +1,14 @@
 FROM jakkn/nwnxee-builder as builder
 WORKDIR /nwnx/home
 COPY ./ .
-# compile nwnx
+# Compile nwnx
 RUN Scripts/buildnwnx.sh
 
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 # Install plugin run dependencies
-RUN mkdir -p /usr/share/man/man1
-RUN runDeps="openjdk-8-jdk-headless \
-    hunspell \
+RUN runDeps="hunspell \
     libmono-2.0-1 \
     libmariadbclient18 \
     libpq-dev \
@@ -27,8 +25,6 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
     NWN_TAIL_LOGS=n \
     NWNX_CORE_LOG_LEVEL=7 \
     NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
-# Configure JVM
-ENV NWNX_JVM_CLASSPATH=/nwn/nwnx/org.nwnx.nwnx2.jvm.jar
 # Disable all other plugins by default. Remember to add new plugins to this list.
 ENV NWNX_ADMINISTRATION_SKIP=y \
     NWNX_BEHAVIOURTREE_SKIP=y \
