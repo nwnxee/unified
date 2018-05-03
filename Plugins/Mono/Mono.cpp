@@ -55,6 +55,14 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     g_Domain = mono_jit_init("nwnx");
 
+    Maybe<std::string> baseDirectory = GetServices()->m_config->Get<std::string>("BASE_DIRECTORY");
+    Maybe<std::string> appConfig = GetServices()->m_config->Get<std::string>("APP_CONFIG");
+    
+    if(baseDirectory && appConfig)
+    {
+        mono_domain_set_config(g_Domain, baseDirectory->c_str(), appConfig->c_str());
+    }
+
     m_ScriptMetrics = GetServices()->m_config->Get<bool>("SCRIPT_METRICS", true);
     m_ClosureMetrics = GetServices()->m_config->Get<bool>("CLOSURE_METRICS", true);
     m_MainLoopMetrics = GetServices()->m_config->Get<bool>("MAIN_LOOP_METRICS", true);
