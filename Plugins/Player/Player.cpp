@@ -65,7 +65,7 @@ Player::Player(const Plugin::CreateParams& params)
 
     GetServices()->m_hooks->RequestSharedHook
         <Functions::CNWSMessage__HandlePlayerToServerInputCancelGuiTimingEvent,
-            void, CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerInputCancelGuiTimingEventHook);
+            int32_t, CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerInputCancelGuiTimingEventHook);
 
 }
 
