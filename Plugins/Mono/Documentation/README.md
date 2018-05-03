@@ -66,4 +66,7 @@ SCRIPT_METRICS [optional]: Whether metrics are exported for script execution tim
 CLOSURE_METRICS [optional]: Whether metrics are exported for closure timings.
 MAIN_LOOP_METRICS [optional]: Whether metrics are exported for main loop tick timings.
 CONFIG_PATH [optional]: The path to the Mono config file. Advanced users only.
+BASE_DIRECTORY [optional]: The path to the directory where your code lives. This is necessary if you need to access App.config files. Used in conjunction with the APP_CONFIG environment variable. Both must be set to use App.config files.
+APP_CONFIG [optional]: The path to the App.config file used for your project. Used in conjunction with the BASE_DIRECTORY environment variable. Both must be set to use App.config files.
+
 ```
