@@ -76,16 +76,3 @@ void main()
     // Send the modfied damages to nwnx
     NWNX_Damage_SetDamageEventData(data);
 }
-
-
-
-
-
-
-
-
-
-
- 
-
-
