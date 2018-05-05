@@ -1,4 +1,4 @@
-FROM nwnxee/builder as builder
+FROM jakkn/nwnxee-builder as builder
 WORKDIR /nwnx/home
 COPY ./ .
 # Compile nwnx
