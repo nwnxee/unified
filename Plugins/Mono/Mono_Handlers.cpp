@@ -246,7 +246,7 @@ MonoString* StackPopString()
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
     if (value.m_sString != nullptr)
-        return mono_string_new(g_Domain, ISO88959ToUTF8(value.m_sString).get());
+        return mono_string_new(g_Domain, ISO88959ToUTF8(value.m_sString).c_str());
     else
         return mono_string_new(g_Domain, "");
 }
@@ -400,31 +400,20 @@ int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-std::shared_ptr<char> ISO88959ToUTF8(const char *str)
+std::string ISO88959ToUTF8(const char *str)
 {
-    char* utf8 = new char[1 + (2 * strlen(str))];
+    std::string utf8("");
+    utf8.reserve(2*strlen(str) + 1);
 
-    int len = 0;
-
-    if (utf8) {
-        char *c = utf8;
-        for (; *str; ++str) {
-            if (!(*str & 0x80)) {
-                *c++ = *str;
-                len++;
-            } else {
-                *c++ = (char) (0xc2 | ((unsigned char)(*str) >> 6));
-
-                *c++ = (char) (0x3f & *str);
-                len += 2;
-            }
+    for (; *str; ++str) {
+        if (!(*str & 0x80)) {
+            utf8.push_back(*str);
+        } else {
+            utf8.push_back(0xc2 | ((unsigned char)(*str) >> 6));
+            utf8.push_back(0x3f & *str);
         }
-        *c++ = '\0';
     }
-
-    realloc(utf8, len);
-
-    return std::shared_ptr<char> (utf8);
+    return utf8;
 }
 
 }
