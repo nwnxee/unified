@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <stack>
 #include <vector>
+#include <cstring>
+#include <memory>
 
 #include <mono/jit/jit.h>
 
@@ -51,5 +53,7 @@ void BeginClosure(uint32_t value);
 int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId);
 int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId);
 int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId);
+
+std::shared_ptr<char> ISO88959ToUTF8(const char *str);
 
 }
