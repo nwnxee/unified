@@ -11,6 +11,7 @@
 #include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSQuickbarButton.hpp"
+#include "API/CGameEffect.hpp"
 //#include "API/CNWSStats_Spell.hpp"
 //#include "API/CNWSStats_SpellLikeAbility.hpp"
 //#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
@@ -176,56 +177,56 @@ void Player::HandlePlayerToServerInputCancelGuiTimingEventHook(Services::Hooks::
 
 ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 {
-    static NWNXLib::Hooking::FunctionHook* pAddMoveToPointAction_hook;
+    static NWNXLib::Hooking::FunctionHook* pOnRemoveLimitMovementSpeed_hook;
 
-    if (!pAddMoveToPointAction_hook)
+    if (!pOnRemoveLimitMovementSpeed_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__AddMoveToPointAction>(
-            +[](
-                    CNWSCreature *pThis,
-                    uint16_t nGroupId,
-                    Vector vNewWalkPosition,
-                    uint32_t oidNewWalkArea,
-                    uint32_t oidObjectMovingTo,
-                    int32_t bRunToPoint,
-                    float fRange,
-                    float fTimeout,
-                    int32_t bClientMoving,
-                    int32_t nClientPathNumber,
-                    int32_t nMoveToPosition,
-                    int32_t nMoveMode,
-                    int32_t bStraightLine,
-                    int32_t bCheckedActionPoint
-            ) -> int32_t
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnRemoveLimitMovementSpeed>(
+            +[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
             {
-                auto walk = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pThis->m_idSelf, "ALWAYS_WALK");
+                // Don't remove the forced walk flag when various slowdown effects expire
+                auto walk = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pObject->m_idSelf, "ALWAYS_WALK");
                 if (walk && *walk)
-                    bRunToPoint = 0;
+                    return 1;
 
-                return pAddMoveToPointAction_hook->CallOriginal<int32_t>
-                        (pThis,nGroupId,vNewWalkPosition,oidNewWalkArea,
-                         oidObjectMovingTo,bRunToPoint,fRange,fTimeout,
-                         bClientMoving,nClientPathNumber,nMoveToPosition,
-                         nMoveMode,bStraightLine,bCheckedActionPoint);
+                return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
             });
-        pAddMoveToPointAction_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__AddMoveToPointAction);
+        pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnRemoveLimitMovementSpeed);
     }
+
+    ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
     {
-        const auto bSetCap = Services::Events::ExtractArgument<int32_t>(args);
+        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        if (!pCreature)
+        {
+            LOG_ERROR("No creature object found for Player ID %x, oidNWSObject %x", 
+                pPlayer->m_oidPCObject, pPlayer->m_oidNWSObject);
+            return stack;
+        }
 
+        const auto bSetCap = Services::Events::ExtractArgument<int32_t>(args);
         if (bSetCap)
         {
+            pCreature->m_bForcedWalk = true;
             g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "ALWAYS_WALK", 1);
         }
         else // remove the override
         {
             g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "ALWAYS_WALK");
+
+            // Fake effect object for bsearch. Don't want to deal with alloc/free from real one..
+            uint8_t key[sizeof(CGameEffect)];
+            CGameEffect *pkey = (CGameEffect*)key;
+            pkey->m_nType = 59; // NOTE: different from nwscript.nss
+
+            // Check for any other effects that limit movement speed
+            pCreature->m_bForcedWalk = !!std::bsearch(&pkey, pCreature->m_appliedEffects.element, pCreature->m_appliedEffects.num, sizeof(pkey),
+                                            +[](const void *a, const void *b){ return ((CGameEffect*)a)->m_nType - ((CGameEffect*)b)->m_nType; });
         }
     }
 
-    ArgumentStack stack;
     return stack;
 }
 
