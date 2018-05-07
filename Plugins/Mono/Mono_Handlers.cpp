@@ -245,10 +245,7 @@ MonoString* StackPopString()
 
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
-    if (value.m_sString != nullptr)
-        return mono_string_new(g_Domain, ISO88959ToUTF8(value.m_sString).c_str());
-    else
-        return mono_string_new(g_Domain, "");
+    return mono_string_new(g_Domain, ISO88959ToUTF8(value.CStr()).c_str());
 }
 
 uint32_t StackPopObject()
@@ -405,10 +402,13 @@ std::string ISO88959ToUTF8(const char *str)
     std::string utf8("");
     utf8.reserve(2*strlen(str) + 1);
 
-    for (; *str; ++str) {
-        if (!(*str & 0x80)) {
+    for (; *str; ++str)
+    {
+        if (!(*str & 0x80))
+        {
             utf8.push_back(*str);
-        } else {
+        } else
+        {
             utf8.push_back(0xc2 | ((unsigned char)(*str) >> 6));
             utf8.push_back(0x3f & *str);
         }
