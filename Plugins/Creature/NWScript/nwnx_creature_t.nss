@@ -128,5 +128,9 @@ void main()
     NWNX_Creature_SetGold(oCreature, nGold + 100);
     report("SetGold", GetGold(oCreature) == (nGold+100));
 
+    int nSave = NWNX_Creature_GetBaseSavingThrow(oCreature, SAVING_THROW_WILL);
+    NWNX_Creature_SetBaseSavingThrow(oCreature, SAVING_THROW_WILL, nSave + 10);
+    report("{S,G}etBaseSavingThrow", NWNX_Creature_GetBaseSavingThrow(oCreature, SAVING_THROW_WILL) == nSave+10);
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
