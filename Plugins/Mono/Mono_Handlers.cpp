@@ -410,7 +410,7 @@ std::string ISO88959ToUTF8(const char *str)
         } else
         {
             utf8.push_back(0xc2 | ((unsigned char)(*str) >> 6));
-            utf8.push_back(0x3f & *str);
+            utf8.push_back(0xbf & *str);
         }
     }
     return utf8;
