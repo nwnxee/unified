@@ -110,6 +110,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetWalkRateCap);
     REGISTER(SetGold);
     REGISTER(SetCorpseDecayTime);
+    REGISTER(GetBaseSavingThrow);
+    REGISTER(SetBaseSavingThrow);
 
 #undef REGISTER
 }
@@ -1320,5 +1322,65 @@ ArgumentStack Creature::SetCorpseDecayTime(ArgumentStack&& args)
     }
     return stack;
 }
-   
+
+ArgumentStack Creature::GetBaseSavingThrow(ArgumentStack&& args)
+{
+    // NOTE: The misc fields are used for creature save override, and will mess with ELC.
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        const auto which = Services::Events::ExtractArgument<int32_t>(args);
+        switch (which)
+        {
+            case Constants::SAVING_THROW_REFLEX:
+                retval = pCreature->m_pStats->m_nReflexSavingThrowMisc + pCreature->m_pStats->GetBaseReflexSavingThrow();
+                break;
+            case Constants::SAVING_THROW_FORT:
+                retval = pCreature->m_pStats->m_nFortSavingThrowMisc + pCreature->m_pStats->GetBaseFortSavingThrow();
+                break;
+            case Constants::SAVING_THROW_WILL:
+                retval = pCreature->m_pStats->m_nWillSavingThrowMisc + pCreature->m_pStats->GetBaseWillSavingThrow();
+                break;
+            default:
+                LOG_WARNING("GetBaseSavingThrow() called for bad save constant %d", which);
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto which = Services::Events::ExtractArgument<int32_t>(args);
+        const auto value = Services::Events::ExtractArgument<int32_t>(args); ASSERT(value >= -128 && value <= 127);
+        int8_t base;
+        switch (which)
+        {
+            case Constants::SAVING_THROW_REFLEX:
+                base = pCreature->m_pStats->m_nReflexSavingThrowMisc + pCreature->m_pStats->GetBaseReflexSavingThrow();
+                pCreature->m_pStats->m_nReflexSavingThrowMisc = value - base;
+                break;
+            case Constants::SAVING_THROW_FORT:
+                base = pCreature->m_pStats->m_nFortSavingThrowMisc + pCreature->m_pStats->GetBaseFortSavingThrow();
+                pCreature->m_pStats->m_nFortSavingThrowMisc = value - base;
+                break;
+            case Constants::SAVING_THROW_WILL:
+                base = pCreature->m_pStats->m_nWillSavingThrowMisc + pCreature->m_pStats->GetBaseWillSavingThrow();
+                pCreature->m_pStats->m_nWillSavingThrowMisc = value - base;
+                break;
+            default:
+                LOG_WARNING("SetBaseSavingThrow() called for bad save constant %d", which);
+                break;
+        }
+    }
+    return stack;
+}
+
+
+
 }

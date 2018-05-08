@@ -258,6 +258,12 @@ void NWNX_Creature_SetGold(object creature, int gold);
 // Sets corpse decay time in milliseconds
 void NWNX_Creature_SetCorpseDecayTime(object creature, int nDecayTime);
 
+// Returns the creature's base save and any modifiers set in the toolset
+int NWNX_Creature_GetBaseSavingThrow(object creature, int which);
+
+// Sets the base saving throw of the creature
+void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -908,6 +914,27 @@ void NWNX_Creature_SetCorpseDecayTime(object creature, int nDecayTime)
 {
     string sFunc = "SetCorpseDecayTime";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nDecayTime);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+
+int NWNX_Creature_GetBaseSavingThrow(object creature, int which)
+{
+    string sFunc = "GetBaseSavingThrow";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, which);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value)
+{
+    string sFunc = "SetBaseSavingThrow";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, which);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
