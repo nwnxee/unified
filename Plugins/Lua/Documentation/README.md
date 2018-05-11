@@ -23,7 +23,7 @@ Allows users to call Lua code with NWScript binding.
 7) In your *"on module chat script"* include *"nwnx_lua"* and add this line `NWNX_Lua_RunEvent("mod_chat",  GetPCChatSpeaker());`
 8) Enter your module and put this line in your talk chat: `/c =GetName(oPC)` dont forget the '='
 9) Press enter and you will get your name as server message
-10) try the same with `/c ApplyEffectToObject(2, EffectHeal(10), oPC)` or `/c return GetName(GetArea(oPC))` or `/c =3+5`
+10) try the same with `/c ApplyEffectToObject(2, EffectHeal(10), oPC)` or `/c return GetName(GetArea(oPC))` or `/c =3+5` or `/c DelayCommand(1.5, oPC, SpeakString, 'Foo')`
 11) Have some fun with your chat command interpreter, every command you want evaled by Lua must start with `/c `, if you want a return value start with `/c =` or `/c return `
 12) Look at the Lua scripts provided for some examples. The different ways to use this plugin are a lot, now you have NWScript binding in a interpred language, Lua, so you can do things like change a Lua script and hot reload it without even restart the module; for an example look at the `loadscript()` function in the preload script.
 
