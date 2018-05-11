@@ -1,0 +1,20 @@
+
+# CmakeLists.txt
+# search for lua before
+
+find_package(Lua)
+if (Lua_FOUND)
+    add_plugin(Lua Lua.cpp Lua_Functions.cpp )
+    target_include_directories(Lua PRIVATE "${LUA_INCLUDE_DIR}" )
+    target_link_libraries( Lua ${LUA_LIBRARY} )
+    add_definitions( -DNWNX_LUA_LIBRARY="${LUA_LIBRARY}" )
+else (Lua_FOUND)
+    find_package(LuaJIT)
+    if (LuaJIT_FOUND)
+        add_plugin(Lua Lua.cpp Lua_Functions.cpp )
+        target_include_directories(Lua PRIVATE "${LUAJIT_INCLUDE_DIR}" )
+        target_link_libraries( Lua ${LUAJIT_LIBRARY} )
+        add_definitions( -DNWNX_LUA_LUAJIT )
+        add_definitions( -DNWNX_LUA_LIBRARY="${LUAJIT_LIBRARY}" )
+    endif (LuaJIT_FOUND)
+endif (Lua_FOUND)
