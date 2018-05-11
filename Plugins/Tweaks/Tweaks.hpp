@@ -7,6 +7,7 @@ namespace Tweaks {
 class HideClassesOnCharList;
 class PlayerDyingHitPointLimit;
 class DisablePause;
+class FixMasterServerDNS;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -18,6 +19,7 @@ private:
     std::unique_ptr<HideClassesOnCharList> m_HideClassesOnCharlist;
     std::unique_ptr<PlayerDyingHitPointLimit> m_PlayerDyingHitPointLimit;
     std::unique_ptr<DisablePause> m_DisablePause;
+    std::unique_ptr<FixMasterServerDNS> m_FixMasterServerDNS;
 };
 
 }

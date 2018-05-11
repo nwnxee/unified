@@ -244,7 +244,8 @@ MonoString* StackPopString()
     }
 
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
-    return mono_string_new(g_Domain, value.m_sString);
+
+    return mono_string_new(g_Domain, ISO88959ToUTF8(value.CStr()).c_str());
 }
 
 uint32_t StackPopObject()
@@ -394,6 +395,25 @@ int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     }
 
     return 0;
+}
+
+std::string ISO88959ToUTF8(const char *str)
+{
+    std::string utf8("");
+    utf8.reserve(2*strlen(str) + 1);
+
+    for (; *str; ++str)
+    {
+        if (!(*str & 0x80))
+        {
+            utf8.push_back(*str);
+        } else
+        {
+            utf8.push_back(0xc2 | ((unsigned char)(*str) >> 6));
+            utf8.push_back(0xbf & *str);
+        }
+    }
+    return utf8;
 }
 
 }

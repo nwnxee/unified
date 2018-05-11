@@ -6,8 +6,9 @@ CLEAN=1
 JOBS=""
 BUILD_TYPE="RelWithDebInfo"
 SANITIZE=""
+TOOLCHAIN=""
 
-while getopts "hcj:ds" o; do
+while getopts "hcj:dst" o; do
     case "${o}" in
         c) # Clean build - remove Binaries and re-execute cmake
             CLEAN=0
@@ -20,6 +21,9 @@ while getopts "hcj:ds" o; do
             ;;
         s) # Enable the address and undefined behaviour sanitisers
             SANITIZE="-DSANITIZE_ADDRESS=On -DSANITIZE_UNDEFINED=On"
+            ;;
+        t) # Enable forcing  locating of 32-bit libraries on linux
+            TOOLCHAIN="-DCMAKE_TOOLCHAIN_FILE=../Toolchains/linux_i686.toolchain.cmake"
             ;;
         h | *) # Display help
             usage
@@ -47,7 +51,7 @@ fi
 mkdir ./build-nwnx
 pushd ./build-nwnx
 
-cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE $SANITIZE ..
+cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE $SANITIZE $TOOLCHAIN ..
 
 make ${JOBS} all
 

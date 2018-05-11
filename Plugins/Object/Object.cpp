@@ -7,6 +7,7 @@
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSPlaceable.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSModule.hpp"
@@ -19,6 +20,7 @@
 #include "Services/Events/Events.hpp"
 #include "ViewPtr.hpp"
 #include "Serialize.hpp"
+#include "Utils.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -64,8 +66,9 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(Serialize);
     REGISTER(Deserialize);
     REGISTER(GetDialogResref);
+    REGISTER(SetDialogResref);
     REGISTER(SetAppearance);
-    REGISTER(GetAppearance);   
+    REGISTER(GetAppearance);
 
 #undef REGISTER
 }
@@ -202,17 +205,12 @@ ArgumentStack Object::GetPortrait(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::SetPortrait(ArgumentStack&&)
+ArgumentStack Object::SetPortrait(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
-    LOG_ERROR("Cannot do SetPortrait: CResRef copy constructor results in a trap");
-    LOG_NOTICE("SetPortrait-TODO: Update portrait directly");
-
-    /*
     if (auto *pObject = object(args))
     {
-
         const auto portrait = Services::Events::ExtractArgument<std::string>(args);
 
         CResRef resref = CResRef(portrait.c_str());
@@ -221,7 +219,6 @@ ArgumentStack Object::SetPortrait(ArgumentStack&&)
         else
             pObject->SetPortrait(resref);
     }
-    */
     return stack;
 }
 
@@ -274,36 +271,58 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retval = "";
+    if (auto *pObject = object(args))
+    {
+        const auto dialog = Services::Events::ExtractArgument<std::string>(args);
+        CResRef resref = CResRef(dialog.c_str());
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            pCreature->m_pStats->m_cDialog = resref;
+        else if(auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pPlaceable->m_cDialog = resref;
+        else if(auto *pDoor = Utils::AsNWSDoor(pObject))
+            pDoor->m_cDialog = resref;
+    }
+
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+
 
 ArgumentStack Object::GetAppearance(ArgumentStack&& args)
-{	  
+{
     ArgumentStack stack;
     int32_t retval = 0;
     if (auto *pObject = object(args))
-    {	       
+    {
         if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
-	{
-	   retval = static_cast<CNWSPlaceable*>(pObject)->m_nAppearance;
-	}
+        {
+            retval = static_cast<CNWSPlaceable*>(pObject)->m_nAppearance;
+        }
     }
-   
-   Services::Events::InsertArgument(stack, retval);
-   return stack;
-}     
-   
-ArgumentStack Object::SetAppearance(ArgumentStack&& args)
-{	
-   ArgumentStack stack;
-   if (auto *pObject = object(args))
-   {
-       const auto app = Services::Events::ExtractArgument<int32_t>(args);  ASSERT(app <= 65535);
-       if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
-       {		  
-           static_cast<CNWSPlaceable*>(pObject)->m_nAppearance=app;
-       }
-	     
-   }	
-   return stack;
+
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
 }
-   
+
+
+ArgumentStack Object::SetAppearance(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pObject = object(args))
+    {
+        const auto app = Services::Events::ExtractArgument<int32_t>(args);  ASSERT(app <= 65535);
+        if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
+        {
+            static_cast<CNWSPlaceable*>(pObject)->m_nAppearance=app;
+        }
+    }
+    return stack;
+}
+
 }
