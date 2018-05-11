@@ -441,7 +441,7 @@ static const struct luaL_Reg property_m [] = {
   {NULL, NULL}
 };
 
-int luaopen_structure(lua_State *L, const char *tname, const luaL_Reg *lreg, bool global) {
+void luaopen_structure(lua_State *L, const char *tname, const luaL_Reg *lreg, bool global) {
     luaL_newmetatable(L, tname);
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
@@ -454,7 +454,6 @@ int luaopen_structure(lua_State *L, const char *tname, const luaL_Reg *lreg, boo
     {
         lua_setglobal(L, tname);
     }
-    return 1;
 }
 
 void LUA_InitNWScript(lua_State *L)
