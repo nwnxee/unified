@@ -2,6 +2,7 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
+#include "API/Constants.hpp"
 extern "C" {
 #include "lua.h"
 #include "lauxlib.h"
@@ -14,6 +15,7 @@ extern "C" {
 
 namespace Lua {
 	using namespace NWNXLib::Services;
+	using namespace NWNXLib::API;
 	class Lua : public NWNXLib::Plugin
 	{
 	public:
@@ -29,6 +31,7 @@ namespace Lua {
 	    std::string m_tokenFunction;
 	    std::string m_eventFunction;
 	    std::string m_setObjSelfFunction;
+	    Types::ObjectID m_object_self;
 	};
 
 }

@@ -14,7 +14,7 @@ Allows users to call Lua code with NWScript binding.
 | OBJSELF_FUNCTION  | string |  _none_                  |
 
 ## Fast Demo Start
-1) Install **LuaJIT**
+1) Install **LuaJIT**, i.e `sudo apt-get install luajit libluajit-5.1-dev`
 2) Compile your plugin and install as any other nwnxee plugin
 3) Don't set any configuration env variable
 4) Import the two scripts in the **NWScript** directory in your module
@@ -87,12 +87,12 @@ Here is the complete list of the configuration environment variables:
 
 ## Notes on Compilation
 NWNX_Lua is configured to compile first against *LuaJIT*, and only if LuaJIT (and its library) cannot be find search for a regular Lua library.
-So if you want to compile against LuaJIT just install it, otherwise install a regular Lua with liblua-dev provided by your distro, something like `sudo apt-get install lua5.3 liblua5.3-dev`. 
+So if you want to compile against LuaJIT just install it, otherwise install a regular Lua with liblua-dev provided by your distro; something like `sudo apt-get install luajit libluajit-5.1-dev` for luajit or `sudo apt-get install lua5.3 liblua5.3-dev` for regular Lua. 
 
 I highly reccomend to use or try LuaJIT, it is really fast and has the FFI library for C bindings. There is a script provided ('compat.lua') that try to mantain compatibility with differents Lua versions, it's tested with LuaJIT and Lua 5.3 but should work with Lua 5.2 and Lua 5.1.
 
 ## Note on LuaJIT and extensions
 If you want to use extensions in *LuaJIT* I highly reccomend to use *luarocks* to install them. To install and compile *luarocks* for *LuaJIT* downlowd it and compile/install with this two commands:
-1) `./configure --lua-suffix=jit --with-lua-include=/usr/local/include/luajit-2.0`
+1) `./configure --lua-suffix=jit --with-lua-include=/usr/include/luajit-2.0`
 2) `make build && sudo make install`
 

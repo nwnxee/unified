@@ -134,7 +134,7 @@ extern "C" {
         if (!GetVm()->StackPopObject(&nRetVal))
         {
             LOG_DEBUG("VM failed to pop Object");
-            nRetVal = 0x7F000000;
+            nRetVal = Constants::OBJECT_INVALID;
         }
         lua_pushinteger(L, nRetVal);
         return 1;

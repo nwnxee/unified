@@ -92,6 +92,7 @@ namespace Lua {
         }
         lua_settop(m_luaInstance, 0);
 
+        m_object_self = Constants::OBJECT_INVALID;
         // bind events
         GetServices()->m_events->RegisterEvent("EVAL", std::bind(&Lua::OnEval, this, std::placeholders::_1));
         GetServices()->m_events->RegisterEvent("EVALVOID", std::bind(&Lua::OnEvalVoid, this, std::placeholders::_1));
@@ -207,6 +208,11 @@ namespace Lua {
     void Lua::SetObjectSelf()
     {              
         Types::ObjectID objSelf = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+
+        if(m_object_self == objSelf)
+        {
+            return;
+        }
         
         // a function is defined, call it 
         if(!m_setObjSelfFunction.empty())
@@ -224,6 +230,7 @@ namespace Lua {
             lua_pushinteger(m_luaInstance, objSelf); 
             lua_setglobal(m_luaInstance, "OBJECT_SELF");
         }
+        m_object_self = objSelf;
         lua_settop(m_luaInstance, 0);
     }
 
