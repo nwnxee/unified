@@ -2,7 +2,7 @@ FROM nwnxee/builder as builder
 WORKDIR /nwnx/home
 COPY ./ .
 # Compile nwnx
-RUN Scripts/buildnwnx.sh
+RUN Scripts/buildnwnx.sh -j $(nproc)
 
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx

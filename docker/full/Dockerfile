@@ -6,7 +6,7 @@ FROM jakkn/nwnxee-builder as builder
 WORKDIR /nwnx/home
 COPY --from=git /tmp/unified/ .
 # Compile nwnx
-RUN Scripts/buildnwnx.sh
+RUN Scripts/buildnwnx.sh -j $(nproc)
 
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
