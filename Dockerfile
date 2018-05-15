@@ -9,7 +9,6 @@ RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 # Install plugin run dependencies
 RUN runDeps="hunspell \
-    libmono-2.0-1 \
     libmariadbclient18 \
     libpq-dev \
     libruby2.3 \
@@ -17,7 +16,7 @@ RUN runDeps="hunspell \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
-# Configure nwserver to run with nwnx 
+# Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
 ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"
 # Use NWNX_ServerLogRedirector as default log manager
