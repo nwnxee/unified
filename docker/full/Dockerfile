@@ -11,6 +11,8 @@ RUN Scripts/buildnwnx.sh -j $(nproc)
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
+# Create man directive so update-alternatives can successfully configure java
+RUN mkdir -p /usr/share/man/man1
 # Install plugin run dependencies
 RUN runDeps="hunspell \
     mono-complete \
