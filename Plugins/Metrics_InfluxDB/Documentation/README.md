@@ -6,7 +6,7 @@ Exports profiling information to Influx DB.
 
 ## Environment Variables
 
-| Variable Name |  Type  | Default Value |
-| ------------- | :----: | ------------- |
-| HOST          | string | _none_        |
-| PORT          | string | _none_        |
+| Variable Name                       |  Type  | Default Value |
+| ----------------------------------- | :----: | ------------- |
+| NWNX_METRICS_INFLUXDB_HOST          | string | _none_        |
+| NWNX_METRICS_INFLUXDB_PORT          | string | _none_        |
