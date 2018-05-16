@@ -105,7 +105,8 @@ namespace Lua {
 
         if(setObjSelfFunction.empty())
         {
-            m_setObjSelfFunction = [&](Types::ObjectID objSelf) { 
+            m_setObjSelfFunction = [&](Types::ObjectID objSelf) 
+            { 
                 lua_pushinteger(m_luaInstance, objSelf); 
                 lua_setglobal(m_luaInstance, "OBJECT_SELF");
             };
@@ -116,7 +117,8 @@ namespace Lua {
             lua_getglobal(m_luaInstance, setObjSelfFunction.c_str());
             int iRef = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
             
-            m_setObjSelfFunction = [&, iRef](Types::ObjectID objSelf) { 
+            m_setObjSelfFunction = [&, iRef](Types::ObjectID objSelf) 
+            { 
                 lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, iRef);
                 lua_pushinteger(m_luaInstance, objSelf);
                 if (lua_pcall(m_luaInstance, 1, 0, 0) != 0)

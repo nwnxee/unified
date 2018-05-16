@@ -73,7 +73,7 @@ The entire system is configurable ad hoc, if you have time you can even change t
 ## Installation and configuration
 
 1) Just import in your module the two scripts in the NWScript directory.
-2) Copy the *lua* directory inside your NWN user directory (usually `.local/Neverwinter Nights/`)
+2) Copy the *lua* directory inside your NWN user directory (usually `.local/share/Neverwinter Nights/`)
 
 Here is the complete list of the configuration environment variables:
 
