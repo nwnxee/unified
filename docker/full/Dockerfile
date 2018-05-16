@@ -2,7 +2,7 @@ FROM alpine/git as git
 WORKDIR /tmp
 RUN git clone https://github.com/jakkn/unified
 
-FROM jakkn/nwnxee-builder as builder
+FROM nwnxee/builder as builder
 WORKDIR /nwnx/home
 COPY --from=git /tmp/unified/ .
 # Compile nwnx
