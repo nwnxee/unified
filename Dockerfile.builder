@@ -22,5 +22,8 @@ RUN mkdir -p /usr/share/man/man1
 RUN apt-get install -y openjdk-8-jdk-headless
 RUN apt-get install -y ant
 
+# NWNX_LUA
+RUN apt-get install -y libluajit-5.1-dev
+
 # slim down the image again.
 RUN rm -r /var/lib/apt/lists /var/cache/apt
