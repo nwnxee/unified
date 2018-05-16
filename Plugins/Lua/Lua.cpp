@@ -69,17 +69,17 @@ namespace Lua {
         // get configuration
         // mandatory preload script and Token Function
         std::string preloadScript = GetServices()->m_config->Get<std::string>("PRELOAD_SCRIPT", userDir+"/lua/preload.lua");
-        m_tokenFunction = GetServices()->m_config->Get<std::string>("TOKEN_FUNCTION", "CallToken");
+        std::string tokenFunction = GetServices()->m_config->Get<std::string>("TOKEN_FUNCTION", "CallToken");
         
         // if you want to use an event framework instead of use only Eval and EvalVoid, less intensive
-        m_eventFunction = GetServices()->m_config->Get<std::string>("EVENT_FUNCTION", "RunEvent");
+        std::string eventFunction = GetServices()->m_config->Get<std::string>("EVENT_FUNCTION", "RunEvent");
         
         // custom Set OBJECT_SELF function accepting an integer as argument (the current value of OBJECT_SELF)
         // if this configuration is not defined a global OBJECT_SELF integer wil be keeped aligned to the current value
         // This is useful if you want to write OOP code and treat nwn objects as lua classes and not as numbers
         // The other function in wich you recive a numeric object is the RunEvent Function,
         // but RunEvent is in lua code so you can modifiy as you want
-        m_setObjSelfFunction = GetServices()->m_config->Get<std::string>("OBJSELF_FUNCTION", "");
+        std::string setObjSelfFunction = GetServices()->m_config->Get<std::string>("OBJSELF_FUNCTION", "");
         
         // loading preload code
         // Dont call any NWN function in this script like SetLocalString(), GetModule() etc
@@ -92,7 +92,41 @@ namespace Lua {
         }
         lua_settop(m_luaInstance, 0);
 
+        // save the Token function in the lua registry for fast access
+        lua_getglobal(m_luaInstance, tokenFunction.c_str());
+        m_tokenFunction = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
+
+        // save the Event function in the lua registry for fast access
+        lua_getglobal(m_luaInstance, eventFunction.c_str());
+        m_eventFunction = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
+
+        // default assignement
         m_object_self = Constants::OBJECT_INVALID;
+
+        if(setObjSelfFunction.empty())
+        {
+            m_setObjSelfFunction = [&](Types::ObjectID objSelf) { 
+                lua_pushinteger(m_luaInstance, objSelf); 
+                lua_setglobal(m_luaInstance, "OBJECT_SELF");
+            };
+        }
+        else
+        {
+            // Save the SetObjectSelf function in the lua registry
+            lua_getglobal(m_luaInstance, setObjSelfFunction.c_str());
+            int iRef = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
+            
+            m_setObjSelfFunction = [&, iRef](Types::ObjectID objSelf) { 
+                lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, iRef);
+                lua_pushinteger(m_luaInstance, objSelf);
+                if (lua_pcall(m_luaInstance, 1, 0, 0) != 0)
+                {
+                    LOG_ERROR("Error on OBJSELF_FUNCTION function, object 0x%x: %s", objSelf, lua_tostring(m_luaInstance, -1));
+                    lua_remove(m_luaInstance, -1);
+                }
+            };
+        }
+
         // bind events
         GetServices()->m_events->RegisterEvent("EVAL", std::bind(&Lua::OnEval, this, std::placeholders::_1));
         GetServices()->m_events->RegisterEvent("EVALVOID", std::bind(&Lua::OnEvalVoid, this, std::placeholders::_1));
@@ -103,15 +137,18 @@ namespace Lua {
     Lua::~Lua()
     {        
         // run last event so resources on Lua side could be released, i.e: closing DB connections
-        LOG_DEBUG("Running server_shutdown event");
-        lua_getglobal(m_luaInstance, m_eventFunction.c_str());  /* function to be called */
+        LOG_INFO("Running server_shutdown event");
+        lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_eventFunction);  /* function to be called */
         lua_pushstring(m_luaInstance, "server_shutdown");   /* push 1st argument */
         lua_pushinteger(m_luaInstance, 0);   /* push 2nd argument */
-        //lua_pushstring(m_luaInstance, "");   /* push 3st argument, OPTIONAL */
-        lua_pcall(m_luaInstance, 2, 0, 0);
-        lua_settop (m_luaInstance, 0);
 
-        LOG_DEBUG("Lua Shutdown, Memory: %d Kb", lua_gc(m_luaInstance, LUA_GCCOUNT, 0));
+        if (lua_pcall(m_luaInstance, 2, 0, 0) != 0)
+        {
+            LOG_ERROR("Error on Event server_shutdown, object 0x0: %s", lua_tostring(m_luaInstance, -1));
+        }
+
+        lua_settop (m_luaInstance, 0);
+        LOG_INFO("Lua Shutdown, Memory: %d Kb", lua_gc(m_luaInstance, LUA_GCCOUNT, 0));
     }
 
     // Eval Lua code and returns the result
@@ -166,7 +203,7 @@ namespace Lua {
         
         SetObjectSelf();         
         
-        lua_getglobal(m_luaInstance, m_tokenFunction.c_str());  /* function to be called */
+        lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_tokenFunction);  /* function to be called */
         lua_pushstring(m_luaInstance, token.c_str());   /* push 1st argument */
 
         if (lua_pcall(m_luaInstance, 1, 0, 0) != 0)
@@ -188,7 +225,7 @@ namespace Lua {
         
         SetObjectSelf();  
 
-        lua_getglobal(m_luaInstance, m_eventFunction.c_str());  /* function to be called */
+        lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_eventFunction);  /* function to be called */
         lua_pushstring(m_luaInstance, eventStr.c_str());   /* push 1st argument */
         lua_pushinteger(m_luaInstance, objectId);   /* push 2nd argument */
         lua_pushstring(m_luaInstance, extraStr.c_str());   /* push 3st argument */
@@ -204,34 +241,19 @@ namespace Lua {
 
     // Set a global number OBJECT_SELF at each request of running Lua code,
     // if a function is present in the configuration
-    // call that function instead
+    // call that function instead, leave the stack clean even on error
     void Lua::SetObjectSelf()
     {              
         Types::ObjectID objSelf = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
-
+        
+        // change only if there is a change of context
         if(m_object_self == objSelf)
         {
             return;
         }
         
-        // a function is defined, call it 
-        if(!m_setObjSelfFunction.empty())
-        {
-            lua_getglobal(m_luaInstance, m_setObjSelfFunction.c_str());  /* function to be called */
-            lua_pushinteger(m_luaInstance, objSelf);   /* push 1st argument */
-            if (lua_pcall(m_luaInstance, 1, 0, 0) != 0)
-            {
-                LOG_ERROR("Error on SetObjSelf function %s, object 0x%x: %s", m_setObjSelfFunction.c_str(), objSelf, lua_tostring(m_luaInstance, -1));
-            }
-
-        }
-        else // no function: give the value to a Global integer 
-        {
-            lua_pushinteger(m_luaInstance, objSelf); 
-            lua_setglobal(m_luaInstance, "OBJECT_SELF");
-        }
+        m_setObjSelfFunction(objSelf);
         m_object_self = objSelf;
-        lua_settop(m_luaInstance, 0);
     }
 
 }
