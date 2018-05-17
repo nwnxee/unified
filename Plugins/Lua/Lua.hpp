@@ -28,9 +28,9 @@ namespace Lua {
 	    Events::ArgumentStack OnEvent(Events::ArgumentStack&& args);
 	private:
 	    void SetObjectSelf();
-	    std::string m_tokenFunction;
-	    std::string m_eventFunction;
-	    std::string m_setObjSelfFunction;
+	    int m_tokenFunction;
+	    int m_eventFunction;
+	    std::function<void(Types::ObjectID objSelf)> m_setObjSelfFunction;
 	    Types::ObjectID m_object_self;
 	};
 
