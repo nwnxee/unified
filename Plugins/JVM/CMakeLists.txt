@@ -6,9 +6,7 @@ if (JAVA_FOUND)
 
   # This is hardcoded for the docker builder image.
   # FindJava is kinda screwed on debian. Fix later.
-  # include_directories(${JNI_INCLUDE_DIRS})
-  include_directories(/usr/lib/jvm/java-8-openjdk-i386/include
-    /usr/lib/jvm/java-8-openjdk-i386/include/linux)
+  include_directories(${JNI_INCLUDE_DIRS})
 
   add_plugin(JVM
     JVM.cpp
