@@ -9,11 +9,15 @@
 #include "API/Vector.hpp"
 #include "API/CExoString.hpp"
 #include "API/CScriptLocation.hpp"
+#include "API/CServerAIMaster.hpp"
+#include "API/CWorldTimer.hpp"
+#include "API/CNWSObject.hpp"
 #include "Log.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
 #include <sys/time.h>
 #include <cmath>
+
 
 // metatables
 #define LUA_NWN_VECTOR "nwn_vector"
@@ -39,7 +43,63 @@ CNWVirtualMachineCommands* GetVmCommands()
     return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
 }
 
+CVirtualMachineScript* CreateScriptForClosure(const char* token)
+{
+    CVirtualMachineScript* script = new CVirtualMachineScript();
+    script->m_nCodeSize = 0;
+    script->m_pCode = NULL;
+    script->m_nLoadedFromSave = 0;
+    script->m_nSecondaryInstructPtr = 0;
+    script->m_nInstructPtr = 0;
+    script->m_nStackSize = 0;
+    script->m_pStack = new CVirtualMachineStack();
+
+    char buff[128];
+    sprintf(buff, "%s %s", "NWNX_LUA_INTERNAL", token);
+    script->m_sScriptName = CExoString(buff);
+
+    return script;
+}
+
 extern "C" {
+
+    static int NWScript_DelayCommand(lua_State *L)
+    {
+        uint32_t oid = (uint32_t)luaL_checkinteger(L, 1);
+        const char* token = luaL_checkstring(L, 2);
+        float duration = lua_tonumber(L, 3);
+        
+        CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
+        if (obj)
+        {
+            int32_t days = 0;
+            int32_t time = 0;
+            if(duration > 0.0f)
+            {
+                days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
+                time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
+            }
+            
+            CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+            ai->AddEventDeltaTime(days, time, oid, oid, 1, CreateScriptForClosure(token));
+        }
+        return 0;
+    }
+
+    static int NWScript_ActionDoCommand(lua_State *L)
+    {
+        uint32_t oid = (uint32_t)luaL_checkinteger(L, 1);
+        const char* token = luaL_checkstring(L, 2);
+
+        CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
+        if (obj && obj->m_nObjectType > Constants::OBJECT_TYPE_AREA)
+        {
+            ((CNWSObject*)obj)->AddDoCommandAction(CreateScriptForClosure(token));
+            return 0;
+        }
+
+        return 0;
+    }
 
     static int NWScript_VM_ExecuteCommand(lua_State *L)
     {
@@ -464,6 +524,8 @@ void LUA_InitNWScript(lua_State *L)
     luaopen_structure(L, LUA_NWN_EVENT, event_m, false);
     luaopen_structure(L, LUA_NWN_TALENT, talent_m, false);
     luaopen_structure(L, LUA_NWN_ITEMPROPERTY, property_m, false);
+    lua_register(L, "actiondocommand", NWScript_ActionDoCommand);
+    lua_register(L, "delaycommand", NWScript_DelayCommand);
     lua_register(L, "serializeobject", NWScript_SerializeObject);
     lua_register(L, "deserializeobject", NWScript_DeserializeObject);
     lua_register(L, "gettimeofday", NWScript_gettimeofday);

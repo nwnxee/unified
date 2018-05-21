@@ -9567,12 +9567,9 @@ end
 --  script and then passed into the action.  For example:
 --  effect eDamage = EffectDamage(nDamage, DAMAGE_TYPE_MAGICAL)
 --  DelayCommand(fDelay, ApplyEffectToObject(DURATION_TYPE_INSTANT, eDamage, oTarget)
-function DelayCommand(t, obj, action, ...)
+function DelayCommand(obj, t, action, ...)
   local scmd = AddToken(action, ...)
-  SetLocalInt(obj, "lua_relay_type", 0);
-  SetLocalFloat(obj, "lua_relay_delay", t)
-  SetLocalString(obj, "lua_relay_cmd", scmd)
-  return ExecuteScript("nwnx_lua_relay", obj)
+  delaycommand(obj, scmd, t)
 end
 
 --  Assign aActionToAssign to oActionSubject.
@@ -9581,14 +9578,10 @@ end
 --    (If the object doesn't exist, nothing happens.)
 function AssignCommand(obj, action, ...)
   local scmd = AddToken(action, ...)
-  SetLocalInt(obj, "lua_relay_type", 1);
-  SetLocalString(obj, "lua_relay_cmd", scmd)
-  return ExecuteScript("nwnx_lua_relay", obj)
+  delaycommand(obj, scmd)
 end
 
 function ActionDoCommand(action, ...)
   local scmd = AddToken(action, ...)
-  SetLocalInt(obj, "lua_relay_type", 2);
-  SetLocalString(OBJECT_SELF, "lua_relay_cmd", scmd)
-  return ExecuteScript("nwnx_lua_relay", OBJECT_SELF)
+  actiondocommand(OBJECT_SELF, scmd)
 end

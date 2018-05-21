@@ -5,6 +5,10 @@
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 #include <cstring>
+//for Hooks
+#include "Services/Hooks/Hooks.hpp"
+#include "API/Functions.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 //for objectself
 #include "API/CVirtualMachine.hpp"
 // for dlopen
@@ -39,6 +43,8 @@ namespace Lua {
 
     using namespace NWNXLib::Services;
     using namespace NWNXLib::API;
+
+    static Hooking::FunctionHook* s_RunScriptSituationHook;
 
     Lua::Lua(const Plugin::CreateParams& params) : Plugin(params)
     {
@@ -131,9 +137,28 @@ namespace Lua {
 
         // bind events
         GetServices()->m_events->RegisterEvent("EVAL", std::bind(&Lua::OnEval, this, std::placeholders::_1));
-        GetServices()->m_events->RegisterEvent("EVALVOID", std::bind(&Lua::OnEvalVoid, this, std::placeholders::_1));
-        GetServices()->m_events->RegisterEvent("TOKEN", std::bind(&Lua::OnToken, this, std::placeholders::_1));    
+        GetServices()->m_events->RegisterEvent("EVALVOID", std::bind(&Lua::OnEvalVoid, this, std::placeholders::_1));    
         GetServices()->m_events->RegisterEvent("EVENT", std::bind(&Lua::OnEvent, this, std::placeholders::_1));
+
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScriptSituation, int32_t>(
+            +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID oid, int32_t oidValid)
+            {
+                if (strstr(script->m_sScriptName.m_sString, "NWNX_LUA_INTERNAL"))
+                {
+                    char* token = strstr(script->m_sScriptName.m_sString, " ");
+                    if (token)
+                    {
+                        g_plugin->OnToken(oid, token + 1);
+                        CVirtualMachineScript__CVirtualMachineScriptDtor(script);
+                        free(script);
+                    }
+                    return 1;
+                }
+
+                return s_RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, oid, oidValid);
+            }
+        );
+        s_RunScriptSituationHook = GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScriptSituation);
     }
 
     Lua::~Lua()
@@ -198,23 +223,27 @@ namespace Lua {
     }
 
     // Used to emulate DelayCommand, AssignCommand and ActioDoCommand
-    Events::ArgumentStack Lua::OnToken(Events::ArgumentStack&& args)
+    void Lua::OnToken(Types::ObjectID oid, char* token)
     {
-        const auto token = Events::ExtractArgument<std::string>(args);        
-        Events::ArgumentStack stack;
-        
+        GetVm()->m_nRecursionLevel += 1;
+
+        GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = oid;
+        GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = 1;
+        GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+        GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
+
         SetObjectSelf();         
         
-        lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_tokenFunction);  /* function to be called */
-        lua_pushstring(m_luaInstance, token.c_str());   /* push 1st argument */
-
+        lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_tokenFunction);
+        lua_pushstring(m_luaInstance, token);   /* push 1st argument */
         if (lua_pcall(m_luaInstance, 1, 0, 0) != 0)
         {
-            LOG_ERROR("Error on Token %s: %s", token.c_str(), lua_tostring(m_luaInstance, -1));
+            LOG_ERROR("Error on Token %s: %s", token, lua_tostring(m_luaInstance, -1));
         }
         
         lua_settop(m_luaInstance, 0);
-        return stack;
+        
+        GetVm()->m_nRecursionLevel -= 1;
     }
 
     // Call the event function

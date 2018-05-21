@@ -17,13 +17,13 @@ Allows users to call Lua code with NWScript binding.
 1) Install **LuaJIT**, i.e `sudo apt-get install luajit libluajit-5.1-dev`
 2) Compile your plugin and install as any other nwnxee plugin
 3) Don't set any configuration env variable
-4) Import the two scripts in the **NWScript** directory in your module
+4) Import the `nwnx_lua.nss` script in the **NWScript** directory in your module
 5) Copy the Lua directory inside your **USERDIR** (usually `.local/Neverwinter Nights/`), so you will have a **USERDIR/lua/preload.lua** file.
 6) In your *"on module load script"* include *"nwnx_lua"* and add this line `NWNX_Lua_RunEvent("mod_load", OBJECT_SELF);`
 7) In your *"on module chat script"* include *"nwnx_lua"* and add this line `NWNX_Lua_RunEvent("mod_chat",  GetPCChatSpeaker());`
 8) Enter your module and put this line in your talk chat: `/c =GetName(oPC)` dont forget the '='
 9) Press enter and you will get your name as server message
-10) try the same with `/c ApplyEffectToObject(2, EffectHeal(10), oPC)` or `/c return GetName(GetArea(oPC))` or `/c =3+5` or `/c DelayCommand(1.5, oPC, SpeakString, 'Foo')`
+10) try the same with `/c ApplyEffectToObject(2, EffectHeal(10), oPC)` or `/c return GetName(GetArea(oPC))` or `/c =3+5` or `/c DelayCommand(oPC, 1.5, SpeakString, 'Foo')`
 11) Have some fun with your chat command interpreter, every command you want evaled by Lua must start with `/c `, if you want a return value start with `/c =` or `/c return `
 12) Look at the Lua scripts provided for some examples. The different ways to use this plugin are a lot, now you have NWScript binding in a interpred language, Lua, so you can do things like change a Lua script and hot reload it without even restart the module; for an example look at the `loadscript()` function in the preload script.
 
@@ -41,7 +41,7 @@ Only these functions are different from NWScript: `DelayCommand`, `AssignCommand
 
 The signatures of the functions are:
 ```ruby
-DelayCommand(fDelay, oObject, Function, 1stFunctionArg, 2ndFunctionArg .....)
+DelayCommand(oObject, fDelay, Function, 1stFunctionArg, 2ndFunctionArg .....)
 
 AssignCommand(oObject, Function, 1stFunctionArg, 2ndFunctionArg .....)
 
@@ -49,14 +49,14 @@ ActionDoCommand(Function, 1stFunctionArg, 2ndFunctionArg .....)
 ```
 For Example:
 ```ruby
-DelayCommand(2.5, oPC, SetLocalInt, oPC, "LOCAL_INT", 42)
+DelayCommand(oPC, 2.5, SetLocalInt, oPC, "LOCAL_INT", 42)
 
 AssignCommand(OBJECT_SELF, SpeakString, "Bar")
 
 ActionDoCommand(SpeakString, "Here's my seat!");
 
 ```
-Beware that for `DelayCommand` there is an additional second argument (oObject) respect to the NWScript counterpart, so you can avoid to write `AssignCommand(oObject, DelayCommand(2.0 ...`. Just write `DelayCommand(2.0, oObject ....`. If you dont know how to set oObject just use `OBJECT_SELF`.
+Beware that for `DelayCommand` there is an additional argument (oObject) respect to the NWScript counterpart, so you can avoid to write `AssignCommand(oObject, DelayCommand, ...`. Just write `DelayCommand(oObject, 2.0  ....`. If you dont know how to set oObject just use `OBJECT_SELF`.
 
 In the Lua namespace are defined, by the plugin, some additional utility functions. You can find them in the file `lua/additions.lua`, among these there are `SerializeObject()` and `DeserializeObject()`, useful if you want to use Lua to connect to database and saving/retrieving objects in it. 
 

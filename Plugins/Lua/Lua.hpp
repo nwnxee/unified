@@ -24,8 +24,8 @@ namespace Lua {
 	    lua_State *m_luaInstance;
 	    Events::ArgumentStack OnEval(Events::ArgumentStack&& args);
 	    Events::ArgumentStack OnEvalVoid(Events::ArgumentStack&& args);
-	    Events::ArgumentStack OnToken(Events::ArgumentStack&& args);
 	    Events::ArgumentStack OnEvent(Events::ArgumentStack&& args);
+	    void OnToken(Types::ObjectID oid, char* token);	    
 	private:
 	    void SetObjectSelf();
 	    int m_tokenFunction;
