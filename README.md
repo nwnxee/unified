@@ -43,7 +43,7 @@ Given the binaries, follow these steps:
 
 4.  You can skip a particular plugin by adding a line that looks like this before starting nwserver-linux:
 
-     export NWNX_JVM_SKIP=true
+        export NWNX_JVM_SKIP=true
 
 5.  You can set the log levels like this, which governs the verbosity of log output, with 1 being the least verbose and 7 being the most verbose.
 
@@ -54,7 +54,27 @@ Optionally, you can use Docker to run the server with pre-built NWNX binaries. R
 
 ## Running the server (Docker)
 
-[TODO] Glorwinger, fill me in.
+`nwnxee/unified` supports the following tags:
+
+* `latest`
+* `latest-full`
+* `[versiontag]` (replace with a github tag, like `build8166`)
+* `[versiontag]-full`
+
+Most users are fine running `nwnxee/unified:latest`. The `-full` versions include all the heavier run dependencies, and is only necessary if you use the mono or the jvm plugin.
+
+Note, the image named `nwnxee/nwserver` exists for legacy reasons but is no longer actively maintained.
+
+Exactly the same as running `beamdog/nwserver` image. For any questions related to running nwserver, please refer to the nwserver [README](https://hub.docker|.com/r/beamdog/nwserver/).
+
+nwnxee plugins are configured using environment variables passed to `docker run`. With the exception of ServerLogRedirector, all plugins are skipped by default. Plugins are activated by passing `n` to the corresponding environment variable for a given plugin in order to not skip it, e.g. `-e NWNX_ADMINISTRATION_SKIP=n`.
+
+Some plugins require additional configurations, like for instance the database plugin. To find plugin specific configurations please refer to the README of the given plugin located in its directory.
+
+It is advised to configure the container with docker-compose. Please refer to these resources for documentation and examples
+
+* https://docs.docker.com/compose/
+* Example compose file: [openlotr](https://github.com/Urothis/nwn-openlotr/blob/master/docker-compose.yml)
 
 ## Compiling NWNX:EE (native)
 
@@ -85,7 +105,7 @@ To build on Windows:
 1.  Execute ./Scripts/rundockerbuild.ps1
 2.  The script will pull the NWNX Linux Docker builder image
 3.  The Container will execute the ./scripts/buildnwnx.sh script
-4.  To perform a clean and build pass -FORCECLEAN eg './scripts/rundockerbuild.ps1 -FORCECLEAN'
+4.  To perform a clean build pass -FORCECLEAN eg './scripts/rundockerbuild.ps1 -FORCECLEAN'
 
 ## Contributing code
 
