@@ -2,6 +2,8 @@
 
 #include "API/Types.hpp"
 #include "API/CGameObject.hpp"
+#include "API/CNWSScriptVarTable.hpp"
+#include "API/Vector.hpp"
 #include <string>
 
 
@@ -33,6 +35,11 @@ API::CNWSWaypoint*           AsNWSWaypoint(API::CGameObject* obj);
 bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner);
 bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y, float z);
 
+bool operator==(API::Vector& v1, API::Vector& v2);
+bool operator!=(API::Vector& v1, API::Vector& v2);
+
+// Returns TRUE if the var tables have the same variables with same values
+bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *pVars2);
 }
 
 }
