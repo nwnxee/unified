@@ -9,6 +9,7 @@ class PlayerDyingHitPointLimit;
 class DisablePause;
 class FixMasterServerDNS;
 class CompareVarsForMerge;
+class ParryAllAttacks;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -22,6 +23,7 @@ private:
     std::unique_ptr<DisablePause> m_DisablePause;
     std::unique_ptr<FixMasterServerDNS> m_FixMasterServerDNS;
     std::unique_ptr<CompareVarsForMerge> m_CompareVarsForMerge;
+    std::unique_ptr<ParryAllAttacks> m_ParryAllAttacks;
 };
 
 }

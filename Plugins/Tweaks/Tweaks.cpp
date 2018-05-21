@@ -4,6 +4,7 @@
 #include "Tweaks/DisablePause.hpp"
 #include "Tweaks/FixMasterServerDNS.hpp"
 #include "Tweaks/CompareVarsForMerge.hpp"
+#include "Tweaks/ParryAllAttacks.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -64,6 +65,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Will compare local variables when merging item stacks");
         m_CompareVarsForMerge = std::make_unique<CompareVarsForMerge>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("PARRY_ALL_ATTACKS", false))
+    {
+        LOG_INFO("Parry will no longer be limited to one attack per flurry");
+        m_ParryAllAttacks = std::make_unique<ParryAllAttacks>(GetServices()->m_hooks.get());
     }
 }
 
