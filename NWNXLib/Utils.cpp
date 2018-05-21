@@ -17,6 +17,10 @@
 #include "API/CNWSStore.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSWaypoint.hpp"
+#include "API/CNWSScriptVarTable.hpp"
+#include "API/CNWSScriptVar.hpp"
+#include "API/CScriptLocation.hpp"
+#include "API/CExoString.hpp"
 
 #include <sstream>
 
@@ -206,7 +210,57 @@ bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y
     }
 }
 
+bool operator==(API::Vector& v1, API::Vector& v2)
+{
+    return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
+}
+bool operator!=(API::Vector& v1, API::Vector& v2)
+{
+    return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
+}
 
+bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *pVars2)
+{
+    // Fast paths
+    if (pVars1->m_lVarList.num == 0 && pVars2->m_lVarList.num == 0)
+        return true;
+    if (pVars1->m_lVarList.num != pVars2->m_lVarList.num)
+        return false;
+
+    // O(n^2) compare
+    for (int32_t i = 0; i < pVars1->m_lVarList.num; i++)
+    {
+        API::CNWSScriptVar *pVar1 = &pVars1->m_lVarList.element[i];
+        switch (pVar1->m_nType)
+        {
+            case 1:
+                if (pVars2->GetInt(pVar1->m_sName) != reinterpret_cast<int32_t>(pVar1->m_pValue))
+                    return false;
+                break;
+            case 2:
+                if (pVars2->GetFloat(pVar1->m_sName) != *reinterpret_cast<float*>(&pVar1->m_pValue))
+                    return false;
+                break;
+            case 3:
+                if (pVars2->GetString(pVar1->m_sName) != *static_cast<API::CExoString*>(pVar1->m_pValue))
+                    return false;
+                break;
+            case 4:
+                if (pVars2->GetObject(pVar1->m_sName) != reinterpret_cast<uint32_t>(pVar1->m_pValue))
+                    return false;
+                break;
+            case 5:
+            {
+                API::CScriptLocation loc1 = *reinterpret_cast<API::CScriptLocation*>(pVar1->m_pValue);
+                API::CScriptLocation loc2 = pVars2->GetLocation(pVar1->m_sName);
+                if (loc1.m_oArea != loc2.m_oArea || loc1.m_vPosition != loc2.m_vPosition || loc1.m_vOrientation != loc2.m_vOrientation)
+                    return false;
+                break;
+            }
+        }
+    }
+    return true;
+}
 
 }
 }

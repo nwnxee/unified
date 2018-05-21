@@ -3,6 +3,7 @@
 #include "Tweaks/PlayerDyingHitPointLimit.hpp"
 #include "Tweaks/DisablePause.hpp"
 #include "Tweaks/FixMasterServerDNS.hpp"
+#include "Tweaks/CompareVarsForMerge.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -57,6 +58,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Fixing master server DNS fallback.");
         m_FixMasterServerDNS = std::make_unique<FixMasterServerDNS>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("COMPARE_VARIABLES_WHEN_MERGING", false))
+    {
+        LOG_INFO("Will compare local variables when merging item stacks");
+        m_CompareVarsForMerge = std::make_unique<CompareVarsForMerge>(GetServices()->m_hooks.get());
     }
 }
 
