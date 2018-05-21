@@ -12,6 +12,7 @@ RUN runDeps="hunspell \
     libmariadbclient18 \
     libpq-dev \
     libruby2.3 \
+    luajit libluajit-5.1 \
     libssl1.1" \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
