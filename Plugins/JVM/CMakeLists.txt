@@ -3,9 +3,6 @@ find_package(JNI)
 find_package(Java)
 
 if (JAVA_FOUND)
-
-  # This is hardcoded for the docker builder image.
-  # FindJava is kinda screwed on debian. Fix later.
   include_directories(${JNI_INCLUDE_DIRS})
 
   add_plugin(JVM
