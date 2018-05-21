@@ -4,4 +4,5 @@ add_plugin(Tweaks
     "Tweaks/PlayerDyingHitPointLimit.cpp"
     "Tweaks/DisablePause.cpp"
     "Tweaks/FixMasterServerDNS.cpp"
-    "Tweaks/CompareVarsForMerge.cpp")
+    "Tweaks/CompareVarsForMerge.cpp"
+    "Tweaks/ParryAllAttacks.cpp")
