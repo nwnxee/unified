@@ -65,7 +65,7 @@ Most users are fine running `nwnxee/unified:latest`. The `-full` versions includ
 
 Note, the image named `nwnxee/nwserver` exists for legacy reasons but is no longer actively maintained.
 
-Run the image exactly the same as you would run the `beamdog/nwserver` image. For any questions related to running nwserver, please refer to the nwserver [README](https://hub.docker|.com/r/beamdog/nwserver/).
+Run the image exactly the same as you would run the `beamdog/nwserver` image. For any questions related to running nwserver, please refer to the nwserver [README](https://hub.docker.com/r/beamdog/nwserver/).
 
 nwnxee plugins are configured using environment variables passed to `docker run`. With the exception of ServerLogRedirector, all plugins are skipped by default. Plugins are activated by passing `n` to the corresponding environment variable for a given plugin in order to not skip it, e.g. `-e NWNX_ADMINISTRATION_SKIP=n`.
 
