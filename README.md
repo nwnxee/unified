@@ -74,7 +74,7 @@ Some plugins require additional configurations, like for instance the database p
 It is advised to configure the container with docker-compose. Please refer to these resources for documentation and examples
 
 * https://docs.docker.com/compose/
-* Example compose file: [openlotr](https://github.com/Urothis/nwn-openlotr/blob/master/docker-compose.yml)
+* Example compose file: [nwnxee-template](https://github.com/Urothis/nwnxee-template/blob/master/docker-compose.yml)
 
 ## Compiling NWNX:EE (native)
 
