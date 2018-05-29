@@ -1668,12 +1668,12 @@ function SetCommandable(bCommandable, oTarget)
 end
 
 --  Determine whether oTarget's action stack can be modified.
-function GetCommandable()
+function GetCommandable(oTarget)
 	oTarget = oTarget or OBJECT_SELF
 
 	StackPushObject(oTarget)
 	VM_ExecuteCommand(163, 1)
-	return StackPopInteger()
+	return StackPopBoolean()
 end
 
 --  Create a Regenerate effect.
