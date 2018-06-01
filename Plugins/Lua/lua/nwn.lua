@@ -9558,7 +9558,77 @@ function SetEventScript(oObject, nHandler, sScript)
     return StackPopBoolean()
 end
 
+-- 1.75
+
+-- Gets a visual transform on the given object.
+-- - oObject can be any valid Creature, Placeable, Item or Door.
+-- - nTransform is one of OBJECT_VISUAL_TRANSFORM_*
+-- Returns the current (or default) value.
+function GetObjectVisualTransform(oObject, nTransform)
+		StackPushInteger(nTransform)
+    StackPushObject(oObject)
+    VM_ExecuteCommand(887, 2)
+    return StackPopFloat()
+end
+
+-- Sets a visual transform on the given object.
+-- - oObject can be any valid Creature, Placeable, Item or Door.
+-- - nTransform is one of OBJECT_VISUAL_TRANSFORM_*
+-- - fValue depends on the transformation to apply.
+-- Returns the old/previous value.
+function SetObjectVisualTransform(oObject, nTransform, fValue)
+		StackPushFloat(fValue)
+		StackPushInteger(nTransform)
+    StackPushObject(oObject)
+    VM_ExecuteCommand(888, 3)
+    return StackPopFloat()
+end
+
+-- Sets an integer material shader uniform override.
+-- - sMaterial needs to be a material on that object.
+-- - sParam needs to be a valid shader parameter already defined on the material.
+function SetMaterialShaderUniformInt(oObject, sMaterial, sParam, nValue)
+		StackPushInteger(nValue)
+		StackPushString(sParam)
+		StackPushString(sMaterial)
+    StackPushObject(oObject)
+    VM_ExecuteCommand(889, 4)
+end
+
+-- Sets a vec4 material shader uniform override.
+-- - sMaterial needs to be a material on that object.
+-- - sParam needs to be a valid shader parameter already defined on the material.
+-- - You can specify a single float value to set just a float, instead of a vec4.
+function SetMaterialShaderUniformVec4(oObject, sMaterial, sParam, fValue1, fValue2, fValue3, fValue4)
+	fValue4 = fValue4 or 0.0
+	fValue3 = fValue3 or 0.0
+	fValue2 = fValue2 or 0.0
+
+	StackPushFloat(fValue4)
+	StackPushFloat(fValue3)
+	StackPushFloat(fValue2)
+	StackPushFloat(fValue1)
+	StackPushString(sParam)
+	StackPushString(sMaterial)
+	StackPushObject(oObject)
+  VM_ExecuteCommand(890, 7)
+end
+-- Resets material shader parameters on the given object:
+-- - Supply a material to only reset shader uniforms for meshes with that material.
+-- - Supply a parameter to only reset shader uniforms of that name.
+-- - Supply both to only reset shader uniforms of that name on meshes with that material.
+function ResetMaterialShaderUniforms(oObject, sMaterial, sParam)
+		sParam = sParam or ""
+		sMaterial = sMaterial or ""
+
+		StackPushString(sParam)
+		StackPushString(sMaterial)
+		StackPushObject(oObject)
+    VM_ExecuteCommand(891, 3)
+end
+
 -- reworked functions
+
 --  Delay aActionToDelay by fSeconds.
 --  * No return value, but if an error occurs, the log file will contain
 --    "DelayCommand failed.".
