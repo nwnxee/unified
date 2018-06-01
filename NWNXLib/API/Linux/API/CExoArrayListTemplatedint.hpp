@@ -13,11 +13,13 @@ struct CExoArrayListTemplatedint
     int32_t array_size;
 
     void Add(int32_t);
+    int32_t AddUnique(int32_t);
     void Allocate(int32_t);
     void SetSize(int32_t);
 };
 
 void CExoArrayListTemplatedint__Add(CExoArrayListTemplatedint* thisPtr, int32_t);
+int32_t CExoArrayListTemplatedint__AddUnique(CExoArrayListTemplatedint* thisPtr, int32_t);
 void CExoArrayListTemplatedint__Allocate(CExoArrayListTemplatedint* thisPtr, int32_t);
 void CExoArrayListTemplatedint__SetSize(CExoArrayListTemplatedint* thisPtr, int32_t);
 

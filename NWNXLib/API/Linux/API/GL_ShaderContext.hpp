@@ -16,7 +16,7 @@
 #include "unknown_PFNGLUNIFORM1FARBPROC.hpp"
 #include "unknown_PFNGLUNIFORM1IARBPROC.hpp"
 #include "unknown_PFNGLUSEPROGRAMOBJECTARBPROC.hpp"
-#include "unknown_SDL2_bool.hpp"
+#include "unknown_SDL_bool.hpp"
 
 namespace NWNXLib {
 
@@ -38,8 +38,8 @@ struct GL_ShaderContext
     PFNGLUNIFORM1IARBPROC glUniform1iARB;
     PFNGLUNIFORM1FARBPROC glUniform1fARB;
     PFNGLUSEPROGRAMOBJECTARBPROC glUseProgramObjectARB;
-    SDL2_bool GL_ARB_texture_rectangle_supported;
-    GL_ShaderData shaders[6];
+    SDL_bool GL_ARB_texture_rectangle_supported;
+    GL_ShaderData shaders[12];
 };
 
 }

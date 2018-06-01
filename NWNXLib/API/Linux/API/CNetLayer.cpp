@@ -336,6 +336,11 @@ void CNetLayer::SetConnectionsMustBeValidated(int32_t a0)
     return CNetLayer__SetConnectionsMustBeValidated(this, a0);
 }
 
+void CNetLayer::SetCurrentMasterServerInternetAddress(uint32_t a0, uint32_t a1)
+{
+    return CNetLayer__SetCurrentMasterServerInternetAddress(this, a0, a1);
+}
+
 void CNetLayer::SetDisconnectReason(const CExoString& a0)
 {
     return CNetLayer__SetDisconnectReason(this, a0);
@@ -359,11 +364,6 @@ void CNetLayer::SetExpansionPackReqd(uint16_t a0)
 int32_t CNetLayer::SetGameMasterPassword(CExoString a0)
 {
     return CNetLayer__SetGameMasterPassword(this, a0);
-}
-
-void CNetLayer::SetMasterServerInternetAddress(const unsigned char* a0, uint32_t a1)
-{
-    return CNetLayer__SetMasterServerInternetAddress(this, a0, a1);
 }
 
 void CNetLayer::SetMstServerPassword(CExoString a0)
@@ -991,6 +991,14 @@ void CNetLayer__SetConnectionsMustBeValidated(CNetLayer* thisPtr, int32_t a0)
     return func(thisPtr, a0);
 }
 
+void CNetLayer__SetCurrentMasterServerInternetAddress(CNetLayer* thisPtr, uint32_t a0, uint32_t a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayer*, uint32_t, uint32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__SetCurrentMasterServerInternetAddress);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 void CNetLayer__SetDisconnectReason(CNetLayer* thisPtr, const CExoString& a0)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayer*, const CExoString&);
@@ -1029,14 +1037,6 @@ int32_t CNetLayer__SetGameMasterPassword(CNetLayer* thisPtr, CExoString a0)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__SetGameMasterPassword);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
-}
-
-void CNetLayer__SetMasterServerInternetAddress(CNetLayer* thisPtr, const unsigned char* a0, uint32_t a1)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayer*, const unsigned char*, uint32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__SetMasterServerInternetAddress);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
 }
 
 void CNetLayer__SetMstServerPassword(CNetLayer* thisPtr, CExoString a0)

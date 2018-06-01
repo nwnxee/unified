@@ -2,8 +2,7 @@
 
 #include <cstdint>
 
-#include "unknown_SDL2_BlitFunc.hpp"
-#include "unknown_TLS_320BA70ECA43DCC2AFAF891964572EC6.hpp"
+#include "unknown_SDL_BlitFunc.hpp"
 
 namespace NWNXLib {
 
@@ -19,8 +18,8 @@ struct blit_table
     uint32_t dstG;
     uint32_t dstB;
     uint32_t blit_features;
-    SDL2_BlitFunc blitfunc;
-    TLS_320BA70ECA43DCC2AFAF891964572EC6 alpha;
+    SDL_BlitFunc blitfunc;
+    uint32_t alpha;
 };
 
 }

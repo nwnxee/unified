@@ -87,12 +87,12 @@ struct CNetLayer
     int32_t SendMessageToStandardConnection(int32_t, char*, int32_t);
     void SetConnectionsDisallowed(int32_t);
     void SetConnectionsMustBeValidated(int32_t);
+    void SetCurrentMasterServerInternetAddress(uint32_t, uint32_t);
     void SetDisconnectReason(const CExoString&);
     void SetDisconnectStrref(uint32_t);
     void SetEnumerateSpecificOverRelay(int32_t, const char*);
     void SetExpansionPackReqd(uint16_t);
     int32_t SetGameMasterPassword(CExoString);
-    void SetMasterServerInternetAddress(const unsigned char*, uint32_t);
     void SetMstServerPassword(CExoString);
     int32_t SetPlayerPassword(CExoString);
     int32_t SetServerAdminPassword(CExoString);
@@ -181,12 +181,12 @@ int32_t CNetLayer__SendMessageToPlayer(CNetLayer* thisPtr, uint32_t, unsigned ch
 int32_t CNetLayer__SendMessageToStandardConnection(CNetLayer* thisPtr, int32_t, char*, int32_t);
 void CNetLayer__SetConnectionsDisallowed(CNetLayer* thisPtr, int32_t);
 void CNetLayer__SetConnectionsMustBeValidated(CNetLayer* thisPtr, int32_t);
+void CNetLayer__SetCurrentMasterServerInternetAddress(CNetLayer* thisPtr, uint32_t, uint32_t);
 void CNetLayer__SetDisconnectReason(CNetLayer* thisPtr, const CExoString&);
 void CNetLayer__SetDisconnectStrref(CNetLayer* thisPtr, uint32_t);
 void CNetLayer__SetEnumerateSpecificOverRelay(CNetLayer* thisPtr, int32_t, const char*);
 void CNetLayer__SetExpansionPackReqd(CNetLayer* thisPtr, uint16_t);
 int32_t CNetLayer__SetGameMasterPassword(CNetLayer* thisPtr, CExoString);
-void CNetLayer__SetMasterServerInternetAddress(CNetLayer* thisPtr, const unsigned char*, uint32_t);
 void CNetLayer__SetMstServerPassword(CNetLayer* thisPtr, CExoString);
 int32_t CNetLayer__SetPlayerPassword(CNetLayer* thisPtr, CExoString);
 int32_t CNetLayer__SetServerAdminPassword(CNetLayer* thisPtr, CExoString);

@@ -36,6 +36,11 @@ void CrashReporter_Linux::InternalCrashHandler(int32_t a0)
     return CrashReporter_Linux__InternalCrashHandler(this, a0);
 }
 
+void CrashReporter_Linux::ReportCrashToUser(const char* a0, const char* a1)
+{
+    return CrashReporter_Linux__ReportCrashToUser(this, a0, a1);
+}
+
 void CrashReporter_Linux::WriteCallstack(_IO_FILE* a0)
 {
     return CrashReporter_Linux__WriteCallstack(this, a0);
@@ -92,6 +97,14 @@ void CrashReporter_Linux__InternalCrashHandler(CrashReporter_Linux* thisPtr, int
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CrashReporter_Linux__InternalCrashHandler);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr, a0);
+}
+
+void CrashReporter_Linux__ReportCrashToUser(CrashReporter_Linux* thisPtr, const char* a0, const char* a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CrashReporter_Linux*, const char*, const char*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CrashReporter_Linux__ReportCrashToUser);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    func(thisPtr, a0, a1);
 }
 
 void CrashReporter_Linux__WriteCallstack(CrashReporter_Linux* thisPtr, _IO_FILE* a0)

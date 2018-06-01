@@ -3,11 +3,13 @@
 #include <cstdint>
 
 #include "CExoArrayListTemplatedCLoopingVisualEffectPtr.hpp"
+#include "CExoArrayListTemplatedMaterialShaderParam.hpp"
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CNWSPlayerLUOAppearanceInfo.hpp"
 #include "CResRef.hpp"
+#include "ObjectVisualTransformData.hpp"
 #include "Vector.hpp"
 
 namespace NWNXLib {
@@ -67,6 +69,7 @@ struct CLastUpdateObject
     int32_t m_bLocked;
     int32_t m_bLockable;
     int32_t m_bRecoverable;
+    int32_t m_bClickable;
     uint8_t m_nAIStateReaction;
     uint32_t m_oidMaster;
     uint16_t m_nAssociateType;
@@ -98,6 +101,8 @@ struct CLastUpdateObject
     uint8_t m_nAbilityFinalINT;
     uint8_t m_nAbilityFinalWIS;
     uint8_t m_nAbilityFinalCHA;
+    ObjectVisualTransformData m_pObjectVisualTransformData;
+    CExoArrayListTemplatedMaterialShaderParam m_lMaterialShaderParameters;
     CNWSPlayerLUOQuickbarItemButton* m_pQuickbarButton;
 
     // The below are auto generated stubs.

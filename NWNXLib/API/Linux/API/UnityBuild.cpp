@@ -46,6 +46,7 @@
 #include "CExoArrayListTemplatedCWorldJournalEntry.cpp"
 #include "CExoArrayListTemplatedfloat.cpp"
 #include "CExoArrayListTemplatedint.cpp"
+#include "CExoArrayListTemplatedMaterialShaderParam.cpp"
 #include "CExoArrayListTemplatedNWPlayerCharacterList_stPtr.cpp"
 #include "CExoArrayListTemplatedNWPlayerCharacterListClass_st.cpp"
 #include "CExoArrayListTemplatedSJournalEntry.cpp"
@@ -270,6 +271,7 @@
 #include "STR_RES.cpp"
 #include "Vector.cpp"
 #include "Vector4.cpp"
+#include "audio_buf_info.cpp"
 #include "AudioBootStrap.cpp"
 #include "axis_correct.cpp"
 #include "B4BLOCK.cpp"
@@ -531,6 +533,15 @@
 #include "GL_ShaderContext.cpp"
 #include "GL_ShaderData.cpp"
 #include "GL_TextureData.cpp"
+#include "GLES2_DriverContext.cpp"
+#include "GLES2_FBOList.cpp"
+#include "GLES2_ProgramCache.cpp"
+#include "GLES2_ProgramCacheEntry.cpp"
+#include "GLES2_Shader.cpp"
+#include "GLES2_ShaderCache.cpp"
+#include "GLES2_ShaderCacheEntry.cpp"
+#include "GLES2_ShaderInstance.cpp"
+#include "GLES2_TextureData.cpp"
 #include "haptic_effect.cpp"
 #include "haptic_hwdata.cpp"
 #include "haptic_hweffect.cpp"
@@ -585,6 +596,7 @@
 #include "LOCK4GROUP.cpp"
 #include "LOCK4ID.cpp"
 #include "LOG4HEADER.cpp"
+#include "MaterialShaderParam.cpp"
 #include "Matrix4x4.cpp"
 #include "MEM4st.cpp"
 #include "MEMO4BLOCK.cpp"
@@ -610,6 +622,7 @@
 #include "NWPlayerCharacterList_st.cpp"
 #include "NWPlayerCharacterListClass_st.cpp"
 #include "NWPlayerListItem_st.cpp"
+#include "ObjectVisualTransformData.cpp"
 #include "OPT4.cpp"
 #include "OPT4BLOCK.cpp"
 #include "OPT4CMP.cpp"
@@ -621,12 +634,15 @@
 #include "pfCVMCommands.cpp"
 #include "pfRECommands.cpp"
 #include "pfRIPCommands.cpp"
+#include "pollfd.cpp"
 #include "prime_factory.cpp"
 #include "pthread_mutex_t____pthread_mutex_s.cpp"
 #include "R4BLOCK_DATA.cpp"
 #include "R4REINDEX.cpp"
 #include "RELATE4St.cpp"
 #include "RELATION4St.cpp"
+#include "RGB2YUVFactors.cpp"
+#include "RGB2YUVParam.cpp"
 #include "RLEDestFormat.cpp"
 #include "S4SCAN.cpp"
 #include "s4singleDistantSt.cpp"
@@ -695,6 +711,12 @@
 #include "tree_desc_s.cpp"
 #include "VideoBootStrap.cpp"
 #include "Visual.cpp"
+#include "VkAllocationCallbacks.cpp"
+#include "VkExtensionProperties.cpp"
+#include "VkInstance_T.cpp"
+#include "VkXcbSurfaceCreateInfoKHR.cpp"
+#include "VkXlibSurfaceCreateInfoKHR.cpp"
+#include "WaveExtensibleFMT.cpp"
 #include "WaveFMT.cpp"
 #include "x11dynlib.cpp"
 #include "xAllocColorCellsReply.cpp"
@@ -703,6 +725,7 @@
 #include "xAllocNamedColorReply.cpp"
 #include "XAnyEvent.cpp"
 #include "XButtonEvent.cpp"
+#include "xcb_connection_t.cpp"
 #include "XCharStruct.cpp"
 #include "XCirculateEvent.cpp"
 #include "XCirculateRequestEvent.cpp"
@@ -745,15 +768,11 @@
 #include "XGraphicsExposeEvent.cpp"
 #include "XGravityEvent.cpp"
 #include "XIAnyClassInfo.cpp"
-#include "XIButtonState.cpp"
-#include "XIDeviceEvent.cpp"
 #include "XIDeviceInfo.cpp"
 #include "XIEventMask.cpp"
-#include "XIModifierState.cpp"
 #include "XineramaScreenInfo.cpp"
 #include "xInternAtomReply.cpp"
 #include "XIRawEvent.cpp"
-#include "XITouchClassInfo.cpp"
 #include "XIValuatorState.cpp"
 #include "xListExtensionsReply.cpp"
 #include "xListFontsReply.cpp"
@@ -795,6 +814,7 @@
 #include "XWindowAttributes.cpp"
 #include "XWMHints.cpp"
 #include "Y4CHUNK.cpp"
+#include "YUV2RGBParam.cpp"
 #include "z_gz_header_s.cpp"
 #include "z_internal_state.cpp"
 #include "z_stream.cpp"
@@ -855,11 +875,12 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CGameObject), 16> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CGameObjectArray), 36> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECTARRAY;
     CheckSize<sizeof(NWNXLib::API::CItemRepository), 20> __attribute__((unused)) SIZE_CHECK_CITEMREPOSITORY;
-    CheckSize<sizeof(NWNXLib::API::CLastUpdateObject), 384> __attribute__((unused)) SIZE_CHECK_CLASTUPDATEOBJECT;
+    CheckSize<sizeof(NWNXLib::API::CLastUpdateObject), 520> __attribute__((unused)) SIZE_CHECK_CLASTUPDATEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CLoopingVisualEffect), 12> __attribute__((unused)) SIZE_CHECK_CLOOPINGVISUALEFFECT;
     CheckSize<sizeof(NWNXLib::API::CMemRecord), 224> __attribute__((unused)) SIZE_CHECK_CMEMRECORD;
     CheckSize<sizeof(NWNXLib::API::CNetLayer), 4> __attribute__((unused)) SIZE_CHECK_CNETLAYER;
-    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 499876> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 889744> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerCDKeyInfo), 24> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERCDKEYINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerInfo), 120> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerSessionInfo), 100> __attribute__((unused)) SIZE_CHECK_CNETLAYERSESSIONINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerWindow), 2332> __attribute__((unused)) SIZE_CHECK_CNETLAYERWINDOW;
@@ -878,42 +899,41 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CNWNameGen), 52> __attribute__((unused)) SIZE_CHECK_CNWNAMEGEN;
     CheckSize<sizeof(NWNXLib::API::CNWPlaceableSurfaceMesh), 88> __attribute__((unused)) SIZE_CHECK_CNWPLACEABLESURFACEMESH;
     CheckSize<sizeof(NWNXLib::API::CNWPlaceMeshManager), 8> __attribute__((unused)) SIZE_CHECK_CNWPLACEMESHMANAGER;
-    CheckSize<sizeof(NWNXLib::API::CNWRace), 52> __attribute__((unused)) SIZE_CHECK_CNWRACE;
+    CheckSize<sizeof(NWNXLib::API::CNWRace), 60> __attribute__((unused)) SIZE_CHECK_CNWRACE;
     CheckSize<sizeof(NWNXLib::API::CNWRules), 284> __attribute__((unused)) SIZE_CHECK_CNWRULES;
     CheckSize<sizeof(NWNXLib::API::CNWSAmbientSound), 48> __attribute__((unused)) SIZE_CHECK_CNWSAMBIENTSOUND;
     CheckSize<sizeof(NWNXLib::API::CNWSArea), 568> __attribute__((unused)) SIZE_CHECK_CNWSAREA;
-    CheckSize<sizeof(NWNXLib::API::CNWSAreaOfEffectObject), 584> __attribute__((unused)) SIZE_CHECK_CNWSAREAOFEFFECTOBJECT;
+    CheckSize<sizeof(NWNXLib::API::CNWSAreaOfEffectObject), 636> __attribute__((unused)) SIZE_CHECK_CNWSAREAOFEFFECTOBJECT;
     CheckSize<sizeof(NWNXLib::API::CNWSBarter), 40> __attribute__((unused)) SIZE_CHECK_CNWSBARTER;
     CheckSize<sizeof(NWNXLib::API::CNWSClient), 12> __attribute__((unused)) SIZE_CHECK_CNWSCLIENT;
     CheckSize<sizeof(NWNXLib::API::CNWSCombatAttackData), 168> __attribute__((unused)) SIZE_CHECK_CNWSCOMBATATTACKDATA;
     CheckSize<sizeof(NWNXLib::API::CNWSCombatRound), 8544> __attribute__((unused)) SIZE_CHECK_CNWSCOMBATROUND;
     CheckSize<sizeof(NWNXLib::API::CNWSCombatRoundAction), 40> __attribute__((unused)) SIZE_CHECK_CNWSCOMBATROUNDACTION;
-    CheckSize<sizeof(NWNXLib::API::CNWSCreature), 2036> __attribute__((unused)) SIZE_CHECK_CNWSCREATURE;
+    CheckSize<sizeof(NWNXLib::API::CNWSCreature), 2168> __attribute__((unused)) SIZE_CHECK_CNWSCREATURE;
     CheckSize<sizeof(NWNXLib::API::CNWSCreatureStats), 1384> __attribute__((unused)) SIZE_CHECK_CNWSCREATURESTATS;
     CheckSize<sizeof(NWNXLib::API::CNWSCreatureStats_ClassInfo), 312> __attribute__((unused)) SIZE_CHECK_CNWSCREATURESTATS_CLASSINFO;
     CheckSize<sizeof(NWNXLib::API::CNWSDialog), 152> __attribute__((unused)) SIZE_CHECK_CNWSDIALOG;
-    CheckSize<sizeof(NWNXLib::API::CNWSDialogEntry), 112> __attribute__((unused)) SIZE_CHECK_CNWSDIALOGENTRY;
-    CheckSize<sizeof(NWNXLib::API::CNWSDoor), 852> __attribute__((unused)) SIZE_CHECK_CNWSDOOR;
+    CheckSize<sizeof(NWNXLib::API::CNWSDoor), 904> __attribute__((unused)) SIZE_CHECK_CNWSDOOR;
     CheckSize<sizeof(NWNXLib::API::CNWSDungeonMaster), 176> __attribute__((unused)) SIZE_CHECK_CNWSDUNGEONMASTER;
     CheckSize<sizeof(NWNXLib::API::CNWSEffectListHandler), 12> __attribute__((unused)) SIZE_CHECK_CNWSEFFECTLISTHANDLER;
-    CheckSize<sizeof(NWNXLib::API::CNWSEncounter), 712> __attribute__((unused)) SIZE_CHECK_CNWSENCOUNTER;
+    CheckSize<sizeof(NWNXLib::API::CNWSEncounter), 764> __attribute__((unused)) SIZE_CHECK_CNWSENCOUNTER;
     CheckSize<sizeof(NWNXLib::API::CNWSExpression), 32> __attribute__((unused)) SIZE_CHECK_CNWSEXPRESSION;
     CheckSize<sizeof(NWNXLib::API::CNWSExpressionList), 12> __attribute__((unused)) SIZE_CHECK_CNWSEXPRESSIONLIST;
     CheckSize<sizeof(NWNXLib::API::CNWSExpressionNode), 28> __attribute__((unused)) SIZE_CHECK_CNWSEXPRESSIONNODE;
     CheckSize<sizeof(NWNXLib::API::CNWSFaction), 36> __attribute__((unused)) SIZE_CHECK_CNWSFACTION;
     CheckSize<sizeof(NWNXLib::API::CNWSForcedAction), 28> __attribute__((unused)) SIZE_CHECK_CNWSFORCEDACTION;
     CheckSize<sizeof(NWNXLib::API::CNWSInventory), 76> __attribute__((unused)) SIZE_CHECK_CNWSINVENTORY;
-    CheckSize<sizeof(NWNXLib::API::CNWSItem), 740> __attribute__((unused)) SIZE_CHECK_CNWSITEM;
+    CheckSize<sizeof(NWNXLib::API::CNWSItem), 792> __attribute__((unused)) SIZE_CHECK_CNWSITEM;
     CheckSize<sizeof(NWNXLib::API::CNWSItemPropertyHandler), 12> __attribute__((unused)) SIZE_CHECK_CNWSITEMPROPERTYHANDLER;
     CheckSize<sizeof(NWNXLib::API::CNWSJournal), 16> __attribute__((unused)) SIZE_CHECK_CNWSJOURNAL;
     CheckSize<sizeof(NWNXLib::API::CNWSkill), 44> __attribute__((unused)) SIZE_CHECK_CNWSKILL;
     CheckSize<sizeof(NWNXLib::API::CNWSMessage), 80> __attribute__((unused)) SIZE_CHECK_CNWSMESSAGE;
     CheckSize<sizeof(NWNXLib::API::CNWSModule), 640> __attribute__((unused)) SIZE_CHECK_CNWSMODULE;
-    CheckSize<sizeof(NWNXLib::API::CNWSObject), 480> __attribute__((unused)) SIZE_CHECK_CNWSOBJECT;
+    CheckSize<sizeof(NWNXLib::API::CNWSObject), 532> __attribute__((unused)) SIZE_CHECK_CNWSOBJECT;
     CheckSize<sizeof(NWNXLib::API::CNWSObjectActionNode), 108> __attribute__((unused)) SIZE_CHECK_CNWSOBJECTACTIONNODE;
     CheckSize<sizeof(NWNXLib::API::CNWSpell), 560> __attribute__((unused)) SIZE_CHECK_CNWSPELL;
     CheckSize<sizeof(NWNXLib::API::CNWSpellArray), 8> __attribute__((unused)) SIZE_CHECK_CNWSPELLARRAY;
-    CheckSize<sizeof(NWNXLib::API::CNWSPlaceable), 976> __attribute__((unused)) SIZE_CHECK_CNWSPLACEABLE;
+    CheckSize<sizeof(NWNXLib::API::CNWSPlaceable), 1028> __attribute__((unused)) SIZE_CHECK_CNWSPLACEABLE;
     CheckSize<sizeof(NWNXLib::API::CNWSPlayer), 168> __attribute__((unused)) SIZE_CHECK_CNWSPLAYER;
     CheckSize<sizeof(NWNXLib::API::CNWSPlayerCharSheetGUI), 16> __attribute__((unused)) SIZE_CHECK_CNWSPLAYERCHARSHEETGUI;
     CheckSize<sizeof(NWNXLib::API::CNWSPlayerContainerGUI), 12> __attribute__((unused)) SIZE_CHECK_CNWSPLAYERCONTAINERGUI;
@@ -921,19 +941,19 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CNWSPlayerLastUpdateObject), 1288> __attribute__((unused)) SIZE_CHECK_CNWSPLAYERLASTUPDATEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CNWSPlayerLUOInventory), 172> __attribute__((unused)) SIZE_CHECK_CNWSPLAYERLUOINVENTORY;
     CheckSize<sizeof(NWNXLib::API::CNWSPlayerStoreGUI), 20> __attribute__((unused)) SIZE_CHECK_CNWSPLAYERSTOREGUI;
-    CheckSize<sizeof(NWNXLib::API::CNWSPlayerTURD), 536> __attribute__((unused)) SIZE_CHECK_CNWSPLAYERTURD;
+    CheckSize<sizeof(NWNXLib::API::CNWSPlayerTURD), 588> __attribute__((unused)) SIZE_CHECK_CNWSPLAYERTURD;
     CheckSize<sizeof(NWNXLib::API::CNWSRules), 284> __attribute__((unused)) SIZE_CHECK_CNWSRULES;
     CheckSize<sizeof(NWNXLib::API::CNWSScriptVarTable), 16> __attribute__((unused)) SIZE_CHECK_CNWSSCRIPTVARTABLE;
-    CheckSize<sizeof(NWNXLib::API::CNWSSoundObject), 564> __attribute__((unused)) SIZE_CHECK_CNWSSOUNDOBJECT;
+    CheckSize<sizeof(NWNXLib::API::CNWSSoundObject), 616> __attribute__((unused)) SIZE_CHECK_CNWSSOUNDOBJECT;
     CheckSize<sizeof(NWNXLib::API::CNWSSpellScriptData), 48> __attribute__((unused)) SIZE_CHECK_CNWSSPELLSCRIPTDATA;
     CheckSize<sizeof(NWNXLib::API::CNWSStats_Spell), 16> __attribute__((unused)) SIZE_CHECK_CNWSSTATS_SPELL;
     CheckSize<sizeof(NWNXLib::API::CNWSStats_SpellLikeAbility), 12> __attribute__((unused)) SIZE_CHECK_CNWSSTATS_SPELLLIKEABILITY;
-    CheckSize<sizeof(NWNXLib::API::CNWSStore), 600> __attribute__((unused)) SIZE_CHECK_CNWSSTORE;
+    CheckSize<sizeof(NWNXLib::API::CNWSStore), 652> __attribute__((unused)) SIZE_CHECK_CNWSSTORE;
     CheckSize<sizeof(NWNXLib::API::CNWSSysAdmin), 12> __attribute__((unused)) SIZE_CHECK_CNWSSYSADMIN;
     CheckSize<sizeof(NWNXLib::API::CNWSTile), 88> __attribute__((unused)) SIZE_CHECK_CNWSTILE;
     CheckSize<sizeof(NWNXLib::API::CNWSTransition), 12> __attribute__((unused)) SIZE_CHECK_CNWSTRANSITION;
-    CheckSize<sizeof(NWNXLib::API::CNWSTrigger), 704> __attribute__((unused)) SIZE_CHECK_CNWSTRIGGER;
-    CheckSize<sizeof(NWNXLib::API::CNWSWaypoint), 504> __attribute__((unused)) SIZE_CHECK_CNWSWAYPOINT;
+    CheckSize<sizeof(NWNXLib::API::CNWSTrigger), 756> __attribute__((unused)) SIZE_CHECK_CNWSTRIGGER;
+    CheckSize<sizeof(NWNXLib::API::CNWSWaypoint), 556> __attribute__((unused)) SIZE_CHECK_CNWSWAYPOINT;
     CheckSize<sizeof(NWNXLib::API::CNWTile), 44> __attribute__((unused)) SIZE_CHECK_CNWTILE;
     CheckSize<sizeof(NWNXLib::API::CNWTileData), 144> __attribute__((unused)) SIZE_CHECK_CNWTILEDATA;
     CheckSize<sizeof(NWNXLib::API::CNWTileSet), 172> __attribute__((unused)) SIZE_CHECK_CNWTILESET;
@@ -943,7 +963,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CNWTileSurfaceMeshHashTableEntry), 16> __attribute__((unused)) SIZE_CHECK_CNWTILESURFACEMESHHASHTABLEENTRY;
     CheckSize<sizeof(NWNXLib::API::CNWVirtualMachineCommands), 16> __attribute__((unused)) SIZE_CHECK_CNWVIRTUALMACHINECOMMANDS;
     CheckSize<sizeof(NWNXLib::API::CObjectLookupTable), 16> __attribute__((unused)) SIZE_CHECK_COBJECTLOOKUPTABLE;
-    CheckSize<sizeof(NWNXLib::API::CObjectTableManager), 388> __attribute__((unused)) SIZE_CHECK_COBJECTTABLEMANAGER;
+    CheckSize<sizeof(NWNXLib::API::CObjectTableManager), 1024> __attribute__((unused)) SIZE_CHECK_COBJECTTABLEMANAGER;
     CheckSize<sizeof(NWNXLib::API::CPathfindInfoIntraTileSuccessors), 24> __attribute__((unused)) SIZE_CHECK_CPATHFINDINFOINTRATILESUCCESSORS;
     CheckSize<sizeof(NWNXLib::API::CPathfindInformation), 404> __attribute__((unused)) SIZE_CHECK_CPATHFINDINFORMATION;
     CheckSize<sizeof(NWNXLib::API::CrashReporter_Linux), 4> __attribute__((unused)) SIZE_CHECK_CRASHREPORTER_LINUX;
@@ -965,10 +985,10 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CResWOK), 56> __attribute__((unused)) SIZE_CHECK_CRESWOK;
     CheckSize<sizeof(NWNXLib::API::CScriptCompiler), 13276> __attribute__((unused)) SIZE_CHECK_CSCRIPTCOMPILER;
     CheckSize<sizeof(NWNXLib::API::CScriptCompilerIdListEntry), 128> __attribute__((unused)) SIZE_CHECK_CSCRIPTCOMPILERIDLISTENTRY;
+    CheckSize<sizeof(NWNXLib::API::CScriptCompilerIncludeFileStackEntry), 68> __attribute__((unused)) SIZE_CHECK_CSCRIPTCOMPILERINCLUDEFILESTACKENTRY;
     CheckSize<sizeof(NWNXLib::API::CScriptEvent), 52> __attribute__((unused)) SIZE_CHECK_CSCRIPTEVENT;
     CheckSize<sizeof(NWNXLib::API::CScriptLocation), 28> __attribute__((unused)) SIZE_CHECK_CSCRIPTLOCATION;
     CheckSize<sizeof(NWNXLib::API::CScriptParseTreeNode), 72> __attribute__((unused)) SIZE_CHECK_CSCRIPTPARSETREENODE;
-    CheckSize<sizeof(NWNXLib::API::CScriptParseTreeNodeBlock), 294916> __attribute__((unused)) SIZE_CHECK_CSCRIPTPARSETREENODEBLOCK;
     CheckSize<sizeof(NWNXLib::API::CScriptSourceFile), 44> __attribute__((unused)) SIZE_CHECK_CSCRIPTSOURCEFILE;
     CheckSize<sizeof(NWNXLib::API::CScriptTalent), 24> __attribute__((unused)) SIZE_CHECK_CSCRIPTTALENT;
     CheckSize<sizeof(NWNXLib::API::CServerAIBodyBagInfo), 16> __attribute__((unused)) SIZE_CHECK_CSERVERAIBODYBAGINFO;
@@ -976,7 +996,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CServerAIList), 16> __attribute__((unused)) SIZE_CHECK_CSERVERAILIST;
     CheckSize<sizeof(NWNXLib::API::CServerAIMaster), 148> __attribute__((unused)) SIZE_CHECK_CSERVERAIMASTER;
     CheckSize<sizeof(NWNXLib::API::CServerExoApp), 8> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPP;
-    CheckSize<sizeof(NWNXLib::API::CServerExoAppInternal), 65936> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPPINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CServerExoAppInternal), 65928> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPPINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CServerInfo), 1180> __attribute__((unused)) SIZE_CHECK_CSERVERINFO;
     CheckSize<sizeof(NWNXLib::API::CStoreCustomer), 24> __attribute__((unused)) SIZE_CHECK_CSTORECUSTOMER;
     CheckSize<sizeof(NWNXLib::API::CTlkFile), 24> __attribute__((unused)) SIZE_CHECK_CTLKFILE;
@@ -989,15 +1009,14 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CVirtualMachineFile), 44> __attribute__((unused)) SIZE_CHECK_CVIRTUALMACHINEFILE;
     CheckSize<sizeof(NWNXLib::API::CVirtualMachineScript), 36> __attribute__((unused)) SIZE_CHECK_CVIRTUALMACHINESCRIPT;
     CheckSize<sizeof(NWNXLib::API::CVirtualMachineStack), 24> __attribute__((unused)) SIZE_CHECK_CVIRTUALMACHINESTACK;
+    CheckSize<sizeof(NWNXLib::API::CWorldJournalEntry), 36> __attribute__((unused)) SIZE_CHECK_CWORLDJOURNALENTRY;
     CheckSize<sizeof(NWNXLib::API::CWorldTimer), 56> __attribute__((unused)) SIZE_CHECK_CWORLDTIMER;
     CheckSize<sizeof(NWNXLib::API::ICrashReporter), 4> __attribute__((unused)) SIZE_CHECK_ICRASHREPORTER;
     CheckSize<sizeof(NWNXLib::API::Matrix), 36> __attribute__((unused)) SIZE_CHECK_MATRIX;
-    CheckSize<sizeof(NWNXLib::API::monty), 52> __attribute__((unused)) SIZE_CHECK_MONTY;
-    CheckSize<sizeof(NWNXLib::API::NWPlayerCharacterList_st), 96> __attribute__((unused)) SIZE_CHECK_NWPLAYERCHARACTERLIST_ST;
     CheckSize<sizeof(NWNXLib::API::Plane), 16> __attribute__((unused)) SIZE_CHECK_PLANE;
     CheckSize<sizeof(NWNXLib::API::Quaternion), 16> __attribute__((unused)) SIZE_CHECK_QUATERNION;
     CheckSize<sizeof(NWNXLib::API::SJournalEntry), 56> __attribute__((unused)) SIZE_CHECK_SJOURNALENTRY;
-    CheckSize<sizeof(NWNXLib::API::SMstDigiDistInfo), 60> __attribute__((unused)) SIZE_CHECK_SMSTDIGIDISTINFO;
+    CheckSize<sizeof(NWNXLib::API::STR_RES), 44> __attribute__((unused)) SIZE_CHECK_STR_RES;
     CheckSize<sizeof(NWNXLib::API::TLK_FILE_HEADER), 20> __attribute__((unused)) SIZE_CHECK_TLK_FILE_HEADER;
     CheckSize<sizeof(NWNXLib::API::Vector), 12> __attribute__((unused)) SIZE_CHECK_VECTOR;
     CheckSize<sizeof(NWNXLib::API::Vector4), 16> __attribute__((unused)) SIZE_CHECK_VECTOR4;

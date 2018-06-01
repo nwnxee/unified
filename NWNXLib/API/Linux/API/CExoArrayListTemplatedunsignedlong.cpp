@@ -6,11 +6,6 @@ namespace NWNXLib {
 
 namespace API {
 
-CExoArrayListTemplatedunsignedlong::~CExoArrayListTemplatedunsignedlong()
-{
-    CExoArrayListTemplatedunsignedlong__CExoArrayListTemplatedunsignedlongDtor(this);
-}
-
 void CExoArrayListTemplatedunsignedlong::Add(uint32_t a0)
 {
     return CExoArrayListTemplatedunsignedlong__Add(this, a0);
@@ -39,14 +34,6 @@ void CExoArrayListTemplatedunsignedlong::Remove(uint32_t a0)
 void CExoArrayListTemplatedunsignedlong::SetSize(int32_t a0)
 {
     return CExoArrayListTemplatedunsignedlong__SetSize(this, a0);
-}
-
-void CExoArrayListTemplatedunsignedlong__CExoArrayListTemplatedunsignedlongDtor(CExoArrayListTemplatedunsignedlong* thisPtr)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoArrayListTemplatedunsignedlong*, int);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoArrayListTemplatedunsignedlong__CExoArrayListTemplatedunsignedlongDtor);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    func(thisPtr, 2);
 }
 
 void CExoArrayListTemplatedunsignedlong__Add(CExoArrayListTemplatedunsignedlong* thisPtr, uint32_t a0)

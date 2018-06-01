@@ -52,6 +52,7 @@ struct CExoArrayListTemplatedCSpell_AddPtr;
 struct CExoArrayListTemplatedCWorldJournalEntry;
 struct CExoArrayListTemplatedfloat;
 struct CExoArrayListTemplatedint;
+struct CExoArrayListTemplatedMaterialShaderParam;
 struct CExoArrayListTemplatedNWPlayerCharacterList_stPtr;
 struct CExoArrayListTemplatedNWPlayerCharacterListClass_st;
 struct CExoArrayListTemplatedSJournalEntry;

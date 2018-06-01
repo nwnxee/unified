@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "ObjectVisualTransformData.hpp"
+
 namespace NWNXLib {
 
 namespace API {
@@ -27,6 +29,8 @@ struct CNWSCreatureAppearanceInfo
     uint32_t m_nWingVariation;
     int32_t m_bForceArmorAppearanceUpdate;
     uint32_t m_oidCloakItem;
+    ObjectVisualTransformData m_pRightHandItemVisualTransform;
+    ObjectVisualTransformData m_pLeftHandItemVisualTransform;
 };
 
 }

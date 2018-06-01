@@ -22,7 +22,7 @@ struct MonitorInfo
     int32_t major_version;
     int32_t minor_version;
     int32_t is_digital;
-    TLS_2CBA9030A62635964B64D4E478EE5B4E _anon_0;
+    TLS_2CBA9030A62635964B64D4E478EE5B4E ad;
     int32_t width_mm;
     int32_t height_mm;
     double aspect_ratio;

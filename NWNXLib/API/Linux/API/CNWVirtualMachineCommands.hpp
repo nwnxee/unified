@@ -469,6 +469,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandLocation(int32_t, int32_t);
     int32_t ExecuteCommandLocationAccess(int32_t, int32_t);
     int32_t ExecuteCommandLockCamera(int32_t, int32_t);
+    int32_t ExecuteCommandMaterialShaderUniforms(int32_t, int32_t);
     int32_t ExecuteCommandMath(int32_t, int32_t);
     int32_t ExecuteCommandModuleAccess(int32_t, int32_t);
     int32_t ExecuteCommandMoveAwayFromObject(int32_t, int32_t);
@@ -477,6 +478,7 @@ struct CNWVirtualMachineCommands
     int32_t ExecuteCommandMusicBackground(int32_t, int32_t);
     int32_t ExecuteCommandMusicBattle(int32_t, int32_t);
     int32_t ExecuteCommandObjectToString(int32_t, int32_t);
+    int32_t ExecuteCommandObjectVisualTransform(int32_t, int32_t);
     int32_t ExecuteCommandOpenDoor(int32_t, int32_t);
     int32_t ExecuteCommandOpenInventory(int32_t, int32_t);
     int32_t ExecuteCommandOpenStore(int32_t, int32_t);
@@ -1084,6 +1086,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandLineOfSight(CNWVirtualMachineCo
 int32_t CNWVirtualMachineCommands__ExecuteCommandLocation(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandLocationAccess(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandLockCamera(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandMaterialShaderUniforms(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandMath(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandModuleAccess(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandMoveAwayFromObject(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
@@ -1092,6 +1095,7 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandMoveToPoint(CNWVirtualMachineCo
 int32_t CNWVirtualMachineCommands__ExecuteCommandMusicBackground(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandMusicBattle(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandObjectToString(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
+int32_t CNWVirtualMachineCommands__ExecuteCommandObjectVisualTransform(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandOpenDoor(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandOpenInventory(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);
 int32_t CNWVirtualMachineCommands__ExecuteCommandOpenStore(CNWVirtualMachineCommands* thisPtr, int32_t, int32_t);

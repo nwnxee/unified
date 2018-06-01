@@ -104,11 +104,6 @@ int32_t CServerExoAppInternal::AdmitPlayerName(CExoString a0)
     return CServerExoAppInternal__AdmitPlayerName(this, a0);
 }
 
-void CServerExoAppInternal::CheckMasterServerTranslation()
-{
-    return CServerExoAppInternal__CheckMasterServerTranslation(this);
-}
-
 int32_t CServerExoAppInternal::CheckStickyPlayerNameReserved(CExoString a0, CExoString a1, CExoString a2, int32_t a3)
 {
     return CServerExoAppInternal__CheckStickyPlayerNameReserved(this, a0, a1, a2, a3);
@@ -831,14 +826,6 @@ int32_t CServerExoAppInternal__AdmitPlayerName(CServerExoAppInternal* thisPtr, C
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__AdmitPlayerName);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
-}
-
-void CServerExoAppInternal__CheckMasterServerTranslation(CServerExoAppInternal* thisPtr)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoAppInternal*);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoAppInternal__CheckMasterServerTranslation);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr);
 }
 
 int32_t CServerExoAppInternal__CheckStickyPlayerNameReserved(CServerExoAppInternal* thisPtr, CExoString a0, CExoString a1, CExoString a2, int32_t a3)

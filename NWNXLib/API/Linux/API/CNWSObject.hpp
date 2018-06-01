@@ -6,6 +6,7 @@
 #include "CExoArrayListTemplatedCGameEffectPtr.hpp"
 #include "CExoArrayListTemplatedCLoopingVisualEffectPtr.hpp"
 #include "CExoArrayListTemplatedCNWSExpressionPtr.hpp"
+#include "CExoArrayListTemplatedMaterialShaderParam.hpp"
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
 #include "CExoLinkedListTemplatedCNWSObjectActionNode.hpp"
 #include "CExoLocString.hpp"
@@ -15,6 +16,7 @@
 #include "CNWSTransition.hpp"
 #include "CResRef.hpp"
 #include "CScriptLocation.hpp"
+#include "ObjectVisualTransformData.hpp"
 #include "Vector.hpp"
 
 namespace NWNXLib {
@@ -126,6 +128,8 @@ struct CNWSObject
     int32_t m_bApplyingPostProcessEffects;
     int32_t m_bOpenDoorAnimationPlayed;
     CNWSTransition m_pTransition;
+    ObjectVisualTransformData m_pVisualTransformData;
+    CExoArrayListTemplatedMaterialShaderParam m_lMaterialShaderParameters;
 
     // The below are auto generated stubs.
     CNWSObject() = default;
@@ -227,8 +231,10 @@ struct CNWSObject
     void LoadActionQueue(CResGFF*, CResStruct*);
     void LoadEffectList(CResGFF*, CResStruct*);
     void LoadListenData(CResGFF*, CResStruct*);
+    void LoadMaterialOverrides(CResGFF*, CResStruct*);
     void LoadObjectState(CResGFF*, CResStruct*);
     void LoadVarTable(CResGFF*, CResStruct*);
+    void LoadVisualTransform(CResGFF*, CResStruct*);
     void PlaySoundSet(CNWSPlayer*, unsigned char);
     void RemoveEffect(CGameEffect*);
     void RemoveEffectByCreator(uint32_t);
@@ -241,13 +247,16 @@ struct CNWSObject
     void RemoveSomeEffectsOfDurationType(uint16_t);
     int32_t ReplyDialog(uint32_t, uint32_t, int32_t, uint32_t);
     void ReportOverflow(int32_t, int32_t, int32_t, int32_t);
+    void ResetMaterialShaderParams(const CExoString&, const CExoString&);
     void RunActions(uint32_t, uint32_t, uint64_t);
     int32_t RunDialogOneLiner(const CExoString&, uint32_t);
     void SaveActionQueue(CResGFF*, CResStruct*);
     void SaveEffectList(CResGFF*, CResStruct*);
     void SaveListenData(CResGFF*, CResStruct*);
+    void SaveMaterialOverrides(CResGFF*, CResStruct*);
     void SaveObjectState(CResGFF*, CResStruct*);
     void SaveVarTable(CResGFF*, CResStruct*);
+    void SaveVisualTransform(CResGFF*, CResStruct*);
     int32_t SendDialogEntry(uint32_t, int32_t);
     int32_t SendDialogReplies();
     void SetAnimation(int32_t);
@@ -260,11 +269,14 @@ struct CNWSObject
     void SetLastHostileActor(uint32_t, int32_t);
     int32_t SetListenExpression(CExoString, int32_t);
     void SetLockOrientationToObject(uint32_t);
+    void SetMaterialShaderParamI(const CExoString&, const CExoString&, int32_t);
+    void SetMaterialShaderParamVec4(const CExoString&, const CExoString&, float, float, float, float);
     void SetOrientation(Vector);
     void SetPortrait(CResRef);
     void SetPortraitId(uint16_t);
     void SetPosition(Vector, int32_t);
     void SetTag(CExoString);
+    void SetVisualTransformData(const ObjectVisualTransformData&);
     void SpawnBodyBag();
     void SpellCastAndImpact(uint32_t, Vector, uint32_t, unsigned char, uint32_t, int32_t, int32_t, unsigned char, int32_t);
     int32_t StartDialog(uint32_t, const CExoString&, int32_t, int32_t);
@@ -373,8 +385,10 @@ int32_t CNWSObject__IsDialogDelay(CNWSObject* thisPtr);
 void CNWSObject__LoadActionQueue(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__LoadEffectList(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__LoadListenData(CNWSObject* thisPtr, CResGFF*, CResStruct*);
+void CNWSObject__LoadMaterialOverrides(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__LoadObjectState(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__LoadVarTable(CNWSObject* thisPtr, CResGFF*, CResStruct*);
+void CNWSObject__LoadVisualTransform(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__PlaySoundSet(CNWSObject* thisPtr, CNWSPlayer*, unsigned char);
 void CNWSObject__RemoveEffect(CNWSObject* thisPtr, CGameEffect*);
 void CNWSObject__RemoveEffectByCreator(CNWSObject* thisPtr, uint32_t);
@@ -387,13 +401,16 @@ int32_t CNWSObject__RemoveObjectFromDialog(CNWSObject* thisPtr, uint32_t);
 void CNWSObject__RemoveSomeEffectsOfDurationType(CNWSObject* thisPtr, uint16_t);
 int32_t CNWSObject__ReplyDialog(CNWSObject* thisPtr, uint32_t, uint32_t, int32_t, uint32_t);
 void CNWSObject__ReportOverflow(CNWSObject* thisPtr, int32_t, int32_t, int32_t, int32_t);
+void CNWSObject__ResetMaterialShaderParams(CNWSObject* thisPtr, const CExoString&, const CExoString&);
 void CNWSObject__RunActions(CNWSObject* thisPtr, uint32_t, uint32_t, uint64_t);
 int32_t CNWSObject__RunDialogOneLiner(CNWSObject* thisPtr, const CExoString&, uint32_t);
 void CNWSObject__SaveActionQueue(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__SaveEffectList(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__SaveListenData(CNWSObject* thisPtr, CResGFF*, CResStruct*);
+void CNWSObject__SaveMaterialOverrides(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__SaveObjectState(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 void CNWSObject__SaveVarTable(CNWSObject* thisPtr, CResGFF*, CResStruct*);
+void CNWSObject__SaveVisualTransform(CNWSObject* thisPtr, CResGFF*, CResStruct*);
 int32_t CNWSObject__SendDialogEntry(CNWSObject* thisPtr, uint32_t, int32_t);
 int32_t CNWSObject__SendDialogReplies(CNWSObject* thisPtr);
 void CNWSObject__SetAnimation(CNWSObject* thisPtr, int32_t);
@@ -406,11 +423,14 @@ void CNWSObject__SetGroupInterruptable(CNWSObject* thisPtr, uint16_t, int32_t);
 void CNWSObject__SetLastHostileActor(CNWSObject* thisPtr, uint32_t, int32_t);
 int32_t CNWSObject__SetListenExpression(CNWSObject* thisPtr, CExoString, int32_t);
 void CNWSObject__SetLockOrientationToObject(CNWSObject* thisPtr, uint32_t);
+void CNWSObject__SetMaterialShaderParamI(CNWSObject* thisPtr, const CExoString&, const CExoString&, int32_t);
+void CNWSObject__SetMaterialShaderParamVec4(CNWSObject* thisPtr, const CExoString&, const CExoString&, float, float, float, float);
 void CNWSObject__SetOrientation(CNWSObject* thisPtr, Vector);
 void CNWSObject__SetPortrait(CNWSObject* thisPtr, CResRef);
 void CNWSObject__SetPortraitId(CNWSObject* thisPtr, uint16_t);
 void CNWSObject__SetPosition(CNWSObject* thisPtr, Vector, int32_t);
 void CNWSObject__SetTag(CNWSObject* thisPtr, CExoString);
+void CNWSObject__SetVisualTransformData(CNWSObject* thisPtr, const ObjectVisualTransformData&);
 void CNWSObject__SpawnBodyBag(CNWSObject* thisPtr);
 void CNWSObject__SpellCastAndImpact(CNWSObject* thisPtr, uint32_t, Vector, uint32_t, unsigned char, uint32_t, int32_t, int32_t, unsigned char, int32_t);
 int32_t CNWSObject__StartDialog(CNWSObject* thisPtr, uint32_t, const CExoString&, int32_t, int32_t);

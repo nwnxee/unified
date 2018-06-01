@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "unknown_SDL2_HapticEffect.hpp"
+#include "unknown_SDL_HapticEffect.hpp"
 
 namespace NWNXLib {
 
@@ -13,7 +13,7 @@ struct haptic_hweffect;
 
 struct haptic_effect
 {
-    SDL2_HapticEffect effect;
+    SDL_HapticEffect effect;
     haptic_hweffect* hweffect;
 };
 
