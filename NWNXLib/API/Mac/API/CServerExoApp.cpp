@@ -4,7 +4,6 @@
 
 #include "CCodeBase.hpp"
 #include "CExoArrayListTemplatedCExoString.hpp"
-#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExtendedServerInfo.hpp"
 #include "CGameObject.hpp"
 #include "CGameObjectArray.hpp"
@@ -496,41 +495,6 @@ CNWSWaypoint* CServerExoApp::GetWaypointByGameObjectID(uint32_t a0)
 CWorldTimer* CServerExoApp::GetWorldTimer()
 {
     return CServerExoApp__GetWorldTimer(this);
-}
-
-void CServerExoApp::GSClientAddServer(void* a0, char* a1, char* a2, int32_t a3, int32_t a4, int32_t a5, int32_t a6, char* a7, int32_t a8, int32_t a9, char* a10, int32_t a11, int32_t a12, int32_t a13, char* a14, char* a15, int32_t a16, int32_t a17, int32_t a18, int32_t a19, int32_t a20, int32_t a21)
-{
-    return CServerExoApp__GSClientAddServer(this, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21);
-}
-
-void CServerExoApp::GSClientChatMessage(int32_t a0, CExoString a1, CExoString a2)
-{
-    return CServerExoApp__GSClientChatMessage(this, a0, a1, a2);
-}
-
-void CServerExoApp::GSClientClearServers()
-{
-    return CServerExoApp__GSClientClearServers(this);
-}
-
-void CServerExoApp::GSClientGroupRoomAdded(int32_t a0, uint32_t a1)
-{
-    return CServerExoApp__GSClientGroupRoomAdded(this, a0, a1);
-}
-
-void CServerExoApp::GSClientRemoveServer(void* a0)
-{
-    return CServerExoApp__GSClientRemoveServer(this, a0);
-}
-
-void CServerExoApp::GSClientUpdateConnectionPhase(unsigned char a0, const CExoString& a1)
-{
-    return CServerExoApp__GSClientUpdateConnectionPhase(this, a0, a1);
-}
-
-void CServerExoApp::GSClientUpdateServer(void* a0, char* a1, char* a2, int32_t a3, int32_t a4, int32_t a5, int32_t a6, char* a7, int32_t a8, int32_t a9, char* a10, int32_t a11, int32_t a12, int32_t a13, char* a14, char* a15, int32_t a16, int32_t a17, int32_t a18, int32_t a19, int32_t a20, int32_t a21)
-{
-    return CServerExoApp__GSClientUpdateServer(this, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21);
 }
 
 void CServerExoApp::HandleGameSpyToServerMessage(int32_t a0, void* a1, int32_t a2)
@@ -1615,62 +1579,6 @@ CWorldTimer* CServerExoApp__GetWorldTimer(CServerExoApp* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GetWorldTimer);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
-}
-
-void CServerExoApp__GSClientAddServer(CServerExoApp* thisPtr, void* a0, char* a1, char* a2, int32_t a3, int32_t a4, int32_t a5, int32_t a6, char* a7, int32_t a8, int32_t a9, char* a10, int32_t a11, int32_t a12, int32_t a13, char* a14, char* a15, int32_t a16, int32_t a17, int32_t a18, int32_t a19, int32_t a20, int32_t a21)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*, void*, char*, char*, int32_t, int32_t, int32_t, int32_t, char*, int32_t, int32_t, char*, int32_t, int32_t, int32_t, char*, char*, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GSClientAddServer);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21);
-}
-
-void CServerExoApp__GSClientChatMessage(CServerExoApp* thisPtr, int32_t a0, CExoString a1, CExoString a2)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*, int32_t, CExoString, CExoString);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GSClientChatMessage);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
-}
-
-void CServerExoApp__GSClientClearServers(CServerExoApp* thisPtr)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GSClientClearServers);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr);
-}
-
-void CServerExoApp__GSClientGroupRoomAdded(CServerExoApp* thisPtr, int32_t a0, uint32_t a1)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*, int32_t, uint32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GSClientGroupRoomAdded);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
-}
-
-void CServerExoApp__GSClientRemoveServer(CServerExoApp* thisPtr, void* a0)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*, void*);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GSClientRemoveServer);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0);
-}
-
-void CServerExoApp__GSClientUpdateConnectionPhase(CServerExoApp* thisPtr, unsigned char a0, const CExoString& a1)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*, unsigned char, const CExoString&);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GSClientUpdateConnectionPhase);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
-}
-
-void CServerExoApp__GSClientUpdateServer(CServerExoApp* thisPtr, void* a0, char* a1, char* a2, int32_t a3, int32_t a4, int32_t a5, int32_t a6, char* a7, int32_t a8, int32_t a9, char* a10, int32_t a11, int32_t a12, int32_t a13, char* a14, char* a15, int32_t a16, int32_t a17, int32_t a18, int32_t a19, int32_t a20, int32_t a21)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerExoApp*, void*, char*, char*, int32_t, int32_t, int32_t, int32_t, char*, int32_t, int32_t, char*, int32_t, int32_t, int32_t, char*, char*, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerExoApp__GSClientUpdateServer);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21);
 }
 
 void CServerExoApp__HandleGameSpyToServerMessage(CServerExoApp* thisPtr, int32_t a0, void* a1, int32_t a2)

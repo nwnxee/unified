@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "unknown_SDL2_Surface.hpp"
+#include "unknown_SDL_Surface.hpp"
 
 namespace NWNXLib {
 
@@ -10,8 +10,8 @@ namespace API {
 
 struct SW_RenderData
 {
-    SDL2_Surface* surface;
-    SDL2_Surface* window;
+    SDL_Surface* surface;
+    SDL_Surface* window;
 };
 
 }

@@ -24,8 +24,8 @@ struct CNetLayerInternal
     CBaseExoApp* m_pcExoApp;
     CExoNet* m_pcExoNet;
     int32_t m_bInitialized;
-    CNetLayerWindow m_aWindows[96];
-    CNetLayerPlayerInfo m_pcPlayerInfo[96];
+    CNetLayerWindow m_aWindows[255];
+    CNetLayerPlayerInfo m_pcPlayerInfo[255];
     CExoNetExtendableBuffer* m_pebFrameStorage;
     uint8_t m_pCompressBuffer[131072];
     uint8_t m_pUncompressBuffer[131072];
@@ -198,8 +198,8 @@ struct CNetLayerInternal
     int32_t SendMessageToAddress(uint32_t, unsigned char*, uint32_t);
     int32_t SendMessageToPlayer(uint32_t, unsigned char*, uint32_t, uint32_t);
     int32_t SendMessageToStandardConnection(int32_t, char*, int32_t);
+    void SetCurrentMasterServerInternetAddress(uint32_t, uint32_t);
     int32_t SetGameMasterPassword(CExoString);
-    void SetMasterServerInternetAddress(const unsigned char*, uint32_t);
     uint32_t SetNetworkAddressData(uint32_t, unsigned char*, unsigned char*, uint32_t, RelayModeChange, const char*);
     void SetPlayerConnected(uint32_t);
     int32_t SetPlayerPassword(CExoString);
@@ -322,8 +322,8 @@ int32_t CNetLayerInternal__SendDirectMessage(CNetLayerInternal* thisPtr, uint32_
 int32_t CNetLayerInternal__SendMessageToAddress(CNetLayerInternal* thisPtr, uint32_t, unsigned char*, uint32_t);
 int32_t CNetLayerInternal__SendMessageToPlayer(CNetLayerInternal* thisPtr, uint32_t, unsigned char*, uint32_t, uint32_t);
 int32_t CNetLayerInternal__SendMessageToStandardConnection(CNetLayerInternal* thisPtr, int32_t, char*, int32_t);
+void CNetLayerInternal__SetCurrentMasterServerInternetAddress(CNetLayerInternal* thisPtr, uint32_t, uint32_t);
 int32_t CNetLayerInternal__SetGameMasterPassword(CNetLayerInternal* thisPtr, CExoString);
-void CNetLayerInternal__SetMasterServerInternetAddress(CNetLayerInternal* thisPtr, const unsigned char*, uint32_t);
 uint32_t CNetLayerInternal__SetNetworkAddressData(CNetLayerInternal* thisPtr, uint32_t, unsigned char*, unsigned char*, uint32_t, RelayModeChange, const char*);
 void CNetLayerInternal__SetPlayerConnected(CNetLayerInternal* thisPtr, uint32_t);
 int32_t CNetLayerInternal__SetPlayerPassword(CNetLayerInternal* thisPtr, CExoString);

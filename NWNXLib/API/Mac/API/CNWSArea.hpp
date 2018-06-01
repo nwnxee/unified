@@ -12,6 +12,7 @@
 #include "CResHelperTemplatedCResARE2012u.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
+#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -20,7 +21,6 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CERFFile;
 struct CExoArrayListTemplatedCGameObjectPtr;
-struct CExoArrayListTemplatedunsignedlong;
 struct CGameEffect;
 struct CNWSAmbientSound;
 struct CNWSAreaGridSuccessors;

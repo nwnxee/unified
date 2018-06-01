@@ -2,8 +2,8 @@
 
 #include <cstdint>
 
-#include "unknown_SDL2_Rect.hpp"
-#include "unknown_SDL2_bool.hpp"
+#include "unknown_SDL_Rect.hpp"
+#include "unknown_SDL_bool.hpp"
 
 namespace NWNXLib {
 
@@ -22,9 +22,9 @@ struct GL_TextureData
     uint32_t formattype;
     void* pixels;
     int32_t pitch;
-    SDL2_Rect locked_rect;
-    SDL2_bool yuv;
-    SDL2_bool nv12;
+    SDL_Rect locked_rect;
+    SDL_bool yuv;
+    SDL_bool nv12;
     uint32_t utexture;
     uint32_t vtexture;
     GL_FBOList* fbo;

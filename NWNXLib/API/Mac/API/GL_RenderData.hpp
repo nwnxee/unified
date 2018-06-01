@@ -9,8 +9,8 @@
 #include "unknown_PFNGLDELETEFRAMEBUFFERSEXTPROC.hpp"
 #include "unknown_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC.hpp"
 #include "unknown_PFNGLGENFRAMEBUFFERSEXTPROC.hpp"
-#include "unknown_SDL2_bool.hpp"
-#include "unknown_TLS_E18F96875E62EB9BBEFD9E9CE746BF44.hpp"
+#include "unknown_SDL_bool.hpp"
+#include "unknown_TLS_2877AE0CE42E9982C297E26B3800E330.hpp"
 
 namespace NWNXLib {
 
@@ -23,16 +23,16 @@ struct GL_ShaderContext;
 struct GL_RenderData
 {
     void* context;
-    SDL2_bool debug_enabled;
-    SDL2_bool GL_ARB_debug_output_supported;
+    SDL_bool debug_enabled;
+    SDL_bool GL_ARB_debug_output_supported;
     int32_t errors;
     char** error_messages;
     GLDEBUGPROCARB next_error_callback;
     void* next_error_userparam;
-    SDL2_bool GL_ARB_texture_non_power_of_two_supported;
-    SDL2_bool GL_ARB_texture_rectangle_supported;
-    TLS_E18F96875E62EB9BBEFD9E9CE746BF44 current;
-    SDL2_bool GL_EXT_framebuffer_object_supported;
+    SDL_bool GL_ARB_texture_non_power_of_two_supported;
+    SDL_bool GL_ARB_texture_rectangle_supported;
+    TLS_2877AE0CE42E9982C297E26B3800E330 current;
+    SDL_bool GL_EXT_framebuffer_object_supported;
     GL_FBOList* framebuffers;
     void** m_funcPtrPlaceholder__0;
     void** m_funcPtrPlaceholder__1;
@@ -78,7 +78,7 @@ struct GL_RenderData
     void** m_funcPtrPlaceholder__41;
     void** m_funcPtrPlaceholder__42;
     void** m_funcPtrPlaceholder__43;
-    SDL2_bool GL_ARB_multitexture_supported;
+    SDL_bool GL_ARB_multitexture_supported;
     PFNGLACTIVETEXTUREARBPROC glActiveTextureARB;
     int32_t num_texture_units;
     PFNGLGENFRAMEBUFFERSEXTPROC glGenFramebuffersEXT;

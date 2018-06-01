@@ -11,7 +11,7 @@ struct CObjectLookupTable;
 
 struct CObjectTableManager
 {
-    CObjectLookupTable* m_pObjectTableArray[96];
+    CObjectLookupTable* m_pObjectTableArray[255];
     uint32_t m_dwMaxPlayerID;
 
     // The below are auto generated stubs.

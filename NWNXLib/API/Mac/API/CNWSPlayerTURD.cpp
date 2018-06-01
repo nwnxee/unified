@@ -5,7 +5,6 @@
 #include "CExoArrayListTemplatedCGameEffectPtr.hpp"
 #include "CExoArrayListTemplatedCNWSPersonalReputation.hpp"
 #include "CExoArrayListTemplatedint.hpp"
-#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CNWSArea.hpp"
 #include "CResGFF.hpp"
 #include "CResStruct.hpp"

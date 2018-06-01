@@ -29,6 +29,7 @@ struct CNWRace
     uint16_t* m_lstFeatTable;
     int32_t m_nAge;
     uint16_t m_nDefaultAppearance;
+    CExoString m_sIcon;
 
     // The below are auto generated stubs.
     CNWRace(const CNWRace&) = default;

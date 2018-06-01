@@ -5,6 +5,7 @@
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CNWSObject.hpp"
+#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -14,7 +15,6 @@ namespace API {
 struct CExoArrayListTemplatedCGameEffectPtr;
 struct CExoArrayListTemplatedCNWSPersonalReputation;
 struct CExoArrayListTemplatedint;
-struct CExoArrayListTemplatedunsignedlong;
 struct CNWSArea;
 struct CResGFF;
 struct CResStruct;

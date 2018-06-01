@@ -58,8 +58,6 @@ struct CServerExoAppInternal
     CNWSMessage* m_pMessage;
     int32_t m_bForceUpdate;
     uint32_t* m_pPendingAuthorization;
-    int32_t m_bTranslatingMasterServer;
-    int32_t m_bMasterServerIPCheck;
     CExoArrayListTemplatedlongunsignedint m_lstClientDisconnectPending;
     uint64_t m_nShutdownTimer;
     uint64_t m_nShutdownTimeStamp;
@@ -141,7 +139,6 @@ struct CServerExoAppInternal
     void AddToExclusionList(uint32_t, unsigned char);
     int32_t AdmitNetworkAddress(uint32_t, CExoString);
     int32_t AdmitPlayerName(CExoString);
-    void CheckMasterServerTranslation();
     int32_t CheckStickyPlayerNameReserved(CExoString, CExoString, CExoString, int32_t);
     void ConnectionLibMainLoop();
     int32_t ContinueMessageProcessing();
@@ -281,7 +278,6 @@ void CServerExoAppInternal__AddSubNetProfileSendSize(CServerExoAppInternal* this
 void CServerExoAppInternal__AddToExclusionList(CServerExoAppInternal* thisPtr, uint32_t, unsigned char);
 int32_t CServerExoAppInternal__AdmitNetworkAddress(CServerExoAppInternal* thisPtr, uint32_t, CExoString);
 int32_t CServerExoAppInternal__AdmitPlayerName(CServerExoAppInternal* thisPtr, CExoString);
-void CServerExoAppInternal__CheckMasterServerTranslation(CServerExoAppInternal* thisPtr);
 int32_t CServerExoAppInternal__CheckStickyPlayerNameReserved(CServerExoAppInternal* thisPtr, CExoString, CExoString, CExoString, int32_t);
 void CServerExoAppInternal__ConnectionLibMainLoop(CServerExoAppInternal* thisPtr);
 int32_t CServerExoAppInternal__ContinueMessageProcessing(CServerExoAppInternal* thisPtr);

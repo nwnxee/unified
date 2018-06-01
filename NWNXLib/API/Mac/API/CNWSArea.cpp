@@ -4,7 +4,6 @@
 
 #include "CERFFile.hpp"
 #include "CExoArrayListTemplatedCGameObjectPtr.hpp"
-#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CGameEffect.hpp"
 #include "CNWSAmbientSound.hpp"
 #include "CNWSAreaGridSuccessors.hpp"

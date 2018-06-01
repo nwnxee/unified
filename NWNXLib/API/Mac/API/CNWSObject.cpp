@@ -495,6 +495,11 @@ void CNWSObject::LoadListenData(CResGFF* a0, CResStruct* a1)
     return CNWSObject__LoadListenData(this, a0, a1);
 }
 
+void CNWSObject::LoadMaterialOverrides(CResGFF* a0, CResStruct* a1)
+{
+    return CNWSObject__LoadMaterialOverrides(this, a0, a1);
+}
+
 void CNWSObject::LoadObjectState(CResGFF* a0, CResStruct* a1)
 {
     return CNWSObject__LoadObjectState(this, a0, a1);
@@ -503,6 +508,11 @@ void CNWSObject::LoadObjectState(CResGFF* a0, CResStruct* a1)
 void CNWSObject::LoadVarTable(CResGFF* a0, CResStruct* a1)
 {
     return CNWSObject__LoadVarTable(this, a0, a1);
+}
+
+void CNWSObject::LoadVisualTransform(CResGFF* a0, CResStruct* a1)
+{
+    return CNWSObject__LoadVisualTransform(this, a0, a1);
 }
 
 void CNWSObject::PlaySoundSet(CNWSPlayer* a0, unsigned char a1)
@@ -565,6 +575,11 @@ void CNWSObject::ReportOverflow(int32_t a0, int32_t a1, int32_t a2, int32_t a3)
     return CNWSObject__ReportOverflow(this, a0, a1, a2, a3);
 }
 
+void CNWSObject::ResetMaterialShaderParams(const CExoString& a0, const CExoString& a1)
+{
+    return CNWSObject__ResetMaterialShaderParams(this, a0, a1);
+}
+
 void CNWSObject::RunActions(uint32_t a0, uint32_t a1, uint64_t a2)
 {
     return CNWSObject__RunActions(this, a0, a1, a2);
@@ -590,6 +605,11 @@ void CNWSObject::SaveListenData(CResGFF* a0, CResStruct* a1)
     return CNWSObject__SaveListenData(this, a0, a1);
 }
 
+void CNWSObject::SaveMaterialOverrides(CResGFF* a0, CResStruct* a1)
+{
+    return CNWSObject__SaveMaterialOverrides(this, a0, a1);
+}
+
 void CNWSObject::SaveObjectState(CResGFF* a0, CResStruct* a1)
 {
     return CNWSObject__SaveObjectState(this, a0, a1);
@@ -598,6 +618,11 @@ void CNWSObject::SaveObjectState(CResGFF* a0, CResStruct* a1)
 void CNWSObject::SaveVarTable(CResGFF* a0, CResStruct* a1)
 {
     return CNWSObject__SaveVarTable(this, a0, a1);
+}
+
+void CNWSObject::SaveVisualTransform(CResGFF* a0, CResStruct* a1)
+{
+    return CNWSObject__SaveVisualTransform(this, a0, a1);
 }
 
 int32_t CNWSObject::SendDialogEntry(uint32_t a0, int32_t a1)
@@ -660,6 +685,16 @@ void CNWSObject::SetLockOrientationToObject(uint32_t a0)
     return CNWSObject__SetLockOrientationToObject(this, a0);
 }
 
+void CNWSObject::SetMaterialShaderParamI(const CExoString& a0, const CExoString& a1, int32_t a2)
+{
+    return CNWSObject__SetMaterialShaderParamI(this, a0, a1, a2);
+}
+
+void CNWSObject::SetMaterialShaderParamVec4(const CExoString& a0, const CExoString& a1, float a2, float a3, float a4, float a5)
+{
+    return CNWSObject__SetMaterialShaderParamVec4(this, a0, a1, a2, a3, a4, a5);
+}
+
 void CNWSObject::SetOrientation(Vector a0)
 {
     return CNWSObject__SetOrientation(this, a0);
@@ -678,6 +713,11 @@ void CNWSObject::SetPortraitId(uint16_t a0)
 void CNWSObject::SetPosition(Vector a0, int32_t a1)
 {
     return CNWSObject__SetPosition(this, a0, a1);
+}
+
+void CNWSObject::SetVisualTransformData(const ObjectVisualTransformData& a0)
+{
+    return CNWSObject__SetVisualTransformData(this, a0);
 }
 
 void CNWSObject::SpawnBodyBag()
@@ -1495,6 +1535,14 @@ void CNWSObject__LoadListenData(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1
     return func(thisPtr, a0, a1);
 }
 
+void CNWSObject__LoadMaterialOverrides(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__LoadMaterialOverrides);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 void CNWSObject__LoadObjectState(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
@@ -1507,6 +1555,14 @@ void CNWSObject__LoadVarTable(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__LoadVarTable);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+void CNWSObject__LoadVisualTransform(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__LoadVisualTransform);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
@@ -1607,6 +1663,14 @@ void CNWSObject__ReportOverflow(CNWSObject* thisPtr, int32_t a0, int32_t a1, int
     return func(thisPtr, a0, a1, a2, a3);
 }
 
+void CNWSObject__ResetMaterialShaderParams(CNWSObject* thisPtr, const CExoString& a0, const CExoString& a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, const CExoString&, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__ResetMaterialShaderParams);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 void CNWSObject__RunActions(CNWSObject* thisPtr, uint32_t a0, uint32_t a1, uint64_t a2)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, uint32_t, uint32_t, uint64_t);
@@ -1647,6 +1711,14 @@ void CNWSObject__SaveListenData(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1
     return func(thisPtr, a0, a1);
 }
 
+void CNWSObject__SaveMaterialOverrides(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__SaveMaterialOverrides);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 void CNWSObject__SaveObjectState(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
@@ -1659,6 +1731,14 @@ void CNWSObject__SaveVarTable(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__SaveVarTable);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+void CNWSObject__SaveVisualTransform(CNWSObject* thisPtr, CResGFF* a0, CResStruct* a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, CResGFF*, CResStruct*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__SaveVisualTransform);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }
@@ -1759,6 +1839,22 @@ void CNWSObject__SetLockOrientationToObject(CNWSObject* thisPtr, uint32_t a0)
     return func(thisPtr, a0);
 }
 
+void CNWSObject__SetMaterialShaderParamI(CNWSObject* thisPtr, const CExoString& a0, const CExoString& a1, int32_t a2)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, const CExoString&, const CExoString&, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__SetMaterialShaderParamI);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1, a2);
+}
+
+void CNWSObject__SetMaterialShaderParamVec4(CNWSObject* thisPtr, const CExoString& a0, const CExoString& a1, float a2, float a3, float a4, float a5)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, const CExoString&, const CExoString&, float, float, float, float);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__SetMaterialShaderParamVec4);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1, a2, a3, a4, a5);
+}
+
 void CNWSObject__SetOrientation(CNWSObject* thisPtr, Vector a0)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, Vector);
@@ -1789,6 +1885,14 @@ void CNWSObject__SetPosition(CNWSObject* thisPtr, Vector a0, int32_t a1)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__SetPosition);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
+}
+
+void CNWSObject__SetVisualTransformData(CNWSObject* thisPtr, const ObjectVisualTransformData& a0)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSObject*, const ObjectVisualTransformData&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSObject__SetVisualTransformData);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
 }
 
 void CNWSObject__SpawnBodyBag(CNWSObject* thisPtr)

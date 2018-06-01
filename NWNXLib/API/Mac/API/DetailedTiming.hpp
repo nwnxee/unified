@@ -27,7 +27,7 @@ struct DetailedTiming
     int32_t interlaced;
     StereoType stereo;
     int32_t digital_sync;
-    TLS_83F1A5C51A5EAE819F547DC1FDDED4CC _anon_0;
+    TLS_83F1A5C51A5EAE819F547DC1FDDED4CC ad;
 };
 
 }

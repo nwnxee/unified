@@ -12,6 +12,7 @@
 #include "CNWSObject.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
+#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -22,7 +23,6 @@ struct CExoArrayListTemplatedCNWSInvitationDetails;
 struct CExoArrayListTemplatedCNWSPVPEntry;
 struct CExoArrayListTemplatedCNWSPersonalReputation;
 struct CExoArrayListTemplatedint;
-struct CExoArrayListTemplatedunsignedlong;
 struct CExoLocString;
 struct CGameEffect;
 struct CItemRepository;
