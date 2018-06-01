@@ -3,6 +3,5 @@ add_plugin(Tweaks
     "Tweaks/HideClassesOnCharList.cpp"
     "Tweaks/PlayerDyingHitPointLimit.cpp"
     "Tweaks/DisablePause.cpp"
-    "Tweaks/FixMasterServerDNS.cpp"
     "Tweaks/CompareVarsForMerge.cpp"
     "Tweaks/ParryAllAttacks.cpp")

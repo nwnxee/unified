@@ -11,8 +11,8 @@ struct CExoString;
 
 struct CResRef
 {
-    char m_resRefLowerCase[32];
-    char m_resRef[32];
+    char m_resRefLowerCase[16];
+    char m_resRef[16];
 
     // The below are auto generated stubs.
     CResRef(const CResRef&) = default;

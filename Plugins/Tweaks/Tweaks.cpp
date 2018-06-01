@@ -2,7 +2,6 @@
 #include "Tweaks/HideClassesOnCharList.hpp"
 #include "Tweaks/PlayerDyingHitPointLimit.hpp"
 #include "Tweaks/DisablePause.hpp"
-#include "Tweaks/FixMasterServerDNS.hpp"
 #include "Tweaks/CompareVarsForMerge.hpp"
 #include "Tweaks/ParryAllAttacks.hpp"
 
@@ -53,12 +52,6 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Disabling pausing of the server");
         m_DisablePause = std::make_unique<DisablePause>(GetServices()->m_hooks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("FIX_MASTER_SERVER_DNS", true))
-    {
-        LOG_INFO("Fixing master server DNS fallback.");
-        m_FixMasterServerDNS = std::make_unique<FixMasterServerDNS>(GetServices()->m_hooks.get());
     }
 
     if (GetServices()->m_config->Get<bool>("COMPARE_VARIABLES_WHEN_MERGING", false))
