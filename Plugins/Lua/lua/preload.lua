@@ -42,9 +42,9 @@ local Events={}
 
 -- Add an event listener for a Module
 -- Mod its the name of the module adding callback listener
--- event is the name of the event
--- callback its a function accepting an object and an extra optional string parameter
--- priority its a number, lower comes first
+-- event is the name of the event, you can add more listeners to the same event but they have to come from different Modules.
+-- callback is a function accepting an object and an extra optional string parameter,
+-- priority is a number, lower comes first.
 function AddEvent(Mod, event, callback, priority)
   priority = priority or 10
   if not Events[event] then Events[event] = {} end
@@ -117,5 +117,15 @@ function FlushTokens(nSeconds)
   return i
 end
 
+-- Example of a run script hook table, the basic definition must be present here in the preload
+-- For how to use look at the RUNSCRIPT_TABLE env documentation
+-- if you dont set the RUNSCRIPT_TABLE env to 'Scripts' you can delete this line
+Scripts = {}
 
-
+-- better to define the mod_load script hook function here in the preload
+-- so it's already defined on module load
+--[[
+Scripts.mod_on_load = function()
+  RunEvent('mod_load', GetModule())
+end
+]]
