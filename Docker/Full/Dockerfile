@@ -1,6 +1,6 @@
 FROM alpine/git as git
 WORKDIR /tmp
-RUN git clone https://github.com/jakkn/unified
+RUN git clone https://github.com/nwnxee/unified
 
 FROM nwnxee/builder as builder
 WORKDIR /nwnx/home
