@@ -18,7 +18,7 @@ The most recent build of NWN:EE that is supported can be discovered at the top o
 
 ## What platforms are supported?
 
-Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. There are plans to bring native Windows support to NWNX:EE but these plans currently lack a concrete schedule.
+Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. Many discussions have taken place regarding work on a native Windows port of NWNX:EE. It has been tackled several times in the past, but none of those attempts have seem fruition - complications have arisen in the course of the work. We know how we would do it, and estimate the time required for the task to be between 2 and 4 weeks of full-time work, but nobody with the skillset necessary to take on the project has the time or interest at the moment to do so. Therefore, users should not expect a native Windows port from a member of the team in the near future. (contributions welcome!)
 
 ## How do I use it?
 
