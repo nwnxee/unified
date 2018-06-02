@@ -12,6 +12,7 @@ Allows users to call Lua code with NWScript binding.
 | TOKEN_FUNCTION    | string |  CallToken               |
 | EVENT_FUNCTION    | string |  RunEvent                |
 | OBJSELF_FUNCTION  | string |  _none_                  |
+| RUNSCRIPT_TABLE   | string |  _none_                  |
 
 ## Quick start
 
@@ -45,7 +46,8 @@ Allows users to call Lua code with NWScript binding.
 
 
 ## Documentation
-This plugin let you execute Lua code inside *NWscript* via two functions `NWNX_Lua_EvalVoid()` and `NWNX_Lua_Eval()`, the second one returning (as string) the result of the Lua code execution. With the `NWNX_Lua_RunEvent()` function you can generate events in NWScript, receive them on the Lua side and executing all the Lua functions registered to consume that event in order of priority. For details on events just look at the three `*Event()` functions in `preload.lua`.
+This plugin let you execute Lua code inside *NWscript* via two functions `NWNX_Lua_EvalVoid()` and `NWNX_Lua_Eval()`, the second one returning (as string) the result of the Lua code execution. With the `NWNX_Lua_RunEvent()` function you can generate events in NWScript, receive them on the Lua side and executing all the Lua functions registered to listen to that event in order of priority. For details on events just look at the three `*Event()` functions in `preload.lua`. 
+Lastly the *run script hook* permit to run a Lua function before a script is executed in the module, with returning values from the function having special effects: from skipping the script execution to being treated as a StartingConditional() result (for details see the configuration section). 
 
 In the Lua space all the basics NWScript functions are already defined, that by simply requiring the file `nwn.lua`. 
 
@@ -99,7 +101,11 @@ Here is the complete list of the configuration environment variables:
 
 **NWNX_LUA_EVENT_FUNCTION** mandatory: you can use the event system for generate events inside NWScript, via the function `NWNX_Lua_RunEvent` provided in nwnx_lua.nss. These events can be consumend by a Lua function registered to observe the events, the default is `RunEvent()`, and it's already defined in the preload script. If you dont want to use the event system just dont call `NWNX_Lua_RunEvent()` on the NWScript side.
 
-**NWNX_LUA_OBJSELF_FUNCTION** optional and advanced: in the Lua global namespace there is already a OBJECT_SELF integer keeped by the plugin at the right integer value. If you need to be more OOP and don't want to use integers for objects you have to change first the `RunEvent` function, because is accepting integers as objects so you have to transform them in real objects inside the `RunEvent` function before the function call the observers callbacks. Second you have to set this configuration variable to the name of the function responsible for setting OBJECT_SELF to an object. The function will be called by the plugin with an integer value (the value of OBJECT_SELF) as argument when needed. There is an example of `SetObjectSelf()` commented out in the preload script, note: it does not work by itself, you have to write oop code (i.e. a class for objects) before setting the configuration and uncommenting/modifying it.
+**NWNX_LUA_OBJSELF_FUNCTION** optional and advanced: in the Lua global namespace there is already a OBJECT_SELF global variable synced by the plugin at the right integer value following the context change. If you need to be more OOP and don't want to use integers for objects you have to change first the `RunEvent` function, because is accepting integers as objects. So you have to transform them in real objects inside the `RunEvent` function, just before the function call the observers callbacks. Second you have to set this configuration variable to the name of the function responsible for setting OBJECT_SELF to an object. The function will be called by the plugin with an integer value (the value of OBJECT_SELF) as argument when needed, i.e. when the context change. There is an example of `SetObjectSelf()` commented out in the preload script, note: it does not work by itself, you have to write oop code (i.e. a class for objects) before setting the configuration and uncommenting/modifying it. If this configuration is defined the function **must** be present in the preload script. Default: none.
+
+**NWNX_LUA_RUNSCRIPT_TABLE** optional: this is the name of the *global* Lua **table** containing the functions called in the *run script hook*. A function with the same name of the script executed in the module will be run before the script itself. If the function returns something different from `nil` (i.e.: string, numbers or booleans) the script execution will be skipped, if the function returns a Lua boolean (`true` or `false`) it's treated like a return value from a StartingConditional(). 
+For example if you have the script 'mod_on_chat.nss' in your module *onchat* event, if this configuration parameter is set to `Scripts`, when the `mod_on_chat` script is called the plugin search for a Lua function `Scripts.mod_on_chat()`. If the function is found it will be called before the 'mod_on_chat' script and the returned value determine if the original script is to be skipped. No argument is passed to the function, the context object is already represented by OBJECT_SELF. 
+If this parameter is not defined no *run script hook* is set up. If this parameter is defined the basic table definition **must** be present in the preload script, a line like this one is enough:  `Scripts = {}` all the other functions of the run script table could be defined after the preloading phase, obviously apart from the mod_load function if you want one. Default: none.
 
 ## Notes on Compilation
 NWNX_Lua is configured to compile first against *LuaJIT*, and only if LuaJIT (and its library) cannot be find search for a regular Lua library.

@@ -25,11 +25,13 @@ namespace Lua {
 	    Events::ArgumentStack OnEval(Events::ArgumentStack&& args);
 	    Events::ArgumentStack OnEvalVoid(Events::ArgumentStack&& args);
 	    Events::ArgumentStack OnEvent(Events::ArgumentStack&& args);
-	    void OnToken(Types::ObjectID oid, char* token);	    
+	    void OnToken(Types::ObjectID oid, char* token);
+	    bool OnScript(const char* scriptName, NWNXLib::API::Types::ObjectID objId, bool valid);	    
 	private:
-	    void SetObjectSelf();
+	    void SetObjectSelf(Types::ObjectID objSelf = Constants::OBJECT_INVALID);
 	    int m_tokenFunction;
 	    int m_eventFunction;
+	    int m_runScriptTable;
 	    std::function<void(Types::ObjectID objSelf)> m_setObjSelfFunction;
 	    Types::ObjectID m_object_self;
 	};

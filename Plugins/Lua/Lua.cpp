@@ -44,6 +44,7 @@ namespace Lua {
     using namespace NWNXLib::Services;
     using namespace NWNXLib::API;
 
+    static Hooking::FunctionHook* s_RunScriptHook;
     static Hooking::FunctionHook* s_RunScriptSituationHook;
 
     Lua::Lua(const Plugin::CreateParams& params) : Plugin(params)
@@ -86,6 +87,12 @@ namespace Lua {
         // The other function in wich you recive a numeric object is the RunEvent Function,
         // but RunEvent is in lua code so you can modifiy as you want
         std::string setObjSelfFunction = GetServices()->m_config->Get<std::string>("OBJSELF_FUNCTION", "");
+
+        // Name of the table containg the functions called in the run script hook
+        // Optional; a function with the same name of the script executed will be run before
+        // the script, if returning something diffferent from nil the script execution will be skipped,
+        // if returns a Lua boolean is treated like a return value from a StartingConditional() in NWScript 
+        std::string runScriptTable = GetServices()->m_config->Get<std::string>("RUNSCRIPT_TABLE", "");
         
         // loading preload code
         // Dont call any NWN function in this script like SetLocalString(), GetModule() etc
@@ -140,6 +147,24 @@ namespace Lua {
         GetServices()->m_events->RegisterEvent("EVALVOID", std::bind(&Lua::OnEvalVoid, this, std::placeholders::_1));    
         GetServices()->m_events->RegisterEvent("EVENT", std::bind(&Lua::OnEvent, this, std::placeholders::_1));
 
+        // RunScript hook
+        if(!runScriptTable.empty())
+        {
+            // save the Scripts table in the registry
+            lua_getglobal(m_luaInstance, runScriptTable.c_str());
+            m_runScriptTable = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
+
+            GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, int32_t>(
+                +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
+                {
+                    bool skip = script->m_sString && g_plugin->OnScript(script->m_sString, objId, !!valid);
+                    return skip ? 1 : s_RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+                }
+            );
+            s_RunScriptHook = GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScript);
+        }
+
+        // RunScriptSituation hook
         GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScriptSituation, int32_t>(
             +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID oid, int32_t oidValid)
             {
@@ -184,7 +209,9 @@ namespace Lua {
         const auto code = Events::ExtractArgument<std::string>(args);       
         Events::ArgumentStack stack;
 
-        SetObjectSelf();  
+        SetObjectSelf(); 
+
+        LOG_DEBUG("Eval request code: %s", code.c_str()); 
         
         if(luaL_dostring(m_luaInstance, code.c_str()))
         {
@@ -213,6 +240,8 @@ namespace Lua {
 
         SetObjectSelf();  
 
+        LOG_DEBUG("Evalvoid request code: %s", code.c_str());
+
         if(luaL_dostring(m_luaInstance, code.c_str()))
         {
             LOG_ERROR("Error on EvalVoid: %s", lua_tostring(m_luaInstance, -1));               
@@ -232,7 +261,9 @@ namespace Lua {
         GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
         GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
 
-        SetObjectSelf();         
+        SetObjectSelf(oid); 
+
+        LOG_DEBUG("Token %s on OBJECT: 0x%x", token, oid);          
         
         lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_tokenFunction);
         lua_pushstring(m_luaInstance, token);   /* push 1st argument */
@@ -254,7 +285,9 @@ namespace Lua {
         const auto extraStr = Events::ExtractArgument<std::string>(args);
         Events::ArgumentStack stack;
         
-        SetObjectSelf();  
+        SetObjectSelf();
+
+        LOG_DEBUG("Event %s on OBJECT: 0x%x", eventStr.c_str(), objectId);  
 
         lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_eventFunction);  /* function to be called */
         lua_pushstring(m_luaInstance, eventStr.c_str());   /* push 1st argument */
@@ -270,19 +303,99 @@ namespace Lua {
         return stack;
     }
 
+    bool Lua::OnScript(const char* scriptName, Types::ObjectID objId, bool valid)
+    {   
+        std::string scriptNameLower = scriptName;
+        std::transform(std::begin(scriptNameLower), std::end(scriptNameLower), std::begin(scriptNameLower), ::tolower);
+        bool bSkip = false;
+
+        //LOG_DEBUG("Called Script %s, OBJECT: 0x%x", scriptNameLower.c_str(), objId);        
+        lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_runScriptTable);
+        lua_getfield(m_luaInstance, -1, scriptNameLower.c_str());        
+        
+        // check if the functions exists in the m_runScriptTable Table
+        if(lua_isfunction(m_luaInstance, -1))
+        {   
+            LOG_DEBUG("RunScript Hook: %s function found, object 0x%x", scriptNameLower.c_str(), objId);
+            
+            // PREPARE VM
+            if (GetVm()->m_nRecursionLevel == -1)
+            {
+                GetVm()->m_cRunTimeStack.InitializeStack();
+                GetVm()->m_cRunTimeStack.m_pVMachine = GetVm();
+            }
+            GetVm()->m_nReturnValueParameterType = 0;
+            GetVm()->m_pReturnValue = nullptr;
+            GetVm()->m_nRecursionLevel += 1;
+            GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel] = objId;
+            GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel] = valid;
+            GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+            GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
+            
+            int spBefore = GetVm()->m_cRunTimeStack.GetStackPointer();
+            
+            SetObjectSelf(objId);
+            
+            if (lua_pcall(m_luaInstance, 0, 1, 0) != 0) // call with 0 args and a return value
+            {
+                LOG_ERROR("Error on function %s: %s", scriptNameLower.c_str(), lua_tostring(m_luaInstance, -1));
+            }
+            else
+            {               
+                if(!lua_isnil(m_luaInstance, -1))
+                {
+                    // we got something so skip the original script call
+                    bSkip = true;
+                    LOG_DEBUG("Skipping %s execution", scriptNameLower.c_str());
+                    
+
+                    if(lua_isboolean(m_luaInstance, -1))
+                    {
+                        // we got a boolean: it's a result from a starting conditional!!
+                        int retval = lua_toboolean(m_luaInstance, -1);
+                        LOG_DEBUG("Got a returning boolean from function %s, value: %d", scriptNameLower.c_str(), retval);
+                        GetVm()->m_nReturnValueParameterType = 0x03;
+                        GetVm()->m_pReturnValue = reinterpret_cast<void*>(retval);
+                    }
+                }           
+            }
+
+            // check the VM stack
+            int spAfter = GetVm()->m_cRunTimeStack.GetStackPointer();
+            if (spBefore != spAfter)
+            {
+                LOG_WARNING("The stack pointer before (%d) and after (%d) were different - stack over/underflow in script %s?", spBefore, spAfter, scriptNameLower.c_str());
+            }
+
+            // CLEANUP VM          
+            GetVm()->m_nRecursionLevel -= 1;
+            if (GetVm()->m_nRecursionLevel != -1)
+            {               
+                GetVmCommands()->m_oidObjectRunScript = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+                GetVmCommands()->m_bValidObjectRunScript = GetVm()->m_bValidObjectRunScript[GetVm()->m_nRecursionLevel];
+            }
+
+        }
+        // clean the stack
+        lua_settop(m_luaInstance, 0);        
+        return bSkip;
+    }
+
     // Set a global number OBJECT_SELF at each request of running Lua code,
     // if a function is present in the configuration
     // call that function instead, leave the stack clean even on error
-    void Lua::SetObjectSelf()
+    void Lua::SetObjectSelf(Types::ObjectID objSelf)
     {              
-        Types::ObjectID objSelf = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
-        
+        if(objSelf == Constants::OBJECT_INVALID)
+        {
+            objSelf = GetVm()->m_oidObjectRunScript[GetVm()->m_nRecursionLevel];
+        }
         // change only if there is a change of context
         if(m_object_self == objSelf)
         {
             return;
         }
-        
+        LOG_DEBUG("Setting OBJECT_SELF to 0x%x", objSelf);
         m_setObjSelfFunction(objSelf);
         m_object_self = objSelf;
     }
