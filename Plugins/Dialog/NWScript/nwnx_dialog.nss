@@ -41,7 +41,7 @@ int NWNX_Dialog_GetCurrentNodeIndex();
 string NWNX_Dialog_GetCurrentNodeText(int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE);
 
 // Set the text of the current node for given language/gender
-// This will persist until server reset, for this dialog owner only
+// This will only work in a starting conditional script (action take comes after the text is displayed)
 void NWNX_Dialog_SetCurrentNodeText(string text, int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE);
 
 
