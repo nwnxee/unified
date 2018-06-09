@@ -224,6 +224,12 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
             // Check for any other effects that limit movement speed
             pCreature->m_bForcedWalk = !!std::bsearch(&pkey, pCreature->m_appliedEffects.element, pCreature->m_appliedEffects.num, sizeof(pkey),
                                             +[](const void *a, const void *b){ return ((CGameEffect*)a)->m_nType - ((CGameEffect*)b)->m_nType; });
+            if (!pCreature->m_bForcedWalk)
+            {
+                pCreature->UpdateEncumbranceState(false);
+                pCreature->m_bForcedWalk = (pCreature->m_nEncumbranceState != 0);
+            }
+
         }
     }
 
