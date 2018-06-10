@@ -4,6 +4,7 @@
 #include "Redis.hpp"
 #include "Pool.hpp"
 #include <mutex>
+#include <sstream>
 
 namespace Redis
 {
@@ -27,5 +28,39 @@ struct Internal {
     // Aaand the config
     Redis::Configuration m_config;
 };
+
+inline std::string RedisReplyTypeToString(const cpp_redis::reply::type& t)
+{
+    switch (t) {
+        case cpp_redis::reply::type::array: return "Array";
+        case cpp_redis::reply::type::bulk_string: return "BulkString";
+        case cpp_redis::reply::type::error: return "Error";
+        case cpp_redis::reply::type::integer: return "Integer";
+        case cpp_redis::reply::type::simple_string: return "String";
+        case cpp_redis::reply::type::null: return "Null";
+    }
+    return "Unknown";
+}
+
+inline int RedisReplyTypeToInt(const cpp_redis::reply::type& t)
+{
+    switch (t)
+    {
+        case cpp_redis::reply::type::array: return 1;
+        case cpp_redis::reply::type::bulk_string: return 2;
+        case cpp_redis::reply::type::error: return 3;
+        case cpp_redis::reply::type::integer: return 4;
+        case cpp_redis::reply::type::simple_string: return 5;
+        case cpp_redis::reply::type::null: return 6;
+    }
+    return 0;
+}
+
+inline std::string RedisReplyAsString(const cpp_redis::reply& r)
+{
+    std::stringstream ss;
+    ss << r;
+    return ss.str();
+}
 
 }

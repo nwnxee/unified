@@ -11,20 +11,6 @@ namespace Redis
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
 
-int RedisReplyTypeToInt(const cpp_redis::reply::type& t)
-{
-    switch (t)
-    {
-        case cpp_redis::reply::type::array: return 1;
-        case cpp_redis::reply::type::bulk_string: return 2;
-        case cpp_redis::reply::type::error: return 3;
-        case cpp_redis::reply::type::integer: return 4;
-        case cpp_redis::reply::type::simple_string: return 5;
-        case cpp_redis::reply::type::null: return 6;
-    }
-    return 0;
-}
-
 void Redis::RegisterWithNWScript()
 {
     // Full reply data of the last command executed for nwscript purposes.
@@ -51,7 +37,7 @@ void Redis::RegisterWithNWScript()
         Events::ArgumentStack st;
         // Return value: a simple string for now to cut down on call
         // count.
-        Events::InsertArgument(st, m_last_nwscript_reply.as_string());
+        Events::InsertArgument(st, RedisReplyAsString(m_last_nwscript_reply));
 
         // Events::InsertArgument(st, std::to_string(RedisReplyTypeToInt(
         // m_last_nwscript_reply.get_type())));
@@ -64,7 +50,7 @@ void Redis::RegisterWithNWScript()
     [&](Events::ArgumentStack &&)
     {
         Events::ArgumentStack st;
-        Events::InsertArgument(st, m_last_nwscript_reply.as_string());
+        Events::InsertArgument(st, RedisReplyAsString(m_last_nwscript_reply));
         return st;
     });
 
