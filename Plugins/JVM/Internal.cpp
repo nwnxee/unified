@@ -8,6 +8,7 @@
 
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CGameEffect.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -165,6 +166,11 @@ ArgumentStack Internal::EntryPoint(jmethodID method, ArgumentStack& args)
 
     // reset event mappings
     if (m_contextDepth == 0) {
+        for (const CGameEffect* eff : m_touchedEffects)
+        {
+            delete eff;
+        }
+
         m_touchedEffects.clear();
     }
 

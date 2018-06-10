@@ -138,6 +138,9 @@ jobject JNIEXPORT JNICALL Internal::NWScriptPopLocation(JNIEnv* env, jobject obj
     auto r = JNICHECKED(env, CallStaticObjectMethod(g_internal->m_jclassNWLocation,
         g_internal->m_jmethodNWLocationCreate,
         ret_area, pRetVal->m_vPosition.x, pRetVal->m_vPosition.y, pRetVal->m_vPosition.z, facing));
+
+    delete pRetVal;
+
     return r;
 }
 
