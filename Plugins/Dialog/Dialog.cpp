@@ -80,7 +80,7 @@ void Dialog::Hooks::GetStartEntry(Services::Hooks::CallType type, CNWSDialog *pT
 }
 
 void Dialog::Hooks::GetStartEntryOneLiner(Services::Hooks::CallType type, CNWSDialog *pThis, 
-    CNWSObject* pNWSObjectOwner, CExoLocString& sOneLiner, CResRef* sSound, CResRef* sScript)
+    CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript)
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
@@ -186,9 +186,9 @@ Dialog::Dialog(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook
         <Functions::CNWSDialog__GetStartEntry,
             uint32_t, CNWSDialog*, CNWSObject*>(&Hooks::GetStartEntry);
-//    GetServices()->m_hooks->RequestSharedHook
-//        <Functions::CNWSDialog__GetStartEntryOneLiner,
-//            int32_t, CNWSDialog*, CNWSObject*, CExoLocString&, CResRef*, CResRef*>(&Hooks::GetStartEntryOneLiner);
+    GetServices()->m_hooks->RequestSharedHook
+        <Functions::CNWSDialog__GetStartEntryOneLiner,
+            int32_t, CNWSDialog*, CNWSObject*, CExoLocString*, CResRef*, CResRef*>(&Hooks::GetStartEntryOneLiner);
     GetServices()->m_hooks->RequestSharedHook
         <Functions::CNWSDialog__SendDialogEntry,
             int32_t, CNWSDialog*, CNWSObject*, uint32_t, uint32_t, int32_t>(&Hooks::SendDialogEntry);

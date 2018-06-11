@@ -20,7 +20,7 @@ private:
         static void GetStartEntry(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSDialog *pThis,
             NWNXLib::API::CNWSObject* pNWSObjectOwner);
         static void GetStartEntryOneLiner(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSDialog *pThis,
-            NWNXLib::API::CNWSObject* pNWSObjectOwner, NWNXLib::API::CExoLocString& sOneLiner, NWNXLib::API::CResRef* sSound, NWNXLib::API::CResRef* sScript);
+            NWNXLib::API::CNWSObject* pNWSObjectOwner, NWNXLib::API::CExoLocString* sOneLiner, NWNXLib::API::CResRef* sSound, NWNXLib::API::CResRef* sScript);
         static void SendDialogEntry(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSDialog *pThis,
             NWNXLib::API::CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, int32_t bPlayHelloSound);
         static void SendDialogReplies(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSDialog *pThis,
