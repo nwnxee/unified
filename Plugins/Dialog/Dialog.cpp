@@ -80,7 +80,7 @@ void Dialog::Hooks::GetStartEntry(Services::Hooks::CallType type, CNWSDialog *pT
 }
 
 void Dialog::Hooks::GetStartEntryOneLiner(Services::Hooks::CallType type, CNWSDialog *pThis, 
-    CNWSObject* pNWSObjectOwner, CExoLocString& sOneLiner, CResRef* sSound, CResRef* sScript)
+    CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript)
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
@@ -96,11 +96,13 @@ void Dialog::Hooks::SendDialogEntry(Services::Hooks::CallType type, CNWSDialog *
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
-    idxEntry = iEntry;
     loopCount = 0;
     (void)nPlayerIdGUIOnly; (void)bPlayHelloSound;
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    {
         statestack[++ssp] = DIALOG_STATE_SEND_ENTRY;
+        idxEntry = iEntry;
+    }
     else ssp--;
 }
 
@@ -121,12 +123,14 @@ void Dialog::Hooks::HandleReply(Services::Hooks::CallType type, CNWSDialog *pThi
 {
     pDialog = pThis;
     pOwner = pNWSObjectOwner;
-    idxEntry = currentEntryIndex;
-    idxReply = nReplyIndex;
     loopCount = 0;
     (void)bEscapeDialog; (void)nPlayerID;
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    {
         statestack[++ssp] = DIALOG_STATE_HANDLE_REPLY;
+        idxEntry = currentEntryIndex;
+        idxReply = nReplyIndex;
+    }
     else ssp--;
 }
 
@@ -138,6 +142,12 @@ void Dialog::Hooks::CheckScript(Services::Hooks::CallType type, CNWSDialog *pThi
     (void)sActive;
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {
+        if (statestack[ssp] == DIALOG_STATE_HANDLE_REPLY)
+        {
+            statestack[ssp] = DIALOG_STATE_SEND_ENTRY;
+            idxReply = pDialog->m_pEntries[idxEntry].m_pReplies[idxReply].m_nIndex;
+            idxEntry = pDialog->m_pReplies[idxReply].m_pEntries[loopCount].m_nIndex;
+        }
         scriptType = SCRIPT_TYPE_STARTING_CONDITIONAL;
     }
     else
@@ -176,9 +186,9 @@ Dialog::Dialog(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook
         <Functions::CNWSDialog__GetStartEntry,
             uint32_t, CNWSDialog*, CNWSObject*>(&Hooks::GetStartEntry);
-//    GetServices()->m_hooks->RequestSharedHook
-//        <Functions::CNWSDialog__GetStartEntryOneLiner,
-//            int32_t, CNWSDialog*, CNWSObject*, CExoLocString&, CResRef*, CResRef*>(&Hooks::GetStartEntryOneLiner);
+    GetServices()->m_hooks->RequestSharedHook
+        <Functions::CNWSDialog__GetStartEntryOneLiner,
+            int32_t, CNWSDialog*, CNWSObject*, CExoLocString*, CResRef*, CResRef*>(&Hooks::GetStartEntryOneLiner);
     GetServices()->m_hooks->RequestSharedHook
         <Functions::CNWSDialog__SendDialogEntry,
             int32_t, CNWSDialog*, CNWSObject*, uint32_t, uint32_t, int32_t>(&Hooks::SendDialogEntry);
@@ -241,7 +251,7 @@ ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&& args)
             retval = idxEntry;
             break;
         case DIALOG_STATE_HANDLE_REPLY:
-            retval = idxReply;
+            retval = pDialog->m_pEntries[idxEntry].m_pReplies[idxReply].m_nIndex;
             break;
         case DIALOG_STATE_SEND_REPLIES:
             retval = pDialog->m_pEntries[pDialog->m_currentEntryIndex].m_pReplies[loopCount].m_nIndex;
@@ -281,8 +291,11 @@ ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
             pLocString = &pDialog->m_pEntries[idxEntry].m_sText;
             break;
         case DIALOG_STATE_HANDLE_REPLY:
-            pLocString = &pDialog->m_pReplies[idxReply].m_sText;
+        {
+            auto idx = pDialog->m_pEntries[idxEntry].m_pReplies[idxReply].m_nIndex;
+            pLocString = &pDialog->m_pReplies[idx].m_sText;
             break;
+        }
         case DIALOG_STATE_SEND_REPLIES:
         {
             auto idx = pDialog->m_pEntries[pDialog->m_currentEntryIndex].m_pReplies[loopCount].m_nIndex;
@@ -322,8 +335,11 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
             pLocString = &pDialog->m_pEntries[idxEntry].m_sText;
             break;
         case DIALOG_STATE_HANDLE_REPLY:
-            pLocString = &pDialog->m_pReplies[idxReply].m_sText;
+        {
+            auto idx = pDialog->m_pEntries[idxEntry].m_pReplies[idxReply].m_nIndex;
+            pLocString = &pDialog->m_pReplies[idx].m_sText;
             break;
+        }
         case DIALOG_STATE_SEND_REPLIES:
         {
             auto idx = pDialog->m_pEntries[pDialog->m_currentEntryIndex].m_pReplies[loopCount].m_nIndex;
