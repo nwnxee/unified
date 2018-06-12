@@ -224,8 +224,8 @@ extern "C" {
 
     static int NWScript_StackPushEffect(lua_State *L)
     {
-        void **pEffect = (void **)luaL_checkudata(L, 1, LUA_NWN_EFFECT);
-        if(!GetVm()->StackPushEngineStructure(0, *pEffect))
+        void *pEffect = *(void **)luaL_checkudata(L, 1, LUA_NWN_EFFECT);
+        if(!GetVm()->StackPushEngineStructure(0, pEffect))
         {
             LOG_DEBUG("VM failed to push Effect");
         }
@@ -246,8 +246,8 @@ extern "C" {
 
     static int NWScript_StackPushEvent(lua_State *L)
     {
-        void **pEvent = (void **)luaL_checkudata(L, 1, LUA_NWN_EVENT);
-        if(!GetVm()->StackPushEngineStructure(1, *pEvent))
+        void *pEvent = *(void **)luaL_checkudata(L, 1, LUA_NWN_EVENT);
+        if(!GetVm()->StackPushEngineStructure(1, pEvent))
         {
             LOG_DEBUG("VM failed to push Event");
         }
@@ -268,8 +268,8 @@ extern "C" {
 
     static int NWScript_StackPushLocation(lua_State *L)
     {
-        void **pLocation = (void **)luaL_checkudata(L, 1, LUA_NWN_LOCATION);
-        if(!GetVm()->StackPushEngineStructure(2, *pLocation))
+        void *pLocation = *(void **)luaL_checkudata(L, 1, LUA_NWN_LOCATION);
+        if(!GetVm()->StackPushEngineStructure(2, pLocation))
         {
             LOG_DEBUG("VM failed to push Location");
         }
@@ -290,8 +290,8 @@ extern "C" {
 
     static int NWScript_StackPushTalent(lua_State *L)
     {
-        void **pTalent = (void **)luaL_checkudata(L, 1, LUA_NWN_TALENT);
-        if(!GetVm()->StackPushEngineStructure(3, *pTalent))
+        void *pTalent = *(void **)luaL_checkudata(L, 1, LUA_NWN_TALENT);
+        if(!GetVm()->StackPushEngineStructure(3, pTalent))
         {
             LOG_DEBUG("VM failed to push Talent");
         }
@@ -312,8 +312,8 @@ extern "C" {
 
     static int NWScript_StackPushItemProperty(lua_State *L)
     {
-        void **pProperty = (void **)luaL_checkudata(L, 1, LUA_NWN_ITEMPROPERTY);
-        if(!GetVm()->StackPushEngineStructure(4, *pProperty))
+        void *pProperty = *(void **)luaL_checkudata(L, 1, LUA_NWN_ITEMPROPERTY);
+        if(!GetVm()->StackPushEngineStructure(4, pProperty))
         {
             LOG_DEBUG("VM failed to push ItemProperty");
         }
@@ -335,50 +335,50 @@ extern "C" {
     // __gc
     static int NWScript_FreeEffect(lua_State *L)
     {
-        void **pEffect = (void **)lua_touserdata(L, 1);
-        if (*pEffect)
+        void *pEffect = *(void **)lua_touserdata(L, 1);
+        if (pEffect)
         {
-            GetVmCommands()->DestroyGameDefinedStructure(0, *pEffect);
+            GetVmCommands()->DestroyGameDefinedStructure(0, pEffect);
         }
         return 0;
     }
 
     static int NWScript_FreeEvent(lua_State *L)
     {
-        void **pEvent = (void **)lua_touserdata(L, 1);
-        if (*pEvent)
+        void *pEvent = *(void **)lua_touserdata(L, 1);
+        if (pEvent)
         {
-            GetVmCommands()->DestroyGameDefinedStructure(1, *pEvent);
+            GetVmCommands()->DestroyGameDefinedStructure(1, pEvent);
         }
         return 0;
     }
 
     static int NWScript_FreeLocation(lua_State *L)
     {
-        void **pLocation = (void **)lua_touserdata(L, 1);
-        if (*pLocation)
+        void *pLocation = *(void **)lua_touserdata(L, 1);
+        if (pLocation)
         {
-            GetVmCommands()->DestroyGameDefinedStructure(2, *pLocation);
+            GetVmCommands()->DestroyGameDefinedStructure(2, pLocation);
         }
         return 0;
     }
 
     static int NWScript_FreeTalent(lua_State *L)
     {
-        void **pTalent = (void **)lua_touserdata(L, 1);
-        if (*pTalent)
+        void *pTalent = *(void **)lua_touserdata(L, 1);
+        if (pTalent)
         {
-            GetVmCommands()->DestroyGameDefinedStructure(3, *pTalent);
+            GetVmCommands()->DestroyGameDefinedStructure(3, pTalent);
         }
         return 0;
     }
 
     static int NWScript_FreeItemProperty(lua_State *L)
     {
-        void **pProperty = (void **)lua_touserdata(L, 1);
-        if (*pProperty)
+        void *pProperty = *(void **)lua_touserdata(L, 1);
+        if (pProperty)
         {
-            GetVmCommands()->DestroyGameDefinedStructure(4, *pProperty);
+            GetVmCommands()->DestroyGameDefinedStructure(4, pProperty);
         }
         return 0;
     }
@@ -396,9 +396,9 @@ extern "C" {
     // nwn_location.components()
     static int NWScript_LocationGetComponents(lua_State *L) 
     {
-        CScriptLocation **ptr = (CScriptLocation **)luaL_checkudata(L, 1, LUA_NWN_LOCATION);
+        CScriptLocation *ptr = *(CScriptLocation **)luaL_checkudata(L, 1, LUA_NWN_LOCATION);
         
-        float facing = (float)(std::atan2((*ptr)->m_vOrientation.y, (*ptr)->m_vOrientation.x) * (180 / 3.1415927));
+        float facing = (float)(std::atan2((ptr)->m_vOrientation.y, (ptr)->m_vOrientation.x) * (180 / 3.1415927));
         while (facing > 360.0)
         {
             facing -= 360.0;
@@ -407,10 +407,10 @@ extern "C" {
         {
             facing += 360.0;
         }
-        lua_pushinteger(L, (*ptr)->m_oArea);
-        lua_pushnumber(L, (*ptr)->m_vPosition.x);
-        lua_pushnumber(L, (*ptr)->m_vPosition.y);
-        lua_pushnumber(L, (*ptr)->m_vPosition.z);
+        lua_pushinteger(L, (ptr)->m_oArea);
+        lua_pushnumber(L, (ptr)->m_vPosition.x);
+        lua_pushnumber(L, (ptr)->m_vPosition.y);
+        lua_pushnumber(L, (ptr)->m_vPosition.z);
         lua_pushnumber(L, facing);
         return 5;
     }
