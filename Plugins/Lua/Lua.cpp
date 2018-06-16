@@ -305,18 +305,16 @@ namespace Lua {
 
     bool Lua::OnScript(const char* scriptName, Types::ObjectID objId, bool valid)
     {   
-        std::string scriptNameLower = scriptName;
-        std::transform(std::begin(scriptNameLower), std::end(scriptNameLower), std::begin(scriptNameLower), ::tolower);
         bool bSkip = false;
 
-        //LOG_DEBUG("Called Script %s, OBJECT: 0x%x", scriptNameLower.c_str(), objId);        
+        //LOG_DEBUG("Called Script %s, OBJECT: 0x%x", scriptName, objId);        
         lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_runScriptTable);
-        lua_getfield(m_luaInstance, -1, scriptNameLower.c_str());        
+        lua_getfield(m_luaInstance, -1, scriptName);        
         
         // check if the functions exists in the m_runScriptTable Table
         if(lua_isfunction(m_luaInstance, -1))
         {   
-            LOG_DEBUG("RunScript Hook: %s function found, object 0x%x", scriptNameLower.c_str(), objId);
+            LOG_DEBUG("RunScript Hook: %s function found, object 0x%x", scriptName, objId);
             
             // PREPARE VM
             if (GetVm()->m_nRecursionLevel == -1)
@@ -338,7 +336,7 @@ namespace Lua {
             
             if (lua_pcall(m_luaInstance, 0, 1, 0) != 0) // call with 0 args and a return value
             {
-                LOG_ERROR("Error on function %s: %s", scriptNameLower.c_str(), lua_tostring(m_luaInstance, -1));
+                LOG_ERROR("Error on function %s: %s", scriptName, lua_tostring(m_luaInstance, -1));
             }
             else
             {               
@@ -346,14 +344,14 @@ namespace Lua {
                 {
                     // we got something so skip the original script call
                     bSkip = true;
-                    LOG_DEBUG("Skipping %s execution", scriptNameLower.c_str());
+                    LOG_DEBUG("Skipping %s execution", scriptName);
                     
 
                     if(lua_isboolean(m_luaInstance, -1))
                     {
                         // we got a boolean: it's a result from a starting conditional!!
                         int retval = lua_toboolean(m_luaInstance, -1);
-                        LOG_DEBUG("Got a returning boolean from function %s, value: %d", scriptNameLower.c_str(), retval);
+                        LOG_DEBUG("Got a returning boolean from function %s, value: %d", scriptName, retval);
                         GetVm()->m_nReturnValueParameterType = 0x03;
                         GetVm()->m_pReturnValue = reinterpret_cast<void*>(retval);
                     }
@@ -364,7 +362,7 @@ namespace Lua {
             int spAfter = GetVm()->m_cRunTimeStack.GetStackPointer();
             if (spBefore != spAfter)
             {
-                LOG_WARNING("The stack pointer before (%d) and after (%d) were different - stack over/underflow in script %s?", spBefore, spAfter, scriptNameLower.c_str());
+                LOG_WARNING("The stack pointer before (%d) and after (%d) were different - stack over/underflow in script %s?", spBefore, spAfter, scriptName);
             }
 
             // CLEANUP VM          
