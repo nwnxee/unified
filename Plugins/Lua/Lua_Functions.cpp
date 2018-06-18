@@ -398,7 +398,7 @@ extern "C" {
     {
         CScriptLocation *ptr = *(CScriptLocation **)luaL_checkudata(L, 1, LUA_NWN_LOCATION);
         
-        float facing = (float)(std::atan2((ptr)->m_vOrientation.y, (ptr)->m_vOrientation.x) * (180 / 3.1415927));
+        float facing = (float)(std::atan2(ptr->m_vOrientation.y, ptr->m_vOrientation.x) * (180 / 3.1415927));
         while (facing > 360.0)
         {
             facing -= 360.0;
@@ -407,10 +407,10 @@ extern "C" {
         {
             facing += 360.0;
         }
-        lua_pushinteger(L, (ptr)->m_oArea);
-        lua_pushnumber(L, (ptr)->m_vPosition.x);
-        lua_pushnumber(L, (ptr)->m_vPosition.y);
-        lua_pushnumber(L, (ptr)->m_vPosition.z);
+        lua_pushinteger(L, ptr->m_oArea);
+        lua_pushnumber(L, ptr->m_vPosition.x);
+        lua_pushnumber(L, ptr->m_vPosition.y);
+        lua_pushnumber(L, ptr->m_vPosition.z);
         lua_pushnumber(L, facing);
         return 5;
     }
