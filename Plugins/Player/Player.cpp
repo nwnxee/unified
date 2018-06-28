@@ -307,7 +307,7 @@ ArgumentStack Player::GetBicFileName(ArgumentStack&& args)
     ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
-        Services::Events::InsertArgument(stack, std::string(pPlayer->m_resFileName.GetResRef()));
+        Services::Events::InsertArgument(stack, std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength()));
     }
     return stack;
 }
