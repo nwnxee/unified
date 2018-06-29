@@ -61,6 +61,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetAlwaysWalk);
     REGISTER(GetQuickBarSlot);
     REGISTER(SetQuickBarSlot);
+    REGISTER(GetBicFileName);
 
 #undef REGISTER
 
@@ -297,6 +298,16 @@ ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         pMessage->SendServerToPlayerGuiQuickbar_SetButton(pPlayer, slot, 0);
+    }
+    return stack;
+}
+
+ArgumentStack Player::GetBicFileName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        Services::Events::InsertArgument(stack, std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength()));
     }
     return stack;
 }

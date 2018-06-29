@@ -39,6 +39,9 @@ struct NWNX_Player_QuickBarSlot NWNX_Player_GetQuickBarSlot(object player, int s
 // Sets a player's quickbar slot
 void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_QuickBarSlot qbs);
 
+// Get the name of the .bic file associated with the player's character.
+string NWNX_Player_GetBicFileName(object player);
+
 const string NWNX_Player = "NWNX_Player";
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -153,4 +156,12 @@ void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_Qui
     NWNX_PushArgumentInt(NWNX_Player, sFunc, slot);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
     NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+string NWNX_Player_GetBicFileName(object player)
+{
+    string sFunc = "GetBicFileName";
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Player, sFunc);
 }

@@ -26,6 +26,7 @@ private:
     ArgumentStack SetAlwaysWalk                 (ArgumentStack&& args);
     ArgumentStack GetQuickBarSlot               (ArgumentStack&& args);
     ArgumentStack SetQuickBarSlot               (ArgumentStack&& args);
+    ArgumentStack GetBicFileName                (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
