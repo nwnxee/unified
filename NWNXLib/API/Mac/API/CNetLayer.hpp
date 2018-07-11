@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "CExoString.hpp"
+#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -30,13 +31,14 @@ struct CNetLayer
     int32_t DisconnectFromSession();
     int32_t DisconnectPlayer(uint32_t, uint32_t, int32_t, const CExoString&);
     int32_t DropConnectionToServer();
+    void EndAddressTranslation(const CExoString&);
     int32_t EndConnectToSession();
     int32_t EndEnumerateSessions();
     int32_t EndEnumerateSessionsSection(uint32_t);
-    int32_t EndInternetAddressTranslation();
     int32_t EndPing(uint32_t);
     int32_t EndProtocol(uint32_t);
     int32_t EndServerMode();
+    int32_t GetAddressTranslationResult(const CExoString&, CExoArrayListTemplatedunsignedlong&);
     int32_t GetAnySessionsEnumerated();
     int32_t GetAnyWindowBehind();
     int32_t GetClientConnected();
@@ -50,7 +52,6 @@ struct CNetLayer
     uint16_t GetExpansionPackReqd();
     CExoString GetGameMasterPassword();
     int32_t GetGameMasterPermision();
-    uint32_t GetInternetAddressTranslationStatus(unsigned char*);
     int32_t GetIPBySessionId(uint32_t, CExoString*);
     CExoString GetLocalAdapterString(uint32_t, uint32_t);
     uint32_t GetLocalPrivileges(uint32_t);
@@ -103,11 +104,11 @@ struct CNetLayer
     void SetUpPlayBackConnection();
     int32_t ShutDown();
     void ShutDownClientInterfaceWithReason(uint32_t, const CExoString&);
+    void StartAddressTranslation(const CExoString&);
     int32_t StartConnectToSession(uint32_t, const CExoString&, int32_t, int32_t, const CExoString&, uint32_t, uint32_t, const CExoString&, const CExoString&);
     int32_t StartEnumerateSessions(uint32_t*, int32_t, unsigned char*, uint16_t, int32_t);
     int32_t StartEnumerateSessions(uint32_t, int32_t, unsigned char*, uint16_t, int32_t);
     int32_t StartEnumerateSessionsSection(uint32_t, uint32_t, CExoString*);
-    int32_t StartInternetAddressTranslation(CExoString, uint32_t, uint32_t);
     int32_t StartPing(uint32_t);
     int32_t StartProtocol(uint32_t, uint32_t, uint32_t, uint32_t);
     int32_t StartServerMode(CExoString, uint32_t);
@@ -124,13 +125,14 @@ int32_t CNetLayer__CloseStandardConnection(CNetLayer* thisPtr, int32_t);
 int32_t CNetLayer__DisconnectFromSession(CNetLayer* thisPtr);
 int32_t CNetLayer__DisconnectPlayer(CNetLayer* thisPtr, uint32_t, uint32_t, int32_t, const CExoString&);
 int32_t CNetLayer__DropConnectionToServer(CNetLayer* thisPtr);
+void CNetLayer__EndAddressTranslation(CNetLayer* thisPtr, const CExoString&);
 int32_t CNetLayer__EndConnectToSession(CNetLayer* thisPtr);
 int32_t CNetLayer__EndEnumerateSessions(CNetLayer* thisPtr);
 int32_t CNetLayer__EndEnumerateSessionsSection(CNetLayer* thisPtr, uint32_t);
-int32_t CNetLayer__EndInternetAddressTranslation(CNetLayer* thisPtr);
 int32_t CNetLayer__EndPing(CNetLayer* thisPtr, uint32_t);
 int32_t CNetLayer__EndProtocol(CNetLayer* thisPtr, uint32_t);
 int32_t CNetLayer__EndServerMode(CNetLayer* thisPtr);
+int32_t CNetLayer__GetAddressTranslationResult(CNetLayer* thisPtr, const CExoString&, CExoArrayListTemplatedunsignedlong&);
 int32_t CNetLayer__GetAnySessionsEnumerated(CNetLayer* thisPtr);
 int32_t CNetLayer__GetAnyWindowBehind(CNetLayer* thisPtr);
 int32_t CNetLayer__GetClientConnected(CNetLayer* thisPtr);
@@ -144,7 +146,6 @@ void CNetLayer__GetExoNet(CNetLayer* thisPtr);
 uint16_t CNetLayer__GetExpansionPackReqd(CNetLayer* thisPtr);
 CExoString CNetLayer__GetGameMasterPassword(CNetLayer* thisPtr);
 int32_t CNetLayer__GetGameMasterPermision(CNetLayer* thisPtr);
-uint32_t CNetLayer__GetInternetAddressTranslationStatus(CNetLayer* thisPtr, unsigned char*);
 int32_t CNetLayer__GetIPBySessionId(CNetLayer* thisPtr, uint32_t, CExoString*);
 CExoString CNetLayer__GetLocalAdapterString(CNetLayer* thisPtr, uint32_t, uint32_t);
 uint32_t CNetLayer__GetLocalPrivileges(CNetLayer* thisPtr, uint32_t);
@@ -197,11 +198,11 @@ void CNetLayer__SetSessionName(CNetLayer* thisPtr, CExoString);
 void CNetLayer__SetUpPlayBackConnection(CNetLayer* thisPtr);
 int32_t CNetLayer__ShutDown(CNetLayer* thisPtr);
 void CNetLayer__ShutDownClientInterfaceWithReason(CNetLayer* thisPtr, uint32_t, const CExoString&);
+void CNetLayer__StartAddressTranslation(CNetLayer* thisPtr, const CExoString&);
 int32_t CNetLayer__StartConnectToSession(CNetLayer* thisPtr, uint32_t, const CExoString&, int32_t, int32_t, const CExoString&, uint32_t, uint32_t, const CExoString&, const CExoString&);
 int32_t CNetLayer__StartEnumerateSessions__0(CNetLayer* thisPtr, uint32_t*, int32_t, unsigned char*, uint16_t, int32_t);
 int32_t CNetLayer__StartEnumerateSessions__1(CNetLayer* thisPtr, uint32_t, int32_t, unsigned char*, uint16_t, int32_t);
 int32_t CNetLayer__StartEnumerateSessionsSection(CNetLayer* thisPtr, uint32_t, uint32_t, CExoString*);
-int32_t CNetLayer__StartInternetAddressTranslation(CNetLayer* thisPtr, CExoString, uint32_t, uint32_t);
 int32_t CNetLayer__StartPing(CNetLayer* thisPtr, uint32_t);
 int32_t CNetLayer__StartProtocol(CNetLayer* thisPtr, uint32_t, uint32_t, uint32_t, uint32_t);
 int32_t CNetLayer__StartServerMode(CNetLayer* thisPtr, CExoString, uint32_t);

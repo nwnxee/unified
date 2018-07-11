@@ -13,6 +13,7 @@ struct CServerNetOptions
     int32_t m_nGameRegion;
     CExoString m_szGameDetails;
     int16_t m_GameType;
+    int32_t m_bNetworkRelaysEnabled;
 };
 
 }
