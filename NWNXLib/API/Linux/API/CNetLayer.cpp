@@ -3,6 +3,7 @@
 #include "Platform/ASLR.hpp"
 
 #include "CBaseExoApp.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CNetLayerInternal.hpp"
 #include "CNetLayerPlayerInfo.hpp"
 #include "CNetLayerSessionInfo.hpp"
@@ -51,6 +52,11 @@ int32_t CNetLayer::DropConnectionToServer()
     return CNetLayer__DropConnectionToServer(this);
 }
 
+void CNetLayer::EndAddressTranslation(const CExoString& a0)
+{
+    return CNetLayer__EndAddressTranslation(this, a0);
+}
+
 int32_t CNetLayer::EndConnectToSession()
 {
     return CNetLayer__EndConnectToSession(this);
@@ -66,11 +72,6 @@ int32_t CNetLayer::EndEnumerateSessionsSection(uint32_t a0)
     return CNetLayer__EndEnumerateSessionsSection(this, a0);
 }
 
-int32_t CNetLayer::EndInternetAddressTranslation()
-{
-    return CNetLayer__EndInternetAddressTranslation(this);
-}
-
 int32_t CNetLayer::EndPing(uint32_t a0)
 {
     return CNetLayer__EndPing(this, a0);
@@ -84,6 +85,11 @@ int32_t CNetLayer::EndProtocol(uint32_t a0)
 int32_t CNetLayer::EndServerMode()
 {
     return CNetLayer__EndServerMode(this);
+}
+
+int32_t CNetLayer::GetAddressTranslationResult(const CExoString& a0, CExoArrayListTemplatedunsignedlong& a1)
+{
+    return CNetLayer__GetAddressTranslationResult(this, a0, a1);
 }
 
 int32_t CNetLayer::GetAnySessionsEnumerated()
@@ -149,11 +155,6 @@ CExoString CNetLayer::GetGameMasterPassword()
 int32_t CNetLayer::GetGameMasterPermision()
 {
     return CNetLayer__GetGameMasterPermision(this);
-}
-
-uint32_t CNetLayer::GetInternetAddressTranslationStatus(unsigned char* a0)
-{
-    return CNetLayer__GetInternetAddressTranslationStatus(this, a0);
 }
 
 int32_t CNetLayer::GetIPBySessionId(uint32_t a0, CExoString* a1)
@@ -416,6 +417,11 @@ void CNetLayer::ShutDownClientInterfaceWithReason(uint32_t a0, const CExoString&
     return CNetLayer__ShutDownClientInterfaceWithReason(this, a0, a1);
 }
 
+void CNetLayer::StartAddressTranslation(const CExoString& a0)
+{
+    return CNetLayer__StartAddressTranslation(this, a0);
+}
+
 int32_t CNetLayer::StartConnectToSession(uint32_t a0, const CExoString& a1, int32_t a2, int32_t a3, const CExoString& a4, uint32_t a5, uint32_t a6, const CExoString& a7, const CExoString& a8)
 {
     return CNetLayer__StartConnectToSession(this, a0, a1, a2, a3, a4, a5, a6, a7, a8);
@@ -434,11 +440,6 @@ int32_t CNetLayer::StartEnumerateSessions(uint32_t a0, int32_t a1, unsigned char
 int32_t CNetLayer::StartEnumerateSessionsSection(uint32_t a0, uint32_t a1, CExoString* a2)
 {
     return CNetLayer__StartEnumerateSessionsSection(this, a0, a1, a2);
-}
-
-int32_t CNetLayer::StartInternetAddressTranslation(CExoString a0, uint32_t a1, uint32_t a2)
-{
-    return CNetLayer__StartInternetAddressTranslation(this, a0, a1, a2);
 }
 
 int32_t CNetLayer::StartPing(uint32_t a0)
@@ -535,6 +536,14 @@ int32_t CNetLayer__DropConnectionToServer(CNetLayer* thisPtr)
     return func(thisPtr);
 }
 
+void CNetLayer__EndAddressTranslation(CNetLayer* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayer*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__EndAddressTranslation);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
 int32_t CNetLayer__EndConnectToSession(CNetLayer* thisPtr)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*);
@@ -559,14 +568,6 @@ int32_t CNetLayer__EndEnumerateSessionsSection(CNetLayer* thisPtr, uint32_t a0)
     return func(thisPtr, a0);
 }
 
-int32_t CNetLayer__EndInternetAddressTranslation(CNetLayer* thisPtr)
-{
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__EndInternetAddressTranslation);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr);
-}
-
 int32_t CNetLayer__EndPing(CNetLayer* thisPtr, uint32_t a0)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*, uint32_t);
@@ -589,6 +590,14 @@ int32_t CNetLayer__EndServerMode(CNetLayer* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__EndServerMode);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
+}
+
+int32_t CNetLayer__GetAddressTranslationResult(CNetLayer* thisPtr, const CExoString& a0, CExoArrayListTemplatedunsignedlong& a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*, const CExoString&, CExoArrayListTemplatedunsignedlong&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__GetAddressTranslationResult);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
 }
 
 int32_t CNetLayer__GetAnySessionsEnumerated(CNetLayer* thisPtr)
@@ -693,14 +702,6 @@ int32_t CNetLayer__GetGameMasterPermision(CNetLayer* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__GetGameMasterPermision);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
-}
-
-uint32_t CNetLayer__GetInternetAddressTranslationStatus(CNetLayer* thisPtr, unsigned char* a0)
-{
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CNetLayer*, unsigned char*);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__GetInternetAddressTranslationStatus);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0);
 }
 
 int32_t CNetLayer__GetIPBySessionId(CNetLayer* thisPtr, uint32_t a0, CExoString* a1)
@@ -1119,6 +1120,14 @@ void CNetLayer__ShutDownClientInterfaceWithReason(CNetLayer* thisPtr, uint32_t a
     return func(thisPtr, a0, a1);
 }
 
+void CNetLayer__StartAddressTranslation(CNetLayer* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNetLayer*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__StartAddressTranslation);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
 int32_t CNetLayer__StartConnectToSession(CNetLayer* thisPtr, uint32_t a0, const CExoString& a1, int32_t a2, int32_t a3, const CExoString& a4, uint32_t a5, uint32_t a6, const CExoString& a7, const CExoString& a8)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*, uint32_t, const CExoString&, int32_t, int32_t, const CExoString&, uint32_t, uint32_t, const CExoString&, const CExoString&);
@@ -1147,14 +1156,6 @@ int32_t CNetLayer__StartEnumerateSessionsSection(CNetLayer* thisPtr, uint32_t a0
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*, uint32_t, uint32_t, CExoString*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__StartEnumerateSessionsSection);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1, a2);
-}
-
-int32_t CNetLayer__StartInternetAddressTranslation(CNetLayer* thisPtr, CExoString a0, uint32_t a1, uint32_t a2)
-{
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNetLayer*, CExoString, uint32_t, uint32_t);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNetLayer__StartInternetAddressTranslation);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2);
 }

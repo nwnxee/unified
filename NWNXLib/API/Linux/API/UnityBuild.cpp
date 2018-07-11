@@ -325,6 +325,7 @@
 #include "CExoAliasListInternal__CExoAlias.cpp"
 #include "CExoArrayListTemplatedCConnectionLib__RoomListEntry.cpp"
 #include "CExoArrayListTemplatedCEffectIconObjectPtr.cpp"
+#include "CExoArrayListTemplatedCExoNetInternal__PendingAddressTranslationPtr.cpp"
 #include "CExoArrayListTemplatedCLoopingVisualEffectPtr.cpp"
 #include "CExoArrayListTemplatedCNWSExpressionPtr.cpp"
 #include "CExoArrayListTemplatedCNWSPVPEntry.cpp"
@@ -358,6 +359,7 @@
 #include "CExoNetExtendableBuffer.cpp"
 #include "CExoNetFrameBuffer.cpp"
 #include "CExoNetInternal.cpp"
+#include "CExoNetInternal__PendingAddressTranslation.cpp"
 #include "CFeatUseListEntry.cpp"
 #include "CFileInfo.cpp"
 #include "CGameEffectApplierRemover.cpp"
@@ -879,7 +881,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CLoopingVisualEffect), 12> __attribute__((unused)) SIZE_CHECK_CLOOPINGVISUALEFFECT;
     CheckSize<sizeof(NWNXLib::API::CMemRecord), 224> __attribute__((unused)) SIZE_CHECK_CMEMRECORD;
     CheckSize<sizeof(NWNXLib::API::CNetLayer), 4> __attribute__((unused)) SIZE_CHECK_CNETLAYER;
-    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 889744> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
+    CheckSize<sizeof(NWNXLib::API::CNetLayerInternal), 889728> __attribute__((unused)) SIZE_CHECK_CNETLAYERINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerCDKeyInfo), 24> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERCDKEYINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerPlayerInfo), 120> __attribute__((unused)) SIZE_CHECK_CNETLAYERPLAYERINFO;
     CheckSize<sizeof(NWNXLib::API::CNetLayerSessionInfo), 100> __attribute__((unused)) SIZE_CHECK_CNETLAYERSESSIONINFO;
@@ -997,7 +999,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CServerAIMaster), 148> __attribute__((unused)) SIZE_CHECK_CSERVERAIMASTER;
     CheckSize<sizeof(NWNXLib::API::CServerExoApp), 8> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPP;
     CheckSize<sizeof(NWNXLib::API::CServerExoAppInternal), 65928> __attribute__((unused)) SIZE_CHECK_CSERVEREXOAPPINTERNAL;
-    CheckSize<sizeof(NWNXLib::API::CServerInfo), 1180> __attribute__((unused)) SIZE_CHECK_CSERVERINFO;
+    CheckSize<sizeof(NWNXLib::API::CServerInfo), 1184> __attribute__((unused)) SIZE_CHECK_CSERVERINFO;
     CheckSize<sizeof(NWNXLib::API::CStoreCustomer), 24> __attribute__((unused)) SIZE_CHECK_CSTORECUSTOMER;
     CheckSize<sizeof(NWNXLib::API::CTlkFile), 24> __attribute__((unused)) SIZE_CHECK_CTLKFILE;
     CheckSize<sizeof(NWNXLib::API::CTlkTable), 44> __attribute__((unused)) SIZE_CHECK_CTLKTABLE;
