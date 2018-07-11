@@ -1,4 +1,4 @@
-# NWNX:EE (build 8176)
+# NWNX:EE (build 8179)
 
 ## What is NWNX:EE?
 
