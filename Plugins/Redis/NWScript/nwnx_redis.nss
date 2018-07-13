@@ -16,8 +16,8 @@
  * Annotated return value: integer
  */
 int NWNX_Redis_APPEND(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -27,7 +27,7 @@ int NWNX_Redis_APPEND(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_AUTH(
-	string password
+    string password
 );
 
 /**
@@ -55,11 +55,11 @@ string NWNX_Redis_BGSAVE();
  * Annotated return value: integer
  */
 int NWNX_Redis_BITCOUNT(
-	string key,
-	// Redis type: integer
-	int start = 0,
-	// Redis type: integer
-	int end = 0
+    string key,
+    // Redis type: integer
+    int start = 0,
+    // Redis type: integer
+    int end = 0
 );
 
 /**
@@ -68,26 +68,26 @@ int NWNX_Redis_BITCOUNT(
  * Perform arbitrary bitfield integer operations on strings
  *
  * Time complexity: O(1) for each subcommand specified
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_BITFIELD(
-	string key,
-	// Redis type: type
-	string get_type = "",
-	// Redis type: integer
-	int get_offset = 0,
-	// Redis type: type
-	string set_type = "",
-	// Redis type: integer
-	int set_offset = 0,
-	// Redis type: integer
-	int set_value = 0,
-	// Redis type: type
-	string incrby_type = "",
-	// Redis type: integer
-	int incrby_offset = 0,
-	// Redis type: integer
-	int incrby_increment = 0
+    string key,
+    // Redis type: type
+    string get_type = "",
+    // Redis type: integer
+    int get_offset = 0,
+    // Redis type: type
+    string set_type = "",
+    // Redis type: integer
+    int set_offset = 0,
+    // Redis type: integer
+    int set_value = 0,
+    // Redis type: type
+    string incrby_type = "",
+    // Redis type: integer
+    int incrby_offset = 0,
+    // Redis type: integer
+    int incrby_increment = 0
 );
 
 /**
@@ -99,10 +99,10 @@ string NWNX_Redis_BITFIELD(
  * Annotated return value: integer
  */
 int NWNX_Redis_BITOP(
-	string operation,
-	// Redis type: key
-	string destkey,
-	string key
+    string operation,
+    // Redis type: key
+    string destkey,
+    string key
 );
 
 /**
@@ -114,13 +114,13 @@ int NWNX_Redis_BITOP(
  * Annotated return value: integer
  */
 int NWNX_Redis_BITPOS(
-	string key,
-	// Redis type: integer
-	int bit,
-	// Redis type: integer
-	int start = 0,
-	// Redis type: integer
-	int end = 0
+    string key,
+    // Redis type: integer
+    int bit,
+    // Redis type: integer
+    int start = 0,
+    // Redis type: integer
+    int end = 0
 );
 
 /**
@@ -132,9 +132,9 @@ int NWNX_Redis_BITPOS(
  * Annotated return value: array
  */
 int NWNX_Redis_BLPOP(
-	string key,
-	// Redis type: integer
-	int timeout
+    string key,
+    // Redis type: integer
+    int timeout
 );
 
 /**
@@ -146,9 +146,9 @@ int NWNX_Redis_BLPOP(
  * Annotated return value: array
  */
 int NWNX_Redis_BRPOP(
-	string key,
-	// Redis type: integer
-	int timeout
+    string key,
+    // Redis type: integer
+    int timeout
 );
 
 /**
@@ -160,12 +160,12 @@ int NWNX_Redis_BRPOP(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_BRPOPLPUSH(
-	// Redis type: key
-	string source,
-	// Redis type: key
-	string destination,
-	// Redis type: integer
-	int timeout
+    // Redis type: key
+    string source,
+    // Redis type: key
+    string destination,
+    // Redis type: integer
+    int timeout
 );
 
 /**
@@ -177,11 +177,11 @@ string NWNX_Redis_BRPOPLPUSH(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLIENT_KILL(
-	string ip_port = "",
-	// Redis type: integer
-	int id_client_id = 0,
-	string addr_ip_port = "",
-	string skipme_yes_no = ""
+    string ip_port = "",
+    // Redis type: integer
+    int id_client_id = 0,
+    string addr_ip_port = "",
+    string skipme_yes_no = ""
 );
 
 /**
@@ -213,8 +213,8 @@ string NWNX_Redis_CLIENT_GETNAME();
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLIENT_PAUSE(
-	// Redis type: integer
-	int timeout
+    // Redis type: integer
+    int timeout
 );
 
 /**
@@ -228,8 +228,8 @@ string NWNX_Redis_CLIENT_PAUSE(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLIENT_REPLY(
-	// Redis type: enum
-	string reply_mode
+    // Redis type: enum
+    string reply_mode
 );
 
 /**
@@ -241,7 +241,7 @@ string NWNX_Redis_CLIENT_REPLY(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLIENT_SETNAME(
-	string connection_name
+    string connection_name
 );
 
 /**
@@ -253,8 +253,8 @@ string NWNX_Redis_CLIENT_SETNAME(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_ADDSLOTS(
-	// Redis type: integer
-	int slot
+    // Redis type: integer
+    int slot
 );
 
 /**
@@ -266,7 +266,7 @@ string NWNX_Redis_CLUSTER_ADDSLOTS(
  * Annotated return value: integer
  */
 int NWNX_Redis_CLUSTER_COUNT_FAILURE_REPORTS(
-	string node_id
+    string node_id
 );
 
 /**
@@ -278,8 +278,8 @@ int NWNX_Redis_CLUSTER_COUNT_FAILURE_REPORTS(
  * Annotated return value: integer
  */
 int NWNX_Redis_CLUSTER_COUNTKEYSINSLOT(
-	// Redis type: integer
-	int slot
+    // Redis type: integer
+    int slot
 );
 
 /**
@@ -291,8 +291,8 @@ int NWNX_Redis_CLUSTER_COUNTKEYSINSLOT(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_DELSLOTS(
-	// Redis type: integer
-	int slot
+    // Redis type: integer
+    int slot
 );
 
 /**
@@ -306,8 +306,8 @@ string NWNX_Redis_CLUSTER_DELSLOTS(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_FAILOVER(
-	// Redis type: enum
-	string options = ""
+    // Redis type: enum
+    string options = ""
 );
 
 /**
@@ -319,7 +319,7 @@ string NWNX_Redis_CLUSTER_FAILOVER(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_FORGET(
-	string node_id
+    string node_id
 );
 
 /**
@@ -331,10 +331,10 @@ string NWNX_Redis_CLUSTER_FORGET(
  * Annotated return value: array
  */
 int NWNX_Redis_CLUSTER_GETKEYSINSLOT(
-	// Redis type: integer
-	int slot,
-	// Redis type: integer
-	int count
+    // Redis type: integer
+    int slot,
+    // Redis type: integer
+    int count
 );
 
 /**
@@ -356,7 +356,7 @@ string NWNX_Redis_CLUSTER_INFO();
  * Annotated return value: integer
  */
 int NWNX_Redis_CLUSTER_KEYSLOT(
-	string key
+    string key
 );
 
 /**
@@ -368,9 +368,9 @@ int NWNX_Redis_CLUSTER_KEYSLOT(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_MEET(
-	string ip,
-	// Redis type: integer
-	int port
+    string ip,
+    // Redis type: integer
+    int port
 );
 
 /**
@@ -392,7 +392,7 @@ string NWNX_Redis_CLUSTER_NODES();
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_REPLICATE(
-	string node_id
+    string node_id
 );
 
 /**
@@ -407,8 +407,8 @@ string NWNX_Redis_CLUSTER_REPLICATE(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_RESET(
-	// Redis type: enum
-	string reset_type = ""
+    // Redis type: enum
+    string reset_type = ""
 );
 
 /**
@@ -430,8 +430,8 @@ string NWNX_Redis_CLUSTER_SAVECONFIG();
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_SET_CONFIG_EPOCH(
-	// Redis type: integer
-	int config_epoch
+    // Redis type: integer
+    int config_epoch
 );
 
 /**
@@ -445,11 +445,11 @@ string NWNX_Redis_CLUSTER_SET_CONFIG_EPOCH(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CLUSTER_SETSLOT(
-	// Redis type: integer
-	int slot,
-	// Redis type: enum
-	string subcommand,
-	string node_id = ""
+    // Redis type: integer
+    int slot,
+    // Redis type: enum
+    string subcommand,
+    string node_id = ""
 );
 
 /**
@@ -458,10 +458,10 @@ string NWNX_Redis_CLUSTER_SETSLOT(
  * List slave nodes of the specified master node
  *
  * Time complexity: O(1)
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_CLUSTER_SLAVES(
-	string node_id
+    string node_id
 );
 
 /**
@@ -513,7 +513,7 @@ int NWNX_Redis_COMMAND_GETKEYS();
  * Annotated return value: array
  */
 int NWNX_Redis_COMMAND_INFO(
-	string command_name
+    string command_name
 );
 
 /**
@@ -523,7 +523,7 @@ int NWNX_Redis_COMMAND_INFO(
  * Annotated return value: array
  */
 int NWNX_Redis_CONFIG_GET(
-	string parameter
+    string parameter
 );
 
 /**
@@ -541,8 +541,8 @@ string NWNX_Redis_CONFIG_REWRITE();
  * Annotated return value: simple-string
  */
 string NWNX_Redis_CONFIG_SET(
-	string parameter,
-	string value
+    string parameter,
+    string value
 );
 
 /**
@@ -570,7 +570,7 @@ int NWNX_Redis_DBSIZE();
  * Annotated return value: simple-string
  */
 string NWNX_Redis_DEBUG_OBJECT(
-	string key
+    string key
 );
 
 /**
@@ -590,7 +590,7 @@ string NWNX_Redis_DEBUG_SEGFAULT();
  * Annotated return value: integer
  */
 int NWNX_Redis_DECR(
-	string key
+    string key
 );
 
 /**
@@ -602,9 +602,9 @@ int NWNX_Redis_DECR(
  * Annotated return value: integer
  */
 int NWNX_Redis_DECRBY(
-	string key,
-	// Redis type: integer
-	int decrement
+    string key,
+    // Redis type: integer
+    int decrement
 );
 
 /**
@@ -619,7 +619,7 @@ int NWNX_Redis_DECRBY(
  * Annotated return value: integer
  */
 int NWNX_Redis_DEL(
-	string key
+    string key
 );
 
 /**
@@ -642,7 +642,7 @@ string NWNX_Redis_DISCARD();
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_DUMP(
-	string key
+    string key
 );
 
 /**
@@ -652,7 +652,7 @@ string NWNX_Redis_DUMP(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_ECHO(
-	string message
+    string message
 );
 
 /**
@@ -661,14 +661,14 @@ string NWNX_Redis_ECHO(
  * Execute a Lua script server side
  *
  * Time complexity: Depends on the script that is executed.
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_EVAL(
-	string script,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	string arg
+    string script,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    string arg
 );
 
 /**
@@ -677,14 +677,14 @@ string NWNX_Redis_EVAL(
  * Execute a Lua script server side
  *
  * Time complexity: Depends on the script that is executed.
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_EVALSHA(
-	string sha1,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	string arg
+    string sha1,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    string arg
 );
 
 /**
@@ -704,7 +704,7 @@ int NWNX_Redis_EXEC();
  * Annotated return value: integer
  */
 int NWNX_Redis_EXISTS(
-	string key
+    string key
 );
 
 /**
@@ -716,9 +716,9 @@ int NWNX_Redis_EXISTS(
  * Annotated return value: integer
  */
 int NWNX_Redis_EXPIRE(
-	string key,
-	// Redis type: integer
-	int seconds
+    string key,
+    // Redis type: integer
+    int seconds
 );
 
 /**
@@ -730,9 +730,9 @@ int NWNX_Redis_EXPIRE(
  * Annotated return value: integer
  */
 int NWNX_Redis_EXPIREAT(
-	string key,
-	// Redis type: posix time
-	string timestamp
+    string key,
+    // Redis type: posix time
+    string timestamp
 );
 
 /**
@@ -744,8 +744,8 @@ int NWNX_Redis_EXPIREAT(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_FLUSHALL(
-	// Redis type: enum
-	string async = ""
+    // Redis type: enum
+    string async = ""
 );
 
 /**
@@ -757,8 +757,8 @@ string NWNX_Redis_FLUSHALL(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_FLUSHDB(
-	// Redis type: enum
-	string async = ""
+    // Redis type: enum
+    string async = ""
 );
 
 /**
@@ -771,12 +771,12 @@ string NWNX_Redis_FLUSHDB(
  * Annotated return value: integer
  */
 int NWNX_Redis_GEOADD(
-	string key,
-	// Redis type: double
-	float longitude,
-	// Redis type: double
-	float latitude,
-	string member
+    string key,
+    // Redis type: double
+    float longitude,
+    // Redis type: double
+    float latitude,
+    string member
 );
 
 /**
@@ -789,8 +789,8 @@ int NWNX_Redis_GEOADD(
  * Annotated return value: array
  */
 int NWNX_Redis_GEOHASH(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -803,8 +803,8 @@ int NWNX_Redis_GEOHASH(
  * Annotated return value: array
  */
 int NWNX_Redis_GEOPOS(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -816,10 +816,10 @@ int NWNX_Redis_GEOPOS(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_GEODIST(
-	string key,
-	string member1,
-	string member2,
-	string unit = ""
+    string key,
+    string member1,
+    string member2,
+    string unit = ""
 );
 
 /**
@@ -843,29 +843,29 @@ string NWNX_Redis_GEODIST(
  * Annotated return value: array
  */
 int NWNX_Redis_GEORADIUS(
-	string key,
-	// Redis type: double
-	float longitude,
-	// Redis type: double
-	float latitude,
-	// Redis type: double
-	float radius,
-	// Redis type: enum
-	string unit,
-	// Redis type: enum
-	string withcoord = "",
-	// Redis type: enum
-	string withdist = "",
-	// Redis type: enum
-	string withhash = "",
-	// Redis type: integer
-	int count_count = 0,
-	// Redis type: enum
-	string order = "",
-	// Redis type: key
-	string store_key = "",
-	// Redis type: key
-	string storedist_key = ""
+    string key,
+    // Redis type: double
+    float longitude,
+    // Redis type: double
+    float latitude,
+    // Redis type: double
+    float radius,
+    // Redis type: enum
+    string unit,
+    // Redis type: enum
+    string withcoord = "",
+    // Redis type: enum
+    string withdist = "",
+    // Redis type: enum
+    string withhash = "",
+    // Redis type: integer
+    int count_count = 0,
+    // Redis type: enum
+    string order = "",
+    // Redis type: key
+    string store_key = "",
+    // Redis type: key
+    string storedist_key = ""
 );
 
 /**
@@ -886,29 +886,29 @@ int NWNX_Redis_GEORADIUS(
  * - Valid values for withhash: "WITHHASH"
 
  * - Valid values for order: "ASC", "DESC"
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_GEORADIUSBYMEMBER(
-	string key,
-	string member,
-	// Redis type: double
-	float radius,
-	// Redis type: enum
-	string unit,
-	// Redis type: enum
-	string withcoord = "",
-	// Redis type: enum
-	string withdist = "",
-	// Redis type: enum
-	string withhash = "",
-	// Redis type: integer
-	int count_count = 0,
-	// Redis type: enum
-	string order = "",
-	// Redis type: key
-	string store_key = "",
-	// Redis type: key
-	string storedist_key = ""
+    string key,
+    string member,
+    // Redis type: double
+    float radius,
+    // Redis type: enum
+    string unit,
+    // Redis type: enum
+    string withcoord = "",
+    // Redis type: enum
+    string withdist = "",
+    // Redis type: enum
+    string withhash = "",
+    // Redis type: integer
+    int count_count = 0,
+    // Redis type: enum
+    string order = "",
+    // Redis type: key
+    string store_key = "",
+    // Redis type: key
+    string storedist_key = ""
 );
 
 /**
@@ -920,7 +920,7 @@ string NWNX_Redis_GEORADIUSBYMEMBER(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_GET(
-	string key
+    string key
 );
 
 /**
@@ -932,9 +932,9 @@ string NWNX_Redis_GET(
  * Annotated return value: integer
  */
 int NWNX_Redis_GETBIT(
-	string key,
-	// Redis type: integer
-	int offset
+    string key,
+    // Redis type: integer
+    int offset
 );
 
 /**
@@ -949,11 +949,11 @@ int NWNX_Redis_GETBIT(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_GETRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int end
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int end
 );
 
 /**
@@ -965,8 +965,8 @@ string NWNX_Redis_GETRANGE(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_GETSET(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -978,8 +978,8 @@ string NWNX_Redis_GETSET(
  * Annotated return value: integer
  */
 int NWNX_Redis_HDEL(
-	string key,
-	string field
+    string key,
+    string field
 );
 
 /**
@@ -991,8 +991,8 @@ int NWNX_Redis_HDEL(
  * Annotated return value: integer
  */
 int NWNX_Redis_HEXISTS(
-	string key,
-	string field
+    string key,
+    string field
 );
 
 /**
@@ -1004,8 +1004,8 @@ int NWNX_Redis_HEXISTS(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_HGET(
-	string key,
-	string field
+    string key,
+    string field
 );
 
 /**
@@ -1017,7 +1017,7 @@ string NWNX_Redis_HGET(
  * Annotated return value: array
  */
 int NWNX_Redis_HGETALL(
-	string key
+    string key
 );
 
 /**
@@ -1029,10 +1029,10 @@ int NWNX_Redis_HGETALL(
  * Annotated return value: integer
  */
 int NWNX_Redis_HINCRBY(
-	string key,
-	string field,
-	// Redis type: integer
-	int increment
+    string key,
+    string field,
+    // Redis type: integer
+    int increment
 );
 
 /**
@@ -1044,10 +1044,10 @@ int NWNX_Redis_HINCRBY(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_HINCRBYFLOAT(
-	string key,
-	string field,
-	// Redis type: double
-	float increment
+    string key,
+    string field,
+    // Redis type: double
+    float increment
 );
 
 /**
@@ -1059,7 +1059,7 @@ string NWNX_Redis_HINCRBYFLOAT(
  * Annotated return value: array
  */
 int NWNX_Redis_HKEYS(
-	string key
+    string key
 );
 
 /**
@@ -1071,7 +1071,7 @@ int NWNX_Redis_HKEYS(
  * Annotated return value: integer
  */
 int NWNX_Redis_HLEN(
-	string key
+    string key
 );
 
 /**
@@ -1083,8 +1083,8 @@ int NWNX_Redis_HLEN(
  * Annotated return value: array
  */
 int NWNX_Redis_HMGET(
-	string key,
-	string field
+    string key,
+    string field
 );
 
 /**
@@ -1096,9 +1096,9 @@ int NWNX_Redis_HMGET(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_HMSET(
-	string key,
-	string field,
-	string value
+    string key,
+    string field,
+    string value
 );
 
 /**
@@ -1110,9 +1110,9 @@ string NWNX_Redis_HMSET(
  * Annotated return value: integer
  */
 int NWNX_Redis_HSET(
-	string key,
-	string field,
-	string value
+    string key,
+    string field,
+    string value
 );
 
 /**
@@ -1124,9 +1124,9 @@ int NWNX_Redis_HSET(
  * Annotated return value: integer
  */
 int NWNX_Redis_HSETNX(
-	string key,
-	string field,
-	string value
+    string key,
+    string field,
+    string value
 );
 
 /**
@@ -1138,8 +1138,8 @@ int NWNX_Redis_HSETNX(
  * Annotated return value: integer
  */
 int NWNX_Redis_HSTRLEN(
-	string key,
-	string field
+    string key,
+    string field
 );
 
 /**
@@ -1151,7 +1151,7 @@ int NWNX_Redis_HSTRLEN(
  * Annotated return value: array
  */
 int NWNX_Redis_HVALS(
-	string key
+    string key
 );
 
 /**
@@ -1163,7 +1163,7 @@ int NWNX_Redis_HVALS(
  * Annotated return value: integer
  */
 int NWNX_Redis_INCR(
-	string key
+    string key
 );
 
 /**
@@ -1175,9 +1175,9 @@ int NWNX_Redis_INCR(
  * Annotated return value: integer
  */
 int NWNX_Redis_INCRBY(
-	string key,
-	// Redis type: integer
-	int increment
+    string key,
+    // Redis type: integer
+    int increment
 );
 
 /**
@@ -1189,9 +1189,9 @@ int NWNX_Redis_INCRBY(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_INCRBYFLOAT(
-	string key,
-	// Redis type: double
-	float increment
+    string key,
+    // Redis type: double
+    float increment
 );
 
 /**
@@ -1201,7 +1201,7 @@ string NWNX_Redis_INCRBYFLOAT(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_INFO(
-	string section = ""
+    string section = ""
 );
 
 /**
@@ -1215,7 +1215,7 @@ string NWNX_Redis_INFO(
  * Annotated return value: array
  */
 int NWNX_Redis_KEYS(
-	string pattern
+    string pattern
 );
 
 /**
@@ -1236,9 +1236,9 @@ int NWNX_Redis_LASTSAVE();
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_LINDEX(
-	string key,
-	// Redis type: integer
-	int index
+    string key,
+    // Redis type: integer
+    int index
 );
 
 /**
@@ -1255,11 +1255,11 @@ string NWNX_Redis_LINDEX(
  * Annotated return value: integer
  */
 int NWNX_Redis_LINSERT(
-	string key,
-	// Redis type: enum
-	string where,
-	string pivot,
-	string value
+    string key,
+    // Redis type: enum
+    string where,
+    string pivot,
+    string value
 );
 
 /**
@@ -1271,7 +1271,7 @@ int NWNX_Redis_LINSERT(
  * Annotated return value: integer
  */
 int NWNX_Redis_LLEN(
-	string key
+    string key
 );
 
 /**
@@ -1283,7 +1283,7 @@ int NWNX_Redis_LLEN(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_LPOP(
-	string key
+    string key
 );
 
 /**
@@ -1295,8 +1295,8 @@ string NWNX_Redis_LPOP(
  * Annotated return value: integer
  */
 int NWNX_Redis_LPUSH(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -1308,8 +1308,8 @@ int NWNX_Redis_LPUSH(
  * Annotated return value: integer
  */
 int NWNX_Redis_LPUSHX(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -1323,11 +1323,11 @@ int NWNX_Redis_LPUSHX(
  * Annotated return value: array
  */
 int NWNX_Redis_LRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop
 );
 
 /**
@@ -1339,10 +1339,10 @@ int NWNX_Redis_LRANGE(
  * Annotated return value: integer
  */
 int NWNX_Redis_LREM(
-	string key,
-	// Redis type: integer
-	int count,
-	string value
+    string key,
+    // Redis type: integer
+    int count,
+    string value
 );
 
 /**
@@ -1355,10 +1355,10 @@ int NWNX_Redis_LREM(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_LSET(
-	string key,
-	// Redis type: integer
-	int index,
-	string value
+    string key,
+    // Redis type: integer
+    int index,
+    string value
 );
 
 /**
@@ -1370,11 +1370,11 @@ string NWNX_Redis_LSET(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_LTRIM(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop
 );
 
 /**
@@ -1386,7 +1386,7 @@ string NWNX_Redis_LTRIM(
  * Annotated return value: array
  */
 int NWNX_Redis_MGET(
-	string key
+    string key
 );
 
 /**
@@ -1407,27 +1407,27 @@ int NWNX_Redis_MGET(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_MIGRATE(
-	string host,
-	string port,
-	// Redis type: enum
-	string key,
-	// Redis type: integer
-	int destination_db,
-	// Redis type: integer
-	int timeout,
-	// Redis type: enum
-	string copy = "",
-	// Redis type: enum
-	string replace = "",
-	// Redis type: key
-	string keys_key = ""
+    string host,
+    string port,
+    // Redis type: enum
+    string key,
+    // Redis type: integer
+    int destination_db,
+    // Redis type: integer
+    int timeout,
+    // Redis type: enum
+    string copy = "",
+    // Redis type: enum
+    string replace = "",
+    // Redis type: key
+    string keys_key = ""
 );
 
 /**
  * MONITOR
  *
  * Listen for all requests received by the server in real time
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_MONITOR();
 
@@ -1440,9 +1440,9 @@ string NWNX_Redis_MONITOR();
  * Annotated return value: integer
  */
 int NWNX_Redis_MOVE(
-	string key,
-	// Redis type: integer
-	int db
+    string key,
+    // Redis type: integer
+    int db
 );
 
 /**
@@ -1454,8 +1454,8 @@ int NWNX_Redis_MOVE(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_MSET(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -1467,8 +1467,8 @@ string NWNX_Redis_MSET(
  * Annotated return value: integer
  */
 int NWNX_Redis_MSETNX(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -1485,11 +1485,11 @@ string NWNX_Redis_MULTI();
  * Inspect the internals of Redis objects
  *
  * Time complexity: O(1) for all the currently implemented subcommands.
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_OBJECT(
-	string subcommand,
-	string arguments = ""
+    string subcommand,
+    string arguments = ""
 );
 
 /**
@@ -1501,7 +1501,7 @@ string NWNX_Redis_OBJECT(
  * Annotated return value: integer
  */
 int NWNX_Redis_PERSIST(
-	string key
+    string key
 );
 
 /**
@@ -1513,9 +1513,9 @@ int NWNX_Redis_PERSIST(
  * Annotated return value: integer
  */
 int NWNX_Redis_PEXPIRE(
-	string key,
-	// Redis type: integer
-	int milliseconds
+    string key,
+    // Redis type: integer
+    int milliseconds
 );
 
 /**
@@ -1527,9 +1527,9 @@ int NWNX_Redis_PEXPIRE(
  * Annotated return value: integer
  */
 int NWNX_Redis_PEXPIREAT(
-	string key,
-	// Redis type: posix time
-	string milliseconds_timestamp
+    string key,
+    // Redis type: posix time
+    string milliseconds_timestamp
 );
 
 /**
@@ -1541,8 +1541,8 @@ int NWNX_Redis_PEXPIREAT(
  * Annotated return value: integer
  */
 int NWNX_Redis_PFADD(
-	string key,
-	string element
+    string key,
+    string element
 );
 
 /**
@@ -1556,7 +1556,7 @@ int NWNX_Redis_PFADD(
  * Annotated return value: integer
  */
 int NWNX_Redis_PFCOUNT(
-	string key
+    string key
 );
 
 /**
@@ -1568,10 +1568,10 @@ int NWNX_Redis_PFCOUNT(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_PFMERGE(
-	// Redis type: key
-	string destkey,
-	// Redis type: key
-	string sourcekey
+    // Redis type: key
+    string destkey,
+    // Redis type: key
+    string sourcekey
 );
 
 /**
@@ -1581,7 +1581,7 @@ string NWNX_Redis_PFMERGE(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_PING(
-	string message = ""
+    string message = ""
 );
 
 /**
@@ -1590,13 +1590,13 @@ string NWNX_Redis_PING(
  * Set the value and expiration in milliseconds of a key
  *
  * Time complexity: O(1)
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_PSETEX(
-	string key,
-	// Redis type: integer
-	int milliseconds,
-	string value
+    string key,
+    // Redis type: integer
+    int milliseconds,
+    string value
 );
 
 /**
@@ -1611,8 +1611,8 @@ string NWNX_Redis_PSETEX(
  * Annotated return value: array
  */
 int NWNX_Redis_PUBSUB(
-	string subcommand,
-	string argument = ""
+    string subcommand,
+    string argument = ""
 );
 
 /**
@@ -1624,7 +1624,7 @@ int NWNX_Redis_PUBSUB(
  * Annotated return value: integer
  */
 int NWNX_Redis_PTTL(
-	string key
+    string key
 );
 
 /**
@@ -1637,8 +1637,8 @@ int NWNX_Redis_PTTL(
  * Annotated return value: integer
  */
 int NWNX_Redis_PUBLISH(
-	string channel,
-	string message
+    string channel,
+    string message
 );
 
 /**
@@ -1688,9 +1688,9 @@ string NWNX_Redis_READWRITE();
  * Annotated return value: simple-string
  */
 string NWNX_Redis_RENAME(
-	string key,
-	// Redis type: key
-	string newkey
+    string key,
+    // Redis type: key
+    string newkey
 );
 
 /**
@@ -1702,9 +1702,9 @@ string NWNX_Redis_RENAME(
  * Annotated return value: integer
  */
 int NWNX_Redis_RENAMENX(
-	string key,
-	// Redis type: key
-	string newkey
+    string key,
+    // Redis type: key
+    string newkey
 );
 
 /**
@@ -1723,12 +1723,12 @@ int NWNX_Redis_RENAMENX(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_RESTORE(
-	string key,
-	// Redis type: integer
-	int ttl,
-	string serialized_value,
-	// Redis type: enum
-	string replace = ""
+    string key,
+    // Redis type: integer
+    int ttl,
+    string serialized_value,
+    // Redis type: enum
+    string replace = ""
 );
 
 /**
@@ -1748,7 +1748,7 @@ int NWNX_Redis_ROLE();
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_RPOP(
-	string key
+    string key
 );
 
 /**
@@ -1760,10 +1760,10 @@ string NWNX_Redis_RPOP(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_RPOPLPUSH(
-	// Redis type: key
-	string source,
-	// Redis type: key
-	string destination
+    // Redis type: key
+    string source,
+    // Redis type: key
+    string destination
 );
 
 /**
@@ -1775,8 +1775,8 @@ string NWNX_Redis_RPOPLPUSH(
  * Annotated return value: integer
  */
 int NWNX_Redis_RPUSH(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -1788,8 +1788,8 @@ int NWNX_Redis_RPUSH(
  * Annotated return value: integer
  */
 int NWNX_Redis_RPUSHX(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -1802,8 +1802,8 @@ int NWNX_Redis_RPUSHX(
  * Annotated return value: integer
  */
 int NWNX_Redis_SADD(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -1823,7 +1823,7 @@ string NWNX_Redis_SAVE();
  * Annotated return value: integer
  */
 int NWNX_Redis_SCARD(
-	string key
+    string key
 );
 
 /**
@@ -1837,8 +1837,8 @@ int NWNX_Redis_SCARD(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_SCRIPT_DEBUG(
-	// Redis type: enum
-	string mode
+    // Redis type: enum
+    string mode
 );
 
 /**
@@ -1851,7 +1851,7 @@ string NWNX_Redis_SCRIPT_DEBUG(
  * Annotated return value: array
  */
 int NWNX_Redis_SCRIPT_EXISTS(
-	string sha1
+    string sha1
 );
 
 /**
@@ -1883,7 +1883,7 @@ string NWNX_Redis_SCRIPT_KILL();
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_SCRIPT_LOAD(
-	string script
+    string script
 );
 
 /**
@@ -1895,7 +1895,7 @@ string NWNX_Redis_SCRIPT_LOAD(
  * Annotated return value: array
  */
 int NWNX_Redis_SDIFF(
-	string key
+    string key
 );
 
 /**
@@ -1907,9 +1907,9 @@ int NWNX_Redis_SDIFF(
  * Annotated return value: integer
  */
 int NWNX_Redis_SDIFFSTORE(
-	// Redis type: key
-	string destination,
-	string key
+    // Redis type: key
+    string destination,
+    string key
 );
 
 /**
@@ -1919,8 +1919,8 @@ int NWNX_Redis_SDIFFSTORE(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_SELECT(
-	// Redis type: integer
-	int index
+    // Redis type: integer
+    int index
 );
 
 /**
@@ -1934,14 +1934,14 @@ string NWNX_Redis_SELECT(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_SET(
-	string key,
-	string value,
-	// Redis type: integer
-	int ex_seconds = 0,
-	// Redis type: integer
-	int px_milliseconds = 0,
-	// Redis type: enum
-	string condition = ""
+    string key,
+    string value,
+    // Redis type: integer
+    int ex_seconds = 0,
+    // Redis type: integer
+    int px_milliseconds = 0,
+    // Redis type: enum
+    string condition = ""
 );
 
 /**
@@ -1953,10 +1953,10 @@ string NWNX_Redis_SET(
  * Annotated return value: integer
  */
 int NWNX_Redis_SETBIT(
-	string key,
-	// Redis type: integer
-	int offset,
-	string value
+    string key,
+    // Redis type: integer
+    int offset,
+    string value
 );
 
 /**
@@ -1968,10 +1968,10 @@ int NWNX_Redis_SETBIT(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_SETEX(
-	string key,
-	// Redis type: integer
-	int seconds,
-	string value
+    string key,
+    // Redis type: integer
+    int seconds,
+    string value
 );
 
 /**
@@ -1983,8 +1983,8 @@ string NWNX_Redis_SETEX(
  * Annotated return value: integer
  */
 int NWNX_Redis_SETNX(
-	string key,
-	string value
+    string key,
+    string value
 );
 
 /**
@@ -1998,10 +1998,10 @@ int NWNX_Redis_SETNX(
  * Annotated return value: integer
  */
 int NWNX_Redis_SETRANGE(
-	string key,
-	// Redis type: integer
-	int offset,
-	string value
+    string key,
+    // Redis type: integer
+    int offset,
+    string value
 );
 
 /**
@@ -2013,8 +2013,8 @@ int NWNX_Redis_SETRANGE(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_SHUTDOWN(
-	// Redis type: enum
-	string save_mode = ""
+    // Redis type: enum
+    string save_mode = ""
 );
 
 /**
@@ -2027,7 +2027,7 @@ string NWNX_Redis_SHUTDOWN(
  * Annotated return value: array
  */
 int NWNX_Redis_SINTER(
-	string key
+    string key
 );
 
 /**
@@ -2040,9 +2040,9 @@ int NWNX_Redis_SINTER(
  * Annotated return value: integer
  */
 int NWNX_Redis_SINTERSTORE(
-	// Redis type: key
-	string destination,
-	string key
+    // Redis type: key
+    string destination,
+    string key
 );
 
 /**
@@ -2054,8 +2054,8 @@ int NWNX_Redis_SINTERSTORE(
  * Annotated return value: integer
  */
 int NWNX_Redis_SISMEMBER(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -2065,19 +2065,19 @@ int NWNX_Redis_SISMEMBER(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_SLAVEOF(
-	string host,
-	string port
+    string host,
+    string port
 );
 
 /**
  * SLOWLOG
  *
  * Manages the Redis slow queries log
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_SLOWLOG(
-	string subcommand,
-	string argument = ""
+    string subcommand,
+    string argument = ""
 );
 
 /**
@@ -2089,7 +2089,7 @@ string NWNX_Redis_SLOWLOG(
  * Annotated return value: array
  */
 int NWNX_Redis_SMEMBERS(
-	string key
+    string key
 );
 
 /**
@@ -2101,11 +2101,11 @@ int NWNX_Redis_SMEMBERS(
  * Annotated return value: integer
  */
 int NWNX_Redis_SMOVE(
-	// Redis type: key
-	string source,
-	// Redis type: key
-	string destination,
-	string member
+    // Redis type: key
+    string source,
+    // Redis type: key
+    string destination,
+    string member
 );
 
 /**
@@ -2124,20 +2124,20 @@ int NWNX_Redis_SMOVE(
  * Annotated return value: array
  */
 int NWNX_Redis_SORT(
-	string key,
-	// Redis type: pattern
-	string by_pattern = "",
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0,
-	string get_pattern = "",
-	// Redis type: enum
-	string order = "",
-	// Redis type: enum
-	string sorting = "",
-	// Redis type: key
-	string store_destination = ""
+    string key,
+    // Redis type: pattern
+    string by_pattern = "",
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0,
+    string get_pattern = "",
+    // Redis type: enum
+    string order = "",
+    // Redis type: enum
+    string sorting = "",
+    // Redis type: key
+    string store_destination = ""
 );
 
 /**
@@ -2149,9 +2149,9 @@ int NWNX_Redis_SORT(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_SPOP(
-	string key,
-	// Redis type: integer
-	int count = 0
+    string key,
+    // Redis type: integer
+    int count = 0
 );
 
 /**
@@ -2164,9 +2164,9 @@ string NWNX_Redis_SPOP(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_SRANDMEMBER(
-	string key,
-	// Redis type: integer
-	int count = 0
+    string key,
+    // Redis type: integer
+    int count = 0
 );
 
 /**
@@ -2178,8 +2178,8 @@ string NWNX_Redis_SRANDMEMBER(
  * Annotated return value: integer
  */
 int NWNX_Redis_SREM(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -2191,7 +2191,7 @@ int NWNX_Redis_SREM(
  * Annotated return value: integer
  */
 int NWNX_Redis_STRLEN(
-	string key
+    string key
 );
 
 /**
@@ -2203,7 +2203,7 @@ int NWNX_Redis_STRLEN(
  * Annotated return value: array
  */
 int NWNX_Redis_SUNION(
-	string key
+    string key
 );
 
 /**
@@ -2215,9 +2215,9 @@ int NWNX_Redis_SUNION(
  * Annotated return value: integer
  */
 int NWNX_Redis_SUNIONSTORE(
-	// Redis type: key
-	string destination,
-	string key
+    // Redis type: key
+    string destination,
+    string key
 );
 
 /**
@@ -2227,17 +2227,17 @@ int NWNX_Redis_SUNIONSTORE(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_SWAPDB(
-	// Redis type: integer
-	int index,
-	// Redis type: integer
-	int index_1
+    // Redis type: integer
+    int index,
+    // Redis type: integer
+    int index_1
 );
 
 /**
  * SYNC
  *
  * Internal command used for replication
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_SYNC();
 
@@ -2260,7 +2260,7 @@ int NWNX_Redis_TIME();
  * Annotated return value: integer
  */
 int NWNX_Redis_TOUCH(
-	string key
+    string key
 );
 
 /**
@@ -2272,7 +2272,7 @@ int NWNX_Redis_TOUCH(
  * Annotated return value: integer
  */
 int NWNX_Redis_TTL(
-	string key
+    string key
 );
 
 /**
@@ -2284,7 +2284,7 @@ int NWNX_Redis_TTL(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_TYPE(
-	string key
+    string key
 );
 
 /**
@@ -2298,7 +2298,7 @@ string NWNX_Redis_TYPE(
  * Annotated return value: integer
  */
 int NWNX_Redis_UNLINK(
-	string key
+    string key
 );
 
 /**
@@ -2320,10 +2320,10 @@ string NWNX_Redis_UNWATCH();
  * Annotated return value: integer
  */
 int NWNX_Redis_WAIT(
-	// Redis type: integer
-	int numslaves,
-	// Redis type: integer
-	int timeout
+    // Redis type: integer
+    int numslaves,
+    // Redis type: integer
+    int timeout
 );
 
 /**
@@ -2335,7 +2335,7 @@ int NWNX_Redis_WAIT(
  * Annotated return value: simple-string
  */
 string NWNX_Redis_WATCH(
-	string key
+    string key
 );
 
 /**
@@ -2354,16 +2354,16 @@ string NWNX_Redis_WATCH(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZADD(
-	string key,
-	// Redis type: enum
-	string condition = "",
-	// Redis type: enum
-	string change = "",
-	// Redis type: enum
-	string increment = "",
-	// Redis type: double
-	float score = 0.0,
-	string member = ""
+    string key,
+    // Redis type: enum
+    string condition = "",
+    // Redis type: enum
+    string change = "",
+    // Redis type: enum
+    string increment = "",
+    // Redis type: double
+    float score = 0.0,
+    string member = ""
 );
 
 /**
@@ -2375,7 +2375,7 @@ int NWNX_Redis_ZADD(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZCARD(
-	string key
+    string key
 );
 
 /**
@@ -2387,11 +2387,11 @@ int NWNX_Redis_ZCARD(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZCOUNT(
-	string key,
-	// Redis type: double
-	float min,
-	// Redis type: double
-	float max
+    string key,
+    // Redis type: double
+    float min,
+    // Redis type: double
+    float max
 );
 
 /**
@@ -2403,10 +2403,10 @@ int NWNX_Redis_ZCOUNT(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_ZINCRBY(
-	string key,
-	// Redis type: integer
-	int increment,
-	string member
+    string key,
+    // Redis type: integer
+    int increment,
+    string member
 );
 
 /**
@@ -2422,15 +2422,15 @@ string NWNX_Redis_ZINCRBY(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZINTERSTORE(
-	// Redis type: key
-	string destination,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	// Redis type: integer
-	int weights_weight = 0,
-	// Redis type: enum
-	string aggregate_aggregate = ""
+    // Redis type: key
+    string destination,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    // Redis type: integer
+    int weights_weight = 0,
+    // Redis type: enum
+    string aggregate_aggregate = ""
 );
 
 /**
@@ -2442,9 +2442,9 @@ int NWNX_Redis_ZINTERSTORE(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZLEXCOUNT(
-	string key,
-	string min,
-	string max
+    string key,
+    string min,
+    string max
 );
 
 /**
@@ -2459,13 +2459,13 @@ int NWNX_Redis_ZLEXCOUNT(
  * Annotated return value: array
  */
 int NWNX_Redis_ZRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop,
-	// Redis type: enum
-	string withscores = ""
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop,
+    // Redis type: enum
+    string withscores = ""
 );
 
 /**
@@ -2479,13 +2479,13 @@ int NWNX_Redis_ZRANGE(
  * Annotated return value: array
  */
 int NWNX_Redis_ZRANGEBYLEX(
-	string key,
-	string min,
-	string max,
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    string min,
+    string max,
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 );
 
 /**
@@ -2499,13 +2499,13 @@ int NWNX_Redis_ZRANGEBYLEX(
  * Annotated return value: array
  */
 int NWNX_Redis_ZREVRANGEBYLEX(
-	string key,
-	string max,
-	string min,
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    string max,
+    string min,
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 );
 
 /**
@@ -2521,17 +2521,17 @@ int NWNX_Redis_ZREVRANGEBYLEX(
  * Annotated return value: array
  */
 int NWNX_Redis_ZRANGEBYSCORE(
-	string key,
-	// Redis type: double
-	float min,
-	// Redis type: double
-	float max,
-	// Redis type: enum
-	string withscores = "",
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    // Redis type: double
+    float min,
+    // Redis type: double
+    float max,
+    // Redis type: enum
+    string withscores = "",
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 );
 
 /**
@@ -2543,8 +2543,8 @@ int NWNX_Redis_ZRANGEBYSCORE(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZRANK(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -2557,8 +2557,8 @@ int NWNX_Redis_ZRANK(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZREM(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -2571,9 +2571,9 @@ int NWNX_Redis_ZREM(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZREMRANGEBYLEX(
-	string key,
-	string min,
-	string max
+    string key,
+    string min,
+    string max
 );
 
 /**
@@ -2586,11 +2586,11 @@ int NWNX_Redis_ZREMRANGEBYLEX(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZREMRANGEBYRANK(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop
 );
 
 /**
@@ -2603,11 +2603,11 @@ int NWNX_Redis_ZREMRANGEBYRANK(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZREMRANGEBYSCORE(
-	string key,
-	// Redis type: double
-	float min,
-	// Redis type: double
-	float max
+    string key,
+    // Redis type: double
+    float min,
+    // Redis type: double
+    float max
 );
 
 /**
@@ -2622,13 +2622,13 @@ int NWNX_Redis_ZREMRANGEBYSCORE(
  * Annotated return value: array
  */
 int NWNX_Redis_ZREVRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop,
-	// Redis type: enum
-	string withscores = ""
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop,
+    // Redis type: enum
+    string withscores = ""
 );
 
 /**
@@ -2644,17 +2644,17 @@ int NWNX_Redis_ZREVRANGE(
  * Annotated return value: array
  */
 int NWNX_Redis_ZREVRANGEBYSCORE(
-	string key,
-	// Redis type: double
-	float max,
-	// Redis type: double
-	float min,
-	// Redis type: enum
-	string withscores = "",
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    // Redis type: double
+    float max,
+    // Redis type: double
+    float min,
+    // Redis type: enum
+    string withscores = "",
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 );
 
 /**
@@ -2666,8 +2666,8 @@ int NWNX_Redis_ZREVRANGEBYSCORE(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZREVRANK(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -2679,8 +2679,8 @@ int NWNX_Redis_ZREVRANK(
  * Annotated return value: bulk-string
  */
 string NWNX_Redis_ZSCORE(
-	string key,
-	string member
+    string key,
+    string member
 );
 
 /**
@@ -2695,15 +2695,15 @@ string NWNX_Redis_ZSCORE(
  * Annotated return value: integer
  */
 int NWNX_Redis_ZUNIONSTORE(
-	// Redis type: key
-	string destination,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	// Redis type: integer
-	int weights_weight = 0,
-	// Redis type: enum
-	string aggregate_aggregate = ""
+    // Redis type: key
+    string destination,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    // Redis type: integer
+    int weights_weight = 0,
+    // Redis type: enum
+    string aggregate_aggregate = ""
 );
 
 /**
@@ -2714,15 +2714,15 @@ int NWNX_Redis_ZUNIONSTORE(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection.
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_SCAN(
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 );
 
 /**
@@ -2733,16 +2733,16 @@ string NWNX_Redis_SCAN(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection..
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_SSCAN(
-	string key,
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    string key,
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 );
 
 /**
@@ -2753,16 +2753,16 @@ string NWNX_Redis_SSCAN(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection..
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_HSCAN(
-	string key,
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    string key,
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 );
 
 /**
@@ -2773,24 +2773,24 @@ string NWNX_Redis_HSCAN(
  * Time complexity: O(1) for every call. O(N) for a complete iteration, including enough command
  * calls for the cursor to return back to 0. N is the number of elements inside
  * the collection..
- * Annotated return value: 
+ * Annotated return value:
  */
 string NWNX_Redis_ZSCAN(
-	string key,
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    string key,
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 );
 
 
 
 // Implementation below
 int NWNX_Redis_APPEND(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "APPEND");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -2800,7 +2800,7 @@ int NWNX_Redis_APPEND(
 }
 
 string NWNX_Redis_AUTH(
-	string password
+    string password
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "AUTH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", password);
@@ -2821,11 +2821,11 @@ string NWNX_Redis_BGSAVE() {
 }
 
 int NWNX_Redis_BITCOUNT(
-	string key,
-	// Redis type: integer
-	int start = 0,
-	// Redis type: integer
-	int end = 0
+    string key,
+    // Redis type: integer
+    int start = 0,
+    // Redis type: integer
+    int end = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "BITCOUNT");
   if (end != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(end));
@@ -2836,23 +2836,23 @@ int NWNX_Redis_BITCOUNT(
 }
 
 string NWNX_Redis_BITFIELD(
-	string key,
-	// Redis type: type
-	string get_type = "",
-	// Redis type: integer
-	int get_offset = 0,
-	// Redis type: type
-	string set_type = "",
-	// Redis type: integer
-	int set_offset = 0,
-	// Redis type: integer
-	int set_value = 0,
-	// Redis type: type
-	string incrby_type = "",
-	// Redis type: integer
-	int incrby_offset = 0,
-	// Redis type: integer
-	int incrby_increment = 0
+    string key,
+    // Redis type: type
+    string get_type = "",
+    // Redis type: integer
+    int get_offset = 0,
+    // Redis type: type
+    string set_type = "",
+    // Redis type: integer
+    int set_offset = 0,
+    // Redis type: integer
+    int set_value = 0,
+    // Redis type: type
+    string incrby_type = "",
+    // Redis type: integer
+    int incrby_offset = 0,
+    // Redis type: integer
+    int incrby_increment = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "BITFIELD");
   if (incrby_increment != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(incrby_increment));
@@ -2869,10 +2869,10 @@ string NWNX_Redis_BITFIELD(
 }
 
 int NWNX_Redis_BITOP(
-	string operation,
-	// Redis type: key
-	string destkey,
-	string key
+    string operation,
+    // Redis type: key
+    string destkey,
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "BITOP");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -2883,13 +2883,13 @@ int NWNX_Redis_BITOP(
 }
 
 int NWNX_Redis_BITPOS(
-	string key,
-	// Redis type: integer
-	int bit,
-	// Redis type: integer
-	int start = 0,
-	// Redis type: integer
-	int end = 0
+    string key,
+    // Redis type: integer
+    int bit,
+    // Redis type: integer
+    int start = 0,
+    // Redis type: integer
+    int end = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "BITPOS");
   if (end != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(end));
@@ -2901,9 +2901,9 @@ int NWNX_Redis_BITPOS(
 }
 
 int NWNX_Redis_BLPOP(
-	string key,
-	// Redis type: integer
-	int timeout
+    string key,
+    // Redis type: integer
+    int timeout
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "BLPOP");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(timeout));
@@ -2913,9 +2913,9 @@ int NWNX_Redis_BLPOP(
 }
 
 int NWNX_Redis_BRPOP(
-	string key,
-	// Redis type: integer
-	int timeout
+    string key,
+    // Redis type: integer
+    int timeout
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "BRPOP");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(timeout));
@@ -2925,12 +2925,12 @@ int NWNX_Redis_BRPOP(
 }
 
 string NWNX_Redis_BRPOPLPUSH(
-	// Redis type: key
-	string source,
-	// Redis type: key
-	string destination,
-	// Redis type: integer
-	int timeout
+    // Redis type: key
+    string source,
+    // Redis type: key
+    string destination,
+    // Redis type: integer
+    int timeout
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "BRPOPLPUSH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(timeout));
@@ -2941,11 +2941,11 @@ string NWNX_Redis_BRPOPLPUSH(
 }
 
 string NWNX_Redis_CLIENT_KILL(
-	string ip_port = "",
-	// Redis type: integer
-	int id_client_id = 0,
-	string addr_ip_port = "",
-	string skipme_yes_no = ""
+    string ip_port = "",
+    // Redis type: integer
+    int id_client_id = 0,
+    string addr_ip_port = "",
+    string skipme_yes_no = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLIENT_KILL");
   if (skipme_yes_no != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", skipme_yes_no);
@@ -2969,8 +2969,8 @@ string NWNX_Redis_CLIENT_GETNAME() {
 }
 
 string NWNX_Redis_CLIENT_PAUSE(
-	// Redis type: integer
-	int timeout
+    // Redis type: integer
+    int timeout
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLIENT_PAUSE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(timeout));
@@ -2979,8 +2979,8 @@ string NWNX_Redis_CLIENT_PAUSE(
 }
 
 string NWNX_Redis_CLIENT_REPLY(
-	// Redis type: enum
-	string reply_mode
+    // Redis type: enum
+    string reply_mode
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLIENT_REPLY");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", reply_mode);
@@ -2989,7 +2989,7 @@ string NWNX_Redis_CLIENT_REPLY(
 }
 
 string NWNX_Redis_CLIENT_SETNAME(
-	string connection_name
+    string connection_name
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLIENT_SETNAME");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", connection_name);
@@ -2998,8 +2998,8 @@ string NWNX_Redis_CLIENT_SETNAME(
 }
 
 string NWNX_Redis_CLUSTER_ADDSLOTS(
-	// Redis type: integer
-	int slot
+    // Redis type: integer
+    int slot
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_ADDSLOTS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(slot));
@@ -3008,7 +3008,7 @@ string NWNX_Redis_CLUSTER_ADDSLOTS(
 }
 
 int NWNX_Redis_CLUSTER_COUNT_FAILURE_REPORTS(
-	string node_id
+    string node_id
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_COUNT_FAILURE_REPORTS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", node_id);
@@ -3017,8 +3017,8 @@ int NWNX_Redis_CLUSTER_COUNT_FAILURE_REPORTS(
 }
 
 int NWNX_Redis_CLUSTER_COUNTKEYSINSLOT(
-	// Redis type: integer
-	int slot
+    // Redis type: integer
+    int slot
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_COUNTKEYSINSLOT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(slot));
@@ -3027,8 +3027,8 @@ int NWNX_Redis_CLUSTER_COUNTKEYSINSLOT(
 }
 
 string NWNX_Redis_CLUSTER_DELSLOTS(
-	// Redis type: integer
-	int slot
+    // Redis type: integer
+    int slot
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_DELSLOTS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(slot));
@@ -3037,8 +3037,8 @@ string NWNX_Redis_CLUSTER_DELSLOTS(
 }
 
 string NWNX_Redis_CLUSTER_FAILOVER(
-	// Redis type: enum
-	string options = ""
+    // Redis type: enum
+    string options = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_FAILOVER");
   if (options != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", options);
@@ -3047,7 +3047,7 @@ string NWNX_Redis_CLUSTER_FAILOVER(
 }
 
 string NWNX_Redis_CLUSTER_FORGET(
-	string node_id
+    string node_id
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_FORGET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", node_id);
@@ -3056,10 +3056,10 @@ string NWNX_Redis_CLUSTER_FORGET(
 }
 
 int NWNX_Redis_CLUSTER_GETKEYSINSLOT(
-	// Redis type: integer
-	int slot,
-	// Redis type: integer
-	int count
+    // Redis type: integer
+    int slot,
+    // Redis type: integer
+    int count
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_GETKEYSINSLOT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(count));
@@ -3075,7 +3075,7 @@ string NWNX_Redis_CLUSTER_INFO() {
 }
 
 int NWNX_Redis_CLUSTER_KEYSLOT(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_KEYSLOT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3084,9 +3084,9 @@ int NWNX_Redis_CLUSTER_KEYSLOT(
 }
 
 string NWNX_Redis_CLUSTER_MEET(
-	string ip,
-	// Redis type: integer
-	int port
+    string ip,
+    // Redis type: integer
+    int port
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_MEET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(port));
@@ -3102,7 +3102,7 @@ string NWNX_Redis_CLUSTER_NODES() {
 }
 
 string NWNX_Redis_CLUSTER_REPLICATE(
-	string node_id
+    string node_id
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_REPLICATE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", node_id);
@@ -3111,8 +3111,8 @@ string NWNX_Redis_CLUSTER_REPLICATE(
 }
 
 string NWNX_Redis_CLUSTER_RESET(
-	// Redis type: enum
-	string reset_type = ""
+    // Redis type: enum
+    string reset_type = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_RESET");
   if (reset_type != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", reset_type);
@@ -3127,8 +3127,8 @@ string NWNX_Redis_CLUSTER_SAVECONFIG() {
 }
 
 string NWNX_Redis_CLUSTER_SET_CONFIG_EPOCH(
-	// Redis type: integer
-	int config_epoch
+    // Redis type: integer
+    int config_epoch
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_SET_CONFIG_EPOCH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(config_epoch));
@@ -3137,11 +3137,11 @@ string NWNX_Redis_CLUSTER_SET_CONFIG_EPOCH(
 }
 
 string NWNX_Redis_CLUSTER_SETSLOT(
-	// Redis type: integer
-	int slot,
-	// Redis type: enum
-	string subcommand,
-	string node_id = ""
+    // Redis type: integer
+    int slot,
+    // Redis type: enum
+    string subcommand,
+    string node_id = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_SETSLOT");
   if (node_id != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", node_id);
@@ -3152,7 +3152,7 @@ string NWNX_Redis_CLUSTER_SETSLOT(
 }
 
 string NWNX_Redis_CLUSTER_SLAVES(
-	string node_id
+    string node_id
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CLUSTER_SLAVES");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", node_id);
@@ -3185,7 +3185,7 @@ int NWNX_Redis_COMMAND_GETKEYS() {
 }
 
 int NWNX_Redis_COMMAND_INFO(
-	string command_name
+    string command_name
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "COMMAND_INFO");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", command_name);
@@ -3194,7 +3194,7 @@ int NWNX_Redis_COMMAND_INFO(
 }
 
 int NWNX_Redis_CONFIG_GET(
-	string parameter
+    string parameter
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CONFIG_GET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", parameter);
@@ -3209,8 +3209,8 @@ string NWNX_Redis_CONFIG_REWRITE() {
 }
 
 string NWNX_Redis_CONFIG_SET(
-	string parameter,
-	string value
+    string parameter,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "CONFIG_SET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3232,7 +3232,7 @@ int NWNX_Redis_DBSIZE() {
 }
 
 string NWNX_Redis_DEBUG_OBJECT(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "DEBUG_OBJECT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3247,7 +3247,7 @@ string NWNX_Redis_DEBUG_SEGFAULT() {
 }
 
 int NWNX_Redis_DECR(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "DECR");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3256,9 +3256,9 @@ int NWNX_Redis_DECR(
 }
 
 int NWNX_Redis_DECRBY(
-	string key,
-	// Redis type: integer
-	int decrement
+    string key,
+    // Redis type: integer
+    int decrement
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "DECRBY");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(decrement));
@@ -3268,7 +3268,7 @@ int NWNX_Redis_DECRBY(
 }
 
 int NWNX_Redis_DEL(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "DEL");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3283,7 +3283,7 @@ string NWNX_Redis_DISCARD() {
 }
 
 string NWNX_Redis_DUMP(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "DUMP");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3292,7 +3292,7 @@ string NWNX_Redis_DUMP(
 }
 
 string NWNX_Redis_ECHO(
-	string message
+    string message
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ECHO");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", message);
@@ -3301,11 +3301,11 @@ string NWNX_Redis_ECHO(
 }
 
 string NWNX_Redis_EVAL(
-	string script,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	string arg
+    string script,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    string arg
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "EVAL");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", arg);
@@ -3317,11 +3317,11 @@ string NWNX_Redis_EVAL(
 }
 
 string NWNX_Redis_EVALSHA(
-	string sha1,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	string arg
+    string sha1,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    string arg
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "EVALSHA");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", arg);
@@ -3339,7 +3339,7 @@ int NWNX_Redis_EXEC() {
 }
 
 int NWNX_Redis_EXISTS(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "EXISTS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3348,9 +3348,9 @@ int NWNX_Redis_EXISTS(
 }
 
 int NWNX_Redis_EXPIRE(
-	string key,
-	// Redis type: integer
-	int seconds
+    string key,
+    // Redis type: integer
+    int seconds
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "EXPIRE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(seconds));
@@ -3360,9 +3360,9 @@ int NWNX_Redis_EXPIRE(
 }
 
 int NWNX_Redis_EXPIREAT(
-	string key,
-	// Redis type: posix time
-	string timestamp
+    string key,
+    // Redis type: posix time
+    string timestamp
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "EXPIREAT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", timestamp);
@@ -3372,8 +3372,8 @@ int NWNX_Redis_EXPIREAT(
 }
 
 string NWNX_Redis_FLUSHALL(
-	// Redis type: enum
-	string async = ""
+    // Redis type: enum
+    string async = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "FLUSHALL");
   if (async != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", async);
@@ -3382,8 +3382,8 @@ string NWNX_Redis_FLUSHALL(
 }
 
 string NWNX_Redis_FLUSHDB(
-	// Redis type: enum
-	string async = ""
+    // Redis type: enum
+    string async = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "FLUSHDB");
   if (async != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", async);
@@ -3392,12 +3392,12 @@ string NWNX_Redis_FLUSHDB(
 }
 
 int NWNX_Redis_GEOADD(
-	string key,
-	// Redis type: double
-	float longitude,
-	// Redis type: double
-	float latitude,
-	string member
+    string key,
+    // Redis type: double
+    float longitude,
+    // Redis type: double
+    float latitude,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GEOADD");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -3409,8 +3409,8 @@ int NWNX_Redis_GEOADD(
 }
 
 int NWNX_Redis_GEOHASH(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GEOHASH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -3420,8 +3420,8 @@ int NWNX_Redis_GEOHASH(
 }
 
 int NWNX_Redis_GEOPOS(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GEOPOS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -3431,10 +3431,10 @@ int NWNX_Redis_GEOPOS(
 }
 
 string NWNX_Redis_GEODIST(
-	string key,
-	string member1,
-	string member2,
-	string unit = ""
+    string key,
+    string member1,
+    string member2,
+    string unit = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GEODIST");
   if (unit != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", unit);
@@ -3446,29 +3446,29 @@ string NWNX_Redis_GEODIST(
 }
 
 int NWNX_Redis_GEORADIUS(
-	string key,
-	// Redis type: double
-	float longitude,
-	// Redis type: double
-	float latitude,
-	// Redis type: double
-	float radius,
-	// Redis type: enum
-	string unit,
-	// Redis type: enum
-	string withcoord = "",
-	// Redis type: enum
-	string withdist = "",
-	// Redis type: enum
-	string withhash = "",
-	// Redis type: integer
-	int count_count = 0,
-	// Redis type: enum
-	string order = "",
-	// Redis type: key
-	string store_key = "",
-	// Redis type: key
-	string storedist_key = ""
+    string key,
+    // Redis type: double
+    float longitude,
+    // Redis type: double
+    float latitude,
+    // Redis type: double
+    float radius,
+    // Redis type: enum
+    string unit,
+    // Redis type: enum
+    string withcoord = "",
+    // Redis type: enum
+    string withdist = "",
+    // Redis type: enum
+    string withhash = "",
+    // Redis type: integer
+    int count_count = 0,
+    // Redis type: enum
+    string order = "",
+    // Redis type: key
+    string store_key = "",
+    // Redis type: key
+    string storedist_key = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GEORADIUS");
   if (storedist_key != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", storedist_key);
@@ -3488,26 +3488,26 @@ int NWNX_Redis_GEORADIUS(
 }
 
 string NWNX_Redis_GEORADIUSBYMEMBER(
-	string key,
-	string member,
-	// Redis type: double
-	float radius,
-	// Redis type: enum
-	string unit,
-	// Redis type: enum
-	string withcoord = "",
-	// Redis type: enum
-	string withdist = "",
-	// Redis type: enum
-	string withhash = "",
-	// Redis type: integer
-	int count_count = 0,
-	// Redis type: enum
-	string order = "",
-	// Redis type: key
-	string store_key = "",
-	// Redis type: key
-	string storedist_key = ""
+    string key,
+    string member,
+    // Redis type: double
+    float radius,
+    // Redis type: enum
+    string unit,
+    // Redis type: enum
+    string withcoord = "",
+    // Redis type: enum
+    string withdist = "",
+    // Redis type: enum
+    string withhash = "",
+    // Redis type: integer
+    int count_count = 0,
+    // Redis type: enum
+    string order = "",
+    // Redis type: key
+    string store_key = "",
+    // Redis type: key
+    string storedist_key = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GEORADIUSBYMEMBER");
   if (storedist_key != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", storedist_key);
@@ -3526,7 +3526,7 @@ string NWNX_Redis_GEORADIUSBYMEMBER(
 }
 
 string NWNX_Redis_GET(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3535,9 +3535,9 @@ string NWNX_Redis_GET(
 }
 
 int NWNX_Redis_GETBIT(
-	string key,
-	// Redis type: integer
-	int offset
+    string key,
+    // Redis type: integer
+    int offset
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GETBIT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(offset));
@@ -3547,11 +3547,11 @@ int NWNX_Redis_GETBIT(
 }
 
 string NWNX_Redis_GETRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int end
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int end
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GETRANGE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(end));
@@ -3562,8 +3562,8 @@ string NWNX_Redis_GETRANGE(
 }
 
 string NWNX_Redis_GETSET(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "GETSET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3573,8 +3573,8 @@ string NWNX_Redis_GETSET(
 }
 
 int NWNX_Redis_HDEL(
-	string key,
-	string field
+    string key,
+    string field
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HDEL");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", field);
@@ -3584,8 +3584,8 @@ int NWNX_Redis_HDEL(
 }
 
 int NWNX_Redis_HEXISTS(
-	string key,
-	string field
+    string key,
+    string field
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HEXISTS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", field);
@@ -3595,8 +3595,8 @@ int NWNX_Redis_HEXISTS(
 }
 
 string NWNX_Redis_HGET(
-	string key,
-	string field
+    string key,
+    string field
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HGET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", field);
@@ -3606,7 +3606,7 @@ string NWNX_Redis_HGET(
 }
 
 int NWNX_Redis_HGETALL(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HGETALL");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3615,10 +3615,10 @@ int NWNX_Redis_HGETALL(
 }
 
 int NWNX_Redis_HINCRBY(
-	string key,
-	string field,
-	// Redis type: integer
-	int increment
+    string key,
+    string field,
+    // Redis type: integer
+    int increment
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HINCRBY");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(increment));
@@ -3629,10 +3629,10 @@ int NWNX_Redis_HINCRBY(
 }
 
 string NWNX_Redis_HINCRBYFLOAT(
-	string key,
-	string field,
-	// Redis type: double
-	float increment
+    string key,
+    string field,
+    // Redis type: double
+    float increment
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HINCRBYFLOAT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", FloatToString(increment, 0));
@@ -3643,7 +3643,7 @@ string NWNX_Redis_HINCRBYFLOAT(
 }
 
 int NWNX_Redis_HKEYS(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HKEYS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3652,7 +3652,7 @@ int NWNX_Redis_HKEYS(
 }
 
 int NWNX_Redis_HLEN(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HLEN");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3661,8 +3661,8 @@ int NWNX_Redis_HLEN(
 }
 
 int NWNX_Redis_HMGET(
-	string key,
-	string field
+    string key,
+    string field
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HMGET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", field);
@@ -3672,9 +3672,9 @@ int NWNX_Redis_HMGET(
 }
 
 string NWNX_Redis_HMSET(
-	string key,
-	string field,
-	string value
+    string key,
+    string field,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HMSET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3685,9 +3685,9 @@ string NWNX_Redis_HMSET(
 }
 
 int NWNX_Redis_HSET(
-	string key,
-	string field,
-	string value
+    string key,
+    string field,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HSET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3698,9 +3698,9 @@ int NWNX_Redis_HSET(
 }
 
 int NWNX_Redis_HSETNX(
-	string key,
-	string field,
-	string value
+    string key,
+    string field,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HSETNX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3711,8 +3711,8 @@ int NWNX_Redis_HSETNX(
 }
 
 int NWNX_Redis_HSTRLEN(
-	string key,
-	string field
+    string key,
+    string field
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HSTRLEN");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", field);
@@ -3722,7 +3722,7 @@ int NWNX_Redis_HSTRLEN(
 }
 
 int NWNX_Redis_HVALS(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HVALS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3731,7 +3731,7 @@ int NWNX_Redis_HVALS(
 }
 
 int NWNX_Redis_INCR(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "INCR");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3740,9 +3740,9 @@ int NWNX_Redis_INCR(
 }
 
 int NWNX_Redis_INCRBY(
-	string key,
-	// Redis type: integer
-	int increment
+    string key,
+    // Redis type: integer
+    int increment
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "INCRBY");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(increment));
@@ -3752,9 +3752,9 @@ int NWNX_Redis_INCRBY(
 }
 
 string NWNX_Redis_INCRBYFLOAT(
-	string key,
-	// Redis type: double
-	float increment
+    string key,
+    // Redis type: double
+    float increment
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "INCRBYFLOAT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", FloatToString(increment, 0));
@@ -3763,8 +3763,20 @@ string NWNX_Redis_INCRBYFLOAT(
   return NWNX_GetReturnValueString("NWNX_Redis", "RawCommand");
 }
 
+string NWNX_Redis_DECRBYFLOAT(
+    string key,
+    // Redis type: double
+    float decrement
+) {
+  NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "DECRBYFLOAT");
+  NWNX_PushArgumentString("NWNX_Redis", "RawCommand", FloatToString(decrement, 0));
+  NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
+  NWNX_CallFunction("NWNX_Redis", "RawCommand");
+  return NWNX_GetReturnValueString("NWNX_Redis", "RawCommand");
+}
+
 string NWNX_Redis_INFO(
-	string section = ""
+    string section = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "INFO");
   if (section != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", section);
@@ -3773,7 +3785,7 @@ string NWNX_Redis_INFO(
 }
 
 int NWNX_Redis_KEYS(
-	string pattern
+    string pattern
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "KEYS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", pattern);
@@ -3788,9 +3800,9 @@ int NWNX_Redis_LASTSAVE() {
 }
 
 string NWNX_Redis_LINDEX(
-	string key,
-	// Redis type: integer
-	int index
+    string key,
+    // Redis type: integer
+    int index
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LINDEX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(index));
@@ -3800,11 +3812,11 @@ string NWNX_Redis_LINDEX(
 }
 
 int NWNX_Redis_LINSERT(
-	string key,
-	// Redis type: enum
-	string where,
-	string pivot,
-	string value
+    string key,
+    // Redis type: enum
+    string where,
+    string pivot,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LINSERT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3816,7 +3828,7 @@ int NWNX_Redis_LINSERT(
 }
 
 int NWNX_Redis_LLEN(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LLEN");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3825,7 +3837,7 @@ int NWNX_Redis_LLEN(
 }
 
 string NWNX_Redis_LPOP(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LPOP");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3834,8 +3846,8 @@ string NWNX_Redis_LPOP(
 }
 
 int NWNX_Redis_LPUSH(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LPUSH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3845,8 +3857,8 @@ int NWNX_Redis_LPUSH(
 }
 
 int NWNX_Redis_LPUSHX(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LPUSHX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3856,11 +3868,11 @@ int NWNX_Redis_LPUSHX(
 }
 
 int NWNX_Redis_LRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LRANGE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(stop));
@@ -3871,10 +3883,10 @@ int NWNX_Redis_LRANGE(
 }
 
 int NWNX_Redis_LREM(
-	string key,
-	// Redis type: integer
-	int count,
-	string value
+    string key,
+    // Redis type: integer
+    int count,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LREM");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3885,10 +3897,10 @@ int NWNX_Redis_LREM(
 }
 
 string NWNX_Redis_LSET(
-	string key,
-	// Redis type: integer
-	int index,
-	string value
+    string key,
+    // Redis type: integer
+    int index,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LSET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3899,11 +3911,11 @@ string NWNX_Redis_LSET(
 }
 
 string NWNX_Redis_LTRIM(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "LTRIM");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(stop));
@@ -3914,7 +3926,7 @@ string NWNX_Redis_LTRIM(
 }
 
 int NWNX_Redis_MGET(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "MGET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -3923,20 +3935,20 @@ int NWNX_Redis_MGET(
 }
 
 string NWNX_Redis_MIGRATE(
-	string host,
-	string port,
-	// Redis type: enum
-	string key,
-	// Redis type: integer
-	int destination_db,
-	// Redis type: integer
-	int timeout,
-	// Redis type: enum
-	string copy = "",
-	// Redis type: enum
-	string replace = "",
-	// Redis type: key
-	string keys_key = ""
+    string host,
+    string port,
+    // Redis type: enum
+    string key,
+    // Redis type: integer
+    int destination_db,
+    // Redis type: integer
+    int timeout,
+    // Redis type: enum
+    string copy = "",
+    // Redis type: enum
+    string replace = "",
+    // Redis type: key
+    string keys_key = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "MIGRATE");
   if (keys_key != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", keys_key);
@@ -3958,9 +3970,9 @@ string NWNX_Redis_MONITOR() {
 }
 
 int NWNX_Redis_MOVE(
-	string key,
-	// Redis type: integer
-	int db
+    string key,
+    // Redis type: integer
+    int db
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "MOVE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(db));
@@ -3970,8 +3982,8 @@ int NWNX_Redis_MOVE(
 }
 
 string NWNX_Redis_MSET(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "MSET");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3981,8 +3993,8 @@ string NWNX_Redis_MSET(
 }
 
 int NWNX_Redis_MSETNX(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "MSETNX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -3998,8 +4010,8 @@ string NWNX_Redis_MULTI() {
 }
 
 string NWNX_Redis_OBJECT(
-	string subcommand,
-	string arguments = ""
+    string subcommand,
+    string arguments = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "OBJECT");
   if (arguments != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", arguments);
@@ -4009,7 +4021,7 @@ string NWNX_Redis_OBJECT(
 }
 
 int NWNX_Redis_PERSIST(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PERSIST");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4018,9 +4030,9 @@ int NWNX_Redis_PERSIST(
 }
 
 int NWNX_Redis_PEXPIRE(
-	string key,
-	// Redis type: integer
-	int milliseconds
+    string key,
+    // Redis type: integer
+    int milliseconds
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PEXPIRE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(milliseconds));
@@ -4030,9 +4042,9 @@ int NWNX_Redis_PEXPIRE(
 }
 
 int NWNX_Redis_PEXPIREAT(
-	string key,
-	// Redis type: posix time
-	string milliseconds_timestamp
+    string key,
+    // Redis type: posix time
+    string milliseconds_timestamp
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PEXPIREAT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", milliseconds_timestamp);
@@ -4042,8 +4054,8 @@ int NWNX_Redis_PEXPIREAT(
 }
 
 int NWNX_Redis_PFADD(
-	string key,
-	string element
+    string key,
+    string element
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PFADD");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", element);
@@ -4053,7 +4065,7 @@ int NWNX_Redis_PFADD(
 }
 
 int NWNX_Redis_PFCOUNT(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PFCOUNT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4062,10 +4074,10 @@ int NWNX_Redis_PFCOUNT(
 }
 
 string NWNX_Redis_PFMERGE(
-	// Redis type: key
-	string destkey,
-	// Redis type: key
-	string sourcekey
+    // Redis type: key
+    string destkey,
+    // Redis type: key
+    string sourcekey
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PFMERGE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", sourcekey);
@@ -4075,7 +4087,7 @@ string NWNX_Redis_PFMERGE(
 }
 
 string NWNX_Redis_PING(
-	string message = ""
+    string message = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PING");
   if (message != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", message);
@@ -4084,10 +4096,10 @@ string NWNX_Redis_PING(
 }
 
 string NWNX_Redis_PSETEX(
-	string key,
-	// Redis type: integer
-	int milliseconds,
-	string value
+    string key,
+    // Redis type: integer
+    int milliseconds,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PSETEX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -4098,8 +4110,8 @@ string NWNX_Redis_PSETEX(
 }
 
 int NWNX_Redis_PUBSUB(
-	string subcommand,
-	string argument = ""
+    string subcommand,
+    string argument = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PUBSUB");
   if (argument != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", argument);
@@ -4109,7 +4121,7 @@ int NWNX_Redis_PUBSUB(
 }
 
 int NWNX_Redis_PTTL(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PTTL");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4118,8 +4130,8 @@ int NWNX_Redis_PTTL(
 }
 
 int NWNX_Redis_PUBLISH(
-	string channel,
-	string message
+    string channel,
+    string message
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "PUBLISH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", message);
@@ -4153,9 +4165,9 @@ string NWNX_Redis_READWRITE() {
 }
 
 string NWNX_Redis_RENAME(
-	string key,
-	// Redis type: key
-	string newkey
+    string key,
+    // Redis type: key
+    string newkey
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "RENAME");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", newkey);
@@ -4165,9 +4177,9 @@ string NWNX_Redis_RENAME(
 }
 
 int NWNX_Redis_RENAMENX(
-	string key,
-	// Redis type: key
-	string newkey
+    string key,
+    // Redis type: key
+    string newkey
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "RENAMENX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", newkey);
@@ -4177,12 +4189,12 @@ int NWNX_Redis_RENAMENX(
 }
 
 string NWNX_Redis_RESTORE(
-	string key,
-	// Redis type: integer
-	int ttl,
-	string serialized_value,
-	// Redis type: enum
-	string replace = ""
+    string key,
+    // Redis type: integer
+    int ttl,
+    string serialized_value,
+    // Redis type: enum
+    string replace = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "RESTORE");
   if (replace != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", replace);
@@ -4200,7 +4212,7 @@ int NWNX_Redis_ROLE() {
 }
 
 string NWNX_Redis_RPOP(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "RPOP");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4209,10 +4221,10 @@ string NWNX_Redis_RPOP(
 }
 
 string NWNX_Redis_RPOPLPUSH(
-	// Redis type: key
-	string source,
-	// Redis type: key
-	string destination
+    // Redis type: key
+    string source,
+    // Redis type: key
+    string destination
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "RPOPLPUSH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", destination);
@@ -4222,8 +4234,8 @@ string NWNX_Redis_RPOPLPUSH(
 }
 
 int NWNX_Redis_RPUSH(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "RPUSH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -4233,8 +4245,8 @@ int NWNX_Redis_RPUSH(
 }
 
 int NWNX_Redis_RPUSHX(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "RPUSHX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -4244,8 +4256,8 @@ int NWNX_Redis_RPUSHX(
 }
 
 int NWNX_Redis_SADD(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SADD");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4261,7 +4273,7 @@ string NWNX_Redis_SAVE() {
 }
 
 int NWNX_Redis_SCARD(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SCARD");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4270,8 +4282,8 @@ int NWNX_Redis_SCARD(
 }
 
 string NWNX_Redis_SCRIPT_DEBUG(
-	// Redis type: enum
-	string mode
+    // Redis type: enum
+    string mode
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SCRIPT_DEBUG");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", mode);
@@ -4280,7 +4292,7 @@ string NWNX_Redis_SCRIPT_DEBUG(
 }
 
 int NWNX_Redis_SCRIPT_EXISTS(
-	string sha1
+    string sha1
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SCRIPT_EXISTS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", sha1);
@@ -4301,7 +4313,7 @@ string NWNX_Redis_SCRIPT_KILL() {
 }
 
 string NWNX_Redis_SCRIPT_LOAD(
-	string script
+    string script
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SCRIPT_LOAD");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", script);
@@ -4310,7 +4322,7 @@ string NWNX_Redis_SCRIPT_LOAD(
 }
 
 int NWNX_Redis_SDIFF(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SDIFF");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4319,9 +4331,9 @@ int NWNX_Redis_SDIFF(
 }
 
 int NWNX_Redis_SDIFFSTORE(
-	// Redis type: key
-	string destination,
-	string key
+    // Redis type: key
+    string destination,
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SDIFFSTORE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4331,8 +4343,8 @@ int NWNX_Redis_SDIFFSTORE(
 }
 
 string NWNX_Redis_SELECT(
-	// Redis type: integer
-	int index
+    // Redis type: integer
+    int index
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SELECT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(index));
@@ -4341,14 +4353,14 @@ string NWNX_Redis_SELECT(
 }
 
 string NWNX_Redis_SET(
-	string key,
-	string value,
-	// Redis type: integer
-	int ex_seconds = 0,
-	// Redis type: integer
-	int px_milliseconds = 0,
-	// Redis type: enum
-	string condition = ""
+    string key,
+    string value,
+    // Redis type: integer
+    int ex_seconds = 0,
+    // Redis type: integer
+    int px_milliseconds = 0,
+    // Redis type: enum
+    string condition = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SET");
   if (condition != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", condition);
@@ -4361,10 +4373,10 @@ string NWNX_Redis_SET(
 }
 
 int NWNX_Redis_SETBIT(
-	string key,
-	// Redis type: integer
-	int offset,
-	string value
+    string key,
+    // Redis type: integer
+    int offset,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SETBIT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -4375,10 +4387,10 @@ int NWNX_Redis_SETBIT(
 }
 
 string NWNX_Redis_SETEX(
-	string key,
-	// Redis type: integer
-	int seconds,
-	string value
+    string key,
+    // Redis type: integer
+    int seconds,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SETEX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -4389,8 +4401,8 @@ string NWNX_Redis_SETEX(
 }
 
 int NWNX_Redis_SETNX(
-	string key,
-	string value
+    string key,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SETNX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -4400,10 +4412,10 @@ int NWNX_Redis_SETNX(
 }
 
 int NWNX_Redis_SETRANGE(
-	string key,
-	// Redis type: integer
-	int offset,
-	string value
+    string key,
+    // Redis type: integer
+    int offset,
+    string value
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SETRANGE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", value);
@@ -4414,8 +4426,8 @@ int NWNX_Redis_SETRANGE(
 }
 
 string NWNX_Redis_SHUTDOWN(
-	// Redis type: enum
-	string save_mode = ""
+    // Redis type: enum
+    string save_mode = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SHUTDOWN");
   if (save_mode != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", save_mode);
@@ -4424,7 +4436,7 @@ string NWNX_Redis_SHUTDOWN(
 }
 
 int NWNX_Redis_SINTER(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SINTER");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4433,9 +4445,9 @@ int NWNX_Redis_SINTER(
 }
 
 int NWNX_Redis_SINTERSTORE(
-	// Redis type: key
-	string destination,
-	string key
+    // Redis type: key
+    string destination,
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SINTERSTORE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4445,8 +4457,8 @@ int NWNX_Redis_SINTERSTORE(
 }
 
 int NWNX_Redis_SISMEMBER(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SISMEMBER");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4456,8 +4468,8 @@ int NWNX_Redis_SISMEMBER(
 }
 
 string NWNX_Redis_SLAVEOF(
-	string host,
-	string port
+    string host,
+    string port
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SLAVEOF");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", port);
@@ -4467,8 +4479,8 @@ string NWNX_Redis_SLAVEOF(
 }
 
 string NWNX_Redis_SLOWLOG(
-	string subcommand,
-	string argument = ""
+    string subcommand,
+    string argument = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SLOWLOG");
   if (argument != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", argument);
@@ -4478,7 +4490,7 @@ string NWNX_Redis_SLOWLOG(
 }
 
 int NWNX_Redis_SMEMBERS(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SMEMBERS");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4487,11 +4499,11 @@ int NWNX_Redis_SMEMBERS(
 }
 
 int NWNX_Redis_SMOVE(
-	// Redis type: key
-	string source,
-	// Redis type: key
-	string destination,
-	string member
+    // Redis type: key
+    string source,
+    // Redis type: key
+    string destination,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SMOVE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4502,20 +4514,20 @@ int NWNX_Redis_SMOVE(
 }
 
 int NWNX_Redis_SORT(
-	string key,
-	// Redis type: pattern
-	string by_pattern = "",
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0,
-	string get_pattern = "",
-	// Redis type: enum
-	string order = "",
-	// Redis type: enum
-	string sorting = "",
-	// Redis type: key
-	string store_destination = ""
+    string key,
+    // Redis type: pattern
+    string by_pattern = "",
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0,
+    string get_pattern = "",
+    // Redis type: enum
+    string order = "",
+    // Redis type: enum
+    string sorting = "",
+    // Redis type: key
+    string store_destination = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SORT");
   if (store_destination != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", store_destination);
@@ -4531,9 +4543,9 @@ int NWNX_Redis_SORT(
 }
 
 string NWNX_Redis_SPOP(
-	string key,
-	// Redis type: integer
-	int count = 0
+    string key,
+    // Redis type: integer
+    int count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SPOP");
   if (count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(count));
@@ -4543,9 +4555,9 @@ string NWNX_Redis_SPOP(
 }
 
 string NWNX_Redis_SRANDMEMBER(
-	string key,
-	// Redis type: integer
-	int count = 0
+    string key,
+    // Redis type: integer
+    int count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SRANDMEMBER");
   if (count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(count));
@@ -4555,8 +4567,8 @@ string NWNX_Redis_SRANDMEMBER(
 }
 
 int NWNX_Redis_SREM(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SREM");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4566,7 +4578,7 @@ int NWNX_Redis_SREM(
 }
 
 int NWNX_Redis_STRLEN(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "STRLEN");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4575,7 +4587,7 @@ int NWNX_Redis_STRLEN(
 }
 
 int NWNX_Redis_SUNION(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SUNION");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4584,9 +4596,9 @@ int NWNX_Redis_SUNION(
 }
 
 int NWNX_Redis_SUNIONSTORE(
-	// Redis type: key
-	string destination,
-	string key
+    // Redis type: key
+    string destination,
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SUNIONSTORE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4596,10 +4608,10 @@ int NWNX_Redis_SUNIONSTORE(
 }
 
 string NWNX_Redis_SWAPDB(
-	// Redis type: integer
-	int index,
-	// Redis type: integer
-	int index_1
+    // Redis type: integer
+    int index,
+    // Redis type: integer
+    int index_1
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SWAPDB");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(index_1));
@@ -4621,7 +4633,7 @@ int NWNX_Redis_TIME() {
 }
 
 int NWNX_Redis_TOUCH(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "TOUCH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4630,7 +4642,7 @@ int NWNX_Redis_TOUCH(
 }
 
 int NWNX_Redis_TTL(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "TTL");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4639,7 +4651,7 @@ int NWNX_Redis_TTL(
 }
 
 string NWNX_Redis_TYPE(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "TYPE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4648,7 +4660,7 @@ string NWNX_Redis_TYPE(
 }
 
 int NWNX_Redis_UNLINK(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "UNLINK");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4663,10 +4675,10 @@ string NWNX_Redis_UNWATCH() {
 }
 
 int NWNX_Redis_WAIT(
-	// Redis type: integer
-	int numslaves,
-	// Redis type: integer
-	int timeout
+    // Redis type: integer
+    int numslaves,
+    // Redis type: integer
+    int timeout
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "WAIT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(timeout));
@@ -4676,7 +4688,7 @@ int NWNX_Redis_WAIT(
 }
 
 string NWNX_Redis_WATCH(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "WATCH");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4685,16 +4697,16 @@ string NWNX_Redis_WATCH(
 }
 
 int NWNX_Redis_ZADD(
-	string key,
-	// Redis type: enum
-	string condition = "",
-	// Redis type: enum
-	string change = "",
-	// Redis type: enum
-	string increment = "",
-	// Redis type: double
-	float score = 0.0,
-	string member = ""
+    string key,
+    // Redis type: enum
+    string condition = "",
+    // Redis type: enum
+    string change = "",
+    // Redis type: enum
+    string increment = "",
+    // Redis type: double
+    float score = 0.0,
+    string member = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZADD");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4708,7 +4720,7 @@ int NWNX_Redis_ZADD(
 }
 
 int NWNX_Redis_ZCARD(
-	string key
+    string key
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZCARD");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", key);
@@ -4717,11 +4729,11 @@ int NWNX_Redis_ZCARD(
 }
 
 int NWNX_Redis_ZCOUNT(
-	string key,
-	// Redis type: double
-	float min,
-	// Redis type: double
-	float max
+    string key,
+    // Redis type: double
+    float min,
+    // Redis type: double
+    float max
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZCOUNT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", FloatToString(max, 0));
@@ -4732,10 +4744,10 @@ int NWNX_Redis_ZCOUNT(
 }
 
 string NWNX_Redis_ZINCRBY(
-	string key,
-	// Redis type: integer
-	int increment,
-	string member
+    string key,
+    // Redis type: integer
+    int increment,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZINCRBY");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4746,15 +4758,15 @@ string NWNX_Redis_ZINCRBY(
 }
 
 int NWNX_Redis_ZINTERSTORE(
-	// Redis type: key
-	string destination,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	// Redis type: integer
-	int weights_weight = 0,
-	// Redis type: enum
-	string aggregate_aggregate = ""
+    // Redis type: key
+    string destination,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    // Redis type: integer
+    int weights_weight = 0,
+    // Redis type: enum
+    string aggregate_aggregate = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZINTERSTORE");
   if (aggregate_aggregate != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", aggregate_aggregate);
@@ -4767,9 +4779,9 @@ int NWNX_Redis_ZINTERSTORE(
 }
 
 int NWNX_Redis_ZLEXCOUNT(
-	string key,
-	string min,
-	string max
+    string key,
+    string min,
+    string max
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZLEXCOUNT");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", max);
@@ -4780,13 +4792,13 @@ int NWNX_Redis_ZLEXCOUNT(
 }
 
 int NWNX_Redis_ZRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop,
-	// Redis type: enum
-	string withscores = ""
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop,
+    // Redis type: enum
+    string withscores = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZRANGE");
   if (withscores != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", withscores);
@@ -4798,13 +4810,13 @@ int NWNX_Redis_ZRANGE(
 }
 
 int NWNX_Redis_ZRANGEBYLEX(
-	string key,
-	string min,
-	string max,
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    string min,
+    string max,
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZRANGEBYLEX");
   if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(limit_count));
@@ -4817,13 +4829,13 @@ int NWNX_Redis_ZRANGEBYLEX(
 }
 
 int NWNX_Redis_ZREVRANGEBYLEX(
-	string key,
-	string max,
-	string min,
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    string max,
+    string min,
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREVRANGEBYLEX");
   if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(limit_count));
@@ -4836,17 +4848,17 @@ int NWNX_Redis_ZREVRANGEBYLEX(
 }
 
 int NWNX_Redis_ZRANGEBYSCORE(
-	string key,
-	// Redis type: double
-	float min,
-	// Redis type: double
-	float max,
-	// Redis type: enum
-	string withscores = "",
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    // Redis type: double
+    float min,
+    // Redis type: double
+    float max,
+    // Redis type: enum
+    string withscores = "",
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZRANGEBYSCORE");
   if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(limit_count));
@@ -4860,8 +4872,8 @@ int NWNX_Redis_ZRANGEBYSCORE(
 }
 
 int NWNX_Redis_ZRANK(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZRANK");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4871,8 +4883,8 @@ int NWNX_Redis_ZRANK(
 }
 
 int NWNX_Redis_ZREM(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREM");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4882,9 +4894,9 @@ int NWNX_Redis_ZREM(
 }
 
 int NWNX_Redis_ZREMRANGEBYLEX(
-	string key,
-	string min,
-	string max
+    string key,
+    string min,
+    string max
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREMRANGEBYLEX");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", max);
@@ -4895,11 +4907,11 @@ int NWNX_Redis_ZREMRANGEBYLEX(
 }
 
 int NWNX_Redis_ZREMRANGEBYRANK(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREMRANGEBYRANK");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(stop));
@@ -4910,11 +4922,11 @@ int NWNX_Redis_ZREMRANGEBYRANK(
 }
 
 int NWNX_Redis_ZREMRANGEBYSCORE(
-	string key,
-	// Redis type: double
-	float min,
-	// Redis type: double
-	float max
+    string key,
+    // Redis type: double
+    float min,
+    // Redis type: double
+    float max
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREMRANGEBYSCORE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", FloatToString(max, 0));
@@ -4925,13 +4937,13 @@ int NWNX_Redis_ZREMRANGEBYSCORE(
 }
 
 int NWNX_Redis_ZREVRANGE(
-	string key,
-	// Redis type: integer
-	int start,
-	// Redis type: integer
-	int stop,
-	// Redis type: enum
-	string withscores = ""
+    string key,
+    // Redis type: integer
+    int start,
+    // Redis type: integer
+    int stop,
+    // Redis type: enum
+    string withscores = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREVRANGE");
   if (withscores != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", withscores);
@@ -4943,17 +4955,17 @@ int NWNX_Redis_ZREVRANGE(
 }
 
 int NWNX_Redis_ZREVRANGEBYSCORE(
-	string key,
-	// Redis type: double
-	float max,
-	// Redis type: double
-	float min,
-	// Redis type: enum
-	string withscores = "",
-	// Redis type: integer
-	int limit_offset = 0,
-	// Redis type: integer
-	int limit_count = 0
+    string key,
+    // Redis type: double
+    float max,
+    // Redis type: double
+    float min,
+    // Redis type: enum
+    string withscores = "",
+    // Redis type: integer
+    int limit_offset = 0,
+    // Redis type: integer
+    int limit_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREVRANGEBYSCORE");
   if (limit_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(limit_count));
@@ -4967,8 +4979,8 @@ int NWNX_Redis_ZREVRANGEBYSCORE(
 }
 
 int NWNX_Redis_ZREVRANK(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZREVRANK");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4978,8 +4990,8 @@ int NWNX_Redis_ZREVRANK(
 }
 
 string NWNX_Redis_ZSCORE(
-	string key,
-	string member
+    string key,
+    string member
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZSCORE");
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", member);
@@ -4989,15 +5001,15 @@ string NWNX_Redis_ZSCORE(
 }
 
 int NWNX_Redis_ZUNIONSTORE(
-	// Redis type: key
-	string destination,
-	// Redis type: integer
-	int numkeys,
-	string key,
-	// Redis type: integer
-	int weights_weight = 0,
-	// Redis type: enum
-	string aggregate_aggregate = ""
+    // Redis type: key
+    string destination,
+    // Redis type: integer
+    int numkeys,
+    string key,
+    // Redis type: integer
+    int weights_weight = 0,
+    // Redis type: enum
+    string aggregate_aggregate = ""
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZUNIONSTORE");
   if (aggregate_aggregate != "") NWNX_PushArgumentString("NWNX_Redis", "RawCommand", aggregate_aggregate);
@@ -5010,12 +5022,12 @@ int NWNX_Redis_ZUNIONSTORE(
 }
 
 string NWNX_Redis_SCAN(
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SCAN");
   if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(count_count));
@@ -5026,13 +5038,13 @@ string NWNX_Redis_SCAN(
 }
 
 string NWNX_Redis_SSCAN(
-	string key,
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    string key,
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "SSCAN");
   if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(count_count));
@@ -5044,13 +5056,13 @@ string NWNX_Redis_SSCAN(
 }
 
 string NWNX_Redis_HSCAN(
-	string key,
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    string key,
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "HSCAN");
   if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(count_count));
@@ -5062,13 +5074,13 @@ string NWNX_Redis_HSCAN(
 }
 
 string NWNX_Redis_ZSCAN(
-	string key,
-	// Redis type: integer
-	int cursor,
-	// Redis type: pattern
-	string match_pattern = "",
-	// Redis type: integer
-	int count_count = 0
+    string key,
+    // Redis type: integer
+    int cursor,
+    // Redis type: pattern
+    string match_pattern = "",
+    // Redis type: integer
+    int count_count = 0
 ) {
   NWNX_PushArgumentString("NWNX_Redis", "RawCommand", "ZSCAN");
   if (count_count != 0) NWNX_PushArgumentString("NWNX_Redis", "RawCommand", IntToString(count_count));
@@ -5078,4 +5090,3 @@ string NWNX_Redis_ZSCAN(
   NWNX_CallFunction("NWNX_Redis", "RawCommand");
   return NWNX_GetReturnValueString("NWNX_Redis", "RawCommand");
 }
-
