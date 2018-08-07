@@ -112,6 +112,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetCorpseDecayTime);
     REGISTER(GetBaseSavingThrow);
     REGISTER(SetBaseSavingThrow);
+    REGISTER(LevelUp);
+    REGISTER(LevelDown);
 
 #undef REGISTER
 }
@@ -1382,5 +1384,85 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
 }
 
 
+ArgumentStack Creature::LevelUp(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    static NWNXLib::Hooking::FunctionHook* pCanLevelUp_hook;
+    static bool bOverrideCanLevelUp = false;
+    if (!pCanLevelUp_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(
+            +[](CNWSCreatureStats *pThis) -> int32_t
+            {
+                if (bOverrideCanLevelUp) 
+                {
+                    // NPCs can have at most 60 levels
+                    ASSERT(!pThis->m_bIsPC);
+                    return pThis->GetLevel(false) < 60;
+                }
+                return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
+            });
+        pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__CanLevelUp);
+    }
+
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_bPlayerCharacter)
+        {
+            LOG_WARNING("LevelUp() does not work on PCs");
+            return stack;
+        }
+
+        const auto cls = Services::Events::ExtractArgument<int32_t>(args);
+        const auto count = Services::Events::ExtractArgument<int32_t>(args);
+
+        // Allow leveling outside of regular rules
+        bOverrideCanLevelUp = true;
+        for (int32_t i = 0; i < count; i++)
+        {
+            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, 0xFF))
+            {
+                LOG_WARNING("Failed to add level of class %d, aborting", cls);
+                break;
+            }
+        }
+        // Restore leveling restrictions
+        bOverrideCanLevelUp = false;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::LevelDown(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_bPlayerCharacter)
+        {
+            LOG_WARNING("LevelDown() does not work on PCs");
+            return stack;
+        }
+
+        auto count = Services::Events::ExtractArgument<int32_t>(args);
+        auto level = pCreature->m_pStats->GetLevel(false);
+        if (count >= level)
+            count = level - 1;
+
+        for (int32_t i = 1; i <= count; i++)
+        {
+            if (auto *pLevelStats = pCreature->m_pStats->GetLevelStats(level - i))
+            {
+                pCreature->m_pStats->LevelDown(pLevelStats);
+            }
+            else
+            {
+                LOG_WARNING("Creature does not have the LeveLStats?");
+                break;
+            }
+        }
+    }
+    return stack;
+}
 
 }

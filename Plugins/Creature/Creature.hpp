@@ -78,6 +78,8 @@ private:
     ArgumentStack SetCorpseDecayTime            (ArgumentStack&& args);
     ArgumentStack GetBaseSavingThrow            (ArgumentStack&& args);
     ArgumentStack SetBaseSavingThrow            (ArgumentStack&& args);
+    ArgumentStack LevelUp                       (ArgumentStack&& args);
+    ArgumentStack LevelDown                     (ArgumentStack&& args);
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
 };

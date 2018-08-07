@@ -264,6 +264,14 @@ int NWNX_Creature_GetBaseSavingThrow(object creature, int which);
 // Sets the base saving throw of the creature
 void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
 
+// Add count levels of class to the creature
+// This will not work on player characters
+void NWNX_Creature_LevelUp(object creature, int class, int count=1);
+
+// Remove last count levels from a creature
+// This will not work on player characters
+void NWNX_Creature_LevelDown(object creature, int count=1);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -935,6 +943,25 @@ void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value)
     string sFunc = "SetBaseSavingThrow";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, value);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, which);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_LevelUp(object creature, int class, int count=1)
+{
+    string sFunc = "LevelUp";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, count);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, class);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_LevelDown(object creature, int count=1)
+{
+    string sFunc = "LevelDown";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, count);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
