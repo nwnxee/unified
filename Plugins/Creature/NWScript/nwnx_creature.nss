@@ -264,7 +264,7 @@ int NWNX_Creature_GetBaseSavingThrow(object creature, int which);
 // Sets the base saving throw of the creature
 void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
 
-// Add count levels of class to the creature
+// Add count levels of class to the creature, bypassing all validation
 // This will not work on player characters
 void NWNX_Creature_LevelUp(object creature, int class, int count=1);
 

@@ -9,6 +9,8 @@
 #include "API/CNWSStats_SpellLikeAbility.hpp"
 #include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
 #include "API/CExoArrayListTemplatedshortunsignedint.hpp"
+#include "API/CNWRules.hpp"
+#include "API/CNWClass.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -1383,19 +1385,19 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
     return stack;
 }
 
-
 ArgumentStack Creature::LevelUp(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
     static NWNXLib::Hooking::FunctionHook* pCanLevelUp_hook;
-    static bool bOverrideCanLevelUp = false;
+    static NWNXLib::Hooking::FunctionHook* pValidateLevelUp_hook;
+    static bool bSkipLevelUpValidation = false;
     if (!pCanLevelUp_hook)
     {
         GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(
             +[](CNWSCreatureStats *pThis) -> int32_t
             {
-                if (bOverrideCanLevelUp) 
+                if (bSkipLevelUpValidation)
                 {
                     // NPCs can have at most 60 levels
                     ASSERT(!pThis->m_bIsPC);
@@ -1404,6 +1406,20 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                 return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
             });
         pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__CanLevelUp);
+
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__ValidateLevelUp>(
+            +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
+            {
+                if (bSkipLevelUpValidation)
+                {
+                    ASSERT(!pThis->m_bIsPC);
+                    pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
+                    pThis->UpdateCombatInformation();
+                    return 0;
+                }
+                return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
+            });
+        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__ValidateLevelUp);
     }
 
     if (auto *pCreature = creature(args))
@@ -1418,7 +1434,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
         const auto count = Services::Events::ExtractArgument<int32_t>(args);
 
         // Allow leveling outside of regular rules
-        bOverrideCanLevelUp = true;
+        bSkipLevelUpValidation = true;
         for (int32_t i = 0; i < count; i++)
         {
             if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, 0xFF))
@@ -1428,7 +1444,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
             }
         }
         // Restore leveling restrictions
-        bOverrideCanLevelUp = false;
+        bSkipLevelUpValidation = false;
     }
     return stack;
 }
