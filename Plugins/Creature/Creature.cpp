@@ -97,6 +97,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSoundset);
     REGISTER(SetSkillRank);
     REGISTER(SetClassByPosition);
+    REGISTER(SetLevelByPosition);
     REGISTER(SetBaseAttackBonus);
     REGISTER(GetAttacksPerRound);
     REGISTER(SetGender);
@@ -1084,6 +1085,23 @@ ArgumentStack Creature::SetClassByPosition(ArgumentStack&& args)
         ASSERT(classID <= 255);
 
         pCreature->m_pStats->SetClass(static_cast<uint8_t>(position), static_cast<uint8_t>(classID));
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetLevelByPosition(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto position = Services::Events::ExtractArgument<int32_t>(args);
+        const auto level = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(position >= 0);
+        ASSERT(position <= 2);
+        ASSERT(level >= 0);
+        ASSERT(level <= 60);
+
+        pCreature->m_pStats->SetClassLevel(static_cast<uint8_t>(position), static_cast<uint8_t>(level));
     }
     return stack;
 }

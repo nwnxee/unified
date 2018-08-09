@@ -199,6 +199,11 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 // ClassID should be a valid ID number in classes.2da and be between 0 and 255.
 void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
 
+// Set the level at the given position for a creature. A creature should already
+// have a class in that position.
+// Position should be 0, 1, or 2.
+void NWNX_Creature_SetLevelByPosition(object creature, int position, int level);
+
 // Set creature's base attack bonus (BAB)
 // Modifying the BAB will also affect the creature's attacks per round and its
 // eligability for feats, prestige classes, etc.
@@ -787,6 +792,16 @@ void NWNX_Creature_SetClassByPosition(object creature, int position, int classID
 {
     string sFunc = "SetClassByPosition";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, classID);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, position);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetLevelByPosition(object creature, int position, int level)
+{
+    string sFunc = "SetLevelByPosition";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, position);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 

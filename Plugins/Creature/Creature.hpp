@@ -61,6 +61,7 @@ private:
     ArgumentStack SetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSkillRank                  (ArgumentStack&& args);
     ArgumentStack SetClassByPosition            (ArgumentStack&& args);
+    ArgumentStack SetLevelByPosition            (ArgumentStack&& args);
     ArgumentStack SetBaseAttackBonus            (ArgumentStack&& args);
     ArgumentStack GetAttacksPerRound            (ArgumentStack&& args);
     ArgumentStack SetGender                     (ArgumentStack&& args);
