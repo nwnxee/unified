@@ -138,10 +138,19 @@ void main()
     report("LevelUp", GetLevelByPosition(1, oCreature) == 11);
     NWNX_Creature_LevelDown(oCreature, 10);
     report("LevelDown", GetLevelByPosition(1, oCreature) == 1);
+    NWNX_Creature_SetClassByPosition(oCreature, 0, CLASS_TYPE_ROGUE);
     NWNX_Creature_LevelUp(oCreature, CLASS_TYPE_ROGUE, 20);
     NWNX_Creature_LevelUp(oCreature, CLASS_TYPE_ROGUE, 20);
     NWNX_Creature_LevelUp(oCreature, CLASS_TYPE_ROGUE, 20);
     NWNX_Creature_LevelUp(oCreature, CLASS_TYPE_ROGUE, 20);
+    report("LevelUp+SetLevelByPosition", GetLevelByPosition(1, oCreature) == 60);
+
+    NWNX_Creature_SetLevelByPosition(oCreature, 0, 1); // Ugh, game uses 1-based indexing here..
+    report("SetLevelByPosition", GetLevelByPosition(1, oCreature) == 1);
+
+    float fCR = GetChallengeRating(oCreature);
+    NWNX_Creature_SetChallengeRating(oCreature, fCR + 1.0);
+    report("SetChallengeRating", GetChallengeRating(oCreature) == (fCR + 1.0));
 
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
