@@ -15,7 +15,8 @@ public:
     virtual ~Time();
 
 private:
-    ArgumentStack GetTimeStamp                       (ArgumentStack&& args);
+    ArgumentStack GetTimeStamp                        (ArgumentStack&& args);
+    ArgumentStack GetHighResTimeStamp                 (ArgumentStack&& args);
     ArgumentStack GetSystemDate                       (ArgumentStack&& args);
     ArgumentStack GetSystemTime                       (ArgumentStack&& args);
 };
