@@ -12,6 +12,7 @@
 #include "Events/ItemEvents.hpp"
 #include "Events/StealthEvents.hpp"
 #include "Events/SpellEvents.hpp"
+#include "Events/PartyEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -107,6 +108,11 @@ Events::Events(const Plugin::CreateParams& params)
     if (GetServices()->m_config->Get<bool>("ENABLE_SPELL_EVENTS", true))
     {
         m_spellEvents = std::make_unique<SpellEvents>(GetServices()->m_hooks);
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_PARTY_EVENTS", true))
+    {
+        m_partyEvents = std::make_unique<PartyEvents>(GetServices()->m_hooks);
     }
 }
 
