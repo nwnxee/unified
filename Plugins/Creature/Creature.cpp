@@ -1473,8 +1473,28 @@ ArgumentStack Creature::LevelDown(ArgumentStack&& args)
             }
             else
             {
-                LOG_WARNING("Creature does not have the LeveLStats?");
-                break;
+                //
+                // Creature wasn't leveled up properly, so just decrement the level count.
+                // Assume that it first got all levels in first class, then second, then third.
+                //
+                if (pCreature->m_pStats->m_ClassInfo[2].m_nClass != 0xFF)
+                {
+                    if (--pCreature->m_pStats->m_ClassInfo[2].m_nLevel == 0)
+                        pCreature->m_pStats->m_ClassInfo[2].m_nClass = 0xFF;
+                }
+                else if (pCreature->m_pStats->m_ClassInfo[1].m_nClass != 0xFF)
+                {
+                    if (--pCreature->m_pStats->m_ClassInfo[1].m_nLevel == 0)
+                        pCreature->m_pStats->m_ClassInfo[1].m_nClass = 0xFF;
+                }
+                else
+                {
+                    if (--pCreature->m_pStats->m_ClassInfo[0].m_nLevel == 0)
+                    {
+                        LOG_WARNING("Creature out of levels to level down.");
+                        pCreature->m_pStats->m_ClassInfo[0].m_nLevel = 1;
+                    }
+                }
             }
         }
     }
