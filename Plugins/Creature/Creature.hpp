@@ -61,6 +61,7 @@ private:
     ArgumentStack SetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSkillRank                  (ArgumentStack&& args);
     ArgumentStack SetClassByPosition            (ArgumentStack&& args);
+    ArgumentStack SetLevelByPosition            (ArgumentStack&& args);
     ArgumentStack SetBaseAttackBonus            (ArgumentStack&& args);
     ArgumentStack GetAttacksPerRound            (ArgumentStack&& args);
     ArgumentStack SetGender                     (ArgumentStack&& args);
@@ -78,6 +79,10 @@ private:
     ArgumentStack SetCorpseDecayTime            (ArgumentStack&& args);
     ArgumentStack GetBaseSavingThrow            (ArgumentStack&& args);
     ArgumentStack SetBaseSavingThrow            (ArgumentStack&& args);
+    ArgumentStack LevelUp                       (ArgumentStack&& args);
+    ArgumentStack LevelDown                     (ArgumentStack&& args);
+    ArgumentStack SetChallengeRating            (ArgumentStack&& args);
+
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
 };

@@ -199,6 +199,11 @@ void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
 // ClassID should be a valid ID number in classes.2da and be between 0 and 255.
 void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
 
+// Set the level at the given position for a creature. A creature should already
+// have a class in that position.
+// Position should be 0, 1, or 2.
+void NWNX_Creature_SetLevelByPosition(object creature, int position, int level);
+
 // Set creature's base attack bonus (BAB)
 // Modifying the BAB will also affect the creature's attacks per round and its
 // eligability for feats, prestige classes, etc.
@@ -263,6 +268,17 @@ int NWNX_Creature_GetBaseSavingThrow(object creature, int which);
 
 // Sets the base saving throw of the creature
 void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
+
+// Add count levels of class to the creature, bypassing all validation
+// This will not work on player characters
+void NWNX_Creature_LevelUp(object creature, int class, int count=1);
+
+// Remove last count levels from a creature
+// This will not work on player characters
+void NWNX_Creature_LevelDown(object creature, int count=1);
+
+// Sets corpse decay time in milliseconds
+void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -785,6 +801,16 @@ void NWNX_Creature_SetClassByPosition(object creature, int position, int classID
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
+void NWNX_Creature_SetLevelByPosition(object creature, int position, int level)
+{
+    string sFunc = "SetLevelByPosition";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, level);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, position);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
 void NWNX_Creature_SetBaseAttackBonus(object creature, int bab)
 {
     string sFunc = "SetBaseAttackBonus";
@@ -939,3 +965,32 @@ void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
+
+void NWNX_Creature_LevelUp(object creature, int class, int count=1)
+{
+    string sFunc = "LevelUp";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, count);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, class);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_LevelDown(object creature, int count=1)
+{
+    string sFunc = "LevelDown";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, count);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetChallengeRating(object creature, float fCR)
+{
+    string sFunc = "SetChallengeRating";
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fCR);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+

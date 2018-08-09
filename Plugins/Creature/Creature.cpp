@@ -9,6 +9,8 @@
 #include "API/CNWSStats_SpellLikeAbility.hpp"
 #include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
 #include "API/CExoArrayListTemplatedshortunsignedint.hpp"
+#include "API/CNWRules.hpp"
+#include "API/CNWClass.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -95,6 +97,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetSoundset);
     REGISTER(SetSkillRank);
     REGISTER(SetClassByPosition);
+    REGISTER(SetLevelByPosition);
     REGISTER(SetBaseAttackBonus);
     REGISTER(GetAttacksPerRound);
     REGISTER(SetGender);
@@ -112,6 +115,9 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetCorpseDecayTime);
     REGISTER(GetBaseSavingThrow);
     REGISTER(SetBaseSavingThrow);
+    REGISTER(LevelUp);
+    REGISTER(LevelDown);
+    REGISTER(SetChallengeRating);
 
 #undef REGISTER
 }
@@ -1084,6 +1090,23 @@ ArgumentStack Creature::SetClassByPosition(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::SetLevelByPosition(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto position = Services::Events::ExtractArgument<int32_t>(args);
+        const auto level = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(position >= 0);
+        ASSERT(position <= 2);
+        ASSERT(level >= 0);
+        ASSERT(level <= 60);
+
+        pCreature->m_pStats->SetClassLevel(static_cast<uint8_t>(position), static_cast<uint8_t>(level));
+    }
+    return stack;
+}
+
 ArgumentStack Creature::SetBaseAttackBonus(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -1381,6 +1404,131 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::LevelUp(ArgumentStack&& args)
+{
+    ArgumentStack stack;
 
+    static NWNXLib::Hooking::FunctionHook* pCanLevelUp_hook;
+    static NWNXLib::Hooking::FunctionHook* pValidateLevelUp_hook;
+    static bool bSkipLevelUpValidation = false;
+    if (!pCanLevelUp_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(
+            +[](CNWSCreatureStats *pThis) -> int32_t
+            {
+                if (bSkipLevelUpValidation)
+                {
+                    // NPCs can have at most 60 levels
+                    ASSERT(!pThis->m_bIsPC);
+                    return pThis->GetLevel(false) < 60;
+                }
+                return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
+            });
+        pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__CanLevelUp);
+
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__ValidateLevelUp>(
+            +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
+            {
+                if (bSkipLevelUpValidation)
+                {
+                    ASSERT(!pThis->m_bIsPC);
+                    pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
+                    pThis->UpdateCombatInformation();
+                    return 0;
+                }
+                return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
+            });
+        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__ValidateLevelUp);
+    }
+
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_bPlayerCharacter)
+        {
+            LOG_WARNING("LevelUp() does not work on PCs");
+            return stack;
+        }
+
+        const auto cls = Services::Events::ExtractArgument<int32_t>(args);
+        const auto count = Services::Events::ExtractArgument<int32_t>(args);
+
+        // Allow leveling outside of regular rules
+        bSkipLevelUpValidation = true;
+        for (int32_t i = 0; i < count; i++)
+        {
+            if (!pCreature->m_pStats->LevelUpAutomatic(cls, true, 0xFF))
+            {
+                LOG_WARNING("Failed to add level of class %d, aborting", cls);
+                break;
+            }
+        }
+        // Restore leveling restrictions
+        bSkipLevelUpValidation = false;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::LevelDown(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_bPlayerCharacter)
+        {
+            LOG_WARNING("LevelDown() does not work on PCs");
+            return stack;
+        }
+
+        auto count = Services::Events::ExtractArgument<int32_t>(args);
+        auto level = pCreature->m_pStats->GetLevel(false);
+        if (count >= level)
+            count = level - 1;
+
+        for (int32_t i = 1; i <= count; i++)
+        {
+            if (auto *pLevelStats = pCreature->m_pStats->GetLevelStats(level - i))
+            {
+                pCreature->m_pStats->LevelDown(pLevelStats);
+            }
+            else
+            {
+                //
+                // Creature wasn't leveled up properly, so just decrement the level count.
+                // Assume that it first got all levels in first class, then second, then third.
+                //
+                if (pCreature->m_pStats->m_ClassInfo[2].m_nClass != 0xFF)
+                {
+                    if (--pCreature->m_pStats->m_ClassInfo[2].m_nLevel == 0)
+                        pCreature->m_pStats->m_ClassInfo[2].m_nClass = 0xFF;
+                }
+                else if (pCreature->m_pStats->m_ClassInfo[1].m_nClass != 0xFF)
+                {
+                    if (--pCreature->m_pStats->m_ClassInfo[1].m_nLevel == 0)
+                        pCreature->m_pStats->m_ClassInfo[1].m_nClass = 0xFF;
+                }
+                else
+                {
+                    if (--pCreature->m_pStats->m_ClassInfo[0].m_nLevel == 0)
+                    {
+                        LOG_WARNING("Creature out of levels to level down.");
+                        pCreature->m_pStats->m_ClassInfo[0].m_nLevel = 1;
+                    }
+                }
+            }
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetChallengeRating(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto fCR = Services::Events::ExtractArgument<float>(args); ASSERT(fCR >= 0.0);
+        pCreature->m_pStats->m_fChallengeRating = fCR;
+    }
+    return stack;
+}
 
 }
