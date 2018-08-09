@@ -117,6 +117,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetBaseSavingThrow);
     REGISTER(LevelUp);
     REGISTER(LevelDown);
+    REGISTER(SetChallengeRating);
 
 #undef REGISTER
 }
@@ -1515,6 +1516,17 @@ ArgumentStack Creature::LevelDown(ArgumentStack&& args)
                 }
             }
         }
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetChallengeRating(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto fCR = Services::Events::ExtractArgument<float>(args); ASSERT(fCR >= 0.0);
+        pCreature->m_pStats->m_fChallengeRating = fCR;
     }
     return stack;
 }

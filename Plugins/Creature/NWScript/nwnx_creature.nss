@@ -277,6 +277,9 @@ void NWNX_Creature_LevelUp(object creature, int class, int count=1);
 // This will not work on player characters
 void NWNX_Creature_LevelDown(object creature, int count=1);
 
+// Sets corpse decay time in milliseconds
+void NWNX_Creature_SetChallengeRating(object creature, float fCR);
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -981,3 +984,13 @@ void NWNX_Creature_LevelDown(object creature, int count=1)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
+
+void NWNX_Creature_SetChallengeRating(object creature, float fCR)
+{
+    string sFunc = "SetChallengeRating";
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fCR);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
