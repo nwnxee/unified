@@ -19,6 +19,7 @@ class FeatEvents;
 class ItemEvents;
 class StealthEvents;
 class SpellEvents;
+class PartyEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -56,6 +57,7 @@ private:
     std::unique_ptr<ItemEvents> m_itemEvents;
     std::unique_ptr<StealthEvents> m_stealthEvents;
     std::unique_ptr<SpellEvents> m_spellEvents;
+    std::unique_ptr<PartyEvents> m_partyEvents;
 };
 
 }
