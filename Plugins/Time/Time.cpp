@@ -49,6 +49,7 @@ Time::Time(const Plugin::CreateParams& params)
     REGISTER(GetSystemDate);
     REGISTER(GetSystemTime);
     REGISTER(GetTimeStamp);
+    REGISTER(GetHighResTimeStamp);
 
 
 #undef REGISTER
@@ -69,6 +70,20 @@ ArgumentStack Time::GetTimeStamp(ArgumentStack&&)
 
 
     Services::Events::InsertArgument(stack, (int)seconds);
+    return stack;
+}
+
+ArgumentStack Time::GetHighResTimeStamp(ArgumentStack&&)
+{
+    ArgumentStack stack;
+
+    auto now = std::chrono::system_clock::now();
+    auto dur = now.time_since_epoch();
+
+    auto count = std::chrono::duration_cast<std::chrono::microseconds>(dur).count();
+
+    Services::Events::InsertArgument(stack, (int32_t)(count / 1000000));
+    Services::Events::InsertArgument(stack, (int32_t)(count % 1000000));
     return stack;
 }
 
