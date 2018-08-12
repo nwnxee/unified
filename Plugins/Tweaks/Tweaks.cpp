@@ -4,6 +4,7 @@
 #include "Tweaks/DisablePause.hpp"
 #include "Tweaks/CompareVarsForMerge.hpp"
 #include "Tweaks/ParryAllAttacks.hpp"
+#include "Tweaks/FixPerPartColoring.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -64,6 +65,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Parry will no longer be limited to one attack per flurry");
         m_ParryAllAttacks = std::make_unique<ParryAllAttacks>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("FIX_PER_PART_COLORING", true))
+    {
+        LOG_INFO("Per part coloring in CopyItemAndModify crash fixed");
+        m_FixPerPartColoring = std::make_unique<FixPerPartColoring>(GetServices()->m_hooks.get());
     }
 }
 
