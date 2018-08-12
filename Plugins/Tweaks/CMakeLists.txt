@@ -4,4 +4,5 @@ add_plugin(Tweaks
     "Tweaks/PlayerDyingHitPointLimit.cpp"
     "Tweaks/DisablePause.cpp"
     "Tweaks/CompareVarsForMerge.cpp"
-    "Tweaks/ParryAllAttacks.cpp")
+    "Tweaks/ParryAllAttacks.cpp"
+    "Tweaks/FixPerPartColoring.cpp")
