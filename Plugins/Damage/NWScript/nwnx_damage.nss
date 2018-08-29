@@ -32,7 +32,7 @@ struct NWNX_Damage_DamageEventData NWNX_Weapon_GetDamageEventData();
 void NWNX_Damage_SetDamageEventData(struct NWNX_Damage_DamageEventData data);
 
 
-void NWNX_Weapon_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID)
+void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID)
 {
     string sFunc = "SetDamageEventScript";
 

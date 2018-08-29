@@ -138,9 +138,9 @@ int32_t Damage::OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLi
       {
          // Prepare the data for the nwscript
          plugin.m_DamageData.oidDamager = pEffect->m_oidCreator;
-         
+
          std::memcpy(plugin.m_DamageData.vDamage, pEffect->m_nParamInteger, sizeof(plugin.m_DamageData.vDamage));
-         Utils::ExecuteScript(plugin.m_DamageScript, pObject->m_idSelf);
+         Utils::ExecuteScript(script, pObject->m_idSelf);
          std::memcpy(pEffect->m_nParamInteger, plugin.m_DamageData.vDamage, sizeof(plugin.m_DamageData.vDamage));
       }
    }
