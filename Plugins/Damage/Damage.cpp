@@ -7,7 +7,10 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSCreature.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Utils.hpp"
+
+#include <cstring>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -61,11 +64,39 @@ Damage::~Damage()
 ArgumentStack Damage::SetDamageEventScript(ArgumentStack&& args)
 {
    ArgumentStack stack;
-   
-   m_DamageScript = Services::Events::ExtractArgument<std::string>(args);
-   LOG_INFO("Set Damage Event Script to %s", m_DamageScript.c_str());
-   
-   return stack;   
+   Types::ObjectID oidOwner = Constants::OBJECT_INVALID;
+   std::string script = Services::Events::ExtractArgument<std::string>(args);
+
+   // If compiled with old NSS, they won't be pushing the object after the script, so need to handle that.
+   try
+   {
+      oidOwner = Services::Events::ExtractArgument<Types::ObjectID>(args);
+   }
+   catch(std::runtime_error e)
+   {
+      LOG_WARNING("Please update nwnx_damage.nss and recompile your scripts");
+   }
+
+   if (oidOwner == Constants::OBJECT_INVALID)
+   {
+      m_DamageScript = script;
+      LOG_INFO("Set Global Damage Event Script to %s", m_DamageScript.c_str());
+   }
+   else
+   {
+      if (script != "")
+      {
+         g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, "DAMAGE_EVENT_SCRIPT", script);
+         LOG_INFO("Set object 0x%08x Damage Event Script to %s", oidOwner, script.c_str());
+      }
+      else
+      {
+         g_plugin->GetServices()->m_perObjectStorage->Remove(oidOwner, "DAMAGE_EVENT_SCRIPT");
+         LOG_INFO("Clearing Damage Event Script for object 0x%08x", oidOwner);
+      }
+   }
+
+   return stack;
 }
 
 ArgumentStack Damage::GetEventData(ArgumentStack&&)
@@ -96,41 +127,24 @@ ArgumentStack Damage::SetEventData(ArgumentStack&& args)
 
 int32_t Damage::OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame)
 {
-   Damage& plugin = *g_plugin;   
-   CNWSCreature *pCreature;
-   uint32_t objID;
-   
-   if( plugin.m_DamageScript.empty() || pObject==nullptr || pEffect==nullptr || 
-      pEffect->m_nParamInteger == nullptr ||(objID=pObject->m_idSelf)==Constants::OBJECT_INVALID)
+   Damage& plugin = *g_plugin;
+   auto posScript = plugin.GetServices()->m_perObjectStorage->Get<std::string>(pObject, "DAMAGE_EVENT_SCRIPT");
+   std::string script = posScript ? *posScript : plugin.m_DamageScript;
+
+   if (!script.empty())
    {
-      return plugin.m_OnApplyDamageHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);  
+      // We only run the OnDamage event for creatures.
+      if (Utils::AsNWSCreature(pObject))
+      {
+         // Prepare the data for the nwscript
+         plugin.m_DamageData.oidDamager = pEffect->m_oidCreator;
+         
+         std::memcpy(plugin.m_DamageData.vDamage, pEffect->m_nParamInteger, sizeof(plugin.m_DamageData.vDamage));
+         Utils::ExecuteScript(plugin.m_DamageScript, pObject->m_idSelf);
+         std::memcpy(pEffect->m_nParamInteger, plugin.m_DamageData.vDamage, sizeof(plugin.m_DamageData.vDamage));
+      }
    }
 
-   pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objID);
-
-   if(pCreature==nullptr || pCreature->m_pStats==nullptr)
-   {
-      return plugin.m_OnApplyDamageHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);    
-   }
-
-   
-   // Prepare the data for the nwscript
-   plugin.m_DamageData.oidDamager=pEffect->m_oidCreator;
-   
-   for(int k=0; k<13; k++)
-   {
-      plugin.m_DamageData.vDamage[k] = pEffect->m_nParamInteger[k];
-   }  
-   
-   // Call the script
-   Utils::ExecuteScript(plugin.m_DamageScript, objID); 
-
-   // Change the data
-   for(int k=0; k<13; k++)
-   {
-      pEffect->m_nParamInteger[k] = plugin.m_DamageData.vDamage[k];
-   }
-   
    return plugin.m_OnApplyDamageHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);
 }
 
