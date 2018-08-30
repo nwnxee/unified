@@ -5,6 +5,7 @@
 #include "Tweaks/CompareVarsForMerge.hpp"
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/FixPerPartColoring.hpp"
+#include "Tweaks/SneakAttackCritImmunity.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -71,6 +72,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Per part coloring in CopyItemAndModify crash fixed");
         m_FixPerPartColoring = std::make_unique<FixPerPartColoring>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY", false))
+    {
+        LOG_INFO("Sneak attacks will now be possible on creatures with immunity to critical hits");
+        m_SneakAttackCritImmunity = std::make_unique<SneakAttackCritImmunity>(GetServices()->m_hooks.get());
     }
 }
 
