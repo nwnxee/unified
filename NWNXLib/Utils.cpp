@@ -149,6 +149,11 @@ API::CNWSWaypoint* AsNWSWaypoint(API::CGameObject* obj)
     return nullptr;
 }
 
+API::CGameObject* GetGameObject(API::Types::ObjectID objectId)
+{
+    return API::Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+}
+
 bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner)
 {
     if (!pOwner || !pItem)

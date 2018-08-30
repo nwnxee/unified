@@ -1,11 +1,10 @@
 #pragma once
 
 #include "API/Types.hpp"
-#include "API/CGameObject.hpp"
-#include "API/CGameObjectArray.hpp"
 #include "Maybe.hpp"
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
+#include "Utils.hpp"
 
 #include <cstdint>
 #include <memory>
@@ -20,25 +19,24 @@ class PerObjectStorage : public ServiceBase
 {
 public:
     using CleanupFunc = void (*)(void*);
-    void Set(API::Types::ObjectID object, std::string key, int value);
-    void Set(API::Types::ObjectID object, std::string key, float value);
-    void Set(API::Types::ObjectID object, std::string key, std::string value);
-    void Set(API::Types::ObjectID object, std::string key, void *value, CleanupFunc cleanup = nullptr);
+    void Set(API::CGameObject *pGameObject, std::string key, int value);
+    void Set(API::CGameObject *pGameObject, std::string key, float value);
+    void Set(API::CGameObject *pGameObject, std::string key, std::string value);
+    void Set(API::CGameObject *pGameObject, std::string key, void *value, CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
     template <typename T> Maybe<T>
-    Get(API::Types::ObjectID object, std::string key);
+    Get(API::CGameObject *pGameObject, std::string key);
 
     // Removes without cleanup
-    void Remove(API::Types::ObjectID object, std::string key);
+    void Remove(API::CGameObject *pGameObject, std::string key);
 
     PerObjectStorage();
     ~PerObjectStorage();
 
-    // Should really hook the CGameObject destructor, but that doesn't work currently..
-    static void CGameObjectArray__Delete__1_hook(Services::Hooks::CallType type, API::CGameObjectArray* thisPtr, uint32_t, API::CGameObject**);
+    static void CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, API::CNWSObject* thisPtr);
+    static void CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, API::CNWSArea* thisPtr);
 private:
-
     class ObjectStorage
     {
         // TODO maybe pack it up into a a single map?
@@ -63,8 +61,9 @@ private:
         std::unique_ptr<PointerMap> m_PointerMap;
     };
 
-    static ObjectStorage& GetObjectStorage(API::Types::ObjectID object);
-    static std::unordered_map<API::Types::ObjectID, std::unique_ptr<ObjectStorage>> g_objectStorage;
+    static ObjectStorage* GetObjectStorage(API::Types::ObjectID object);
+    static ObjectStorage* GetObjectStorage(API::CGameObject *pGameObject);
+    static void DestroyObjectStorage(API::CGameObject *pGameObject);
 };
 
 class PerObjectStorageProxy : public ServiceProxy<PerObjectStorage>
@@ -73,48 +72,49 @@ public:
     PerObjectStorageProxy(PerObjectStorage& perObjectStorage, std::string pluginName);
     ~PerObjectStorageProxy();
 
-    void Set(API::Types::ObjectID object, std::string key, int value);
-    void Set(API::Types::ObjectID object, std::string key, float value);
-    void Set(API::Types::ObjectID object, std::string key, std::string value);
-    void Set(API::Types::ObjectID object, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
+    void Set(API::CGameObject *pGameObject, std::string key, int value);
+    void Set(API::CGameObject *pGameObject, std::string key, float value);
+    void Set(API::CGameObject *pGameObject, std::string key, std::string value);
+    void Set(API::CGameObject *pGameObject, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
     template <typename T> Maybe<T>
-    Get(API::Types::ObjectID object, std::string key)
+    Get(API::CGameObject *pGameObject, std::string key)
     {
-        return m_proxyBase.Get<T>(object, m_pluginName + "!" + key);
+        return m_proxyBase.Get<T>(pGameObject, m_pluginName + "!" + key);
     }
 
     // Removes without cleanup
-    void Remove(API::Types::ObjectID object, std::string key);
+    void Remove(API::CGameObject *pGameObject, std::string key);
 
     //
-    // Interfaces using CGameObject pointer directly:
+    // Interfaces using objectID instead of CGameObject pointer
     //
-    void Set(API::CGameObject *pGameObject, std::string key, int value)
+    void Set(API::Types::ObjectID object, std::string key, int value)
     {
-        return Set(pGameObject->m_idSelf, key, value);
+        return Set(Utils::GetGameObject(object), key, value);
     }
-    void Set(API::CGameObject *pGameObject, std::string key, float value)
+    void Set(API::Types::ObjectID object, std::string key, float value)
     {
-        return Set(pGameObject->m_idSelf, key, value);
+        return Set(Utils::GetGameObject(object), key, value);
     }
-    void Set(API::CGameObject *pGameObject, std::string key, std::string value)
+    void Set(API::Types::ObjectID object, std::string key, std::string value)
     {
-        return Set(pGameObject->m_idSelf, key, value);
+        return Set(Utils::GetGameObject(object), key, value);
     }
-    void Set(API::CGameObject *pGameObject, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
+    void Set(API::Types::ObjectID object, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
     {
-        return Set(pGameObject->m_idSelf, key, value, cleanup);
+        return Set(Utils::GetGameObject(object), key, value, cleanup);
     }
     template <typename T> Maybe<T>
-    Get(API::CGameObject *pGameObject, std::string key)
+    Get(API::Types::ObjectID object, std::string key)
     {
-        return Get<T>(pGameObject->m_idSelf, key);
+        return Get<T>(Utils::GetGameObject(object), key);
     }
-    void Remove(API::CGameObject *pGameObject, std::string key)
+
+    void Remove(API::Types::ObjectID object, std::string key)
     {
-        return Remove(pGameObject->m_idSelf, key);
+        return Remove(Utils::GetGameObject(object), key);
     }
 
 
