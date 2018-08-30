@@ -21,7 +21,9 @@ struct NWNX_Damage_DamageEventData // Damage event data
 };
 
 // Set Damage Event Script
-void NWNX_Damage_SetDamageEventScript(string sScript);
+// If oOwner is OBJECT_INVALID, this sets the script globally for all creatures
+// If oOwner is valid, it will set it only for that creature.
+void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID);
 
 // Get Damage Event Data (to use only on Damage Event Script)
 struct NWNX_Damage_DamageEventData NWNX_Weapon_GetDamageEventData();
@@ -30,10 +32,11 @@ struct NWNX_Damage_DamageEventData NWNX_Weapon_GetDamageEventData();
 void NWNX_Damage_SetDamageEventData(struct NWNX_Damage_DamageEventData data);
 
 
-void NWNX_Weapon_SetDamageEventScript(string sScript)
+void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID)
 {
     string sFunc = "SetDamageEventScript";
 
+    NWNX_PushArgumentObject(NWNX_Damage, sFunc, oOwner);
     NWNX_PushArgumentString(NWNX_Damage, sFunc, sScript);
 
     NWNX_CallFunction(NWNX_Damage, sFunc);
