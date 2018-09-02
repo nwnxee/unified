@@ -62,6 +62,8 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(GetQuickBarSlot);
     REGISTER(SetQuickBarSlot);
     REGISTER(GetBicFileName);
+    REGISTER(SetVisibilityOverride);
+    REGISTER(GetVisibilityOverride);
 
 #undef REGISTER
 
@@ -308,6 +310,42 @@ ArgumentStack Player::GetBicFileName(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         Services::Events::InsertArgument(stack, std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength()));
+    }
+    return stack;
+}
+
+
+ArgumentStack Player::SetVisibilityOverride(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto override = Services::Events::ExtractArgument<int32_t>(args);
+
+        std::string name = std::string("VISIBILITY_OVERRIDE:") + Utils::ObjectIDToString(oidTarget);
+        if (override > 0 && override <= 2) // valid values
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, name, override);
+        }
+        else
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, name);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::GetVisibilityOverride(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        std::string name = std::string("VISIBILITY_OVERRIDE:") + Utils::ObjectIDToString(oidTarget);
+
+        int override = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pPlayer->m_oidNWSObject, name);
+        Services::Events::InsertArgument(stack, override);
     }
     return stack;
 }

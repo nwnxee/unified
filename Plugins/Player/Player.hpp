@@ -27,6 +27,8 @@ private:
     ArgumentStack GetQuickBarSlot               (ArgumentStack&& args);
     ArgumentStack SetQuickBarSlot               (ArgumentStack&& args);
     ArgumentStack GetBicFileName                (ArgumentStack&& args);
+    ArgumentStack SetVisibilityOverride         (ArgumentStack&& args);
+    ArgumentStack GetVisibilityOverride         (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
