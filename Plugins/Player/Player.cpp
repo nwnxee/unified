@@ -317,6 +317,28 @@ ArgumentStack Player::GetBicFileName(ArgumentStack&& args)
 
 ArgumentStack Player::SetVisibilityOverride(ArgumentStack&& args)
 {
+    static NWNXLib::Hooking::FunctionHook* pTestObjectVisible_hook;
+
+    if (!pTestObjectVisible_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__TestObjectVisible>(
+            +[](CNWSMessage *pThis, CNWSObject *pAreaObject, CNWSObject *pPlayerGameObject) -> int32_t
+            {
+                std::string name = std::string("VISIBILITY_OVERRIDE:") + Utils::ObjectIDToString(pAreaObject->m_idSelf);
+
+                // Don't remove the forced walk flag when various slowdown effects expire
+                auto override = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pPlayerGameObject, name);
+                if (override && *override)
+                {
+                    ASSERT(*override == 1 || *override == 2);
+                    return *override == 2;
+                }
+
+                return pTestObjectVisible_hook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
+            });
+        pTestObjectVisible_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__TestObjectVisible);
+    }
+
     ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
@@ -328,9 +350,13 @@ ArgumentStack Player::SetVisibilityOverride(ArgumentStack&& args)
         {
             g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, name, override);
         }
-        else
+        else if (override == 0)
         {
             g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, name);
+        }
+        else
+        {
+            LOG_WARNING("Invalid visibility override constant specified: %d", override);
         }
     }
     return stack;
@@ -344,8 +370,8 @@ ArgumentStack Player::GetVisibilityOverride(ArgumentStack&& args)
         const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
         std::string name = std::string("VISIBILITY_OVERRIDE:") + Utils::ObjectIDToString(oidTarget);
 
-        int override = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pPlayer->m_oidNWSObject, name);
-        Services::Events::InsertArgument(stack, override);
+        auto override = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pPlayer->m_oidNWSObject, name);
+        Services::Events::InsertArgument(stack, override ? *override : 0);
     }
     return stack;
 }
