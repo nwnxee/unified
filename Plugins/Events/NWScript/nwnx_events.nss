@@ -41,6 +41,17 @@ int NWNX_Events_SignalEvent(string evt, object target);
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 string NWNX_Events_GetEventData(string tag);
 
+// Skips execution of the currently executing event.
+// If this is a NWNX event, that means that the base function call won't be called.
+// This won't impact any other subscribers, nor dispatch for before / after functions.
+// For example, if you are subscribing to NWNX_ON_EXAMINE_OBJECT_BEFORE, and you skip ...
+// - The other subscribers will still be called.
+// - The original function in the base game will be skipped.
+// - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
+//
+// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+void NWNX_Events_SkipEvent();
+
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
     NWNX_PushArgumentString("NWNX_Events", "SUBSCRIBE_EVENT", script);
@@ -69,3 +80,9 @@ string NWNX_Events_GetEventData(string tag)
     NWNX_CallFunction("NWNX_Events", "GET_EVENT_DATA");
     return NWNX_GetReturnValueString("NWNX_Events", "GET_EVENT_DATA");
 }
+
+void NWNX_Events_SkipEvent()
+{
+    NWNX_CallFunction("NWNX_Events", "SKIP_EVENT");
+}
+
