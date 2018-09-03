@@ -117,7 +117,7 @@ Events::Events(const Plugin::CreateParams& params)
         m_partyEvents = std::make_unique<PartyEvents>(GetServices()->m_hooks);
     }
 
-    if (GetServices()->m_config->Get<bool>("ENABLE_HEALERKIT_EVENTS", true))
+    if (GetServices()->m_config->Get<bool>("ENABLE_HEALER_KIT_EVENTS", true))
     {
         m_healerKitEvents = std::make_unique<HealerKitEvents>(GetServices()->m_hooks);
     }
@@ -136,7 +136,7 @@ void Events::PushEventData(const std::string tag, const std::string data)
     }
     
     LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag.c_str(), data.c_str());
-    g_plugin->m_eventData.top().m_EventData[tag] = std::move(data);
+    g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
     g_plugin->m_eventData.top().m_Skipped = false;
 }
 
@@ -209,9 +209,9 @@ Services::Events::ArgumentStack Events::OnGetEventData(Services::Events::Argumen
     }
 
     auto& eventData = m_eventData.top();
-    auto data = eventData.m_EventData.find(Services::Events::ExtractArgument<std::string>(args));
+    auto data = eventData.m_EventDataMap.find(Services::Events::ExtractArgument<std::string>(args));
 
-    if (data == std::end(eventData.m_EventData))
+    if (data == std::end(eventData.m_EventDataMap))
     {
         throw std::runtime_error("Tried to access event data with invalid tag.");
     }

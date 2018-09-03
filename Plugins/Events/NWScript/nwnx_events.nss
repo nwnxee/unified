@@ -22,7 +22,8 @@
 //     NWNX_ON_CLIENT_DISCONNECT_AFTER
 //     NWNX_ON_CAST_SPELL_BEFORE
 //     NWNX_ON_CAST_SPELL_AFTER
-//
+//     NWNX_ON_USE_HEALER_KIT_BEFORE
+//     NWNX_ON_USE_HEALER_KIT_AFTER
 
 // Scripts can subscribe to events.
 // Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).

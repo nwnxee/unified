@@ -28,7 +28,7 @@ public: // Structures
     struct EventParams
     {
         // This maps between event data key -> event data value.
-        std::unordered_map<std::string, std::string> m_EventData;
+        std::unordered_map<std::string, std::string> m_EventDataMap;
          // This is true if SkipEvent() has been called on this event during its execution.
         bool m_Skipped;
     };
