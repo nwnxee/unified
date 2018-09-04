@@ -53,6 +53,12 @@ string NWNX_Events_GetEventData(string tag);
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 void NWNX_Events_SkipEvent();
 
+// Set the return value of the event.
+//
+// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+void NWNX_Events_SetEventResult(string data);
+
+
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
     NWNX_PushArgumentString("NWNX_Events", "SUBSCRIBE_EVENT", script);
@@ -87,3 +93,8 @@ void NWNX_Events_SkipEvent()
     NWNX_CallFunction("NWNX_Events", "SKIP_EVENT");
 }
 
+void NWNX_Events_SetEventResult(string data)
+{
+    NWNX_PushArgumentString("NWNX_Events", "EVENT_RESULT", data);
+    NWNX_CallFunction("NWNX_Events", "EVENT_RESULT");
+}

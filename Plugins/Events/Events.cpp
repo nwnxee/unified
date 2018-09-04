@@ -52,6 +52,7 @@ Events::Events(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("SIGNAL_EVENT", std::bind(&Events::OnSignalEvent, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_EVENT_DATA", std::bind(&Events::OnGetEventData, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("SKIP_EVENT", std::bind(&Events::OnSkipEvent, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("EVENT_RESULT", std::bind(&Events::OnEventResult, this, std::placeholders::_1));
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
         [](const std::vector<std::string> message)
@@ -138,9 +139,34 @@ void Events::PushEventData(const std::string tag, const std::string data)
     LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag.c_str(), data.c_str());
     g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
     g_plugin->m_eventData.top().m_Skipped = false;
+    g_plugin->m_eventData.top().m_Result = "";
 }
 
-bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectID target)
+
+std::string Events::GetEventData(const std::string tag)
+{
+    std::string retVal="";
+    if (g_plugin->m_eventDepth == 0 || g_plugin->m_eventData.empty())
+    {
+        LOG_ERROR("Attempted to access invalid event data or in an invalid context.");
+        return retVal;
+    }
+
+    auto& eventData = g_plugin->m_eventData.top();
+    auto data = eventData.m_EventDataMap.find(tag);
+
+    if (data == std::end(eventData.m_EventDataMap))
+    {
+        LOG_ERROR("Tried to access event data with invalid tag.");
+        return retVal;
+    }
+
+    retVal=data->second;
+    LOG_DEBUG("Getting event data: '%s' -> '%s'.", tag.c_str(), retVal.c_str());
+    return retVal;
+}
+
+bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectID target, std::string *result)
 {
     bool skipped = false;
 
@@ -154,6 +180,12 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
         ++g_plugin->m_eventDepth;
         API::Globals::VirtualMachine()->RunScript(&scriptExoStr, target, 1);
         skipped |= g_plugin->m_eventData.top().m_Skipped;
+
+        if(result)
+        {
+            *result = g_plugin->m_eventData.top().m_Result;
+        }
+
         --g_plugin->m_eventDepth;
     }
 
@@ -203,21 +235,9 @@ Services::Events::ArgumentStack Events::OnSignalEvent(Services::Events::Argument
 
 Services::Events::ArgumentStack Events::OnGetEventData(Services::Events::ArgumentStack&& args)
 {
-    if (m_eventDepth == 0 || m_eventData.empty())
-    {
-        throw std::runtime_error("Attempted to access invalid event data or in an invalid context.");
-    }
-
-    auto& eventData = m_eventData.top();
-    auto data = eventData.m_EventDataMap.find(Services::Events::ExtractArgument<std::string>(args));
-
-    if (data == std::end(eventData.m_EventDataMap))
-    {
-        throw std::runtime_error("Tried to access event data with invalid tag.");
-    }
-
+    std::string data = GetEventData(Services::Events::ExtractArgument<std::string>(args));
     Services::Events::ArgumentStack stack;
-    Services::Events::InsertArgument(stack, data->second);
+    Services::Events::InsertArgument(stack, data);
     return stack;
 }
 
@@ -228,6 +248,23 @@ Services::Events::ArgumentStack Events::OnSkipEvent(Services::Events::ArgumentSt
         throw std::runtime_error("Attempted to skip event in an invalid context.");
     }
     m_eventData.top().m_Skipped = true;
+
+    LOG_DEBUG("Skipping last event.");
+
+    return Services::Events::ArgumentStack();
+}
+
+Services::Events::ArgumentStack Events::OnEventResult(Services::Events::ArgumentStack&& args)
+{
+    if (m_eventDepth == 0 || m_eventData.empty())
+    {
+        throw std::runtime_error("Attempted to skip event in an invalid context.");
+    }
+    const auto data = Services::Events::ExtractArgument<std::string>(args);
+
+    m_eventData.top().m_Result = data;
+
+    LOG_DEBUG("Received event result '%s'.", data.c_str());
 
     return Services::Events::ArgumentStack();
 }

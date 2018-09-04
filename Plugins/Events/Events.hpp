@@ -29,8 +29,12 @@ public: // Structures
     {
         // This maps between event data key -> event data value.
         std::unordered_map<std::string, std::string> m_EventDataMap;
-         // This is true if SkipEvent() has been called on this event during its execution.
+        
+        // This is true if SkipEvent() has been called on this event during its execution.
         bool m_Skipped;
+
+        // The result of the event, if any, is stored here
+        std::string m_Result;
     };
 
 public:
@@ -40,8 +44,11 @@ public:
     // Pushes event data to the stack - won't do anything until SignalEvent is called.
     static void PushEventData(const std::string tag, const std::string data);
 
+    // Get event data
+    static std::string GetEventData(const std::string tag);
+
     // Returns true if the event can proceed, or false if the event has been skipped.
-    static bool SignalEvent(const std::string& eventName, const NWNXLib::API::Types::ObjectID target);
+    static bool SignalEvent(const std::string& eventName, const NWNXLib::API::Types::ObjectID target, std::string *result=nullptr);
 
 private: // Structures
     using EventMapType = std::unordered_map<std::string, std::vector<std::string>>;
@@ -52,6 +59,7 @@ private:
     NWNXLib::Services::Events::ArgumentStack OnSignalEvent(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetEventData(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnSkipEvent(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnEventResult(NWNXLib::Services::Events::ArgumentStack&& args);
 
     EventMapType m_eventMap; // Event name -> subscribers.
     std::stack<EventParams> m_eventData; // Data tag -> data for currently executing event.
