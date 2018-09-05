@@ -428,7 +428,7 @@ std::string UTF8ToISO8859(const char *str)
     std::string iso8859("");
     iso8859.reserve(strlen(str) + 1);
 
-    uint32_t codepoint;
+    uint32_t codepoint = 0;
     for (; *str; ++str)
     {
         uint8_t ch = static_cast<uint8_t>(*str);
