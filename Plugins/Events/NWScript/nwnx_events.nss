@@ -51,6 +51,7 @@ string NWNX_Events_GetEventData(string tag);
 // - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+// ONLY WORKS WITH HEALER'S KIT EVENT
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
