@@ -131,7 +131,7 @@ void StackPushString(MonoString* value)
 
     char* valueAsCStr = mono_string_to_utf8(value);
     LOG_DEBUG("Pushing string '%s'.", valueAsCStr);
-    CExoString str(valueAsCStr);
+    CExoString str(UTF8ToISO8859(valueAsCStr).c_str());
     mono_free(valueAsCStr);
 
     if (GetVm()->StackPushString(str))
@@ -245,7 +245,7 @@ MonoString* StackPopString()
 
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
-    return mono_string_new(g_Domain, ISO88959ToUTF8(value.CStr()).c_str());
+    return mono_string_new(g_Domain, ISO8859ToUTF8(value.CStr()).c_str());
 }
 
 uint32_t StackPopObject()
@@ -397,8 +397,11 @@ int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
     return 0;
 }
 
-std::string ISO88959ToUTF8(const char *str)
+std::string ISO8859ToUTF8(const char *str)
 {
+    if (str == nullptr || *str == 0)
+        return std::string("");
+
     std::string utf8("");
     utf8.reserve(2*strlen(str) + 1);
 
@@ -414,6 +417,38 @@ std::string ISO88959ToUTF8(const char *str)
         }
     }
     return utf8;
+}
+
+// Adapted from https://stackoverflow.com/a/23690194/2771245
+std::string UTF8ToISO8859(const char *str)
+{
+    if (str == nullptr || *str == 0)
+        return std::string("");
+
+    std::string iso8859("");
+    iso8859.reserve(strlen(str) + 1);
+
+    uint32_t codepoint = 0;
+    for (; *str; ++str)
+    {
+        uint8_t ch = static_cast<uint8_t>(*str);
+        if (ch <= 0x7f)
+            codepoint = ch;
+        else if (ch <= 0xbf)
+            codepoint = (codepoint << 6) | (ch & 0x3f);
+        else if (ch <= 0xdf)
+            codepoint = ch & 0x1f;
+        else if (ch <= 0xef)
+            codepoint = ch & 0x0f;
+        else
+            codepoint = ch & 0x07;
+
+        if (((str[1] & 0xc0) != 0x80) && (codepoint <= 0x10ffff))
+        {
+            iso8859.push_back(codepoint <= 0xFF ? static_cast<char>(codepoint) : '?');
+        }
+    }
+    return iso8859;
 }
 
 }
