@@ -1,5 +1,7 @@
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "API/CGameObject.hpp"
+#include "API/CNWSArea.hpp"
+#include "API/CNWSObject.hpp"
 #include "API/Constants.hpp"
 
 namespace NWNXLib {
@@ -216,12 +218,12 @@ void PerObjectStorage::DestroyObjectStorage(API::CGameObject *pGameObject)
 void PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, API::CNWSObject* pThis)
 {
     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
-        DestroyObjectStorage((API::CGameObject*)pThis);
+        DestroyObjectStorage(dynamic_cast<API::CGameObject*>(pThis));
 }
 void PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, API::CNWSArea* pThis)
 {
     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
-        DestroyObjectStorage((API::CGameObject*)pThis);
+        DestroyObjectStorage(dynamic_cast<API::CGameObject*>(pThis));
 }
 
 
