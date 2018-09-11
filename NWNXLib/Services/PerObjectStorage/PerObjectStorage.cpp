@@ -218,12 +218,12 @@ void PerObjectStorage::DestroyObjectStorage(API::CGameObject *pGameObject)
 void PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, API::CNWSObject* pThis)
 {
     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
-        DestroyObjectStorage(dynamic_cast<API::CGameObject*>(pThis));
+        DestroyObjectStorage(static_cast<API::CGameObject*>(pThis));
 }
 void PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, API::CNWSArea* pThis)
 {
     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
-        DestroyObjectStorage(dynamic_cast<API::CGameObject*>(pThis));
+        DestroyObjectStorage(static_cast<API::CGameObject*>(pThis));
 }
 
 
