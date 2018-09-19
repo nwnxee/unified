@@ -22,7 +22,8 @@
 //     NWNX_ON_CLIENT_DISCONNECT_AFTER
 //     NWNX_ON_CAST_SPELL_BEFORE
 //     NWNX_ON_CAST_SPELL_AFTER
-//
+//     NWNX_ON_USE_HEALER_KIT_BEFORE
+//     NWNX_ON_USE_HEALER_KIT_AFTER
 
 // Scripts can subscribe to events.
 // Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
@@ -40,6 +41,24 @@ int NWNX_Events_SignalEvent(string evt, object target);
 // Retrieves the event data for the currently executing script.
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 string NWNX_Events_GetEventData(string tag);
+
+// Skips execution of the currently executing event.
+// If this is a NWNX event, that means that the base function call won't be called.
+// This won't impact any other subscribers, nor dispatch for before / after functions.
+// For example, if you are subscribing to NWNX_ON_EXAMINE_OBJECT_BEFORE, and you skip ...
+// - The other subscribers will still be called.
+// - The original function in the base game will be skipped.
+// - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
+//
+// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+// ONLY WORKS WITH HEALER'S KIT EVENT
+void NWNX_Events_SkipEvent();
+
+// Set the return value of the event.
+//
+// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+void NWNX_Events_SetEventResult(string data);
+
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
@@ -68,4 +87,15 @@ string NWNX_Events_GetEventData(string tag)
     NWNX_PushArgumentString("NWNX_Events", "GET_EVENT_DATA", tag);
     NWNX_CallFunction("NWNX_Events", "GET_EVENT_DATA");
     return NWNX_GetReturnValueString("NWNX_Events", "GET_EVENT_DATA");
+}
+
+void NWNX_Events_SkipEvent()
+{
+    NWNX_CallFunction("NWNX_Events", "SKIP_EVENT");
+}
+
+void NWNX_Events_SetEventResult(string data)
+{
+    NWNX_PushArgumentString("NWNX_Events", "EVENT_RESULT", data);
+    NWNX_CallFunction("NWNX_Events", "EVENT_RESULT");
 }
