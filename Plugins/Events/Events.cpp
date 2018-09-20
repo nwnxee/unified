@@ -262,7 +262,7 @@ Services::Events::ArgumentStack Events::OnEventResult(Services::Events::Argument
 
 void Events::CreateNewEventDataIfNeeded()
 {
-    if (g_plugin->m_eventData.size() <= g_plugin->m_eventDepth)
+    if (m_eventData.size() <= m_eventDepth)
     {
         EventParams params;
         params.m_Skipped = false;
