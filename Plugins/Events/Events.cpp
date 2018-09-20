@@ -130,16 +130,9 @@ Events::~Events()
 
 void Events::PushEventData(const std::string tag, const std::string data)
 {
-    if (g_plugin->m_eventData.size() <= g_plugin->m_eventDepth)
-    {       
-        EventParams aux;
-        g_plugin->m_eventData.push(aux);
-    }
-    
     LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag.c_str(), data.c_str());
+    g_plugin->CreateNewEventDataIfNeeded();
     g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
-    g_plugin->m_eventData.top().m_Skipped = false;
-    g_plugin->m_eventData.top().m_Result = "";
 }
 
 
@@ -170,18 +163,19 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
 {
     bool skipped = false;
 
-    const auto& scripts = g_plugin->m_eventMap[eventName];
+    g_plugin->CreateNewEventDataIfNeeded();
 
-    for (const auto& script : scripts)
+    for (const auto& script : g_plugin->m_eventMap[eventName])
     {
         LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName.c_str(), script.c_str());
         API::CExoString scriptExoStr = script.c_str();
 
         ++g_plugin->m_eventDepth;
         API::Globals::VirtualMachine()->RunScript(&scriptExoStr, target, 1);
+
         skipped |= g_plugin->m_eventData.top().m_Skipped;
 
-        if(result)
+        if (result)
         {
             *result = g_plugin->m_eventData.top().m_Result;
         }
@@ -189,10 +183,7 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
         --g_plugin->m_eventDepth;
     }
 
-    if (g_plugin->m_eventData.size() > g_plugin->m_eventDepth)
-    {
-        g_plugin->m_eventData.pop();
-    }
+    g_plugin->m_eventData.pop();
 
     return !skipped;
 }
@@ -267,6 +258,16 @@ Services::Events::ArgumentStack Events::OnEventResult(Services::Events::Argument
     LOG_DEBUG("Received event result '%s'.", data.c_str());
 
     return Services::Events::ArgumentStack();
+}
+
+void Events::CreateNewEventDataIfNeeded()
+{
+    if (m_eventData.size() <= m_eventDepth)
+    {
+        EventParams params;
+        params.m_Skipped = false;
+        m_eventData.emplace(std::move(params));
+    }
 }
 
 }

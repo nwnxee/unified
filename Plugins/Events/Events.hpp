@@ -61,6 +61,10 @@ private:
     NWNXLib::Services::Events::ArgumentStack OnSkipEvent(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnEventResult(NWNXLib::Services::Events::ArgumentStack&& args);
 
+    // Pushes a brand new event data onto the event data stack, set up with the correct defaults.
+    // Only does it if needed though, based on the current event depth!
+    void CreateNewEventDataIfNeeded();
+
     EventMapType m_eventMap; // Event name -> subscribers.
     std::stack<EventParams> m_eventData; // Data tag -> data for currently executing event.
     uint8_t m_eventDepth;
