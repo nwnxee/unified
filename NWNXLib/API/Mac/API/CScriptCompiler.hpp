@@ -41,7 +41,7 @@ struct CScriptCompiler
     int32_t m_nCurrentLineNumberBinaryStartInstruction;
     int32_t m_nCurrentLineNumberBinaryEndInstruction;
     int32_t m_nTableFileNames;
-    CExoString m_psTableFileNames[64];
+    CExoString m_psTableFileNames[128];
     int32_t m_nLineNumberEntries;
     int32_t m_nFinalLineNumberEntries;
     CExoArrayListTemplatedint m_pnTableInstructionFileReference;

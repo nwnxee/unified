@@ -65,6 +65,10 @@
 #include "CGameEffect.cpp"
 #include "CGameObject.cpp"
 #include "CGameObjectArray.cpp"
+#include "CGOG.cpp"
+#include "CGOGFriendRichPresence.cpp"
+#include "CGOGInternal.cpp"
+#include "CGOGInternalImpl.cpp"
 #include "CItemRepository.cpp"
 #include "CLastUpdateObject.cpp"
 #include "CLoopingVisualEffect.cpp"
@@ -212,6 +216,7 @@
 #include "CVirtualMachineScript.cpp"
 #include "CVirtualMachineStack.cpp"
 #include "CWorldTimer.cpp"
+#include "galaxyapi.cpp"
 #include "ICrashReporter.cpp"
 #include "ListTemplatedCExoString.cpp"
 #include "Matrix.cpp"
@@ -283,6 +288,7 @@
 #include "CExoArrayListTemplatedCFeatUseListEntryPtr.cpp"
 #include "CExoArrayListTemplatedCGameEffectPtr.cpp"
 #include "CExoArrayListTemplatedCGameObjectPtr.cpp"
+#include "CExoArrayListTemplatedCGOGFriendRichPresencePtr.cpp"
 #include "CExoArrayListTemplatedchar.cpp"
 #include "CExoArrayListTemplatedCLoopingVisualEffectPtr.cpp"
 #include "CExoArrayListTemplatedCNWCCMessageDataPtr.cpp"
@@ -872,6 +878,8 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CGameEffect), 160> __attribute__((unused)) SIZE_CHECK_CGAMEEFFECT;
     CheckSize<sizeof(NWNXLib::API::CGameObject), 16> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CGameObjectArray), 36> __attribute__((unused)) SIZE_CHECK_CGAMEOBJECTARRAY;
+    CheckSize<sizeof(NWNXLib::API::CGOG), 4> __attribute__((unused)) SIZE_CHECK_CGOG;
+    CheckSize<sizeof(NWNXLib::API::CGOGInternal), 16> __attribute__((unused)) SIZE_CHECK_CGOGINTERNAL;
     CheckSize<sizeof(NWNXLib::API::CItemRepository), 20> __attribute__((unused)) SIZE_CHECK_CITEMREPOSITORY;
     CheckSize<sizeof(NWNXLib::API::CLastUpdateObject), 520> __attribute__((unused)) SIZE_CHECK_CLASTUPDATEOBJECT;
     CheckSize<sizeof(NWNXLib::API::CLoopingVisualEffect), 12> __attribute__((unused)) SIZE_CHECK_CLOOPINGVISUALEFFECT;
@@ -981,7 +989,7 @@ namespace
     CheckSize<sizeof(NWNXLib::API::CResSET), 64> __attribute__((unused)) SIZE_CHECK_CRESSET;
     CheckSize<sizeof(NWNXLib::API::CResTGA), 80> __attribute__((unused)) SIZE_CHECK_CRESTGA;
     CheckSize<sizeof(NWNXLib::API::CResWOK), 56> __attribute__((unused)) SIZE_CHECK_CRESWOK;
-    CheckSize<sizeof(NWNXLib::API::CScriptCompiler), 13276> __attribute__((unused)) SIZE_CHECK_CSCRIPTCOMPILER;
+    CheckSize<sizeof(NWNXLib::API::CScriptCompiler), 13788> __attribute__((unused)) SIZE_CHECK_CSCRIPTCOMPILER;
     CheckSize<sizeof(NWNXLib::API::CScriptCompilerIdListEntry), 128> __attribute__((unused)) SIZE_CHECK_CSCRIPTCOMPILERIDLISTENTRY;
     CheckSize<sizeof(NWNXLib::API::CScriptCompilerIncludeFileStackEntry), 68> __attribute__((unused)) SIZE_CHECK_CSCRIPTCOMPILERINCLUDEFILESTACKENTRY;
     CheckSize<sizeof(NWNXLib::API::CScriptEvent), 52> __attribute__((unused)) SIZE_CHECK_CSCRIPTEVENT;
