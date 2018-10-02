@@ -10,7 +10,6 @@ class DisablePause;
 class FixMasterServerDNS;
 class CompareVarsForMerge;
 class ParryAllAttacks;
-class FixPerPartColoring;
 class SneakAttackCritImmunity;
 
 class Tweaks : public NWNXLib::Plugin
@@ -25,7 +24,6 @@ private:
     std::unique_ptr<DisablePause> m_DisablePause;
     std::unique_ptr<CompareVarsForMerge> m_CompareVarsForMerge;
     std::unique_ptr<ParryAllAttacks> m_ParryAllAttacks;
-    std::unique_ptr<FixPerPartColoring> m_FixPerPartColoring;
     std::unique_ptr<SneakAttackCritImmunity> m_SneakAttackCritImmunity;
 };
 

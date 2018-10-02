@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMa
 # -DSANITIZE_ADDRESS=On
 find_package(Sanitizers)
 
-set(TARGET_NWN_BUILD 8179)
+set(TARGET_NWN_BUILD 8181)
 set(PLUGIN_PREFIX NWNX_)
 
 # Disables PIC which plays havoc with our absolute address function jumps.

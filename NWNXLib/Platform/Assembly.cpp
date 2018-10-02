@@ -250,13 +250,13 @@ void RewriteGCCThunks(uint8_t* data, uintptr_t originalAddress, uintptr_t length
 
     std::unordered_map<uintptr_t, Register> thunkMap =
     {
-        { ASLR::GetRelocatedAddress(0x0001E155), Register::EAX }, // __x86_get_pc_thunk_ax
-        { ASLR::GetRelocatedAddress(0x00016010), Register::EBX }, // __x86_get_pc_thunk_bx
-        { ASLR::GetRelocatedAddress(0x0003997F), Register::ECX }, // __x86_get_pc_thunk_cx
-        { ASLR::GetRelocatedAddress(0x00029CD1), Register::EDX }, // __x86_get_pc_thunk_dx
-        { ASLR::GetRelocatedAddress(0x00039B8B), Register::ESI }, // __x86_get_pc_thunk_si
-        { ASLR::GetRelocatedAddress(0x0005244D), Register::EDI }  // __x86_get_pc_thunk_di
-    }; NWNX_EXPECT_VERSION(8179);
+        { ASLR::GetRelocatedAddress(0x0001E205), Register::EAX }, // __x86_get_pc_thunk_ax
+        { ASLR::GetRelocatedAddress(0x00016090), Register::EBX }, // __x86_get_pc_thunk_bx
+        { ASLR::GetRelocatedAddress(0x00039B7F), Register::ECX }, // __x86_get_pc_thunk_cx
+        { ASLR::GetRelocatedAddress(0x00029EE1), Register::EDX }, // __x86_get_pc_thunk_dx
+        { ASLR::GetRelocatedAddress(0x00039D8B), Register::ESI }, // __x86_get_pc_thunk_si
+        { ASLR::GetRelocatedAddress(0x0005266D), Register::EDI }  // __x86_get_pc_thunk_di
+    }; NWNX_EXPECT_VERSION(8181);
 
     DISASM disassembler = {};
     disassembler.EIP = reinterpret_cast<uintptr_t>(data);
