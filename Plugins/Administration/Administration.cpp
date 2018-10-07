@@ -18,6 +18,8 @@
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Patching/Patching.hpp"
 #include <cstdlib>
+#include <unistd.h>
+#include <signal.h>
 
 using namespace NWNXLib;
 
@@ -122,7 +124,11 @@ Events::ArgumentStack Administration::OnSetDMPassword(Events::ArgumentStack&& ar
 Events::ArgumentStack Administration::OnShutdownServer(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Shutting down the server!");
-    std::quick_exit(0);
+    if (kill(getpid(), SIGTERM) != 0)
+    {
+      LOG_ERROR("Shutdown failed: SIGTERM signal not sent successfully");
+    }
+    return Events::ArgumentStack();
 }
 
 Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentStack&& args)
