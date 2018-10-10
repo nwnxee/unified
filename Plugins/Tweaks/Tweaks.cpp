@@ -8,6 +8,10 @@
 
 #include "Services/Config/Config.hpp"
 
+#include "API/Version.hpp"
+#include "Platform/Assembly.hpp"
+#include "Services/Patching/Patching.hpp"
+
 using namespace NWNXLib;
 
 static ViewPtr<Tweaks::Tweaks> g_plugin;
@@ -71,6 +75,28 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Sneak attacks will now be possible on creatures with immunity to critical hits");
         m_SneakAttackCritImmunity = std::make_unique<SneakAttackCritImmunity>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("DISABLE_SHADOWS", false))
+    {
+        LOG_INFO("Sun and moon shadows will be disabled");
+
+        // Temporary workaround for Intel crash in complex areas - disable when a proper fix is implemented.
+
+        // m_bMoonShadows
+        GetServices()->m_patching->PatchWithInstructions(0x000E5B7C,
+            Platform::Assembly::PushImmInstruction(0),
+            Platform::Assembly::NoopInstruction(),
+            Platform::Assembly::NoopInstruction(),
+            Platform::Assembly::NoopInstruction(),
+            Platform::Assembly::NoopInstruction()
+        ); NWNX_EXPECT_VERSION(8181);
+
+        // m_bSunShadows
+        GetServices()->m_patching->PatchWithInstructions(0x000E5C04,
+            Platform::Assembly::PushImmInstruction(0),
+            Platform::Assembly::NoopInstruction()
+        ); NWNX_EXPECT_VERSION(8181);
     }
 }
 
