@@ -101,7 +101,7 @@ SQL::SQL(const Plugin::CreateParams& params)
         throw std::runtime_error("Invalid database type selected.");
     }
 
-    m_target->Connect(GetServices()->m_config);
+    Reconnect(19);
 }
 
 SQL::~SQL()
