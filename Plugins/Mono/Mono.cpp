@@ -15,6 +15,7 @@
 
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/mono-config.h>
+#include <mono/metadata/mono-debug.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -53,7 +54,22 @@ Mono::Mono(const Plugin::CreateParams& params)
     Maybe<std::string> configPath = GetServices()->m_config->Get<std::string>("CONFIG_PATH");
     mono_config_parse(configPath ? configPath->c_str() : nullptr);
 
+    if (GetServices()->m_config->Get<bool>("ALLOW_REMOTE_DEBUGGING", false))
+    {
+        const char* opt[2] =
+        {
+            "--debugger-agent=address=0.0.0.0:10000,transport=dt_socket,server=y",
+            "--soft-breakpoints"
+        };
+
+        mono_jit_parse_options(2, reinterpret_cast<char**>(&opt));
+        LOG_NOTICE("Remote debugging enabled. Will block for debugger.");
+    }
+
+    mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+
     g_Domain = mono_jit_init("nwnx");
+    mono_debug_domain_create(g_Domain);
 
     Maybe<std::string> baseDirectory = GetServices()->m_config->Get<std::string>("BASE_DIRECTORY");
     Maybe<std::string> appConfig = GetServices()->m_config->Get<std::string>("APP_CONFIG");
