@@ -123,9 +123,14 @@ Events::ArgumentStack Chat::OnSendMessage(Events::ArgumentStack&& args)
             // This means we're sending this to one player only.
             // The normal function broadcasts in an area for talk, shout, and whisper, therefore
             // we need to call these functions directly if we are in those categories.
-            if (channel == ChatChannel::PLAYER_TALK || channel == ChatChannel::DM_TALK)
+            if (channel == ChatChannel::PLAYER_TALK)
             {
                 messageDispatch->SendServerToPlayerChat_Talk(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == ChatChannel::DM_TALK)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Talk(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
             else if (channel == ChatChannel::PLAYER_SHOUT || channel == ChatChannel::DM_SHOUT)
@@ -133,9 +138,14 @@ Events::ArgumentStack Chat::OnSendMessage(Events::ArgumentStack&& args)
                 messageDispatch->SendServerToPlayerChat_Shout(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
-            else if (channel == ChatChannel::PLAYER_WHISPER || channel == ChatChannel::DM_WHISPER)
+            else if (channel == ChatChannel::PLAYER_WHISPER)
             {
                 messageDispatch->SendServerToPlayerChat_Whisper(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == ChatChannel::DM_WHISPER)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Whisper(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
         }
