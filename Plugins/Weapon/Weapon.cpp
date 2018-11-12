@@ -834,8 +834,7 @@ void Weapon::SetCombatMode(CNWSCreature *pCreature, unsigned char nMode, int32_t
     {
         plugin.m_SetCombatModeHook->CallOriginal<int32_t>(pCreature, nMode, bForceMode);
     }
-    LOG_NOTICE("%u %d", nMode, bForceMode);
-
+    
     if(nMode==0 && bForceMode==1)
     {
         if(pCreature->m_nCombatMode == 5) //flurry of blows automatic engine cancel
