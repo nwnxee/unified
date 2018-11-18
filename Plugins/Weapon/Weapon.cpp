@@ -833,6 +833,7 @@ void Weapon::SetCombatMode(CNWSCreature *pCreature, unsigned char nMode, int32_t
     if(pCreature==nullptr)
     {
         plugin.m_SetCombatModeHook->CallOriginal<int32_t>(pCreature, nMode, bForceMode);
+        return;
     }
     
     if(nMode==0 && bForceMode==1)
