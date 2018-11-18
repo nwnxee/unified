@@ -34,19 +34,17 @@ namespace ThreadWatchdog {
 static bool g_exit;
 static uint64_t s_mainThreadCounter = 0;
 static uint64_t s_watchdogLastObservedCounter = 0;
-static uint32_t s_watchdogPeriod = 15;
-static uint32_t s_watchdogKillThreshold = ~0; // effectively infinite
+static uint32_t s_watchdogPeriod;
+static uint32_t s_watchdogKillThreshold;
 
 ThreadWatchdog::ThreadWatchdog(const Plugin::CreateParams& params)
     : Plugin(params)
 {
     GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopUpdate);
 
-    if (auto period = GetServices()->m_config->Get<uint32_t>("PERIOD"))
-        s_watchdogPeriod = *period;
-
-    if (auto threshold = GetServices()->m_config->Get<uint32_t>("KILL_THRESHOLD"))
-        s_watchdogKillThreshold = *threshold;
+    s_watchdogPeriod = GetServices()->m_config->Get<uint32_t>("PERIOD", 15);
+    // Default to effectively infinite
+    s_watchdogKillThreshold = GetServices()->m_config->Get<uint32_t>("KILL_THRESHOLD", ~0);
 
 }
 
