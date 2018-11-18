@@ -5,4 +5,5 @@ add_plugin(Tweaks
     "Tweaks/DisablePause.cpp"
     "Tweaks/CompareVarsForMerge.cpp"
     "Tweaks/ParryAllAttacks.cpp"
-    "Tweaks/SneakAttackCritImmunity.cpp")
+    "Tweaks/SneakAttackCritImmunity.cpp"
+    "Tweaks/PreserveDepletedItems.cpp")
