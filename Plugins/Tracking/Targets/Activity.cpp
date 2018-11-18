@@ -5,6 +5,8 @@
 #include "API/CNWSArea.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/Constants.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/Functions.hpp"
@@ -42,26 +44,25 @@ void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInter
     {
         s_lastUpdate = std::move(now);
 
-        CExoLinkedListNode* head = thisPtr->m_pNWSPlayerList->m_pcExoLinkedListInternal->pHead;
-
-        while (head)
+        for (auto oidPC = thisPtr->GetFirstPCObject();
+             oidPC != Constants::OBJECT_INVALID;
+             oidPC = thisPtr->GetNextPCObject())
         {
-            CNWSPlayer* player = static_cast<CNWSPlayer*>(head->pObject);
+            CNWSPlayer *player = thisPtr->GetClientObjectByObjectId(oidPC);
+            CNWSCreature *creature = thisPtr->GetCreatureByGameObjectID(player->m_oidNWSObject);
 
             std::string areaName;
-            CGameObject* obj = thisPtr->GetGameObject(player->m_oidNWSObject);
-
-            if (obj)
+            std::string clientType;
+            if (creature)
             {
-                CNWSArea* area = thisPtr->GetAreaByGameObjectID(static_cast<CNWSObject*>(obj)->m_oidArea);
+                CNWSArea* area = thisPtr->GetAreaByGameObjectID(creature->m_oidArea);
 
                 if (area)
                 {
                     areaName = std::string(area->m_cResRef.m_resRef, area->m_cResRef.GetLength());
                 }
+                clientType = creature->m_pStats->m_bIsDM ? "DM" : "Player";
             }
-
-            const bool isDm = false; //TODO: reinterpret_cast<uintptr_t>(player->m_vtable[3]) == Functions::CNWSDungeonMaster__AsNWSDungeonMaster; NWNX_EXPECT_VERSION(8109);
 
             g_metrics->Push(
                 "Activity",
@@ -70,10 +71,8 @@ void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInter
                 },
                 {
                     { "Area", areaName.empty() ? "(unknown)" : std::move(areaName) },
-                    { "Type", isDm ? "DM" : "Player" }
+                    { "Type", clientType.empty() ? "(unknown)" : std::move(clientType) }
                 });
-
-            head = head->pNext;
         }
     }
 }
