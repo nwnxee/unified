@@ -3,6 +3,7 @@
 #include "API/Version.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.hpp"
+#include "Services/Config/Config.hpp"
 #include "ViewPtr.hpp"
 
 using namespace NWNXLib;
@@ -33,11 +34,20 @@ namespace ThreadWatchdog {
 static bool g_exit;
 static uint64_t s_mainThreadCounter = 0;
 static uint64_t s_watchdogLastObservedCounter = 0;
+static uint32_t s_watchdogPeriod = 15;
+static uint32_t s_watchdogKillThreshold = ~0; // effectively infinite
 
 ThreadWatchdog::ThreadWatchdog(const Plugin::CreateParams& params)
     : Plugin(params)
 {
     GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopUpdate);
+
+    if (auto period = GetServices()->m_config->Get<uint32_t>("PERIOD"))
+        s_watchdogPeriod = *period;
+
+    if (auto threshold = GetServices()->m_config->Get<uint32_t>("KILL_THRESHOLD"))
+        s_watchdogKillThreshold = *threshold;
+
 }
 
 ThreadWatchdog::~ThreadWatchdog()
@@ -60,6 +70,7 @@ void ThreadWatchdog::MainLoopUpdate(Services::Hooks::CallType, API::CServerExoAp
 
         g_plugin->m_watchdog = std::make_unique<std::thread>([]()
         {
+            static uint32_t killThreshold = s_watchdogKillThreshold;
             while (!g_exit)
             {
                 if (s_mainThreadCounter == s_watchdogLastObservedCounter)
@@ -85,10 +96,19 @@ void ThreadWatchdog::MainLoopUpdate(Services::Hooks::CallType, API::CServerExoAp
                     // tasks, and so we remain productive until somebody can come along and figure out why we've
                     // hit a long stall.
                     tasks->ProcessWorkOnMainThread();
+
+                    if (--killThreshold == 0)
+                    {
+                        LOG_FATAL("ThreadWatchdog has detected %d successive LongStalls, and will kill the server, per configuration", s_watchdogKillThreshold);
+                    }
+                }
+                else
+                {
+                    killThreshold = s_watchdogKillThreshold;
                 }
 
                 s_watchdogLastObservedCounter = s_mainThreadCounter;
-                std::this_thread::sleep_for(std::chrono::seconds(15));
+                std::this_thread::sleep_for(std::chrono::seconds(s_watchdogPeriod));
             }
         });
     }
