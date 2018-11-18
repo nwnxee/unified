@@ -5,6 +5,7 @@
 #include "Tweaks/CompareVarsForMerge.hpp"
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/SneakAttackCritImmunity.hpp"
+#include "Tweaks/PreserveDepletedItems.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -75,6 +76,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Sneak attacks will now be possible on creatures with immunity to critical hits");
         m_SneakAttackCritImmunity = std::make_unique<SneakAttackCritImmunity>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("PRESERVE_DEPLETED_ITEMS", false))
+    {
+        LOG_INFO("Items will no longer be destroyed when they run out of charges");
+        m_PreserveDepletedItems = std::make_unique<PreserveDepletedItems>(GetServices()->m_hooks.get());
     }
 
     if (GetServices()->m_config->Get<bool>("DISABLE_SHADOWS", false))
