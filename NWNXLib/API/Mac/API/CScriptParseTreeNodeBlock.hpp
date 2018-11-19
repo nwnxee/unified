@@ -18,9 +18,11 @@ struct CScriptParseTreeNodeBlock
     CScriptParseTreeNodeBlock& operator=(const CScriptParseTreeNodeBlock&) = default;
 
     CScriptParseTreeNodeBlock();
+    void CleanBlockEntries();
 };
 
 void CScriptParseTreeNodeBlock__CScriptParseTreeNodeBlockCtor(CScriptParseTreeNodeBlock* thisPtr);
+void CScriptParseTreeNodeBlock__CleanBlockEntries(CScriptParseTreeNodeBlock* thisPtr);
 
 }
 

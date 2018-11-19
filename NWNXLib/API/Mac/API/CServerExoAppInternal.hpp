@@ -7,7 +7,6 @@
 #include "CExoArrayListTemplatedlongunsignedint.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
-#include "unknown_CExoLinkedListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -20,6 +19,7 @@ struct CConnectionLib;
 struct CExoLinkedListNode;
 struct CExoLinkedListTemplatedCNWSClient;
 struct CExoLinkedListTemplatedlongunsignedint;
+struct CExoLinkedListTemplatedunsignedlong;
 struct CExtendedServerInfo;
 struct CFactionManager;
 struct CGameObject;

@@ -3,6 +3,7 @@
 #include "Platform/ASLR.hpp"
 
 #include "CBaseExoApp.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CNetLayerInternal.hpp"
 #include "CNetLayerPlayerInfo.hpp"
 #include "CNetLayerSessionInfo.hpp"

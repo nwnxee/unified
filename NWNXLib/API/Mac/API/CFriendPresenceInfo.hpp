@@ -21,13 +21,11 @@ struct CFriendPresenceInfo
     CFriendPresenceInfo& operator=(const CFriendPresenceInfo&) = default;
 
     CFriendPresenceInfo();
-    ~CFriendPresenceInfo();
     void Decode(CExoString);
     static CExoString Encode(CExtendedServerInfo*);
 };
 
 void CFriendPresenceInfo__CFriendPresenceInfoCtor(CFriendPresenceInfo* thisPtr);
-void CFriendPresenceInfo__CFriendPresenceInfoDtor(CFriendPresenceInfo* thisPtr);
 void CFriendPresenceInfo__Decode(CFriendPresenceInfo* thisPtr, CExoString);
 CExoString CFriendPresenceInfo__Encode(CExtendedServerInfo*);
 

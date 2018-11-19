@@ -30,6 +30,8 @@ struct CNetLayerSessionInfo
     int32_t m_bRecievedBNXR;
     uint32_t m_nLastUpdate;
     CExoString m_sVisibleAddress;
+    CExoString m_sNWSyncHash;
+    CExoString m_sNWSyncUrl;
 
     // The below are auto generated stubs.
     CNetLayerSessionInfo(const CNetLayerSessionInfo&) = default;

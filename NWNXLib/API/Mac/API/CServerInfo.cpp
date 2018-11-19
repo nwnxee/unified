@@ -11,11 +11,6 @@ CServerInfo::CServerInfo()
     CServerInfo__CServerInfoCtor__0(this);
 }
 
-CServerInfo::~CServerInfo()
-{
-    CServerInfo__CServerInfoDtor(this);
-}
-
 int32_t CServerInfo::FindOptionIndex(CExoString a0, CExoString a1)
 {
     return CServerInfo__FindOptionIndex(this, a0, a1);
@@ -32,14 +27,6 @@ void CServerInfo__CServerInfoCtor__0(CServerInfo* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerInfo__CServerInfoCtor__0);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr);
-}
-
-void CServerInfo__CServerInfoDtor(CServerInfo* thisPtr)
-{
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CServerInfo*, int);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CServerInfo__CServerInfoDtor);
-    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    func(thisPtr, 2);
 }
 
 int32_t CServerInfo__FindOptionIndex(CServerInfo* thisPtr, CExoString a0, CExoString a1)

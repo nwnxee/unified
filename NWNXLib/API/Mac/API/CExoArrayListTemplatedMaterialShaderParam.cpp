@@ -8,9 +8,22 @@ namespace NWNXLib {
 
 namespace API {
 
+CExoArrayListTemplatedMaterialShaderParam::~CExoArrayListTemplatedMaterialShaderParam()
+{
+    CExoArrayListTemplatedMaterialShaderParam__CExoArrayListTemplatedMaterialShaderParamDtor(this);
+}
+
 CExoArrayListTemplatedMaterialShaderParam& CExoArrayListTemplatedMaterialShaderParam::operator=(const CExoArrayListTemplatedMaterialShaderParam& a0)
 {
     return CExoArrayListTemplatedMaterialShaderParam__OperatorAssignment(this, a0);
+}
+
+void CExoArrayListTemplatedMaterialShaderParam__CExoArrayListTemplatedMaterialShaderParamDtor(CExoArrayListTemplatedMaterialShaderParam* thisPtr)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoArrayListTemplatedMaterialShaderParam*, int);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoArrayListTemplatedMaterialShaderParam__CExoArrayListTemplatedMaterialShaderParamDtor);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    func(thisPtr, 2);
 }
 
 CExoArrayListTemplatedMaterialShaderParam& CExoArrayListTemplatedMaterialShaderParam__OperatorAssignment(CExoArrayListTemplatedMaterialShaderParam* thisPtr, const CExoArrayListTemplatedMaterialShaderParam& a0)

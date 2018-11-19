@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "RESID.hpp"
+
 namespace NWNXLib {
 
 namespace API {
@@ -15,7 +17,7 @@ struct CRes
     void** m_vtable;
     uint16_t m_nDemands;
     uint16_t m_nRequests;
-    uint32_t m_nID;
+    RESID m_nID;
     uint32_t m_status;
     void* m_pResource;
     CKeyTableEntry* m_pKeyEntry;
@@ -30,7 +32,7 @@ struct CRes
     CRes& operator=(const CRes&) = default;
 
     CRes();
-    CRes(uint32_t);
+    CRes(RESID);
     ~CRes();
     int32_t CancelRequest();
     void* Demand();
@@ -39,7 +41,7 @@ struct CRes
     int32_t GetDemands();
     int32_t GetFixedResourceDataOffset();
     int32_t GetFixedResourceSize();
-    int32_t GetID();
+    RESID GetID();
     int32_t GetRequests();
     int32_t GetSize();
     int32_t OnResourceFreed();
@@ -47,11 +49,11 @@ struct CRes
     int32_t ReadRaw(int32_t, char*);
     int32_t Release();
     int32_t Request();
-    void SetID(uint32_t);
+    void SetID(RESID);
 };
 
 void CRes__CResCtor__0(CRes* thisPtr);
-void CRes__CResCtor__2(CRes* thisPtr, uint32_t);
+void CRes__CResCtor__2(CRes* thisPtr, RESID);
 void CRes__CResDtor__0(CRes* thisPtr);
 int32_t CRes__CancelRequest(CRes* thisPtr);
 void* CRes__Demand(CRes* thisPtr);
@@ -60,7 +62,7 @@ void* CRes__GetData(CRes* thisPtr);
 int32_t CRes__GetDemands(CRes* thisPtr);
 int32_t CRes__GetFixedResourceDataOffset(CRes* thisPtr);
 int32_t CRes__GetFixedResourceSize(CRes* thisPtr);
-int32_t CRes__GetID(CRes* thisPtr);
+RESID CRes__GetID(CRes* thisPtr);
 int32_t CRes__GetRequests(CRes* thisPtr);
 int32_t CRes__GetSize(CRes* thisPtr);
 int32_t CRes__OnResourceFreed(CRes* thisPtr);
@@ -68,7 +70,7 @@ int32_t CRes__OnResourceServiced(CRes* thisPtr);
 int32_t CRes__ReadRaw(CRes* thisPtr, int32_t, char*);
 int32_t CRes__Release(CRes* thisPtr);
 int32_t CRes__Request(CRes* thisPtr);
-void CRes__SetID(CRes* thisPtr, uint32_t);
+void CRes__SetID(CRes* thisPtr, RESID);
 
 }
 

@@ -3,7 +3,6 @@
 #include <cstdint>
 
 #include "CExoString.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -11,6 +10,7 @@ namespace API {
 
 // Forward class declarations (defined in the source file)
 struct CBaseExoApp;
+struct CExoArrayListTemplatedunsignedlong;
 struct CNetLayerInternal;
 struct CNetLayerPlayerInfo;
 struct CNetLayerSessionInfo;

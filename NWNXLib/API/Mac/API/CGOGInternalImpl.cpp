@@ -18,6 +18,11 @@ CGOGInternalImpl::~CGOGInternalImpl()
     CGOGInternalImpl__CGOGInternalImplDtor__0(this);
 }
 
+void CGOGInternalImpl::ClearAchievement(const CExoString& a0)
+{
+    return CGOGInternalImpl__ClearAchievement(this, a0);
+}
+
 void CGOGInternalImpl::ClearPresenceData()
 {
     return CGOGInternalImpl__ClearPresenceData(this);
@@ -26,6 +31,11 @@ void CGOGInternalImpl::ClearPresenceData()
 CExoString CGOGInternalImpl::GetLanguage()
 {
     return CGOGInternalImpl__GetLanguage(this);
+}
+
+void CGOGInternalImpl::IncrementAchievement(const CExoString& a0, uint32_t a1, uint32_t a2)
+{
+    return CGOGInternalImpl__IncrementAchievement(this, a0, a1, a2);
 }
 
 int32_t CGOGInternalImpl::IsLoggedOn()
@@ -68,7 +78,7 @@ void CGOGInternalImpl::OnRichPresenceChangeSuccess()
     return CGOGInternalImpl__OnRichPresenceChangeSuccess(this);
 }
 
-CExoString CGOGInternalImpl::PackMetadata(const CGOGFriendRichPresence& a0)
+void CGOGInternalImpl::PackMetadata(const CGOGFriendRichPresence& a0)
 {
     return CGOGInternalImpl__PackMetadata(this, a0);
 }
@@ -98,7 +108,12 @@ const char* CGOGInternalImpl::ShowInviteOverlay()
     return CGOGInternalImpl__ShowInviteOverlay(this);
 }
 
-int32_t CGOGInternalImpl::UnpackMetadata(const CExoString& a0, CGOGFriendRichPresence* a1)
+void CGOGInternalImpl::UnlockAchievement(const CExoString& a0)
+{
+    return CGOGInternalImpl__UnlockAchievement(this, a0);
+}
+
+void CGOGInternalImpl::UnpackMetadata(const CExoString& a0, CGOGFriendRichPresence* a1)
 {
     return CGOGInternalImpl__UnpackMetadata(this, a0, a1);
 }
@@ -124,6 +139,14 @@ void CGOGInternalImpl__CGOGInternalImplDtor__0(CGOGInternalImpl* thisPtr)
     func(thisPtr, 2);
 }
 
+void CGOGInternalImpl__ClearAchievement(CGOGInternalImpl* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOGInternalImpl*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOGInternalImpl__ClearAchievement);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
 void CGOGInternalImpl__ClearPresenceData(CGOGInternalImpl* thisPtr)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CGOGInternalImpl*);
@@ -138,6 +161,14 @@ CExoString CGOGInternalImpl__GetLanguage(CGOGInternalImpl* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOGInternalImpl__GetLanguage);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
+}
+
+void CGOGInternalImpl__IncrementAchievement(CGOGInternalImpl* thisPtr, const CExoString& a0, uint32_t a1, uint32_t a2)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOGInternalImpl*, const CExoString&, uint32_t, uint32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOGInternalImpl__IncrementAchievement);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1, a2);
 }
 
 int32_t CGOGInternalImpl__IsLoggedOn(CGOGInternalImpl* thisPtr)
@@ -204,12 +235,12 @@ void CGOGInternalImpl__OnRichPresenceChangeSuccess(CGOGInternalImpl* thisPtr)
     return func(thisPtr);
 }
 
-CExoString CGOGInternalImpl__PackMetadata(CGOGInternalImpl* thisPtr, const CGOGFriendRichPresence& a0)
+void CGOGInternalImpl__PackMetadata(CGOGInternalImpl* thisPtr, const CGOGFriendRichPresence& a0)
 {
-    using FuncPtrType = CExoString(__attribute__((cdecl)) *)(CGOGInternalImpl*, const CGOGFriendRichPresence&);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOGInternalImpl*, const CGOGFriendRichPresence&);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOGInternalImpl__PackMetadata);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0);
+    func(thisPtr, a0);
 }
 
 void CGOGInternalImpl__RequestFriendsUpdate(CGOGInternalImpl* thisPtr)
@@ -252,12 +283,20 @@ const char* CGOGInternalImpl__ShowInviteOverlay(CGOGInternalImpl* thisPtr)
     return func(thisPtr);
 }
 
-int32_t CGOGInternalImpl__UnpackMetadata(CGOGInternalImpl* thisPtr, const CExoString& a0, CGOGFriendRichPresence* a1)
+void CGOGInternalImpl__UnlockAchievement(CGOGInternalImpl* thisPtr, const CExoString& a0)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CGOGInternalImpl*, const CExoString&, CGOGFriendRichPresence*);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOGInternalImpl*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOGInternalImpl__UnlockAchievement);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
+void CGOGInternalImpl__UnpackMetadata(CGOGInternalImpl* thisPtr, const CExoString& a0, CGOGFriendRichPresence* a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOGInternalImpl*, const CExoString&, CGOGFriendRichPresence*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOGInternalImpl__UnpackMetadata);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    return func(thisPtr, a0, a1);
+    func(thisPtr, a0, a1);
 }
 
 void CGOGInternalImpl__Update(CGOGInternalImpl* thisPtr, float a0)

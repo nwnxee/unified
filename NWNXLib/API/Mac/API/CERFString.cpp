@@ -88,7 +88,7 @@ void CERFString__SetText(CERFString* thisPtr, CExoString& a0)
     using FuncPtrType = void(__attribute__((cdecl)) *)(CERFString*, CExoString&);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CERFString__SetText);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    func(thisPtr, a0);
+    return func(thisPtr, a0);
 }
 
 int32_t CERFString__Write(CERFString* thisPtr, CExoFile& a0)
