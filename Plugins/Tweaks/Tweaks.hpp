@@ -11,6 +11,7 @@ class FixMasterServerDNS;
 class CompareVarsForMerge;
 class ParryAllAttacks;
 class SneakAttackCritImmunity;
+class PreserveDepletedItems;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -25,6 +26,7 @@ private:
     std::unique_ptr<CompareVarsForMerge> m_CompareVarsForMerge;
     std::unique_ptr<ParryAllAttacks> m_ParryAllAttacks;
     std::unique_ptr<SneakAttackCritImmunity> m_SneakAttackCritImmunity;
+    std::unique_ptr<PreserveDepletedItems> m_PreserveDepletedItems;
 };
 
 }
