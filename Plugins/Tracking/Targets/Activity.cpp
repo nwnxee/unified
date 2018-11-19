@@ -49,7 +49,7 @@ void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInter
              oidPC = thisPtr->GetNextPCObject())
         {
             CNWSPlayer *player = thisPtr->GetClientObjectByObjectId(oidPC);
-            CNWSCreature *creature = thisPtr->GetCreatureByGameObjectID(player->m_oidNWSObject);
+            CNWSCreature *creature = thisPtr->GetCreatureByGameObjectID(player ? player->m_oidNWSObject : oidPC);
 
             std::string areaName;
             std::string clientType;
@@ -61,7 +61,15 @@ void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInter
                 {
                     areaName = std::string(area->m_cResRef.m_resRef, area->m_cResRef.GetLength());
                 }
-                clientType = creature->m_pStats->m_bIsDM ? "DM" : "Player";
+
+                if (creature->m_pStats->m_bIsDM || creature->m_nAssociateType == 7 || creature->m_nAssociateType == 8)
+                {
+                    clientType = "DM";
+                }
+                else
+                {
+                    clientType = "Player";
+                }
             }
 
             g_metrics->Push(
