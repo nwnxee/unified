@@ -6,6 +6,11 @@ namespace NWNXLib {
 
 namespace API {
 
+CExoString ICrashReporter::ChecksumFile(const CExoString& a0)
+{
+    return ICrashReporter__ChecksumFile(a0);
+}
+
 void ICrashReporter::ExposeFile(_IO_FILE* a0, const char* a1)
 {
     return ICrashReporter__ExposeFile(a0, a1);
@@ -24,6 +29,14 @@ int32_t ICrashReporter::WriteMinidump(_IO_FILE* a0, int32_t a1)
 int32_t ICrashReporter::WriteSystemFiles(_IO_FILE* a0)
 {
     return ICrashReporter__WriteSystemFiles(this, a0);
+}
+
+CExoString ICrashReporter__ChecksumFile(const CExoString& a0)
+{
+    using FuncPtrType = CExoString(*)(const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::ICrashReporter__ChecksumFile);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(a0);
 }
 
 void ICrashReporter__ExposeFile(_IO_FILE* a0, const char* a1)

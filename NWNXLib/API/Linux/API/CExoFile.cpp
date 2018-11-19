@@ -9,14 +9,24 @@ namespace NWNXLib {
 
 namespace API {
 
+CExoFile::CExoFile(const CExoString& a0, const CExoString& a1)
+{
+    CExoFile__CExoFileCtor__0(this, a0, a1);
+}
+
+CExoFile::CExoFile(const void* a0, int32_t a1)
+{
+    CExoFile__CExoFileCtor__1(this, a0, a1);
+}
+
 CExoFile::CExoFile(const CExoString& a0, uint16_t a1, const CExoString& a2)
 {
-    CExoFile__CExoFileCtor(this, a0, a1, a2);
+    CExoFile__CExoFileCtor__2(this, a0, a1, a2);
 }
 
 CExoFile::~CExoFile()
 {
-    CExoFile__CExoFileDtor(this);
+    CExoFile__CExoFileDtor__0(this);
 }
 
 int32_t CExoFile::Eof()
@@ -42,6 +52,11 @@ uint32_t CExoFile::GetOffset()
 int32_t CExoFile::GetSize()
 {
     return CExoFile__GetSize(this);
+}
+
+int32_t CExoFile::IsMemoryBacked()
+{
+    return CExoFile__IsMemoryBacked(this);
 }
 
 uint32_t CExoFile::Read(CExoString& a0, uint32_t a1)
@@ -89,6 +104,11 @@ int32_t CExoFile::SeekEnd()
     return CExoFile__SeekEnd(this);
 }
 
+void CExoFile::SetMemoryBuffer(const void* a0, int32_t a1)
+{
+    return CExoFile__SetMemoryBuffer(this, a0, a1);
+}
+
 uint32_t CExoFile::Write(const CExoString& a0)
 {
     return CExoFile__Write__0(this, a0);
@@ -104,18 +124,34 @@ uint32_t CExoFile::Write(const void* a0, uint32_t a1, uint32_t a2)
     return CExoFile__Write__2(this, a0, a1, a2);
 }
 
-void CExoFile__CExoFileCtor(CExoFile* thisPtr, const CExoString& a0, uint16_t a1, const CExoString& a2)
+void CExoFile__CExoFileCtor__0(CExoFile* thisPtr, const CExoString& a0, const CExoString& a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoFile*, const CExoString&, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__CExoFileCtor__0);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    func(thisPtr, a0, a1);
+}
+
+void CExoFile__CExoFileCtor__1(CExoFile* thisPtr, const void* a0, int32_t a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoFile*, const void*, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__CExoFileCtor__1);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    func(thisPtr, a0, a1);
+}
+
+void CExoFile__CExoFileCtor__2(CExoFile* thisPtr, const CExoString& a0, uint16_t a1, const CExoString& a2)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CExoFile*, const CExoString&, uint16_t, const CExoString&);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__CExoFileCtor);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__CExoFileCtor__2);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr, a0, a1, a2);
 }
 
-void CExoFile__CExoFileDtor(CExoFile* thisPtr)
+void CExoFile__CExoFileDtor__0(CExoFile* thisPtr)
 {
     using FuncPtrType = void(__attribute__((cdecl)) *)(CExoFile*, int);
-    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__CExoFileDtor);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__CExoFileDtor__0);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr, 2);
 }
@@ -156,6 +192,14 @@ int32_t CExoFile__GetSize(CExoFile* thisPtr)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoFile*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__GetSize);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr);
+}
+
+int32_t CExoFile__IsMemoryBacked(CExoFile* thisPtr)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoFile*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__IsMemoryBacked);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
 }
@@ -230,6 +274,14 @@ int32_t CExoFile__SeekEnd(CExoFile* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__SeekEnd);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
+}
+
+void CExoFile__SetMemoryBuffer(CExoFile* thisPtr, const void* a0, int32_t a1)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoFile*, const void*, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoFile__SetMemoryBuffer);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
 }
 
 uint32_t CExoFile__Write__0(CExoFile* thisPtr, const CExoString& a0)

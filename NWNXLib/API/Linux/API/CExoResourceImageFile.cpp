@@ -59,17 +59,17 @@ EncapsulatedKeyListEntry_st CExoResourceImageFile::GetKeyListEntry(uint32_t a0)
     return CExoResourceImageFile__GetKeyListEntry(this, a0);
 }
 
-void* CExoResourceImageFile::GetResource(uint32_t a0)
+void* CExoResourceImageFile::GetResource(RESID a0)
 {
     return CExoResourceImageFile__GetResource(this, a0);
 }
 
-EncapsulatedResListEntry_st* CExoResourceImageFile::GetResourceListEntry(uint32_t a0)
+EncapsulatedResListEntry_st* CExoResourceImageFile::GetResourceListEntry(RESID a0)
 {
     return CExoResourceImageFile__GetResourceListEntry(this, a0);
 }
 
-uint32_t CExoResourceImageFile::GetResourceSize(uint32_t a0)
+uint32_t CExoResourceImageFile::GetResourceSize(RESID a0)
 {
     return CExoResourceImageFile__GetResourceSize(this, a0);
 }
@@ -94,12 +94,12 @@ int32_t CExoResourceImageFile::OpenFile(unsigned char* a0)
     return CExoResourceImageFile__OpenFile__1(this, a0);
 }
 
-uint32_t CExoResourceImageFile::ReadResource(uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+uint32_t CExoResourceImageFile::ReadResource(RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
     return CExoResourceImageFile__ReadResource(this, a0, a1, a2, a3);
 }
 
-void CExoResourceImageFile::ReadResourceAsync(uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+void CExoResourceImageFile::ReadResourceAsync(RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
     return CExoResourceImageFile__ReadResourceAsync(this, a0, a1, a2, a3);
 }
@@ -184,25 +184,25 @@ EncapsulatedKeyListEntry_st CExoResourceImageFile__GetKeyListEntry(CExoResourceI
     return func(thisPtr, a0);
 }
 
-void* CExoResourceImageFile__GetResource(CExoResourceImageFile* thisPtr, uint32_t a0)
+void* CExoResourceImageFile__GetResource(CExoResourceImageFile* thisPtr, RESID a0)
 {
-    using FuncPtrType = void*(__attribute__((cdecl)) *)(CExoResourceImageFile*, uint32_t);
+    using FuncPtrType = void*(__attribute__((cdecl)) *)(CExoResourceImageFile*, RESID);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResourceImageFile__GetResource);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
 }
 
-EncapsulatedResListEntry_st* CExoResourceImageFile__GetResourceListEntry(CExoResourceImageFile* thisPtr, uint32_t a0)
+EncapsulatedResListEntry_st* CExoResourceImageFile__GetResourceListEntry(CExoResourceImageFile* thisPtr, RESID a0)
 {
-    using FuncPtrType = EncapsulatedResListEntry_st*(__attribute__((cdecl)) *)(CExoResourceImageFile*, uint32_t);
+    using FuncPtrType = EncapsulatedResListEntry_st*(__attribute__((cdecl)) *)(CExoResourceImageFile*, RESID);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResourceImageFile__GetResourceListEntry);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
 }
 
-uint32_t CExoResourceImageFile__GetResourceSize(CExoResourceImageFile* thisPtr, uint32_t a0)
+uint32_t CExoResourceImageFile__GetResourceSize(CExoResourceImageFile* thisPtr, RESID a0)
 {
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResourceImageFile*, uint32_t);
+    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResourceImageFile*, RESID);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResourceImageFile__GetResourceSize);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
@@ -240,17 +240,17 @@ int32_t CExoResourceImageFile__OpenFile__1(CExoResourceImageFile* thisPtr, unsig
     return func(thisPtr, a0);
 }
 
-uint32_t CExoResourceImageFile__ReadResource(CExoResourceImageFile* thisPtr, uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+uint32_t CExoResourceImageFile__ReadResource(CExoResourceImageFile* thisPtr, RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResourceImageFile*, uint32_t, void*, uint32_t, uint32_t);
+    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResourceImageFile*, RESID, void*, uint32_t, uint32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResourceImageFile__ReadResource);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CExoResourceImageFile__ReadResourceAsync(CExoResourceImageFile* thisPtr, uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+void CExoResourceImageFile__ReadResourceAsync(CExoResourceImageFile* thisPtr, RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoResourceImageFile*, uint32_t, void*, uint32_t, uint32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoResourceImageFile*, RESID, void*, uint32_t, uint32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResourceImageFile__ReadResourceAsync);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2, a3);

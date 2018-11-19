@@ -8,7 +8,7 @@ namespace API {
 
 struct fd_set
 {
-    int32_t fds_bits[32];
+    int32_t __fds_bits[32];
 };
 
 }

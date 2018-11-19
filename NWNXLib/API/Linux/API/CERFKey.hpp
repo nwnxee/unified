@@ -7,7 +7,6 @@ namespace NWNXLib {
 namespace API {
 
 // Forward class declarations (defined in the source file)
-struct CExoFile;
 struct CExoString;
 
 struct CERFKey
@@ -26,7 +25,6 @@ struct CERFKey
     int32_t Read();
     int32_t Reset();
     void SetName(CExoString&);
-    int32_t Write(CExoFile&);
 };
 
 void CERFKey__CERFKeyCtor(CERFKey* thisPtr);
@@ -34,7 +32,6 @@ void CERFKey__CERFKeyDtor(CERFKey* thisPtr);
 int32_t CERFKey__Read(CERFKey* thisPtr);
 int32_t CERFKey__Reset(CERFKey* thisPtr);
 void CERFKey__SetName(CERFKey* thisPtr, CExoString&);
-int32_t CERFKey__Write(CERFKey* thisPtr, CExoFile&);
 
 }
 

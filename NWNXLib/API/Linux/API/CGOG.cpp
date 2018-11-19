@@ -19,6 +19,11 @@ CGOG::~CGOG()
     CGOG__CGOGDtor(this);
 }
 
+void CGOG::ClearAchievement(const CExoString& a0)
+{
+    return CGOG__ClearAchievement(this, a0);
+}
+
 void CGOG::ClearPresenceData()
 {
     return CGOG__ClearPresenceData(this);
@@ -32,6 +37,11 @@ CExoArrayListTemplatedCGOGFriendRichPresencePtr& CGOG::GetFriendList()
 CExoString CGOG::GetLanguage()
 {
     return CGOG__GetLanguage(this);
+}
+
+void CGOG::IncrementAchievement(const CExoString& a0, uint32_t a1, uint32_t a2)
+{
+    return CGOG__IncrementAchievement(this, a0, a1, a2);
 }
 
 int32_t CGOG::IsLoggedOn()
@@ -64,6 +74,11 @@ const char* CGOG::ShowInviteOverlay()
     return CGOG__ShowInviteOverlay(this);
 }
 
+void CGOG::UnlockAchievement(const CExoString& a0)
+{
+    return CGOG__UnlockAchievement(this, a0);
+}
+
 void CGOG::Update(float a0)
 {
     return CGOG__Update(this, a0);
@@ -83,6 +98,14 @@ void CGOG__CGOGDtor(CGOG* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOG__CGOGDtor);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr, 2);
+}
+
+void CGOG__ClearAchievement(CGOG* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOG*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOG__ClearAchievement);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
 }
 
 void CGOG__ClearPresenceData(CGOG* thisPtr)
@@ -107,6 +130,14 @@ CExoString CGOG__GetLanguage(CGOG* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOG__GetLanguage);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
+}
+
+void CGOG__IncrementAchievement(CGOG* thisPtr, const CExoString& a0, uint32_t a1, uint32_t a2)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOG*, const CExoString&, uint32_t, uint32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOG__IncrementAchievement);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1, a2);
 }
 
 int32_t CGOG__IsLoggedOn(CGOG* thisPtr)
@@ -155,6 +186,14 @@ const char* CGOG__ShowInviteOverlay(CGOG* thisPtr)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOG__ShowInviteOverlay);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
+}
+
+void CGOG__UnlockAchievement(CGOG* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CGOG*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CGOG__UnlockAchievement);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
 }
 
 void CGOG__Update(CGOG* thisPtr, float a0)

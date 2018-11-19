@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "CExoString.hpp"
+#include "RESID.hpp"
 
 namespace NWNXLib {
 
@@ -39,8 +40,9 @@ struct CExoKeyTable
     ~CExoKeyTable();
     int32_t AddDirectoryContents(int32_t);
     int32_t AddEncapsulatedContents(int32_t);
-    CKeyTableEntry* AddKey(const CResRef&, uint16_t, uint32_t, int32_t);
+    CKeyTableEntry* AddKey(const CResRef&, uint16_t, RESID, int32_t);
     int32_t AddKeyTableContents(int32_t);
+    int32_t AddManifestContents(int32_t);
     int32_t AddResourceImageContents(int32_t, unsigned char*);
     CKeyTableEntry* AllocateTable(uint32_t, int32_t);
     int32_t BuildNewTable(uint32_t, const CExoString&, uint32_t, int32_t, unsigned char*);
@@ -51,7 +53,7 @@ struct CExoKeyTable
     int32_t GetEntryCount(int32_t);
     CExoStringList* GetKeysOfType(uint16_t);
     CRes* GetRes(const CResRef&, uint16_t);
-    uint32_t GetResID(const CResRef&, uint16_t);
+    RESID GetResID(const CResRef&, uint16_t);
     int32_t GetTableEntry(uint32_t, CResRef&, uint16_t&);
     int32_t GetTableIndex(uint32_t&, const CResRef&, uint16_t);
     uint32_t Hash(const CResRef&, uint16_t);
@@ -63,8 +65,9 @@ void CExoKeyTable__CExoKeyTableCtor(CExoKeyTable* thisPtr);
 void CExoKeyTable__CExoKeyTableDtor(CExoKeyTable* thisPtr);
 int32_t CExoKeyTable__AddDirectoryContents(CExoKeyTable* thisPtr, int32_t);
 int32_t CExoKeyTable__AddEncapsulatedContents(CExoKeyTable* thisPtr, int32_t);
-CKeyTableEntry* CExoKeyTable__AddKey(CExoKeyTable* thisPtr, const CResRef&, uint16_t, uint32_t, int32_t);
+CKeyTableEntry* CExoKeyTable__AddKey(CExoKeyTable* thisPtr, const CResRef&, uint16_t, RESID, int32_t);
 int32_t CExoKeyTable__AddKeyTableContents(CExoKeyTable* thisPtr, int32_t);
+int32_t CExoKeyTable__AddManifestContents(CExoKeyTable* thisPtr, int32_t);
 int32_t CExoKeyTable__AddResourceImageContents(CExoKeyTable* thisPtr, int32_t, unsigned char*);
 CKeyTableEntry* CExoKeyTable__AllocateTable(CExoKeyTable* thisPtr, uint32_t, int32_t);
 int32_t CExoKeyTable__BuildNewTable(CExoKeyTable* thisPtr, uint32_t, const CExoString&, uint32_t, int32_t, unsigned char*);
@@ -75,7 +78,7 @@ CKeyTableEntry* CExoKeyTable__FindKey__1(CExoKeyTable* thisPtr, const CResRef&, 
 int32_t CExoKeyTable__GetEntryCount(CExoKeyTable* thisPtr, int32_t);
 CExoStringList* CExoKeyTable__GetKeysOfType(CExoKeyTable* thisPtr, uint16_t);
 CRes* CExoKeyTable__GetRes(CExoKeyTable* thisPtr, const CResRef&, uint16_t);
-uint32_t CExoKeyTable__GetResID(CExoKeyTable* thisPtr, const CResRef&, uint16_t);
+RESID CExoKeyTable__GetResID(CExoKeyTable* thisPtr, const CResRef&, uint16_t);
 int32_t CExoKeyTable__GetTableEntry(CExoKeyTable* thisPtr, uint32_t, CResRef&, uint16_t&);
 int32_t CExoKeyTable__GetTableIndex(CExoKeyTable* thisPtr, uint32_t&, const CResRef&, uint16_t);
 uint32_t CExoKeyTable__Hash(CExoKeyTable* thisPtr, const CResRef&, uint16_t);

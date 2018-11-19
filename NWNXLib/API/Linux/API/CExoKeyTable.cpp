@@ -33,7 +33,7 @@ int32_t CExoKeyTable::AddEncapsulatedContents(int32_t a0)
     return CExoKeyTable__AddEncapsulatedContents(this, a0);
 }
 
-CKeyTableEntry* CExoKeyTable::AddKey(const CResRef& a0, uint16_t a1, uint32_t a2, int32_t a3)
+CKeyTableEntry* CExoKeyTable::AddKey(const CResRef& a0, uint16_t a1, RESID a2, int32_t a3)
 {
     return CExoKeyTable__AddKey(this, a0, a1, a2, a3);
 }
@@ -41,6 +41,11 @@ CKeyTableEntry* CExoKeyTable::AddKey(const CResRef& a0, uint16_t a1, uint32_t a2
 int32_t CExoKeyTable::AddKeyTableContents(int32_t a0)
 {
     return CExoKeyTable__AddKeyTableContents(this, a0);
+}
+
+int32_t CExoKeyTable::AddManifestContents(int32_t a0)
+{
+    return CExoKeyTable__AddManifestContents(this, a0);
 }
 
 int32_t CExoKeyTable::AddResourceImageContents(int32_t a0, unsigned char* a1)
@@ -93,7 +98,7 @@ CRes* CExoKeyTable::GetRes(const CResRef& a0, uint16_t a1)
     return CExoKeyTable__GetRes(this, a0, a1);
 }
 
-uint32_t CExoKeyTable::GetResID(const CResRef& a0, uint16_t a1)
+RESID CExoKeyTable::GetResID(const CResRef& a0, uint16_t a1)
 {
     return CExoKeyTable__GetResID(this, a0, a1);
 }
@@ -155,9 +160,9 @@ int32_t CExoKeyTable__AddEncapsulatedContents(CExoKeyTable* thisPtr, int32_t a0)
     return func(thisPtr, a0);
 }
 
-CKeyTableEntry* CExoKeyTable__AddKey(CExoKeyTable* thisPtr, const CResRef& a0, uint16_t a1, uint32_t a2, int32_t a3)
+CKeyTableEntry* CExoKeyTable__AddKey(CExoKeyTable* thisPtr, const CResRef& a0, uint16_t a1, RESID a2, int32_t a3)
 {
-    using FuncPtrType = CKeyTableEntry*(__attribute__((cdecl)) *)(CExoKeyTable*, const CResRef&, uint16_t, uint32_t, int32_t);
+    using FuncPtrType = CKeyTableEntry*(__attribute__((cdecl)) *)(CExoKeyTable*, const CResRef&, uint16_t, RESID, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoKeyTable__AddKey);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2, a3);
@@ -167,6 +172,14 @@ int32_t CExoKeyTable__AddKeyTableContents(CExoKeyTable* thisPtr, int32_t a0)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoKeyTable*, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoKeyTable__AddKeyTableContents);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
+int32_t CExoKeyTable__AddManifestContents(CExoKeyTable* thisPtr, int32_t a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoKeyTable*, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoKeyTable__AddManifestContents);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
 }
@@ -251,9 +264,9 @@ CRes* CExoKeyTable__GetRes(CExoKeyTable* thisPtr, const CResRef& a0, uint16_t a1
     return func(thisPtr, a0, a1);
 }
 
-uint32_t CExoKeyTable__GetResID(CExoKeyTable* thisPtr, const CResRef& a0, uint16_t a1)
+RESID CExoKeyTable__GetResID(CExoKeyTable* thisPtr, const CResRef& a0, uint16_t a1)
 {
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoKeyTable*, const CResRef&, uint16_t);
+    using FuncPtrType = RESID(__attribute__((cdecl)) *)(CExoKeyTable*, const CResRef&, uint16_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoKeyTable__GetResID);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);

@@ -114,7 +114,7 @@ uint32_t CResGFF::GetElementType(CResStruct* a0)
     return CResGFF__GetElementType(this, a0);
 }
 
-void CResGFF::GetField(CResStruct* a0, uint32_t a1)
+CResGFFField* CResGFF::GetField(CResStruct* a0, uint32_t a1)
 {
     return CResGFF__GetField(this, a0, a1);
 }
@@ -559,12 +559,12 @@ uint32_t CResGFF__GetElementType(CResGFF* thisPtr, CResStruct* a0)
     return func(thisPtr, a0);
 }
 
-void CResGFF__GetField(CResGFF* thisPtr, CResStruct* a0, uint32_t a1)
+CResGFFField* CResGFF__GetField(CResGFF* thisPtr, CResStruct* a0, uint32_t a1)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CResGFF*, CResStruct*, uint32_t);
+    using FuncPtrType = CResGFFField*(__attribute__((cdecl)) *)(CResGFF*, CResStruct*, uint32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CResGFF__GetField);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    func(thisPtr, a0, a1);
+    return func(thisPtr, a0, a1);
 }
 
 uint32_t CResGFF__GetFieldByLabel(CResGFF* thisPtr, CResStruct* a0, char* a1)

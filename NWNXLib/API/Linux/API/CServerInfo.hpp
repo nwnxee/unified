@@ -33,6 +33,9 @@ struct CServerInfo
     CAutoSave m_AutoSave;
     CPersistantWorldOptions m_PersistantWorldOptions;
     CServerNetOptions m_NetOptions;
+    CExoString m_sNWSyncHash;
+    CExoString m_sNWSyncUrl;
+    int32_t m_bNWSyncPublishHaks;
     int32_t m_bConversationMultiPlayer;
     int32_t m_bConversationMultiPlayerViewOnly;
     int32_t m_nDifficulty;
