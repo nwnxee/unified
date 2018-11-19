@@ -82,21 +82,22 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         LOG_INFO("Sun and moon shadows will be disabled");
 
         // Temporary workaround for Intel crash in complex areas - disable when a proper fix is implemented.
+        // PackAreaIntoMessage
 
         // m_bMoonShadows
-        GetServices()->m_patching->PatchWithInstructions(0x000E5B7C,
+        GetServices()->m_patching->PatchWithInstructions(0x0012EB0C,
             Platform::Assembly::PushImmInstruction(0),
             Platform::Assembly::NoopInstruction(),
             Platform::Assembly::NoopInstruction(),
             Platform::Assembly::NoopInstruction(),
             Platform::Assembly::NoopInstruction()
-        ); NWNX_EXPECT_VERSION(8181);
+        ); NWNX_EXPECT_VERSION(8186);
 
         // m_bSunShadows
-        GetServices()->m_patching->PatchWithInstructions(0x000E5C04,
+        GetServices()->m_patching->PatchWithInstructions(0x0012EB94,
             Platform::Assembly::PushImmInstruction(0),
             Platform::Assembly::NoopInstruction()
-        ); NWNX_EXPECT_VERSION(8181);
+        ); NWNX_EXPECT_VERSION(8186);
     }
 }
 
