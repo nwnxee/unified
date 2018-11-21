@@ -57,6 +57,10 @@ void NWNX_Player_SetVisibilityOverride(object player, object target, int overrid
 int NWNX_Player_GetVisibilityOverride(object player, object target);
 
 
+// Plays the VFX at the target position in current area for the given player only
+int NWNX_Player_ShowVisualEffect(object player, int effectId, vector position);
+
+
 const string NWNX_Player = "NWNX_Player";
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -199,4 +203,16 @@ int NWNX_Player_GetVisibilityOverride(object player, object target)
 
     NWNX_CallFunction(NWNX_Player, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+}
+
+int NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
+{
+    string sFunc = "ShowVisualEffect";
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.x);
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.y);
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.z);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, effectId);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }
