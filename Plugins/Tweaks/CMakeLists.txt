@@ -3,6 +3,7 @@ add_plugin(Tweaks
     "Tweaks/HideClassesOnCharList.cpp"
     "Tweaks/PlayerDyingHitPointLimit.cpp"
     "Tweaks/DisablePause.cpp"
+    "Tweaks/DisableQuicksave.cpp"
     "Tweaks/CompareVarsForMerge.cpp"
     "Tweaks/ParryAllAttacks.cpp"
     "Tweaks/SneakAttackCritImmunity.cpp"

@@ -2,6 +2,7 @@
 #include "Tweaks/HideClassesOnCharList.hpp"
 #include "Tweaks/PlayerDyingHitPointLimit.hpp"
 #include "Tweaks/DisablePause.hpp"
+#include "Tweaks/DisableQuicksave.hpp"
 #include "Tweaks/CompareVarsForMerge.hpp"
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/SneakAttackCritImmunity.hpp"
@@ -58,6 +59,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Disabling pausing of the server");
         m_DisablePause = std::make_unique<DisablePause>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("DISABLE_QUICKSAVE", false))
+    {
+        LOG_INFO("Disabling the quicksave option on the server");
+        m_DisableQuicksave = std::make_unique<DisableQuicksave>(GetServices()->m_hooks.get());
     }
 
     if (GetServices()->m_config->Get<bool>("COMPARE_VARIABLES_WHEN_MERGING", false))
