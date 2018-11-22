@@ -29,6 +29,7 @@ private:
     ArgumentStack GetBicFileName                (ArgumentStack&& args);
     ArgumentStack SetVisibilityOverride         (ArgumentStack&& args);
     ArgumentStack GetVisibilityOverride         (ArgumentStack&& args);
+    ArgumentStack ShowVisualEffect              (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

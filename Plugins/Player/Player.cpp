@@ -64,6 +64,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(GetBicFileName);
     REGISTER(SetVisibilityOverride);
     REGISTER(GetVisibilityOverride);
+    REGISTER(ShowVisualEffect);
 
 #undef REGISTER
 
@@ -372,6 +373,26 @@ ArgumentStack Player::GetVisibilityOverride(ArgumentStack&& args)
 
         auto override = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pPlayer->m_oidNWSObject, name);
         Services::Events::InsertArgument(stack, override ? *override : 0);
+    }
+    return stack;
+}
+
+ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        Vector pos;
+        auto effectId = Services::Events::ExtractArgument<int32_t>(args); ASSERT(effectId >= 0); ASSERT(effectId <= 0xFFFF);
+        pos.z = Services::Events::ExtractArgument<float>(args);
+        pos.y = Services::Events::ExtractArgument<float>(args);
+        pos.x = Services::Events::ExtractArgument<float>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos);
+        }
     }
     return stack;
 }
