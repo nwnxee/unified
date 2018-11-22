@@ -12,6 +12,9 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSQuickbarButton.hpp"
 #include "API/CGameEffect.hpp"
+#include "API/CNWSPlayerInventoryGUI.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSItem.hpp"
 //#include "API/CNWSStats_Spell.hpp"
 //#include "API/CNWSStats_SpellLikeAbility.hpp"
 //#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
@@ -56,6 +59,7 @@ Player::Player(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Player::func, this, std::placeholders::_1))
 
     REGISTER(ForcePlaceableExamineWindow);
+    REGISTER(ForcePlaceableInventoryWindow);
     REGISTER(StartGuiTimingBar);
     REGISTER(StopGuiTimingBar);
     REGISTER(SetAlwaysWalk);
@@ -110,6 +114,24 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
         else
         {
             LOG_ERROR("Unable to get CNWSMessage");
+        }
+    }
+
+    return stack;
+}
+
+
+ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidPlayer = pPlayer->m_oidNWSObject;
+
+        if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
+        {
+            pPlaceable->OpenInventory(oidPlayer);
         }
     }
 

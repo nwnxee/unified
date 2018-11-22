@@ -23,7 +23,18 @@ const int NWNX_PLAYER_VISIBILITY_HIDDEN  = 1;
 const int NWNX_PLAYER_VISIBILITY_VISIBLE = 2;
 
 // Force display placeable examine window for player
+// If used on a placeable in a different area than the player, the portait will not be shown.
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable);
+
+// Force opens the target object's inventory for the player.
+// A few notes about this function:
+// - If the placeable is in a different area than the player, the portrait will not be shown
+// - The placeable's open/close animations will be played
+// - Clicking the 'close' button will cause the player to walk to the placeable;
+//     If the placeable is in a different area, the player will just walk to the edge
+//     of the current area and stop. This action can be cancelled manually.
+// - Walking will close the placeable automatically.
+void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable);
 
 // Starts displaying a timing bar.
 // Will run a script at the end of the timing bar, if specified.
@@ -62,6 +73,15 @@ const string NWNX_Player = "NWNX_Player";
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 {
     string sFunc = "ForcePlaceableExamineWindow";
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable)
+{
+    string sFunc = "ForcePlaceableInventoryWindow";
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
