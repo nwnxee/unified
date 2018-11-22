@@ -21,6 +21,7 @@ private:
         NWNXLib::API::CNWSMessage* pMessage, NWNXLib::API::CNWSPlayer* pPlayer);
 
     ArgumentStack ForcePlaceableExamineWindow   (ArgumentStack&& args);
+    ArgumentStack ForcePlaceableInventoryWindow (ArgumentStack&& args);
     ArgumentStack StartGuiTimingBar             (ArgumentStack&& args);
     ArgumentStack StopGuiTimingBar              (ArgumentStack&& args);
     ArgumentStack SetAlwaysWalk                 (ArgumentStack&& args);
