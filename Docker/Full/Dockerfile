@@ -47,7 +47,6 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
 ENV NWNX_JVM_CLASSPATH=/nwn/nwnx/org.nwnx.nwnx2.jvm.jar
 # Disable all other plugins by default. Remember to add new plugins to this list.
 ENV NWNX_ADMINISTRATION_SKIP=y \
-    NWNX_BEHAVIOURTREE_SKIP=y \
     NWNX_CHAT_SKIP=y \
     NWNX_CREATURE_SKIP=y \
     NWNX_DAMAGE_SKIP=y \
