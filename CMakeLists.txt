@@ -97,8 +97,19 @@ add_subdirectory(Core)
 # Detect every plugin and store it in plugins . . .
 file(GLOB plugins Plugins/*/CMakeLists.txt)
 
+# Allow skipping certain plugins by putting their names in env. variable
+foreach(skipped $ENV{NWNX_SKIP_PLUGINS})
+    file(GLOB skip Plugins/${skipped}/CMakeLists.txt)
+    list(REMOVE_ITEM plugins ${skip} )
+endforeach(skipped)
+
 # . . . Then iterate over it.
 foreach(plugin ${plugins})
     get_filename_component(pluginPath ${plugin} PATH)
     add_subdirectory(${pluginPath})
 endforeach(plugin)
+
+# Allow specifying out of tree plugins by putting their paths in env. variable
+foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
+    add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
+endforeach(addplugin)
