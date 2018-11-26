@@ -5,8 +5,8 @@
 #include "API/Functions.hpp"
 #include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
+#include "Services/Messaging/Messaging.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "Services/Metrics/Metrics.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -179,14 +179,19 @@ Mono::Mono(const Plugin::CreateParams& params)
                 return;
             }
 
+            static bool s_MadeResamplers = false;
+            if (!s_MadeResamplers)
+            {
+                g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER", { "MonoClosure" });
+                g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER", { "MonoMainLoop" });
+                g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER", { "MonoScript" });
+                s_MadeResamplers = true;
+            }
+
             static uint64_t s_Frame = 0;
             g_plugin->ExecuteMainLoopTick(s_Frame++);
         }
     );
-
-    Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
-    GetServices()->m_metrics->SetResampler("Closure", resampler, std::chrono::seconds(1));
-    GetServices()->m_metrics->SetResampler("MainLoop", resampler, std::chrono::seconds(1));
 }
 
 Mono::~Mono()
@@ -279,18 +284,9 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
 
         if (m_ScriptMetrics)
         {
-            const auto timeBefore = std::chrono::high_resolution_clock::now();
+            GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_PUSH_PERF_SCOPE", { "MonoScript", "Script", scriptNameAsLower.c_str() });
             runScripts();
-            const auto timeAfter = std::chrono::high_resolution_clock::now();
-
-            using namespace std::chrono;
-            nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
-            LOG_DEBUG("Run took %f ms.", dur.count() / 1000.0f / 1000.0f);
-
-            GetServices()->m_metrics->Push(
-                "Script",
-                { { "ns", std::to_string(dur.count()) } },
-                { { "Script", scriptNameAsLower.c_str() } });
+            GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_POP_PERF_SCOPE", {});
         }
         else
         {
@@ -385,14 +381,9 @@ void Mono::ExecuteClosure(uint64_t eventId)
 
     if (m_ClosureMetrics)
     {
-        const auto timeBefore = std::chrono::high_resolution_clock::now();
+        GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_PUSH_PERF_SCOPE", { "MonoClosure" });
         execClosures();
-        const auto timeAfter = std::chrono::high_resolution_clock::now();
-
-        using namespace std::chrono;
-        nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
-
-        GetServices()->m_metrics->Push("Closure", { { "ns", std::to_string(dur.count()) } });
+        GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_POP_PERF_SCOPE", {});
     }
     else
     {
@@ -422,14 +413,9 @@ void Mono::ExecuteMainLoopTick(uint64_t frame)
 
     if (m_MainLoopMetrics)
     {
-        const auto timeBefore = std::chrono::high_resolution_clock::now();
+        GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_PUSH_PERF_SCOPE", { "MonoMainLoop" });
         execMainLoop();
-        const auto timeAfter = std::chrono::high_resolution_clock::now();
-
-        using namespace std::chrono;
-        nanoseconds dur = duration_cast<nanoseconds>(timeAfter - timeBefore);
-
-        GetServices()->m_metrics->Push("MainLoop", { { "ns", std::to_string(dur.count()) } });
+        GetServices()->m_messaging->BroadcastMessage("NWNX_PROFILER_POP_PERF_SCOPE", {});
     }
     else
     {
