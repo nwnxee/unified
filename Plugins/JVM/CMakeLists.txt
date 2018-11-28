@@ -2,7 +2,7 @@
 find_package(JNI)
 find_package(Java)
 
-if (JAVA_FOUND)
+if (JAVA_FOUND AND JNI_FOUND)
   include_directories(${JNI_INCLUDE_DIRS})
 
   add_plugin(JVM
@@ -20,6 +20,6 @@ if (JAVA_FOUND)
   # target_link_libraries(JVM ${JAVA_JVM_LIBRARY})
   target_link_libraries(JVM /usr/lib/jvm/java-8-openjdk-i386/jre/lib/i386/server/libjvm.so)
 
-elseif (JAVA_FOUND)
+elseif (JAVA_FOUND AND JNI_FOUND)
   message(WARNING "Not compiling JVM plugin, no JDK&JNI found")
 endif()
