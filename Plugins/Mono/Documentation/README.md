@@ -7,7 +7,7 @@ Allow users to see sharp. More specifically, this plugin enables developers to w
 ## How to see sharp?
 
 - Follow these instructions to add the Mono repository to your apt sources: https://www.mono-project.com/download/stable/#download-lin-debian
-- Make sure the version at the top of the above page is 5.16.0 Stable (5.16.0.179). If it isn't, install libmono-2.0-dev:i386, then find libmono-2.0.a and copy it to the Plugins/Mono/lib folder.
+- Make sure the version at the top of the above page is 5.16.0 Stable (5.16.0.220). If it isn't, install libmono-2.0-dev:i386, then find libmono-2.0.a and copy it to the Plugins/Mono/lib folder.
 - Make sure you have the mono-complete package installed. The version of the package MUST match the version of the 32-bit shared library from the step above. If it doesn't, you may encounter run-time failures.
 
 - Make sure you have a binary compiled that exports one or more scripts.
