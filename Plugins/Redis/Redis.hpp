@@ -4,6 +4,11 @@
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
+#include "API/Types.hpp"
+#include "API/Functions.hpp"
+#include "API/CVirtualMachine.hpp"
+#include "API/CExoString.hpp"
+
 #include <functional>
 
 namespace cpp_redis
@@ -87,6 +92,9 @@ private:
     void LogQuery(const std::vector<std::string>&, const cpp_redis::reply&,
                   const uint64_t ns);
     std::unique_ptr<cpp_redis::redis_client> PoolMakeFunc();
+
+    static void CleanAfterRunScript(NWNXLib::Services::Hooks::CallType,
+            NWNXLib::API::CVirtualMachine*, NWNXLib::API::CExoString*, NWNXLib::API::Types::ObjectID, int32_t);
 };
 
 }

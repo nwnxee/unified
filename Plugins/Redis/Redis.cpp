@@ -1,6 +1,7 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
+#include "Services/Hooks/Hooks.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Tasks/Tasks.hpp"
@@ -40,6 +41,13 @@ using namespace NWNXLib::Hooking;
 Redis::Redis(const Plugin::CreateParams& params)
     : Plugin(params)
 {
+    GetServices()->m_hooks->RequestSharedHook<Functions::CVirtualMachine__RunScript, int32_t>(&CleanAfterRunScript);
+
+    if (!GetServices()->m_hooks->FindHookByAddress(Functions::CVirtualMachine__RunScript))
+    {
+        throw std::runtime_error("Redis depends on a shared hook to RunScript, but was unable to acquire.");
+    }
+
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 
     Reconfigure();
