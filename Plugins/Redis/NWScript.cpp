@@ -33,30 +33,69 @@ void Redis::RegisterWithNWScript()
         }
         reverse(v.begin(), v.end());
 
-        m_last_nwscript_reply = RawSync(v);
+        auto ret = RawSync(v);
+
+        if (ret.is_array())
+        {
+            m_last_nwscript_reply = ret;
+        }
 
         Events::ArgumentStack st;
-        // Return value: a simple string for now to cut down on call
-        // count.
-        Events::InsertArgument(st, RedisReplyAsString(m_last_nwscript_reply));
+        // Return value: a simple string for now to cut down on call count.
+        Events::InsertArgument(st, RedisReplyAsString(ret));
 
         // Events::InsertArgument(st, std::to_string(RedisReplyTypeToInt(
         // m_last_nwscript_reply.get_type())));
         return st;
     });
 
-    // NWScript: Returns the last query result as a string.
+    // NWScript: Returns the last query result type as a int.
     // Values returned: last reply as a string
-    GetServices()->m_events->RegisterEvent("GetLastReplyAsString",
+    GetServices()->m_events->RegisterEvent("GetLastReplyType",
     [&](Events::ArgumentStack &&)
     {
         Events::ArgumentStack st;
-        Events::InsertArgument(st, RedisReplyAsString(m_last_nwscript_reply));
+        Events::InsertArgument(st, RedisReplyTypeToInt(m_last_nwscript_reply.get_type()));
         return st;
     });
 
-    // NWScript: Get list length.
+    // NWScript: Get list length of result. Returns 0 if not a list.
+    // N.B: Redis can return multi-list results. This is not handled here
+    GetServices()->m_events->RegisterEvent("GetLastReplyArrayLength",
+    [&](Events::ArgumentStack &&)
+    {
+        int32_t len = 0;
+        if (m_last_nwscript_reply.is_array())
+        {
+            len = static_cast<int32_t>(m_last_nwscript_reply.as_array().size());
+        }
+
+        Events::ArgumentStack st;
+        Events::InsertArgument(st, len);
+        return st;
+    });
+
+    // NWScript: Get array element (as string) of result.
+    // Will return 0 if the last command wasn't a list.
     // N.B: Redis can return multi-list results.
+    //      This is not yet properly handled here.
+    GetServices()->m_events->RegisterEvent("GetLastReplyArrayElement",
+    [&](Events::ArgumentStack && arg)
+    {
+        const auto idx = Services::Events::ExtractArgument<int32_t>(arg);
+
+        std::string ret;
+        if (m_last_nwscript_reply.is_array() &&
+            idx >= 0 &&
+            idx < static_cast<int32_t>(m_last_nwscript_reply.as_array().size()))
+        {
+            ret = RedisReplyAsString(m_last_nwscript_reply.as_array()[idx]);
+        }
+
+        Events::ArgumentStack st;
+        Events::InsertArgument(st, ret);
+        return st;
+    });
 
     // NWScript: Get the last pubsub message.
     // Values returned: channel, message
