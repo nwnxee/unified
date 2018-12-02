@@ -93,8 +93,8 @@ private:
                   const uint64_t ns);
     std::unique_ptr<cpp_redis::redis_client> PoolMakeFunc();
 
-    static void CleanAfterRunScript(NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CVirtualMachine*, NWNXLib::API::CExoString*, NWNXLib::API::Types::ObjectID, int32_t);
+    static void CleanState(NWNXLib::Services::Hooks::CallType,
+            NWNXLib::API::CVirtualMachine*);
 };
 
 }

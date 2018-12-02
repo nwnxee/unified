@@ -21,14 +21,11 @@ using namespace NWNXLib::API;
 // We cache all results until the end of the current script invocation.
 static std::vector<cpp_redis::reply> s_results;
 
-void Redis::CleanAfterRunScript(Services::Hooks::CallType type,
-                                CVirtualMachine* vm, CExoString* script,
-                                Types::ObjectID, int32_t)
+void Redis::CleanState(Services::Hooks::CallType type, CVirtualMachine* vm)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL && vm->m_nRecursionLevel == 1 &&
-        !script->IsEmpty())
+    if (type == Services::Hooks::CallType::AFTER_ORIGINAL && vm->m_nRecursionLevel == 1)
     {
-        LOG_DEBUG("Clearing all results after script exit: %s\n", script->CStr());
+        LOG_DEBUG("Clearing all results after script exit.\n");
         s_results.clear();
     }
 }
