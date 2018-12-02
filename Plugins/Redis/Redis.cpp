@@ -19,7 +19,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
     return new Plugin::Info {
         "Redis",
-        "redis connector with pubsub support",
+        "redis.io plugin with PubSub support",
         "niv",
         "niv@nwnx.io",
         1,

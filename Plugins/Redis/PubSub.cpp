@@ -25,24 +25,25 @@ void Redis::OnPubsub(const std::string& channel, const std::string& message)
 {
     LOG_DEBUG("PubSub: channel='%s' message='%s'", channel.c_str(), message.c_str());
 
-    m_internal->m_last_pubsub_channel = channel;
-    m_internal->m_last_pubsub_message = message;
-
     std::string scr;
 
     {
         std::lock_guard<std::mutex> lock(m_internal->m_config_mtx);
+
         ASSERT(!m_internal->m_config.m_pubsub_script.empty());
         scr = m_internal->m_config.m_pubsub_script;
     }
 
     if (!scr.empty())
     {
-        GetServices()->m_tasks->QueueOnMainThread([scr] {
+        GetServices()->m_tasks->QueueOnMainThread([this, scr, channel, message] {
+
+            m_internal->m_last_pubsub_channel = channel;
+            m_internal->m_last_pubsub_message = message;
 
             // Only ever deliver script events when a module is running.
             if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2) {
-                // GetServices()->m_log->Debug("%s", "PubSub: event dropped, not in a running module");
+                LOG_DEBUG("Event dropped because no module is running.");
                 return;
             }
 

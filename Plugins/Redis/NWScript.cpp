@@ -157,13 +157,13 @@ void Redis::RegisterWithNWScript()
     // NWScript: Get the last pubsub message.
     // Values returned: channel, message
     GetServices()->m_events->RegisterEvent("GetPubSubData",
-    [&](Events::ArgumentStack &&)
-    {
-        Events::ArgumentStack st;
-        Events::InsertArgument(st, m_internal->m_last_pubsub_channel);
-        Events::InsertArgument(st, m_internal->m_last_pubsub_message);
-        return st;
-    });
+            [&](Events::ArgumentStack &&)
+            {
+                Events::ArgumentStack st;
+                Events::InsertArgument(st, m_internal->m_last_pubsub_channel);
+                Events::InsertArgument(st, m_internal->m_last_pubsub_message);
+                return st;
+            });
 }
 
 
