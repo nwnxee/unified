@@ -23,9 +23,9 @@ static std::vector<cpp_redis::reply> s_results;
 
 void Redis::CleanState(Services::Hooks::CallType type, CVirtualMachine* vm)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL && vm->m_nRecursionLevel == 1)
+    if (type == Services::Hooks::CallType::AFTER_ORIGINAL && vm->m_nRecursionLevel == 0)
     {
-        LOG_DEBUG("Clearing all results after script exit.\n");
+        LOG_DEBUG("Clearing all results after script exit.");
         s_results.clear();
     }
 }
@@ -93,7 +93,8 @@ void Redis::RegisterWithNWScript()
                 }
                 else
                 {
-                    LOG_ERROR("Result %d was not found or is not an array. This is a error on your side.", resultId);
+                    LOG_ERROR("Result %d was not found or is not an array. "
+                              "This is a error on your side.", resultId);
                 }
 
                 Events::ArgumentStack st;
