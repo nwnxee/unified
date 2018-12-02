@@ -15,6 +15,7 @@
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Services/Commands/Commands.hpp"
 #include "Utils.hpp"
 
 #include <cstring>
