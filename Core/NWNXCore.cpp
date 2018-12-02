@@ -136,6 +136,7 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
+    services->m_commands = std::make_unique<Commands>();
 
     return services;
 }
@@ -153,6 +154,7 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
+    proxyServices->m_commands = std::make_unique<Services::CommandsProxy>(*m_services->m_commands);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
 
@@ -429,6 +431,7 @@ void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CSer
 
     g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks);
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
+    g_core->m_services->m_commands->RunScheduledCommands();
 }
 
 }
