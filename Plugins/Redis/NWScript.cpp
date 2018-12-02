@@ -30,8 +30,9 @@ void Redis::RegisterWithNWScript()
             // to redis.
             v.push_back(arg.top().substr(2));
             arg.pop();
-            reverse(v.begin(), v.end());
         }
+        reverse(v.begin(), v.end());
+
         m_last_nwscript_reply = RawSync(v);
 
         Events::ArgumentStack st;
