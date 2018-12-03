@@ -67,9 +67,29 @@ void NWNX_Player_SetVisibilityOverride(object player, object target, int overrid
 // Returns NWNX_PLAYER_VISIBILITY_DEFAULT if no override exists
 int NWNX_Player_GetVisibilityOverride(object player, object target);
 
-
 // Plays the VFX at the target position in current area for the given player only
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position);
+
+// Changes the daytime music track for the given player only
+void NWNX_Player_MusicBackgroundChangeDay(object player, int track);
+
+// Changes the nighttime music track for the given player only
+void NWNX_Player_MusicBackgroundChangeNight(object player, int track);
+
+// Starts the background music for the given player only
+void NWNX_Player_MusicBackgroundStart(object player);
+
+// Stops the background music for the given player only
+void NWNX_Player_MusicBackgroundStop(object player);
+
+// Changes the battle music track for the given player only
+void NWNX_Player_MusicBattleChange(object player, int track);
+
+// Starts the battle music for the given player only
+void NWNX_Player_MusicBattleStart(object player);
+
+// Stops the background music for the given player only
+void NWNX_Player_MusicBattleStop(object player);
 
 
 const string NWNX_Player = "NWNX_Player";
@@ -232,6 +252,71 @@ void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.y);
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.z);
     NWNX_PushArgumentInt(NWNX_Player, sFunc, effectId);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_MusicBackgroundChangeDay(object player, int track)
+{
+    string sFunc = "ChangeBackgroundMusic";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool day = TRUE
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_MusicBackgroundChangeNight(object player, int track)
+{
+    string sFunc = "ChangeBackgroundMusic";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool day = FALSE
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_MusicBackgroundStart(object player)
+{
+    string sFunc = "PlayBackgroundMusic";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool play = TRUE
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_MusicBackgroundStop(object player)
+{
+    string sFunc = "PlayBackgroundMusic";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool play = FALSE
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_MusicBattleChange(object player, int track)
+{
+    string sFunc = "ChangeBattleMusic";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_MusicBattleStart(object player)
+{
+    string sFunc = "PlayBattleMusic";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool play = TRUE
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_MusicBattleStop(object player)
+{
+    string sFunc = "PlayBattleMusic";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool play = FALSE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
