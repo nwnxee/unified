@@ -69,6 +69,10 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetVisibilityOverride);
     REGISTER(GetVisibilityOverride);
     REGISTER(ShowVisualEffect);
+    REGISTER(ChangeBackgroundMusic);
+    REGISTER(PlayBackgroundMusic);
+    REGISTER(ChangeBattleMusic);
+    REGISTER(PlayBattleMusic);
 
 #undef REGISTER
 
@@ -227,7 +231,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature)
         {
-            LOG_ERROR("No creature object found for Player ID %x, oidNWSObject %x", 
+            LOG_ERROR("No creature object found for Player ID %x, oidNWSObject %x",
                 pPlayer->m_oidPCObject, pPlayer->m_oidNWSObject);
             return stack;
         }
@@ -414,6 +418,84 @@ ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
         if (pMessage)
         {
             pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::ChangeBackgroundMusic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlayer = pPlayer->m_nPlayerID;
+
+        auto day = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto track = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(track >= 0);
+        ASSERT(track <= 0xFFFF);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientMusicChangeTrack(oidPlayer, day, track);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::PlayBackgroundMusic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlayer = pPlayer->m_nPlayerID;
+
+        auto play = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientMusicPlay(oidPlayer, play);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::ChangeBattleMusic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlayer = pPlayer->m_nPlayerID;
+
+        auto track = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(track >= 0);
+        ASSERT(track <= 0xFFFF);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientBattleMusicChange(oidPlayer, track);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::PlayBattleMusic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlayer = pPlayer->m_nPlayerID;
+
+        auto play = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientBattleMusicPlay(oidPlayer, play);
         }
     }
     return stack;

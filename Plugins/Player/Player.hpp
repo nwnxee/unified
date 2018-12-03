@@ -31,6 +31,10 @@ private:
     ArgumentStack SetVisibilityOverride         (ArgumentStack&& args);
     ArgumentStack GetVisibilityOverride         (ArgumentStack&& args);
     ArgumentStack ShowVisualEffect              (ArgumentStack&& args);
+    ArgumentStack ChangeBackgroundMusic         (ArgumentStack&& args);
+    ArgumentStack PlayBackgroundMusic           (ArgumentStack&& args);
+    ArgumentStack ChangeBattleMusic             (ArgumentStack&& args);
+    ArgumentStack PlayBattleMusic               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
