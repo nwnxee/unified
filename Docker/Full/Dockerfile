@@ -12,7 +12,7 @@ FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 # Install mono
-ENV MONO_VERSION 5.16.0.179
+ENV MONO_VERSION 5.16.0.220
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 RUN apt-get update \
     && apt-get -y install gnupg2 \
