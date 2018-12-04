@@ -91,8 +91,9 @@ void NWNX_Player_MusicBattleStart(object player);
 // Stops the background music for the given player only
 void NWNX_Player_MusicBattleStop(object player);
 
-// Play a sound for the given player only
-void NWNX_Player_PlaySound(object player, string sound);
+// Play a sound at the location of target for the given player only
+// If target is OBJECT_INVALID the sound will play at the location of the player
+void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_INVALID);
 
 
 const string NWNX_Player = "NWNX_Player";
@@ -325,9 +326,10 @@ void NWNX_Player_MusicBattleStop(object player)
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_PlaySound(object player, string sound)
+void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_INVALID)
 {
     string sFunc = "PlaySound";
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sound);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 

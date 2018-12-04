@@ -508,14 +508,20 @@ ArgumentStack Player::PlaySound(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         const auto playerID = pPlayer->m_nPlayerID;
-        const auto oidPlayer = pPlayer->m_oidNWSObject;
 
         auto sound = Services::Events::ExtractArgument<std::string>(args);
+
+        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+        if (oidTarget == Constants::OBJECT_INVALID)
+        {
+            oidTarget = pPlayer->m_oidNWSObject;
+        }
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
         {
-            pMessage->SendServerToPlayerAIActionPlaySound(playerID, oidPlayer, sound.c_str());
+            pMessage->SendServerToPlayerAIActionPlaySound(playerID, oidTarget, sound.c_str());
         }
     }
     return stack;
