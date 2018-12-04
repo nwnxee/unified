@@ -73,6 +73,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(PlayBackgroundMusic);
     REGISTER(ChangeBattleMusic);
     REGISTER(PlayBattleMusic);
+    REGISTER(PlaySound);
 
 #undef REGISTER
 
@@ -496,6 +497,25 @@ ArgumentStack Player::PlayBattleMusic(ArgumentStack&& args)
         if (pMessage)
         {
             pMessage->SendServerToPlayerAmbientBattleMusicPlay(oidPlayer, play);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::PlaySound(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto playerID = pPlayer->m_nPlayerID;
+        const auto oidPlayer = pPlayer->m_oidNWSObject;
+
+        auto sound = Services::Events::ExtractArgument<std::string>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAIActionPlaySound(playerID, oidPlayer, sound.c_str());
         }
     }
     return stack;
