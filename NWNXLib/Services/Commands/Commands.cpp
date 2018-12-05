@@ -41,27 +41,29 @@ void Commands::UnregisterCommand(const std::string& cmd)
     m_commandMap.erase(cmd);
 }
 
-bool Commands::ScheduleCommand(const std::string& cmdline)
+// This runs on a side thread that processes input.
+bool Commands::ScheduleCommand(std::string cmdline)
 {
+    auto trim = [](std::string &s)
+    {
+        s.erase(0, s.find_first_not_of(" \n\r\t"));
+        s.erase(s.find_last_not_of(" \n\r\t") + 1);
+    };
+
+    trim(cmdline);
     std::string cmd, args;
     size_t space = cmdline.find(' ');
 
-    if (space == std::string::npos) // No args
-    {
-        cmd = cmdline.substr(0, cmdline.length() - 1);
-        args = "";
-    }
-    else
-    {
-        cmd = cmdline.substr(0, space);
-        args = cmdline.substr(space+1, cmdline.length()-space-2);
-    }
+    cmd = cmdline.substr(0, space);
+    args = (space == std::string::npos) ? "" : cmdline.substr(space, std::string::npos);
+
+    trim(cmd); trim(args);
 
     auto it = m_commandMap.find(cmd);
     if (it != m_commandMap.end())
     {
         std::lock_guard<std::mutex> guard(m_queueLock);
-        m_commandQueue.push_back(std::make_pair(cmd, args));
+        m_commandQueue.emplace_back(cmd, args);
         LOG_DEBUG("Scheduled command '%s' with args '%s'", cmd.c_str(), args.c_str());
         return true;
     }

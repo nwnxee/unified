@@ -21,7 +21,7 @@ public:
     bool RegisterCommand(const std::string& cmd, CommandFunc func);
     void UnregisterCommand(const std::string& cmd);
 
-    bool ScheduleCommand(const std::string& cmdline);
+    bool ScheduleCommand(std::string cmdline);
     void RunScheduledCommands();
 
 private:
