@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <deque>
+#include <set>
 #include <mutex>
 
 namespace NWNXLib {
@@ -37,6 +38,9 @@ public:
 
     bool RegisterCommand(const std::string& cmd, Commands::CommandFunc func);
     void UnregisterCommand(const std::string& cmd);
+
+private:
+    std::set<std::string> m_RegisteredCommands;
 };
 
 }

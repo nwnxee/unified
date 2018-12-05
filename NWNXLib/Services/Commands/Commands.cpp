@@ -92,16 +92,30 @@ CommandsProxy::CommandsProxy(Commands& commands)
 }
 CommandsProxy::~CommandsProxy()
 {
+    for (auto cmd: m_RegisteredCommands)
+    {
+        m_proxyBase.UnregisterCommand(cmd);
+    }
+    m_RegisteredCommands.clear();
 }
 
 
 bool CommandsProxy::RegisterCommand(const std::string& cmd, Commands::CommandFunc func)
 {
-    return m_proxyBase.RegisterCommand(cmd, func);
+    if (m_proxyBase.RegisterCommand(cmd, func))
+    {
+        m_RegisteredCommands.emplace(cmd);
+        return true;
+    }
+    return false;
 }
 void CommandsProxy::UnregisterCommand(const std::string& cmd)
 {
-    m_proxyBase.UnregisterCommand(cmd);
+    if (m_RegisteredCommands.find(cmd) != m_RegisteredCommands.end())
+    {
+        m_proxyBase.UnregisterCommand(cmd);
+        m_RegisteredCommands.erase(cmd);
+    }
 }
 
 }
