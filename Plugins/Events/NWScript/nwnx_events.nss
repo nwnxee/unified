@@ -121,19 +121,19 @@
         PROJECTILE_PATH_TYPE    int
         IS_INSTANT_SPELL        int         Returns TRUE if spell was instant else FALSE
 ////////////////////////////////////////////////////////////////////////////////
-        NWNX_ON_USE_HEALER_KIT_BEFORE
-        NWNX_ON_USE_HEALER_KIT_AFTER
+    NWNX_ON_USE_HEALER_KIT_BEFORE
+    NWNX_ON_USE_HEALER_KIT_AFTER
 
-        Usage:
-            OBJECT_SELF = The creature using the Healer's Kit
+    Usage:
+        OBJECT_SELF = The creature using the Healer's Kit
 
-        Event data:
-            Variable Name           Type        Notes
-            TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
-            ITEM_OBJECT_ID          object      ...
-            ITEM_PROPERTY_INDEX     int
-            MOVE_TO_TARGET          int
-            ACTION_RESULT           int
+    Event data:
+        Variable Name           Type        Notes
+        TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
+        ITEM_OBJECT_ID          object      ...
+        ITEM_PROPERTY_INDEX     int
+        MOVE_TO_TARGET          int
+        ACTION_RESULT           int
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_PARTY_*_BEFORE
     NWNX_ON_PARTY_*_AFTER
