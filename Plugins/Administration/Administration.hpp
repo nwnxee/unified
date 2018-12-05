@@ -26,7 +26,7 @@ public:
     NWNXLib::Services::Events::ArgumentStack OnRemoveBannedPlayerName(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetBannedList(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnSetModuleName(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSetServereName(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnSetServerName(NWNXLib::Services::Events::ArgumentStack&& args);
 
 };
 
