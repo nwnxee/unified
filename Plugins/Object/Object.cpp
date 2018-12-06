@@ -274,7 +274,6 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
 ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    std::string retval = "";
     if (auto *pObject = object(args))
     {
         const auto dialog = Services::Events::ExtractArgument<std::string>(args);
@@ -288,7 +287,6 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
             pDoor->m_cDialog = resref;
     }
 
-    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 
