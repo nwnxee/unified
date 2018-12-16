@@ -14,7 +14,7 @@ public:
     ItemEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void UseItemHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t,
+    static void UseItemHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t,
         uint8_t, NWNXLib::API::Types::ObjectID, NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID);
 };
 
