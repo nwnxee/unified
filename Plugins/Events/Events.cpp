@@ -124,7 +124,7 @@ Events::Events(const Plugin::CreateParams& params)
         m_healerKitEvents = std::make_unique<HealerKitEvents>(GetServices()->m_hooks);
     }
 
-    if (GetServices()->m_config->Get<bool>("ENABLE_COMBAT_MODE_EVENTS", true))
+    if (GetServices()->m_config->Get<bool>("ENABLE_COMBAT_MODE_EVENTS", false))
     {
         m_combatModeEvents = std::make_unique<CombatModeEvents>(GetServices()->m_hooks);
     }    
