@@ -21,6 +21,7 @@ class StealthEvents;
 class SpellEvents;
 class PartyEvents;
 class HealerKitEvents;
+class CombatModeEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -80,6 +81,7 @@ private:
     std::unique_ptr<SpellEvents> m_spellEvents;
     std::unique_ptr<PartyEvents> m_partyEvents;
     std::unique_ptr<HealerKitEvents> m_healerKitEvents;
+    std::unique_ptr<CombatModeEvents> m_combatModeEvents;
 };
 
 }

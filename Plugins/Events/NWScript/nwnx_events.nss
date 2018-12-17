@@ -176,6 +176,32 @@
 
     KICK_HENCHMAN
         INVITED_BY          object      ...
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_COMBAT_MODE_BEFORE
+    NWNX_ON_COMBAT_MODE_AFTER
+
+    Usage:
+        OBJECT_SELF = The Player Character toggling the mode
+
+    Event data:
+        Variable Name           Type        Notes
+        COMBAT_MODE_ID          int         See below
+
+    The Combat Mode ID returned does not match the COMBAT_MODE_* NWScript constants
+    
+    Use the following:
+    NONE                    0
+    PARRY                   1
+    POWER_ATTACK            2
+    IMPROVED_POWER_ATTACK   3
+    COUNTERSPELL            4
+    FLURRY_OF_BLOWS         5
+    RAPID_SHOT              6
+    EXPERTISE               7
+    IMPROVED_EXPERTISE      8
+    DEFENSIVE_CASTING       9
+    DIRTY_FIGHTING          10
+    DEFENSIVE_STANCE        11      
 *///////////////////////////////////////////////////////////////////////////////
 
 // Scripts can subscribe to events.
@@ -208,6 +234,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Feat events
 // - Item events
 // - Healer's Kit event
+// - Combat Mode events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.

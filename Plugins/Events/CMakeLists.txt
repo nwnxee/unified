@@ -10,4 +10,5 @@ add_plugin(Events
     "Events/StealthEvents.cpp"
     "Events/SpellEvents.cpp"
     "Events/PartyEvents.cpp"
-    "Events/HealerKitEvents.cpp")
+    "Events/HealerKitEvents.cpp"
+    "Events/CombatModeEvents.cpp")

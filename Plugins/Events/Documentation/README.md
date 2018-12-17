@@ -10,9 +10,13 @@ Provides an interface for plugins to create event-based systems, and exposes som
 | ------------------------------------- | :----: | ------------- |
 | NWNX_EVENTS_ENABLE_ASSOCIATE_EVENTS   | bool   | true          |
 | NWNX_EVENTS_ENABLE_CLIENT_EVENTS      | bool   | true          |
+| NWNX_EVENTS_ENABLE_COMBAT_EVENTS      | bool   | true          |
 | NWNX_EVENTS_ENABLE_DM_ACTION_EVENTS   | bool   | true          |
 | NWNX_EVENTS_ENABLE_EXAMINE_EVENTS     | bool   | true          |
 | NWNX_EVENTS_ENABLE_ITEM_EVENTS        | bool   | true          |
 | NWNX_EVENTS_ENABLE_FEAT_EVENTS        | bool   | true          |
 | NWNX_EVENTS_ENABLE_STEALTH_EVENTS     | bool   | true          |
 | NWNX_EVENTS_ENABLE_SPELL_EVENTS       | bool   | true          |
+| NWNX_EVENTS_ENABLE_PARTY_EVENTS       | bool   | true          |
+| NWNX_EVENTS_ENABLE_HEALER_KIT_EVENTS  | bool   | true          |
+| NWNX_EVENTS_ENABLE_COMBAT_MODE_EVENTS | bool   | true          |
