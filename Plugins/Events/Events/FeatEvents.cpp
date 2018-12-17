@@ -39,7 +39,6 @@ int32_t FeatEvents::UseFeatHook(
     NWNXLib::API::Vector* pvTarget)
 {
     int32_t retVal;
-    std::string sAux;
 
     Events::PushEventData("FEAT_ID", std::to_string(featID));
     Events::PushEventData("SUBFEAT_ID", std::to_string(subFeatID));
@@ -51,7 +50,7 @@ int32_t FeatEvents::UseFeatHook(
     Events::PushEventData("TARGET_POSITION_Y", pvTarget ? std::to_string(pvTarget->y) : "0.0");
     Events::PushEventData("TARGET_POSITION_Z", pvTarget ? std::to_string(pvTarget->z) : "0.0");
 
-    if (Events::SignalEvent("NWNX_ON_USE_FEAT_BEFORE", thisPtr->m_idSelf, &sAux))
+    if (Events::SignalEvent("NWNX_ON_USE_FEAT_BEFORE", thisPtr->m_idSelf))
     {
         retVal = m_UseFeatHook->CallOriginal<int32_t>(thisPtr, featID, subFeatID, oidTarget, oidArea, pvTarget);
     }

@@ -28,7 +28,6 @@ int32_t ItemEvents::UseItemHook(
     API::Types::ObjectID area)
 {
     int32_t retVal;
-    std::string sAux;
     
     Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
     Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
@@ -38,7 +37,7 @@ int32_t ItemEvents::UseItemHook(
     Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
     Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));    
     
-    if (Events::SignalEvent("NWNX_ON_USE_ITEM_BEFORE", thisPtr->m_idSelf, &sAux))
+    if (Events::SignalEvent("NWNX_ON_USE_ITEM_BEFORE", thisPtr->m_idSelf))
     {
         retVal = m_UseItemHook->CallOriginal<int32_t>(thisPtr, item, propIndex, subPropIndex, target, targetPosition, area);
     }
