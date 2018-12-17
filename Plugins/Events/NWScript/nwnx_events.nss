@@ -44,6 +44,10 @@
         ITEM_OBJECT_ID          object      Convert to object with NWNX_Object_StringToObject()
         TARGET_OBJECT_ID        object      ...
         ITEM_PROPERTY_INDEX     int
+        ITEM_SUB_PROPERTY_INDEX int
+        TARGET_POSITION_X       float
+        TARGET_POSITION_Y       float
+        TARGET_POSITION_Z       float
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -200,7 +204,10 @@ string NWNX_Events_GetEventData(string tag);
 // - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
-// ONLY WORKS WITH HEALER'S KIT EVENT
+// ONLY WORKS WITH THE FOLLOWING EVENTS:
+// - Feat events
+// - Item events
+// - Healer's Kit event
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
