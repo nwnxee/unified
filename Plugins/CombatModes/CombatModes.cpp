@@ -19,7 +19,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
     return new Plugin::Info
     {
         "CombatModes",
-        "Dispatches Combat Mode toggle events.",
+        "Allows subscribing to Combat Mode toggle events",
         "Daz",
         "daztek@gmail.com",
         1,
