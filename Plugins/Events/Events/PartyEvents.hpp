@@ -13,8 +13,7 @@ public:
     PartyEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void HandlePartyMessageHook(NWNXLib::Services::Hooks::CallType, 
-        NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*, uint8_t);
+    static int32_t HandlePartyMessageHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*, uint8_t);
 };
 
 }

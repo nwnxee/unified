@@ -180,6 +180,8 @@
     NWNX_ON_COMBAT_MODE_ON
     NWNX_ON_COMBAT_MODE_OFF
 
+    !!! NOTICE: NEEDS THE NWNX_CombatModes PLUGIN TO WORK !!!
+    
     Usage:
         OBJECT_SELF = The Player Character toggling the mode
 
@@ -234,7 +236,8 @@ string NWNX_Events_GetEventData(string tag);
 // - Feat events
 // - Item events
 // - Healer's Kit event
-// - Combat Mode events
+// - CombatMode events
+// - Party events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
