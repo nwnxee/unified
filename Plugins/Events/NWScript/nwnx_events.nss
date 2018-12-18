@@ -177,8 +177,8 @@
     KICK_HENCHMAN
         INVITED_BY          object      ...
 ////////////////////////////////////////////////////////////////////////////////
-    NWNX_ON_COMBAT_MODE_BEFORE
-    NWNX_ON_COMBAT_MODE_AFTER
+    NWNX_ON_COMBAT_MODE_ON
+    NWNX_ON_COMBAT_MODE_OFF
 
     Usage:
         OBJECT_SELF = The Player Character toggling the mode
