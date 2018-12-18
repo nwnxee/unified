@@ -42,6 +42,13 @@ CombatModes::CombatModes(const Plugin::CreateParams& params)
 {
     GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSCreature__SetCombatMode, void, API::CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
     g_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSCreature__SetCombatMode);
+
+    GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
+        [this](const std::vector<std::string> message)
+        {
+            if (message[0] == "NWNX_ON_COMBAT_MODE_ON" || message[0] == "NWNX_ON_COMBAT_MODE_OFF")
+                this->m_Skipped = std::strtoul(message[1].c_str(), NULL, 0) == 1;
+        });    
 }
 
 CombatModes::~CombatModes()
@@ -60,19 +67,22 @@ void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode
             
             if (nCurrentMode != 0)
             {
-                 messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", { "MODE", std::to_string(nCurrentMode) } );
-                 messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", { "NWNX_ON_MODE_OFF", NWNXLib::Utils::ObjectIDToString(thisPtr->m_idSelf) });
+                 messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", { "COMBAT_MODE_ID", std::to_string(nCurrentMode) } );
+                 messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", { "NWNX_ON_COMBAT_MODE_OFF", NWNXLib::Utils::ObjectIDToString(thisPtr->m_idSelf) });
             }
 
             if (nNewMode != 0)
             {
-                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", { "MODE", std::to_string(nNewMode) } );
-                messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", { "NWNX_ON_MODE_ON", NWNXLib::Utils::ObjectIDToString(thisPtr->m_idSelf) });
+                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", { "COMBAT_MODE_ID", std::to_string(nNewMode) } );
+                messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", { "NWNX_ON_COMBAT_MODE_ON", NWNXLib::Utils::ObjectIDToString(thisPtr->m_idSelf) });
             }
         }
     }
 
-    return g_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
+    if (!g_plugin->m_Skipped)
+    {
+        return g_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
+    }    
 }
 
 }

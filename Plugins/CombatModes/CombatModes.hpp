@@ -13,6 +13,7 @@ public:
     virtual ~CombatModes();
 
 private:
+    bool m_Skipped;
     static void SetCombatModeHook(NWNXLib::API::CNWSCreature*, uint8_t, int32_t);
 };
 
