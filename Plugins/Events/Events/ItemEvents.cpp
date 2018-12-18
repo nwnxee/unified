@@ -28,33 +28,28 @@ int32_t ItemEvents::UseItemHook(
     API::Types::ObjectID area)
 {
     int32_t retVal;
-    
-    Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
-    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
-    Events::PushEventData("ITEM_PROPERTY_INDEX", std::to_string(propIndex));
-    Events::PushEventData("ITEM_SUB_PROPERTY_INDEX", std::to_string(subPropIndex));
-    Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
-    Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
-    Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));    
-    
-    if (Events::SignalEvent("NWNX_ON_USE_ITEM_BEFORE", thisPtr->m_idSelf))
+
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
+        Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
+        Events::PushEventData("ITEM_PROPERTY_INDEX", std::to_string(propIndex));
+        Events::PushEventData("ITEM_SUB_PROPERTY_INDEX", std::to_string(subPropIndex));
+        Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
+        Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
+        Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));
+    return Events::SignalEvent(ev, thisPtr->m_idSelf);   
+    };
+
+    if (PushAndSignal("NWNX_ON_USE_ITEM_BEFORE"))
     {
         retVal = m_UseItemHook->CallOriginal<int32_t>(thisPtr, item, propIndex, subPropIndex, target, targetPosition, area);
     }
     else
     {
         retVal = false;    
-    }
+    }   
 
-    Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
-    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
-    Events::PushEventData("ITEM_PROPERTY_INDEX", std::to_string(propIndex));
-    Events::PushEventData("ITEM_SUB_PROPERTY_INDEX", std::to_string(subPropIndex));
-    Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
-    Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
-    Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));    
-
-    Events::SignalEvent("NWNX_ON_USE_ITEM_AFTER", thisPtr->m_idSelf);
+    PushAndSignal("NWNX_ON_USE_ITEM_AFTER");
 
     return retVal;
 }

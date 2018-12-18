@@ -40,17 +40,18 @@ int32_t FeatEvents::UseFeatHook(
 {
     int32_t retVal;
 
-    Events::PushEventData("FEAT_ID", std::to_string(featID));
-    Events::PushEventData("SUBFEAT_ID", std::to_string(subFeatID));
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("FEAT_ID", std::to_string(featID));
+        Events::PushEventData("SUBFEAT_ID", std::to_string(subFeatID));
+        Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
+        Events::PushEventData("AREA_OBJECT_ID", Utils::ObjectIDToString(oidArea));
+        Events::PushEventData("TARGET_POSITION_X", pvTarget ? std::to_string(pvTarget->x) : "0.0");
+        Events::PushEventData("TARGET_POSITION_Y", pvTarget ? std::to_string(pvTarget->y) : "0.0");
+        Events::PushEventData("TARGET_POSITION_Z", pvTarget ? std::to_string(pvTarget->z) : "0.0");
+    return Events::SignalEvent(ev, thisPtr->m_idSelf);   
+    };
 
-    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
-    Events::PushEventData("AREA_OBJECT_ID", Utils::ObjectIDToString(oidArea));
-
-    Events::PushEventData("TARGET_POSITION_X", pvTarget ? std::to_string(pvTarget->x) : "0.0");
-    Events::PushEventData("TARGET_POSITION_Y", pvTarget ? std::to_string(pvTarget->y) : "0.0");
-    Events::PushEventData("TARGET_POSITION_Z", pvTarget ? std::to_string(pvTarget->z) : "0.0");
-
-    if (Events::SignalEvent("NWNX_ON_USE_FEAT_BEFORE", thisPtr->m_idSelf))
+    if (PushAndSignal("NWNX_ON_USE_FEAT_BEFORE"))
     {
         retVal = m_UseFeatHook->CallOriginal<int32_t>(thisPtr, featID, subFeatID, oidTarget, oidArea, pvTarget);
     }
@@ -59,17 +60,7 @@ int32_t FeatEvents::UseFeatHook(
         retVal = false;    
     }
 
-    Events::PushEventData("FEAT_ID", std::to_string(featID));
-    Events::PushEventData("SUBFEAT_ID", std::to_string(subFeatID));
-
-    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
-    Events::PushEventData("AREA_OBJECT_ID", Utils::ObjectIDToString(oidArea));
-
-    Events::PushEventData("TARGET_POSITION_X", pvTarget ? std::to_string(pvTarget->x) : "0.0");
-    Events::PushEventData("TARGET_POSITION_Y", pvTarget ? std::to_string(pvTarget->y) : "0.0");
-    Events::PushEventData("TARGET_POSITION_Z", pvTarget ? std::to_string(pvTarget->z) : "0.0");
-
-    Events::SignalEvent("NWNX_ON_USE_FEAT_AFTER", thisPtr->m_idSelf);   
+    PushAndSignal("NWNX_ON_USE_FEAT_AFTER");   
 
     return retVal;
 }

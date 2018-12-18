@@ -30,15 +30,18 @@ int32_t SkillEvents::UseSkillHook(
 {
     int32_t retVal;
 
-    Events::PushEventData("SKILL_ID", std::to_string(skill));
-    Events::PushEventData("SUB_SKILL_ID", std::to_string(subSkill));
-    Events::PushEventData("USED_ITEM_OBJECT_ID", Utils::ObjectIDToString(usedItem));
-    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
-    Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
-    Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
-    Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));    
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("SKILL_ID", std::to_string(skill));
+        Events::PushEventData("SUB_SKILL_ID", std::to_string(subSkill));
+        Events::PushEventData("USED_ITEM_OBJECT_ID", Utils::ObjectIDToString(usedItem));
+        Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
+        Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
+        Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
+        Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z)); 
+    return Events::SignalEvent(ev, thisPtr->m_idSelf);   
+    };
 
-    if (Events::SignalEvent("NWNX_ON_USE_SKILL_BEFORE", thisPtr->m_idSelf))
+    if (PushAndSignal("NWNX_ON_USE_SKILL_BEFORE"))
     {
         retVal = m_UseSkillHook->CallOriginal<int32_t>(thisPtr, skill, subSkill, target, targetPosition, area, usedItem, activePropertyIndex);
     }
@@ -47,15 +50,7 @@ int32_t SkillEvents::UseSkillHook(
         retVal = false;    
     }
 
-    Events::PushEventData("SKILL_ID", std::to_string(skill));
-    Events::PushEventData("SUB_SKILL_ID", std::to_string(subSkill));
-    Events::PushEventData("USED_ITEM_OBJECT_ID", Utils::ObjectIDToString(usedItem));
-    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
-    Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
-    Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
-    Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));    
-
-    Events::SignalEvent("NWNX_ON_USE_SKILL_AFTER", thisPtr->m_idSelf);
+    PushAndSignal("NWNX_ON_USE_SKILL_AFTER");
 
     return retVal;
 }
