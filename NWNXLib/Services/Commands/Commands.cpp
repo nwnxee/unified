@@ -59,10 +59,10 @@ bool Commands::ScheduleCommand(std::string cmdline)
 
     trim(cmd); trim(args);
 
+    std::lock_guard<std::mutex> guard(m_queueLock);
     auto it = m_commandMap.find(cmd);
     if (it != m_commandMap.end())
     {
-        std::lock_guard<std::mutex> guard(m_queueLock);
         m_commandQueue.emplace_back(cmd, args);
         LOG_DEBUG("Scheduled command '%s' with args '%s'", cmd.c_str(), args.c_str());
         return true;
