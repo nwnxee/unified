@@ -203,7 +203,27 @@
     IMPROVED_EXPERTISE      8
     DEFENSIVE_CASTING       9
     DIRTY_FIGHTING          10
-    DEFENSIVE_STANCE        11      
+    DEFENSIVE_STANCE        11
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_USE_SKILL_BEFORE
+    NWNX_ON_USE_SKILL_AFTER
+
+    Probably only really works with the following activated skills:
+    SKILL_ANIMAL_EMPATHY, SKILL_DISABLE_TRAP, SKILL_HEAL, SKILL_OPEN_LOCK, 
+    SKILL_PICK_POCKET, SKILL_TAUNT
+
+    Usage:
+        OBJECT_SELF = The creature using the skill
+
+    Event data:
+        Variable Name           Type        Notes
+        USED_ITEM_OBJECT_ID     object      Convert to object with NWNX_Object_StringToObject()
+        TARGET_OBJECT_ID        object      ...
+        SKILL_ID                int
+        SUB_SKILL_ID            int
+        TARGET_POSITION_X       float
+        TARGET_POSITION_Y       float
+        TARGET_POSITION_Z       float        
 *///////////////////////////////////////////////////////////////////////////////
 
 // Scripts can subscribe to events.
@@ -238,6 +258,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Healer's Kit event
 // - CombatMode events
 // - Party events
+// - Skill events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.

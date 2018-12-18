@@ -14,6 +14,7 @@
 #include "Events/SpellEvents.hpp"
 #include "Events/PartyEvents.hpp"
 #include "Events/HealerKitEvents.hpp"
+#include "Events/SkillEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -121,7 +122,12 @@ Events::Events(const Plugin::CreateParams& params)
     if (GetServices()->m_config->Get<bool>("ENABLE_HEALER_KIT_EVENTS", true))
     {
         m_healerKitEvents = std::make_unique<HealerKitEvents>(GetServices()->m_hooks);
-    }   
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_SKILL_EVENTS", true))
+    {
+        m_skillEvents = std::make_unique<SkillEvents>(GetServices()->m_hooks);
+    }        
 }
 
 Events::~Events()
