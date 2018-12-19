@@ -44,6 +44,10 @@
         ITEM_OBJECT_ID          object      Convert to object with NWNX_Object_StringToObject()
         TARGET_OBJECT_ID        object      ...
         ITEM_PROPERTY_INDEX     int
+        ITEM_SUB_PROPERTY_INDEX int
+        TARGET_POSITION_X       float
+        TARGET_POSITION_Y       float
+        TARGET_POSITION_Z       float
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -172,6 +176,54 @@
 
     KICK_HENCHMAN
         INVITED_BY          object      ...
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_COMBAT_MODE_ON
+    NWNX_ON_COMBAT_MODE_OFF
+
+    !!! NOTICE: NEEDS THE NWNX_CombatModes PLUGIN TO WORK !!!
+    
+    Usage:
+        OBJECT_SELF = The Player Character toggling the mode
+
+    Event data:
+        Variable Name           Type        Notes
+        COMBAT_MODE_ID          int         See below
+
+    The Combat Mode ID returned does not match the COMBAT_MODE_* NWScript constants
+    
+    Use the following:
+    NONE                    0
+    PARRY                   1
+    POWER_ATTACK            2
+    IMPROVED_POWER_ATTACK   3
+    COUNTERSPELL            4
+    FLURRY_OF_BLOWS         5
+    RAPID_SHOT              6
+    EXPERTISE               7
+    IMPROVED_EXPERTISE      8
+    DEFENSIVE_CASTING       9
+    DIRTY_FIGHTING          10
+    DEFENSIVE_STANCE        11
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_USE_SKILL_BEFORE
+    NWNX_ON_USE_SKILL_AFTER
+
+    Probably only really works with the following activated skills:
+    SKILL_ANIMAL_EMPATHY, SKILL_DISABLE_TRAP, SKILL_HEAL, SKILL_OPEN_LOCK, 
+    SKILL_PICK_POCKET, SKILL_TAUNT
+
+    Usage:
+        OBJECT_SELF = The creature using the skill
+
+    Event data:
+        Variable Name           Type        Notes
+        USED_ITEM_OBJECT_ID     object      Convert to object with NWNX_Object_StringToObject()
+        TARGET_OBJECT_ID        object      ...
+        SKILL_ID                int
+        SUB_SKILL_ID            int
+        TARGET_POSITION_X       float
+        TARGET_POSITION_Y       float
+        TARGET_POSITION_Z       float        
 *///////////////////////////////////////////////////////////////////////////////
 
 // Scripts can subscribe to events.
@@ -200,7 +252,13 @@ string NWNX_Events_GetEventData(string tag);
 // - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
-// ONLY WORKS WITH HEALER'S KIT EVENT
+// ONLY WORKS WITH THE FOLLOWING EVENTS:
+// - Feat events
+// - Item events
+// - Healer's Kit event
+// - CombatMode events
+// - Party events
+// - Skill events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
