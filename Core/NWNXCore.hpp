@@ -47,6 +47,7 @@ private:
     void InitialSetupHooks();
     void InitialVersionCheck();
     void InitialSetupPlugins();
+    void InitialSetupCommands();
 
     void UnloadPlugins();
     void UnloadPlugin(std::pair<NWNXLib::Services::Plugins::RegistrationToken,

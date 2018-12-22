@@ -275,6 +275,27 @@ void NWNXCore::InitialSetupPlugins()
     }
 }
 
+void NWNXCore::InitialSetupCommands()
+{
+    m_services->m_commands->RegisterCommand("set", [](std::string& s)
+    {
+        size_t equals = s.find('=');
+        if (equals != std::string::npos)
+        {
+            std::string varname = s.substr(0, equals);
+            std::string value = s.substr(equals+1, std::string::npos);
+            if (setenv(varname.c_str(), value.c_str(), 1) == 0)
+                LOG_NOTICE("Environment variable '%s' set to '%s'", varname.c_str(), value.c_str());
+            else
+                LOG_WARNING("Unable to set environment variable '%s' to '%s'", varname.c_str(), value.c_str());
+        }
+        else
+        {
+            LOG_WARNING("Usage: set <varname>=<value>");
+        }
+    });
+}
+
 void NWNXCore::UnloadPlugins()
 {
     using PairType = std::pair<Services::Plugins::RegistrationToken, std::unique_ptr<Services::ProxyServiceList>>;
@@ -400,6 +421,7 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
         {
             g_core->InitialSetupHooks();
             g_core->InitialSetupPlugins();
+            g_core->InitialSetupCommands();
         }
         catch (const std::runtime_error& ex)
         {
