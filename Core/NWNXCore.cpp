@@ -285,14 +285,22 @@ void NWNXCore::InitialSetupCommands()
             std::string varname = s.substr(0, equals);
             std::string value = s.substr(equals+1, std::string::npos);
             if (setenv(varname.c_str(), value.c_str(), 1) == 0)
-                LOG_NOTICE("Environment variable '%s' set to '%s'", varname.c_str(), value.c_str());
+                std::printf("Environment variable '%s' set to '%s'\n", varname.c_str(), value.c_str());
             else
-                LOG_WARNING("Unable to set environment variable '%s' to '%s'", varname.c_str(), value.c_str());
+                std::printf("Unable to set environment variable '%s' to '%s'\n", varname.c_str(), value.c_str());
         }
         else
         {
-            LOG_WARNING("Usage: set <varname>=<value>");
+            std::printf("Usage: set <varname>=<value>\n");
         }
+    });
+    m_services->m_commands->RegisterCommand("get", [](std::string& s)
+    {
+        char *value = std::getenv(s.c_str());
+        if (value) 
+            std::printf("%s=%s\n", s.c_str(), value);
+        else
+            std::printf("Variable %s does not exist\n", s.c_str());
     });
 }
 
