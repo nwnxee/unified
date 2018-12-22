@@ -74,6 +74,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(ChangeBattleMusic);
     REGISTER(PlayBattleMusic);
     REGISTER(PlaySound);
+    REGISTER(SetPlaceableUsable);
 
 #undef REGISTER
 
@@ -522,6 +523,33 @@ ArgumentStack Player::PlaySound(ArgumentStack&& args)
         if (pMessage)
         {
             pMessage->SendServerToPlayerAIActionPlaySound(playerID, oidTarget, sound.c_str());
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlaceable = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto bUsable = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->CreateWriteMessage(sizeof(bUsable) + sizeof(oidPlaceable), pPlayer->m_nPlayerID, 1);
+
+            pMessage->WriteOBJECTIDServer(oidPlaceable);
+            pMessage->WriteBOOL(bUsable);
+            uint8_t *buffer; 
+            uint32_t size;
+            
+            if (pMessage->GetWriteMessage(&buffer, &size))
+            {
+                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID, 0x05, 0x08, buffer, size);
+            }
         }
     }
     return stack;
