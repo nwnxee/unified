@@ -281,6 +281,7 @@ void NWNX_Creature_LevelDown(object creature, int count=1);
 void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 
 // Returns the creature's highest attack bonus based on its own stats
+// NOTE: AB vs. <Type> and +AB on Gauntlets are excluded
 int NWNX_Creature_GetAttackBonus(object creature, int isMelee, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE);
 
 const string NWNX_Creature = "NWNX_Creature";
