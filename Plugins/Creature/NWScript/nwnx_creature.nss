@@ -281,7 +281,7 @@ void NWNX_Creature_LevelDown(object creature, int count=1);
 void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 
 // Returns the creature's highest attack bonus based on its own stats
-int NWNX_Creature_GetAttackBonus(object creature, int isMelee, int isTouchAttack = FALSE, int isOffhand = FALSE, includeBaseAttackBonus = TRUE);
+int NWNX_Creature_GetAttackBonus(object creature, int isMelee, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -997,7 +997,7 @@ void NWNX_Creature_SetChallengeRating(object creature, float fCR)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetAttackBonus(object creature, int isMelee, int isTouchAttack = FALSE, int isOffhand = FALSE, includeBaseAttackBonus = TRUE)
+int NWNX_Creature_GetAttackBonus(object creature, int isMelee, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE)
 {
     string sFunc = "GetAttackBonus";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, includeBaseAttackBonus);
