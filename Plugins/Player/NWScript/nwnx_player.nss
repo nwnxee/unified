@@ -95,6 +95,9 @@ void NWNX_Player_MusicBattleStop(object player);
 // If target is OBJECT_INVALID the sound will play at the location of the player
 void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_INVALID);
 
+// Toggle a placeable's usable flag for the given player only
+void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -331,6 +334,16 @@ void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_I
     string sFunc = "PlaySound";
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sound);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
+{
+    string sFunc = "SetPlaceableUsable";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, usable);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
