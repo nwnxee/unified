@@ -23,7 +23,7 @@ ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"
 # Use NWNX_ServerLogRedirector as default log manager
 ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
     NWN_TAIL_LOGS=n \
-    NWNX_CORE_LOG_LEVEL=7 \
+    NWNX_CORE_LOG_LEVEL=6 \
     NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
 # Disable all other plugins by default. Remember to add new plugins to this list.
 ENV NWNX_ADMINISTRATION_SKIP=y \
