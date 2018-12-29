@@ -82,6 +82,7 @@ private:
     ArgumentStack LevelUp                       (ArgumentStack&& args);
     ArgumentStack LevelDown                     (ArgumentStack&& args);
     ArgumentStack SetChallengeRating            (ArgumentStack&& args);
+    ArgumentStack GetAttackBonus                (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
