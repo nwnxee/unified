@@ -27,6 +27,7 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
     NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
 # Disable all other plugins by default. Remember to add new plugins to this list.
 ENV NWNX_ADMINISTRATION_SKIP=y \
+    NWNX_AREA_SKIP=y \
     NWNX_BEHAVIOURTREE_SKIP=y \
     NWNX_CHAT_SKIP=y \
     NWNX_COMBATMODES_SKIP=y \
