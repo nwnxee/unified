@@ -62,6 +62,12 @@ int NWNX_Area_GetWeatherChance(object area, int type);
 // chance = 0-100
 void NWNX_Area_SetWeatherChance(object area, int type, int chance);
 
+// Get the fog clip distance in area
+float NWNX_Area_GetFogClipDistance(object area);
+
+// Set the fog clip distance in area
+void NWNX_Area_SetFogClipDistance(object area, float distance);
+
 const string NWNX_Area = "NWNX_Area";
 
 
@@ -207,6 +213,25 @@ void NWNX_Area_SetWeatherChance(object area, int type, int chance)
 
     NWNX_PushArgumentInt(NWNX_Area, sFunc, chance);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+float NWNX_Area_GetFogClipDistance(object area)
+{
+    string sFunc = "GetFogClipDistance";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_SetFogClipDistance(object area, float distance)
+{
+    string sFunc = "SetFogClipDistance";
+
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, distance);
     NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
     NWNX_CallFunction(NWNX_Area, sFunc);
 }

@@ -30,7 +30,9 @@ private:
     ArgumentStack GetWindPower              (ArgumentStack&& args);
     ArgumentStack SetWindPower              (ArgumentStack&& args);
     ArgumentStack GetWeatherChance          (ArgumentStack&& args);
-    ArgumentStack SetWeatherChance          (ArgumentStack&& args);    
+    ArgumentStack SetWeatherChance          (ArgumentStack&& args);
+    ArgumentStack GetFogClipDistance        (ArgumentStack&& args);
+    ArgumentStack SetFogClipDistance        (ArgumentStack&& args);    
 
     NWNXLib::API::CNWSArea *area(ArgumentStack& args);
 

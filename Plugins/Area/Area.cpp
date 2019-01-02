@@ -57,7 +57,9 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(GetWindPower);
     REGISTER(SetWindPower);
     REGISTER(GetWeatherChance);
-    REGISTER(SetWeatherChance);    
+    REGISTER(SetWeatherChance);
+    REGISTER(GetFogClipDistance);
+    REGISTER(SetFogClipDistance);    
 
 #undef REGISTER
 }
@@ -152,11 +154,11 @@ ArgumentStack Area::SetPVPSetting(ArgumentStack&& args)
     
     if (auto *pArea = area(args))
     {
-        const auto pvpSetting = Services::Events::ExtractArgument<int32_t>(args);
+        auto pvpSetting = Services::Events::ExtractArgument<int32_t>(args);
         
-        ASSERT(pvpSetting >= 0);
-        ASSERT(pvpSetting <= 3);
-
+        if (pvpSetting < 0) pvpSetting = 0;
+        if (pvpSetting > 3) pvpSetting = 3;
+        
         pArea->m_nPVPSetting = pvpSetting;
     }    
 
@@ -244,9 +246,6 @@ ArgumentStack Area::SetNoRestingAllowed(ArgumentStack&& args)
     {
         const auto noRestingAllowed = Services::Events::ExtractArgument<int32_t>(args);
         
-        ASSERT(noRestingAllowed >= 0);
-        ASSERT(noRestingAllowed <= 1);
-
         pArea->m_bNoRestingAllowed = noRestingAllowed;
     }    
 
@@ -274,10 +273,10 @@ ArgumentStack Area::SetWindPower(ArgumentStack&& args)
     
     if (auto *pArea = area(args))
     {
-        const auto windPower = Services::Events::ExtractArgument<int32_t>(args);
+        auto windPower = Services::Events::ExtractArgument<int32_t>(args);
         
-        ASSERT(windPower >= 0);
-        ASSERT(windPower <= 2);
+        if (windPower < 0 ) windPower = 0;
+        if (windPower > 2) windPower = 2; 
 
         pArea->m_nWindAmount = windPower;
     }    
@@ -293,9 +292,6 @@ ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
     if (auto *pArea = area(args))
     {
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
-
-        ASSERT(type >= 0);
-        ASSERT(type <= 2);
 
         switch (type)
         {
@@ -330,13 +326,10 @@ ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
     {
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
 
-        ASSERT(type >= 0);
-        ASSERT(type <= 2);
+        auto chance = Services::Events::ExtractArgument<int32_t>(args);
 
-        const auto chance = Services::Events::ExtractArgument<int32_t>(args);
-
-        ASSERT(chance >= 0);
-        ASSERT(chance <= 100);        
+        if (chance < 0 ) chance = 0;
+        if (chance > 100) chance = 100;    
 
         switch (type)
         {
@@ -355,6 +348,38 @@ ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
             default:
                 break;
         }
+    }    
+
+    return stack;
+}
+
+ArgumentStack Area::GetFogClipDistance(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    float retVal = 0.0;
+    
+    if (auto *pArea = area(args))
+    {
+        retVal = pArea->m_fFogClipDistance;
+    }
+    
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    
+    if (auto *pArea = area(args))
+    {
+        auto distance = Services::Events::ExtractArgument<float>(args);
+        
+        if (distance < 0.0)
+            distance = 0.0;
+
+        pArea->m_fFogClipDistance = distance;
     }    
 
     return stack;
