@@ -24,7 +24,13 @@ private:
     ArgumentStack GetAreaSpotModifier       (ArgumentStack&& args);
     ArgumentStack SetAreaSpotModifier       (ArgumentStack&& args);
     ArgumentStack GetAreaListenModifier     (ArgumentStack&& args);
-    ArgumentStack SetAreaListenModifier     (ArgumentStack&& args);    
+    ArgumentStack SetAreaListenModifier     (ArgumentStack&& args);
+    ArgumentStack GetNoRestingAllowed       (ArgumentStack&& args);
+    ArgumentStack SetNoRestingAllowed       (ArgumentStack&& args);
+    ArgumentStack GetWindPower              (ArgumentStack&& args);
+    ArgumentStack SetWindPower              (ArgumentStack&& args);
+    ArgumentStack GetWeatherChance          (ArgumentStack&& args);
+    ArgumentStack SetWeatherChance          (ArgumentStack&& args);    
 
     NWNXLib::API::CNWSArea *area(ArgumentStack& args);
 

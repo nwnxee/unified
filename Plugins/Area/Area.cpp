@@ -51,7 +51,13 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(GetAreaSpotModifier);
     REGISTER(SetAreaSpotModifier);
     REGISTER(GetAreaListenModifier);
-    REGISTER(SetAreaListenModifier);    
+    REGISTER(SetAreaListenModifier);
+    REGISTER(GetNoRestingAllowed);
+    REGISTER(SetNoRestingAllowed);
+    REGISTER(GetWindPower);
+    REGISTER(SetWindPower);
+    REGISTER(GetWeatherChance);
+    REGISTER(SetWeatherChance);    
 
 #undef REGISTER
 }
@@ -210,6 +216,145 @@ ArgumentStack Area::SetAreaListenModifier(ArgumentStack&& args)
         const auto listenModifier = Services::Events::ExtractArgument<int32_t>(args);
         
         pArea->m_nAreaListenModifier = listenModifier;
+    }    
+
+    return stack;
+}
+
+ArgumentStack Area::GetNoRestingAllowed(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+    
+    if (auto *pArea = area(args))
+    {
+        retVal = pArea->m_bNoRestingAllowed;
+    }
+    
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Area::SetNoRestingAllowed(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    
+    if (auto *pArea = area(args))
+    {
+        const auto noRestingAllowed = Services::Events::ExtractArgument<int32_t>(args);
+        
+        ASSERT(noRestingAllowed >= 0);
+        ASSERT(noRestingAllowed <= 1);
+
+        pArea->m_bNoRestingAllowed = noRestingAllowed;
+    }    
+
+    return stack;
+}
+
+ArgumentStack Area::GetWindPower(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+    
+    if (auto *pArea = area(args))
+    {
+        retVal = pArea->m_nWindAmount;
+    }
+    
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Area::SetWindPower(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    
+    if (auto *pArea = area(args))
+    {
+        const auto windPower = Services::Events::ExtractArgument<int32_t>(args);
+        
+        ASSERT(windPower >= 0);
+        ASSERT(windPower <= 2);
+
+        pArea->m_nWindAmount = windPower;
+    }    
+
+    return stack;
+}
+
+ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+    
+    if (auto *pArea = area(args))
+    {
+        const auto type = Services::Events::ExtractArgument<int32_t>(args);
+
+        ASSERT(type >= 0);
+        ASSERT(type <= 2);
+
+        switch (type)
+        {
+            case 0:
+                retVal = pArea->m_nChanceOfRain;
+                break;
+            
+            case 1:
+                retVal = pArea->m_nChanceOfSnow;
+                break;
+
+            case 2:
+                retVal = pArea->m_nChanceOfLightning;
+                break;
+
+            default:
+                retVal = 0;
+                break;
+        }        
+    }
+    
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    
+    if (auto *pArea = area(args))
+    {
+        const auto type = Services::Events::ExtractArgument<int32_t>(args);
+
+        ASSERT(type >= 0);
+        ASSERT(type <= 2);
+
+        const auto chance = Services::Events::ExtractArgument<int32_t>(args);
+
+        ASSERT(chance >= 0);
+        ASSERT(chance <= 100);        
+
+        switch (type)
+        {
+            case 0:
+                pArea->m_nChanceOfRain = chance;
+                break;
+            
+            case 1:
+                pArea->m_nChanceOfSnow = chance;
+                break;
+
+            case 2:
+                pArea->m_nChanceOfLightning = chance;
+                break;
+
+            default:
+                break;
+        }
     }    
 
     return stack;
