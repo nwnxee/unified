@@ -32,7 +32,11 @@ private:
     ArgumentStack GetWeatherChance          (ArgumentStack&& args);
     ArgumentStack SetWeatherChance          (ArgumentStack&& args);
     ArgumentStack GetFogClipDistance        (ArgumentStack&& args);
-    ArgumentStack SetFogClipDistance        (ArgumentStack&& args);    
+    ArgumentStack SetFogClipDistance        (ArgumentStack&& args);
+    ArgumentStack GetShadowOpacity          (ArgumentStack&& args);
+    ArgumentStack SetShadowOpacity          (ArgumentStack&& args);
+    ArgumentStack GetDayNightCycle          (ArgumentStack&& args);
+    ArgumentStack SetDayNightCycle          (ArgumentStack&& args);    
 
     NWNXLib::API::CNWSArea *area(ArgumentStack& args);
 

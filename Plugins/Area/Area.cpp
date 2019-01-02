@@ -59,7 +59,11 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(GetWeatherChance);
     REGISTER(SetWeatherChance);
     REGISTER(GetFogClipDistance);
-    REGISTER(SetFogClipDistance);    
+    REGISTER(SetFogClipDistance);
+    REGISTER(GetShadowOpacity);
+    REGISTER(SetShadowOpacity);
+    REGISTER(GetDayNightCycle);
+    REGISTER(SetDayNightCycle);    
 
 #undef REGISTER
 }
@@ -380,6 +384,93 @@ ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
             distance = 0.0;
 
         pArea->m_fFogClipDistance = distance;
+    }    
+
+    return stack;
+}
+
+ArgumentStack Area::GetShadowOpacity(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+    
+    if (auto *pArea = area(args))
+    {
+        retVal = pArea->m_nShadowOpacity;
+    }
+    
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Area::SetShadowOpacity(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    
+    if (auto *pArea = area(args))
+    {
+        auto shadowOpacity = Services::Events::ExtractArgument<int32_t>(args);
+        
+        if (shadowOpacity < 0 ) shadowOpacity = 0;
+        if (shadowOpacity > 100) shadowOpacity = 100; 
+
+        pArea->m_nShadowOpacity = shadowOpacity;
+    }    
+
+    return stack;
+}
+
+ArgumentStack Area::GetDayNightCycle(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+    
+    if (auto *pArea = area(args))
+    {
+        if (pArea->m_bUseDayNightCycle)
+        {
+            retVal = 0;
+        }
+        else
+        {
+            retVal = pArea->m_bIsNight + 1;
+        }        
+    }
+    
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    
+    if (auto *pArea = area(args))
+    {
+        const auto type = Services::Events::ExtractArgument<int32_t>(args);
+
+        switch (type)
+        {
+            case 0:
+                pArea->m_bUseDayNightCycle = 1;
+                pArea->m_bIsNight = 0;
+                break;
+            
+            case 1:
+                pArea->m_bUseDayNightCycle = 0;
+                pArea->m_bIsNight = 0;
+                break;
+
+            case 2:
+                pArea->m_bUseDayNightCycle = 0;
+                pArea->m_bIsNight = 1;
+                break;
+
+            default:
+                break;
+        }
     }    
 
     return stack;

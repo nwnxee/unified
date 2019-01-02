@@ -1,13 +1,17 @@
 #include "nwnx"
 
-const int NWNX_AREA_PVP_SETTING_NO_PVP          = 0;
-const int NWNX_AREA_PVP_SETTING_PARTY_PVP       = 1;
-const int NWNX_AREA_PVP_SETTING_FULL_PVP        = 2;
-const int NWNX_AREA_PVP_SETTING_SERVER_DEFAULT  = 3;
+const int NWNX_AREA_PVP_SETTING_NO_PVP              = 0;
+const int NWNX_AREA_PVP_SETTING_PARTY_PVP           = 1;
+const int NWNX_AREA_PVP_SETTING_FULL_PVP            = 2;
+const int NWNX_AREA_PVP_SETTING_SERVER_DEFAULT      = 3;
 
-const int NWNX_AREA_WEATHER_CHANCE_RAIN         = 0;
-const int NWNX_AREA_WEATHER_CHANCE_SNOW         = 1;
-const int NWNX_AREA_WEATHER_CHANCE_LIGHTNING    = 2;
+const int NWNX_AREA_WEATHER_CHANCE_RAIN             = 0;
+const int NWNX_AREA_WEATHER_CHANCE_SNOW             = 1;
+const int NWNX_AREA_WEATHER_CHANCE_LIGHTNING        = 2;
+
+const int NWNX_AREA_DAYNIGHTCYCLE_CYCLE_DAY_NIGHT   = 0;
+const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_BRIGHT     = 1;
+const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK       = 2;
 
 // Gets the number of players in area
 int NWNX_Area_GetNumberOfPlayersInArea(object area);
@@ -67,6 +71,22 @@ float NWNX_Area_GetFogClipDistance(object area);
 
 // Set the fog clip distance in area
 void NWNX_Area_SetFogClipDistance(object area, float distance);
+
+// Get the shadow opacity of area
+int NWNX_Area_GetShadowOpacity(object area);
+
+// Set the shadow opacity of area
+// shadowOpacity = 0-100
+void NWNX_Area_SetShadowOpacity(object area, int shadowOpacity);
+
+// Get the day/night cycle of area
+// Returns NWNX_AREA_DAYNIGHTCYCLE_*
+int NWNX_Area_GetDayNightCycle(object area);
+
+// Set the day/night cycle of area
+// type = NWNX_AREA_DAYNIGHTCYCLE_*
+void NWNX_Area_SetDayNightCycle(object area, int type);
+
 
 const string NWNX_Area = "NWNX_Area";
 
@@ -232,6 +252,45 @@ void NWNX_Area_SetFogClipDistance(object area, float distance)
     string sFunc = "SetFogClipDistance";
 
     NWNX_PushArgumentFloat(NWNX_Area, sFunc, distance);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetShadowOpacity(object area)
+{
+    string sFunc = "GetShadowOpacity";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_SetShadowOpacity(object area, int shadowOpacity)
+{
+    string sFunc = "SetShadowOpacity";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, shadowOpacity);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+
+int NWNX_Area_GetDayNightCycle(object area)
+{
+    string sFunc = "GetDayNightCycle";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_SetDayNightCycle(object area, int type)
+{
+    string sFunc = "SetDayNightCycle";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
     NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
     NWNX_CallFunction(NWNX_Area, sFunc);
 }
