@@ -7,8 +7,7 @@
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
 #include "ViewPtr.hpp"
-#include "Serialize.hpp"
-#include "Utils.hpp"
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -380,8 +379,7 @@ ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
     {
         auto distance = Services::Events::ExtractArgument<float>(args);
         
-        if (distance < 0.0)
-            distance = 0.0;
+        if (distance < 0.0) distance = 0.0;
 
         pArea->m_fFogClipDistance = distance;
     }    
