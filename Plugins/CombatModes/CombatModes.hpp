@@ -16,7 +16,6 @@ private:
     bool m_Skipped;
     bool m_FlurryOfBlows;
     static void SetCombatModeHook(NWNXLib::API::CNWSCreature*, uint8_t, int32_t);
-
 };
 
 }

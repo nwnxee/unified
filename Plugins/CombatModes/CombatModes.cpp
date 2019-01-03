@@ -119,7 +119,6 @@ void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode
                 return;
             }
         }
-
         return g_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
     }    
 }

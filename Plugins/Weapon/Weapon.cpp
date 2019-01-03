@@ -233,6 +233,7 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
       LOG_DEBUG("SetCombatMode hooked.");
       m_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__SetCombatMode);
    }
+
    return stack;
 }
 
@@ -853,7 +854,6 @@ void Weapon::SetCombatMode(CNWSCreature *pCreature, unsigned char nMode, int32_t
     
     if(nMode==0 && bForceMode==1)
     {
-        
         if(pCreature->m_nCombatMode == 5) // && Globals::AppManager()->m_pServerExoApp->GetStickyCombatModesEnabled()) //flurry of blows automatic engine cancel
         {
             if(pCreature->m_pStats->GetUseMonkAttackTables(0)) 
