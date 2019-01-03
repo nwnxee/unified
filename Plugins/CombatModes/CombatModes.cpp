@@ -1,5 +1,6 @@
 #include "CombatModes.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
@@ -48,6 +49,13 @@ CombatModes::CombatModes(const Plugin::CreateParams& params)
         {
             if (message[0] == "NWNX_ON_COMBAT_MODE_ON" || message[0] == "NWNX_ON_COMBAT_MODE_OFF")
                 this->m_Skipped = std::strtoul(message[1].c_str(), NULL, 0) == 1;
+        });  
+
+    GetServices()->m_messaging->SubscribeMessage("NWNX_WEAPON_SIGNAL",
+        [this](const std::vector<std::string> message)
+        {                
+            if (message[0] == "FLURRY_OF_BLOWS_RECQUIRED")
+                this->m_FlurryOfBlows = true;
         });    
 }
 
@@ -57,6 +65,26 @@ CombatModes::~CombatModes()
 
 void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode, int32_t bForceNewMode)
 {
+    //If Weapon plugin recquires flurry of blows
+    if(g_plugin->m_FlurryOfBlows)
+    {
+        //flurry of blows automatic cancel
+        if(nNewMode==0 && bForceNewMode==1 && thisPtr->m_nCombatMode == 5) 
+        {
+            if(thisPtr->m_pStats->GetUseMonkAttackTables(0)) 
+            {
+                return;
+            }
+        }
+        
+        //flurry of blows manual cancel
+        if(nNewMode==5 && bForceNewMode==0) 
+        {
+            nNewMode = 0;
+            bForceNewMode = 1; 
+        }       
+    }
+        
     if (thisPtr->m_bPlayerCharacter) 
     {
         const uint8_t nCurrentMode = thisPtr->m_nCombatMode;
@@ -81,6 +109,17 @@ void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode
 
     if (!g_plugin->m_Skipped)
     {
+        //flurry of blows manual activation
+        if(g_plugin->m_FlurryOfBlows && nNewMode==5 && bForceNewMode==1) 
+        {
+            if(thisPtr->m_pStats->GetUseMonkAttackTables(0)) 
+            {
+                thisPtr->m_nCombatMode  = 5;
+                thisPtr->SetActivity(0x4000,1);
+                return;
+            }
+        }
+
         return g_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
     }    
 }

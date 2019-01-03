@@ -13,6 +13,7 @@
 #include "API/CNWSInventory.hpp"
 #include "API/CNWSCombatRound.hpp"
 #include "Utils.hpp"
+#include "Services/Messaging/Messaging.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -111,12 +112,6 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    m_GetRangedAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetRangedAttackBonus);
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetUseMonkAttackTables>(&Weapon::GetUseMonkAttackTables);
-   
-   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__SetCombatMode>(&SetCombatMode); 
-   m_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__SetCombatMode);
-
-   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__ToggleMode>(&ToggleMode); 
-   m_ToggleModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__ToggleMode);
 
    m_WeaponFinesseSizeMap.insert({Constants::BASE_ITEM_RAPIER, (uint8_t) Constants::CREATURE_SIZE_MEDIUM});
 
@@ -209,6 +204,7 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
 ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
 {
    ArgumentStack stack;
+   static bool bFirstTime=true;
    
    const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
    
@@ -217,7 +213,26 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
       m_MonkWeaponSet.insert(w_bitem);
       LOG_DEBUG("Base Item Type %d set as monk weapon", w_bitem);
    }
-   
+
+   if(bFirstTime)
+   {
+      bFirstTime=false;
+      // Hooks for flurry of blows
+      GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__ToggleMode>(&ToggleMode); 
+      m_ToggleModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__ToggleMode);
+      try 
+      {
+         GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__SetCombatMode>(&SetCombatMode);
+      }
+      catch (...)
+      {
+         LOG_NOTICE("SetCombatMode already hooked by another plugin. Sending FLURRY_OF_BLOWS_RECQUIRED message.");
+         g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_RECQUIRED"});  
+         return stack;
+      }
+      LOG_DEBUG("SetCombatMode hooked.");
+      m_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__SetCombatMode);
+   }
    return stack;
 }
 
@@ -838,7 +853,8 @@ void Weapon::SetCombatMode(CNWSCreature *pCreature, unsigned char nMode, int32_t
     
     if(nMode==0 && bForceMode==1)
     {
-        if(pCreature->m_nCombatMode == 5) //flurry of blows automatic engine cancel
+        
+        if(pCreature->m_nCombatMode == 5) // && Globals::AppManager()->m_pServerExoApp->GetStickyCombatModesEnabled()) //flurry of blows automatic engine cancel
         {
             if(pCreature->m_pStats->GetUseMonkAttackTables(0)) 
             {
