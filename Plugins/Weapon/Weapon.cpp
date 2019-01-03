@@ -227,7 +227,7 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
       catch (...)
       {
          LOG_NOTICE("SetCombatMode already hooked by another plugin. Sending FLURRY_OF_BLOWS_RECQUIRED message.");
-         g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_RECQUIRED"});  
+         g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});  
          return stack;
       }
       LOG_DEBUG("SetCombatMode hooked.");

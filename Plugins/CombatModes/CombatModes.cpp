@@ -54,7 +54,7 @@ CombatModes::CombatModes(const Plugin::CreateParams& params)
     GetServices()->m_messaging->SubscribeMessage("NWNX_WEAPON_SIGNAL",
         [this](const std::vector<std::string> message)
         {                
-            if (message[0] == "FLURRY_OF_BLOWS_RECQUIRED")
+            if (message[0] == "FLURRY_OF_BLOWS_REQUIRED")
                 this->m_FlurryOfBlows = true;
         });    
 }
