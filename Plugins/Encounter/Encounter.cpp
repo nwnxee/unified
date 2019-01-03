@@ -8,9 +8,7 @@
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
 #include "ViewPtr.hpp"
-#include "Utils.hpp"
 
-#include <cstring>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
