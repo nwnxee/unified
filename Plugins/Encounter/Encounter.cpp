@@ -72,7 +72,7 @@ CNWSEncounter *Encounter::encounter(ArgumentStack& args)
 
     if (!pEncounter)
     {
-        LOG_NOTICE("NWNX_Encounter function called on non-area object %x", encounterId);
+        LOG_NOTICE("NWNX_Encounter function called on non-encounter object %x", encounterId);
     }
 
     return pEncounter;
@@ -131,8 +131,7 @@ ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
         auto unique = Services::Events::ExtractArgument<int32_t>(args);
 
         if (cr < 0.0) cr = 0.0;
-        if (unique < 0) unique = 0; 
-        if (unique > 1) unique = 1;
+        unique = !!unique;
         
         if (index < pEncounter->m_nNumEncounterListEntries)
         {
@@ -200,8 +199,7 @@ ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
     {
         auto playerTriggeredOnly = Services::Events::ExtractArgument<int32_t>(args);
 
-        if (playerTriggeredOnly < 0) playerTriggeredOnly = 0;
-        if (playerTriggeredOnly > 1) playerTriggeredOnly = 1;
+        playerTriggeredOnly = !!playerTriggeredOnly;
         
         pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
     }
