@@ -10,6 +10,8 @@
 #include "ViewPtr.hpp"
 #include "Utils.hpp"
 
+#include <cstring>
+
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
@@ -45,6 +47,11 @@ Encounter::Encounter(const Plugin::CreateParams& params)
 
     REGISTER(GetNumberOfCreaturesInEncounterList);
     REGISTER(GetEncounterCreatureByIndex);
+    REGISTER(SetEncounterCreatureByIndex);
+    REGISTER(GetFactionId);
+    REGISTER(SetFactionId);
+    REGISTER(GetPlayerTriggeredOnly);
+    REGISTER(SetPlayerTriggeredOnly);
 
 #undef REGISTER
 }
@@ -104,12 +111,102 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
             resRef = pEncounter->m_pEncounterList[index].m_cCreatureResRef.GetResRefStr();
             cr = pEncounter->m_pEncounterList[index].m_fCR;
             unique = pEncounter->m_pEncounterList[index].m_bUnique;
-        }
+        }          
     }
     
     Services::Events::InsertArgument(stack, resRef);
     Services::Events::InsertArgument(stack, cr);
     Services::Events::InsertArgument(stack, unique);
+
+    return stack;
+}
+
+ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        const auto resref = Services::Events::ExtractArgument<std::string>(args);
+        auto cr = Services::Events::ExtractArgument<float>(args);
+        auto unique = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (cr < 0.0) cr = 0.0;
+        if (unique < 0) unique = 0; 
+        if (unique > 1) unique = 1;
+        
+        if (index < pEncounter->m_nNumEncounterListEntries)
+        {
+            pEncounter->m_pEncounterList[index].m_cCreatureResRef = resref.c_str();
+            pEncounter->m_pEncounterList[index].m_fCR = cr;
+            pEncounter->m_pEncounterList[index].m_fCreaturePoints = pEncounter->CalculatePointsFromCR(cr);
+            pEncounter->m_pEncounterList[index].m_bUnique = unique; 
+        } 
+    }
+
+    return stack;
+}
+
+ArgumentStack Encounter::GetFactionId(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nFactionId;
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Encounter::SetFactionId(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        auto factionId = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (factionId < 0) factionId = 0;
+        
+        pEncounter->m_nFactionId = factionId;
+    }
+
+    return stack;
+}
+
+ArgumentStack Encounter::GetPlayerTriggeredOnly(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_bPlayerTriggeredOnly;
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        auto playerTriggeredOnly = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (playerTriggeredOnly < 0) playerTriggeredOnly = 0;
+        if (playerTriggeredOnly > 1) playerTriggeredOnly = 1;
+        
+        pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
+    }
 
     return stack;
 }

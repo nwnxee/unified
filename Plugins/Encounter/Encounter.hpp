@@ -17,7 +17,12 @@ public:
 
 private:
     ArgumentStack GetNumberOfCreaturesInEncounterList       (ArgumentStack&& args);
-    ArgumentStack GetEncounterCreatureByIndex               (ArgumentStack&& args);   
+    ArgumentStack GetEncounterCreatureByIndex               (ArgumentStack&& args);
+    ArgumentStack SetEncounterCreatureByIndex               (ArgumentStack&& args);
+    ArgumentStack GetFactionId                              (ArgumentStack&& args);
+    ArgumentStack SetFactionId                              (ArgumentStack&& args); 
+    ArgumentStack GetPlayerTriggeredOnly                    (ArgumentStack&& args);
+    ArgumentStack SetPlayerTriggeredOnly                    (ArgumentStack&& args);
 
     NWNXLib::API::CNWSEncounter *encounter(ArgumentStack& args);
 
