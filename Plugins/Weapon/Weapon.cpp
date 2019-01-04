@@ -220,18 +220,8 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
       // Hooks for flurry of blows
       GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__ToggleMode>(&ToggleMode); 
       m_ToggleModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__ToggleMode);
-      try 
-      {
-         GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__SetCombatMode>(&SetCombatMode);
-      }
-      catch (...)
-      {
-         LOG_NOTICE("SetCombatMode already hooked by another plugin. Sending FLURRY_OF_BLOWS_RECQUIRED message.");
-         g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});  
-         return stack;
-      }
-      LOG_DEBUG("SetCombatMode hooked.");
-      m_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__SetCombatMode);
+      g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});  
+      LOG_NOTICE("Flurry of blows requires activation of CombatModes plugin");
    }
 
    return stack;
@@ -841,42 +831,6 @@ int32_t Weapon::ToggleMode(CNWSCreature *pCreature, unsigned char nMode)
     }
     
     return plugin.m_ToggleModeHook->CallOriginal<int32_t>(pCreature, nMode);
-}
-
-void Weapon::SetCombatMode(CNWSCreature *pCreature, unsigned char nMode, int32_t bForceMode)
-{
-    Weapon& plugin = *g_plugin;
-    if(pCreature==nullptr)
-    {
-        plugin.m_SetCombatModeHook->CallOriginal<void>(pCreature, nMode, bForceMode);
-        return;
-    }
-    
-    if(nMode==0 && bForceMode==1)
-    {
-        if(pCreature->m_nCombatMode == 5) // && Globals::AppManager()->m_pServerExoApp->GetStickyCombatModesEnabled()) //flurry of blows automatic engine cancel
-        {
-            if(pCreature->m_pStats->GetUseMonkAttackTables(0)) 
-            {
-                return;
-            }
-        }
-    }
-    else if(nMode==5 && bForceMode==0) //flurry of blows manual cancel
-    {
-        nMode = 0;
-        bForceMode = 1;
-    }
-    else if(nMode==5 && bForceMode==1) //flurry of blows manual activation
-    {
-        if(pCreature->m_pStats->GetUseMonkAttackTables(0)) 
-        {
-            pCreature->m_nCombatMode  = 5;
-            pCreature->SetActivity(0x4000,1);
-            return;
-        }
-    }
-    plugin.m_SetCombatModeHook->CallOriginal<void>(pCreature, nMode, bForceMode);
 }
 
 int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, bool bForceUnarmed)
