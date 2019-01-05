@@ -33,8 +33,8 @@ void HideItemLostAndAcquiredMessages::SendFeedbackMessageHook(
 
     switch(nFeedbackID)
     {
-        case 50: // Lost Item
-        case 51: // Acquired Item 
+        case 50: // Acquired Item
+        case 51: // Lost Item 
             bSuppressMessage = true;
             break;
 
