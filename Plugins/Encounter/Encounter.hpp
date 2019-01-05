@@ -22,6 +22,8 @@ private:
     ArgumentStack SetFactionId                              (ArgumentStack&& args); 
     ArgumentStack GetPlayerTriggeredOnly                    (ArgumentStack&& args);
     ArgumentStack SetPlayerTriggeredOnly                    (ArgumentStack&& args);
+    ArgumentStack GetResetTime                              (ArgumentStack&& args);
+    ArgumentStack SetResetTime                              (ArgumentStack&& args);
 
     NWNXLib::API::CNWSEncounter *encounter(ArgumentStack& args);
 

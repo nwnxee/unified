@@ -50,6 +50,8 @@ Encounter::Encounter(const Plugin::CreateParams& params)
     REGISTER(SetFactionId);
     REGISTER(GetPlayerTriggeredOnly);
     REGISTER(SetPlayerTriggeredOnly);
+    REGISTER(GetResetTime);
+    REGISTER(SetResetTime);
 
 #undef REGISTER
 }
@@ -202,6 +204,37 @@ ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
         playerTriggeredOnly = !!playerTriggeredOnly;
         
         pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
+    }
+
+    return stack;
+}
+
+ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nResetTime;
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        auto resetTime = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (resetTime < 0) resetTime = 0;
+        
+        pEncounter->m_nResetTime = resetTime;
     }
 
     return stack;

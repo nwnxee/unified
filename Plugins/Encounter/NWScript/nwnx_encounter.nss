@@ -31,6 +31,12 @@ int NWNX_Encounter_GetPlayerTriggeredOnly(object encounter);
 // playerTriggeredOnly = TRUE/FALSE
 void NWNX_Encounter_SetPlayerTriggeredOnly(object encounter, int playerTriggeredOnly);
 
+// Get the reset time of encounter
+int NWNX_Encounter_GetResetTime(object encounter);
+
+// Set the reset time of encounter
+void NWNX_Encounter_SetResetTime(object encounter, int resetTime);
+
 
 const string NWNX_Encounter = "NWNX_Encounter";
 
@@ -110,6 +116,26 @@ void NWNX_Encounter_SetPlayerTriggeredOnly(object encounter, int playerTriggered
     string sFunc = "SetPlayerTriggeredOnly";
 
     NWNX_PushArgumentInt(NWNX_Encounter, sFunc, playerTriggeredOnly);
+    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+
+    NWNX_CallFunction(NWNX_Encounter, sFunc);
+}
+
+int NWNX_Encounter_GetResetTime(object encounter)
+{
+    string sFunc = "GetResetTime";
+
+    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
+    NWNX_CallFunction(NWNX_Encounter, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+}
+
+void NWNX_Encounter_SetResetTime(object encounter, int resetTime)
+{
+    string sFunc = "SetResetTime";
+
+    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, resetTime);
     NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
