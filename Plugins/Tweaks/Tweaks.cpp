@@ -7,6 +7,7 @@
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/SneakAttackCritImmunity.hpp"
 #include "Tweaks/PreserveDepletedItems.hpp"
+#include "Tweaks/HideItemLostAndAcquiredMessages.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -113,6 +114,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
             Platform::Assembly::NoopInstruction()
         ); NWNX_EXPECT_VERSION(8186);
     }
+
+    if (GetServices()->m_config->Get<bool>("HIDE_ITEM_LOST_AND_ACQUIRED_MESSAGES", false))
+    {
+        LOG_INFO("Item acquired/lost feedback messages will be hidden");
+        m_HideItemLostAndAcquiredMessages = std::make_unique<HideItemLostAndAcquiredMessages>(GetServices()->m_hooks.get());
+    }    
 }
 
 Tweaks::~Tweaks()
