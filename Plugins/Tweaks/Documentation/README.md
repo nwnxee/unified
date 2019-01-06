@@ -29,9 +29,9 @@ This tweak will hide the following messages from the combat log:
 
 `NWNX_TWEAKS_HIDE_ITEM_FEEDBACK_MESSAGES` has two modes:
 
-* `1` will suppress the item feedback message.
-* `2` will only suppress the item feedback message if the player has `SetLocalInt(oPlayer, "NWNX_HIDE_ITEM_MESSAGES", TRUE)` set on them.
+* `1` will always suppress the item feedback messages.
+* `2` will only suppress the item feedback messages if the player has `SetLocalInt(oPlayer, "NWNX_HIDE_ITEM_MESSAGES", TRUE)` set on them.
 
-If you only want to hide the lost/acquired message you can set the following optional environment variable to true:
+If you only want to hide the lost/acquired messages you can set the following optional environment variable to true:
 
 * `NWNX_TWEAKS_ONLY_HIDE_LOST_ACQUIRED_MESSAGES`: true or false
