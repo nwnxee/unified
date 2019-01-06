@@ -7,4 +7,5 @@ add_plugin(Tweaks
     "Tweaks/CompareVarsForMerge.cpp"
     "Tweaks/ParryAllAttacks.cpp"
     "Tweaks/SneakAttackCritImmunity.cpp"
-    "Tweaks/PreserveDepletedItems.cpp")
+    "Tweaks/PreserveDepletedItems.cpp"
+    "Tweaks/HideItemLostAndAcquiredMessages.cpp")
