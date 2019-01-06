@@ -44,11 +44,11 @@ void HideItemFeedbackMessages::SendFeedbackMessageHook(
         bool retVal = 0;
         if (pScriptVarTable)
         {
-            CExoString varName = "NWNX_HIDE_ITEM_MESSAGES";
+            CExoString varName = "NWNX_HIDE_ITEM_FEEDBACK_MESSAGES";
 
             retVal = !!pScriptVarTable->GetInt(varName);
 
-            LOG_DEBUG("NWNX_HIDE_ITEM_MESSAGES = %i", retVal);
+            LOG_DEBUG("NWNX_HIDE_ITEM_FEEDBACK_MESSAGES = %i", retVal);
         }        
 
         return retVal;   
