@@ -7,7 +7,7 @@
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/SneakAttackCritImmunity.hpp"
 #include "Tweaks/PreserveDepletedItems.hpp"
-#include "Tweaks/HideItemLostAndAcquiredMessages.hpp"
+#include "Tweaks/HideItemFeedbackMessages.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -115,10 +115,28 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         ); NWNX_EXPECT_VERSION(8186);
     }
 
-    if (GetServices()->m_config->Get<bool>("HIDE_ITEM_LOST_AND_ACQUIRED_MESSAGES", false))
+    int32_t hideItemFeedbackMessagesMode = GetServices()->m_config->Get<int32_t>("HIDE_ITEM_FEEDBACK_MESSAGES", 0);
+    if (hideItemFeedbackMessagesMode != 0)
     {
-        LOG_INFO("Item acquired/lost feedback messages will be hidden");
-        m_HideItemLostAndAcquiredMessages = std::make_unique<HideItemLostAndAcquiredMessages>(GetServices()->m_hooks.get());
+        bool onlyHideLostAcquired = GetServices()->m_config->Get<bool>("ONLY_HIDE_LOST_ACQUIRED_MESSAGES", false);
+        std::string logMessage = "";
+
+        if(onlyHideLostAcquired)
+            logMessage += "Item acquired/lost feedback messages will ";
+        else
+            logMessage += "Item feedback messages will ";
+       
+        if (hideItemFeedbackMessagesMode == 2)
+            logMessage += "be hidden per local int on player.";
+        else
+            logMessage += "always be hidden.";
+
+        LOG_NOTICE("%s", logMessage.c_str());
+        
+        m_HideItemFeedbackMessages = std::make_unique<HideItemFeedbackMessages>(
+            GetServices()->m_hooks.get(), 
+            hideItemFeedbackMessagesMode, 
+            onlyHideLostAcquired);
     }    
 }
 

@@ -14,4 +14,24 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_PARRY_ALL_ATTACKS`: true or false
 * `NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY`: true or false
 * `NWNX_TWEAKS_PRESERVE_DEPLETED_ITEMS`: true or false
-* `NWNX_TWEAKS_HIDE_ITEM_LOST_AND_ACQUIRED_MESSAGES`: true or false
+* `NWNX_TWEAKS_HIDE_ITEM_FEEDBACK_MESSAGES`: 0, 1 or 2
+
+## Hide Item Feedback Messages Notes
+
+This tweak will hide the following messages from the combat log:
+
+* Acquired Item: 
+* Lost Item:
+* Armor/Shield Penalty
+* Weapon equipped as one handed weapon
+* Weapon equipped as two handed weapon
+* Equipped item swapped out
+
+`NWNX_TWEAKS_HIDE_ITEM_FEEDBACK_MESSAGES` has two modes:
+
+* `1` will suppress the item feedback message.
+* `2` will only suppress the item feedback message if the player has `SetLocalInt(oPlayer, "NWNX_HIDE_ITEM_MESSAGES", TRUE)` set on them.
+
+If you only want to hide the lost/acquired message you can set the following optional environment variable to true:
+
+* `NWNX_TWEAKS_ONLY_HIDE_LOST_ACQUIRED_MESSAGES`: true or false
