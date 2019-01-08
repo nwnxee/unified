@@ -48,8 +48,8 @@ Feedback::Feedback(const Plugin::CreateParams& params)
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Feedback::func, this, std::placeholders::_1))
 
-    REGISTER(GetMessageHidden);
-    REGISTER(SetMessageHidden);
+    REGISTER(GetFeedbackMessageHidden);
+    REGISTER(SetFeedbackMessageHidden);
 
 #undef REGISTER
 
@@ -68,79 +68,59 @@ void Feedback::SendFeedbackMessageHook(
     CNWSPlayer* pPlayer)
 {
     Feedback& plugin = *g_plugin;
-    bool bSuppressFeedback = false;
+    auto personalState = plugin.GetPersonalState(pCreature->m_idSelf, nFeedbackID);
+    bool bSuppressFeedback = (personalState == -1) ? plugin.GetGlobalState(nFeedbackID) : personalState;
     
-    std::string personalStateKeyName = std::string("HIDE_FEEDBACK_MESSAGE:") + std::to_string(nFeedbackID);
-    auto personalState = plugin.GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, personalStateKeyName);
-
-    if (*personalState)
-    {// Player has personal state
-        bSuppressFeedback = !!personalState;
-    }
-    else
-    {// Check global state
-        auto index = plugin.m_GlobalHiddenMessageStateSet.find(nFeedbackID);
-        if (index != plugin.m_GlobalHiddenMessageStateSet.end())
-        {
-            bSuppressFeedback = true;
-        }
-    }
-
     if (!bSuppressFeedback)
     {
         plugin.m_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pData, pPlayer);
     }
 }
 
-ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
+bool Feedback::GetGlobalState(int32_t messageId)
+{
+    Feedback& plugin = *g_plugin;
+
+    return plugin.m_GlobalHiddenMessageStateSet.find(messageId) != plugin.m_GlobalHiddenMessageStateSet.end();
+}
+
+int32_t Feedback::GetPersonalState(Types::ObjectID playerId, int32_t messageId)
+{
+    Feedback& plugin = *g_plugin;
+    int32_t value = -1;
+
+    if (auto personalState = plugin.GetServices()->m_perObjectStorage->Get<int>(playerId, std::to_string(messageId)))
+        value = !!*personalState;
+
+    return value;    
+}
+
+ArgumentStack Feedback::GetFeedbackMessageHidden(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    Feedback& plugin = *g_plugin;
-    int32_t retVal = 0;
 
     const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);    
     
-    if (playerId == Constants::OBJECT_INVALID)
-    {
-        auto index = plugin.m_GlobalHiddenMessageStateSet.find(messageId);
-        if (index != plugin.m_GlobalHiddenMessageStateSet.end())
-        {
-            retVal = 1;
-        }
-    }
-    else
-    {
-        std::string personalStateKeyName = std::string("HIDE_FEEDBACK_MESSAGE:") + std::to_string(messageId);
-        auto personalState = plugin.GetServices()->m_perObjectStorage->Get<int>(playerId, personalStateKeyName);
-        
-        if (*personalState)
-        {
-            retVal = !!personalState;
-        }
-        else
-        {
-            retVal = -1;
-        }        
-    }
+    int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalState(messageId) : GetPersonalState(playerId, messageId);
 
     Services::Events::InsertArgument(stack, retVal);
     
     return stack;
 }
 
-ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
+ArgumentStack Feedback::SetFeedbackMessageHidden(ArgumentStack&& args)
 {
     ArgumentStack stack;
     Feedback& plugin = *g_plugin;
 
     const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
-    const auto hide = Services::Events::ExtractArgument<int32_t>(args);
+    const auto state = Services::Events::ExtractArgument<int32_t>(args);
 
     if (playerId == Constants::OBJECT_INVALID)
     {
-        if (!!hide)
+        if (!!state)
         {
             plugin.m_GlobalHiddenMessageStateSet.insert(messageId);    
         }
@@ -155,15 +135,13 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
     }
     else
     {
-        std::string personalStateKeyName = std::string("HIDE_FEEDBACK_MESSAGE:") + std::to_string(messageId);
-
-        if (hide == -1)
+        if (state == -1)
         {
-            plugin.GetServices()->m_perObjectStorage->Remove(playerId, personalStateKeyName);
+            plugin.GetServices()->m_perObjectStorage->Remove(playerId, std::to_string(messageId));
         }
         else
         {            
-            plugin.GetServices()->m_perObjectStorage->Set(playerId, personalStateKeyName, !!hide);
+            plugin.GetServices()->m_perObjectStorage->Set(playerId, std::to_string(messageId), !!state);
         }
     }       
 
