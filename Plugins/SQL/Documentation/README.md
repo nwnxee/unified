@@ -50,3 +50,13 @@ __Example__
 ```
 export NWNX_SQL_PASSWORD=lathander_rulez
 ```
+
+### NWNX_SQL_DATABASE
+
+The database to connect to.
+
+__Example__
+
+```
+export NWNX_SQL_DATABASE=mymodulename
+```
