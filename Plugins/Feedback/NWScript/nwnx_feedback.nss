@@ -10,6 +10,7 @@
 //    FALSE     nMessage is not hidden for oPC
 //    -1        Personal state is not set
 int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID);
+
 // Sets if feedback message nMessage is hidden.
 // Notes:
 // If oPC == OBJECT_INVALID it will set the global state:
@@ -24,8 +25,33 @@ int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INV
 // to TRUE but the personal state is set to FALSE, the message will be shown to oPC
 void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID);
 
+// Gets if combatlog message nMessage is hidden.
+// Notes:
+// If oPC == OBJECT_INVALID it will return the global state:
+//    TRUE      nMessage is globally hidden
+//    FALSE     nMessage is not globally hidden
+// If oPC is a valid player it will return the personal state:
+//    TRUE      nMessage is hidden for oPC
+//    FALSE     nMessage is not hidden for oPC
+//    -1        Personal state is not set
+int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_INVALID);
+
+// Sets if combatlog message nMessage is hidden.
+// Notes:
+// If oPC == OBJECT_INVALID it will set the global state:
+//    TRUE      nMessage is globally hidden
+//    FALSE     nMessage is not globally hidden
+// If oPC is a valid player it will set the personal state:
+//    TRUE      nMessage is hidden for oPC
+//    FALSE     nMessage is not hidden for oPC
+//    -1        Remove the personal state
+//
+// Personal state overrides the global state which means if a global state is set
+// to TRUE but the personal state is set to FALSE, the message will be shown to oPC
+void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID);
+
 // ***
-// For a list of the various feedback messages see below.
+// For a list of the various combatlog / feedback messages see below.
 // ***
 
 const string NWNX_Feedback = "NWNX_Feedback";
@@ -33,9 +59,11 @@ const string NWNX_Feedback = "NWNX_Feedback";
 
 int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
 {
-    string sFunc = "GetFeedbackMessageHidden";
+    string sFunc = "GetMessageHidden";
+    int nMessageType = 0;
 
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
     NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 
@@ -44,15 +72,92 @@ int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INV
 
 void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID)
 {
-    string sFunc = "SetFeedbackMessageHidden";
+    string sFunc = "SetMessageHidden";
+    int nMessageType = 0;
 
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nState);
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
     NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 
-/* Feedback Messages
+int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "GetMessageHidden";
+    int nMessageType = 1;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "SetMessageHidden";
+    int nMessageType = 1;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nState);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+/*
+// CombatLog Messages
+// For use with NWNX_Feedback_GetCombatLogMessageHidden() and
+//              NWNX_Feedback_GetCombatLogMessageHidden()
+
+const int COMBATLOG_SIMPLE_ADJECTIVE    = 1;
+const int COMBATLOG_SIMPLE_DAMAGE       = 2;
+const int COMBATLOG_COMPLEX_DAMAGE      = 3;
+const int COMBATLOG_COMPLEX_DEATH       = 4;
+const int COMBATLOG_COMPLEX_ATTACK      = 5;
+const int COMBATLOG_SPECIAL_ATTACK      = 6;
+const int COMBATLOG_SAVING_THROW        = 7;
+const int COMBATLOG_CAST_SPELL          = 8;
+const int COMBATLOG_USE_SKILL           = 9;
+const int COMBATLOG_SPELL_RESISTANCE    = 10;
+const int COMBATLOG_FEEDBACK            = 11; // NOTE: This hides ALL feedback messages, to hide individual messages use NWNX_Feedback_SetFeedbackMessageHidden()
+const int COMBATLOG_COUNTERSPELL        = 12;
+const int COMBATLOG_TOUCHATTACK         = 13;
+const int COMBATLOG_INITIATIVE          = 14;
+const int COMBATLOG_DISPEL_MAGIC        = 15;
+const int COMBATLOG_POLYMORPH           = 17;
+const int COMBATLOG_FEEDBACKSTRING      = 18;
+const int COMBATLOG_VIBRATE             = 19;
+const int COMBATLOG_UNLOCKACHIEVEMENT   = 20;
+
+// 1  -> Simple_Adjective: <charname> : <adjective described by strref>
+// 2  -> Simple_Damage: <charname> damaged : <amount>
+// 3  -> Complex_Damage: <charname> damages <charname> : <amount>
+// 4  -> Complex_Death: <charname> killed <charname>
+// 5  -> Complex_Attack: <charname> attacks <charname> : *hit* / *miss* / *parried* : (<attack roll> + <attack mod> = <modified total>)
+// 6  -> Special_Attack: <charname> attempts <special attack> on <charname> : *success* / *failure* : (<attack roll> + <attack mod> = <modified roll>)
+// 7  -> Saving_Throw: <charname> : <saving throw type> : *success* / *failure* : (<saving throw roll> + <saving throw modifier> = <modified total>)
+// 8  -> Cast_Spell: <charname> casts <spell name> : Spellcraft check *failure* / *success*
+// 9  -> Use_Skill: <charname> : <skill name> : *success* / *failure* : (<skill roll> + <skill modifier> = <modified total> vs <DC> )
+// 10 -> Spell_Resistance: <charname> : Spell Resistance <SR value> : *success* / *failure*
+// 11 -> Feedback: Reason skill/feat/ability failed.
+// 12 -> Counterspel: <charname> casts <spell name> : *spell countered by* : <charname> casting <spell name>
+// 13 -> TouchAttack: <charname> attempts <melee/ranged touch attack> on <charname> : *hit/miss/critical* : (<attack roll> + <attack mod> = <modified roll>)
+// 14 -> Initiative: <charname> : Initiative Roll : <total> : (<roll> + <modifier> = <total>)
+// 15 -> Dispel_Magic: Dispel Magic : <charname> : <spell name>, <spell name>, <spell name>...
+// 17 -> Unused, probably
+// 18 -> Same as 11, probably, maybe
+// 19 -> Unused
+// 20 -> Unused
+*/
+
+/*
+// Feedback Messages
+// For use with NWNX_Feedback_GetFeedbackMessageHidden() and
+//              NWNX_Feedback_GetFeedbackMessageHidden()
+
 // Skill Feedback Messages
 const int FEEDBACK_SKILL_CANT_USE                     = 0;
 const int FEEDBACK_SKILL_CANT_USE_TIMER               = 1;
