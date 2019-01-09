@@ -13,6 +13,7 @@ int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INV
 
 // Sets if feedback message nMessage is hidden.
 // Notes:
+// nMessage = FEEDBACK_* > See Below
 // If oPC == OBJECT_INVALID it will set the global state:
 //    TRUE      nMessage is globally hidden
 //    FALSE     nMessage is not globally hidden
@@ -38,6 +39,7 @@ int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_IN
 
 // Sets if combatlog message nMessage is hidden.
 // Notes:
+// nMessage = COMBATLOG_* > See Below
 // If oPC == OBJECT_INVALID it will set the global state:
 //    TRUE      nMessage is globally hidden
 //    FALSE     nMessage is not globally hidden
