@@ -1,4 +1,4 @@
-# Dialog Plugin Reference
+# Encounter Plugin Reference
 
 ## Description
 

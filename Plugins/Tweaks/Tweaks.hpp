@@ -13,7 +13,6 @@ class CompareVarsForMerge;
 class ParryAllAttacks;
 class SneakAttackCritImmunity;
 class PreserveDepletedItems;
-class HideItemLostAndAcquiredMessages;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -30,7 +29,6 @@ private:
     std::unique_ptr<ParryAllAttacks> m_ParryAllAttacks;
     std::unique_ptr<SneakAttackCritImmunity> m_SneakAttackCritImmunity;
     std::unique_ptr<PreserveDepletedItems> m_PreserveDepletedItems;
-    std::unique_ptr<HideItemLostAndAcquiredMessages> m_HideItemLostAndAcquiredMessages;
 };
 
 }
