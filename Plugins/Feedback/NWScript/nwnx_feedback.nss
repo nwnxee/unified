@@ -111,7 +111,7 @@ void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oP
 
 /*
 // CombatLog Messages
-// For use with NWNX_Feedback_GetCombatLogMessageHidden() and
+// For use with NWNX_Feedback_SetCombatLogMessageHidden() and
 //              NWNX_Feedback_GetCombatLogMessageHidden()
 
 const int COMBATLOG_SIMPLE_ADJECTIVE    = 1;
@@ -157,7 +157,7 @@ const int COMBATLOG_UNLOCKACHIEVEMENT   = 20;
 
 /*
 // Feedback Messages
-// For use with NWNX_Feedback_GetFeedbackMessageHidden() and
+// For use with NWNX_Feedback_SetFeedbackMessageHidden() and
 //              NWNX_Feedback_GetFeedbackMessageHidden()
 
 // Skill Feedback Messages
