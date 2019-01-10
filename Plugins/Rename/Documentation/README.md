@@ -6,9 +6,8 @@ None
 
 ## Description
 
-Functions to facilitate renaming, overriding and customization of player names.
 
-This plugin allows changing different items properties. Just call the different NWNX_Item_* functions on a valid item target. 
+This plugin facilitates renaming, overriding and customization of player names.
 
 Script function | Description  
 ----------------|-------------
