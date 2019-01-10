@@ -9,9 +9,9 @@ void NWNX_Rename_SetPlayerOverrideName(object oPlayer, string sPrefix, string sN
 void NWNX_Rename_SetPlayerOverrideName(object oPlayer, string sPrefix, string sNewName, string sSuffix)
 {
     string sFunc = "SetPlayerOverrideName";
-	
-	NWNX_PushArgumentString(NWNX_Rename, sFunc, sSuffix);
-	NWNX_PushArgumentString(NWNX_Rename, sFunc, sNewName);
+    
+    NWNX_PushArgumentString(NWNX_Rename, sFunc, sSuffix);
+    NWNX_PushArgumentString(NWNX_Rename, sFunc, sNewName);
     NWNX_PushArgumentString(NWNX_Rename, sFunc, sPrefix);
     NWNX_PushArgumentObject(NWNX_Rename, sFunc, oPlayer);
 
