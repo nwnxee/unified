@@ -49,7 +49,7 @@ Rename::Rename(const Plugin::CreateParams& params)
 #define REGISTER(func)              \
   GetServices()->m_events->RegisterEvent(#func, std::bind(&Rename::func, this, std::placeholders::_1))
 
-  REGISTER(SetPlayerOverrideName);
+  REGISTER(SetPlayerNameOverride);
 
 #undef REGISTER
 
@@ -96,10 +96,10 @@ int32_t Rename::HookPlayerList(CNWSMessage* message, CNWSPlayer* pPlayer)
     {
         CNWSClient* client = reinterpret_cast<API::CNWSClient*>(head->pObject);
         Types::ObjectID clientID = static_cast<CNWSPlayer*>(client)->m_oidNWSObject;
-        auto overrideName = plugin.m_ObjectIDtoOverrideName.find(clientID);
+        auto overrideName = plugin.m_ObjectIDtoNameOverride.find(clientID);
         CNWSCreature* pCreature = static_cast<CNWSCreature*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(clientID));
         
-        if (client && overrideName != std::end(plugin.m_ObjectIDtoOverrideName) && !pCreature->m_sDisplayName.IsEmpty())
+        if (client && overrideName != std::end(plugin.m_ObjectIDtoNameOverride) && !pCreature->m_sDisplayName.IsEmpty())
         {
             pCreature->m_pStats->m_lsFirstName = overrideName->second;
             pCreature->m_pStats->m_lsLastName = plugin.m_blankLocStr;
@@ -180,7 +180,7 @@ void Rename::UpdateName(CNWSCreature* targetObject)
 }
 
 
-ArgumentStack Rename::SetPlayerOverrideName(ArgumentStack&& args)
+ArgumentStack Rename::SetPlayerNameOverride(ArgumentStack&& args)
 {
      ArgumentStack stack;
     auto playerObjectID = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -198,14 +198,14 @@ ArgumentStack Rename::SetPlayerOverrideName(ArgumentStack&& args)
         const auto newName = Services::Events::ExtractArgument<std::string>(args);
         const auto sSuffix = Services::Events::ExtractArgument<std::string>(args);
         
-        const std::string fullDisplayName = sPrefix + newName + sSuffix; //put together the floaty name, escape all colors
+        const std::string fullDisplayName = sPrefix + newName + sSuffix; //put together the floaty/chat/hover name
         
         pCreature->m_sDisplayName = fullDisplayName.c_str();
         pCreature->m_bUpdateDisplayName = true; //unsure if this is necessary
 
         API::CExoLocString locStr;
         locStr.AddString(0, CExoString(newName.c_str()), 0);
-        m_ObjectIDtoOverrideName[playerObjectID] = locStr;
+        m_ObjectIDtoNameOverride[playerObjectID] = locStr;
         m_ObjectIDtoRealFirstName[playerObjectID] = pCreature->m_pStats->m_lsFirstName; //store original first name
         m_ObjectIDtoRealLastName[playerObjectID] = pCreature->m_pStats->m_lsLastName; //store original last name
         

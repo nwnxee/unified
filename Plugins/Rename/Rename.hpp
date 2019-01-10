@@ -28,7 +28,7 @@ private:
   
   ObjectIDToNameMap m_ObjectIDtoRealFirstName;
   ObjectIDToNameMap m_ObjectIDtoRealLastName;
-  ObjectIDToNameMap m_ObjectIDtoOverrideName;
+  ObjectIDToNameMap m_ObjectIDtoNameOverride;
   
   NWNXLib::API::CExoLocString m_blankLocStr;
   
@@ -36,7 +36,7 @@ private:
   
   static int32_t HookPlayerList(NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer);
   void UpdateName(NWNXLib::API::CNWSCreature* targetObject);
-  ArgumentStack SetPlayerOverrideName(ArgumentStack&& args);
+  ArgumentStack SetPlayerNameOverride(ArgumentStack&& args);
    
   NWNXLib::API::CNWSPlayer *player(NWNXLib::API::Types::ObjectID playerId);
 };
