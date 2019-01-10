@@ -198,7 +198,7 @@ ArgumentStack Rename::SetPlayerOverrideName(ArgumentStack&& args)
         const auto newName = Services::Events::ExtractArgument<std::string>(args);
         const auto sSuffix = Services::Events::ExtractArgument<std::string>(args);
         
-        const std::string fullDisplayName = sPrefix + newName + sSuffix + "</c>"; //put together the floaty name, escape all colors
+        const std::string fullDisplayName = sPrefix + newName + sSuffix; //put together the floaty name, escape all colors
         
         pCreature->m_sDisplayName = fullDisplayName.c_str();
         pCreature->m_bUpdateDisplayName = true; //unsure if this is necessary
