@@ -1,6 +1,7 @@
 #include "SQL.hpp"
 #include "Targets/MySQL.hpp"
 #include "Targets/PostgreSQL.hpp"
+#include "Targets/SQLite.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "ViewPtr.hpp"
@@ -95,6 +96,14 @@ SQL::SQL(const Plugin::CreateParams& params)
 #else
         throw std::runtime_error("Targeting PostgreSQL, but no PostgreSQL support built in.");
 #endif
+    }
+    else if (type == "SQLITE")
+    {
+#if defined(NWNX_SQL_SQLITE_SUPPORT)
+        m_target = std::make_unique<SQLite>();
+#else
+        throw std::runtime_error("Targeting SQLite3, but no SQLite3 support built in.");
+#endif        
     }
     else
     {
