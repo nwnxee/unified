@@ -46,35 +46,5 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
     NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
 # Configure JVM
 ENV NWNX_JVM_CLASSPATH=/nwn/nwnx/org.nwnx.nwnx2.jvm.jar
-# Disable all other plugins by default. Remember to add new plugins to this list.
-ENV NWNX_ADMINISTRATION_SKIP=y \
-    NWNX_AREA_SKIP=y \
-    NWNX_CHAT_SKIP=y \
-    NWNX_COMBATMODES_SKIP=y \
-    NWNX_CREATURE_SKIP=y \
-    NWNX_DAMAGE_SKIP=y \
-    NWNX_DATA_SKIP=y \
-    NWNX_DIALOG_SKIP=y \
-    NWNX_ENCOUNTER_SKIP=y \
-    NWNX_EVENTS_SKIP=y \
-    NWNX_FEEDBACK_SKIP=y \
-    NWNX_ITEM_SKIP=y \
-    NWNX_JVM_SKIP=y \
-    NWNX_LUA_SKIP=y \
-    NWNX_METRICS_INFLUXDB_SKIP=y \
-    NWNX_MONO_SKIP=y \
-    NWNX_OBJECT_SKIP=y \
-    NWNX_PLAYER_SKIP=y \
-    NWNX_PROFILER_SKIP=y \
-    NWNX_SPELLCHECKER_SKIP=y \
-    NWNX_REDIS_SKIP=y \
-    NWNX_RENAME_SKIP=y \
-    NWNX_RUBY_SKIP=y \
-    NWNX_SQL_SKIP=y \
-    NWNX_THREADWATCHDOG_SKIP=y \
-    NWNX_TIME_SKIP=y \
-    NWNX_TRACKING_SKIP=y \
-    NWNX_TWEAKS_SKIP=y \
-    NWNX_UTIL_SKIP=y \
-    NWNX_WEAPON_SKIP=y \
-    NWNX_WEBHOOK_SKIP=y
+# Disable all other plugins by default. 
+ENV NWNX_CORE_SKIP_ALL=y 
