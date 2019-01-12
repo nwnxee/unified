@@ -254,7 +254,7 @@ void NWNXCore::InitialSetupPlugins()
 
         Plugin::CreateParams params = { services };
 
-        if (services->m_config->Get<bool>("SKIP", !!skipAllPlugins))
+        if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
             continue;
