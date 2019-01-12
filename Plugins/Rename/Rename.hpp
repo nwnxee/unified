@@ -23,16 +23,16 @@ public:
   virtual ~Rename();
   
 private:
+
+  static void HookPlayerList(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer);
+  static void HookPartyInvite(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer, unsigned char c);
   
-  NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerPlayerList_All;
-  NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerParty;
-  
-  static int32_t HookPlayerList(NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer);
-  static int32_t HookPartyInvite(NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer, unsigned char c);
   NWNXLib::API::CExoLocString ContainString(std::string str);
   std::string ExtractString(NWNXLib::API::CExoLocString locStr);
+  
   void GlobalNameChange(bool bOriginal);
   void UpdateName(NWNXLib::API::CNWSCreature* targetObject);
+  
   ArgumentStack SetPlayerNameOverride(ArgumentStack&& args);
    
   NWNXLib::API::CNWSPlayer *player(NWNXLib::API::Types::ObjectID playerId);

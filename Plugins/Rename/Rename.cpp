@@ -47,7 +47,6 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 namespace Rename {
     
-
 Rename::Rename(const Plugin::CreateParams& params)
   : Plugin(params)
 {
@@ -58,19 +57,20 @@ Rename::Rename(const Plugin::CreateParams& params)
 
 #undef REGISTER
   
-  GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__SendServerToPlayerPlayerList_All,int32_t,CNWSMessage*,CNWSPlayer*>(&HookPlayerList); 
-  m_SendServerToPlayerPlayerList_All = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__SendServerToPlayerPlayerList_All);
+  GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__SendServerToPlayerPlayerList_All,int32_t,CNWSMessage*,CNWSPlayer*>(&HookPlayerList); 
+  
   try //try to request a hook. If it fails that means that NWNX_EVENTS_PARTY_EVENTS is enabled, which should broadcast a message to trigger the name change anyway.
   {
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerParty,int32_t,CNWSMessage*,CNWSPlayer*,unsigned char>(&HookPartyInvite);
-    m_HandlePlayerToServerParty = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__HandlePlayerToServerParty);
+    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerParty,int32_t,CNWSMessage*,CNWSPlayer*,unsigned char>(&HookPartyInvite);
   } 
   catch (...){}
-  GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",
+  GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
         [this](const std::vector<std::string> message)
-        {
-            if (message[0] == "NWNX_ON_PARTY_INVITE_BEFORE") this->GlobalNameChange(false);
-            if (message[0] == "NWNX_ON_PARTY_INVITE_AFTER") this->GlobalNameChange(true);
+        {   if (message[1] == "0") //if the event was skipped it doesn't matter what the event was. 
+            {
+                if (message[0] == "NWNX_ON_PARTY_INVITE_BEFORE") this->GlobalNameChange(false);
+                if (message[0] == "NWNX_ON_PARTY_INVITE_AFTER") this->GlobalNameChange(true);
+            }
         });  
 }
 
@@ -95,33 +95,34 @@ CNWSPlayer *Rename::player(Types::ObjectID playerId)
     return pPlayer;
 }
 
-int32_t Rename::HookPlayerList(CNWSMessage* message, CNWSPlayer* pPlayer)
+void Rename::HookPlayerList(Services::Hooks::CallType cType, CNWSMessage* message, CNWSPlayer* pPlayer)
 {
     Rename& plugin = *g_plugin;
-    //traverse the player list and replace the names of all players on the override list
-    plugin.GlobalNameChange(false);
-    
-    int32_t retVal = plugin.m_SendServerToPlayerPlayerList_All->CallOriginal<int32_t>(message, pPlayer); //send the list
-    
-    //And now we do it again to restore the names after the player list has been sent over 
-    plugin.GlobalNameChange(true);
-
-    return retVal;
-    
+    if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    {
+        //traverse the player list and replace the names of all players on the override list
+        plugin.GlobalNameChange(false);
+    }
+    else
+    { 
+        //And now we do it again to restore the names after the player list has been sent over 
+        plugin.GlobalNameChange(true);
+    }
 }
 
-int32_t Rename::HookPartyInvite(NWNXLib::API::CNWSMessage* message, CNWSPlayer* pPlayer, unsigned char c)
+void Rename::HookPartyInvite(Services::Hooks::CallType cType, NWNXLib::API::CNWSMessage* message, CNWSPlayer* pPlayer, unsigned char c)
 {
     Rename& plugin = *g_plugin;
-    //traverse the player list and replace the names of all players on the override list
-    plugin.GlobalNameChange(false);
-
-    int32_t retVal = plugin.m_HandlePlayerToServerParty->CallOriginal<int32_t>(message, pPlayer, c); //send the invite
-    
-    //And now we do it again to restore the names after the party invite
-    plugin.GlobalNameChange(true);
-    
-    return retVal;
+    if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    {
+        //traverse the player list and replace the names of all players on the override list
+        plugin.GlobalNameChange(false);
+    }
+    else
+    {
+        //And now we do it again to restore the names after the party invite
+        plugin.GlobalNameChange(true);
+    }
 }
 
 void Rename::GlobalNameChange(bool bOriginal)
@@ -171,7 +172,7 @@ void Rename::UpdateName(CNWSCreature* targetObject)
     
     for (API::CExoLinkedListNode* head = playerList->pHead; head; head = head->pNext)
     {
-        API::CNWSClient* client = reinterpret_cast<API::CNWSClient*>(head->pObject);
+        API::CNWSClient* client = static_cast<API::CNWSClient*>(head->pObject);
         if (client)
         {
             playersToNotify.emplace_back(client->m_nPlayerID); //gather a list of players to iterate through and notify of the name change
