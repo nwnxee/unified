@@ -32,7 +32,7 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 { 
     if (auto database = config->Get<std::string>("DATABASE"))
     {
-        m_dbName = database->c_str();;
+        m_dbName = database->c_str();
 
         LOG_INFO("SQLite Database name set to %s", m_dbName.c_str());
     }
