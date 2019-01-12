@@ -226,6 +226,7 @@ void NWNXCore::InitialSetupPlugins()
     const std::string prefix = pluginPrefix;
 
     const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
+    const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir.c_str());
 
@@ -253,7 +254,7 @@ void NWNXCore::InitialSetupPlugins()
 
         Plugin::CreateParams params = { services };
 
-        if (services->m_config->Get<bool>("SKIP", false))
+        if (services->m_config->Get<bool>("SKIP", !!skipAllPlugins))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
             continue;
