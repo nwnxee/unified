@@ -24,17 +24,14 @@ public:
   
 private:
   
-  using ObjectIDToNameMap = std::unordered_map<NWNXLib::API::Types::ObjectID, NWNXLib::API::CExoLocString>;
-  
-  ObjectIDToNameMap m_ObjectIDtoRealFirstName;
-  ObjectIDToNameMap m_ObjectIDtoRealLastName;
-  ObjectIDToNameMap m_ObjectIDtoNameOverride;
-  
-  NWNXLib::API::CExoLocString m_blankLocStr;
-  
   NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerPlayerList_All;
+  NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerParty;
   
   static int32_t HookPlayerList(NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer);
+  static int32_t HookPartyInvite(NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer, unsigned char c);
+  NWNXLib::API::CExoLocString ContainString(std::string str);
+  std::string ExtractString(NWNXLib::API::CExoLocString locStr);
+  void GlobalNameChange(bool bOriginal);
   void UpdateName(NWNXLib::API::CNWSCreature* targetObject);
   ArgumentStack SetPlayerNameOverride(ArgumentStack&& args);
    

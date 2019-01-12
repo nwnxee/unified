@@ -14,12 +14,17 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"
-
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Services/Messaging/Messaging.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static ViewPtr<Rename::Rename> g_plugin;
+
+const std::string firstNameKey = "REAL FIRST NAME";
+const std::string lastNameKey = "REAL LAST NAME";
+const std::string overrideNameKey = "OVERRIDE NAME";
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -29,7 +34,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
     "Functions to facilitate renaming, overriding and customization of player names.",
     "Silvard",
     "jusenkyo at gmail.com",
-    1,
+    2,
     true
   };
 }
@@ -52,13 +57,21 @@ Rename::Rename(const Plugin::CreateParams& params)
   REGISTER(SetPlayerNameOverride);
 
 #undef REGISTER
-
-  m_blankLocStr.AddString(0, CExoString(""),0); 
   
-  GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__SendServerToPlayerPlayerList_All,int32_t,CNWSMessage*,CNWSPlayer*>(&HookPlayerList);
-  
+  GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__SendServerToPlayerPlayerList_All,int32_t,CNWSMessage*,CNWSPlayer*>(&HookPlayerList); 
   m_SendServerToPlayerPlayerList_All = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__SendServerToPlayerPlayerList_All);
-
+  try //try to request a hook. If it fails that means that NWNX_EVENTS_PARTY_EVENTS is enabled, which should broadcast a message to trigger the name change anyway.
+  {
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerParty,int32_t,CNWSMessage*,CNWSPlayer*,unsigned char>(&HookPartyInvite);
+    m_HandlePlayerToServerParty = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__HandlePlayerToServerParty);
+  } 
+  catch (...){}
+  GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",
+        [this](const std::vector<std::string> message)
+        {
+            if (message[0] == "NWNX_ON_PARTY_INVITE_BEFORE") this->GlobalNameChange(false);
+            if (message[0] == "NWNX_ON_PARTY_INVITE_AFTER") this->GlobalNameChange(true);
+        });  
 }
 
 Rename::~Rename()
@@ -85,47 +98,68 @@ CNWSPlayer *Rename::player(Types::ObjectID playerId)
 int32_t Rename::HookPlayerList(CNWSMessage* message, CNWSPlayer* pPlayer)
 {
     Rename& plugin = *g_plugin;
-    int32_t retVal;
-    API::CServerExoApp* server = Globals::AppManager()->m_pServerExoApp;
-    std::vector<Types::PlayerID> playerIDList;
-    
-    API::CExoLinkedListInternal* playerList = server->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
-    
     //traverse the player list and replace the names of all players on the override list
-    for (API::CExoLinkedListNode* head = playerList->pHead; head; head = head->pNext) 
-    {
-        CNWSClient* client = reinterpret_cast<API::CNWSClient*>(head->pObject);
-        Types::ObjectID clientID = static_cast<CNWSPlayer*>(client)->m_oidNWSObject;
-        auto overrideName = plugin.m_ObjectIDtoNameOverride.find(clientID);
-        CNWSCreature* pCreature = static_cast<CNWSCreature*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(clientID));
-        
-        if (client && overrideName != std::end(plugin.m_ObjectIDtoNameOverride) && !pCreature->m_sDisplayName.IsEmpty())
-        {
-            pCreature->m_pStats->m_lsFirstName = overrideName->second;
-            pCreature->m_pStats->m_lsLastName = plugin.m_blankLocStr;
-        }
-    }
+    plugin.GlobalNameChange(false);
     
-    retVal = plugin.m_SendServerToPlayerPlayerList_All->CallOriginal<int32_t>(message, pPlayer); //send the list
+    int32_t retVal = plugin.m_SendServerToPlayerPlayerList_All->CallOriginal<int32_t>(message, pPlayer); //send the list
     
     //And now we do it again to restore the names after the player list has been sent over 
-    for (API::CExoLinkedListNode* head = playerList->pHead; head; head = head->pNext)
-    {
-        CNWSClient* client = reinterpret_cast<API::CNWSClient*>(head->pObject);
-        Types::ObjectID clientID = static_cast<CNWSPlayer*>(client)->m_oidNWSObject;
-        auto firstName = plugin.m_ObjectIDtoRealFirstName.find(clientID);
-        auto lastName = plugin.m_ObjectIDtoRealLastName.find(clientID);
-        
-        if (client && firstName != std::end(plugin.m_ObjectIDtoRealFirstName))
-        {
-            CNWSCreature* pCreature = static_cast<CNWSCreature*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(clientID));
-            pCreature->m_pStats->m_lsFirstName = firstName->second;
-            pCreature->m_pStats->m_lsLastName = lastName->second;
-        }
-    }
+    plugin.GlobalNameChange(true);
 
     return retVal;
     
+}
+
+int32_t Rename::HookPartyInvite(NWNXLib::API::CNWSMessage* message, CNWSPlayer* pPlayer, unsigned char c)
+{
+    Rename& plugin = *g_plugin;
+    //traverse the player list and replace the names of all players on the override list
+    plugin.GlobalNameChange(false);
+
+    int32_t retVal = plugin.m_HandlePlayerToServerParty->CallOriginal<int32_t>(message, pPlayer, c); //send the invite
+    
+    //And now we do it again to restore the names after the party invite
+    plugin.GlobalNameChange(true);
+    
+    return retVal;
+}
+
+void Rename::GlobalNameChange(bool bOriginal)
+{
+    API::CServerExoAppInternal* server = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal;
+ 
+    //go through all the players and change their names or restore them based on bOriginal.
+    
+    API::CExoLinkedListInternal* playerList = server->m_pNWSPlayerList->m_pcExoLinkedListInternal;
+    
+    for (API::CExoLinkedListNode* head = playerList->pHead; head; head = head->pNext) 
+    {
+        CNWSClient* client = reinterpret_cast<API::CNWSClient*>(head->pObject);
+        Types::ObjectID pcObjectID = static_cast<CNWSPlayer*>(client)->m_oidNWSObject;
+        std::string lsFirstName = (bOriginal) ?  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,firstNameKey) :  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,overrideNameKey);
+        std::string lsLastName = (bOriginal) ?  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,lastNameKey) : std::string("");
+        CNWSCreature* pCreature = server->GetCreatureByGameObjectID(pcObjectID);
+        
+        if (pCreature && !lsFirstName.empty() && ( bOriginal || !pCreature->m_sDisplayName.IsEmpty()))
+        {
+            pCreature->m_pStats->m_lsFirstName = ContainString(lsFirstName);
+            pCreature->m_pStats->m_lsLastName = ContainString(lsLastName);
+        }
+    }
+}
+
+std::string Rename::ExtractString(CExoLocString locStr)
+{
+    CExoString str;
+    locStr.GetStringLoc(0,&str,0);
+    return std::string(str.CStr());
+}
+
+CExoLocString Rename::ContainString(std::string str)
+{
+    CExoLocString locStr;
+    locStr.AddString(0,CExoString(str.c_str()),0);
+    return locStr;
 }
 
 void Rename::UpdateName(CNWSCreature* targetObject)
@@ -171,12 +205,8 @@ void Rename::UpdateName(CNWSCreature* targetObject)
 
             // Update the player list. This handles updating the hover-over GUI elements too.
             message->SendServerToPlayerPlayerList_All(observerPlayerObject);
-        }
-
-        
+        }   
     }
-
-
 }
 
 
@@ -200,14 +230,12 @@ ArgumentStack Rename::SetPlayerNameOverride(ArgumentStack&& args)
         
         const std::string fullDisplayName = sPrefix + newName + sSuffix; //put together the floaty/chat/hover name
         
-        pCreature->m_sDisplayName = fullDisplayName.c_str();
+        pCreature->m_sDisplayName = fullDisplayName.c_str(); //sets the override floaty name, this goes away on logout/reset
         pCreature->m_bUpdateDisplayName = true; //unsure if this is necessary
 
-        API::CExoLocString locStr;
-        locStr.AddString(0, CExoString(newName.c_str()), 0);
-        m_ObjectIDtoNameOverride[playerObjectID] = locStr;
-        m_ObjectIDtoRealFirstName[playerObjectID] = pCreature->m_pStats->m_lsFirstName; //store original first name
-        m_ObjectIDtoRealLastName[playerObjectID] = pCreature->m_pStats->m_lsLastName; //store original last name
+        g_plugin->GetServices()->m_perObjectStorage->Set(playerObjectID,overrideNameKey, newName); //store affix-less override
+        g_plugin->GetServices()->m_perObjectStorage->Set(playerObjectID,firstNameKey, ExtractString(pCreature->m_pStats->m_lsFirstName)); //store original first name
+        g_plugin->GetServices()->m_perObjectStorage->Set(playerObjectID,lastNameKey, ExtractString(pCreature->m_pStats->m_lsLastName)); //store original last name
         
         UpdateName(pCreature); //this sends an update message to all clients. 
 
