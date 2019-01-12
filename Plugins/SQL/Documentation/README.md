@@ -12,8 +12,9 @@ Controls the target database type used at runtime.
 
 Possible values (case insensitive):
 
-*  ``MYSQL`` 
+* ``MYSQL`` 
 * ``POSTGRESQL``
+* ``SQLITE``
 
 __Example__
 
@@ -25,6 +26,8 @@ export NWNX_SQL_TYPE=POSTGRESQL
 
 Host name where the database resides.  Typically ``localhost`` but can be any valid host name or IP address.
 
+Not used if using SQLite.
+
 __Example__
 
 ```
@@ -34,6 +37,8 @@ export NWNX_SQL_HOSTNAME=localhost
 ### NWNX_SQL_USERNAME
 
 Database username used for the connection.
+
+Not used if using SQLite.
 
 __Example__
 
@@ -45,6 +50,8 @@ export NWNX_SQL_USERNAME=nwn_db
 
 Password for the database connection.
 
+Not used if using SQLite.
+
 __Example__
 
 ```
@@ -54,6 +61,8 @@ export NWNX_SQL_PASSWORD=lathander_rulez
 ### NWNX_SQL_DATABASE
 
 The database to connect to.
+
+The filename of the database when using SQLite
 
 __Example__
 

@@ -27,7 +27,7 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     {
         m_dbName = (*database).c_str();
 
-        LOG_DEBUG("DB set to %s", m_dbName.c_str());
+        LOG_INFO("SQLite Database name set to %s", m_dbName.c_str());
     }
 
     // BAD: This just dumps the DB file in the executable folder, should be user directory
@@ -85,7 +85,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
 
     for(unsigned int i = 0; i < m_paramCount; i++)
     {
-        int j = i + 1;
+        int j = i + 1;// First param is 1 in SQLite
         int bindStatus;
 
         LOG_DEBUG("Binding Text '%i' to: %s", j, m_paramValues[i].c_str());
@@ -129,7 +129,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
             for (int col = 0; col < columnCount; col++)
             {
                 const char* value = reinterpret_cast<const char*>(sqlite3_column_text(m_stmt, col));
-                LOG_DEBUG("Got text = %s", value);
+                LOG_DEBUG("Got value = %s", value);
                 row.emplace_back(Result(value, sqlite3_column_bytes(m_stmt, col)));
             }
 
