@@ -32,11 +32,6 @@ private:
     std::string m_dbName;
     size_t m_paramCount;
     std::string m_lastError;
-
-    // No std::variant available, and C++ really doesn't like strings in unions.
-    struct Variant { float f; int32_t n; std::string s;
-        Variant() { s = ""; }
-    };
     std::vector<std::string> m_paramValues;
     int m_affectedRows;
 };

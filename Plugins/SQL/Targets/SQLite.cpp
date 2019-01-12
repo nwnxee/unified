@@ -78,7 +78,6 @@ bool SQLite::PrepareQuery(const Query& query)
 NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
 {
     int stepState;
-    int columnCount;
     m_affectedRows = -1;
 
     sqlite3_reset(m_stmt);
@@ -94,14 +93,15 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         
         if(bindStatus != SQLITE_OK)
         {
-            LOG_WARNING("Failed to bind params");
             m_lastError.assign(sqlite3_errmsg(m_dbConn));
+            
+            LOG_WARNING("Failed to bind params: %s", m_lastError.c_str());            
 
             return NWNXLib::Maybe<ResultSet>(); // Failed query.
         }
     }
 
-    columnCount = sqlite3_column_count(m_stmt);
+    int columnCount = sqlite3_column_count(m_stmt);
     
     if (!columnCount)
     {// Statement returns no rows (INSERT, UPDATE, DELETE, etc.)
@@ -111,7 +111,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         {
             m_affectedRows = sqlite3_changes(m_dbConn);
             return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results. 
-        }   
+        }
     }
     else
     {
@@ -145,6 +145,9 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         }
     }
 
+    m_lastError.assign(sqlite3_errmsg(m_dbConn));
+    LOG_WARNING("Query failed due to error '%s'", m_lastError.c_str());
+
     return NWNXLib::Maybe<ResultSet>(); // Failed query.
 }
 
@@ -153,10 +156,8 @@ void SQLite::PrepareInt(int32_t position, int32_t value)
     LOG_DEBUG("Assigning position %d to value '%d'", position, value);
 
     ASSERT(position >= 0);
-    size_t pos = static_cast<size_t>(position);
 
-    m_paramValues[pos] = std::to_string(value);
-    //m_paramValues[pos].n = value;
+    m_paramValues[position] = std::to_string(value);
 }
 
 void SQLite::PrepareFloat(int32_t position, float value)
@@ -164,10 +165,8 @@ void SQLite::PrepareFloat(int32_t position, float value)
     LOG_DEBUG("Assigning position %d to value '%f'", position, value); 
 
     ASSERT(position >= 0);
-    size_t pos = static_cast<size_t>(position);
 
-    m_paramValues[pos] = std::to_string(value);
-    //m_paramValues[pos].f = value;  
+    m_paramValues[position] = std::to_string(value);
 }
 
 void SQLite::PrepareString(int32_t position, const std::string& value)
@@ -175,9 +174,8 @@ void SQLite::PrepareString(int32_t position, const std::string& value)
     LOG_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
 
     ASSERT(position >= 0);
-    size_t pos = static_cast<size_t>(position);
 
-    m_paramValues[pos] = value.c_str();
+    m_paramValues[position] = value;
 }
 
 int SQLite::GetAffectedRows()
