@@ -88,7 +88,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         int j = i + 1;// First param is 1 in SQLite
         int bindStatus;
 
-        LOG_DEBUG("Binding Text '%i' to: %s", j, m_paramValues[i].c_str());
+        LOG_DEBUG("Binding value '%s' to param '%s'", m_paramValues[i].c_str(), i);
         bindStatus = sqlite3_bind_text(m_stmt, j, m_paramValues[i].c_str(), -1, NULL);  
         
         if(bindStatus != SQLITE_OK)
@@ -129,7 +129,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
             for (int col = 0; col < columnCount; col++)
             {
                 const char* value = reinterpret_cast<const char*>(sqlite3_column_text(m_stmt, col));
-                LOG_DEBUG("Got value = %s", value);
+                LOG_DEBUG("Got value '%s' from column '%i'", value, col);
                 row.emplace_back(Result(value, sqlite3_column_bytes(m_stmt, col)));
             }
 
