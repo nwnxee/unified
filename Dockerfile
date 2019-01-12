@@ -11,6 +11,7 @@ COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 RUN runDeps="hunspell \
     libmariadbclient18 \
     libpq-dev \
+    libsqlite3-dev \
     libruby2.3 \
     luajit libluajit-5.1 \
     libssl1.1" \
@@ -28,7 +29,6 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
 # Disable all other plugins by default. Remember to add new plugins to this list.
 ENV NWNX_ADMINISTRATION_SKIP=y \
     NWNX_AREA_SKIP=y \
-    NWNX_BEHAVIOURTREE_SKIP=y \
     NWNX_CHAT_SKIP=y \
     NWNX_COMBATMODES_SKIP=y \
     NWNX_CREATURE_SKIP=y \
