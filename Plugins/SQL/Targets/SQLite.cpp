@@ -88,7 +88,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         int j = i + 1;// First param is 1 in SQLite
         int bindStatus;
 
-        LOG_DEBUG("Binding value '%s' to param '%s'", m_paramValues[i].c_str(), i);
+        LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i].c_str(), i);
         bindStatus = sqlite3_bind_text(m_stmt, j, m_paramValues[i].c_str(), -1, NULL);  
         
         if(bindStatus != SQLITE_OK)
