@@ -1,10 +1,9 @@
-
-# - Find sqlite
+# - Find sqlite3
 # Find the native SQLite3 includes and library
 #
-#  SQLITE3_INCLUDE_DIR - where to find mysql.h, etc.
-#  SQLITE3_LIBRARIES   - List of libraries when using MySQL.
-#  SQLITE3_FOUND       - True if MySQL found.
+#  SQLITE3_INCLUDE_DIR - where to find sqlite3.h, etc.
+#  SQLITE3_LIBRARIES   - List of libraries when using SQLite3.
+#  SQLITE3_FOUND       - True if SQLite3 found.
 
 IF (SQLITE3_INCLUDE_DIR)
   # Already in cache, be silent
