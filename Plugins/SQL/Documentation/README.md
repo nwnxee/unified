@@ -62,7 +62,7 @@ export NWNX_SQL_PASSWORD=lathander_rulez
 
 The database to connect to.
 
-The filename of the database when using SQLite
+The filename of the database when using SQLite, it is stored in the UserDirectory/database folder.
 
 __Example__
 

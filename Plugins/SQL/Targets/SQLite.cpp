@@ -2,11 +2,18 @@
 
 #include "SQLite.hpp"
 #include "Services/Config/Config.hpp"
+#include "API/Globals.hpp"
+#include "API/CExoBase.hpp"
+#include "Platform/FileSystem.hpp"
 
 #include <string.h>
 #include <sqlite3.h>
 
 namespace SQL {
+
+using namespace NWNXLib;
+using namespace NWNXLib::API;
+using namespace Platform::FileSystem;
 
 SQLite::SQLite()
 {
@@ -29,10 +36,11 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 
         LOG_INFO("SQLite Database name set to %s", m_dbName.c_str());
     }
-
-    // BAD: This just dumps the DB file in the executable folder, should be user directory
-    std::string dbPath = m_dbName + ".sqlite3";
     
+    // Save the database file to UserDirectory/database
+    static std::string dbPath = CombinePaths(
+        CombinePaths(std::string(Globals::ExoBase()->m_sUserDirectory.CStr()),  std::string("database")), m_dbName + ".sqlite3");
+  
     if (sqlite3_open(dbPath.c_str(), &m_dbConn))
     {
         throw std::runtime_error(std::string(sqlite3_errmsg(m_dbConn)));
