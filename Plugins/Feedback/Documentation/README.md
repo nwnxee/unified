@@ -2,6 +2,6 @@
 
 ## Description
 
-Allows feedback messages to be hidden globally or per player
+Allows combatlog and feedback messages to be hidden globally or per player
 
 ## Environment Variables
