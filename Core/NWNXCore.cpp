@@ -5,10 +5,6 @@
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "API/Vector.hpp"
-#include "API/CExoString.hpp"
-#include "API/CScriptLocation.hpp"
-#include "API/CVirtualMachine.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Debug.hpp"
 #include "Platform/FileSystem.hpp"
@@ -22,7 +18,6 @@
 #include "Services/Commands/Commands.hpp"
 #include "Utils.hpp"
 
-#include <cstring>
 #include <csignal>
 
 using namespace NWNXLib;
@@ -69,36 +64,11 @@ void RestoreCrashHandlers()
     std::signal(SIGSEGV, nwn_crash_handler);
 }
 
-static const char NWNX_PREFIX[]        = "NWNXEE!";
-static const char NWNX_LEGACY_PREFIX[] = "NWNX!";
-
-bool CompareStringPrefix(const API::CExoString& str, const char *prefix)
-{
-    auto len = std::strlen(prefix);
-    return str.m_sString && str.m_nBufferLength >= len && std::strncmp(prefix, str.m_sString, len) == 0;
-}
-
-void NotifyLegacyCall(const char* str)
-{
-    LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript().c_str());
-    const char *cmd = str + sizeof(NWNX_LEGACY_PREFIX) - 1;
-    if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
-        !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||
-        !std::strncmp(cmd, "GET_RETURN_VALUE", std::strlen("GET_RETURN_VALUE")))
-    {
-        LOG_NOTICE("  Please recompile all scripts that include \"nwnx.nss\"");
-    }
-    else
-    {
-        LOG_NOTICE("  This is a leftover from 1.69 nwnx2 scripts.");
-    }
-}
-
 }
 
 namespace Core {
 
-static NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
+NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
 NWNXCore::NWNXCore()
     : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; })
@@ -321,53 +291,6 @@ void NWNXCore::Shutdown()
     g_core = nullptr;
 }
 
-/*void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index, API::CExoString* value)
-{
-    if (CompareStringPrefix(index, NWNX_PREFIX))
-    {
-        std::string keyAsStr = std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1);
-        std::string valueAsStr = value->m_sString ? std::string(value->m_sString) : std::string("");
-        return g_core->m_services->m_events->OnSetLocalString(std::move(keyAsStr), std::move(valueAsStr));
-    }
-    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(index->CStr());
-    }
-
-    g_setStringHook->CallOriginal<void>(thisPtr, index, value);
-}
-
-API::Types::ObjectID NWNXCore::GetObjectHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
-{
-    if (CompareStringPrefix(index, NWNX_PREFIX))
-    {
-        Maybe<API::Types::ObjectID> eventRet = g_core->m_services->m_events->OnGetLocalObject(std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1));
-        return eventRet ? eventRet.Extract() : API::Constants::OBJECT_INVALID;
-    }
-    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(index->CStr());
-    }
-
-    return g_getObjectHook->CallOriginal<API::Types::ObjectID>(thisPtr, index);
-}
-
-API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
-{
-    if (CompareStringPrefix(index, NWNX_PREFIX))
-    {
-        Maybe<std::string> eventRet = g_core->m_services->m_events->OnGetLocalString(std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1));
-
-        return eventRet ? eventRet.Extract().c_str() : "";
-    }
-    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(index->CStr());
-    }
-
-    return g_getStringHook->CallOriginal<API::CExoString>(thisPtr, index);
-}*/
-
 void NWNXCore::CreateServerHandler(API::CAppManager* app)
 {
     g_core->InitialVersionCheck();
@@ -428,215 +351,6 @@ void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CSer
     g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks);
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
     g_core->m_services->m_commands->RunScheduledCommands();
-}
-
-enum VMCommand
-{
-    GetLocalInt         = 51,
-    GetLocalFloat       = 52,
-    GetLocalString      = 53,
-    GetLocalObject      = 54,
-    SetLocalInt         = 55,
-    SetLocalFloat       = 56,
-    SetLocalString      = 57,
-    SetLocalObject      = 58,
-    SetLocalLocation    = 152,
-    GetLocalLocation    = 153,
-    TagEffect           = 850,
-    TagItemProperty     = 855
-};
-enum VMError
-{
-    Success = 0,
-    TooManyInstructions          = -632,
-    TooManyLevelsOfRecursion     = -633,
-    FileNotOpened                = -634,
-    FileNotCompiledSuccessfully  = -635,
-    InvalidAuxCode               = -636,
-    NullVirtualMachineNode       = -637,
-    StackOverflow                = -638,
-    StackUnderflow               = -639,
-    InvalidOpCode                = -640,
-    InvalidExtraDataOnOpCode     = -641,
-    InvalidCommand               = -642,
-    FakeShortcutLogicalOperation = -643,
-    DivideByZero                 = -644,
-    FakeAbortScript              = -645,
-    IPOutOfCodeSegment           = -646,
-    CommandImplementerNotSet     = -647,
-    UnknownTypeOnRunTimeSTack    = -648
-};
-
-enum VMStructure
-{
-    Effect       = 0,
-    Event        = 1,
-    Location     = 2,
-    Talent       = 3,
-    Itemproperty = 4
-};
-
-int32_t NWNXCore::GetVarHandler(API::CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
-{
-    auto *vm = API::Globals::VirtualMachine();
-
-    API::Types::ObjectID oid;
-    if (!vm->StackPopObject(&oid))
-        return VMError::StackUnderflow;
-
-    API::CExoString varname;
-    if (!vm->StackPopString(&varname))
-        return VMError::StackUnderflow;
-
-    auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
-
-    bool nwnx = CompareStringPrefix(varname, NWNX_PREFIX);
-    if (!nwnx && CompareStringPrefix(varname, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(varname.CStr());
-    }
-
-    bool success = false;
-    switch (nCommandId)
-    {
-        case VMCommand::GetLocalInt:
-            success = vm->StackPushInteger(vartable?vartable->GetInt(varname):0);
-            break;
-        case VMCommand::GetLocalFloat:
-            success = vm->StackPushFloat(vartable?vartable->GetFloat(varname):0.0);
-            break;
-        case VMCommand::GetLocalString:
-        {
-            API::CExoString str = "";
-            if (nwnx)
-            {
-                auto eventRet = g_core->m_services->m_events->OnGetLocalString(std::string(varname.m_sString + sizeof(NWNX_PREFIX) - 1));
-                if (eventRet)
-                    str = eventRet->c_str();
-            }
-            else if (vartable)
-            {
-                str = vartable->GetString(varname);
-            }
-            success = vm->StackPushString(str);
-            break;
-        }
-        case VMCommand::GetLocalObject:
-        {
-            API::Types::ObjectID oid = API::Constants::OBJECT_INVALID;
-
-            if (nwnx)
-            {
-                auto eventRet = g_core->m_services->m_events->OnGetLocalObject(std::string(varname.m_sString + sizeof(NWNX_PREFIX) - 1));
-                if (eventRet)
-                    oid = *eventRet;
-            }
-            else if (vartable)
-            {
-                oid = vartable->GetObject(varname);
-            }
-            success = vm->StackPushObject(oid);
-            break;
-        }
-        case VMCommand::GetLocalLocation:
-        {
-            API::CScriptLocation loc;
-            if (vartable)
-                vartable->GetLocation(varname);
-
-            success = vm->StackPushEngineStructure(VMStructure::Location, &loc);
-            break;
-        }
-    }
-
-    return success ? VMError::Success : VMError::StackOverflow;
-}
-int32_t NWNXCore::SetVarHandler(API::CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
-{
-    auto *vm = API::Globals::VirtualMachine();
-
-    API::Types::ObjectID oid;
-    if (!vm->StackPopObject(&oid))
-        return VMError::StackUnderflow;
-
-    API::CExoString varname;
-    if (!vm->StackPopString(&varname))
-        return VMError::StackUnderflow;
-
-    auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
-
-    bool nwnx = CompareStringPrefix(varname, NWNX_PREFIX);
-    if (!nwnx && CompareStringPrefix(varname, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(varname.CStr());
-    }
-
-    switch (nCommandId)
-    {
-        case VMCommand::SetLocalInt:
-        {
-            int32_t value;
-            if (!vm->StackPopInteger(&value))
-                return VMError::StackUnderflow;
-
-            if (vartable)
-                vartable->SetInt(varname, value, 0);
-            break;
-        }
-        case VMCommand::SetLocalFloat:
-        {
-            float value;
-            if (!vm->StackPopFloat(&value))
-                return VMError::StackUnderflow;
-
-            if (vartable)
-                vartable->SetFloat(varname, value);
-            break;
-        }
-        case VMCommand::SetLocalString:
-        {
-            API::CExoString value;
-            if (!vm->StackPopString(&value))
-                return VMError::StackUnderflow;
-
-            if (nwnx)
-            {
-                auto keyAsStr = std::string(varname.m_sString + sizeof(NWNX_PREFIX) - 1);
-                auto valueAsStr = std::string(value.CStr());
-                g_core->m_services->m_events->OnSetLocalString(std::move(keyAsStr), std::move(valueAsStr));
-            }
-            else
-            {
-                if (vartable)
-                    vartable->SetString(varname, value);
-            }
-            break;
-        }
-        case VMCommand::SetLocalObject:
-        {
-            API::Types::ObjectID value;
-            if (!vm->StackPopObject(&value))
-                return VMError::StackUnderflow;
-
-            if (vartable)
-                vartable->SetObject(varname, value);
-            break;
-        }
-        case VMCommand::SetLocalLocation:
-        {
-            API::CScriptLocation *pLoc;
-            if (!vm->StackPopEngineStructure(VMStructure::Location, (void**)&pLoc))
-                return VMError::StackUnderflow;
-            if (vartable)
-                vartable->SetLocation(varname, *pLoc);
-
-            delete pLoc;
-            break;
-        }
-    }
-
-
-    return VMError::Success;
 }
 
 }

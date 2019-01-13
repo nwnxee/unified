@@ -1,0 +1,262 @@
+#include "NWNXCore.hpp"
+
+#include "API/CAppManager.hpp"
+#include "API/CExoString.hpp"
+#include "API/Constants.hpp"
+#include "API/Functions.hpp"
+#include "API/Globals.hpp"
+#include "API/Vector.hpp"
+#include "API/CExoString.hpp"
+#include "API/CScriptLocation.hpp"
+#include "API/CVirtualMachine.hpp"
+#include "Platform/Debug.hpp"
+#include "Services/Events/Events.hpp"
+#include "Utils.hpp"
+
+#include <cstring>
+
+using namespace NWNXLib;
+using namespace NWNXLib::API;
+using namespace NWNXLib::API::Types;
+
+namespace {
+
+enum VMCommand
+{
+    GetLocalInt         = 51,
+    GetLocalFloat       = 52,
+    GetLocalString      = 53,
+    GetLocalObject      = 54,
+    SetLocalInt         = 55,
+    SetLocalFloat       = 56,
+    SetLocalString      = 57,
+    SetLocalObject      = 58,
+    SetLocalLocation    = 152,
+    GetLocalLocation    = 153,
+    TagEffect           = 850,
+    TagItemProperty     = 855
+};
+enum VMError
+{
+    Success                      = 0,
+    TooManyInstructions          = -632,
+    TooManyLevelsOfRecursion     = -633,
+    FileNotOpened                = -634,
+    FileNotCompiledSuccessfully  = -635,
+    InvalidAuxCode               = -636,
+    NullVirtualMachineNode       = -637,
+    StackOverflow                = -638,
+    StackUnderflow               = -639,
+    InvalidOpCode                = -640,
+    InvalidExtraDataOnOpCode     = -641,
+    InvalidCommand               = -642,
+    FakeShortcutLogicalOperation = -643,
+    DivideByZero                 = -644,
+    FakeAbortScript              = -645,
+    IPOutOfCodeSegment           = -646,
+    CommandImplementerNotSet     = -647,
+    UnknownTypeOnRunTimeSTack    = -648
+};
+
+enum VMStructure
+{
+    Effect       = 0,
+    Event        = 1,
+    Location     = 2,
+    Talent       = 3,
+    Itemproperty = 4
+};
+
+bool CheckNWNX(CExoString* str)
+{
+    static const char NWNX_PREFIX[]        = "NWNXEE!";
+    static const char NWNX_LEGACY_PREFIX[] = "NWNX!";
+
+    auto startsWith = [](const CExoString* str, const char *prefix) -> bool
+    {
+        auto len = std::strlen(prefix);
+        return str->m_sString && str->m_nBufferLength >= len && std::strncmp(prefix, str->m_sString, len) == 0;
+    };
+
+    if (startsWith(str, NWNX_PREFIX))
+    {
+        std::memmove(str->m_sString, str->m_sString + sizeof(NWNX_PREFIX)-1,
+                    std::strlen(str->m_sString) - sizeof(NWNX_PREFIX) + 2);
+        return true;
+    }
+    else if (startsWith(str, NWNX_LEGACY_PREFIX))
+    {
+        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript().c_str());
+        const char *cmd = str->m_sString + sizeof(NWNX_LEGACY_PREFIX) - 1;
+        if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
+            !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||
+            !std::strncmp(cmd, "GET_RETURN_VALUE", std::strlen("GET_RETURN_VALUE")))
+        {
+            LOG_NOTICE("  Please recompile all scripts that include \"nwnx.nss\"");
+        }
+        else
+        {
+            LOG_NOTICE("  This is a leftover from 1.69 nwnx2 scripts.");
+        }
+    }
+
+    return false;
+}
+
+}
+
+namespace Core {
+
+extern NWNXCore* g_core;
+
+int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+{
+    auto *vm = Globals::VirtualMachine();
+
+    Types::ObjectID oid;
+    if (!vm->StackPopObject(&oid))
+        return VMError::StackUnderflow;
+
+    CExoString varname;
+    if (!vm->StackPopString(&varname))
+        return VMError::StackUnderflow;
+
+    auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
+    bool nwnx = CheckNWNX(&varname);
+
+
+    bool success = false;
+    switch (nCommandId)
+    {
+        case VMCommand::GetLocalInt:
+            success = vm->StackPushInteger(vartable?vartable->GetInt(varname):0);
+            break;
+        case VMCommand::GetLocalFloat:
+            success = vm->StackPushFloat(vartable?vartable->GetFloat(varname):0.0);
+            break;
+        case VMCommand::GetLocalString:
+        {
+            CExoString str = "";
+            if (nwnx)
+            {
+                if (auto v = g_core->m_services->m_events->OnGetLocalString(varname.CStr()))
+                    str = v->c_str();
+            }
+            else if (vartable)
+            {
+                str = vartable->GetString(varname);
+            }
+            success = vm->StackPushString(str);
+            break;
+        }
+        case VMCommand::GetLocalObject:
+        {
+            Types::ObjectID oid = Constants::OBJECT_INVALID;
+
+            if (nwnx)
+            {
+                if (auto v = g_core->m_services->m_events->OnGetLocalObject(varname.CStr()))
+                    oid = *v;
+            }
+            else if (vartable)
+            {
+                oid = vartable->GetObject(varname);
+            }
+            success = vm->StackPushObject(oid);
+            break;
+        }
+        case VMCommand::GetLocalLocation:
+        {
+            CScriptLocation loc;
+            if (vartable)
+                vartable->GetLocation(varname);
+
+            success = vm->StackPushEngineStructure(VMStructure::Location, &loc);
+            break;
+        }
+    }
+
+    return success ? VMError::Success : VMError::StackOverflow;
+}
+int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+{
+    auto *vm = Globals::VirtualMachine();
+
+    Types::ObjectID oid;
+    if (!vm->StackPopObject(&oid))
+        return VMError::StackUnderflow;
+
+    CExoString varname;
+    if (!vm->StackPopString(&varname))
+        return VMError::StackUnderflow;
+
+    auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
+    bool nwnx = CheckNWNX(&varname);
+
+    switch (nCommandId)
+    {
+        case VMCommand::SetLocalInt:
+        {
+            int32_t value;
+            if (!vm->StackPopInteger(&value))
+                return VMError::StackUnderflow;
+
+            if (vartable)
+                vartable->SetInt(varname, value, 0);
+            break;
+        }
+        case VMCommand::SetLocalFloat:
+        {
+            float value;
+            if (!vm->StackPopFloat(&value))
+                return VMError::StackUnderflow;
+
+            if (vartable)
+                vartable->SetFloat(varname, value);
+            break;
+        }
+        case VMCommand::SetLocalString:
+        {
+            CExoString value;
+            if (!vm->StackPopString(&value))
+                return VMError::StackUnderflow;
+
+            if (nwnx)
+            {
+                g_core->m_services->m_events->OnSetLocalString(varname.CStr(), value.CStr());
+            }
+            else
+            {
+                if (vartable)
+                    vartable->SetString(varname, value);
+            }
+            break;
+        }
+        case VMCommand::SetLocalObject:
+        {
+            Types::ObjectID value;
+            if (!vm->StackPopObject(&value))
+                return VMError::StackUnderflow;
+
+            if (vartable)
+                vartable->SetObject(varname, value);
+            break;
+        }
+        case VMCommand::SetLocalLocation:
+        {
+            CScriptLocation *pLoc;
+            if (!vm->StackPopEngineStructure(VMStructure::Location, (void**)&pLoc))
+                return VMError::StackUnderflow;
+            if (vartable)
+                vartable->SetLocation(varname, *pLoc);
+
+            delete pLoc;
+            break;
+        }
+    }
+
+
+    return VMError::Success;
+}
+
+}
