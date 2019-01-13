@@ -108,21 +108,25 @@ ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
 {
     ArgumentStack stack;
     std::string retVal = "";
-    auto *pTlk = API::Globals::TlkTable();
-    auto *pTokens = pTlk->m_pTokensCustom;
-    int numTokens = pTlk->m_nTokensCustom;
 
     const auto tokenNumber = Services::Events::ExtractArgument<int32_t>(args);
 
-    CTlkTableTokenCustom token;
-    token.m_nNumber = tokenNumber < 0 ? 0 : tokenNumber;
-    
-    auto *foundToken = (CTlkTableTokenCustom*)std::bsearch(&token, pTokens, numTokens, sizeof(token),
-         +[](const void *a, const void *b){ return (int32_t)((CTlkTableTokenCustom*)a)->m_nNumber - (int32_t)((CTlkTableTokenCustom*)b)->m_nNumber; });
-    
-    if(foundToken)
-    { 
-        retVal = foundToken->m_sValue.CStr();
+    if (tokenNumber >= 0)
+    {
+        auto *pTlk = API::Globals::TlkTable();
+        auto *pTokens = pTlk->m_pTokensCustom;
+        int numTokens = pTlk->m_nTokensCustom;
+
+        CTlkTableTokenCustom token;
+        token.m_nNumber = tokenNumber;
+        
+        auto *foundToken = (CTlkTableTokenCustom*)std::bsearch(&token, pTokens, numTokens, sizeof(token),
+            +[](const void *a, const void *b){ return (int32_t)((CTlkTableTokenCustom*)a)->m_nNumber - (int32_t)((CTlkTableTokenCustom*)b)->m_nNumber; });
+        
+        if(foundToken)
+        { 
+            retVal = foundToken->m_sValue.CStr();
+        }
     }
 
     Services::Events::InsertArgument(stack, retVal);
