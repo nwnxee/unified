@@ -40,6 +40,8 @@ public:
     void OnSetLocalString(std::string&& index, std::string&& value);
     Maybe<std::string> OnGetLocalString(std::string&& index);
     Maybe<API::Types::ObjectID> OnGetLocalObject(std::string&& index);
+    Maybe<API::CGameEffect*> OnTagEffect(std::string&& index, API::CGameEffect* effect);
+    Maybe<API::CGameEffect*> OnTagItemProperty(std::string&& index, API::CGameEffect* itemproperty);
 
     RegistrationToken RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb);
     void ClearEvent(RegistrationToken&& token);

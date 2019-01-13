@@ -23,6 +23,8 @@ public:
 
     static int32_t GetVarHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
     static int32_t SetVarHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t TagEffectHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t TagItemPropertyHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
 
 private: // Structures
     using PluginProxyServiceMap = std::map<

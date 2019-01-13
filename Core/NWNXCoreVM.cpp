@@ -9,6 +9,7 @@
 #include "API/CExoString.hpp"
 #include "API/CScriptLocation.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CGameEffect.hpp"
 #include "Platform/Debug.hpp"
 #include "Services/Events/Events.hpp"
 #include "Utils.hpp"
@@ -64,7 +65,7 @@ enum VMStructure
     Event        = 1,
     Location     = 2,
     Talent       = 3,
-    Itemproperty = 4
+    ItemProperty = 4
 };
 
 bool CheckNWNX(CExoString* str)
@@ -111,6 +112,7 @@ extern NWNXCore* g_core;
 
 int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
+    ASSERT(thisPtr); ASSERT(nParameters == 2);
     auto *vm = Globals::VirtualMachine();
 
     Types::ObjectID oid;
@@ -174,12 +176,15 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             success = vm->StackPushEngineStructure(VMStructure::Location, &loc);
             break;
         }
+        default:
+            ASSERT_FAIL();
     }
 
     return success ? VMError::Success : VMError::StackOverflow;
 }
 int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
 {
+    ASSERT(thisPtr); ASSERT(nParameters == 3);
     auto *vm = Globals::VirtualMachine();
 
     Types::ObjectID oid;
@@ -253,9 +258,79 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             delete pLoc;
             break;
         }
+        default:
+            ASSERT_FAIL();
     }
 
 
+    return VMError::Success;
+}
+
+int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+{
+    ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagEffect); ASSERT(nParameters == 2);
+    auto *vm = Globals::VirtualMachine();
+
+    CGameEffect *pEffect;
+    if (!vm->StackPopEngineStructure(VMStructure::Effect, (void**)&pEffect))
+        return VMError::StackUnderflow;
+
+    CExoString tag;
+    if (!vm->StackPopString(&tag))
+        return VMError::StackUnderflow;
+
+    if (CheckNWNX(&tag))
+    {
+        if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pEffect))
+            pEffect = *res;
+    }
+    else
+    {
+        pEffect->SetCustomTag(tag);
+        if (pEffect->m_nType == 40) // linked effects
+        {
+            pEffect->UpdateLinked();
+        }
+    }
+
+    if (!vm->StackPushEngineStructure(VMStructure::Effect, pEffect))
+        return VMError::StackOverflow;
+
+    delete pEffect;
+    return VMError::Success;
+}
+
+
+int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+{
+    ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagItemProperty); ASSERT(nParameters == 2);
+    auto *vm = Globals::VirtualMachine();
+
+    CGameEffect *pItemProperty; // Not a typo, same base type for effects and IPs
+    if (!vm->StackPopEngineStructure(VMStructure::ItemProperty, (void**)&pItemProperty))
+        return VMError::StackUnderflow;
+
+    CExoString tag;
+    if (!vm->StackPopString(&tag))
+        return VMError::StackUnderflow;
+
+    if (CheckNWNX(&tag))
+    {
+        if (auto res = g_core->m_services->m_events->OnTagItemProperty(tag.CStr(), pItemProperty))
+            pItemProperty = *res;
+    }
+    else
+    {
+        if (pItemProperty->m_nType == 91) // ItemProperty effect
+        {
+            pItemProperty->SetString(0, tag);
+        }
+    }
+
+    if (!vm->StackPushEngineStructure(VMStructure::ItemProperty, pItemProperty))
+        return VMError::StackOverflow;
+
+    delete pItemProperty;
     return VMError::Success;
 }
 

@@ -152,6 +152,8 @@ void NWNXCore::InitialSetupHooks()
 {
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandSetVar>(&SetVarHandler);
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandGetVar>(&GetVarHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandTagEffect>(&TagEffectHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandTagItemProperty>(&TagItemPropertyHandler);
 
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);

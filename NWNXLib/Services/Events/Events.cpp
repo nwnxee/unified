@@ -1,5 +1,6 @@
 #include "Services/Events/Events.hpp"
 #include "API/CExoString.hpp"
+#include "API/CGameEffect.hpp"
 
 #include <algorithm>
 #include <array>
@@ -147,6 +148,16 @@ Maybe<API::Types::ObjectID> Events::OnGetLocalObject(std::string&& index)
 {
     auto objectAsStr = OnGetLocalString(std::forward<std::string>(index));
     return objectAsStr ? Maybe<API::Types::ObjectID>(std::strtoul((*objectAsStr).c_str(), nullptr, 16)) : Maybe<API::Types::ObjectID>();
+}
+
+Maybe<API::CGameEffect*> Events::OnTagEffect(std::string&& index, API::CGameEffect* effect)
+{
+    return Maybe<API::CGameEffect*>(nullptr);
+}
+
+Maybe<API::CGameEffect*> Events::OnTagItemProperty(std::string&& index, API::CGameEffect* itemproperty)
+{
+    return Maybe<API::CGameEffect*>(nullptr);
 }
 
 Events::RegistrationToken Events::RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb)
