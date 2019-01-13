@@ -267,5 +267,21 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
     return true;
 }
 
+API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject)
+{
+    if (!pObject)
+        return nullptr;
+
+    switch (pObject->m_nObjectType)
+    {
+        case OBJECT_TYPE_AREA:
+            return &static_cast<API::CNWSArea*>(pObject)->m_ScriptVars;
+        case OBJECT_TYPE_MODULE:
+            return &static_cast<API::CNWSModule*>(pObject)->m_ScriptVars;
+        default:
+            return &static_cast<API::CNWSObject*>(pObject)->m_ScriptVars;
+    }
+}
+
 }
 }
