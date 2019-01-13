@@ -115,7 +115,7 @@ ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
     const auto tokenNumber = Services::Events::ExtractArgument<int32_t>(args);
 
     CTlkTableTokenCustom token;
-    token.m_nNumber = tokenNumber;
+    token.m_nNumber = tokenNumber < 0 ? 0 : tokenNumber;
     
     auto *foundToken = (CTlkTableTokenCustom*)std::bsearch(&token, pTokens, numTokens, sizeof(token),
          +[](const void *a, const void *b){ return (int32_t)((CTlkTableTokenCustom*)a)->m_nNumber - (int32_t)((CTlkTableTokenCustom*)b)->m_nNumber; });
