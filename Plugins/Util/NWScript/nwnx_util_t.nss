@@ -1,7 +1,5 @@
 #include "nwnx_util"
 
-
-
 void report(string func, int bSuccess)
 {
     if (bSuccess)
@@ -9,6 +7,7 @@ void report(string func, int bSuccess)
     else
         WriteTimestampedLogEntry("NWNX_Util: " + func + "() failed");
 }
+
 void main()
 {
     WriteTimestampedLogEntry("NWNX_Util unit test begin..");
@@ -22,6 +21,10 @@ void main()
 
     string ascii = NWNX_Util_GetAsciiTableString();
     report("GetAsciiTableString", GetSubString(ascii, 65, 1) == "A");
+
+    SetCustomToken(1000, "Test Token 1000");
+    string sToken = NWNX_Util_GetCustomToken(1000);
+    report("GetCustomToken", sToken == "Test Token 1000");
 
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

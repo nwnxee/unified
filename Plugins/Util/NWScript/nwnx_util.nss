@@ -8,6 +8,8 @@ string NWNX_Util_GetCurrentScriptName(int depth=0);
 string NWNX_Util_GetAsciiTableString();
 // Returns an integer hash of a string
 int NWNX_Util_Hash(string str);
+// Gets the value of customTokenNumber
+string NWNX_Util_GetCustomToken(int customTokenNumber);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -20,12 +22,14 @@ string NWNX_Util_GetCurrentScriptName(int depth=0)
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
+
 string NWNX_Util_GetAsciiTableString()
 {
     string sFunc = "GetAsciiTableString";
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
+
 int NWNX_Util_Hash(string str)
 {
     string sFunc = "Hash";
@@ -34,3 +38,10 @@ int NWNX_Util_Hash(string str)
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
+string NWNX_Util_GetCustomToken(int customTokenNumber)
+{
+    string sFunc = "GetCustomToken";
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, customTokenNumber);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
