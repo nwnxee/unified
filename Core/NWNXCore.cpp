@@ -96,10 +96,6 @@ namespace Core {
 
 static NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
-static Hooking::FunctionHook* g_setStringHook = nullptr;
-static Hooking::FunctionHook* g_getStringHook = nullptr;
-static Hooking::FunctionHook* g_getObjectHook = nullptr;
-
 NWNXCore::NWNXCore()
     : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; })
 {
@@ -180,19 +176,14 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Servi
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__SetString>(&SetStringHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__GetObject>(&GetObjectHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__GetString>(&GetStringHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandSetVar>(&SetVarHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandGetVar>(&GetVarHandler);
 
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);
 
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSObject__CNWSObjectDtor__0, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSArea__CNWSAreaDtor__0, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
-
-    g_setStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__SetString);
-    g_getStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetString);
-    g_getObjectHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetObject);
 }
 
 void NWNXCore::InitialVersionCheck()
@@ -326,7 +317,7 @@ void NWNXCore::Shutdown()
     g_core = nullptr;
 }
 
-void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index, API::CExoString* value)
+/*void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index, API::CExoString* value)
 {
     if (CompareStringPrefix(index, NWNX_PREFIX))
     {
@@ -371,7 +362,7 @@ API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API
     }
 
     return g_getStringHook->CallOriginal<API::CExoString>(thisPtr, index);
-}
+}*/
 
 void NWNXCore::CreateServerHandler(API::CAppManager* app)
 {
@@ -433,6 +424,16 @@ void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CSer
     g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks);
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
     g_core->m_services->m_commands->RunScheduledCommands();
+}
+
+
+int32_t NWNXCore::GetVarHandler(API::CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+{
+    return 0;
+}
+int32_t NWNXCore::SetVarHandler(API::CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+{
+    return 0;
 }
 
 }

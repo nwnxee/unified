@@ -21,9 +21,8 @@ public:
     NWNXCore();
     ~NWNXCore();
 
-    static void SetStringHandler(NWNXLib::API::CNWSScriptVarTable*, NWNXLib::API::CExoString*, NWNXLib::API::CExoString*);
-    static NWNXLib::API::Types::ObjectID GetObjectHandler(NWNXLib::API::CNWSScriptVarTable*, NWNXLib::API::CExoString*);
-    static NWNXLib::API::CExoString GetStringHandler(NWNXLib::API::CNWSScriptVarTable*, NWNXLib::API::CExoString*);
+    static int32_t GetVarHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t SetVarHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
 
 private: // Structures
     using PluginProxyServiceMap = std::map<
