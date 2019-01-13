@@ -2,11 +2,13 @@ template<> Maybe<float> Events::StringToTypeCast<float>(std::string&&);
 template<> Maybe<int32_t> Events::StringToTypeCast<int32_t>(std::string&&);
 template<> Maybe<API::Types::ObjectID> Events::StringToTypeCast<API::Types::ObjectID>(std::string&&);
 template<> Maybe<std::string> Events::StringToTypeCast<std::string>(std::string&&);
+template<> Maybe<Events::EffectType> Events::StringToTypeCast<Events::EffectType>(std::string&&);
 
 template<> std::string Events::TypeToStringCast(float&& data);
 template<> std::string Events::TypeToStringCast(int32_t&& data);
 template<> std::string Events::TypeToStringCast(API::Types::ObjectID&& data);
 template<> std::string Events::TypeToStringCast(std::string&& data);
+template<> std::string Events::TypeToStringCast(Events::EffectType&& data);
 
 template <typename T>
 Maybe<std::tuple<T>> Events::MakeTupleFromArgs(Events::ArgumentStack& arguments)

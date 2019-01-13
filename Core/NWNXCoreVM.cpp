@@ -171,7 +171,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         {
             CScriptLocation loc;
             if (vartable)
-                vartable->GetLocation(varname);
+                loc = vartable->GetLocation(varname);
 
             success = vm->StackPushEngineStructure(VMStructure::Location, &loc);
             break;
@@ -316,7 +316,7 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
 
     if (CheckNWNX(&tag))
     {
-        if (auto res = g_core->m_services->m_events->OnTagItemProperty(tag.CStr(), pItemProperty))
+        if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pItemProperty))
             pItemProperty = *res;
     }
     else

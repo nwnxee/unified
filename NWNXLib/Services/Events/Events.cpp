@@ -150,14 +150,74 @@ Maybe<API::Types::ObjectID> Events::OnGetLocalObject(std::string&& index)
     return objectAsStr ? Maybe<API::Types::ObjectID>(std::strtoul((*objectAsStr).c_str(), nullptr, 16)) : Maybe<API::Types::ObjectID>();
 }
 
-Maybe<API::CGameEffect*> Events::OnTagEffect(std::string&& index, API::CGameEffect* effect)
+Maybe<Events::EffectType> Events::OnTagEffect(std::string&& index, EffectType value)
 {
-    return Maybe<API::CGameEffect*>(nullptr);
-}
+    try
+    {
+        const ParsedCommand command = FindEventDataFromIndex(index);
 
-Maybe<API::CGameEffect*> Events::OnTagItemProperty(std::string&& index, API::CGameEffect* itemproperty)
-{
-    return Maybe<API::CGameEffect*>(nullptr);
+        if (command.m_eventData)
+        {
+            if (command.m_eventData->m_returns.empty())
+            {
+                throw std::runtime_error("Tried to get a return value when one did not exist.");
+            }
+
+            switch (command.m_function)
+            {
+                case BuiltInFunction::GET_RETURN_VALUE:
+                {
+                    std::string retVal = command.m_eventData->m_returns.top();
+                    command.m_eventData->m_returns.pop();
+
+                    if (retVal.size() < TYPE_SIZE_IN_CHARACTERS || command.m_specifiers.size() < TYPE_SIZE_IN_CHARACTERS)
+                    {
+                        throw std::runtime_error("Invalid type sizes.");
+                    }
+
+                    const bool typeMatches = std::strncmp(
+                        command.m_specifiers.c_str(),
+                        retVal.c_str(),
+                        TYPE_SIZE_IN_CHARACTERS) == 0;
+
+                    if (!typeMatches)
+                    {
+                        throw std::runtime_error("Type mismatch.");
+                    }
+
+                    // Strip typeinfo
+                    retVal = retVal.substr(2);
+
+                    LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
+                        retVal.c_str(),
+                        command.m_eventData->m_data.m_eventName.c_str(),
+                        command.m_eventData->m_data.m_pluginName.c_str());
+
+                    return Maybe<Events::EffectType>(reinterpret_cast<EffectType>((uintptr_t)std::strtoul(retVal.c_str(), nullptr, 16)));
+                }
+
+                case BuiltInFunction::PUSH_ARGUMENT:
+                {
+                    LOG_DEBUG("Pushing argument '%p'. Event '%s', Plugin: '%s'.",
+                        value,
+                        command.m_eventData->m_data.m_eventName.c_str(),
+                        command.m_eventData->m_data.m_pluginName.c_str());
+                    command.m_eventData->m_arguments.push(std::forward<std::string>(std::to_string((uintptr_t)value)));
+                    break;
+
+                }
+                case BuiltInFunction::CALL_FUNCTION:
+                case BuiltInFunction::INVALID:
+                    throw std::runtime_error("Malformed input.");
+            }
+        }
+    }
+    catch (const std::runtime_error& err)
+    {
+        LOG_ERROR("TagEffect encountered error '%s' for input '%s'.", err.what(), index.c_str());
+    }
+
+    return Maybe<Events::EffectType>();
 }
 
 Events::RegistrationToken Events::RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb)
@@ -334,6 +394,15 @@ Maybe<std::string> Events::StringToTypeCast<std::string>(std::string&& data)
 }
 
 template <>
+Maybe<Events::EffectType> Events::StringToTypeCast<Events::EffectType>(std::string&& data)
+{
+    using MaybeTempl = Maybe<Events::EffectType>;
+    const CastableTypes type = ExtractType(data);
+    data.erase(0, TYPE_SIZE_IN_CHARACTERS);
+    return type == CastableTypes::GAMEEFFECT ? MaybeTempl(reinterpret_cast<EffectType>(std::strtoul(data.c_str(), nullptr, 16))) : MaybeTempl();
+}
+
+template <>
 std::string Events::TypeToStringCast<float>(float&& arg)
 {
     std::stringstream ss;
@@ -364,6 +433,15 @@ std::string Events::TypeToStringCast<std::string>(std::string&& arg)
     ss << +(static_cast<uint8_t>(CastableTypes::STRING)) << " " << std::forward<std::string>(arg);
     return ss.str();
 }
+
+template <>
+std::string Events::TypeToStringCast<std::string>(Events::EffectType&& arg)
+{
+    std::stringstream ss;
+    ss << +(static_cast<uint8_t>(CastableTypes::GAMEEFFECT)) << " " << std::forward<Events::EffectType>(arg);
+    return ss.str();
+}
+
 
 EventsProxy::EventsProxy(Events& events, std::string pluginName)
     : ServiceProxy<Events>(events), m_pluginName(pluginName)
