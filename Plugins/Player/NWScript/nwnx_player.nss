@@ -1,6 +1,5 @@
 #include "nwnx"
 
-
 struct NWNX_Player_QuickBarSlot
 {
     object oItem;
@@ -17,10 +16,6 @@ struct NWNX_Player_QuickBarSlot
     int    nAssociateType;
     object oAssociate;
 };
-
-const int NWNX_PLAYER_VISIBILITY_DEFAULT = 0;
-const int NWNX_PLAYER_VISIBILITY_HIDDEN  = 1;
-const int NWNX_PLAYER_VISIBILITY_VISIBLE = 2;
 
 // Force display placeable examine window for player
 // If used on a placeable in a different area than the player, the portait will not be shown.
@@ -56,16 +51,6 @@ void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_Qui
 
 // Get the name of the .bic file associated with the player's character.
 string NWNX_Player_GetBicFileName(object player);
-
-// Overrides the default visibility rules about how player perceives the target object.
-// NWNX_PLAYER_VISIBILITY_DEFAULT - Restore normal behavior
-// NWNX_PLAYER_VISIBILITY_HIDDEN - Object is always hidden from the player
-// NWNX_PLAYER_VISIBILITY_VISIBLE - Object is always shown to the player
-void NWNX_Player_SetVisibilityOverride(object player, object target, int override);
-
-// Queries the existing visibility override for given (player, object) pair
-// Returns NWNX_PLAYER_VISIBILITY_DEFAULT if no override exists
-int NWNX_Player_GetVisibilityOverride(object player, object target);
 
 // Plays the VFX at the target position in current area for the given player only
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position);
@@ -230,26 +215,6 @@ string NWNX_Player_GetBicFileName(object player)
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
     NWNX_CallFunction(NWNX_Player, sFunc);
     return NWNX_GetReturnValueString(NWNX_Player, sFunc);
-}
-
-void NWNX_Player_SetVisibilityOverride(object player, object target, int override)
-{
-    string sFunc = "SetVisibilityOverride";
-    NWNX_PushArgumentInt(NWNX_Player, sFunc, override);
-    NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
-    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-}
-
-int NWNX_Player_GetVisibilityOverride(object player, object target)
-{
-    string sFunc = "GetVisibilityOverride";
-    NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
-    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
-
-    NWNX_CallFunction(NWNX_Player, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
 }
 
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
