@@ -141,8 +141,8 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             CExoString str = "";
             if (nwnx)
             {
-                if (auto v = g_core->m_services->m_events->OnGetLocalString(varname.CStr()))
-                    str = v->c_str();
+                //if (auto v = g_core->m_services->m_events->OnGetLocalString(varname.CStr()))
+                //    str = v->c_str();
             }
             else if (vartable)
             {
@@ -157,8 +157,8 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                if (auto v = g_core->m_services->m_events->OnGetLocalObject(varname.CStr()))
-                    oid = *v;
+                //if (auto v = g_core->m_services->m_events->OnGetLocalObject(varname.CStr()))
+                //    oid = *v;
             }
             else if (vartable)
             {
@@ -228,7 +228,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                g_core->m_services->m_events->OnSetLocalString(varname.CStr(), value.CStr());
+                //g_core->m_services->m_events->OnSetLocalString(varname.CStr(), value.CStr());
             }
             else
             {
@@ -281,8 +281,8 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
 
     if (CheckNWNX(&tag))
     {
-        if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pEffect))
-            pEffect = *res;
+        //if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pEffect))
+        //    pEffect = *res;
     }
     else
     {
@@ -316,8 +316,8 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
 
     if (CheckNWNX(&tag))
     {
-        if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pItemProperty))
-            pItemProperty = *res;
+        //if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pItemProperty))
+        //    pItemProperty = *res;
     }
     else
     {
