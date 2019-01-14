@@ -20,6 +20,31 @@ Events::~Events()
 {
 }
 
+void Events::Call(const std::string& pluginName, const std::string& eventName)
+{
+    EventList& events = m_eventMap[pluginName];
+
+
+    auto it = std::find_if(std::begin(events), std::end(events),
+        [&eventName](const std::unique_ptr<EventDataInternal>& data) -> bool
+        {
+            return data->m_data.m_eventName == eventName;
+        }
+    );
+    if (it != std::end(events))
+    {
+        LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
+            eventName.c_str(), pluginName.c_str());
+        auto& event = *it;
+        event->m_returns = event->m_callback(std::move(event->m_arguments));
+    }
+    else
+    {
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+    }
+}
+
+
 Events::RegistrationToken Events::RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb)
 {
     EventList& events = m_eventMap[pluginName];

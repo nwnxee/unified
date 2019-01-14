@@ -1,9 +1,55 @@
 
 template <typename T>
-void Push(const std::string& pluginName, const std::string& eventName, const T& value);
+void Events::Push(const std::string& pluginName, const std::string& eventName, const T& value)
+{
+    auto events = m_eventMap[pluginName];
+    for (auto event: events)
+    {
+        if (event->m_data.m_eventName == eventName)
+        {
+            event->m_returns.push(Events::Argument(value));
+            LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
+                event->m_arguments.top().toString(), eventName.c_str(), pluginName.c_str());
+            return;
+        }
+    }
+
+    LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+}
 
 template <typename T>
-Maybe<T> Pop(const std::string& pluginName, const std::string& eventName);
+Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName)
+{
+    auto events = m_eventMap[pluginName];
+    for (auto event: events)
+    {
+        if (event->m_data.m_eventName == eventName)
+        {
+            if (event->m_returns.empty())
+            {
+                LOG_ERROR("Plugin '%s', event '%s': Tried to get a return value when one did not exist.",
+                    pluginName.c_str(), eventName.c_str());
+                return Maybe<T>();
+            }
+
+            Maybe<T>& data = event->m_returns.top().Get<T>();
+            if (!data)
+            {
+                LOG_ERROR("Plugin '%s', event '%s': Type mismatch in return values",
+                    pluginName.c_str(), eventName.c_str());
+            }
+            else
+            {
+                LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
+                    data->toString(), eventName.c_str(), pluginName.c_str());
+            }
+            return data;
+        }
+    }
+
+    LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+    return Maybe<T>();
+}
 
 
 
