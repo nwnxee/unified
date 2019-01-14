@@ -27,8 +27,8 @@ private:
   static void HookPlayerList(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer);
   static void HookPartyInvite(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSMessage* message, NWNXLib::API::CNWSPlayer* pPlayer, unsigned char c);
   
-  NWNXLib::API::CExoLocString ContainString(std::string str);
-  std::string ExtractString(NWNXLib::API::CExoLocString locStr);
+  NWNXLib::API::CExoLocString ContainString(const std::string& str);
+  std::string ExtractString(NWNXLib::API::CExoLocString& locStr);
   
   void GlobalNameChange(bool bOriginal);
   void UpdateName(NWNXLib::API::CNWSCreature* targetObject);

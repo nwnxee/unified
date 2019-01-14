@@ -128,17 +128,18 @@ void Rename::HookPartyInvite(Services::Hooks::CallType cType, NWNXLib::API::CNWS
 void Rename::GlobalNameChange(bool bOriginal)
 {
     API::CServerExoAppInternal* server = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal;
- 
-    //go through all the players and change their names or restore them based on bOriginal.
-    
     API::CExoLinkedListInternal* playerList = server->m_pNWSPlayerList->m_pcExoLinkedListInternal;
     
+    std::string lsFirstName;
+    std::string lsLastName;
+    
+    //go through all the players and change their names or restore them based on bOriginal.
     for (API::CExoLinkedListNode* head = playerList->pHead; head; head = head->pNext) 
     {
-        CNWSClient* client = reinterpret_cast<API::CNWSClient*>(head->pObject);
+        CNWSClient* client = static_cast<API::CNWSClient*>(head->pObject);
         Types::ObjectID pcObjectID = static_cast<CNWSPlayer*>(client)->m_oidNWSObject;
-        std::string lsFirstName = (bOriginal) ?  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,firstNameKey) :  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,overrideNameKey);
-        std::string lsLastName = (bOriginal) ?  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,lastNameKey) : std::string("");
+        lsFirstName = (bOriginal) ?  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,firstNameKey) :  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,overrideNameKey);
+        lsLastName = (bOriginal) ?  *g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID,lastNameKey) : std::string("");
         CNWSCreature* pCreature = server->GetCreatureByGameObjectID(pcObjectID);
         
         if (pCreature && !lsFirstName.empty() && ( bOriginal || !pCreature->m_sDisplayName.IsEmpty()))
@@ -149,14 +150,14 @@ void Rename::GlobalNameChange(bool bOriginal)
     }
 }
 
-std::string Rename::ExtractString(CExoLocString locStr)
+std::string Rename::ExtractString(CExoLocString& locStr)
 {
     CExoString str;
     locStr.GetStringLoc(0,&str,0);
     return std::string(str.CStr());
 }
 
-CExoLocString Rename::ContainString(std::string str)
+CExoLocString Rename::ContainString(const std::string& str)
 {
     CExoLocString locStr;
     locStr.AddString(0,CExoString(str.c_str()),0);
