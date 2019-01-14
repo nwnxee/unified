@@ -28,11 +28,11 @@ public: // Structures
         Maybe<API::CGameEffect>     Effect;
 
         // Constructors
-        Argument(const int32_t& v)                : Int(v)    { }
-        Argument(const float& v)                  : Float(v)  { }
-        Argument(const API::Types::ObjectID& v)   : Object(v) { }
-        Argument(const std::string& v)            : String(v) { }
-        Argument(const API::CGameEffect& v)       : Effect(v) { }
+        Argument(const int32_t& v)                : Int(std::move(v))    { }
+        Argument(const float& v)                  : Float(std::move(v))  { }
+        Argument(const API::Types::ObjectID& v)   : Object(std::move(v)) { }
+        Argument(const std::string& v)            : String(std::move(v)) { }
+        Argument(const API::CGameEffect& v)       : Effect(std::move(v)) { }
 
         template <typename T> Maybe<T>& Get();
         std::string toString();
@@ -81,6 +81,8 @@ private: // Structures
         ArgumentStack m_arguments;
         ArgumentStack m_returns;
     };
+
+    EventDataInternal* GetEventData(const std::string& pluginName, const std::string& eventName);
 
     using EventList = std::vector<std::unique_ptr<EventDataInternal>>;
     using EventMap = std::unordered_map<std::string, EventList>;

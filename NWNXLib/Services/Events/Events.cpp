@@ -20,22 +20,24 @@ Events::~Events()
 {
 }
 
-void Events::Call(const std::string& pluginName, const std::string& eventName)
+Events::EventDataInternal* Events::GetEventData(const std::string& pluginName, const std::string& eventName)
 {
     EventList& events = m_eventMap[pluginName];
-
-
     auto it = std::find_if(std::begin(events), std::end(events),
         [&eventName](const std::unique_ptr<EventDataInternal>& data) -> bool
         {
             return data->m_data.m_eventName == eventName;
         }
     );
-    if (it != std::end(events))
+    return (it == std::end(events)) ? nullptr : it->get();
+}
+
+void Events::Call(const std::string& pluginName, const std::string& eventName)
+{
+    if (auto* event = GetEventData(pluginName, eventName))
     {
         LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
             eventName.c_str(), pluginName.c_str());
-        auto& event = *it;
         event->m_returns = event->m_callback(std::move(event->m_arguments));
     }
     else

@@ -10,6 +10,8 @@
 #include "API/CScriptLocation.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CGameEffect.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
+#include "API/CNWSObject.hpp"
 #include "Platform/Debug.hpp"
 #include "Services/Events/Events.hpp"
 #include "Utils.hpp"
@@ -24,6 +26,7 @@ namespace {
 
 enum VMCommand
 {
+    PlaySound           = 46,
     GetLocalInt         = 51,
     GetLocalFloat       = 52,
     GetLocalString      = 53,
@@ -68,27 +71,52 @@ enum VMStructure
     ItemProperty = 4
 };
 
-bool CheckNWNX(CExoString* str)
+struct Command
 {
-    static const char NWNX_PREFIX[]        = "NWNXEE!";
-    static const char NWNX_LEGACY_PREFIX[] = "NWNX!";
+    std::string plugin;
+    std::string event;
+    std::string operation;
+};
 
-    auto startsWith = [](const CExoString* str, const char *prefix) -> bool
+static const int  NWNX_ABI_VERSION = 2;
+
+Maybe<Command> ProcessNWNX(const CExoString& str)
+{
+    auto startsWith = [](const CExoString& str, const char *prefix) -> bool
     {
         auto len = std::strlen(prefix);
-        return str->m_sString && str->m_nBufferLength >= len && std::strncmp(prefix, str->m_sString, len) == 0;
+        return str.m_sString && str.m_nBufferLength >= len && std::strncmp(prefix, str.m_sString, len) == 0;
     };
 
-    if (startsWith(str, NWNX_PREFIX))
+    if (startsWith(str, "NWNXEE!"))
     {
-        std::memmove(str->m_sString, str->m_sString + sizeof(NWNX_PREFIX)-1,
-                    std::strlen(str->m_sString) - sizeof(NWNX_PREFIX) + 2);
-        return true;
+        int abi;
+        char plugin[256];
+        char event[256];
+        char operation[256];
+
+        int scanned = std::sscanf(str.m_sString,
+                            "NWNXEE!ABIv%d!%255[A-Za-z0-9_]!%255[A-Za-z0-9_]!%255[A-Za-z0-9_]",
+                            &abi, plugin, event, operation);
+
+        if (scanned < 4 || abi != NWNX_ABI_VERSION)
+        {
+            LOG_WARNING("Bad NWNX ABI call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript().c_str());
+            LOG_WARNING("NWNX ABI has changed. Please update your \"nwnx.nss\" file and recompile all scripts.");
+        }
+        else
+        {
+            Command cmd; 
+            cmd.plugin    = plugin;
+            cmd.event     = event;
+            cmd.operation = operation;
+            return Maybe<Command>(cmd);
+        }
     }
-    else if (startsWith(str, NWNX_LEGACY_PREFIX))
+    else if (startsWith(str, "NWNX!"))
     {
-        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript().c_str());
-        const char *cmd = str->m_sString + sizeof(NWNX_LEGACY_PREFIX) - 1;
+        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript().c_str());
+        const char *cmd = str.m_sString + 5;
         if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
             !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||
             !std::strncmp(cmd, "GET_RETURN_VALUE", std::strlen("GET_RETURN_VALUE")))
@@ -101,7 +129,7 @@ bool CheckNWNX(CExoString* str)
         }
     }
 
-    return false;
+    return Maybe<Command>();
 }
 
 }
@@ -124,25 +152,54 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         return VMError::StackUnderflow;
 
     auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
-    bool nwnx = CheckNWNX(&varname);
+
+    auto nwnx = ProcessNWNX(varname);
+    auto& events = g_core->m_services->m_events;
+
+    if (nwnx) // Only POP operation for GetLocal
+        ASSERT(nwnx->operation == "POP");
 
 
     bool success = false;
     switch (nCommandId)
     {
         case VMCommand::GetLocalInt:
-            success = vm->StackPushInteger(vartable?vartable->GetInt(varname):0);
+        {
+            int32_t n = 0;
+            if (nwnx)
+            {
+                if (auto res = events->Pop<int32_t>(nwnx->plugin, nwnx->event))
+                    n = *res;
+            }
+            else if (vartable)
+            {
+                n = vartable->GetInt(varname);
+            }
+            success = vm->StackPushInteger(n);
             break;
+        }
         case VMCommand::GetLocalFloat:
-            success = vm->StackPushFloat(vartable?vartable->GetFloat(varname):0.0);
+        {
+            float f = 0;
+            if (nwnx)
+            {
+                if (auto res = events->Pop<float>(nwnx->plugin, nwnx->event))
+                    f = *res;
+            }
+            else if (vartable)
+            {
+                f = vartable->GetInt(varname);
+            }
+            success = vm->StackPushFloat(f);
             break;
+        }
         case VMCommand::GetLocalString:
         {
             CExoString str = "";
             if (nwnx)
             {
-                //if (auto v = g_core->m_services->m_events->OnGetLocalString(varname.CStr()))
-                //    str = v->c_str();
+                if (auto res = events->Pop<std::string>(nwnx->plugin, nwnx->event))
+                    str = res->c_str();
             }
             else if (vartable)
             {
@@ -157,8 +214,8 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                //if (auto v = g_core->m_services->m_events->OnGetLocalObject(varname.CStr()))
-                //    oid = *v;
+                if (auto res = events->Pop<Types::ObjectID>(nwnx->plugin, nwnx->event))
+                    oid = *res;
             }
             else if (vartable)
             {
@@ -169,6 +226,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         }
         case VMCommand::GetLocalLocation:
         {
+            // No NWNX option here
             CScriptLocation loc;
             if (vartable)
                 loc = vartable->GetLocation(varname);
@@ -196,7 +254,12 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         return VMError::StackUnderflow;
 
     auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
-    bool nwnx = CheckNWNX(&varname);
+
+    auto nwnx = ProcessNWNX(varname);
+    auto& events = g_core->m_services->m_events;
+
+    if (nwnx) // Only PUSH operation for SetLocal
+        ASSERT(nwnx->operation == "PUSH");
 
     switch (nCommandId)
     {
@@ -206,8 +269,14 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             if (!vm->StackPopInteger(&value))
                 return VMError::StackUnderflow;
 
-            if (vartable)
+            if (nwnx)
+            {
+                events->Push(nwnx->plugin, nwnx->event, value);
+            }
+            else if (vartable)
+            {
                 vartable->SetInt(varname, value, 0);
+            }
             break;
         }
         case VMCommand::SetLocalFloat:
@@ -216,8 +285,14 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             if (!vm->StackPopFloat(&value))
                 return VMError::StackUnderflow;
 
-            if (vartable)
+            if (nwnx)
+            {
+                events->Push(nwnx->plugin, nwnx->event, value);
+            }
+            else if (vartable)
+            {
                 vartable->SetFloat(varname, value);
+            }
             break;
         }
         case VMCommand::SetLocalString:
@@ -228,12 +303,11 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                //g_core->m_services->m_events->OnSetLocalString(varname.CStr(), value.CStr());
+                events->Push(nwnx->plugin, nwnx->event, std::string(value.CStr()));
             }
-            else
+            else if (vartable)
             {
-                if (vartable)
-                    vartable->SetString(varname, value);
+                vartable->SetString(varname, value);
             }
             break;
         }
@@ -243,12 +317,19 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             if (!vm->StackPopObject(&value))
                 return VMError::StackUnderflow;
 
-            if (vartable)
+            if (nwnx)
+            {
+                events->Push(nwnx->plugin, nwnx->event, value);
+            }
+            else if (vartable)
+            {
                 vartable->SetObject(varname, value);
+            }
             break;
         }
         case VMCommand::SetLocalLocation:
         {
+            // No NWNX option here
             CScriptLocation *pLoc;
             if (!vm->StackPopEngineStructure(VMStructure::Location, (void**)&pLoc))
                 return VMError::StackUnderflow;
@@ -279,10 +360,26 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     if (!vm->StackPopString(&tag))
         return VMError::StackUnderflow;
 
-    if (CheckNWNX(&tag))
+    if (auto nwnx = ProcessNWNX(tag))
     {
-        //if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pEffect))
-        //    pEffect = *res;
+        auto& events = g_core->m_services->m_events;
+
+        if (nwnx->operation == "PUSH")
+        {
+            events->Push(nwnx->plugin, nwnx->event, *pEffect);
+        }
+        else if (nwnx->operation == "POP")
+        {
+            if (auto res = events->Pop<CGameEffect>(nwnx->plugin, nwnx->event))
+            {
+                CGameEffect eff = *res;
+                if (!vm->StackPushEngineStructure(VMStructure::Effect, &eff))
+                    return VMError::StackOverflow;
+                delete pEffect;
+                return VMError::Success;
+            }
+        }
+        else ASSERT_FAIL_MSG("Only PUSH and POP operations allowed on TagEffect");
     }
     else
     {
@@ -314,10 +411,26 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     if (!vm->StackPopString(&tag))
         return VMError::StackUnderflow;
 
-    if (CheckNWNX(&tag))
+    if (auto nwnx = ProcessNWNX(tag))
     {
-        //if (auto res = g_core->m_services->m_events->OnTagEffect(tag.CStr(), pItemProperty))
-        //    pItemProperty = *res;
+        auto& events = g_core->m_services->m_events;
+
+        if (nwnx->operation == "PUSH")
+        {
+            events->Push(nwnx->plugin, nwnx->event, *pItemProperty);
+        }
+        else if (nwnx->operation == "POP")
+        {
+            if (auto res = events->Pop<CGameEffect>(nwnx->plugin, nwnx->event))
+            {
+                CGameEffect eff = *res;
+                if (!vm->StackPushEngineStructure(VMStructure::Effect, &eff))
+                    return VMError::StackOverflow;
+                delete pItemProperty;
+                return VMError::Success;
+            }
+        }
+        else ASSERT_FAIL_MSG("Only PUSH and POP operations allowed on TagItemProperty");
     }
     else
     {
@@ -333,5 +446,40 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     delete pItemProperty;
     return VMError::Success;
 }
+
+
+int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCommandId, int32_t nParameters)
+{
+    ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::PlaySound); ASSERT(nParameters == 1);
+    auto *vm = Globals::VirtualMachine();
+
+    CExoString sound;
+    if (!vm->StackPopString(&sound))
+        return VMError::StackUnderflow;
+
+    if (auto nwnx = ProcessNWNX(sound))
+    {
+        auto& events = g_core->m_services->m_events;
+        ASSERT(nwnx->operation == "CALL"); // This one is used only for CALL ops
+        events->Call(nwnx->plugin, nwnx->event);
+    }
+    else
+    {
+        if (thisPtr->m_bValidObjectRunScript)
+        {
+            if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(thisPtr->m_oidObjectRunScript)))
+            {
+                if (obj->m_bAbleToModifyActionQueue)
+                {
+                    obj->AddAction(23, -1, 4, (CExoString*)&sound,
+                              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+                }
+
+            }
+        }
+    }
+    return VMError::Success;
+}
+
 
 }

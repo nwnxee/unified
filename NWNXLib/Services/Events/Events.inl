@@ -2,52 +2,51 @@
 template <typename T>
 void Events::Push(const std::string& pluginName, const std::string& eventName, const T& value)
 {
-    auto events = m_eventMap[pluginName];
-    for (auto event: events)
+    if (auto* event = GetEventData(pluginName, eventName))
     {
-        if (event->m_data.m_eventName == eventName)
-        {
-            event->m_returns.push(Events::Argument(value));
-            LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
-                event->m_arguments.top().toString(), eventName.c_str(), pluginName.c_str());
-            return;
-        }
+        event->m_arguments.push(Events::Argument(value));
+        LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
+            event->m_arguments.top().toString().c_str(), eventName.c_str(), pluginName.c_str());
     }
-
-    LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+    else
+    {
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+    }
 }
 
 template <typename T>
 Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName)
 {
-    auto events = m_eventMap[pluginName];
-    for (auto event: events)
+    if (auto* event = GetEventData(pluginName, eventName))
     {
-        if (event->m_data.m_eventName == eventName)
+        if (event->m_returns.empty())
         {
-            if (event->m_returns.empty())
-            {
-                LOG_ERROR("Plugin '%s', event '%s': Tried to get a return value when one did not exist.",
-                    pluginName.c_str(), eventName.c_str());
-                return Maybe<T>();
-            }
+            LOG_ERROR("Plugin '%s', event '%s': Tried to get a return value when one did not exist.",
+                pluginName.c_str(), eventName.c_str());
+            return Maybe<T>();
+        }
 
-            Maybe<T>& data = event->m_returns.top().Get<T>();
-            if (!data)
-            {
-                LOG_ERROR("Plugin '%s', event '%s': Type mismatch in return values",
-                    pluginName.c_str(), eventName.c_str());
-            }
-            else
-            {
-                LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
-                    data->toString(), eventName.c_str(), pluginName.c_str());
-            }
-            return data;
+        Maybe<T>& data = event->m_returns.top().Get<T>();
+        if (!data)
+        {
+            LOG_ERROR("Plugin '%s', event '%s': Type mismatch in return values",
+                pluginName.c_str(), eventName.c_str());
+        }
+        else
+        {
+            LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
+                event->m_returns.top().toString().c_str(), eventName.c_str(), pluginName.c_str());
+
+            // I'm probably using all these moves wrong..
+            T real = std::move(*data);
+            event->m_returns.pop();
+            return Maybe<T>(std::move(real));
         }
     }
-
-    LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+    else
+    {
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+    }
     return Maybe<T>();
 }
 
@@ -74,12 +73,14 @@ T Events::ExtractArgument(ArgumentStack& arguments)
     }
 
     Maybe<T>& data = arguments.top().Get<T>();
-    arguments.pop();
 
     if (!data)
     {
         throw std::runtime_error("Failed to match pushed argument to the provided type.");
     }
 
-    return data.Extract();
+    T real = std::move(data.Extract());
+    arguments.pop();
+
+    return std::move(real);
 }
