@@ -19,7 +19,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
     return new Plugin::Info
     {
         "Visibility",
-        "Allows the visibility of objects to be overriden globally or per player",
+        "Allows the visibility of objects to be overridden globally or per player",
         "Daz",
         "daztek@gmail.com",
         1,
