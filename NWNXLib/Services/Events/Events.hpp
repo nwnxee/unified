@@ -25,14 +25,14 @@ public: // Structures
         Maybe<float>                Float;
         Maybe<API::Types::ObjectID> Object;
         Maybe<std::string>          String;
-        Maybe<API::CGameEffect>     Effect;
+        Maybe<API::CGameEffect*>    Effect;
 
         // Constructors
-        Argument(const int32_t& v)                : Int(std::move(v))    { }
-        Argument(const float& v)                  : Float(std::move(v))  { }
-        Argument(const API::Types::ObjectID& v)   : Object(std::move(v)) { }
+        Argument(const int32_t& v)                : Int(v)    { }
+        Argument(const float& v)                  : Float(v)  { }
+        Argument(const API::Types::ObjectID& v)   : Object(v) { }
         Argument(const std::string& v)            : String(std::move(v)) { }
-        Argument(const API::CGameEffect& v)       : Effect(std::move(v)) { }
+        Argument(API::CGameEffect* v)             : Effect(v) { }
 
         template <typename T> Maybe<T>& Get();
         std::string toString();

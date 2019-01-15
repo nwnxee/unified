@@ -142,7 +142,7 @@ template<> Maybe<int32_t>&              Events::Argument::Get<int32_t>()        
 template<> Maybe<float>&                Events::Argument::Get<float>()               { return Float; }
 template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return Object; }
 template<> Maybe<std::string>&          Events::Argument::Get<std::string>()         { return String; }
-template<> Maybe<API::CGameEffect>&     Events::Argument::Get<API::CGameEffect>()    { return Effect; }
+template<> Maybe<API::CGameEffect*>&     Events::Argument::Get<API::CGameEffect*>()  { return Effect; }
 
 std::string Events::Argument::toString()
 {
@@ -150,7 +150,7 @@ std::string Events::Argument::toString()
     if (Float)  return std::to_string(*Float);
     if (Object) return Utils::ObjectIDToString(*Object);
     if (String) return *String;
-    if (Effect) return std::string("EffectID:") + std::to_string(Effect->m_nID);
+    if (Effect) return *Effect ? std::string("EffectID:") + std::to_string((*Effect)->m_nID) : std::string("nullptr effect");
 
     return std::string("");
 }

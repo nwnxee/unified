@@ -366,17 +366,15 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
 
         if (nwnx->operation == "PUSH")
         {
-            events->Push(nwnx->plugin, nwnx->event, *pEffect);
+            CGameEffect *push = new CGameEffect;
+            push->CopyEffect(pEffect, false);
+            events->Push(nwnx->plugin, nwnx->event, push);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = events->Pop<CGameEffect>(nwnx->plugin, nwnx->event))
+            if (auto res = events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
             {
-                CGameEffect eff = *res;
-                if (!vm->StackPushEngineStructure(VMStructure::Effect, &eff))
-                    return VMError::StackOverflow;
-                delete pEffect;
-                return VMError::Success;
+                pEffect = *res;
             }
         }
         else ASSERT_FAIL_MSG("Only PUSH and POP operations allowed on TagEffect");
@@ -417,17 +415,15 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
 
         if (nwnx->operation == "PUSH")
         {
-            events->Push(nwnx->plugin, nwnx->event, *pItemProperty);
+            CGameEffect *push = new CGameEffect;
+            push->CopyEffect(pItemProperty, false);
+            events->Push(nwnx->plugin, nwnx->event, push);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = events->Pop<CGameEffect>(nwnx->plugin, nwnx->event))
+            if (auto res = events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
             {
-                CGameEffect eff = *res;
-                if (!vm->StackPushEngineStructure(VMStructure::Effect, &eff))
-                    return VMError::StackOverflow;
-                delete pItemProperty;
-                return VMError::Success;
+                pItemProperty = *res;
             }
         }
         else ASSERT_FAIL_MSG("Only PUSH and POP operations allowed on TagItemProperty");
