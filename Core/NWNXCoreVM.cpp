@@ -154,11 +154,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
     auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
 
     auto nwnx = ProcessNWNX(varname);
-    auto& events = g_core->m_services->m_events;
-
-    if (nwnx) // Only POP operation for GetLocal
-        ASSERT(nwnx->operation == "POP");
-
+    ASSERT(!nwnx || nwnx->operation == "POP"); // Only POP operation for GetLocal
 
     bool success = false;
     switch (nCommandId)
@@ -168,7 +164,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             int32_t n = 0;
             if (nwnx)
             {
-                if (auto res = events->Pop<int32_t>(nwnx->plugin, nwnx->event))
+                if (auto res = g_core->m_services->m_events->Pop<int32_t>(nwnx->plugin, nwnx->event))
                     n = *res;
             }
             else if (vartable)
@@ -183,7 +179,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             float f = 0;
             if (nwnx)
             {
-                if (auto res = events->Pop<float>(nwnx->plugin, nwnx->event))
+                if (auto res = g_core->m_services->m_events->Pop<float>(nwnx->plugin, nwnx->event))
                     f = *res;
             }
             else if (vartable)
@@ -198,7 +194,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             CExoString str = "";
             if (nwnx)
             {
-                if (auto res = events->Pop<std::string>(nwnx->plugin, nwnx->event))
+                if (auto res = g_core->m_services->m_events->Pop<std::string>(nwnx->plugin, nwnx->event))
                     str = res->c_str();
             }
             else if (vartable)
@@ -214,7 +210,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                if (auto res = events->Pop<Types::ObjectID>(nwnx->plugin, nwnx->event))
+                if (auto res = g_core->m_services->m_events->Pop<Types::ObjectID>(nwnx->plugin, nwnx->event))
                     oid = *res;
             }
             else if (vartable)
@@ -256,10 +252,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
     auto *vartable = Utils::GetScriptVarTable(Utils::GetGameObject(oid));
 
     auto nwnx = ProcessNWNX(varname);
-    auto& events = g_core->m_services->m_events;
-
-    if (nwnx) // Only PUSH operation for SetLocal
-        ASSERT(nwnx->operation == "PUSH");
+    ASSERT(!nwnx || nwnx->operation == "PUSH"); // Only PUSH operation for SetLocal
 
     switch (nCommandId)
     {
@@ -271,7 +264,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                events->Push(nwnx->plugin, nwnx->event, value);
+                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, value);
             }
             else if (vartable)
             {
@@ -287,7 +280,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                events->Push(nwnx->plugin, nwnx->event, value);
+                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, value);
             }
             else if (vartable)
             {
@@ -303,7 +296,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                events->Push(nwnx->plugin, nwnx->event, std::string(value.CStr()));
+                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, std::string(value.CStr()));
             }
             else if (vartable)
             {
@@ -319,7 +312,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                events->Push(nwnx->plugin, nwnx->event, value);
+                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, value);
             }
             else if (vartable)
             {
@@ -352,6 +345,7 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagEffect); ASSERT(nParameters == 2);
     auto *vm = Globals::VirtualMachine();
 
+    bool bSkipDelete = false;
     CGameEffect *pEffect;
     if (!vm->StackPopEngineStructure(VMStructure::Effect, (void**)&pEffect))
         return VMError::StackUnderflow;
@@ -362,18 +356,16 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
 
     if (auto nwnx = ProcessNWNX(tag))
     {
-        auto& events = g_core->m_services->m_events;
-
         if (nwnx->operation == "PUSH")
         {
-            CGameEffect *push = new CGameEffect;
-            push->CopyEffect(pEffect, false);
-            events->Push(nwnx->plugin, nwnx->event, push);
+            bSkipDelete = true;
+            g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, pEffect);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
+            if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
             {
+                delete pEffect;
                 pEffect = *res;
             }
         }
@@ -391,7 +383,8 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     if (!vm->StackPushEngineStructure(VMStructure::Effect, pEffect))
         return VMError::StackOverflow;
 
-    delete pEffect;
+    if (!bSkipDelete)
+        delete pEffect;
     return VMError::Success;
 }
 
@@ -401,6 +394,7 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     ASSERT(thisPtr); ASSERT(nCommandId == VMCommand::TagItemProperty); ASSERT(nParameters == 2);
     auto *vm = Globals::VirtualMachine();
 
+    bool bSkipDelete = false;
     CGameEffect *pItemProperty; // Not a typo, same base type for effects and IPs
     if (!vm->StackPopEngineStructure(VMStructure::ItemProperty, (void**)&pItemProperty))
         return VMError::StackUnderflow;
@@ -411,18 +405,16 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
 
     if (auto nwnx = ProcessNWNX(tag))
     {
-        auto& events = g_core->m_services->m_events;
-
         if (nwnx->operation == "PUSH")
         {
-            CGameEffect *push = new CGameEffect;
-            push->CopyEffect(pItemProperty, false);
-            events->Push(nwnx->plugin, nwnx->event, push);
+            bSkipDelete = true;
+            g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, pItemProperty);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
+            if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
             {
+                delete pItemProperty;
                 pItemProperty = *res;
             }
         }
@@ -439,7 +431,8 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     if (!vm->StackPushEngineStructure(VMStructure::ItemProperty, pItemProperty))
         return VMError::StackOverflow;
 
-    delete pItemProperty;
+    if (!bSkipDelete)
+        delete pItemProperty;
     return VMError::Success;
 }
 
@@ -455,9 +448,8 @@ int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
 
     if (auto nwnx = ProcessNWNX(sound))
     {
-        auto& events = g_core->m_services->m_events;
         ASSERT(nwnx->operation == "CALL"); // This one is used only for CALL ops
-        events->Call(nwnx->plugin, nwnx->event);
+        g_core->m_services->m_events->Call(nwnx->plugin, nwnx->event);
     }
     else
     {
