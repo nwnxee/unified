@@ -2,7 +2,7 @@
 
 const string NWNX_Rename = "NWNX_Rename";
 
-//Constant
+//Constants for Player Name states.
 const int NWNX_RENAME_PLAYERNAME_DEFAULT = 0;
 const int NWNX_RENAME_PLAYERNAME_OBFUSCATE = 1;
 const int NWNX_RENAME_PLAYERNAME_OVERRIDE = 2;

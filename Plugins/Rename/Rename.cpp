@@ -29,11 +29,17 @@ using namespace NWNXLib::API;
 
 static ViewPtr<Rename::Rename> g_plugin;
 
+//key names for Per Object Storage
 const std::string firstNameKey = "REAL FIRST NAME";
 const std::string lastNameKey = "REAL LAST NAME";
 const std::string playerNameKey = "REAL PLAYER NAME";
 const std::string playerNameOverrideStateKey = "PLAYER NAME OVERRIDE STATE";
 const std::string overrideNameKey = "OVERRIDE NAME";
+
+//Constants for Player Name states.
+const int NWNX_RENAME_PLAYERNAME_DEFAULT = 0;
+const int NWNX_RENAME_PLAYERNAME_OBFUSCATE = 1;
+const int NWNX_RENAME_PLAYERNAME_OVERRIDE = 2;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -163,9 +169,9 @@ void Rename::GlobalNameChange(bool bOriginal, CNWSPlayer* pPlayer)
                 {
                     switch((*g_plugin->GetServices()->m_perObjectStorage->Get<int>(pcObjectID, playerNameOverrideStateKey)))
                     {
-                        case 1  : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString(GenerateRandomPlayerName(7).c_str());
+                        case NWNX_RENAME_PLAYERNAME_OBFUSCATE  : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString(GenerateRandomPlayerName(7).c_str());
                                   break;
-                        case 2  : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString(lsFirstName.c_str());
+                        case NWNX_RENAME_PLAYERNAME_OVERRIDE  : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString(lsFirstName.c_str());
                                   break;
                         default : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString((*g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID, playerNameKey)).c_str());
                                   break;
@@ -277,8 +283,9 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
         
         pCreature->m_sDisplayName = fullDisplayName.c_str(); //sets the override floaty name, this goes away on logout/reset
         pCreature->m_bUpdateDisplayName = true; //unsure if this is necessary, will be removed for next patch.
-
-        if (bPlayerNameState != 0) newName = "<cþþþ>" + newName + "</c>"; //add color tag to make it visually the same but functionally different from a similarly named character
+        
+        //add color tag to make it visually the same but functionally different from a similarly named character
+        if (bPlayerNameState != NWNX_RENAME_PLAYERNAME_DEFAULT) newName = "<cþþþ>" + newName + "</c>"; 
         
         g_plugin->GetServices()->m_perObjectStorage->Set(playerObjectID,overrideNameKey, newName); //store affix-less override
         g_plugin->GetServices()->m_perObjectStorage->Set(playerObjectID,playerNameOverrideStateKey, bPlayerNameState);//store whether the player name should be obfuscated or overridden
