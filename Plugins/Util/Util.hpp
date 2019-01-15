@@ -18,6 +18,7 @@ private:
     ArgumentStack GetCurrentScriptName(ArgumentStack&& args);
     ArgumentStack GetAsciiTableString(ArgumentStack&& args);
     ArgumentStack Hash(ArgumentStack&& args);
+    ArgumentStack GetCustomToken(ArgumentStack&& args);
 
 };
 
