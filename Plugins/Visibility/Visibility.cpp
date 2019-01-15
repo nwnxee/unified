@@ -64,6 +64,11 @@ int32_t Visibility::TestObjectVisibleHook(
     CNWSObject *pAreaObject,
     CNWSObject *pPlayerGameObject)
 {    
+    if(pAreaObject->m_idSelf == pPlayerGameObject->m_idSelf)
+    {
+        return g_plugin->m_TestObjectVisibilityHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
+    }
+
     bool bInvisible = false;
     int32_t personalOverride = GetPersonalOverride(pPlayerGameObject->m_idSelf, pAreaObject->m_idSelf);
     int32_t globalOverride = GetGlobalOverride(pAreaObject->m_idSelf);
