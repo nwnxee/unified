@@ -18,8 +18,6 @@ private:
     ArgumentStack GetCurrentScriptName(ArgumentStack&& args);
     ArgumentStack GetAsciiTableString(ArgumentStack&& args);
     ArgumentStack Hash(ArgumentStack&& args);
-    ArgumentStack PackEffect(ArgumentStack&& args);
-    ArgumentStack UnpackEffect(ArgumentStack&& args);
 
 };
 
