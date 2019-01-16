@@ -28,8 +28,6 @@ private:
     ArgumentStack GetQuickBarSlot               (ArgumentStack&& args);
     ArgumentStack SetQuickBarSlot               (ArgumentStack&& args);
     ArgumentStack GetBicFileName                (ArgumentStack&& args);
-    ArgumentStack SetVisibilityOverride         (ArgumentStack&& args);
-    ArgumentStack GetVisibilityOverride         (ArgumentStack&& args);
     ArgumentStack ShowVisualEffect              (ArgumentStack&& args);
     ArgumentStack ChangeBackgroundMusic         (ArgumentStack&& args);
     ArgumentStack PlayBackgroundMusic           (ArgumentStack&& args);
