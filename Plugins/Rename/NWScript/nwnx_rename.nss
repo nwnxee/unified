@@ -11,6 +11,7 @@ const int NWNX_RENAME_PLAYERNAME_OVERRIDE = 2;
 //If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OVERRIDE the player name will change to (sNewName) on tells.
 //If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OBFUSCATE the player name will be set to a random string.
 //If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_DEFAULT the player name will be untouched.
+//DMs and the player themselves will still see their original player name regardless of option set
 //Will not persist through saving, resets or logout.
 void NWNX_Rename_SetPCNameOverride(object oPC, string sPrefix, string sNewName, string sSuffix, int iPlayerNameState);
 
