@@ -159,9 +159,11 @@ void Rename::GlobalNameChange(bool bOriginal, CNWSPlayer* pPlayer)
         
         if (pCreature && !lsFirstName.empty() && ( bOriginal || !pCreature->m_sDisplayName.IsEmpty()))
         {
-            if (pPlayer != nullptr) //if the pPlayer pointer is null skip playername changing since it's likely from a party invite hook that doesn't need it.
+            if (pPlayer != nullptr || static_cast<bool>(*g_plugin->GetServices()->m_perObjectStorage->Get<int>(pcObjectID, playerNameOverrideStateKey)) //if the pPlayer pointer is null (from a party invite) or the player name override is default...
+                                   || !static_cast<bool>((server->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))->m_pStats->m_bIsDM) //or if pPlayer is a DM...
+                                   || pPlayer->m_oidNWSObject != pcObjectID) //or pCreature is pPlayer's creature object then skip changing the player name, since it's not needed or desired.
             {
-                if ((bOriginal && static_cast<bool>(*g_plugin->GetServices()->m_perObjectStorage->Get<int>(pcObjectID, playerNameOverrideStateKey))) || static_cast<bool>((server->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))->m_pStats->m_bIsDM))
+                if (bOriginal)
                 {
                     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString((*g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID, playerNameKey)).c_str());
                 }
@@ -172,8 +174,6 @@ void Rename::GlobalNameChange(bool bOriginal, CNWSPlayer* pPlayer)
                         case NWNX_RENAME_PLAYERNAME_OBFUSCATE  : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString(GenerateRandomPlayerName(7).c_str());
                                   break;
                         case NWNX_RENAME_PLAYERNAME_OVERRIDE  : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString(lsFirstName.c_str());
-                                  break;
-                        default : Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerInfo(client->m_nPlayerID)->m_sPlayerName = CExoString((*g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pcObjectID, playerNameKey)).c_str());
                                   break;
                     }
                 }
@@ -285,7 +285,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
         pCreature->m_bUpdateDisplayName = true; //unsure if this is necessary, will be removed for next patch.
         
         //add color tag to make it visually the same but functionally different from a similarly named character
-        if (bPlayerNameState != NWNX_RENAME_PLAYERNAME_DEFAULT) newName = "<cþþþ>" + newName + "</c>"; 
+        //if (bPlayerNameState != NWNX_RENAME_PLAYERNAME_DEFAULT) newName = "<cþþþ>" + newName + "</c>";
         
         g_plugin->GetServices()->m_perObjectStorage->Set(playerObjectID,overrideNameKey, newName); //store affix-less override
         g_plugin->GetServices()->m_perObjectStorage->Set(playerObjectID,playerNameOverrideStateKey, bPlayerNameState);//store whether the player name should be obfuscated or overridden
