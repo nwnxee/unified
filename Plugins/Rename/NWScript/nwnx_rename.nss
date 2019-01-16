@@ -12,10 +12,10 @@ const int NWNX_RENAME_PLAYERNAME_OVERRIDE = 2;
 //If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OBFUSCATE the player name will be set to a random string.
 //If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_DEFAULT the player name will be untouched.
 //Will not persist through saving, resets or logout.
-void NWNX_Rename_SetPCNameOverride(object oPlayer, string sPrefix, string sNewName, string sSuffix, int iPlayerNameState);
+void NWNX_Rename_SetPCNameOverride(object oPC, string sPrefix, string sNewName, string sSuffix, int iPlayerNameState);
 
 
-void NWNX_Rename_SetPCNameOverride(object oPlayer, string sPrefix, string sNewName, string sSuffix, int iPlayerNameState)
+void NWNX_Rename_SetPCNameOverride(object oPC, string sPrefix, string sNewName, string sSuffix, int iPlayerNameState)
 {
     string sFunc = "SetPCNameOverride";
     
@@ -23,7 +23,7 @@ void NWNX_Rename_SetPCNameOverride(object oPlayer, string sPrefix, string sNewNa
     NWNX_PushArgumentString(NWNX_Rename, sFunc, sSuffix);
     NWNX_PushArgumentString(NWNX_Rename, sFunc, sNewName);
     NWNX_PushArgumentString(NWNX_Rename, sFunc, sPrefix);
-    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oPlayer);
+    NWNX_PushArgumentObject(NWNX_Rename, sFunc, oPC);
 
     NWNX_CallFunction(NWNX_Rename, sFunc);
 }
