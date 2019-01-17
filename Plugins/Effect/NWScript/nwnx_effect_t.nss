@@ -1,7 +1,7 @@
-#include "NWNX_Effect"
+#include "nwnx_effect"
 
 
-void printeff(struct NWNX_Effect n)
+void printeff(struct NWNX_EffectUnpacked n)
 {
     string s = "Unpacked effect: \n";
     s += "nType = " + IntToString(n.nType) + "\n";
@@ -64,7 +64,7 @@ void main()
     effect e = EffectCurse(1,2,3,4,5,6);
     e = TagEffect(e, "NWNX_EFFECT_TEST");
 
-    struct NWNX_Effect unpacked = NWNX_Util_UnpackEffect(e);
+    struct NWNX_EffectUnpacked unpacked = NWNX_Util_UnpackEffect(e);
     printeff(unpacked);
     report("UnpackEffect", unpacked.sTag == "NWNX_EFFECT_TEST");
     effect packed = NWNX_Util_PackEffect(unpacked);

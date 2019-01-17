@@ -59,7 +59,7 @@ enum VMError
     FakeAbortScript              = -645,
     IPOutOfCodeSegment           = -646,
     CommandImplementerNotSet     = -647,
-    UnknownTypeOnRunTimeSTack    = -648
+    UnknownTypeOnRunTimeStack    = -648
 };
 
 enum VMStructure
@@ -365,7 +365,7 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
         {
             if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
             {
-                delete pEffect;
+                Utils::DestroyGameEffect(pEffect);
                 pEffect = *res;
             }
         }
@@ -384,7 +384,9 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
         return VMError::StackOverflow;
 
     if (!bSkipDelete)
-        delete pEffect;
+    {
+        Utils::DestroyGameEffect(pEffect);
+    }
     return VMError::Success;
 }
 
@@ -414,7 +416,7 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
         {
             if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
             {
-                delete pItemProperty;
+                Utils::DestroyGameEffect(pItemProperty);
                 pItemProperty = *res;
             }
         }
@@ -424,6 +426,7 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     {
         if (pItemProperty->m_nType == 91) // ItemProperty effect
         {
+            // Why, Liareth, WHY?
             pItemProperty->SetString(0, tag);
         }
     }
@@ -432,7 +435,9 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
         return VMError::StackOverflow;
 
     if (!bSkipDelete)
-        delete pItemProperty;
+    {
+        Utils::DestroyGameEffect(pItemProperty);
+    }
     return VMError::Success;
 }
 

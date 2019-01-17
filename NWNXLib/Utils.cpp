@@ -3,6 +3,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSAreaOfEffectObject.hpp"
@@ -282,6 +283,16 @@ API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject)
             return &static_cast<API::CNWSObject*>(pObject)->m_ScriptVars;
     }
 }
+
+void DestroyGameEffect(API::CGameEffect* pEffect)
+{
+    if (pEffect)
+    {
+        // Don't actually need the this pointer here.
+        static_cast<API::CNWVirtualMachineCommands*>(nullptr)->DestroyGameDefinedStructure(0, pEffect);
+    }
+}
+
 
 }
 }

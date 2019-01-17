@@ -162,7 +162,8 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[3]);
 
     Services::Events::InsertArgument(stack, std::string(eff->m_sCustomTag.CStr()));
-    delete eff;
+    //delete eff;
+    Utils::DestroyGameEffect(eff);
     return stack;
 }
 

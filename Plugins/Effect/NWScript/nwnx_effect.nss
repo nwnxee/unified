@@ -1,6 +1,6 @@
 #include "nwnx"
 
-struct NWNX_Effect
+struct NWNX_EffectUnpacked
 {
     int nType;
     int nSubType;
@@ -48,21 +48,21 @@ struct NWNX_Effect
 };
 
 // Convert native effect type to unpacked structure
-struct NWNX_Effect NWNX_Effect_UnpackEffect(effect e);
+struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e);
 // Convert unpacked effect structure to native type
-effect NWNX_Effect_PackEffect(struct NWNX_Effect e);
+effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e);
 
 
 const string NWNX_Effect = "NWNX_Effect";
 
-struct NWNX_Effect NWNX_Effect_UnpackEffect(effect e)
+struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
 {
     string sFunc = "UnpackEffect";
 
     NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
-    struct NWNX_Effect n;
+    struct NWNX_EffectUnpacked n;
     n.sTag = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
 
     n.oParam3 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
@@ -109,7 +109,7 @@ struct NWNX_Effect NWNX_Effect_UnpackEffect(effect e)
 
     return n;
 }
-effect NWNX_Effect_PackEffect(struct NWNX_Effect e)
+effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
 {
     string sFunc = "PackEffect";
 
