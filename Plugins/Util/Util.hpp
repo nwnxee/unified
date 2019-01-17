@@ -19,7 +19,7 @@ private:
     ArgumentStack GetAsciiTableString(ArgumentStack&& args);
     ArgumentStack Hash(ArgumentStack&& args);
     ArgumentStack GetCustomToken(ArgumentStack&& args);
-
+    ArgumentStack EffectTypeCast(ArgumentStack&& args);
 };
 
 }

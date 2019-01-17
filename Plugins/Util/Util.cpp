@@ -49,6 +49,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetAsciiTableString);
     REGISTER(Hash);
     REGISTER(GetCustomToken);
+    REGISTER(EffectTypeCast);
 
 #undef REGISTER
 
@@ -132,5 +133,13 @@ ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
 
     return stack;
 }
+
+ArgumentStack Util::EffectTypeCast(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    Services::Events::InsertArgument(stack, Services::Events::ExtractArgument<CGameEffect*>(args));
+    return stack;
+}
+
 
 }
