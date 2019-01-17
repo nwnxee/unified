@@ -118,7 +118,9 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(LevelUp);
     REGISTER(LevelDown);
     REGISTER(SetChallengeRating);
-    REGISTER(GetAttackBonus);
+    REGISTER(GetFeatRemainingUses);
+    REGISTER(GetFeatTotalUses);
+    REGISTER(SetFeatRemainingUses);
 
 #undef REGISTER
 }
@@ -1529,33 +1531,6 @@ ArgumentStack Creature::SetChallengeRating(ArgumentStack&& args)
         const auto fCR = Services::Events::ExtractArgument<float>(args); ASSERT(fCR >= 0.0);
         pCreature->m_pStats->m_fChallengeRating = fCR;
     }
-    return stack;
-}
-
-ArgumentStack Creature::GetAttackBonus(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    int32_t retVal = -1; 
-
-    if (auto *pCreature = creature(args))
-    {
-        const auto isMelee = Services::Events::ExtractArgument<int32_t>(args);
-        const auto isTouchAttack = Services::Events::ExtractArgument<int32_t>(args);
-        const auto isOffhand = Services::Events::ExtractArgument<int32_t>(args);
-        const auto includeBaseAttackBonus = Services::Events::ExtractArgument<int32_t>(args);        
-
-        if (isMelee)
-        {
-            retVal = pCreature->m_pStats->GetMeleeAttackBonus(isOffhand, includeBaseAttackBonus, isTouchAttack);
-        }
-        else
-        {
-            retVal = pCreature->m_pStats->GetRangedAttackBonus(includeBaseAttackBonus, isTouchAttack);    
-        }
-    }
-
-    Services::Events::InsertArgument(stack, retVal);
-    
     return stack;
 }
 
