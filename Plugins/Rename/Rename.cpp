@@ -167,7 +167,7 @@ void Rename::GlobalNameChange(bool bOriginal, CNWSPlayer* pPlayer)
                 //or if pPlayer is a DM...
             && !static_cast<bool>((server->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))->m_pStats->m_bIsDM)
                 //or pCreature is pPlayer's creature object then skip changing the player name, since it's not needed or desired.
-            && pPlayer->m_oidNWSObject != pcObjectID))
+            && pPlayer->m_oidNWSObject != pcObjectID)
             {
                 if (bOriginal)
                 {
