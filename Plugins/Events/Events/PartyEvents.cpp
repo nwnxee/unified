@@ -13,10 +13,13 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Platform;
 
+static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerPartyHook = nullptr;
+
 PartyEvents::PartyEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerParty, int32_t,
+    hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerParty, int32_t,
         CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
+    m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerParty);
 }
 template <typename T>
 static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
@@ -28,18 +31,13 @@ static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
     return value;
 }
 
-void PartyEvents::HandlePartyMessageHook(Services::Hooks::CallType type,
-    CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
-    const bool before = (type == Services::Hooks::CallType::BEFORE_ORIGINAL);
-    const char *suffix = before ? "_BEFORE" : "_AFTER";
+    int32_t retVal;
+    
     std::string event = "NWNX_ON_PARTY_";
-
     Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
-
-    static std::string sOidOther;
-    if (before)
-        sOidOther = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0));
+    std::string sOidOther = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
 
     std::string argname;
     switch (nMinor)
@@ -78,12 +76,24 @@ void PartyEvents::HandlePartyMessageHook(Services::Hooks::CallType type,
             break;
 
         default:
-            return;
+            break;
     }
 
     Events::PushEventData(argname, sOidOther);
-    Events::SignalEvent(event + suffix, oidPlayer);
-}
 
+    if (Events::SignalEvent(event + "_BEFORE", oidPlayer))
+    {
+        retVal = m_HandlePlayerToServerPartyHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    Events::PushEventData(argname, sOidOther);
+    Events::SignalEvent(event + "_AFTER", oidPlayer);
+
+    return retVal;
+}
 
 }

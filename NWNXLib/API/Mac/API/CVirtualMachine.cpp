@@ -79,7 +79,7 @@ int32_t CVirtualMachine::ReadScriptFile(CExoString* a0)
     return CVirtualMachine__ReadScriptFile(this, a0);
 }
 
-void CVirtualMachine::RunScript(CExoString* a0, uint32_t a1, int32_t a2)
+int32_t CVirtualMachine::RunScript(CExoString* a0, uint32_t a1, int32_t a2)
 {
     return CVirtualMachine__RunScript(this, a0, a1, a2);
 }
@@ -288,12 +288,12 @@ int32_t CVirtualMachine__ReadScriptFile(CVirtualMachine* thisPtr, CExoString* a0
     return func(thisPtr, a0);
 }
 
-void CVirtualMachine__RunScript(CVirtualMachine* thisPtr, CExoString* a0, uint32_t a1, int32_t a2)
+int32_t CVirtualMachine__RunScript(CVirtualMachine* thisPtr, CExoString* a0, uint32_t a1, int32_t a2)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CVirtualMachine*, CExoString*, uint32_t, int32_t);
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CVirtualMachine*, CExoString*, uint32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CVirtualMachine__RunScript);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
-    func(thisPtr, a0, a1, a2);
+    return func(thisPtr, a0, a1, a2);
 }
 
 int32_t CVirtualMachine__RunScriptFile(CVirtualMachine* thisPtr, int32_t a0)

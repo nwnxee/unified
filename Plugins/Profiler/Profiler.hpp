@@ -2,6 +2,7 @@
 
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
+#include "Services/Metrics/Metrics.hpp"
 #include <chrono>
 #include <memory>
 
@@ -36,6 +37,10 @@ private:
     static void HandleRecalibration(const std::chrono::time_point<std::chrono::high_resolution_clock>& now);
 
     static void MainLoopUpdate(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CServerExoAppInternal* thisPtr);
+
+    void SetPerfScopeResampler(std::string&& name);
+    void PushPerfScope(std::string&& name, NWNXLib::Services::MetricData::Tags&& tags);
+    void PopPerfScope();
 };
 
 }

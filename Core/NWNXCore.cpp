@@ -15,6 +15,7 @@
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Services/Commands/Commands.hpp"
 #include "Utils.hpp"
 
 #include <cstring>
@@ -135,6 +136,7 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
+    services->m_commands = std::make_unique<Commands>();
 
     return services;
 }
@@ -152,6 +154,7 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
+    proxyServices->m_commands = std::make_unique<Services::CommandsProxy>(*m_services->m_commands);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
 
@@ -223,6 +226,7 @@ void NWNXCore::InitialSetupPlugins()
     const std::string prefix = pluginPrefix;
 
     const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
+    const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir.c_str());
 
@@ -250,7 +254,7 @@ void NWNXCore::InitialSetupPlugins()
 
         Plugin::CreateParams params = { services };
 
-        if (services->m_config->Get<bool>("SKIP", false))
+        if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
             continue;
@@ -428,6 +432,7 @@ void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CSer
 
     g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks);
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
+    g_core->m_services->m_commands->RunScheduledCommands();
 }
 
 }

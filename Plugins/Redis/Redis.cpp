@@ -1,6 +1,7 @@
 #include "Redis.hpp"
 #include "Internal.hpp"
 
+#include "Services/Hooks/Hooks.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Tasks/Tasks.hpp"
@@ -18,7 +19,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
     return new Plugin::Info {
         "Redis",
-        "redis connector with pubsub support",
+        "redis.io plugin with PubSub support",
         "niv",
         "niv@nwnx.io",
         1,
@@ -40,6 +41,8 @@ using namespace NWNXLib::Hooking;
 Redis::Redis(const Plugin::CreateParams& params)
     : Plugin(params)
 {
+    GetServices()->m_hooks->RequestSharedHook<Functions::CVirtualMachineStack__ClearStack, void>(&CleanState);
+
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 
     Reconfigure();

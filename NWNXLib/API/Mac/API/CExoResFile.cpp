@@ -49,7 +49,7 @@ void CExoResFile::DeleteRefCount()
     return CExoResFile__DeleteRefCount(this);
 }
 
-uint32_t CExoResFile::GetResourceSize(uint32_t a0)
+uint32_t CExoResFile::GetResourceSize(RESID a0)
 {
     return CExoResFile__GetResourceSize(this, a0);
 }
@@ -79,12 +79,12 @@ int32_t CExoResFile::OpenFile(unsigned char* a0)
     return CExoResFile__OpenFile__1(this, a0);
 }
 
-uint32_t CExoResFile::ReadResource(uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+uint32_t CExoResFile::ReadResource(RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
     return CExoResFile__ReadResource(this, a0, a1, a2, a3);
 }
 
-void CExoResFile::ReadResourceAsync(uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+void CExoResFile::ReadResourceAsync(RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
     return CExoResFile__ReadResourceAsync(this, a0, a1, a2, a3);
 }
@@ -158,9 +158,9 @@ void CExoResFile__DeleteRefCount(CExoResFile* thisPtr)
     return func(thisPtr);
 }
 
-uint32_t CExoResFile__GetResourceSize(CExoResFile* thisPtr, uint32_t a0)
+uint32_t CExoResFile__GetResourceSize(CExoResFile* thisPtr, RESID a0)
 {
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResFile*, uint32_t);
+    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResFile*, RESID);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResFile__GetResourceSize);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
@@ -206,17 +206,17 @@ int32_t CExoResFile__OpenFile__1(CExoResFile* thisPtr, unsigned char* a0)
     return func(thisPtr, a0);
 }
 
-uint32_t CExoResFile__ReadResource(CExoResFile* thisPtr, uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+uint32_t CExoResFile__ReadResource(CExoResFile* thisPtr, RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResFile*, uint32_t, void*, uint32_t, uint32_t);
+    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResFile*, RESID, void*, uint32_t, uint32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResFile__ReadResource);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CExoResFile__ReadResourceAsync(CExoResFile* thisPtr, uint32_t a0, void* a1, uint32_t a2, uint32_t a3)
+void CExoResFile__ReadResourceAsync(CExoResFile* thisPtr, RESID a0, void* a1, uint32_t a2, uint32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoResFile*, uint32_t, void*, uint32_t, uint32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoResFile*, RESID, void*, uint32_t, uint32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResFile__ReadResourceAsync);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2, a3);

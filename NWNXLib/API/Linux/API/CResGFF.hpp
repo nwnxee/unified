@@ -79,7 +79,7 @@ struct CResGFF
     unsigned char* GetDataLayoutField(CResGFFField*, uint32_t&);
     unsigned char* GetDataLayoutList(CResGFFField*, uint32_t&);
     uint32_t GetElementType(CResStruct*);
-    void GetField(CResStruct*, uint32_t);
+    CResGFFField* GetField(CResStruct*, uint32_t);
     uint32_t GetFieldByLabel(CResStruct*, char*);
     uint32_t GetFieldCount(CResStruct*);
     uint32_t GetFieldCount(CResGFFStruct*);
@@ -158,7 +158,7 @@ int32_t CResGFF__GetDataFromPointer(CResGFF* thisPtr, void*, int32_t);
 unsigned char* CResGFF__GetDataLayoutField(CResGFF* thisPtr, CResGFFField*, uint32_t&);
 unsigned char* CResGFF__GetDataLayoutList(CResGFF* thisPtr, CResGFFField*, uint32_t&);
 uint32_t CResGFF__GetElementType(CResGFF* thisPtr, CResStruct*);
-void CResGFF__GetField(CResGFF* thisPtr, CResStruct*, uint32_t);
+CResGFFField* CResGFF__GetField(CResGFF* thisPtr, CResStruct*, uint32_t);
 uint32_t CResGFF__GetFieldByLabel(CResGFF* thisPtr, CResStruct*, char*);
 uint32_t CResGFF__GetFieldCount__0(CResGFF* thisPtr, CResStruct*);
 uint32_t CResGFF__GetFieldCount__1(CResGFF* thisPtr, CResGFFStruct*);

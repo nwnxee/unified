@@ -71,7 +71,7 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER("REMOVE_BANNED_PLAYER_NAME",     OnRemoveBannedPlayerName);
     REGISTER("GET_BANNED_LIST",               OnGetBannedList);
     REGISTER("SET_MODULE_NAME",               OnSetModuleName);
-    REGISTER("SET_SERVER_NAME",               OnSetServereName);
+    REGISTER("SET_SERVER_NAME",               OnSetServerName);
 
 #undef REGISTER
 }
@@ -256,7 +256,7 @@ Events::ArgumentStack Administration::OnSetModuleName(Events::ArgumentStack&& ar
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnSetServereName(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::OnSetServerName(Events::ArgumentStack&& args)
 {
     const auto newName = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Set server name to '%s'.", newName.c_str());

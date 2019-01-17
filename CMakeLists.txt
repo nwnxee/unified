@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMa
 # -DSANITIZE_ADDRESS=On
 find_package(Sanitizers)
 
-set(TARGET_NWN_BUILD 8181)
+set(TARGET_NWN_BUILD 8186)
 set(PLUGIN_PREFIX NWNX_)
 
 # Disables PIC which plays havoc with our absolute address function jumps.
@@ -97,8 +97,19 @@ add_subdirectory(Core)
 # Detect every plugin and store it in plugins . . .
 file(GLOB plugins Plugins/*/CMakeLists.txt)
 
+# Allow skipping certain plugins by putting their names in env. variable
+foreach(skipped $ENV{NWNX_SKIP_PLUGINS})
+    file(GLOB skip Plugins/${skipped}/CMakeLists.txt)
+    list(REMOVE_ITEM plugins ${skip} )
+endforeach(skipped)
+
 # . . . Then iterate over it.
 foreach(plugin ${plugins})
     get_filename_component(pluginPath ${plugin} PATH)
     add_subdirectory(${pluginPath})
 endforeach(plugin)
+
+# Allow specifying out of tree plugins by putting their paths in env. variable
+foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
+    add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
+endforeach(addplugin)

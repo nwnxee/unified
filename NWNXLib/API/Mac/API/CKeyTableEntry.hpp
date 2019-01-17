@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "CResRef.hpp"
+#include "RESID.hpp"
 
 namespace NWNXLib {
 
@@ -15,7 +16,7 @@ struct CKeyTableEntry
 {
     CResRef m_cResRef;
     CRes* m_pRes;
-    uint32_t m_nID;
+    RESID m_nID;
     uint16_t m_nRefCount;
     uint16_t m_nType;
 };

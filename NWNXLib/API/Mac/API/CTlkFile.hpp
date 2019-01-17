@@ -21,10 +21,14 @@ struct CTlkFile
     CTlkFile& operator=(const CTlkFile&) = default;
 
     CTlkFile(CExoString);
+    CTlkFile(const void*, int32_t);
+    ~CTlkFile();
     int32_t ReadHeader();
 };
 
 void CTlkFile__CTlkFileCtor__0(CTlkFile* thisPtr, CExoString);
+void CTlkFile__CTlkFileCtor__2(CTlkFile* thisPtr, const void*, int32_t);
+void CTlkFile__CTlkFileDtor__0(CTlkFile* thisPtr);
 int32_t CTlkFile__ReadHeader(CTlkFile* thisPtr);
 
 }

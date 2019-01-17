@@ -125,7 +125,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             if (before) // Need to persist for AFTER as well
             {
                 amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
             }
             Events::PushEventData("AMOUNT", amount);
             Events::PushEventData("TARGET", target);
@@ -139,7 +139,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             if (before) // Need to persist for AFTER as well
             {
                 numLevels = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
             }
             Events::PushEventData("NUM_LEVELS", numLevels);
             Events::PushEventData("TARGET", target);
@@ -153,7 +153,7 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             if (before) // Need to persist for AFTER as well
             {
                 amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
             }
             Events::PushEventData("AMOUNT", amount);
             Events::PushEventData("TARGET", target);

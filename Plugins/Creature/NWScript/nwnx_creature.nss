@@ -280,6 +280,16 @@ void NWNX_Creature_LevelDown(object creature, int count=1);
 // Sets corpse decay time in milliseconds
 void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 
+// Returns the creature's highest attack bonus based on its own stats
+// NOTE: AB vs. <Type> and +AB on Gauntlets are excluded
+//
+// int isMelee values:
+//   TRUE: Get Melee/Unarmed Attack Bonus
+//   FALSE: Get Ranged Attack Bonus
+//   -1: Get Attack Bonus depending on the weapon creature has equipped in its right hand
+//       Defaults to Melee Attack Bonus if weapon is invalid or no weapon 
+int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE);
+
 // Get feat remaining uses of a creature
 int NWNX_Creature_GetFeatRemainingUses(object creature, int feat);
 
@@ -288,7 +298,6 @@ int NWNX_Creature_GetFeatTotalUses(object creature, int feat);
 
 // Set feat remaining uses of a creature
 int NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses);
-
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -1002,6 +1011,34 @@ void NWNX_Creature_SetChallengeRating(object creature, float fCR)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE)
+{
+    string sFunc = "GetAttackBonus";
+    
+    if (isMelee == -1)
+    {
+        object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND, creature);
+
+        if (GetIsObjectValid(oWeapon))
+        {
+            isMelee = !GetWeaponRanged(oWeapon);
+        }
+        else
+        {// Default to melee for unarmed
+            isMelee = TRUE;
+        }
+    }
+    
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, includeBaseAttackBonus);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, isOffhand);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, isTouchAttack);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, isMelee);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
 int NWNX_Creature_GetFeatRemainingUses(object creature, int feat)

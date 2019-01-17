@@ -14,6 +14,7 @@
 #include "Events/SpellEvents.hpp"
 #include "Events/PartyEvents.hpp"
 #include "Events/HealerKitEvents.hpp"
+#include "Events/SkillEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -122,6 +123,11 @@ Events::Events(const Plugin::CreateParams& params)
     {
         m_healerKitEvents = std::make_unique<HealerKitEvents>(GetServices()->m_hooks);
     }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_SKILL_EVENTS", true))
+    {
+        m_skillEvents = std::make_unique<SkillEvents>(GetServices()->m_hooks);
+    }        
 }
 
 Events::~Events()
@@ -184,6 +190,9 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
     }
 
     g_plugin->m_eventData.pop();
+
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, result ? *result : ""});
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED", { eventName, skipped ? "1" : "0"});    
 
     return !skipped;
 }

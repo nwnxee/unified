@@ -136,7 +136,11 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     if (serialized.size() < 14*4) // GFF header size
         return nullptr;
 
-    if (!resGff.GetDataFromPointer((void*)serialized.data(), (int32_t)serialized.size()))
+    // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
+    // so need a copy for them to play with since the vector can't relinquish its own.
+    uint8_t *data = new uint8_t[serialized.size()];
+    memcpy(data, serialized.data(), serialized.size());
+    if (!resGff.GetDataFromPointer((void*)data, (int32_t)serialized.size()))
         return nullptr;
 
     resGff.InitializeForWriting();

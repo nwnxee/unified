@@ -4,6 +4,8 @@
 
 #include "CCodeBase.hpp"
 #include "CExoArrayListTemplatedCExoString.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
+#include "CExoLinkedListTemplatedunsignedlong.hpp"
 #include "CExtendedServerInfo.hpp"
 #include "CGameObject.hpp"
 #include "CGameObjectArray.hpp"

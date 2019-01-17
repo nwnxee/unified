@@ -26,15 +26,7 @@ struct CNWSDialogEntry
     CResRef m_sSound;
     CExoString m_sQuestTag;
     uint32_t m_nQuestId;
-
-    // The below are auto generated stubs.
-    CNWSDialogEntry(const CNWSDialogEntry&) = default;
-    CNWSDialogEntry& operator=(const CNWSDialogEntry&) = default;
-
-    CNWSDialogEntry();
 };
-
-void CNWSDialogEntry__CNWSDialogEntryCtor(CNWSDialogEntry* thisPtr);
 
 }
 

@@ -68,6 +68,7 @@ class Weapon : public NWNXLib::Plugin
       NWNXLib::Hooking::FunctionHook* m_GetMeleeAttackBonusHook;
       NWNXLib::Hooking::FunctionHook* m_GetRangedAttackBonusHook;
       NWNXLib::Hooking::FunctionHook* m_GetAttackModifierVersusHook;
+      NWNXLib::Hooking::FunctionHook* m_ToggleModeHook;
 
       static int32_t GetWeaponFocus                   (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
       static int32_t GetEpicWeaponFocus               (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
@@ -85,7 +86,7 @@ class Weapon : public NWNXLib::Plugin
       static int32_t GetRangedAttackBonus             (NWNXLib::API::CNWSCreatureStats *pStats, bool bIncludeBase, bool bTouchAttack);
       static int32_t GetAttackModifierVersus          (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSCreature* pCreature);
       static int32_t GetUseMonkAttackTables           (NWNXLib::API::CNWSCreatureStats *pStats, bool bForceUnarmed);
-
+      static int32_t ToggleMode                       (NWNXLib::API::CNWSCreature *pCreature, unsigned char nMode); 
       
       std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
       std::map<std::uint32_t, std::uint32_t> m_EpicWeaponFocusMap;

@@ -12,6 +12,9 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSQuickbarButton.hpp"
 #include "API/CGameEffect.hpp"
+#include "API/CNWSPlayerInventoryGUI.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSItem.hpp"
 //#include "API/CNWSStats_Spell.hpp"
 //#include "API/CNWSStats_SpellLikeAbility.hpp"
 //#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
@@ -56,14 +59,20 @@ Player::Player(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Player::func, this, std::placeholders::_1))
 
     REGISTER(ForcePlaceableExamineWindow);
+    REGISTER(ForcePlaceableInventoryWindow);
     REGISTER(StartGuiTimingBar);
     REGISTER(StopGuiTimingBar);
     REGISTER(SetAlwaysWalk);
     REGISTER(GetQuickBarSlot);
     REGISTER(SetQuickBarSlot);
     REGISTER(GetBicFileName);
-    REGISTER(SetVisibilityOverride);
-    REGISTER(GetVisibilityOverride);
+    REGISTER(ShowVisualEffect);
+    REGISTER(ChangeBackgroundMusic);
+    REGISTER(PlayBackgroundMusic);
+    REGISTER(ChangeBattleMusic);
+    REGISTER(PlayBattleMusic);
+    REGISTER(PlaySound);
+    REGISTER(SetPlaceableUsable);
 
 #undef REGISTER
 
@@ -110,6 +119,24 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
         else
         {
             LOG_ERROR("Unable to get CNWSMessage");
+        }
+    }
+
+    return stack;
+}
+
+
+ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidPlayer = pPlayer->m_oidNWSObject;
+
+        if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
+        {
+            pPlaceable->OpenInventory(oidPlayer);
         }
     }
 
@@ -204,7 +231,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature)
         {
-            LOG_ERROR("No creature object found for Player ID %x, oidNWSObject %x", 
+            LOG_ERROR("No creature object found for Player ID %x, oidNWSObject %x",
                 pPlayer->m_oidPCObject, pPlayer->m_oidNWSObject);
             return stack;
         }
@@ -314,64 +341,152 @@ ArgumentStack Player::GetBicFileName(ArgumentStack&& args)
     return stack;
 }
 
-
-ArgumentStack Player::SetVisibilityOverride(ArgumentStack&& args)
+ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
 {
-    static NWNXLib::Hooking::FunctionHook* pTestObjectVisible_hook;
-
-    if (!pTestObjectVisible_hook)
-    {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__TestObjectVisible>(
-            +[](CNWSMessage *pThis, CNWSObject *pAreaObject, CNWSObject *pPlayerGameObject) -> int32_t
-            {
-                std::string name = std::string("VISIBILITY_OVERRIDE:") + Utils::ObjectIDToString(pAreaObject->m_idSelf);
-
-                // Don't remove the forced walk flag when various slowdown effects expire
-                auto override = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pPlayerGameObject, name);
-                if (override && *override)
-                {
-                    ASSERT(*override == 1 || *override == 2);
-                    return *override == 2;
-                }
-
-                return pTestObjectVisible_hook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
-            });
-        pTestObjectVisible_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__TestObjectVisible);
-    }
-
     ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
-        const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
-        const auto override = Services::Events::ExtractArgument<int32_t>(args);
+        Vector pos;
+        auto effectId = Services::Events::ExtractArgument<int32_t>(args); ASSERT(effectId >= 0); ASSERT(effectId <= 0xFFFF);
+        pos.z = Services::Events::ExtractArgument<float>(args);
+        pos.y = Services::Events::ExtractArgument<float>(args);
+        pos.x = Services::Events::ExtractArgument<float>(args);
 
-        std::string name = std::string("VISIBILITY_OVERRIDE:") + Utils::ObjectIDToString(oidTarget);
-        if (override > 0 && override <= 2) // valid values
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, name, override);
-        }
-        else if (override == 0)
-        {
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, name);
-        }
-        else
-        {
-            LOG_WARNING("Invalid visibility override constant specified: %d", override);
+            pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos);
         }
     }
     return stack;
 }
 
-ArgumentStack Player::GetVisibilityOverride(ArgumentStack&& args)
+ArgumentStack Player::ChangeBackgroundMusic(ArgumentStack&& args)
 {
     ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
-        const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
-        std::string name = std::string("VISIBILITY_OVERRIDE:") + Utils::ObjectIDToString(oidTarget);
+        const auto oidPlayer = pPlayer->m_nPlayerID;
 
-        auto override = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pPlayer->m_oidNWSObject, name);
-        Services::Events::InsertArgument(stack, override ? *override : 0);
+        auto day = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto track = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(track >= 0);
+        ASSERT(track <= 0xFFFF);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientMusicChangeTrack(oidPlayer, day, track);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::PlayBackgroundMusic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlayer = pPlayer->m_nPlayerID;
+
+        auto play = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientMusicPlay(oidPlayer, play);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::ChangeBattleMusic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlayer = pPlayer->m_nPlayerID;
+
+        auto track = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT(track >= 0);
+        ASSERT(track <= 0xFFFF);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientBattleMusicChange(oidPlayer, track);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::PlayBattleMusic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlayer = pPlayer->m_nPlayerID;
+
+        auto play = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAmbientBattleMusicPlay(oidPlayer, play);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::PlaySound(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto playerID = pPlayer->m_nPlayerID;
+
+        auto sound = Services::Events::ExtractArgument<std::string>(args);
+
+        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+        if (oidTarget == Constants::OBJECT_INVALID)
+        {
+            oidTarget = pPlayer->m_oidNWSObject;
+        }
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerAIActionPlaySound(playerID, oidTarget, sound.c_str());
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidPlaceable = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto bUsable = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->CreateWriteMessage(sizeof(bUsable) + sizeof(oidPlaceable), pPlayer->m_nPlayerID, 1);
+
+            pMessage->WriteOBJECTIDServer(oidPlaceable);
+            pMessage->WriteBOOL(bUsable);
+            uint8_t *buffer; 
+            uint32_t size;
+            
+            if (pMessage->GetWriteMessage(&buffer, &size))
+            {
+                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID, 0x05, 0x08, buffer, size);
+            }
+        }
     }
     return stack;
 }

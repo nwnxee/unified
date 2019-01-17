@@ -6,7 +6,6 @@
 #include "CExoString.hpp"
 #include "CNetLayerPlayerInfo.hpp"
 #include "CNetLayerWindow.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 #include "unknown_RelayModeChange.hpp"
 
 namespace NWNXLib {
@@ -16,6 +15,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CBaseExoApp;
 struct CExoArrayListTemplatedCExoString;
+struct CExoArrayListTemplatedunsignedlong;
 struct CExoNet;
 struct CExoNetExtendableBuffer;
 struct CNetLayerSessionInfo;
@@ -38,6 +38,8 @@ struct CNetLayerInternal
     CExoString m_sGameMasterPassword;
     CExoString m_sServerAdminPassword;
     uint32_t m_nSessionMaxPlayers;
+    CExoString m_sNWSyncHash;
+    CExoString m_sNWSyncUrl;
     int32_t m_bEnumerateSessions;
     int32_t m_bEnumerateSpecific;
     int32_t m_bEnumerateSpecificOverRelay;

@@ -4,6 +4,8 @@
 #include "API/Globals.hpp"
 #include "API/CExoString.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CTlkTable.hpp"
+#include "API/CTlkTableTokenCustom.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
 
@@ -11,6 +13,7 @@
 #include <functional>
 
 using namespace NWNXLib;
+using namespace NWNXLib::API;
 
 static ViewPtr<Util::Util> g_plugin;
 
@@ -45,6 +48,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetCurrentScriptName);
     REGISTER(GetAsciiTableString);
     REGISTER(Hash);
+    REGISTER(GetCustomToken);
 
 #undef REGISTER
 
@@ -100,5 +104,34 @@ ArgumentStack Util::Hash(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retVal = "";
+
+    const auto tokenNumber = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (tokenNumber >= 0)
+    {
+        auto *pTlk = API::Globals::TlkTable();
+        auto *pTokens = pTlk->m_pTokensCustom;
+        int numTokens = pTlk->m_nTokensCustom;
+
+        CTlkTableTokenCustom token;
+        token.m_nNumber = tokenNumber;
+        
+        auto *foundToken = (CTlkTableTokenCustom*)std::bsearch(&token, pTokens, numTokens, sizeof(token),
+            +[](const void *a, const void *b){ return (int32_t)((CTlkTableTokenCustom*)a)->m_nNumber - (int32_t)((CTlkTableTokenCustom*)b)->m_nNumber; });
+        
+        if(foundToken)
+        { 
+            retVal = foundToken->m_sValue.CStr();
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
 
 }

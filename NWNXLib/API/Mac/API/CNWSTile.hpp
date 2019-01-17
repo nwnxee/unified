@@ -6,13 +6,13 @@
 #include "CNWTile.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
 namespace API {
 
 // Forward class declarations (defined in the source file)
+struct CExoArrayListTemplatedunsignedlong;
 struct CNWArea;
 struct CNWTileData;
 struct CPathfindInformation;

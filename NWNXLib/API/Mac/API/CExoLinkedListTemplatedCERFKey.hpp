@@ -12,7 +12,16 @@ struct CExoLinkedListInternal;
 struct CExoLinkedListTemplatedCERFKey
 {
     CExoLinkedListInternal* m_pcExoLinkedListInternal;
+
+    // The below are auto generated stubs.
+    CExoLinkedListTemplatedCERFKey() = default;
+    CExoLinkedListTemplatedCERFKey(const CExoLinkedListTemplatedCERFKey&) = default;
+    CExoLinkedListTemplatedCERFKey& operator=(const CExoLinkedListTemplatedCERFKey&) = default;
+
+    ~CExoLinkedListTemplatedCERFKey();
 };
+
+void CExoLinkedListTemplatedCERFKey__CExoLinkedListTemplatedCERFKeyDtor(CExoLinkedListTemplatedCERFKey* thisPtr);
 
 }
 

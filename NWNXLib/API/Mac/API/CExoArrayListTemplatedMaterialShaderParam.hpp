@@ -15,9 +15,15 @@ struct CExoArrayListTemplatedMaterialShaderParam
     int32_t num;
     int32_t array_size;
 
+    // The below are auto generated stubs.
+    CExoArrayListTemplatedMaterialShaderParam() = default;
+    CExoArrayListTemplatedMaterialShaderParam(const CExoArrayListTemplatedMaterialShaderParam&) = default;
+
+    ~CExoArrayListTemplatedMaterialShaderParam();
     CExoArrayListTemplatedMaterialShaderParam& operator=(const CExoArrayListTemplatedMaterialShaderParam&);
 };
 
+void CExoArrayListTemplatedMaterialShaderParam__CExoArrayListTemplatedMaterialShaderParamDtor(CExoArrayListTemplatedMaterialShaderParam* thisPtr);
 CExoArrayListTemplatedMaterialShaderParam& CExoArrayListTemplatedMaterialShaderParam__OperatorAssignment(CExoArrayListTemplatedMaterialShaderParam* thisPtr, const CExoArrayListTemplatedMaterialShaderParam&);
 
 }

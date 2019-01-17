@@ -10,6 +10,11 @@ namespace NWNXLib {
 
 namespace API {
 
+CNWSTransition::~CNWSTransition()
+{
+    CNWSTransition__CNWSTransitionDtor(this);
+}
+
 void CNWSTransition::LoadFromGff(CResGFF* a0, CResStruct* a1)
 {
     return CNWSTransition__LoadFromGff(this, a0, a1);
@@ -38,6 +43,14 @@ void CNWSTransition::SetTarget(CNWSObject* a0)
 void CNWSTransition::Unlink(int32_t a0)
 {
     return CNWSTransition__Unlink(this, a0);
+}
+
+void CNWSTransition__CNWSTransitionDtor(CNWSTransition* thisPtr)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSTransition*, int);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSTransition__CNWSTransitionDtor);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    func(thisPtr, 2);
 }
 
 void CNWSTransition__LoadFromGff(CNWSTransition* thisPtr, CResGFF* a0, CResStruct* a1)

@@ -13,6 +13,7 @@
 #include "API/CNWSInventory.hpp"
 #include "API/CNWSCombatRound.hpp"
 #include "Utils.hpp"
+#include "Services/Messaging/Messaging.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -111,7 +112,7 @@ Weapon::Weapon(const Plugin::CreateParams& params)
    m_GetRangedAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__GetRangedAttackBonus);
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetUseMonkAttackTables>(&Weapon::GetUseMonkAttackTables);
-   
+
    m_WeaponFinesseSizeMap.insert({Constants::BASE_ITEM_RAPIER, (uint8_t) Constants::CREATURE_SIZE_MEDIUM});
 
    m_DCScript="";
@@ -203,6 +204,7 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
 ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
 {
    ArgumentStack stack;
+   static bool bFirstTime=true;
    
    const auto w_bitem  = Services::Events::ExtractArgument<int32_t>(args);
    
@@ -211,7 +213,17 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
       m_MonkWeaponSet.insert(w_bitem);
       LOG_DEBUG("Base Item Type %d set as monk weapon", w_bitem);
    }
-   
+
+   if(bFirstTime)
+   {
+      bFirstTime=false;
+      // Hooks for flurry of blows
+      GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__ToggleMode>(&ToggleMode); 
+      m_ToggleModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__ToggleMode);
+      g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});  
+      LOG_NOTICE("Flurry of blows requires activation of CombatModes plugin");
+   }
+
    return stack;
 }
 
@@ -809,6 +821,17 @@ int32_t Weapon::GetRangedAttackBonus(NWNXLib::API::CNWSCreatureStats* pStats, bo
    return nBonus;
 }
 
+int32_t Weapon::ToggleMode(CNWSCreature *pCreature, unsigned char nMode)
+{
+    Weapon& plugin = *g_plugin;
+    if(nMode == 6)//flurry of blows
+    {       
+        pCreature->SetCombatMode(5,pCreature->m_nCombatMode != 5);
+        return 1;
+    }
+    
+    return plugin.m_ToggleModeHook->CallOriginal<int32_t>(pCreature, nMode);
+}
 
 int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, bool bForceUnarmed)
 {

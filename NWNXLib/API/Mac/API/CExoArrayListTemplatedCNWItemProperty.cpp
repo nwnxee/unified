@@ -8,6 +8,11 @@ namespace NWNXLib {
 
 namespace API {
 
+CExoArrayListTemplatedCNWItemProperty::~CExoArrayListTemplatedCNWItemProperty()
+{
+    CExoArrayListTemplatedCNWItemProperty__CExoArrayListTemplatedCNWItemPropertyDtor(this);
+}
+
 void CExoArrayListTemplatedCNWItemProperty::Allocate(int32_t a0)
 {
     return CExoArrayListTemplatedCNWItemProperty__Allocate(this, a0);
@@ -16,6 +21,14 @@ void CExoArrayListTemplatedCNWItemProperty::Allocate(int32_t a0)
 CExoArrayListTemplatedCNWItemProperty& CExoArrayListTemplatedCNWItemProperty::operator=(const CExoArrayListTemplatedCNWItemProperty& a0)
 {
     return CExoArrayListTemplatedCNWItemProperty__OperatorAssignment(this, a0);
+}
+
+void CExoArrayListTemplatedCNWItemProperty__CExoArrayListTemplatedCNWItemPropertyDtor(CExoArrayListTemplatedCNWItemProperty* thisPtr)
+{
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CExoArrayListTemplatedCNWItemProperty*, int);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoArrayListTemplatedCNWItemProperty__CExoArrayListTemplatedCNWItemPropertyDtor);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    func(thisPtr, 2);
 }
 
 void CExoArrayListTemplatedCNWItemProperty__Allocate(CExoArrayListTemplatedCNWItemProperty* thisPtr, int32_t a0)
