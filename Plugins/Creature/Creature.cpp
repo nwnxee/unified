@@ -118,6 +118,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(LevelUp);
     REGISTER(LevelDown);
     REGISTER(SetChallengeRating);
+    REGISTER(GetAttackBonus);
 
 #undef REGISTER
 }
@@ -1527,6 +1528,72 @@ ArgumentStack Creature::SetChallengeRating(ArgumentStack&& args)
     {
         const auto fCR = Services::Events::ExtractArgument<float>(args); ASSERT(fCR >= 0.0);
         pCreature->m_pStats->m_fChallengeRating = fCR;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetAttackBonus(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1; 
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto isMelee = Services::Events::ExtractArgument<int32_t>(args);
+        const auto isTouchAttack = Services::Events::ExtractArgument<int32_t>(args);
+        const auto isOffhand = Services::Events::ExtractArgument<int32_t>(args);
+        const auto includeBaseAttackBonus = Services::Events::ExtractArgument<int32_t>(args);        
+
+        if (isMelee)
+        {
+            retVal = pCreature->m_pStats->GetMeleeAttackBonus(isOffhand, includeBaseAttackBonus, isTouchAttack);
+        }
+        else
+        {
+            retVal = pCreature->m_pStats->GetRangedAttackBonus(includeBaseAttackBonus, isTouchAttack);    
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+    
+    return stack;
+}
+
+ArgumentStack Creature::GetFeatRemainingUses(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        const auto feat = Services::Events::ExtractArgument<int32_t>(args); ASSERT(feat <= 65535); /* word */
+        retval = pCreature->m_pStats->GetFeatRemainingUses(feat);
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::GetFeatTotalUses(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        const auto feat = Services::Events::ExtractArgument<int32_t>(args); ASSERT(feat <= 65535); /* word */
+        retval = pCreature->m_pStats->GetFeatTotalUses(feat);
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Creature::SetFeatRemainingUses(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto feat = Services::Events::ExtractArgument<int32_t>(args); ASSERT(feat <= 65535); /* word */
+        const auto uses = Services::Events::ExtractArgument<int32_t>(args); ASSERT(uses <= 255); /* byte */
+
+        pCreature->m_pStats->SetFeatRemainingUses(feat, uses);
     }
     return stack;
 }
