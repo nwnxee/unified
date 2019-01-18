@@ -51,6 +51,13 @@ void main()
 
     report("GetFeatByLevel", NWNX_Creature_GetFeatByLevel(oCreature, 1, nFeatCountLvl1) == FEAT_PLAYER_TOOL_01);
 
+    NWNX_Creature_AddFeat(oCreature, FEAT_STUNNING_FIST);
+    report("GetFeatRemainingUses", NWNX_Creature_GetFeatRemainingUses(oCreature, FEAT_STUNNING_FIST) == 1);
+    NWNX_Creature_SetFeatRemainingUses(oCreature, FEAT_STUNNING_FIST, 0);
+    report("GetFeatRemainingUses", NWNX_Creature_GetFeatRemainingUses(oCreature, FEAT_STUNNING_FIST) == 0);
+
+    int uses = NWNX_Creature_GetFeatTotalUses(oCreature, FEAT_STUNNING_FIST);
+    WriteTimestampedLogEntry("Creature has " + IntToString(uses) + " total uses of STUNNING FIST left");
 
     //
     // SPECIAL ABILITY functions
@@ -85,7 +92,7 @@ void main()
 
 
     int nOldStr = GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE);
-    NWNX_Creature_SetAbilityScore(oCreature, ABILITY_STRENGTH, 25);
+    NWNX_Creature_SetRawAbilityScore(oCreature, ABILITY_STRENGTH, 25);
     report("SetAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
     report("SetAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
 
