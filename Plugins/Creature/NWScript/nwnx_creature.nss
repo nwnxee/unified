@@ -277,7 +277,7 @@ void NWNX_Creature_LevelUp(object creature, int class, int count=1);
 // This will not work on player characters
 void NWNX_Creature_LevelDown(object creature, int count=1);
 
-// Sets corpse decay time in milliseconds
+// Sets the creature's challenge rating
 void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 
 // Returns the creature's highest attack bonus based on its own stats
