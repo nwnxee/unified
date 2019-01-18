@@ -85,7 +85,7 @@ Events::ArgumentStack Administration::OnGetPlayerPassword(Events::ArgumentStack&
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerPassword();
     LOG_DEBUG("Returned player password '%s'.", password.m_sString);
     Events::ArgumentStack stack;
-    Events::InsertArgument(stack, std::string(password.m_sString));
+    Events::InsertArgument(stack, std::string(password.m_sString ? password.m_sString : ""));
     return stack;
 }
 
@@ -109,7 +109,7 @@ Events::ArgumentStack Administration::OnGetDMPassword(Events::ArgumentStack&&)
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetGameMasterPassword();
     LOG_DEBUG("Returned DM password '%s'.", password.m_sString);
     Events::ArgumentStack stack;
-    Events::InsertArgument(stack, std::string(password.m_sString));
+    Events::InsertArgument(stack, std::string(password.m_sString ? password.m_sString : ""));
     return stack;
 }
 
