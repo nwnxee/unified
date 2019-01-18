@@ -297,7 +297,7 @@ int NWNX_Creature_GetFeatRemainingUses(object creature, int feat);
 int NWNX_Creature_GetFeatTotalUses(object creature, int feat);
 
 // Set feat remaining uses of a creature
-int NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses);
+void NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -1063,7 +1063,7 @@ int NWNX_Creature_GetFeatTotalUses(object creature, int feat)
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses)
+void NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses)
 {
     string sFunc="SetFeatRemainingUses";
     
