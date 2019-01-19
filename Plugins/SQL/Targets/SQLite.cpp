@@ -206,8 +206,11 @@ int32_t SQLite::GetPreparedQueryParamCount()
 void SQLite::DestroyPreparedQuery()
 {
     sqlite3_finalize(m_stmt);
-
     m_stmt = nullptr;
+
+    // Force deallocation
+    std::vector<std::string>().swap(m_paramValues);
+    m_paramCount = 0;
 }
 
 }
