@@ -65,6 +65,8 @@ bool SQLite::PrepareQuery(const Query& query)
 {
     LOG_DEBUG("Preparing query: %s", query.c_str());
 
+    sqlite3_finalize(m_stmt);
+
     bool success = sqlite3_prepare_v2(m_dbConn, query.c_str(), -1, &m_stmt, NULL) == SQLITE_OK;
 
     if(success)
