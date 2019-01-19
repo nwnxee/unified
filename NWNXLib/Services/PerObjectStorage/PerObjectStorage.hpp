@@ -36,6 +36,8 @@ public:
 
     static void CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, API::CNWSObject* thisPtr);
     static void CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, API::CNWSArea* thisPtr);
+    static void CNWSPlayer__EatTURD_hook(Services::Hooks::CallType type, API::CNWSPlayer* thisPtr, API::CNWSPlayerTURD* pTURD);
+    static void CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type, API::CNWSPlayer* thisPtr);
 private:
     class ObjectStorage
     {
@@ -53,6 +55,9 @@ private:
 
         ObjectStorage(API::Types::ObjectID owner);
         ~ObjectStorage();
+
+        void CloneFrom(ObjectStorage *other);
+        std::string DumpToString();
 
         API::Types::ObjectID        m_oidOwner;
         std::unique_ptr<IntMap>     m_IntMap;
