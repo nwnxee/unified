@@ -20,7 +20,7 @@ void NWNX_Rename_SetPCNameOverride(object oPC, string sNewName, string sPrefix =
 {
     string sFunc = "SetPCNameOverride";
     
-    NWNX_PushArgumentInt(NWNX_Rename, sFunc, bOverridePlayerName);
+    NWNX_PushArgumentInt(NWNX_Rename, sFunc, iPlayerNameState);
     NWNX_PushArgumentString(NWNX_Rename, sFunc, sSuffix);
     NWNX_PushArgumentString(NWNX_Rename, sFunc, sPrefix);
     NWNX_PushArgumentString(NWNX_Rename, sFunc, sNewName);
