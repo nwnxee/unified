@@ -87,7 +87,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, ChatChannel chann
     LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
         plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
 
-    if (!plugin.m_skipMessage)
+    if (plugin.m_depth > 0 || !plugin.m_skipMessage)
     {
         plugin.m_hook->CallOriginal<void>(thisPtr, channel, sender, message, target, tellName);
     }
