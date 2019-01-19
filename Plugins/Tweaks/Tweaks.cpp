@@ -7,6 +7,7 @@
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/SneakAttackCritImmunity.hpp"
 #include "Tweaks/PreserveDepletedItems.hpp"
+#include "Tweaks/HideDMsOnCharList.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -112,7 +113,13 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
             Platform::Assembly::PushImmInstruction(0),
             Platform::Assembly::NoopInstruction()
         ); NWNX_EXPECT_VERSION(8186);
-    }   
+    }
+
+    if (GetServices()->m_config->Get<bool>("HIDE_DMS_ON_CHAR_LIST", false))
+    {
+        LOG_INFO("DMs will not be visible on character list");
+        m_HideDMsOnCharList = std::make_unique<HideDMsOnCharList>(GetServices()->m_hooks.get());
+    }
 }
 
 Tweaks::~Tweaks()
