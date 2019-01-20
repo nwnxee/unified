@@ -26,7 +26,7 @@ struct NWNX_Damage_DamageEventData // Damage event data
 void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID);
 
 // Get Damage Event Data (to use only on Damage Event Script)
-struct NWNX_Damage_DamageEventData NWNX_Weapon_GetDamageEventData();
+struct NWNX_Damage_DamageEventData NWNX_Damage_GetDamageEventData();
 
 // Set Damage Event Data (to use only on Damage Event Script)
 void NWNX_Damage_SetDamageEventData(struct NWNX_Damage_DamageEventData data);
