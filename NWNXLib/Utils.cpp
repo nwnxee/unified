@@ -154,6 +154,10 @@ API::CGameObject* GetGameObject(API::Types::ObjectID objectId)
 {
     return API::Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
 }
+API::CNWSModule* GetModule()
+{
+    return static_cast<API::CNWSModule*>(API::Globals::AppManager()->m_pServerExoApp->GetModule());
+}
 
 bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner)
 {

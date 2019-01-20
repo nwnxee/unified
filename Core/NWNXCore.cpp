@@ -161,6 +161,8 @@ void NWNXCore::InitialSetupHooks()
 
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSObject__CNWSObjectDtor__0, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSArea__CNWSAreaDtor__0, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__EatTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__DropTURD, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
 }
 
 void NWNXCore::InitialVersionCheck()

@@ -33,6 +33,7 @@ API::CNWSTrigger*            AsNWSTrigger(API::CGameObject* obj);
 API::CNWSWaypoint*           AsNWSWaypoint(API::CGameObject* obj);
 
 API::CGameObject* GetGameObject(API::Types::ObjectID objectId);
+API::CNWSModule* GetModule();
 
 // Wrappers around non-virtual methods repeated for all NWS types
 bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner);

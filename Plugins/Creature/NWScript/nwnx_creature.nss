@@ -277,7 +277,7 @@ void NWNX_Creature_LevelUp(object creature, int class, int count=1);
 // This will not work on player characters
 void NWNX_Creature_LevelDown(object creature, int count=1);
 
-// Sets corpse decay time in milliseconds
+// Sets the creature's challenge rating
 void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 
 // Returns the creature's highest attack bonus based on its own stats
@@ -289,6 +289,15 @@ void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 //   -1: Get Attack Bonus depending on the weapon creature has equipped in its right hand
 //       Defaults to Melee Attack Bonus if weapon is invalid or no weapon 
 int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE);
+
+// Get feat remaining uses of a creature
+int NWNX_Creature_GetFeatRemainingUses(object creature, int feat);
+
+// Get feat total uses of a creature
+int NWNX_Creature_GetFeatTotalUses(object creature, int feat);
+
+// Set feat remaining uses of a creature
+void NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -1032,3 +1041,35 @@ int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchA
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
+int NWNX_Creature_GetFeatRemainingUses(object creature, int feat)
+{
+    string sFunc="GetFeatRemainingUses";
+    
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, feat);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetFeatTotalUses(object creature, int feat)
+{
+    string sFunc="GetFeatTotalUses";
+    
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, feat);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses)
+{
+    string sFunc="SetFeatRemainingUses";
+    
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, uses);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, feat);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}

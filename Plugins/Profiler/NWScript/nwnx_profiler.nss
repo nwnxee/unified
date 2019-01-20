@@ -37,7 +37,7 @@ void NWNX_Profiler_PushPerfScope(string name, string tag0_tag = "", string tag0_
     NWNX_CallFunction("NWNX_Profiler", "PUSH_PERF_SCOPE");
 }
 
-string NWNX_Profiler_PopPerfScope()
+void NWNX_Profiler_PopPerfScope()
 {
     NWNX_CallFunction("NWNX_Profiler", "POP_PERF_SCOPE");
 }
