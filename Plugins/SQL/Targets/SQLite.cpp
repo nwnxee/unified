@@ -25,6 +25,7 @@ SQLite::SQLite()
 
 SQLite::~SQLite()
 {
+    sqlite3_finalize(m_stmt);
     sqlite3_close(m_dbConn);
 }
 
@@ -62,7 +63,9 @@ bool SQLite::IsConnected()
 
 bool SQLite::PrepareQuery(const Query& query)
 {
-    LOG_DEBUG("Preparing query %s\n", query.c_str());
+    LOG_DEBUG("Preparing query: %s", query.c_str());
+
+    sqlite3_finalize(m_stmt);
 
     bool success = sqlite3_prepare_v2(m_dbConn, query.c_str(), -1, &m_stmt, NULL) == SQLITE_OK;
 
@@ -93,11 +96,9 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
 
     for(unsigned int i = 0; i < m_paramCount; i++)
     {
-        int j = i + 1;// First param is 1 in SQLite
-        int bindStatus;
-
         LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i].c_str(), i);
-        bindStatus = sqlite3_bind_text(m_stmt, j, m_paramValues[i].c_str(), -1, NULL);  
+        // Params in SQLite are 1 based
+        int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i].c_str(), -1, NULL);  
         
         if(bindStatus != SQLITE_OK)
         {
@@ -105,7 +106,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
             
             LOG_WARNING("Failed to bind params: %s", m_lastError.c_str());            
 
-            return NWNXLib::Maybe<ResultSet>(); // Failed query.
+            return NWNXLib::Maybe<ResultSet>(); // Failed query, bind error.
         }
     }
 
@@ -129,8 +130,6 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         while (stepState == SQLITE_ROW)
         {
             ResultRow row;
-
-            columnCount = sqlite3_column_count(m_stmt);
 
             row.reserve(columnCount);
             
@@ -209,8 +208,11 @@ int32_t SQLite::GetPreparedQueryParamCount()
 void SQLite::DestroyPreparedQuery()
 {
     sqlite3_finalize(m_stmt);
-
     m_stmt = nullptr;
+
+    // Force deallocation
+    std::vector<std::string>().swap(m_paramValues);
+    m_paramCount = 0;
 }
 
 }
