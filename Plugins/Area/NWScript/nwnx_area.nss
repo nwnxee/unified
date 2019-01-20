@@ -28,7 +28,7 @@ int NWNX_Area_GetPVPSetting(object area);
 
 // Set the PVP setting of area
 // pvpSetting = NWNX_AREA_PVP_SETTING_*
-int NWNX_Area_SetPVPSetting(object area, int pvpSetting);
+void NWNX_Area_SetPVPSetting(object area, int pvpSetting);
 
 // Get the spot modifier of area
 int NWNX_Area_GetAreaSpotModifier(object area);
