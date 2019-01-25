@@ -21,18 +21,18 @@ class Events : public ServiceBase
 public: // Structures
     struct Argument
     {
-        Maybe<int32_t>              Int;
-        Maybe<float>                Float;
-        Maybe<API::Types::ObjectID> Object;
-        Maybe<std::string>          String;
-        Maybe<API::CGameEffect*>    Effect;
+        Maybe<int32_t>              m_int;
+        Maybe<float>                m_float;
+        Maybe<API::Types::ObjectID> m_object;
+        Maybe<std::string>          m_string;
+        Maybe<API::CGameEffect*>    m_effect;
 
         // Constructors
-        Argument(const int32_t& v)                : Int(v)    { }
-        Argument(const float& v)                  : Float(v)  { }
-        Argument(const API::Types::ObjectID& v)   : Object(v) { }
-        Argument(const std::string& v)            : String(std::move(v)) { }
-        Argument(API::CGameEffect* v)             : Effect(v) { }
+        Argument(const int32_t& v)                : m_int(v)    { }
+        Argument(const float& v)                  : m_float(v)  { }
+        Argument(const API::Types::ObjectID& v)   : m_object(v) { }
+        Argument(const std::string& v)            : m_string(std::move(v)) { }
+        Argument(API::CGameEffect* v)             : m_effect(v) { }
 
         template <typename T> Maybe<T>& Get();
         std::string toString();

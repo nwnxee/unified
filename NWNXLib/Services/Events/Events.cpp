@@ -138,19 +138,19 @@ void EventsProxy::ClearEvent(const std::string& eventName)
 
 
 
-template<> Maybe<int32_t>&              Events::Argument::Get<int32_t>()             { return Int; }
-template<> Maybe<float>&                Events::Argument::Get<float>()               { return Float; }
-template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return Object; }
-template<> Maybe<std::string>&          Events::Argument::Get<std::string>()         { return String; }
-template<> Maybe<API::CGameEffect*>&     Events::Argument::Get<API::CGameEffect*>()  { return Effect; }
+template<> Maybe<int32_t>&              Events::Argument::Get<int32_t>()             { return m_int; }
+template<> Maybe<float>&                Events::Argument::Get<float>()               { return m_float; }
+template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return m_object; }
+template<> Maybe<std::string>&          Events::Argument::Get<std::string>()         { return m_string; }
+template<> Maybe<API::CGameEffect*>&    Events::Argument::Get<API::CGameEffect*>()   { return m_effect; }
 
 std::string Events::Argument::toString()
 {
-    if (Int)    return std::to_string(*Int);
-    if (Float)  return std::to_string(*Float);
-    if (Object) return Utils::ObjectIDToString(*Object);
-    if (String) return *String;
-    if (Effect) return *Effect ? std::string("EffectID:") + std::to_string((*Effect)->m_nID) : std::string("nullptr effect");
+    if (m_int)    return std::to_string(*m_int);
+    if (m_float)  return std::to_string(*m_float);
+    if (m_object) return Utils::ObjectIDToString(*m_object);
+    if (m_string) return *m_string;
+    if (m_effect) return *m_effect ? std::string("EffectID:") + std::to_string((*m_effect)->m_nID) : std::string("nullptr effect");
 
     return std::string("");
 }

@@ -426,7 +426,6 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     {
         if (pItemProperty->m_nType == 91) // ItemProperty effect
         {
-            // Why, Liareth, WHY?
             pItemProperty->SetString(0, tag);
         }
     }

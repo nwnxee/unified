@@ -82,5 +82,5 @@ T Events::ExtractArgument(ArgumentStack& arguments)
     T real = std::move(data.Extract());
     arguments.pop();
 
-    return std::move(real);
+    return real;
 }

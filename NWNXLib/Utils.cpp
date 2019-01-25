@@ -2,6 +2,7 @@
 #include "API/Globals.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
@@ -292,8 +293,8 @@ void DestroyGameEffect(API::CGameEffect* pEffect)
 {
     if (pEffect)
     {
-        // Don't actually need the this pointer here.
-        static_cast<API::CNWVirtualMachineCommands*>(nullptr)->DestroyGameDefinedStructure(0, pEffect);
+        auto *srv = API::Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal;
+        srv->m_pVirtualMachineCommandImplementer->DestroyGameDefinedStructure(0, pEffect);
     }
 }
 
