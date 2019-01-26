@@ -2,7 +2,9 @@
 #include "API/Globals.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSAreaOfEffectObject.hpp"
@@ -270,6 +272,32 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
     }
     return true;
 }
+
+API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject)
+{
+    if (!pObject)
+        return nullptr;
+
+    switch (pObject->m_nObjectType)
+    {
+        case OBJECT_TYPE_AREA:
+            return &static_cast<API::CNWSArea*>(pObject)->m_ScriptVars;
+        case OBJECT_TYPE_MODULE:
+            return &static_cast<API::CNWSModule*>(pObject)->m_ScriptVars;
+        default:
+            return &static_cast<API::CNWSObject*>(pObject)->m_ScriptVars;
+    }
+}
+
+void DestroyGameEffect(API::CGameEffect* pEffect)
+{
+    if (pEffect)
+    {
+        auto *srv = API::Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal;
+        srv->m_pVirtualMachineCommandImplementer->DestroyGameDefinedStructure(0, pEffect);
+    }
+}
+
 
 }
 }

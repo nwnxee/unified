@@ -91,27 +91,13 @@ CNWSObject *Object::object(ArgumentStack& args)
     return static_cast<CNWSObject*>(pGameObject);
 }
 
-static inline CNWSScriptVarTable *_getScriptVarTable(CGameObject *pObject)
-{
-    ASSERT(pObject);
-    switch (pObject->m_nObjectType)
-    {
-        case Constants::OBJECT_TYPE_AREA:
-            return &static_cast<CNWSArea*>(pObject)->m_ScriptVars;
-        case Constants::OBJECT_TYPE_MODULE:
-            return &static_cast<CNWSModule*>(pObject)->m_ScriptVars;
-        default:
-            return &static_cast<CNWSObject*>(pObject)->m_ScriptVars;
-    }
-}
-
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int retval = -1;
     if (auto *pObject = object(args))
     {
-        auto *pVarTable = _getScriptVarTable(pObject);
+        auto *pVarTable = Utils::GetScriptVarTable(pObject);
         retval = pVarTable->m_lVarList.num;
     }
     Services::Events::InsertArgument(stack, retval);
@@ -126,7 +112,7 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
     if (auto *pObject = object(args))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        auto *pVarTable = _getScriptVarTable(pObject);
+        auto *pVarTable = Utils::GetScriptVarTable(pObject);
         if (index < pVarTable->m_lVarList.num)
         {
             type = static_cast<int>(pVarTable->m_lVarList.element[index].m_nType);

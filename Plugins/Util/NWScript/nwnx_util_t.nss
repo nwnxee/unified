@@ -26,5 +26,11 @@ void main()
     string sToken = NWNX_Util_GetCustomToken(1000);
     report("GetCustomToken", sToken == "Test Token 1000");
 
+    effect e = EffectCurse(1,2,3,4,5,6);
+    e = TagEffect(e, "NWNX_UTIL_TEST");
+    itemproperty ip = NWNX_Util_EffectToItemProperty(e);
+    e = NWNX_Util_ItemPropertyToEffect(ip);
+    report("EffectToItemProperty_ItemPropertyToEffect", GetEffectTag(e) == "NWNX_UTIL_TEST");
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

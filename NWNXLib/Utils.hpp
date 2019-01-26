@@ -4,6 +4,7 @@
 #include "API/CGameObject.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/Vector.hpp"
+#include "API/CGameEffect.hpp"
 #include <string>
 
 
@@ -43,6 +44,10 @@ bool operator!=(API::Vector& v1, API::Vector& v2);
 
 // Returns TRUE if the var tables have the same variables with same values
 bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *pVars2);
+API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject);
+
+void DestroyGameEffect(API::CGameEffect* pEffect);
+
 }
 
 }

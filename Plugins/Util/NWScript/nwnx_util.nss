@@ -10,6 +10,10 @@ string NWNX_Util_GetAsciiTableString();
 int NWNX_Util_Hash(string str);
 // Gets the value of customTokenNumber
 string NWNX_Util_GetCustomToken(int customTokenNumber);
+// Convert an effect type to an IP type
+itemproperty NWNX_Util_EffectToItemProperty(effect e);
+// Convert an IP type to an effect type
+effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -44,4 +48,20 @@ string NWNX_Util_GetCustomToken(int customTokenNumber)
     NWNX_PushArgumentInt(NWNX_Util, sFunc, customTokenNumber);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+itemproperty NWNX_Util_EffectToItemProperty(effect e)
+{
+    string sFunc = "EffectTypeCast";
+    NWNX_PushArgumentEffect(NWNX_Util, sFunc, e);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueItemProperty(NWNX_Util, sFunc);
+}
+
+effect NWNX_Util_ItemPropertyToEffect(itemproperty ip)
+{
+    string sFunc = "EffectTypeCast";
+    NWNX_PushArgumentItemProperty(NWNX_Util, sFunc, ip);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueEffect(NWNX_Util, sFunc);
 }

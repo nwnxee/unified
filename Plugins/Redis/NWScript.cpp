@@ -43,7 +43,7 @@ void Redis::RegisterWithNWScript()
                     // be ignorant about type and just strip it, since we take
                     // raw values (integers, strings) and shove them as strings straight
                     // to redis.
-                    v.push_back(arg.top().substr(2));
+                    v.push_back(arg.top().toString());
                     arg.pop();
                 }
                 reverse(v.begin(), v.end());
