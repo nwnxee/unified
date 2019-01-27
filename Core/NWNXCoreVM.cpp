@@ -176,7 +176,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         }
         case VMCommand::GetLocalFloat:
         {
-            float f = 0;
+            float f = 0.0f;
             if (nwnx)
             {
                 if (auto res = g_core->m_services->m_events->Pop<float>(nwnx->plugin, nwnx->event))
@@ -184,7 +184,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             }
             else if (vartable)
             {
-                f = vartable->GetInt(varname);
+                f = vartable->GetFloat(varname);
             }
             success = vm->StackPushFloat(f);
             break;
