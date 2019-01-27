@@ -7,7 +7,7 @@ for i in `find . -name NWScript`; do
 
     mkdir -p $folder
     for n in $i/*.nss; do
-        if [[ `basename $n` != *_t*.nss ]]; then
+        if [[ ! `basename $n` =~ (_t+[0-9]{0,1}.nss) ]]; then
             cp $n $folder/`basename $n`
         fi
     done 
