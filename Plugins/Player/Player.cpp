@@ -534,10 +534,8 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
             g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "REST_DURATION");
         }
         else
-        {
-            if (duration < 10) duration = 10;
-            
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_DURATION", duration);
+        {          
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_DURATION", duration < 10 ? 10 : duration);
         }          
     }   
 

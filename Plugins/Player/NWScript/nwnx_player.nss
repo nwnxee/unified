@@ -103,6 +103,7 @@ void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
 
 // Override player's rest duration
 // Duration is in milliseconds, 1000 = 1 second
+// Minimum duration of 10ms
 // -1 clears the override
 void NWNX_Player_SetRestDuration(object player, int duration);
 
