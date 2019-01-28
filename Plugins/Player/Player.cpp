@@ -15,6 +15,10 @@
 #include "API/CNWSPlayerInventoryGUI.hpp"
 #include "API/CNWSPlaceable.hpp"
 #include "API/CNWSItem.hpp"
+#include "API/CNWRules.hpp"
+#include "API/CNWSCreatureStats.hpp"
+#include "API/CTwoDimArrays.hpp"
+#include "API/C2DA.hpp"
 //#include "API/CNWSStats_Spell.hpp"
 //#include "API/CNWSStats_SpellLikeAbility.hpp"
 //#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
@@ -73,12 +77,16 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(PlayBattleMusic);
     REGISTER(PlaySound);
     REGISTER(SetPlaceableUsable);
+    REGISTER(SetRestDuration);
 
 #undef REGISTER
 
     GetServices()->m_hooks->RequestSharedHook
         <Functions::CNWSMessage__HandlePlayerToServerInputCancelGuiTimingEvent,
             int32_t, CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerInputCancelGuiTimingEventHook);
+
+    GetServices()->m_hooks->RequestSharedHook
+        <Functions::CNWSCreature__AIActionRest, int32_t>(&AIActionRestHook);
 
 }
 
@@ -223,7 +231,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
             });
         pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnRemoveLimitMovementSpeed);
     }
-
+    
     ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
@@ -488,6 +496,51 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
             }
         }
     }
+    return stack;
+}
+
+void Player::AIActionRestHook(Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*)
+{
+    static int32_t creatureLevel;
+    static int32_t originalValue; 
+
+    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    {
+        creatureLevel = pCreature->m_pStats->GetLevel(0);       
+        
+        Globals::Rules()->m_p2DArrays->m_pRestDurationTable->GetINTEntry(creatureLevel, "DURATION", &originalValue);
+
+        if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
+        {
+            Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", *restDuration);
+        }
+    }
+    else
+    {
+        Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", originalValue);
+    }    
+}
+
+ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        auto duration = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (duration < 0)
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "REST_DURATION");
+        }
+        else
+        {
+            if (duration < 10) duration = 10;
+            
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_DURATION", duration);
+        }          
+    }   
+
     return stack;
 }
 

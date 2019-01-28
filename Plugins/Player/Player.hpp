@@ -20,6 +20,9 @@ private:
     static void HandlePlayerToServerInputCancelGuiTimingEventHook(NWNXLib::Services::Hooks::CallType type,
         NWNXLib::API::CNWSMessage* pMessage, NWNXLib::API::CNWSPlayer* pPlayer);
 
+    static void AIActionRestHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSCreature* pCreature, 
+        NWNXLib::API::CNWSObjectActionNode*);
+
     ArgumentStack ForcePlaceableExamineWindow   (ArgumentStack&& args);
     ArgumentStack ForcePlaceableInventoryWindow (ArgumentStack&& args);
     ArgumentStack StartGuiTimingBar             (ArgumentStack&& args);
@@ -35,6 +38,7 @@ private:
     ArgumentStack PlayBattleMusic               (ArgumentStack&& args);
     ArgumentStack PlaySound                     (ArgumentStack&& args);
     ArgumentStack SetPlaceableUsable            (ArgumentStack&& args);
+    ArgumentStack SetRestDuration               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
