@@ -84,10 +84,6 @@ Player::Player(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook
         <Functions::CNWSMessage__HandlePlayerToServerInputCancelGuiTimingEvent,
             int32_t, CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerInputCancelGuiTimingEventHook);
-
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::CNWSCreature__AIActionRest, int32_t>(&AIActionRestHook);
-
 }
 
 Player::~Player()
@@ -499,30 +495,37 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
     return stack;
 }
 
-void Player::AIActionRestHook(Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*)
-{
-    static int32_t creatureLevel;
-    static int32_t originalValue; 
-
-    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
-    {
-        creatureLevel = pCreature->m_pStats->GetLevel(0);       
-        
-        Globals::Rules()->m_p2DArrays->m_pRestDurationTable->GetINTEntry(creatureLevel, "DURATION", &originalValue);
-
-        if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
-        {
-            Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", *restDuration);
-        }
-    }
-    else
-    {
-        Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", originalValue);
-    }    
-}
-
 ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
 {
+    static bool bAIActionRestHook;
+
+    if (!bAIActionRestHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__AIActionRest, int32_t>(
+            +[](Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
+            {
+                static int32_t creatureLevel;
+                static int32_t originalValue; 
+
+                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                {
+                    creatureLevel = pCreature->m_pStats->GetLevel(0);       
+                    
+                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->GetINTEntry(creatureLevel, "DURATION", &originalValue);
+
+                    if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
+                    {
+                        Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", *restDuration);
+                    }
+                }
+                else
+                {
+                    Globals::Rules()->m_p2DArrays->m_pRestDurationTable->SetINTEntry(creatureLevel, "DURATION", originalValue);
+                }
+            });
+        bAIActionRestHook = true;
+    }
+    
     ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
