@@ -81,9 +81,6 @@ Player::Player(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::CNWSMessage__HandlePlayerToServerInputCancelGuiTimingEvent,
-            int32_t, CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerInputCancelGuiTimingEventHook);
 }
 
 Player::~Player()
@@ -149,6 +146,32 @@ ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
 
 ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
 {
+    static bool bHandlePlayerToServerInputCancelGuiTimingEventHook;
+
+    if (!bHandlePlayerToServerInputCancelGuiTimingEventHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerInputCancelGuiTimingEvent, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> void
+                {
+                    // Before or after doesn't matter, just pick one so it happens only once
+                    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                    {
+                        CNWSObject *pGameObject = static_cast<CNWSObject*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(pPlayer->m_oidPCObject));
+
+                        CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
+                        int32_t id = pGameObject->m_ScriptVars.GetInt(varName);
+
+                        if (id > 0)
+                        {
+                            LOG_DEBUG("Cancelling GUI timing event id %d...", id);
+                            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
+                            pGameObject->m_ScriptVars.DestroyInt(varName);
+                        }
+                    }
+                });
+        bHandlePlayerToServerInputCancelGuiTimingEventHook = true;
+    }
+
     ArgumentStack stack;
     if(auto *pPlayer = player(args))
     {
@@ -187,26 +210,6 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
     }
 
     return stack;
-}
-
-
-void Player::HandlePlayerToServerInputCancelGuiTimingEventHook(Services::Hooks::CallType type, CNWSMessage* pMessage, CNWSPlayer* pPlayer)
-{
-    // Before or after doesn't matter, just pick one so it happens only once
-    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
-    {
-        CNWSObject *pGameObject = static_cast<CNWSObject*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(pPlayer->m_oidPCObject));
-
-        CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
-        int32_t id = pGameObject->m_ScriptVars.GetInt(varName);
-
-        if (id > 0)
-        {
-            LOG_DEBUG("Cancelling GUI timing event id %d...", id);
-            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
-            pGameObject->m_ScriptVars.DestroyInt(varName);
-        }
-    }
 }
 
 ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
