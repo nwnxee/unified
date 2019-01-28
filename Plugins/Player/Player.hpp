@@ -35,6 +35,7 @@ private:
     ArgumentStack PlayBattleMusic               (ArgumentStack&& args);
     ArgumentStack PlaySound                     (ArgumentStack&& args);
     ArgumentStack SetPlaceableUsable            (ArgumentStack&& args);
+    ArgumentStack SetRestDuration               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

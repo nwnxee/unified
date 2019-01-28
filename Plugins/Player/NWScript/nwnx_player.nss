@@ -101,6 +101,12 @@ void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_I
 // Toggle a placeable's usable flag for the given player only
 void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable);
 
+// Override player's rest duration
+// Duration is in milliseconds, 1000 = 1 second
+// Minimum duration of 10ms
+// -1 clears the override
+void NWNX_Player_SetRestDuration(object player, int duration);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -389,6 +395,15 @@ void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
     string sFunc = "SetPlaceableUsable";
     NWNX_PushArgumentInt(NWNX_Player, sFunc, usable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetRestDuration(object player, int duration)
+{
+    string sFunc = "SetRestDuration";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, duration);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
