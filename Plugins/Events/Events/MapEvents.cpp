@@ -30,6 +30,7 @@ MapEvents::MapEvents(ViewPtr<Services::HooksProxy> hooker)
     hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerMapPinDestroyMapPin, int32_t,
         CNWSMessage*, CNWSPlayer*>(&HandleMapPinDestroyMapPinMessageHook);
     m_HandlePlayerToServerMapPinDestroyMapPinHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerMapPinDestroyMapPin);
+
 }
 template <typename T>
 static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
@@ -59,12 +60,12 @@ int32_t MapEvents::HandleMapPinSetMapPinAtMessageHook(CNWSMessage *thisPtr, CNWS
     // Copy the string over
     std::string note;
     note.reserve(len+1);
-    std::memcpy(note.data(), thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset, len);
+    note.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), len);
     note[len] = '\0';
 
     Events::PushEventData("PIN_X", std::to_string(x));
     Events::PushEventData("PIN_Y", std::to_string(y));
-    Events::PushEventData("PIN_NOTE", note.c_str());
+    Events::PushEventData("PIN_NOTE", note);
     
     if (Events::SignalEvent("NWNX_ON_MAP_PIN_ADD_PIN", oidPlayer))
     {
@@ -96,7 +97,7 @@ int32_t MapEvents::HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPl
     // Copy the string over
     std::string note;
     note.reserve(len+1);
-    std::memcpy(note.data(), thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset, len);
+    note.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), len);
     note[len] = '\0';
     offset += len;
 
@@ -106,7 +107,7 @@ int32_t MapEvents::HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPl
 
     Events::PushEventData("PIN_X", std::to_string(x));
     Events::PushEventData("PIN_Y", std::to_string(y));
-    Events::PushEventData("PIN_NOTE", note.c_str());
+    Events::PushEventData("PIN_NOTE", note);
     Events::PushEventData("PIN_ID", pin_id);
 
     if (Events::SignalEvent("NWNX_ON_MAP_PIN_CHANGE_PIN", oidPlayer))
