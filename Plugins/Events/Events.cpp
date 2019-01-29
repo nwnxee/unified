@@ -55,6 +55,7 @@ Events::Events(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("GET_EVENT_DATA", std::bind(&Events::OnGetEventData, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("SKIP_EVENT", std::bind(&Events::OnSkipEvent, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("EVENT_RESULT", std::bind(&Events::OnEventResult, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("GET_CURRENT_EVENT", std::bind(&Events::OnGetCurrentEvent, this, std::placeholders::_1));
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
         [](const std::vector<std::string> message)
@@ -177,6 +178,8 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
 
     g_plugin->CreateNewEventDataIfNeeded();
 
+    g_plugin->m_eventData.top().m_EventName = eventName;
+
     for (const auto& script : g_plugin->m_eventMap[eventName])
     {
         LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName.c_str(), script.c_str());
@@ -273,6 +276,20 @@ Services::Events::ArgumentStack Events::OnEventResult(Services::Events::Argument
     LOG_DEBUG("Received event result '%s'.", data.c_str());
 
     return Services::Events::ArgumentStack();
+}
+
+Services::Events::ArgumentStack Events::OnGetCurrentEvent(Services::Events::ArgumentStack&& args)
+{
+    if (m_eventDepth == 0 || m_eventData.empty())
+    {
+        throw std::runtime_error("Attempted to get the current event in an invalid context.");
+    }
+
+    std::string eventName = g_plugin->m_eventData.top().m_EventName;
+
+    Services::Events::ArgumentStack stack;
+    Services::Events::InsertArgument(stack, eventName);
+    return stack;
 }
 
 void Events::CreateNewEventDataIfNeeded()
