@@ -8,10 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recompile all your scripts. 
 
 ### Added
-- New plugins: Area, CombatModes, Effect, Encounter, Feedback, Rename, Visibility
 - Added support to skip building certain plugins by setting an environment variable, for example: `NWNX_SKIP_PLUGINS="JVM;Lua;Mono;Ruby;SpellChecker"`
-- Added support to build out of tree plugins with the following environment variable: `NWNX_ADDITIONAL_PLUGINS={pathtoplugins}`
-- Core: Allow skipping all plugins on load with the following environment variable: `NWNX_CORE_SKIP_ALL=y`
+- Added support to build out of tree plugins with the following environment variable: `NWNX_ADDITIONAL_PLUGINS=/path/to/Plugin1;/path/to/Plugin2`
+- Core: Allow changing default plugin state from 'load all' to 'skip all' with the following environment variable: `NWNX_CORE_SKIP_ALL=y`. Use `NWNX_PLUGIN_SKIP=n` to enable specific plugins in this case.
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
 - Events: New events: SkillEvents
 - Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents
@@ -19,7 +18,16 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
-##### New functions
+##### New Plugins
+The following plugins were added:
+- **Area**: Adds functions exposing additional area properties
+- **CombatModes**: Allows subscribing to Combat Mode toggle events. The Events plugin is needed to subscribe to the CombatMode events
+- **Effect**: Provides various utility functions to manipulate builtin effect types (Effect/Itemproperty)
+- **Encounter**: Adds functions exposing additional encounter properties
+- **Feedback**: Allows combatlog and feedback messages to be hidden globally or per player
+- **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
+- **Visibility**: Allows the visibility of objects to be overridden globally or per player
+##### New NWScript Functions
 - Area: GetNumberOfPlayersInArea()
 - Area: GetLastEntered()
 - Area: GetLastLeft()

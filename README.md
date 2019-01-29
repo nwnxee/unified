@@ -1,4 +1,4 @@
-# NWNX:EE (build 8186)
+# NWNX:EE (build 8186) ([Changelog](CHANGELOG.md))
 
 ## What is NWNX:EE?
 
