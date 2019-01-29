@@ -17,6 +17,7 @@ class DMActionEvents;
 class ExamineEvents;
 class FeatEvents;
 class ItemEvents;
+class MapEvents;
 class StealthEvents;
 class SpellEvents;
 class PartyEvents;
@@ -77,6 +78,7 @@ private:
     std::unique_ptr<ExamineEvents> m_examineEvents;
     std::unique_ptr<FeatEvents> m_featEvents;
     std::unique_ptr<ItemEvents> m_itemEvents;
+    std::unique_ptr<MapEvents> m_mapEvents;
     std::unique_ptr<StealthEvents> m_stealthEvents;
     std::unique_ptr<SpellEvents> m_spellEvents;
     std::unique_ptr<PartyEvents> m_partyEvents;
