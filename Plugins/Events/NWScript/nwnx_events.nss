@@ -266,6 +266,11 @@ void NWNX_Events_SkipEvent();
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 void NWNX_Events_SetEventResult(string data);
 
+// Returns the current event name
+//
+// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+string NWNX_Events_GetCurrentEvent();
+
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
@@ -305,4 +310,10 @@ void NWNX_Events_SetEventResult(string data)
 {
     NWNX_PushArgumentString("NWNX_Events", "EVENT_RESULT", data);
     NWNX_CallFunction("NWNX_Events", "EVENT_RESULT");
+}
+
+string NWNX_Events_GetCurrentEvent()
+{
+    NWNX_CallFunction("NWNX_Events", "GET_CURRENT_EVENT");
+    return NWNX_GetReturnValueString("NWNX_Events", "GET_CURRENT_EVENT");
 }
