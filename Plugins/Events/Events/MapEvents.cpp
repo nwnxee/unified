@@ -102,7 +102,7 @@ int32_t MapEvents::HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPl
 
     // Copy the pin id over
     static std::string pin_id;
-    pin_id = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+    pin_id = std::to_string(PeekMessage<int32_t>(thisPtr, offset));
 
     Events::PushEventData("PIN_X", std::to_string(x));
     Events::PushEventData("PIN_Y", std::to_string(y));
