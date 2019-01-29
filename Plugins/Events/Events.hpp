@@ -36,6 +36,9 @@ public: // Structures
 
         // The result of the event, if any, is stored here
         std::string m_Result;
+
+        // The current event name
+        std::string m_EventName;
     };
 
 public:
@@ -61,6 +64,7 @@ private:
     NWNXLib::Services::Events::ArgumentStack OnGetEventData(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnSkipEvent(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnEventResult(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnGetCurrentEvent(NWNXLib::Services::Events::ArgumentStack&& args);
 
     // Pushes a brand new event data onto the event data stack, set up with the correct defaults.
     // Only does it if needed though, based on the current event depth!

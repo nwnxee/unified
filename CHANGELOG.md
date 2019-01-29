@@ -14,6 +14,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
 - Events: New events: SkillEvents
 - Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents
+- Events: You can now get the current event name with a nwscript function
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
@@ -64,6 +65,7 @@ The following plugins were added:
 - Encounter: SetPlayerTriggeredOnly()
 - Encounter: GetResetTime()
 - Encounter: SetResetTime()
+- Events: GetCurrentEvent()
 - Feedback: GetMessageHidden()
 - Feedback: SetMessageHidden()
 - Player: ShowVisualEffect()
