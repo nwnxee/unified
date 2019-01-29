@@ -12,8 +12,8 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Added support to build out of tree plugins with the following environment variable: `NWNX_ADDITIONAL_PLUGINS=/path/to/Plugin1;/path/to/Plugin2`
 - Core: Allow changing default plugin state from 'load all' to 'skip all' with the following environment variable: `NWNX_CORE_SKIP_ALL=y`. Use `NWNX_PLUGIN_SKIP=n` to enable specific plugins in this case.
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
-- Events: New events: SkillEvents
-- Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents
+- Events: New events: SkillEvents, MapEvents
+- Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents
 - Events: You can now get the current event name with a nwscript function
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
