@@ -59,7 +59,7 @@ int32_t MapEvents::HandleMapPinSetMapPinAtMessageHook(CNWSMessage *thisPtr, CNWS
     // Copy the string over
     std::string note;
     note.reserve(len+1);
-    memcpy(note.data(), thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset, len);
+    std::memcpy(note.data(), thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset, len);
     note[len] = '\0';
 
     Events::PushEventData("PIN_X", std::to_string(x));
@@ -96,7 +96,7 @@ int32_t MapEvents::HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPl
     // Copy the string over
     std::string note;
     note.reserve(len+1);
-    memcpy(note.data(), thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset, len);
+    std::memcpy(note.data(), thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset, len);
     note[len] = '\0';
     offset += len;
 
