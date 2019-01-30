@@ -189,7 +189,7 @@ struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseSpecialAbility(int nSpell, in
 }
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Command(string sCommandLabel, string sCommandLine)
 {
-    struct NWNX_Player_QuickBarSlot qbs = NWNX_Player_QBS_Empty(NWNX_PLAYER_QBS_TYPE_SPELL);
+    struct NWNX_Player_QuickBarSlot qbs = NWNX_Player_QBS_Empty(NWNX_PLAYER_QBS_TYPE_COMMAND);
 
     qbs.sCommandLabel     = sCommandLabel;
     qbs.sCommandLine      = sCommandLine;
