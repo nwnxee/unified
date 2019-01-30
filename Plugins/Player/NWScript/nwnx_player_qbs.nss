@@ -1,6 +1,5 @@
 #include "nwnx_player"
 
-
 const int NWNX_PLAYER_QBS_TYPE_EMPTY                        = 0;
 const int NWNX_PLAYER_QBS_TYPE_ITEM                         = 1;
 const int NWNX_PLAYER_QBS_TYPE_SPELL                        = 2;
