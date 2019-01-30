@@ -66,15 +66,22 @@ int32_t MapEvents::HandleMapPinSetMapPinAtMessageHook(CNWSMessage *thisPtr, CNWS
     Events::PushEventData("PIN_X", std::to_string(x));
     Events::PushEventData("PIN_Y", std::to_string(y));
     Events::PushEventData("PIN_NOTE", note);
-    
-    if (Events::SignalEvent("NWNX_ON_MAP_PIN_ADD_PIN", oidPlayer))
+
+    if (Events::SignalEvent("NWNX_ON_MAP_PIN_ADD_PIN_BEFORE", oidPlayer))
     {
         retVal = m_HandlePlayerToServerMapPinSetMapPinAtHook->CallOriginal<int32_t>(thisPtr, pPlayer);
-    } 
-    else 
+    }
+    else
     {
         retVal = false;
     }
+
+    Events::PushEventData("PIN_X", std::to_string(x));
+    Events::PushEventData("PIN_Y", std::to_string(y));
+    Events::PushEventData("PIN_NOTE", note);
+
+    Events::SignalEvent("NWNX_ON_MAP_PIN_ADD_PIN_AFTER", oidPlayer);
+
     return retVal;
 }
 
@@ -102,22 +109,29 @@ int32_t MapEvents::HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPl
     offset += len;
 
     // Copy the pin id over
-    static std::string pin_id;
-    pin_id = std::to_string(PeekMessage<int32_t>(thisPtr, offset));
+    int32_t pin_id = PeekMessage<int32_t>(thisPtr, offset);
 
     Events::PushEventData("PIN_X", std::to_string(x));
     Events::PushEventData("PIN_Y", std::to_string(y));
     Events::PushEventData("PIN_NOTE", note);
-    Events::PushEventData("PIN_ID", pin_id);
+    Events::PushEventData("PIN_ID", std::to_string(pin_id));
 
-    if (Events::SignalEvent("NWNX_ON_MAP_PIN_CHANGE_PIN", oidPlayer))
+    if (Events::SignalEvent("NWNX_ON_MAP_PIN_CHANGE_PIN_BEFORE", oidPlayer))
     {
         retVal = m_HandlePlayerToServerMapPinChangePinHook->CallOriginal<int32_t>(thisPtr, pPlayer);
-    } 
-    else 
+    }
+    else
     {
         retVal = false;
     }
+
+    Events::PushEventData("PIN_X", std::to_string(x));
+    Events::PushEventData("PIN_Y", std::to_string(y));
+    Events::PushEventData("PIN_NOTE", note);
+    Events::PushEventData("PIN_ID", std::to_string(pin_id));
+
+    Events::SignalEvent("NWNX_ON_MAP_PIN_CHANGE_PIN_AFTER", oidPlayer);
+
     return retVal;
 }
 
@@ -128,19 +142,23 @@ int32_t MapEvents::HandleMapPinDestroyMapPinMessageHook(CNWSMessage *thisPtr, CN
     Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
 
     // Send the pin id
-    static std::string pin_id;
-    pin_id = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+    int32_t pin_id = PeekMessage<int32_t>(thisPtr, 0);
 
-    Events::PushEventData("PIN_ID", pin_id);
+    Events::PushEventData("PIN_ID", std::to_string(pin_id));
 
-    if (Events::SignalEvent("NWNX_ON_MAP_PIN_DESTROY_PIN", oidPlayer))
+    if (Events::SignalEvent("NWNX_ON_MAP_PIN_DESTROY_PIN_BEFORE", oidPlayer))
     {
         retVal = m_HandlePlayerToServerMapPinDestroyMapPinHook->CallOriginal<int32_t>(thisPtr, pPlayer);
-    } 
-    else 
+    }
+    else
     {
         retVal = false;
     }
+
+    Events::PushEventData("PIN_ID", std::to_string(pin_id));
+
+    Events::SignalEvent("NWNX_ON_MAP_PIN_DESTROY_PIN_AFTER", oidPlayer);
+
     return retVal;
 }
 

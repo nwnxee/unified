@@ -225,9 +225,12 @@
         TARGET_POSITION_Y       float
         TARGET_POSITION_Z       float        
 ////////////////////////////////////////////////////////////////////////////////
-    NWNX_ON_MAP_PIN_ADD_PIN
-    NWNX_ON_MAP_PIN_CHANGE_PIN
-    NWNX_ON_MAP_PIN_DESTROY_PIN
+    NWNX_ON_MAP_PIN_ADD_PIN_BEFORE
+    NWNX_ON_MAP_PIN_ADD_PIN_AFTER
+    NWNX_ON_MAP_PIN_CHANGE_PIN_BEFORE
+    NWNX_ON_MAP_PIN_CHANGE_PIN_AFTER
+    NWNX_ON_MAP_PIN_DESTROY_PIN_BEFORE
+    NWNX_ON_MAP_PIN_DESTROY_PIN_AFTER
 
     Usage:
         OBJECT_SELF = The player doing the action
