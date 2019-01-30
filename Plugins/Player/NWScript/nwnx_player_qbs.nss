@@ -10,6 +10,7 @@ const int NWNX_PLAYER_QBS_TYPE_ATTACK                       = 7;
 const int NWNX_PLAYER_QBS_TYPE_EMOTE                        = 8;
 const int NWNX_PLAYER_QBS_TYPE_ITEM_PROPERTY_CASTSPELL      = 9;
 const int NWNX_PLAYER_QBS_TYPE_MODE_TOGGLE                  = 10;
+const int NWNX_PLAYER_QBS_TYPE_COMMAND                      = 18;
 const int NWNX_PLAYER_QBS_TYPE_POSSESS_FAMILIAR             = 38;
 const int NWNX_PLAYER_QBS_TYPE_ASSOCIATE_COMMAND            = 39;
 const int NWNX_PLAYER_QBS_TYPE_EXAMINE                      = 40;
@@ -49,6 +50,8 @@ struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_QuickChat(int nCommand);
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_PossessFamiliar();
 // Create a QBS for casting a spell
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseSpecialAbility(int nSpell, int nCasterLevel);
+// Create a QBS for running a command
+struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Command(string sCommandLabel, string sCommandLine);
 
 
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Empty(int type = NWNX_PLAYER_QBS_TYPE_EMPTY)
@@ -181,6 +184,15 @@ struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseSpecialAbility(int nSpell, in
 
     qbs.nINTParam1     = nSpell;
     qbs.nDomainLevel   = nCasterLevel;
+
+    return qbs;
+}
+struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Command(string sCommandLabel, string sCommandLine)
+{
+    struct NWNX_Player_QuickBarSlot qbs = NWNX_Player_QBS_Empty(NWNX_PLAYER_QBS_TYPE_COMMAND);
+
+    qbs.sCommandLabel     = sCommandLabel;
+    qbs.sCommandLine      = sCommandLine;
 
     return qbs;
 }
