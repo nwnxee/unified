@@ -122,6 +122,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetFeatRemainingUses);
     REGISTER(GetFeatTotalUses);
     REGISTER(SetFeatRemainingUses);
+    REGISTER(GetTotalEffectBonus);
 
 #undef REGISTER
 }
@@ -1600,4 +1601,33 @@ ArgumentStack Creature::SetFeatRemainingUses(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::GetTotalEffectBonus(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pCreature = creature(args))
+    {
+        API::CNWSObject *versus = NULL;
+        const auto bonusType = Services::Events::ExtractArgument<int32_t>(args);
+        const auto versus_id = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        if (versus_id != Constants::OBJECT_INVALID)
+        {
+            API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);
+            versus = Utils::AsNWSObject(pObject);
+        }
+
+        const auto isElementalDamage = Services::Events::ExtractArgument<int32_t>(args);
+        const auto isForceMax = Services::Events::ExtractArgument<int32_t>(args);
+        const auto saveType = Services::Events::ExtractArgument<int32_t>(args);
+        const auto saveSpecificType = Services::Events::ExtractArgument<int32_t>(args);
+        const auto skill = Services::Events::ExtractArgument<int32_t>(args);
+        const auto abilityScore = Services::Events::ExtractArgument<int32_t>(args);
+        const auto isOffhand = Services::Events::ExtractArgument<int32_t>(args);
+        retVal = pCreature->GetTotalEffectBonus(bonusType, versus, isElementalDamage, isForceMax, saveType, saveSpecificType, skill, abilityScore, isOffhand);
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
 }
