@@ -254,6 +254,7 @@
         Variable Name           Type        Notes
         TARGET                  object      Convert to object with NWNX_Object_StringToObject()
         TARGET_INVISIBLE        int         TRUE/FALSE
+        BEFORE_RESULT           int         TRUE/FALSE, only in _AFTER events
 *///////////////////////////////////////////////////////////////////////////////
 
 // Scripts can subscribe to events.
@@ -298,7 +299,7 @@ void NWNX_Events_SkipEvent();
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 // ONLY WORKS WITH THE FOLLOWING EVENTS:
 // - Healer's Kit event
-// - Listen/Spot Detection events
+// - Listen/Spot Detection events -> "1" or "0"
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name

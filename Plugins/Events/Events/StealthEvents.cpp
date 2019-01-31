@@ -49,18 +49,22 @@ int32_t StealthEvents::HandleDetectionHook(
         int32_t bTargetInvisible)
 {
     int32_t retVal;
-    std::string sOverrideEventResult;
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
 
     Events::PushEventData("TARGET", Utils::ObjectIDToString(pTarget->m_idSelf));
     Events::PushEventData("TARGET_INVISIBLE", std::to_string(bTargetInvisible));
 
-    retVal = Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_BEFORE", pThis->m_idSelf, &sOverrideEventResult)
-             ? pHook->CallOriginal<int32_t>(pThis, pTarget, bTargetInvisible) : sOverrideEventResult == "1";
+    retVal = Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_BEFORE", pThis->m_idSelf, &sBeforeEventResult)
+             ? pHook->CallOriginal<int32_t>(pThis, pTarget, bTargetInvisible) : sBeforeEventResult == "1";
 
     Events::PushEventData("TARGET", Utils::ObjectIDToString(pTarget->m_idSelf));
     Events::PushEventData("TARGET_INVISIBLE", std::to_string(bTargetInvisible));
+    Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
 
-    Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_AFTER", pThis->m_idSelf);
+    Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_AFTER", pThis->m_idSelf, &sAfterEventResult);
+
+    retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
 
     return retVal;
 }
@@ -70,6 +74,9 @@ int32_t StealthEvents::DoListenDetectionHook(
         CNWSCreature* pTarget,
         int32_t bTargetInvisible)
 {
+    if (!pTarget->m_nStealthMode)
+        return true;
+
     return HandleDetectionHook("LISTEN", m_DoListenDetectionHook, pThis, pTarget, bTargetInvisible);
 }
 
@@ -78,6 +85,12 @@ int32_t StealthEvents::DoSpotDetectionHook(
         CNWSCreature* pTarget,
         int32_t bTargetInvisible)
 {
+    if (bTargetInvisible || pThis->GetBlind())
+        return false;
+
+    if (!pTarget->m_nStealthMode)
+        return true;
+
     return HandleDetectionHook("SPOT", m_DoSpotDetectionHook, pThis, pTarget, bTargetInvisible);
 }
 
