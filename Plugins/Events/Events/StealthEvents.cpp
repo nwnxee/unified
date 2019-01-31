@@ -49,12 +49,13 @@ int32_t StealthEvents::HandleDetectionHook(
         int32_t bTargetInvisible)
 {
     int32_t retVal;
+    std::string sOverrideEventResult;
 
     Events::PushEventData("TARGET", Utils::ObjectIDToString(pTarget->m_idSelf));
     Events::PushEventData("TARGET_INVISIBLE", std::to_string(bTargetInvisible));
 
-    retVal = Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_BEFORE", pThis->m_idSelf)
-             ? pHook->CallOriginal<int32_t>(pThis, pTarget, bTargetInvisible) : false;
+    retVal = Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_BEFORE", pThis->m_idSelf, &sOverrideEventResult)
+             ? pHook->CallOriginal<int32_t>(pThis, pTarget, bTargetInvisible) : sOverrideEventResult == "1";
 
     Events::PushEventData("TARGET", Utils::ObjectIDToString(pTarget->m_idSelf));
     Events::PushEventData("TARGET_INVISIBLE", std::to_string(bTargetInvisible));
