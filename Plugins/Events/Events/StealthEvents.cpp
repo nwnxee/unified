@@ -50,13 +50,13 @@ int32_t StealthEvents::HandleDetectionHook(
 {
     int32_t retVal;
 
-    Events::PushEventData("TARGET", Utils::ObjectIDToString(pThis->m_idSelf));
+    Events::PushEventData("TARGET", Utils::ObjectIDToString(pTarget->m_idSelf));
     Events::PushEventData("TARGET_INVISIBLE", std::to_string(bTargetInvisible));
 
     retVal = Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_BEFORE", pThis->m_idSelf)
              ? pHook->CallOriginal<int32_t>(pThis, pTarget, bTargetInvisible) : false;
 
-    Events::PushEventData("TARGET", Utils::ObjectIDToString(pThis->m_idSelf));
+    Events::PushEventData("TARGET", Utils::ObjectIDToString(pTarget->m_idSelf));
     Events::PushEventData("TARGET_INVISIBLE", std::to_string(bTargetInvisible));
 
     Events::SignalEvent("NWNX_ON_DO_" + type + "_DETECTION_AFTER", pThis->m_idSelf);
