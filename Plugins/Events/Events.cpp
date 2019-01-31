@@ -10,6 +10,7 @@
 #include "Events/ExamineEvents.hpp"
 #include "Events/FeatEvents.hpp"
 #include "Events/ItemEvents.hpp"
+#include "Events/MapEvents.hpp"
 #include "Events/StealthEvents.hpp"
 #include "Events/SpellEvents.hpp"
 #include "Events/PartyEvents.hpp"
@@ -128,7 +129,12 @@ Events::Events(const Plugin::CreateParams& params)
     if (GetServices()->m_config->Get<bool>("ENABLE_SKILL_EVENTS", true))
     {
         m_skillEvents = std::make_unique<SkillEvents>(GetServices()->m_hooks);
-    }        
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_MAP_EVENTS", true))
+    {
+        m_mapEvents = std::make_unique<MapEvents>(GetServices()->m_hooks);
+    }
 }
 
 Events::~Events()

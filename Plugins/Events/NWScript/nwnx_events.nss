@@ -224,6 +224,23 @@
         TARGET_POSITION_X       float
         TARGET_POSITION_Y       float
         TARGET_POSITION_Z       float        
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_MAP_PIN_ADD_PIN_BEFORE
+    NWNX_ON_MAP_PIN_ADD_PIN_AFTER
+    NWNX_ON_MAP_PIN_CHANGE_PIN_BEFORE
+    NWNX_ON_MAP_PIN_CHANGE_PIN_AFTER
+    NWNX_ON_MAP_PIN_DESTROY_PIN_BEFORE
+    NWNX_ON_MAP_PIN_DESTROY_PIN_AFTER
+
+    Usage:
+        OBJECT_SELF = The player doing the action
+
+    Event data:
+        Variable Name           Type        Notes
+        PIN_X                   float
+        PIN_Y                   float
+        PIN_ID                  int
+        PIN_NOTE                string
 *///////////////////////////////////////////////////////////////////////////////
 
 // Scripts can subscribe to events.
@@ -259,6 +276,7 @@ string NWNX_Events_GetEventData(string tag);
 // - CombatMode events
 // - Party events
 // - Skill events
+// - Map events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
