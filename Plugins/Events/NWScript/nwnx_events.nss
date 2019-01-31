@@ -290,12 +290,15 @@ string NWNX_Events_GetEventData(string tag);
 // - Party events
 // - Skill events
 // - Map events
-// - Listen/Spot Detection Events
+// - Listen/Spot Detection events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+// ONLY WORKS WITH THE FOLLOWING EVENTS:
+// - Healer's Kit event
+// - Listen/Spot Detection events
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
