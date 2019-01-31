@@ -54,6 +54,7 @@ The following plugins were added:
 - Creature: GetFeatRemainingUses()
 - Creature: GetFeatTotalUses()
 - Creature: SetFeatRemainingUses()
+- Creature: GetTotalEffectBonus()
 - Effect: PackEffect()
 - Effect: UnpackEffect()
 - Encounter: GetNumberOfCreaturesInEncounterList()

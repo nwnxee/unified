@@ -36,6 +36,13 @@ const int NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY    = 19;
 const int NWNX_CREATURE_CLERIC_DOMAIN_WAR         = 20;
 const int NWNX_CREATURE_CLERIC_DOMAIN_WATER       = 21;
 
+const int NWNX_CREATURE_BONUS_TYPE_ATTACK        = 1;
+const int NWNX_CREATURE_BONUS_TYPE_DAMAGE        = 2;
+const int NWNX_CREATURE_BONUS_TYPE_SAVING_THROW  = 3;
+const int NWNX_CREATURE_BONUS_TYPE_ABILITY       = 4;
+const int NWNX_CREATURE_BONUS_TYPE_SKILL         = 5;
+const int NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK  = 6;
+
 struct NWNX_Creature_SpecialAbility
 {
     int id;
@@ -298,6 +305,10 @@ int NWNX_Creature_GetFeatTotalUses(object creature, int feat);
 
 // Set feat remaining uses of a creature
 void NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses);
+
+// Get total effect bonus
+int NWNX_Creature_GetTotalEffectBonus(object creature, int bonusType=NWNX_CREATURE_BONUS_TYPE_ATTACK, object target=OBJECT_INVALID, int isElemental=0,
+    int isForceMax=0, int savetype=-1, int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -1072,4 +1083,24 @@ void NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetTotalEffectBonus(object creature, int bonusType=NWNX_CREATURE_BONUS_TYPE_ATTACK, object target=OBJECT_INVALID, int isElemental=0,
+    int isForceMax=0, int savetype=-1, int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE)
+{
+    string sFunc="GetTotalEffectBonus";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, isOffhand);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, abilityScore);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, skill);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, saveSpecificType);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, savetype);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, isForceMax);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, isElemental);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, target);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bonusType);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }

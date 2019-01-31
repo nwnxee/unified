@@ -159,5 +159,11 @@ void main()
     NWNX_Creature_SetChallengeRating(oCreature, fCR + 1.0);
     report("SetChallengeRating", GetChallengeRating(oCreature) == (fCR + 1.0));
 
+    int iOldBonus = NWNX_Creature_GetTotalEffectBonus(oCreature, NWNX_CREATURE_BONUS_TYPE_ABILITY, OBJECT_INVALID, 0, 0, -1, -1, -1, ABILITY_STRENGTH);
+    effect eStr = EffectAbilityIncrease(ABILITY_STRENGTH,1);
+    ApplyEffectToObject(DURATION_TYPE_TEMPORARY, eStr, oCreature, 2.0f);
+    int iNewBonus = NWNX_Creature_GetTotalEffectBonus(oCreature, NWNX_CREATURE_BONUS_TYPE_ABILITY, OBJECT_INVALID, 0, 0, -1, -1, -1, ABILITY_STRENGTH);
+    report("GetTotalEffectBonus", iOldBonus+1 == iNewBonus);
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
