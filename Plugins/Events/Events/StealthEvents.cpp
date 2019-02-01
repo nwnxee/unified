@@ -74,7 +74,7 @@ int32_t StealthEvents::DoListenDetectionHook(
         CNWSCreature* pTarget,
         int32_t bTargetInvisible)
 {
-    if (!pTarget->m_nStealthMode)
+    if (!pTarget->m_nStealthMode && !bTargetInvisible)
         return true;
 
     return HandleDetectionHook("LISTEN", m_DoListenDetectionHook, pThis, pTarget, bTargetInvisible);
