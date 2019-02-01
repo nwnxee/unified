@@ -51,6 +51,11 @@ struct NWNX_EffectUnpacked
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e);
 // Convert unpacked effect structure to native type
 effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e);
+// Set a script that runs when effect expires
+// Only works for TEMPORARY and PERMANENT effects
+//
+// Note: OBJECT_SELF in the script is the object the effect is applied to.
+effect NWNX_Effect_SetOnEffectRemovedScript(effect e, string script);
 
 
 const string NWNX_Effect = "NWNX_Effect";
@@ -158,5 +163,17 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sTag);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
+    return NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
+}
+
+effect NWNX_Effect_SetOnEffectRemovedScript(effect e, string script)
+{
+    string sFunc = "SetOnEffectRemovedScript";
+
+    NWNX_PushArgumentString(NWNX_Effect, sFunc, script);
+    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
     return NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
 }

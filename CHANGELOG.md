@@ -57,6 +57,7 @@ The following plugins were added:
 - Creature: GetTotalEffectBonus()
 - Effect: PackEffect()
 - Effect: UnpackEffect()
+- Effect: SetOnEffectRemovedScript()
 - Encounter: GetNumberOfCreaturesInEncounterList()
 - Encounter: GetEncounterCreatureByIndex()
 - Encounter: SetEncounterCreatureByIndex()

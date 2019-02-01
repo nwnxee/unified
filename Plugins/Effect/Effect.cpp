@@ -4,6 +4,9 @@
 #include "API/Globals.hpp"
 #include "API/CExoString.hpp"
 #include "API/CGameEffect.hpp"
+#include "API/Functions.hpp"
+#include "API/CVirtualMachine.hpp"
+#include "API/CNWSObject.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
 
@@ -11,6 +14,7 @@
 #include <functional>
 
 using namespace NWNXLib;
+using namespace NWNXLib::API;
 
 static ViewPtr<Effect::Effect> g_plugin;
 
@@ -44,6 +48,7 @@ Effect::Effect(const Plugin::CreateParams& params)
 
     REGISTER(PackEffect);
     REGISTER(UnpackEffect);
+    REGISTER(SetOnEffectRemovedScript);
 
 #undef REGISTER
 
@@ -167,5 +172,39 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Effect::SetOnEffectRemovedScript(ArgumentStack&& args)
+{
+    static bool bOnEffectRemovedHook;
+
+    if (!bOnEffectRemovedHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSEffectListHandler__OnEffectRemoved, int32_t>(
+            +[](Services::Hooks::CallType type, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
+            {
+                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                {
+                    CExoString &sScriptName = pEffect->m_sParamString[2];
+                    if (!sScriptName.IsEmpty())
+                    {
+                        LOG_DEBUG("Running script '%s' on object '%x' for expired effect of type '%u'", sScriptName.CStr(), pObject->m_idSelf, pEffect->m_nType);
+
+                        Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
+                    }
+                }
+            });
+
+        bOnEffectRemovedHook = true;
+    }
+
+    ArgumentStack stack;
+
+    auto effect = Services::Events::ExtractArgument<API::CGameEffect*>(args);
+
+    effect->m_sParamString[2] = Services::Events::ExtractArgument<std::string>(args).c_str();
+
+    Services::Events::InsertArgument(stack, effect);
+
+    return stack;
+}
 
 }
