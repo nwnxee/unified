@@ -73,9 +73,9 @@ void main()
     object oCreature = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
     ApplyEffectToObject(DURATION_TYPE_PERMANENT, packed, oCreature);
 
-    e = NWNX_Effect_SetOnEffectRemovedScript(EffectDarkness(), "effect_test");
+    e = NWNX_Effect_SetEffectExpiredScript(EffectDarkness(), "effect_test");
     unpacked = NWNX_Effect_UnpackEffect(e);
-    report("SetOnEffectRemovedScript", unpacked.sParam2 == "effect_test");
+    report("SetEffectExpiredScript", unpacked.sParam2 == "effect_test");
 
     WriteTimestampedLogEntry("NWNX_Effect unit test end.");
 }

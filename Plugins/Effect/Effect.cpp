@@ -48,7 +48,8 @@ Effect::Effect(const Plugin::CreateParams& params)
 
     REGISTER(PackEffect);
     REGISTER(UnpackEffect);
-    REGISTER(SetOnEffectRemovedScript);
+    REGISTER(SetEffectExpiredScript);
+    REGISTER(GetEffectExpiredData);
 
 #undef REGISTER
 
@@ -172,7 +173,7 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Effect::SetOnEffectRemovedScript(ArgumentStack&& args)
+ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
 {
     static bool bOnEffectRemovedHook;
 
@@ -186,9 +187,13 @@ ArgumentStack Effect::SetOnEffectRemovedScript(ArgumentStack&& args)
                     CExoString &sScriptName = pEffect->m_sParamString[2];
                     if (!sScriptName.IsEmpty())
                     {
-                        LOG_DEBUG("Running script '%s' on object '%x' for expired effect of type '%u'", sScriptName.CStr(), pObject->m_idSelf, pEffect->m_nType);
+                        g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[3].CStr());
 
+                        LOG_DEBUG("Running script '%s' on object '%x' with data '%s'", sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
+
+                        ++g_plugin->m_effectExpiredDepth;
                         Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
+                        --g_plugin->m_effectExpiredDepth;
                     }
                 }
             });
@@ -200,9 +205,26 @@ ArgumentStack Effect::SetOnEffectRemovedScript(ArgumentStack&& args)
 
     auto effect = Services::Events::ExtractArgument<API::CGameEffect*>(args);
 
+    // Script name
     effect->m_sParamString[2] = Services::Events::ExtractArgument<std::string>(args).c_str();
+    // Data
+    effect->m_sParamString[3] = Services::Events::ExtractArgument<std::string>(args).c_str();
 
     Services::Events::InsertArgument(stack, effect);
+
+    return stack;
+}
+
+ArgumentStack Effect::GetEffectExpiredData(ArgumentStack&&)
+{
+    if (g_plugin->m_effectExpiredDepth == 0)
+    {
+        throw std::runtime_error("Attempted to get effect expired data in an invalid context.");
+    }
+
+    ArgumentStack stack;
+
+    Services::Events::InsertArgument(stack, g_plugin->m_effectExpiredData);
 
     return stack;
 }

@@ -16,9 +16,13 @@ public:
     virtual ~Effect();
 
 private:
+    std::string m_effectExpiredData;
+    uint32_t m_effectExpiredDepth;
+
     ArgumentStack PackEffect(ArgumentStack&& args);
     ArgumentStack UnpackEffect(ArgumentStack&& args);
-    ArgumentStack SetOnEffectRemovedScript(ArgumentStack&& args);
+    ArgumentStack SetEffectExpiredScript(ArgumentStack&& args);
+    ArgumentStack GetEffectExpiredData(ArgumentStack&& args);
 };
 
 }
