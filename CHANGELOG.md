@@ -24,9 +24,10 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 The following plugins were added:
 - **Area**: Adds functions exposing additional area properties
 - **CombatModes**: Allows subscribing to Combat Mode toggle events. The Events plugin is needed to subscribe to the CombatMode events
-- **Effect**: Provides various utility functions to manipulate builtin effect types (Effect/Itemproperty)
+- **Effect**: Provides various utility functions to manipulate builtin effect types
 - **Encounter**: Adds functions exposing additional encounter properties
 - **Feedback**: Allows combatlog and feedback messages to be hidden globally or per player
+- **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
 ##### New NWScript Functions
@@ -72,6 +73,8 @@ The following plugins were added:
 - Events: GetCurrentEvent()
 - Feedback: GetMessageHidden()
 - Feedback: SetMessageHidden()
+- ItemProperty: PackIP()
+- ItemProperty: UnpackIP()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()
