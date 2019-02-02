@@ -60,6 +60,7 @@ The following plugins were added:
 - Effect: UnpackEffect()
 - Effect: SetEffectExpiredScript()
 - Effect: GetEffectExpiredData()
+- Effect: GetEffectExpiredCreator()
 - Encounter: GetNumberOfCreaturesInEncounterList()
 - Encounter: GetEncounterCreatureByIndex()
 - Encounter: SetEncounterCreatureByIndex()

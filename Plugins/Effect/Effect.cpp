@@ -50,6 +50,7 @@ Effect::Effect(const Plugin::CreateParams& params)
     REGISTER(UnpackEffect);
     REGISTER(SetEffectExpiredScript);
     REGISTER(GetEffectExpiredData);
+    REGISTER(GetEffectExpiredCreator);
 
 #undef REGISTER
 
@@ -188,6 +189,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
                     if (!sScriptName.IsEmpty())
                     {
                         g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
+                        g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
 
                         LOG_DEBUG("Running script '%s' on object '%x' with data '%s'", sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
 
@@ -228,5 +230,19 @@ ArgumentStack Effect::GetEffectExpiredData(ArgumentStack&&)
 
     return stack;
 }
+
+    ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
+    {
+        if (g_plugin->m_effectExpiredDepth == 0)
+        {
+            throw std::runtime_error("Attempted to get effect expired creator in an invalid context.");
+        }
+
+        ArgumentStack stack;
+
+        Services::Events::InsertArgument(stack, g_plugin->m_effectExpiredCreator);
+
+        return stack;
+    }
 
 }

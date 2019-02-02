@@ -18,11 +18,13 @@ public:
 private:
     std::string m_effectExpiredData;
     uint32_t m_effectExpiredDepth;
+    NWNXLib::API::Types::ObjectID m_effectExpiredCreator;
 
     ArgumentStack PackEffect(ArgumentStack&& args);
     ArgumentStack UnpackEffect(ArgumentStack&& args);
     ArgumentStack SetEffectExpiredScript(ArgumentStack&& args);
     ArgumentStack GetEffectExpiredData(ArgumentStack&& args);
+    ArgumentStack GetEffectExpiredCreator(ArgumentStack&& args);
 };
 
 }
