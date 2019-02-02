@@ -231,18 +231,18 @@ ArgumentStack Effect::GetEffectExpiredData(ArgumentStack&&)
     return stack;
 }
 
-    ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
+ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
+{
+    if (g_plugin->m_effectExpiredDepth == 0)
     {
-        if (g_plugin->m_effectExpiredDepth == 0)
-        {
-            throw std::runtime_error("Attempted to get effect expired creator in an invalid context.");
-        }
-
-        ArgumentStack stack;
-
-        Services::Events::InsertArgument(stack, g_plugin->m_effectExpiredCreator);
-
-        return stack;
+        throw std::runtime_error("Attempted to get effect expired creator in an invalid context.");
     }
+
+    ArgumentStack stack;
+
+    Services::Events::InsertArgument(stack, g_plugin->m_effectExpiredCreator);
+
+    return stack;
+}
 
 }
