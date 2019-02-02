@@ -1,6 +1,5 @@
 #include "nwnx_effect"
 
-
 void printeff(struct NWNX_EffectUnpacked n)
 {
     string s = "Unpacked effect: \n";
@@ -49,7 +48,6 @@ void printeff(struct NWNX_EffectUnpacked n)
     WriteTimestampedLogEntry(s);
 }
 
-
 void report(string func, int bSuccess)
 {
     if (bSuccess)
@@ -57,21 +55,27 @@ void report(string func, int bSuccess)
     else
         WriteTimestampedLogEntry("NWNX_Effect: " + func + "() failed");
 }
+
 void main()
 {
     WriteTimestampedLogEntry("NWNX_Effect unit test begin..");
 
-    effect e = EffectCurse(1,2,3,4,5,6);
+    effect e = EffectCurse(1, 2, 3, 4, 5, 6);
     e = TagEffect(e, "NWNX_EFFECT_TEST");
 
-    struct NWNX_EffectUnpacked unpacked = NWNX_Util_UnpackEffect(e);
+    struct NWNX_EffectUnpacked unpacked = NWNX_Effect_UnpackEffect(e);
     printeff(unpacked);
     report("UnpackEffect", unpacked.sTag == "NWNX_EFFECT_TEST");
-    effect packed = NWNX_Util_PackEffect(unpacked);
-    report(GetEffectTag(packed) == "NWNX_EFFECT_TEST");
+
+    effect packed = NWNX_Effect_PackEffect(unpacked);
+    report("PackEffect", GetEffectTag(packed) == "NWNX_EFFECT_TEST");
 
     object oCreature = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
     ApplyEffectToObject(DURATION_TYPE_PERMANENT, packed, oCreature);
+
+    e = NWNX_Effect_SetEffectExpiredScript(EffectDarkness(), "effect_test");
+    unpacked = NWNX_Effect_UnpackEffect(e);
+    report("SetEffectExpiredScript", unpacked.sParam4 == "effect_test");
 
     WriteTimestampedLogEntry("NWNX_Effect unit test end.");
 }
