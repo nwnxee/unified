@@ -16,6 +16,7 @@
 #include "Events/PartyEvents.hpp"
 #include "Events/HealerKitEvents.hpp"
 #include "Events/SkillEvents.hpp"
+#include "Events/PolymorphEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -134,6 +135,11 @@ Events::Events(const Plugin::CreateParams& params)
     if (GetServices()->m_config->Get<bool>("ENABLE_MAP_EVENTS", true))
     {
         m_mapEvents = std::make_unique<MapEvents>(GetServices()->m_hooks);
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_POLYMORPH_EVENTS", true))
+    {
+        m_polymorphEvents = std::make_unique<PolymorphEvents>(GetServices()->m_hooks);
     }
 }
 

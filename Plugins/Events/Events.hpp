@@ -23,6 +23,7 @@ class SpellEvents;
 class PartyEvents;
 class HealerKitEvents;
 class SkillEvents;
+class PolymorphEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -88,6 +89,7 @@ private:
     std::unique_ptr<PartyEvents> m_partyEvents;
     std::unique_ptr<HealerKitEvents> m_healerKitEvents;
     std::unique_ptr<SkillEvents> m_skillEvents;
+    std::unique_ptr<PolymorphEvents> m_polymorphEvents;
 };
 
 }
