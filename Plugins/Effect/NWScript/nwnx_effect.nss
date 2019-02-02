@@ -51,10 +51,10 @@ struct NWNX_EffectUnpacked
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e);
 // Convert unpacked effect structure to native type
 effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e);
-// Set a script that runs when an effect expires with optional data
-// Only works for TEMPORARY and PERMANENT effects
+// Set a script with optional data that runs when an effect expires
+// Only works for TEMPORARY and PERMANENT effects applied to an object
 //
-// Note: OBJECT_SELF in the script is the object the effect is applied to.
+// Note: OBJECT_SELF in the script is the object the effect is applied to
 effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data = "");
 // Get the data set with NWNX_Effect_SetEffectExpiredScript()
 //
