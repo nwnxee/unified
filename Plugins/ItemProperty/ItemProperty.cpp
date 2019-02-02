@@ -71,6 +71,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     auto usesperday   = Services::Events::ExtractArgument<int32_t>(args);
     auto chance       = Services::Events::ExtractArgument<int32_t>(args);
     auto usable       = Services::Events::ExtractArgument<int32_t>(args);
+    auto spellId      = Services::Events::ExtractArgument<int32_t>(args);
 
     auto creator      = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
     auto tag      = Services::Events::ExtractArgument<std::string>(args);
@@ -79,6 +80,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     ip->m_nType = API::Constants::EFFECT_TRUETYPE_ITEMPROPERTY;
     ip->m_nSubType = API::Constants::DURATION_TYPE_PERMANENT;
     ip->m_oidCreator = creator;
+    ip->m_nSpellId = spellId;
 
     ip->SetInteger(0, propname);
     ip->SetInteger(1, subtype);
@@ -101,6 +103,7 @@ ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
 
     Services::Events::InsertArgument(stack, ip->GetString(0).CStr());
     Services::Events::InsertArgument(stack, (API::Types::ObjectID)ip->m_oidCreator);
+    Services::Events::InsertArgument(stack, (int32_t)ip->m_nSpellId);
     Services::Events::InsertArgument(stack, ip->GetInteger(8));
     Services::Events::InsertArgument(stack, ip->GetInteger(7));
     Services::Events::InsertArgument(stack, ip->GetInteger(6));

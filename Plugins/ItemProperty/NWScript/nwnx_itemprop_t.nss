@@ -12,6 +12,7 @@ void printip(struct NWNX_IPUnpacked n)
     s += "nUsesPerDay = " + IntToString(n.nUsesPerDay) + "\n";
     s += "nChanceToAppear = " + IntToString(n.nChanceToAppear) + "\n";
     s += "bUsable = " + IntToString(n.bUsable) + "\n";
+    s += "nSpellId = " + IntToString(n.nSpellId) + "\n";
     s += "sTag = " + "'" + n.sTag + "'" + "\n";
 
     WriteTimestampedLogEntry(s);

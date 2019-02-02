@@ -11,6 +11,7 @@ struct NWNX_IPUnpacked
     int nUsesPerDay;
     int nChanceToAppear;
     int bUsable;
+    int nSpellId;
     object oCreator;
     string sTag;
 };
@@ -41,6 +42,7 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
     n.nUsesPerDay     = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.nChanceToAppear = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.bUsable         = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nSpellId        = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.oCreator        = NWNX_GetReturnValueObject(NWNX_ItemProperty, sFunc);
     n.sTag            = NWNX_GetReturnValueString(NWNX_ItemProperty, sFunc);
 
@@ -52,6 +54,7 @@ itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked n)
 
     NWNX_PushArgumentString(NWNX_ItemProperty, sFunc, n.sTag);
     NWNX_PushArgumentObject(NWNX_ItemProperty, sFunc, n.oCreator);
+    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nSpellId);
     NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.bUsable);
     NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nChanceToAppear);
     NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nUsesPerDay);
