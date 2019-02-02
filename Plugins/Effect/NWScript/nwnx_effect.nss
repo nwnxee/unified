@@ -60,6 +60,10 @@ effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data =
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN A SCRIPT THAT WAS EXECUTED BY NWNX_Effect_SetEffectExpiredScript()
 string NWNX_Effect_GetEffectExpiredData();
+// Get the effect creator of NWNX_Effect_SetEffectExpiredScript()
+//
+// THIS SHOULD ONLY BE CALLED FROM WITHIN A SCRIPT THAT WAS EXECUTED BY NWNX_Effect_SetEffectExpiredScript()
+object NWNX_Effect_GetEffectExpiredCreator();
 
 
 const string NWNX_Effect = "NWNX_Effect";
@@ -190,4 +194,13 @@ string NWNX_Effect_GetEffectExpiredData()
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Effect, sFunc);
+}
+
+object NWNX_Effect_GetEffectExpiredCreator()
+{
+    string sFunc = "GetEffectExpiredCreator";
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
 }
