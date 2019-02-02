@@ -184,10 +184,10 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
             {
                 if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                 {
-                    CExoString &sScriptName = pEffect->m_sParamString[2];
+                    CExoString &sScriptName = pEffect->m_sParamString[4];
                     if (!sScriptName.IsEmpty())
                     {
-                        g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[3].CStr());
+                        g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
 
                         LOG_DEBUG("Running script '%s' on object '%x' with data '%s'", sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
 
@@ -206,9 +206,9 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
     auto effect = Services::Events::ExtractArgument<API::CGameEffect*>(args);
 
     // Script name
-    effect->m_sParamString[2] = Services::Events::ExtractArgument<std::string>(args).c_str();
+    effect->m_sParamString[4] = Services::Events::ExtractArgument<std::string>(args).c_str();
     // Data
-    effect->m_sParamString[3] = Services::Events::ExtractArgument<std::string>(args).c_str();
+    effect->m_sParamString[5] = Services::Events::ExtractArgument<std::string>(args).c_str();
 
     Services::Events::InsertArgument(stack, effect);
 
