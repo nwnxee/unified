@@ -15,6 +15,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: New events: SkillEvents, MapEvents
 - Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents
 - Events: You can now get the current event name with a nwscript function
+- Events: Added On{Listen/Spot}Detection events to StealthEvents
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave

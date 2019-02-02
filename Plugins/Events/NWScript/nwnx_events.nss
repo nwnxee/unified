@@ -241,6 +241,20 @@
         PIN_Y                   float
         PIN_ID                  int
         PIN_NOTE                string
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_DO_LISTEN_DETECTION_BEFORE
+    NWNX_ON_DO_LISTEN_DETECTION_AFTER
+    NWNX_ON_DO_SPOT_DETECTION_BEFORE
+    NWNX_ON_DO_SPOT_DETECTION_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature doing the detecting
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        TARGET_INVISIBLE        int         TRUE/FALSE
+        BEFORE_RESULT           int         TRUE/FALSE, only in _AFTER events
 *///////////////////////////////////////////////////////////////////////////////
 
 // Scripts can subscribe to events.
@@ -277,11 +291,15 @@ string NWNX_Events_GetEventData(string tag);
 // - Party events
 // - Skill events
 // - Map events
+// - Listen/Spot Detection events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+// ONLY WORKS WITH THE FOLLOWING EVENTS:
+// - Healer's Kit event
+// - Listen/Spot Detection events -> "1" or "0"
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
