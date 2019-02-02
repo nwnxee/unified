@@ -44,7 +44,7 @@ int32_t PolymorphEvents::PolymorphHook
     }
 
     Events::PushEventData("POLYMORPH_TYPE", std::to_string(nPolymorphType));
-    Events::SignalEvent("NWNX_ON_POLYMORPH_BEFORE", pThis->m_idSelf);
+    Events::SignalEvent("NWNX_ON_POLYMORPH_AFTER", pThis->m_idSelf);
     return retVal;
 }
 
@@ -65,7 +65,7 @@ int32_t PolymorphEvents::UnPolymorphHook
         retVal = false;
     }
 
-    Events::SignalEvent("NWNX_ON_POLYMORPH_BEFORE", pThis->m_idSelf);
+    Events::SignalEvent("NWNX_ON_UNPOLYMORPH_AFTER", pThis->m_idSelf);
     return retVal;
 }
 
