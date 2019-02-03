@@ -255,6 +255,25 @@
         TARGET                  object      Convert to object with NWNX_Object_StringToObject()
         TARGET_INVISIBLE        int         TRUE/FALSE
         BEFORE_RESULT           int         TRUE/FALSE, only in _AFTER events
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_POLYMORPH_BEFORE
+    NWNX_ON_POLYMORPH_AFTER
+    NWNX_ON_UNPOLYMORPH_BEFORE
+    NWNX_ON_UNPOLYMORPH_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature doing the un/polymorphing
+
+    Event data:
+        Variable Name           Type        Notes
+        POLYMORPH_TYPE          int         Appearance polymorphing into. Only for ON_POLYMORPH
+
+    Note:
+        If skipping the ON_POLYMORPH event, in some cases bioware scripts will
+        enter an endless loop trying to merge item properties. This can be seen
+        in x2_s2_gwildshp with the minotaur form with the following line:
+            IPWildShapeCopyItemProperties(oWeaponOld,oWeaponNew, TRUE);
+        If you want to skip this, you need to make sure oWeaponOld != oWeaponNew
 *///////////////////////////////////////////////////////////////////////////////
 
 // Scripts can subscribe to events.
@@ -292,6 +311,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Skill events
 // - Map events
 // - Listen/Spot Detection events
+// - Polymorph events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.

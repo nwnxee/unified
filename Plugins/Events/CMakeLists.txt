@@ -12,4 +12,5 @@ add_plugin(Events
     "Events/SpellEvents.cpp"
     "Events/PartyEvents.cpp"
     "Events/HealerKitEvents.cpp"
-    "Events/SkillEvents.cpp")
+    "Events/SkillEvents.cpp"
+    "Events/PolymorphEvents.cpp")
