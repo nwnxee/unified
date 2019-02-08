@@ -1,10 +1,9 @@
 #include "Assert.hpp"
 #include "Platform/Debug.hpp"
-#include "Utils.hpp"
 
 #include <cstdlib>
 #include <cstring>
-#include <stdexcept>
+
 
 #ifdef _WIN32
     #include "Windows.h"
@@ -87,11 +86,6 @@ void Fail(const char* condition, const char* file, int line, const char* message
     {
         std::abort();
     }
-}
-
-void Throw(const char* condition)
-{
-    throw std::runtime_error("ASSERTION FAILURE: (" + std::string(condition) + ") in NWScript: " + Utils::GetCurrentScript());
 }
 
 }
