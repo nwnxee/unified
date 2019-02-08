@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Utils.hpp"
 #include <cstdio>
 
 namespace NWNXLib {
