@@ -31,12 +31,20 @@ namespace Assert {
     #define ASSERT_FAIL_MSG(format, ...) (void)0
 #endif
 
+    #define ASSERT_THROW(condition) \
+        do \
+        { \
+            if(!(condition)) ::NWNXLib::Assert::Throw((#condition)); \
+        } while (0)
+
 void Fail(const char* condition, const char* file, int line, const char* message);
 
 template <typename ... Args>
 void Fail(const char* condition, const char* file, int line, const char* format, Args ... args);
 
 void SetCrashOnFailure(bool crash);
+
+void Throw(const char* condition);
 
 #include "Assert.inl"
 
