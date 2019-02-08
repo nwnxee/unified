@@ -69,3 +69,15 @@ __Example__
 ```
 export NWNX_SQL_DATABASE=mymodulename
 ```
+
+### NWNX_SQL_QUERY_METRICS
+
+Export query execution metrics. 
+
+The Metrics_InfluxDB plugin and a visualizer like Grafana are required to view these metrics.
+
+__Example__
+
+```
+export NWNX_SQL_QUERY_METRICS=true
+```
