@@ -281,7 +281,7 @@ ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         auto slot = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT(slot < 36);
+        ASSERT_OR_THROW(slot < 36);
 
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature->m_pQuickbarButton)
@@ -312,7 +312,7 @@ ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         auto slot = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT(slot < 36);
+        ASSERT_OR_THROW(slot < 36);
 
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature->m_pQuickbarButton)
@@ -354,7 +354,7 @@ ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         Vector pos;
-        auto effectId = Services::Events::ExtractArgument<int32_t>(args); ASSERT(effectId >= 0); ASSERT(effectId <= 0xFFFF);
+        auto effectId = Services::Events::ExtractArgument<int32_t>(args); ASSERT_OR_THROW(effectId >= 0); ASSERT_OR_THROW(effectId <= 0xFFFF);
         pos.z = Services::Events::ExtractArgument<float>(args);
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
@@ -378,8 +378,8 @@ ArgumentStack Player::ChangeBackgroundMusic(ArgumentStack&& args)
         auto day = Services::Events::ExtractArgument<int32_t>(args);
 
         auto track = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT(track >= 0);
-        ASSERT(track <= 0xFFFF);
+        ASSERT_OR_THROW(track >= 0);
+        ASSERT_OR_THROW(track <= 0xFFFF);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
@@ -416,8 +416,8 @@ ArgumentStack Player::ChangeBattleMusic(ArgumentStack&& args)
         const auto oidPlayer = pPlayer->m_nPlayerID;
 
         auto track = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT(track >= 0);
-        ASSERT(track <= 0xFFFF);
+        ASSERT_OR_THROW(track >= 0);
+        ASSERT_OR_THROW(track <= 0xFFFF);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
