@@ -168,7 +168,7 @@ ArgumentStack Creature::AddFeatByLevel(ArgumentStack&& args)
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
-            ASSERT_OR_THROW(pLevelStats);
+            ASSERT(pLevelStats);
             pLevelStats->AddFeat(static_cast<uint16_t>(feat));
             pCreature->m_pStats->AddFeat(static_cast<uint16_t>(feat));
         }
@@ -214,7 +214,7 @@ ArgumentStack Creature::GetFeatCountByLevel(ArgumentStack&& args)
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
-            ASSERT_OR_THROW(pLevelStats);
+            ASSERT(pLevelStats);
             retVal = pLevelStats->m_lstFeats.num;
         }
     }
@@ -234,7 +234,7 @@ ArgumentStack Creature::GetFeatByLevel(ArgumentStack&& args)
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
-            ASSERT_OR_THROW(pLevelStats);
+            ASSERT(pLevelStats);
 
             if (index < pLevelStats->m_lstFeats.num)
                 retVal = pLevelStats->m_lstFeats.element[index];
@@ -301,7 +301,7 @@ ArgumentStack Creature::GetSpecialAbility(ArgumentStack&& args)
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
 
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
-        ASSERT_OR_THROW(pAbilities);
+        ASSERT(pAbilities);
         if (index < pAbilities->num)
         {
             id    = static_cast<int32_t>(pAbilities->element[index].m_nSpellId);
@@ -322,7 +322,7 @@ ArgumentStack Creature::GetSpecialAbilityCount(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
-        ASSERT_OR_THROW(pAbilities);
+        ASSERT(pAbilities);
 
         // Need to count them manually, since some might be set to invalid
         retVal = 0;
@@ -346,7 +346,7 @@ ArgumentStack Creature::AddSpecialAbility(ArgumentStack&& args)
         ASSERT_OR_THROW(id >= 0);
 
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
-        ASSERT_OR_THROW(pAbilities);
+        ASSERT(pAbilities);
 
         // Check for an empty slot somewhere first
         for (int32_t i = 0; i < pAbilities->num; i++)
@@ -364,7 +364,7 @@ ArgumentStack Creature::AddSpecialAbility(ArgumentStack&& args)
         {
             pAbilities->Allocate(pAbilities->array_size + 1);
         }
-        ASSERT_OR_THROW(pAbilities->array_size > pAbilities->num);
+        ASSERT(pAbilities->array_size > pAbilities->num);
         pAbilities->element[pAbilities->num].m_nSpellId     = static_cast<uint32_t>(id);
         pAbilities->element[pAbilities->num].m_bReadied     = ready;
         pAbilities->element[pAbilities->num].m_nCasterLevel = static_cast<uint8_t>(level);
@@ -381,7 +381,7 @@ ArgumentStack Creature::RemoveSpecialAbility(ArgumentStack&& args)
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
 
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
-        ASSERT_OR_THROW(pAbilities);
+        ASSERT(pAbilities);
         if (index < pAbilities->num)
         {
             pAbilities->element[index].m_nSpellId = ~0u;
@@ -404,7 +404,7 @@ ArgumentStack Creature::SetSpecialAbility(ArgumentStack&& args)
         ASSERT_OR_THROW(id >= 0);
 
         auto *pAbilities = pCreature->m_pStats->m_pSpellLikeAbilityList;
-        ASSERT_OR_THROW(pAbilities);
+        ASSERT(pAbilities);
         if (index < pAbilities->num)
         {
             pAbilities->element[index].m_nSpellId     = static_cast<uint32_t>(id);
@@ -426,7 +426,7 @@ ArgumentStack Creature::GetClassByLevel(ArgumentStack&& args)
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
-            ASSERT_OR_THROW(pLevelStats);
+            ASSERT(pLevelStats);
 
             retVal = pLevelStats->m_nClass;
         }
@@ -541,7 +541,7 @@ ArgumentStack Creature::ModifyRawAbilityScore(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto ability = Services::Events::ExtractArgument<int32_t>(args);
-        const auto offset  = Services::Events::ExtractArgument<int32_t>(args); ASSERT(offset <= 255);
+        const auto offset  = Services::Events::ExtractArgument<int32_t>(args); ASSERT_OR_THROW(offset <= 255);
 
         switch (ability)
         {
@@ -882,7 +882,7 @@ ArgumentStack Creature::GetMaxHitPointsByLevel(ArgumentStack&& args)
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
-            ASSERT_OR_THROW(pLevelStats);
+            ASSERT(pLevelStats);
 
             retVal = pLevelStats->m_nHitDie;
         }
@@ -902,7 +902,7 @@ ArgumentStack Creature::SetMaxHitPointsByLevel(ArgumentStack&& args)
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
-            ASSERT_OR_THROW(pLevelStats);
+            ASSERT(pLevelStats);
 
             pLevelStats->m_nHitDie = static_cast<uint8_t>(value);
         }
@@ -1424,7 +1424,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                 if (bSkipLevelUpValidation)
                 {
                     // NPCs can have at most 60 levels
-                    ASSERT_OR_THROW(!pThis->m_bIsPC);
+                    ASSERT(!pThis->m_bIsPC);
                     return pThis->GetLevel(false) < 60;
                 }
                 return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
@@ -1436,7 +1436,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
             {
                 if (bSkipLevelUpValidation)
                 {
-                    ASSERT_OR_THROW(!pThis->m_bIsPC);
+                    ASSERT(!pThis->m_bIsPC);
                     pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
                     pThis->UpdateCombatInformation();
                     return 0;
