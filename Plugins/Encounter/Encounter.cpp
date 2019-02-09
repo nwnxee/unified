@@ -128,16 +128,17 @@ ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
     if (auto *pEncounter = encounter(args))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        const auto resref = Services::Events::ExtractArgument<std::string>(args);
+        const auto resRef = Services::Events::ExtractArgument<std::string>(args);
         auto cr = Services::Events::ExtractArgument<float>(args);
         auto unique = Services::Events::ExtractArgument<int32_t>(args);
 
-        if (cr < 0.0) cr = 0.0;
+        ASSERT_OR_THROW(cr >= 0.0);
+
         unique = !!unique;
         
         if (index < pEncounter->m_nNumEncounterListEntries)
         {
-            pEncounter->m_pEncounterList[index].m_cCreatureResRef = resref.c_str();
+            pEncounter->m_pEncounterList[index].m_cCreatureResRef = resRef.c_str();
             pEncounter->m_pEncounterList[index].m_fCR = cr;
             pEncounter->m_pEncounterList[index].m_fCreaturePoints = pEncounter->CalculatePointsFromCR(cr);
             pEncounter->m_pEncounterList[index].m_bUnique = unique; 
@@ -170,8 +171,8 @@ ArgumentStack Encounter::SetFactionId(ArgumentStack&& args)
     {
         auto factionId = Services::Events::ExtractArgument<int32_t>(args);
 
-        if (factionId < 0) factionId = 0;
-        
+        ASSERT_OR_THROW(factionId >= 0);
+
         pEncounter->m_nFactionId = factionId;
     }
 
@@ -232,7 +233,7 @@ ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
     {
         auto resetTime = Services::Events::ExtractArgument<int32_t>(args);
 
-        if (resetTime < 0) resetTime = 0;
+        ASSERT_OR_THROW(resetTime >= 0);
         
         pEncounter->m_nResetTime = resetTime;
     }

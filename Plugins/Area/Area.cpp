@@ -159,9 +159,9 @@ ArgumentStack Area::SetPVPSetting(ArgumentStack&& args)
     {
         auto pvpSetting = Services::Events::ExtractArgument<int32_t>(args);
         
-        if (pvpSetting < 0) pvpSetting = 0;
-        if (pvpSetting > 3) pvpSetting = 3;
-        
+        ASSERT_OR_THROW(pvpSetting >= 0);
+        ASSERT_OR_THROW(pvpSetting <= 3);
+
         pArea->m_nPVPSetting = pvpSetting;
     }    
 
@@ -248,6 +248,8 @@ ArgumentStack Area::SetNoRestingAllowed(ArgumentStack&& args)
     if (auto *pArea = area(args))
     {
         const auto noRestingAllowed = Services::Events::ExtractArgument<int32_t>(args);
+
+        ASSERT_OR_THROW(noRestingAllowed >= 0);
         
         pArea->m_bNoRestingAllowed = noRestingAllowed;
     }    
@@ -278,8 +280,8 @@ ArgumentStack Area::SetWindPower(ArgumentStack&& args)
     {
         auto windPower = Services::Events::ExtractArgument<int32_t>(args);
         
-        if (windPower < 0 ) windPower = 0;
-        if (windPower > 2) windPower = 2; 
+        ASSERT_OR_THROW(windPower >= 0);
+        ASSERT_OR_THROW(windPower <= 2);
 
         pArea->m_nWindAmount = windPower;
     }    
@@ -331,8 +333,8 @@ ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
 
         auto chance = Services::Events::ExtractArgument<int32_t>(args);
 
-        if (chance < 0 ) chance = 0;
-        if (chance > 100) chance = 100;    
+        ASSERT_OR_THROW(chance >= 0);
+        ASSERT_OR_THROW(chance <= 100);
 
         switch (type)
         {
@@ -379,7 +381,7 @@ ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
     {
         auto distance = Services::Events::ExtractArgument<float>(args);
         
-        if (distance < 0.0) distance = 0.0;
+        ASSERT_OR_THROW(distance >= 0.0);
 
         pArea->m_fFogClipDistance = distance;
     }    
@@ -410,8 +412,8 @@ ArgumentStack Area::SetShadowOpacity(ArgumentStack&& args)
     {
         auto shadowOpacity = Services::Events::ExtractArgument<int32_t>(args);
         
-        if (shadowOpacity < 0 ) shadowOpacity = 0;
-        if (shadowOpacity > 100) shadowOpacity = 100; 
+        ASSERT_OR_THROW(shadowOpacity >= 0);
+        ASSERT_OR_THROW(shadowOpacity <= 100);
 
         pArea->m_nShadowOpacity = shadowOpacity;
     }    
