@@ -151,6 +151,8 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
     const auto state = Services::Events::ExtractArgument<int32_t>(args);
 
+    ASSERT_OR_THROW(messageId >= 0);
+
     if (playerId == Constants::OBJECT_INVALID)
     {
         std::set<int32_t>* hiddenMessageSet = messageType ? &plugin.m_GlobalHiddenCombatLogMessageSet : &plugin.m_GlobalHiddenFeedbackMessageSet;
