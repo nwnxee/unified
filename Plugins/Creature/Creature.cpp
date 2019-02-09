@@ -469,22 +469,22 @@ ArgumentStack Creature::SetRawAbilityScore(ArgumentStack&& args)
 
         switch (ability)
         {
-            case Constants::ABILITY_STRENGTH:
+            case Constants::Ability::Strength:
                 pCreature->m_pStats->SetSTRBase(static_cast<uint8_t>(value));
                 break;
-            case Constants::ABILITY_DEXTERITY:
+            case Constants::Ability::Dexterity:
                 pCreature->m_pStats->SetDEXBase(static_cast<uint8_t>(value));
                 break;
-            case Constants::ABILITY_CONSTITUTION:
+            case Constants::Ability::Constitution:
                 pCreature->m_pStats->SetCONBase(static_cast<uint8_t>(value), 1/*bRecalculateHP*/);
                 break;
-            case Constants::ABILITY_INTELLIGENCE:
+            case Constants::Ability::Intelligence:
                 pCreature->m_pStats->SetINTBase(static_cast<uint8_t>(value));
                 break;
-            case Constants::ABILITY_WISDOM:
+            case Constants::Ability::Wisdom:
                 pCreature->m_pStats->SetWISBase(static_cast<uint8_t>(value));
                 break;
-            case Constants::ABILITY_CHARISMA:
+            case Constants::Ability::Charisma:
                 pCreature->m_pStats->SetCHABase(static_cast<uint8_t>(value));
                 break;
             default:
@@ -507,22 +507,22 @@ ArgumentStack Creature::GetRawAbilityScore(ArgumentStack&& args)
 
         switch (ability)
         {
-            case Constants::ABILITY_STRENGTH:
+            case Constants::Ability::Strength:
                 retval = pCreature->m_pStats->m_nStrengthBase;
                 break;
-            case Constants::ABILITY_DEXTERITY:
+            case Constants::Ability::Dexterity:
                 retval = pCreature->m_pStats->m_nDexterityBase;
                 break;
-            case Constants::ABILITY_CONSTITUTION:
+            case Constants::Ability::Constitution:
                 retval = pCreature->m_pStats->m_nConstitutionBase;
                 break;
-            case Constants::ABILITY_INTELLIGENCE:
+            case Constants::Ability::Intelligence:
                 retval = pCreature->m_pStats->m_nIntelligenceBase;
                 break;
-            case Constants::ABILITY_WISDOM:
+            case Constants::Ability::Wisdom:
                 retval = pCreature->m_pStats->m_nWisdomBase;
                 break;
-            case Constants::ABILITY_CHARISMA:
+            case Constants::Ability::Charisma:
                 retval = pCreature->m_pStats->m_nCharismaBase;
                 break;
             default:
@@ -545,22 +545,22 @@ ArgumentStack Creature::ModifyRawAbilityScore(ArgumentStack&& args)
 
         switch (ability)
         {
-            case Constants::ABILITY_STRENGTH:
+            case Constants::Ability::Strength:
                 pCreature->m_pStats->SetSTRBase(static_cast<uint8_t>(pCreature->m_pStats->m_nStrengthBase + offset));
                 break;
-            case Constants::ABILITY_DEXTERITY:
+            case Constants::Ability::Dexterity:
                 pCreature->m_pStats->SetDEXBase(static_cast<uint8_t>(pCreature->m_pStats->m_nDexterityBase + offset));
                 break;
-            case Constants::ABILITY_CONSTITUTION:
+            case Constants::Ability::Constitution:
                 pCreature->m_pStats->SetCONBase(static_cast<uint8_t>(pCreature->m_pStats->m_nConstitutionBase + offset), 1/*bRecalculateHP*/);
                 break;
-            case Constants::ABILITY_INTELLIGENCE:
+            case Constants::Ability::Intelligence:
                 pCreature->m_pStats->SetINTBase(static_cast<uint8_t>(pCreature->m_pStats->m_nIntelligenceBase + offset));
                 break;
-            case Constants::ABILITY_WISDOM:
+            case Constants::Ability::Wisdom:
                 pCreature->m_pStats->SetWISBase(static_cast<uint8_t>(pCreature->m_pStats->m_nWisdomBase + offset));
                 break;
-            case Constants::ABILITY_CHARISMA:
+            case Constants::Ability::Charisma:
                 pCreature->m_pStats->SetCHABase(static_cast<uint8_t>(pCreature->m_pStats->m_nCharismaBase + offset));
                 break;
             default:
@@ -960,7 +960,7 @@ ArgumentStack Creature::GetClericDomain(ArgumentStack&& args)
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::CLASS_TYPE_CLERIC)
+            if (classInfo.m_nClass == Constants::ClassType::Cleric)
             {
                 retval = classInfo.m_nDomain[index - 1];
                 break;
@@ -986,7 +986,7 @@ ArgumentStack Creature::SetClericDomain(ArgumentStack&& args)
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::CLASS_TYPE_CLERIC)
+            if (classInfo.m_nClass == Constants::ClassType::Cleric)
             {
                 classInfo.m_nDomain[index - 1] = static_cast<uint8_t>(domain);
                 break;
@@ -1005,7 +1005,7 @@ ArgumentStack Creature::GetWizardSpecialization(ArgumentStack&& args)
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::CLASS_TYPE_WIZARD)
+            if (classInfo.m_nClass == Constants::ClassType::Wizard)
             {
                 retval = classInfo.m_nSchool;
                 break;
@@ -1028,7 +1028,7 @@ ArgumentStack Creature::SetWizardSpecialization(ArgumentStack&& args)
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::CLASS_TYPE_WIZARD)
+            if (classInfo.m_nClass == Constants::ClassType::Wizard)
             {
                 classInfo.m_nSchool = static_cast<uint8_t>(school);
                 break;
@@ -1361,13 +1361,13 @@ ArgumentStack Creature::GetBaseSavingThrow(ArgumentStack&& args)
         const auto which = Services::Events::ExtractArgument<int32_t>(args);
         switch (which)
         {
-            case Constants::SAVING_THROW_REFLEX:
+            case Constants::SavingThrow::Reflex:
                 retval = pCreature->m_pStats->m_nReflexSavingThrowMisc + pCreature->m_pStats->GetBaseReflexSavingThrow();
                 break;
-            case Constants::SAVING_THROW_FORT:
+            case Constants::SavingThrow::Fortitude:
                 retval = pCreature->m_pStats->m_nFortSavingThrowMisc + pCreature->m_pStats->GetBaseFortSavingThrow();
                 break;
-            case Constants::SAVING_THROW_WILL:
+            case Constants::SavingThrow::Will:
                 retval = pCreature->m_pStats->m_nWillSavingThrowMisc + pCreature->m_pStats->GetBaseWillSavingThrow();
                 break;
             default:
@@ -1389,15 +1389,15 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
         int8_t base;
         switch (which)
         {
-            case Constants::SAVING_THROW_REFLEX:
+            case Constants::SavingThrow::Reflex:
                 base = pCreature->m_pStats->m_nReflexSavingThrowMisc + pCreature->m_pStats->GetBaseReflexSavingThrow();
                 pCreature->m_pStats->m_nReflexSavingThrowMisc = value - base;
                 break;
-            case Constants::SAVING_THROW_FORT:
+            case Constants::SavingThrow::Fortitude:
                 base = pCreature->m_pStats->m_nFortSavingThrowMisc + pCreature->m_pStats->GetBaseFortSavingThrow();
                 pCreature->m_pStats->m_nFortSavingThrowMisc = value - base;
                 break;
-            case Constants::SAVING_THROW_WILL:
+            case Constants::SavingThrow::Will:
                 base = pCreature->m_pStats->m_nWillSavingThrowMisc + pCreature->m_pStats->GetBaseWillSavingThrow();
                 pCreature->m_pStats->m_nWillSavingThrowMisc = value - base;
                 break;

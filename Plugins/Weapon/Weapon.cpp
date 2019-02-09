@@ -113,7 +113,7 @@ Weapon::Weapon(const Plugin::CreateParams& params)
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetUseMonkAttackTables>(&Weapon::GetUseMonkAttackTables);
 
-   m_WeaponFinesseSizeMap.insert({Constants::BASE_ITEM_RAPIER, (uint8_t) Constants::CREATURE_SIZE_MEDIUM});
+   m_WeaponFinesseSizeMap.insert({Constants::BASE_ITEM_RAPIER, (uint8_t) Constants::CreatureSize::Medium});
 
    m_DCScript="";
 }
@@ -422,8 +422,8 @@ int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib:
       feat =  (w == plugin.m_WeaponFocusMap.end()) ? -1 : w->second;
    }
    
-   if (feat == Constants::FEAT_WEAPON_FOCUS_CREATURE && 
-       pStats->HasFeat(Constants::FEAT_WEAPON_FOCUS_UNARMED_STRIKE))
+   if (feat == Constants::Feat::WeaponFocus_Creature && 
+       pStats->HasFeat(Constants::Feat::WeaponFocus_UnarmedStrike))
    {
       return 1;
    }   
@@ -446,8 +446,8 @@ int32_t Weapon::GetEpicWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNX
       feat =  (w == plugin.m_EpicWeaponFocusMap.end()) ? -1 : w->second;
    }
    
-   if (feat == Constants::FEAT_EPIC_WEAPON_FOCUS_CREATURE && 
-       pStats->HasFeat(Constants::FEAT_EPIC_WEAPON_FOCUS_UNARMED))
+   if (feat == Constants::Feat::EpicWeaponFocus_Creature && 
+       pStats->HasFeat(Constants::Feat::EpicWeaponFocus_Unarmed))
    {
       return 1;
    }   
@@ -458,7 +458,7 @@ int32_t Weapon::GetWeaponFinesse(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLi
 {
    Weapon& plugin = *g_plugin;
 
-   if(!pStats->HasFeat(Constants::FEAT_WEAPON_FINESSE))
+   if(!pStats->HasFeat(Constants::Feat::WeaponFinesse))
       return 0;
 
    return plugin.GetIsWeaponLight(pStats, pWeapon, true) ? 1 : 0;
@@ -837,7 +837,7 @@ int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, 
 {
    Weapon& plugin = *g_plugin;
    NWNXLib::API::CNWSItem* pWeapon;    
-   int nMonk = plugin.GetLevelByClass(pStats, Constants::CLASS_TYPE_MONK);
+   int nMonk = plugin.GetLevelByClass(pStats, Constants::ClassType::Monk);
 
    if(nMonk<1 || pStats->m_nACArmorBase>0 || pStats->m_nACShieldBase>0)
    {
@@ -891,8 +891,8 @@ bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::
    }
 
    if (pStats->m_pBaseCreature == nullptr ||
-      pStats->m_pBaseCreature->m_nCreatureSize < (int32_t) Constants::CREATURE_SIZE_TINY ||
-      pStats->m_pBaseCreature->m_nCreatureSize > (int32_t) Constants::CREATURE_SIZE_HUGE)
+      pStats->m_pBaseCreature->m_nCreatureSize < (int32_t) Constants::CreatureSize::Tiny ||
+      pStats->m_pBaseCreature->m_nCreatureSize > (int32_t) Constants::CreatureSize::Huge)
    {
       return false;
    }
@@ -900,7 +900,7 @@ bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::
    if (bFinesse)
    {
       auto w = plugin.m_WeaponFinesseSizeMap.find(pWeapon->m_nBaseItem);
-      int iSize =  (w == plugin.m_WeaponFinesseSizeMap.end()) ? Constants::CREATURE_SIZE_HUGE + 1 : w->second;
+      int iSize =  (w == plugin.m_WeaponFinesseSizeMap.end()) ? Constants::CreatureSize::Huge + 1 : w->second;
       
       if(pStats->m_pBaseCreature->m_nCreatureSize >= iSize) 
       {
@@ -912,7 +912,7 @@ bool Weapon::GetIsWeaponLight(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib::
 
    // Ensure small creatures can finesse small weapons
    if (bFinesse && 
-      (uint32_t) (pStats->m_pBaseCreature->m_nCreatureSize) <= Constants::CREATURE_SIZE_SMALL)
+      (uint32_t) (pStats->m_pBaseCreature->m_nCreatureSize) <= Constants::CreatureSize::Small)
    {
       return (rel <= 0);
    }
