@@ -69,11 +69,12 @@ void AIMasterUpdates::AIMasterUpdate(Hooks::CallType type, API::CServerAIMaster*
 
     g_metrics->Push("AIQueuedEvents", { { "Count", std::to_string(thisPtr->m_lEventQueue.m_pcExoLinkedListInternal->m_nCount) } });
 
-    for (uint8_t i = 0; i < 5; ++i)
+    using namespace API::Constants;
+    for (uint8_t i = AIPriority::MIN; i <= AIPriority::MAX; ++i)
     {
         g_metrics->Push("AIUpdateListObjects",
             { { "Count", std::to_string(thisPtr->m_apGameAIList[i].m_aoGameObjects.num) } },
-            { { "Level", API::Constants::AIPriorityToString(i) } });
+            { { "Level", AIPriority::ToString(i) } });
     }
 }
 

@@ -113,7 +113,7 @@ Weapon::Weapon(const Plugin::CreateParams& params)
 
    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetUseMonkAttackTables>(&Weapon::GetUseMonkAttackTables);
 
-   m_WeaponFinesseSizeMap.insert({Constants::BASE_ITEM_RAPIER, (uint8_t) Constants::CreatureSize::Medium});
+   m_WeaponFinesseSizeMap.insert({Constants::BaseItem::Rapier, (uint8_t) Constants::CreatureSize::Medium});
 
    m_DCScript="";
 }
@@ -413,7 +413,7 @@ int32_t Weapon::GetWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib:
    
    if(pWeapon==nullptr) 
    {
-      auto w = plugin.m_WeaponFocusMap.find(Constants::BASE_ITEM_GLOVES);
+      auto w = plugin.m_WeaponFocusMap.find(Constants::BaseItem::Gloves);
       feat =  (w == plugin.m_WeaponFocusMap.end()) ? -1 : w->second;
    }
    else
@@ -437,7 +437,7 @@ int32_t Weapon::GetEpicWeaponFocus(NWNXLib::API::CNWSCreatureStats* pStats, NWNX
    
    if(pWeapon==nullptr) 
    {
-      auto w = plugin.m_EpicWeaponFocusMap.find(Constants::BASE_ITEM_GLOVES);
+      auto w = plugin.m_EpicWeaponFocusMap.find(Constants::BaseItem::Gloves);
       feat =  (w == plugin.m_EpicWeaponFocusMap.end()) ? -1 : w->second;
    }
    else
@@ -471,7 +471,7 @@ int32_t Weapon::GetWeaponImprovedCritical(NWNXLib::API::CNWSCreatureStats* pStat
    
    if(pWeapon==nullptr) 
    {
-      auto w = plugin.m_WeaponImprovedCriticalMap.find(Constants::BASE_ITEM_GLOVES);
+      auto w = plugin.m_WeaponImprovedCriticalMap.find(Constants::BaseItem::Gloves);
       feat =  (w == plugin.m_WeaponImprovedCriticalMap.end()) ? -1 : w->second;
    }
    else
@@ -490,7 +490,7 @@ int32_t Weapon::GetWeaponSpecialization(NWNXLib::API::CNWSCreatureStats* pStats,
    
    if(pWeapon==nullptr) 
    {
-      auto w = plugin.m_WeaponSpecializationMap.find(Constants::BASE_ITEM_GLOVES);
+      auto w = plugin.m_WeaponSpecializationMap.find(Constants::BaseItem::Gloves);
       feat =  (w == plugin.m_WeaponSpecializationMap.end()) ? -1 : w->second;
    }
    else
@@ -509,7 +509,7 @@ int32_t Weapon::GetEpicWeaponSpecialization(NWNXLib::API::CNWSCreatureStats* pSt
    
    if(pWeapon==nullptr) 
    {
-      auto w = plugin.m_EpicWeaponSpecializationMap.find(Constants::BASE_ITEM_GLOVES);
+      auto w = plugin.m_EpicWeaponSpecializationMap.find(Constants::BaseItem::Gloves);
       feat =  (w == plugin.m_EpicWeaponSpecializationMap.end()) ? -1 : w->second;
    }
    else
@@ -528,7 +528,7 @@ int32_t Weapon::GetEpicWeaponOverwhelmingCritical(NWNXLib::API::CNWSCreatureStat
    
    if(pWeapon==nullptr) 
    {
-      auto w = plugin.m_EpicWeaponOverwhelmingCriticalMap.find(Constants::BASE_ITEM_GLOVES);
+      auto w = plugin.m_EpicWeaponOverwhelmingCriticalMap.find(Constants::BaseItem::Gloves);
       feat =  (w == plugin.m_EpicWeaponOverwhelmingCriticalMap.end()) ? -1 : w->second;
    }
    else
@@ -548,7 +548,7 @@ int32_t Weapon::GetEpicWeaponDevastatingCritical(NWNXLib::API::CNWSCreatureStats
    
    if(pWeapon==nullptr) 
    {
-      auto w = plugin.m_EpicWeaponDevastatingCriticalMap.find(Constants::BASE_ITEM_GLOVES);
+      auto w = plugin.m_EpicWeaponDevastatingCriticalMap.find(Constants::BaseItem::Gloves);
       feat =  (w == plugin.m_EpicWeaponDevastatingCriticalMap.end()) ? -1 : w->second;
    }
    else
@@ -606,17 +606,17 @@ int32_t Weapon::GetMeleeDamageBonus(NWNXLib::API::CNWSCreatureStats* pStats, int
    {  
       if(bOffHand)
       {  
-    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND);
+    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
       }
       else
       {
-    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+    pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
       }
    }
    
    if(pWeapon==nullptr)
    {
-      nBaseItem = Constants::BASE_ITEM_GLOVES;   
+      nBaseItem = Constants::BaseItem::Gloves;   
    }
    else
    {
@@ -645,16 +645,16 @@ int32_t Weapon::GetDamageBonus(NWNXLib::API::CNWSCreatureStats* pStats, NWNXLib:
 
    if(bOffHand)
    {  
-      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND);
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
    }
    else
    {
-      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
    }
    
    if(pWeapon==nullptr)
    {
-      nBaseItem = Constants::BASE_ITEM_GLOVES;   
+      nBaseItem = Constants::BaseItem::Gloves;   
    }
    else
    {
@@ -682,7 +682,7 @@ int32_t Weapon::GetRangedDamageBonus(NWNXLib::API::CNWSCreatureStats* pStats)
 
    int nBonus = plugin.m_GetRangedDamageBonusHook->CallOriginal<int32_t>(pStats);
 
-   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
    
    if(pWeapon==nullptr)
    {
@@ -759,16 +759,16 @@ int32_t Weapon::GetMeleeAttackBonus(NWNXLib::API::CNWSCreatureStats* pStats, boo
 
    if(bOffHand)
    {
-      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND);
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
    }
    else
    {
-      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);  
+      pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);  
    }
    
    if(pWeapon==nullptr)
    {
-      nBaseItem = Constants::BASE_ITEM_GLOVES;
+      nBaseItem = Constants::BaseItem::Gloves;
    }
    else
    {
@@ -801,7 +801,7 @@ int32_t Weapon::GetRangedAttackBonus(NWNXLib::API::CNWSCreatureStats* pStats, bo
       return nBonus;
    }
 
-   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);  
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);  
    
    if(pWeapon==nullptr)
    {
@@ -844,7 +844,7 @@ int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, 
       return 0;
    }
 
-   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_RIGHTHAND);
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
    
    if(pWeapon==nullptr)
    {
@@ -857,13 +857,13 @@ int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, 
    }
 
    auto w = plugin.m_MonkWeaponSet.find(pWeapon->m_nBaseItem);
-   if (w == plugin.m_MonkWeaponSet.end() && pWeapon->m_nBaseItem!=Constants::BASE_ITEM_KAMA)
+   if (w == plugin.m_MonkWeaponSet.end() && pWeapon->m_nBaseItem!=Constants::BaseItem::Kama)
    {
       return 0;
    }
    
    // Right hand weapon is correct, now check left hand
-   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EQUIPMENT_SLOT_LEFTHAND); 
+   pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand); 
    if(pWeapon==nullptr)
    {
       return 1;
@@ -871,8 +871,8 @@ int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, 
 
    w = plugin.m_MonkWeaponSet.find(pWeapon->m_nBaseItem);
    if (w == plugin.m_MonkWeaponSet.end() && 
-      pWeapon->m_nBaseItem!=Constants::BASE_ITEM_KAMA && 
-      pWeapon->m_nBaseItem!=Constants::BASE_ITEM_TORCH)
+      pWeapon->m_nBaseItem!=Constants::BaseItem::Kama && 
+      pWeapon->m_nBaseItem!=Constants::BaseItem::Torch)
    {
       return 0;
    } 
@@ -928,12 +928,12 @@ bool Weapon::GetIsUnarmedWeapon(NWNXLib::API::CNWSItem* pWeapon)
       return true;   
 
    // In case of standard unarmed weapon return true
-   if(pWeapon->m_nBaseItem == Constants::BASE_ITEM_GLOVES       ||
-      pWeapon->m_nBaseItem == Constants::BASE_ITEM_BRACER       ||
-      pWeapon->m_nBaseItem == Constants::BASE_ITEM_CSLASHWEAPON ||
-      pWeapon->m_nBaseItem == Constants::BASE_ITEM_CPIERCWEAPON ||
-      pWeapon->m_nBaseItem == Constants::BASE_ITEM_CBLUDGWEAPON ||
-      pWeapon->m_nBaseItem == Constants::BASE_ITEM_CSLSHPRCWEAP)
+   if(pWeapon->m_nBaseItem == Constants::BaseItem::Gloves       ||
+      pWeapon->m_nBaseItem == Constants::BaseItem::Bracer       ||
+      pWeapon->m_nBaseItem == Constants::BaseItem::CreatureSlashWeapon ||
+      pWeapon->m_nBaseItem == Constants::BaseItem::CreaturePierceWeapon ||
+      pWeapon->m_nBaseItem == Constants::BaseItem::CreatureBludgeWeapon ||
+      pWeapon->m_nBaseItem == Constants::BaseItem::CreatureSlashPierceWeapon)
    {
       return true;
    }

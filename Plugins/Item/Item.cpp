@@ -158,32 +158,32 @@ ArgumentStack Item::SetItemAppearance(ArgumentStack&& args)
 
     switch(type)
     {
-      case Constants::ITEM_APPR_TYPE_SIMPLE_MODEL :
+      case Constants::ItemAppearanceType::SimpleModel:
         if(val>0)
         {       
           pItem->m_nModelPart[0] = val;
         }       
         break;
 
-      case Constants::ITEM_APPR_TYPE_WEAPON_COLOR :
+      case Constants::ItemAppearanceType::WeaponColor:
         if(val>=0 && val <= 255 && idx>=0 && idx<= 5)
         {
           pItem->m_nLayeredTextureColors[idx] = val;
         }
         break;
-      case Constants::ITEM_APPR_TYPE_WEAPON_MODEL :
+      case Constants::ItemAppearanceType::WeaponModel:
         if(val>=0 && idx>=0 && idx<= 2)
         {
           pItem->m_nModelPart[idx] = val;
         }
         break;
-      case Constants::ITEM_APPR_TYPE_ARMOR_MODEL :
+      case Constants::ItemAppearanceType::ArmorModel:
         if(val>=0 && idx>=0 && idx<= 18)
         {
           pItem->m_nArmorModelPart[idx] = val;
         }
         break;
-      case Constants::ITEM_APPR_TYPE_ARMOR_COLOR :
+      case Constants::ItemAppearanceType::ArmorColor:
         if(val>=0 && val<=255 && idx>=0 && idx<= 119)
         {
           if(idx<=5) //1.69 colors 

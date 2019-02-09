@@ -64,5 +64,33 @@ namespace ObjectType
     }
 }
 
+namespace AIPriority
+{
+    enum TYPE
+    {
+        VeryLow   = 0,
+        Low       = 1,
+        Medium    = 2,
+        High      = 3,
+        VeryHigh  = 4,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 4;
+    static_assert(MAX == VeryHigh);
+
+    constexpr const char* ToString(const unsigned objectType)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "VERY_LOW",
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "VERY_HIGH"
+        };
+
+        return (objectType > MAX) ? "(invalid)" : TYPE_STRINGS[objectType];
+    }
+}
 
 }

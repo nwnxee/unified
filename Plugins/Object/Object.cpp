@@ -300,7 +300,7 @@ ArgumentStack Object::SetAppearance(ArgumentStack&& args)
     ArgumentStack stack;
     if (auto *pObject = object(args))
     {
-        const auto app = Services::Events::ExtractArgument<int32_t>(args);  ASSERT(app <= 65535);
+        const auto app = Services::Events::ExtractArgument<int32_t>(args);  ASSERT_OR_THROW(app <= 65535);
         if(pObject->m_nObjectType == Constants::ObjectType::Placeable)
         {
             static_cast<CNWSPlaceable*>(pObject)->m_nAppearance=app;
