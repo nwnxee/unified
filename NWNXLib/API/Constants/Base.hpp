@@ -78,7 +78,7 @@ namespace AIPriority
     constexpr int32_t MAX   = 4;
     static_assert(MAX == VeryHigh);
 
-    constexpr const char* ToString(const unsigned objectType)
+    constexpr const char* ToString(const unsigned value)
     {
         constexpr const char* TYPE_STRINGS[] =
         {
@@ -89,7 +89,7 @@ namespace AIPriority
             "VERY_HIGH"
         };
 
-        return (objectType > MAX) ? "(invalid)" : TYPE_STRINGS[objectType];
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
     }
 }
 

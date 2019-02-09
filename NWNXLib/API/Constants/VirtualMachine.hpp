@@ -39,6 +39,7 @@ namespace VMStructure
         Talent       = 3,
         ItemProperty = 4,
     };
+    constexpr int32_t MIN = 0;
     constexpr int32_t MAX = 4;
 }
 

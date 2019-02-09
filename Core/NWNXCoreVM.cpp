@@ -329,7 +329,7 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     else
     {
         pEffect->SetCustomTag(tag);
-        if (pEffect->m_nType == 40) // linked effects
+        if (pEffect->m_nType == EffectTrueType::Link)
         {
             pEffect->UpdateLinked();
         }
@@ -379,7 +379,7 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     }
     else
     {
-        if (pItemProperty->m_nType == 91) // ItemProperty effect
+        if (pItemProperty->m_nType == EffectTrueType::ItemProperty)
         {
             pItemProperty->SetString(0, tag);
         }

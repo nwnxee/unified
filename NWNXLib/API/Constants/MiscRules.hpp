@@ -296,4 +296,92 @@ namespace ImmunityType
     }
 }
 
+namespace ToggleMode
+{
+    enum TYPE
+    {
+        Detect              = 0,
+        Stealth             = 1,
+        Parry               = 2,
+        PowerAttack         = 3,
+        ImprovedPowerAttack = 4,
+        CounterSpell        = 5,
+        FlurryOfBlows       = 6,
+        RapidShot           = 7,
+        Expertise           = 8,
+        ImprovedExpertise   = 9,
+        DefensiveCast       = 10,
+        DirtyFighting       = 11,
+        DefensiveStance     = 12,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 12;
+    static_assert(MAX == DefensiveStance);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "Detect",
+            "Stealth",
+            "Parry",
+            "Power Attack",
+            "Improved Power Attack",
+            "Counterspell",
+            "Flurry Of Blows",
+            "Rapid Shot",
+            "Expertise",
+            "Improved Expertise",
+            "Defensive Casting",
+            "Dirty Fighting",
+            "Defensive Stance",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
+namespace CombatMode
+{
+    enum TYPE
+    {
+        None                = 0,
+        Parry               = 1,
+        PowerAttack         = 2,
+        ImprovedPowerAttack = 3,
+        CounterSpell        = 4,
+        FlurryOfBlows       = 5,
+        RapidShot           = 6,
+        Expertise           = 7,
+        ImprovedExpertise   = 8,
+        DefensiveCasting    = 9,
+        DirtyFighting       = 10,
+        DefensiveStance     = 11,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 11;
+    static_assert(MAX == DefensiveStance);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "None",
+            "Parry",
+            "Power Attack",
+            "Improved PowerA ttack",
+            "Counterspell",
+            "Flurry Of Blows",
+            "Rapid Shot",
+            "Expertise",
+            "Improved Expertise",
+            "Defensive Cast",
+            "Dirty Fighting",
+            "Defensive Stance",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
 }

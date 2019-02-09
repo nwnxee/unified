@@ -69,7 +69,7 @@ void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode
     if(g_plugin->m_FlurryOfBlows)
     {
         //flurry of blows automatic cancel
-        if(nNewMode==0 && bForceNewMode==1 && thisPtr->m_nCombatMode == 5) 
+        if(nNewMode==0 && bForceNewMode==1 && thisPtr->m_nCombatMode == CombatMode::FlurryOfBlows) 
         {
             if(thisPtr->m_pStats->GetUseMonkAttackTables(0)) 
             {
@@ -78,7 +78,7 @@ void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode
         }
         
         //flurry of blows manual cancel
-        if(nNewMode==5 && bForceNewMode==0) 
+        if(nNewMode==CombatMode::FlurryOfBlows && bForceNewMode==0) 
         {
             nNewMode = 0;
             bForceNewMode = 1; 
@@ -110,11 +110,11 @@ void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode
     if (!g_plugin->m_Skipped)
     {
         //flurry of blows manual activation
-        if(g_plugin->m_FlurryOfBlows && nNewMode==5 && bForceNewMode==1) 
+        if(g_plugin->m_FlurryOfBlows && nNewMode==CombatMode::FlurryOfBlows && bForceNewMode==1) 
         {
             if(thisPtr->m_pStats->GetUseMonkAttackTables(0)) 
             {
-                thisPtr->m_nCombatMode  = 5;
+                thisPtr->m_nCombatMode  = CombatMode::FlurryOfBlows;
                 thisPtr->SetActivity(0x4000,1);
                 return;
             }
