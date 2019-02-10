@@ -68,7 +68,7 @@ extern "C" {
         uint32_t oid = (uint32_t)luaL_checkinteger(L, 1);
         const char* token = luaL_checkstring(L, 2);
         float duration = lua_tonumber(L, 3);
-        
+
         CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
         if (obj)
         {
@@ -79,7 +79,7 @@ extern "C" {
                 days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
                 time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
             }
-            
+
             CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
             ai->AddEventDeltaTime(days, time, oid, oid, 1, CreateScriptForClosure(token));
         }
@@ -92,7 +92,7 @@ extern "C" {
         const char* token = luaL_checkstring(L, 2);
 
         CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
-        if (obj && obj->m_nObjectType > Constants::OBJECT_TYPE_AREA)
+        if (obj && obj->m_nObjectType > Constants::ObjectType::Area)
         {
             ((CNWSObject*)obj)->AddDoCommandAction(CreateScriptForClosure(token));
             return 0;
@@ -202,7 +202,7 @@ extern "C" {
 
     static int NWScript_StackPushVector(lua_State *L)
     {
-        Vector *vVector = (Vector *)luaL_checkudata(L, 1, LUA_NWN_VECTOR);        
+        Vector *vVector = (Vector *)luaL_checkudata(L, 1, LUA_NWN_VECTOR);
         if(!GetVm()->StackPushVector(*vVector))
         {
             LOG_DEBUG("VM failed to push Vector");
@@ -384,9 +384,9 @@ extern "C" {
     }
 
     // nwn_vector.components()
-    static int NWScript_VectorGetComponents(lua_State *L) 
+    static int NWScript_VectorGetComponents(lua_State *L)
     {
-        Vector *ptr = (Vector *)luaL_checkudata(L, 1, LUA_NWN_VECTOR);       
+        Vector *ptr = (Vector *)luaL_checkudata(L, 1, LUA_NWN_VECTOR);
         lua_pushnumber(L, ptr->x);
         lua_pushnumber(L, ptr->y);
         lua_pushnumber(L, ptr->z);
@@ -394,10 +394,10 @@ extern "C" {
     }
 
     // nwn_location.components()
-    static int NWScript_LocationGetComponents(lua_State *L) 
+    static int NWScript_LocationGetComponents(lua_State *L)
     {
         CScriptLocation *ptr = *(CScriptLocation **)luaL_checkudata(L, 1, LUA_NWN_LOCATION);
-        
+
         float facing = (float)(std::atan2(ptr->m_vOrientation.y, ptr->m_vOrientation.x) * (180 / 3.1415927));
         while (facing > 360.0)
         {
@@ -422,10 +422,10 @@ extern "C" {
         gettimeofday(&t, NULL);
         lua_pushnumber(L, t.tv_sec);
         lua_pushnumber(L, t.tv_usec);
-        return 2; 
+        return 2;
     }
-    
-    static int NWScript_SerializeObject(lua_State *L) 
+
+    static int NWScript_SerializeObject(lua_State *L)
     {
         uint32_t value = (uint32_t)luaL_checkinteger(L, 1);
         API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
@@ -434,7 +434,7 @@ extern "C" {
         return 1;
     }
 
-    static int NWScript_DeserializeObject(lua_State *L) 
+    static int NWScript_DeserializeObject(lua_State *L)
     {
         const char *s = luaL_checkstring(L, 1);
         uint32_t owner = (uint32_t)luaL_checkinteger(L, 2);
@@ -471,33 +471,33 @@ extern "C" {
 }
 
 static const struct luaL_Reg vector_m [] = {
-  {"components", NWScript_VectorGetComponents}, 
+  {"components", NWScript_VectorGetComponents},
   {NULL, NULL}
 };
 
 static const struct luaL_Reg effect_m [] = {
-  {"__gc", NWScript_FreeEffect},  
+  {"__gc", NWScript_FreeEffect},
   {NULL, NULL}
 };
 
 static const struct luaL_Reg event_m [] = {
-  {"__gc", NWScript_FreeEvent},  
+  {"__gc", NWScript_FreeEvent},
   {NULL, NULL}
 };
 
 static const struct luaL_Reg location_m [] = {
   {"components", NWScript_LocationGetComponents},
-  {"__gc", NWScript_FreeLocation},  
+  {"__gc", NWScript_FreeLocation},
   {NULL, NULL}
 };
 
 static const struct luaL_Reg talent_m [] = {
-  {"__gc", NWScript_FreeTalent},  
+  {"__gc", NWScript_FreeTalent},
   {NULL, NULL}
 };
 
 static const struct luaL_Reg property_m [] = {
-  {"__gc", NWScript_FreeItemProperty},  
+  {"__gc", NWScript_FreeItemProperty},
   {NULL, NULL}
 };
 
