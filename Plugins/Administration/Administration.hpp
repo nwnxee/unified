@@ -29,6 +29,7 @@ public:
     NWNXLib::Services::Events::ArgumentStack OnSetServerName(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetPlayOption(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnSetPlayOption(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnDeleteTURD(NWNXLib::Services::Events::ArgumentStack&& args);
 
 };
 

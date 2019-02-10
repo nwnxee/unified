@@ -34,6 +34,7 @@ The following plugins were added:
 ##### New NWScript Functions
 - Administration: GetPlayOption()
 - Administration: SetPlayOption()
+- Administration: DeleteTURD()
 - Area: GetNumberOfPlayersInArea()
 - Area: GetLastEntered()
 - Area: GetLastLeft()
