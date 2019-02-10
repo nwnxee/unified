@@ -11,7 +11,7 @@ class PlayerDyingHitPointLimit
 public:
     PlayerDyingHitPointLimit(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker, int16_t hplimit);
 
-    
+
 private:
     static int32_t CNWSObject__GetIsPCDying_Hook(NWNXLib::API::CNWSObject*);
     static int32_t CNWSObject__GetDead_Hook(NWNXLib::API::CNWSObject*);

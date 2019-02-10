@@ -35,7 +35,7 @@ namespace Assert {
     #define ASSERT_OR_THROW(condition) \
         do \
         { \
-            if(!(condition)) throw std::runtime_error("ASSERTION FAILURE: (" + std::string(#condition) + ") in NWScript: " + Utils::GetCurrentScript()); \
+            if(!(condition)) throw std::runtime_error("ASSERTION FAILURE: (" + std::string(#condition) + ") in NWScript: " + NWNXLib::Utils::GetCurrentScript()); \
         } while (0)
 
 void Fail(const char* condition, const char* file, int line, const char* message);

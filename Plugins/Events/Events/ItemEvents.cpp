@@ -19,12 +19,12 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 }
 
 int32_t ItemEvents::UseItemHook(
-    API::CNWSCreature* thisPtr, 
-    API::Types::ObjectID item, 
+    API::CNWSCreature* thisPtr,
+    API::Types::ObjectID item,
     uint8_t propIndex,
     uint8_t subPropIndex,
-    API::Types::ObjectID target, 
-    API::Vector targetPosition, 
+    API::Types::ObjectID target,
+    API::Vector targetPosition,
     API::Types::ObjectID area)
 {
     int32_t retVal;
@@ -37,7 +37,7 @@ int32_t ItemEvents::UseItemHook(
         Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
         Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
         Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));
-    return Events::SignalEvent(ev, thisPtr->m_idSelf);   
+    return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_USE_ITEM_BEFORE"))
@@ -46,8 +46,8 @@ int32_t ItemEvents::UseItemHook(
     }
     else
     {
-        retVal = false;    
-    }   
+        retVal = false;
+    }
 
     PushAndSignal("NWNX_ON_USE_ITEM_AFTER");
 

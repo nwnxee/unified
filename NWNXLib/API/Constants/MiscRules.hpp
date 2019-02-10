@@ -207,7 +207,27 @@ namespace DamageType
 
     constexpr const char* ToString(const unsigned value)
     {
-        return "(TODO)";
+        switch (value)
+        {
+            case None:         return "None";
+            case Bludgeoning:  return "Bludgeoning";
+            case Piercing:     return "Piercing";
+            case Slashing:     return "Slashing";
+            case Magical:      return "Magical";
+            case Acid:         return "Acid";
+            case Cold:         return "Cold";
+            case Divine:       return "Divine";
+            case Electrical:   return "Electrical";
+            case Fire:         return "Fire";
+            case Negative:     return "Negative";
+            case Positive:     return "Positive";
+            case Sonic:        return "Sonic";
+            case Physical:     return "Physical";
+            case Elemental:    return "Elemental";
+            case Exotic:       return "Exotic";
+            case MAX:          return "All";
+        }
+        return (value <= MAX) ? "Multiple" : "(invalid)";
     }
 }
 
@@ -369,7 +389,7 @@ namespace CombatMode
             "None",
             "Parry",
             "Power Attack",
-            "Improved PowerA ttack",
+            "Improved Power Attack",
             "Counterspell",
             "Flurry Of Blows",
             "Rapid Shot",

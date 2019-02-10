@@ -11,9 +11,9 @@ using namespace NWNXLib;
 SpellEvents::SpellEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     hooker->RequestSharedHook<
-        NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact, 
-        int32_t, 
-        NWNXLib::API::CNWSObject*, 
+        NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact,
+        int32_t,
+        NWNXLib::API::CNWSObject*,
         uint32_t,
         NWNXLib::API::Vector,
         uint32_t,
@@ -27,12 +27,12 @@ SpellEvents::SpellEvents(ViewPtr<Services::HooksProxy> hooker)
 
 void SpellEvents::CastSpellHook
 (
-    Services::Hooks::CallType type, 
-    NWNXLib::API::CNWSObject* thisPtr, 
-    uint32_t spellID, 
+    Services::Hooks::CallType type,
+    NWNXLib::API::CNWSObject* thisPtr,
+    uint32_t spellID,
     NWNXLib::API::Vector targetPosition,
-    NWNXLib::API::Types::ObjectID oidTarget, 
-    int8_t multiClass, 
+    NWNXLib::API::Types::ObjectID oidTarget,
+    int8_t multiClass,
     NWNXLib::API::Types::ObjectID oidItem,
     bool spellCountered,
     bool counteringSpell,

@@ -87,7 +87,30 @@ namespace EquipmentSlot
 
     constexpr const char* ToString(const unsigned value)
     {
-        return "(TODO)";
+        switch (value)
+        {
+            case None:                 return "None";
+            case Head:                 return "Head";
+            case Chest:                return "Chest";
+            case Boots:                return "Boots";
+            case Arms:                 return "Arms";
+            case RightHand:            return "Right Hand";
+            case LeftHand:             return "Left Hand";
+            case Cloak:                return "Cloak";
+            case LeftRing:             return "Left Ring";
+            case RightRing:            return "Right Ring";
+            case Neck:                 return "Neck";
+            case Belt:                 return "Belt";
+            case Arrows:               return "Arrows";
+            case Bullets:              return "Bullets";
+            case Bolts:                return "Bolts";
+            case CreatureWeaponLeft:   return "Creature Weapon Left";
+            case CreatureWeaponRight:  return "Creature Weapon Right";
+            case CreatureWeaponBite:   return "Creature Weapon Bite";
+            case CreatureArmour:       return "Creature Armour";
+            case MAX:                  return "All";
+        }
+        return (value < MAX) ? "Multiple" : "(invalid)";
     }
 }
 

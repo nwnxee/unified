@@ -62,7 +62,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(GetShadowOpacity);
     REGISTER(SetShadowOpacity);
     REGISTER(GetDayNightCycle);
-    REGISTER(SetDayNightCycle);    
+    REGISTER(SetDayNightCycle);
 
 #undef REGISTER
 }
@@ -95,7 +95,7 @@ ArgumentStack Area::GetNumberOfPlayersInArea(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_nPlayersInArea;
@@ -110,7 +110,7 @@ ArgumentStack Area::GetLastEntered(ArgumentStack&& args)
 {
     ArgumentStack stack;
     Types::ObjectID retVal = Constants::OBJECT_INVALID;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = static_cast<Types::ObjectID>(pArea->m_oidLastEntered);
@@ -125,7 +125,7 @@ ArgumentStack Area::GetLastLeft(ArgumentStack&& args)
 {
     ArgumentStack stack;
     Types::ObjectID retVal = Constants::OBJECT_INVALID;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = static_cast<Types::ObjectID>(pArea->m_oidLastLeft);
@@ -140,12 +140,12 @@ ArgumentStack Area::GetPVPSetting(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_nPVPSetting;
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -154,16 +154,15 @@ ArgumentStack Area::GetPVPSetting(ArgumentStack&& args)
 ArgumentStack Area::SetPVPSetting(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         auto pvpSetting = Services::Events::ExtractArgument<int32_t>(args);
-        
-        ASSERT_OR_THROW(pvpSetting >= 0);
-        ASSERT_OR_THROW(pvpSetting <= 3);
+          ASSERT_OR_THROW(pvpSetting >= Constants::PvPSetting::MIN);
+          ASSERT_OR_THROW(pvpSetting <= Constants::PvPSetting::MAX);
 
         pArea->m_nPVPSetting = pvpSetting;
-    }    
+    }
 
     return stack;
 }
@@ -172,12 +171,12 @@ ArgumentStack Area::GetAreaSpotModifier(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_nAreaSpotModifier;
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -186,13 +185,13 @@ ArgumentStack Area::GetAreaSpotModifier(ArgumentStack&& args)
 ArgumentStack Area::SetAreaSpotModifier(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         const auto spotModifier = Services::Events::ExtractArgument<int32_t>(args);
-        
+
         pArea->m_nAreaSpotModifier = spotModifier;
-    }    
+    }
 
     return stack;
 }
@@ -201,27 +200,27 @@ ArgumentStack Area::GetAreaListenModifier(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_nAreaListenModifier;
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
-    
+
     return stack;
 }
 
 ArgumentStack Area::SetAreaListenModifier(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         const auto listenModifier = Services::Events::ExtractArgument<int32_t>(args);
-        
+
         pArea->m_nAreaListenModifier = listenModifier;
-    }    
+    }
 
     return stack;
 }
@@ -230,12 +229,12 @@ ArgumentStack Area::GetNoRestingAllowed(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_bNoRestingAllowed;
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -244,15 +243,13 @@ ArgumentStack Area::GetNoRestingAllowed(ArgumentStack&& args)
 ArgumentStack Area::SetNoRestingAllowed(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         const auto noRestingAllowed = Services::Events::ExtractArgument<int32_t>(args);
 
-        ASSERT_OR_THROW(noRestingAllowed >= 0);
-        
-        pArea->m_bNoRestingAllowed = noRestingAllowed;
-    }    
+        pArea->m_bNoRestingAllowed = !!noRestingAllowed;
+    }
 
     return stack;
 }
@@ -261,12 +258,12 @@ ArgumentStack Area::GetWindPower(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_nWindAmount;
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -275,16 +272,15 @@ ArgumentStack Area::GetWindPower(ArgumentStack&& args)
 ArgumentStack Area::SetWindPower(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         auto windPower = Services::Events::ExtractArgument<int32_t>(args);
-        
-        ASSERT_OR_THROW(windPower >= 0);
-        ASSERT_OR_THROW(windPower <= 2);
+          ASSERT_OR_THROW(windPower >= 0);
+          ASSERT_OR_THROW(windPower <= 2);
 
         pArea->m_nWindAmount = windPower;
-    }    
+    }
 
     return stack;
 }
@@ -293,7 +289,7 @@ ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
@@ -303,7 +299,7 @@ ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
             case 0:
                 retVal = pArea->m_nChanceOfRain;
                 break;
-            
+
             case 1:
                 retVal = pArea->m_nChanceOfSnow;
                 break;
@@ -315,9 +311,9 @@ ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
             default:
                 retVal = 0;
                 break;
-        }        
+        }
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -326,22 +322,21 @@ ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
 ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
 
         auto chance = Services::Events::ExtractArgument<int32_t>(args);
-
-        ASSERT_OR_THROW(chance >= 0);
-        ASSERT_OR_THROW(chance <= 100);
+          ASSERT_OR_THROW(chance >= 0);
+          ASSERT_OR_THROW(chance <= 100);
 
         switch (type)
         {
             case 0:
                 pArea->m_nChanceOfRain = chance;
                 break;
-            
+
             case 1:
                 pArea->m_nChanceOfSnow = chance;
                 break;
@@ -353,7 +348,7 @@ ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
             default:
                 break;
         }
-    }    
+    }
 
     return stack;
 }
@@ -362,12 +357,12 @@ ArgumentStack Area::GetFogClipDistance(ArgumentStack&& args)
 {
     ArgumentStack stack;
     float retVal = 0.0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_fFogClipDistance;
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -376,15 +371,14 @@ ArgumentStack Area::GetFogClipDistance(ArgumentStack&& args)
 ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         auto distance = Services::Events::ExtractArgument<float>(args);
-        
-        ASSERT_OR_THROW(distance >= 0.0);
+          ASSERT_OR_THROW(distance >= 0.0);
 
         pArea->m_fFogClipDistance = distance;
-    }    
+    }
 
     return stack;
 }
@@ -393,12 +387,12 @@ ArgumentStack Area::GetShadowOpacity(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         retVal = pArea->m_nShadowOpacity;
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -407,16 +401,15 @@ ArgumentStack Area::GetShadowOpacity(ArgumentStack&& args)
 ArgumentStack Area::SetShadowOpacity(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         auto shadowOpacity = Services::Events::ExtractArgument<int32_t>(args);
-        
-        ASSERT_OR_THROW(shadowOpacity >= 0);
-        ASSERT_OR_THROW(shadowOpacity <= 100);
+          ASSERT_OR_THROW(shadowOpacity >= 0);
+          ASSERT_OR_THROW(shadowOpacity <= 100);
 
         pArea->m_nShadowOpacity = shadowOpacity;
-    }    
+    }
 
     return stack;
 }
@@ -425,7 +418,7 @@ ArgumentStack Area::GetDayNightCycle(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
-    
+
     if (auto *pArea = area(args))
     {
         if (pArea->m_bUseDayNightCycle)
@@ -435,9 +428,9 @@ ArgumentStack Area::GetDayNightCycle(ArgumentStack&& args)
         else
         {
             retVal = pArea->m_bIsNight + 1;
-        }        
+        }
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
@@ -446,7 +439,7 @@ ArgumentStack Area::GetDayNightCycle(ArgumentStack&& args)
 ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    
+
     if (auto *pArea = area(args))
     {
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
@@ -457,7 +450,7 @@ ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
                 pArea->m_bUseDayNightCycle = 1;
                 pArea->m_bIsNight = 0;
                 break;
-            
+
             case 1:
                 pArea->m_bUseDayNightCycle = 0;
                 pArea->m_bIsNight = 0;
@@ -471,7 +464,7 @@ ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
             default:
                 break;
         }
-    }    
+    }
 
     return stack;
 }

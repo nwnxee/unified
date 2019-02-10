@@ -13,3 +13,4 @@
 #include "Constants/Effect.hpp"
 #include "Constants/Events.hpp"
 #include "Constants/Misc.hpp"
+#include "Constants/Animation.hpp"

@@ -34,7 +34,7 @@ static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
 int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
     int32_t retVal;
-    
+
     std::string event = "NWNX_ON_PARTY_";
     Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
     std::string sOidOther = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);

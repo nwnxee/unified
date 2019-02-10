@@ -63,7 +63,7 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
          message.replace(pos, s_Find.length(), s_Replace);
          pos += s_Replace.length();
     }
-    
+
     message= plugin.m_bIso_8859_1 ? iso_8859_1_to_utf8(message) : message;
 
     if(mrkdwn==0)
@@ -80,9 +80,9 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
     {
         username=plugin.m_bIso_8859_1 ? iso_8859_1_to_utf8(username) : username;
         message = "{\"text\":\"" + message + "\", \"username\":\"" + username + "\"}";
-    } 
+    }
 
-    
+
     plugin.GetServices()->m_tasks->QueueOnAsyncThread([message, host, path]()
     {
         static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;
@@ -125,11 +125,11 @@ std::string WebHook::iso_8859_1_to_utf8(std::string &str)
     for (std::string::iterator it = str.begin(); it != str.end(); ++it)
     {
         uint8_t ch = *it;
-        if (ch < 0x80) 
+        if (ch < 0x80)
         {
             strOut.push_back(ch);
         }
-        else 
+        else
         {
             strOut.push_back(0xc0 | ch >> 6);
             strOut.push_back(0x80 | (ch & 0x3f));

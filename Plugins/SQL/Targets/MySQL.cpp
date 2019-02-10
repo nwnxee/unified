@@ -176,7 +176,7 @@ void MySQL::PrepareInt(int32_t position, int32_t value)
 {
     LOG_DEBUG("Assigning position %d to value '%d'", position, value);
 
-    ASSERT(position >= 0);
+    ASSERT_OR_THROW(position >= 0);
     size_t pos = static_cast<size_t>(position);
 
     MYSQL_BIND *pBind = &m_params[pos];
@@ -191,7 +191,7 @@ void MySQL::PrepareFloat(int32_t position, float value)
 {
     LOG_DEBUG("Assigning position %d to value '%f'", position, value);
 
-    ASSERT(position >= 0);
+    ASSERT_OR_THROW(position >= 0);
     size_t pos = static_cast<size_t>(position);
 
     MYSQL_BIND *pBind = &m_params[pos];
@@ -206,7 +206,7 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
 {
     LOG_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
 
-    ASSERT(position >= 0);
+    ASSERT_OR_THROW(position >= 0);
     size_t pos = static_cast<size_t>(position);
 
     MYSQL_BIND *pBind = &m_params[pos];

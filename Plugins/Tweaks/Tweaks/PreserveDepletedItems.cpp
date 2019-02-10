@@ -34,7 +34,7 @@ uint32_t PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(CNWSCre
     {
         pItem->m_nNumCharges += 10;
         int32_t ret = pAIActionItemCastSpell_hook->CallOriginal<uint32_t>(pThis, pNode);
-        pItem->SetNumCharges(pItem->m_nNumCharges - 10, 1 /* update which properties are usable */);
+        pItem->SetNumCharges(pItem->m_nNumCharges - 10, true /* update which properties are usable */);
         return ret;
     }
     return pAIActionItemCastSpell_hook->CallOriginal<uint32_t>(pThis, pNode);

@@ -169,7 +169,7 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[3]);
 
     Services::Events::InsertArgument(stack, std::string(eff->m_sCustomTag.CStr()));
-    //delete eff;
+
     Utils::DestroyGameEffect(eff);
     return stack;
 }
@@ -191,7 +191,8 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
                         g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
                         g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
 
-                        LOG_DEBUG("Running script '%s' on object '%x' with data '%s'", sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
+                        LOG_DEBUG("Running script '%s' on object '%x' with data '%s'",
+                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
 
                         ++g_plugin->m_effectExpiredDepth;
                         Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);

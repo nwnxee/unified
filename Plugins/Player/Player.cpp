@@ -19,9 +19,6 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/C2DA.hpp"
-//#include "API/CNWSStats_Spell.hpp"
-//#include "API/CNWSStats_SpellLikeAbility.hpp"
-//#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -173,13 +170,13 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
     }
 
     ArgumentStack stack;
-    if(auto *pPlayer = player(args))
+    if (auto *pPlayer = player(args))
     {
         const float seconds = Services::Events::ExtractArgument<float>(args);
         const uint32_t milliseconds = static_cast<uint32_t>(seconds * 1000.0f); // NWN expects milliseconds.
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
-        if(pMessage)
+        if (pMessage)
         {
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, 10, milliseconds);
         }
@@ -195,10 +192,10 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
 ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if(auto *pPlayer = player(args))
+    if (auto *pPlayer = player(args))
     {
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
-        if(pMessage)
+        if (pMessage)
         {
             pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
         }
@@ -230,7 +227,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
             });
         pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnRemoveLimitMovementSpeed);
     }
-    
+
     ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
@@ -281,7 +278,7 @@ ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         auto slot = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW(slot < 36);
+          ASSERT_OR_THROW(slot < 36);
 
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature->m_pQuickbarButton)
@@ -312,7 +309,8 @@ ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         auto slot = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW(slot < 36);
+          ASSERT_OR_THROW(slot >= 0);
+          ASSERT_OR_THROW(slot < 36);
 
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
         if (!pCreature->m_pQuickbarButton)
@@ -354,7 +352,9 @@ ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         Vector pos;
-        auto effectId = Services::Events::ExtractArgument<int32_t>(args); ASSERT_OR_THROW(effectId >= 0); ASSERT_OR_THROW(effectId <= 0xFFFF);
+        auto effectId = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(effectId >= 0);
+          ASSERT_OR_THROW(effectId <= 0xFFFF);
         pos.z = Services::Events::ExtractArgument<float>(args);
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
@@ -375,11 +375,10 @@ ArgumentStack Player::ChangeBackgroundMusic(ArgumentStack&& args)
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
 
-        auto day = Services::Events::ExtractArgument<int32_t>(args);
-
+        auto day   = Services::Events::ExtractArgument<int32_t>(args);
         auto track = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW(track >= 0);
-        ASSERT_OR_THROW(track <= 0xFFFF);
+          ASSERT_OR_THROW(track >= 0);
+          ASSERT_OR_THROW(track <= 0xFFFF);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
@@ -416,8 +415,8 @@ ArgumentStack Player::ChangeBattleMusic(ArgumentStack&& args)
         const auto oidPlayer = pPlayer->m_nPlayerID;
 
         auto track = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW(track >= 0);
-        ASSERT_OR_THROW(track <= 0xFFFF);
+          ASSERT_OR_THROW(track >= 0);
+          ASSERT_OR_THROW(track <= 0xFFFF);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
@@ -486,9 +485,9 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
 
             pMessage->WriteOBJECTIDServer(oidPlaceable);
             pMessage->WriteBOOL(bUsable);
-            uint8_t *buffer; 
+            uint8_t *buffer;
             uint32_t size;
-            
+
             if (pMessage->GetWriteMessage(&buffer, &size))
             {
                 pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID, 0x05, 0x08, buffer, size);
@@ -508,12 +507,12 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
             +[](Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
             {
                 static int32_t creatureLevel;
-                static int32_t originalValue; 
+                static int32_t originalValue;
 
                 if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                 {
-                    creatureLevel = pCreature->m_pStats->GetLevel(0);       
-                    
+                    creatureLevel = pCreature->m_pStats->GetLevel(0);
+
                     Globals::Rules()->m_p2DArrays->m_pRestDurationTable->GetINTEntry(creatureLevel, "DURATION", &originalValue);
 
                     if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
@@ -528,7 +527,7 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
             });
         bAIActionRestHook = true;
     }
-    
+
     ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
@@ -540,10 +539,10 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
             g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "REST_DURATION");
         }
         else
-        {          
+        {
             g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_DURATION", duration < 10 ? 10 : duration);
-        }          
-    }   
+        }
+    }
 
     return stack;
 }

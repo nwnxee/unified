@@ -16,11 +16,11 @@ public:
 private:
     static void CastSpellHook
     (
-        NWNXLib::Services::Hooks::CallType, 
-        NWNXLib::API::CNWSObject*, 
+        NWNXLib::Services::Hooks::CallType,
+        NWNXLib::API::CNWSObject*,
         uint32_t,
         NWNXLib::API::Vector,
-        NWNXLib::API::Types::ObjectID, 
+        NWNXLib::API::Types::ObjectID,
         int8_t,
         NWNXLib::API::Types::ObjectID,
         bool,

@@ -125,7 +125,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     }
     else if (pTarget->m_pStats->HasFeat(Constants::Feat::UncannyDodge2))
     {
-        const uint8_t uncannyClasses[] = 
+        const uint8_t uncannyClasses[] =
         {
             Constants::ClassType::Barbarian,
             Constants::ClassType::Rogue,
@@ -155,7 +155,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
 
     if (isSneakAttack)
     {
-        if (pTarget->m_pStats->GetEffectImmunity(30 /*backstab*/, pThis, true))
+        if (pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::SneakAttack, pThis, true))
         {
             CNWCCMessageData *pData = new CNWCCMessageData;
             pData->SetObjectID(0, pTarget->m_idSelf);
@@ -238,7 +238,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
     }
     else if (pTarget->m_pStats->HasFeat(Constants::Feat::UncannyDodge2))
     {
-        const uint8_t uncannyClasses[] = 
+        const uint8_t uncannyClasses[] =
         {
             Constants::ClassType::Barbarian,
             Constants::ClassType::Rogue,
@@ -268,7 +268,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
 
     if (isDeathAttack)
     {
-        if (pTarget->m_pStats->GetEffectImmunity(30 /*backstab*/, pThis, true))
+        if (pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::SneakAttack, pThis, true))
         {
             CNWCCMessageData *pData = new CNWCCMessageData;
             pData->SetObjectID(0, pTarget->m_idSelf);

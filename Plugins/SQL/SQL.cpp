@@ -103,7 +103,7 @@ SQL::SQL(const Plugin::CreateParams& params)
         m_target = std::make_unique<SQLite>();
 #else
         throw std::runtime_error("Targeting SQLite3, but no SQLite3 support built in.");
-#endif        
+#endif
     }
     else
     {

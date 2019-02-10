@@ -119,4 +119,102 @@ namespace QuickbarType
 }
 
 
+namespace ChatChannel
+{
+    enum TYPE
+    {
+        PlayerTalk     = 1,
+        PlayerShout    = 2,
+        PlayerWhisper  = 3,
+        PlayerTell     = 4,
+        ServerMessage  = 5,
+        PlayerParty    = 6,
+        PlayerDm       = 14,
+        DmTalk         = 17,
+        DmShout        = 18,
+        DmWhisper      = 19,
+        DmTell         = 20,
+        DmParty        = 22,
+        DmDm           = 30,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 30;
+    static_assert(MAX == DmDm);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        switch (value)
+        {
+            case PlayerTalk:     return "Player Talk";
+            case PlayerShout:    return "Player Shout";
+            case PlayerWhisper:  return "Player Whisper";
+            case PlayerTell:     return "Player Tell";
+            case ServerMessage:  return "Server Message";
+            case PlayerParty:    return "Player Party";
+            case PlayerDm:       return "Player DM";
+            case DmTalk:         return "DM Talk";
+            case DmShout:        return "DM Shout";
+            case DmWhisper:      return "DM Whisper";
+            case DmTell:         return "DM Tell";
+            case DmParty:        return "DM Party";
+            case DmDm:           return "DM DM";
+        }
+        return "(invalid)";
+    }
+}
+
+namespace PvPSetting
+{
+    enum TYPE
+    {
+        None      = 0,
+        Party     = 1,
+        Full      = 2,
+        Default   = 3,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 3;
+    static_assert(MAX == Default);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "None",
+            "Party",
+            "Full",
+            "Default",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
+namespace CharacterType
+{
+    enum TYPE
+    {
+        Local          = 1,
+        DM             = 2,
+        Server         = 3,
+        ServerSubdir   = 4,
+    };
+    constexpr int32_t MIN   = 1;
+    constexpr int32_t MAX   = 4;
+    static_assert(MAX == ServerSubdir);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "Local",
+            "DM",
+            "Server",
+            "ServerSubdir",
+        };
+
+        return (value > MAX || value < MIN) ? "(invalid)" : TYPE_STRINGS[value - MIN];
+    }
+}
+
 }
