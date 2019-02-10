@@ -71,9 +71,12 @@ void NWNX_Administration_SetModuleName(string name);
 void NWNX_Administration_SetServerName(string name);
 
 // Get a NWNX_ADMINISTRATION_OPTION_* value
-int NWNX_Administration_GetPlayOption(int option)
+int NWNX_Administration_GetPlayOption(int option);
 // Set a NWNX_ADMINISTRATION_OPTION_* to value
-void NWNX_Administration_SetPlayOption(int option, int value)
+void NWNX_Administration_SetPlayOption(int option, int value);
+
+// Delete the TURD of playerName + characterName
+void NWNX_Administration_DeleteTURD(string playerName, string characterName);
 
 
 string NWNX_Administration_GetPlayerPassword()
@@ -185,4 +188,11 @@ void NWNX_Administration_SetPlayOption(int option, int value)
     NWNX_PushArgumentInt("NWNX_Administration", "SET_PLAY_OPTION", value);
     NWNX_PushArgumentInt("NWNX_Administration", "SET_PLAY_OPTION", option);
     NWNX_CallFunction("NWNX_Administration", "SET_PLAY_OPTION");
+}
+
+void NWNX_Administration_DeleteTURD(string playerName, string characterName)
+{
+    NWNX_PushArgumentString("NWNX_Administration", "DELETE_TURD", characterName);
+    NWNX_PushArgumentString("NWNX_Administration", "DELETE_TURD", playerName);
+    NWNX_CallFunction("NWNX_Administration", "DELETE_TURD");
 }

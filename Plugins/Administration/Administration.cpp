@@ -13,6 +13,10 @@
 #include "API/Globals.hpp"
 #include "API/Types.hpp"
 #include "API/Version.hpp"
+#include "API/CExoLinkedListInternal.hpp"
+#include "API/CExoLinkedListNode.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSPlayerTURD.hpp"
 #include "ViewPtr.hpp"
 #include "Platform/FileSystem.hpp"
 #include "Services/Tasks/Tasks.hpp"
@@ -74,6 +78,7 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER("SET_SERVER_NAME",               OnSetServerName);
     REGISTER("GET_PLAY_OPTION",               OnGetPlayOption);
     REGISTER("SET_PLAY_OPTION",               OnSetPlayOption);
+    REGISTER("DELETE_TURD",                   OnDeleteTURD);
 
 #undef REGISTER
 }
@@ -519,6 +524,49 @@ Events::ArgumentStack Administration::OnSetPlayOption(Events::ArgumentStack&& ar
         default:
             LOG_NOTICE("Calling NWNX_Administration_SetPlayOption with invalid option: %d", option);
             break;
+    }
+
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Administration::OnDeleteTURD(Events::ArgumentStack&& args)
+{
+    const auto playerName = Events::ExtractArgument<std::string>(args);
+    const auto characterName = Events::ExtractArgument<std::string>(args);
+
+    ASSERT_OR_THROW(!playerName.empty());
+    ASSERT_OR_THROW(!characterName.empty());
+
+    CExoLinkedListNode *foundNode = nullptr;
+
+    auto *turds = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    for (auto *node = turds->pHead; node; node = node->pNext)
+    {
+        auto *turd = static_cast<CNWSPlayerTURD*>(node->pObject);
+
+        if (turd)
+        {
+            auto ExtractString = [&](CExoLocString locStr) -> std::string {
+                CExoString str;
+                locStr.GetStringLoc(0, &str, 0);
+                return std::string(str.CStr());
+            };
+
+            std::string turdCharacterName = ExtractString(turd->m_lsFirstName) + " " + ExtractString(turd->m_lsLastName);
+
+            if (turd->m_sCommunityName.CStr() == playerName &&
+                characterName == turdCharacterName)
+            {
+                foundNode = node;
+                break;
+            }
+        }
+    }
+
+    if (foundNode)
+    {
+        LOG_NOTICE("Deleted TURD of %s (%s)", characterName.c_str(), playerName.c_str());
+        Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal->Remove(foundNode);
     }
 
     return Events::ArgumentStack();
