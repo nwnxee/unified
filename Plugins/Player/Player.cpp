@@ -490,7 +490,10 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
 
             if (pMessage->GetWriteMessage(&buffer, &size))
             {
-                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID, 0x05, 0x08, buffer, size);
+                pMessage->SendServerToPlayerMessage(pPlayer->m_nPlayerID,
+                                                    Constants::MessageMajor::GameObjectUpdate,
+                                                    Constants::MessageGameObjectUpdateMinor::PlaceableUseable,
+                                                    buffer, size);
             }
         }
     }

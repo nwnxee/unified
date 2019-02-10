@@ -257,7 +257,10 @@ void Rename::UpdateName(CNWSCreature* targetObject)
 
             if (message->GetWriteMessage(&data, &size) && size)
             {
-                message->SendServerToPlayerMessage(pid, 5, 1, data, size);
+                message->SendServerToPlayerMessage(pid,
+                    API::Constants::MessageMajor::GameObjectUpdate,
+                    API::Constants::MessageGameObjectUpdateMinor::ObjectList,
+                    data, size);
             }
 
             // Update the player list. This handles updating the hover-over GUI elements too.

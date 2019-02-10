@@ -61,7 +61,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
         }
         else
         {
-            Command cmd; 
+            Command cmd;
             cmd.plugin    = plugin;
             cmd.event     = event;
             cmd.operation = operation;

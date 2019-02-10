@@ -42,35 +42,35 @@ int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
     std::string argname;
     switch (nMinor)
     {
-        case 0x06:
+        case Constants::MessagePartyMinor::Leave:
             event += "LEAVE";
             argname = "LEAVING";
             break;
-        case 0x07:
+        case Constants::MessagePartyMinor::Kick:
             event += "KICK";
             argname = "KICKED";
             break;
-        case 0x08:
+        case Constants::MessagePartyMinor::TransferLeadership:
             event += "TRANSFER_LEADERSHIP";
             argname = "NEW_LEADER";
             break;
-        case 0x09:
+        case Constants::MessagePartyMinor::Invite:
             event += "INVITE";
             argname = "INVITED";
             break;
-        case 0x0a:
+        case Constants::MessagePartyMinor::IgnoreInvitation:
             event += "IGNORE_INVITATION";
             argname = "INVITED_BY";
             break;
-        case 0x0b:
+        case Constants::MessagePartyMinor::AcceptInvitation:
             event += "ACCEPT_INVITATION";
             argname = "INVITED_BY";
             break;
-        case 0x0c:
+        case Constants::MessagePartyMinor::RejectInvitation:
             event += "REJECT_INVITATION";
             argname = "INVITED_BY";
             break;
-        case 0x0d:
+        case Constants::MessagePartyMinor::KickHenchman:
             event += "KICK_HENCHMAN";
             argname = "KICKED";
             break;
