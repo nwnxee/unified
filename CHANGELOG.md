@@ -32,6 +32,8 @@ The following plugins were added:
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
 ##### New NWScript Functions
+- Administration: GetPlayOption()
+- Administration: SetPlayOption()
 - Area: GetNumberOfPlayersInArea()
 - Area: GetLastEntered()
 - Area: GetLastLeft()

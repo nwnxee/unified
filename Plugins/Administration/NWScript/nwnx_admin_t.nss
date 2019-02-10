@@ -23,5 +23,8 @@ void main()
     NWNX_Administration_SetDMPassword(sString);
     report("{Set/Get}DMPassword", NWNX_Administration_GetDMPassword() == sString);
 
+    NWNX_Administration_SetPlayOption(NWNX_ADMINISTRATION_OPTION_EXAMINE_EFFECTS, TRUE);
+    report("{Set/Get}PlayOption", NWNX_Administration_GetPlayOption(NWNX_ADMINISTRATION_OPTION_EXAMINE_EFFECTS));
+
     WriteTimestampedLogEntry("NWNX_Administration unit test end.");
 }
