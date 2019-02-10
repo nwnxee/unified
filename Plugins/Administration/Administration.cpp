@@ -552,7 +552,13 @@ Events::ArgumentStack Administration::OnDeleteTURD(Events::ArgumentStack&& args)
                 return std::string(str.CStr());
             };
 
-            std::string turdCharacterName = ExtractString(turd->m_lsFirstName) + " " + ExtractString(turd->m_lsLastName);
+            std::string turdCharacterName = ExtractString(turd->m_lsFirstName);
+            std::string turdLastName = ExtractString(turd->m_lsLastName);
+
+            if (!turdLastName.empty())
+            {
+                turdCharacterName += turdCharacterName.empty() ? turdLastName : " " + turdLastName;
+            }
 
             if (turd->m_sCommunityName.CStr() == playerName &&
                 characterName == turdCharacterName)
