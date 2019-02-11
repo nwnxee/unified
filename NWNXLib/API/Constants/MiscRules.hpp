@@ -404,4 +404,35 @@ namespace CombatMode
     }
 }
 
+namespace Alignment
+{
+    enum TYPE
+    {
+        All                 = 0,
+        Neutral             = 1,
+        Lawful              = 2,
+        Chaotic             = 3,
+        Good                = 4,
+        Evil                = 5,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 5;
+    static_assert(MAX == Evil);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+                {
+                        "All",
+                        "Neutral",
+                        "Lawful",
+                        "Chaotic",
+                        "Good",
+                        "Evil",
+                };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
 }

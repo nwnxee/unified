@@ -1,15 +1,17 @@
 #include "Events/DMActionEvents.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
+#include "API/CGameObjectArray.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWSPlayer.hpp"
-#include "API/CNWSCreature.hpp"
-#include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/Types.hpp"
-#include "API/Version.hpp"
 #include "API/Constants.hpp"
+#include "API/Globals.hpp"
 #include "Events.hpp"
 #include "Services/Patching/Patching.hpp"
 #include "Utils.hpp"
+
 namespace Events {
 
 using namespace NWNXLib;
@@ -35,7 +37,7 @@ static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
 void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
     CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup)
 {
-    // unused variabes
+    // unused variables
     (void)(sizeof(thisPtr) & sizeof(bGroup));
 
     const bool before = (type == Services::Hooks::CallType::BEFORE_ORIGINAL);
@@ -47,26 +49,68 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
     switch (nMinor)
     {
         case MessageDungeonMasterMinor::SpawnCreature:
-            event += "SPAWN_CREATURE";
-            break;
         case MessageDungeonMasterMinor::SpawnItem:
-            event += "SPAWN_ITEM";
-            break;
-        case MessageDungeonMasterMinor::SpawnTrigger:
-            event += "SPAWN_TRIGGER";
-            break;
-        case MessageDungeonMasterMinor::SpawnWaypoint:
-            event += "SPAWN_WAYPOINT";
-            break;
-        case MessageDungeonMasterMinor::SpawnEncounter:
-            event += "SPAWN_ENCOUNTER";
-            break;
-        case MessageDungeonMasterMinor::SpawnPortal:
-            event += "SPAWN_PORTAL";
-            break;
         case MessageDungeonMasterMinor::SpawnPlaceable:
-            event += "SPAWN_PLACEABLE";
+        case MessageDungeonMasterMinor::SpawnWaypoint:
+        case MessageDungeonMasterMinor::SpawnTrigger:
+        case MessageDungeonMasterMinor::SpawnEncounter:
+        case MessageDungeonMasterMinor::SpawnPortal:
+        {
+            event += "SPAWN_OBJECT";
+
+            static std::string area;
+            static std::string object;
+            static int32_t objectType;
+            static std::string x;
+            static std::string y;
+            static std::string z;
+
+            if (before) // Need to persist for AFTER as well
+            {
+                area = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+                object = Utils::ObjectIDToString(Globals::AppManager()->m_pServerExoApp->GetObjectArray()->m_nNextObjectArrayID[0]);
+
+                switch (nMinor)
+                {
+                    case MessageDungeonMasterMinor::SpawnCreature:
+                        objectType = ObjectType::Creature;
+                        break;
+                    case MessageDungeonMasterMinor::SpawnItem:
+                        objectType = ObjectType::Item;
+                        break;
+                    case MessageDungeonMasterMinor::SpawnPlaceable:
+                        objectType = ObjectType::Placeable;
+                        break;
+                    case MessageDungeonMasterMinor::SpawnWaypoint:
+                        objectType = ObjectType::Waypoint;
+                        break;
+                    case MessageDungeonMasterMinor::SpawnTrigger:
+                        objectType = ObjectType::Trigger;
+                        break;
+                    case MessageDungeonMasterMinor::SpawnEncounter:
+                        objectType = ObjectType::Encounter;
+                        break;
+                    case MessageDungeonMasterMinor::SpawnPortal:
+                        objectType = ObjectType::Portal;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                x = std::to_string(PeekMessage<float>(thisPtr, 4));
+                y = std::to_string(PeekMessage<float>(thisPtr, 8));
+                z = std::to_string(PeekMessage<float>(thisPtr, 12));
+            }
+
+            Events::PushEventData("AREA", area);
+            Events::PushEventData("OBJECT", object);
+            Events::PushEventData("OBJECT_TYPE", std::to_string(objectType));
+            Events::PushEventData("POS_X", x);
+            Events::PushEventData("POS_Y", y);
+            Events::PushEventData("POS_Z", z);
             break;
+        }
         case MessageDungeonMasterMinor::Difficulty:
             event += "CHANGE_DIFFICULTY";
             break;
@@ -121,13 +165,16 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
         case MessageDungeonMasterMinor::GiveXP:
         {
             event += "GIVE_XP";
+
             static std::string amount;
             static std::string target;
+
             if (before) // Need to persist for AFTER as well
             {
                 amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
                 target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
             }
+
             Events::PushEventData("AMOUNT", amount);
             Events::PushEventData("TARGET", target);
             break;
@@ -135,13 +182,16 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
         case MessageDungeonMasterMinor::GiveLevel:
         {
             event += "GIVE_LEVEL";
+
             static std::string numLevels;
             static std::string target;
+
             if (before) // Need to persist for AFTER as well
             {
                 numLevels = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
                 target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
             }
+
             Events::PushEventData("NUM_LEVELS", numLevels);
             Events::PushEventData("TARGET", target);
             break;
@@ -149,13 +199,16 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
         case MessageDungeonMasterMinor::GiveGold:
         {
             event += "GIVE_GOLD";
+
             static std::string amount;
             static std::string target;
+
             if (before) // Need to persist for AFTER as well
             {
                 amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
                 target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
             }
+
             Events::PushEventData("AMOUNT", amount);
             Events::PushEventData("TARGET", target);
             break;
@@ -165,8 +218,22 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             event += "SET_FACTION";
             break;
         case MessageDungeonMasterMinor::GiveItem:
+        {
             event += "GIVE_ITEM";
+
+            static std::string target;
+            static std::string item;
+
+            if (before) // Need to persist for AFTER as well
+            {
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+                item = Utils::ObjectIDToString(Globals::AppManager()->m_pServerExoApp->GetObjectArray()->m_nNextObjectArrayID[0]);
+            }
+
+            Events::PushEventData("TARGET", target);
+            Events::PushEventData("ITEM", item);
             break;
+        }
         case MessageDungeonMasterMinor::TakeItem:
             event += "TAKE_ITEM";
             break;
@@ -192,26 +259,55 @@ void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
             event += "SET_DATE";
             break;
         case MessageDungeonMasterMinor::SetFactionReputation:
-            event += "SET_FACTION)REPUTATION";
+            event += "SET_FACTION_REPUTATION";
             break;
         case MessageDungeonMasterMinor::GetFactionReputation:
-            event += "GET_FACTION)REPUTATION";
+            event += "GET_FACTION_REPUTATION";
             break;
         case MessageDungeonMasterMinor::DumpLocals:
             event += "DUMP_LOCALS";
             break;
         case MessageDungeonMasterMinor::GiveGoodAlignment:
-            event += "GIVE_GOOD_ALIGNMENT";
-            break;
         case MessageDungeonMasterMinor::GiveEvilAlignment:
-            event += "GIVE_EVIL_ALIGNMENT";
-            break;
         case MessageDungeonMasterMinor::GiveLawfulAlignment:
-            event += "GIVE_LAWFUL_ALIGNMENT";
-            break;
         case MessageDungeonMasterMinor::GiveChaoticAlignment:
-            event += "GIVE_CHAOTIC_ALIGNMENT";
+        {
+            event += "GIVE_ALIGNMENT";
+
+            static int32_t alignmentType;
+            static std::string amount;
+            static std::string target;
+
+            if (before) // Need to persist for AFTER as well
+            {
+                switch (nMinor)
+                {
+                    case MessageDungeonMasterMinor::GiveGoodAlignment:
+                        alignmentType = Alignment::Good;
+                        break;
+                    case MessageDungeonMasterMinor::GiveEvilAlignment:
+                        alignmentType = Alignment::Evil;
+                        break;
+                    case MessageDungeonMasterMinor::GiveLawfulAlignment:
+                        alignmentType = Alignment::Lawful;
+                        break;
+                    case MessageDungeonMasterMinor::GiveChaoticAlignment:
+                        alignmentType = Alignment::Chaotic;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
+            }
+
+            Events::PushEventData("ALIGNMENT_TYPE", std::to_string(alignmentType));
+            Events::PushEventData("AMOUNT", amount);
+            Events::PushEventData("TARGET", target);
             break;
+        }
         default:
             return;
     }
