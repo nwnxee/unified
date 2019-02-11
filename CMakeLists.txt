@@ -42,8 +42,8 @@ function(add_plugin_windows target)
 endfunction()
 
 # Sets the output directory for the built targets.
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # MSVC
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
@@ -111,5 +111,5 @@ endforeach(plugin)
 
 # Allow specifying out of tree plugins by putting their paths in env. variable
 foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
-    add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
+    add_subdirectory(${addplugin} ${CMAKE_CURRENT_BINARY_DIR})
 endforeach(addplugin)
