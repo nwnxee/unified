@@ -21,55 +21,10 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Types;
+using namespace NWNXLib::API::Constants;
 
 namespace {
 
-enum VMCommand
-{
-    PlaySound           = 46,
-    GetLocalInt         = 51,
-    GetLocalFloat       = 52,
-    GetLocalString      = 53,
-    GetLocalObject      = 54,
-    SetLocalInt         = 55,
-    SetLocalFloat       = 56,
-    SetLocalString      = 57,
-    SetLocalObject      = 58,
-    SetLocalLocation    = 152,
-    GetLocalLocation    = 153,
-    TagEffect           = 850,
-    TagItemProperty     = 855
-};
-enum VMError
-{
-    Success                      = 0,
-    TooManyInstructions          = -632,
-    TooManyLevelsOfRecursion     = -633,
-    FileNotOpened                = -634,
-    FileNotCompiledSuccessfully  = -635,
-    InvalidAuxCode               = -636,
-    NullVirtualMachineNode       = -637,
-    StackOverflow                = -638,
-    StackUnderflow               = -639,
-    InvalidOpCode                = -640,
-    InvalidExtraDataOnOpCode     = -641,
-    InvalidCommand               = -642,
-    FakeShortcutLogicalOperation = -643,
-    DivideByZero                 = -644,
-    FakeAbortScript              = -645,
-    IPOutOfCodeSegment           = -646,
-    CommandImplementerNotSet     = -647,
-    UnknownTypeOnRunTimeStack    = -648
-};
-
-enum VMStructure
-{
-    Effect       = 0,
-    Event        = 1,
-    Location     = 2,
-    Talent       = 3,
-    ItemProperty = 4
-};
 
 struct Command
 {
@@ -106,7 +61,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
         }
         else
         {
-            Command cmd; 
+            Command cmd;
             cmd.plugin    = plugin;
             cmd.event     = event;
             cmd.operation = operation;
@@ -374,7 +329,7 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     else
     {
         pEffect->SetCustomTag(tag);
-        if (pEffect->m_nType == 40) // linked effects
+        if (pEffect->m_nType == EffectTrueType::Link)
         {
             pEffect->UpdateLinked();
         }
@@ -424,7 +379,7 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
     }
     else
     {
-        if (pItemProperty->m_nType == 91) // ItemProperty effect
+        if (pItemProperty->m_nType == EffectTrueType::ItemProperty)
         {
             pItemProperty->SetString(0, tag);
         }

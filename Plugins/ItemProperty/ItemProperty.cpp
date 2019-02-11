@@ -74,11 +74,11 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     auto spellId      = Services::Events::ExtractArgument<int32_t>(args);
 
     auto creator      = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
-    auto tag      = Services::Events::ExtractArgument<std::string>(args);
+    auto tag          = Services::Events::ExtractArgument<std::string>(args);
 
     ip->SetNumIntegersInitializeToNegativeOne(9);
-    ip->m_nType = API::Constants::EFFECT_TRUETYPE_ITEMPROPERTY;
-    ip->m_nSubType = API::Constants::DURATION_TYPE_PERMANENT;
+    ip->m_nType = API::Constants::EffectTrueType::ItemProperty;
+    ip->m_nSubType = API::Constants::EffectDurationType::Permanent;
     ip->m_oidCreator = creator;
     ip->m_nSpellId = spellId;
 

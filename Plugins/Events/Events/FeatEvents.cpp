@@ -48,7 +48,7 @@ int32_t FeatEvents::UseFeatHook(
         Events::PushEventData("TARGET_POSITION_X", pvTarget ? std::to_string(pvTarget->x) : "0.0");
         Events::PushEventData("TARGET_POSITION_Y", pvTarget ? std::to_string(pvTarget->y) : "0.0");
         Events::PushEventData("TARGET_POSITION_Z", pvTarget ? std::to_string(pvTarget->z) : "0.0");
-    return Events::SignalEvent(ev, thisPtr->m_idSelf);   
+    return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_USE_FEAT_BEFORE"))
@@ -57,10 +57,10 @@ int32_t FeatEvents::UseFeatHook(
     }
     else
     {
-        retVal = false;    
+        retVal = false;
     }
 
-    PushAndSignal("NWNX_ON_USE_FEAT_AFTER");   
+    PushAndSignal("NWNX_ON_USE_FEAT_AFTER");
 
     return retVal;
 }

@@ -14,6 +14,7 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
+#include "API/Constants.hpp"
 
 namespace Tweaks {
 
@@ -38,7 +39,7 @@ int32_t HideDMsOnCharList::HandlePlayerToServerPlayModuleCharacterList_StartHook
     for (auto *node = players->pHead; node; node = node->pNext)
     {
         auto *other = static_cast<CNWSPlayer*>(node->pObject);
-        if (other && other->m_nCharacterType != 2 /*DM*/)
+        if (other && other->m_nCharacterType != Constants::CharacterType::DM)
         {
             pThis->SendServerToPlayerPlayModuleCharacterListResponse(
                 pPlayer->m_nPlayerID, other->m_oidNWSObject, true);

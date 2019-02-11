@@ -35,7 +35,7 @@ private:
     ArgumentStack GetShadowOpacity          (ArgumentStack&& args);
     ArgumentStack SetShadowOpacity          (ArgumentStack&& args);
     ArgumentStack GetDayNightCycle          (ArgumentStack&& args);
-    ArgumentStack SetDayNightCycle          (ArgumentStack&& args);    
+    ArgumentStack SetDayNightCycle          (ArgumentStack&& args);
 
     NWNXLib::API::CNWSArea *area(ArgumentStack& args);
 

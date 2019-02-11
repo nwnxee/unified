@@ -56,9 +56,9 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
                     {
                         std::string areaName;
 
-                        if (objectType >= OBJECT_TYPE_AREA)
+                        if (objectType >= ObjectType::Area)
                         {
-                            CNWSArea* area = objectType == OBJECT_TYPE_AREA
+                            CNWSArea* area = objectType == ObjectType::Area
                                 ? static_cast<CNWSArea*>(obj)
                                 : server->GetAreaByGameObjectID(static_cast<CNWSObject*>(obj)->m_oidArea);
 
@@ -73,7 +73,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
 
                     if (g_typeTimings)
                     {
-                        tags.emplace_back("ObjectType", ObjectTypeToString(objectType));
+                        tags.emplace_back("ObjectType", ObjectType::ToString(objectType));
                     }
                 }
             }

@@ -76,7 +76,7 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
 
     switch (pObject->m_nObjectType)
     {
-        case API::Constants::OBJECT_TYPE_CREATURE:
+        case API::Constants::ObjectType::Creature:
         {
             API::CNWSCreature *pCreature = static_cast<API::CNWSCreature*>(pObject);
             if (resGff.CreateGFFFile(&resStruct, "BIC ", "V2.0"))
@@ -109,12 +109,12 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
             }                                                                    \
         } while(0)
 
-        case API::Constants::OBJECT_TYPE_ITEM:      SERIALIZE(Item,      "UTI ", 0); break;
-        case API::Constants::OBJECT_TYPE_PLACEABLE: SERIALIZE(Placeable, "UTP ", 0);    break;
-        case API::Constants::OBJECT_TYPE_WAYPOINT:  SERIALIZE(Waypoint,  "UTW ");    break;
-        case API::Constants::OBJECT_TYPE_STORE:     SERIALIZE(Store,     "UTM ", 0);    break;
-        case API::Constants::OBJECT_TYPE_DOOR:      SERIALIZE(Door,      "UTD ");    break;
-        case API::Constants::OBJECT_TYPE_TRIGGER:   SERIALIZE(Trigger,   "UTT ");    break;
+        case API::Constants::ObjectType::Item:      SERIALIZE(Item,      "UTI ", 0); break;
+        case API::Constants::ObjectType::Placeable: SERIALIZE(Placeable, "UTP ", 0);    break;
+        case API::Constants::ObjectType::Waypoint:  SERIALIZE(Waypoint,  "UTW ");    break;
+        case API::Constants::ObjectType::Store:     SERIALIZE(Store,     "UTM ", 0);    break;
+        case API::Constants::ObjectType::Door:      SERIALIZE(Door,      "UTD ");    break;
+        case API::Constants::ObjectType::Trigger:   SERIALIZE(Trigger,   "UTT ");    break;
 #undef SERIALIZE
 
         default:

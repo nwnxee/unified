@@ -86,7 +86,7 @@ ArgumentStack Util::GetAsciiTableString(ArgumentStack&& args)
 
     if (table[0] == 0)
     {
-        table[0] = ' '; // Can't pass NULL or it will terminate the string
+        table[0] = 1; // Can't pass NULL or it will terminate the string
         for (size_t i = 1; i < sizeof(table); i++)
             table[i] = i;
     }
@@ -110,8 +110,7 @@ ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
     std::string retVal;
 
     const auto tokenNumber = Services::Events::ExtractArgument<int32_t>(args);
-
-    ASSERT_OR_THROW(tokenNumber >= 0);
+      ASSERT_OR_THROW(tokenNumber >= 0);
 
     auto *pTlk = API::Globals::TlkTable();
     auto *pTokens = pTlk->m_pTokensCustom;

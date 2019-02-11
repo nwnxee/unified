@@ -99,21 +99,21 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
 {
     ArgumentStack stack;
     std::string resRef = "";
-    float cr = 0.0; 
+    float cr = 0.0;
     int32_t unique = 0;
 
     if (auto *pEncounter = encounter(args))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        
+
         if (index < pEncounter->m_nNumEncounterListEntries)
-        {          
+        {
             resRef = pEncounter->m_pEncounterList[index].m_cCreatureResRef.GetResRefStr();
             cr = pEncounter->m_pEncounterList[index].m_fCR;
             unique = pEncounter->m_pEncounterList[index].m_bUnique;
-        }          
+        }
     }
-    
+
     Services::Events::InsertArgument(stack, resRef);
     Services::Events::InsertArgument(stack, cr);
     Services::Events::InsertArgument(stack, unique);
@@ -130,19 +130,17 @@ ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
         const auto resRef = Services::Events::ExtractArgument<std::string>(args);
         auto cr = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(cr >= 0.0);
         auto unique = Services::Events::ExtractArgument<int32_t>(args);
-
-        ASSERT_OR_THROW(cr >= 0.0);
-
         unique = !!unique;
-        
+
         if (index < pEncounter->m_nNumEncounterListEntries)
         {
             pEncounter->m_pEncounterList[index].m_cCreatureResRef = resRef.c_str();
             pEncounter->m_pEncounterList[index].m_fCR = cr;
             pEncounter->m_pEncounterList[index].m_fCreaturePoints = pEncounter->CalculatePointsFromCR(cr);
-            pEncounter->m_pEncounterList[index].m_bUnique = unique; 
-        } 
+            pEncounter->m_pEncounterList[index].m_bUnique = unique;
+        }
     }
 
     return stack;
@@ -203,7 +201,7 @@ ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
         auto playerTriggeredOnly = Services::Events::ExtractArgument<int32_t>(args);
 
         playerTriggeredOnly = !!playerTriggeredOnly;
-        
+
         pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
     }
 
@@ -232,9 +230,8 @@ ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
     if (auto *pEncounter = encounter(args))
     {
         auto resetTime = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(resetTime >= 0);
 
-        ASSERT_OR_THROW(resetTime >= 0);
-        
         pEncounter->m_nResetTime = resetTime;
     }
 

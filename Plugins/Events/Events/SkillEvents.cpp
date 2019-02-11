@@ -12,14 +12,14 @@ static Hooking::FunctionHook* m_UseSkillHook = nullptr;
 
 SkillEvents::SkillEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseSkill, int32_t, API::CNWSCreature*, uint8_t, uint8_t, NWNXLib::API::Types::ObjectID, 
+    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseSkill, int32_t, API::CNWSCreature*, uint8_t, uint8_t, NWNXLib::API::Types::ObjectID,
         NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t>(&UseSkillHook);
 
     m_UseSkillHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseSkill);
 }
 
 int32_t SkillEvents::UseSkillHook(
-    API::CNWSCreature* thisPtr,  
+    API::CNWSCreature* thisPtr,
     uint8_t skill,
     uint8_t subSkill,
     API::Types::ObjectID target,
@@ -37,8 +37,8 @@ int32_t SkillEvents::UseSkillHook(
         Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
         Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
         Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
-        Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z)); 
-    return Events::SignalEvent(ev, thisPtr->m_idSelf);   
+        Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));
+    return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_USE_SKILL_BEFORE"))
@@ -47,7 +47,7 @@ int32_t SkillEvents::UseSkillHook(
     }
     else
     {
-        retVal = false;    
+        retVal = false;
     }
 
     PushAndSignal("NWNX_ON_USE_SKILL_AFTER");

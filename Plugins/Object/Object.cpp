@@ -88,7 +88,7 @@ CNWSObject *Object::object(ArgumentStack& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    return static_cast<CNWSObject*>(pGameObject);
+    return Utils::AsNWSObject(pGameObject);
 }
 
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
@@ -149,7 +149,7 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
 
-        pObject->SetPosition(pos, 1 /*bUpdateInAreaArray*/);
+        pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
     }
     return stack;
 }
@@ -182,7 +182,7 @@ ArgumentStack Object::GetPortrait(ArgumentStack&& args)
     std::string retval = "";
     if (auto *pObject = object(args))
     {
-        if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
+        if (pObject->m_nObjectType == Constants::ObjectType::Creature)
             retval = static_cast<CNWSCreature*>(pObject)->GetPortrait().GetResRefStr();
         else
             retval = pObject->GetPortrait().GetResRefStr();
@@ -200,8 +200,8 @@ ArgumentStack Object::SetPortrait(ArgumentStack&& args)
         const auto portrait = Services::Events::ExtractArgument<std::string>(args);
 
         CResRef resref = CResRef(portrait.c_str());
-        if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
-            static_cast<CNWSCreature*>(pObject)->SetPortrait(resref);
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            pCreature->SetPortrait(resref);
         else
             pObject->SetPortrait(resref);
     }
@@ -244,12 +244,12 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     std::string retval = "";
     if (auto *pObject = object(args))
     {
-        if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
-            retval = static_cast<CNWSCreature*>(pObject)->GetDialogResref().GetResRefStr();
-        else if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
-            retval = static_cast<CNWSPlaceable*>(pObject)->GetDialogResref().GetResRefStr();
-        else if(pObject->m_nObjectType == Constants::OBJECT_TYPE_DOOR)
-            retval = static_cast<CNWSDoor*>(pObject)->GetDialogResref().GetResRefStr();
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            retval = pCreature->GetDialogResref().GetResRefStr();
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            retval = pPlaceable->GetDialogResref().GetResRefStr();
+        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
+            retval = pDoor->GetDialogResref().GetResRefStr();
         else
             retval = pObject->GetDialogResref().GetResRefStr();
     }
@@ -267,9 +267,9 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
 
         if (auto *pCreature = Utils::AsNWSCreature(pObject))
             pCreature->m_pStats->m_cDialog = resref;
-        else if(auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
             pPlaceable->m_cDialog = resref;
-        else if(auto *pDoor = Utils::AsNWSDoor(pObject))
+        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
             pDoor->m_cDialog = resref;
     }
 
@@ -277,34 +277,28 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
 }
 
 
-
 ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retval = 0;
-    if (auto *pObject = object(args))
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
-        if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
-        {
-            retval = static_cast<CNWSPlaceable*>(pObject)->m_nAppearance;
-        }
+        retval = pPlaceable->m_nAppearance;
     }
 
     Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 
-
 ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pObject = object(args))
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
-        const auto app = Services::Events::ExtractArgument<int32_t>(args);  ASSERT_OR_THROW(app <= 65535);
-        if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
-        {
-            static_cast<CNWSPlaceable*>(pObject)->m_nAppearance=app;
-        }
+        const auto app = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(app <= 65535);
+
+        pPlaceable->m_nAppearance=app;
     }
     return stack;
 }

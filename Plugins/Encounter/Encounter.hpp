@@ -19,7 +19,7 @@ private:
     ArgumentStack GetEncounterCreatureByIndex               (ArgumentStack&& args);
     ArgumentStack SetEncounterCreatureByIndex               (ArgumentStack&& args);
     ArgumentStack GetFactionId                              (ArgumentStack&& args);
-    ArgumentStack SetFactionId                              (ArgumentStack&& args); 
+    ArgumentStack SetFactionId                              (ArgumentStack&& args);
     ArgumentStack GetPlayerTriggeredOnly                    (ArgumentStack&& args);
     ArgumentStack SetPlayerTriggeredOnly                    (ArgumentStack&& args);
     ArgumentStack GetResetTime                              (ArgumentStack&& args);
