@@ -282,9 +282,19 @@ void PerObjectStorage::CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type,
 {
     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
     {
-        auto turdlist = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
-        auto *pTURD = static_cast<API::CNWSPlayerTURD*>(turdlist->pHead->pObject);
-        GetObjectStorage(pTURD)->CloneFrom(GetObjectStorage(thisPtr->m_oidNWSObject));
+        // Be very, very paranoid. Bad things happen when the TURD list doesn't exist
+        // This can happen when you BootPC() the very first PC to connect to your sever
+        //     https://github.com/nwnxee/unified/issues/319
+        if (auto turdlist = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
+        {
+            if (auto *pHead = turdlist->pHead)
+            {
+                if (auto *pTURD = static_cast<API::CNWSPlayerTURD*>(pHead->pObject))
+                {
+                    GetObjectStorage(pTURD)->CloneFrom(GetObjectStorage(thisPtr->m_oidNWSObject));
+                }
+            }
+        }
     }
 }
 
