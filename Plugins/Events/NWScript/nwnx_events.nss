@@ -88,6 +88,44 @@
         Variable Name           Type        Notes
         NUM_LEVELS              int
         TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_DM_SPAWN_OBJECT_BEFORE
+    NWNX_ON_DM_SPAWN_OBJECT_AFTER
+
+    Usage:
+        OBJECT_SELF = The DM spawning the object
+
+    Event data:
+        Variable Name           Type        Notes
+        AREA                    object      Convert to object with NWNX_Object_StringToObject()
+        OBJECT                  object      Only returns a valid object in *_AFTER
+        OBJECT_TYPE             int         Returns NWNX_EVENTS_OBJECT_TYPE_*, see below
+        POS_X                   float
+        POS_Y                   float
+        POS_Z                   float
+
+    NWNX_ON_DM_GIVE_ITEM_BEFORE
+    NWNX_ON_DM_GIVE_ITEM_AFTER
+
+    Usage:
+        OBJECT_SELF = The DM giving the item
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        ITEM                    object      Only returns a valid object in *_AFTER
+
+    NWNX_ON_DM_GIVE_ALIGNMENT_BEFORE
+    NWNX_ON_DM_GIVE_ALIGNMENT_AFTER
+
+    Usage:
+        OBJECT_SELF = The DM giving the alignment
+
+    Event data:
+        Variable Name           Type        Notes
+        ALIGNMENT_TYPE          int         Returns ALIGNMENT_*
+        AMOUNT                  int
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_CLIENT_DISCONNECT_BEFORE
     NWNX_ON_CLIENT_DISCONNECT_AFTER
@@ -181,7 +219,7 @@
     NWNX_ON_COMBAT_MODE_OFF
 
     !!! NOTICE: NEEDS THE NWNX_CombatModes PLUGIN TO WORK !!!
-    
+
     Usage:
         OBJECT_SELF = The Player Character toggling the mode
 
@@ -190,7 +228,7 @@
         COMBAT_MODE_ID          int         See below
 
     The Combat Mode ID returned does not match the COMBAT_MODE_* NWScript constants
-    
+
     Use the following:
     NONE                    0
     PARRY                   1
@@ -209,7 +247,7 @@
     NWNX_ON_USE_SKILL_AFTER
 
     Probably only really works with the following activated skills:
-    SKILL_ANIMAL_EMPATHY, SKILL_DISABLE_TRAP, SKILL_HEAL, SKILL_OPEN_LOCK, 
+    SKILL_ANIMAL_EMPATHY, SKILL_DISABLE_TRAP, SKILL_HEAL, SKILL_OPEN_LOCK,
     SKILL_PICK_POCKET, SKILL_TAUNT
 
     Usage:
@@ -223,7 +261,7 @@
         SUB_SKILL_ID            int
         TARGET_POSITION_X       float
         TARGET_POSITION_Y       float
-        TARGET_POSITION_Z       float        
+        TARGET_POSITION_Z       float
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_MAP_PIN_ADD_PIN_BEFORE
     NWNX_ON_MAP_PIN_ADD_PIN_AFTER
@@ -276,13 +314,23 @@
         If you want to skip this, you need to make sure oWeaponOld != oWeaponNew
 *///////////////////////////////////////////////////////////////////////////////
 
+/*
+const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
+const int NWNX_EVENTS_OBJECT_TYPE_ITEM              = 6;
+const int NWNX_EVENTS_OBJECT_TYPE_TRIGGER           = 7;
+const int NWNX_EVENTS_OBJECT_TYPE_PLACEABLE         = 9;
+const int NWNX_EVENTS_OBJECT_TYPE_WAYPOINT          = 12;
+const int NWNX_EVENTS_OBJECT_TYPE_ENCOUNTER         = 13;
+const int NWNX_EVENTS_OBJECT_TYPE_PORTAL            = 15;
+*/
+
 // Scripts can subscribe to events.
 // Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
 // Others can be signalled via script code (see NWNX_Events_SignalEvent).
 void NWNX_Events_SubscribeEvent(string evt, string script);
 
 // Pushes event data at the provided tag, which subscribers can access with GetEventData.
-// Thsi should be called BEFORE SignalEvent.
+// This should be called BEFORE SignalEvent.
 void NWNX_Events_PushEventData(string tag, string data);
 
 // Signals an event. This will dispatch a notification to all subscribed handlers.
