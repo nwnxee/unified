@@ -14,8 +14,7 @@ public:
     DMActionEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void HandleDMMessageHook(NWNXLib::Services::Hooks::CallType,
-        NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*, uint8_t, int32_t);
+    static int32_t HandleDMMessageHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*, uint8_t, int32_t);
 };
 
 }
