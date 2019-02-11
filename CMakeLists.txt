@@ -61,7 +61,7 @@ else()
         set(WARNING_FLAGS_CXX "-Wall -Wextra")
     endif()
 
-    set(NWNX_STANDARD_FLAGS "-m32 -march=pentium4 -fdiagnostics-show-option -fno-omit-frame-pointer -fno-pic")
+    set(NWNX_STANDARD_FLAGS "-m32 -march=pentium4 -fdiagnostics-show-option -fno-omit-frame-pointer -fno-pic -fno-strict-aliasing")
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")
