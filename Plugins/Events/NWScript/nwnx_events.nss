@@ -360,6 +360,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Map events
 // - Listen/Spot Detection events
 // - Polymorph events
+// - DMAction events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
