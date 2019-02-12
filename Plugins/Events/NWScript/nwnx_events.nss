@@ -69,25 +69,19 @@
     NWNX_ON_DM_GIVE_GOLD_AFTER
     NWNX_ON_DM_GIVE_XP_BEFORE
     NWNX_ON_DM_GIVE_XP_AFTER
+    NWNX_ON_DM_GIVE_LEVEL_BEFORE
+    NWNX_ON_DM_GIVE_LEVEL_AFTER
+    NWNX_ON_DM_GIVE_ALIGNMENT_BEFORE
+    NWNX_ON_DM_GIVE_ALIGNMENT_AFTER
 
     Usage:
-        OBJECT_SELF = The DM giving the gold/xp
+        OBJECT_SELF = The DM giving the gold/xp/level/alignment
 
     Event data:
         Variable Name           Type        Notes
         AMOUNT                  int
         TARGET                  object      Convert to object with NWNX_Object_StringToObject()
-
-    NWNX_ON_DM_GIVE_LEVEL_BEFORE
-    NWNX_ON_DM_GIVE_LEVEL_AFTER
-
-    Usage:
-        OBJECT_SELF = The DM giving the levels
-
-    Event data:
-        Variable Name           Type        Notes
-        NUM_LEVELS              int
-        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        ALIGNMENT_TYPE          int         Only valid for NWNX_ON_DM_GIVE_ALIGNMENT_*
 
     NWNX_ON_DM_SPAWN_OBJECT_BEFORE
     NWNX_ON_DM_SPAWN_OBJECT_AFTER
@@ -115,17 +109,28 @@
         TARGET                  object      Convert to object with NWNX_Object_StringToObject()
         ITEM                    object      Only returns a valid object in *_AFTER
 
-    NWNX_ON_DM_GIVE_ALIGNMENT_BEFORE
-    NWNX_ON_DM_GIVE_ALIGNMENT_AFTER
+    NWNX_ON_DM_HEAL_BEFORE
+    NWNX_ON_DM_HEAL_AFTER
+    NWNX_ON_DM_KILL_BEFORE
+    NWNX_ON_DM_KILL_AFTER
+    NWNX_ON_DM_TOGGLE_INVULNERABLE_BEFORE
+    NWNX_ON_DM_TOGGLE_INVULNERABLE_AFTER
+    NWNX_ON_DM_FORCE_REST_BEFORE
+    NWNX_ON_DM_FORCE_REST_AFTER
+    NWNX_ON_DM_LIMBO_BEFORE
+    NWNX_ON_DM_LIMBO_AFTER
+    NWNX_ON_DM_TOGGLE_AI_BEFORE
+    NWNX_ON_DM_TOGGLE_AI_AFTER
+    NWNX_ON_DM_TOGGLE_IMMORTAL_BEFORE
+    NWNX_ON_DM_TOGGLE_IMMORTAL_AFTER
 
     Usage:
-        OBJECT_SELF = The DM giving the alignment
+        OBJECT_SELF = The DM doing the thing
 
     Event data:
         Variable Name           Type        Notes
-        ALIGNMENT_TYPE          int         Returns ALIGNMENT_*
-        AMOUNT                  int
-        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        NUM_TARGETS             int         The number of targets affected
+        TARGET_*                object      * = 1 <= NUM_TARGETS
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_CLIENT_DISCONNECT_BEFORE
     NWNX_ON_CLIENT_DISCONNECT_AFTER

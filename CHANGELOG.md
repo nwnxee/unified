@@ -17,8 +17,8 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: You can now get the current event name with a nwscript function
 - Events: Added On{Listen/Spot}Detection events to StealthEvents
 - Events: Added On{Un}Polymorph events as PolymorphEvents
-- Events: Added SpawnObject, GiveItem and GiveAlignment events to DMActionEvents
-- Events: OnClientConnect events that fire before the player sees the server vault.
+- Events: Added SpawnObject, GiveItem and GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal events to DMActionEvents
+- Events: Added OnClientConnect events that fire before the player sees the server vault.
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
@@ -107,6 +107,7 @@ The following plugins were added:
 - Docker: Set default log level to 6
 - Docker: Skip all plugins except ServerLogRedirector by default
 - Redis: Lots of stuff, be sure to update the redis nwscripts!
+- Events: Changed `NUM_LEVELS` to `AMOUNT` for DMActionEvent GiveLevel
 
 ### Deprecated
 - Player: {Get/Set}VisibilityOverride are deprecated, please use the new Visibility plugin!
