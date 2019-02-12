@@ -10,6 +10,7 @@
 #include "ViewPtr.hpp"
 
 #include <string>
+#include <stdio.h>
 #include <functional>
 
 using namespace NWNXLib;
@@ -50,6 +51,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(Hash);
     REGISTER(GetCustomToken);
     REGISTER(EffectTypeCast);
+    REGISTER(GenerateUUID);
 
 #undef REGISTER
 
@@ -139,5 +141,26 @@ ArgumentStack Util::EffectTypeCast(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Util::GenerateUUID(ArgumentStack&&)
+{
+    ArgumentStack stack;
+    uint8_t bytes[16];
+    char uuid[38];
+
+    FILE *urandom = fopen("/dev/urandom", "rb");
+    ASSERT_OR_THROW(urandom);
+    ASSERT(fread(bytes, 1, 16, urandom) == 16);
+    fclose(urandom);
+
+    bytes[6] = 0x40 | (bytes[6] & 0x0F);
+    bytes[8] = 0x80 | (bytes[6] & 0x3F);
+
+    snprintf(uuid, 37, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+        bytes[0],bytes[1],bytes[2],bytes[3],bytes[4],bytes[5],bytes[6],bytes[7],
+        bytes[8],bytes[9],bytes[10],bytes[11],bytes[12],bytes[13],bytes[14],bytes[15]);
+
+    Services::Events::InsertArgument(stack, uuid);
+    return stack;
+}
 
 }
