@@ -11,6 +11,7 @@
 #include "Events.hpp"
 #include "Services/Patching/Patching.hpp"
 #include "Utils.hpp"
+#include <vector>
 
 
 namespace Events {
@@ -28,6 +29,7 @@ DMActionEvents::DMActionEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> h
 
     m_HandlePlayerToServerDungeonMasterMessageHook = hooker->FindHookByAddress(Functions::CNWSMessage__HandlePlayerToServerDungeonMasterMessage);
 }
+
 template <typename T>
 static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
 {
@@ -84,12 +86,13 @@ int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPla
         offset += sizeof(groupSize);
     }
 
-    Types::ObjectID targets[groupSize];
+    std::vector<Types::ObjectID> targets;
+    targets.reserve(groupSize);
 
     for (int32_t target = 0; target < groupSize; target++)
     {
-        targets[target] = PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF;
-        offset += sizeof(targets[target]);
+        targets.push_back(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
+        offset += sizeof(Types::ObjectID);
     }
 
     auto PushAndSignalGroupEvent = [&](std::string ev) -> bool {
@@ -111,6 +114,93 @@ int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPla
     }
 
     PushAndSignalGroupEvent(event + "_AFTER");
+
+    return retVal;
+}
+
+int32_t DMActionEvents::HandleSingleTargetEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                                const std::string &event)
+{
+    int32_t retVal;
+    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
+    std::string target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(pMessage, 0) & 0x7FFFFFFF);
+
+    auto PushAndSignalSingleTargetEvent = [&](std::string ev) -> bool {
+        Events::PushEventData("TARGET", target);
+        return Events::SignalEvent(ev, oidDM);
+    };
+
+    if (PushAndSignalSingleTargetEvent(event + "_BEFORE"))
+    {
+        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignalSingleTargetEvent(event + "_AFTER");
+
+    return retVal;
+}
+
+int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                            const std::string &event)
+{
+    int32_t retVal;
+    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
+    int32_t offset = 0;
+    int32_t groupSize = 1;
+    std::vector<Types::ObjectID> targets;
+
+    std::string targetArea = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF); offset += sizeof(Types::ObjectID);
+    std::string x = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+    std::string y = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+    std::string z = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+
+    if (nMinor == MessageDungeonMasterMinor::GotoPointTarget)
+    {
+        if (bGroup)
+        {
+            groupSize = PeekMessage<int32_t>(pMessage, offset);
+            offset += sizeof(groupSize);
+        }
+
+        targets.reserve(groupSize);
+
+        for (int32_t target = 0; target < groupSize; target++)
+        {
+            targets.push_back(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
+            offset += sizeof(Types::ObjectID);
+        }
+    }
+
+    auto PushAndSignalTeleportEvent = [&](std::string ev) -> bool {
+        Events::PushEventData("TARGET_AREA", targetArea);
+        Events::PushEventData("POS_X", x);
+        Events::PushEventData("POS_Y", y);
+        Events::PushEventData("POS_Z", z);
+        if (nMinor == MessageDungeonMasterMinor::GotoPointTarget)
+        {
+            Events::PushEventData("NUM_TARGETS", std::to_string(groupSize));
+            for(int32_t target = 0; target < groupSize; target++)
+            {
+                Events::PushEventData("TARGET_" + std::to_string(target + 1), Utils::ObjectIDToString(targets[target]));
+            }
+        }
+        return Events::SignalEvent(ev, oidDM);
+    };
+
+    if (PushAndSignalTeleportEvent(event + "_BEFORE"))
+    {
+        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignalTeleportEvent(event + "_AFTER");
 
     return retVal;
 }
@@ -144,13 +234,14 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case MessageDungeonMasterMinor::SpawnPortal:
         {
             event += "SPAWN_OBJECT";
+            int32_t offset = 0;
 
-            std::string area = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+            std::string area = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF); offset += sizeof(Types::ObjectID);
             std::string object = Utils::ObjectIDToString(Globals::AppManager()->m_pServerExoApp->GetObjectArray()->m_nNextObjectArrayID[0]);
             int32_t objectType;
-            std::string x = std::to_string(PeekMessage<float>(thisPtr, 4));
-            std::string y = std::to_string(PeekMessage<float>(thisPtr, 8));
-            std::string z = std::to_string(PeekMessage<float>(thisPtr, 12));
+            std::string x = std::to_string(PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
+            std::string y = std::to_string(PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
+            std::string z = std::to_string(PeekMessage<float>(thisPtr, offset));
 
             switch (nMinor)
             {
@@ -205,13 +296,13 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case MessageDungeonMasterMinor::Difficulty:
         {
             event += "CHANGE_DIFFICULTY";
-            DefaultSignalEvent();
+            DefaultSignalEvent(); // Int
             break;
         }
         case MessageDungeonMasterMinor::ViewInventory:
         {
             event += "VIEW_INVENTORY";
-            DefaultSignalEvent();
+            DefaultSignalEvent(); // bOpenInventory, Target
             break;
         }
         case MessageDungeonMasterMinor::SpawnTrapOnObject:
@@ -234,14 +325,20 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         }
         case MessageDungeonMasterMinor::Goto:
         {
-            event += "JUMP";
-            DefaultSignalEvent();
+            event += "GOTO";
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
         case MessageDungeonMasterMinor::Possess:
         {
             event += "POSSESS";
-            DefaultSignalEvent();
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
+            break;
+        }
+        case MessageDungeonMasterMinor::Impersonate:
+        {
+            event += "POSSESS_FULL_POWER";
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
         case MessageDungeonMasterMinor::Invulnerable:
@@ -271,13 +368,13 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case MessageDungeonMasterMinor::ToggleLock:
         {
             event += "TOGGLE_LOCK";
-            DefaultSignalEvent();
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
         case MessageDungeonMasterMinor::DisableTrap:
         {
             event += "DISABLE_TRAP";
-            DefaultSignalEvent();
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
         case MessageDungeonMasterMinor::Manifest:
@@ -301,7 +398,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case MessageDungeonMasterMinor::GotoPoint:
         {
             event += "JUMP_TO_POINT";
-            DefaultSignalEvent();
+            retVal = HandleTeleportEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
         case MessageDungeonMasterMinor::GiveXP:
@@ -363,13 +460,13 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case MessageDungeonMasterMinor::GotoPointTarget:
         {
             event += "JUMP_TARGET_TO_POINT";
-            DefaultSignalEvent();
+            retVal = HandleTeleportEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
         case MessageDungeonMasterMinor::GotoPointAllPlayers:
         {
             event += "JUMP_ALL_PLAYERS_TO_POINT";
-            DefaultSignalEvent();
+            retVal = HandleTeleportEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
         case MessageDungeonMasterMinor::SetStat:

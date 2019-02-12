@@ -75,7 +75,7 @@
     NWNX_ON_DM_GIVE_ALIGNMENT_AFTER
 
     Usage:
-        OBJECT_SELF = The DM giving the gold/xp/level/alignment
+        OBJECT_SELF = The DM
 
     Event data:
         Variable Name           Type        Notes
@@ -87,7 +87,7 @@
     NWNX_ON_DM_SPAWN_OBJECT_AFTER
 
     Usage:
-        OBJECT_SELF = The DM spawning the object
+        OBJECT_SELF = The DM
 
     Event data:
         Variable Name           Type        Notes
@@ -102,7 +102,7 @@
     NWNX_ON_DM_GIVE_ITEM_AFTER
 
     Usage:
-        OBJECT_SELF = The DM giving the item
+        OBJECT_SELF = The DM
 
     Event data:
         Variable Name           Type        Notes
@@ -125,12 +125,51 @@
     NWNX_ON_DM_TOGGLE_IMMORTAL_AFTER
 
     Usage:
-        OBJECT_SELF = The DM doing the thing
+        OBJECT_SELF = The DM
 
     Event data:
         Variable Name           Type        Notes
         NUM_TARGETS             int         The number of targets affected
         TARGET_*                object      * = 1 <= NUM_TARGETS
+
+    NWNX_ON_DM_GOTO_BEFORE
+    NWNX_ON_DM_GOTO_AFTER
+    NWNX_ON_DM_POSSESS_BEFORE
+    NWNX_ON_DM_POSSESS_AFTER
+    NWNX_ON_DM_POSSESS_FULL_POWER_BEFORE
+    NWNX_ON_DM_POSSESS_FULL_POWER_AFTER
+    NWNX_ON_DM_TOGGLE_LOCK_BEFORE
+    NWNX_ON_DM_TOGGLE_LOCK_AFTER
+    NWNX_ON_DM_DISABLE_TRAP_BEFORE
+    NWNX_ON_DM_DISABLE_TRAP_AFTER
+
+    !!! Notice: If TARGET is OBJECT_INVALID for NWNX_ON_DM_POSSESS_*, the DM is unpossessing. !!!
+
+    Usage:
+        OBJECT_SELF = The DM
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_DM_JUMP_TO_POINT_BEFORE
+    NWNX_ON_DM_JUMP_TO_POINT_AFTER
+    NWNX_ON_DM_JUMP_TARGET_TO_POINT_BEFORE
+    NWNX_ON_DM_JUMP_TARGET_TO_POINT_AFTER
+    NWNX_ON_DM_JUMP_ALL_PLAYERS_TO_POINT_BEFORE
+    NWNX_ON_DM_JUMP_ALL_PLAYERS_TO_POINT_AFTER
+
+    Usage:
+        OBJECT_SELF = The DM
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET_AREA             object      Convert to object with NWNX_Object_StringToObject()
+        POS_X                   float
+        POS_Y                   float
+        POS_Z                   float
+        NUM_TARGETS             int         Only valid for NWNX_ON_DM_JUMP_TARGET_TO_POINT_*
+        TARGET_*                object      * = 1 <= NUM_TARGETS, Only valid for NWNX_ON_DM_JUMP_TARGET_TO_POINT_
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_CLIENT_DISCONNECT_BEFORE
     NWNX_ON_CLIENT_DISCONNECT_AFTER
