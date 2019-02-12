@@ -157,7 +157,7 @@ void Events::PushEventData(const std::string tag, const std::string data)
 
 std::string Events::GetEventData(const std::string tag)
 {
-    std::string retVal="";
+    std::string retVal;
     if (g_plugin->m_eventDepth == 0 || g_plugin->m_eventData.empty())
     {
         LOG_ERROR("Attempted to access invalid event data or in an invalid context.");
@@ -256,7 +256,7 @@ Services::Events::ArgumentStack Events::OnGetEventData(Services::Events::Argumen
     return stack;
 }
 
-Services::Events::ArgumentStack Events::OnSkipEvent(Services::Events::ArgumentStack&& args)
+Services::Events::ArgumentStack Events::OnSkipEvent(Services::Events::ArgumentStack&&)
 {
     if (m_eventDepth == 0 || m_eventData.empty())
     {
@@ -284,7 +284,7 @@ Services::Events::ArgumentStack Events::OnEventResult(Services::Events::Argument
     return Services::Events::ArgumentStack();
 }
 
-Services::Events::ArgumentStack Events::OnGetCurrentEvent(Services::Events::ArgumentStack&& args)
+Services::Events::ArgumentStack Events::OnGetCurrentEvent(Services::Events::ArgumentStack&&)
 {
     if (m_eventDepth == 0 || m_eventData.empty())
     {
