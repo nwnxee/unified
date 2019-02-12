@@ -296,19 +296,74 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case MessageDungeonMasterMinor::Difficulty:
         {
             event += "CHANGE_DIFFICULTY";
-            DefaultSignalEvent(); // Int
+
+            std::string difficulty = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("DIFFICULTY_SETTING", difficulty);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
             break;
         }
         case MessageDungeonMasterMinor::ViewInventory:
         {
             event += "VIEW_INVENTORY";
-            DefaultSignalEvent(); // bOpenInventory, Target
+
+            std::string openInventory = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
+            std::string target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("OPEN_INVENTORY", openInventory);
+                Events::PushEventData("TARGET", target);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
             break;
         }
         case MessageDungeonMasterMinor::SpawnTrapOnObject:
         {
             event += "SPAWN_TRAP_ON_OBJECT";
-            DefaultSignalEvent();
+
+            std::string area = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+            std::string target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("AREA", area);
+                Events::PushEventData("TARGET", target);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
             break;
         }
         case MessageDungeonMasterMinor::Heal:
