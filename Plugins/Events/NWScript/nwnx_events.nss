@@ -169,7 +169,72 @@
         POS_Y                   float
         POS_Z                   float
         NUM_TARGETS             int         Only valid for NWNX_ON_DM_JUMP_TARGET_TO_POINT_*
-        TARGET_*                object      * = 1 <= NUM_TARGETS, Only valid for NWNX_ON_DM_JUMP_TARGET_TO_POINT_
+        TARGET_*                object      * = 1 <= NUM_TARGETS, Only valid for NWNX_ON_DM_JUMP_TARGET_TO_POINT_*
+
+    NWNX_ON_DM_CHANGE_DIFFICULTY_BEFORE
+    NWNX_ON_DM_CHANGE_DIFFICULTY_AFTER
+
+    Usage:
+        OBJECT_SELF = The DM
+
+    Event data:
+        Variable Name           Type        Notes
+        DIFFICULTY_SETTING      int
+
+    NWNX_ON_DM_VIEW_INVENTORY_BEFORE
+    NWNX_ON_DM_VIEW_INVENTORY_AFTER
+
+    Usage:
+        OBJECT_SELF = The DM
+
+    Event data:
+        Variable Name           Type        Notes
+        OPEN_INVENTORY          int         TRUE if opening an inventory, FALSE if closing
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_DM_SPAWN_TRAP_ON_OBJECT_BEFORE
+    NWNX_ON_DM_SPAWN_TRAP_ON_OBJECT_AFTER
+
+    Usage:
+        OBJECT_SELF = The DM
+
+    Event data:
+        Variable Name           Type        Notes
+        AREA                    object      Convert to object with NWNX_Object_StringToObject()
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_DM_APPEAR_BEFORE
+    NWNX_ON_DM_APPEAR_AFTER
+    NWNX_ON_DM_DISAPPEAR_BEFORE
+    NWNX_ON_DM_DISAPPEAR_AFTER
+    NWNX_ON_DM_SET_FACTION_BEFORE
+    NWNX_ON_DM_SET_FACTION_AFTER
+    NWNX_ON_DM_TAKE_ITEM_BEFORE
+    NWNX_ON_DM_TAKE_ITEM_AFTER
+    NWNX_ON_DM_SET_STAT_BEFORE
+    NWNX_ON_DM_SET_STAT_AFTER
+    NWNX_ON_DM_GET_VARIABLE_BEFORE
+    NWNX_ON_DM_GET_VARIABLE_AFTER
+    NWNX_ON_DM_SET_VARIABLE_BEFORE
+    NWNX_ON_DM_SET_VARIABLE_AFTER
+    NWNX_ON_DM_SET_TIME_BEFORE
+    NWNX_ON_DM_SET_TIME_AFTER
+    NWNX_ON_DM_SET_DATE_BEFORE
+    NWNX_ON_DM_SET_DATE_AFTER
+    NWNX_ON_DM_SET_FACTION_REPUTATION_BEFORE
+    NWNX_ON_DM_SET_FACTION_REPUTATION_AFTER
+    NWNX_ON_DM_GET_FACTION_REPUTATION_BEFORE
+    NWNX_ON_DM_GET_FACTION_REPUTATION_AFTER
+    NWNX_ON_DM_DUMP_LOCALS_BEFORE
+    NWNX_ON_DM_DUMP_LOCALS_AFTER
+
+    These events do not have event data implemented and can only be skipped
+
+    Usage:
+        OBJECT_SELF = The DM
+
+    Event data:
+        Variable Name           Type        Notes
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_CLIENT_DISCONNECT_BEFORE
     NWNX_ON_CLIENT_DISCONNECT_AFTER
