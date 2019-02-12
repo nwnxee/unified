@@ -17,7 +17,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: You can now get the current event name with a nwscript function
 - Events: Added On{Listen/Spot}Detection events to StealthEvents
 - Events: Added On{Un}Polymorph events as PolymorphEvents
-- Events: Added SpawnObject, GiveItem and GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal events to DMActionEvents
+- Events: Added SpawnObject, GiveItem and GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal, Goto, Possess, PossessFullPower, ToggleLock, DisableTrap, JumpToPoint, JumpTargetToPoint, JumpAllPlayersToPoint events to DMActionEvents
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
