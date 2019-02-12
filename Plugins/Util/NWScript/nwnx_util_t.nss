@@ -32,5 +32,8 @@ void main()
     e = NWNX_Util_ItemPropertyToEffect(ip);
     report("EffectToItemProperty_ItemPropertyToEffect", GetEffectTag(e) == "NWNX_UTIL_TEST");
 
+    string uuid = NWNX_Util_GenerateUUID();
+    report("GenerateUUID", GetStringLength(uuid) == 36);
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

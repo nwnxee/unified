@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recompile all your scripts. 
+NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recompile all your scripts.
 
 ### Added
 - Added support to skip building certain plugins by setting an environment variable, for example: `NWNX_SKIP_PLUGINS="JVM;Lua;Mono;Ruby;SpellChecker"`
@@ -94,6 +94,7 @@ The following plugins were added:
 - Player: SetPlaceableUsable()
 - Player: SetRestDuration()
 - Rename: SetPCNameOverride()
+- Util: GenerateUUID()
 - Util: GetCustomToken()
 - Util: EffectToItemProperty()
 - Util: ItemPropertyToEffect()

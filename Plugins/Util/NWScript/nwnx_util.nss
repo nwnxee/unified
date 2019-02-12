@@ -14,6 +14,8 @@ string NWNX_Util_GetCustomToken(int customTokenNumber);
 itemproperty NWNX_Util_EffectToItemProperty(effect e);
 // Convert an IP type to an effect type
 effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
+// Generate a v4 UUID.
+string NWNX_Util_GenerateUUID();
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -64,4 +66,11 @@ effect NWNX_Util_ItemPropertyToEffect(itemproperty ip)
     NWNX_PushArgumentItemProperty(NWNX_Util, sFunc, ip);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueEffect(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GenerateUUID()
+{
+    string sFunc = "GenerateUUID";
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
