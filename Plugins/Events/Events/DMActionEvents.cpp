@@ -38,8 +38,8 @@ static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
     return value;
 }
 
-int32_t HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
-                        const std::string &event, int32_t alignmentType = 0)
+int32_t DMActionEvents::HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                        const std::string &event, int32_t alignmentType = 0)
 {
     int32_t retVal;
     Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
@@ -70,7 +70,8 @@ int32_t HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMin
     return retVal;
 }
 
-int32_t HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup, const std::string &event)
+int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                        const std::string &event)
 {
     int32_t retVal;
     Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
