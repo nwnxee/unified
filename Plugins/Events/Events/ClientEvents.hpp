@@ -16,6 +16,7 @@ private:
     static void RemovePCFromWorldHook(NWNXLib::Services::Hooks::CallType type,
         NWNXLib::API::CServerExoAppInternal*,
         NWNXLib::API::CNWSPlayer*);
+    static int32_t SendServerToPlayerCharListHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*);
 };
 
 }
