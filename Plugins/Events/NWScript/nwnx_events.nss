@@ -143,6 +143,8 @@
     NWNX_ON_DM_DISABLE_TRAP_BEFORE
     NWNX_ON_DM_DISABLE_TRAP_AFTER
 
+    !!! Notice: If TARGET is OBJECT_INVALID for NWNX_ON_DM_POSSESS_*, the DM is unpossessing. !!!
+
     Usage:
         OBJECT_SELF = The DM
 

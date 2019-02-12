@@ -91,7 +91,7 @@ int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPla
     for (int32_t target = 0; target < groupSize; target++)
     {
         targets.push_back(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
-        offset += 4;
+        offset += sizeof(Types::ObjectID);
     }
 
     auto PushAndSignalGroupEvent = [&](std::string ev) -> bool {
@@ -149,24 +149,24 @@ int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *p
     int32_t retVal;
     Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
     int32_t offset = 0;
-    int32_t groupSize = 0;
+    int32_t groupSize = 1;
     std::vector<Types::ObjectID> targets;
 
-    std::string targetArea = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF); offset += 4;
-    std::string x = std::to_string(PeekMessage<float>(pMessage, offset)); offset += 4;
-    std::string y = std::to_string(PeekMessage<float>(pMessage, offset)); offset += 4;
-    std::string z = std::to_string(PeekMessage<float>(pMessage, offset)); offset += 4;
+    std::string targetArea = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF); offset += sizeof(Types::ObjectID);
+    std::string x = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+    std::string y = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+    std::string z = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
 
-    if (bGroup)
+    if (bGroup && nMinor == MessageDungeonMasterMinor::GotoPointTarget)
     {
         groupSize = PeekMessage<int32_t>(pMessage, offset);
-        offset += 4;
+        offset += sizeof(groupSize);
+    }
 
-        for (int32_t target = 0; target < groupSize; target++)
-        {
-            targets.push_back(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
-            offset += 4;
-        }
+    for (int32_t target = 0; target < groupSize; target++)
+    {
+        targets.push_back(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
+        offset += sizeof(Types::ObjectID);
     }
 
     auto PushAndSignalTeleportEvent = [&](std::string ev) -> bool {
@@ -174,7 +174,7 @@ int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *p
         Events::PushEventData("POS_X", x);
         Events::PushEventData("POS_Y", y);
         Events::PushEventData("POS_Z", z);
-        if (bGroup)
+        if (nMinor == MessageDungeonMasterMinor::GotoPointTarget)
         {
             Events::PushEventData("NUM_TARGETS", std::to_string(groupSize));
             for(int32_t target = 0; target < groupSize; target++)
@@ -228,13 +228,14 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case MessageDungeonMasterMinor::SpawnPortal:
         {
             event += "SPAWN_OBJECT";
+            int32_t offset = 0;
 
-            std::string area = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+            std::string area = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF); offset += sizeof(Types::ObjectID);
             std::string object = Utils::ObjectIDToString(Globals::AppManager()->m_pServerExoApp->GetObjectArray()->m_nNextObjectArrayID[0]);
             int32_t objectType;
-            std::string x = std::to_string(PeekMessage<float>(thisPtr, 4));
-            std::string y = std::to_string(PeekMessage<float>(thisPtr, 8));
-            std::string z = std::to_string(PeekMessage<float>(thisPtr, 12));
+            std::string x = std::to_string(PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
+            std::string y = std::to_string(PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
+            std::string z = std::to_string(PeekMessage<float>(thisPtr, offset));
 
             switch (nMinor)
             {
