@@ -157,16 +157,19 @@ int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *p
     std::string y = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
     std::string z = std::to_string(PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
 
-    if (bGroup && nMinor == MessageDungeonMasterMinor::GotoPointTarget)
+    if (nMinor == MessageDungeonMasterMinor::GotoPointTarget)
     {
-        groupSize = PeekMessage<int32_t>(pMessage, offset);
-        offset += sizeof(groupSize);
-    }
+        if (bGroup)
+        {
+            groupSize = PeekMessage<int32_t>(pMessage, offset);
+            offset += sizeof(groupSize);
+        }
 
-    for (int32_t target = 0; target < groupSize; target++)
-    {
-        targets.push_back(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
-        offset += sizeof(Types::ObjectID);
+        for (int32_t target = 0; target < groupSize; target++)
+        {
+            targets.push_back(PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
+            offset += sizeof(Types::ObjectID);
+        }
     }
 
     auto PushAndSignalTeleportEvent = [&](std::string ev) -> bool {
