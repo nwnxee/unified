@@ -138,6 +138,21 @@
     Usage:
         OBJECT_SELF = The player disconnecting from the server
 ////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_CLIENT_CONNECT_BEFORE
+    NWNX_ON_CLIENT_CONNECT_AFTER
+
+    Skipping the _BEFORE event will cause the client's connection to be denied.
+    You can optionally pass a reason for this in the event result.
+
+    Usage:
+        OBJECT_SELF = The module
+
+    Event data:
+        Variable Name           Type        Notes
+        PLAYER_NAME             string      Player name of the connecting client
+        CDKEY                   string      Public cdkey of the connecting client
+        IS_DM                   int         Whether the client is connect as DM (1/0)
+////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_START_COMBAT_ROUND_BEFORE
     NWNX_ON_START_COMBAT_ROUND_AFTER
 
@@ -366,6 +381,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Listen/Spot Detection events
 // - Polymorph events
 // - DMAction events
+// - Client connect event
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
@@ -374,6 +390,7 @@ void NWNX_Events_SkipEvent();
 // ONLY WORKS WITH THE FOLLOWING EVENTS:
 // - Healer's Kit event
 // - Listen/Spot Detection events -> "1" or "0"
+// - OnClientConnectBefore -> Reason for disconnect if skipped
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
