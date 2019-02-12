@@ -87,6 +87,7 @@ int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPla
     }
 
     std::vector<Types::ObjectID> targets;
+    targets.reserve(groupSize);
 
     for (int32_t target = 0; target < groupSize; target++)
     {
@@ -164,6 +165,8 @@ int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *p
             groupSize = PeekMessage<int32_t>(pMessage, offset);
             offset += sizeof(groupSize);
         }
+
+        targets.reserve(groupSize);
 
         for (int32_t target = 0; target < groupSize; target++)
         {
