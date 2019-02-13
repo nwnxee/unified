@@ -16,6 +16,8 @@ public:
 private:
     static int32_t UseItemHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t,
         uint8_t, NWNXLib::API::Types::ObjectID, NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID);
+    static void OpenInventoryHook(NWNXLib::API::CNWSItem*, NWNXLib::API::Types::ObjectID);
+    static void CloseInventoryHook(NWNXLib::API::CNWSItem*, NWNXLib::API::Types::ObjectID, int32_t);
 };
 
 }

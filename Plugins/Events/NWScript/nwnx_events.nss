@@ -48,6 +48,18 @@
         TARGET_POSITION_X       float
         TARGET_POSITION_Y       float
         TARGET_POSITION_Z       float
+
+    NWNX_ON_ITEM_INVENTORY_OPEN_BEFORE
+    NWNX_ON_ITEM_INVENTORY_OPEN_AFTER
+    NWNX_ON_ITEM_INVENTORY_CLOSE_BEFORE
+    NWNX_ON_ITEM_INVENTORY_CLOSE_AFTER
+
+    Usage:
+        OBJECT_SELF = The container
+
+    Event data:
+        Variable Name           Type        Notes
+        OWNER                   object      Convert to object with NWNX_Object_StringToObject()
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
