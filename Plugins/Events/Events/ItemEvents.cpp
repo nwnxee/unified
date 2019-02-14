@@ -1,21 +1,29 @@
 #include "Events/ItemEvents.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
+#include "API/CNWSItem.hpp"
 #include "Events.hpp"
 #include "Utils.hpp"
 
 namespace Events {
 
 using namespace NWNXLib;
+using namespace NWNXLib::API;
 
 static Hooking::FunctionHook* m_UseItemHook = nullptr;
+static Hooking::FunctionHook* m_OpenInventoryHook = nullptr;
+static Hooking::FunctionHook* m_CloseInventoryHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseItem, int32_t, API::CNWSCreature*, API::Types::ObjectID, uint8_t,
-        uint8_t, API::Types::ObjectID, API::Vector, API::Types::ObjectID>(&UseItemHook);
-
+    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseItem>(&UseItemHook);
     m_UseItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseItem);
+
+    hooker->RequestExclusiveHook<API::Functions::CNWSItem__OpenInventory>(&OpenInventoryHook);
+    m_OpenInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__OpenInventory);
+
+    hooker->RequestExclusiveHook<API::Functions::CNWSItem__CloseInventory>(&CloseInventoryHook);
+    m_CloseInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__CloseInventory);
 }
 
 int32_t ItemEvents::UseItemHook(
@@ -52,6 +60,36 @@ int32_t ItemEvents::UseItemHook(
     PushAndSignal("NWNX_ON_USE_ITEM_AFTER");
 
     return retVal;
+}
+
+void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidOpener)
+{
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("OWNER", Utils::ObjectIDToString(oidOpener));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_INVENTORY_OPEN_BEFORE"))
+    {
+        m_OpenInventoryHook->CallOriginal<void>(thisPtr, oidOpener);
+    }
+
+    PushAndSignal("NWNX_ON_ITEM_INVENTORY_OPEN_AFTER");
+}
+
+void ItemEvents::CloseInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidCloser, int32_t bUpdatePlayer)
+{
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("OWNER", Utils::ObjectIDToString(oidCloser));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_INVENTORY_CLOSE_BEFORE"))
+    {
+        m_CloseInventoryHook->CallOriginal<void>(thisPtr, oidCloser, bUpdatePlayer);
+    }
+
+    PushAndSignal("NWNX_ON_ITEM_INVENTORY_CLOSE_AFTER");
 }
 
 }
