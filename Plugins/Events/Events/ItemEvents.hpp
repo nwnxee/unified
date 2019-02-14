@@ -18,6 +18,8 @@ private:
         uint8_t, NWNXLib::API::Types::ObjectID, NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID);
     static void OpenInventoryHook(NWNXLib::API::CNWSItem*, NWNXLib::API::Types::ObjectID);
     static void CloseInventoryHook(NWNXLib::API::CNWSItem*, NWNXLib::API::Types::ObjectID, int32_t);
+    static int32_t AddItemHook(NWNXLib::API::CItemRepository*, NWNXLib::API::CNWSItem**, uint8_t, uint8_t, int32_t, int32_t);
+    static void RemoveItemHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CItemRepository*, NWNXLib::API::CNWSItem*);
 };
 
 }

@@ -60,6 +60,20 @@
     Event data:
         Variable Name           Type        Notes
         OWNER                   object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_INVENTORY_ADD_ITEM_BEFORE
+    NWNX_ON_ITEM_INVENTORY_ADD_ITEM_AFTER
+    NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_BEFORE
+    NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_AFTER
+
+    Note: NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_* is not skippable
+
+    Usage:
+        OBJECT_SELF = The container
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
