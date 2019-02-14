@@ -19,7 +19,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added On{Un}Polymorph events as PolymorphEvents
 - Events: Added Event Data for SpawnObject, GiveItem and GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal, Goto, Possess, PossessFullPower, ToggleLock, DisableTrap, JumpToPoint, JumpTargetToPoint, JumpAllPlayersToPoint, ChangeDifficulty, ViewInventory, SpawnTrapOnObject events in DMActionEvents
 - Events: Added OnClientConnect events that fire before the player sees the server vault.
-- Events: Added ItemInventory{Open/Close} events to ItemEvents
+- Events: Added ItemInventory{Open/Close} and ItemInventory{Add/Remove}Item events to ItemEvents
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
