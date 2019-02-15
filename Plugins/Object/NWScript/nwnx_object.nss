@@ -128,6 +128,9 @@ void NWNX_Object_SetAppearance(object obj, int app);
 // Get obj's appearance
 int NWNX_Object_GetAppearance(object obj);
 
+// Return TRUE if obj has visual effect nVFX applied to it
+int NWNX_Object_GetHasVisualEffect(object obj, int nVFX);
+
 
 const string NWNX_Object = "NWNX_Object";
 
@@ -321,5 +324,17 @@ int NWNX_Object_GetAppearance(object obj)
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetHasVisualEffect(object obj, int nVFX)
+{
+    string sFunc = "GetHasVisualEffect";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nVFX);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }

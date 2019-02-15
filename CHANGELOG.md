@@ -83,6 +83,7 @@ The following plugins were added:
 - Feedback: SetMessageHidden()
 - ItemProperty: PackIP()
 - ItemProperty: UnpackIP()
+- Object: GetHasVisualEffect()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()

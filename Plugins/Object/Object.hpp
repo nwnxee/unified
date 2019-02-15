@@ -30,6 +30,7 @@ private:
     ArgumentStack SetDialogResref      (ArgumentStack&& args);
     ArgumentStack SetAppearance        (ArgumentStack&& args);
     ArgumentStack GetAppearance        (ArgumentStack&& args);
+    ArgumentStack GetHasVisualEffect   (ArgumentStack&& args);
 
     NWNXLib::API::CNWSObject *object(ArgumentStack& args);
 
