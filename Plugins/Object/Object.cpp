@@ -17,6 +17,7 @@
 #include "API/CNWSDoor.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/CLoopingVisualEffect.hpp"
 #include "Services/Events/Events.hpp"
 #include "ViewPtr.hpp"
 #include "Serialize.hpp"
@@ -69,6 +70,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetDialogResref);
     REGISTER(SetAppearance);
     REGISTER(GetAppearance);
+    REGISTER(GetHasVisualEffect);
 
 #undef REGISTER
 }
@@ -300,6 +302,30 @@ ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 
         pPlaceable->m_nAppearance=app;
     }
+    return stack;
+}
+
+ArgumentStack Object::GetHasVisualEffect(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal=0;
+    
+    if (auto *pObject = object(args))
+    {
+        const auto nVfx = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto& vfx = pObject->m_lstLoopingVisualEffects;
+        for (int k = 0; k< vfx.num; k++)
+        {
+            if (vfx.element[k] && vfx.element[k]->m_nId == nVfx)
+            {
+                retVal=1;
+                break;
+            }
+        }
+    }
+    
+    Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
 
