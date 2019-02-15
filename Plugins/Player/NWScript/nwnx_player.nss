@@ -107,6 +107,11 @@ void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
 // -1 clears the override
 void NWNX_Player_SetRestDuration(object player, int duration);
 
+// Apply visualeffect to target that only player can see
+//
+// Note: Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_*
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -194,21 +199,21 @@ struct NWNX_Player_QuickBarSlot NWNX_Player_GetQuickBarSlot(object player, int s
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
     NWNX_CallFunction(NWNX_Player, sFunc);
 
-     qbs.oAssociate     = NWNX_GetReturnValueObject(NWNX_Player, sFunc);
-     qbs.nAssociateType = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
-     qbs.nDomainLevel   = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
-     qbs.nMetaType      = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
-     qbs.nINTParam1     = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
-     qbs.sToolTip       = NWNX_GetReturnValueString(NWNX_Player, sFunc);
-     qbs.sCommandLine   = NWNX_GetReturnValueString(NWNX_Player, sFunc);
-     qbs.sCommandLabel  = NWNX_GetReturnValueString(NWNX_Player, sFunc);
-     qbs.sResRef        = NWNX_GetReturnValueString(NWNX_Player, sFunc);
-     qbs.nMultiClass    = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
-     qbs.nObjectType    = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
-     qbs.oSecondaryItem = NWNX_GetReturnValueObject(NWNX_Player, sFunc);
-     qbs.oItem          = NWNX_GetReturnValueObject(NWNX_Player, sFunc);
+    qbs.oAssociate     = NWNX_GetReturnValueObject(NWNX_Player, sFunc);
+    qbs.nAssociateType = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
+    qbs.nDomainLevel   = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
+    qbs.nMetaType      = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
+    qbs.nINTParam1     = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
+    qbs.sToolTip       = NWNX_GetReturnValueString(NWNX_Player, sFunc);
+    qbs.sCommandLine   = NWNX_GetReturnValueString(NWNX_Player, sFunc);
+    qbs.sCommandLabel  = NWNX_GetReturnValueString(NWNX_Player, sFunc);
+    qbs.sResRef        = NWNX_GetReturnValueString(NWNX_Player, sFunc);
+    qbs.nMultiClass    = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
+    qbs.nObjectType    = NWNX_GetReturnValueInt(NWNX_Player,    sFunc);
+    qbs.oSecondaryItem = NWNX_GetReturnValueObject(NWNX_Player, sFunc);
+    qbs.oItem          = NWNX_GetReturnValueObject(NWNX_Player, sFunc);
 
-     return qbs;
+    return qbs;
 }
 
 void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_QuickBarSlot qbs)
@@ -404,6 +409,16 @@ void NWNX_Player_SetRestDuration(object player, int duration)
 {
     string sFunc = "SetRestDuration";
     NWNX_PushArgumentInt(NWNX_Player, sFunc, duration);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect)
+{
+    string sFunc = "ApplyInstantVisualEffectToObject";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);

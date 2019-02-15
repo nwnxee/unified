@@ -96,6 +96,7 @@ The following plugins were added:
 - Player: PlaySound()
 - Player: SetPlaceableUsable()
 - Player: SetRestDuration()
+- Player: ApplyInstantVisualEffectToObject()
 - Rename: SetPCNameOverride()
 - Util: GenerateUUID()
 - Util: GetCustomToken()

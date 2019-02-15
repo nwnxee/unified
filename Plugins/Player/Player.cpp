@@ -18,6 +18,7 @@
 #include "API/CNWRules.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CTwoDimArrays.hpp"
+#include "API/CNWSModule.hpp"
 #include "API/C2DA.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -75,6 +76,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(PlaySound);
     REGISTER(SetPlaceableUsable);
     REGISTER(SetRestDuration);
+    REGISTER(ApplyInstantVisualEffectToObject);
 
 #undef REGISTER
 
@@ -547,6 +549,38 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
         }
     }
 
+    return stack;
+}
+
+ArgumentStack Player::ApplyInstantVisualEffectToObject(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(visualEffect >= 0); ASSERT_OR_THROW(visualEffect <= 65535);
+
+        Vector vTargetPosition;
+        vTargetPosition.x = 0.0f;
+        vTargetPosition.y = 0.0f;
+        vTargetPosition.z = 0.0f;
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerGameObjUpdateVisEffect(
+                    pPlayer,
+                    visualEffect,                 // nVisualEffectID
+                    oidTarget,                    // oidTarget
+                    Utils::GetModule()->m_idSelf, // oidSource
+                    0,                            // nSourceNode
+                    0,                            // nTargetNode
+                    vTargetPosition,              // vTargetPosition
+                    0.0f);                        // fDuration
+        }
+    }
     return stack;
 }
 
