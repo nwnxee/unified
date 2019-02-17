@@ -44,6 +44,8 @@ void Redis::Reconfigure()
                                    m_internal->m_config.m_host.c_str(),
                                    m_internal->m_config.m_port);
 
+        LOG_INFO("PubSub: Using NWScript: %s", m_internal->m_config.m_pubsub_script.c_str());
+
         try
         {
             m_internal->m_connection_pubsub.disconnect();
