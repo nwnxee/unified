@@ -11,6 +11,7 @@
 
 #include <string>
 #include <stdio.h>
+#include <regex>
 #include <functional>
 
 using namespace NWNXLib;
@@ -52,6 +53,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetCustomToken);
     REGISTER(EffectTypeCast);
     REGISTER(GenerateUUID);
+    REGISTER(StripColors);
 
 #undef REGISTER
 
@@ -160,6 +162,17 @@ ArgumentStack Util::GenerateUUID(ArgumentStack&&)
         bytes[8],bytes[9],bytes[10],bytes[11],bytes[12],bytes[13],bytes[14],bytes[15]);
 
     Services::Events::InsertArgument(stack, uuid);
+    return stack;
+}
+
+ArgumentStack Util::StripColors(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto s = Services::Events::ExtractArgument<std::string>(args);
+
+    std::regex color_codes("<c.+?(?=>)>|<\\/c>");
+    std::string retVal = std::regex_replace(s, color_codes, "");
+    Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
 

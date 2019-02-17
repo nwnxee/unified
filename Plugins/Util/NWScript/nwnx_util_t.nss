@@ -1,4 +1,5 @@
 #include "nwnx_util"
+#include "x3_inc_string"
 
 void report(string func, int bSuccess)
 {
@@ -34,6 +35,11 @@ void main()
 
     string uuid = NWNX_Util_GenerateUUID();
     report("GenerateUUID", GetStringLength(uuid) == 36);
+
+    string sRedString = StringToRGBString("stripped colors.", STRING_COLOR_RED);
+    str = "This is a <cfff>test</c> of "+sRedString;
+    string strip_colors = NWNX_Util_StripColors(str);
+    report("RegexReplace", strip_colors == "This is a test of stripped colors.");
 
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }
