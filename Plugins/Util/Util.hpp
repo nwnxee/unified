@@ -21,6 +21,7 @@ private:
     ArgumentStack GetCustomToken(ArgumentStack&& args);
     ArgumentStack EffectTypeCast(ArgumentStack&& args);
     ArgumentStack GenerateUUID(ArgumentStack&& args);
+    ArgumentStack StripColors(ArgumentStack&& args);
 };
 
 }

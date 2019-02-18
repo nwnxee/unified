@@ -102,6 +102,7 @@ The following plugins were added:
 - Util: GetCustomToken()
 - Util: EffectToItemProperty()
 - Util: ItemPropertyToEffect()
+- Util: StripColors()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()

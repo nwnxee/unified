@@ -16,6 +16,8 @@ itemproperty NWNX_Util_EffectToItemProperty(effect e);
 effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
 // Generate a v4 UUID.
 string NWNX_Util_GenerateUUID();
+// Strip any color codes from a string
+string NWNX_Util_StripColors(string str);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -71,6 +73,14 @@ effect NWNX_Util_ItemPropertyToEffect(itemproperty ip)
 string NWNX_Util_GenerateUUID()
 {
     string sFunc = "GenerateUUID";
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_StripColors(string str)
+{
+    string sFunc = "StripColors";
+    NWNX_PushArgumentString(NWNX_Util, sFunc, str);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
