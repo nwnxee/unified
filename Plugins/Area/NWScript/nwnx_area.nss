@@ -13,6 +13,11 @@ const int NWNX_AREA_DAYNIGHTCYCLE_CYCLE_DAY_NIGHT   = 0;
 const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_BRIGHT     = 1;
 const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK       = 2;
 
+const int NWNX_AREA_COLOR_TYPE_MOON_AMBIENT         = 0;
+const int NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE         = 1;
+const int NWNX_AREA_COLOR_TYPE_SUN_AMBIENT          = 2;
+const int NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE          = 3;
+
 // Gets the number of players in area
 int NWNX_Area_GetNumberOfPlayersInArea(object area);
 
@@ -86,6 +91,17 @@ int NWNX_Area_GetDayNightCycle(object area);
 // Set the day/night cycle of area
 // type = NWNX_AREA_DAYNIGHTCYCLE_*
 void NWNX_Area_SetDayNightCycle(object area, int type);
+
+// Set the Sun/Moon Ambient/Diffuse colors of area
+// type = NWNX_AREA_COLOR_TYPE_*
+// color = FOG_COLOR_*
+//
+// The color can also be represented as a hex RGB number if specific color shades are desired.
+// The format of a hex specified color would be 0xFFEEDD where
+// FF would represent the amount of red in the color
+// EE would represent the amount of green in the color
+// DD would represent the amount of blue in the color.
+void NWNX_Area_SetSunMoonColors(object area, int type, int color);
 
 
 const string NWNX_Area = "NWNX_Area";
@@ -290,6 +306,16 @@ void NWNX_Area_SetDayNightCycle(object area, int type)
 {
     string sFunc = "SetDayNightCycle";
 
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_SetSunMoonColors(object area, int type, int color)
+{
+    string sFunc = "SetSunMoonColors";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, color);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
     NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
     NWNX_CallFunction(NWNX_Area, sFunc);
