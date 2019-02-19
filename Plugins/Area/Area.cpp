@@ -480,29 +480,27 @@ ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
           ASSERT_OR_THROW(type >= 0);
           ASSERT_OR_THROW(type <= 3);
         auto color = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(color >= 0);
 
-        // The game stores this as a BGR value, but RGB is probably more intuitive for users,
-        // So lets swap Blue and Red around here.
-        auto nFogColor = ( (((uint32_t)color & 0x000000FF) << 16) |
-                            ((uint32_t)color & 0x0000FF00) |
-                           (((uint32_t)color & 0x00FF0000) >> 16) );
+        // Switch from RGB to BGR
+        auto swappedColor = (uint32_t)(((color & 0x000000FF) << 16) | (color & 0x0000FF00) | ((color & 0x00FF0000) >> 16));
 
         switch (type)
         {
             case 0:
-                pArea->m_nMoonAmbientColor = nFogColor;
+                pArea->m_nMoonAmbientColor = swappedColor;
                 break;
 
             case 1:
-                pArea->m_nMoonDiffuseColor = nFogColor;
+                pArea->m_nMoonDiffuseColor = swappedColor;
                 break;
 
             case 2:
-                pArea->m_nSunAmbientColor = nFogColor;
+                pArea->m_nSunAmbientColor = swappedColor;
                 break;
 
             case 3:
-                pArea->m_nSunDiffuseColor = nFogColor;
+                pArea->m_nSunDiffuseColor = swappedColor;
                 break;
 
             default:
