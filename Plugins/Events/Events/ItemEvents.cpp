@@ -164,6 +164,14 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
     }
 
+    // We're most assuredly in an infinite loop here caused by the scripting end
+    // unless the player has > 255 stacks of ammo they can't equip
+    // Suppose I could set this to a higher value but I think this is safe
+    if(nTh > 255)
+    {
+        return OBJECT_INVALID;
+    }
+
     auto ItemSanityCheck = [&](uint32_t objectId) -> uint32_t {
         if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
             return objectId;
