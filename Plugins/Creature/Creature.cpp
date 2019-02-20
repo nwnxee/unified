@@ -123,6 +123,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetFeatTotalUses);
     REGISTER(SetFeatRemainingUses);
     REGISTER(GetTotalEffectBonus);
+    REGISTER(SetOriginalName);
+    REGISTER(GetOriginalName);
 
 #undef REGISTER
 }
@@ -1739,4 +1741,60 @@ ArgumentStack Creature::GetTotalEffectBonus(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
+
+ArgumentStack Creature::SetOriginalName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto name = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(!name.empty());
+        const auto isLastName = Services::Events::ExtractArgument<int32_t>(args);
+
+        CExoLocString locName;
+        locName.AddString(0, CExoString(name.c_str()), 0);
+
+        if (isLastName)
+        {
+            pCreature->m_pStats->m_lsLastName = locName;
+        }
+        else
+        {
+            pCreature->m_pStats->m_lsFirstName = locName;
+        }
+    }
+
+    return stack;
+}
+
+ArgumentStack Creature::GetOriginalName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retVal;
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto isLastName = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto ExtractString = [&](CExoLocString locStr) -> std::string {
+            CExoString str;
+            locStr.GetStringLoc(0, &str, 0);
+            return std::string(str.CStr());
+        };
+
+        if (isLastName)
+        {
+            retVal = ExtractString(pCreature->m_pStats->m_lsLastName);
+        }
+        else
+        {
+            retVal = ExtractString(pCreature->m_pStats->m_lsFirstName);
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
 }

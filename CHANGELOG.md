@@ -65,6 +65,8 @@ The following plugins were added:
 - Creature: GetFeatTotalUses()
 - Creature: SetFeatRemainingUses()
 - Creature: GetTotalEffectBonus()
+- Creature: SetOriginalName()
+- Creature: GetOriginalName()
 - Effect: PackEffect()
 - Effect: UnpackEffect()
 - Effect: SetEffectExpiredScript()

@@ -87,6 +87,8 @@ private:
     ArgumentStack GetFeatTotalUses              (ArgumentStack&& args);
     ArgumentStack SetFeatRemainingUses          (ArgumentStack&& args);
     ArgumentStack GetTotalEffectBonus           (ArgumentStack&& args);
+    ArgumentStack SetOriginalName               (ArgumentStack&& args);
+    ArgumentStack GetOriginalName               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
