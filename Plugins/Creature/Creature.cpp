@@ -1749,7 +1749,6 @@ ArgumentStack Creature::SetOriginalName(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto name = Services::Events::ExtractArgument<std::string>(args);
-          ASSERT_OR_THROW(!name.empty());
         const auto isLastName = Services::Events::ExtractArgument<int32_t>(args);
 
         CExoLocString locName;
@@ -1761,6 +1760,7 @@ ArgumentStack Creature::SetOriginalName(ArgumentStack&& args)
         }
         else
         {
+            ASSERT_OR_THROW(!name.empty());
             pCreature->m_pStats->m_lsFirstName = locName;
         }
     }
