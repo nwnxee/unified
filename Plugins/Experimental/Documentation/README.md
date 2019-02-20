@@ -6,7 +6,7 @@ Experimental functionality. Use this stuff at your own risk.
 
 The following environmental variable is required to load the plugin:
 
-`NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN=true`
+`NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN=y`
 
 ## Environment Variables
 
