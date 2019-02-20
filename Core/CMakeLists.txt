@@ -15,4 +15,5 @@ target_link_libraries(Core NWNXLib)
 
 # The name defined here will be ignored when loading plugins.
 add_definitions(-DNWNX_CORE_PLUGIN_NAME="${PLUGIN_PREFIX}Core")
+# The name of the experimental plugin.
 add_definitions(-DNWNX_EXPERIMENTAL_PLUGIN_NAME="${PLUGIN_PREFIX}Experimental")

@@ -34,7 +34,7 @@ Experimental::Experimental(const Plugin::CreateParams& params)
 {
     if (GetServices()->m_config->Get<bool>("SUPPRESS_PLAYER_LOGIN_INFO", false))
     {
-        LOG_INFO("EXPERIMENTAL: Suppressing playerlist and player login messages for non DMs.");
+        LOG_INFO("EXPERIMENTAL: Suppressing playerlist and player login/logout messages for non DMs.");
         m_SuppressPlayerLoginInfo = std::make_unique<SuppressPlayerLoginInfo>(GetServices()->m_hooks.get());
     }
 }

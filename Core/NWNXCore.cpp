@@ -229,7 +229,7 @@ void NWNXCore::InitialSetupPlugins()
             }
             else
             {
-                LOG_WARNING("Experimental Plugin Found: %s", pluginNameWithoutExtension.c_str());
+                LOG_WARNING("Experimental plugin %s found, it will be loaded due to configuration.", pluginNameWithoutExtension.c_str());
             }
         }
 

@@ -14,7 +14,6 @@ public:
 
 private:
     std::unique_ptr<SuppressPlayerLoginInfo> m_SuppressPlayerLoginInfo;
-
 };
 
 }

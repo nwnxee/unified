@@ -29,6 +29,7 @@ The following plugins were added:
 - **Area**: Adds functions exposing additional area properties
 - **CombatModes**: Allows subscribing to Combat Mode toggle events. The Events plugin is needed to subscribe to the CombatMode events
 - **Effect**: Provides various utility functions to manipulate builtin effect types
+- **Experimental**: Adds experimental functionality that's not really useful for the general user. The following environmental variable needs to be true for the plugin to load: `NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN=y`
 - **Encounter**: Adds functions exposing additional encounter properties
 - **Feedback**: Allows combatlog and feedback messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
