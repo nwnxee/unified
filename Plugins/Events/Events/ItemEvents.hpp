@@ -20,6 +20,7 @@ private:
     static void CloseInventoryHook(NWNXLib::API::CNWSItem*, NWNXLib::API::Types::ObjectID, int32_t);
     static int32_t AddItemHook(NWNXLib::API::CItemRepository*, NWNXLib::API::CNWSItem**, uint8_t, uint8_t, int32_t, int32_t);
     static void RemoveItemHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CItemRepository*, NWNXLib::API::CNWSItem*);
+    static uint32_t FindItemWithBaseItemIdHook(NWNXLib::API::CItemRepository*, uint32_t, int32_t);
 };
 
 }

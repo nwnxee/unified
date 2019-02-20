@@ -20,6 +20,7 @@ static Hooking::FunctionHook* m_UseItemHook = nullptr;
 static Hooking::FunctionHook* m_OpenInventoryHook = nullptr;
 static Hooking::FunctionHook* m_CloseInventoryHook = nullptr;
 static Hooking::FunctionHook* m_AddItemHook = nullptr;
+static Hooking::FunctionHook* m_FindItemWithBaseItemIdHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
@@ -36,6 +37,10 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     m_AddItemHook = hooker->FindHookByAddress(API::Functions::CItemRepository__AddItem);
 
     hooker->RequestSharedHook<API::Functions::CItemRepository__RemoveItem, int32_t>(&RemoveItemHook);
+
+    hooker->RequestExclusiveHook<API::Functions::CItemRepository__FindItemWithBaseItemId>(&FindItemWithBaseItemIdHook);
+    m_FindItemWithBaseItemIdHook = hooker->FindHookByAddress(API::Functions::CItemRepository__FindItemWithBaseItemId);
+
 }
 
 int32_t ItemEvents::UseItemHook(
@@ -148,5 +153,59 @@ void ItemEvents::RemoveItemHook(Services::Hooks::CallType type, CItemRepository*
     Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
     Events::SignalEvent(before ? "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_BEFORE" : "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_AFTER", thisPtr->m_oidParent);
 }
+
+uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32_t baseItem, int32_t nTh)
+{
+    auto *pItemHolder = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
+
+    if(!pItemHolder)
+    {
+        // For our purposes we only want this to be used on creature ItemRepositories
+        return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
+    }
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
+
+    uint32_t retVal;
+    Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
+    Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
+
+    if (Events::SignalEvent("NWNX_ON_ITEM_FIND_ITEM_WITH_BASE_ITEMID_BEFORE", thisPtr->m_oidParent, &sBeforeEventResult))
+    {
+        retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+    }
+    else
+    {
+        retVal = stoul(sBeforeEventResult, nullptr, 16);
+
+        // Sanity check
+        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(retVal));
+        if (!pItem)
+            retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+
+        return retVal;
+    }
+
+    Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
+    Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
+    Events::PushEventData("ACTION_RESULT", Utils::ObjectIDToString(retVal));
+
+    if (Events::SignalEvent("NWNX_ON_ITEM_FIND_ITEM_WITH_BASE_ITEMID_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
+    {
+        retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+    }
+    else
+    {
+        retVal = stoul(sAfterEventResult, nullptr, 16);
+
+        // Sanity check
+        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(retVal));
+        if (!pItem)
+            retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+    }
+
+    return retVal;
+}
+
 
 }
