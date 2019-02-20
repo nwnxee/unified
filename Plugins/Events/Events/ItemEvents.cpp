@@ -163,10 +163,36 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         // For our purposes we only want this to be used on creature ItemRepositories
         return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
     }
+
+    auto ItemSanityCheck = [&](uint32_t objectId) -> uint32_t {
+        if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
+            return objectId;
+
+        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId));
+        if (!pItem)
+        {
+            LOG_WARNING("Item does not exist, falling back to original call.");
+            objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+        }
+        else if (pItem->m_nBaseItem != baseItem)
+        {
+            LOG_WARNING("Base Item ID of returned item does not match, falling back to original call.");
+            objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+        }
+        else if (pItem->m_pItemRepository != thisPtr)
+        {
+            LOG_WARNING("Item does not belong to that creature, falling back to original call.");
+            objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+        }
+        // TODO: Check if player is allowed to equip the item
+        return objectId;
+    };
+
     std::string sBeforeEventResult;
     std::string sAfterEventResult;
 
     uint32_t retVal;
+
     Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
     Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
 
@@ -176,14 +202,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     }
     else
     {
-        retVal = stoul(sBeforeEventResult, nullptr, 16);
-
-        // Sanity check
-        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(retVal));
-        if (!pItem)
-            retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
-
-        return retVal;
+        return ItemSanityCheck(stoul(sBeforeEventResult, nullptr, 16));
     }
 
     Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
@@ -196,12 +215,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     }
     else
     {
-        retVal = stoul(sAfterEventResult, nullptr, 16);
-
-        // Sanity check
-        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(retVal));
-        if (!pItem)
-            retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+        retVal = ItemSanityCheck(stoul(sAfterEventResult, nullptr, 16));
     }
 
     return retVal;
