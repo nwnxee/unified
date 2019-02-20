@@ -512,6 +512,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Polymorph events
 // - DMAction events
 // - Client connect event
+// - Spell events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
