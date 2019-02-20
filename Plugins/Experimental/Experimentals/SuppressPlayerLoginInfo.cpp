@@ -1,4 +1,4 @@
-#include "Experiments/SuppressPlayerLoginInfo.hpp"
+#include "Experimentals/SuppressPlayerLoginInfo.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
 
