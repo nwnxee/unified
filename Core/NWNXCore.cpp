@@ -220,6 +220,11 @@ void NWNXCore::InitialSetupPlugins()
             continue; // Not a plugin.
         }
 
+        if (pluginNameWithoutExtension == "NWNX_Experimental" && !m_coreServices->m_config->Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
+        {
+            continue;
+        }
+
         std::unique_ptr<Services::ProxyServiceList> services = ConstructProxyServices(pluginNameWithoutExtension);
 
         Plugin::CreateParams params = { services };
