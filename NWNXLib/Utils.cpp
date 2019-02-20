@@ -298,6 +298,13 @@ void DestroyGameEffect(API::CGameEffect* pEffect)
     }
 }
 
+std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID, uint8_t bGender)
+{
+    API::CExoString str;
+    locStr.GetStringLoc(nID, &str, bGender);
+
+    return std::string(str.CStr());
+}
 
 }
 }

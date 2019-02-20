@@ -546,14 +546,8 @@ Events::ArgumentStack Administration::OnDeleteTURD(Events::ArgumentStack&& args)
 
         if (turd)
         {
-            auto ExtractString = [&](CExoLocString locStr) -> std::string {
-                CExoString str;
-                locStr.GetStringLoc(0, &str, 0);
-                return std::string(str.CStr());
-            };
-
-            std::string turdCharacterName = ExtractString(turd->m_lsFirstName);
-            std::string turdLastName = ExtractString(turd->m_lsLastName);
+            std::string turdCharacterName = Utils::ExtractLocString(turd->m_lsFirstName);
+            std::string turdLastName = Utils::ExtractLocString(turd->m_lsLastName);
 
             if (!turdLastName.empty())
             {
