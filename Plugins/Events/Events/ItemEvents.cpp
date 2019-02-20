@@ -187,7 +187,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
             LOG_WARNING("Base Item ID of returned item does not match, falling back to original call.");
             objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
         }
-        else if (pItem->m_pItemRepository != thisPtr)
+        else if (pItem->m_oidPossessor != thisPtr->m_oidParent)
         {
             LOG_WARNING("Item does not belong to that creature, falling back to original call.");
             objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
