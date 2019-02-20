@@ -27,6 +27,9 @@ SuppressPlayerLoginInfo::SuppressPlayerLoginInfo(ViewPtr<Services::HooksProxy> h
 
     hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerPlayerList_Delete, int32_t>(&SendServerToPlayerPlayerList_DeleteHook);
     m_SendServerToPlayerPlayerList_DeleteHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerPlayerList_Delete);
+
+    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__HandlePlayerToServerPlayModuleCharacterList_Start>
+        (&HandlePlayerToServerPlayModuleCharacterList_StartHook);
 }
 
 int32_t SuppressPlayerLoginInfo::SendServerToPlayerPlayerList_AddHook(CNWSMessage *pThis, uint32_t nPlayerId, CNWSPlayer *pNewPlayer)
@@ -49,5 +52,13 @@ int32_t SuppressPlayerLoginInfo::SendServerToPlayerPlayerList_DeleteHook(CNWSMes
            m_SendServerToPlayerPlayerList_DeleteHook->CallOriginal<int32_t>(pThis, nPlayerId, pNewPlayer) :
            false;
 }
+int32_t SuppressPlayerLoginInfo::HandlePlayerToServerPlayModuleCharacterList_StartHook(
+    CNWSMessage* pThis, CNWSPlayer* pPlayer)
+{
+    if (pThis->MessageReadOverflow(true) || pThis->MessageReadUnderflow(true))
+        return false;
 
+    pPlayer->m_bPlayModuleListingCharacters = true;
+    return true;
+}
 }
