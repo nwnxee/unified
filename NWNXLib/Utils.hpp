@@ -5,6 +5,7 @@
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/Vector.hpp"
 #include "API/CGameEffect.hpp"
+#include "API/CExoLocString.hpp"
 #include <string>
 
 
@@ -47,6 +48,8 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
 API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject);
 
 void DestroyGameEffect(API::CGameEffect* pEffect);
+
+std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID = 0, uint8_t bGender = 0);
 
 }
 

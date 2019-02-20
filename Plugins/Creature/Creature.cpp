@@ -1777,19 +1777,13 @@ ArgumentStack Creature::GetOriginalName(ArgumentStack&& args)
     {
         const auto isLastName = Services::Events::ExtractArgument<int32_t>(args);
 
-        auto ExtractString = [&](CExoLocString locStr) -> std::string {
-            CExoString str;
-            locStr.GetStringLoc(0, &str, 0);
-            return std::string(str.CStr());
-        };
-
         if (isLastName)
         {
-            retVal = ExtractString(pCreature->m_pStats->m_lsLastName);
+            retVal = Utils::ExtractLocString(pCreature->m_pStats->m_lsLastName);
         }
         else
         {
-            retVal = ExtractString(pCreature->m_pStats->m_lsFirstName);
+            retVal = Utils::ExtractLocString(pCreature->m_pStats->m_lsFirstName);
         }
     }
 

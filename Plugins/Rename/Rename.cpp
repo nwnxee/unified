@@ -191,13 +191,6 @@ void Rename::GlobalNameChange(bool bOriginal, CNWSPlayer* pPlayer)
     }
 }
 
-std::string Rename::ExtractString(CExoLocString& locStr)
-{
-    CExoString str;
-    locStr.GetStringLoc(0,&str,0);
-    return std::string(str.CStr());
-}
-
 CExoLocString Rename::ContainString(const std::string& str)
 {
     CExoLocString locStr;
@@ -303,9 +296,9 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
         // Store the original player name
         pPOS->Set(playerObjectID,playerNameKey, std::string(pPlayerInfo->m_sPlayerName.CStr()));
         //store original first name
-        pPOS->Set(playerObjectID,firstNameKey, ExtractString(pCreature->m_pStats->m_lsFirstName));
+        pPOS->Set(playerObjectID,firstNameKey, Utils::ExtractLocString(pCreature->m_pStats->m_lsFirstName));
         //store original last name
-        pPOS->Set(playerObjectID,lastNameKey, ExtractString(pCreature->m_pStats->m_lsLastName));
+        pPOS->Set(playerObjectID,lastNameKey, Utils::ExtractLocString(pCreature->m_pStats->m_lsLastName));
 
         UpdateName(pCreature); //this sends an update message to all clients.
 
