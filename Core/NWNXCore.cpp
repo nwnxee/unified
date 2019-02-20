@@ -197,7 +197,6 @@ void NWNXCore::InitialSetupPlugins()
 
     const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
     const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
-    const bool loadExperimentalPlugin = m_coreServices->m_config->Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir.c_str());
 
@@ -221,16 +220,10 @@ void NWNXCore::InitialSetupPlugins()
             continue; // Not a plugin.
         }
 
-        if (pluginNameWithoutExtension == NWNX_EXPERIMENTAL_PLUGIN_NAME)
+
+        if (pluginNameWithoutExtension == "NWNX_Experimental" && !m_coreServices->m_config->Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
         {
-            if (!loadExperimentalPlugin)
-            {
-                continue;
-            }
-            else
-            {
-                LOG_WARNING("Experimental plugin %s found, it will be loaded due to configuration.", pluginNameWithoutExtension.c_str());
-            }
+            continue;
         }
 
         std::unique_ptr<Services::ProxyServiceList> services = ConstructProxyServices(pluginNameWithoutExtension);
