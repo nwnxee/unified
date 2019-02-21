@@ -156,6 +156,15 @@ void ItemEvents::RemoveItemHook(Services::Hooks::CallType type, CItemRepository*
 
 uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32_t baseItem, int32_t nTh)
 {
+
+    // This event hook is currently only used for Ammunition Reloading but could in the future be used for more
+    if ((baseItem != Constants::BaseItem::Arrow &&
+         baseItem != Constants::BaseItem::Bolt &&
+         baseItem != Constants::BaseItem::Bullet))
+    {
+        return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
+    }
+
     auto *pItemHolder = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
 
     if(!pItemHolder)
