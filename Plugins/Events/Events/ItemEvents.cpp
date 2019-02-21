@@ -181,28 +181,27 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         return OBJECT_INVALID;
     }
 
-    auto ItemSanityCheck = [&](uint32_t objectId) -> uint32_t {
+    auto ItemSanityCheck = [&](uint32_t objectId) -> bool {
         if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
-            return objectId;
+            return true;
 
         auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId));
         if (!pItem)
         {
             LOG_WARNING("Item does not exist, falling back to original call.");
-            objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+            return false;
         }
         else if (pItem->m_nBaseItem != baseItem)
         {
             LOG_WARNING("Base Item ID of returned item does not match, falling back to original call.");
-            objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+            return false;
         }
         else if (pItem->m_oidPossessor != thisPtr->m_oidParent)
         {
             LOG_WARNING("Item does not belong to that creature, falling back to original call.");
-            objectId = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+            return false;
         }
-        // TODO: Check if player is allowed to equip the item
-        return objectId;
+        return true;
     };
 
     std::string sBeforeEventResult;
@@ -219,7 +218,11 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     }
     else
     {
-        return ItemSanityCheck(stoul(sBeforeEventResult, nullptr, 16));
+        retVal = stoul(sBeforeEventResult, nullptr, 16);
+        if (ItemSanityCheck(retVal))
+            return retVal;
+        else
+            retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
     }
 
     Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
@@ -232,7 +235,9 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     }
     else
     {
-        retVal = ItemSanityCheck(stoul(sAfterEventResult, nullptr, 16));
+        retVal = stoul(sAfterEventResult, nullptr, 16);
+        if (ItemSanityCheck(retVal))
+            return retVal;
     }
 
     return retVal;
