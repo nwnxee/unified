@@ -177,9 +177,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     // unless the player has > 255 stacks of ammo they can't equip
     // Suppose I could set this to a higher value but I think this is safe
     if(nTh > 255)
-    {
         return OBJECT_INVALID;
-    }
 
     auto ItemSanityCheck = [&](uint32_t objectId) -> bool {
         if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
@@ -212,7 +210,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
     Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
 
-    if (Events::SignalEvent("NWNX_ON_ITEM_FIND_ITEM_WITH_BASE_ITEMID_BEFORE", thisPtr->m_oidParent, &sBeforeEventResult))
+    if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_BEFORE", thisPtr->m_oidParent, &sBeforeEventResult))
     {
         retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
     }
@@ -229,7 +227,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
     Events::PushEventData("ACTION_RESULT", Utils::ObjectIDToString(retVal));
 
-    if (Events::SignalEvent("NWNX_ON_ITEM_FIND_ITEM_WITH_BASE_ITEMID_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
+    if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
     {
         retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
     }
