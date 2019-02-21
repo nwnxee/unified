@@ -16,14 +16,12 @@ static ViewPtr<Reveal::Reveal> g_plugin;
 //key names for Per Object Storage
 const std::string revealKey = "REVEAL";
 
-
-
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
     return new Plugin::Info
     {
         "Reveal",
-        "Functions to allow the selective revealing of a stealthing character to another character or their party.",
+        "Functions to allow the selective revealing of a stealthed character to another character or their party.",
         "Silvard",
         "jusenkyo at gmail.com",
         1,
@@ -51,7 +49,6 @@ Reveal::Reveal(const Plugin::CreateParams& params)
 #undef REGISTER
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__DoStealthDetection, int32_t,CNWSCreature*,CNWSCreature*, int32_t, int32_t*, int32_t*, int32_t>(&HookStealthDetection);
-
     m_DoStealthDetection = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__DoStealthDetection);
 }   
 
@@ -74,14 +71,13 @@ int32_t Reveal::HookStealthDetection(NWNXLib::API::CNWSCreature* pObserverCreatu
             }
             if (static_cast<bool>(*g_plugin->GetServices()->m_perObjectStorage->Get<int>(pHidingCreature->m_idSelf, revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf))))
             {
-                g_plugin->GetServices()->m_perObjectStorage->Remove(pHidingCreature->m_idSelf, revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf));
+                g_plugin->GetServices()->m_perObjectStorage->Remove(pHidingCreature->m_idSelf, revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf)); //remove mapping after first check
                 *bHeard = true;
                 return true;
             }
         }
     }
     return g_plugin->m_DoStealthDetection->CallOriginal<int32_t>(pObserverCreature, pHidingCreature, bClearLOS, bSeen, bHeard, bTargetInvisible);
-    
 }
 
 
@@ -93,7 +89,7 @@ ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
     
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
     
-    pPOS->Set(stealtherID, revealKey + Utils::ObjectIDToString(observerID), true); //store affix-less override
+    pPOS->Set(stealtherID, revealKey + Utils::ObjectIDToString(observerID), true); //store stealth to observer reveal map
     return stack;
 }
 
@@ -104,7 +100,7 @@ ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
     auto revealToPartyState = Services::Events::ExtractArgument<int>(args);
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
     
-    pPOS->Set(stealtherID, revealKey + "PARTY", revealToPartyState); //store affix-less override
+    pPOS->Set(stealtherID, revealKey + "PARTY", revealToPartyState); //store party reveal state
     return stack;
 }
 
