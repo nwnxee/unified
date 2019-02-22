@@ -40,6 +40,7 @@ private:
     int32_t m_nextQueryId;
     bool m_queryMetrics;
     bool m_queryPrepared;
+    bool m_utf8;
 };
 
 }
