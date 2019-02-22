@@ -1,4 +1,4 @@
-# Events Plugin Refernece
+# Events Plugin Reference
 
 ## Description
 
