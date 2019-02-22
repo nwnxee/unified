@@ -20,6 +20,7 @@ static Hooking::FunctionHook* m_UseItemHook = nullptr;
 static Hooking::FunctionHook* m_OpenInventoryHook = nullptr;
 static Hooking::FunctionHook* m_CloseInventoryHook = nullptr;
 static Hooking::FunctionHook* m_AddItemHook = nullptr;
+static Hooking::FunctionHook* m_FindItemWithBaseItemIdHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
@@ -36,6 +37,10 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     m_AddItemHook = hooker->FindHookByAddress(API::Functions::CItemRepository__AddItem);
 
     hooker->RequestSharedHook<API::Functions::CItemRepository__RemoveItem, int32_t>(&RemoveItemHook);
+
+    hooker->RequestExclusiveHook<API::Functions::CItemRepository__FindItemWithBaseItemId>(&FindItemWithBaseItemIdHook);
+    m_FindItemWithBaseItemIdHook = hooker->FindHookByAddress(API::Functions::CItemRepository__FindItemWithBaseItemId);
+
 }
 
 int32_t ItemEvents::UseItemHook(
@@ -148,5 +153,89 @@ void ItemEvents::RemoveItemHook(Services::Hooks::CallType type, CItemRepository*
     Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
     Events::SignalEvent(before ? "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_BEFORE" : "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_AFTER", thisPtr->m_oidParent);
 }
+
+uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32_t baseItem, int32_t nTh)
+{
+
+    // This event hook is currently only used for Ammunition Reloading but could in the future be used for more
+    if ((baseItem != Constants::BaseItem::Arrow &&
+         baseItem != Constants::BaseItem::Bolt &&
+         baseItem != Constants::BaseItem::Bullet))
+    {
+        return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
+    }
+
+    auto *pItemHolder = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
+
+    if(!pItemHolder)
+    {
+        // For our purposes we only want this to be used on creature ItemRepositories
+        return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
+    }
+
+    // We're most assuredly in an infinite loop here caused by the scripting end
+    // unless the player has > 255 stacks of ammo they can't equip
+    // Suppose I could set this to a higher value but I think this is safe
+    if(nTh > 255)
+        return OBJECT_INVALID;
+
+    auto ItemSanityCheck = [&](uint32_t objectId) -> bool {
+        if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
+            return true;
+
+        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId));
+        if (!pItem)
+        {
+            LOG_WARNING("Item does not exist, falling back to original call.");
+            return false;
+        }
+        else if (pItem->m_nBaseItem != baseItem)
+        {
+            LOG_WARNING("Base Item ID of returned item does not match, falling back to original call.");
+            return false;
+        }
+        else if (pItem->m_oidPossessor != thisPtr->m_oidParent)
+        {
+            LOG_WARNING("Item does not belong to that creature, falling back to original call.");
+            return false;
+        }
+        return true;
+    };
+
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
+
+    uint32_t retVal;
+
+    Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
+    Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
+
+    if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_BEFORE", thisPtr->m_oidParent, &sBeforeEventResult))
+    {
+        retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+    }
+    else
+    {
+        retVal = stoul(sBeforeEventResult, nullptr, 16);
+        if (ItemSanityCheck(retVal))
+            return retVal;
+        else
+            retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+    }
+
+    Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
+    Events::PushEventData("BASE_ITEM_NTH", std::to_string(nTh));
+    Events::PushEventData("ACTION_RESULT", Utils::ObjectIDToString(retVal));
+
+    if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
+    {
+        uint32_t result = stoul(sAfterEventResult, nullptr, 16);
+        if (ItemSanityCheck(result))
+            return result;
+    }
+
+    return retVal;
+}
+
 
 }
