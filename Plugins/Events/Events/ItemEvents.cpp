@@ -229,13 +229,9 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
 
     if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
     {
-        retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
-    }
-    else
-    {
-        retVal = stoul(sAfterEventResult, nullptr, 16);
-        if (ItemSanityCheck(retVal))
-            return retVal;
+        uint32_t result = stoul(sAfterEventResult, nullptr, 16);
+        if (ItemSanityCheck(result))
+            return result;
     }
 
     return retVal;
