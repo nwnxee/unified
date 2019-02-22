@@ -1,4 +1,4 @@
-# Events Plugin Refernece
+# Events Plugin Reference
 
 ## Description
 
@@ -21,3 +21,4 @@ Provides an interface for plugins to create event-based systems, and exposes som
 | NWNX_EVENTS_ENABLE_HEALER_KIT_EVENTS  | bool   | true          |
 | NWNX_EVENTS_ENABLE_SKILL_EVENTS       | bool   | true          |
 | NWNX_EVENTS_ENABLE_POLYMORPH_EVENTS   | bool   | true          |
+| NWNX_EVENTS_ENABLE_EFFECT_EVENTS      | bool   | true          |
