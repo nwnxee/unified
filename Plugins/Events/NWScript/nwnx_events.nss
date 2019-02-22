@@ -74,6 +74,20 @@
     Event data:
         Variable Name           Type        Notes
         ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_AMMO_RELOAD_BEFORE
+    NWNX_ON_ITEM_AMMO_RELOAD_AFTER
+
+    Note: Search for the next available ammunition to autoequip
+
+    Usage:
+        OBJECT_SELF = The creature whose inventory we're searching for the item type
+
+    Event data:
+        Variable Name           Type        Notes
+        BASE_ITEM_ID            int
+        BASE_ITEM_NTH           int         Find the Nth instance of this item
+        ACTION_RESULT           int         The object that was determined in BEFORE (only in after)
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -550,6 +564,7 @@ void NWNX_Events_SkipEvent();
 // - Healer's Kit event
 // - Listen/Spot Detection events -> "1" or "0"
 // - OnClientConnectBefore -> Reason for disconnect if skipped
+// - Ammo Reload event -> Forced ammunition returned
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
