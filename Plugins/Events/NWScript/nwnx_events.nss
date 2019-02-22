@@ -74,6 +74,20 @@
     Event data:
         Variable Name           Type        Notes
         ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_AMMO_RELOAD_BEFORE
+    NWNX_ON_ITEM_AMMO_RELOAD_AFTER
+
+    Note: Search for the next available ammunition to autoequip
+
+    Usage:
+        OBJECT_SELF = The creature whose inventory we're searching for the item type
+
+    Event data:
+        Variable Name           Type        Notes
+        BASE_ITEM_ID            int
+        BASE_ITEM_NTH           int         Find the Nth instance of this item
+        ACTION_RESULT           int         The object that was determined in BEFORE (only in after)
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -491,6 +505,44 @@
         in x2_s2_gwildshp with the minotaur form with the following line:
             IPWildShapeCopyItemProperties(oWeaponOld,oWeaponNew, TRUE);
         If you want to skip this, you need to make sure oWeaponOld != oWeaponNew
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_EFFECT_APPLIED_BEFORE
+    NWNX_ON_EFFECT_APPLIED_AFTER
+    NWNX_ON_EFFECT_REMOVED_BEFORE
+    NWNX_ON_EFFECT_REMOVED_AFTER
+
+    Usage:
+        OBJECT_SELF = The target of the effect
+
+    Event data:
+        Variable Name           Type        Notes
+        UNIQUE_ID               int
+        CREATOR                 object      Convert to object with NWNX_Object_StringToObject()
+        TYPE                    int         The effect type, does not match NWScript constants
+                                            See: https://github.com/nwnxee/unified/blob/master/NWNXLib/API/Constants/Effect.hpp#L8
+        SUB_TYPE                int         SUBTYPE_*
+        DURATION_TYPE           int         DURATION_TYPE_*
+        DURATION                float
+        SPELL_ID                int
+        CASTER_LEVEL            int
+        CUSTOM_TAG              string
+        INT_PARAM_*             int         * = 1-8
+        FLOAT_PARAM_*           float       * = 1-4
+        STRING_PARAM_*          string      * = 1-6
+        OBJECT_PARAM_*          object      * = 1-4, Convert to object with NWNX_Object_StringToObject()
+
+    Note:
+        Only fires for Temporary or Permanent effects, does not include VisualEffects or ItemProperty effects.
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_QUICKCHAT_BEFORE
+    NWNX_ON_QUICKCHAT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player using the quick chat command
+
+    Event data:
+        Variable Name           Type        Notes
+        QUICKCHAT_COMMAND       int
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -542,6 +594,7 @@ string NWNX_Events_GetEventData(string tag);
 // - DMAction events
 // - Client connect event
 // - Spell events
+// - QuickChat events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
@@ -551,6 +604,7 @@ void NWNX_Events_SkipEvent();
 // - Healer's Kit event
 // - Listen/Spot Detection events -> "1" or "0"
 // - OnClientConnectBefore -> Reason for disconnect if skipped
+// - Ammo Reload event -> Forced ammunition returned
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name

@@ -7,6 +7,7 @@
 #include "ViewPtr.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
+#include "Encoding.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
 #include "API/CAppManager.hpp"
@@ -110,6 +111,8 @@ SQL::SQL(const Plugin::CreateParams& params)
         throw std::runtime_error("Invalid database type selected.");
     }
 
+    m_utf8 = GetServices()->m_config->Get<bool>("USE_UTF8", false);
+
     Reconnect(19);
 }
 
@@ -151,6 +154,12 @@ Events::ArgumentStack SQL::OnPrepareQuery(Events::ArgumentStack&& args)
     Events::ArgumentStack stack;
 
     m_activeQuery = Events::ExtractArgument<std::string>(args);
+
+    if (m_utf8)
+    {
+        m_activeQuery = Encoding::ToUTF8(m_activeQuery);
+    }
+
     m_activeResults = ResultSet();
 
     if (!m_target->IsConnected() && !Reconnect(3))
@@ -286,7 +295,7 @@ Events::ArgumentStack SQL::OnReadDataInActiveRow(Events::ArgumentStack&& args)
     }
 
     Events::ArgumentStack stack;
-    Events::InsertArgument(stack, m_activeRow[column]);
+    Events::InsertArgument(stack, m_utf8 ? Encoding::FromUTF8(m_activeRow[column]) : m_activeRow[column]);
     return stack;
 }
 Events::ArgumentStack SQL::OnPreparedInt(Events::ArgumentStack&& args)
@@ -313,7 +322,7 @@ Events::ArgumentStack SQL::OnPreparedString(Events::ArgumentStack&& args)
     }
     else
     {
-        m_target->PrepareString(position, value);
+        m_target->PrepareString(position, m_utf8 ? Encoding::ToUTF8(value) : value);
     }
     return Events::ArgumentStack();
 }

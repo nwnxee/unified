@@ -17,6 +17,8 @@
 #include "Events/HealerKitEvents.hpp"
 #include "Events/SkillEvents.hpp"
 #include "Events/PolymorphEvents.hpp"
+#include "Events/EffectEvents.hpp"
+#include "Events/QuickChatEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -140,6 +142,16 @@ Events::Events(const Plugin::CreateParams& params)
     if (GetServices()->m_config->Get<bool>("ENABLE_POLYMORPH_EVENTS", true))
     {
         m_polymorphEvents = std::make_unique<PolymorphEvents>(GetServices()->m_hooks);
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_EFFECT_EVENTS", true))
+    {
+        m_effectEvents = std::make_unique<EffectEvents>(GetServices()->m_hooks);
+    }
+
+    if (GetServices()->m_config->Get<bool>("ENABLE_QUICKCHAT_EVENTS", true))
+    {
+        m_quickChatEvents = std::make_unique<QuickChatEvents>(GetServices()->m_hooks);
     }
 }
 

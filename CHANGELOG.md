@@ -10,10 +10,11 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 ### Added
 - Added support to skip building certain plugins by setting an environment variable, for example: `NWNX_SKIP_PLUGINS="JVM;Lua;Mono;Ruby;SpellChecker"`
 - Added support to build out of tree plugins with the following environment variable: `NWNX_ADDITIONAL_PLUGINS=/path/to/Plugin1;/path/to/Plugin2`
+- Added string localization support. Only Russian/Cyrillic supported at the moment. Use environment variable `NWNX_CORE_LOCALE=ru`
 - Core: Allow changing default plugin state from 'load all' to 'skip all' with the following environment variable: `NWNX_CORE_SKIP_ALL=y`. Use `NWNX_PLUGIN_SKIP=n` to enable specific plugins in this case.
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
-- Events: New events: SkillEvents, MapEvents
-- Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents
+- Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents
+- Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents, QuickChatEvents
 - Events: You can now get the current event name with a nwscript function
 - Events: Added On{Listen/Spot}Detection events to StealthEvents
 - Events: Added On{Un}Polymorph events as PolymorphEvents
@@ -21,6 +22,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added OnClientConnect events that fire before the player sees the server vault.
 - Events: Added ItemInventory{Open/Close} and ItemInventory{Add/Remove}Item events to ItemEvents
 - Events: Added {Set|Clear}MemorizedSpellSlot events to SpellEvents
+- Events: Added AmmoReload events that are used when the engine is looking for ammunition to reload
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
@@ -35,6 +37,7 @@ The following plugins were added:
 - **Feedback**: Allows combatlog and feedback messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
+- **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
 ##### New NWScript Functions
 - Administration: GetPlayOption()
@@ -103,6 +106,8 @@ The following plugins were added:
 - Player: SetRestDuration()
 - Player: ApplyInstantVisualEffectToObject()
 - Rename: SetPCNameOverride()
+- Reveal: RevealTo()
+- Reveal: SetRevealToParty()
 - Util: GenerateUUID()
 - Util: GetCustomToken()
 - Util: EffectToItemProperty()

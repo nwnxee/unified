@@ -3,6 +3,7 @@
 #include "External/httplib.h"
 #include "Services/Config/Config.hpp"
 #include "Services/Tasks/Tasks.hpp"
+#include "Encoding.hpp"
 #include <memory>
 #include <unordered_map>
 
@@ -37,8 +38,6 @@ WebHook::WebHook(const Plugin::CreateParams& params)
     : Plugin(params)
 {
     GetServices()->m_events->RegisterEvent("SEND_WEBHOOK_HTTPS", &OnSendWebhookHTTPS);
-
-    m_bIso_8859_1 = GetServices()->m_config->Get<int>("ISO_8859_1", 0);
 }
 
 WebHook::~WebHook()
@@ -64,7 +63,7 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
          pos += s_Replace.length();
     }
 
-    message= plugin.m_bIso_8859_1 ? iso_8859_1_to_utf8(message) : message;
+    message = Encoding::ToUTF8(message);
 
     if(mrkdwn==0)
     {
@@ -78,7 +77,7 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
     }
     else
     {
-        username=plugin.m_bIso_8859_1 ? iso_8859_1_to_utf8(username) : username;
+        username = Encoding::ToUTF8(username);
         message = "{\"text\":\"" + message + "\", \"username\":\"" + username + "\"}";
     }
 
@@ -117,25 +116,6 @@ Events::ArgumentStack WebHook::OnSendWebhookHTTPS(Events::ArgumentStack&& args)
     });
 
     return Events::ArgumentStack();
-}
-
-std::string WebHook::iso_8859_1_to_utf8(std::string &str)
-{
-    std::string strOut;
-    for (std::string::iterator it = str.begin(); it != str.end(); ++it)
-    {
-        uint8_t ch = *it;
-        if (ch < 0x80)
-        {
-            strOut.push_back(ch);
-        }
-        else
-        {
-            strOut.push_back(0xc0 | ch >> 6);
-            strOut.push_back(0x80 | (ch & 0x3f));
-        }
-    }
-    return strOut;
 }
 
 }
