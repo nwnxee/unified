@@ -16,7 +16,7 @@ void NWNX_Reveal_RevealTo(object oHiding, object oObserver, int iDetectionMethod
 void NWNX_Reveal_SetRevealToParty(object oHiding, int bReveal, int iDetectionMethod = NWNX_REVEAL_HEARD); 
 
 
-void NWNX_Reveal_RevealTo(object oHiding, object oObserverint, iDetectionMethod = NWNX_REVEAL_HEARD)
+void NWNX_Reveal_RevealTo(object oHiding, object oObserver, int iDetectionMethod = NWNX_REVEAL_HEARD)
 {
     string sFunc = "RevealTo";
     
