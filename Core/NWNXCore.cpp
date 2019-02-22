@@ -17,6 +17,7 @@
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Services/Commands/Commands.hpp"
 #include "Utils.hpp"
+#include "Encoding.hpp"
 
 #include <csignal>
 
@@ -310,6 +311,11 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
+
+    if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
+    {
+        Encoding::SetDefaultLocale(*locale);
+    }
 
     Maybe<bool> crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
     if (crashOnAssertFailure)
