@@ -462,6 +462,16 @@
         in x2_s2_gwildshp with the minotaur form with the following line:
             IPWildShapeCopyItemProperties(oWeaponOld,oWeaponNew, TRUE);
         If you want to skip this, you need to make sure oWeaponOld != oWeaponNew
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_QUICKCHAT_BEFORE
+    NWNX_ON_QUICKCHAT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player using the quick chat command
+
+    Event data:
+        Variable Name           Type        Notes
+        QUICKCHAT_COMMAND       int
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -513,6 +523,7 @@ string NWNX_Events_GetEventData(string tag);
 // - DMAction events
 // - Client connect event
 // - Spell events
+// - QuickChat events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
