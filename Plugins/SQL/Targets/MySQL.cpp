@@ -38,6 +38,13 @@ void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     {
         throw std::runtime_error(std::string(mysql_error(&m_mysql)));
     }
+
+    if (auto charset = config->Get<std::string>("CHARACTER_SET"))
+    {
+        LOG_INFO("Connection character set is '%s'", charset->c_str());
+        if (mysql_set_character_set(&m_mysql, charset->c_str()))
+            LOG_ERROR("Unable to set the character set");
+    }
 }
 
 bool MySQL::IsConnected()
