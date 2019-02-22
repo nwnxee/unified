@@ -3,6 +3,7 @@
 //
 
 #include <string>
+#include <vector>
 
 namespace NWNXLib::Encoding {
 
@@ -19,6 +20,10 @@ void SetDefaultLocale(const std::string& locale);
 
 std::string ToUTF8(const char *str, Locale locale = Default);
 std::string FromUTF8(const char *str, Locale locale = Default);
+
+std::string ToBase64(const std::vector<uint8_t>& in);
+std::vector<uint8_t> FromBase64(const std::string &in);
+
 
 //
 // Convenience wrappers
