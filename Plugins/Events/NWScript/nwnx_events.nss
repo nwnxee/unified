@@ -463,6 +463,34 @@
             IPWildShapeCopyItemProperties(oWeaponOld,oWeaponNew, TRUE);
         If you want to skip this, you need to make sure oWeaponOld != oWeaponNew
 ////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_EFFECT_APPLIED_BEFORE
+    NWNX_ON_EFFECT_APPLIED_AFTER
+    NWNX_ON_EFFECT_REMOVED_BEFORE
+    NWNX_ON_EFFECT_REMOVED_AFTER
+
+    Usage:
+        OBJECT_SELF = The target of the effect
+
+    Event data:
+        Variable Name           Type        Notes
+        UNIQUE_ID               int
+        CREATOR                 object      Convert to object with NWNX_Object_StringToObject()
+        TYPE                    int         The effect type, does not match NWScript constants
+                                            See: https://github.com/nwnxee/unified/blob/master/NWNXLib/API/Constants/Effect.hpp#L8
+        SUB_TYPE                int         SUBTYPE_*
+        DURATION_TYPE           int         DURATION_TYPE_*
+        DURATION                float
+        SPELL_ID                int
+        CASTER_LEVEL            int
+        CUSTOM_TAG              string
+        INT_PARAM_*             int         * = 1-8
+        FLOAT_PARAM_*           float       * = 1-4
+        STRING_PARAM_*          string      * = 1-6
+        OBJECT_PARAM_*          object      * = 1-4, Convert to object with NWNX_Object_StringToObject()
+
+    Note:
+        Only fires for Temporary or Permanent effects, does not include VisualEffects or ItemProperty effects.
+////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_QUICKCHAT_BEFORE
     NWNX_ON_QUICKCHAT_AFTER
 

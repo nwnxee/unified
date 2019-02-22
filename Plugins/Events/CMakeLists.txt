@@ -14,4 +14,5 @@ add_plugin(Events
     "Events/HealerKitEvents.cpp"
     "Events/SkillEvents.cpp"
     "Events/PolymorphEvents.cpp"
+    "Events/EffectEvents.cpp"
     "Events/QuickChatEvents.cpp")
