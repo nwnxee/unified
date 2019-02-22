@@ -15,6 +15,12 @@ static ViewPtr<Reveal::Reveal> g_plugin;
 
 //key names for Per Object Storage
 const std::string revealKey = "REVEAL";
+const std::string detectionKey = "DETECTION VECTOR";
+
+//constants for detection method
+
+const int NWNX_REVEAL_SEEN = 1;
+const int NWNX_REVEAL_HEARD = 0;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -57,21 +63,31 @@ Reveal::~Reveal()
 }
 int32_t Reveal::HookStealthDetection(NWNXLib::API::CNWSCreature* pObserverCreature, NWNXLib::API::CNWSCreature* pHidingCreature, int32_t bClearLOS, int32_t* bSeen, int32_t* bHeard, int32_t bTargetInvisible)
 {
+    Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+    
     if (pObserverCreature->m_bPlayerCharacter && pHidingCreature->m_bPlayerCharacter && pHidingCreature->m_nStealthMode)
     {
         if (pObserverCreature->GetArea() == pHidingCreature->GetArea())
         {
-            if (static_cast<bool>(*g_plugin->GetServices()->m_perObjectStorage->Get<int>(pHidingCreature->m_idSelf, revealKey + "PARTY")))
+            if (*pPOS->Get<int>(pHidingCreature->m_idSelf, revealKey + "PARTY"))
             {
                 if (pObserverCreature->GetFaction()->GetLeader() == pHidingCreature->GetFaction()->GetLeader())
                 {
+                    if(*pPOS->Get<int>(pHidingCreature->m_idSelf, detectionKey + "PARTY"))
+                    {
+                        *bSeen = true;
+                    }
                     *bHeard = true;
                     return true;
                 }
             }
-            if (static_cast<bool>(*g_plugin->GetServices()->m_perObjectStorage->Get<int>(pHidingCreature->m_idSelf, revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf))))
+            if (*pPOS->Get<int>(pHidingCreature->m_idSelf, revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf)))
             {
-                g_plugin->GetServices()->m_perObjectStorage->Remove(pHidingCreature->m_idSelf, revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf)); //remove mapping after first check
+                pPOS->Remove(pHidingCreature->m_idSelf, revealKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf)); //remove mapping after first check
+                if (*pPOS->Get<int>(pHidingCreature->m_idSelf, detectionKey + Utils::ObjectIDToString(pObserverCreature->m_idSelf)))
+                {
+                    *bSeen = true;
+                }
                 *bHeard = true;
                 return true;
             }
@@ -86,10 +102,12 @@ ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
     ArgumentStack stack;
     auto stealtherID = Services::Events::ExtractArgument<Types::ObjectID>(args);
     auto observerID = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto detectionVector = Services::Events::ExtractArgument<int>(args);
     
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
     
     pPOS->Set(stealtherID, revealKey + Utils::ObjectIDToString(observerID), true); //store stealth to observer reveal map
+    pPOS->Set(stealtherID, detectionKey + Utils::ObjectIDToString(observerID), detectionVector); //store the means through which detection happens
     return stack;
 }
 
@@ -98,9 +116,12 @@ ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
     ArgumentStack stack;
     auto stealtherID = Services::Events::ExtractArgument<Types::ObjectID>(args);
     auto revealToPartyState = Services::Events::ExtractArgument<int>(args);
+    auto detectionVector = Services::Events::ExtractArgument<int>(args);
+    
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
     
     pPOS->Set(stealtherID, revealKey + "PARTY", revealToPartyState); //store party reveal state
+    pPOS->Set(stealtherID, detectionKey + "PARTY", detectionVector); //store the means through which detection happens
     return stack;
 }
 
