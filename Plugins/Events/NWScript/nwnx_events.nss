@@ -312,6 +312,35 @@
         COUNTERING_SPELL        int         Returns TRUE if cast as counter else FALSE
         PROJECTILE_PATH_TYPE    int
         IS_INSTANT_SPELL        int         Returns TRUE if spell was instant else FALSE
+
+    NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE
+    NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature whose memorizing the spell
+
+    Event data:
+        Variable Name           Type        Notes
+        SPELL_MULTICLASS        int
+        SPELL_LEVEL             int
+        SPELL_SLOT              int
+        SPELL_ID                int
+        SPELL_DOMAIN            int
+        SPELL_METAMAGIC         int
+        SPELL_FROMCLIENT        int
+        BEFORE_RESULT           int
+
+    NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE
+    NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature whose spellbook is being changed
+
+    Event data:
+        Variable Name           Type        Notes
+        SPELL_MULTICLASS        int
+        SPELL_LEVEL             int
+        SPELL_SLOT              int
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_HEALER_KIT_BEFORE
     NWNX_ON_USE_HEALER_KIT_AFTER
