@@ -23,39 +23,53 @@ void EffectEvents::HandleEffectHook(const std::string& event, Services::Hooks::C
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
 
+    int32_t effectDurationType = pEffect->m_nSubType & EffectDurationType::MASK;
+
+    if (!pEffect->m_bExpose ||
+        effectDurationType == EffectDurationType::Instant ||
+        effectDurationType > EffectDurationType::Permanent)
+        return;
+
     switch (pEffect->m_nType)
     {
-        case EffectTrueType::Invalid:
         case EffectTrueType::Icon:
-        case EffectTrueType::RacialType:
         case EffectTrueType::VisualEffect:
         case EffectTrueType::Link:
         case EffectTrueType::ItemProperty:
-        case EffectTrueType::HasteInternal:
-        case EffectTrueType::SlowInternal:
-        case EffectTrueType::SetStateInternal:
             return;
 
         default:
             break;
     }
 
-    Events::PushEventData("ID", std::to_string(pEffect->m_nID));
+    Events::PushEventData("UNIQUE_ID", std::to_string(pEffect->m_nID));
     Events::PushEventData("CREATOR", Utils::ObjectIDToString(pEffect->m_oidCreator));
     Events::PushEventData("TYPE", std::to_string(pEffect->m_nType));
-    Events::PushEventData("SUB_TYPE", std::to_string(pEffect->m_nSubType));
+    Events::PushEventData("SUB_TYPE", std::to_string(pEffect->m_nSubType & EffectSubType::MASK));
+    Events::PushEventData("DURATION_TYPE", std::to_string(effectDurationType));
+    Events::PushEventData("DURATION", std::to_string(pEffect->m_fDuration));
     Events::PushEventData("SPELL_ID", std::to_string(pEffect->m_nSpellId));
     Events::PushEventData("CASTER_LEVEL", std::to_string(pEffect->m_nCasterLevel));
     Events::PushEventData("CUSTOM_TAG", pEffect->m_sCustomTag.CStr());
-    Events::PushEventData("DURATION", std::to_string(pEffect->m_fDuration));
 
-    int32_t numIntegerParams = pEffect->m_nNumIntegers;
-    if (numIntegerParams)
-    {
-        for (int i = 0; i < numIntegerParams; i++)
-        {
-            Events::PushEventData("INT_PARAM_" + std::to_string(i + 1), std::to_string(pEffect->m_nParamInteger[i]));
-        }
+    for (int i = 0; i < pEffect->m_nNumIntegers; i++)
+    {// Int Params
+        Events::PushEventData("INT_PARAM_" + std::to_string(i + 1), std::to_string(pEffect->m_nParamInteger[i]));
+    }
+
+    for(int i = 0; i < 4; i++)
+    {// Float Params
+        Events::PushEventData("FLOAT_PARAM_" + std::to_string(i + 1), std::to_string(pEffect->m_nParamFloat[i]));
+    }
+
+    for(int i = 0; i < 6; i++)
+    {// String Params
+        Events::PushEventData("STRING_PARAM_" + std::to_string(i + 1), pEffect->m_sParamString[i].CStr());
+    }
+
+    for(int i = 0; i < 4; i++)
+    {// Object Params
+        Events::PushEventData("OBJECT_PARAM_" + std::to_string(i + 1), Utils::ObjectIDToString(pEffect->m_oidParamObjectID[i]));
     }
 
     Events::SignalEvent(before ? "NWNX_ON_EFFECT_" + event + "_BEFORE" : "NWNX_ON_EFFECT_" + event + "_AFTER" , pObject->m_idSelf);
