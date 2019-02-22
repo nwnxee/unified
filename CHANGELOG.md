@@ -35,6 +35,7 @@ The following plugins were added:
 - **Feedback**: Allows combatlog and feedback messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
+- **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
 ##### New NWScript Functions
 - Administration: GetPlayOption()
@@ -103,6 +104,8 @@ The following plugins were added:
 - Player: SetRestDuration()
 - Player: ApplyInstantVisualEffectToObject()
 - Rename: SetPCNameOverride()
+- Reveal: RevealTo()
+- Reveal: SetRevealToParty()
 - Util: GenerateUUID()
 - Util: GetCustomToken()
 - Util: EffectToItemProperty()
