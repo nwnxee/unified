@@ -13,7 +13,6 @@ namespace Events {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-
 static Hooking::FunctionHook* m_SpellCastAndImpactHook = nullptr;
 static Hooking::FunctionHook* m_SetMemorizedSpellSlotHook = nullptr;
 static Hooking::FunctionHook* m_ClearMemorizedSpellSlotHook = nullptr;
