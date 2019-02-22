@@ -21,15 +21,6 @@ PartyEvents::PartyEvents(ViewPtr<Services::HooksProxy> hooker)
         CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
     m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerParty);
 }
-template <typename T>
-static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
-{
-    static_assert(std::is_pod<T>::value);
-    T value;
-    uint8_t *ptr = pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset;
-    std::memcpy(&value, ptr, sizeof(T));
-    return value;
-}
 
 int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
@@ -37,7 +28,7 @@ int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
     std::string event = "NWNX_ON_PARTY_";
     Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
-    std::string sOidOther = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+    std::string sOidOther = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
 
     std::string argname;
     switch (nMinor)

@@ -25,6 +25,7 @@ class HealerKitEvents;
 class SkillEvents;
 class PolymorphEvents;
 class EffectEvents;
+class QuickChatEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -92,6 +93,7 @@ private:
     std::unique_ptr<SkillEvents> m_skillEvents;
     std::unique_ptr<PolymorphEvents> m_polymorphEvents;
     std::unique_ptr<EffectEvents> m_effectEvents;
+    std::unique_ptr<QuickChatEvents> m_quickChatEvents;
 };
 
 }
