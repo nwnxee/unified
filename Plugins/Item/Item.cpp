@@ -49,6 +49,7 @@ Item::Item(const Plugin::CreateParams& params)
     REGISTER(SetItemAppearance);
     REGISTER(GetEntireItemAppearance);
     REGISTER(RestoreItemAppearance);
+    REGISTER(GetBaseArmorClass);
 
 #undef REGISTER
 }
@@ -288,6 +289,18 @@ ArgumentStack Item::RestoreItemAppearance(ArgumentStack&& args)
     {
         LOG_NOTICE("RestoreItemAppearance: invalid string length, must be 284");
     }
+    return stack;
+}
+
+ArgumentStack Item::GetBaseArmorClass(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pItem = item(args))
+    {
+        retval = pItem->m_nArmorValue;
+    }
+    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 
