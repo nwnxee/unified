@@ -15,8 +15,12 @@ using namespace NWNXLib::API::Constants;
 
 EffectEvents::EffectEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<NWNXLib::API::Functions::CNWSEffectListHandler__OnEffectApplied, int32_t>(&OnEffectAppliedHook);
-    hooker->RequestSharedHook<NWNXLib::API::Functions::CNWSEffectListHandler__OnEffectRemoved, int32_t>(&OnEffectRemovedHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", [hooker]() {
+       hooker->RequestSharedHook<NWNXLib::API::Functions::CNWSEffectListHandler__OnEffectApplied, int32_t>(&OnEffectAppliedHook);
+    });
+    Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_REMOVED_.*", [hooker]() {
+        hooker->RequestSharedHook<NWNXLib::API::Functions::CNWSEffectListHandler__OnEffectRemoved, int32_t>(&OnEffectRemovedHook);
+    });
 }
 
 void EffectEvents::HandleEffectHook(const std::string& event, Services::Hooks::CallType type, CNWSObject* pObject, CGameEffect* pEffect)

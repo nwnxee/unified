@@ -23,6 +23,7 @@
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
 #include <algorithm>
+#include <regex>
 
 using namespace NWNXLib;
 
@@ -52,6 +53,9 @@ namespace Events {
 Events::Events(const Plugin::CreateParams& params)
     : Plugin(params), m_eventDepth(0)
 {
+    if (g_plugin == nullptr) // :(
+        g_plugin = this;
+
     GetServices()->m_events->RegisterEvent("SUBSCRIBE_EVENT", std::bind(&Events::OnSubscribeEvent, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("PUSH_EVENT_DATA", std::bind(&Events::OnPushEventData, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("SIGNAL_EVENT", std::bind(&Events::OnSignalEvent, this, std::placeholders::_1));
@@ -74,85 +78,22 @@ Events::Events(const Plugin::CreateParams& params)
             PushEventData(message[0], message[1]);
         });
 
-    if (GetServices()->m_config->Get<bool>("ENABLE_ASSOCIATE_EVENTS", true))
-    {
-        m_associateEvents = std::make_unique<AssociateEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_CLIENT_EVENTS", true))
-    {
-        m_clientEvents = std::make_unique<ClientEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_COMBAT_EVENTS", true))
-    {
-        m_combatEvents = std::make_unique<CombatEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_DM_ACTION_EVENTS", true))
-    {
-        m_dmActionEvents = std::make_unique<DMActionEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_EXAMINE_EVENTS", true))
-    {
-        m_examineEvents = std::make_unique<ExamineEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_ITEM_EVENTS", true))
-    {
-        m_itemEvents = std::make_unique<ItemEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_FEAT_EVENTS", true))
-    {
-        m_featEvents = std::make_unique<FeatEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_STEALTH_EVENTS", true))
-    {
-        m_stealthEvents = std::make_unique<StealthEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_SPELL_EVENTS", true))
-    {
-        m_spellEvents = std::make_unique<SpellEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_PARTY_EVENTS", true))
-    {
-        m_partyEvents = std::make_unique<PartyEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_HEALER_KIT_EVENTS", true))
-    {
-        m_healerKitEvents = std::make_unique<HealerKitEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_SKILL_EVENTS", true))
-    {
-        m_skillEvents = std::make_unique<SkillEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_MAP_EVENTS", true))
-    {
-        m_mapEvents = std::make_unique<MapEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_POLYMORPH_EVENTS", true))
-    {
-        m_polymorphEvents = std::make_unique<PolymorphEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_EFFECT_EVENTS", true))
-    {
-        m_effectEvents = std::make_unique<EffectEvents>(GetServices()->m_hooks);
-    }
-
-    if (GetServices()->m_config->Get<bool>("ENABLE_QUICKCHAT_EVENTS", true))
-    {
-        m_quickChatEvents = std::make_unique<QuickChatEvents>(GetServices()->m_hooks);
-    }
+    m_associateEvents   = std::make_unique<AssociateEvents>(GetServices()->m_hooks);
+    m_clientEvents      = std::make_unique<ClientEvents>(GetServices()->m_hooks);
+    m_combatEvents      = std::make_unique<CombatEvents>(GetServices()->m_hooks);
+    m_dmActionEvents    = std::make_unique<DMActionEvents>(GetServices()->m_hooks);
+    m_examineEvents     = std::make_unique<ExamineEvents>(GetServices()->m_hooks);
+    m_itemEvents        = std::make_unique<ItemEvents>(GetServices()->m_hooks);
+    m_featEvents        = std::make_unique<FeatEvents>(GetServices()->m_hooks);
+    m_stealthEvents     = std::make_unique<StealthEvents>(GetServices()->m_hooks);
+    m_spellEvents       = std::make_unique<SpellEvents>(GetServices()->m_hooks);
+    m_partyEvents       = std::make_unique<PartyEvents>(GetServices()->m_hooks);
+    m_healerKitEvents   = std::make_unique<HealerKitEvents>(GetServices()->m_hooks);
+    m_skillEvents       = std::make_unique<SkillEvents>(GetServices()->m_hooks);
+    m_mapEvents         = std::make_unique<MapEvents>(GetServices()->m_hooks);
+    m_polymorphEvents   = std::make_unique<PolymorphEvents>(GetServices()->m_hooks);
+    m_effectEvents      = std::make_unique<EffectEvents>(GetServices()->m_hooks);
+    m_quickChatEvents   = std::make_unique<QuickChatEvents>(GetServices()->m_hooks);
 }
 
 Events::~Events()
@@ -224,11 +165,37 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
     return !skipped;
 }
 
+void Events::InitOnFirstSubscribe(const std::string& eventName, std::function<void(void)> init)
+{
+    g_plugin->m_initList[eventName] = init;
+}
+
+void Events::RunEventInit(const std::string& eventName)
+{
+    std::vector<std::string> erase;
+    for (auto it: m_initList)
+    {
+        if (std::regex_search(eventName, std::regex(it.first)))
+        {
+            LOG_DEBUG("Running init function for events '%s' (requested by event '%s')",
+                        it.first.c_str(), eventName.c_str());
+            it.second();
+            erase.push_back(it.first);
+        }
+    }
+    for (auto e: erase)
+    {
+        m_initList.erase(e);
+    }
+
+}
+
 Services::Events::ArgumentStack Events::OnSubscribeEvent(Services::Events::ArgumentStack&& args)
 {
     const auto event = Services::Events::ExtractArgument<std::string>(args);
     auto script = Services::Events::ExtractArgument<std::string>(args);
 
+    RunEventInit(event);
     auto& eventVector = m_eventMap[event];
 
     if (std::find(std::begin(eventVector), std::end(eventVector), script) != std::end(eventVector))
