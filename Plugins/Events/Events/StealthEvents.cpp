@@ -19,13 +19,13 @@ StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", [hooker]() {
-    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoListenDetection, int32_t>(&DoListenDetectionHook);
-    m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoListenDetection);
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoListenDetection, int32_t>(&DoListenDetectionHook);
+        m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoListenDetection);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_SPOT_DETECTION.*", [hooker]() {
-    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoSpotDetection, int32_t>(&DoSpotDetectionHook);
-    m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoSpotDetection);
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoSpotDetection, int32_t>(&DoSpotDetectionHook);
+        m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoSpotDetection);
     });
 }
 
