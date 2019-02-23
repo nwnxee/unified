@@ -72,6 +72,21 @@ void main()
 
     WriteTimestampedLogEntry("Deserialized " + GetName(oDeserialized) + " in " + GetName(GetArea(oDeserialized)));
 
+    object bag = CreateObject(OBJECT_TYPE_ITEM, "nw_it_contain006", GetStartingLocation()); // Bag of holding
+    CreateItemOnObject("x2_it_adaplate", bag, 1);
+    CreateItemOnObject("x2_it_adaplate", bag, 1);
+    CreateItemOnObject("x2_it_adaplate", bag, 1);
+    int iFits = NWNX_Object_CheckFit(bag, BASE_ITEM_ARROW);
+    report("CheckFit", iFits == 1);
+    iFits = NWNX_Object_CheckFit(bag, BASE_ITEM_ARMOR);
+    report("CheckFit", iFits == 0);
+    object oItem = GetFirstItemInInventory(bag);
+    while (oItem != OBJECT_INVALID)
+    {
+        DestroyObject(oItem);
+        oItem = GetNextItemInInventory(bag);
+    }
+    DestroyObject(bag);
 
     DestroyObject(o);
     DestroyObject(oDeserialized);
