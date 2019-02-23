@@ -172,6 +172,7 @@ void Events::InitOnFirstSubscribe(const std::string& eventName, std::function<vo
 
 void Events::RunEventInit(const std::string& eventName)
 {
+    std::vector<std::string> erase;
     for (auto it: m_initList)
     {
         if (std::regex_search(eventName, std::regex(it.first)))
@@ -179,9 +180,14 @@ void Events::RunEventInit(const std::string& eventName)
             LOG_DEBUG("Running init function for events '%s' (requested by event '%s')",
                         it.first.c_str(), eventName.c_str());
             it.second();
-            m_initList.erase(it.first);
+            erase.push_back(it.first);
         }
     }
+    for (auto e: erase)
+    {
+        m_initList.erase(e);
+    }
+
 }
 
 Services::Events::ArgumentStack Events::OnSubscribeEvent(Services::Events::ArgumentStack&& args)
