@@ -19,6 +19,7 @@
 #include "API/CNWRules.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSPlayerCharSheetGUI.hpp"
+#include "API/CNWSPlayerInventoryGUI.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/C2DA.hpp"
@@ -80,6 +81,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetRestDuration);
     REGISTER(ApplyInstantVisualEffectToObject);
     REGISTER(UpdateCharacterSheet);
+    REGISTER(OpenInventory);
 
 #undef REGISTER
 
@@ -601,6 +603,35 @@ ArgumentStack Player::UpdateCharacterSheet(ArgumentStack&& args)
                 pMessage->WriteGameObjUpdate_CharacterSheet(pPlayer, msg);
         }
     }
+    return stack;
+}
+
+ArgumentStack Player::OpenInventory(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto open = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        CNWSPlayerInventoryGUI *pInventory = pPlayer->m_oidNWSObject == oidTarget ? pPlayer->m_pInventoryGUI :
+                                                                                    pPlayer->m_pOtherInventoryGUI;
+
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage && pInventory)
+        {
+            pMessage->SendPlayerToServerGuiInventory_Status(pPlayer, open, oidTarget);
+            pInventory->SetOpen(open, 0/*bClientDirected*/);
+
+            if (open)
+            {
+                pInventory->SetOwner(oidTarget);
+            }
+        }
+    }
+
     return stack;
 }
 

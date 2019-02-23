@@ -108,6 +108,7 @@ The following plugins were added:
 - Player: SetRestDuration()
 - Player: ApplyInstantVisualEffectToObject()
 - Player: UpdateCharacterSheet()
+- Player: OpenInventory()
 - Rename: SetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
