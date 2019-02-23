@@ -462,10 +462,10 @@ ArgumentStack Creature::SetBaseAC(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto ac = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(ac >= 0);
-          ASSERT_OR_THROW(ac <= 255);
+          ASSERT_OR_THROW(ac >= -128);
+          ASSERT_OR_THROW(ac <= 127);
 
-        pCreature->m_pStats->m_nACNaturalBase = static_cast<char>(ac);
+        pCreature->m_pStats->m_nACNaturalBase = static_cast<int8_t>(ac);
     }
     return stack;
 }
