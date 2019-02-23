@@ -88,6 +88,7 @@ The following plugins were added:
 - Events: GetCurrentEvent()
 - Feedback: GetMessageHidden()
 - Feedback: SetMessageHidden()
+- Item: GetBaseArmorClass()
 - ItemProperty: PackIP()
 - ItemProperty: UnpackIP()
 - Object: GetHasVisualEffect()

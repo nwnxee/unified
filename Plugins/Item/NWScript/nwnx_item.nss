@@ -55,42 +55,45 @@ string NWNX_Item_GetEntireItemAppearance (object oItem);
 /* Restore an item's appearance with the value returned by GetEntireItemAppearance(). */
 void NWNX_Item_RestoreItemAppearance (object oItem, string sApp);
 
+// Get oItem's base armor class
+int NWNX_Item_GetBaseArmorClass(object oItem);
+
 void NWNX_Item_SetWeight(object oItem, int w)
 {
     string sFunc = "SetWeight";
-    
+
     NWNX_PushArgumentInt(NWNX_Item, sFunc, w);
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
-    
+
     NWNX_CallFunction(NWNX_Item, sFunc);
 }
 
 void NWNX_Item_SetBaseGoldPieceValue(object oItem, int g)
 {
     string sFunc = "SetBaseGoldPieceValue";
-    
+
     NWNX_PushArgumentInt(NWNX_Item, sFunc, g);
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
-    
+
     NWNX_CallFunction(NWNX_Item, sFunc);
 }
 
 void NWNX_Item_SetAddGoldPieceValue(object oItem, int g)
 {
     string sFunc = "SetAddGoldPieceValue";
-    
+
     NWNX_PushArgumentInt(NWNX_Item, sFunc, g);
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
-    
+
     NWNX_CallFunction(NWNX_Item, sFunc);
 }
 
 int NWNX_Item_GetBaseGoldPieceValue(object oItem)
 {
     string sFunc = "GetBaseGoldPieceValue";
-    
+
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
-    
+
     NWNX_CallFunction(NWNX_Item, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Item, sFunc);
 }
@@ -98,27 +101,27 @@ int NWNX_Item_GetBaseGoldPieceValue(object oItem)
 int NWNX_Item_GetAddGoldPieceValue(object oItem)
 {
     string sFunc = "GetAddGoldPieceValue";
-    
+
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
-    
+
     NWNX_CallFunction(NWNX_Item, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Item, sFunc);
 }
-				
+
 void NWNX_Item_SetBaseItemType(object oItem, int nBaseItem)
 {
     string sFunc = "SetBaseItemType";
-    
+
     NWNX_PushArgumentInt(NWNX_Item, sFunc, nBaseItem);
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
-    
+
     NWNX_CallFunction(NWNX_Item, sFunc);
 }
 
 void NWNX_Item_SetItemAppearance(object oItem, int nType, int nIndex, int nValue)
 {
     string sFunc = "SetItemAppearance";
-  
+
     NWNX_PushArgumentInt(NWNX_Item, sFunc, nValue);
     NWNX_PushArgumentInt(NWNX_Item, sFunc, nIndex);
     NWNX_PushArgumentInt(NWNX_Item, sFunc, nType);
@@ -147,4 +150,13 @@ void NWNX_Item_RestoreItemAppearance(object oItem, string sApp)
 
     NWNX_CallFunction(NWNX_Item, sFunc);
 }
-		
+
+int NWNX_Item_GetBaseArmorClass(object oItem)
+{
+    string sFunc = "GetBaseArmorClass";
+
+    NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Item, sFunc);
+}
