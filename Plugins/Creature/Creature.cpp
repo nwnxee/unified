@@ -127,7 +127,6 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetOriginalName);
     REGISTER(SetSpellResistance);
 
-
 #undef REGISTER
 }
 
