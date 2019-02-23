@@ -24,22 +24,34 @@ static Hooking::FunctionHook* m_FindItemWithBaseItemIdHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseItem>(&UseItemHook);
-    m_UseItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseItem);
+    Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseItem>(&UseItemHook);
+        m_UseItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseItem);
+    });
 
-    hooker->RequestExclusiveHook<API::Functions::CNWSItem__OpenInventory>(&OpenInventoryHook);
-    m_OpenInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__OpenInventory);
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_OPEN_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSItem__OpenInventory>(&OpenInventoryHook);
+        m_OpenInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__OpenInventory);
+    });
 
-    hooker->RequestExclusiveHook<API::Functions::CNWSItem__CloseInventory>(&CloseInventoryHook);
-    m_CloseInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__CloseInventory);
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_CLOSE_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSItem__CloseInventory>(&CloseInventoryHook);
+        m_CloseInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__CloseInventory);
+    });
 
-    hooker->RequestExclusiveHook<API::Functions::CItemRepository__AddItem>(&AddItemHook);
-    m_AddItemHook = hooker->FindHookByAddress(API::Functions::CItemRepository__AddItem);
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_ADD_ITEM_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CItemRepository__AddItem>(&AddItemHook);
+        m_AddItemHook = hooker->FindHookByAddress(API::Functions::CItemRepository__AddItem);
+    });
 
-    hooker->RequestSharedHook<API::Functions::CItemRepository__RemoveItem, int32_t>(&RemoveItemHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CItemRepository__RemoveItem, int32_t>(&RemoveItemHook);
+    });
 
-    hooker->RequestExclusiveHook<API::Functions::CItemRepository__FindItemWithBaseItemId>(&FindItemWithBaseItemIdHook);
-    m_FindItemWithBaseItemIdHook = hooker->FindHookByAddress(API::Functions::CItemRepository__FindItemWithBaseItemId);
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_AMMO_RELOAD_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CItemRepository__FindItemWithBaseItemId>(&FindItemWithBaseItemIdHook);
+        m_FindItemWithBaseItemIdHook = hooker->FindHookByAddress(API::Functions::CItemRepository__FindItemWithBaseItemId);
+    });
 
 }
 

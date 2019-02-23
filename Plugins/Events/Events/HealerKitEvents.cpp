@@ -15,9 +15,10 @@ static NWNXLib::Hooking::FunctionHook* m_AIActionHealHook=nullptr;
 
 HealerKitEvents::HealerKitEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-
-    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AIActionHeal, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionHealHook);
-    m_AIActionHealHook =  hooker->FindHookByAddress(API::Functions::CNWSCreature__AIActionHeal);
+    Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AIActionHeal, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionHealHook);
+        m_AIActionHealHook =  hooker->FindHookByAddress(API::Functions::CNWSCreature__AIActionHeal);
+    });
 }
 
 uint32_t HealerKitEvents::AIActionHealHook(

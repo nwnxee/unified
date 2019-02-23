@@ -17,9 +17,11 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerPartyHook = nullptr
 
 PartyEvents::PartyEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerParty, int32_t,
-        CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
-    m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerParty);
+    Events::InitOnFirstSubscribe("NWNX_ON_PARTY_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerParty, int32_t,
+            CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
+        m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerParty);
+    });
 }
 
 int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)

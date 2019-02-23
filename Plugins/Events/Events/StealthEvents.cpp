@@ -14,13 +14,19 @@ static NWNXLib::Hooking::FunctionHook* m_DoListenDetectionHook = nullptr;
 
 StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<API::Functions::CNWSCreature__SetStealthMode, void, API::CNWSCreature*, uint8_t>(&SetStealthModeHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_E.*_STEALTH_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CNWSCreature__SetStealthMode, void, API::CNWSCreature*, uint8_t>(&SetStealthModeHook);
+    });
 
+    Events::InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", [hooker]() {
     hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoListenDetection, int32_t>(&DoListenDetectionHook);
     m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoListenDetection);
+    });
 
+    Events::InitOnFirstSubscribe("NWNX_ON_DO_SPOT_DETECTION.*", [hooker]() {
     hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoSpotDetection, int32_t>(&DoSpotDetectionHook);
     m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoSpotDetection);
+    });
 }
 
 void StealthEvents::SetStealthModeHook(Services::Hooks::CallType type, API::CNWSCreature* thisPtr, uint8_t mode)

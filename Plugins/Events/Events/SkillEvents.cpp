@@ -12,10 +12,12 @@ static Hooking::FunctionHook* m_UseSkillHook = nullptr;
 
 SkillEvents::SkillEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseSkill, int32_t, API::CNWSCreature*, uint8_t, uint8_t, NWNXLib::API::Types::ObjectID,
-        NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t>(&UseSkillHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_USE_SKILL_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseSkill, int32_t, API::CNWSCreature*, uint8_t, uint8_t, NWNXLib::API::Types::ObjectID,
+            NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t>(&UseSkillHook);
 
-    m_UseSkillHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseSkill);
+        m_UseSkillHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseSkill);
+    });
 }
 
 int32_t SkillEvents::UseSkillHook(

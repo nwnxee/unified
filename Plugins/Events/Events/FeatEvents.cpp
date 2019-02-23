@@ -17,17 +17,19 @@ static Hooking::FunctionHook* m_UseFeatHook = nullptr;
 
 FeatEvents::FeatEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<
-        NWNXLib::API::Functions::CNWSCreature__UseFeat,
-        int32_t,
-        NWNXLib::API::CNWSCreature*,
-        uint16_t,
-        uint16_t,
-        NWNXLib::API::Types::ObjectID,
-        NWNXLib::API::Types::ObjectID,
-        NWNXLib::API::Vector*>(FeatEvents::UseFeatHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", [hooker]() {
+        hooker->RequestExclusiveHook<
+            NWNXLib::API::Functions::CNWSCreature__UseFeat,
+            int32_t,
+            NWNXLib::API::CNWSCreature*,
+            uint16_t,
+            uint16_t,
+            NWNXLib::API::Types::ObjectID,
+            NWNXLib::API::Types::ObjectID,
+            NWNXLib::API::Vector*>(FeatEvents::UseFeatHook);
 
-    m_UseFeatHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseFeat);
+        m_UseFeatHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseFeat);
+    });
 }
 
 int32_t FeatEvents::UseFeatHook(

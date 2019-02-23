@@ -12,8 +12,10 @@ static Hooking::FunctionHook* m_SpellCastAndImpactHook = nullptr;
 
 SpellEvents::SpellEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact>(&CastSpellHook);
-    m_SpellCastAndImpactHook = hooker->FindHookByAddress(NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact);
+    Events::InitOnFirstSubscribe("NWNX_ON_CAST_SPELL_.*", [hooker]() {
+        hooker->RequestExclusiveHook<NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact>(&CastSpellHook);
+        m_SpellCastAndImpactHook = hooker->FindHookByAddress(NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact);
+    });
 }
 
 void SpellEvents::CastSpellHook
