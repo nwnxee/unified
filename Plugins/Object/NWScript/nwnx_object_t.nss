@@ -30,6 +30,7 @@ void main()
 
     string sObj = ObjectToString(o);
     report("StringToObject", NWNX_Object_StringToObject(sObj) == o);
+    report("Negative: StringToObject", NWNX_Object_StringToObject("!@#!@#!@#!") == OBJECT_INVALID);
 
 
     string sHandler = NWNX_Object_GetEventHandler(o, 0);
