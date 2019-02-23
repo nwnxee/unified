@@ -8,6 +8,7 @@
 #include "API/CGameObject.hpp"
 #include "API/CNWSScriptVar.hpp"
 #include "API/CNWSScriptVarTable.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSQuickbarButton.hpp"
@@ -17,6 +18,7 @@
 #include "API/CNWSItem.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSPlayerCharSheetGUI.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/C2DA.hpp"
@@ -77,6 +79,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetPlaceableUsable);
     REGISTER(SetRestDuration);
     REGISTER(ApplyInstantVisualEffectToObject);
+    REGISTER(UpdateCharacterSheet);
 
 #undef REGISTER
 
@@ -579,6 +582,23 @@ ArgumentStack Player::ApplyInstantVisualEffectToObject(ArgumentStack&& args)
                     0,                            // nTargetNode
                     vTargetPosition,              // vTargetPosition
                     0.0f);                        // fDuration
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::UpdateCharacterSheet(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        const auto charSheet = pPlayer->m_pCharSheetGUI;
+        uint32_t msg = charSheet->ComputeCharacterSheetUpdateRequired(pPlayer);
+        if (msg)
+        {
+            auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+            if (pMessage)
+                pMessage->WriteGameObjUpdate_CharacterSheet(pPlayer, msg);
         }
     }
     return stack;

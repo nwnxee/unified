@@ -112,6 +112,11 @@ void NWNX_Player_SetRestDuration(object player, int duration);
 // Note: Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_*
 void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect);
 
+// Refreshes the players character sheet
+// Note: You may need to use DelayCommand if you're manipulating values
+// through nwnx and forcing a UI refresh, 0.5s seemed to be fine
+void NWNX_Player_UpdateCharacterSheet(object player);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -419,6 +424,14 @@ void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, 
     string sFunc = "ApplyInstantVisualEffectToObject";
     NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_UpdateCharacterSheet(object player)
+{
+    string sFunc = "UpdateCharacterSheet";
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);

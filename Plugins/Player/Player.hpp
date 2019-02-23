@@ -33,6 +33,7 @@ private:
     ArgumentStack SetPlaceableUsable                (ArgumentStack&& args);
     ArgumentStack SetRestDuration                   (ArgumentStack&& args);
     ArgumentStack ApplyInstantVisualEffectToObject  (ArgumentStack&& args);
+    ArgumentStack UpdateCharacterSheet              (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

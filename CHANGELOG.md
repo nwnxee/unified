@@ -106,6 +106,7 @@ The following plugins were added:
 - Player: SetPlaceableUsable()
 - Player: SetRestDuration()
 - Player: ApplyInstantVisualEffectToObject()
+- Player: UpdateCharacterSheet()
 - Rename: SetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
