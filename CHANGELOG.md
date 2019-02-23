@@ -71,6 +71,7 @@ The following plugins were added:
 - Creature: GetTotalEffectBonus()
 - Creature: SetOriginalName()
 - Creature: GetOriginalName()
+- Creature: SetSpellResistance()
 - Effect: PackEffect()
 - Effect: UnpackEffect()
 - Effect: SetEffectExpiredScript()

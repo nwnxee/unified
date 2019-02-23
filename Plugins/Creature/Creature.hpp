@@ -89,6 +89,7 @@ private:
     ArgumentStack GetTotalEffectBonus           (ArgumentStack&& args);
     ArgumentStack SetOriginalName               (ArgumentStack&& args);
     ArgumentStack GetOriginalName               (ArgumentStack&& args);
+    ArgumentStack SetSpellResistance            (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 
