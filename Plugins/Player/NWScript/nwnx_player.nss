@@ -119,6 +119,8 @@ void NWNX_Player_UpdateCharacterSheet(object player);
 
 // Allows player to open target's inventory
 // Target must be a creature or another player
+//
+// Note: only works if player and target are in the same area
 void NWNX_Player_OpenInventory(object player, object target, int open = TRUE);
 
 
