@@ -39,7 +39,7 @@ int32_t DMActionEvents::HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlay
     std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(pMessage, 4) & 0x7FFFFFFF);
 
     auto PushAndSignalGiveEvent = [&](std::string ev) -> bool {
-        Events::PushEventData("AREA", amount);
+        Events::PushEventData("AMOUNT", amount);
         Events::PushEventData("OBJECT", target);
         if (alignmentType > 0)
         {
