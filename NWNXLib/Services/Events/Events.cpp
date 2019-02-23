@@ -38,11 +38,11 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     {
         LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
             eventName.c_str(), pluginName.c_str());
-        try 
+        try
         {
             event->m_returns = event->m_callback(std::move(event->m_arguments));
         }
-        catch (const std::runtime_error& err)
+        catch (const std::exception& err)
         {
             LOG_ERROR("Plugin '%s' failed event '%s'. Error: %s", pluginName.c_str(), eventName.c_str(), err.what());
         }
