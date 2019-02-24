@@ -21,6 +21,7 @@ static Hooking::FunctionHook* m_OpenInventoryHook = nullptr;
 static Hooking::FunctionHook* m_CloseInventoryHook = nullptr;
 static Hooking::FunctionHook* m_AddItemHook = nullptr;
 static Hooking::FunctionHook* m_FindItemWithBaseItemIdHook = nullptr;
+static Hooking::FunctionHook* m_LearnScrollHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
@@ -51,6 +52,11 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_AMMO_RELOAD_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::CItemRepository__FindItemWithBaseItemId>(&FindItemWithBaseItemIdHook);
         m_FindItemWithBaseItemIdHook = hooker->FindHookByAddress(API::Functions::CItemRepository__FindItemWithBaseItemId);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_SCROLL_LEARN_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__LearnScroll>(&LearnScrollHook);
+        m_LearnScrollHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__LearnScroll);
     });
 
 }
@@ -249,5 +255,27 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     return retVal;
 }
 
+int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, Types::ObjectID oidScrollToLearn)
+{
+    int32_t retVal;
+
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("SCROLL", Utils::ObjectIDToString(oidScrollToLearn));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_SCROLL_LEARN_BEFORE"))
+    {
+        retVal = m_LearnScrollHook->CallOriginal<int32_t>(thisPtr, oidScrollToLearn);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignal("NWNX_ON_ITEM_SCROLL_LEARN_AFTER");
+
+    return retVal;
+}
 
 }

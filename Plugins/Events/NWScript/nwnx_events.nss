@@ -88,6 +88,16 @@
         BASE_ITEM_ID            int
         BASE_ITEM_NTH           int         Find the Nth instance of this item
         ACTION_RESULT           int         The object that was determined in BEFORE (only in after)
+
+    NWNX_ON_ITEM_SCROLL_LEARN_BEFORE
+    NWNX_ON_ITEM_SCROLL_LEARN_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature learning the scroll
+
+    Event data:
+        Variable Name           Type        Notes
+        SCROLL                  object      Convert to object with NWNX_Object_StringToObject()
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
