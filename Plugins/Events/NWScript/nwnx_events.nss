@@ -331,11 +331,11 @@
     NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER
 
     Usage:
-        OBJECT_SELF = The creature whose memorizing the spell
+        OBJECT_SELF = The creature who's memorizing the spell
 
     Event data:
         Variable Name           Type        Notes
-        SPELL_MULTICLASS        int
+        SPELL_MULTICLASS        int         Index of the spell casting class (0-2)
         SPELL_LEVEL             int
         SPELL_SLOT              int
         SPELL_ID                int
@@ -352,7 +352,7 @@
 
     Event data:
         Variable Name           Type        Notes
-        SPELL_MULTICLASS        int
+        SPELL_MULTICLASS        int         Index of the spell casting class (0-2)
         SPELL_LEVEL             int
         SPELL_SLOT              int
 ////////////////////////////////////////////////////////////////////////////////

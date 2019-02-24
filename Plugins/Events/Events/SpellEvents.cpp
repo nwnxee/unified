@@ -117,11 +117,6 @@ int32_t SpellEvents::SetMemorizedSpellSlotHook
 
     retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
 
-    if(retVal)
-    {
-        // Do we do anything if the user bypasses but returns a value?
-    }
-
     return retVal;
 }
 
