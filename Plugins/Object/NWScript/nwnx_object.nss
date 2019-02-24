@@ -108,7 +108,6 @@ string NWNX_Object_GetPortrait(object obj);
 void NWNX_Object_SetPortrait(object obj, string portrait);
 
 // Serialize the full object (including locals, inventory, etc) to base64 string
-// Only works on Creatures and Items currently.
 string NWNX_Object_Serialize(object obj);
 
 // Deserialize the object. The object will be created outside of the world and
