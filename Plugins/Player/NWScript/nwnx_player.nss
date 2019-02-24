@@ -117,6 +117,12 @@ void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, 
 // through nwnx and forcing a UI refresh, 0.5s seemed to be fine
 void NWNX_Player_UpdateCharacterSheet(object player);
 
+// Allows player to open target's inventory
+// Target must be a creature or another player
+//
+// Note: only works if player and target are in the same area
+void NWNX_Player_OpenInventory(object player, object target, int open = TRUE);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -432,6 +438,17 @@ void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, 
 void NWNX_Player_UpdateCharacterSheet(object player)
 {
     string sFunc = "UpdateCharacterSheet";
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_OpenInventory(object player, object target, int open = TRUE)
+{
+    string sFunc = "OpenInventory";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, open);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
