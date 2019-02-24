@@ -39,17 +39,10 @@ private:
         int32_t bCompleted,
         NWNXLib::API::CExoLocString* p_locName);
 
-    bool GetGlobalState(int32_t messageType, int32_t messageId);
-    int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);
+    static bool GetGlobalState(int32_t messageType, int32_t messageId);
+    static int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);
 
-    NWNXLib::Hooking::FunctionHook* m_SendFeedbackMessageHook;
-    std::set<int32_t> m_GlobalHiddenFeedbackMessageSet;
-
-    NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCCMessageHook;
-    std::set<int32_t> m_GlobalHiddenCombatLogMessageSet;
-
-    NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerJournalUpdatedHook;
-    std::set<int32_t> m_GlobalHiddenJournalUpdatedMessageSet;
+    std::set<int32_t> m_GlobalHiddenMessageSet;
 };
 
 }

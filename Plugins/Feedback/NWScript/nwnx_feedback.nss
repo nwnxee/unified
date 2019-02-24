@@ -52,25 +52,25 @@ int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_IN
 // to TRUE but the personal state is set to FALSE, the message will be shown to oPC
 void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID);
 
-// Gets if journal updated message nMessage is hidden.
+// Gets if journal updated messages are hidden.
 // Notes:
 // If oPC == OBJECT_INVALID it will return the global state:
-//    TRUE      nMessage is globally hidden
-//    FALSE     nMessage is not globally hidden
+//    TRUE      Journal updated messages are globally hidden
+//    FALSE     Journal updated messages are not globally hidden
 // If oPC is a valid player it will return the personal state:
-//    TRUE      nMessage is hidden for oPC
-//    FALSE     nMessage is not hidden for oPC
+//    TRUE      Journal updated messages are hidden for oPC
+//    FALSE     Journal updated messages are not hidden for oPC
 //    -1        Personal state is not set
 int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID);
 
-// Sets if journal updated message nMessage is hidden.
+// Sets if journal updated messages are hidden.
 // Notes:
 // If oPC == OBJECT_INVALID it will set the global state:
-//    TRUE      nMessage is globally hidden
-//    FALSE     nMessage is not globally hidden
+//    TRUE      Journal updated messages are globally hidden
+//    FALSE     Journal updated messages are not globally hidden
 // If oPC is a valid player it will set the personal state:
-//    TRUE      nMessage is hidden for oPC
-//    FALSE     nMessage is not hidden for oPC
+//    TRUE      Journal updated messages are hidden for oPC
+//    FALSE     Journal updated messages are not hidden for oPC
 //    -1        Remove the personal state
 //
 // Personal state overrides the global state which means if a global state is set
@@ -245,7 +245,8 @@ const int NWNX_FEEDBACK_TRAP_TRIGGERED                     = 82;
 const int NWNX_FEEDBACK_DAMAGE_HEALED                      = 151;
 const int NWNX_FEEDBACK_EXPERIENCE_GAINNED                 = 182;
 const int NWNX_FEEDBACK_EXPERIENCE_LOST                    = 183;
-const int NWNX_FEEDBACK_JOURNALUPDATED                     = 184;
+const int NWNX_FEEDBACK_JOURNALUPDATED                     = 184; // Doesn't actually work, use:
+                                                                  // NWNX_Feedback_{Get/Set}JournalUpdatedMessageHidden()
 const int NWNX_FEEDBACK_BARTER_CANCELLED                   = 185;
 
 // Mode activation/deactivation Messages

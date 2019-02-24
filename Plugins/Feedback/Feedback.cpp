@@ -5,16 +5,11 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "API/CNWSMessage.hpp"
-#include "API/CNWCCMessageData.hpp"
-#include "API/CNWSCombatAttackData.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "ViewPtr.hpp"
-#include <set>
-#include <string>
 
 
 using namespace NWNXLib;
@@ -27,7 +22,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
     return new Plugin::Info
     {
         "Feedback",
-        "Allows combatlog and feedback messages to be hidden globally or per player",
+        "Allows combatlog, feedback and journal updated messages to be hidden globally or per player",
         "Daz",
         "daztek@gmail.com",
         1,
@@ -44,6 +39,10 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 namespace Feedback {
 
+static NWNXLib::Hooking::FunctionHook* m_SendFeedbackMessageHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCCMessageHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerJournalUpdatedHook = nullptr;
+
 const int32_t FEEDBACK_MESSAGE = 0;
 const int32_t COMBATLOG_MESSAGE = 1;
 const int32_t JOURNALUPDATED_MESSAGE = 2;
@@ -59,13 +58,13 @@ Feedback::Feedback(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSCreature__SendFeedbackMessage>(&Feedback::SendFeedbackMessageHook);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSCreature__SendFeedbackMessage>(&SendFeedbackMessageHook);
     m_SendFeedbackMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSCreature__SendFeedbackMessage);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCCMessage>(&Feedback::SendServerToPlayerCCMessageHook);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCCMessage>(&SendServerToPlayerCCMessageHook);
     m_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCCMessage);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerJournalUpdated>(&Feedback::SendServerToPlayerJournalUpdatedHook);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerJournalUpdated>(&SendServerToPlayerJournalUpdatedHook);
     m_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerJournalUpdated);
 }
 
@@ -74,76 +73,64 @@ Feedback::~Feedback()
 }
 
 void Feedback::SendFeedbackMessageHook(
-    CNWSCreature* pCreature,
+    CNWSCreature *pCreature,
     uint16_t nFeedbackID,
-    CNWCCMessageData* pData,
-    CNWSPlayer* pPlayer)
+    CNWCCMessageData *pData,
+    CNWSPlayer *pPlayer)
 {
-    Feedback& plugin = *g_plugin;
-    auto personalState = plugin.GetPersonalState(pCreature->m_idSelf, FEEDBACK_MESSAGE, nFeedbackID);
-    bool bSuppressFeedback = (personalState == -1) ? plugin.GetGlobalState(FEEDBACK_MESSAGE, nFeedbackID) : personalState;
+    auto personalState = GetPersonalState(pCreature->m_idSelf, FEEDBACK_MESSAGE, nFeedbackID);
+    bool bSuppressFeedback = (personalState == -1) ? GetGlobalState(FEEDBACK_MESSAGE, nFeedbackID) : personalState;
 
     if (!bSuppressFeedback)
     {
-        plugin.m_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pData, pPlayer);
+        m_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pData, pPlayer);
     }
 }
 
 int32_t Feedback::SendServerToPlayerCCMessageHook(
-    CNWSMessage* pMessage,
+    CNWSMessage *pMessage,
     uint32_t nPlayerId,
     uint8_t nMinor,
-    CNWCCMessageData* pMessageData,
-    CNWSCombatAttackData* pAttackData)
+    CNWCCMessageData *pMessageData,
+    CNWSCombatAttackData *pAttackData)
 {
-    Feedback& plugin = *g_plugin;
     uint32_t oidPlayer = static_cast<CNWSPlayer*>(Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId, 0))->m_oidPCObject;
 
-    auto personalState = plugin.GetPersonalState(oidPlayer, COMBATLOG_MESSAGE, nMinor);
-    bool bSuppressFeedback = (personalState == -1) ? plugin.GetGlobalState(COMBATLOG_MESSAGE, nMinor) : personalState;
+    auto personalState = GetPersonalState(oidPlayer, COMBATLOG_MESSAGE, nMinor);
+    bool bSuppressFeedback = (personalState == -1) ? GetGlobalState(COMBATLOG_MESSAGE, nMinor) : personalState;
 
     return bSuppressFeedback ? false :
-                    plugin.m_SendServerToPlayerCCMessageHook->CallOriginal<int32_t>(pMessage, nPlayerId, nMinor, pMessageData, pAttackData);
+                    m_SendServerToPlayerCCMessageHook->CallOriginal<int32_t>(pMessage, nPlayerId, nMinor, pMessageData, pAttackData);
 }
 
 int32_t Feedback::SendServerToPlayerJournalUpdatedHook(
-    CNWSMessage* pMessage,
-    CNWSPlayer* pPlayer,
+    CNWSMessage *pMessage,
+    CNWSPlayer *pPlayer,
     int32_t bQuest,
     int32_t bCompleted,
-    CExoLocString* p_locName)
+    CExoLocString *p_locName)
 {
-   Feedback& plugin = *g_plugin;
-
-    auto personalState = plugin.GetPersonalState(pPlayer->m_oidNWSObject, JOURNALUPDATED_MESSAGE, 0);
-    bool bSuppressFeedback = (personalState == -1) ? plugin.GetGlobalState(JOURNALUPDATED_MESSAGE, 0) : personalState;
+    auto personalState = GetPersonalState(pPlayer->m_oidNWSObject, JOURNALUPDATED_MESSAGE, 0);
+    bool bSuppressFeedback = (personalState == -1) ? GetGlobalState(JOURNALUPDATED_MESSAGE, 0) : personalState;
 
     return bSuppressFeedback ? false :
-                    plugin.m_SendServerToPlayerJournalUpdatedHook->CallOriginal<int32_t>(pMessage, pPlayer, bQuest, bCompleted, p_locName);
+                    m_SendServerToPlayerJournalUpdatedHook->CallOriginal<int32_t>(pMessage, pPlayer, bQuest, bCompleted, p_locName);
 }
 
 bool Feedback::GetGlobalState(int32_t messageType, int32_t messageId)
 {
-    Feedback& plugin = *g_plugin;
-    std::set<int32_t>* hiddenMessageSet;
-    if (messageType == JOURNALUPDATED_MESSAGE)
-        hiddenMessageSet = &plugin.m_GlobalHiddenJournalUpdatedMessageSet;
-    else if(messageType == COMBATLOG_MESSAGE)
-        hiddenMessageSet = &plugin.m_GlobalHiddenCombatLogMessageSet;
-    else
-        hiddenMessageSet = &plugin.m_GlobalHiddenFeedbackMessageSet;
+    int32_t realMessageId = messageType * 10000 + messageId;
 
-    return hiddenMessageSet->find(messageId) != hiddenMessageSet->end();
+    return g_plugin->m_GlobalHiddenMessageSet.find(realMessageId) != g_plugin->m_GlobalHiddenMessageSet.end();
 }
 
 int32_t Feedback::GetPersonalState(Types::ObjectID playerId, int32_t messageType, int32_t messageId)
 {
-    Feedback& plugin = *g_plugin;
     int32_t value = -1;
 
     std::string varName = std::to_string(messageType) + ":" + std::to_string(messageId);
 
-    if (auto personalState = plugin.GetServices()->m_perObjectStorage->Get<int>(playerId, varName))
+    if (auto personalState = g_plugin->GetServices()->m_perObjectStorage->Get<int>(playerId, varName))
     {
         value = !!*personalState;
     }
@@ -170,7 +157,6 @@ ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    Feedback& plugin = *g_plugin;
 
     const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
@@ -181,24 +167,18 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 
     if (playerId == Constants::OBJECT_INVALID)
     {
-        std::set<int32_t>* hiddenMessageSet;
-        if (messageType == JOURNALUPDATED_MESSAGE)
-            hiddenMessageSet = &plugin.m_GlobalHiddenJournalUpdatedMessageSet;
-        else if(messageType == COMBATLOG_MESSAGE)
-            hiddenMessageSet = &plugin.m_GlobalHiddenCombatLogMessageSet;
-        else
-            hiddenMessageSet = &plugin.m_GlobalHiddenFeedbackMessageSet;
+        int32_t realMessageId = messageType * 10000 + messageId;
 
         if (!!state)
         {
-            hiddenMessageSet->insert(messageId);
+            g_plugin->m_GlobalHiddenMessageSet.insert(realMessageId);
         }
         else
         {
-            auto index = hiddenMessageSet->find(messageId);
-            if (index != hiddenMessageSet->end())
+            auto index = g_plugin->m_GlobalHiddenMessageSet.find(messageId);
+            if (index != g_plugin->m_GlobalHiddenMessageSet.end())
             {
-                hiddenMessageSet->erase(index);
+                g_plugin->m_GlobalHiddenMessageSet.erase(index);
             }
         }
     }
@@ -208,11 +188,11 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 
         if (state == -1)
         {
-            plugin.GetServices()->m_perObjectStorage->Remove(playerId, varName);
+            g_plugin->GetServices()->m_perObjectStorage->Remove(playerId, varName);
         }
         else
         {
-            plugin.GetServices()->m_perObjectStorage->Set(playerId, varName, !!state);
+            g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state);
         }
     }
 
