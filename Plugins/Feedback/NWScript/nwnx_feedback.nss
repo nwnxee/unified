@@ -52,6 +52,31 @@ int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_IN
 // to TRUE but the personal state is set to FALSE, the message will be shown to oPC
 void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID);
 
+// Gets if journal updated message nMessage is hidden.
+// Notes:
+// If oPC == OBJECT_INVALID it will return the global state:
+//    TRUE      nMessage is globally hidden
+//    FALSE     nMessage is not globally hidden
+// If oPC is a valid player it will return the personal state:
+//    TRUE      nMessage is hidden for oPC
+//    FALSE     nMessage is not hidden for oPC
+//    -1        Personal state is not set
+int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID);
+
+// Sets if journal updated message nMessage is hidden.
+// Notes:
+// If oPC == OBJECT_INVALID it will set the global state:
+//    TRUE      nMessage is globally hidden
+//    FALSE     nMessage is not globally hidden
+// If oPC is a valid player it will set the personal state:
+//    TRUE      nMessage is hidden for oPC
+//    FALSE     nMessage is not hidden for oPC
+//    -1        Remove the personal state
+//
+// Personal state overrides the global state which means if a global state is set
+// to TRUE but the personal state is set to FALSE, the message will be shown to oPC
+void NWNX_Feedback_SetJournalUpdatedMessageHidden(int nState, object oPC = OBJECT_INVALID);
+
 // ***
 // For a list of the various combatlog / feedback messages see below.
 // ***
@@ -104,6 +129,31 @@ void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oP
 
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nState);
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID)
+{
+    string sFunc = "GetMessageHidden";
+    int nMessageType = 2;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetJournalUpdatedMessageHidden(int nState, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "SetMessageHidden";
+    int nMessageType = 2;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nState);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
     NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
