@@ -117,11 +117,9 @@ int32_t SpellEvents::SetMemorizedSpellSlotHook
 
     retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
 
-    uint8_t level = Globals::Rules()->m_pSpellArray->GetSpell(spellID)->GetSpellLevel(thisPtr->GetClass(multiClass));
-
-    if(!retVal)
+    if(retVal)
     {
-        m_ClearMemorizedSpellSlotHook->CallOriginal<void>(thisPtr, multiClass, level, slot);
+        // Do we do anything if the user bypasses but returns a value?
     }
 
     return retVal;
@@ -145,10 +143,6 @@ void SpellEvents::ClearMemorizedSpellSlotHook
     if (PushAndSignal("NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE"))
     {
         m_ClearMemorizedSpellSlotHook->CallOriginal<void>(thisPtr, multiClass, level, slot);
-    }
-    else
-    {
-        //do we need to do anything?
     }
 
     PushAndSignal("NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER");
