@@ -32,6 +32,13 @@ private:
         NWNXLib::API::CNWCCMessageData* pMessageData,
         NWNXLib::API::CNWSCombatAttackData* pAttackData);
 
+    static int32_t SendServerToPlayerJournalUpdatedHook(
+        NWNXLib::API::CNWSMessage* pMessage,
+        NWNXLib::API::CNWSPlayer* pPlayer,
+        int32_t bQuest,
+        int32_t bCompleted,
+        NWNXLib::API::CExoLocString* p_locName);
+
     bool GetGlobalState(int32_t messageType, int32_t messageId);
     int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);
 
@@ -40,6 +47,9 @@ private:
 
     NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCCMessageHook;
     std::set<int32_t> m_GlobalHiddenCombatLogMessageSet;
+
+    NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerJournalUpdatedHook;
+    std::set<int32_t> m_GlobalHiddenJournalUpdatedMessageSet;
 };
 
 }
