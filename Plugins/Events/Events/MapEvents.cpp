@@ -19,17 +19,23 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerMapPinDestroyMapPin
 
 MapEvents::MapEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerMapPinSetMapPinAt, int32_t,
-        CNWSMessage*, CNWSPlayer*>(&HandleMapPinSetMapPinAtMessageHook);
-    m_HandlePlayerToServerMapPinSetMapPinAtHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerMapPinSetMapPinAt);
+    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_ADD_PIN_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerMapPinSetMapPinAt, int32_t,
+            CNWSMessage*, CNWSPlayer*>(&HandleMapPinSetMapPinAtMessageHook);
+        m_HandlePlayerToServerMapPinSetMapPinAtHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerMapPinSetMapPinAt);
+    });
 
-    hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerMapPinChangePin, int32_t,
-        CNWSMessage*, CNWSPlayer*>(&HandleMapPinChangePinMessageHook);
-    m_HandlePlayerToServerMapPinChangePinHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerMapPinChangePin);
+    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_CHANGE_PIN_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerMapPinChangePin, int32_t,
+            CNWSMessage*, CNWSPlayer*>(&HandleMapPinChangePinMessageHook);
+        m_HandlePlayerToServerMapPinChangePinHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerMapPinChangePin);
+    });
 
-    hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerMapPinDestroyMapPin, int32_t,
-        CNWSMessage*, CNWSPlayer*>(&HandleMapPinDestroyMapPinMessageHook);
-    m_HandlePlayerToServerMapPinDestroyMapPinHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerMapPinDestroyMapPin);
+    Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_DESTROY_PIN_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerMapPinDestroyMapPin, int32_t,
+            CNWSMessage*, CNWSPlayer*>(&HandleMapPinDestroyMapPinMessageHook);
+        m_HandlePlayerToServerMapPinDestroyMapPinHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerMapPinDestroyMapPin);
+    });
 
 }
 

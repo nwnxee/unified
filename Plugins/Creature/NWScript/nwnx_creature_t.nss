@@ -165,5 +165,9 @@ void main()
     int iNewBonus = NWNX_Creature_GetTotalEffectBonus(oCreature, NWNX_CREATURE_BONUS_TYPE_ABILITY, OBJECT_INVALID, 0, 0, -1, -1, -1, ABILITY_STRENGTH);
     report("GetTotalEffectBonus", iOldBonus+1 == iNewBonus);
 
+    int iSR = GetSpellResistance(oCreature);
+    NWNX_Creature_SetSpellResistance(oCreature, iSR + 10);
+    report("SetSpellResistance", GetSpellResistance(oCreature) == (iSR + 10));
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

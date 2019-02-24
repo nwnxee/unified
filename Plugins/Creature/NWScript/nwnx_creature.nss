@@ -318,6 +318,8 @@ void NWNX_Creature_SetOriginalName(object creature, string name, int isLastName)
 // Get the original first or last name of creature
 string NWNX_Creature_GetOriginalName(object creature, int isLastName);
 
+// Set creature's spell resistance
+void NWNX_Creature_SetSpellResistance(object creature, int sr);
 
 const string NWNX_Creature = "NWNX_Creature";
 
@@ -738,6 +740,7 @@ void NWNX_Creature_SetMovementRate(object creature, int rate)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
+
 void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value)
 {
     string sFunc = "SetAlignmentGoodEvil";
@@ -1134,4 +1137,14 @@ string NWNX_Creature_GetOriginalName(object creature, int isLastName)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueString(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetSpellResistance(object creature, int sr)
+{
+    string sFunc = "SetSpellResistance";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, sr);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }

@@ -15,6 +15,11 @@
 #include "API/CNWSEncounter.hpp"
 #include "API/CNWSAreaOfEffectObject.hpp"
 #include "API/CNWSDoor.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWRules.hpp"
+#include "API/CNWBaseItem.hpp"
+#include "API/CNWBaseItemArray.hpp"
+#include "API/CItemRepository.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
@@ -71,6 +76,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetAppearance);
     REGISTER(GetAppearance);
     REGISTER(GetHasVisualEffect);
+    REGISTER(CheckFit);
 
 #undef REGISTER
 }
@@ -329,4 +335,49 @@ ArgumentStack Object::GetHasVisualEffect(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Object::CheckFit(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        CItemRepository *pRepo;
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            pRepo = pCreature->m_pcItemRepository;
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pRepo = pPlaceable->m_pcItemRepository;
+        else if (auto *pItem = Utils::AsNWSItem(pObject))
+            pRepo = pItem->m_pItemRepository;
+        else
+        {
+            Services::Events::InsertArgument(stack, retVal);
+            return stack;
+        }
+        retVal = 0;
+        const auto baseitem = Services::Events::ExtractArgument<int32_t>(args);
+        static CNWSItem *tmp = new CNWSItem(Constants::OBJECT_INVALID);
+        tmp->m_nBaseItem = baseitem;
+
+        uint8_t width  = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotWidth;
+        uint8_t height = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotHeight;
+
+        for (uint8_t y = 0; y < (pRepo->m_nHeight - height + 1); y++)
+        {
+            for (uint8_t x = 0; x < (pRepo->m_nWidth - width + 1); x++)
+            {
+                if (pRepo->CheckFit(tmp, x, y))
+                {
+                    retVal = 1;
+                    break;
+                }
+            }
+            if (retVal)
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
 }

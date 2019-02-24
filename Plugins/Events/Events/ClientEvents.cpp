@@ -23,12 +23,16 @@ static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCharListHook;
 
 ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<API::Functions::CServerExoAppInternal__RemovePCFromWorld, void,
-        CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_DISCONNECT_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CServerExoAppInternal__RemovePCFromWorld, void,
+            CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
+    });
 
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCharList, int32_t,
-        CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerCharListHook);
-    m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCharList);
+    Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_CONNECT_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCharList, int32_t,
+            CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerCharListHook);
+        m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCharList);
+    });
 }
 
 void ClientEvents::RemovePCFromWorldHook(Hooks::CallType type, CServerExoAppInternal*, CNWSPlayer* player)

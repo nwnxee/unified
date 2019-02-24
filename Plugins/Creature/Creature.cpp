@@ -125,6 +125,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetTotalEffectBonus);
     REGISTER(SetOriginalName);
     REGISTER(GetOriginalName);
+    REGISTER(SetSpellResistance);
 
 #undef REGISTER
 }
@@ -461,10 +462,10 @@ ArgumentStack Creature::SetBaseAC(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto ac = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(ac >= 0);
-          ASSERT_OR_THROW(ac <= 255);
+          ASSERT_OR_THROW(ac >= -128);
+          ASSERT_OR_THROW(ac <= 127);
 
-        pCreature->m_pStats->m_nACNaturalBase = static_cast<char>(ac);
+        pCreature->m_pStats->m_nACNaturalBase = static_cast<int8_t>(ac);
     }
     return stack;
 }
@@ -1791,4 +1792,16 @@ ArgumentStack Creature::GetOriginalName(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::SetSpellResistance(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto sr = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(sr >= -127);
+          ASSERT_OR_THROW(sr <= 128);
+        pCreature->m_pStats->SetSpellResistance(static_cast<int8_t>(sr));
+    }
+    return stack;
+}
 }

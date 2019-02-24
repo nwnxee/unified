@@ -15,15 +15,19 @@ static Hooking::FunctionHook* m_OnRemovePolymorphHook = nullptr;
 
 PolymorphEvents::PolymorphEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnApplyPolymorph,
-        int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
-        (PolymorphEvents::OnApplyPolymorphHook);
-    hooker->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnRemovePolymorph,
-        int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>
-        (PolymorphEvents::OnRemovePolymorphHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_POLYMORPH_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnApplyPolymorph,
+            int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
+            (PolymorphEvents::OnApplyPolymorphHook);
+        m_OnApplyPolymorphHook = hooker->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyPolymorph);
+    });
+    Events::InitOnFirstSubscribe("NWNX_ON_UNPOLYMORPH_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnRemovePolymorph,
+            int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>
+            (PolymorphEvents::OnRemovePolymorphHook);
+        m_OnRemovePolymorphHook = hooker->FindHookByAddress(Functions::CNWSEffectListHandler__OnRemovePolymorph);
+    });
 
-    m_OnApplyPolymorphHook = hooker->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyPolymorph);
-    m_OnRemovePolymorphHook = hooker->FindHookByAddress(Functions::CNWSEffectListHandler__OnRemovePolymorph);
 }
 
 int32_t PolymorphEvents::OnApplyPolymorphHook

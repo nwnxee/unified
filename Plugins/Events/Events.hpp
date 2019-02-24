@@ -58,6 +58,8 @@ public:
     // Returns true if the event can proceed, or false if the event has been skipped.
     static bool SignalEvent(const std::string& eventName, const NWNXLib::API::Types::ObjectID target, std::string *result=nullptr);
 
+    static void InitOnFirstSubscribe(const std::string& eventName, std::function<void(void)> init);
+
 private: // Structures
     using EventMapType = std::unordered_map<std::string, std::vector<std::string>>;
 
@@ -74,9 +76,13 @@ private:
     // Only does it if needed though, based on the current event depth!
     void CreateNewEventDataIfNeeded();
 
+    void RunEventInit(const std::string& eventName);
+
     EventMapType m_eventMap; // Event name -> subscribers.
     std::stack<EventParams> m_eventData; // Data tag -> data for currently executing event.
     uint8_t m_eventDepth;
+
+    std::unordered_map<std::string, std::function<void(void)>> m_initList;
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
     std::unique_ptr<ClientEvents> m_clientEvents;

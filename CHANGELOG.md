@@ -34,7 +34,7 @@ The following plugins were added:
 - **Effect**: Provides various utility functions to manipulate builtin effect types
 - **Experimental**: Adds experimental functionality that's not really useful for the general user. The following environmental variable needs to be true for the plugin to load: `NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN=y`
 - **Encounter**: Adds functions exposing additional encounter properties
-- **Feedback**: Allows combatlog and feedback messages to be hidden globally or per player
+- **Feedback**: Allows combatlog, feedback and 'quest journal updated' messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
@@ -72,6 +72,7 @@ The following plugins were added:
 - Creature: GetTotalEffectBonus()
 - Creature: SetOriginalName()
 - Creature: GetOriginalName()
+- Creature: SetSpellResistance()
 - Effect: PackEffect()
 - Effect: UnpackEffect()
 - Effect: SetEffectExpiredScript()
@@ -89,9 +90,11 @@ The following plugins were added:
 - Events: GetCurrentEvent()
 - Feedback: GetMessageHidden()
 - Feedback: SetMessageHidden()
+- Item: GetBaseArmorClass()
 - ItemProperty: PackIP()
 - ItemProperty: UnpackIP()
 - Object: GetHasVisualEffect()
+- Object: CheckFit()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()
@@ -105,6 +108,8 @@ The following plugins were added:
 - Player: SetPlaceableUsable()
 - Player: SetRestDuration()
 - Player: ApplyInstantVisualEffectToObject()
+- Player: UpdateCharacterSheet()
+- Player: OpenInventory()
 - Rename: SetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
