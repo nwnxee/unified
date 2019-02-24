@@ -15,4 +15,5 @@ add_plugin(Events
     "Events/SkillEvents.cpp"
     "Events/PolymorphEvents.cpp"
     "Events/EffectEvents.cpp"
-    "Events/QuickChatEvents.cpp")
+    "Events/QuickChatEvents.cpp"
+    "Events/InventoryEvents.cpp")

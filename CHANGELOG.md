@@ -13,12 +13,12 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Added string localization support. Only Russian/Cyrillic supported at the moment. Use environment variable `NWNX_CORE_LOCALE=ru`
 - Core: Allow changing default plugin state from 'load all' to 'skip all' with the following environment variable: `NWNX_CORE_SKIP_ALL=y`. Use `NWNX_PLUGIN_SKIP=n` to enable specific plugins in this case.
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
-- Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents
-- Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents, QuickChatEvents
+- Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents, InventoryEvents
+- Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents, QuickChatEvents, InventoryEvents
 - Events: You can now get the current event name with a nwscript function
 - Events: Added On{Listen/Spot}Detection events to StealthEvents
 - Events: Added On{Un}Polymorph events as PolymorphEvents
-- Events: Added Event Data for SpawnObject, GiveItem and GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal, Goto, Possess, PossessFullPower, ToggleLock, DisableTrap, JumpToPoint, JumpTargetToPoint, JumpAllPlayersToPoint, ChangeDifficulty, ViewInventory, SpawnTrapOnObject events in DMActionEvents
+- Events: Added Event Data for SpawnObject, GiveItem, GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal, Goto, Possess, PossessFullPower, ToggleLock, DisableTrap, JumpToPoint, JumpTargetToPoint, JumpAllPlayersToPoint, ChangeDifficulty, ViewInventory, SpawnTrapOnObject events in DMActionEvents
 - Events: Added OnClientConnect events that fire before the player sees the server vault.
 - Events: Added ItemInventory{Open/Close} and ItemInventory{Add/Remove}Item events to ItemEvents
 - Events: Added {Set|Clear}MemorizedSpellSlot events to SpellEvents
