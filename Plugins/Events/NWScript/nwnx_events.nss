@@ -342,7 +342,7 @@
         SPELL_DOMAIN            int
         SPELL_METAMAGIC         int
         SPELL_FROMCLIENT        int
-        BEFORE_RESULT           int
+        ACTION_RESULT           int
 
     NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE
     NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER
