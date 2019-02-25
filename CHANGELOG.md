@@ -130,7 +130,8 @@ The following plugins were added:
 - Events: Changed `NUM_LEVELS` to `AMOUNT` for DMActionEvent GiveLevel
 
 ### Deprecated
-- Player: {Get/Set}VisibilityOverride are deprecated, please use the new Visibility plugin!
+- Player: {Get/Set}VisibilityOverride() are deprecated, please use the new Visibility plugin!
+- Object: {Get/Set}Portrait() are deprecated, please use the native {Get/Set}PortraitResRef() functions instead!
 
 ### Removed
 - The following plugins were removed: Names, BehaviourTree

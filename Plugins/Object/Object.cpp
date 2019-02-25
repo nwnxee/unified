@@ -67,8 +67,6 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetPosition);
     REGISTER(SetCurrentHitPoints);
     REGISTER(SetMaxHitPoints);
-    REGISTER(GetPortrait);
-    REGISTER(SetPortrait);
     REGISTER(Serialize);
     REGISTER(Deserialize);
     REGISTER(GetDialogResref);
@@ -184,38 +182,6 @@ ArgumentStack Object::SetMaxHitPoints(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::GetPortrait(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    std::string retval = "";
-    if (auto *pObject = object(args))
-    {
-        if (pObject->m_nObjectType == Constants::ObjectType::Creature)
-            retval = static_cast<CNWSCreature*>(pObject)->GetPortrait().GetResRefStr();
-        else
-            retval = pObject->GetPortrait().GetResRefStr();
-    }
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
-}
-
-ArgumentStack Object::SetPortrait(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-
-    if (auto *pObject = object(args))
-    {
-        const auto portrait = Services::Events::ExtractArgument<std::string>(args);
-
-        CResRef resref = CResRef(portrait.c_str());
-        if (auto *pCreature = Utils::AsNWSCreature(pObject))
-            pCreature->SetPortrait(resref);
-        else
-            pObject->SetPortrait(resref);
-    }
-    return stack;
-}
-
 ArgumentStack Object::Serialize(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -315,7 +281,7 @@ ArgumentStack Object::GetHasVisualEffect(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal=0;
-    
+
     if (auto *pObject = object(args))
     {
         const auto nVfx = Services::Events::ExtractArgument<int32_t>(args);
@@ -330,7 +296,7 @@ ArgumentStack Object::GetHasVisualEffect(ArgumentStack&& args)
             }
         }
     }
-    
+
     Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
