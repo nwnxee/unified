@@ -101,10 +101,12 @@ void NWNX_Object_SetCurrentHitPoints(object obj, int hp);
 void NWNX_Object_SetMaxHitPoints(object obj, int hp);
 
 // Get the name of the portrait object is using.
+// DEPRECATED - Use GetPortraitResRef() built-in function instead
 string NWNX_Object_GetPortrait(object obj);
 
 // Set the portrait object is using. The portrait string must be no more
 // than 15 characters long.
+// DEPRECATED - Use SetPortraitResRef() built-in function instead
 void NWNX_Object_SetPortrait(object obj, string portrait);
 
 // Serialize the full object (including locals, inventory, etc) to base64 string
@@ -247,26 +249,20 @@ void NWNX_Object_SetMaxHitPoints(object creature, int hp)
 
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
+
 string NWNX_Object_GetPortrait(object creature)
 {
-    string sFunc = "GetPortrait";
+    WriteTimestampedLogEntry("NWNX_Object: GetPortrait() is deprecated. Use native GetPortraitResRef() instead");
 
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Object, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+    return GetPortraitResRef(creature);
 }
 
 void NWNX_Object_SetPortrait(object creature, string portrait)
 {
-    string sFunc = "SetPortrait";
+    WriteTimestampedLogEntry("NWNX_Object: SetPortrait() is deprecated. Use native SetPortraitResRef() instead");
 
-    NWNX_PushArgumentString(NWNX_Object, sFunc, portrait);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Object, sFunc);
+    SetPortraitResRef(creature, portrait);
 }
-
 
 string NWNX_Object_Serialize(object obj)
 {
@@ -287,7 +283,6 @@ object NWNX_Object_Deserialize(string serialized)
     NWNX_CallFunction(NWNX_Object, sFunc);
     return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
 }
-
 
 string NWNX_Object_GetDialogResref(object obj)
 {

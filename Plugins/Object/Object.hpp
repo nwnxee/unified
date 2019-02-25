@@ -22,8 +22,6 @@ private:
     ArgumentStack SetPosition          (ArgumentStack&& args);
     ArgumentStack SetCurrentHitPoints  (ArgumentStack&& args);
     ArgumentStack SetMaxHitPoints      (ArgumentStack&& args);
-    ArgumentStack GetPortrait          (ArgumentStack&& args);
-    ArgumentStack SetPortrait          (ArgumentStack&& args);
     ArgumentStack Serialize            (ArgumentStack&& args);
     ArgumentStack Deserialize          (ArgumentStack&& args);
     ArgumentStack GetDialogResref      (ArgumentStack&& args);
