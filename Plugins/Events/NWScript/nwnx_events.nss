@@ -563,7 +563,7 @@
     Event data:
         Variable Name           Type        Notes
         CURRENT_PANEL           int         The current panel, index starts at 0
-        SELECTED_PANE           int         The selected panel, index starts at 0
+        SELECTED_PANEL          int         The selected panel, index starts at 0
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
