@@ -61,7 +61,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
                     CNWSPlayerInventoryGUI *pInventory = pPlayer->m_oidNWSObject == target ? pPlayer->m_pInventoryGUI :
                                                          pPlayer->m_pOtherInventoryGUI;
 
-                    auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+                    auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
                     if (pMessage)
                     {
                         pMessage->SendPlayerToServerGuiInventory_Status(pPlayer, false, target);
@@ -104,7 +104,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
                 }
                 else
                 {
-                    auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+                    auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
                     if (pMessage)
                     {
                         pMessage->SendServerToPlayerInventory_SelectPanel(pPlayer->m_nPlayerID, currentPanel);
