@@ -1,4 +1,5 @@
 #include "nwnx_regex"
+#include "x3_inc_string"
 
 void report(string func, int bSuccess)
 {
