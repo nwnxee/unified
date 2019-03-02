@@ -553,6 +553,27 @@
     Event data:
         Variable Name           Type        Notes
         QUICKCHAT_COMMAND       int
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INVENTORY_OPEN_BEFORE
+    NWNX_ON_INVENTORY_OPEN_AFTER
+
+    Usage:
+        OBJECT_SELF = The player opening the inventory
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET_INVENTORY        object      Pretty sure this is always the player
+
+    NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE
+    NWNX_ON_INVENTORY_SELECT_PANEL_AFTER
+
+    Usage:
+        OBJECT_SELF = The player changing inventory panels
+
+    Event data:
+        Variable Name           Type        Notes
+        CURRENT_PANEL           int         The current panel, index starts at 0
+        SELECTED_PANEL          int         The selected panel, index starts at 0
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
