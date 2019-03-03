@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Events = "NWNX_Events";
+
 ////////////////////////////////////////////////////////////////////////////////
 /* The following events are exposed by this plugin:
 ////////////////////////////////////////////////////////////////////////////////
@@ -316,6 +318,20 @@
     Event data:
         Variable Name           Type        Notes
         TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_ATTACK
+
+    Usage:
+        OBJECT_SELF = The creature making the attack
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
+        ATTACK_NUMBER           int         Number of attack in current combat round (1st, 2nd, 3rd, ...)
+        ATTACK_DAMAGE_*         int         amount of damage dealt by type (*=0..12)
+        ATTACK_RESULT           int         1=hit, 3=critical, 4=miss, 8=concealed
+        IS_SNEAK_ATTACK         int         whether attack is a sneak (or death) attack
+        IS_OFFHAND_ATTACK       int         whether attack is made with off-hand weapon
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_CAST_SPELL_BEFORE
     NWNX_ON_CAST_SPELL_AFTER
@@ -688,4 +704,33 @@ string NWNX_Events_GetCurrentEvent()
 {
     NWNX_CallFunction("NWNX_Events", "GET_CURRENT_EVENT");
     return NWNX_GetReturnValueString("NWNX_Events", "GET_CURRENT_EVENT");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions only available while processing certain events
+////////////////////////////////////////////////////////////////////////////////
+
+// Increase damage by given amount
+void NWNX_Events_OnAttack_AddDamage(int damageAmount, int damageType = DAMAGE_TYPE_BASE_WEAPON);
+// Set damage of particular type to given amount
+void NWNX_Events_OnAttack_SetDamage(int damageAmount, int damageType);
+
+void NWNX_Events_OnAttack_AddDamage(int damageAmount, int damageType)
+{
+    string sFunc = "AddAttackDamage";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageAmount);
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageType);
+
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_OnAttack_SetDamage(int damageAmount, int damageType)
+{
+    string sFunc = "SetAttackDamage";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageAmount);
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageType);
+
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
