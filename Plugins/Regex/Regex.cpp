@@ -36,7 +36,6 @@ namespace Regex {
 Regex::Regex(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    m_backslashSubstring = GetServices()->m_config->Get<std::string>("BACKSLASH_SUBSTRING", "!!");
 
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Regex::func, this, std::placeholders::_1))
@@ -52,24 +51,13 @@ Regex::~Regex()
 {
 }
 
-std::regex Regex::ConvertToBackslash(std::string beforeRegex)
-{
-    // First replace all double exclamation marks in the string to backslashes
-    std::regex backslashes(m_backslashSubstring);
-    std::string clean_regex = std::regex_replace(beforeRegex, backslashes, "\\");
-
-    std::regex afterRegex(clean_regex);
-
-    return afterRegex;
-}
-
 ArgumentStack Regex::Search(ArgumentStack&& args)
 {
     ArgumentStack stack;
     const auto str = Services::Events::ExtractArgument<std::string>(args);
     const auto regex = Services::Events::ExtractArgument<std::string>(args);
 
-    const auto rgx = ConvertToBackslash(regex);
+    std::regex rgx(regex);
     const auto retVal = std::regex_search(str, rgx);
 
     Services::Events::InsertArgument(stack, retVal);
@@ -84,7 +72,7 @@ ArgumentStack Regex::Replace(ArgumentStack&& args)
     const auto rpl = Services::Events::ExtractArgument<std::string>(args);
     const auto firstOnly = Services::Events::ExtractArgument<int32_t>(args);
 
-    const auto rgx = ConvertToBackslash(regex);
+    std::regex rgx(regex);
     std::string retVal;
     if (firstOnly)
         retVal = std::regex_replace(str, rgx, rpl, std::regex_constants::format_first_only);

@@ -17,8 +17,6 @@ public:
     virtual ~Regex();
 
 private:
-    std::string m_backslashSubstring;
-    std::regex ConvertToBackslash(std::string beforeRegex);
     ArgumentStack Search(ArgumentStack&& args);
     ArgumentStack Replace(ArgumentStack&& args);
 };
