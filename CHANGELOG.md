@@ -36,6 +36,7 @@ The following plugins were added:
 - **Encounter**: Adds functions exposing additional encounter properties
 - **Feedback**: Allows combatlog, feedback and 'quest journal updated' messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
+- **Regex**: Adds functions to search and replace strings using regular expressions.
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
@@ -110,6 +111,8 @@ The following plugins were added:
 - Player: ApplyInstantVisualEffectToObject()
 - Player: UpdateCharacterSheet()
 - Player: OpenInventory()
+- Regex: Search()
+- Regex: Replace()
 - Rename: SetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
