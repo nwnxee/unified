@@ -234,11 +234,13 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     }
     else
     {
-        retVal = stoul(sBeforeEventResult, nullptr, 16);
-        if (ItemSanityCheck(retVal))
-            return retVal;
-        else
-            retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
+        if (!sBeforeEventResult.empty())
+        {
+            retVal = stoul(sBeforeEventResult, nullptr, 16);
+            if (ItemSanityCheck(retVal))
+                return retVal;
+        }
+        retVal = m_FindItemWithBaseItemIdHook->CallOriginal<uint32_t>(thisPtr, baseItem, nTh);
     }
 
     Events::PushEventData("BASE_ITEM_ID", std::to_string(baseItem));
@@ -247,9 +249,12 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
 
     if (Events::SignalEvent("NWNX_ON_ITEM_AMMO_RELOAD_AFTER", thisPtr->m_oidParent, &sAfterEventResult))
     {
-        uint32_t result = stoul(sAfterEventResult, nullptr, 16);
-        if (ItemSanityCheck(result))
-            return result;
+        if (!sAfterEventResult.empty())
+        {
+            uint32_t result = stoul(sAfterEventResult, nullptr, 16);
+            if (ItemSanityCheck(result))
+                return result;
+        }
     }
 
     return retVal;
