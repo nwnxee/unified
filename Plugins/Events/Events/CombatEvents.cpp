@@ -44,7 +44,7 @@ CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker, ViewPtr<EventsProxy> eve)
             API::Functions::CNWSCombatRound__SetCurrentAttack,
             int32_t,
             API::CNWSCombatRound*,
-            unsigned char>
+            uint8_t>
             (
                 &AttackHook
             );
@@ -66,14 +66,14 @@ void CombatEvents::StartCombatRoundHook(
 void CombatEvents::AttackHook(
     Hooks::CallType type,
     API::CNWSCombatRound* thisPtr,
-    unsigned char attackNumber)
+    uint8_t attackNumber)
 {
     if ( type == Hooks::CallType::AFTER_ORIGINAL )
     {
         // SetCurrentAttack is 1-based, GetAttack is 0-based
         CNWSCombatAttackData* combatAttackData = g_combatEvents->m_combatAttackData = thisPtr->GetAttack(attackNumber - 1);
         Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(thisPtr->m_pBaseCreature->m_oidAttackTarget));
-        Events::PushEventData("ATTACK_NUMBER", std::to_string(static_cast<int>(attackNumber)));
+        Events::PushEventData("ATTACK_NUMBER", std::to_string(attackNumber));
         for ( int i = 0; i < 13; i++ )
         {
             int16_t nDamage = combatAttackData->m_nDamage[i];

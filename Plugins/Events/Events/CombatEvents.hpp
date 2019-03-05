@@ -27,7 +27,7 @@ private:
     (
         NWNXLib::Services::Hooks::CallType,
         NWNXLib::API::CNWSCombatRound*,
-        unsigned char
+        uint8_t
     );
 
     ArgumentStack AddAttackDamage(ArgumentStack&& args);
