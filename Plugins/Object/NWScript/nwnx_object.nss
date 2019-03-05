@@ -136,6 +136,7 @@ int NWNX_Object_GetHasVisualEffect(object obj, int nVFX);
 int NWNX_Object_CheckFit(object obj, int baseitem);
 
 // Return damage immunity (in percent) against given damage type
+// Use DAMAGE_TYPE_* constants for damageType
 int NWNX_Object_GetDamageImmunity(object obj, int damageType);
 
 const string NWNX_Object = "NWNX_Object";

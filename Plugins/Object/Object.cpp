@@ -355,7 +355,8 @@ ArgumentStack Object::GetDamageImmunity(ArgumentStack&& args)
 
     if (auto *pObject = object(args))
     {
-        const uint16_t damageFlags = Services::Events::ExtractArgument<int32_t>(args);
+        const int32_t damageFlags = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(damageFlags >= 0);
         retVal = pObject->GetDamageImmunityByFlags(damageFlags);
     }
     Services::Events::InsertArgument(stack, retVal);

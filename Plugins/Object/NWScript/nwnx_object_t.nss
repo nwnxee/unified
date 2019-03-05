@@ -89,6 +89,10 @@ void main()
     }
     DestroyObject(bag);
 
+    report("GetDamageImmunity", NWNX_Object_GetDamageImmunity(o, DAMAGE_TYPE_FIRE) == 0);
+    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectDamageImmunityIncrease(DAMAGE_TYPE_FIRE, 50), o);
+    report("GetDamageImmunity", NWNX_Object_GetDamageImmunity(o, DAMAGE_TYPE_FIRE) == 50);
+
     DestroyObject(o);
     DestroyObject(oDeserialized);
     WriteTimestampedLogEntry("NWNX_Object unit test end.");
