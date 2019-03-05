@@ -96,6 +96,7 @@ The following plugins were added:
 - ItemProperty: UnpackIP()
 - Object: GetHasVisualEffect()
 - Object: CheckFit()
+- Object: GetDamageImmunity()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()

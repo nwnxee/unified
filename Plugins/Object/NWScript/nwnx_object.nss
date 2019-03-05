@@ -135,6 +135,9 @@ int NWNX_Object_GetHasVisualEffect(object obj, int nVFX);
 // Return TRUE if an item of baseitem type can fit in object's inventory
 int NWNX_Object_CheckFit(object obj, int baseitem);
 
+// Return damage immunity (in percent) against given damage type
+// Use DAMAGE_TYPE_* constants for damageType
+int NWNX_Object_GetDamageImmunity(object obj, int damageType);
 
 const string NWNX_Object = "NWNX_Object";
 
@@ -341,6 +344,18 @@ int NWNX_Object_CheckFit(object obj, int baseitem)
     string sFunc = "CheckFit";
 
     NWNX_PushArgumentInt(NWNX_Object, sFunc, baseitem);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetDamageImmunity(object obj, int damageType)
+{
+    string sFunc = "GetDamageImmunity";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, damageType);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
 
     NWNX_CallFunction(NWNX_Object, sFunc);

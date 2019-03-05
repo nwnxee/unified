@@ -75,6 +75,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetAppearance);
     REGISTER(GetHasVisualEffect);
     REGISTER(CheckFit);
+    REGISTER(GetDamageImmunity);
 
 #undef REGISTER
 }
@@ -342,6 +343,21 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
             if (retVal)
                 break;
         }
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Object::GetDamageImmunity(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        const int32_t damageFlags = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(damageFlags >= 0);
+        retVal = pObject->GetDamageImmunityByFlags(damageFlags);
     }
     Services::Events::InsertArgument(stack, retVal);
     return stack;

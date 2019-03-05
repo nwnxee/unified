@@ -30,6 +30,7 @@ private:
     ArgumentStack GetAppearance        (ArgumentStack&& args);
     ArgumentStack GetHasVisualEffect   (ArgumentStack&& args);
     ArgumentStack CheckFit             (ArgumentStack&& args);
+    ArgumentStack GetDamageImmunity    (ArgumentStack&& args);
 
     NWNXLib::API::CNWSObject *object(ArgumentStack& args);
 
