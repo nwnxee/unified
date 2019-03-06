@@ -27,6 +27,8 @@ using namespace NWNXLib::Hooking;
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
 {
+    std::fflush(stdout);
+
     const char *err;
     switch (sig)
     {
