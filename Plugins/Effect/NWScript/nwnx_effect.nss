@@ -2,6 +2,7 @@
 
 struct NWNX_EffectUnpacked
 {
+    int nEffectId;
     int nType;
     int nSubType;
 
@@ -119,6 +120,7 @@ struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
 
     n.nSubType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
     n.nType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
+    n.nEffectId = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
 
     return n;
 }
@@ -126,6 +128,7 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
 {
     string sFunc = "PackEffect";
 
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nEffectId);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSubType);
 
