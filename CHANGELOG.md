@@ -23,6 +23,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added ItemInventory{Open/Close}, ItemInventory{Add/Remove}Item and ScrollLearn events to ItemEvents
 - Events: Added {Set|Clear}MemorizedSpellSlot events to SpellEvents
 - Events: Added AmmoReload events that are used when the engine is looking for ammunition to reload
+- Events: Added Run{Un}Equip events to ItemEvents
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
