@@ -81,7 +81,7 @@ Events::Events(const Plugin::CreateParams& params)
 
     m_associateEvents   = std::make_unique<AssociateEvents>(GetServices()->m_hooks);
     m_clientEvents      = std::make_unique<ClientEvents>(GetServices()->m_hooks);
-    m_combatEvents      = std::make_unique<CombatEvents>(GetServices()->m_hooks, GetServices()->m_events);
+    m_combatEvents      = std::make_unique<CombatEvents>(GetServices()->m_hooks);
     m_dmActionEvents    = std::make_unique<DMActionEvents>(GetServices()->m_hooks);
     m_examineEvents     = std::make_unique<ExamineEvents>(GetServices()->m_hooks);
     m_itemEvents        = std::make_unique<ItemEvents>(GetServices()->m_hooks);

@@ -653,6 +653,7 @@ void NWNX_Events_SkipEvent();
 // - Listen/Spot Detection events -> "1" or "0"
 // - OnClientConnectBefore -> Reason for disconnect if skipped
 // - Ammo Reload event -> Forced ammunition returned
+// - OnAttack event -> Set base damage dealt
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
@@ -705,33 +706,4 @@ string NWNX_Events_GetCurrentEvent()
 {
     NWNX_CallFunction("NWNX_Events", "GET_CURRENT_EVENT");
     return NWNX_GetReturnValueString("NWNX_Events", "GET_CURRENT_EVENT");
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Functions only available while processing certain events
-////////////////////////////////////////////////////////////////////////////////
-
-// Increase damage by given amount
-void NWNX_Events_OnAttack_AddDamage(int damageAmount, int damageType = DAMAGE_TYPE_BASE_WEAPON);
-// Set damage of particular type to given amount
-void NWNX_Events_OnAttack_SetDamage(int damageAmount, int damageType);
-
-void NWNX_Events_OnAttack_AddDamage(int damageAmount, int damageType)
-{
-    string sFunc = "AddAttackDamage";
-
-    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageAmount);
-    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageType);
-
-    NWNX_CallFunction(NWNX_Events, sFunc);
-}
-
-void NWNX_Events_OnAttack_SetDamage(int damageAmount, int damageType)
-{
-    string sFunc = "SetAttackDamage";
-
-    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageAmount);
-    NWNX_PushArgumentInt(NWNX_Events, sFunc, damageType);
-
-    NWNX_CallFunction(NWNX_Events, sFunc);
 }

@@ -14,7 +14,7 @@ using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 class CombatEvents
 {
 public:
-    CombatEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker, NWNXLib::ViewPtr<NWNXLib::Services::EventsProxy> eve);
+    CombatEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
     static void StartCombatRoundHook
@@ -29,11 +29,6 @@ private:
         NWNXLib::API::CNWSCombatRound*,
         uint8_t
     );
-
-    ArgumentStack AddAttackDamage(ArgumentStack&& args);
-    ArgumentStack SetAttackDamage(ArgumentStack&& args);
-    // current attack data (used with ON_ATTACK hook)
-    NWNXLib::API::CNWSCombatAttackData* m_combatAttackData;
 };
 
 }
