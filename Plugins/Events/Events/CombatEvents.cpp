@@ -39,7 +39,7 @@ CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker, ViewPtr<EventsProxy> eve)
                 &StartCombatRoundHook
             );
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_ATTACK", [hooker]() {
+    Events::InitOnFirstSubscribe("NWNX_ON_ATTACK_.*", [hooker]() {
         hooker->RequestSharedHook<
             API::Functions::CNWSCombatRound__SetCurrentAttack,
             int32_t,
@@ -68,23 +68,21 @@ void CombatEvents::AttackHook(
     API::CNWSCombatRound* thisPtr,
     uint8_t attackNumber)
 {
-    if ( type == Hooks::CallType::AFTER_ORIGINAL )
+    const bool before = type == Hooks::CallType::BEFORE_ORIGINAL;
+    // SetCurrentAttack is 1-based, GetAttack is 0-based
+    CNWSCombatAttackData* combatAttackData = g_combatEvents->m_combatAttackData = thisPtr->GetAttack(attackNumber - 1);
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(thisPtr->m_pBaseCreature->m_oidAttackTarget));
+    Events::PushEventData("ATTACK_NUMBER", std::to_string(attackNumber));
+    for ( int i = 0; i < 13; i++ )
     {
-        // SetCurrentAttack is 1-based, GetAttack is 0-based
-        CNWSCombatAttackData* combatAttackData = g_combatEvents->m_combatAttackData = thisPtr->GetAttack(attackNumber - 1);
-        Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(thisPtr->m_pBaseCreature->m_oidAttackTarget));
-        Events::PushEventData("ATTACK_NUMBER", std::to_string(attackNumber));
-        for ( int i = 0; i < 13; i++ )
-        {
-            int16_t nDamage = combatAttackData->m_nDamage[i];
-            Events::PushEventData("ATTACK_DAMAGE_" + std::to_string(i), std::to_string(nDamage));
-        }
-        Events::PushEventData("ATTACK_RESULT", std::to_string(combatAttackData->m_nAttackResult));
-        Events::PushEventData("IS_SNEAK_ATTACK", std::to_string(combatAttackData->m_bSneakAttack || combatAttackData->m_bDeathAttack));
-        Events::PushEventData("IS_OFFHAND_ATTACK", std::to_string(combatAttackData->m_nWeaponAttackType == 2));
-        Events::SignalEvent("NWNX_ON_ATTACK", thisPtr->m_pBaseCreature->m_idSelf);
-        g_combatEvents->m_combatAttackData = nullptr;
+        int16_t nDamage = combatAttackData->m_nDamage[i];
+        Events::PushEventData("ATTACK_DAMAGE_" + std::to_string(i), std::to_string(nDamage));
     }
+    Events::PushEventData("ATTACK_RESULT", std::to_string(combatAttackData->m_nAttackResult));
+    Events::PushEventData("IS_SNEAK_ATTACK", std::to_string(combatAttackData->m_bSneakAttack || combatAttackData->m_bDeathAttack));
+    Events::PushEventData("IS_OFFHAND_ATTACK", std::to_string(combatAttackData->m_nWeaponAttackType == 2));
+    Events::SignalEvent(before ? "NWNX_ON_ATTACK_BEFORE" : "NWNX_ON_ATTACK_AFTER", thisPtr->m_pBaseCreature->m_idSelf);
+    g_combatEvents->m_combatAttackData = nullptr;
 }
 
 ArgumentStack CombatEvents::AddAttackDamage(ArgumentStack&& args)

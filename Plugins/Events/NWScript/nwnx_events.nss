@@ -319,7 +319,8 @@ const string NWNX_Events = "NWNX_Events";
         Variable Name           Type        Notes
         TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
 ////////////////////////////////////////////////////////////////////////////////
-    NWNX_ON_ATTACK
+    NWNX_ON_ATTACK_BEFORE
+    NWNX_ON_ATTACK_AFTER
 
     Usage:
         OBJECT_SELF = The creature making the attack
