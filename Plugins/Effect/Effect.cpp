@@ -114,6 +114,7 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
     eff->m_fDuration          = Services::Events::ExtractArgument<float>(args);
     eff->m_nSubType           = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_nType              = Services::Events::ExtractArgument<int32_t>(args);
+    eff->m_nID                = Services::Events::ExtractArgument<int32_t>(args);
 
     if (bLeftLinkValid || bRightLinkValid)
         eff->UpdateLinked();
@@ -126,6 +127,7 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     ArgumentStack stack;
     auto eff = Services::Events::ExtractArgument<API::CGameEffect*>(args);
 
+    Services::Events::InsertArgument(stack, (int32_t)eff->m_nID);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nType);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nSubType);
     Services::Events::InsertArgument(stack, (float)eff->m_fDuration);
