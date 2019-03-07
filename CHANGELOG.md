@@ -97,6 +97,7 @@ The following plugins were added:
 - Object: GetHasVisualEffect()
 - Object: CheckFit()
 - Object: GetDamageImmunity()
+- Object: AddToArea()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()

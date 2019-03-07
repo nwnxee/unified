@@ -76,6 +76,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetHasVisualEffect);
     REGISTER(CheckFit);
     REGISTER(GetDamageImmunity);
+    REGISTER(AddToArea);
 
 #undef REGISTER
 }
@@ -362,4 +363,29 @@ ArgumentStack Object::GetDamageImmunity(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
+
+ArgumentStack Object::AddToArea(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto oidArea = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
+        const auto posX = Services::Events::ExtractArgument<float>(args);
+        const auto posY = Services::Events::ExtractArgument<float>(args);
+        const auto posZ = Services::Events::ExtractArgument<float>(args);
+
+        CNWSArea *pArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(oidArea);
+
+        if (pArea)
+        {
+            if (!Utils::AddToArea(pObject, pArea, posX, posY, posZ))
+                LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", pObject->m_idSelf, oidArea, posX, posY, posZ);
+        }
+    }
+
+    return stack;
+}
+
 }

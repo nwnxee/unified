@@ -31,6 +31,7 @@ private:
     ArgumentStack GetHasVisualEffect   (ArgumentStack&& args);
     ArgumentStack CheckFit             (ArgumentStack&& args);
     ArgumentStack GetDamageImmunity    (ArgumentStack&& args);
+    ArgumentStack AddToArea            (ArgumentStack&& args);
 
     NWNXLib::API::CNWSObject *object(ArgumentStack& args);
 
