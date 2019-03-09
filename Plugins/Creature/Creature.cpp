@@ -1607,12 +1607,18 @@ ArgumentStack Creature::LevelDown(ArgumentStack&& args)
                 if (pCreature->m_pStats->m_ClassInfo[2].m_nClass != Constants::ClassType::Invalid)
                 {
                     if (--pCreature->m_pStats->m_ClassInfo[2].m_nLevel == 0)
+                    {
                         pCreature->m_pStats->m_ClassInfo[2].m_nClass = Constants::ClassType::Invalid;
+                        pCreature->m_pStats->m_nNumMultiClasses = 2;
+                    }
                 }
                 else if (pCreature->m_pStats->m_ClassInfo[1].m_nClass != Constants::ClassType::Invalid)
                 {
                     if (--pCreature->m_pStats->m_ClassInfo[1].m_nLevel == 0)
+                    {
                         pCreature->m_pStats->m_ClassInfo[1].m_nClass = Constants::ClassType::Invalid;
+                        pCreature->m_pStats->m_nNumMultiClasses = 1;
+                    }
                 }
                 else
                 {
@@ -1620,6 +1626,7 @@ ArgumentStack Creature::LevelDown(ArgumentStack&& args)
                     {
                         LOG_WARNING("Creature out of levels to level down.");
                         pCreature->m_pStats->m_ClassInfo[0].m_nLevel = 1;
+                        pCreature->m_pStats->m_nNumMultiClasses = 1;
                     }
                 }
             }
