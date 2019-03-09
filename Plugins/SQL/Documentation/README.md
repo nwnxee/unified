@@ -31,7 +31,7 @@ Not used if using SQLite.
 __Example__
 
 ```
-export NWNX_SQL_HOSTNAME=localhost
+export NWNX_SQL_HOST=localhost
 ```
 
 ### NWNX_SQL_USERNAME
