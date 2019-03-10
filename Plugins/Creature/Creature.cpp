@@ -1629,6 +1629,8 @@ ArgumentStack Creature::LevelDown(ArgumentStack&& args)
                         pCreature->m_pStats->m_nNumMultiClasses = 1;
                     }
                 }
+
+                pCreature->m_pStats->m_nMultiClassLeveledUpIn = pCreature->m_pStats->m_nNumMultiClasses - 1;
             }
         }
     }
