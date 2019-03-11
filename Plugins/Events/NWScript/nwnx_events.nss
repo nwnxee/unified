@@ -151,7 +151,7 @@
     Event data:
         Variable Name           Type        Notes
         AMOUNT                  int
-        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        OBJECT                  object      Convert to object with NWNX_Object_StringToObject()
         ALIGNMENT_TYPE          int         Only valid for NWNX_ON_DM_GIVE_ALIGNMENT_*
 
     NWNX_ON_DM_SPAWN_OBJECT_BEFORE
