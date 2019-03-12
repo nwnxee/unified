@@ -2,6 +2,7 @@
 
 struct NWNX_IPUnpacked
 {
+    int nItemPropertyId;
     int nProperty;
     int nSubType;
     int nCostTable;
@@ -33,6 +34,8 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
     NWNX_CallFunction(NWNX_ItemProperty, sFunc);
 
     struct NWNX_IPUnpacked n;
+
+    n.nItemPropertyId = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.nProperty       = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.nSubType        = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
     n.nCostTable      = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
@@ -64,6 +67,7 @@ itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked n)
     NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nCostTable);
     NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nSubType);
     NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nProperty);
+    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, n.nItemPropertyId);
 
     NWNX_CallFunction(NWNX_ItemProperty, sFunc);
     return NWNX_GetReturnValueItemProperty(NWNX_ItemProperty, sFunc);
