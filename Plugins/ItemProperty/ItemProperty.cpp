@@ -41,7 +41,7 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 namespace ItemProperty {
 
 ItemProperty::ItemProperty(const Plugin::CreateParams& params)
-    : Plugin(params)
+        : Plugin(params)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&ItemProperty::func, this, std::placeholders::_1))
@@ -62,6 +62,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     ArgumentStack stack;
     API::CGameEffect *ip = new API::CGameEffect();
 
+    auto ipId         = Services::Events::ExtractArgument<int32_t>(args);
     auto propname     = Services::Events::ExtractArgument<int32_t>(args);
     auto subtype      = Services::Events::ExtractArgument<int32_t>(args);
     auto costtable    = Services::Events::ExtractArgument<int32_t>(args);
@@ -77,6 +78,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     auto tag          = Services::Events::ExtractArgument<std::string>(args);
 
     ip->SetNumIntegersInitializeToNegativeOne(9);
+    ip->m_nID = ipId;
     ip->m_nType = API::Constants::EffectTrueType::ItemProperty;
     ip->m_nSubType = API::Constants::EffectDurationType::Permanent;
     ip->m_oidCreator = creator;
@@ -113,6 +115,7 @@ ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, ip->GetInteger(2));
     Services::Events::InsertArgument(stack, ip->GetInteger(1));
     Services::Events::InsertArgument(stack, ip->GetInteger(0));
+    Services::Events::InsertArgument(stack, (int32_t)ip->m_nID);
 
     Utils::DestroyGameEffect(ip);
     return stack;
