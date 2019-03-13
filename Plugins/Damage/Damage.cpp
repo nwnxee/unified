@@ -157,8 +157,8 @@ ArgumentStack Damage::GetAttackEventData(ArgumentStack&&)
 {
     ArgumentStack stack;
 
-    Services::Events::InsertArgument(stack, m_AttackData.bOffhand);
-    Services::Events::InsertArgument(stack, m_AttackData.bSneakAttack);
+    Services::Events::InsertArgument(stack, m_AttackData.nSneakAttack);
+    Services::Events::InsertArgument(stack, m_AttackData.nAttackType);
     Services::Events::InsertArgument(stack, m_AttackData.nAttackResult);
     Services::Events::InsertArgument(stack, m_AttackData.nAttackNumber);
     for (int k = 12; k >= 0; k--)
@@ -195,8 +195,9 @@ void Damage::OnCombatAttack(NWNXLib::API::CNWSCombatRound *pThis, uint8_t attack
         attackData.oidTarget = pThis->m_pBaseCreature->m_oidAttackTarget;
         attackData.nAttackNumber = attackNumber;
         attackData.nAttackResult = combatAttackData->m_nAttackResult;
-        attackData.bSneakAttack = combatAttackData->m_bSneakAttack || combatAttackData->m_bDeathAttack;
-        attackData.bOffhand = combatAttackData->m_nWeaponAttackType == 2;
+        attackData.nAttackType = combatAttackData->m_nWeaponAttackType;
+        attackData.nSneakAttack = combatAttackData->m_bSneakAttack
+            + (combatAttackData->m_bDeathAttack << 1);
 
         std::memcpy(attackData.vDamage, combatAttackData->m_nDamage, sizeof(attackData.vDamage));
         Utils::ExecuteScript(script, pThis->m_pBaseCreature->m_idSelf);

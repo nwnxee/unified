@@ -18,8 +18,8 @@ struct AttackDataStr
     int16_t  vDamage[13];
     uint8_t  nAttackNumber;
     uint8_t  nAttackResult;
-    uint8_t  bSneakAttack;
-    uint8_t  bOffhand;
+    uint8_t  nAttackType;
+    uint8_t  nSneakAttack;
 };
 
 namespace Damage {

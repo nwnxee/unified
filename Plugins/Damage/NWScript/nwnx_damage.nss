@@ -38,8 +38,8 @@ struct NWNX_Damage_AttackEventData
     int iBase;
     int iAttackNumber; // 1-based index of the attack in current combat round
     int iAttackResult; // 1=hit, 3=critical hit, 4=miss, 8=concealed
-    int bSneakAttack;  // is the attack a sneak (or death) attack
-    int bOffhand;      // is the attack made with off-hand weapon
+    int iAttackType;   // 1=main hand, 2=offhand, 3-5=creature, 6=haste
+    int iSneakAttack;  // 0=neither, 1=sneak attack, 2=death attack, 3=both
 };
 
 // Set Damage Event Script
@@ -156,8 +156,8 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData()
     data.iBase         = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.iAttackNumber = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
     data.iAttackResult = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.bSneakAttack  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
-    data.bOffhand      = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iAttackType   = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
+    data.iSneakAttack  = NWNX_GetReturnValueInt(NWNX_Damage, sFunc);
 
     return data;
 }
