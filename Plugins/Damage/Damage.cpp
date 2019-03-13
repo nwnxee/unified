@@ -57,8 +57,8 @@ Damage::Damage(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnApplyDamage>(&Damage::OnApplyDamage);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCombatRound__SetCurrentAttack>(&Damage::OnCombatAttack);
 
-    m_EventHooks["DAMAGE"] = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyDamage);
-    m_EventHooks["ATTACK"] = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCombatRound__SetCurrentAttack);
+    m_OnApplyDamageHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyDamage);
+    m_OnCombatAttackHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCombatRound__SetCurrentAttack);
 
     m_EventScripts["DAMAGE"] = "";
     m_EventScripts["ATTACK"] = "";
@@ -148,7 +148,7 @@ int32_t Damage::OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLi
         }
     }
 
-    return g_plugin->m_EventHooks["DAMAGE"]->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);
+    return g_plugin->m_OnApplyDamageHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);
 }
 
 //--------------------------- Attack Event ------------------------------------
@@ -203,7 +203,7 @@ void Damage::OnCombatAttack(NWNXLib::API::CNWSCombatRound *pThis, uint8_t attack
         std::memcpy(combatAttackData->m_nDamage, attackData.vDamage, sizeof(attackData.vDamage));
     }
 
-    g_plugin->m_EventHooks["ATTACK"]->CallOriginal<void>(pThis, attackNumber);
+    g_plugin->m_OnCombatAttackHook->CallOriginal<void>(pThis, attackNumber);
 }
 
 }

@@ -37,12 +37,14 @@ private:
     ArgumentStack GetAttackEventData(ArgumentStack&& args);
     ArgumentStack SetAttackEventData(ArgumentStack&& args);
 
+    NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
+    NWNXLib::Hooking::FunctionHook* m_OnCombatAttackHook;
+
     static int32_t OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame);
     static void OnCombatAttack(NWNXLib::API::CNWSCombatRound *pThis, uint8_t attackNumber);
 
     static std::string GetEventScript(NWNXLib::API::CNWSObject *pObject, const std::string &event);
 
-    std::unordered_map<std::string,NWNXLib::Hooking::FunctionHook*> m_EventHooks;
     std::unordered_map<std::string,std::string> m_EventScripts;
 
     DamageDataStr m_DamageData;
