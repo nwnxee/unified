@@ -79,6 +79,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
 
     ip->SetNumIntegersInitializeToNegativeOne(9);
     ip->m_nID = ipId;
+    ip->m_bExpose = 1;
     ip->m_nType = API::Constants::EffectTrueType::ItemProperty;
     ip->m_nSubType = API::Constants::EffectDurationType::Permanent;
     ip->m_oidCreator = creator;
