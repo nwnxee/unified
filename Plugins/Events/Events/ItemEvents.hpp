@@ -22,6 +22,8 @@ private:
     static void RemoveItemHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CItemRepository*, NWNXLib::API::CNWSItem*);
     static uint32_t FindItemWithBaseItemIdHook(NWNXLib::API::CItemRepository*, uint32_t, int32_t);
     static int32_t LearnScrollHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID);
+    static int32_t RunEquipHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, uint32_t, uint32_t);
+    static int32_t RunUnequipHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, uint8_t, uint8_t, int32_t, uint32_t);
 };
 
 }

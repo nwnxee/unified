@@ -98,6 +98,27 @@
     Event data:
         Variable Name           Type        Notes
         SCROLL                  object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_EQUIP_BEFORE
+    NWNX_ON_ITEM_EQUIP_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature equipping the item
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+        SLOT                    int
+
+    NWNX_ON_ITEM_UNEQUIP_BEFORE
+    NWNX_ON_ITEM_UNEQUIP_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature unequipping the item
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -130,7 +151,7 @@
     Event data:
         Variable Name           Type        Notes
         AMOUNT                  int
-        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        OBJECT                  object      Convert to object with NWNX_Object_StringToObject()
         ALIGNMENT_TYPE          int         Only valid for NWNX_ON_DM_GIVE_ALIGNMENT_*
 
     NWNX_ON_DM_SPAWN_OBJECT_BEFORE
