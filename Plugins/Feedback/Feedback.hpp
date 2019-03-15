@@ -18,6 +18,7 @@ public:
 private:
     ArgumentStack GetMessageHidden          (ArgumentStack&& args);
     ArgumentStack SetMessageHidden          (ArgumentStack&& args);
+    ArgumentStack SetFeedbackMode           (ArgumentStack&& args);
 
     static void SendFeedbackMessageHook(
         NWNXLib::API::CNWSCreature* pCreature,
@@ -43,6 +44,8 @@ private:
     static int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);
 
     std::set<int32_t> m_GlobalHiddenMessageSet;
+    bool m_FeedbackMessageWhitelist = true;
+    bool m_CombatMessageWhitelist = false;
 };
 
 }
