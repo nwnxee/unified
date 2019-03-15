@@ -44,7 +44,7 @@ private:
     static int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);
 
     std::set<int32_t> m_GlobalHiddenMessageSet;
-    bool m_FeedbackMessageWhitelist = true;
+    bool m_FeedbackMessageWhitelist = false;
     bool m_CombatMessageWhitelist = false;
 };
 
