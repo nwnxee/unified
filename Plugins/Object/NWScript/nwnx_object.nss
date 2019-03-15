@@ -140,7 +140,7 @@ int NWNX_Object_CheckFit(object obj, int baseitem);
 int NWNX_Object_GetDamageImmunity(object obj, int damageType);
 
 // Add or move obj to area at pos
-void NWNX_Object_AddToArea(object obj, object area, vector pos)
+void NWNX_Object_AddToArea(object obj, object area, vector pos);
 
 
 const string NWNX_Object = "NWNX_Object";
