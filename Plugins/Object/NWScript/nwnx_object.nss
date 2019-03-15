@@ -139,7 +139,7 @@ int NWNX_Object_CheckFit(object obj, int baseitem);
 // Use DAMAGE_TYPE_* constants for damageType
 int NWNX_Object_GetDamageImmunity(object obj, int damageType);
 
-// Add a deserialized object to area at pos
+// Add or move obj to area at pos
 void NWNX_Object_AddToArea(object obj, object area, vector pos)
 
 
