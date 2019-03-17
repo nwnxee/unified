@@ -126,6 +126,7 @@ The following plugins were added:
 - Util: EffectToItemProperty()
 - Util: ItemPropertyToEffect()
 - Util: StripColors()
+- Util: IsValidResRef()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()
