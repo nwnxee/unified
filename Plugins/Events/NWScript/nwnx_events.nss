@@ -595,6 +595,31 @@
         Variable Name           Type        Notes
         CURRENT_PANEL           int         The current panel, index starts at 0
         SELECTED_PANEL          int         The selected panel, index starts at 0
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_BARTER_START_BEFORE
+    NWNX_ON_BARTER_START_AFTER
+
+    Usage:
+        OBJECT_SELF = The player who initiated the barter
+
+    Event data:
+        Variable Name           Type        Notes
+        BARTER_TARGET           object      The other player involved in the barter
+
+    NWNX_ON_BARTER_END_BEFORE
+    NWNX_ON_BARTER_END_AFTER
+
+    Usage:
+        OBJECT_SELF = The player who initiated the barter
+
+    Event data:
+        Variable Name                 Type        Notes
+        BARTER_TARGET                 object      The other player involved in the barter
+        BARTER_COMPLETE               int         TRUE/FALSE - whether the barter completed successfully
+        BARTER_INITIATOR_ITEM_COUNT   int         How many items the initiator traded away
+        BARTER_TARGET_ITEM_COUNT      int         How many items the target traded away
+        BARTER_INITIATOR_ITEM_*       object      Convert to object with NWNX_Object_StringToObject()
+        BARTER_TARGET_ITEM_*          object      Convert to object with NWNX_Object_StringToObject()
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -647,6 +672,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Client connect event
 // - Spell events
 // - QuickChat events
+// - Barter event (START only)
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.

@@ -4,6 +4,7 @@
 #include "API/Globals.hpp"
 #include "API/Version.hpp"
 #include "Events/AssociateEvents.hpp"
+#include "Events/BarterEvents.hpp"
 #include "Events/ClientEvents.hpp"
 #include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
@@ -80,6 +81,7 @@ Events::Events(const Plugin::CreateParams& params)
         });
 
     m_associateEvents   = std::make_unique<AssociateEvents>(GetServices()->m_hooks);
+    m_barterEvents      = std::make_unique<BarterEvents>(GetServices()->m_hooks);
     m_clientEvents      = std::make_unique<ClientEvents>(GetServices()->m_hooks);
     m_combatEvents      = std::make_unique<CombatEvents>(GetServices()->m_hooks);
     m_dmActionEvents    = std::make_unique<DMActionEvents>(GetServices()->m_hooks);
