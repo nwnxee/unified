@@ -2,6 +2,8 @@
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/CResRef.hpp"
+#include "API/CExoResMan.hpp"
 #include "API/CExoString.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CTlkTable.hpp"
@@ -54,6 +56,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(EffectTypeCast);
     REGISTER(GenerateUUID);
     REGISTER(StripColors);
+    REGISTER(IsValidResRef);
 
 #undef REGISTER
 
@@ -172,6 +175,19 @@ ArgumentStack Util::StripColors(ArgumentStack&& args)
 
     std::regex color_codes("<c.+?(?=>)>|<\\/c>");
     std::string retVal = std::regex_replace(s, color_codes, "");
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+    const auto resRef = Services::Events::ExtractArgument<std::string>(args);
+    const auto resType = Services::Events::ExtractArgument<int32_t>(args);
+
+    auto pResRef = CResRef(resRef.c_str());
+    retVal = Globals::ExoResMan()->Exists(pResRef,resType,nullptr);
     Services::Events::InsertArgument(stack, retVal);
     return stack;
 }

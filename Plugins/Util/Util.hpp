@@ -22,6 +22,7 @@ private:
     ArgumentStack EffectTypeCast(ArgumentStack&& args);
     ArgumentStack GenerateUUID(ArgumentStack&& args);
     ArgumentStack StripColors(ArgumentStack&& args);
+    ArgumentStack IsValidResRef(ArgumentStack&& args);
 };
 
 }

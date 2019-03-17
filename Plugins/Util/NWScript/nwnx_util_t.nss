@@ -41,5 +41,10 @@ void main()
     string strip_colors = NWNX_Util_StripColors(str);
     report("RegexReplace", strip_colors == "This is a test of stripped colors.");
 
+    string sValidResRef = "nw_undeadhigh";
+    report("IsValidResRef", NWNX_Util_IsValidResRef(sValidResRef, NWNX_UTIL_RESREF_TYPE_ENCOUNTER));
+    string sInValidResRef = "aaaaaaaaaaaaaaaa";
+    report("IsValidResRef", NWNX_Util_IsValidResRef(sInValidResRef, NWNX_UTIL_RESREF_TYPE_ITEM) == 0);
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

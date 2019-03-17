@@ -1,5 +1,17 @@
 #include "nwnx"
 
+const int NWNX_UTIL_RESREF_TYPE_AREA_GIT  = 2012;
+const int NWNX_UTIL_RESREF_TYPE_ITEM      = 2025;
+const int NWNX_UTIL_RESREF_TYPE_CREATURE  = 2027;
+const int NWNX_UTIL_RESREF_TYPE_DIALOG    = 2029;
+const int NWNX_UTIL_RESREF_TYPE_TRIGGER   = 2032;
+const int NWNX_UTIL_RESREF_TYPE_SOUND     = 2035;
+const int NWNX_UTIL_RESREF_TYPE_ENCOUNTER = 2040;
+const int NWNX_UTIL_RESREF_TYPE_DOOR      = 2042;
+const int NWNX_UTIL_RESREF_TYPE_PLACEABLE = 2044;
+const int NWNX_UTIL_RESREF_TYPE_STORE     = 2051;
+const int NWNX_UTIL_RESREF_TYPE_WAYPOINT  = 2058;
+
 // Returns the name of the currently executing script.
 // If depth is >0, it will return the name of the script that called this one via ExecuteScript()
 string NWNX_Util_GetCurrentScriptName(int depth=0);
@@ -18,6 +30,8 @@ effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
 string NWNX_Util_GenerateUUID();
 // Strip any color codes from a string
 string NWNX_Util_StripColors(string str);
+// Is a valid resref
+int NWNX_Util_IsValidResRef(string filename, int type=NWNX_UTIL_RESREF_TYPE_CREATURE);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -83,4 +97,13 @@ string NWNX_Util_StripColors(string str)
     NWNX_PushArgumentString(NWNX_Util, sFunc, str);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_IsValidResRef(string filename, int type=NWNX_UTIL_RESREF_TYPE_CREATURE)
+{
+    string sFunc = "IsValidResRef";
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, type);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, filename);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
