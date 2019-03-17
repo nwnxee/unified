@@ -139,6 +139,10 @@ int NWNX_Object_CheckFit(object obj, int baseitem);
 // Use DAMAGE_TYPE_* constants for damageType
 int NWNX_Object_GetDamageImmunity(object obj, int damageType);
 
+// Add or move obj to area at pos
+void NWNX_Object_AddToArea(object obj, object area, vector pos);
+
+
 const string NWNX_Object = "NWNX_Object";
 
 
@@ -361,4 +365,16 @@ int NWNX_Object_GetDamageImmunity(object obj, int damageType)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_AddToArea(object obj, object area, vector pos)
+{
+    string sFunc = "AddToArea";
+
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.z);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.y);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.x);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, area);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }
