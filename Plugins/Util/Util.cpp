@@ -186,8 +186,7 @@ ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
     const auto resRef = Services::Events::ExtractArgument<std::string>(args);
     const auto resType = Services::Events::ExtractArgument<int32_t>(args);
 
-    auto pResRef = CResRef(resRef.c_str());
-    retVal = Globals::ExoResMan()->Exists(pResRef,resType,nullptr);
+    retVal = Globals::ExoResMan()->Exists(CResRef(resRef.c_str()), resType, nullptr);
     Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
