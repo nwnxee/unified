@@ -616,10 +616,10 @@
         Variable Name                 Type        Notes
         BARTER_TARGET                 object      The other player involved in the barter
         BARTER_COMPLETE               int         TRUE/FALSE - whether the barter completed successfully
-        BARTER_INITIATOR_ITEM_COUNT   int         How many items the initiator traded away
-        BARTER_TARGET_ITEM_COUNT      int         How many items the target traded away
-        BARTER_INITIATOR_ITEM_*       object      Convert to object with NWNX_Object_StringToObject()
-        BARTER_TARGET_ITEM_*          object      Convert to object with NWNX_Object_StringToObject()
+        BARTER_INITIATOR_ITEM_COUNT   int         How many items the initiator traded away, only in _BEFORE events
+        BARTER_TARGET_ITEM_COUNT      int         How many items the target traded away, only in _BEFORE events
+        BARTER_INITIATOR_ITEM_*       object      Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
+        BARTER_TARGET_ITEM_*          object      Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
