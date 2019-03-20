@@ -847,7 +847,7 @@ int32_t Weapon::GetUseMonkAttackTables(NWNXLib::API::CNWSCreatureStats* pStats, 
     NWNXLib::API::CNWSItem* pWeapon;
     int nMonk = plugin.GetLevelByClass(pStats, Constants::ClassType::Monk);
 
-    if (nMonk < 1 || pStats->m_nACArmorBase > 0 || pStats->m_nACShieldBase > 0)
+    if (nMonk < 1 || !pStats->m_pBaseCreature->GetUseMonkAbilities())
     {
         return 0;
     }

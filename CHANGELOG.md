@@ -28,6 +28,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
+- Tweaks: DisableMonkAbilitiesWhenPolymorphed
 ##### New Plugins
 The following plugins were added:
 - **Area**: Adds functions exposing additional area properties

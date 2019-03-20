@@ -8,6 +8,7 @@
 #include "Tweaks/SneakAttackCritImmunity.hpp"
 #include "Tweaks/PreserveDepletedItems.hpp"
 #include "Tweaks/HideDMsOnCharList.hpp"
+#include "Tweaks/DisableMonkAbilitiesWhenPolymorphed.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -119,6 +120,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("DMs will not be visible on character list");
         m_HideDMsOnCharList = std::make_unique<HideDMsOnCharList>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED", false))
+    {
+        LOG_INFO("Monk abilities (ac, speed, attacks) will be disabled during polymorph");
+        m_DisableMonkAbilitiesWhenPolymorphed = std::make_unique<DisableMonkAbilitiesWhenPolymorphed>(GetServices()->m_hooks.get());
     }
 }
 
