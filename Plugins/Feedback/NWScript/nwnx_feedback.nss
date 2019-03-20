@@ -77,6 +77,22 @@ int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID);
 // to TRUE but the personal state is set to FALSE, the message will be shown to oPC
 void NWNX_Feedback_SetJournalUpdatedMessageHidden(int nState, object oPC = OBJECT_INVALID);
 
+// Set whether to use a blacklist or whitelist mode for feedback messages
+// Default: Blacklist
+//
+// TRUE = Whitelist, all messages hidden by default
+// FALSE = Blacklist, all messages shown by default
+void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist);
+
+// Set whether to use a blacklist or whitelist mode for combatlog messages
+// Default: Blacklist
+//
+// TRUE = Whitelist, all messages hidden by default
+// FALSE = Blacklist, all messages shown by default
+//
+// NOTE: If using Whitelist, be sure to whitelist NWNX_FEEDBACK_COMBATLOG_FEEDBACK for feedback messages to work
+void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist);
+
 // ***
 // For a list of the various combatlog / feedback messages see below.
 // ***
@@ -156,6 +172,26 @@ void NWNX_Feedback_SetJournalUpdatedMessageHidden(int nState, object oPC = OBJEC
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
     NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
     NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)
+{
+    string sFunc = "SetFeedbackMode";
+    int nMessageType = 0;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)
+{
+    string sFunc = "SetFeedbackMode";
+    int nMessageType = 1;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
     NWNX_CallFunction(NWNX_Feedback, sFunc);
 }
 

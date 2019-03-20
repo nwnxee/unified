@@ -55,6 +55,7 @@ Feedback::Feedback(const Plugin::CreateParams& params)
 
     REGISTER(GetMessageHidden);
     REGISTER(SetMessageHidden);
+    REGISTER(SetFeedbackMode);
 
 #undef REGISTER
 
@@ -79,9 +80,9 @@ void Feedback::SendFeedbackMessageHook(
     CNWSPlayer *pPlayer)
 {
     auto personalState = GetPersonalState(pCreature->m_idSelf, FEEDBACK_MESSAGE, nFeedbackID);
-    bool bSuppressFeedback = (personalState == -1) ? GetGlobalState(FEEDBACK_MESSAGE, nFeedbackID) : personalState;
+    auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(FEEDBACK_MESSAGE, nFeedbackID) : personalState;
 
-    if (!bSuppressFeedback)
+    if (g_plugin->m_FeedbackMessageWhitelist == bSuppressFeedback)
     {
         m_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pData, pPlayer);
     }
@@ -97,9 +98,9 @@ int32_t Feedback::SendServerToPlayerCCMessageHook(
     uint32_t oidPlayer = static_cast<CNWSPlayer*>(Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayerId, 0))->m_oidPCObject;
 
     auto personalState = GetPersonalState(oidPlayer, COMBATLOG_MESSAGE, nMinor);
-    bool bSuppressFeedback = (personalState == -1) ? GetGlobalState(COMBATLOG_MESSAGE, nMinor) : personalState;
+    auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(COMBATLOG_MESSAGE, nMinor) : personalState;
 
-    return bSuppressFeedback ? false :
+    return g_plugin->m_CombatMessageWhitelist != bSuppressFeedback ? false :
                     m_SendServerToPlayerCCMessageHook->CallOriginal<int32_t>(pMessage, nPlayerId, nMinor, pMessageData, pAttackData);
 }
 
@@ -111,7 +112,7 @@ int32_t Feedback::SendServerToPlayerJournalUpdatedHook(
     CExoLocString *p_locName)
 {
     auto personalState = GetPersonalState(pPlayer->m_oidNWSObject, JOURNALUPDATED_MESSAGE, 0);
-    bool bSuppressFeedback = (personalState == -1) ? GetGlobalState(JOURNALUPDATED_MESSAGE, 0) : personalState;
+    auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(JOURNALUPDATED_MESSAGE, 0) : personalState;
 
     return bSuppressFeedback ? false :
                     m_SendServerToPlayerJournalUpdatedHook->CallOriginal<int32_t>(pMessage, pPlayer, bQuest, bCompleted, p_locName);
@@ -194,6 +195,25 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
         {
             g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state);
         }
+    }
+
+    return stack;
+}
+
+ArgumentStack Feedback::SetFeedbackMode(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
+    const auto state = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (!messageType)
+    {
+        g_plugin->m_FeedbackMessageWhitelist = !!state;
+    }
+    else
+    {
+        g_plugin->m_CombatMessageWhitelist = !!state;
     }
 
     return stack;
