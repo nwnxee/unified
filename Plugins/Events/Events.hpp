@@ -11,6 +11,7 @@
 namespace Events {
 
 class AssociateEvents;
+class BarterEvents;
 class ClientEvents;
 class CombatEvents;
 class DMActionEvents;
@@ -86,6 +87,7 @@ private:
     std::unordered_map<std::string, std::function<void(void)>> m_initList;
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
+    std::unique_ptr<BarterEvents> m_barterEvents;
     std::unique_ptr<ClientEvents> m_clientEvents;
     std::unique_ptr<CombatEvents> m_combatEvents;
     std::unique_ptr<DMActionEvents> m_dmActionEvents;

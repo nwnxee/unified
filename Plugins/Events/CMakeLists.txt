@@ -1,6 +1,7 @@
 add_plugin(Events
     "Events.cpp"
     "Events/AssociateEvents.cpp"
+    "Events/BarterEvents.cpp"
     "Events/ClientEvents.cpp"
     "Events/CombatEvents.cpp"
     "Events/DMActionEvents.cpp"
