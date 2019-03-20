@@ -9,5 +9,5 @@ add_plugin(Tweaks
     "Tweaks/SneakAttackCritImmunity.cpp"
     "Tweaks/PreserveDepletedItems.cpp"
     "Tweaks/HideDMsOnCharList.cpp"
-    "Tweaks/DisablePolymorphedMonks.cpp"
+    "Tweaks/DisableMonkAbilitiesWhenPolymorphed.cpp"
 )

@@ -7,10 +7,10 @@
 
 namespace Tweaks {
 
-class DisablePolymorphedMonks
+class DisableMonkAbilitiesWhenPolymorphed
 {
 public:
-    DisablePolymorphedMonks(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    DisableMonkAbilitiesWhenPolymorphed(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
     static int32_t CNWSCreature__GetUseMonkAbilities_hook(NWNXLib::API::CNWSCreature*);
