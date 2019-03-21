@@ -229,25 +229,32 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     }
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
 
-    // apply damage immunity, resistance and reduction
     CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
     CNWSCreature *pTarget = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidTarget);
+    ASSERT_OR_THROW(pTarget != nullptr);
+
+    // apply damage immunity and resistance
     for (int k = 0; k < 12; k++)
     {
-        vDamage[k] = pTarget->DoDamageImmunity(pSource, vDamage[k], 1 << k, 0, 1);
-        vDamage[k] = pTarget->DoDamageResistance(pSource, vDamage[k], 1 << k, 0, 1, 0);
+        if ( vDamage[k] > 0 )
+            vDamage[k] = pTarget->DoDamageImmunity(pSource, vDamage[k], 1 << k, false, false);
+        if ( vDamage[k] > 0 )
+            vDamage[k] = pTarget->DoDamageResistance(pSource, vDamage[k], 1 << k, false, false, false);
     }
-    // base damage (combine physical for DR)
-    vDamage[13] = pTarget->DoDamageReduction(pSource, vDamage[0] + vDamage[1] + vDamage[2], damagePower, 0, 1);
-    vDamage[0] = vDamage[1] = vDamage[2] = 0;
+    // apply DR (combine physical damage for this)
+    vDamage[13] = vDamage[0] + vDamage[1] + vDamage[2];
     positive[13] = positive[0] || positive[1] || positive[2];
+    if (vDamage[13] > 0)
+        vDamage[13] = pTarget->DoDamageReduction(pSource, vDamage[13], damagePower, false, false);
 
     // create damage effect ...
     CGameEffect *pEffect = new CGameEffect(true);
     pEffect->m_nType = 38;
     pEffect->SetCreator(oidSource);
     pEffect->SetNumIntegers(19);
-    for (int k = 0; k < 13; k++)
+    for (int k = 0; k < 3; k++)
+        pEffect->SetInteger(k, -1);
+    for (int k = 3; k < 13; k++)
         pEffect->SetInteger(k, positive[k] ? vDamage[k] : -1);
     pEffect->SetInteger(17, true); // combat damage
     // ... and apply it
