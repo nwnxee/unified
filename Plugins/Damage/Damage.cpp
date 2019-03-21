@@ -242,10 +242,10 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
             vDamage[k] = pTarget->DoDamageResistance(pSource, vDamage[k], 1 << k, false, false, false);
     }
     // apply DR (combine physical damage for this)
-    vDamage[13] = vDamage[0] + vDamage[1] + vDamage[2];
-    positive[13] = positive[0] || positive[1] || positive[2];
-    if (vDamage[13] > 0)
-        vDamage[13] = pTarget->DoDamageReduction(pSource, vDamage[13], damagePower, false, false);
+    vDamage[12] = vDamage[0] + vDamage[1] + vDamage[2];
+    positive[12] = positive[0] || positive[1] || positive[2];
+    if (vDamage[12] > 0)
+        vDamage[12] = pTarget->DoDamageReduction(pSource, vDamage[12], damagePower, false, false);
 
     // create damage effect ...
     CGameEffect *pEffect = new CGameEffect(true);
