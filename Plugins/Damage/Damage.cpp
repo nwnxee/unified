@@ -230,7 +230,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
 
     CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
-    CNWSCreature *pTarget = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidTarget);
+    CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
     ASSERT_OR_THROW(pTarget != nullptr);
 
     // apply damage immunity and resistance
