@@ -30,7 +30,6 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
 - Tweaks: DisableMonkAbilitiesWhenPolymorphed
-- Utils: GetEnvironmentVariable
 ##### New Plugins
 The following plugins were added:
 - **Area**: Adds functions exposing additional area properties
@@ -128,6 +127,7 @@ The following plugins were added:
 - Reveal: SetRevealToParty()
 - Util: GenerateUUID()
 - Util: GetCustomToken()
+- Util: GetEnvironmentVariable()
 - Util: EffectToItemProperty()
 - Util: ItemPropertyToEffect()
 - Util: StripColors()
