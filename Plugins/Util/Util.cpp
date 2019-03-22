@@ -194,7 +194,7 @@ ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
 
 ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args) {
     ArgumentStack stack;
-    InsertArgument(stack, std::getenv(ExtractArgument<std::string>(args).c_str());
+    Services::Events::InsertArgument(stack, std::getenv(Services::Events::ExtractArgument<std::string>(args).c_str()));
     return stack;
 }
 
