@@ -46,5 +46,8 @@ void main()
     string sInValidResRef = "aaaaaaaaaaaaaaaa";
     report("IsValidResRef", NWNX_Util_IsValidResRef(sInValidResRef, NWNX_UTIL_RESREF_TYPE_ITEM) == 0);
 
+    string sEnvVar = "NWNX_CORE_LOG_LEVEL";
+    report("GetEnvironmentVariable", StringToInt(NWNX_Util_GetEnvironmentVariable(sEnvVar)) > 0);
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

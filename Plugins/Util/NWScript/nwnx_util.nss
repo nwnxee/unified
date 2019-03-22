@@ -32,6 +32,8 @@ string NWNX_Util_GenerateUUID();
 string NWNX_Util_StripColors(string str);
 // Is a valid resref
 int NWNX_Util_IsValidResRef(string resref, int type = NWNX_UTIL_RESREF_TYPE_CREATURE);
+// Retrieve an environment variable
+string NWNX_Util_GetEnvironmentVariable(string sVarname);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -106,4 +108,12 @@ int NWNX_Util_IsValidResRef(string resref, int type = NWNX_UTIL_RESREF_TYPE_CREA
     NWNX_PushArgumentString(NWNX_Util, sFunc, resref);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetEnvironmentVariable(string sVarname)
+{
+    string sFunc = "GetEnvironmentVariable";
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sVarname);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }

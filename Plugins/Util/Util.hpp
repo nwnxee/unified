@@ -23,6 +23,7 @@ private:
     ArgumentStack GenerateUUID(ArgumentStack&& args);
     ArgumentStack StripColors(ArgumentStack&& args);
     ArgumentStack IsValidResRef(ArgumentStack&& args);
+    ArgumentStack GetEnvironmentVariable(ArgumentStack&& args);
 };
 
 }

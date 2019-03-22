@@ -128,6 +128,7 @@ The following plugins were added:
 - Reveal: SetRevealToParty()
 - Util: GenerateUUID()
 - Util: GetCustomToken()
+- Util: GetEnvironmentVariable()
 - Util: EffectToItemProperty()
 - Util: ItemPropertyToEffect()
 - Util: StripColors()
