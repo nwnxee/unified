@@ -42,6 +42,24 @@ struct NWNX_Damage_AttackEventData
     int iSneakAttack;  // 0=neither, 1=sneak attack, 2=death attack, 3=both
 };
 
+// for DealDamage
+struct NWNX_Damage_DamageData
+{
+    int iBludgeoning;
+    int iPierce;
+    int iSlash;
+    int iMagical;
+    int iAcid;
+    int iCold;
+    int iDivine;
+    int iElectrical;
+    int iFire;
+    int iNegative;
+    int iPositive;
+    int iSonic;
+    int iPower; // for overcoming DR
+};
+
 // Set Damage Event Script
 // If oOwner is OBJECT_INVALID, this sets the script globally for all creatures
 // If oOwner is valid, it will set it only for that creature.
@@ -64,6 +82,10 @@ struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData();
 // Set Attack Event Data (to use only on Attack Event Script)
 void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 
+// Deal damage to target - permits multiple damage types and checks enhancement bonus for overcoming DR
+void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource=OBJECT_SELF);
+
+//--------------------------- Implementation ----------------------------------
 
 void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID)
 {
@@ -179,6 +201,29 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data)
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iSlash);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPierce);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iBludgeoning);
+
+    NWNX_CallFunction(NWNX_Damage, sFunc);
+}
+
+void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource)
+{
+    string sFunc = "DealDamage";
+
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPower);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iSonic);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPositive);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iNegative);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iFire);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iElectrical);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iDivine);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iCold);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iAcid);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iMagical);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iSlash);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPierce);
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iBludgeoning);
+    NWNX_PushArgumentObject(NWNX_Damage, sFunc, oTarget);
+    NWNX_PushArgumentObject(NWNX_Damage, sFunc, oSource);
 
     NWNX_CallFunction(NWNX_Damage, sFunc);
 }

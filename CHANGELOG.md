@@ -80,6 +80,7 @@ The following plugins were added:
 - Damage: SetAttackEventScript()
 - Damage: GetAttackEventData()
 - Damage: SetAttackEventData()
+- Damage: DealDamage()
 - Effect: PackEffect()
 - Effect: UnpackEffect()
 - Effect: SetEffectExpiredScript()

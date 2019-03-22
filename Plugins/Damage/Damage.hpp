@@ -36,6 +36,7 @@ private:
     ArgumentStack SetDamageEventData(ArgumentStack&& args);
     ArgumentStack GetAttackEventData(ArgumentStack&& args);
     ArgumentStack SetAttackEventData(ArgumentStack&& args);
+    ArgumentStack DealDamage(ArgumentStack&& args);
 
     NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
     NWNXLib::Hooking::FunctionHook* m_OnCombatAttackHook;

@@ -12,6 +12,7 @@
 #include "Utils.hpp"
 
 #include <cstring>
+#include <bitset>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -51,6 +52,7 @@ Damage::Damage(const Plugin::CreateParams& params)
     REGISTER(SetDamageEventData);
     REGISTER(GetAttackEventData);
     REGISTER(SetAttackEventData);
+    REGISTER(DealDamage);
 
 #undef REGISTER
 
@@ -205,6 +207,60 @@ void Damage::OnCombatAttack(NWNXLib::API::CNWSCombatRound *pThis, uint8_t attack
     }
 
     g_plugin->m_OnCombatAttackHook->CallOriginal<void>(pThis, attackNumber);
+}
+
+//--------------------------- Dealing Damage ----------------------------------
+
+ArgumentStack Damage::DealDamage(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int vDamage[13];
+    std::bitset<13> positive;
+
+    // read input
+    uint32_t oidSource = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    uint32_t oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    for (int k = 0; k < 12; k++)
+    {
+        vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
+        // need to distinguish between no damage dealt, and damage reduced to 0
+        positive[k] = vDamage[k] > 0;
+    }
+    int damagePower = Services::Events::ExtractArgument<int32_t>(args);
+
+    CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
+    CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
+    ASSERT_OR_THROW(pTarget != nullptr);
+
+    // apply damage immunity and resistance
+    for (int k = 0; k < 12; k++)
+    {
+        if ( vDamage[k] > 0 )
+            vDamage[k] = pTarget->DoDamageImmunity(pSource, vDamage[k], 1 << k, false, false);
+        if ( vDamage[k] > 0 )
+            vDamage[k] = pTarget->DoDamageResistance(pSource, vDamage[k], 1 << k, false, false, false);
+    }
+    // apply DR (combine physical damage for this)
+    vDamage[12] = vDamage[0] + vDamage[1] + vDamage[2];
+    positive[12] = positive[0] || positive[1] || positive[2];
+    if (vDamage[12] > 0)
+        vDamage[12] = pTarget->DoDamageReduction(pSource, vDamage[12], damagePower, false, false);
+
+    // create damage effect ...
+    CGameEffect *pEffect = new CGameEffect(true);
+    pEffect->m_nType = 38;
+    pEffect->SetCreator(oidSource);
+    pEffect->SetNumIntegers(19);
+    for (int k = 0; k < 3; k++)
+        pEffect->SetInteger(k, -1);
+    for (int k = 3; k < 13; k++)
+        pEffect->SetInteger(k, positive[k] ? vDamage[k] : -1);
+    pEffect->SetInteger(17, true); // combat damage
+    // ... and apply it
+    pTarget->ApplyEffect(pEffect, false, true);
+
+    return stack;
 }
 
 }
