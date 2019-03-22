@@ -57,6 +57,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GenerateUUID);
     REGISTER(StripColors);
     REGISTER(IsValidResRef);
+    REGISTER(GetEnvironmentVariable);
 
 #undef REGISTER
 
@@ -188,6 +189,12 @@ ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
 
     retVal = Globals::ExoResMan()->Exists(CResRef(resRef.c_str()), resType, nullptr);
     Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args) {
+    ArgumentStack stack;
+    InsertArgument(stack, std::getenv(ExtractArgument<std::string>(args).c_str());
     return stack;
 }
 
