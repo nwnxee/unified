@@ -22,10 +22,10 @@ TODO:
 ## Getting started with PubSub
 
 * Set up redis-server. Start it. This should be as simple as apt-get install redis. There's also a docker image.
-* Configure `REDIS_HOST` and `REDIS_PORT` for nwnx.
+* Configure `NWNX_REDIS_HOST` and `NWNX_REDIS_PORT` for nwnx. `NWNX_REDIS_PORT` is not necessary if the default redis port is used.
 * Include the .nss files in NWScript/ into your module.
-* Create a script called "on_pubsub" (or rename it through `PUBSUB_SCRIPT`). An example is included in NWScript/.
-* Configure `PUBSUB_CHANNELS` to be "test".
+* Create a script called "on_pubsub" (or rename it through `NWNX_REDIS_PUBSUB_SCRIPT`). An example is included in NWScript/.
+* Configure `NWNX_REDIS_PUBSUB_CHANNELS` to be "test".
 * Hint: Subscriptions support wildcards.
 * Start your module.
 * Use `redis-cli` to connect to your running redis server and type `PUBLISH test hi there`.
@@ -41,10 +41,9 @@ TODO:
 
 ## Environment Variables
 
-| Variable Name     |  Type                   | Default Value                      |
-| ----------------- | :---------------------: | ---------------------------------- |
-| `REDIS_HOST`      | string                  | (none)                             |
-| `REDIS_PORT`      | int16                   | 6379                               |
-| `PUBSUB_SCRIPT`   | string                  | on_pubsub                          |
-| `PUBSUB_CHANNELS` | comma-separated strings | ""                                 |
-
+| Variable Name                |  Type                   | Default Value                      |
+| ---------------------------- | :---------------------: | ---------------------------------- |
+| `NWNX_REDIS_HOST`            | string                  | (none)                             |
+| `NWNX_REDIS_PORT`            | int16                   | 6379                               |
+| `NWNX_REDIS_PUBSUB_SCRIPT`   | string                  | on_pubsub                          |
+| `NWNX_REDIS_PUBSUB_CHANNELS` | comma-separated strings | ""                                 |
