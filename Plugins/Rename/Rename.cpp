@@ -135,7 +135,6 @@ Rename::~Rename()
 
 CNWSPlayer *Rename::player(Types::ObjectID playerId)
 {
-
     if (playerId == Constants::OBJECT_INVALID)
     {
         LOG_NOTICE("NWNX_Rename function called on OBJECT_INVALID");
@@ -258,7 +257,6 @@ int32_t Rename::SendServerToPlayerPlayModuleCharacterListResponseHook(
         Types::ObjectID targetOid,
         int32_t add)
 {
-
     Rename& plugin = *g_plugin;
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
     auto *client = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(observerPlayerId, 0);
