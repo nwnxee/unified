@@ -41,10 +41,9 @@ TODO:
 
 ## Environment Variables
 
-| Variable Name     |  Type                   | Default Value                      |
-| ----------------- | :---------------------: | ---------------------------------- |
-| `REDIS_HOST`      | string                  | (none)                             |
-| `REDIS_PORT`      | int16                   | 6379                               |
-| `PUBSUB_SCRIPT`   | string                  | on_pubsub                          |
-| `PUBSUB_CHANNELS` | comma-separated strings | ""                                 |
-
+| Variable Name                |  Type                   | Default Value                      |
+| ---------------------------- | :---------------------: | ---------------------------------- |
+| `NWNX_REDIS_HOST`            | string                  | (none)                             |
+| `NWNX_REDIS_PORT`            | int16                   | 6379                               |
+| `NWNX_REDIS_PUBSUB_SCRIPT`   | string                  | on_pubsub                          |
+| `NWNX_REDIS_PUBSUB_CHANNELS` | comma-separated strings | ""                                 |
