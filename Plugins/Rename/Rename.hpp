@@ -4,13 +4,11 @@
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Events/Events.hpp"
 #include "API/Types.hpp"
-#include "API/CNWSPlayer.hpp"
-#include "API/CNWSMessage.hpp"
 #include "Common.hpp"
-#include "API/CExoLocString.hpp"
 #include "ViewPtr.hpp"
 
-#include <unordered_map>
+using namespace NWNXLib;
+using namespace NWNXLib::API;
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -23,20 +21,64 @@ public:
     virtual ~Rename();
 
 private:
+    int32_t m_RenameOnModuleCharList;
+    bool m_RenameOnPlayerList;
 
-    static void HookPlayerList(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer* pPlayer);
-    static void HookPartyInvite(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*, unsigned char);
+    static void WriteGameObjUpdate_UpdateObjectHook(
+            Services::Hooks::CallType,
+            CNWSMessage*,
+            CNWSPlayer*,
+            CNWSObject*,
+            CLastUpdateObject*,
+            uint32_t,
+            uint32_t);
+    static void SendServerToPlayerPlayerList_AllHook(
+            NWNXLib::Services::Hooks::CallType,
+            CNWSMessage*,
+            CNWSPlayer*);
+    static void SendServerToPlayerPlayerList_AddHook(
+            NWNXLib::Services::Hooks::CallType,
+            CNWSMessage*,
+            Types::PlayerID,
+            CNWSPlayer*);
+    static void SendServerToPlayerPlayerList_DeleteHook(
+            NWNXLib::Services::Hooks::CallType,
+            CNWSMessage*,
+            Types::PlayerID,
+            CNWSPlayer*);
+    static void SendServerToPlayerExamineGui_CreatureDataHook(
+            Services::Hooks::CallType,
+            CNWSMessage*,
+            CNWSPlayer*,
+            Types::ObjectID);
+    static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(
+            CNWSMessage*,
+            Types::PlayerID,
+            Types::ObjectID,
+            int32_t);
+    static void SendServerToPlayerChatHook(
+            NWNXLib::Services::Hooks::CallType,
+            CNWSMessage*,
+            Types::PlayerID,
+            Types::ObjectID,
+            CExoString*);
+    static int32_t SendServerToPlayerPopUpGUIPanelHook(
+            CNWSMessage*,
+            Types::ObjectID,
+            int32_t, int32_t, int32_t, int32_t, CExoString*);
 
-    NWNXLib::API::CExoLocString ContainString(const std::string& str);
-    std::string ExtractString(NWNXLib::API::CExoLocString& locStr);
+    static void SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType, CNWSPlayer*, CNWSPlayer*);
+    static void SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID);
+    static void RestorePlayerName(CNWSCreature *targetCreature);
+    void GlobalNameChange(NWNXLib::Services::Hooks::CallType, Types::PlayerID, Types::PlayerID);
+
+    CExoLocString ContainString(const std::string& str);
     std::string GenerateRandomPlayerName(size_t length);
 
-    void GlobalNameChange(bool bOriginal, NWNXLib::API::CNWSPlayer* pPlayer);
-    void UpdateName(NWNXLib::API::CNWSCreature* targetObject);
-
     ArgumentStack SetPCNameOverride(ArgumentStack&& args);
+    ArgumentStack GetPCNameOverride(ArgumentStack&& args);
 
-    NWNXLib::API::CNWSPlayer *player(NWNXLib::API::Types::ObjectID playerId);
+    CNWSPlayer *player(Types::ObjectID playerId);
 };
 
 }

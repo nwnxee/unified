@@ -124,6 +124,7 @@ The following plugins were added:
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
+- Rename: GetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
 - Util: GenerateUUID()
