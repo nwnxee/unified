@@ -7,7 +7,8 @@ T ArrayImpl<T>::At(const NWNXLib::API::Types::ObjectID oid, const std::string& t
     std::vector<T>& collection = m_store[oid][tag];
 
     const int32_t size = static_cast<int32_t>(collection.size());
-    ASSERT(index < size && index >= 0);
+      ASSERT_OR_THROW(index < size);
+      ASSERT_OR_THROW(index >= 0);
 
     if (index >= size || index < 0)
     {
@@ -41,7 +42,7 @@ template <typename T>
 void ArrayImpl<T>::Erase(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t index)
 {
     std::vector<T>& collection = m_store[oid][tag];
-    ASSERT(index < static_cast<int32_t>(collection.size()));
+      ASSERT_OR_THROW(index < static_cast<int32_t>(collection.size()));
     collection.erase(std::begin(collection) + index);
 }
 
@@ -57,7 +58,8 @@ template <typename T>
 void ArrayImpl<T>::Insert(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t index, T&& element)
 {
     std::vector<T>& collection = m_store[oid][tag];
-    ASSERT(index >= 0 && index < static_cast<int32_t>(collection.size()));
+      ASSERT_OR_THROW(index >= 0);
+      ASSERT_OR_THROW(index < static_cast<int32_t>(collection.size()));
     collection[static_cast<size_t>(index)] = std::forward<T>(element);
 }
 
@@ -70,7 +72,7 @@ void ArrayImpl<T>::PushBack(const NWNXLib::API::Types::ObjectID oid, const std::
 template <typename T>
 void ArrayImpl<T>::Resize(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t size)
 {
-    ASSERT(size >= 0);
+      ASSERT_OR_THROW(size >= 0);
     m_store[oid][tag].resize(static_cast<size_t>(size));
 }
 
