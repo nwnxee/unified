@@ -69,6 +69,7 @@ The following plugins were added:
 - Area: GetDayNightCycle()
 - Area: SetDayNightCycle()
 - Area: SetSunMoonColors()
+- Area: CreateTransition()
 - Creature: GetAttackBonus()
 - Creature: GetFeatRemainingUses()
 - Creature: GetFeatTotalUses()

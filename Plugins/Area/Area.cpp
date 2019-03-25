@@ -3,6 +3,9 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSArea.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSTransition.hpp"
+#include "API/CNWSTrigger.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
@@ -64,6 +67,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(GetDayNightCycle);
     REGISTER(SetDayNightCycle);
     REGISTER(SetSunMoonColors);
+    REGISTER(CreateTransition);
 
 #undef REGISTER
 }
@@ -507,6 +511,66 @@ ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
                 break;
         }
     }
+
+    return stack;
+}
+
+ArgumentStack Area::CreateTransition(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pArea = area(args))
+    {
+        auto targetOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto *pTargetObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(targetOid));
+        if (pTargetObject == nullptr ||
+            (pTargetObject->m_nObjectType != Constants::ObjectType::Door &&
+             pTargetObject->m_nObjectType != Constants::ObjectType::Waypoint))
+        {
+            LOG_ERROR("Transition destination object is not valid. Valid targets are doors or waypoints.");
+            Services::Events::InsertArgument(stack, Constants::OBJECT_INVALID);
+            return stack;
+        }
+
+        Vector vTransitionPosition;
+        vTransitionPosition.x = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(vTransitionPosition.x >= 0.0f);
+        ASSERT_OR_THROW(vTransitionPosition.x < pArea->m_nWidth * 10.0f);
+        vTransitionPosition.y = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(vTransitionPosition.y >= 0.0f);
+        ASSERT_OR_THROW(vTransitionPosition.x < pArea->m_nHeight * 10.0f);
+        vTransitionPosition.z = Services::Events::ExtractArgument<float>(args);
+
+        const auto size = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(size >= 0.0f);
+        ASSERT_OR_THROW(vTransitionPosition.x + size < pArea->m_nWidth * 10.0f);
+        ASSERT_OR_THROW(vTransitionPosition.y + size < pArea->m_nHeight * 10.0f);
+
+        // Create our trigger
+        auto *trigger = new CNWSTrigger(API::Constants::OBJECT_INVALID);
+        trigger->LoadFromTemplate(CResRef("newtransition")); // Stock nwn Area Transition resRef
+        trigger->SetPosition(vTransitionPosition, 0);
+        trigger->CreateNewGeometry(size, vTransitionPosition, pArea);
+
+        // Set its tag if supplied
+        const auto tag = Services::Events::ExtractArgument<std::string>(args);
+        if (!tag.empty())
+        {
+            trigger->m_sTag = CExoString(tag.c_str());
+            Utils::GetModule()->AddObjectToLookupTable(trigger->m_sTag, trigger->m_idSelf);
+        }
+
+        // Create and assign our transition to the trigger
+        auto *transition = new CNWSTransition();
+        transition->SetTarget(pTargetObject);
+        trigger->m_pTransition = *transition;
+
+        // And add to area
+        trigger->AddToArea(pArea, vTransitionPosition.x, vTransitionPosition.y, vTransitionPosition.z, false);
+        Services::Events::InsertArgument(stack, trigger->m_idSelf);
+    }
+    else
+        Services::Events::InsertArgument(stack, Constants::OBJECT_INVALID);
 
     return stack;
 }

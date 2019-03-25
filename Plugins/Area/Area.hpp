@@ -37,6 +37,7 @@ private:
     ArgumentStack GetDayNightCycle          (ArgumentStack&& args);
     ArgumentStack SetDayNightCycle          (ArgumentStack&& args);
     ArgumentStack SetSunMoonColors          (ArgumentStack&& args);
+    ArgumentStack CreateTransition          (ArgumentStack&& args);
 
     NWNXLib::API::CNWSArea *area(ArgumentStack& args);
 
