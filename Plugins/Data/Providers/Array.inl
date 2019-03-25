@@ -10,12 +10,6 @@ T ArrayImpl<T>::At(const NWNXLib::API::Types::ObjectID oid, const std::string& t
       ASSERT_OR_THROW(index < size);
       ASSERT_OR_THROW(index >= 0);
 
-    if (index >= size || index < 0)
-    {
-        LOG_ERROR("Index %i (size %i) out of bounds for array %s, returning default value.", index, size, tag.c_str());
-        return T();
-    }
-
     return collection[static_cast<size_t>(index)];
 }
 
@@ -59,8 +53,8 @@ void ArrayImpl<T>::Insert(const NWNXLib::API::Types::ObjectID oid, const std::st
 {
     std::vector<T>& collection = m_store[oid][tag];
       ASSERT_OR_THROW(index >= 0);
-      ASSERT_OR_THROW(index < static_cast<int32_t>(collection.size()));
-    collection[static_cast<size_t>(index)] = std::forward<T>(element);
+      ASSERT_OR_THROW(index <= static_cast<int32_t>(collection.size()));
+    collection.insert(std::begin(collection) + index, element);
 }
 
 template <typename T>
@@ -102,4 +96,13 @@ void ArrayImpl<T>::SortDescending(const NWNXLib::API::Types::ObjectID oid, const
 {
     std::vector<T>& collection = m_store[oid][tag];
     std::sort(std::rbegin(collection), std::rend(collection));
+}
+
+template <typename T>
+void ArrayImpl<T>::Set(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t index, T&& element)
+{
+    std::vector<T>& collection = m_store[oid][tag];
+      ASSERT_OR_THROW(index >= 0);
+      ASSERT_OR_THROW(index < static_cast<int32_t>(collection.size()));
+    collection[static_cast<size_t>(index)] = std::forward<T>(element);
 }

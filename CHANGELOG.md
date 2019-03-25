@@ -81,6 +81,7 @@ The following plugins were added:
 - Damage: GetAttackEventData()
 - Damage: SetAttackEventData()
 - Damage: DealDamage()
+- Data: Array_Set_<Type>()
 - Effect: PackEffect()
 - Effect: UnpackEffect()
 - Effect: SetEffectExpiredScript()
@@ -143,6 +144,7 @@ The following plugins were added:
 - Docker: Skip all plugins except ServerLogRedirector by default
 - Redis: Lots of stuff, be sure to update the redis nwscripts!
 - Events: Changed `NUM_LEVELS` to `AMOUNT` for DMActionEvent GiveLevel
+- Data: Array_Insert_<Type>() actually inserts now. Added Array_Set_<Type>() to update existing elements
 
 ### Deprecated
 - Player: {Get/Set}VisibilityOverride() are deprecated, please use the new Visibility plugin!
