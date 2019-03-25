@@ -542,7 +542,7 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
         vTransitionPosition.z = Services::Events::ExtractArgument<float>(args);
 
         const auto size = Services::Events::ExtractArgument<float>(args);
-        ASSERT_OR_THROW(size >= 0.0f);
+        ASSERT_OR_THROW(size > 0.0f);
         ASSERT_OR_THROW(vTransitionPosition.x + size < pArea->m_nWidth * 10.0f);
         ASSERT_OR_THROW(vTransitionPosition.y + size < pArea->m_nHeight * 10.0f);
 
