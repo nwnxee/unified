@@ -156,7 +156,7 @@ void IntroducePlayers(object oPC, object oTarget, string sName, int iType = 0)
     {
         SendMessageToPC(oTarget, sMyName + " wants you to know them as " + sName + ".");
         NWNX_Rename_SetPCNameOverride(oPC, sName, RENAMED_PLAYER_PREFIX,
-                        RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oOtherPC);
+                        RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oTarget);
         SetDynamicNameDB(oPC, oTarget, sName);
     }
 }
