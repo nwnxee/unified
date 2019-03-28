@@ -103,6 +103,11 @@ void NWNX_Area_SetDayNightCycle(object area, int type);
 // DD would represent the amount of blue in the color.
 void NWNX_Area_SetSunMoonColors(object area, int type, int color);
 
+// Create and returns a transition (square shaped of specified size) at a location
+// Valid object types for the target are DOOR or WAYPOINT.
+// If a tag is specified the returning object will have that tag
+object NWNX_Area_CreateTransition(object area, object target, float x, float y, float z, float size = 2.0f, string tag="");
+
 
 const string NWNX_Area = "NWNX_Area";
 
@@ -319,4 +324,20 @@ void NWNX_Area_SetSunMoonColors(object area, int type, int color)
     NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
     NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
     NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+object NWNX_Area_CreateTransition(object area, object target, float x, float y, float z, float size = 2.0f, string tag="")
+{
+    string sFunc = "CreateTransition";
+
+    NWNX_PushArgumentString(NWNX_Area, sFunc, tag);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, size);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, z);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, y);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, x);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, target);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Area, sFunc);
 }

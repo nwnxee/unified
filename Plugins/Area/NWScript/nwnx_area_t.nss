@@ -55,6 +55,11 @@ void main()
 
         NWNX_Area_SetDayNightCycle(oArea, NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK);
         report("{Set/Get}DayNightCycle", NWNX_Area_GetDayNightCycle(oArea) == NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK);
+
+        vector vLoc = GetPositionFromLocation(GetStartingLocation());
+        object oWP = CreateObject(OBJECT_TYPE_WAYPOINT, "nw_waypoint001", GetStartingLocation());
+        object oAT = NWNX_Area_CreateTransition(oArea, oWP, vLoc.x, vLoc.y, vLoc.z);
+        report ("CreateTransition", oAT != OBJECT_INVALID);
     }
     else
     {
