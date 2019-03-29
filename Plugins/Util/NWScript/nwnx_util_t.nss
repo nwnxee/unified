@@ -49,5 +49,10 @@ void main()
     string sEnvVar = "NWNX_CORE_LOG_LEVEL";
     report("GetEnvironmentVariable", StringToInt(NWNX_Util_GetEnvironmentVariable(sEnvVar)) > 0);
 
+    int nMinsPerHour = NWNX_Util_GetMinutesPerHour();
+    report("GetMinutesPerHour", nMinsPerHour > 0);
+    NWNX_Util_SetMinutesPerHour(30);
+    report("SetMinutesPerHour", NWNX_Util_GetMinutesPerHour() == 30);
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

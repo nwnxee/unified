@@ -24,6 +24,8 @@ private:
     ArgumentStack StripColors(ArgumentStack&& args);
     ArgumentStack IsValidResRef(ArgumentStack&& args);
     ArgumentStack GetEnvironmentVariable(ArgumentStack&& args);
+    ArgumentStack GetMinutesPerHour(ArgumentStack&& args);
+    ArgumentStack SetMinutesPerHour(ArgumentStack&& args);
 };
 
 }
