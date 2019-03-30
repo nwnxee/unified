@@ -11,11 +11,11 @@ namespace Events {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static NWNXLib::Hooking::FunctionHook* m_AIActionDisarmTrapHook=nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AIActionExamineTrapHook=nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AIActionFlagTrapHook=nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AIActionRecoverTrapHook=nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AIActionSetTrapHook=nullptr;
+static NWNXLib::Hooking::FunctionHook* m_AIActionDisarmTrapHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* m_AIActionExamineTrapHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* m_AIActionFlagTrapHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* m_AIActionRecoverTrapHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* m_AIActionSetTrapHook = nullptr;
 
 TrapEvents::TrapEvents(ViewPtr<Services::HooksProxy> hooker)
 {
