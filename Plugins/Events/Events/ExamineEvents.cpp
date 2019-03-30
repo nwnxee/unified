@@ -19,6 +19,8 @@ ExamineEvents::ExamineEvents(ViewPtr<Services::HooksProxy> hooker)
             API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineItemHook);
         hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_PlaceableData, int32_t,
             API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExaminePlaceableHook);
+        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_TrapData, int32_t,
+            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID, API::CNWSCreature*, int32_t>(&ExamineTrapHook);
     });
 }
 
@@ -52,6 +54,16 @@ void ExamineEvents::ExaminePlaceableHook(Services::Hooks::CallType type, API::CN
     API::CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
     HandleExamine(type, examiner->m_oidNWSObject, examinee);
+}
+
+void ExamineEvents::ExamineTrapHook(Services::Hooks::CallType type, API::CNWSMessage*,
+                                         API::CNWSPlayer* examiner, API::Types::ObjectID examinee,
+                                         API::CNWSCreature*, int32_t success)
+{
+    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
+    Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));
+    Events::PushEventData("TRAP_EXAMINE_SUCCESS", std::to_string(success));
+    Events::SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner->m_oidNWSObject);
 }
 
 }

@@ -32,6 +32,7 @@
     Event data:
         Variable Name           Type        Notes
         EXAMINEE_OBJECT_ID      object      Convert to object with NWNX_Object_StringToObject()
+        TRAP_EXAMINE_SUCCESS    int         For trap examine only, whether the examine succeeded
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_ITEM_BEFORE
     NWNX_ON_USE_ITEM_AFTER
@@ -620,6 +621,24 @@
         BARTER_TARGET_ITEM_COUNT      int         How many items the target traded away, only in _BEFORE events
         BARTER_INITIATOR_ITEM_*       object      Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
         BARTER_TARGET_ITEM_*          object      Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_TRAP_DISARM_BEFORE
+    NWNX_ON_TRAP_DISARM_AFTER
+    NWNX_ON_TRAP_EXAMINE_BEFORE
+    NWNX_ON_TRAP_EXAMINE_AFTER
+    NWNX_ON_TRAP_FLAG_BEFORE
+    NWNX_ON_TRAP_FLAG_AFTER
+    NWNX_ON_TRAP_RECOVER_BEFORE
+    NWNX_ON_TRAP_RECOVER_AFTER
+    NWNX_ON_TRAP_SET_BEFORE
+    NWNX_ON_TRAP_SET_AFTER
+    Usage:
+        OBJECT_SELF = The creature performing the trap action
+
+    Event data:
+        Variable Name     Type        Notes
+        TRAP_OBJECT_ID    object      Convert to object with NWNX_Object_StringToObject()
+        ACTION_RESULT     int
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -673,6 +692,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Spell events
 // - QuickChat events
 // - Barter event (START only)
+// - Trap events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
@@ -683,6 +703,7 @@ void NWNX_Events_SkipEvent();
 // - Listen/Spot Detection events -> "1" or "0"
 // - OnClientConnectBefore -> Reason for disconnect if skipped
 // - Ammo Reload event -> Forced ammunition returned
+// - Trap events
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
