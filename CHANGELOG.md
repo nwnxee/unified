@@ -134,6 +134,8 @@ The following plugins were added:
 - Util: ItemPropertyToEffect()
 - Util: StripColors()
 - Util: IsValidResRef()
+- Util: GetMinutesPerHour()
+- Util: SetMinutesPerHour()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()

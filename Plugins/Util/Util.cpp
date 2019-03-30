@@ -8,6 +8,9 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CTlkTable.hpp"
 #include "API/CTlkTableTokenCustom.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
+#include "API/CWorldTimer.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
 
@@ -58,6 +61,8 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(StripColors);
     REGISTER(IsValidResRef);
     REGISTER(GetEnvironmentVariable);
+    REGISTER(GetMinutesPerHour);
+    REGISTER(SetMinutesPerHour);
 
 #undef REGISTER
 
@@ -192,9 +197,29 @@ ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args) {
+ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args)
+{
     ArgumentStack stack;
     Services::Events::InsertArgument(stack, std::getenv(Services::Events::ExtractArgument<std::string>(args).c_str()));
+    return stack;
+}
+
+ArgumentStack Util::GetMinutesPerHour(ArgumentStack&&)
+{
+    ArgumentStack stack;
+
+    Services::Events::InsertArgument(stack,Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->m_nMinutesPerHour);
+    return stack;
+}
+
+ArgumentStack Util::SetMinutesPerHour(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto minPerHour = Services::Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(minPerHour > 0);
+    ASSERT_OR_THROW(minPerHour <= 255);
+
+    Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->SetMinutesPerHour(minPerHour);
     return stack;
 }
 
