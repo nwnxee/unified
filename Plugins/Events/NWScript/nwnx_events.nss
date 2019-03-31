@@ -624,6 +624,8 @@
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_TRAP_DISARM_BEFORE
     NWNX_ON_TRAP_DISARM_AFTER
+    NWNX_ON_TRAP_ENTER_BEFORE
+    NWNX_ON_TRAP_ENTER_AFTER
     NWNX_ON_TRAP_EXAMINE_BEFORE
     NWNX_ON_TRAP_EXAMINE_AFTER
     NWNX_ON_TRAP_FLAG_BEFORE
@@ -638,7 +640,8 @@
     Event data:
         Variable Name     Type        Notes
         TRAP_OBJECT_ID    object      Convert to object with NWNX_Object_StringToObject()
-        ACTION_RESULT     int
+        TRAP_FORCE_SET    int         TRUE/FALSE, only in ENTER events
+        ACTION_RESULT     int         TRUE/FALSE, only in _AFTER events (not ENTER)
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -703,7 +706,7 @@ void NWNX_Events_SkipEvent();
 // - Listen/Spot Detection events -> "1" or "0"
 // - OnClientConnectBefore -> Reason for disconnect if skipped
 // - Ammo Reload event -> Forced ammunition returned
-// - Trap events
+// - Trap events -> "1" or "0"
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
