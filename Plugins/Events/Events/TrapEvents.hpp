@@ -17,6 +17,7 @@ private:
     static uint32_t AIActionFlagTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
     static uint32_t AIActionRecoverTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
     static uint32_t AIActionSetTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
+    static void OnEnterTrapHook(NWNXLib::API::CNWSTrigger *pTrigger, int32_t bForceSet);
 
 };
 
