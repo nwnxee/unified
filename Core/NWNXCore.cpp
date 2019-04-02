@@ -1,6 +1,8 @@
 #include "NWNXCore.hpp"
 
 #include "API/CAppManager.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CVirtualMachine.hpp"
 #include "API/CExoString.hpp"
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
@@ -351,6 +353,14 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
 void NWNXCore::DestroyServerHandler(API::CAppManager* app)
 {
+    if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
+    {
+        LOG_NOTICE("Running module shutdown script: %s", shutdownScript->c_str());
+
+        API::CExoString scriptName = shutdownScript->c_str();
+        API::Globals::VirtualMachine()->RunScript(&scriptName, Utils::GetModule()->m_idSelf, 1);
+    }
+
     LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();
 
