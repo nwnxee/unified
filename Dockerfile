@@ -7,6 +7,11 @@ RUN Scripts/buildnwnx.sh -j $(nproc)
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
+
+# Copy our modified run-server.sh
+COPY Scripts/run-server.sh /nwn/
+RUN chmod +x /nwn/run-server.sh
+
 # Install plugin run dependencies
 RUN runDeps="hunspell \
     libmariadbclient18 \
@@ -27,4 +32,4 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
     NWNX_CORE_LOG_LEVEL=6 \
     NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
 # Disable all other plugins by default.
-ENV NWNX_CORE_SKIP_ALL=y 
+ENV NWNX_CORE_SKIP_ALL=y

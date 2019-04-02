@@ -11,6 +11,11 @@ RUN Scripts/buildnwnx.sh -j $(nproc)
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
+
+# Copy our modified run-server.sh
+COPY Scripts/run-server.sh /nwn/
+RUN chmod +x /nwn/run-server.sh
+
 # Install mono
 ENV MONO_VERSION 5.16.0.220
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
@@ -46,5 +51,5 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
     NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
 # Configure JVM
 ENV NWNX_JVM_CLASSPATH=/nwn/nwnx/org.nwnx.nwnx2.jvm.jar
-# Disable all other plugins by default. 
-ENV NWNX_CORE_SKIP_ALL=y 
+# Disable all other plugins by default.
+ENV NWNX_CORE_SKIP_ALL=y
