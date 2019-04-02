@@ -9,7 +9,7 @@ RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 
 # Copy our modified run-server.sh
-COPY Scripts/run-server.sh /nwn/
+COPY --from=builder /nwnx/home/Scripts/run-server.sh /nwn/
 RUN chmod +x /nwn/run-server.sh
 
 # Install plugin run dependencies
