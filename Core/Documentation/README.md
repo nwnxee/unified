@@ -15,6 +15,7 @@ The core of NWNXEE that does all the things.
 | `NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN` | 0-1 | 0 | Allows loading of NWNX_Experimental, use at your own risk.
 | `NWNX_CORE_LOCALE` | ru | Unset | Set the locale NWNX will use when encoding. Currently only supports Russian/Cyrillic (`ru`)
 | `NWNX_CORE_CRASH_ON_ASSERT_FAILURE` | 0-1 | 0 | Sets whether an ASSERT failure hard crashes the server.
+| `NWNX_CORE_SHUTDOWN_SCRIPT` | string | Unset | Sets which NWScript to run when the module shuts down.
 
 # Plugin Management
 
