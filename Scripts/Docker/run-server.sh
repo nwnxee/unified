@@ -38,7 +38,7 @@ fi
 echo "[*] Port: ${NWN_PORT:-5121}/udp"
 
 copycrashlog() {
-  inotifywait -m -e moved_to -e create "$1" --format "%f" | while read f
+  inotifywait -mq -e moved_to -e create "$1" --format "%f" | while read f
   do
     # check if the file is a crash log file
     if [[ $f = nwserver-crash*.log ]]; then
