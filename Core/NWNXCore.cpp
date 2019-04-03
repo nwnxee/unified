@@ -354,7 +354,6 @@ void NWNXCore::DestroyServerHandler(API::CAppManager* app)
     if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
     {
         LOG_NOTICE("Running module shutdown script: %s", shutdownScript->c_str());
-
         Utils::ExecuteScript(*shutdownScript, 0);
     }
 

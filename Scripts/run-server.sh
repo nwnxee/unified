@@ -37,38 +37,23 @@ fi
 
 echo "[*] Port: ${NWN_PORT:-5121}/udp"
 
-# Forward SIGTERM to nwserver-linux
-# From: https://unix.stackexchange.com/a/444676
-prep_term()
-{
-    unset term_child_pid
-    unset term_kill_needed
-    trap 'handle_term' TERM INT
+copycrashlog() {
+  inotifywait -m -e moved_to -e create "$1" --format "%f" | while read f
+  do
+    # check if the file is a crash log file
+    if [[ $f = nwserver-crash*.log ]]; then
+      echo "The server crashed, trying to save crash data ($f) into your mounted server home."
+      cp -a $1/$f $2
+    fi
+  done
 }
 
-handle_term()
-{
-    if [ "${term_child_pid}" ]; then
-        kill -TERM "${term_child_pid}" 2>/dev/null
-    else
-        term_kill_needed="yes"
-    fi
-}
-
-wait_term()
-{
-    term_child_pid=$!
-    if [ "${term_kill_needed}" ]; then
-        kill -TERM "${term_child_pid}" 2>/dev/null
-    fi
-    wait ${term_child_pid}
-    trap - TERM INT
-    wait ${term_child_pid}
-}
+copycrashlog $HOMEPATH $ROHOMEPATH &
 
 set +e
-prep_term
-LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
+export LD_PRELOAD=$NWN_LD_PRELOAD
+export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
+exec ./nwserver-linux \
   $NWN_EXTRA_ARGS \
   -port ${NWN_PORT:-5121} \
   -interactive \
@@ -90,15 +75,4 @@ LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux
   -playerpassword "${NWN_PLAYERPASSWORD}" \
   -dmpassword "${NWN_DMPASSWORD}" \
   -adminpassword "${NWN_ADMINPASSWORD}" \
-  -reloadwhenempty "${NWN_RELOADWHENEMPTY:-0}" &
-wait_term
-RET=$?
-set -e
-
-# If this thing crashed, copy the log to the public home so the user
-# can deliberate over it.
-if ls $HOMEPATH/nwserver-crash* 1> /dev/null 2>&1; then
-  echo "The server crashed with return code "$RET". Trying to save crash data into your mounted server home."
-  cp -va $HOMEPATH/nwserver-crash*.log $ROHOMEPATH/ || true
-fi
-exit $RET
+  -reloadwhenempty "${NWN_RELOADWHENEMPTY:-0}"
