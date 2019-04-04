@@ -5,7 +5,7 @@
 >     # check if the file is a crash log file
 >     if [[ $f = nwserver-crash*.log ]]; then
 >       echo "The server crashed, trying to save crash data ($f) into your mounted server home."
->       cp -a $1/$f $2
+>       cp -a $1/$f $2/
 >     fi
 >   done
 > }
