@@ -1,0 +1,31 @@
+39a40,52
+> copycrashlog() {
+>   inotifywait -mq -e moved_to -e create "$1" --format "%f" | while read f
+>   do
+>     # check if the file is a crash log file
+>     if [[ $f = nwserver-crash*.log ]]; then
+>       echo "The server crashed, trying to save crash data ($f) into your mounted server home."
+>       cp -a $1/$f $2
+>     fi
+>   done
+> }
+> 
+> copycrashlog $HOMEPATH $ROHOMEPATH &
+> 
+41c54,56
+< LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
+---
+> export LD_PRELOAD=$NWN_LD_PRELOAD
+> export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
+> exec ./nwserver-linux \
+64,73d78
+< RET=$?
+< set -e
+< 
+< # If this thing crashed, copy the log to the public home so the user
+< # can deliberate over it.
+< if ls $HOMEPATH/nwserver-crash* 1> /dev/null 2>&1; then
+<   echo "The server crashed with return code "$RET". Trying to save crash data into your mounted server home."
+<   cp -va $HOMEPATH/nwserver-crash*.log $ROHOMEPATH/ || true
+< fi
+< exit $RET

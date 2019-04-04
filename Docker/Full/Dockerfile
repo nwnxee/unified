@@ -12,10 +12,6 @@ FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 
-# Copy our modified run-server.sh
-COPY --from=builder /nwnx/home/Scripts/Docker/run-server.sh /nwn/
-RUN chmod +x /nwn/run-server.sh
-
 # Install mono
 ENV MONO_VERSION 5.16.0.220
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
@@ -42,6 +38,11 @@ RUN runDeps="hunspell \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
+
+# Patch run-server.sh with our modifications
+COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn/
+RUN patch /nwn/run-server.sh < /nwn/run-server.patch
+
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
 ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"

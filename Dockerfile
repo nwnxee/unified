@@ -8,10 +8,6 @@ FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 
-# Copy our modified run-server.sh
-COPY --from=builder /nwnx/home/Scripts/Docker/run-server.sh /nwn/
-RUN chmod +x /nwn/run-server.sh
-
 # Install plugin run dependencies
 RUN runDeps="hunspell \
     libmariadbclient18 \
@@ -20,10 +16,16 @@ RUN runDeps="hunspell \
     libruby2.3 \
     luajit libluajit-5.1 \
     libssl1.1 \
-    inotify-tools" \
+    inotify-tools \
+    patch" \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
+
+# Patch run-server.sh with our modifications
+COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn/
+RUN patch /nwn/run-server.sh < /nwn/run-server.patch
+
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
 ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"
