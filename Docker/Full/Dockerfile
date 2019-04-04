@@ -34,7 +34,8 @@ RUN runDeps="hunspell \
     libruby2.3 \
     luajit libluajit-5.1 \
     libssl1.1 \
-    inotify-tools" \
+    inotify-tools \
+    patch" \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
