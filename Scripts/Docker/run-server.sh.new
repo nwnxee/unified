@@ -51,8 +51,8 @@ copycrashlog() {
 copycrashlog $HOMEPATH $ROHOMEPATH &
 
 set +e
-export LD_PRELOAD=$NWN_LD_PRELOAD 
-export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH 
+export LD_PRELOAD=$NWN_LD_PRELOAD
+export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
 exec ./nwserver-linux \
   $NWN_EXTRA_ARGS \
   -port ${NWN_PORT:-5121} \
