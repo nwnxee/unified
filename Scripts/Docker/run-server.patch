@@ -15,13 +15,13 @@
 41c54,56
 < LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
 ---
-> export LD_PRELOAD=$NWN_LD_PRELOAD
-> export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
+> export LD_PRELOAD=$NWN_LD_PRELOAD 
+> export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH 
 > exec ./nwserver-linux \
-64,73d78
+66,67d80
 < RET=$?
 < set -e
-< 
+69,75d81
 < # If this thing crashed, copy the log to the public home so the user
 < # can deliberate over it.
 < if ls $HOMEPATH/nwserver-crash* 1> /dev/null 2>&1; then
