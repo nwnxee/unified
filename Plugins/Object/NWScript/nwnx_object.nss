@@ -142,6 +142,13 @@ int NWNX_Object_GetDamageImmunity(object obj, int damageType);
 // Add or move obj to area at pos
 void NWNX_Object_AddToArea(object obj, object area, vector pos);
 
+// Get placeable's static setting
+int NWNX_Object_GetPlaceableIsStatic(object obj);
+
+// Set placeable as static or not. Will not update for PCs until they
+// re-enter the area.
+void NWNX_Object_SetPlaceableIsStatic(object obj, int isStatic);
+
 
 const string NWNX_Object = "NWNX_Object";
 
@@ -376,5 +383,25 @@ void NWNX_Object_AddToArea(object obj, object area, vector pos)
     NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.x);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, area);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetPlaceableIsStatic(object obj)
+{
+    string sFunc = "GetPlaceableIsStatic";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetPlaceableIsStatic(object obj, int isStatic)
+{
+    string sFunc = "SetPlaceableIsStatic";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, isStatic);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
     NWNX_CallFunction(NWNX_Object, sFunc);
 }

@@ -93,6 +93,16 @@ void main()
     ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectDamageImmunityIncrease(DAMAGE_TYPE_FIRE, 50), o);
     report("GetDamageImmunity", NWNX_Object_GetDamageImmunity(o, DAMAGE_TYPE_FIRE) == 50);
 
+    object oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_defportal", GetStartingLocation());
+    NWNX_Object_SetPlaceableIsStatic(oPlc, 1);
+    report("SetPlaceableIsStatic 1", NWNX_Object_GetPlaceableIsStatic(oPlc) == 1);
+    DestroyObject(oPlc);
+
+    oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
+    NWNX_Object_SetPlaceableIsStatic(oPlc, 0);
+    report("SetPlaceableIsStatic 2", NWNX_Object_GetPlaceableIsStatic(oPlc) == 0);
+    DestroyObject(oPlc);
+
     DestroyObject(o);
     DestroyObject(oDeserialized);
     WriteTimestampedLogEntry("NWNX_Object unit test end.");
