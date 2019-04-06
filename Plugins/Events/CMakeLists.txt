@@ -18,4 +18,5 @@ add_plugin(Events
     "Events/EffectEvents.cpp"
     "Events/QuickChatEvents.cpp"
     "Events/InventoryEvents.cpp"
-    "Events/TrapEvents.cpp")
+    "Events/TrapEvents.cpp"
+    "Events/TimingBarEvents.cpp")
