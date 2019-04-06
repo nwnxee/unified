@@ -108,6 +108,8 @@ The following plugins were added:
 - Object: CheckFit()
 - Object: GetDamageImmunity()
 - Object: AddToArea()
+- Object: GetPlaceableIsStatic()
+- Object: SetPlaceableIsStatic()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()
