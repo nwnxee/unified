@@ -77,6 +77,8 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(CheckFit);
     REGISTER(GetDamageImmunity);
     REGISTER(AddToArea);
+    REGISTER(GetPlaceableIsStatic);
+    REGISTER(SetPlaceableIsStatic);
 
 #undef REGISTER
 }
@@ -252,7 +254,6 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
     return stack;
 }
 
-
 ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -385,6 +386,42 @@ ArgumentStack Object::AddToArea(ArgumentStack&& args)
         }
     }
 
+    return stack;
+}
+
+ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    {
+        retval = pPlaceable->m_bStaticObject;
+    }
+
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    {
+        const auto isStatic = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(isStatic >= 0);
+        ASSERT_OR_THROW(isStatic <= 1);
+
+        // Not sure if this is even needed
+        pPlaceable->m_bNeverMakeIntoStaticObject = false;
+        pPlaceable->m_bStaticObject = isStatic;
+        // These are settings the engine makes if the placeable is static on area load so
+        // just mimicking them.
+        if (isStatic)
+        {
+            pPlaceable->m_bPlotObject = true;
+            pPlaceable->m_bUseable = false;
+        }
+    }
     return stack;
 }
 

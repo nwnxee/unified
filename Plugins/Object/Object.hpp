@@ -32,6 +32,8 @@ private:
     ArgumentStack CheckFit             (ArgumentStack&& args);
     ArgumentStack GetDamageImmunity    (ArgumentStack&& args);
     ArgumentStack AddToArea            (ArgumentStack&& args);
+    ArgumentStack GetPlaceableIsStatic (ArgumentStack&& args);
+    ArgumentStack SetPlaceableIsStatic (ArgumentStack&& args);
 
     NWNXLib::API::CNWSObject *object(ArgumentStack& args);
 

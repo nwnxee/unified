@@ -642,6 +642,21 @@
         TRAP_OBJECT_ID    object      Convert to object with NWNX_Object_StringToObject()
         TRAP_FORCE_SET    int         TRUE/FALSE, only in ENTER events
         ACTION_RESULT     int         TRUE/FALSE, only in _AFTER events (not ENTER)
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_TIMING_BAR_START_BEFORE
+    NWNX_ON_TIMING_BAR_START_AFTER
+    NWNX_ON_TIMING_BAR_STOP_BEFORE
+    NWNX_ON_TIMING_BAR_STOP_AFTER
+    NWNX_ON_TIMING_BAR_CANCEL_BEFORE
+    NWNX_ON_TIMING_BAR_CANCEL_AFTER
+
+    Usage:
+        OBJECT_SELF = The player the timing bar is for
+
+    Event data:
+        Variable Name     Type        Notes
+        EVENT_ID          int         The type of timing bar, see constants below, only in _START_ events
+        DURATION          int         Length of time (in milliseconds) the bar is set to last, only in _START_ events
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -652,6 +667,18 @@ const int NWNX_EVENTS_OBJECT_TYPE_PLACEABLE         = 9;
 const int NWNX_EVENTS_OBJECT_TYPE_WAYPOINT          = 12;
 const int NWNX_EVENTS_OBJECT_TYPE_ENCOUNTER         = 13;
 const int NWNX_EVENTS_OBJECT_TYPE_PORTAL            = 15;
+*/
+
+/*
+const int NWNX_EVENTS_TIMING_BAR_TRAP_FLAG     = 1;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_RECOVER  = 2;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_DISARM   = 3;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_EXAMINE  = 4;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_SET      = 5;
+const int NWNX_EVENTS_TIMING_BAR_REST          = 6;
+const int NWNX_EVENTS_TIMING_BAR_UNLOCK        = 7;
+const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;
+const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
 */
 
 // Scripts can subscribe to events.

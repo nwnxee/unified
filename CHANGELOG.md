@@ -14,6 +14,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Core: Allow changing default plugin state from 'load all' to 'skip all' with the following environment variable: `NWNX_CORE_SKIP_ALL=y`. Use `NWNX_PLUGIN_SKIP=n` to enable specific plugins in this case.
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
 - Core: Added the environment variable `NWNX_CORE_SHUTDOWN_SCRIPT=scriptname` which lets you set a nwscript that runs when the server shuts down
+- Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents, InventoryEvents, BarterEvents, TrapEvents, TimingBarEvents
 - Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents, InventoryEvents, BarterEvents, TrapEvents
 - Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents, QuickChatEvents, InventoryEvents, BarterEvents (START only), TrapEvents
 - Events: You can now get the current event name with a nwscript function
@@ -27,6 +28,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added Run{Un}Equip events to ItemEvents
 - Events: Added Barter Start/End events
 - Events: Added AIAction{Disarm|Examine|Flag|Recover|Set}Trap events
+- Events: Added Timing Bar events
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
@@ -109,6 +111,8 @@ The following plugins were added:
 - Object: CheckFit()
 - Object: GetDamageImmunity()
 - Object: AddToArea()
+- Object: GetPlaceableIsStatic()
+- Object: SetPlaceableIsStatic()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()
