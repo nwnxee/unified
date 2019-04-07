@@ -738,6 +738,7 @@ string NWNX_Events_GetEventData(string tag);
 // - QuickChat events
 // - Barter event (START only)
 // - Trap events
+// - Sticky Player Name event
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
@@ -749,6 +750,7 @@ void NWNX_Events_SkipEvent();
 // - OnClientConnectBefore -> Reason for disconnect if skipped
 // - Ammo Reload event -> Forced ammunition returned
 // - Trap events -> "1" or "0"
+// - Sticky Player Name event -> "1" or "0"
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
