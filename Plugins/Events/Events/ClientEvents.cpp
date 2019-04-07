@@ -20,6 +20,7 @@ using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
 static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCharListHook;
+static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
 
 ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
 {
@@ -32,6 +33,12 @@ ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
         hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCharList, int32_t,
             CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerCharListHook);
         m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCharList);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CServerExoApp__CheckStickyPlayerNameReserved, int32_t,
+                CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>(&CheckStickyPlayerNameReservedHook);
+        m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::CServerExoApp__CheckStickyPlayerNameReserved);
     });
 }
 
@@ -81,6 +88,37 @@ int32_t ClientEvents::SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPla
     }
     PushAndSignal("NWNX_ON_CLIENT_CONNECT_AFTER");
     return retVal;
+}
+
+int32_t ClientEvents::CheckStickyPlayerNameReservedHook(
+        NWNXLib::API::CServerExoApp *pServer,
+        NWNXLib::API::CExoString *p_sClientCDKey,
+        NWNXLib::API::CExoString *p_sClientLegacyCDKey,
+        NWNXLib::API::CExoString *p_sPlayerName,
+        int32_t nConnectionType)
+{
+    int32_t retVal;
+
+    std::string valid;
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("PLAYER_NAME", p_sPlayerName->CStr());
+        Events::PushEventData("CDKEY", p_sClientCDKey->CStr());
+        Events::PushEventData("LEGACY_CDKEY", p_sClientLegacyCDKey->CStr());
+        Events::PushEventData("IS_DM", nConnectionType == 32 ? "1" : "0");
+        return Events::SignalEvent(ev, Utils::GetModule()->m_idSelf, &valid);
+    };
+
+    if (PushAndSignal("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_BEFORE"))
+    {
+        retVal = m_CheckStickyPlayerNameReservedHook->CallOriginal<int32_t>(pServer, p_sClientCDKey, p_sClientLegacyCDKey, p_sPlayerName, nConnectionType);
+    }
+    else
+    {
+        retVal = valid == "1" ? 1 : 0;
+    }
+    PushAndSignal("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER");
+    return retVal;
+
 }
 
 }
