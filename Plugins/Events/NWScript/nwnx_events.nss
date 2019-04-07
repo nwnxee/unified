@@ -657,6 +657,21 @@
         Variable Name     Type        Notes
         EVENT_ID          int         The type of timing bar, see constants below, only in _START_ events
         DURATION          int         Length of time (in milliseconds) the bar is set to last, only in _START_ events
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_BEFORE
+    NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER
+
+    Skipping the _BEFORE event will cause no player names to be accepted unless you SetEventResult("1")
+
+    Usage:
+        OBJECT_SELF = The module
+
+    Event data:
+        Variable Name           Type        Notes
+        PLAYER_NAME             string      Player name of the connecting client
+        CDKEY                   string      Public cdkey of the connecting client
+        LEGACY_CDKEY            string      Public cdkey from earlier versions of NWN
+        IS_DM                   int         Whether the client is connecting as DM (1/0)
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
