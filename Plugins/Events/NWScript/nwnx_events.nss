@@ -32,6 +32,7 @@
     Event data:
         Variable Name           Type        Notes
         EXAMINEE_OBJECT_ID      object      Convert to object with NWNX_Object_StringToObject()
+        TRAP_EXAMINE_SUCCESS    int         For trap examine only, whether the examine succeeded
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_ITEM_BEFORE
     NWNX_ON_USE_ITEM_AFTER
@@ -620,6 +621,57 @@
         BARTER_TARGET_ITEM_COUNT      int         How many items the target traded away, only in _BEFORE events
         BARTER_INITIATOR_ITEM_*       object      Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
         BARTER_TARGET_ITEM_*          object      Convert to object with NWNX_Object_StringToObject(), only in _BEFORE events
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_TRAP_DISARM_BEFORE
+    NWNX_ON_TRAP_DISARM_AFTER
+    NWNX_ON_TRAP_ENTER_BEFORE
+    NWNX_ON_TRAP_ENTER_AFTER
+    NWNX_ON_TRAP_EXAMINE_BEFORE
+    NWNX_ON_TRAP_EXAMINE_AFTER
+    NWNX_ON_TRAP_FLAG_BEFORE
+    NWNX_ON_TRAP_FLAG_AFTER
+    NWNX_ON_TRAP_RECOVER_BEFORE
+    NWNX_ON_TRAP_RECOVER_AFTER
+    NWNX_ON_TRAP_SET_BEFORE
+    NWNX_ON_TRAP_SET_AFTER
+    Usage:
+        OBJECT_SELF = The creature performing the trap action
+
+    Event data:
+        Variable Name     Type        Notes
+        TRAP_OBJECT_ID    object      Convert to object with NWNX_Object_StringToObject()
+        TRAP_FORCE_SET    int         TRUE/FALSE, only in ENTER events
+        ACTION_RESULT     int         TRUE/FALSE, only in _AFTER events (not ENTER)
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_TIMING_BAR_START_BEFORE
+    NWNX_ON_TIMING_BAR_START_AFTER
+    NWNX_ON_TIMING_BAR_STOP_BEFORE
+    NWNX_ON_TIMING_BAR_STOP_AFTER
+    NWNX_ON_TIMING_BAR_CANCEL_BEFORE
+    NWNX_ON_TIMING_BAR_CANCEL_AFTER
+
+    Usage:
+        OBJECT_SELF = The player the timing bar is for
+
+    Event data:
+        Variable Name     Type        Notes
+        EVENT_ID          int         The type of timing bar, see constants below, only in _START_ events
+        DURATION          int         Length of time (in milliseconds) the bar is set to last, only in _START_ events
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_BEFORE
+    NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER
+
+    Skipping the _BEFORE event will cause no player names to be accepted unless you SetEventResult("1")
+
+    Usage:
+        OBJECT_SELF = The module
+
+    Event data:
+        Variable Name           Type        Notes
+        PLAYER_NAME             string      Player name of the connecting client
+        CDKEY                   string      Public cdkey of the connecting client
+        LEGACY_CDKEY            string      Public cdkey from earlier versions of NWN
+        IS_DM                   int         Whether the client is connecting as DM (1/0)
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -630,6 +682,18 @@ const int NWNX_EVENTS_OBJECT_TYPE_PLACEABLE         = 9;
 const int NWNX_EVENTS_OBJECT_TYPE_WAYPOINT          = 12;
 const int NWNX_EVENTS_OBJECT_TYPE_ENCOUNTER         = 13;
 const int NWNX_EVENTS_OBJECT_TYPE_PORTAL            = 15;
+*/
+
+/*
+const int NWNX_EVENTS_TIMING_BAR_TRAP_FLAG     = 1;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_RECOVER  = 2;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_DISARM   = 3;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_EXAMINE  = 4;
+const int NWNX_EVENTS_TIMING_BAR_TRAP_SET      = 5;
+const int NWNX_EVENTS_TIMING_BAR_REST          = 6;
+const int NWNX_EVENTS_TIMING_BAR_UNLOCK        = 7;
+const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;
+const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
 */
 
 // Scripts can subscribe to events.
@@ -673,6 +737,8 @@ string NWNX_Events_GetEventData(string tag);
 // - Spell events
 // - QuickChat events
 // - Barter event (START only)
+// - Trap events
+// - Sticky Player Name event
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
@@ -683,6 +749,8 @@ void NWNX_Events_SkipEvent();
 // - Listen/Spot Detection events -> "1" or "0"
 // - OnClientConnectBefore -> Reason for disconnect if skipped
 // - Ammo Reload event -> Forced ammunition returned
+// - Trap events -> "1" or "0"
+// - Sticky Player Name event -> "1" or "0"
 void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name

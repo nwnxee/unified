@@ -1277,8 +1277,8 @@ ArgumentStack Creature::RestoreSpells(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(level >= 0);
-          ASSERT_OR_THROW(level <= 255);
+          ASSERT_OR_THROW(level >= -1);
+          ASSERT_OR_THROW(level <= 9);
 
         if (level >= 0 && level <= 9)
         {

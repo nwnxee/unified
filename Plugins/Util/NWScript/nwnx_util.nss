@@ -38,6 +38,10 @@ string NWNX_Util_StripColors(string str);
 int NWNX_Util_IsValidResRef(string resref, int type = NWNX_UTIL_RESREF_TYPE_CREATURE);
 // Retrieve an environment variable
 string NWNX_Util_GetEnvironmentVariable(string sVarname);
+// Gets the module real life minutes per in game hour
+int NWNX_Util_GetMinutesPerHour();
+// Set module real life minutes per in game hour
+void NWNX_Util_SetMinutesPerHour(int minutes);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -120,4 +124,18 @@ string NWNX_Util_GetEnvironmentVariable(string sVarname)
     NWNX_PushArgumentString(NWNX_Util, sFunc, sVarname);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetMinutesPerHour()
+{
+    string sFunc = "GetMinutesPerHour";
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetMinutesPerHour(int minutes)
+{
+    string sFunc = "SetMinutesPerHour";
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, minutes);
+    NWNX_CallFunction(NWNX_Util, sFunc);
 }

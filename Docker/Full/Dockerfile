@@ -11,6 +11,7 @@ RUN Scripts/buildnwnx.sh -j $(nproc)
 FROM beamdog/nwserver
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
+
 # Install mono
 ENV MONO_VERSION 5.16.0.220
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
@@ -32,10 +33,17 @@ RUN runDeps="hunspell \
     libsqlite3-dev \
     libruby2.3 \
     luajit libluajit-5.1 \
-    libssl1.1" \
+    libssl1.1 \
+    inotify-tools \
+    patch" \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
+
+# Patch run-server.sh with our modifications
+COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn/
+RUN patch /nwn/run-server.sh < /nwn/run-server.patch
+
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
 ENV NWN_LD_PRELOAD="/nwn/nwnx/NWNX_Core.so"
@@ -46,5 +54,5 @@ ENV NWNX_SERVERLOGREDIRECTOR_SKIP=n \
     NWNX_SERVERLOGREDIRECTOR_LOG_LEVEL=6
 # Configure JVM
 ENV NWNX_JVM_CLASSPATH=/nwn/nwnx/org.nwnx.nwnx2.jvm.jar
-# Disable all other plugins by default. 
-ENV NWNX_CORE_SKIP_ALL=y 
+# Disable all other plugins by default.
+ENV NWNX_CORE_SKIP_ALL=y

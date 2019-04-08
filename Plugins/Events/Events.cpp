@@ -21,6 +21,8 @@
 #include "Events/EffectEvents.hpp"
 #include "Events/QuickChatEvents.hpp"
 #include "Events/InventoryEvents.hpp"
+#include "Events/TrapEvents.hpp"
+#include "Events/TimingBarEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -98,6 +100,8 @@ Events::Events(const Plugin::CreateParams& params)
     m_effectEvents      = std::make_unique<EffectEvents>(GetServices()->m_hooks);
     m_quickChatEvents   = std::make_unique<QuickChatEvents>(GetServices()->m_hooks);
     m_inventoryEvents   = std::make_unique<InventoryEvents>(GetServices()->m_hooks);
+    m_trapEvents        = std::make_unique<TrapEvents>(GetServices()->m_hooks);
+    m_timingBarEvents   = std::make_unique<TimingBarEvents>(GetServices()->m_hooks);
 }
 
 Events::~Events()
