@@ -163,6 +163,7 @@ The following plugins were added:
 ### Fixed
 - Administration: Fixed a nullptr crash in Get{DM/Player}Password()
 - Chat: Fix recursive message skipping
+- Object: GetLocalVariable and GetLocalVariableCount now work with module object
 - Events: DMActionEvents now return valid TARGET event data
 
 [Unreleased]: https://github.com/nwnxee/unified/compare/build8186-2...HEAD

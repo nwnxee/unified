@@ -35,7 +35,7 @@ private:
     ArgumentStack GetPlaceableIsStatic (ArgumentStack&& args);
     ArgumentStack SetPlaceableIsStatic (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSObject *object(ArgumentStack& args);
+    NWNXLib::API::CNWSObject *object(ArgumentStack& args, bool allowModule = false);
 
 };
 

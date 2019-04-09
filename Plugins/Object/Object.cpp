@@ -87,7 +87,7 @@ Object::~Object()
 {
 }
 
-CNWSObject *Object::object(ArgumentStack& args)
+CNWSObject *Object::object(ArgumentStack& args, bool allowModule)
 {
     const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
 
@@ -98,6 +98,10 @@ CNWSObject *Object::object(ArgumentStack& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+    if (allowModule && objectId == 0)
+    {
+        return static_cast<API::CNWSObject*>(pGameObject);
+    }
     return Utils::AsNWSObject(pGameObject);
 }
 
@@ -105,7 +109,7 @@ ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int retval = -1;
-    if (auto *pObject = object(args))
+    if (auto *pObject = object(args, true))
     {
         auto *pVarTable = Utils::GetScriptVarTable(pObject);
         retval = pVarTable->m_lVarList.num;
@@ -119,7 +123,7 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
     ArgumentStack stack;
     std::string key = "";
     int type = -1;
-    if (auto *pObject = object(args))
+    if (auto *pObject = object(args, true))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
         auto *pVarTable = Utils::GetScriptVarTable(pObject);
