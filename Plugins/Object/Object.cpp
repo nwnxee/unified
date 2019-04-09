@@ -87,7 +87,7 @@ Object::~Object()
 {
 }
 
-CNWSObject *Object::object(ArgumentStack& args, bool allowModule)
+CNWSObject *Object::object(ArgumentStack& args)
 {
     const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
 
@@ -98,10 +98,6 @@ CNWSObject *Object::object(ArgumentStack& args, bool allowModule)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    if (allowModule && objectId == 0)
-    {
-        return static_cast<API::CNWSObject*>(pGameObject);
-    }
     return Utils::AsNWSObject(pGameObject);
 }
 
@@ -109,9 +105,15 @@ ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int retval = -1;
-    if (auto *pObject = object(args, true))
+    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (objectId == Constants::OBJECT_INVALID)
     {
-        auto *pVarTable = Utils::GetScriptVarTable(pObject);
+        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
+    }
+    else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
+    {
+        auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
         retval = pVarTable->m_lVarList.num;
     }
     Services::Events::InsertArgument(stack, retval);
@@ -123,10 +125,16 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
     ArgumentStack stack;
     std::string key = "";
     int type = -1;
-    if (auto *pObject = object(args, true))
+    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (objectId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
+    }
+    else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        auto *pVarTable = Utils::GetScriptVarTable(pObject);
+        auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
         if (index < pVarTable->m_lVarList.num)
         {
             type = static_cast<int>(pVarTable->m_lVarList.element[index].m_nType);
