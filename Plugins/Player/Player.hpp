@@ -2,8 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
-#include "API/CNWSPlayer.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include <map>
 

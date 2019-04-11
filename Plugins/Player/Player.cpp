@@ -698,7 +698,11 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
         const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidObject);
 
-        auto CheckMap = [&]() -> void
+        if (transform == -1)
+        {
+            m_OVTData.erase(key);
+        }
+        else
         {
             if (m_OVTData.find(key) == m_OVTData.end())
             {
@@ -710,73 +714,45 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
                 m_OVTData.insert(std::make_pair(key, data));
             }
-        };
 
-        switch (transform)
-        {
-            case -1:
-                m_OVTData.erase(key);
-                break;
-
-            case Constants::ObjectVisualTransform::Scale:
+            switch (transform)
             {
-                CheckMap();
-                m_OVTData[key].m_scale.x = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::Scale:
+                    m_OVTData[key].m_scale.x = value;
+                    break;
 
-            case Constants::ObjectVisualTransform::RotateX:
-            {
-                CheckMap();
-                m_OVTData[key].m_rotate.x = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::RotateX:
+                    m_OVTData[key].m_rotate.x = value;
+                    break;
 
-            case Constants::ObjectVisualTransform::RotateY:
-            {
-                CheckMap();
-                m_OVTData[key].m_rotate.y = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::RotateY:
+                    m_OVTData[key].m_rotate.y = value;
+                    break;
 
-            case Constants::ObjectVisualTransform::RotateZ:
-            {
-                CheckMap();
-                m_OVTData[key].m_rotate.z = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::RotateZ:
+                    m_OVTData[key].m_rotate.z = value;
+                    break;
 
-            case Constants::ObjectVisualTransform::TranslateX:
-            {
-                CheckMap();
-                m_OVTData[key].m_translate.x = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::TranslateX:
+                    m_OVTData[key].m_translate.x = value;
+                    break;
 
-            case Constants::ObjectVisualTransform::TranslateY:
-            {
-                CheckMap();
-                m_OVTData[key].m_translate.y = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::TranslateY:
+                    m_OVTData[key].m_translate.y = value;
+                    break;
 
-            case Constants::ObjectVisualTransform::TranslateZ:
-            {
-                CheckMap();
-                m_OVTData[key].m_translate.z = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::TranslateZ:
+                    m_OVTData[key].m_translate.z = value;
+                    break;
 
-            case Constants::ObjectVisualTransform::AnimationSpeed:
-            {
-                CheckMap();
-                m_OVTData[key].m_animationSpeed = value;
-                break;
-            }
+                case Constants::ObjectVisualTransform::AnimationSpeed:
+                    m_OVTData[key].m_animationSpeed = value;
+                    break;
 
-            default:
-                LOG_WARNING("NWNX_Player_SetObjectVisualTransformOverride called with invalid transform!");
-                break;
+                default:
+                    LOG_WARNING("NWNX_Player_SetObjectVisualTransformOverride called with invalid transform!");
+                    break;
+            }
         }
     }
 
