@@ -682,18 +682,14 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
     if (!bSetObjectVisualTransformOverrideHooks)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__WriteGameObjUpdate_UpdateObject, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject *pAreaObject,
-                    CLastUpdateObject*, int32_t, int32_t) -> void
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                    CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
-                    g_plugin->SwapOVTData(type, pPlayer, pAreaObject);
-                });
-
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__TestObjectUpdateDifferences, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject *pAreaObject,
-                    CLastUpdateObject**, int32_t*, int32_t*) -> void
-                {
-                    g_plugin->SwapOVTData(type, pPlayer, pAreaObject);
+                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    {
+                        g_plugin->SwapOVTData(type, pPlayer, pObject);
+                    }
                 });
 
         bSetObjectVisualTransformOverrideHooks = true;
