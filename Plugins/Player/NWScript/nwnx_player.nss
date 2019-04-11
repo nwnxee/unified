@@ -123,6 +123,12 @@ void NWNX_Player_UpdateCharacterSheet(object player);
 // Note: only works if player and target are in the same area
 void NWNX_Player_OpenInventory(object player, object target, int open = TRUE);
 
+// Override a visual transform on the given object that only oPlayer will see.
+// - oObject can be any valid Creature, Placeable, Item or Door.
+// - nTransform is one of OBJECT_VISUAL_TRANSFORM_* or -1 to remove the override
+// - fValue depends on the transformation to apply.
+void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject, int nTransform, float fValue);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -452,4 +458,27 @@ void NWNX_Player_OpenInventory(object player, object target, int open = TRUE)
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_INTERNAL_SetObjectVisualTransformOverrideHelper(object oObject, float fOld)
+{
+   SetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z, fOld);
+}
+
+void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject, int nTransform, float fValue)
+{
+    string sFunc = "SetObjectVisualTransformOverride";
+
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, fValue);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nTransform);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+
+    if (nTransform == -1)
+    {// Force an update when the override is removed
+        float fOld = SetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z, GetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z) + 0.001f);
+        DelayCommand(0.5f, NWNX_Player_INTERNAL_SetObjectVisualTransformOverrideHelper(oObject, fOld));
+    }
 }

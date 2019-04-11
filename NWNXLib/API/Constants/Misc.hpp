@@ -217,4 +217,38 @@ namespace CharacterType
     }
 }
 
+namespace ObjectVisualTransform
+{
+    enum TYPE
+    {
+        Scale           = 10,
+        RotateX         = 21,
+        RotateY         = 22,
+        RotateZ         = 23,
+        TranslateX      = 31,
+        TranslateY      = 32,
+        TranslateZ      = 33,
+        AnimationSpeed  = 40,
+    };
+    constexpr int32_t MIN = 10;
+    constexpr int32_t MAX = 40;
+    static_assert(MAX == AnimationSpeed);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        switch (value)
+        {
+            case Scale:             return "Scale";
+            case RotateX:           return "Rotate X";
+            case RotateY:           return "Rotate X";
+            case RotateZ:           return "Rotate X";
+            case TranslateX:        return "Translate X";
+            case TranslateY:        return "Translate Y";
+            case TranslateZ:        return "Translate Z";
+            case AnimationSpeed:    return "Animation Speed";
+        }
+        return "(invalid)";
+    }
+}
+
 }

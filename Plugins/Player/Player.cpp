@@ -23,6 +23,7 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/C2DA.hpp"
+#include "API/ObjectVisualTransformData.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -34,6 +35,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static ViewPtr<Player::Player> g_plugin;
+
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -82,6 +84,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(ApplyInstantVisualEffectToObject);
     REGISTER(UpdateCharacterSheet);
     REGISTER(OpenInventory);
+    REGISTER(SetObjectVisualTransformOverride);
 
 #undef REGISTER
 
@@ -129,7 +132,6 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
 
     return stack;
 }
-
 
 ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
 {
@@ -276,7 +278,6 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 
     return stack;
 }
-
 
 ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
 {
@@ -629,6 +630,135 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
             {
                 pInventory->SetOwner(oidTarget);
             }
+        }
+    }
+
+    return stack;
+}
+
+void Player::SwapOVTData(Services::Hooks::CallType type, CNWSPlayer *pPlayer, CNWSObject *pAreaObject)
+{
+    static ObjectVisualTransformData objectVisualTransformData;
+    static bool bSwapBack;
+
+    if (pAreaObject->m_nObjectType == Constants::ObjectType::Creature ||
+        pAreaObject->m_nObjectType == Constants::ObjectType::Placeable ||
+        pAreaObject->m_nObjectType == Constants::ObjectType::Item ||
+        pAreaObject->m_nObjectType == Constants::ObjectType::Door)
+    {
+        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+        {
+            const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
+                                    Utils::ObjectIDToString(pAreaObject->m_idSelf);
+
+            auto search = g_plugin->m_OVTData.find(key);
+            if(search != g_plugin->m_OVTData.end())
+            {
+                objectVisualTransformData = search->second;
+                std::swap(objectVisualTransformData, pAreaObject->m_pVisualTransformData);
+                bSwapBack = true;
+            }
+            else
+            {
+                bSwapBack = false;
+            }
+        }
+        else
+        {
+            if (bSwapBack)
+            {
+                std::swap(objectVisualTransformData, pAreaObject->m_pVisualTransformData);
+            }
+        }
+    }
+}
+
+ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
+{
+    static bool bSetObjectVisualTransformOverrideHooks;
+
+    if (!bSetObjectVisualTransformOverrideHooks)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__WriteGameObjUpdate_UpdateObject, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject *pAreaObject,
+                    CLastUpdateObject*, int32_t, int32_t) -> void
+                {
+                    g_plugin->SwapOVTData(type, pPlayer, pAreaObject);
+                });
+
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__TestObjectUpdateDifferences, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject *pAreaObject,
+                    CLastUpdateObject**, int32_t*, int32_t*) -> void
+                {
+                    g_plugin->SwapOVTData(type, pPlayer, pAreaObject);
+                });
+
+        bSetObjectVisualTransformOverrideHooks = true;
+    }
+
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+        const auto transform = Services::Events::ExtractArgument<int32_t>(args);
+        const auto value = Services::Events::ExtractArgument<float>(args);
+
+        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidObject);
+
+        if (m_OVTData.find(key) == m_OVTData.end())
+        {
+            ObjectVisualTransformData data = {};
+            data.m_scale = Vector{1.0f, 1.0f, 1.0f};
+            data.m_rotate = Vector{0.0f, 0.0f, 0.0f};
+            data.m_translate = Vector{0.0f, 0.0f, 0.0f};
+            data.m_animationSpeed = 1.0f;
+
+            m_OVTData.insert(std::make_pair(key, data));
+        }
+
+        switch (transform)
+        {
+            case -1:
+                m_OVTData.erase(key);
+                break;
+
+            case Constants::ObjectVisualTransform::Scale:
+                m_OVTData[key].m_scale.x = value;
+                break;
+
+            case Constants::ObjectVisualTransform::RotateX:
+                m_OVTData[key].m_rotate.x = value;
+                break;
+
+            case Constants::ObjectVisualTransform::RotateY:
+                m_OVTData[key].m_rotate.y = value;
+                break;
+
+            case Constants::ObjectVisualTransform::RotateZ:
+                m_OVTData[key].m_rotate.z = value;
+                break;
+
+            case Constants::ObjectVisualTransform::TranslateX:
+                m_OVTData[key].m_translate.x = value;
+                break;
+
+            case Constants::ObjectVisualTransform::TranslateY:
+                m_OVTData[key].m_translate.y = value;
+                break;
+
+            case Constants::ObjectVisualTransform::TranslateZ:
+                m_OVTData[key].m_translate.z = value;
+                break;
+
+            case Constants::ObjectVisualTransform::AnimationSpeed:
+                m_OVTData[key].m_animationSpeed = value;
+                break;
+
+            default:
+                LOG_WARNING("NWNX_Player_SetObjectVisualTransformOverride called with invalid transform!");
+                break;
         }
     }
 

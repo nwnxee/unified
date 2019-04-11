@@ -4,6 +4,9 @@
 #include "Services/Events/Events.hpp"
 #include "API/Types.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/ObjectVisualTransformData.hpp"
+#include "Services/Hooks/Hooks.hpp"
+#include <map>
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -35,9 +38,12 @@ private:
     ArgumentStack ApplyInstantVisualEffectToObject  (ArgumentStack&& args);
     ArgumentStack UpdateCharacterSheet              (ArgumentStack&& args);
     ArgumentStack OpenInventory                     (ArgumentStack&& args);
+    ArgumentStack SetObjectVisualTransformOverride  (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
+    std::map<std::string, NWNXLib::API::ObjectVisualTransformData> m_OVTData;
+    static void SwapOVTData(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSPlayer*, NWNXLib::API::CNWSObject*);
 };
 
 }

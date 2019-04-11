@@ -128,6 +128,7 @@ The following plugins were added:
 - Player: ApplyInstantVisualEffectToObject()
 - Player: UpdateCharacterSheet()
 - Player: OpenInventory()
+- Player: SetObjectVisualTransformOverride()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
