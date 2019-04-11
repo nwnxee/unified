@@ -240,8 +240,8 @@ namespace ObjectVisualTransform
         {
             case Scale:             return "Scale";
             case RotateX:           return "Rotate X";
-            case RotateY:           return "Rotate X";
-            case RotateZ:           return "Rotate X";
+            case RotateY:           return "Rotate Y";
+            case RotateZ:           return "Rotate Z";
             case TranslateX:        return "Translate X";
             case TranslateY:        return "Translate Y";
             case TranslateZ:        return "Translate Z";

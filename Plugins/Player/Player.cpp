@@ -638,6 +638,9 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
 
 void Player::SwapOVTData(Services::Hooks::CallType type, CNWSPlayer *pPlayer, CNWSObject *pAreaObject)
 {
+    if (pPlayer == nullptr || pAreaObject == nullptr)
+        return;
+
     static ObjectVisualTransformData objectVisualTransformData;
     static bool bSwapBack;
 
@@ -707,16 +710,19 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
         const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidObject);
 
-        if (m_OVTData.find(key) == m_OVTData.end())
+        auto CheckMap = [&]() -> void
         {
-            ObjectVisualTransformData data = {};
-            data.m_scale = Vector{1.0f, 1.0f, 1.0f};
-            data.m_rotate = Vector{0.0f, 0.0f, 0.0f};
-            data.m_translate = Vector{0.0f, 0.0f, 0.0f};
-            data.m_animationSpeed = 1.0f;
+            if (m_OVTData.find(key) == m_OVTData.end())
+            {
+                ObjectVisualTransformData data = {};
+                data.m_scale = Vector{1.0f, 1.0f, 1.0f};
+                data.m_rotate = Vector{0.0f, 0.0f, 0.0f};
+                data.m_translate = Vector{0.0f, 0.0f, 0.0f};
+                data.m_animationSpeed = 1.0f;
 
-            m_OVTData.insert(std::make_pair(key, data));
-        }
+                m_OVTData.insert(std::make_pair(key, data));
+            }
+        };
 
         switch (transform)
         {
@@ -725,36 +731,60 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                 break;
 
             case Constants::ObjectVisualTransform::Scale:
+            {
+                CheckMap();
                 m_OVTData[key].m_scale.x = value;
                 break;
+            }
 
             case Constants::ObjectVisualTransform::RotateX:
+            {
+                CheckMap();
                 m_OVTData[key].m_rotate.x = value;
                 break;
+            }
 
             case Constants::ObjectVisualTransform::RotateY:
+            {
+                CheckMap();
                 m_OVTData[key].m_rotate.y = value;
                 break;
+            }
 
             case Constants::ObjectVisualTransform::RotateZ:
+            {
+                CheckMap();
                 m_OVTData[key].m_rotate.z = value;
                 break;
+            }
 
             case Constants::ObjectVisualTransform::TranslateX:
+            {
+                CheckMap();
                 m_OVTData[key].m_translate.x = value;
                 break;
+            }
 
             case Constants::ObjectVisualTransform::TranslateY:
+            {
+                CheckMap();
                 m_OVTData[key].m_translate.y = value;
                 break;
+            }
 
             case Constants::ObjectVisualTransform::TranslateZ:
+            {
+                CheckMap();
                 m_OVTData[key].m_translate.z = value;
                 break;
+            }
 
             case Constants::ObjectVisualTransform::AnimationSpeed:
+            {
+                CheckMap();
                 m_OVTData[key].m_animationSpeed = value;
                 break;
+            }
 
             default:
                 LOG_WARNING("NWNX_Player_SetObjectVisualTransformOverride called with invalid transform!");

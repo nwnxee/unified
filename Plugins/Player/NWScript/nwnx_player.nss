@@ -478,7 +478,8 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
 
     if (nTransform == -1)
     {// Force an update when the override is removed
-        float fOld = SetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z, GetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z) + 0.001f);
+        float fOld = SetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z,
+                        GetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z) + 0.001f);
         DelayCommand(0.5f, NWNX_Player_INTERNAL_SetObjectVisualTransformOverrideHelper(oObject, fOld));
     }
 }
