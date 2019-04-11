@@ -636,46 +636,6 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
     return stack;
 }
 
-void Player::SwapOVTData(Services::Hooks::CallType type, CNWSPlayer *pPlayer, CNWSObject *pAreaObject)
-{
-    if (pPlayer == nullptr || pAreaObject == nullptr)
-        return;
-
-    static ObjectVisualTransformData objectVisualTransformData;
-    static bool bSwapBack;
-
-    if (pAreaObject->m_nObjectType == Constants::ObjectType::Creature ||
-        pAreaObject->m_nObjectType == Constants::ObjectType::Placeable ||
-        pAreaObject->m_nObjectType == Constants::ObjectType::Item ||
-        pAreaObject->m_nObjectType == Constants::ObjectType::Door)
-    {
-        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
-        {
-            const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
-                                    Utils::ObjectIDToString(pAreaObject->m_idSelf);
-
-            auto search = g_plugin->m_OVTData.find(key);
-            if(search != g_plugin->m_OVTData.end())
-            {
-                objectVisualTransformData = search->second;
-                std::swap(objectVisualTransformData, pAreaObject->m_pVisualTransformData);
-                bSwapBack = true;
-            }
-            else
-            {
-                bSwapBack = false;
-            }
-        }
-        else
-        {
-            if (bSwapBack)
-            {
-                std::swap(objectVisualTransformData, pAreaObject->m_pVisualTransformData);
-            }
-        }
-    }
-}
-
 ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 {
     static bool bSetObjectVisualTransformOverrideHooks;
@@ -688,7 +648,39 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        g_plugin->SwapOVTData(type, pPlayer, pObject);
+                        static ObjectVisualTransformData objectVisualTransformData;
+                        static bool bSwapBack;
+
+                        if (pObject->m_nObjectType == Constants::ObjectType::Creature ||
+                            pObject->m_nObjectType == Constants::ObjectType::Placeable ||
+                            pObject->m_nObjectType == Constants::ObjectType::Item ||
+                            pObject->m_nObjectType == Constants::ObjectType::Door)
+                        {
+                            if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                            {
+                                const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
+                                                        Utils::ObjectIDToString(pObject->m_idSelf);
+
+                                auto search = g_plugin->m_OVTData.find(key);
+                                if(search != g_plugin->m_OVTData.end())
+                                {
+                                    objectVisualTransformData = search->second;
+                                    std::swap(objectVisualTransformData, pObject->m_pVisualTransformData);
+                                    bSwapBack = true;
+                                }
+                                else
+                                {
+                                    bSwapBack = false;
+                                }
+                            }
+                            else
+                            {
+                                if (bSwapBack)
+                                {
+                                    std::swap(objectVisualTransformData, pObject->m_pVisualTransformData);
+                                }
+                            }
+                        }
                     }
                 });
 

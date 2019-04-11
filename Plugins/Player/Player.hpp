@@ -5,7 +5,6 @@
 #include "API/Types.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/ObjectVisualTransformData.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include <map>
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
@@ -43,7 +42,6 @@ private:
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
     std::map<std::string, NWNXLib::API::ObjectVisualTransformData> m_OVTData;
-    static void SwapOVTData(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSPlayer*, NWNXLib::API::CNWSObject*);
 };
 
 }
