@@ -460,11 +460,6 @@ void NWNX_Player_OpenInventory(object player, object target, int open = TRUE)
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_INTERNAL_SetObjectVisualTransformOverrideHelper(object oObject, float fOld)
-{
-   SetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z, fOld);
-}
-
 void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject, int nTransform, float fValue)
 {
     string sFunc = "SetObjectVisualTransformOverride";
@@ -475,11 +470,4 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
-
-    if (nTransform == -1)
-    {// Force an update when the override is removed
-        float fOld = SetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z,
-                        GetObjectVisualTransform(oObject, OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z) + 0.001f);
-        DelayCommand(0.5f, NWNX_Player_INTERNAL_SetObjectVisualTransformOverrideHelper(oObject, fOld));
-    }
 }

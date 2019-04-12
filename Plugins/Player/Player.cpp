@@ -649,7 +649,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
                         static ObjectVisualTransformData objectVisualTransformData;
-                        static bool bSwapBack;
+                        static bool bKeyExists;
 
                         if (pObject->m_nObjectType == Constants::ObjectType::Creature ||
                             pObject->m_nObjectType == Constants::ObjectType::Placeable ||
@@ -662,20 +662,17 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                                                         Utils::ObjectIDToString(pObject->m_idSelf);
 
                                 auto search = g_plugin->m_OVTData.find(key);
-                                if(search != g_plugin->m_OVTData.end())
+                                bKeyExists = search != g_plugin->m_OVTData.end();
+
+                                if (bKeyExists)
                                 {
                                     objectVisualTransformData = search->second;
                                     std::swap(objectVisualTransformData, pObject->m_pVisualTransformData);
-                                    bSwapBack = true;
-                                }
-                                else
-                                {
-                                    bSwapBack = false;
                                 }
                             }
                             else
                             {
-                                if (bSwapBack)
+                                if (bKeyExists)
                                 {
                                     std::swap(objectVisualTransformData, pObject->m_pVisualTransformData);
                                 }
@@ -712,7 +709,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                 data.m_translate = Vector{0.0f, 0.0f, 0.0f};
                 data.m_animationSpeed = 1.0f;
 
-                m_OVTData.insert(std::make_pair(key, data));
+                m_OVTData[key] = data;
             }
 
             switch (transform)
