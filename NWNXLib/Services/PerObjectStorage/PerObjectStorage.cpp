@@ -125,8 +125,8 @@ PerObjectStorage::ObjectStorage::~ObjectStorage()
         for (auto it: *m_PointerMap)
         {
             auto ptr = it.second.first;
-            auto cleanup = it.second.second;
-            cleanup(ptr);
+            if (auto cleanup = it.second.second)
+                cleanup(ptr);
         }
     }
 }
