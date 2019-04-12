@@ -54,7 +54,7 @@ void ArrayImpl<T>::Insert(const NWNXLib::API::Types::ObjectID oid, const std::st
     std::vector<T>& collection = m_store[oid][tag];
       ASSERT_OR_THROW(index >= 0);
       ASSERT_OR_THROW(index <= static_cast<int32_t>(collection.size()));
-    collection.insert(std::begin(collection) + index, element);
+    collection.insert(std::begin(collection) + index, std::forward<T>(element));
 }
 
 template <typename T>
