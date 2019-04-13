@@ -132,6 +132,7 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
 // Apply a looping visualeffect to target that only player can see
 //
 // Note: Only works with looping effects: VFX_DUR_*, -1 to remove the effect
+// Only a single effect per player/target pair, will overwrite effects from previous calls
 void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect);
 
 
