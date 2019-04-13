@@ -36,6 +36,7 @@ private:
     ArgumentStack UpdateCharacterSheet              (ArgumentStack&& args);
     ArgumentStack OpenInventory                     (ArgumentStack&& args);
     ArgumentStack SetObjectVisualTransformOverride  (ArgumentStack&& args);
+    ArgumentStack ApplyLoopingVisualEffectToObject  (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

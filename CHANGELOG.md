@@ -129,6 +129,7 @@ The following plugins were added:
 - Player: UpdateCharacterSheet()
 - Player: OpenInventory()
 - Player: SetObjectVisualTransformOverride()
+- Player: ApplyLoopingVisualEffectToObject()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()

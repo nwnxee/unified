@@ -85,6 +85,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(UpdateCharacterSheet);
     REGISTER(OpenInventory);
     REGISTER(SetObjectVisualTransformOverride);
+    REGISTER(ApplyLoopingVisualEffectToObject);
 
 #undef REGISTER
 
@@ -638,9 +639,9 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
 
 ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 {
-    static bool bSetObjectVisualTransformOverrideHooks;
+    static bool bSetObjectVisualTransformOverrideHook;
 
-    if (!bSetObjectVisualTransformOverrideHooks)
+    if (!bSetObjectVisualTransformOverrideHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>(
                 +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
@@ -681,7 +682,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                     }
                 });
 
-        bSetObjectVisualTransformOverrideHooks = true;
+        bSetObjectVisualTransformOverrideHook = true;
     }
 
     ArgumentStack stack;
@@ -753,6 +754,65 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
         }
     }
 
+    return stack;
+}
+
+ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
+{
+    static bool bApplyLoopingVisualEffectToObjectHook;
+
+    if (!bApplyLoopingVisualEffectToObjectHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                    CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
+                {
+                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    {
+                        static Maybe<int> visualEffect;
+
+                        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                        {
+                            visualEffect = g_plugin->GetServices()->m_perObjectStorage->Get<int>(oidObjectToUpdate,
+                                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+                            if (visualEffect)
+                            {
+                                pObject->AddLoopingVisualEffect(*visualEffect, Constants::OBJECT_INVALID, 0);
+                            }
+                        }
+                        else
+                        {
+                            if (visualEffect)
+                            {
+                                pObject->RemoveLoopingVisualEffect(*visualEffect);
+                            }
+                        }
+                    }
+                });
+
+        bApplyLoopingVisualEffectToObjectHook = true;
+    }
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(visualEffect <= 65535);
+
+        if (visualEffect < 0)
+        {
+            GetServices()->m_perObjectStorage->Remove(oidTarget,
+                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+        }
+        else
+        {
+            GetServices()->m_perObjectStorage->Set(oidTarget,
+                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), visualEffect);
+        }
+    }
     return stack;
 }
 

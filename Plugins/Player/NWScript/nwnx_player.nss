@@ -129,6 +129,11 @@ void NWNX_Player_OpenInventory(object player, object target, int open = TRUE);
 // - fValue depends on the transformation to apply.
 void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject, int nTransform, float fValue);
 
+// Apply a looping visualeffect to target that only player can see
+//
+// Note: Only works with looping effects: VFX_DUR_*, -1 to remove the effect
+void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -468,6 +473,16 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
     NWNX_PushArgumentInt(NWNX_Player, sFunc, nTransform);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect)
+{
+    string sFunc = "ApplyLoopingVisualEffectToObject";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
