@@ -695,7 +695,7 @@ int32_t SkillRanks::GetSkillRankHook(
                 const auto skillIdStr = varName.substr(strSkillPos + 1, varName.length() - strSkillPos - 1);
                 const auto skillId = atoi(skillIdStr.c_str());
                 if (skillId == nSkill)
-                    pVarTable->GetInt(pVar1->m_sName);
+                    retVal += pVarTable->GetInt(pVar1->m_sName);
             }
         }
     }
