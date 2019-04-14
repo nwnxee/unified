@@ -46,6 +46,7 @@ The following plugins were added:
 - **Regex**: Adds functions to search and replace strings using regular expressions.
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
+- **SkillRanks**: Adds functions to create feats and perform actions that manipulate the calculations of skill ranks
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
 ##### New NWScript Functions
 - Administration: GetPlayOption()
@@ -135,6 +136,12 @@ The following plugins were added:
 - Rename: GetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
+- SkillRanks: GetSkillFeat()
+- SkillRanks: GetSkillFeatCountForSkill()
+- SkillRanks: GetSkillFeatForSkillByIndex()
+- SkillRanks: SetSkillFeat()
+- SkillRanks: SetSkillFeatFocusModifier()
+- SkillRanks: SetBlindnessPenalty()
 - Util: GenerateUUID()
 - Util: GetCustomToken()
 - Util: GetEnvironmentVariable()
