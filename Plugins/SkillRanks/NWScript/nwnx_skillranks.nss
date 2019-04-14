@@ -87,7 +87,6 @@ int NWNX_SkillRanks_GetSkillFeatCountForSkill(int iSkill)
     NWNX_CallFunction(NWNX_SkillRanks, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_SkillRanks, sFunc);
-
 }
 
 struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_GetSkillFeatForSkillByIndex(int iSkill, int iIndex)

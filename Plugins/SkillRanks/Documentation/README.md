@@ -63,7 +63,7 @@ NWNX_SkillRanks_SetSkillFeat(skillFeat, TRUE);
 
 ##### Example 4
 The builder has created a new feat called **Moonlight Spy** which gives a **Listen**, **Search** and **Spot** bonus of 3 plus 1 for every 2 levels of **Assassin** or **Rogue** when the player is outdoors at night time.
-* Add the Night Sky Spy feat to feat.2da 
+* Add the **Moonlight Spy** feat to feat.2da 
 * In the `OnModuleLoad` script enter the following:
 ```c
 struct NWNX_SkillRanks_SkillFeat skillFeat;
