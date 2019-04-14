@@ -29,18 +29,18 @@ void main()
 
     struct NWNX_SkillRanks_SkillFeat sf = NWNX_SkillRanks_GetSkillFeatForSkillByIndex(SKILL_LORE, iCount - 1);
     int iModifier = sf.iModifier;
-    report("GetSkillFeatForSkillByIndex", iOriginalMod > 0);
+    report("GetSkillFeatForSkillByIndex", iModifier > 0);
 
     sf = NWNX_SkillRanks_GetSkillFeat(SKILL_LORE, FEAT_SKILL_FOCUS_LORE);
     iModifier = sf.iModifier;
-    report("GetSkillFeat", iOriginalMod == 3);
+    report("GetSkillFeat", iModifier == 3);
 
     sf.iModifier = 10;
     NWNX_SkillRanks_SetSkillFeat(sf);
-    report("SetSkillFeat", GetSkillRank(SKILL_LORE, o) == (iRank + 10 - iOriginalMod));
+    report("SetSkillFeat", GetSkillRank(SKILL_LORE, o) == (iRank + 10 - iModifier));
 
     NWNX_SkillRanks_SetSkillFeatFocusModifier(4);
-    report("SetSkillFeatFocusModifier", GetSkillRank(SKILL_LORE, o) == (iRank + 4 - iOriginalMod));
+    report("SetSkillFeatFocusModifier", GetSkillRank(SKILL_LORE, o) == (iRank + 4 - iModifier));
 
     effect eBlind = EffectBlindness();
     ApplyEffectToObject(DURATION_TYPE_TEMPORARY, eBlind, o, 2.0f);
