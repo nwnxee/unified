@@ -149,6 +149,13 @@ int NWNX_Object_GetPlaceableIsStatic(object obj);
 // re-enter the area.
 void NWNX_Object_SetPlaceableIsStatic(object obj, int isStatic);
 
+// Gets if a door/placeable auto-removes the key after use.
+// Returns -1 on error.
+int NWNX_Object_GetAutoRemoveKey(object obj);
+
+// Sets if a door/placeable auto-removes the key after use.
+void NWNX_Object_SetAutoRemoveKey(object obj, int bRemoveKey);
+
 
 const string NWNX_Object = "NWNX_Object";
 
@@ -401,6 +408,26 @@ void NWNX_Object_SetPlaceableIsStatic(object obj, int isStatic)
     string sFunc = "SetPlaceableIsStatic";
 
     NWNX_PushArgumentInt(NWNX_Object, sFunc, isStatic);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetAutoRemoveKey(object obj)
+{
+    string sFunc = "GetAutoRemoveKey";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetAutoRemoveKey(object obj, int bRemoveKey)
+{
+    string sFunc = "SetAutoRemoveKey";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bRemoveKey);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
