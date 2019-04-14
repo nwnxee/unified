@@ -16,7 +16,7 @@ For example, you have an area in your module called The Great Library, you creat
 
 To create a new skill feat, builders create a `SkillFeat` structure and run functions on the `OnModuleLoad`.
 
-##### Example 1
+#### Example 1
 The builder wants to create a new skill called **Travel** and wants to add Skill Focus and Epic Skill Focus feats.
 
 * Add the **Travel** skill definition to skills.2da
@@ -26,18 +26,18 @@ The builder wants to create a new skill called **Travel** and wants to add Skill
 struct NWNX_SkillRanks_SkillFeat skillFeat;
 skillFeat.iSkill = 27; // The row number for the new Travel skill
 skillFeat.iFeat = 1801; // The row number for the Skill Focus Travel feat
-skillFeat.iMod = 3;
+skillFeat.iModifier = 3;
 // Defining feats with the focusFeat setting helps with mass changing modifiers
 skillFeat.focusFeat = 1;
 NWNX_SkillRanks_SetSkillFeat(skillFeat, TRUE);
 
 skillFeat.iFeat = 1802; // The row number for the Epic Skill Focus Travel feat
-skillFeat.iMod = 10;
+skillFeat.iModifier = 10;
 skillFeat.focusFeat = 2; // 2 for Epic Focus
 NWNX_SkillRanks_SetSkillFeat(skillFeat, TRUE);
 ``` 
 
-##### Example 2
+#### Example 2
 The builder doesn't like the restriction on the **Trackless Step** feat which inhibits the skill bonus while Underground even if the Natural flag is set.
 
 * In the `OnModuleLoad` script enter the following:
@@ -49,7 +49,7 @@ skillFeat.iSkill = SKILL_MOVE_SILENTLY;
 NWNX_SkillRanks_SetSkillFeat(skillFeat);
 ``` 
 
-##### Example 3
+#### Example 3
 The builder has created a new feat called **Doctor** which counts the creature's **Intelligence** instead of **Wisdom** if higher when calculating their **Heal** skill.
 * Add the Doctor feat to feat.2da. 
 * In the `OnModuleLoad` script enter the following:
@@ -61,7 +61,7 @@ skillFeat.iKeyAbilityMask = NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE | NWNX_SKIL
 NWNX_SkillRanks_SetSkillFeat(skillFeat, TRUE);
 ```
 
-##### Example 4
+#### Example 4
 The builder has created a new feat called **Moonlight Spy** which gives a **Listen**, **Search** and **Spot** bonus of 3 plus 1 for every 2 levels of **Assassin** or **Rogue** when the player is outdoors at night time.
 * Add the **Moonlight Spy** feat to feat.2da 
 * In the `OnModuleLoad` script enter the following:
@@ -69,7 +69,7 @@ The builder has created a new feat called **Moonlight Spy** which gives a **List
 struct NWNX_SkillRanks_SkillFeat skillFeat;
 skillFeat.iSkill = SKILL_LISTEN;
 skillFeat.iFeat = 1804;
-skillFeat.iMod = 3;
+skillFeat.iModifier = 3;
 skillFeat.fClassLevelMod = 0.5f;
 skillFeat.iAreaFlagsRequired = 0x4; // Natural
 skillFeat.iAreaFlagsForbidden = 0x1 | 0x2; // Not indoors or underground
@@ -85,7 +85,7 @@ skillFeat.iSkill = SKILL_SPOT;
 NWNX_SkillRanks_SetSkillFeat(skillFeat, TRUE);
 ```
 
-##### Example 5
+#### Example 5
 The builder wants all Skill Focus feats to increase the modifier by 5 and all Epic Skill Focus feats to increase the modifier by 12.
 * Change the TLK reference in the feat.2da for all Skill Focus feats from 424 to a new custom TLK entry that states:
 ```text
