@@ -78,7 +78,7 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
         int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
 
     m_blindnessMod = 4;
-    m_checkAreaVars = GetServices()->m_config->Get<int32_t>("CHECK_AREA_VARS", 0);
+    m_checkAreaVars = GetServices()->m_config->Get<bool>("CHECK_AREA_VARS", 0);
 }
 
 SkillRanks::~SkillRanks()
@@ -571,8 +571,7 @@ int32_t SkillRanks::GetSkillRankHook(
 
     int32_t retVal = baseRank + thisPtr->m_pBaseCreature->GetTotalEffectBonus(5, pVersus, 0, 0, 0, 0, nSkill, -1, 0);
 
-    auto *pAreaObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_pBaseCreature->m_oidArea);
-    auto *pArea = Utils::AsNWSArea(pAreaObject);
+    auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_pBaseCreature->m_oidArea);
 
     // Now check if the creature has any skill impacting feats
     bool bHasOverrideKeyAbilityFeat = false;
@@ -682,7 +681,7 @@ int32_t SkillRanks::GetSkillRankHook(
     // Area set skill rank modifiers
     if (g_plugin->m_checkAreaVars && pArea)
     {
-        auto *pVarTable = Utils::GetScriptVarTable(pAreaObject);
+        auto *pVarTable = Utils::GetScriptVarTable(pArea);
         for (int32_t i = 0; i < pVarTable->m_lVarList.num; i++)
         {
             API::CNWSScriptVar *pVar1 = &pVarTable->m_lVarList.element[i];
