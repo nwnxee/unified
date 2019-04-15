@@ -12,11 +12,15 @@ using namespace NWNXLib::Services;
 
 LevelEvents::LevelEvents(ViewPtr<HooksProxy> hooker)
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_.*", [hooker]() {
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::CNWSCreatureStats__LevelUp, int32_t,
                 CNWSCreatureStats*, CNWLevelStats*, uint8_t, uint8_t, uint8_t, int32_t>(&LevelUpHook);
+    });
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_AUTOMATIC_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::CNWSCreatureStats__LevelUpAutomatic, int32_t,
                 CNWSCreatureStats*, uint8_t, int32_t, uint8_t>(&LevelUpAutomaticHook);
+    });
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::CNWSCreatureStats__LevelDown, int32_t,
                 CNWSCreatureStats*, CNWLevelStats*>(&LevelDownHook);
     });
