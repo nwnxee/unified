@@ -97,21 +97,23 @@ std::string StatBonuses::encode() const
 StatBonuses StatBonuses::decode(const std::string &s)
 {
     StatBonuses result;
-    size_t level;
-    char statCode;
-    int32_t bonus;
-
-    std::istringstream iss(s);
-    while ( iss )
+    if ( !s.empty() )
     {
-        iss >> level >> statCode >> bonus;
-        size_t stat = 0;
-        while ( stat < 6 && StatCodes[stat] != statCode )
-            stat++;
-        ASSERT_MSG(stat < 6, "unknown stat code '%c' in '%s'", statCode, s);
-        if ( level >= result.size() )
-            result.resize(level + 1, NO_BONUS);
-        result[level][stat] = bonus;
+        size_t level;
+        char statCode;
+        int32_t bonus;
+        std::istringstream iss(s);
+        while ( iss )
+        {
+            iss >> level >> statCode >> bonus;
+            size_t stat = 0;
+            while ( stat < 6 && StatCodes[stat] != statCode )
+                stat++;
+            ASSERT_MSG(stat < 6, "unknown stat code '%c' in '%s'", statCode, s);
+            if ( level >= result.size() )
+                result.resize(level + 1, NO_BONUS);
+            result[level][stat] = bonus;
+        }
     }
     return result;
 }
@@ -125,6 +127,8 @@ Extra2DA::Extra2DA(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Extra2DA::func, this, std::placeholders::_1))
 
     REGISTER(GetDragonAbilityDivergence);
+    REGISTER(GetDragonAbilityHistory);
+    REGISTER(SetDragonAbilityHistory);
 
 #undef REGISTER
 
@@ -151,7 +155,7 @@ ArgumentStack Extra2DA::GetDragonAbilityDivergence(ArgumentStack&& args)
         // find first dragon disciple level where scores diverge
         const uint8_t dragonLevel = GetClassLevel(*pCreature->m_pStats, CLASS_DRAGON_DISCIPLE);
         const StatBonuses &sb = g_plugin->m_DragonAbilityBonuses;
-        const StatBonuses sbHistory = GetDragonAbilityHistory(pCreature);
+        const StatBonuses sbHistory = StatBonuses::decode(GetDragonAbilityHistoryInternal(pCreature));
         uint8_t dragonDivergence = 0;
         for ( uint8_t level = 1; level <= dragonLevel; level++ )
         {
@@ -175,6 +179,34 @@ ArgumentStack Extra2DA::GetDragonAbilityDivergence(ArgumentStack&& args)
         }
     }
     Services::Events::InsertArgument(stack, result);
+    return stack;
+}
+
+ArgumentStack Extra2DA::GetDragonAbilityHistory(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string result;
+
+    Types::ObjectID oidCreature = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidCreature);
+    if ( pCreature && pCreature->m_bPlayerCharacter )
+        result = GetDragonAbilityHistoryInternal(pCreature);
+
+    Services::Events::InsertArgument(stack, result);
+    return stack;
+}
+
+ArgumentStack Extra2DA::SetDragonAbilityHistory(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    Types::ObjectID oidCreature = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    std::string sHistory = Services::Events::ExtractArgument<std::string>(args);
+
+    CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidCreature);
+    if ( pCreature && pCreature->m_bPlayerCharacter )
+        SetDragonAbilityHistoryInternal(pCreature, sHistory);
+
     return stack;
 }
 
@@ -207,28 +239,28 @@ void Extra2DA::LoadDragonAbilityBonuses()
         LOG_DEBUG("dragon.2da not found");
 }
 
-StatBonuses Extra2DA::GetDragonAbilityHistory(CNWSCreature *pCreature)
+std::string Extra2DA::GetDragonAbilityHistoryInternal(CNWSCreature *pCreature)
 {
-    StatBonuses sb;
-    Maybe<std::string> sbString = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pCreature, DragonAbilityVariable);
-    if ( sbString )
+    Maybe<std::string> msHistory = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pCreature, DragonAbilityVariable);
+    if ( msHistory )
     {
-        sb = StatBonuses::decode(*sbString);
-        LOG_NOTICE("GetDragonAbilityHistory => '%s'", sbString->c_str());
+        LOG_NOTICE("GetDragonAbilityHistory => '%s'", msHistory->c_str());
+        return *msHistory;
     }
     else
+    {
         LOG_NOTICE("GetDragonAbilityHistory => not found");
-    return sb;
+        return "";
+    }
 }
 
-void Extra2DA::SetDragonAbilityHistory(CNWSCreature *pCreature, const StatBonuses& sb)
+void Extra2DA::SetDragonAbilityHistoryInternal(CNWSCreature *pCreature, const std::string& sHistory)
 {
-    std::string sbString = sb.encode();
-    if ( sbString.size() )
-        g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, DragonAbilityVariable, sbString);
+    if ( sHistory.size() )
+        g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, DragonAbilityVariable, sHistory);
     else
         g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, DragonAbilityVariable);
-    LOG_NOTICE("SetDragonAbilityHistory('%s')", sbString.c_str());
+    LOG_NOTICE("SetDragonAbilityHistory('%s')", sHistory.c_str());
 }
 
 // update stats for one (current or previous) level
@@ -244,14 +276,14 @@ void Extra2DA::OnComputeFeatBonuses(CNWSCreatureStats *pThis, CExoArrayListTempl
         // remove bonuses bigger than current level
         if ( bSubtractBonuses || bLevelingDown )
         {
-            StatBonuses sbHistory = GetDragonAbilityHistory(pThis->m_pBaseCreature);
+            StatBonuses sbHistory = StatBonuses::decode(GetDragonAbilityHistoryInternal(pThis->m_pBaseCreature));
             const size_t dragonLevel = GetClassLevel(*pThis, CLASS_DRAGON_DISCIPLE);
             for ( size_t level = dragonLevel + 1; level < sbHistory.size(); level++ )
                 statBonus -= sbHistory[level];
             if ( dragonLevel + 1 < sbHistory.size() )
             {
                 sbHistory.resize(dragonLevel + 1);
-                SetDragonAbilityHistory(pThis->m_pBaseCreature, sbHistory);
+                SetDragonAbilityHistoryInternal(pThis->m_pBaseCreature, sbHistory.encode());
             }
         }
         else
@@ -260,7 +292,7 @@ void Extra2DA::OnComputeFeatBonuses(CNWSCreatureStats *pThis, CExoArrayListTempl
             const size_t dragonLevel = classInfo.m_nClass == CLASS_DRAGON_DISCIPLE ? classInfo.m_nLevel : 0;
             if ( dragonLevel )
             {
-                StatBonuses sbHistory = GetDragonAbilityHistory(pThis->m_pBaseCreature);
+                StatBonuses sbHistory = StatBonuses::decode(GetDragonAbilityHistoryInternal(pThis->m_pBaseCreature));
                 const StatBonus newBonus = statBonuses.size() > dragonLevel ? statBonuses[dragonLevel] : NO_BONUS;
                 if ( dragonLevel < sbHistory.size() )
                 {
@@ -269,13 +301,13 @@ void Extra2DA::OnComputeFeatBonuses(CNWSCreatureStats *pThis, CExoArrayListTempl
                         statBonus -= sbHistory[level];
                     sbHistory.resize(dragonLevel + 1);
                     statBonus += sbHistory[dragonLevel] = newBonus;
-                    SetDragonAbilityHistory(pThis->m_pBaseCreature, sbHistory);
+                    SetDragonAbilityHistoryInternal(pThis->m_pBaseCreature, sbHistory.encode());
                 }
                 else if ( newBonus != NO_BONUS )
                 {
                     sbHistory.resize(dragonLevel + 1, NO_BONUS);
                     statBonus = sbHistory[dragonLevel] = newBonus;
-                    SetDragonAbilityHistory(pThis->m_pBaseCreature, sbHistory);
+                    SetDragonAbilityHistoryInternal(pThis->m_pBaseCreature, sbHistory.encode());
                 }
             }
         }

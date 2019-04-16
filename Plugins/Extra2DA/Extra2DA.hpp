@@ -29,13 +29,15 @@ public:
 
 private:
     ArgumentStack GetDragonAbilityDivergence(ArgumentStack&& args);
+    ArgumentStack GetDragonAbilityHistory(ArgumentStack&& args);
+    ArgumentStack SetDragonAbilityHistory(ArgumentStack&& args);
 
     NWNXLib::Hooking::FunctionHook* m_ComputeFeatBonusesHook;
     StatBonuses m_DragonAbilityBonuses;
 
     static void LoadDragonAbilityBonuses();
-    static StatBonuses GetDragonAbilityHistory(NWNXLib::API::CNWSCreature *pCreature);
-    static void SetDragonAbilityHistory(NWNXLib::API::CNWSCreature *pCreature, const StatBonuses& sb);
+    static std::string GetDragonAbilityHistoryInternal(NWNXLib::API::CNWSCreature *pCreature);
+    static void SetDragonAbilityHistoryInternal(NWNXLib::API::CNWSCreature *pCreature, const std::string& sHistory);
 
     static void OnComputeFeatBonuses(NWNXLib::API::CNWSCreatureStats *pThis,
                                      NWNXLib::API::CExoArrayListTemplatedunsignedshort *pFeats,
