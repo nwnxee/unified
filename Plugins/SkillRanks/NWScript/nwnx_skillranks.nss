@@ -75,8 +75,17 @@ struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_AddSkillFeatClass(struct NWNX_S
 // changed with this function.
 void NWNX_SkillRanks_SetSkillFeatFocusMod(int iModifier, int iEpic = FALSE);
 
+// Gets the current penalty to Dexterity based skills when blind
+int NWNX_SkillRanks_GetBlindnessPenalty();
+
 // Can change the value the Dexterity based skills get decreased due to blindness, default is 4
 void NWNX_SkillRanks_SetBlindnessPenalty(int iModifier);
+
+// Returns any skill modifier for the area
+int NWNX_SkillRanks_GetAreaModifier(object oArea, int iSkill);
+
+// Sets the skill modifier for the area
+void NWNX_SkillRanks_SetAreaModifier(object oArea, int iSkill, int iModifier);
 
 
 int NWNX_SkillRanks_GetSkillFeatCountForSkill(int iSkill)
@@ -181,10 +190,40 @@ void NWNX_SkillRanks_SetSkillFeatFocusModifier(int iModifier, int epicFocus = FA
     NWNX_CallFunction(NWNX_SkillRanks, sFunc);
 }
 
+int NWNX_SkillRanks_GetBlindnessPenalty()
+{
+    string sFunc = "GetBlindnessPenalty";
+
+    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_SkillRanks, sFunc);
+}
+
 void NWNX_SkillRanks_SetBlindnessPenalty(int iModifier)
 {
     string sFunc = "SetBlindnessPenalty";
 
     NWNX_PushArgumentInt(NWNX_SkillRanks, sFunc, iModifier);
+    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
+}
+
+int NWNX_SkillRanks_GetAreaModifier(object oArea, int iSkill)
+{
+    string sFunc = "GetAreaModifier";
+
+    NWNX_PushArgumentInt(NWNX_SkillRanks, sFunc, iSkill);
+    NWNX_PushArgumentObject(NWNX_SkillRanks, sFunc, oArea);
+    NWNX_CallFunction(NWNX_SkillRanks, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_SkillRanks, sFunc);
+}
+
+void NWNX_SkillRanks_SetAreaModifier(object oArea, int iSkill, int iModifier)
+{
+    string sFunc = "SetAreaModifier";
+
+    NWNX_PushArgumentInt(NWNX_SkillRanks, sFunc, iModifier);
+    NWNX_PushArgumentInt(NWNX_SkillRanks, sFunc, iSkill);
+    NWNX_PushArgumentObject(NWNX_SkillRanks, sFunc, oArea);
     NWNX_CallFunction(NWNX_SkillRanks, sFunc);
 }

@@ -22,12 +22,14 @@ private:
     ArgumentStack GetSkillFeatForSkillByIndex (ArgumentStack&& args);
     ArgumentStack SetSkillFeat                (ArgumentStack&& args);
     ArgumentStack SetSkillFeatFocusModifier   (ArgumentStack&& args);
+    ArgumentStack GetBlindnessPenalty         (ArgumentStack&& args);
     ArgumentStack SetBlindnessPenalty         (ArgumentStack&& args);
+    ArgumentStack GetAreaModifier             (ArgumentStack&& args);
+    ArgumentStack SetAreaModifier             (ArgumentStack&& args);
 
     static void LoadFeatInfoHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWRules*);
     static int32_t GetSkillRankHook(NWNXLib::API::CNWSCreatureStats*, uint8_t, NWNXLib::API::CNWSObject*, int32_t);
     uint8_t m_blindnessMod;
-    bool m_checkAreaVars;
 
     struct SkillFeats {
         int8_t nModifier;

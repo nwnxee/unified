@@ -4,14 +4,6 @@
 
 Enhances and allows for manipulation of skill rank calculations including the ability to build custom skill related feats as well as modifying stock feats.
 
-## Environment Variables
-
-`NWNX_SKILLRANKS_CHECK_AREA_VARS` - When set to `TRUE` builders can add variables to areas that modify skill ranks.
-
-Variables are named `NWNX_SKILLRANKS_SKILL_ID_NN` where `NN` is the skill number.
-
-For example, you have an area in your module called The Great Library, you create a variable on the area `NWNX_SKILLRANKS_SKILL_ID_7` = `10` and all Creatures would receive a bonus of 10 **Lore** when inside the library. Negative modifiers work as well.
-
 ## Plugin Sample Usage
 
 To create a new skill feat, builders create a `SkillFeat` structure and run functions on the `OnModuleLoad`.
@@ -105,4 +97,12 @@ Use: Automatic.
 ```c
 NWNX_SkillRanks_SetSkillFeatFocusMod(5);
 NWNX_SkillRanks_SetSkillFeatFocusMod(12, TRUE);
+```
+
+#### Example 6
+The builder has an area in her module called *The Great Library* where she wants all creatures to receive a bonus of 10 **Lore** whenever inside.
+* In the `OnModuleLoad` script enter the following:
+```c
+object oArea = GetObjectByTag("greatlibrary");
+NWNX_SkillRanks_SetAreaModifier(oArea, SKILL_LORE, 10);
 ```

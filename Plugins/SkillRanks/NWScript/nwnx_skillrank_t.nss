@@ -42,11 +42,19 @@ void main()
     NWNX_SkillRanks_SetSkillFeatFocusModifier(4);
     report("SetSkillFeatFocusModifier", GetSkillRank(SKILL_LORE, o) == (iRank + 4 - iModifier));
 
+    int iBlindnessPenalty = NWNX_SkillRanks_GetBlindnessPenalty();
+    report("GetBlindnessPenalty", iBlindnessPenalty == 4);
     effect eBlind = EffectBlindness();
     ApplyEffectToObject(DURATION_TYPE_TEMPORARY, eBlind, o, 2.0f);
     iRank = GetSkillRank(SKILL_HIDE, o);
     NWNX_SkillRanks_SetBlindnessPenalty(12);
-    report("SetBlindnessPenalty", GetSkillRank(SKILL_HIDE, o) == (iRank - 12 + 4));
+    report("SetBlindnessPenalty", GetSkillRank(SKILL_HIDE, o) == (iRank - 12 + iBlindnessPenalty));
+    report("GetBlindnessPenalty", NWNX_SkillRanks_GetBlindnessPenalty() == 12);
+
+    iRank = GetSkillRank(SKILL_LORE, o);
+    NWNX_SkillRanks_SetAreaModifier(GetArea(o), SKILL_LORE, 20);
+    report("SetAreaModifier", GetSkillRank(SKILL_LORE, o) == (iRank + 20));
+    report("GetAreaModifier", NWNX_SkillRanks_GetAreaModifier(GetArea(o), SKILL_LORE) == 20);
 
     DestroyObject(o);
     WriteTimestampedLogEntry("NWNX_SkillRanks unit test end.");

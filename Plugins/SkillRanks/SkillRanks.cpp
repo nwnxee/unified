@@ -6,15 +6,13 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSkill.hpp"
-#include "API/CNWSScriptVar.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/Config/Config.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Services/Events/Events.hpp"
-#include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
 #include <cmath>
 #include <list>
@@ -35,6 +33,7 @@ const auto minMask = (1u << 6u);
 const auto maxMask = (1u << 7u);
 const auto avgMask = (1u << 8u);
 const auto sumMask = (1u << 9u);
+const auto areaModPOSKey = "SKILLRANK_MOD_";
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -69,7 +68,10 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
     REGISTER(SetSkillFeatFocusModifier);
     REGISTER(GetSkillFeatCountForSkill);
     REGISTER(GetSkillFeatForSkillByIndex);
+    REGISTER(GetBlindnessPenalty);
     REGISTER(SetBlindnessPenalty);
+    REGISTER(GetAreaModifier);
+    REGISTER(SetAreaModifier);
 
 #undef REGISTER
 
@@ -78,7 +80,6 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
         int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
 
     m_blindnessMod = 4;
-    m_checkAreaVars = GetServices()->m_config->Get<bool>("CHECK_AREA_VARS", 0);
 }
 
 SkillRanks::~SkillRanks()
@@ -679,24 +680,10 @@ int32_t SkillRanks::GetSkillRankHook(
     }
 
     // Area set skill rank modifiers
-    if (g_plugin->m_checkAreaVars && pArea)
+    if (pArea)
     {
-        auto *pVarTable = Utils::GetScriptVarTable(pArea);
-        for (int32_t i = 0; i < pVarTable->m_lVarList.num; i++)
-        {
-            API::CNWSScriptVar *pVar1 = &pVarTable->m_lVarList.element[i];
-            std::string varName = pVar1->m_sName.CStr();
-            if (varName.find("NWNX_SKILLRANKS_SKILL_ID") == 0)
-            {
-                if (pVar1->m_nType != 1)
-                    continue;
-                const auto strSkillPos = varName.find_last_of('_');
-                const auto skillIdStr = varName.substr(strSkillPos + 1, varName.length() - strSkillPos - 1);
-                const auto skillId = atoi(skillIdStr.c_str());
-                if (skillId == nSkill)
-                    retVal += pVarTable->GetInt(pVar1->m_sName);
-            }
-        }
+        auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+        retVal += *pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill));
     }
 
     if (!bHasOverrideKeyAbilityFeat)
@@ -901,6 +888,60 @@ ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
             }
         }
     }
+
+    return stack;
+}
+
+ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
+    if (!pArea)
+    {
+        LOG_ERROR("GetAreaModifier function called on non-area object %x", areaOid);
+        return stack;
+    }
+    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
+    ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
+
+    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+    Services::Events::InsertArgument(stack, *pPOS->Get<int>(areaOid, areaModPOSKey + std::to_string(skillId)));
+
+    return stack;
+}
+
+ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
+    if (!pArea)
+    {
+        LOG_ERROR("SetAreaModifier function called on non-area object %x", areaOid);
+        return stack;
+    }
+    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
+    ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
+    const auto modifier = Services::Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(modifier >= -127);
+    ASSERT_OR_THROW(modifier < 127);
+
+    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier);
+
+    return stack;
+}
+
+ArgumentStack SkillRanks::GetBlindnessPenalty(ArgumentStack &&)
+{
+    ArgumentStack stack;
+
+    Services::Events::InsertArgument(stack, g_plugin->m_blindnessMod);
 
     return stack;
 }
