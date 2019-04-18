@@ -72,6 +72,7 @@ The following plugins were added:
 - Area: SetSunMoonColors()
 - Area: CreateTransition()
 - Creature: GetAttackBonus()
+- Creature: GetHighestLevelOfFeat()
 - Creature: GetFeatRemainingUses()
 - Creature: GetFeatTotalUses()
 - Creature: SetFeatRemainingUses()

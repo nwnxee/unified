@@ -297,6 +297,9 @@ void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 //       Defaults to Melee Attack Bonus if weapon is invalid or no weapon
 int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE);
 
+// Get highest level version of feat posessed by creature (e.g. for barbarian rage)
+int NWNX_Creature_GetHighestLevelOfFeat(object creature, int feat);
+
 // Get feat remaining uses of a creature
 int NWNX_Creature_GetFeatRemainingUses(object creature, int feat);
 
@@ -1058,6 +1061,17 @@ int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchA
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, isOffhand);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, isTouchAttack);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, isMelee);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetHighestLevelOfFeat(object creature, int feat)
+{
+    string sFunc = "GetHighestLevelOfFeat";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, feat);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
