@@ -35,6 +35,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
 - Tweaks: DisableMonkAbilitiesWhenPolymorphed
+- Weapon: Feat and Base Item names were added to LOG_INFO feedback
 ##### New Plugins
 The following plugins were added:
 - **Area**: Adds functions exposing additional area properties
