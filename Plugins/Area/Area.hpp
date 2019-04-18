@@ -36,6 +36,7 @@ private:
     ArgumentStack SetShadowOpacity          (ArgumentStack&& args);
     ArgumentStack GetDayNightCycle          (ArgumentStack&& args);
     ArgumentStack SetDayNightCycle          (ArgumentStack&& args);
+    ArgumentStack GetSunMoonColors          (ArgumentStack&& args);
     ArgumentStack SetSunMoonColors          (ArgumentStack&& args);
     ArgumentStack CreateTransition          (ArgumentStack&& args);
 
