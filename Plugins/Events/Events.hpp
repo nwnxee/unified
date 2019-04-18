@@ -30,6 +30,7 @@ class QuickChatEvents;
 class InventoryEvents;
 class TrapEvents;
 class TimingBarEvents;
+class LevelEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -108,6 +109,7 @@ private:
     std::unique_ptr<InventoryEvents> m_inventoryEvents;
     std::unique_ptr<TrapEvents> m_trapEvents;
     std::unique_ptr<TimingBarEvents> m_timingBarEvents;
+    std::unique_ptr<LevelEvents> m_levelEvents;
 };
 
 }

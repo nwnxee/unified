@@ -92,6 +92,12 @@ int NWNX_Area_GetDayNightCycle(object area);
 // type = NWNX_AREA_DAYNIGHTCYCLE_*
 void NWNX_Area_SetDayNightCycle(object area, int type);
 
+// Get the Sun/Moon Ambient/Diffuse colors of area
+// type = NWNX_AREA_COLOR_TYPE_*
+//
+// Returns FOG_COLOR_* or a custom value, -1 on error
+int NWNX_Area_GetSunMoonColors(object area, int type);
+
 // Set the Sun/Moon Ambient/Diffuse colors of area
 // type = NWNX_AREA_COLOR_TYPE_*
 // color = FOG_COLOR_*
@@ -314,6 +320,17 @@ void NWNX_Area_SetDayNightCycle(object area, int type)
     NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
     NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
     NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetSunMoonColors(object area, int type)
+{
+    string sFunc = "GetSunMoonColors";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
 }
 
 void NWNX_Area_SetSunMoonColors(object area, int type, int color)
