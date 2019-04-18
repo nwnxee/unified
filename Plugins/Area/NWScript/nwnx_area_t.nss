@@ -56,6 +56,9 @@ void main()
         NWNX_Area_SetDayNightCycle(oArea, NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK);
         report("{Set/Get}DayNightCycle", NWNX_Area_GetDayNightCycle(oArea) == NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK);
 
+        NWNX_Area_SetSunMoonColors(oArea, NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE, FOG_COLOR_GREEN);
+        report("{Set/Get}SunMoonColors", NWNX_Area_GetSunMoonColors(oArea, NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE) == FOG_COLOR_GREEN);
+
         vector vLoc = GetPositionFromLocation(GetStartingLocation());
         object oWP = CreateObject(OBJECT_TYPE_WAYPOINT, "nw_waypoint001", GetStartingLocation());
         object oAT = NWNX_Area_CreateTransition(oArea, oWP, vLoc.x, vLoc.y, vLoc.z);

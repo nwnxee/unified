@@ -66,6 +66,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(SetShadowOpacity);
     REGISTER(GetDayNightCycle);
     REGISTER(SetDayNightCycle);
+    REGISTER(GetSunMoonColors);
     REGISTER(SetSunMoonColors);
     REGISTER(CreateTransition);
 
@@ -470,6 +471,45 @@ ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
                 break;
         }
     }
+
+    return stack;
+}
+
+ArgumentStack Area::GetSunMoonColors(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pArea = area(args))
+    {
+        auto type = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(type >= 0);
+          ASSERT_OR_THROW(type <= 3);
+
+        switch (type)
+        {
+            case 0:
+                retVal = pArea->m_nMoonAmbientColor;
+                break;
+
+            case 1:
+                retVal = pArea->m_nMoonDiffuseColor;
+                break;
+
+            case 2:
+                retVal = pArea->m_nSunAmbientColor;
+                break;
+
+            case 3:
+                retVal = pArea->m_nSunDiffuseColor;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
 
     return stack;
 }
