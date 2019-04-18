@@ -105,9 +105,7 @@ CNWSTile *Area::GetTile(CNWSArea *pArea, float x, float y)
     int nTile = (int)(y / 10) * pArea->m_nWidth + (int)(x / 10);
 
     if (nTile >= 0 && nTile < (pArea->m_nWidth * pArea->m_nHeight))
-    {
-        return  &pArea->m_pTile[nTile];
-    }
+        return &pArea->m_pTile[nTile];
     else
         return nullptr;
 }
@@ -665,6 +663,10 @@ ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
                     break;
             }
         }
+        else
+        {
+            LOG_ERROR("NWNX_Area_GetTileAnimationLoop: invalid tile specified");
+        }
     }
 
     Services::Events::InsertArgument(stack, retVal);
@@ -706,6 +708,10 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
                 default:
                     break;
             }
+        }
+        else
+        {
+            LOG_ERROR("NWNX_Area_SetTileAnimationLoop: invalid tile specified");
         }
     }
 
