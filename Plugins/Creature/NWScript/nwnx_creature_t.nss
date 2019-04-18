@@ -1,6 +1,6 @@
 #include "nwnx_creature"
 
-
+const int FEAT_BARBARIAN_RAGE_2 = 326;
 
 void report(string func, int bSuccess)
 {
@@ -50,6 +50,11 @@ void main()
     report("GetFeatByIndex", NWNX_Creature_GetFeatByIndex(oCreature, nFeatCountTotal) == FEAT_PLAYER_TOOL_01);
 
     report("GetFeatByLevel", NWNX_Creature_GetFeatByLevel(oCreature, 1, nFeatCountLvl1) == FEAT_PLAYER_TOOL_01);
+
+    NWNX_Creature_AddFeat(oCreature, FEAT_BARBARIAN_RAGE);
+    report("GetHighestLevelOfFeat", NWNX_Creature_GetHighestLevelOfFeat(oCreature, FEAT_BARBARIAN_RAGE) == FEAT_BARBARIAN_RAGE);
+    NWNX_Creature_AddFeat(oCreature, FEAT_BARBARIAN_RAGE_2);
+    report("GetHighestLevelOfFeat", NWNX_Creature_GetHighestLevelOfFeat(oCreature, FEAT_BARBARIAN_RAGE) == FEAT_BARBARIAN_RAGE_2);
 
     NWNX_Creature_AddFeat(oCreature, FEAT_STUNNING_FIST);
     report("GetFeatRemainingUses", NWNX_Creature_GetFeatRemainingUses(oCreature, FEAT_STUNNING_FIST) == 1);
