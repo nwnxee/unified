@@ -1,8 +1,10 @@
 #pragma once
 
-
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
+#include "API/Types.hpp"
+
+using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
 namespace WebHook {
 
@@ -12,7 +14,9 @@ public:
     WebHook(const Plugin::CreateParams& params);
     virtual ~WebHook();
 
-    static NWNXLib::Services::Events::ArgumentStack OnSendWebhookHTTPS(NWNXLib::Services::Events::ArgumentStack&&);
+private:
+    ArgumentStack OnSendWebHookHTTPS(NWNXLib::Services::Events::ArgumentStack&&);
+    ArgumentStack EncodeURL(NWNXLib::Services::Events::ArgumentStack&&);
 };
 
 }
