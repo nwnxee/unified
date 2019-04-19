@@ -35,6 +35,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
 - Tweaks: DisableMonkAbilitiesWhenPolymorphed
+- Weapon: Feat and Base Item names were added to LOG_INFO feedback
 ##### New Plugins
 The following plugins were added:
 - **Area**: Adds functions exposing additional area properties
@@ -47,6 +48,7 @@ The following plugins were added:
 - **Regex**: Adds functions to search and replace strings using regular expressions.
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
+- **SkillRanks**: Adds functions to create feats and perform actions that manipulate the calculations of skill ranks
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
 ##### New NWScript Functions
 - Administration: GetPlayOption()
@@ -75,6 +77,7 @@ The following plugins were added:
 - Area: SetDayNightCycle()
 - Area: {Get|Set}SunMoonColors()
 - Area: CreateTransition()
+- Area: {Get|Set}TileAnimationLoop()
 - Creature: GetAttackBonus()
 - Creature: GetHighestLevelOfFeat()
 - Creature: GetFeatRemainingUses()
@@ -137,6 +140,15 @@ The following plugins were added:
 - Rename: GetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
+- SkillRanks: GetSkillFeat()
+- SkillRanks: GetSkillFeatCountForSkill()
+- SkillRanks: GetSkillFeatForSkillByIndex()
+- SkillRanks: SetSkillFeat()
+- SkillRanks: SetSkillFeatFocusModifier()
+- SkillRanks: GetBlindnessPenalty()
+- SkillRanks: SetBlindnessPenalty()
+- SkillRanks: GetAreaModifier()
+- SkillRanks: SetAreaModifier()
 - Util: GenerateUUID()
 - Util: GetCustomToken()
 - Util: GetEnvironmentVariable()
