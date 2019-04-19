@@ -75,6 +75,7 @@ The following plugins were added:
 - Area: SetDayNightCycle()
 - Area: {Get|Set}SunMoonColors()
 - Area: CreateTransition()
+- Area: {Get|Set}TileAnimationLoop()
 - Creature: GetAttackBonus()
 - Creature: GetHighestLevelOfFeat()
 - Creature: GetFeatRemainingUses()

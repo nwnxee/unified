@@ -63,6 +63,9 @@ void main()
         object oWP = CreateObject(OBJECT_TYPE_WAYPOINT, "nw_waypoint001", GetStartingLocation());
         object oAT = NWNX_Area_CreateTransition(oArea, oWP, vLoc.x, vLoc.y, vLoc.z);
         report ("CreateTransition", oAT != OBJECT_INVALID);
+
+        NWNX_Area_SetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1, FALSE);
+        report("{Set/Get}TileAnimationLoop", NWNX_Area_GetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1) == FALSE);
     }
     else
     {
