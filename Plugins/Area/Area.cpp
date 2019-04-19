@@ -636,7 +636,9 @@ ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
     if (auto *pArea = area(args))
     {
         const auto tileX = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileX >= 0.0f);
         const auto tileY = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileY >= 0.0f);
         const auto tileAnimLoop = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(tileAnimLoop >= 1);
           ASSERT_OR_THROW(tileAnimLoop <= 3);
@@ -681,7 +683,9 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
     if (auto *pArea = area(args))
     {
         const auto tileX = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileX >= 0.0f);
         const auto tileY = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileY >= 0.0f);
         const auto tileAnimLoop = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(tileAnimLoop >= 1);
           ASSERT_OR_THROW(tileAnimLoop <= 3);
