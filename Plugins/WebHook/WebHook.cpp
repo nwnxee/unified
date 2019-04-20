@@ -66,7 +66,7 @@ ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
     auto username = Services::Events::ExtractArgument<std::string>(args);
     auto mrkdwn = Services::Events::ExtractArgument<int32_t>(args);
 
-    // Backwards compatible check
+    // If it's just a simple text string, construct the JSON
     if (message.find("\"text\":") == std::string::npos)
     {
         message = R"({"text": ")" + message + "\"";
