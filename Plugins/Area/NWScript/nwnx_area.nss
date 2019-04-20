@@ -92,6 +92,12 @@ int NWNX_Area_GetDayNightCycle(object area);
 // type = NWNX_AREA_DAYNIGHTCYCLE_*
 void NWNX_Area_SetDayNightCycle(object area, int type);
 
+// Get the Sun/Moon Ambient/Diffuse colors of area
+// type = NWNX_AREA_COLOR_TYPE_*
+//
+// Returns FOG_COLOR_* or a custom value, -1 on error
+int NWNX_Area_GetSunMoonColors(object area, int type);
+
 // Set the Sun/Moon Ambient/Diffuse colors of area
 // type = NWNX_AREA_COLOR_TYPE_*
 // color = FOG_COLOR_*
@@ -107,6 +113,16 @@ void NWNX_Area_SetSunMoonColors(object area, int type, int color);
 // Valid object types for the target are DOOR or WAYPOINT.
 // If a tag is specified the returning object will have that tag
 object NWNX_Area_CreateTransition(object area, object target, float x, float y, float z, float size = 2.0f, string tag="");
+
+// Get the state of a tile animation loop
+// nAnimLoop = 1-3
+int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop);
+
+// Set the state of a tile animation loop
+// nAnimLoop = 1-3
+//
+// NOTE: Requires clients to re-enter the area for it to take effect
+void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
 
 
 const string NWNX_Area = "NWNX_Area";
@@ -316,6 +332,17 @@ void NWNX_Area_SetDayNightCycle(object area, int type)
     NWNX_CallFunction(NWNX_Area, sFunc);
 }
 
+int NWNX_Area_GetSunMoonColors(object area, int type)
+{
+    string sFunc = "GetSunMoonColors";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, type);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, area);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
 void NWNX_Area_SetSunMoonColors(object area, int type, int color)
 {
     string sFunc = "SetSunMoonColors";
@@ -340,4 +367,31 @@ object NWNX_Area_CreateTransition(object area, object target, float x, float y, 
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueObject(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop)
+{
+    string sFunc = "GetTileAnimationLoop";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, nAnimLoop);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled)
+{
+    string sFunc = "SetTileAnimationLoop";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, bEnabled);
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, nAnimLoop);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+
+    NWNX_CallFunction(NWNX_Area, sFunc);
 }

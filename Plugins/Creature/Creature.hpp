@@ -83,6 +83,7 @@ private:
     ArgumentStack LevelDown                     (ArgumentStack&& args);
     ArgumentStack SetChallengeRating            (ArgumentStack&& args);
     ArgumentStack GetAttackBonus                (ArgumentStack&& args);
+    ArgumentStack GetHighestLevelOfFeat         (ArgumentStack&& args);
     ArgumentStack GetFeatRemainingUses          (ArgumentStack&& args);
     ArgumentStack GetFeatTotalUses              (ArgumentStack&& args);
     ArgumentStack SetFeatRemainingUses          (ArgumentStack&& args);

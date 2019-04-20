@@ -14,7 +14,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Core: Allow changing default plugin state from 'load all' to 'skip all' with the following environment variable: `NWNX_CORE_SKIP_ALL=y`. Use `NWNX_PLUGIN_SKIP=n` to enable specific plugins in this case.
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
 - Core: Added the environment variable `NWNX_CORE_SHUTDOWN_SCRIPT=scriptname` which lets you set a nwscript that runs when the server shuts down
-- Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents, InventoryEvents, BarterEvents, TrapEvents, TimingBarEvents
+- Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents, InventoryEvents, BarterEvents, TrapEvents, TimingBarEvents, LevelEvents
 - Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents, QuickChatEvents, InventoryEvents, BarterEvents (START only), TrapEvents, StickyPlayerNameReservedEvent
 - Events: You can now get the current event name with a nwscript function
 - Events: Added On{Listen/Spot}Detection events to StealthEvents
@@ -29,11 +29,13 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added AIAction{Disarm|Examine|Flag|Recover|Set}Trap events
 - Events: Added Timing Bar events
 - Events: Added Sticky Player Name Reserved event allowing builders to use another method instead of knownservernames.2da to validate player names and cd keys
+- Events: Added Level{Up|UpAutomatic|Down} events to LevelEvents
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
 - Tweaks: DisableMonkAbilitiesWhenPolymorphed
+- Weapon: Feat and Base Item names were added to LOG_INFO feedback
 ##### New Plugins
 The following plugins were added:
 - **Area**: Adds functions exposing additional area properties
@@ -46,6 +48,7 @@ The following plugins were added:
 - **Regex**: Adds functions to search and replace strings using regular expressions.
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
+- **SkillRanks**: Adds functions to create feats and perform actions that manipulate the calculations of skill ranks
 - **Visibility**: Allows the visibility of objects to be overridden globally or per player
 ##### New NWScript Functions
 - Administration: GetPlayOption()
@@ -72,9 +75,11 @@ The following plugins were added:
 - Area: SetShadowOpacity()
 - Area: GetDayNightCycle()
 - Area: SetDayNightCycle()
-- Area: SetSunMoonColors()
+- Area: {Get|Set}SunMoonColors()
 - Area: CreateTransition()
+- Area: {Get|Set}TileAnimationLoop()
 - Creature: GetAttackBonus()
+- Creature: GetHighestLevelOfFeat()
 - Creature: GetFeatRemainingUses()
 - Creature: GetFeatTotalUses()
 - Creature: SetFeatRemainingUses()
@@ -114,6 +119,7 @@ The following plugins were added:
 - Object: AddToArea()
 - Object: GetPlaceableIsStatic()
 - Object: SetPlaceableIsStatic()
+- Object: {Get|Set}AutoRemoveKey()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()
@@ -135,6 +141,15 @@ The following plugins were added:
 - Rename: GetPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
+- SkillRanks: GetSkillFeat()
+- SkillRanks: GetSkillFeatCountForSkill()
+- SkillRanks: GetSkillFeatForSkillByIndex()
+- SkillRanks: SetSkillFeat()
+- SkillRanks: SetSkillFeatFocusModifier()
+- SkillRanks: GetBlindnessPenalty()
+- SkillRanks: SetBlindnessPenalty()
+- SkillRanks: GetAreaModifier()
+- SkillRanks: SetAreaModifier()
 - Util: GenerateUUID()
 - Util: GetCustomToken()
 - Util: GetEnvironmentVariable()

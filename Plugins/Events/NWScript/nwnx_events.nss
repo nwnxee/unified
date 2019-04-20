@@ -672,6 +672,19 @@
         CDKEY                   string      Public cdkey of the connecting client
         LEGACY_CDKEY            string      Public cdkey from earlier versions of NWN
         IS_DM                   int         Whether the client is connecting as DM (1/0)
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_LEVEL_UP_BEFORE
+    NWNX_ON_LEVEL_UP_AFTER
+    NWNX_ON_LEVEL_UP_AUTOMATIC_BEFORE
+    NWNX_ON_LEVEL_UP_AUTOMATIC_AFTER
+    NWNX_ON_LEVEL_DOWN_BEFORE
+    NWNX_ON_LEVEL_DOWN_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature levelling up or down, automatic is for henchmen levelling
+
+    Event data:
+        Variable Name           Type        Notes
 *///////////////////////////////////////////////////////////////////////////////
 
 /*

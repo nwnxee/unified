@@ -34,6 +34,8 @@ private:
     ArgumentStack AddToArea            (ArgumentStack&& args);
     ArgumentStack GetPlaceableIsStatic (ArgumentStack&& args);
     ArgumentStack SetPlaceableIsStatic (ArgumentStack&& args);
+    ArgumentStack GetAutoRemoveKey     (ArgumentStack&& args);
+    ArgumentStack SetAutoRemoveKey     (ArgumentStack&& args);
 
     NWNXLib::API::CNWSObject *object(ArgumentStack& args);
 

@@ -103,6 +103,11 @@ void main()
     report("SetPlaceableIsStatic 2", NWNX_Object_GetPlaceableIsStatic(oPlc) == 0);
     DestroyObject(oPlc);
 
+    oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
+    NWNX_Object_SetAutoRemoveKey(oPlc, 1);
+    report("SetAutoRemoveKey", NWNX_Object_GetAutoRemoveKey(oPlc) == 1);
+    DestroyObject(oPlc);
+
     DestroyObject(o);
     DestroyObject(oDeserialized);
     WriteTimestampedLogEntry("NWNX_Object unit test end.");
