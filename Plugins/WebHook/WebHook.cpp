@@ -38,14 +38,7 @@ namespace WebHook {
 WebHook::WebHook(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-#define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&WebHook::func, this, std::placeholders::_1))
-
-    REGISTER(OnSendWebHookHTTPS);
-    REGISTER(EncodeURL);
-
-#undef REGISTER
-
+    GetServices()->m_events->RegisterEvent("SEND_WEBHOOK_HTTPS", &OnSendWebHookHTTPS);
 }
 
 WebHook::~WebHook()
@@ -70,7 +63,19 @@ ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
     auto host = Services::Events::ExtractArgument<std::string>(args);
     auto origPath = Services::Events::ExtractArgument<std::string>(args);
     auto message = Services::Events::ExtractArgument<std::string>(args);
-    auto originalMsg = message;
+    auto username = Services::Events::ExtractArgument<std::string>(args);
+    auto mrkdwn = Services::Events::ExtractArgument<int32_t>(args);
+
+    // Backwards compatible check
+    if (message.find("\"text\":") == std::string::npos)
+    {
+        message = R"({"text": ")" + message + "\"";
+        if (!username.empty())
+            message = message + R"(, "username": ")" + username + "\"";
+        if (!mrkdwn)
+            message = message +  R"(, "mrkdwn": false)";
+        message = message + "}";
+    }
 
     // For Discord, will wait for a response
     auto path = origPath + "?wait=true";
@@ -80,7 +85,7 @@ ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
     message = Encoding::ToUTF8(message);
     escape_json(message);
 
-    plugin.GetServices()->m_tasks->QueueOnAsyncThread([originalMsg, message, host, path, origPath]()
+    plugin.GetServices()->m_tasks->QueueOnAsyncThread([message, host, path, origPath]()
     {
         auto messaging = g_plugin->GetServices()->m_messaging.get();
         auto moduleOid = NWNXLib::Utils::ObjectIDToString(Utils::GetModule()->m_idSelf);
@@ -148,15 +153,6 @@ ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
         }
     });
 
-    return stack;
-}
-
-ArgumentStack WebHook::EncodeURL(ArgumentStack&& args)
-{
-    Events::ArgumentStack stack;
-    const auto url = Services::Events::ExtractArgument<std::string>(args);
-
-    Services::Events::InsertArgument(stack, httplib::detail::encode_url(url));
     return stack;
 }
 

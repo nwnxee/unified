@@ -18,7 +18,10 @@ For added security, it is highly recommended to set your webhook path as an envi
 The builder wants to be notified with a simple message when the module has completed start up
 * At the end of the `on_module_load` script, add the following:
 ```c
+#include "nwnx_webhook"
+...
 NWNX_WebHook_SendWebHookHTTPS("discordapp.com", NWNX_Util_GetEnvironmentVariable("NWNX_WEBHOOK_DEVELOPER_CHANNEL"), "Module has completed start up.");
+...
 ```
 
 #### Example 2
@@ -28,7 +31,7 @@ The builder wishes to create a function to post a bug report to the Discord deve
 ```c
 #include "nwnx_time"
 #include "nwnx_util"
-#include "nwnx_webhook"
+#include "nwnx_webhook_rch"
 
 void ReportBug(string sMessage, object oReporter=OBJECT_INVALID)
 {
@@ -55,7 +58,8 @@ void ReportBug(string sMessage, object oReporter=OBJECT_INVALID)
     stMessage.sField3Name = "Location";
     stMessage.sField3Value = NWNXLocationToString(GetLocation(oReporter));
     stMessage.iTimestamp = NWNX_Time_GetTimeStamp();
-    NWNX_WebHook_SendRichWebHookHTTPS("discordapp.com", NWNX_Util_GetEnvironmentVariable("NWNX_WEBHOOK_DEVELOPER_CHANNEL"), stMessage);
+    string sConstructedMsg = NWNX_WebHook_BuildMessageForWebHook("discordapp.com", NWNX_Util_GetEnvironmentVariable("NWNX_WEBHOOK_DEVELOPER_CHANNEL"), stMessage);
+    NWNX_WebHook_SendWebHookHTTPS("discordapp.com", NWNX_Util_GetEnvironmentVariable("NWNX_WEBHOOK_DEVELOPER_CHANNEL"), sConstructedMsg);
 }
 
 ```
@@ -123,7 +127,8 @@ void main()
         stMessage.sDescription = "**" + GetName(oPC) + "** has reached level **"+IntToString(GetHitDice(oPC))+"**! :tada:";
         stMessage.sFooterText = "My_Module_1.00";
         stMessage.iTimestamp = NWNX_Time_GetTimeStamp();
-        NWNX_WebHook_SendRichWebHookHTTPS("hook.slack.com", NWNX_Util_GetEnvironmentVariable("NWNX_WEBHOOK_PUBLIC_CHANNEL"), stMessage);
+        string sConstructedMsg = NWNX_WebHook_BuildMessageForWebHook("hook.slack.com", NWNX_Util_GetEnvironmentVariable("NWNX_WEBHOOK_PUBLIC_CHANNEL"), stMessage);
+        NWNX_WebHook_SendWebHookHTTPS("hook.slack.com", NWNX_Util_GetEnvironmentVariable("NWNX_WEBHOOK_PUBLIC_CHANNEL"), sConstructedMsg);
     }
 }
 ```

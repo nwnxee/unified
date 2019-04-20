@@ -163,7 +163,6 @@ The following plugins were added:
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()
-- WebHook: EncodeURL()
 
 ### Changed
 - Core: The nwnx.txt logfile will now be written to the UserDirectory
