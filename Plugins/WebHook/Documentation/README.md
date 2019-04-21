@@ -42,7 +42,7 @@ void ReportBug(string sMessage, object oReporter=OBJECT_INVALID)
     stMessage.sAvatarURL = "https://example.com/img/icon.png";
     stMessage.sTitle = "Add to Gitlab?";
     stMessage.sURL = "https://gitlab.example.com/nwn/module/issues/new?issue[title]="+
-                     "NWN+Bug+Report&issue[description]="+NWNX_WebHook_EncodeURL(sMessage);
+                     "NWN+Bug+Report&issue[description]="+NWNX_Util_EncodeStringForURL(sMessage);
     stMessage.sColor = "#FF0000";
     stMessage.sAuthorName = GetName(oReporter) + " ("+ GetPCPlayerName(oReporter)+")";
     stMessage.sAuthorIconURL = "https://example.com/img/portrait/" + GetStringLowerCase(GetPortraitResRef(oReporter)) + "t.png";
@@ -108,7 +108,7 @@ NWNX_Events_SubscribeEvent("NWNX_ON_LEVEL_UP_AFTER", "event_level");
 #include "nwnx_events"
 #include "nwnx_time"
 #include "nwnx_util"
-#include "nwnx_webhook"
+#include "nwnx_webhook_rch"
 
 void main()
 {
