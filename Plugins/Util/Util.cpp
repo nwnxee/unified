@@ -63,6 +63,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetEnvironmentVariable);
     REGISTER(GetMinutesPerHour);
     REGISTER(SetMinutesPerHour);
+    REGISTER(EncodeStringForURL);
 
 #undef REGISTER
 
@@ -220,6 +221,38 @@ ArgumentStack Util::SetMinutesPerHour(ArgumentStack&& args)
     ASSERT_OR_THROW(minPerHour <= 255);
 
     Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->SetMinutesPerHour(minPerHour);
+    return stack;
+}
+
+ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto s = Services::Events::ExtractArgument<std::string>(args);
+    std::string result;
+
+    // Taken from httplib.h endode_url
+    for (auto i = 0; s[i]; i++)
+    {
+        switch (s[i]) {
+            case ' ':  result += "+"; break;
+            case '\'': result += "%27"; break;
+            case ',':  result += "%2C"; break;
+            case ':':  result += "%3A"; break;
+            case ';':  result += "%3B"; break;
+            default:
+                if (s[i] < 0) {
+                    result += '%';
+                    char hex[4];
+                    size_t len = snprintf(hex, sizeof(hex) - 1, "%02X", (unsigned char)s[i]);
+                    ASSERT_OR_THROW(len == 2);
+                    result.append(hex, len);
+                } else {
+                    result += s[i];
+                }
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, result);
     return stack;
 }
 
