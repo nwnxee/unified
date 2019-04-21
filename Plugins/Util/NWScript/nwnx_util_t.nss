@@ -54,5 +54,8 @@ void main()
     NWNX_Util_SetMinutesPerHour(30);
     report("SetMinutesPerHour", NWNX_Util_GetMinutesPerHour() == 30);
 
+    string sStringForURL = "This is a test, yes.";
+    report("EncodeStringForURL", NWNX_Util_EncodeStringForURL(sStringForURL) == "This+is+a+test%2C+yes.");
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }
