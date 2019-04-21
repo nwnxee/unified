@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CNWSArea.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWLevelStats.hpp"
@@ -14,6 +15,7 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
+#include "Encoding.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
@@ -127,6 +129,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetOriginalName);
     REGISTER(GetOriginalName);
     REGISTER(SetSpellResistance);
+    REGISTER(GetAreaExplorationState);
+    REGISTER(SetAreaExplorationState);
 
 #undef REGISTER
 }
@@ -1826,6 +1830,74 @@ ArgumentStack Creature::SetSpellResistance(ArgumentStack&& args)
           ASSERT_OR_THROW(sr >= -127);
           ASSERT_OR_THROW(sr <= 128);
         pCreature->m_pStats->SetSpellResistance(static_cast<int8_t>(sr));
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetAreaExplorationState(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string encString="";
+    
+    if (auto *pCreature = creature(args))
+    {
+        const auto areaId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        if (areaId != Constants::OBJECT_INVALID)
+        {
+            const auto pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
+            if (pArea)
+            {
+                uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
+                for (int k=0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                {
+                    if (*p_oidArea==areaId)
+                    {
+                        uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
+                        if (pTileData)
+                        {
+                            std::vector<uint8_t> tileDataVector(&pTileData[0], &pTileData[pArea->m_nMapSize]);
+                            encString = NWNXLib::Encoding::ToBase64(tileDataVector);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    Services::Events::InsertArgument(stack, encString);
+    return stack;
+}
+
+ArgumentStack Creature::SetAreaExplorationState(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto areaId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        if (areaId != Constants::OBJECT_INVALID)
+        {
+            const auto pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
+            if (pArea)
+            {
+                auto encString = Services::Events::ExtractArgument<std::string>(args);
+                
+                uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
+                for (int k=0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                {
+                    if (*p_oidArea==areaId)
+                    {
+                        uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
+                        if (pTileData)
+                        {
+                            std::vector<uint8_t> tileDataVector=NWNXLib::Encoding::FromBase64(encString);
+                            std::copy(tileDataVector.begin(), tileDataVector.begin()+pArea->m_nMapSize, pTileData);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
     return stack;
 }

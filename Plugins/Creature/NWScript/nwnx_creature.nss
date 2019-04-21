@@ -324,6 +324,13 @@ string NWNX_Creature_GetOriginalName(object creature, int isLastName);
 // Set creature's spell resistance
 void NWNX_Creature_SetSpellResistance(object creature, int sr);
 
+// Get creature's area exploration state
+string NWNX_Creature_GetAreaExplorationState(object creature, object area);
+
+// Set creature's area exploration state (str is an encoded string obtained with NWNX_Creature_GetAreaExplorationState)
+void NWNX_Creature_SetAreaExplorationState(object creature, object area, string str);
+
+
 const string NWNX_Creature = "NWNX_Creature";
 
 
@@ -1158,6 +1165,26 @@ void NWNX_Creature_SetSpellResistance(object creature, int sr)
     string sFunc = "SetSpellResistance";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, sr);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+string NWNX_Creature_GetAreaExplorationState(object creature, object area)
+{
+    string sFunc = "GetAreaExplorationState";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, area);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return  NWNX_GetReturnValueString(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetAreaExplorationState(object creature, object area, string str)
+{
+    string sFunc = "SetAreaExplorationState";
+    NWNX_PushArgumentString(NWNX_Creature, sFunc, str);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, area);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);

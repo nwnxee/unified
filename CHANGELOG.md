@@ -87,6 +87,8 @@ The following plugins were added:
 - Creature: SetOriginalName()
 - Creature: GetOriginalName()
 - Creature: SetSpellResistance()
+- Creature: SetAreaExplorationState()
+- Creature: GetAreaExplorationState()
 - Damage: SetAttackEventScript()
 - Damage: GetAttackEventData()
 - Damage: SetAttackEventData()
