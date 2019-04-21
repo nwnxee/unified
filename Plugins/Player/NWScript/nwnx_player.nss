@@ -123,6 +123,12 @@ void NWNX_Player_UpdateCharacterSheet(object player);
 // Note: only works if player and target are in the same area
 void NWNX_Player_OpenInventory(object player, object target, int open = TRUE);
 
+// Get player's area exploration state
+string NWNX_Player_GetAreaExplorationState(object player, object area);
+
+// Set player's area exploration state (str is an encoded string obtained with NWNX_Player_GetAreaExplorationState)
+void NWNX_Player_SetAreaExplorationState(object player, object area, string str);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -450,6 +456,26 @@ void NWNX_Player_OpenInventory(object player, object target, int open = TRUE)
     NWNX_PushArgumentInt(NWNX_Player, sFunc, open);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+string NWNX_Player_GetAreaExplorationState(object creature, object area)
+{
+    string sFunc = "GetAreaExplorationState";
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, area);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return  NWNX_GetReturnValueString(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetAreaExplorationState(object creature, object area, string str)
+{
+    string sFunc = "SetAreaExplorationState";
+    NWNX_PushArgumentString(NWNX_Player, sFunc, str);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, area);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
 }

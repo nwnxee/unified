@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CNWSArea.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSObject.hpp"
@@ -28,6 +29,7 @@
 #include "API/Functions.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Encoding.hpp"
 #include "ViewPtr.hpp"
 
 using namespace NWNXLib;
@@ -82,6 +84,8 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(ApplyInstantVisualEffectToObject);
     REGISTER(UpdateCharacterSheet);
     REGISTER(OpenInventory);
+    REGISTER(GetAreaExplorationState);
+    REGISTER(SetAreaExplorationState);
 
 #undef REGISTER
 
@@ -635,4 +639,73 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Player::GetAreaExplorationState(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string encString="";
+    
+    if (auto *pPlayer = player(args))
+    {
+        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        const auto areaId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        if (pCreature && areaId != Constants::OBJECT_INVALID)
+        {
+            const auto pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
+            if (pArea)
+            {
+                uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
+                for (int k=0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                {
+                    if (*p_oidArea==areaId)
+                    {
+                        uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
+                        if (pTileData)
+                        {
+                            std::vector<uint8_t> tileDataVector(&pTileData[0], &pTileData[pArea->m_nMapSize]);
+                            encString = NWNXLib::Encoding::ToBase64(tileDataVector);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    Services::Events::InsertArgument(stack, encString);
+    return stack;
+}
+
+ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        const auto areaId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        if (pCreature && areaId != Constants::OBJECT_INVALID)
+        {
+            const auto pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
+            if (pArea)
+            {
+                auto encString = Services::Events::ExtractArgument<std::string>(args);
+                
+                uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
+                for (int k=0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                {
+                    if (*p_oidArea==areaId)
+                    {
+                        uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
+                        if (pTileData)
+                        {
+                            std::vector<uint8_t> tileDataVector=NWNXLib::Encoding::FromBase64(encString);
+                            std::copy(tileDataVector.begin(), tileDataVector.begin()+pArea->m_nMapSize, pTileData);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return stack;
+}
 }
