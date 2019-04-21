@@ -136,6 +136,8 @@ The following plugins were added:
 - Player: ApplyInstantVisualEffectToObject()
 - Player: UpdateCharacterSheet()
 - Player: OpenInventory()
+- Player: GetAreaExplorationState()
+- Player: SetAreaExplorationState()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()

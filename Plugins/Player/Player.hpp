@@ -35,6 +35,8 @@ private:
     ArgumentStack ApplyInstantVisualEffectToObject  (ArgumentStack&& args);
     ArgumentStack UpdateCharacterSheet              (ArgumentStack&& args);
     ArgumentStack OpenInventory                     (ArgumentStack&& args);
+    ArgumentStack GetAreaExplorationState           (ArgumentStack&& args);
+    ArgumentStack SetAreaExplorationState           (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
