@@ -1,3 +1,30 @@
+/*
+Part of the code for method Util::EncodeStringForURL() was taken from yhirose's cpp-httplib.
+The cpp-httplib copyright notice is as follows:
+
+The MIT License (MIT)
+
+Copyright (c) 2017 yhirose
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 #include "Util.hpp"
 
 #include "API/Constants.hpp"
@@ -63,6 +90,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetEnvironmentVariable);
     REGISTER(GetMinutesPerHour);
     REGISTER(SetMinutesPerHour);
+    REGISTER(EncodeStringForURL);
 
 #undef REGISTER
 
@@ -220,6 +248,39 @@ ArgumentStack Util::SetMinutesPerHour(ArgumentStack&& args)
     ASSERT_OR_THROW(minPerHour <= 255);
 
     Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->SetMinutesPerHour(minPerHour);
+    return stack;
+}
+
+ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto s = Services::Events::ExtractArgument<std::string>(args);
+    std::string result;
+
+    // For licensing information pertaining to this part of the method, see the comment at the top of this file.
+    for (auto i = 0; s[i]; i++)
+    {
+        switch (s[i]) {
+            case ' ':  result += "+"; break;
+            case '\'': result += "%27"; break;
+            case ',':  result += "%2C"; break;
+            case ':':  result += "%3A"; break;
+            case ';':  result += "%3B"; break;
+            default:
+                if (s[i] < 0) {
+                    result += '%';
+                    char hex[4];
+                    size_t len = snprintf(hex, sizeof(hex) - 1, "%02X", (unsigned char)s[i]);
+                    ASSERT_OR_THROW(len == 2);
+                    result.append(hex, len);
+                } else {
+                    result += s[i];
+                }
+                break;
+        }
+    }
+    // End of cpp-httplib code
+    Services::Events::InsertArgument(stack, result);
     return stack;
 }
 

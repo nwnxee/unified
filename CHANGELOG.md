@@ -162,6 +162,7 @@ The following plugins were added:
 - Util: IsValidResRef()
 - Util: GetMinutesPerHour()
 - Util: SetMinutesPerHour()
+- Util: EncodeStringForURL()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()
