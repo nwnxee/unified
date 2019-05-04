@@ -101,6 +101,10 @@ void main()
     report("SetAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
     report("SetAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
 
+    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectPolymorph(POLYMORPH_TYPE_BADGER), oCreature);
+    report("GetPrePolymorphAbilityScore", 25 == NWNX_Creature_GetPrePolymorphAbilityScore(oCreature, ABILITY_STRENGTH));
+    RemoveEffect(oCreature, GetFirstEffect(oCreature));
+
 
     int nLvl1HP = NWNX_Creature_GetMaxHitPointsByLevel(oCreature, 1);
     report("GetMaxHitPointsByLevel", nLvl1HP >= 0);
