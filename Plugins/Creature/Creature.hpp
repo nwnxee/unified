@@ -36,6 +36,7 @@ private:
     ArgumentStack SetRawAbilityScore            (ArgumentStack&& args);
     ArgumentStack GetRawAbilityScore            (ArgumentStack&& args);
     ArgumentStack ModifyRawAbilityScore         (ArgumentStack&& args);
+    ArgumentStack GetPrePolymorphAbilityScore   (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpell             (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpellCountByLevel (ArgumentStack&& args);
     ArgumentStack SetMemorisedSpell             (ArgumentStack&& args);

@@ -127,6 +127,9 @@ int NWNX_Creature_GetRawAbilityScore(object creature, int ability);
 // Adjusts the provided ability score of a provided creature. Does not apply racial bonuses/penalties.
 void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modifier);
 
+// Gets the raw ability score a polymorphed creature had prior to polymorphing. Str/Dex/Con only.
+int NWNX_Creature_GetPrePolymorphAbilityScore(object creature, int ability);
+
 // Gets the memorised spell of the provided creature for the provided class, level, and index.
 // Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
 struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index);
@@ -553,6 +556,17 @@ void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modif
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetPrePolymorphAbilityScore(object creature, int ability)
+{
+    string sFunc = "GetPrePolymorphAbilityScore";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
 struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index)
