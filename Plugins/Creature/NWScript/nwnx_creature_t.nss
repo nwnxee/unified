@@ -105,6 +105,11 @@ void main()
     report("GetPrePolymorphAbilityScore", 25 == NWNX_Creature_GetPrePolymorphAbilityScore(oCreature, ABILITY_STRENGTH));
     RemoveEffect(oCreature, GetFirstEffect(oCreature));
 
+    report("GetMovementRateFactor", 1.0 == NWNX_Creature_GetMovementRateFactor(oCreature));
+    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectMovementSpeedIncrease(25), oCreature);
+    report("GetMovementRateFactor", 1.25 == NWNX_Creature_GetMovementRateFactor(oCreature));
+    NWNX_Creature_SetMovementRateFactor(oCreature, 1.5);
+    report("SetMovementRateFactor", 1.5 == NWNX_Creature_GetMovementRateFactor(oCreature));
 
     int nLvl1HP = NWNX_Creature_GetMaxHitPointsByLevel(oCreature, 1);
     report("GetMaxHitPointsByLevel", nLvl1HP >= 0);

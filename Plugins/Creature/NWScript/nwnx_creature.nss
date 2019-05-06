@@ -177,6 +177,12 @@ void NWNX_Creature_SetMaxHitPointsByLevel(object creature, int level, int value)
 // Set creature's movement rate.
 void NWNX_Creature_SetMovementRate(object creature, int rate);
 
+// Returns the creature's current movement rate factor (base = 1.0)
+float NWNX_Creature_GetMovementRateFactor(object creature);
+
+// Sets the creature's current movement rate factor (base = 1.0)
+void NWNX_Creature_SetMovementRateFactor(object creature, float rate);
+
 // Set creature's raw good/evil alignment value.
 void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value);
 
@@ -753,6 +759,25 @@ void NWNX_Creature_SetMovementRate(object creature, int rate)
     string sFunc = "SetMovementRate";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, rate);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetMovementRateFactor(object creature)
+{
+    string sFunc = "GetMovementRateFactor";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetMovementRateFactor(object creature, float factor)
+{
+    string sFunc = "SetMovementRateFactor";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, factor);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
