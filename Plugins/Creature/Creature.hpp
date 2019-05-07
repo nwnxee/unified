@@ -52,6 +52,8 @@ private:
     ArgumentStack GetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
+    ArgumentStack GetMovementRateFactor         (ArgumentStack&& args);
+    ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
     ArgumentStack GetClericDomain               (ArgumentStack&& args);

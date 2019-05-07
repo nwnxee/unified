@@ -88,6 +88,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetMaxHitPointsByLevel);
     REGISTER(SetMaxHitPointsByLevel);
     REGISTER(SetMovementRate);
+    REGISTER(GetMovementRateFactor);
+    REGISTER(SetMovementRateFactor);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
     REGISTER(GetClericDomain);
@@ -1042,6 +1044,29 @@ ArgumentStack Creature::SetMovementRate(ArgumentStack&& args)
     {
         const auto rate = Services::Events::ExtractArgument<int32_t>(args);
         pCreature->m_pStats->SetMovementRate(rate);
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetMovementRateFactor(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->GetMovementRateFactor();
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Creature::SetMovementRateFactor(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const float factor = Services::Events::ExtractArgument<float>(args);
+        pCreature->SetMovementRateFactor(factor);
     }
     return stack;
 }
