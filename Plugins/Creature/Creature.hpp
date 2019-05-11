@@ -36,6 +36,7 @@ private:
     ArgumentStack SetRawAbilityScore            (ArgumentStack&& args);
     ArgumentStack GetRawAbilityScore            (ArgumentStack&& args);
     ArgumentStack ModifyRawAbilityScore         (ArgumentStack&& args);
+    ArgumentStack GetPrePolymorphAbilityScore   (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpell             (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpellCountByLevel (ArgumentStack&& args);
     ArgumentStack SetMemorisedSpell             (ArgumentStack&& args);
@@ -51,6 +52,8 @@ private:
     ArgumentStack GetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
+    ArgumentStack GetMovementRateFactor         (ArgumentStack&& args);
+    ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
     ArgumentStack GetClericDomain               (ArgumentStack&& args);
