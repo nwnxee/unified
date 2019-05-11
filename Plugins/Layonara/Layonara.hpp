@@ -20,6 +20,7 @@ private:
     NWNXLib::Hooking::FunctionHook* m_GetItemInSlotHook;
 
     ArgumentStack SetEquippableSlots      (ArgumentStack&& args);
+    ArgumentStack SetHostileFeat          (ArgumentStack&& args);
 };
 
 }
