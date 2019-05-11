@@ -3,6 +3,7 @@
 #include "API/CNWRules.hpp"
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
+#include "API/CNWFeat.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -41,6 +42,7 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Layonara::func, this, std::placeholders::_1))
 
     REGISTER(SetEquippableSlots);
+    REGISTER(SetHostileFeat);
 
 #undef REGISTER
 
@@ -73,6 +75,16 @@ ArgumentStack Layonara::SetEquippableSlots(ArgumentStack&& args)
     auto baseItemId =  Services::Events::ExtractArgument<int32_t>(args);
     auto slots =  Services::Events::ExtractArgument<int32_t>(args);
     Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItemId)->m_nEquipableSlots = slots;
+    return stack;
+}
+
+ArgumentStack Layonara::SetHostileFeat(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    auto featId =  Services::Events::ExtractArgument<int32_t>(args);
+    auto hostile =  Services::Events::ExtractArgument<int32_t>(args);
+    auto feat = Globals::Rules()->GetFeat(featId);
+    feat->m_bHostileFeat = hostile;
     return stack;
 }
 
