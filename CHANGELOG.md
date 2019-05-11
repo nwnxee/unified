@@ -110,6 +110,7 @@ The following plugins were added:
 - Encounter: GetResetTime()
 - Encounter: SetResetTime()
 - Events: GetCurrentEvent()
+- Events: ON_ITEM_EVENT_{BEFORE|AFTER}
 - Feedback: Get{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog}MessageMode()

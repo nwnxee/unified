@@ -120,6 +120,16 @@
     Event data:
         Variable Name           Type        Notes
         ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_EVENT_BEFORE
+    NWNX_ON_ITEM_EVENT_AFTER
+
+    Usage:
+        OBJECT_SELF = The item triggering the event
+
+    Event data:
+        Variable Name           Type        Notes
+        EVENT_ID                int         Type of event triggered, see ITEM_EVENT_* constants below
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -727,6 +737,11 @@ const int NWNX_EVENTS_TIMING_BAR_REST          = 6;
 const int NWNX_EVENTS_TIMING_BAR_UNLOCK        = 7;
 const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;
 const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
+*/
+
+/*
+const int NWNX_EVENTS_ITEM_EVENT_DESTROY_OBJECT = 11;
+const int NWNX_EVENTS_ITEM_EVENT_DECREMENT_STACKSIZE = 16;
 */
 
 // Scripts can subscribe to events.

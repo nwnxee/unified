@@ -24,6 +24,7 @@ static Hooking::FunctionHook* m_FindItemWithBaseItemIdHook = nullptr;
 static Hooking::FunctionHook* m_LearnScrollHook = nullptr;
 static Hooking::FunctionHook* m_RunEquipHook = nullptr;
 static Hooking::FunctionHook* m_RunUnequipHook = nullptr;
+static Hooking::FunctionHook* m_ItemEventHandlerHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
@@ -69,6 +70,11 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_UNEQUIP_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::CNWSCreature__RunUnequip>(&RunUnequipHook);
         m_RunUnequipHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__RunUnequip);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_EVENT_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSItem__EventHandler>(&ItemEventHandlerHook);
+        m_ItemEventHandlerHook = hooker->FindHookByAddress(API::Functions::CNWSItem__EventHandler);
     });
 }
 
@@ -347,6 +353,26 @@ int32_t ItemEvents::RunUnequipHook(
     PushAndSignal("NWNX_ON_ITEM_UNEQUIP_AFTER");
 
     return retVal;
+}
+
+// hooks into CNWSItem::EventHandler
+void ItemEvents::ItemEventHandlerHook(
+        API::CNWSItem* thisPtr,
+        uint32_t nEventId,
+        NWNXLib::API::Types::ObjectID nCallerObjectId,
+        void *pScript,
+        uint32_t nCalendarDay,
+        uint32_t nTimeOfDay)
+{
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("EVENT_ID", std::to_string(nEventId));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+    if (PushAndSignal("NWNX_ON_ITEM_EVENT_BEFORE"))
+    {
+        m_ItemEventHandlerHook->CallOriginal<int32_t>(thisPtr, nEventId, nCallerObjectId, pScript, nCalendarDay, nTimeOfDay);
+    }
+    PushAndSignal("NWNX_ON_ITEM_EVENT_AFTER");
 }
 
 }
