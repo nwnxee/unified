@@ -21,7 +21,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added On{Un}Polymorph events as PolymorphEvents
 - Events: Added Event Data for SpawnObject, GiveItem, GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal, Goto, Possess, PossessFullPower, ToggleLock, DisableTrap, JumpToPoint, JumpTargetToPoint, JumpAllPlayersToPoint, ChangeDifficulty, ViewInventory, SpawnTrapOnObject events in DMActionEvents
 - Events: Added OnClientConnect events that fire before the player sees the server vault.
-- Events: Added ItemInventory{Open/Close}, ItemInventory{Add/Remove}Item and ScrollLearn events to ItemEvents
+- Events: Added ItemInventory{Open/Close}, ItemInventory{Add/Remove}Item, ScrollLearn and EventHandler events to ItemEvents
 - Events: Added {Set|Clear}MemorizedSpellSlot events to SpellEvents
 - Events: Added AmmoReload events that are used when the engine is looking for ammunition to reload
 - Events: Added Run{Un}Equip events to ItemEvents
@@ -110,7 +110,6 @@ The following plugins were added:
 - Encounter: GetResetTime()
 - Encounter: SetResetTime()
 - Events: GetCurrentEvent()
-- Events: ON_ITEM_EVENT_{BEFORE|AFTER}
 - Feedback: Get{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog}MessageMode()

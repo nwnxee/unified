@@ -130,6 +130,8 @@
     Event data:
         Variable Name           Type        Notes
         EVENT_ID                int         Type of event triggered, see ITEM_EVENT_* constants below
+
+    Note: Use of NWNX_ON_ITEM_EVENT_{BEFORE|AFTER} conflicts object event handler profiling
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
