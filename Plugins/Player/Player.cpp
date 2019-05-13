@@ -86,6 +86,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(OpenInventory);
     REGISTER(SetObjectVisualTransformOverride);
     REGISTER(ApplyLoopingVisualEffectToObject);
+    REGISTER(SetPlaceableNameOverride);
 
 #undef REGISTER
 
@@ -811,6 +812,74 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         {
             GetServices()->m_perObjectStorage->Set(oidTarget,
                     "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), visualEffect);
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
+{
+    static bool bSetPlaceableNameOverrideHook;
+
+    if (!bSetPlaceableNameOverrideHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                    CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
+                {
+                    if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
+                    {
+                        static Maybe<std::string> name;
+                        static CExoString swapName;
+
+                        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                        {
+                            name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,
+                                    "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+                            if (name)
+                            {
+                                std::string newName = *name;
+                                swapName = newName.c_str();
+
+                                std::swap(swapName, pPlaceable->m_sDisplayName);
+
+                                // TODO: This might get removed next patch?
+                                pPlaceable->m_bUpdateDisplayName = true;
+                            }
+                        }
+                        else
+                        {
+                            if (name)
+                            {
+                                std::swap(swapName, pPlaceable->m_sDisplayName);
+
+                                // TODO: This might get removed next patch?
+                                pPlaceable->m_bUpdateDisplayName = true;
+                            }
+                        }
+                    }
+                });
+
+        bSetPlaceableNameOverrideHook = true;
+    }
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto name = Services::Events::ExtractArgument<std::string>(args);
+
+        if (name.empty())
+        {
+            GetServices()->m_perObjectStorage->Remove(oidTarget,
+                                                      "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+        }
+        else
+        {
+            GetServices()->m_perObjectStorage->Set(oidTarget,
+                                                   "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
         }
     }
     return stack;

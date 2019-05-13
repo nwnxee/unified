@@ -130,6 +130,7 @@ The following plugins were added:
 - Player: OpenInventory()
 - Player: SetObjectVisualTransformOverride()
 - Player: ApplyLoopingVisualEffectToObject()
+- Player: SetPlaceableNameOverride()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()

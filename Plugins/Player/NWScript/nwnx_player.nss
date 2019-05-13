@@ -135,6 +135,10 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
 // Only a single effect per player/target pair, will overwrite effects from previous calls
 void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect);
 
+// Override the name of placeable for player only
+// "" to clear the override
+void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, string name);
+
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -483,6 +487,17 @@ void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, 
     string sFunc = "ApplyLoopingVisualEffectToObject";
     NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, string name)
+{
+    string sFunc = "SetPlaceableNameOverride";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, name);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);

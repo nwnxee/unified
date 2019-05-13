@@ -37,6 +37,7 @@ private:
     ArgumentStack OpenInventory                     (ArgumentStack&& args);
     ArgumentStack SetObjectVisualTransformOverride  (ArgumentStack&& args);
     ArgumentStack ApplyLoopingVisualEffectToObject  (ArgumentStack&& args);
+    ArgumentStack SetPlaceableNameOverride          (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
