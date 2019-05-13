@@ -35,6 +35,8 @@ private:
     ArgumentStack ApplyInstantVisualEffectToObject  (ArgumentStack&& args);
     ArgumentStack UpdateCharacterSheet              (ArgumentStack&& args);
     ArgumentStack OpenInventory                     (ArgumentStack&& args);
+    ArgumentStack GetAreaExplorationState           (ArgumentStack&& args);
+    ArgumentStack SetAreaExplorationState           (ArgumentStack&& args);
     ArgumentStack SetObjectVisualTransformOverride  (ArgumentStack&& args);
     ArgumentStack ApplyLoopingVisualEffectToObject  (ArgumentStack&& args);
     ArgumentStack SetPlaceableNameOverride          (ArgumentStack&& args);

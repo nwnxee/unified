@@ -79,6 +79,8 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(AddToArea);
     REGISTER(GetPlaceableIsStatic);
     REGISTER(SetPlaceableIsStatic);
+    REGISTER(GetAutoRemoveKey);
+    REGISTER(SetAutoRemoveKey);
 
 #undef REGISTER
 }
@@ -434,6 +436,61 @@ ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
             pPlaceable->m_bUseable = false;
         }
     }
+    return stack;
+}
+
+ArgumentStack Object::GetAutoRemoveKey(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        switch (pObject->m_nObjectType)
+        {
+            case Constants::ObjectType::Door:
+                retVal = Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey;
+                break;
+
+            case Constants::ObjectType::Placeable:
+                retVal = Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey;
+                break;
+
+            default:
+                LOG_WARNING("NWNX_Object_GetAutoRemoveKey() called on non door/placeable object.");
+                break;
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto bRemoveKey = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        switch (pObject->m_nObjectType)
+        {
+            case Constants::ObjectType::Door:
+                Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey = bRemoveKey;
+                break;
+
+            case Constants::ObjectType::Placeable:
+                Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey = bRemoveKey;
+                break;
+
+            default:
+                LOG_WARNING("NWNX_Object_SetAutoRemoveKey() called on non door/placeable object.");
+                break;
+        }
+    }
+
     return stack;
 }
 

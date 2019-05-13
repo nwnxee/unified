@@ -127,6 +127,9 @@ int NWNX_Creature_GetRawAbilityScore(object creature, int ability);
 // Adjusts the provided ability score of a provided creature. Does not apply racial bonuses/penalties.
 void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modifier);
 
+// Gets the raw ability score a polymorphed creature had prior to polymorphing. Str/Dex/Con only.
+int NWNX_Creature_GetPrePolymorphAbilityScore(object creature, int ability);
+
 // Gets the memorised spell of the provided creature for the provided class, level, and index.
 // Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
 struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index);
@@ -173,6 +176,12 @@ void NWNX_Creature_SetMaxHitPointsByLevel(object creature, int level, int value)
 
 // Set creature's movement rate.
 void NWNX_Creature_SetMovementRate(object creature, int rate);
+
+// Returns the creature's current movement rate factor (base = 1.0)
+float NWNX_Creature_GetMovementRateFactor(object creature);
+
+// Sets the creature's current movement rate factor (base = 1.0)
+void NWNX_Creature_SetMovementRateFactor(object creature, float rate);
 
 // Set creature's raw good/evil alignment value.
 void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value);
@@ -296,6 +305,9 @@ void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 //   -1: Get Attack Bonus depending on the weapon creature has equipped in its right hand
 //       Defaults to Melee Attack Bonus if weapon is invalid or no weapon
 int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE);
+
+// Get highest level version of feat posessed by creature (e.g. for barbarian rage)
+int NWNX_Creature_GetHighestLevelOfFeat(object creature, int feat);
 
 // Get feat remaining uses of a creature
 int NWNX_Creature_GetFeatRemainingUses(object creature, int feat);
@@ -552,6 +564,17 @@ void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modif
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
+int NWNX_Creature_GetPrePolymorphAbilityScore(object creature, int ability)
+{
+    string sFunc = "GetPrePolymorphAbilityScore";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, ability);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
 struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index)
 {
     string sFunc = "GetMemorisedSpell";
@@ -736,6 +759,25 @@ void NWNX_Creature_SetMovementRate(object creature, int rate)
     string sFunc = "SetMovementRate";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, rate);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetMovementRateFactor(object creature)
+{
+    string sFunc = "GetMovementRateFactor";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetMovementRateFactor(object creature, float factor)
+{
+    string sFunc = "SetMovementRateFactor";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, factor);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
@@ -1058,6 +1100,17 @@ int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchA
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, isOffhand);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, isTouchAttack);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, isMelee);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetHighestLevelOfFeat(object creature, int feat)
+{
+    string sFunc = "GetHighestLevelOfFeat";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, feat);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);

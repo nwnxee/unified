@@ -1,6 +1,6 @@
 #include "nwnx_creature"
 
-
+const int FEAT_BARBARIAN_RAGE_2 = 326;
 
 void report(string func, int bSuccess)
 {
@@ -51,6 +51,11 @@ void main()
 
     report("GetFeatByLevel", NWNX_Creature_GetFeatByLevel(oCreature, 1, nFeatCountLvl1) == FEAT_PLAYER_TOOL_01);
 
+    NWNX_Creature_AddFeat(oCreature, FEAT_BARBARIAN_RAGE);
+    report("GetHighestLevelOfFeat", NWNX_Creature_GetHighestLevelOfFeat(oCreature, FEAT_BARBARIAN_RAGE) == FEAT_BARBARIAN_RAGE);
+    NWNX_Creature_AddFeat(oCreature, FEAT_BARBARIAN_RAGE_2);
+    report("GetHighestLevelOfFeat", NWNX_Creature_GetHighestLevelOfFeat(oCreature, FEAT_BARBARIAN_RAGE) == FEAT_BARBARIAN_RAGE_2);
+
     NWNX_Creature_AddFeat(oCreature, FEAT_STUNNING_FIST);
     report("GetFeatRemainingUses", NWNX_Creature_GetFeatRemainingUses(oCreature, FEAT_STUNNING_FIST) == 1);
     NWNX_Creature_SetFeatRemainingUses(oCreature, FEAT_STUNNING_FIST, 0);
@@ -96,6 +101,15 @@ void main()
     report("SetAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
     report("SetAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
 
+    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectPolymorph(POLYMORPH_TYPE_BADGER), oCreature);
+    report("GetPrePolymorphAbilityScore", 25 == NWNX_Creature_GetPrePolymorphAbilityScore(oCreature, ABILITY_STRENGTH));
+    RemoveEffect(oCreature, GetFirstEffect(oCreature));
+
+    report("GetMovementRateFactor", 1.0 == NWNX_Creature_GetMovementRateFactor(oCreature));
+    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectMovementSpeedIncrease(25), oCreature);
+    report("GetMovementRateFactor", 1.25 == NWNX_Creature_GetMovementRateFactor(oCreature));
+    NWNX_Creature_SetMovementRateFactor(oCreature, 1.5);
+    report("SetMovementRateFactor", 1.5 == NWNX_Creature_GetMovementRateFactor(oCreature));
 
     int nLvl1HP = NWNX_Creature_GetMaxHitPointsByLevel(oCreature, 1);
     report("GetMaxHitPointsByLevel", nLvl1HP >= 0);

@@ -36,11 +36,14 @@ private:
     ArgumentStack SetShadowOpacity          (ArgumentStack&& args);
     ArgumentStack GetDayNightCycle          (ArgumentStack&& args);
     ArgumentStack SetDayNightCycle          (ArgumentStack&& args);
+    ArgumentStack GetSunMoonColors          (ArgumentStack&& args);
     ArgumentStack SetSunMoonColors          (ArgumentStack&& args);
     ArgumentStack CreateTransition          (ArgumentStack&& args);
+    ArgumentStack GetTileAnimationLoop      (ArgumentStack&& args);
+    ArgumentStack SetTileAnimationLoop      (ArgumentStack&& args);
 
     NWNXLib::API::CNWSArea *area(ArgumentStack& args);
-
+    static NWNXLib::API::CNWSTile *GetTile(NWNXLib::API::CNWSArea *pArea, float x, float y);
 };
 
 }

@@ -6,6 +6,7 @@
 #include "API/CNWSModule.hpp"
 #include "API/CNWSTransition.hpp"
 #include "API/CNWSTrigger.hpp"
+#include "API/CNWSTile.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
@@ -66,8 +67,11 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(SetShadowOpacity);
     REGISTER(GetDayNightCycle);
     REGISTER(SetDayNightCycle);
+    REGISTER(GetSunMoonColors);
     REGISTER(SetSunMoonColors);
     REGISTER(CreateTransition);
+    REGISTER(GetTileAnimationLoop);
+    REGISTER(SetTileAnimationLoop);
 
 #undef REGISTER
 }
@@ -94,6 +98,16 @@ CNWSArea *Area::area(ArgumentStack& args)
     }
 
     return pArea;
+}
+
+CNWSTile *Area::GetTile(CNWSArea *pArea, float x, float y)
+{
+    int nTile = (int)(y / 10) * pArea->m_nWidth + (int)(x / 10);
+
+    if (nTile >= 0 && nTile < (pArea->m_nWidth * pArea->m_nHeight))
+        return &pArea->m_pTile[nTile];
+    else
+        return nullptr;
 }
 
 ArgumentStack Area::GetNumberOfPlayersInArea(ArgumentStack&& args)
@@ -474,6 +488,45 @@ ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Area::GetSunMoonColors(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pArea = area(args))
+    {
+        auto type = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(type >= 0);
+          ASSERT_OR_THROW(type <= 3);
+
+        switch (type)
+        {
+            case 0:
+                retVal = pArea->m_nMoonAmbientColor;
+                break;
+
+            case 1:
+                retVal = pArea->m_nMoonDiffuseColor;
+                break;
+
+            case 2:
+                retVal = pArea->m_nSunAmbientColor;
+                break;
+
+            case 3:
+                retVal = pArea->m_nSunDiffuseColor;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
 ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -571,6 +624,100 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
     }
     else
         Services::Events::InsertArgument(stack, Constants::OBJECT_INVALID);
+
+    return stack;
+}
+
+ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pArea = area(args))
+    {
+        const auto tileX = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileX >= 0.0f);
+        const auto tileY = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileY >= 0.0f);
+        const auto tileAnimLoop = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(tileAnimLoop >= 1);
+          ASSERT_OR_THROW(tileAnimLoop <= 3);
+
+        CNWSTile *pTile = GetTile(pArea, tileX, tileY);
+
+        if (pTile)
+        {
+            switch(tileAnimLoop)
+            {
+                case 1:
+                    retVal = pTile->m_nAnimLoop1;
+                    break;
+
+                case 2:
+                    retVal = pTile->m_nAnimLoop2;
+                    break;
+
+                case 3:
+                    retVal = pTile->m_nAnimLoop3;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            LOG_ERROR("NWNX_Area_GetTileAnimationLoop: invalid tile specified");
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pArea = area(args))
+    {
+        const auto tileX = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileX >= 0.0f);
+        const auto tileY = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileY >= 0.0f);
+        const auto tileAnimLoop = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(tileAnimLoop >= 1);
+          ASSERT_OR_THROW(tileAnimLoop <= 3);
+        const auto tileEnabled = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        CNWSTile *pTile = GetTile(pArea, tileX, tileY);
+
+        if (pTile)
+        {
+            switch(tileAnimLoop)
+            {
+                case 1:
+                    pTile->m_nAnimLoop1 = tileEnabled;
+                    break;
+
+                case 2:
+                    pTile->m_nAnimLoop2 = tileEnabled;
+                    break;
+
+                case 3:
+                    pTile->m_nAnimLoop3 = tileEnabled;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            LOG_ERROR("NWNX_Area_SetTileAnimationLoop: invalid tile specified");
+        }
+    }
 
     return stack;
 }

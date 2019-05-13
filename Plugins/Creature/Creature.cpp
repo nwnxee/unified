@@ -72,6 +72,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetRawAbilityScore);
     REGISTER(GetRawAbilityScore);
     REGISTER(ModifyRawAbilityScore);
+    REGISTER(GetPrePolymorphAbilityScore);
     REGISTER(GetMemorisedSpell);
     REGISTER(GetMemorisedSpellCountByLevel);
     REGISTER(SetMemorisedSpell);
@@ -87,6 +88,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetMaxHitPointsByLevel);
     REGISTER(SetMaxHitPointsByLevel);
     REGISTER(SetMovementRate);
+    REGISTER(GetMovementRateFactor);
+    REGISTER(SetMovementRateFactor);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
     REGISTER(GetClericDomain);
@@ -119,6 +122,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(LevelDown);
     REGISTER(SetChallengeRating);
     REGISTER(GetAttackBonus);
+    REGISTER(GetHighestLevelOfFeat);
     REGISTER(GetFeatRemainingUses);
     REGISTER(GetFeatTotalUses);
     REGISTER(SetFeatRemainingUses);
@@ -599,6 +603,36 @@ ArgumentStack Creature::ModifyRawAbilityScore(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::GetPrePolymorphAbilityScore(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto ability = Services::Events::ExtractArgument<int32_t>(args);
+
+        switch (ability)
+        {
+            case Constants::Ability::Strength:
+                retVal = pCreature->m_nPrePolymorphSTR;
+                break;
+            case Constants::Ability::Dexterity:
+                retVal = pCreature->m_nPrePolymorphDEX;
+                break;
+            case Constants::Ability::Constitution:
+                retVal = pCreature->m_nPrePolymorphCON;
+                break;
+            default:
+                LOG_NOTICE("Calling NWNX_Creature_GetPrePolymorphAbilityScore with invalid ability ID: %d", ability);
+                ASSERT_FAIL();
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
 ArgumentStack Creature::GetMemorisedSpell(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -1010,6 +1044,29 @@ ArgumentStack Creature::SetMovementRate(ArgumentStack&& args)
     {
         const auto rate = Services::Events::ExtractArgument<int32_t>(args);
         pCreature->m_pStats->SetMovementRate(rate);
+    }
+    return stack;
+}
+
+ArgumentStack Creature::GetMovementRateFactor(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->GetMovementRateFactor();
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Creature::SetMovementRateFactor(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const float factor = Services::Events::ExtractArgument<float>(args);
+        pCreature->SetMovementRateFactor(factor);
     }
     return stack;
 }
@@ -1672,6 +1729,21 @@ ArgumentStack Creature::GetAttackBonus(ArgumentStack&& args)
     }
 
     Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Creature::GetHighestLevelOfFeat(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pCreature = creature(args))
+    {
+        const auto feat = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
+          ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
+        retval = pCreature->m_pStats->GetHighestLevelOfFeat(feat);
+    }
+    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 

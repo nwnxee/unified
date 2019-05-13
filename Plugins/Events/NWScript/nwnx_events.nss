@@ -658,6 +658,26 @@
         EVENT_ID          int         The type of timing bar, see constants below, only in _START_ events
         DURATION          int         Length of time (in milliseconds) the bar is set to last, only in _START_ events
 ////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_WEBHOOK_SUCCESS
+    NWNX_ON_WEBHOOK_FAILURE
+
+    !!! NOTICE: NEEDS THE NWNX_WebHook PLUGIN TO WORK !!!
+
+    Usage:
+        OBJECT_SELF = The module object
+
+    Event data:
+        Variable Name           Type        Notes
+        STATUS                  int         The return code after posting to the server
+        MESSAGE                 string      The full constructed message sent
+        HOST                    string
+        PATH                    string
+        RATELIMIT_LIMIT         int          Discord: The number of requests that can be made in a limited period
+        RATELIMIT_REMAINING     int          Discord: The number of remaining requests that can be made before rate limited
+        RATELIMIT_RESET         int          Discord: Timestamp when the rate limit resets
+        RETRY_AFTER             float        Milliseconds until another webhook is allowed when rate limited
+        FAIL_INFO               string       The reason the hook failed aside from rate limits
+////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_BEFORE
     NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER
 
@@ -672,6 +692,19 @@
         CDKEY                   string      Public cdkey of the connecting client
         LEGACY_CDKEY            string      Public cdkey from earlier versions of NWN
         IS_DM                   int         Whether the client is connecting as DM (1/0)
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_LEVEL_UP_BEFORE
+    NWNX_ON_LEVEL_UP_AFTER
+    NWNX_ON_LEVEL_UP_AUTOMATIC_BEFORE
+    NWNX_ON_LEVEL_UP_AUTOMATIC_AFTER
+    NWNX_ON_LEVEL_DOWN_BEFORE
+    NWNX_ON_LEVEL_DOWN_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature levelling up or down, automatic is for henchmen levelling
+
+    Event data:
+        Variable Name           Type        Notes
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
