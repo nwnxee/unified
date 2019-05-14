@@ -40,6 +40,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - WebHook: Added support for richer Slack-compatible messages
 ##### New Plugins
 The following plugins were added:
+- **Appearance**: Allows the appearance and some other things of creatures to be overridden per player
 - **Area**: Adds functions exposing additional area properties
 - **CombatModes**: Allows subscribing to Combat Mode toggle events. The Events plugin is needed to subscribe to the CombatMode events
 - **Effect**: Provides various utility functions to manipulate builtin effect types
@@ -56,6 +57,7 @@ The following plugins were added:
 - Administration: GetPlayOption()
 - Administration: SetPlayOption()
 - Administration: DeleteTURD()
+- Appearance: {Get|Set}Override()
 - Area: GetNumberOfPlayersInArea()
 - Area: GetLastEntered()
 - Area: GetLastLeft()
