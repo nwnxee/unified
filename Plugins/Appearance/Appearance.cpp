@@ -102,6 +102,7 @@ void Appearance::ComputeGameObjectUpdateForObjectHook(Services::Hooks::CallType,
             SwapIntValue(aod->bitSet[TailType], aod->tailType, pCreature->m_cAppearance.m_nTailVariation);
             SwapIntValue(aod->bitSet[WingType], aod->wingType, pCreature->m_cAppearance.m_nWingVariation);
             SwapIntValue(aod->bitSet[FootstepSound], aod->footstepSound, pCreature->m_nFootstepType);
+            SwapIntValue(aod->bitSet[Portrait], aod->portraitId, pCreature->m_nPortraitId);
         }
     }
 }
@@ -144,70 +145,68 @@ ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
 
         const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidCreature);
 
-        if (type < 0)
+        if (m_AppearanceOverrideData.find(key) == m_AppearanceOverrideData.end())
         {
-            m_AppearanceOverrideData.erase(key);
+            AppearanceOverrideData data = {};
+            m_AppearanceOverrideData[key] = data;
         }
-        else
+
+        AppearanceOverrideData *aod = &m_AppearanceOverrideData[key];
+
+        switch(type)
         {
-            if (m_AppearanceOverrideData.find(key) == m_AppearanceOverrideData.end())
-            {
-                AppearanceOverrideData data = {};
-                m_AppearanceOverrideData[key] = data;
-            }
+            case AppearanceType:
+                SetIntValue(type, value, aod->bitSet, aod->appearanceType);
+                break;
 
-            AppearanceOverrideData *aod = &m_AppearanceOverrideData[key];
+            case Gender:
+                SetIntValue(type, value, aod->bitSet, aod->gender);
+                break;
 
-            switch(type)
-            {
-                case AppearanceType:
-                    SetIntValue(type, value, aod->bitSet, aod->appearanceType);
-                    break;
+            case HitPoints:
+                SetIntValue(type, value, aod->bitSet, aod->currentHitPoints);
+                break;
 
-                case Gender:
-                    SetIntValue(type, value, aod->bitSet, aod->gender);
-                    break;
+            case HairColor:
+                SetIntValue(type, value, aod->bitSet, aod->hairColor);
+                break;
 
-                case HitPoints:
-                    SetIntValue(type, value, aod->bitSet, aod->currentHitPoints);
-                    break;
+            case SkinColor:
+                SetIntValue(type, value, aod->bitSet, aod->skinColor);
+                break;
 
-                case HairColor:
-                    SetIntValue(type, value, aod->bitSet, aod->hairColor);
-                    break;
+            case PhenoType:
+                SetIntValue(type, value, aod->bitSet, aod->phenoType);
+                break;
 
-                case SkinColor:
-                    SetIntValue(type, value, aod->bitSet, aod->skinColor);
-                    break;
+            case HeadType:
+                SetIntValue(type, value, aod->bitSet, aod->headType);
+                break;
 
-                case PhenoType:
-                    SetIntValue(type, value, aod->bitSet, aod->phenoType);
-                    break;
+            case SoundSet:
+                SetIntValue(type, value, aod->bitSet, aod->soundSet);
+                break;
 
-                case HeadType:
-                    SetIntValue(type, value, aod->bitSet, aod->headType);
-                    break;
+            case TailType:
+                SetIntValue(type, value, aod->bitSet, aod->tailType);
+                break;
 
-                case SoundSet:
-                    SetIntValue(type, value, aod->bitSet, aod->soundSet);
-                    break;
+            case WingType:
+                SetIntValue(type, value, aod->bitSet, aod->wingType);
+                break;
 
-                case TailType:
-                    SetIntValue(type, value, aod->bitSet, aod->tailType);
-                    break;
+            case FootstepSound:
+                SetIntValue(type, value, aod->bitSet, aod->footstepSound);
+                break;
 
-                case WingType:
-                    SetIntValue(type, value, aod->bitSet, aod->wingType);
-                    break;
+            case Portrait:
+                SetIntValue(type, value, aod->bitSet, aod->portraitId);
+                break;
 
-                case FootstepSound:
-                    SetIntValue(type, value, aod->bitSet, aod->footstepSound);
-                    break;
-
-                default:
-                    break;
-            }
+            default:
+                break;
         }
+
     }
 
     return stack;
@@ -278,6 +277,10 @@ ArgumentStack Appearance::GetOverride(ArgumentStack&& args)
 
                     case FootstepSound:
                         retVal = aod->footstepSound;
+                        break;
+
+                    case Portrait:
+                        retVal = aod->portraitId;
                         break;
 
                     default:

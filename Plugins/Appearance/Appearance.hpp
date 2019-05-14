@@ -33,6 +33,7 @@ private:
         TailType        = 8,
         WingType        = 9,
         FootstepSound   = 10,
+        Portrait        = 11,
         OverrideType_MAX // Keep as last
     };
 
@@ -51,6 +52,7 @@ private:
         uint32_t tailType;
         uint32_t wingType;
         int32_t footstepSound;
+        uint16_t portraitId;
     };
 
     std::map<std::string, AppearanceOverrideData> m_AppearanceOverrideData;

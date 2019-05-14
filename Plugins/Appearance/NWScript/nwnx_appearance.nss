@@ -11,8 +11,10 @@ const int NWNX_APPEARANCE_TYPE_SOUNDSET         = 7;
 const int NWNX_APPEARANCE_TYPE_TAIL_TYPE        = 8;
 const int NWNX_APPEARANCE_TYPE_WING_TYPE        = 9;
 const int NWNX_APPEARANCE_TYPE_FOOTSTEP_SOUND   = 10;
+const int NWNX_APPEARANCE_TYPE_PORTRAIT         = 11;
 
 // Override oCreature's nType to nValue for oPlayer
+// - oCreature can be a PC
 //
 // nType = NWNX_APPEARANCE_TYPE_APPEARANCE
 // nValue = APPEARANCE_TYPE_* or -1 to remove
@@ -44,9 +46,14 @@ const int NWNX_APPEARANCE_TYPE_FOOTSTEP_SOUND   = 10;
 //
 // nType = NWNX_APPEARANCE_TYPE_FOOTSTEP_SOUND
 // nValue = 0-17 or see footstepsounds.2da, -1 to remove
+//
+// nType = NWNX_APPEARANCE_TYPE_PORTRAIT
+// nValue = See portraits.2da, -1 to remove
+// NOTE: Does not change the Examine Window portrait
 void NWNX_Appearance_SetOverride(object oPlayer, object oCreature, int nType, int nValue);
 
 // Get oCreature's nValue of nType for oPlayer
+// - oCreature can be a PC
 // Returns -1 when not set
 int NWNX_Appearance_GetOverride(object oPlayer, object oCreature, int nType);
 
