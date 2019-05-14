@@ -72,7 +72,7 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
         m_RunUnequipHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__RunUnequip);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_EVENT_.*", [hooker]() {
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::CNWSItem__EventHandler>(&ItemEventHandlerHook);
         m_ItemEventHandlerHook = hooker->FindHookByAddress(API::Functions::CNWSItem__EventHandler);
     });
@@ -364,15 +364,29 @@ void ItemEvents::ItemEventHandlerHook(
         uint32_t nCalendarDay,
         uint32_t nTimeOfDay)
 {
+    auto CallOriginal = [&]() -> void {
+        m_ItemEventHandlerHook->CallOriginal<int32_t>(thisPtr, nEventId, nCallerObjectId, pScript, nCalendarDay, nTimeOfDay);
+    };
     auto PushAndSignal = [&](std::string ev) -> bool {
-        Events::PushEventData("EVENT_ID", std::to_string(nEventId));
+        //Events::PushEventData("EVENT_ID", std::to_string(nEventId));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
-    if (PushAndSignal("NWNX_ON_ITEM_EVENT_BEFORE"))
+    auto HandleHookableEvent = [&](std::string eventName) -> void {
+        if (PushAndSignal("NWNX_ON_ITEM_" + eventName + "_BEFORE"))
+            CallOriginal();
+        PushAndSignal("NWNX_ON_ITEM_" + eventName + "_AFTER");
+    };
+    switch(nEventId)
     {
-        m_ItemEventHandlerHook->CallOriginal<int32_t>(thisPtr, nEventId, nCallerObjectId, pScript, nCalendarDay, nTimeOfDay);
+        case 11:
+            HandleHookableEvent("DESTROY_OBJECT");
+            break;
+        case 16:
+            HandleHookableEvent("DECREMENT_STACKSIZE");
+            break;
+        default:
+            CallOriginal();
     }
-    PushAndSignal("NWNX_ON_ITEM_EVENT_AFTER");
 }
 
 }
