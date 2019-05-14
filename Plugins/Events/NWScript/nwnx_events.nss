@@ -120,6 +120,16 @@
     Event data:
         Variable Name           Type        Notes
         ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_DESTROY_OBJECT_BEFORE
+    NWNX_ON_ITEM_DESTROY_OBJECT_AFTER
+    NWNX_ON_ITEM_DECREMENT_STACKSIZE_BEFORE
+    NWNX_ON_ITEM_DECREMENT_STACKSIZE_AFTER
+
+    Usage:
+        OBJECT_SELF = The item triggering the event
+
+    Note: Use of NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_* conflicts with object event handler profiling
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
