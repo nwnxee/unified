@@ -180,6 +180,7 @@ ArgumentStack Damage::SetAttackEventData(ArgumentStack&& args)
     {
         m_AttackData.vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
     }
+    m_AttackData.nAttackResult = Services::Events::ExtractArgument<int32_t>(args);
 
     return stack;
 }
@@ -212,10 +213,11 @@ void Damage::OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::strin
     attackData.nAttackResult = combatAttackData->m_nAttackResult;
     attackData.nAttackType = combatAttackData->m_nWeaponAttackType;
     attackData.nSneakAttack = combatAttackData->m_bSneakAttack + (combatAttackData->m_bDeathAttack << 1);
-
     std::memcpy(attackData.vDamage, combatAttackData->m_nDamage, sizeof(attackData.vDamage));
+    // run script, then copy back attack data
     Utils::ExecuteScript(script, pThis->m_idSelf);
     std::memcpy(combatAttackData->m_nDamage, attackData.vDamage, sizeof(attackData.vDamage));
+    combatAttackData->m_nAttackResult = attackData.nAttackResult;
 }
 
 //--------------------------- Dealing Damage ----------------------------------
