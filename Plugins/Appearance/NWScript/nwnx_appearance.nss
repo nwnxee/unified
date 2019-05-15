@@ -24,6 +24,7 @@ const int NWNX_APPEARANCE_TYPE_PORTRAIT         = 11;
 //
 // nType = NWNX_APPEARANCE_TYPE_HITPOINTS
 // nValue = 0-GetMaxHitPoints(oCreature) or -1 to remove
+// NOTE: This is visual only. Does not change the Examine Window health status
 //
 // nType = NWNX_APPEARANCE_TYPE_HAIR_COLOR
 // nType = NWNX_APPEARANCE_TYPE_SKIN_COLOR

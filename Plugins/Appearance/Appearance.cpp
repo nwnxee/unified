@@ -9,7 +9,6 @@
 #include "API/CNWSCreatureAppearanceInfo.hpp"
 #include "API/CNWSCreature.hpp"
 #include "Services/Events/Events.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "ViewPtr.hpp"
 
 
@@ -79,18 +78,23 @@ CNWSPlayer *Appearance::Player(ArgumentStack& args)
     return pPlayer;
 }
 
-void Appearance::ComputeGameObjectUpdateForObjectHook(Services::Hooks::CallType, CNWSMessage*,
+void Appearance::ComputeGameObjectUpdateForObjectHook(Services::Hooks::CallType type, CNWSMessage*,
         CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, Types::ObjectID oidObjectToUpdate)
 {
     if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
     {
-        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
-                Utils::ObjectIDToString(oidObjectToUpdate);
+        static AppearanceOverrideData *aod;
 
-        if (g_plugin->m_AppearanceOverrideData.find(key) != g_plugin->m_AppearanceOverrideData.end())
+        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
         {
-            AppearanceOverrideData *aod = &g_plugin->m_AppearanceOverrideData[key];
+            auto search = g_plugin->m_AppearanceOverrideData.find(
+                    Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidObjectToUpdate));
 
+            aod = search != g_plugin->m_AppearanceOverrideData.end() ? &search->second : nullptr;
+        }
+
+        if (aod)
+        {
             SwapIntValue(aod->bitSet[AppearanceType], aod->appearanceType, pCreature->m_cAppearance.m_nAppearanceType);
             SwapIntValue(aod->bitSet[Gender], aod->gender, pCreature->m_cAppearance.m_nGender);
             SwapIntValue(aod->bitSet[HitPoints], aod->currentHitPoints, pCreature->m_nCurrentHitPoints);
@@ -144,13 +148,6 @@ ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
         const auto value = Services::Events::ExtractArgument<int32_t>(args);
 
         const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidCreature);
-
-        if (m_AppearanceOverrideData.find(key) == m_AppearanceOverrideData.end())
-        {
-            AppearanceOverrideData data = {};
-            m_AppearanceOverrideData[key] = data;
-        }
-
         AppearanceOverrideData *aod = &m_AppearanceOverrideData[key];
 
         switch(type)
