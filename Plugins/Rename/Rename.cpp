@@ -586,7 +586,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
         // nothing else we need to do, the hooks will take care of doing the renames. If we don't skip this
         // then the SendServerToPlayerPlayerList_All below runs before the server has even ran a
         // SendServerToPlayerPlayerList_Add and weird things happen(tm)
-        if (!*pPOS->Get<int>(targetPlayerId, addedToPlayerListKey))
+        if (m_RenameOnPlayerList && !*pPOS->Get<int>(targetPlayerId, addedToPlayerListKey))
             return stack;
 
         std::vector<Types::PlayerID> playersToNotify;
