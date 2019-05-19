@@ -365,17 +365,22 @@ void ItemEvents::ItemEventHandlerHook(
         uint32_t nTimeOfDay)
 {
     auto CallOriginal = [&]() -> void {
-        m_ItemEventHandlerHook->CallOriginal<int32_t>(thisPtr, nEventId, nCallerObjectId, pScript, nCalendarDay, nTimeOfDay);
+        m_ItemEventHandlerHook->CallOriginal<void>(thisPtr, nEventId, nCallerObjectId, pScript, nCalendarDay, nTimeOfDay);
     };
+
     auto PushAndSignal = [&](std::string ev) -> bool {
         //Events::PushEventData("EVENT_ID", std::to_string(nEventId));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
+
     auto HandleHookableEvent = [&](std::string eventName) -> void {
         if (PushAndSignal("NWNX_ON_ITEM_" + eventName + "_BEFORE"))
+        {
             CallOriginal();
+        }
         PushAndSignal("NWNX_ON_ITEM_" + eventName + "_AFTER");
     };
+
     switch(nEventId)
     {
         case 11:
@@ -386,6 +391,7 @@ void ItemEvents::ItemEventHandlerHook(
             break;
         default:
             CallOriginal();
+            break;
     }
 }
 

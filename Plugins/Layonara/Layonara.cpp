@@ -41,7 +41,7 @@ Layonara::Layonara(const Plugin::CreateParams& params)
 #define REGISTER(func)              \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Layonara::func, this, std::placeholders::_1))
 
-    REGISTER(SetEquippableSlots);
+    REGISTER(SetEquippableSlots)
     REGISTER(SetHostileFeat);
 
 #undef REGISTER
