@@ -140,6 +140,7 @@ The following plugins were added:
 - Player: OpenInventory()
 - Player: GetAreaExplorationState()
 - Player: SetAreaExplorationState()
+- Player: SetRestAnimation()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
