@@ -1304,6 +1304,7 @@ ArgumentStack Creature::SetGender(ArgumentStack&& args)
           ASSERT_OR_THROW(gender <= 255);
 
         pCreature->m_pStats->m_nGender = gender;
+        pCreature->m_cAppearance.m_nGender = gender;
     }
     return stack;
 }

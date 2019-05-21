@@ -129,6 +129,14 @@ string NWNX_Player_GetAreaExplorationState(object player, object area);
 // Set player's area exploration state (str is an encoded string obtained with NWNX_Player_GetAreaExplorationState)
 void NWNX_Player_SetAreaExplorationState(object player, object area, string str);
 
+// Override oPlayer's rest animation to nAnimation
+//
+// NOTE: nAnimation does not take ANIMATION_LOOPING_* or ANIMATION_FIREFORGET_* constants
+//       Use NWNX_Consts_TranslateNWScriptAnimation() in nwnx_consts.nss to get their NWNX equivalent
+//       -1 to clear the override
+void NWNX_Player_SetRestAnimation(object oPlayer, int nAnimation);
+
+
 const string NWNX_Player = "NWNX_Player";
 
 
@@ -475,6 +483,16 @@ void NWNX_Player_SetAreaExplorationState(object player, object area, string str)
     NWNX_PushArgumentString(NWNX_Player, sFunc, str);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, area);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetRestAnimation(object oPlayer, int nAnimation)
+{
+    string sFunc = "SetRestAnimation";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nAnimation);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
