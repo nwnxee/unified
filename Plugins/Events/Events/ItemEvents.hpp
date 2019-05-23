@@ -24,6 +24,7 @@ private:
     static int32_t LearnScrollHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID);
     static int32_t RunEquipHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, uint32_t, uint32_t);
     static int32_t RunUnequipHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, uint8_t, uint8_t, int32_t, uint32_t);
+    static void ItemEventHandlerHook(NWNXLib::API::CNWSItem*, uint32_t, NWNXLib::API::Types::ObjectID, void*, uint32_t, uint32_t);
 };
 
 }

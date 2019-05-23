@@ -21,7 +21,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added On{Un}Polymorph events as PolymorphEvents
 - Events: Added Event Data for SpawnObject, GiveItem, GiveAlignment, Heal, Kill, ToggleInvulnerabilty, ForceRest, Limbo, ToggleAI, ToggleImmortal, Goto, Possess, PossessFullPower, ToggleLock, DisableTrap, JumpToPoint, JumpTargetToPoint, JumpAllPlayersToPoint, ChangeDifficulty, ViewInventory, SpawnTrapOnObject events in DMActionEvents
 - Events: Added OnClientConnect events that fire before the player sees the server vault.
-- Events: Added ItemInventory{Open/Close}, ItemInventory{Add/Remove}Item and ScrollLearn events to ItemEvents
+- Events: Added ItemInventory{Open/Close}, ItemInventory{Add/Remove}Item, ScrollLearn, DestroyObject and DecrementStackSize events to ItemEvents
 - Events: Added {Set|Clear}MemorizedSpellSlot events to SpellEvents
 - Events: Added AmmoReload events that are used when the engine is looking for ammunition to reload
 - Events: Added Run{Un}Equip events to ItemEvents
@@ -114,6 +114,7 @@ The following plugins were added:
 - Feedback: Set{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog}MessageMode()
 - Item: GetBaseArmorClass()
+- Item: GetMinEquipLevel()
 - ItemProperty: PackIP()
 - ItemProperty: UnpackIP()
 - Object: GetHasVisualEffect()
@@ -140,6 +141,7 @@ The following plugins were added:
 - Player: OpenInventory()
 - Player: GetAreaExplorationState()
 - Player: SetAreaExplorationState()
+- Player: SetRestAnimation()
 - Player: SetObjectVisualTransformOverride()
 - Player: ApplyLoopingVisualEffectToObject()
 - Player: SetPlaceableNameOverride()

@@ -58,6 +58,9 @@ void NWNX_Item_RestoreItemAppearance (object oItem, string sApp);
 // Get oItem's base armor class
 int NWNX_Item_GetBaseArmorClass(object oItem);
 
+// Get oItem's minimum level needed to equip
+int NWNX_Item_GetMinEquipLevel(object oItem);
+
 void NWNX_Item_SetWeight(object oItem, int w)
 {
     string sFunc = "SetWeight";
@@ -154,6 +157,16 @@ void NWNX_Item_RestoreItemAppearance(object oItem, string sApp)
 int NWNX_Item_GetBaseArmorClass(object oItem)
 {
     string sFunc = "GetBaseArmorClass";
+
+    NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetMinEquipLevel(object oItem)
+{
+    string sFunc = "GetMinEquipLevel";
 
     NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
 

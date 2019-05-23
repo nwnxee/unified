@@ -37,6 +37,7 @@ private:
     ArgumentStack OpenInventory                     (ArgumentStack&& args);
     ArgumentStack GetAreaExplorationState           (ArgumentStack&& args);
     ArgumentStack SetAreaExplorationState           (ArgumentStack&& args);
+    ArgumentStack SetRestAnimation                  (ArgumentStack&& args);
     ArgumentStack SetObjectVisualTransformOverride  (ArgumentStack&& args);
     ArgumentStack ApplyLoopingVisualEffectToObject  (ArgumentStack&& args);
     ArgumentStack SetPlaceableNameOverride          (ArgumentStack&& args);

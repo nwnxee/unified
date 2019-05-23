@@ -38,7 +38,6 @@ using namespace NWNXLib::API;
 
 static ViewPtr<Player::Player> g_plugin;
 
-
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
     return new Plugin::Info
@@ -88,6 +87,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(OpenInventory);
     REGISTER(GetAreaExplorationState);
     REGISTER(SetAreaExplorationState);
+    REGISTER(SetRestAnimation);
     REGISTER(SetObjectVisualTransformOverride);
     REGISTER(ApplyLoopingVisualEffectToObject);
     REGISTER(SetPlaceableNameOverride);
@@ -645,7 +645,7 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
 ArgumentStack Player::GetAreaExplorationState(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    std::string encString="";
+    std::string encString = "";
 
     if (auto *pPlayer = player(args))
     {
@@ -657,9 +657,9 @@ ArgumentStack Player::GetAreaExplorationState(ArgumentStack&& args)
             if (pArea)
             {
                 uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
-                for (int k=0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                for (int k = 0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
                 {
-                    if (*p_oidArea==areaId)
+                    if (*p_oidArea == areaId)
                     {
                         uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
                         if (pTileData)
@@ -693,15 +693,15 @@ ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
                 auto encString = Services::Events::ExtractArgument<std::string>(args);
 
                 uint32_t *p_oidArea = pCreature->m_oidAutoMapAreaList.element;
-                for (int k=0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
+                for (int k = 0; k<pCreature->m_oidAutoMapAreaList.num; k++, p_oidArea++)
                 {
-                    if (*p_oidArea==areaId)
+                    if (*p_oidArea == areaId)
                     {
                         uint8_t *pTileData = *(pCreature->m_nAutoMapTileData + k);
                         if (pTileData)
                         {
-                            std::vector<uint8_t> tileDataVector=NWNXLib::Encoding::FromBase64(encString);
-                            std::copy(tileDataVector.begin(), tileDataVector.begin()+pArea->m_nMapSize, pTileData);
+                            std::vector<uint8_t> tileDataVector = NWNXLib::Encoding::FromBase64(encString);
+                            std::copy(tileDataVector.begin(), tileDataVector.begin() + pArea->m_nMapSize, pTileData);
                         }
                         break;
                     }
@@ -711,6 +711,46 @@ ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
     }
     return stack;
 }
+
+ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
+{
+    static bool bAIActionRestHook;
+
+    if (!bAIActionRestHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__AIActionRest, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
+                {
+                    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    {
+                        if (auto animation = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_ANIMATION"))
+                        {
+                            pCreature->SetAnimation(*animation);
+                        }
+                    }
+                });
+        bAIActionRestHook = true;
+    }
+
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        auto animation = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (animation < 0)
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pPlayer->m_oidNWSObject, "REST_ANIMATION");
+        }
+        else
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_ANIMATION", animation);
+        }
+    }
+
+    return stack;
+    }
+
 
 ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 {

@@ -586,7 +586,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
         // nothing else we need to do, the hooks will take care of doing the renames. If we don't skip this
         // then the SendServerToPlayerPlayerList_All below runs before the server has even ran a
         // SendServerToPlayerPlayerList_Add and weird things happen(tm)
-        if (!*pPOS->Get<int>(targetPlayerId, addedToPlayerListKey))
+        if (m_RenameOnPlayerList && !*pPOS->Get<int>(targetPlayerId, addedToPlayerListKey))
             return stack;
 
         std::vector<Types::PlayerID> playersToNotify;
@@ -662,6 +662,13 @@ ArgumentStack Rename::GetPCNameOverride(ArgumentStack &&args)
             targetId = Constants::PLAYERID_ALL_CLIENTS;
         auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
         retVal = *pPOS->Get<std::string>(playerObjectID, displayNameKey + ":" + Utils::ObjectIDToString(targetId));
+
+        // If the per player name doesn't exist then try for the global check
+        if (retVal.empty() && targetId != Constants::PLAYERID_ALL_CLIENTS)
+        {
+            targetId = Constants::PLAYERID_ALL_CLIENTS;
+            retVal = *pPOS->Get<std::string>(playerObjectID, displayNameKey + ":" + Utils::ObjectIDToString(targetId));
+        }
     }
     Services::Events::InsertArgument(stack, retVal);
     return stack;
