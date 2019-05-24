@@ -50,6 +50,7 @@ Item::Item(const Plugin::CreateParams& params)
     REGISTER(GetEntireItemAppearance);
     REGISTER(RestoreItemAppearance);
     REGISTER(GetBaseArmorClass);
+    REGISTER(GetMinEquipLevel);
 
 #undef REGISTER
 }
@@ -303,5 +304,18 @@ ArgumentStack Item::GetBaseArmorClass(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, retval);
     return stack;
 }
+
+ArgumentStack Item::GetMinEquipLevel(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pItem = item(args))
+    {
+        retval = pItem->GetMinEquipLevel();
+    }
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
 
 }

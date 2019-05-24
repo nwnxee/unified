@@ -114,6 +114,7 @@ The following plugins were added:
 - Feedback: Set{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog}MessageMode()
 - Item: GetBaseArmorClass()
+- Item: GetMinEquipLevel()
 - ItemProperty: PackIP()
 - ItemProperty: UnpackIP()
 - Object: GetHasVisualEffect()
