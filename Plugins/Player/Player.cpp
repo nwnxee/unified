@@ -189,9 +189,21 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
     {
         const auto seconds = Services::Events::ExtractArgument<float>(args);
         const auto milliseconds = static_cast<uint32_t>(seconds * 1000.0f); // NWN expects milliseconds.
-        const auto type = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(type > 0);
-          ASSERT_OR_THROW(type <= 10);
+
+        int32_t type;
+
+        //TODO-64Bit: Remove this try/catch block
+        try
+        {
+            type = Services::Events::ExtractArgument<int32_t>(args);
+        }
+        catch(...)
+        {
+            type = 10;
+        }
+
+        ASSERT_OR_THROW(type > 0);
+        ASSERT_OR_THROW(type <= 10);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
