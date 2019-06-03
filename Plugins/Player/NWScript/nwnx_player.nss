@@ -47,6 +47,7 @@ void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable);
 
 // Starts displaying a timing bar.
 // Will run a script at the end of the timing bar, if specified.
+// The type variable lets you set a pre-defined text, use NWNX_PLAYER_TIMING_BAR_*
 void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "", int type = NWNX_PLAYER_TIMING_BAR_CUSTOM);
 
 // Stops displaying a timing bar.
