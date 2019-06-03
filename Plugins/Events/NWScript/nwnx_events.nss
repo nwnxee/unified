@@ -120,6 +120,16 @@
     Event data:
         Variable Name           Type        Notes
         ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_DESTROY_OBJECT_BEFORE
+    NWNX_ON_ITEM_DESTROY_OBJECT_AFTER
+    NWNX_ON_ITEM_DECREMENT_STACKSIZE_BEFORE
+    NWNX_ON_ITEM_DECREMENT_STACKSIZE_AFTER
+
+    Usage:
+        OBJECT_SELF = The item triggering the event
+
+    Note: Use of NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_* conflicts with object event handler profiling
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -657,6 +667,26 @@
         Variable Name     Type        Notes
         EVENT_ID          int         The type of timing bar, see constants below, only in _START_ events
         DURATION          int         Length of time (in milliseconds) the bar is set to last, only in _START_ events
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_WEBHOOK_SUCCESS
+    NWNX_ON_WEBHOOK_FAILURE
+
+    !!! NOTICE: NEEDS THE NWNX_WebHook PLUGIN TO WORK !!!
+
+    Usage:
+        OBJECT_SELF = The module object
+
+    Event data:
+        Variable Name           Type        Notes
+        STATUS                  int         The return code after posting to the server
+        MESSAGE                 string      The full constructed message sent
+        HOST                    string
+        PATH                    string
+        RATELIMIT_LIMIT         int          Discord: The number of requests that can be made in a limited period
+        RATELIMIT_REMAINING     int          Discord: The number of remaining requests that can be made before rate limited
+        RATELIMIT_RESET         int          Discord: Timestamp when the rate limit resets
+        RETRY_AFTER             float        Milliseconds until another webhook is allowed when rate limited
+        FAIL_INFO               string       The reason the hook failed aside from rate limits
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_BEFORE
     NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER

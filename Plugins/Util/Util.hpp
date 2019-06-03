@@ -26,6 +26,7 @@ private:
     ArgumentStack GetEnvironmentVariable(ArgumentStack&& args);
     ArgumentStack GetMinutesPerHour(ArgumentStack&& args);
     ArgumentStack SetMinutesPerHour(ArgumentStack&& args);
+    ArgumentStack EncodeStringForURL(ArgumentStack&& args);
 };
 
 }

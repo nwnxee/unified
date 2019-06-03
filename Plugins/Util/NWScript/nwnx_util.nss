@@ -42,6 +42,8 @@ string NWNX_Util_GetEnvironmentVariable(string sVarname);
 int NWNX_Util_GetMinutesPerHour();
 // Set module real life minutes per in game hour
 void NWNX_Util_SetMinutesPerHour(int minutes);
+// Encodes a string for usage in a URL
+string NWNX_Util_EncodeStringForURL(string str);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -138,4 +140,14 @@ void NWNX_Util_SetMinutesPerHour(int minutes)
     string sFunc = "SetMinutesPerHour";
     NWNX_PushArgumentInt(NWNX_Util, sFunc, minutes);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_EncodeStringForURL(string sURL)
+{
+    string sFunc = "EncodeStringForURL";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sURL);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }

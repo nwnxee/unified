@@ -129,6 +129,10 @@ void BarterEvents::EndedBarter(
                 i++;
             }
         }
+        else
+        {
+            Events::PushEventData("BARTER_INITIATOR_ITEM_COUNT", "0");
+        }
 
         if (targetBarter->m_pBarterList)
         {
@@ -141,6 +145,10 @@ void BarterEvents::EndedBarter(
                 Events::PushEventData("BARTER_TARGET_ITEM_" + std::to_string(i), Utils::ObjectIDToString(item));
                 i++;
             }
+        }
+        else
+        {
+            Events::PushEventData("BARTER_TARGET_ITEM_COUNT", "0");
         }
         Events::PushEventData("BARTER_COMPLETE", "1");
         Events::PushEventData("BARTER_TARGET", Utils::ObjectIDToString(m_targetOid));
