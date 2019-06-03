@@ -165,16 +165,19 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
                     // Before or after doesn't matter, just pick one so it happens only once
                     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                     {
-                        CNWSObject *pGameObject = static_cast<CNWSObject*>(Globals::AppManager()->m_pServerExoApp->GetGameObject(pPlayer->m_oidPCObject));
+                        CNWSScriptVarTable *pScriptVarTable = Utils::GetScriptVarTable(Utils::GetGameObject(pPlayer->m_oidPCObject));
 
-                        CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
-                        int32_t id = pGameObject->m_ScriptVars.GetInt(varName);
-
-                        if (id > 0)
+                        if (pScriptVarTable)
                         {
-                            LOG_DEBUG("Cancelling GUI timing event id %d...", id);
-                            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
-                            pGameObject->m_ScriptVars.DestroyInt(varName);
+                            CExoString varName = "NWNX_PLAYER_GUI_TIMING_ACTIVE";
+                            int32_t id = pScriptVarTable->GetInt(varName);
+
+                            if (id > 0)
+                            {
+                                LOG_DEBUG("Cancelling GUI timing event id %d...", id);
+                                pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, false, 10, 0);
+                                pScriptVarTable->DestroyInt(varName);
+                            }
                         }
                     }
                 });
@@ -184,13 +187,28 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
     ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
-        const float seconds = Services::Events::ExtractArgument<float>(args);
-        const uint32_t milliseconds = static_cast<uint32_t>(seconds * 1000.0f); // NWN expects milliseconds.
+        const auto seconds = Services::Events::ExtractArgument<float>(args);
+        const auto milliseconds = static_cast<uint32_t>(seconds * 1000.0f); // NWN expects milliseconds.
+
+        int32_t type;
+
+        //TODO-64Bit: Remove this try/catch block
+        try
+        {
+            type = Services::Events::ExtractArgument<int32_t>(args);
+        }
+        catch(...)
+        {
+            type = 10;
+        }
+
+        ASSERT_OR_THROW(type > 0);
+        ASSERT_OR_THROW(type <= 10);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
         {
-            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, 10, milliseconds);
+            pMessage->SendServerToPlayerGuiTimingEvent(pPlayer, true, type, milliseconds);
         }
         else
         {

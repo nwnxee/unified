@@ -21,6 +21,16 @@ const int NWNX_PLAYER_VISIBILITY_DEFAULT = 0;
 const int NWNX_PLAYER_VISIBILITY_HIDDEN  = 1;
 const int NWNX_PLAYER_VISIBILITY_VISIBLE = 2;
 
+const int NWNX_PLAYER_TIMING_BAR_TRAP_FLAG     = 1;
+const int NWNX_PLAYER_TIMING_BAR_TRAP_RECOVER  = 2;
+const int NWNX_PLAYER_TIMING_BAR_TRAP_DISARM   = 3;
+const int NWNX_PLAYER_TIMING_BAR_TRAP_EXAMINE  = 4;
+const int NWNX_PLAYER_TIMING_BAR_TRAP_SET      = 5;
+const int NWNX_PLAYER_TIMING_BAR_REST          = 6;
+const int NWNX_PLAYER_TIMING_BAR_UNLOCK        = 7;
+const int NWNX_PLAYER_TIMING_BAR_LOCK          = 8;
+const int NWNX_PLAYER_TIMING_BAR_CUSTOM        = 10;
+
 // Force display placeable examine window for player
 // If used on a placeable in a different area than the player, the portait will not be shown.
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable);
@@ -37,7 +47,8 @@ void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable);
 
 // Starts displaying a timing bar.
 // Will run a script at the end of the timing bar, if specified.
-void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "");
+// The type variable lets you set a pre-defined text, use NWNX_PLAYER_TIMING_BAR_*
+void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "", int type = NWNX_PLAYER_TIMING_BAR_CUSTOM);
 
 // Stops displaying a timing bar.
 // Runs a script if specified.
@@ -181,13 +192,14 @@ void NWNX_Player_INTERNAL_StopGuiTimingBar(object player, string script = "", in
     }
 }
 
-void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "")
+void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "", int type = NWNX_PLAYER_TIMING_BAR_CUSTOM)
 {
     // only one timing bar at a time!
     if (GetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ACTIVE"))
         return;
 
     string sFunc = "StartGuiTimingBar";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, type);
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, seconds);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 

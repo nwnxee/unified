@@ -177,6 +177,7 @@ The following plugins were added:
 - Docker: Skip all plugins except ServerLogRedirector by default
 - Redis: Lots of stuff, be sure to update the redis nwscripts!
 - Events: Changed `NUM_LEVELS` to `AMOUNT` for DMActionEvent GiveLevel
+- Player: StartGuiTimingBar() now accepts a type for pre-defined text
 
 ### Deprecated
 - Player: {Get/Set}VisibilityOverride() are deprecated, please use the new Visibility plugin!
