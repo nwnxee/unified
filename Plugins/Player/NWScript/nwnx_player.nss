@@ -192,7 +192,7 @@ void NWNX_Player_INTERNAL_StopGuiTimingBar(object player, string script = "", in
     }
 }
 
-void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "", int type = NWNX_PLAYER_TIMING_BAR_CUSTOM);
+void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "", int type = NWNX_PLAYER_TIMING_BAR_CUSTOM)
 {
     // only one timing bar at a time!
     if (GetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ACTIVE"))
