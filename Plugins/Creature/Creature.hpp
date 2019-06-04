@@ -94,6 +94,8 @@ private:
     ArgumentStack SetOriginalName               (ArgumentStack&& args);
     ArgumentStack GetOriginalName               (ArgumentStack&& args);
     ArgumentStack SetSpellResistance            (ArgumentStack&& args);
+    ArgumentStack SetCompanionOrFamiliarType    (ArgumentStack&& args);
+    ArgumentStack SetCompanionOrFamiliarName    (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 

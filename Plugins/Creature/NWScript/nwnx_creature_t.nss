@@ -183,5 +183,17 @@ void main()
     NWNX_Creature_SetSpellResistance(oCreature, iSR + 10);
     report("SetSpellResistance", GetSpellResistance(oCreature) == (iSR + 10));
 
+    NWNX_Creature_SetAnimalCompanionCreatureType(oCreature, ANIMAL_COMPANION_CREATURE_TYPE_PANTHER);
+    report("SetAnimalCompanionCreatureType", GetAnimalCompanionCreatureType(oCreature) == ANIMAL_COMPANION_CREATURE_TYPE_PANTHER);
+
+    NWNX_Creature_SetFamiliarCreatureType(oCreature, FAMILIAR_CREATURE_TYPE_PSEUDO_DRAGON);
+    report("SetFamiliarCreatureType", GetFamiliarCreatureType(oCreature) == FAMILIAR_CREATURE_TYPE_PSEUDO_DRAGON);
+
+    NWNX_Creature_SetAnimalCompanionName(oCreature, "Fuzzles");
+    report("SetAnimalCompanionName", GetAnimalCompanionName(oCreature) == "Fuzzles");
+
+    NWNX_Creature_SetFamiliarName(oCreature, "Fuzzles");
+    report("SetFamiliarName", GetFamiliarName(oCreature) == "Fuzzles");
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
