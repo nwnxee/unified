@@ -27,6 +27,7 @@ private:
     ArgumentStack GetMinutesPerHour(ArgumentStack&& args);
     ArgumentStack SetMinutesPerHour(ArgumentStack&& args);
     ArgumentStack EncodeStringForURL(ArgumentStack&& args);
+    ArgumentStack GetTwoDARowCount(ArgumentStack&& args);
 };
 
 }

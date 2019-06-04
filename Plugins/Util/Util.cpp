@@ -2,6 +2,7 @@
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/C2DA.hpp"
 #include "API/CResRef.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/CExoString.hpp"
@@ -64,6 +65,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetMinutesPerHour);
     REGISTER(SetMinutesPerHour);
     REGISTER(EncodeStringForURL);
+    REGISTER(GetTwoDARowCount);
 
 #undef REGISTER
 
@@ -255,6 +257,16 @@ ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
     // **
 
     Services::Events::InsertArgument(stack, result);
+    return stack;
+}
+
+ArgumentStack Util::GetTwoDARowCount(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
+    auto *twoda = new C2DA(CResRef(twodaRef.c_str()), 0);
+    twoda->Load2DArray();
+    Services::Events::InsertArgument(stack, twoda->m_nNumRows);
     return stack;
 }
 
