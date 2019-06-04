@@ -1219,10 +1219,9 @@ void NWNX_Creature_SetSpellResistance(object creature, int sr)
 
 void NWNX_Creature_SetAnimalCompanionCreatureType(object creature, int type)
 {
-    string sFunc = "SetCompanionOrFamiliarType";
+    string sFunc = "SetAnimalCompanionCreatureType";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, type);
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, TRUE);// isCompanion
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
@@ -1230,10 +1229,9 @@ void NWNX_Creature_SetAnimalCompanionCreatureType(object creature, int type)
 
 void NWNX_Creature_SetFamiliarCreatureType(object creature, int type)
 {
-    string sFunc = "SetCompanionOrFamiliarType";
+    string sFunc = "SetFamiliarCreatureType";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, type);
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, FALSE);// isCompanion
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
@@ -1241,10 +1239,9 @@ void NWNX_Creature_SetFamiliarCreatureType(object creature, int type)
 
 void NWNX_Creature_SetAnimalCompanionName(object creature, string name)
 {
-    string sFunc = "SetCompanionOrFamiliarName";
+    string sFunc = "SetAnimalCompanionName";
 
     NWNX_PushArgumentString(NWNX_Creature, sFunc, name);
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, TRUE);// isCompanion
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
@@ -1252,10 +1249,9 @@ void NWNX_Creature_SetAnimalCompanionName(object creature, string name)
 
 void NWNX_Creature_SetFamiliarName(object creature, string name)
 {
-    string sFunc = "SetCompanionOrFamiliarName";
+    string sFunc = "SetFamiliarName";
 
     NWNX_PushArgumentString(NWNX_Creature, sFunc, name);
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, FALSE);// isCompanion
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
