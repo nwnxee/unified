@@ -3,6 +3,8 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/C2DA.hpp"
+#include "API/CNWRules.hpp"
+#include "API/CTwoDimArrays.hpp"
 #include "API/CResRef.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/CExoString.hpp"
@@ -264,9 +266,8 @@ ArgumentStack Util::Get2DARowCount(ArgumentStack&& args)
 {
     ArgumentStack stack;
     const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
-    C2DA twoda(CResRef(twodaRef.c_str()), 0);
-    twoda.Load2DArray();
-    Services::Events::InsertArgument(stack, twoda.m_nNumRows);
+    auto twoda = Globals::Rules()->m_p2DArrays->GetCached2DA(twodaRef.c_str(), true);
+    Services::Events::InsertArgument(stack, twoda->m_nNumRows);
     return stack;
 }
 
