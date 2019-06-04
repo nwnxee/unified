@@ -93,13 +93,13 @@ void SkillRanks::LoadFeatInfoHook(Services::Hooks::CallType type, API::CNWRules*
     if (before || !Globals::Rules())
         return;
 
-    auto *featTwoda = new C2DA(CResRef("Feat"), 0);
-    featTwoda->Load2DArray();
+    C2DA featTwoda(CResRef("Feat"), 0);
+    featTwoda.Load2DArray();
 
     // Initialize our vector for each skill
     g_plugin->m_skillFeatMap.assign(Globals::Rules()->m_nNumSkills, {});
 
-    for (int featId = 0; featId <= featTwoda->m_nNumRows; featId++)
+    for (int featId = 0; featId <= featTwoda.m_nNumRows; featId++)
     {
         SkillFeats skillFeats { };
         switch (featId)
