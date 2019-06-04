@@ -65,7 +65,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetMinutesPerHour);
     REGISTER(SetMinutesPerHour);
     REGISTER(EncodeStringForURL);
-    REGISTER(GetTwoDARowCount);
+    REGISTER(Get2DARowCount);
 
 #undef REGISTER
 
@@ -260,13 +260,13 @@ ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Util::GetTwoDARowCount(ArgumentStack&& args)
+ArgumentStack Util::Get2DARowCount(ArgumentStack&& args)
 {
     ArgumentStack stack;
     const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
-    auto *twoda = new C2DA(CResRef(twodaRef.c_str()), 0);
-    twoda->Load2DArray();
-    Services::Events::InsertArgument(stack, twoda->m_nNumRows);
+    C2DA twoda(CResRef(twodaRef.c_str()), 0);
+    twoda.Load2DArray();
+    Services::Events::InsertArgument(stack, twoda.m_nNumRows);
     return stack;
 }
 
