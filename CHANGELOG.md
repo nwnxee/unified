@@ -40,6 +40,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - WebHook: Added support for richer Slack-compatible messages
 ##### New Plugins
 The following plugins were added:
+- **Appearance**: Allows the appearance and some other things of creatures to be overridden per player
 - **Area**: Adds functions exposing additional area properties
 - **CombatModes**: Allows subscribing to Combat Mode toggle events. The Events plugin is needed to subscribe to the CombatMode events
 - **Effect**: Provides various utility functions to manipulate builtin effect types
@@ -56,6 +57,7 @@ The following plugins were added:
 - Administration: GetPlayOption()
 - Administration: SetPlayOption()
 - Administration: DeleteTURD()
+- Appearance: {Get|Set}Override()
 - Area: GetNumberOfPlayersInArea()
 - Area: GetLastEntered()
 - Area: GetLastLeft()
@@ -91,6 +93,8 @@ The following plugins were added:
 - Creature: SetSpellResistance()
 - Creature: GetPrePolymorphAbilityScore()
 - Creature: {Get|Set}MovementRateFactor()
+- Creature: Set{AnimalCompanion|Familiar}CreatureType()
+- Creature: Set{AnimalCompanion|Familiar}Name()
 - Damage: SetAttackEventScript()
 - Damage: GetAttackEventData()
 - Damage: SetAttackEventData()
@@ -142,6 +146,9 @@ The following plugins were added:
 - Player: GetAreaExplorationState()
 - Player: SetAreaExplorationState()
 - Player: SetRestAnimation()
+- Player: SetObjectVisualTransformOverride()
+- Player: ApplyLoopingVisualEffectToObject()
+- Player: SetPlaceableNameOverride()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
@@ -167,6 +174,7 @@ The following plugins were added:
 - Util: GetMinutesPerHour()
 - Util: SetMinutesPerHour()
 - Util: EncodeStringForURL()
+- Util: Get2DARowCount()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()
@@ -177,6 +185,7 @@ The following plugins were added:
 - Docker: Skip all plugins except ServerLogRedirector by default
 - Redis: Lots of stuff, be sure to update the redis nwscripts!
 - Events: Changed `NUM_LEVELS` to `AMOUNT` for DMActionEvent GiveLevel
+- Player: StartGuiTimingBar() now accepts a type for pre-defined text
 
 ### Deprecated
 - Player: {Get/Set}VisibilityOverride() are deprecated, please use the new Visibility plugin!

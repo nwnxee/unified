@@ -76,10 +76,10 @@ void NWNX_Damage_SetDamageEventData(struct NWNX_Damage_DamageEventData data);
 // If oOwner is valid, it will set it only for that creature.
 void NWNX_Damage_SetAttackEventScript(string sScript, object oOwner=OBJECT_INVALID);
 
-// Get Attack Event Data (to use only on Attack Event Script)
+// Get Attack Event data (use only in Attack Event script)
 struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData();
 
-// Set Attack Event Data (to use only on Attack Event Script)
+// Set Attack Event data (use only in Attack Event script)
 void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 
 // Deal damage to target - permits multiple damage types and checks enhancement bonus for overcoming DR
@@ -188,6 +188,7 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data)
 {
     string sFunc = "SetAttackEventData";
 
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iAttackResult);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iBase);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iSonic);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPositive);

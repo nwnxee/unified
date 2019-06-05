@@ -57,5 +57,8 @@ void main()
     string sStringForURL = "This is a test, yes.";
     report("EncodeStringForURL", NWNX_Util_EncodeStringForURL(sStringForURL) == "This+is+a+test%2C+yes.");
 
+    string sTwoDA = "bodybag";
+    report("Get2DARowCount", NWNX_Util_Get2DARowCount(sTwoDA) == 7);
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

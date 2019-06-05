@@ -44,7 +44,8 @@ int NWNX_Util_GetMinutesPerHour();
 void NWNX_Util_SetMinutesPerHour(int minutes);
 // Encodes a string for usage in a URL
 string NWNX_Util_EncodeStringForURL(string str);
-
+// Gets the row count for a 2da
+int NWNX_Util_Get2DARowCount(string str);
 
 const string NWNX_Util = "NWNX_Util";
 
@@ -150,4 +151,12 @@ string NWNX_Util_EncodeStringForURL(string sURL)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_Get2DARowCount(string str)
+{
+    string sFunc = "Get2DARowCount";
+    NWNX_PushArgumentString(NWNX_Util, sFunc, str);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }

@@ -130,6 +130,10 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetOriginalName);
     REGISTER(GetOriginalName);
     REGISTER(SetSpellResistance);
+    REGISTER(SetAnimalCompanionCreatureType);
+    REGISTER(SetFamiliarCreatureType);
+    REGISTER(SetAnimalCompanionName);
+    REGISTER(SetFamiliarName);
 
 #undef REGISTER
 }
@@ -1886,4 +1890,55 @@ ArgumentStack Creature::SetSpellResistance(ArgumentStack&& args)
     }
     return stack;
 }
+
+ArgumentStack Creature::SetAnimalCompanionCreatureType(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto creatureType = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(creatureType >= 0);
+
+        pCreature->m_pStats->m_nAnimalCompanionCreatureType = creatureType;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetFamiliarCreatureType(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto creatureType = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(creatureType >= 0);
+
+        pCreature->m_pStats->m_nFamiliarCreatureType = creatureType;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetAnimalCompanionName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto name = Services::Events::ExtractArgument<std::string>(args);
+
+        pCreature->m_pStats->m_sAnimalCompanionName = CExoString(name.c_str());
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetFamiliarName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto name = Services::Events::ExtractArgument<std::string>(args);
+
+        pCreature->m_pStats->m_sFamiliarName = CExoString(name.c_str());
+    }
+    return stack;
+}
+
 }
