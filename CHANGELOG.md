@@ -93,6 +93,8 @@ The following plugins were added:
 - Creature: SetSpellResistance()
 - Creature: GetPrePolymorphAbilityScore()
 - Creature: {Get|Set}MovementRateFactor()
+- Creature: Set{AnimalCompanion|Familiar}CreatureType()
+- Creature: Set{AnimalCompanion|Familiar}Name()
 - Damage: SetAttackEventScript()
 - Damage: GetAttackEventData()
 - Damage: SetAttackEventData()
