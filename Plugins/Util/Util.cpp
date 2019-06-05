@@ -267,7 +267,7 @@ ArgumentStack Util::Get2DARowCount(ArgumentStack&& args)
     ArgumentStack stack;
     const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
     auto twoda = Globals::Rules()->m_p2DArrays->GetCached2DA(twodaRef.c_str(), true);
-    Services::Events::InsertArgument(stack, twoda->m_nNumRows);
+    Services::Events::InsertArgument(stack, twoda ? twoda->m_nNumRows : 0);
     return stack;
 }
 
