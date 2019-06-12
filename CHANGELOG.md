@@ -182,6 +182,7 @@ The following plugins were added:
 
 ### Changed
 - Core: The nwnx.txt logfile will now be written to the UserDirectory
+- Chat: LOG_DEBUG suppresses player to player tell specifics
 - Docker: Set default log level to 6
 - Docker: Skip all plugins except ServerLogRedirector by default
 - Redis: Lots of stuff, be sure to update the redis nwscripts!
