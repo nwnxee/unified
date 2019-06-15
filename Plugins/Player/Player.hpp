@@ -4,6 +4,7 @@
 #include "Services/Events/Events.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include <map>
+#include <set>
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -45,6 +46,7 @@ private:
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
     std::map<std::string, NWNXLib::API::ObjectVisualTransformData> m_OVTData;
+    std::map<std::string, std::set<uint16_t>> m_LVEData;
 };
 
 }
