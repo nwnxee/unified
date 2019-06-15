@@ -1,15 +1,19 @@
 #include "Layonara.hpp"
 
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CNWFeat.hpp"
+#include "API/CNWSCreature.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
+using namespace NWNXLib::API::Constants;
 
 static ViewPtr<Layonara::Layonara> g_plugin;
 
@@ -43,6 +47,9 @@ Layonara::Layonara(const Plugin::CreateParams& params)
 
     REGISTER(SetEquippableSlots);
     REGISTER(SetHostileFeat);
+    REGISTER(SetDuelistCannyDefense);
+    REGISTER(SetDuelistGrace);
+    REGISTER(SetDuelistElaborateParry);
 
 #undef REGISTER
 
@@ -85,6 +92,130 @@ ArgumentStack Layonara::SetHostileFeat(ArgumentStack&& args)
     auto hostile =  Services::Events::ExtractArgument<int32_t>(args);
     auto feat = Globals::Rules()->GetFeat(featId);
     feat->m_bHostileFeat = hostile;
+    return stack;
+}
+
+ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+
+    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+    {
+        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
+        if (eff->m_sCustomTag == "DuelistCannyDefense")
+        {
+            pCreature->RemoveEffect(eff);
+        }
+    }
+
+    if (nBonus != -1)
+    {
+        auto *eff = new API::CGameEffect(true);
+        eff->m_oidCreator         = 0;
+        eff->m_nType              = EffectTrueType::ACIncrease;
+        eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+        eff->m_bShowIcon          = 0;
+        eff->m_nParamInteger[0]   = ACBonus::Dodge;
+        eff->m_nParamInteger[1]   = nBonus;
+        eff->m_nParamInteger[2]   = RacialType::Invalid;
+        eff->m_nParamInteger[3]   = 0;
+        eff->m_nParamInteger[4]   = 0;
+        eff->m_nParamInteger[5]   = 4103;
+        eff->m_sCustomTag         = "DuelistCannyDefense";
+        pCreature->ApplyEffect(eff, true, true);
+    }
+
+    return stack;
+}
+
+ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+
+    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+    {
+        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
+        if (eff->m_sCustomTag == "DuelistGrace")
+        {
+            pCreature->RemoveEffect(eff);
+        }
+    }
+
+    if (nBonus != -1)
+    {
+        auto *eff = new API::CGameEffect(true);
+        eff->m_oidCreator         = 0;
+        eff->m_nType              = EffectTrueType::SavingThrowIncrease;
+        eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+        eff->m_bShowIcon          = 0;
+        eff->m_nParamInteger[0]   = nBonus;
+        eff->m_nParamInteger[1]   = SavingThrow::Reflex;
+        eff->m_nParamInteger[2]   = SavingThrowType::All;
+        eff->m_nParamInteger[3]   = RacialType::Invalid;
+        eff->m_sCustomTag         = "DuelistGrace";
+        pCreature->ApplyEffect(eff, true, true);
+    }
+
+    return stack;
+}
+
+ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+
+    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+    {
+        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
+        if (eff->m_sCustomTag == "DuelistElaborateParry")
+        {
+            pCreature->RemoveEffect(eff);
+        }
+    }
+
+    if (nBonus != -1)
+    {
+        auto *eff = new API::CGameEffect(true);
+        eff->m_oidCreator         = 0;
+        eff->m_nType              = EffectTrueType::SkillIncrease;
+        eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+        eff->m_bShowIcon          = 0;
+        eff->m_nParamInteger[0]   = Skill::Parry;
+        eff->m_nParamInteger[1]   = nBonus;
+        eff->m_nParamInteger[2]   = RacialType::Invalid;
+        eff->m_sCustomTag         = "DuelistElaborateParry";
+        pCreature->ApplyEffect(eff, true, true);
+    }
+
     return stack;
 }
 
