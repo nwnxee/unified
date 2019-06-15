@@ -29,9 +29,7 @@ void EffectEvents::HandleEffectHook(const std::string& event, Services::Hooks::C
 
     int32_t effectDurationType = pEffect->m_nSubType & EffectDurationType::MASK;
 
-    if (!pEffect->m_bExpose ||
-        effectDurationType == EffectDurationType::Instant ||
-        effectDurationType > EffectDurationType::Permanent)
+    if (effectDurationType != EffectDurationType::Temporary && effectDurationType != EffectDurationType::Permanent)
         return;
 
     switch (pEffect->m_nType)
@@ -40,6 +38,7 @@ void EffectEvents::HandleEffectHook(const std::string& event, Services::Hooks::C
         case EffectTrueType::VisualEffect:
         case EffectTrueType::Link:
         case EffectTrueType::ItemProperty:
+        case EffectTrueType::Beam:
             return;
 
         default:
