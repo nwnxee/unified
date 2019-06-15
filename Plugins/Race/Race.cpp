@@ -118,7 +118,7 @@ void Race::DoEffect(CNWSCreature *pCreature,
     eff->m_nParamInteger[3]   = param3;
     eff->m_nParamInteger[4]   = param4;
     eff->m_nParamInteger[5]   = param5;
-    eff->m_sCustomTag         = "RacialMod";
+    eff->m_sCustomTag         = "NWNX_Race_RacialMod";
     pCreature->ApplyEffect(eff, true, true);
 }
 
@@ -140,7 +140,7 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
         for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
         {
             auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-            if (eff->m_sCustomTag == "RacialMod")
+            if (eff->m_sCustomTag == "NWNX_Race_RacialMod")
             {
                 pCreature->RemoveEffect(eff);
             }
