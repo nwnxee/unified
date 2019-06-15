@@ -85,7 +85,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
         --plugin.m_depth;
     }
     // Suppress player to player tells
-    if (channel != Constants::ChatChannel::PlayerTell || (channel == Constants::ChatChannel::PlayerTell && sender == target))
+    if ((channel != Constants::ChatChannel::PlayerTell && channel != Constants::ChatChannel::DmTell) || sender == target)
     {
         LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
             plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
