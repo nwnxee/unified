@@ -10,6 +10,7 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
+#include "API/Constants.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "ViewPtr.hpp"
@@ -83,9 +84,16 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
         Globals::VirtualMachine()->RunScript(&script, sender, 1);
         --plugin.m_depth;
     }
-
-    LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
-        plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
+    // Suppress player to player tells
+    if (channel != Constants::ChatChannel::PlayerTell || (channel == Constants::ChatChannel::PlayerTell && sender == target))
+    {
+        LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
+            plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
+    }
+    else
+    {
+        LOG_DEBUG("%s chat message. Channel: '%i'", plugin.m_skipMessage ? "Skipped" : "Sent", channel);
+    }
 
     if (plugin.m_depth > 0 || !plugin.m_skipMessage)
     {
