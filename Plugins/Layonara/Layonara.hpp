@@ -19,8 +19,11 @@ private:
     static NWNXLib::API::CNWSItem *GetItemInSlotHook(NWNXLib::API::CNWSInventory*, uint32_t);
     NWNXLib::Hooking::FunctionHook* m_GetItemInSlotHook;
 
-    ArgumentStack SetEquippableSlots      (ArgumentStack&& args);
-    ArgumentStack SetHostileFeat          (ArgumentStack&& args);
+    ArgumentStack SetEquippableSlots              (ArgumentStack&& args);
+    ArgumentStack SetHostileFeat                  (ArgumentStack&& args);
+    ArgumentStack SetDuelistCannyDefense          (ArgumentStack&& args);
+    ArgumentStack SetDuelistGrace                 (ArgumentStack&& args);
+    ArgumentStack SetDuelistElaborateParry        (ArgumentStack&& args);
 };
 
 }

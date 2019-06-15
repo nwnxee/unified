@@ -8,6 +8,12 @@ void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots);
 // Sets a feat as hostile
 void NWNX_Layonara_SetHostileFeat(int nFeatID, int bHostile);
 
+// Duelist Canny Defense
+void NWNX_Layonara_DuelistCannyDefense(object creature, int nBonus);
+
+// Duelist Grace
+void NWNX_Layonara_SetDuelistGrace(object creature, int nBonus);
+
 void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
@@ -24,6 +30,36 @@ void NWNX_Layonara_SetHostileFeat(int nFeatID, int bHostile)
 
     NWNX_PushArgumentInt(NWNX_Layonara, sFunc, bHostile);
     NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nFeatID);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_SetDuelistCannyDefense(object creature, int nBonus)
+{
+    string sFunc = "SetDuelistCannyDefense";
+
+    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_SetDuelistGrace(object creature, int nBonus)
+{
+    string sFunc = "SetDuelistGrace";
+
+    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_SetDuelistElaborateParry(object creature, int nBonus)
+{
+    string sFunc = "SetDuelistElaborateParry";
+
+    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
