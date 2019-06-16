@@ -46,10 +46,12 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Layonara::func, this, std::placeholders::_1));
 
     REGISTER(SetEquippableSlots)
-    REGISTER(SetHostileFeat);
-    REGISTER(SetDuelistCannyDefense);
-    REGISTER(SetDuelistGrace);
-    REGISTER(SetDuelistElaborateParry);
+    REGISTER(SetHostileFeat)
+    REGISTER(SetDuelistCannyDefense)
+    REGISTER(SetDuelistGrace)
+    REGISTER(SetDuelistElaborateParry)
+    REGISTER(SetSpellswordIgnoreSpellFailure)
+    REGISTER(SetUndeadSlayerImmunity)
 
 #undef REGISTER
 
@@ -215,6 +217,70 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
         eff->m_sCustomTag         = "DuelistElaborateParry";
         pCreature->ApplyEffect(eff, true, true);
     }
+
+    return stack;
+}
+
+ArgumentStack Layonara::SetSpellswordIgnoreSpellFailure(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+
+    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+    {
+        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
+        if (eff->m_sCustomTag == "SpellswordIgnoreSpellFailure")
+        {
+            pCreature->RemoveEffect(eff);
+        }
+    }
+
+    if (nBonus != -1)
+    {
+        auto *eff = new API::CGameEffect(true);
+        eff->m_oidCreator         = 0;
+        eff->m_nType              = EffectTrueType::ArcaneSpellFailure;
+        eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+        eff->m_bShowIcon          = 0;
+        eff->m_nParamInteger[0]   = nBonus;
+        eff->m_sCustomTag         = "SpellswordIgnoreSpellFailure";
+        pCreature->ApplyEffect(eff, true, true);
+    }
+
+    return stack;
+}
+
+ArgumentStack Layonara::SetUndeadSlayerImmunity(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto nImmunity = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+
+    auto *eff = new API::CGameEffect(true);
+    eff->m_oidCreator         = 0;
+    eff->m_nType              = EffectTrueType::Immunity;
+    eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+    eff->m_bShowIcon          = 0;
+    eff->m_nParamInteger[0]   = nImmunity;
+    eff->m_nParamInteger[1]   = RacialType::Invalid;
+    pCreature->ApplyEffect(eff, true, true);
 
     return stack;
 }

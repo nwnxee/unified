@@ -24,6 +24,8 @@ private:
     ArgumentStack SetDuelistCannyDefense          (ArgumentStack&& args);
     ArgumentStack SetDuelistGrace                 (ArgumentStack&& args);
     ArgumentStack SetDuelistElaborateParry        (ArgumentStack&& args);
+    ArgumentStack SetSpellswordIgnoreSpellFailure (ArgumentStack&& args);
+    ArgumentStack SetUndeadSlayerImmunity         (ArgumentStack&& args);
 };
 
 }
