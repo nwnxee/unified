@@ -26,6 +26,7 @@ private:
     ArgumentStack SetDuelistElaborateParry        (ArgumentStack&& args);
     ArgumentStack SetSpellswordIgnoreSpellFailure (ArgumentStack&& args);
     ArgumentStack SetUndeadSlayerImmunity         (ArgumentStack&& args);
+    ArgumentStack SetSubraceDayEffects            (ArgumentStack&& args);
 };
 
 }
