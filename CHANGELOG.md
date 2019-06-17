@@ -129,6 +129,7 @@ The following plugins were added:
 - Object: GetPlaceableIsStatic()
 - Object: SetPlaceableIsStatic()
 - Object: {Get|Set}AutoRemoveKey()
+- Object: {Get|Set}TriggerGeometry()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()
