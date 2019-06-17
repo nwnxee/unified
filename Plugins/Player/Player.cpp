@@ -903,21 +903,17 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
                         static bool bKeyExists;
-                        static std::set<uint16_t> visualEffects;
+                        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
+                                                Utils::ObjectIDToString(pObject->m_idSelf);
 
                         if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                         {
-                            const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
-                                                    Utils::ObjectIDToString(pObject->m_idSelf);
-
                             auto search = g_plugin->m_LVEData.find(key);
                             bKeyExists = search != g_plugin->m_LVEData.end();
 
                             if (bKeyExists)
                             {
-                                visualEffects = search->second;
-
-                                for(auto visualEffect : visualEffects)
+                                for(auto visualEffect : search->second)
                                 {
                                     pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
                                 }
@@ -927,7 +923,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                         {
                             if (bKeyExists)
                             {
-                                for(auto visualEffect : visualEffects)
+                                for(auto visualEffect : g_plugin->m_LVEData[key])
                                 {
                                     pObject->RemoveLoopingVisualEffect(visualEffect);
                                 }
