@@ -52,6 +52,7 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     REGISTER(SetDuelistElaborateParry)
     REGISTER(SetSpellswordIgnoreSpellFailure)
     REGISTER(SetUndeadSlayerImmunity)
+    REGISTER(SetSubraceDayEffects)
 
 #undef REGISTER
 
@@ -281,6 +282,58 @@ ArgumentStack Layonara::SetUndeadSlayerImmunity(ArgumentStack&& args)
     eff->m_nParamInteger[0]   = nImmunity;
     eff->m_nParamInteger[1]   = RacialType::Invalid;
     pCreature->ApplyEffect(eff, true, true);
+
+    return stack;
+}
+
+ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto nActive = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+
+    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+    {
+        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
+        if (eff->m_sCustomTag == "SubraceDayEffects")
+        {
+            pCreature->RemoveEffectById(eff->m_nID);
+        }
+    }
+
+    if (nActive)
+    {
+        auto *eff = new API::CGameEffect(true);
+        eff->m_oidCreator         = 0;
+        eff->m_nType              = EffectTrueType::AttackDecrease;
+        eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+        eff->m_bShowIcon          = 1;
+        eff->m_nParamInteger[0]   = 2;
+        eff->m_nParamInteger[1]   = 0;
+        eff->m_nParamInteger[2]   = RacialType::Invalid;
+        eff->m_sCustomTag         = "SubraceDayEffects";
+        pCreature->ApplyEffect(eff, true, true);
+
+        auto *eff2 = new API::CGameEffect(true);
+        eff2->m_oidCreator         = 0;
+        eff2->m_nType              = EffectTrueType::SavingThrowDecrease;
+        eff2->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+        eff2->m_bShowIcon          = 1;
+        eff2->m_nParamInteger[0]   = 2;
+        eff2->m_nParamInteger[1]   = SavingThrow::All;
+        eff2->m_nParamInteger[2]   = SavingThrowType::All;
+        eff2->m_nParamInteger[3]   = RacialType::Invalid;
+        eff2->m_sCustomTag         = "SubraceDayEffects";
+        pCreature->ApplyEffect(eff2, true, true);
+    }
 
     return stack;
 }

@@ -20,6 +20,9 @@ void NWNX_Layonara_SetSpellswordIgnoreSpellFailure(object creature, int nBonus);
 // Undead Slayer Immunity
 void NWNX_Layonara_SetUndeadSlayerImmunity(object creature, int nImmunity);
 
+// Subrace Effects for Daytime
+void NWNX_Layonara_SetSubraceDayEffects(object creature, int nActive = TRUE);
+
 void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
@@ -85,6 +88,16 @@ void NWNX_Layonara_SetUndeadSlayerImmunity(object creature, int nImmunity)
     string sFunc = "SetUndeadSlayerImmunity";
 
     NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nImmunity);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_SetSubraceDayEffects(object creature, int nActive = TRUE)
+{
+    string sFunc = "SetSubraceDayEffects";
+
+    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nActive);
     NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
