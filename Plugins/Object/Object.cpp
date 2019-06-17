@@ -28,7 +28,7 @@
 #include "Serialize.hpp"
 #include "Utils.hpp"
 
-#include <regex>
+#include <cstring>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -507,6 +507,8 @@ ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
     {
         if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
         {
+            retVal.reserve(32 * pTrigger->m_nVertices);
+
             for(int i = 0; i < pTrigger->m_nVertices; i++)
             {
                 retVal += "{" + std::to_string(pTrigger->m_pvVertices[i].x) + ", " +
@@ -531,28 +533,30 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
 
     if (auto *pObject = object(args))
     {
-        const auto sGeom = Services::Events::ExtractArgument<std::string>(args);
+        const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
 
         if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
         {
-            std::regex rgx(R"(\{([0-9]+\.[0-9]+){1},\s([0-9]+\.[0-9]+){1}(?:,\s)?([0-9]+\.[0-9]+)?\})");
-            int numMatches = 0;
+            auto str = sGeometry.c_str();
             std::vector<Vector> vecVerts;
+            Vector vec = {};
 
-            for(std::sregex_iterator it = std::sregex_iterator(sGeom.begin(), sGeom.end(), rgx); it != std::sregex_iterator(); ++it)
-            {
-                std::smatch match = *it;
+            do {
+                int cnt = std::sscanf(str, "{%f,%f,%f", &vec.x, &vec.y, &vec.z);
 
-                Vector vec = {};
-                vec.x = std::strtof(match.str(1).c_str(), nullptr);
-                vec.y = std::strtof(match.str(2).c_str(), nullptr);
-                vec.z = match.str(3).empty() ? pTrigger->GetArea()->ComputeHeight(vec) : std::strtof(match.str(3).c_str(), nullptr);
+                if (cnt != 2 && cnt != 3)
+                {
+                    LOG_NOTICE("NWNX_Object_SetTriggerGeometry() invalid geometry string at: %s", str);
+                    break;
+                }
+
+                if (cnt == 2)
+                    vec.z = pTrigger->GetArea()->ComputeHeight(vec);
 
                 vecVerts.push_back(vec);
-                numMatches++;
-            }
+            } while ((str = std::strstr(str + 1, "{")));
 
-            if (numMatches > 2)
+            if (vecVerts.size() > 2)
             {
                 CNWSArea *pArea = pTrigger->GetArea();
                 pTrigger->RemoveFromArea();
@@ -562,8 +566,8 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
                 if (pTrigger->m_pnOutlineVertices)
                     delete[] pTrigger->m_pnOutlineVertices;
 
-                pTrigger->m_nVertices = numMatches;
-                pTrigger->m_nOutlineVertices = numMatches;
+                pTrigger->m_nVertices = vecVerts.size();
+                pTrigger->m_nOutlineVertices = vecVerts.size();
 
                 pTrigger->m_pvVertices = new Vector[pTrigger->m_nVertices];
                 pTrigger->m_pnOutlineVertices = new int32_t[pTrigger->m_nVertices];
