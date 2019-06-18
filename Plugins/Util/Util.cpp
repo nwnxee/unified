@@ -8,6 +8,7 @@
 #include "API/CResRef.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/CExoString.hpp"
+#include "API/CExoStringList.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CTlkTable.hpp"
 #include "API/CTlkTableTokenCustom.hpp"
@@ -68,6 +69,8 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(SetMinutesPerHour);
     REGISTER(EncodeStringForURL);
     REGISTER(Get2DARowCount);
+    REGISTER(GetFirstResRef);
+    REGISTER(GetNextResRef);
 
 #undef REGISTER
 
@@ -268,6 +271,61 @@ ArgumentStack Util::Get2DARowCount(ArgumentStack&& args)
     const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
     auto twoda = Globals::Rules()->m_p2DArrays->GetCached2DA(twodaRef.c_str(), true);
     Services::Events::InsertArgument(stack, twoda ? twoda->m_nNumRows : 0);
+    return stack;
+}
+
+ArgumentStack Util::GetFirstResRef(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retVal;
+
+    const auto resRefType = Services::Events::ExtractArgument<int32_t>(args);
+    const auto regexFilter = Services::Events::ExtractArgument<std::string>(args);
+    const auto bModuleOnly = Services::Events::ExtractArgument<int32_t>(args);
+
+    m_resRefIndex = 0;
+    m_listResRefs.clear();
+    m_listResRefs.reserve(10);
+
+    CExoStringList *pList = Globals::ExoResMan()->GetResOfType(resRefType, !!bModuleOnly);
+
+    if (pList)
+    {
+        std::regex rxg(regexFilter);
+
+        for (int i = 0; i < pList->m_nCount; i++)
+        {
+            if (regexFilter.empty() || std::regex_match(pList->m_pStrings[i]->CStr(), rxg))
+            {
+                m_listResRefs.emplace_back(pList->m_pStrings[i]->CStr());
+            }
+        }
+    }
+
+    if (m_resRefIndex < m_listResRefs.size())
+    {
+        retVal = m_listResRefs[m_resRefIndex];
+        m_resRefIndex++;
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Util::GetNextResRef(ArgumentStack&&)
+{
+    ArgumentStack stack;
+    std::string retVal;
+
+    if (m_resRefIndex < m_listResRefs.size())
+    {
+        retVal = m_listResRefs[m_resRefIndex];
+        m_resRefIndex++;
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
     return stack;
 }
 

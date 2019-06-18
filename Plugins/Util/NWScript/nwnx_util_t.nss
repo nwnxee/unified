@@ -60,5 +60,8 @@ void main()
     string sTwoDA = "bodybag";
     report("Get2DARowCount", NWNX_Util_Get2DARowCount(sTwoDA) == 7);
 
+    report("GetFirstResRef", NWNX_Util_GetFirstResRef(NWNX_UTIL_RESREF_TYPE_NSS, "nwnx_util.*") != "");
+    report("GetNextResRef", NWNX_Util_GetNextResRef() != "");
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }
