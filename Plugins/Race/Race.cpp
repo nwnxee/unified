@@ -250,17 +250,13 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
     for (auto &raceFeatUsage : g_plugin->m_RaceFeatUsage[nRace])
     {
         auto featId = raceFeatUsage.first;
-        for (auto &raceFeatUsageValues : g_plugin->m_RaceFeatUsage[nRace][featId])
-        {
-            auto fuChargen = raceFeatUsageValues.first;
-            auto fuLevel = raceFeatUsageValues.second;
-            auto levelMod = std::floor(pCreature->m_pStats->GetLevel(true) / fuLevel);
-            auto totalMod = int32_t(fuChargen + levelMod);
-            auto featRemainingUses = pCreature->m_pStats->GetFeatRemainingUses(featId);
-            if (totalMod < featRemainingUses)
-                pCreature->m_pStats->SetFeatRemainingUses(featId, totalMod);
-
-        }
+        auto fuChargen = raceFeatUsage.second.first;
+        auto fuLevel = raceFeatUsage.second.second;
+        auto levelMod = std::floor(pCreature->m_pStats->GetLevel(true) / fuLevel);
+        auto totalMod = int32_t(fuChargen + levelMod);
+        auto featRemainingUses = pCreature->m_pStats->GetFeatRemainingUses(featId);
+        if (totalMod < featRemainingUses)
+            pCreature->m_pStats->SetFeatRemainingUses(featId, totalMod);
     }
 
     // IMMUNITY
@@ -486,17 +482,13 @@ void Race::ResetFeatRemainingUsesHook(
     for (auto &raceFeatUsage : g_plugin->m_RaceFeatUsage[nRace])
     {
         auto featId = raceFeatUsage.first;
-        for (auto &raceFeatUsageValues : g_plugin->m_RaceFeatUsage[nRace][featId])
-        {
-            auto fuCharGen = raceFeatUsageValues.first;
-            auto fuLevel = raceFeatUsageValues.second;
-            auto levelMod = std::floor(pCreature->m_pStats->GetLevel(true) / fuLevel);
-            auto totalMod = int32_t(fuCharGen + levelMod);
-            auto featRemainingUses = pCreature->m_pStats->GetFeatRemainingUses(featId);
-            if (totalMod < featRemainingUses)
-                pCreature->m_pStats->SetFeatRemainingUses(featId, totalMod);
-
-        }
+        auto fuCharGen = raceFeatUsage.second.first;
+        auto fuLevel = raceFeatUsage.second.second;
+        auto levelMod = std::floor(pCreature->m_pStats->GetLevel(true) / fuLevel);
+        auto totalMod = int32_t(fuCharGen + levelMod);
+        auto featRemainingUses = pCreature->m_pStats->GetFeatRemainingUses(featId);
+        if (totalMod < featRemainingUses)
+            pCreature->m_pStats->SetFeatRemainingUses(featId, totalMod);
     }
 }
 
@@ -795,7 +787,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
                 LOG_ERROR("%s: Feat Usage modifier improperly set.", raceName);
                 break;
             }
-            g_plugin->m_RaceFeatUsage[raceId][param1][param2] = param3;
+            g_plugin->m_RaceFeatUsage[raceId][param1]= std::make_pair(param2, param3);
             auto featName = Globals::Rules()->GetFeat(param1)->GetNameText();
             LOG_INFO("%s: Setting %s Feat Usage Per Day to %d + 1 for every %d level(s).", raceName, featName.CStr(), param2, param3);
             break;

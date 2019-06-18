@@ -7,7 +7,11 @@
 #include <map>
 #include <tuple>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using namespace std;
+using namespace NWNXLib::API;
+using namespace NWNXLib::Services;
+
+using ArgumentStack = Events::ArgumentStack;
 
 namespace Race {
 
@@ -49,48 +53,48 @@ private:
         SRINCLEVEL    = 22,
     };
 
-    std::map<uint16_t, int32_t>                                        m_RaceAB;
-    std::map<uint16_t, std::map<uint16_t, int32_t>>                    m_RaceABVsRace;
-    std::map<uint16_t, int32_t>                                        m_RaceAC;
-    std::map<uint16_t, std::map<uint16_t, int32_t>>                    m_RaceACVsRace;
-    std::map<uint16_t, uint8_t>                                        m_RaceConcealment;
-    std::map<uint16_t, std::map<uint32_t, int32_t>>                    m_RaceDmgImmunity;
-    std::map<uint16_t, std::map<uint8_t, int32_t>>                     m_RaceDmgReduction;
-    std::map<uint16_t, std::map<uint32_t, int32_t>>                    m_RaceDmgResist;
-    std::map<uint16_t, std::map<uint16_t, uint8_t>>                    m_RaceFeat;
-    std::map<uint16_t, std::map<uint32_t, std::map<uint8_t, uint8_t>>> m_RaceFeatUsage;
-    std::map<uint16_t, std::list<uint32_t>>                            m_RaceImmunities;
-    std::map<uint16_t, int32_t>                                        m_RaceInitiative;
-    std::map<uint16_t, int32_t>                                        m_RaceMovementSpeed;
-    std::map<uint16_t, uint16_t>                                       m_RaceParent;
-    std::map<uint16_t, std::pair<uint8_t, uint16_t>>                   m_RaceRegeneration;
-    std::map<uint16_t, std::map<uint8_t, int32_t>>                     m_RaceSave;
-    std::map<uint16_t, std::map<uint8_t, std::map<uint16_t, int16_t>>> m_RaceSaveVsRace;
-    std::map<uint16_t, std::map<uint8_t, std::map<uint16_t, int16_t>>> m_RaceSaveVsType;
-    std::map<uint16_t, std::map<uint8_t, int32_t>>                     m_RaceSkill;
-    std::map<uint16_t, std::list<uint32_t>>                            m_RaceSpellImmunities;
-    std::map<uint16_t, std::pair<uint8_t, uint8_t>>                    m_RaceSRCharGen;
-    std::map<uint16_t, std::tuple<uint8_t, uint8_t, uint8_t>>          m_RaceSR;
+    unordered_map<uint16_t, int32_t>                                                  m_RaceAB;
+    unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_RaceABVsRace;
+    unordered_map<uint16_t, int32_t>                                                  m_RaceAC;
+    unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_RaceACVsRace;
+    unordered_map<uint16_t, uint8_t>                                                  m_RaceConcealment;
+    unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_RaceDmgImmunity;
+    unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_RaceDmgReduction;
+    unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_RaceDmgResist;
+    unordered_map<uint16_t, unordered_map<uint16_t, uint8_t>>                         m_RaceFeat;
+    unordered_map<uint16_t, unordered_map<uint32_t, pair<uint8_t, uint8_t>>>          m_RaceFeatUsage;
+    unordered_map<uint16_t, list<uint32_t>>                                           m_RaceImmunities;
+    unordered_map<uint16_t, int32_t>                                                  m_RaceInitiative;
+    unordered_map<uint16_t, int32_t>                                                  m_RaceMovementSpeed;
+    unordered_map<uint16_t, uint16_t>                                                 m_RaceParent;
+    unordered_map<uint16_t, pair<uint8_t, uint16_t>>                                  m_RaceRegeneration;
+    unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_RaceSave;
+    unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_RaceSaveVsRace;
+    unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_RaceSaveVsType;
+    unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_RaceSkill;
+    unordered_map<uint16_t, list<uint32_t>>                                           m_RaceSpellImmunities;
+    unordered_map<uint16_t, pair<uint8_t, uint8_t>>                                   m_RaceSRCharGen;
+    unordered_map<uint16_t, tuple<uint8_t, uint8_t, uint8_t>>                         m_RaceSR;
 
-    static void DoEffect(NWNXLib::API::CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
-    static void ApplyRaceEffects(NWNXLib::API::CNWSCreature*);
-    static void SetOrRestoreRace(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreatureStats*, NWNXLib::API::CNWSCreatureStats* = nullptr);
+    static void DoEffect(CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
+    static void ApplyRaceEffects(CNWSCreature*);
+    static void SetOrRestoreRace(Hooks::CallType, CNWSCreatureStats*, CNWSCreatureStats* = nullptr);
     static void SetRaceModifier(int32_t, RaceModifier, int32_t, int32_t, int32_t);
 
-    static void ResolveInitiativeHook(NWNXLib::API::CNWSCreature*);
+    static void ResolveInitiativeHook(CNWSCreature*);
 
-    static void PostProcessHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*);
-    static void ResetFeatRemainingUsesHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreatureStats*);
-    static void CreateDefaultQuickButtonsHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*);
-    static void ValidateCharacterHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSPlayer*, int32_t*);
-    static void SendServerToPlayerLevelUp_ConfirmationHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSMessage*, NWNXLib::API::Types::PlayerID, int32_t);
-    static void LevelUpAutomaticHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
-    static void GetFavoredEnemyBonusHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreatureStats*, NWNXLib::API::CNWSCreature*);
-    static void GetMeetsPrestigeClassRequirementsHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreatureStats*, NWNXLib::API::CNWClass*);
-    static void GetTotalEffectBonusHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*, uint8_t, NWNXLib::API::CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
-    static void SavingThrowRollHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t);
-    static void GetWeaponPowerHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*, NWNXLib::API::CNWSObject*, int32_t);
-    static void LoadRaceInfoHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWRules*);
+    static void PostProcessHook(Hooks::CallType, CNWSCreature*);
+    static void ResetFeatRemainingUsesHook(Hooks::CallType, CNWSCreatureStats*);
+    static void CreateDefaultQuickButtonsHook(Hooks::CallType, CNWSCreature*);
+    static void ValidateCharacterHook(Hooks::CallType, CNWSPlayer*, int32_t*);
+    static void SendServerToPlayerLevelUp_ConfirmationHook(Hooks::CallType, CNWSMessage*, Types::PlayerID, int32_t);
+    static void LevelUpAutomaticHook(Hooks::CallType, CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
+    static void GetFavoredEnemyBonusHook(Hooks::CallType, CNWSCreatureStats*, CNWSCreature*);
+    static void GetMeetsPrestigeClassRequirementsHook(Hooks::CallType, CNWSCreatureStats*, CNWClass*);
+    static void GetTotalEffectBonusHook(Hooks::CallType, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
+    static void SavingThrowRollHook(Hooks::CallType, CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t);
+    static void GetWeaponPowerHook(Hooks::CallType, CNWSCreature*, CNWSObject*, int32_t);
+    static void LoadRaceInfoHook(Hooks::CallType, CNWRules*);
 };
 
 }
