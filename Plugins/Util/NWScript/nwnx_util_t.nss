@@ -60,5 +60,7 @@ void main()
     string sTwoDA = "bodybag";
     report("Get2DARowCount", NWNX_Util_Get2DARowCount(sTwoDA) == 7);
 
+    report("GetServerTicksPerSecond", NWNX_Util_GetServerTicksPerSecond() > 0);
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

@@ -14,6 +14,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CWorldTimer.hpp"
+#include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
 
@@ -68,9 +69,32 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(SetMinutesPerHour);
     REGISTER(EncodeStringForURL);
     REGISTER(Get2DARowCount);
+    REGISTER(GetServerTicksPerSecond);
 
 #undef REGISTER
 
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(
+            +[](Services::Hooks::CallType type, CServerExoAppInternal*)
+            {
+                static int ticks;
+                static time_t previous;
+
+                if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+                {
+                    time_t current = time(nullptr);
+
+                    if (current == previous)
+                    {
+                        ticks++;
+                    }
+                    else
+                    {
+                        g_plugin->m_tickCount = ticks;
+                        previous = current;
+                        ticks = 1;
+                    }
+                }
+            });
 }
 
 Util::~Util()
@@ -221,8 +245,8 @@ ArgumentStack Util::SetMinutesPerHour(ArgumentStack&& args)
 {
     ArgumentStack stack;
     const auto minPerHour = Services::Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW(minPerHour > 0);
-    ASSERT_OR_THROW(minPerHour <= 255);
+      ASSERT_OR_THROW(minPerHour > 0);
+      ASSERT_OR_THROW(minPerHour <= 255);
 
     Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->SetMinutesPerHour(minPerHour);
     return stack;
@@ -237,20 +261,24 @@ ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
     // ** Copied from ../Webhook/External/httplib.h
     for (auto i = 0; s[i]; i++)
     {
-        switch (s[i]) {
+        switch (s[i])
+        {
             case ' ':  result += "+"; break;
             case '\'': result += "%27"; break;
             case ',':  result += "%2C"; break;
             case ':':  result += "%3A"; break;
             case ';':  result += "%3B"; break;
             default:
-                if (s[i] < 0) {
+                if (s[i] < 0)
+                {
                     result += '%';
                     char hex[4];
                     size_t len = snprintf(hex, sizeof(hex) - 1, "%02X", (unsigned char)s[i]);
-                    ASSERT_OR_THROW(len == 2);
+                      ASSERT_OR_THROW(len == 2);
                     result.append(hex, len);
-                } else {
+                }
+                else
+                {
                     result += s[i];
                 }
                 break;
@@ -268,6 +296,13 @@ ArgumentStack Util::Get2DARowCount(ArgumentStack&& args)
     const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
     auto twoda = Globals::Rules()->m_p2DArrays->GetCached2DA(twodaRef.c_str(), true);
     Services::Events::InsertArgument(stack, twoda ? twoda->m_nNumRows : 0);
+    return stack;
+}
+
+ArgumentStack Util::GetServerTicksPerSecond(ArgumentStack&&)
+{
+    ArgumentStack stack;
+    Services::Events::InsertArgument(stack, m_tickCount);
     return stack;
 }
 

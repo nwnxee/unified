@@ -46,6 +46,9 @@ void NWNX_Util_SetMinutesPerHour(int minutes);
 string NWNX_Util_EncodeStringForURL(string str);
 // Gets the row count for a 2da
 int NWNX_Util_Get2DARowCount(string str);
+// Get the ticks per second of the server
+// Useful to dynamically detect lag and adjust behavior accordingly
+int NWNX_Util_GetServerTicksPerSecond();
 
 const string NWNX_Util = "NWNX_Util";
 
@@ -158,5 +161,14 @@ int NWNX_Util_Get2DARowCount(string str)
     string sFunc = "Get2DARowCount";
     NWNX_PushArgumentString(NWNX_Util, sFunc, str);
     NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetServerTicksPerSecond()
+{
+    string sFunc = "GetServerTicksPerSecond";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }

@@ -176,6 +176,7 @@ The following plugins were added:
 - Util: SetMinutesPerHour()
 - Util: EncodeStringForURL()
 - Util: Get2DARowCount()
+- Util: GetServerTicksPerSecond()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()
