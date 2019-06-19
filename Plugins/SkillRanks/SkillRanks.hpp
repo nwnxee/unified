@@ -27,7 +27,7 @@ private:
     ArgumentStack GetAreaModifier             (ArgumentStack&& args);
     ArgumentStack SetAreaModifier             (ArgumentStack&& args);
 
-    static void LoadFeatInfoHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWRules*);
+    static void LoadSkillInfoHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWRules*);
     static int32_t GetSkillRankHook(NWNXLib::API::CNWSCreatureStats*, uint8_t, NWNXLib::API::CNWSObject*, int32_t);
     uint8_t m_blindnessMod;
 
