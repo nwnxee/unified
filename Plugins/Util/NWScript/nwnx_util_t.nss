@@ -63,5 +63,7 @@ void main()
     report("GetFirstResRef", NWNX_Util_GetFirstResRef(NWNX_UTIL_RESREF_TYPE_NSS, "nwnx_util.*") != "");
     report("GetNextResRef", NWNX_Util_GetNextResRef() != "");
 
+    report("GetServerTicksPerSecond", NWNX_Util_GetServerTicksPerSecond() > 0);
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

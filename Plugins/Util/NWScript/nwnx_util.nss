@@ -59,6 +59,9 @@ string NWNX_Util_GetFirstResRef(int nType, string sRegexFilter = "", int bModule
 // Returns "" if no resref is found
 string NWNX_Util_GetNextResRef();
 
+// Get the ticks per second of the server
+// Useful to dynamically detect lag and adjust behavior accordingly
+int NWNX_Util_GetServerTicksPerSecond();
 
 const string NWNX_Util = "NWNX_Util";
 
@@ -193,4 +196,13 @@ string NWNX_Util_GetNextResRef()
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetServerTicksPerSecond()
+{
+    string sFunc = "GetServerTicksPerSecond";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
