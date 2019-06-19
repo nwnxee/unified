@@ -902,23 +902,31 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static Maybe<int> visualEffect;
+                        static bool bKeyExists;
+                        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
+                                                Utils::ObjectIDToString(pObject->m_idSelf);
 
                         if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                         {
-                            visualEffect = g_plugin->GetServices()->m_perObjectStorage->Get<int>(oidObjectToUpdate,
-                                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                            auto search = g_plugin->m_LVEData.find(key);
+                            bKeyExists = search != g_plugin->m_LVEData.end();
 
-                            if (visualEffect)
+                            if (bKeyExists)
                             {
-                                pObject->AddLoopingVisualEffect(*visualEffect, Constants::OBJECT_INVALID, 0);
+                                for(auto visualEffect : search->second)
+                                {
+                                    pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
+                                }
                             }
                         }
                         else
                         {
-                            if (visualEffect)
+                            if (bKeyExists)
                             {
-                                pObject->RemoveLoopingVisualEffect(*visualEffect);
+                                for(auto visualEffect : g_plugin->m_LVEData[key])
+                                {
+                                    pObject->RemoveLoopingVisualEffect(visualEffect);
+                                }
                             }
                         }
                     }
@@ -935,15 +943,19 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect <= 65535);
 
+        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidTarget);
+
         if (visualEffect < 0)
         {
-            GetServices()->m_perObjectStorage->Remove(oidTarget,
-                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+            m_LVEData.erase(key);
+        }
+        else if (m_LVEData[key].find(visualEffect) != m_LVEData[key].end())
+        {
+            m_LVEData[key].erase(visualEffect);
         }
         else
         {
-            GetServices()->m_perObjectStorage->Set(oidTarget,
-                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), visualEffect);
+            m_LVEData[key].insert(visualEffect);
         }
     }
     return stack;

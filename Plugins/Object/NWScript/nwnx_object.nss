@@ -156,6 +156,18 @@ int NWNX_Object_GetAutoRemoveKey(object obj);
 // Sets if a door/placeable auto-removes the key after use.
 void NWNX_Object_SetAutoRemoveKey(object obj, int bRemoveKey);
 
+// Get the geometry of oTrigger as a string of vertex positions
+string NWNX_Object_GetTriggerGeometry(object oTrigger);
+
+// Set the geometry of oTrigger with a list of vertex positions
+// sGeometry: needs to be in the following format -> {x.x, y.y, z.z} or {x.x, y.y}
+//
+// The Z position is optional and will be calculated dynamically based
+// on terrain height if it's not provided. The minimum number of vertices is 3.
+//
+// Example: "{1.0, 1.0, 0.0}{4.0, 1.0, 0.0}{4.0, 4.0, 0.0}{1.0, 4.0, 0.0}"
+void NWNX_Object_SetTriggerGeometry(object oTrigger, string sGeometry);
+
 
 const string NWNX_Object = "NWNX_Object";
 
@@ -430,5 +442,24 @@ void NWNX_Object_SetAutoRemoveKey(object obj, int bRemoveKey)
     NWNX_PushArgumentInt(NWNX_Object, sFunc, bRemoveKey);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
 
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+string NWNX_Object_GetTriggerGeometry(object oTrigger)
+{
+    string sFunc = "GetTriggerGeometry";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oTrigger);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetTriggerGeometry(object oTrigger, string sGeometry)
+{
+    string sFunc = "SetTriggerGeometry";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sGeometry);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oTrigger);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
