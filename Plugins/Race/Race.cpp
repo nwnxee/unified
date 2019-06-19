@@ -882,7 +882,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
                 break;
             }
             g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_SKILLRANK_SIGNAL",
-                                                                   {std::to_string(param1), "race", sRace,
+                                                                   {std::to_string(param1), sRace,
                                                                     std::to_string(param2)});
 
             g_plugin->m_RaceSkill[raceId][param1] = param2;
