@@ -102,22 +102,14 @@ void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, API::CNWRules
     // Initialize our vector for any messages received
     g_plugin->m_skillRaceMod.assign(pRules->m_nNumSkills, {});
 
-    for (int nSkill = 0; nSkill <= pRules->m_nNumSkills; nSkill++)
-    {
-        g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
-                                                               [nSkill](const std::vector<std::string> message)
-                                                               {
-                                                                   if (message[0] == std::to_string(nSkill))
-                                                                   {
-                                                                       if (message[1] == "race")
-                                                                       {
-                                                                           auto nRace = std::stoi(message[2]);
-                                                                           auto nMod = std::stoi(message[3]);
-                                                                           g_plugin->m_skillRaceMod[nSkill][nRace] = nMod;
-                                                                       }
-                                                                   }
-                                                               });
-    }
+    g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
+                                                           [](const std::vector<std::string> message)
+                                                           {
+                                                               auto nSkill = std::stoi(message[0]);
+                                                               auto nRace = std::stoi(message[1]);
+                                                               auto nMod = std::stoi(message[2]);
+                                                               g_plugin->m_skillRaceMod[nSkill][nRace] = nMod;
+                                                           });
 
     for (int featId = 0; featId < pRules->m_nNumFeats; featId++)
     {
