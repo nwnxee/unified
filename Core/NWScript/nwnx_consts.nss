@@ -2,10 +2,13 @@
 
 // Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.
 int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation);
+// Translates OBJECT_TYPE_* constants to their NWNX equivalent.
+int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType);
+
 
 int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation)
 {
-    switch (nAnimation)
+    switch ( nAnimation )
     {
         case ANIMATION_LOOPING_PAUSE: nAnimation = 0; break;
         case ANIMATION_LOOPING_PAUSE2: nAnimation = 52; break;
@@ -71,4 +74,24 @@ int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation)
     }
 
     return nAnimation;
+}
+
+int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType)
+{
+    switch(nObjectType)
+    {
+        case OBJECT_TYPE_ALL: nObjectType = 0; break;
+        case OBJECT_TYPE_AREA_OF_EFFECT: nObjectType = 11; break;
+        case OBJECT_TYPE_CREATURE: nObjectType = 5; break;
+        case OBJECT_TYPE_DOOR: nObjectType = 10; break;
+        case OBJECT_TYPE_ENCOUNTER: nObjectType = 13; break;
+        case OBJECT_TYPE_ITEM: nObjectType = 6; break;
+        case OBJECT_TYPE_PLACEABLE: nObjectType = 9; break;
+        case OBJECT_TYPE_STORE: nObjectType = 14; break;
+        case OBJECT_TYPE_TRIGGER: nObjectType = 7; break;
+        case OBJECT_TYPE_WAYPOINT: nObjectType = 12; break;
+        default: nObjectType = 0; break;
+    }
+
+    return nObjectType;
 }

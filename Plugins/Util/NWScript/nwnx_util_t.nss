@@ -65,5 +65,7 @@ void main()
 
     report("GetServerTicksPerSecond", NWNX_Util_GetServerTicksPerSecond() > 0);
 
+    report("GetLastCreatedObject", GetIsObjectValid(NWNX_Util_GetLastCreatedObject(4/*OBJECT_TYPE_AREA*/, 1)));
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }
