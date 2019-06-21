@@ -23,6 +23,9 @@ void NWNX_Layonara_SetUndeadSlayerImmunity(object creature, int nImmunity);
 // Subrace Effects for Daytime
 void NWNX_Layonara_SetSubraceDayEffects(object creature, int nActive = TRUE);
 
+// Get Quest Completed
+int NWNX_Layonara_GetQuestCompleted(object creature, string sQuestName);
+
 void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
@@ -101,4 +104,14 @@ void NWNX_Layonara_SetSubraceDayEffects(object creature, int nActive = TRUE)
     NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+int NWNX_Layonara_GetQuestCompleted(object creature, string sQuestName)
+{
+    string sFunc = "GetQuestCompleted";
+    NWNX_PushArgumentString(NWNX_Layonara, sFunc, sQuestName);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+    return  NWNX_GetReturnValueInt(NWNX_Layonara, sFunc);
 }
