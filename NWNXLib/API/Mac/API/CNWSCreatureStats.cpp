@@ -4,6 +4,7 @@
 
 #include "CCombatInformation.hpp"
 #include "CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
+#include "CExoArrayListTemplatedunsignedshort.hpp"
 #include "CNWClass.hpp"
 #include "CNWCreatureStatsUpdate.hpp"
 #include "CNWLevelStats.hpp"

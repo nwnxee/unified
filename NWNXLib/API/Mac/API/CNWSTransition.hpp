@@ -18,6 +18,12 @@ struct CNWSTransition
     CExoString m_sTransitionTarget;
     uint32_t m_oidCachedTransitionTarget;
 
+    // The below are auto generated stubs.
+    CNWSTransition() = default;
+    CNWSTransition(const CNWSTransition&) = default;
+    CNWSTransition& operator=(const CNWSTransition&) = default;
+
+    ~CNWSTransition();
     void LoadFromGff(CResGFF*, CResStruct*);
     CNWSObject* LookupTarget();
     void SaveToGff(CResGFF*, CResStruct*);
@@ -26,6 +32,7 @@ struct CNWSTransition
     void Unlink(int32_t);
 };
 
+void CNWSTransition__CNWSTransitionDtor(CNWSTransition* thisPtr);
 void CNWSTransition__LoadFromGff(CNWSTransition* thisPtr, CResGFF*, CResStruct*);
 CNWSObject* CNWSTransition__LookupTarget(CNWSTransition* thisPtr);
 void CNWSTransition__SaveToGff(CNWSTransition* thisPtr, CResGFF*, CResStruct*);

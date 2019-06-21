@@ -13,77 +13,80 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Platform;
 
+static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerPartyHook = nullptr;
+
 PartyEvents::PartyEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerParty, int32_t,
-        CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
-}
-template <typename T>
-static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
-{
-    static_assert(std::is_pod<T>::value);
-    T value;
-    uint8_t *ptr = pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset;
-    std::memcpy(&value, ptr, sizeof(T));
-    return value;
+    Events::InitOnFirstSubscribe("NWNX_ON_PARTY_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerParty, int32_t,
+            CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
+        m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerParty);
+    });
 }
 
-void PartyEvents::HandlePartyMessageHook(Services::Hooks::CallType type,
-    CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
+int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
-    const bool before = (type == Services::Hooks::CallType::BEFORE_ORIGINAL);
-    const char *suffix = before ? "_BEFORE" : "_AFTER";
+    int32_t retVal;
+
     std::string event = "NWNX_ON_PARTY_";
-
     Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
-
-    static std::string sOidOther;
-    if (before)
-        sOidOther = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 0));
+    std::string sOidOther = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
 
     std::string argname;
     switch (nMinor)
     {
-        case 0x06:
+        case Constants::MessagePartyMinor::Leave:
             event += "LEAVE";
             argname = "LEAVING";
             break;
-        case 0x07:
+        case Constants::MessagePartyMinor::Kick:
             event += "KICK";
             argname = "KICKED";
             break;
-        case 0x08:
+        case Constants::MessagePartyMinor::TransferLeadership:
             event += "TRANSFER_LEADERSHIP";
             argname = "NEW_LEADER";
             break;
-        case 0x09:
+        case Constants::MessagePartyMinor::Invite:
             event += "INVITE";
             argname = "INVITED";
             break;
-        case 0x0a:
+        case Constants::MessagePartyMinor::IgnoreInvitation:
             event += "IGNORE_INVITATION";
             argname = "INVITED_BY";
             break;
-        case 0x0b:
+        case Constants::MessagePartyMinor::AcceptInvitation:
             event += "ACCEPT_INVITATION";
             argname = "INVITED_BY";
             break;
-        case 0x0c:
+        case Constants::MessagePartyMinor::RejectInvitation:
             event += "REJECT_INVITATION";
             argname = "INVITED_BY";
             break;
-        case 0x0d:
+        case Constants::MessagePartyMinor::KickHenchman:
             event += "KICK_HENCHMAN";
             argname = "KICKED";
             break;
 
         default:
-            return;
+            break;
     }
 
     Events::PushEventData(argname, sOidOther);
-    Events::SignalEvent(event + suffix, oidPlayer);
-}
 
+    if (Events::SignalEvent(event + "_BEFORE", oidPlayer))
+    {
+        retVal = m_HandlePlayerToServerPartyHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    Events::PushEventData(argname, sOidOther);
+    Events::SignalEvent(event + "_AFTER", oidPlayer);
+
+    return retVal;
+}
 
 }

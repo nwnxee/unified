@@ -33,16 +33,9 @@ struct CExtendedServerInfo
     int32_t m_bLegalChars;
     int32_t m_bItemRestrict;
 
-    // The below are auto generated stubs.
-    CExtendedServerInfo() = default;
-    CExtendedServerInfo(const CExtendedServerInfo&) = default;
-    CExtendedServerInfo& operator=(const CExtendedServerInfo&) = default;
-
-    ~CExtendedServerInfo();
     CExtendedServerInfo* operator=(CNetLayerSessionInfo&);
 };
 
-void CExtendedServerInfo__CExtendedServerInfoDtor(CExtendedServerInfo* thisPtr);
 CExtendedServerInfo* CExtendedServerInfo__OperatorAssignment(CExtendedServerInfo* thisPtr, CNetLayerSessionInfo&);
 
 }

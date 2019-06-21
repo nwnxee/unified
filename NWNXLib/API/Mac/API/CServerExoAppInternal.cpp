@@ -8,6 +8,7 @@
 #include "CExoLinkedListNode.hpp"
 #include "CExoLinkedListTemplatedCNWSClient.hpp"
 #include "CExoLinkedListTemplatedlongunsignedint.hpp"
+#include "CExoLinkedListTemplatedunsignedlong.hpp"
 #include "CExtendedServerInfo.hpp"
 #include "CFactionManager.hpp"
 #include "CGameObject.hpp"

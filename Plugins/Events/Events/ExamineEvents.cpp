@@ -10,14 +10,18 @@ using namespace NWNXLib;
 
 ExamineEvents::ExamineEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_CreatureData, int32_t,
-        API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineCreatureHook);
-    hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_DoorData, int32_t,
-        API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineDoorHook);
-    hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_ItemData, int32_t,
-        API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineItemHook);
-    hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_PlaceableData, int32_t,
-        API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExaminePlaceableHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_CreatureData, int32_t,
+            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineCreatureHook);
+        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_DoorData, int32_t,
+            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineDoorHook);
+        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_ItemData, int32_t,
+            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineItemHook);
+        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_PlaceableData, int32_t,
+            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExaminePlaceableHook);
+        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_TrapData, int32_t,
+            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID, API::CNWSCreature*, int32_t>(&ExamineTrapHook);
+    });
 }
 
 void ExamineEvents::HandleExamine(Services::Hooks::CallType type, API::Types::ObjectID examiner,
@@ -50,6 +54,16 @@ void ExamineEvents::ExaminePlaceableHook(Services::Hooks::CallType type, API::CN
     API::CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
     HandleExamine(type, examiner->m_oidNWSObject, examinee);
+}
+
+void ExamineEvents::ExamineTrapHook(Services::Hooks::CallType type, API::CNWSMessage*,
+                                         API::CNWSPlayer* examiner, API::Types::ObjectID examinee,
+                                         API::CNWSCreature*, int32_t success)
+{
+    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
+    Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));
+    Events::PushEventData("TRAP_EXAMINE_SUCCESS", std::to_string(success));
+    Events::SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner->m_oidNWSObject);
 }
 
 }

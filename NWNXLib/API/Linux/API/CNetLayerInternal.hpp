@@ -38,6 +38,8 @@ struct CNetLayerInternal
     CExoString m_sGameMasterPassword;
     CExoString m_sServerAdminPassword;
     uint32_t m_nSessionMaxPlayers;
+    CExoString m_sNWSyncHash;
+    CExoString m_sNWSyncUrl;
     int32_t m_bEnumerateSessions;
     int32_t m_bEnumerateSpecific;
     int32_t m_bEnumerateSpecificOverRelay;

@@ -36,6 +36,7 @@ private:
     ArgumentStack SetRawAbilityScore            (ArgumentStack&& args);
     ArgumentStack GetRawAbilityScore            (ArgumentStack&& args);
     ArgumentStack ModifyRawAbilityScore         (ArgumentStack&& args);
+    ArgumentStack GetPrePolymorphAbilityScore   (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpell             (ArgumentStack&& args);
     ArgumentStack GetMemorisedSpellCountByLevel (ArgumentStack&& args);
     ArgumentStack SetMemorisedSpell             (ArgumentStack&& args);
@@ -51,6 +52,8 @@ private:
     ArgumentStack GetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMaxHitPointsByLevel        (ArgumentStack&& args);
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
+    ArgumentStack GetMovementRateFactor         (ArgumentStack&& args);
+    ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
     ArgumentStack GetClericDomain               (ArgumentStack&& args);
@@ -82,6 +85,19 @@ private:
     ArgumentStack LevelUp                       (ArgumentStack&& args);
     ArgumentStack LevelDown                     (ArgumentStack&& args);
     ArgumentStack SetChallengeRating            (ArgumentStack&& args);
+    ArgumentStack GetAttackBonus                (ArgumentStack&& args);
+    ArgumentStack GetHighestLevelOfFeat         (ArgumentStack&& args);
+    ArgumentStack GetFeatRemainingUses          (ArgumentStack&& args);
+    ArgumentStack GetFeatTotalUses              (ArgumentStack&& args);
+    ArgumentStack SetFeatRemainingUses          (ArgumentStack&& args);
+    ArgumentStack GetTotalEffectBonus           (ArgumentStack&& args);
+    ArgumentStack SetOriginalName               (ArgumentStack&& args);
+    ArgumentStack GetOriginalName               (ArgumentStack&& args);
+    ArgumentStack SetSpellResistance            (ArgumentStack&& args);
+    ArgumentStack SetAnimalCompanionCreatureType(ArgumentStack&& args);
+    ArgumentStack SetFamiliarCreatureType       (ArgumentStack&& args);
+    ArgumentStack SetAnimalCompanionName        (ArgumentStack&& args);
+    ArgumentStack SetFamiliarName               (ArgumentStack&& args);
 
     NWNXLib::API::CNWSCreature *creature(ArgumentStack& args);
 

@@ -68,7 +68,7 @@ uint32_t Dialog::idxReply;
 int32_t  Dialog::scriptType;
 int32_t  Dialog::loopCount;
 
-void Dialog::Hooks::GetStartEntry(Services::Hooks::CallType type, CNWSDialog *pThis, 
+void Dialog::Hooks::GetStartEntry(Services::Hooks::CallType type, CNWSDialog *pThis,
     CNWSObject* pNWSObjectOwner)
 {
     pDialog = pThis;
@@ -79,7 +79,7 @@ void Dialog::Hooks::GetStartEntry(Services::Hooks::CallType type, CNWSDialog *pT
     else ssp--;
 }
 
-void Dialog::Hooks::GetStartEntryOneLiner(Services::Hooks::CallType type, CNWSDialog *pThis, 
+void Dialog::Hooks::GetStartEntryOneLiner(Services::Hooks::CallType type, CNWSDialog *pThis,
     CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript)
 {
     pDialog = pThis;
@@ -134,7 +134,7 @@ void Dialog::Hooks::HandleReply(Services::Hooks::CallType type, CNWSDialog *pThi
     else ssp--;
 }
 
-void Dialog::Hooks::CheckScript(Services::Hooks::CallType type, CNWSDialog *pThis, 
+void Dialog::Hooks::CheckScript(Services::Hooks::CallType type, CNWSDialog *pThis,
     CNWSObject* pNWSObjectOwner, const CResRef* sActive)
 {
     pDialog = pThis;
@@ -157,7 +157,7 @@ void Dialog::Hooks::CheckScript(Services::Hooks::CallType type, CNWSDialog *pThi
     }
 }
 
-void Dialog::Hooks::RunScript(Services::Hooks::CallType type, CNWSDialog *pThis, 
+void Dialog::Hooks::RunScript(Services::Hooks::CallType type, CNWSDialog *pThis,
     CNWSObject* pNWSObjectOwner, const CResRef* sScript)
 {
     pDialog = pThis;
@@ -256,7 +256,7 @@ ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&& args)
         case DIALOG_STATE_SEND_REPLIES:
             retval = pDialog->m_pEntries[pDialog->m_currentEntryIndex].m_pReplies[loopCount].m_nIndex;
             break;
-        default: 
+        default:
             retval = -1;
             break;
     }
@@ -302,7 +302,7 @@ ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
             pLocString = &pDialog->m_pReplies[idx].m_sText;
             break;
         }
-        default: 
+        default:
             pLocString = nullptr;
             break;
     }
@@ -346,7 +346,7 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
             pLocString = &pDialog->m_pReplies[idx].m_sText;
             break;
         }
-        default: 
+        default:
             pLocString = nullptr;
             break;
     }

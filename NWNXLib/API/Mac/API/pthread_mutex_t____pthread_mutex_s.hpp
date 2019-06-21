@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "unknown_pthread_mutex_t____pthread_mutex_s__TLS_44FD4BF978859E3B15E068738F0C3BA0.hpp"
+#include "unknown_pthread_mutex_t____pthread_mutex_s__TLS_35C37FB0C79D3E75150D19626C0DA072.hpp"
 
 namespace NWNXLib {
 
@@ -15,7 +15,7 @@ struct pthread_mutex_t____pthread_mutex_s
     int32_t __owner;
     int32_t __kind;
     uint32_t __nusers;
-    pthread_mutex_t____pthread_mutex_s__TLS_44FD4BF978859E3B15E068738F0C3BA0 _anon_0;
+    pthread_mutex_t____pthread_mutex_s__TLS_35C37FB0C79D3E75150D19626C0DA072 _anon_0;
 };
 
 }

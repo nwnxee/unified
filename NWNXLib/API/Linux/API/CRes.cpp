@@ -14,7 +14,7 @@ CRes::CRes()
     CRes__CResCtor__0(this);
 }
 
-CRes::CRes(uint32_t a0)
+CRes::CRes(RESID a0)
 {
     CRes__CResCtor__1(this, a0);
 }
@@ -59,7 +59,7 @@ int32_t CRes::GetFixedResourceSize()
     return CRes__GetFixedResourceSize(this);
 }
 
-int32_t CRes::GetID()
+RESID CRes::GetID()
 {
     return CRes__GetID(this);
 }
@@ -99,7 +99,7 @@ int32_t CRes::Request()
     return CRes__Request(this);
 }
 
-void CRes::SetID(uint32_t a0)
+void CRes::SetID(RESID a0)
 {
     return CRes__SetID(this, a0);
 }
@@ -112,9 +112,9 @@ void CRes__CResCtor__0(CRes* thisPtr)
     func(thisPtr);
 }
 
-void CRes__CResCtor__1(CRes* thisPtr, uint32_t a0)
+void CRes__CResCtor__1(CRes* thisPtr, RESID a0)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CRes*, uint32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CRes*, RESID);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CRes__CResCtor__1);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     func(thisPtr, a0);
@@ -184,9 +184,9 @@ int32_t CRes__GetFixedResourceSize(CRes* thisPtr)
     return func(thisPtr);
 }
 
-int32_t CRes__GetID(CRes* thisPtr)
+RESID CRes__GetID(CRes* thisPtr)
 {
-    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CRes*);
+    using FuncPtrType = RESID(__attribute__((cdecl)) *)(CRes*);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CRes__GetID);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr);
@@ -248,9 +248,9 @@ int32_t CRes__Request(CRes* thisPtr)
     return func(thisPtr);
 }
 
-void CRes__SetID(CRes* thisPtr, uint32_t a0)
+void CRes__SetID(CRes* thisPtr, RESID a0)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CRes*, uint32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CRes*, RESID);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CRes__SetID);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);

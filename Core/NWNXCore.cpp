@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
+#include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
@@ -15,9 +16,10 @@
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Services/Commands/Commands.hpp"
 #include "Utils.hpp"
+#include "Encoding.hpp"
 
-#include <cstring>
 #include <csignal>
 
 using namespace NWNXLib;
@@ -26,6 +28,8 @@ using namespace NWNXLib::Hooking;
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
 {
+    std::fflush(stdout);
+
     const char *err;
     switch (sig)
     {
@@ -64,40 +68,11 @@ void RestoreCrashHandlers()
     std::signal(SIGSEGV, nwn_crash_handler);
 }
 
-static const char NWNX_PREFIX[]        = "NWNXEE!";
-static const char NWNX_LEGACY_PREFIX[] = "NWNX!";
-
-bool CompareStringPrefix(const API::CExoString* str, const char *prefix)
-{
-    auto len = std::strlen(prefix);
-    return str && str->m_sString && str->m_nBufferLength >= len && std::strncmp(prefix, str->m_sString, len) == 0;
-}
-
-void NotifyLegacyCall(const char* str)
-{
-    LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript().c_str());
-    const char *cmd = str + sizeof(NWNX_LEGACY_PREFIX) - 1;
-    if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
-        !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||
-        !std::strncmp(cmd, "GET_RETURN_VALUE", std::strlen("GET_RETURN_VALUE")))
-    {
-        LOG_NOTICE("  Please recompile all scripts that include \"nwnx.nss\"");
-    }
-    else
-    {
-        LOG_NOTICE("  This is a leftover from 1.69 nwnx2 scripts.");
-    }
-}
-
 }
 
 namespace Core {
 
-static NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
-
-static Hooking::FunctionHook* g_setStringHook = nullptr;
-static Hooking::FunctionHook* g_getStringHook = nullptr;
-static Hooking::FunctionHook* g_getObjectHook = nullptr;
+NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
 NWNXCore::NWNXCore()
     : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; })
@@ -135,6 +110,7 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
+    services->m_commands = std::make_unique<Commands>();
 
     return services;
 }
@@ -152,6 +128,7 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
+    proxyServices->m_commands = std::make_unique<Services::CommandsProxy>(*m_services->m_commands);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
 
@@ -177,19 +154,19 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Servi
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__SetString>(&SetStringHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__GetObject>(&GetObjectHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWSScriptVarTable__GetString>(&GetStringHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandSetVar>(&SetVarHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandGetVar>(&GetVarHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandTagEffect>(&TagEffectHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandTagItemProperty>(&TagItemPropertyHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandPlaySound>(&PlaySoundHandler);
 
     m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);
 
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSObject__CNWSObjectDtor__0, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSArea__CNWSAreaDtor__0, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
-
-    g_setStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__SetString);
-    g_getStringHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetString);
-    g_getObjectHook = m_services->m_hooks->FindHookByAddress(API::Functions::CNWSScriptVarTable__GetObject);
+    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__EatTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__DropTURD, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
 }
 
 void NWNXCore::InitialVersionCheck()
@@ -223,6 +200,7 @@ void NWNXCore::InitialSetupPlugins()
     const std::string prefix = pluginPrefix;
 
     const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
+    const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir.c_str());
 
@@ -246,11 +224,16 @@ void NWNXCore::InitialSetupPlugins()
             continue; // Not a plugin.
         }
 
+        if (pluginNameWithoutExtension == "NWNX_Experimental" && !m_coreServices->m_config->Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
+        {
+            continue;
+        }
+
         std::unique_ptr<Services::ProxyServiceList> services = ConstructProxyServices(pluginNameWithoutExtension);
 
         Plugin::CreateParams params = { services };
 
-        if (services->m_config->Get<bool>("SKIP", false))
+        if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
             continue;
@@ -322,53 +305,6 @@ void NWNXCore::Shutdown()
     g_core = nullptr;
 }
 
-void NWNXCore::SetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index, API::CExoString* value)
-{
-    if (CompareStringPrefix(index, NWNX_PREFIX))
-    {
-        std::string keyAsStr = std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1);
-        std::string valueAsStr = value->m_sString ? std::string(value->m_sString) : std::string("");
-        return g_core->m_services->m_events->OnSetLocalString(std::move(keyAsStr), std::move(valueAsStr));
-    }
-    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(index->CStr());
-    }
-
-    g_setStringHook->CallOriginal<void>(thisPtr, index, value);
-}
-
-API::Types::ObjectID NWNXCore::GetObjectHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
-{
-    if (CompareStringPrefix(index, NWNX_PREFIX))
-    {
-        Maybe<API::Types::ObjectID> eventRet = g_core->m_services->m_events->OnGetLocalObject(std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1));
-        return eventRet ? eventRet.Extract() : API::Constants::OBJECT_INVALID;
-    }
-    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(index->CStr());
-    }
-
-    return g_getObjectHook->CallOriginal<API::Types::ObjectID>(thisPtr, index);
-}
-
-API::CExoString NWNXCore::GetStringHandler(API::CNWSScriptVarTable* thisPtr, API::CExoString* index)
-{
-    if (CompareStringPrefix(index, NWNX_PREFIX))
-    {
-        Maybe<std::string> eventRet = g_core->m_services->m_events->OnGetLocalString(std::string(index->m_sString + sizeof(NWNX_PREFIX) - 1));
-
-        return eventRet ? eventRet.Extract().c_str() : "";
-    }
-    else if (CompareStringPrefix(index, NWNX_LEGACY_PREFIX))
-    {
-        NotifyLegacyCall(index->CStr());
-    }
-
-    return g_getStringHook->CallOriginal<API::CExoString>(thisPtr, index);
-}
-
 void NWNXCore::CreateServerHandler(API::CAppManager* app)
 {
     g_core->InitialVersionCheck();
@@ -378,6 +314,11 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
+
+    if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
+    {
+        Encoding::SetDefaultLocale(*locale);
+    }
 
     Maybe<bool> crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
     if (crashOnAssertFailure)
@@ -411,6 +352,15 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
 
 void NWNXCore::DestroyServerHandler(API::CAppManager* app)
 {
+    if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
+    {
+        if (API::Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
+        {
+            LOG_NOTICE("Running module shutdown script: %s", shutdownScript->c_str());
+            Utils::ExecuteScript(*shutdownScript, 0);
+        }
+    }
+
     LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();
 
@@ -428,6 +378,7 @@ void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CSer
 
     g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks);
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
+    g_core->m_services->m_commands->RunScheduledCommands();
 }
 
 }

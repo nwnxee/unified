@@ -23,6 +23,9 @@ private:
         NWNXLib::API::CNWSPlayer*, NWNXLib::API::Types::ObjectID);
     static void ExaminePlaceableHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSMessage*,
         NWNXLib::API::CNWSPlayer*, NWNXLib::API::Types::ObjectID);
+    static void ExamineTrapHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSMessage*,
+                                     NWNXLib::API::CNWSPlayer*, NWNXLib::API::Types::ObjectID,
+                                     NWNXLib::API::CNWSCreature*, int32_t);
 };
 
 }

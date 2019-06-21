@@ -31,77 +31,83 @@ void NWNX_PushArgumentInt(string pluginName, string functionName, int value);
 void NWNX_PushArgumentFloat(string pluginName, string functionName, float value);
 void NWNX_PushArgumentObject(string pluginName, string functionName, object value);
 void NWNX_PushArgumentString(string pluginName, string functionName, string value);
+void NWNX_PushArgumentEffect(string pluginName, string functionName, effect value);
+void NWNX_PushArgumentItemProperty(string pluginName, string functionName, itemproperty value);
 int NWNX_GetReturnValueInt(string pluginName, string functionName);
 float NWNX_GetReturnValueFloat(string pluginName, string functionName);
 object NWNX_GetReturnValueObject(string pluginName, string functionName);
 string NWNX_GetReturnValueString(string pluginName, string functionName);
+effect NWNX_GetReturnValueEffect(string pluginName, string functionName);
+itemproperty NWNX_GetReturnValueItemProperty(string pluginName, string functionName);
 
-void NWNX_INTERNAL_CallFunction(string pluginName, string functionName);
-void NWNX_INTERNAL_PushArgument(string pluginName, string functionName, string value);
-string NWNX_INTERNAL_GetReturnValueString(string pluginName, string functionName, string type);
-object NWNX_INTERNAL_GetReturnValueObject(string pluginName, string functionName, string type);
+string NWNX_INTERNAL_BuildString(string pluginName, string functionName, string operation)
+{
+    return "NWNXEE!ABIv2!" + pluginName + "!" + functionName + "!" + operation;
+}
 
 void NWNX_CallFunction(string pluginName, string functionName)
 {
-    NWNX_INTERNAL_CallFunction(pluginName, functionName);
+    PlaySound(NWNX_INTERNAL_BuildString(pluginName, functionName, "CALL"));
 }
 
 void NWNX_PushArgumentInt(string pluginName, string functionName, int value)
 {
-    NWNX_INTERNAL_PushArgument(pluginName, functionName, "0 " + IntToString(value));
+    SetLocalInt(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "PUSH"), value);
 }
 
 void NWNX_PushArgumentFloat(string pluginName, string functionName, float value)
 {
-    NWNX_INTERNAL_PushArgument(pluginName, functionName, "1 " + FloatToString(value));
+    SetLocalFloat(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "PUSH"), value);
 }
 
 void NWNX_PushArgumentObject(string pluginName, string functionName, object value)
 {
-    NWNX_INTERNAL_PushArgument(pluginName, functionName, "2 " + ObjectToString(value));
+    SetLocalObject(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "PUSH"), value);
 }
 
 void NWNX_PushArgumentString(string pluginName, string functionName, string value)
 {
-    NWNX_INTERNAL_PushArgument(pluginName, functionName, "3 " + value);
+    SetLocalString(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "PUSH"), value);
+}
+
+void NWNX_PushArgumentEffect(string pluginName, string functionName, effect value)
+{
+    TagEffect(value, NWNX_INTERNAL_BuildString(pluginName, functionName, "PUSH"));
+}
+
+void NWNX_PushArgumentItemProperty(string pluginName, string functionName, itemproperty value)
+{
+    TagItemProperty(value, NWNX_INTERNAL_BuildString(pluginName, functionName, "PUSH"));
 }
 
 int NWNX_GetReturnValueInt(string pluginName, string functionName)
 {
-    return StringToInt(NWNX_INTERNAL_GetReturnValueString(pluginName, functionName, "0 "));
+    return GetLocalInt(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "POP"));
 }
 
 float NWNX_GetReturnValueFloat(string pluginName, string functionName)
 {
-    return StringToFloat(NWNX_INTERNAL_GetReturnValueString(pluginName, functionName, "1 "));
+    return GetLocalFloat(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "POP"));
 }
 
 object NWNX_GetReturnValueObject(string pluginName, string functionName)
 {
-    return NWNX_INTERNAL_GetReturnValueObject(pluginName, functionName, "2 ");
+    return GetLocalObject(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "POP"));
 }
 
 string NWNX_GetReturnValueString(string pluginName, string functionName)
 {
-    return NWNX_INTERNAL_GetReturnValueString(pluginName, functionName, "3 ");
+    return GetLocalString(OBJECT_INVALID, NWNX_INTERNAL_BuildString(pluginName, functionName, "POP"));
 }
 
-void NWNX_INTERNAL_CallFunction(string pluginName, string functionName)
+effect NWNX_GetReturnValueEffect(string pluginName, string functionName)
 {
-    SetLocalString(GetModule(), "NWNXEE!CALL_FUNCTION!" + pluginName + "!" + functionName, "1");
+    effect e;
+    return TagEffect(e, NWNX_INTERNAL_BuildString(pluginName, functionName, "POP"));
 }
 
-void NWNX_INTERNAL_PushArgument(string pluginName, string functionName, string value)
+itemproperty NWNX_GetReturnValueItemProperty(string pluginName, string functionName)
 {
-    SetLocalString(GetModule(), "NWNXEE!PUSH_ARGUMENT!" + pluginName + "!" + functionName, value);
-}
-
-string NWNX_INTERNAL_GetReturnValueString(string pluginName, string functionName, string type)
-{
-    return GetLocalString(GetModule(), "NWNXEE!GET_RETURN_VALUE!" + pluginName + "!" + functionName + "!" + type);
-}
-
-object NWNX_INTERNAL_GetReturnValueObject(string pluginName, string functionName, string type)
-{
-    return GetLocalObject(GetModule(), "NWNXEE!GET_RETURN_VALUE!" + pluginName + "!" + functionName + "!" + type);
+    itemproperty ip;
+    return TagItemProperty(ip, NWNX_INTERNAL_BuildString(pluginName, functionName, "POP"));
 }

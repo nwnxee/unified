@@ -4,7 +4,11 @@
 #include "API/CGameObject.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/Vector.hpp"
+#include "API/CGameEffect.hpp"
+#include "API/CExoLocString.hpp"
+#include "API/CNWSMessage.hpp"
 #include <string>
+#include <cstring>
 
 
 namespace NWNXLib {
@@ -32,6 +36,7 @@ API::CNWSTrigger*            AsNWSTrigger(API::CGameObject* obj);
 API::CNWSWaypoint*           AsNWSWaypoint(API::CGameObject* obj);
 
 API::CGameObject* GetGameObject(API::Types::ObjectID objectId);
+API::CNWSModule* GetModule();
 
 // Wrappers around non-virtual methods repeated for all NWS types
 bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner);
@@ -42,6 +47,22 @@ bool operator!=(API::Vector& v1, API::Vector& v2);
 
 // Returns TRUE if the var tables have the same variables with same values
 bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *pVars2);
+API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject);
+
+void DestroyGameEffect(API::CGameEffect* pEffect);
+
+std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID = 0, uint8_t bGender = 0);
+
+template <typename T>
+T PeekMessage(API::CNWSMessage *pMessage, int32_t offset)
+{
+    static_assert(std::is_pod<T>::value);
+    T value;
+    uint8_t *ptr = pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset;
+    std::memcpy(&value, ptr, sizeof(T));
+    return value;
+}
+
 }
 
 }

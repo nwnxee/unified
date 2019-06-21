@@ -4,9 +4,9 @@
 #include "Common.hpp"
 #include "ProfilerMacros.hpp"
 #include "Services/Config/Config.hpp"
+#include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Messaging/Messaging.hpp"
-#include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 #include "Targets/AIMasterUpdates.hpp"
 #include "Targets/MainLoop.hpp"
@@ -20,6 +20,7 @@
 #include "ViewPtr.hpp"
 
 #include <queue>
+#include <stack>
 
 using namespace NWNXLib;
 
@@ -148,18 +149,15 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     {
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
-            [this, sum](const std::vector<std::string> message)
-            {
-                ASSERT(message.size() == 1);
-                GetServices()->m_metrics->SetResampler(message[0], sum, std::chrono::seconds(1));
-            });
-
-        static FastTimerScope* s_timerScope;
+        [this, sum](std::vector<std::string> message)
+        {
+            ASSERT(message.size() == 1);
+            SetPerfScopeResampler(std::move(message[0]));
+        });
 
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_PUSH_PERF_SCOPE",
-            [this](const std::vector<std::string> message)
+            [this](std::vector<std::string> message)
             {
-                ASSERT(!s_timerScope);
                 ASSERT(message.size() >= 1);
                 ASSERT(message.size() % 2 == 1);
 
@@ -171,17 +169,61 @@ Profiler::Profiler(const Plugin::CreateParams& params)
                     tags.push_back(std::make_pair(message[i], message[i+1]));
                 }
 
-                s_timerScope = new FastTimerScope(*GetServices()->m_metrics, std::move(name), std::move(tags));
+                PushPerfScope(std::move(name), std::move(tags));
             });
 
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_POP_PERF_SCOPE",
-            [](const std::vector<std::string>)
+            [this](std::vector<std::string>)
             {
-                ASSERT(s_timerScope);
-                delete s_timerScope;
-                s_timerScope = nullptr;
+                PopPerfScope();
             });
     }
+
+    GetServices()->m_events->RegisterEvent("PUSH_PERF_SCOPE",
+        [this](Services::Events::ArgumentStack&& args)
+        {
+            std::string scopeName = Services::Events::ExtractArgument<std::string>(args);
+
+            NWNXLib::Services::MetricData::Tags tags;
+
+            while (!args.empty())
+            {
+                ASSERT(args.size() >= 2);
+                std::string tag = Services::Events::ExtractArgument<std::string>(args);
+                std::string value = Services::Events::ExtractArgument<std::string>(args);
+                tags.emplace_back(std::make_pair(std::move(tag), std::move(value)));
+            }
+
+            PushPerfScope(std::move(scopeName), std::move(tags));
+            return Services::Events::ArgumentStack();
+        });
+
+
+    GetServices()->m_events->RegisterEvent("POP_PERF_SCOPE",
+        [this](Services::Events::ArgumentStack&&)
+        {
+            PopPerfScope();
+            return Services::Events::ArgumentStack();
+        });
+}
+
+void Profiler::SetPerfScopeResampler(std::string&& name)
+{
+    Services::Resamplers::ResamplerFuncPtr sum = &Services::Resamplers::template Sum<int64_t>;
+    GetServices()->m_metrics->SetResampler(name, sum, std::chrono::seconds(1));
+}
+
+static std::stack<FastTimerScope*> s_timerScope;
+
+void Profiler::PushPerfScope(std::string&& name, NWNXLib::Services::MetricData::Tags&& tags)
+{
+    s_timerScope.emplace(new FastTimerScope(*GetServices()->m_metrics, std::move(name), std::move(tags)));
+}
+
+void Profiler::PopPerfScope()
+{
+    delete s_timerScope.top();
+    s_timerScope.pop();
 }
 
 Profiler::~Profiler()

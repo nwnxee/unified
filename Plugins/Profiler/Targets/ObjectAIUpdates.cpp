@@ -16,7 +16,7 @@ DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateAreaOfEffect, bool, API::
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateCreature, bool, API::CNWSCreature*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateDoor, bool, API::CNWSDoor*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateEncounter, bool, API::CNWSEncounter*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateItem, bool, API::CNWSItem*);
+//DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateItem, bool, API::CNWSItem*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateModule, bool, API::CNWSModule*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdatePlaceable, bool, API::CNWSPlaceable*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateStore, bool, API::CNWSStore*);
@@ -48,9 +48,11 @@ ObjectAIUpdates::ObjectAIUpdates(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
         AIUpdateEncounter, API::Functions::CNWSEncounter__AIUpdate,
         bool, API::CNWSEncounter*);
 
+/*
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateItem, API::Functions::CNWSItem__AIUpdate,
         bool, API::CNWSItem*);
+*/
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateModule, API::Functions::CNWSModule__AIUpdate,

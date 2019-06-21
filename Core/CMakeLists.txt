@@ -7,7 +7,7 @@ elseif(UNIX)
     set(ENTRYPOINT "EntryPointLinux.cpp")
 endif()
 
-add_library(Core SHARED ${ENTRYPOINT} NWNXCore.cpp)
+add_library(Core SHARED ${ENTRYPOINT} NWNXCore.cpp NWNXCoreVM.cpp)
 add_sanitizers(Core)
 set_target_properties(Core PROPERTIES PREFIX "${PLUGIN_PREFIX}")
 target_compile_definitions(Core PRIVATE "-DPLUGIN_NAME=\"${PLUGIN_PREFIX}Core\"")

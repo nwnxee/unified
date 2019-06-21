@@ -2,7 +2,8 @@
 #include "Assert.hpp"
 #include "Platform/FileSystem.hpp"
 #include "Platform/Debug.hpp"
-
+#include "API/Globals.hpp"
+#include "API/CExoBase.hpp"
 
 #include <cstring>
 #include <unordered_map>
@@ -49,8 +50,7 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     // for now. We can change this later if we want or need to.
     using namespace Platform::FileSystem;
 
-    // TODO: This needs to grab the userdirectory and write it there. Doing this is not correct.
-    static std::string logPath = CombinePaths(CombinePaths(GetCurExecutablePath(), std::string("logs.0")), "nwnx.txt");
+    static std::string logPath = CombinePaths(CombinePaths(std::string(API::Globals::ExoBase()->m_sUserDirectory.CStr()), std::string("logs.0")), "nwnx.txt");
 
     // TODO: Is this thread safe? This needs to be thread safe
     FILE* logFile = std::fopen(logPath.c_str(), "a+");

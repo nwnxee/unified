@@ -38,6 +38,13 @@ void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     {
         throw std::runtime_error(std::string(mysql_error(&m_mysql)));
     }
+
+    if (auto charset = config->Get<std::string>("CHARACTER_SET"))
+    {
+        LOG_INFO("Connection character set is '%s'", charset->c_str());
+        if (mysql_set_character_set(&m_mysql, charset->c_str()))
+            LOG_ERROR("Unable to set the character set");
+    }
 }
 
 bool MySQL::IsConnected()
@@ -176,7 +183,7 @@ void MySQL::PrepareInt(int32_t position, int32_t value)
 {
     LOG_DEBUG("Assigning position %d to value '%d'", position, value);
 
-    ASSERT(position >= 0);
+    ASSERT_OR_THROW(position >= 0);
     size_t pos = static_cast<size_t>(position);
 
     MYSQL_BIND *pBind = &m_params[pos];
@@ -191,7 +198,7 @@ void MySQL::PrepareFloat(int32_t position, float value)
 {
     LOG_DEBUG("Assigning position %d to value '%f'", position, value);
 
-    ASSERT(position >= 0);
+    ASSERT_OR_THROW(position >= 0);
     size_t pos = static_cast<size_t>(position);
 
     MYSQL_BIND *pBind = &m_params[pos];
@@ -206,7 +213,7 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
 {
     LOG_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
 
-    ASSERT(position >= 0);
+    ASSERT_OR_THROW(position >= 0);
     size_t pos = static_cast<size_t>(position);
 
     MYSQL_BIND *pBind = &m_params[pos];

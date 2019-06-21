@@ -4,6 +4,7 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Version.hpp"
+#include "API/Constants.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
 #include "Utils.hpp"
@@ -29,7 +30,7 @@ void ParryAllAttacks::CNWSCreature__ResolveAttackRoll_hook(CNWSCreature *pThis, 
     int32_t bRoundPaused = false;
     if (auto *pCreature = Utils::AsNWSCreature(pTarget))
     {
-        if (pCreature->m_nCombatMode == 1 /*parry*/ &&
+        if (pCreature->m_nCombatMode == Constants::CombatMode::Parry &&
             pCreature->m_pcCombatRound->m_nParryActions > 0 &&
             !pCreature->GetRangeWeaponEquipped())
         {

@@ -30,6 +30,7 @@ void main()
 
     string sObj = ObjectToString(o);
     report("StringToObject", NWNX_Object_StringToObject(sObj) == o);
+    report("Negative: StringToObject", NWNX_Object_StringToObject("!@#!@#!@#!") == OBJECT_INVALID);
 
 
     string sHandler = NWNX_Object_GetEventHandler(o, 0);
@@ -72,6 +73,40 @@ void main()
 
     WriteTimestampedLogEntry("Deserialized " + GetName(oDeserialized) + " in " + GetName(GetArea(oDeserialized)));
 
+    object bag = CreateObject(OBJECT_TYPE_ITEM, "nw_it_contain006", GetStartingLocation()); // Bag of holding
+    CreateItemOnObject("x2_it_adaplate", bag, 1);
+    CreateItemOnObject("x2_it_adaplate", bag, 1);
+    CreateItemOnObject("x2_it_adaplate", bag, 1);
+    int iFits = NWNX_Object_CheckFit(bag, BASE_ITEM_ARROW);
+    report("CheckFit", iFits == 1);
+    iFits = NWNX_Object_CheckFit(bag, BASE_ITEM_ARMOR);
+    report("CheckFit", iFits == 0);
+    object oItem = GetFirstItemInInventory(bag);
+    while (oItem != OBJECT_INVALID)
+    {
+        DestroyObject(oItem);
+        oItem = GetNextItemInInventory(bag);
+    }
+    DestroyObject(bag);
+
+    report("GetDamageImmunity", NWNX_Object_GetDamageImmunity(o, DAMAGE_TYPE_FIRE) == 0);
+    ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectDamageImmunityIncrease(DAMAGE_TYPE_FIRE, 50), o);
+    report("GetDamageImmunity", NWNX_Object_GetDamageImmunity(o, DAMAGE_TYPE_FIRE) == 50);
+
+    object oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_defportal", GetStartingLocation());
+    NWNX_Object_SetPlaceableIsStatic(oPlc, 1);
+    report("SetPlaceableIsStatic 1", NWNX_Object_GetPlaceableIsStatic(oPlc) == 1);
+    DestroyObject(oPlc);
+
+    oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
+    NWNX_Object_SetPlaceableIsStatic(oPlc, 0);
+    report("SetPlaceableIsStatic 2", NWNX_Object_GetPlaceableIsStatic(oPlc) == 0);
+    DestroyObject(oPlc);
+
+    oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
+    NWNX_Object_SetAutoRemoveKey(oPlc, 1);
+    report("SetAutoRemoveKey", NWNX_Object_GetAutoRemoveKey(oPlc) == 1);
+    DestroyObject(oPlc);
 
     DestroyObject(o);
     DestroyObject(oDeserialized);

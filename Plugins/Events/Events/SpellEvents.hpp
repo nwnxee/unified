@@ -16,11 +16,10 @@ public:
 private:
     static void CastSpellHook
     (
-        NWNXLib::Services::Hooks::CallType, 
-        NWNXLib::API::CNWSObject*, 
+        NWNXLib::API::CNWSObject*,
         uint32_t,
         NWNXLib::API::Vector,
-        NWNXLib::API::Types::ObjectID, 
+        NWNXLib::API::Types::ObjectID,
         int8_t,
         NWNXLib::API::Types::ObjectID,
         bool,
@@ -28,6 +27,17 @@ private:
         int8_t,
         bool
     );
+    static int32_t SetMemorizedSpellSlotHook
+    (
+        NWNXLib::API::CNWSCreatureStats*,
+        uint8_t,
+        uint8_t,
+        uint32_t,
+        uint8_t,
+        uint8_t,
+        int32_t
+    );
+    static void ClearMemorizedSpellSlotHook(NWNXLib::API::CNWSCreatureStats*, uint8_t, uint8_t, uint8_t);
 };
 
 }

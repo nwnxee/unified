@@ -10,6 +10,7 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
+#include "API/Constants.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "ViewPtr.hpp"
@@ -63,7 +64,7 @@ Chat::~Chat()
 {
 }
 
-void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, ChatChannel channel, Types::ObjectID sender,
+void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatChannel::TYPE channel, Types::ObjectID sender,
     CExoString message, Types::PlayerID target, CExoString* tellName)
 {
     Chat& plugin = *g_plugin;
@@ -83,11 +84,18 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, ChatChannel chann
         Globals::VirtualMachine()->RunScript(&script, sender, 1);
         --plugin.m_depth;
     }
+    // Suppress player to player tells
+    if ((channel != Constants::ChatChannel::PlayerTell && channel != Constants::ChatChannel::DmTell) || sender == target)
+    {
+        LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
+            plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
+    }
+    else
+    {
+        LOG_DEBUG("%s chat message. Channel: '%i'", plugin.m_skipMessage ? "Skipped" : "Sent", channel);
+    }
 
-    LOG_DEBUG("%s chat message. Channel: '%i', Message: '%s', Sender (ObjID): '0x%08x', Target (PlayerID): '0x%08x'",
-        plugin.m_skipMessage ? "Skipped" : "Sent", channel, message.m_sString, sender, target);
-
-    if (!plugin.m_skipMessage)
+    if (plugin.m_depth > 0 || !plugin.m_skipMessage)
     {
         plugin.m_hook->CallOriginal<void>(thisPtr, channel, sender, message, target, tellName);
     }
@@ -100,7 +108,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, ChatChannel chann
 
 Events::ArgumentStack Chat::OnSendMessage(Events::ArgumentStack&& args)
 {
-    const auto channel = static_cast<ChatChannel>(Events::ExtractArgument<int32_t>(args));
+    const auto channel = static_cast<Constants::ChatChannel::TYPE>(Events::ExtractArgument<int32_t>(args));
     const auto message = Events::ExtractArgument<std::string>(args);
     const auto speaker = Events::ExtractArgument<Types::ObjectID>(args);
     const auto target = Events::ExtractArgument<Types::ObjectID>(args);
@@ -123,19 +131,29 @@ Events::ArgumentStack Chat::OnSendMessage(Events::ArgumentStack&& args)
             // This means we're sending this to one player only.
             // The normal function broadcasts in an area for talk, shout, and whisper, therefore
             // we need to call these functions directly if we are in those categories.
-            if (channel == ChatChannel::PLAYER_TALK || channel == ChatChannel::DM_TALK)
+            if (channel == Constants::ChatChannel::PlayerTalk)
             {
                 messageDispatch->SendServerToPlayerChat_Talk(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
-            else if (channel == ChatChannel::PLAYER_SHOUT || channel == ChatChannel::DM_SHOUT)
+            else if (channel == Constants::ChatChannel::DmTalk)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Talk(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::PlayerShout || channel == Constants::ChatChannel::DmShout)
             {
                 messageDispatch->SendServerToPlayerChat_Shout(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
-            else if (channel == ChatChannel::PLAYER_WHISPER || channel == ChatChannel::DM_WHISPER)
+            else if (channel == Constants::ChatChannel::PlayerWhisper)
             {
                 messageDispatch->SendServerToPlayerChat_Whisper(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::DmWhisper)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Whisper(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
         }

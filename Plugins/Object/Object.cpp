@@ -15,12 +15,20 @@
 #include "API/CNWSEncounter.hpp"
 #include "API/CNWSAreaOfEffectObject.hpp"
 #include "API/CNWSDoor.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWRules.hpp"
+#include "API/CNWBaseItem.hpp"
+#include "API/CNWBaseItemArray.hpp"
+#include "API/CItemRepository.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/CLoopingVisualEffect.hpp"
 #include "Services/Events/Events.hpp"
 #include "ViewPtr.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
+
+#include <cstring>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -61,14 +69,22 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetPosition);
     REGISTER(SetCurrentHitPoints);
     REGISTER(SetMaxHitPoints);
-    REGISTER(GetPortrait);
-    REGISTER(SetPortrait);
     REGISTER(Serialize);
     REGISTER(Deserialize);
     REGISTER(GetDialogResref);
     REGISTER(SetDialogResref);
     REGISTER(SetAppearance);
     REGISTER(GetAppearance);
+    REGISTER(GetHasVisualEffect);
+    REGISTER(CheckFit);
+    REGISTER(GetDamageImmunity);
+    REGISTER(AddToArea);
+    REGISTER(GetPlaceableIsStatic);
+    REGISTER(SetPlaceableIsStatic);
+    REGISTER(GetAutoRemoveKey);
+    REGISTER(SetAutoRemoveKey);
+    REGISTER(GetTriggerGeometry);
+    REGISTER(SetTriggerGeometry);
 
 #undef REGISTER
 }
@@ -88,30 +104,22 @@ CNWSObject *Object::object(ArgumentStack& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    return static_cast<CNWSObject*>(pGameObject);
-}
-
-static inline CNWSScriptVarTable *_getScriptVarTable(CGameObject *pObject)
-{
-    ASSERT(pObject);
-    switch (pObject->m_nObjectType)
-    {
-        case Constants::OBJECT_TYPE_AREA:
-            return &static_cast<CNWSArea*>(pObject)->m_ScriptVars;
-        case Constants::OBJECT_TYPE_MODULE:
-            return &static_cast<CNWSModule*>(pObject)->m_ScriptVars;
-        default:
-            return &static_cast<CNWSObject*>(pObject)->m_ScriptVars;
-    }
+    return Utils::AsNWSObject(pGameObject);
 }
 
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int retval = -1;
-    if (auto *pObject = object(args))
+    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (objectId == Constants::OBJECT_INVALID)
     {
-        auto *pVarTable = _getScriptVarTable(pObject);
+        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
+    }
+    else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
+    {
+        auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
         retval = pVarTable->m_lVarList.num;
     }
     Services::Events::InsertArgument(stack, retval);
@@ -123,10 +131,16 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
     ArgumentStack stack;
     std::string key = "";
     int type = -1;
-    if (auto *pObject = object(args))
+    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (objectId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Object function called on OBJECT_INVALID");
+    }
+    else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        auto *pVarTable = _getScriptVarTable(pObject);
+        auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
         if (index < pVarTable->m_lVarList.num)
         {
             type = static_cast<int>(pVarTable->m_lVarList.element[index].m_nType);
@@ -163,7 +177,7 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
 
-        pObject->SetPosition(pos, 1 /*bUpdateInAreaArray*/);
+        pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
     }
     return stack;
 }
@@ -186,38 +200,6 @@ ArgumentStack Object::SetMaxHitPoints(ArgumentStack&& args)
     {
         const auto hp = Services::Events::ExtractArgument<int32_t>(args);
         pObject->m_nBaseHitPoints = hp;
-    }
-    return stack;
-}
-
-ArgumentStack Object::GetPortrait(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    std::string retval = "";
-    if (auto *pObject = object(args))
-    {
-        if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
-            retval = static_cast<CNWSCreature*>(pObject)->GetPortrait().GetResRefStr();
-        else
-            retval = pObject->GetPortrait().GetResRefStr();
-    }
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
-}
-
-ArgumentStack Object::SetPortrait(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-
-    if (auto *pObject = object(args))
-    {
-        const auto portrait = Services::Events::ExtractArgument<std::string>(args);
-
-        CResRef resref = CResRef(portrait.c_str());
-        if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
-            static_cast<CNWSCreature*>(pObject)->SetPortrait(resref);
-        else
-            pObject->SetPortrait(resref);
     }
     return stack;
 }
@@ -258,12 +240,12 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     std::string retval = "";
     if (auto *pObject = object(args))
     {
-        if (pObject->m_nObjectType == Constants::OBJECT_TYPE_CREATURE)
-            retval = static_cast<CNWSCreature*>(pObject)->GetDialogResref().GetResRefStr();
-        else if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
-            retval = static_cast<CNWSPlaceable*>(pObject)->GetDialogResref().GetResRefStr();
-        else if(pObject->m_nObjectType == Constants::OBJECT_TYPE_DOOR)
-            retval = static_cast<CNWSDoor*>(pObject)->GetDialogResref().GetResRefStr();
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            retval = pCreature->GetDialogResref().GetResRefStr();
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            retval = pPlaceable->GetDialogResref().GetResRefStr();
+        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
+            retval = pDoor->GetDialogResref().GetResRefStr();
         else
             retval = pObject->GetDialogResref().GetResRefStr();
     }
@@ -274,7 +256,6 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
 ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    std::string retval = "";
     if (auto *pObject = object(args))
     {
         const auto dialog = Services::Events::ExtractArgument<std::string>(args);
@@ -282,46 +263,334 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
 
         if (auto *pCreature = Utils::AsNWSCreature(pObject))
             pCreature->m_pStats->m_cDialog = resref;
-        else if(auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
             pPlaceable->m_cDialog = resref;
-        else if(auto *pDoor = Utils::AsNWSDoor(pObject))
+        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
             pDoor->m_cDialog = resref;
     }
 
-    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
-
-
 
 ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retval = 0;
-    if (auto *pObject = object(args))
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
-        if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
-        {
-            retval = static_cast<CNWSPlaceable*>(pObject)->m_nAppearance;
-        }
+        retval = pPlaceable->m_nAppearance;
     }
 
     Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 
-
 ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    {
+        const auto app = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(app <= 65535);
+
+        pPlaceable->m_nAppearance=app;
+    }
+    return stack;
+}
+
+ArgumentStack Object::GetHasVisualEffect(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal=0;
+
     if (auto *pObject = object(args))
     {
-        const auto app = Services::Events::ExtractArgument<int32_t>(args);  ASSERT(app <= 65535);
-        if(pObject->m_nObjectType == Constants::OBJECT_TYPE_PLACEABLE)
+        const auto nVfx = Services::Events::ExtractArgument<int32_t>(args);
+
+        auto& vfx = pObject->m_lstLoopingVisualEffects;
+        for (int k = 0; k< vfx.num; k++)
         {
-            static_cast<CNWSPlaceable*>(pObject)->m_nAppearance=app;
+            if (vfx.element[k] && vfx.element[k]->m_nId == nVfx)
+            {
+                retVal=1;
+                break;
+            }
         }
     }
+
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Object::CheckFit(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        CItemRepository *pRepo;
+
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            pRepo = pCreature->m_pcItemRepository;
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pRepo = pPlaceable->m_pcItemRepository;
+        else if (auto *pItem = Utils::AsNWSItem(pObject))
+            pRepo = pItem->m_pItemRepository;
+        else
+        {
+            Services::Events::InsertArgument(stack, retVal);
+            return stack;
+        }
+        retVal = 0;
+        const auto baseitem = Services::Events::ExtractArgument<int32_t>(args);
+        static CNWSItem *tmp = new CNWSItem(Constants::OBJECT_INVALID);
+        tmp->m_nBaseItem = baseitem;
+
+        uint8_t width  = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotWidth;
+        uint8_t height = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem)->m_nInvSlotHeight;
+
+        for (uint8_t y = 0; y < (pRepo->m_nHeight - height + 1); y++)
+        {
+            for (uint8_t x = 0; x < (pRepo->m_nWidth - width + 1); x++)
+            {
+                if (pRepo->CheckFit(tmp, x, y))
+                {
+                    retVal = 1;
+                    break;
+                }
+            }
+            if (retVal)
+                break;
+        }
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Object::GetDamageImmunity(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        const int32_t damageFlags = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(damageFlags >= 0);
+        retVal = pObject->GetDamageImmunityByFlags(damageFlags);
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Object::AddToArea(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto oidArea = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
+        const auto posX = Services::Events::ExtractArgument<float>(args);
+        const auto posY = Services::Events::ExtractArgument<float>(args);
+        const auto posZ = Services::Events::ExtractArgument<float>(args);
+
+        CNWSArea *pArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(oidArea);
+
+        if (pArea)
+        {
+            if (!Utils::AddToArea(pObject, pArea, posX, posY, posZ))
+                LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", pObject->m_idSelf, oidArea, posX, posY, posZ);
+        }
+    }
+
+    return stack;
+}
+
+ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    {
+        retval = pPlaceable->m_bStaticObject;
+    }
+
+    Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    {
+        const auto isStatic = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(isStatic >= 0);
+        ASSERT_OR_THROW(isStatic <= 1);
+
+        // Not sure if this is even needed
+        pPlaceable->m_bNeverMakeIntoStaticObject = false;
+        pPlaceable->m_bStaticObject = isStatic;
+        // These are settings the engine makes if the placeable is static on area load so
+        // just mimicking them.
+        if (isStatic)
+        {
+            pPlaceable->m_bPlotObject = true;
+            pPlaceable->m_bUseable = false;
+        }
+    }
+    return stack;
+}
+
+ArgumentStack Object::GetAutoRemoveKey(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        switch (pObject->m_nObjectType)
+        {
+            case Constants::ObjectType::Door:
+                retVal = Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey;
+                break;
+
+            case Constants::ObjectType::Placeable:
+                retVal = Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey;
+                break;
+
+            default:
+                LOG_WARNING("NWNX_Object_GetAutoRemoveKey() called on non door/placeable object.");
+                break;
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto bRemoveKey = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        switch (pObject->m_nObjectType)
+        {
+            case Constants::ObjectType::Door:
+                Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey = bRemoveKey;
+                break;
+
+            case Constants::ObjectType::Placeable:
+                Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey = bRemoveKey;
+                break;
+
+            default:
+                LOG_WARNING("NWNX_Object_SetAutoRemoveKey() called on non door/placeable object.");
+                break;
+        }
+    }
+
+    return stack;
+}
+
+ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retVal;
+
+    if (auto *pObject = object(args))
+    {
+        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
+        {
+            retVal.reserve(32 * pTrigger->m_nVertices);
+
+            for(int i = 0; i < pTrigger->m_nVertices; i++)
+            {
+                retVal += "{" + std::to_string(pTrigger->m_pvVertices[i].x) + ", " +
+                                std::to_string(pTrigger->m_pvVertices[i].y) + ", " +
+                                std::to_string(pTrigger->m_pvVertices[i].z) + "}";
+            }
+        }
+        else
+        {
+            LOG_WARNING("NWNX_Object_GetTriggerGeometry() called on non trigger object.");
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
+
+        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
+        {
+            auto str = sGeometry.c_str();
+            std::vector<Vector> vecVerts;
+            Vector vec = {};
+
+            do {
+                int cnt = std::sscanf(str, "{%f,%f,%f", &vec.x, &vec.y, &vec.z);
+
+                if (cnt != 2 && cnt != 3)
+                {
+                    LOG_NOTICE("NWNX_Object_SetTriggerGeometry() invalid geometry string at: %s", str);
+                    break;
+                }
+
+                if (cnt == 2)
+                    vec.z = pTrigger->GetArea()->ComputeHeight(vec);
+
+                vecVerts.push_back(vec);
+            } while ((str = std::strstr(str + 1, "{")));
+
+            if (vecVerts.size() > 2)
+            {
+                CNWSArea *pArea = pTrigger->GetArea();
+                pTrigger->RemoveFromArea();
+
+                if (pTrigger->m_pvVertices)
+                    delete[] pTrigger->m_pvVertices;
+                if (pTrigger->m_pnOutlineVertices)
+                    delete[] pTrigger->m_pnOutlineVertices;
+
+                pTrigger->m_nVertices = vecVerts.size();
+                pTrigger->m_nOutlineVertices = vecVerts.size();
+
+                pTrigger->m_pvVertices = new Vector[pTrigger->m_nVertices];
+                pTrigger->m_pnOutlineVertices = new int32_t[pTrigger->m_nVertices];
+
+                for(int i = 0; i < pTrigger->m_nVertices; i++)
+                {
+                    pTrigger->m_pvVertices[i] = vecVerts[i];
+                    pTrigger->m_pnOutlineVertices[i] = i;
+                }
+
+                pTrigger->AddToArea(pArea, pTrigger->m_pvVertices[0].x, pTrigger->m_pvVertices[0].y, pTrigger->m_pvVertices[0].z, false);
+            }
+            else
+            {
+                LOG_WARNING("NWNX_Object_SetTriggerGeometry() called with less than 3 vertices.");
+            }
+        }
+        else
+        {
+            LOG_WARNING("NWNX_Object_SetTriggerGeometry() called on non trigger object.");
+        }
+    }
+
     return stack;
 }
 

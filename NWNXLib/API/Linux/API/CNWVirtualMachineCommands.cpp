@@ -2991,6 +2991,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandUnequipItem(int32_t a0, int32_t
     return CNWVirtualMachineCommands__ExecuteCommandUnequipItem(this, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands::ExecuteCommandUnlockAchievement(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandUnlockAchievement(this, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands::ExecuteCommandUnpossessFamiliar(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandUnpossessFamiliar(this, a0, a1);
@@ -3019,6 +3024,11 @@ int32_t CNWVirtualMachineCommands::ExecuteCommandVectorNormalize(int32_t a0, int
 int32_t CNWVirtualMachineCommands::ExecuteCommandVersusEffect(int32_t a0, int32_t a1)
 {
     return CNWVirtualMachineCommands__ExecuteCommandVersusEffect(this, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands::ExecuteCommandVibrate(int32_t a0, int32_t a1)
+{
+    return CNWVirtualMachineCommands__ExecuteCommandVibrate(this, a0, a1);
 }
 
 int32_t CNWVirtualMachineCommands::ExecuteCommandVoiceChat(int32_t a0, int32_t a1)
@@ -7854,6 +7864,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandUnequipItem(CNWVirtualMachineCo
     return func(thisPtr, a0, a1);
 }
 
+int32_t CNWVirtualMachineCommands__ExecuteCommandUnlockAchievement(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandUnlockAchievement);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 int32_t CNWVirtualMachineCommands__ExecuteCommandUnpossessFamiliar(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
@@ -7898,6 +7916,14 @@ int32_t CNWVirtualMachineCommands__ExecuteCommandVersusEffect(CNWVirtualMachineC
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandVersusEffect);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
+int32_t CNWVirtualMachineCommands__ExecuteCommandVibrate(CNWVirtualMachineCommands* thisPtr, int32_t a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CNWVirtualMachineCommands*, int32_t, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWVirtualMachineCommands__ExecuteCommandVibrate);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
 }

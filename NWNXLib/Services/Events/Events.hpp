@@ -1,6 +1,7 @@
 #pragma once
 
 #include "API/Types.hpp"
+#include "API/CGameEffect.hpp"
 #include "Maybe.hpp"
 #include "Services/Services.hpp"
 
@@ -18,7 +19,25 @@ namespace Services {
 class Events : public ServiceBase
 {
 public: // Structures
-    using Argument = std::string;
+    struct Argument
+    {
+        Maybe<int32_t>              m_int;
+        Maybe<float>                m_float;
+        Maybe<API::Types::ObjectID> m_object;
+        Maybe<std::string>          m_string;
+        Maybe<API::CGameEffect*>    m_effect;
+
+        // Constructors
+        Argument(const int32_t& v)                : m_int(v)    { }
+        Argument(const float& v)                  : m_float(v)  { }
+        Argument(const API::Types::ObjectID& v)   : m_object(v) { }
+        Argument(const std::string& v)            : m_string(std::move(v)) { }
+        Argument(API::CGameEffect* v)             : m_effect(v) { }
+
+        template <typename T> Maybe<T>& Get();
+        std::string toString();
+    };
+
     using ArgumentStack = std::stack<Argument>;
     using FunctionCallback = std::function<ArgumentStack(ArgumentStack&& in)>;
 
@@ -37,9 +56,13 @@ public:
     Events();
     ~Events();
 
-    void OnSetLocalString(std::string&& index, std::string&& value);
-    Maybe<std::string> OnGetLocalString(std::string&& index);
-    Maybe<API::Types::ObjectID> OnGetLocalObject(std::string&& index);
+    template <typename T>
+    void Push(const std::string& pluginName, const std::string& eventName, const T& value);
+
+    template <typename T>
+    Maybe<T> Pop(const std::string& pluginName, const std::string& eventName);
+
+    void Call(const std::string& pluginName, const std::string& eventName);
 
     RegistrationToken RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb);
     void ClearEvent(RegistrationToken&& token);
@@ -50,9 +73,6 @@ public:
     template <typename T>
     static T ExtractArgument(ArgumentStack& arguments);
 
-    template <typename ... Params>
-    static std::tuple<Params ...> ExtractArguments(ArgumentStack&& arguments);
-
 private: // Structures
     struct EventDataInternal
     {
@@ -62,56 +82,10 @@ private: // Structures
         ArgumentStack m_returns;
     };
 
+    EventDataInternal* GetEventData(const std::string& pluginName, const std::string& eventName);
+
     using EventList = std::vector<std::unique_ptr<EventDataInternal>>;
     using EventMap = std::unordered_map<std::string, EventList>;
-
-    enum class CastableTypes : uint8_t
-    {
-        INT = 0,
-        FLOAT,
-        OBJECT,
-        STRING,
-        ENUM_COUNT
-    };
-
-    enum class BuiltInFunction
-    {
-        CALL_FUNCTION,
-        PUSH_ARGUMENT,
-        GET_RETURN_VALUE,
-        INVALID
-    };
-
-    struct ParsedCommand
-    {
-        BuiltInFunction m_function;
-        std::string m_specifiers; // These are function specifiers, eg GET_RETURN_VALUE!1 , which specifies the type.
-        ViewPtr<EventDataInternal> m_eventData;
-    };
-
-private:
-    ParsedCommand FindEventDataFromIndex(const std::string& index);
-
-    static BuiltInFunction FromString(const std::string& str);
-    static std::string ToString(const BuiltInFunction func);
-
-    static CastableTypes ExtractType(const std::string& data);
-
-    static constexpr uint8_t TYPE_SIZE_IN_CHARACTERS = 2;
-    static_assert(TYPE_SIZE_IN_CHARACTERS >= 1, "The type size was invalid!");
-
-    template <typename T>
-    static Maybe<T> StringToTypeCast(std::string&& data);
-
-    template <typename T>
-    static std::string TypeToStringCast(T&& data);
-
-    template <typename T>
-    static Maybe<std::tuple<T>> MakeTupleFromArgs(Events::ArgumentStack& arguments);
-
-    template <typename T1, typename T2, typename ... Ts>
-    static Maybe<std::tuple<T1, T2, Ts ...>> MakeTupleFromArgs(Events::ArgumentStack& arguments);
-
     EventMap m_eventMap;
 };
 

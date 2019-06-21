@@ -2,6 +2,7 @@
 #include "API/Functions.hpp"
 #include "Platform/ASLR.hpp"
 
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CNWArea.hpp"
 #include "CNWTileData.hpp"
 #include "CPathfindInformation.hpp"

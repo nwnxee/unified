@@ -48,6 +48,8 @@ struct CNWSModule
     CExoLinkedListTemplatedCNWSPlayerTURD m_lstTURDList;
     CExoLocString m_lsModuleDescription;
     CExoString m_sModuleAltTLKFile;
+    CExoArrayListTemplatedCExoString m_lstManifestHashes;
+    int32_t m_bNWSyncPublishHaks;
     NWModuleHeader_st* m_pModuleHeader;
     NWModuleEntryInfo_st* m_pModuleEntryInfo;
     CExoString m_sModuleResourceName;

@@ -41,59 +41,59 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
 
     CNWSCombatAttackData *pAttackData = pThis->m_pcCombatRound->GetAttack(pThis->m_pcCombatRound->m_nCurrentAttack);
 
-    if (pAttackData->m_nAttackType == Constants::FEAT_WHIRLWIND_ATTACK ||
-        pAttackData->m_nAttackType == Constants::FEAT_IMPROVED_WHIRLWIND)
+    if (pAttackData->m_nAttackType == Constants::Feat::WhirlwindAttack ||
+        pAttackData->m_nAttackType == Constants::Feat::ImprovedWhirlwind)
     {
         return;
     }
 
     const uint16_t sneakAttackFeats[] =
     {
-        Constants::FEAT_SNEAK_ATTACK,
-        Constants::FEAT_SNEAK_ATTACK_2,
-        Constants::FEAT_SNEAK_ATTACK_3,
-        Constants::FEAT_SNEAK_ATTACK_4,
-        Constants::FEAT_SNEAK_ATTACK_5,
-        Constants::FEAT_SNEAK_ATTACK_6,
-        Constants::FEAT_SNEAK_ATTACK_7,
-        Constants::FEAT_SNEAK_ATTACK_8,
-        Constants::FEAT_SNEAK_ATTACK_9,
-        Constants::FEAT_SNEAK_ATTACK_10,
-        Constants::FEAT_SNEAK_ATTACK_11,
-        Constants::FEAT_SNEAK_ATTACK_12,
-        Constants::FEAT_SNEAK_ATTACK_13,
-        Constants::FEAT_SNEAK_ATTACK_14,
-        Constants::FEAT_SNEAK_ATTACK_15,
-        Constants::FEAT_SNEAK_ATTACK_16,
-        Constants::FEAT_SNEAK_ATTACK_17,
-        Constants::FEAT_SNEAK_ATTACK_18,
-        Constants::FEAT_SNEAK_ATTACK_19,
-        Constants::FEAT_SNEAK_ATTACK_20,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_1D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_2D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_3D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_4D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_5D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_6D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_7D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_8D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_9D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_10D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_11D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_12D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_13D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_14D6,
-        Constants::FEAT_BLACKGUARD_SNEAK_ATTACK_15D6,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_1,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_2,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_3,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_4,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_5,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_6,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_7,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_8,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_9,
-        Constants::FEAT_EPIC_IMPROVED_SNEAK_ATTACK_10
+        Constants::Feat::SneakAttack,
+        Constants::Feat::SneakAttack2,
+        Constants::Feat::SneakAttack3,
+        Constants::Feat::SneakAttack4,
+        Constants::Feat::SneakAttack5,
+        Constants::Feat::SneakAttack6,
+        Constants::Feat::SneakAttack7,
+        Constants::Feat::SneakAttack8,
+        Constants::Feat::SneakAttack9,
+        Constants::Feat::SneakAttack10,
+        Constants::Feat::SneakAttack11,
+        Constants::Feat::SneakAttack12,
+        Constants::Feat::SneakAttack13,
+        Constants::Feat::SneakAttack14,
+        Constants::Feat::SneakAttack15,
+        Constants::Feat::SneakAttack16,
+        Constants::Feat::SneakAttack17,
+        Constants::Feat::SneakAttack18,
+        Constants::Feat::SneakAttack19,
+        Constants::Feat::SneakAttack20,
+        Constants::Feat::BlackguardSneakAttack1d6,
+        Constants::Feat::BlackguardSneakAttack2d6,
+        Constants::Feat::BlackguardSneakAttack3d6,
+        Constants::Feat::BlackguardSneakAttack4d6,
+        Constants::Feat::BlackguardSneakAttack5d6,
+        Constants::Feat::BlackguardSneakAttack6d6,
+        Constants::Feat::BlackguardSneakAttack7d6,
+        Constants::Feat::BlackguardSneakAttack8d6,
+        Constants::Feat::BlackguardSneakAttack9d6,
+        Constants::Feat::BlackguardSneakAttack10d6,
+        Constants::Feat::BlackguardSneakAttack11d6,
+        Constants::Feat::BlackguardSneakAttack12d6,
+        Constants::Feat::BlackguardSneakAttack13d6,
+        Constants::Feat::BlackguardSneakAttack14d6,
+        Constants::Feat::BlackguardSneakAttack15d6,
+        Constants::Feat::EpicImprovedSneakAttack1,
+        Constants::Feat::EpicImprovedSneakAttack2,
+        Constants::Feat::EpicImprovedSneakAttack3,
+        Constants::Feat::EpicImprovedSneakAttack4,
+        Constants::Feat::EpicImprovedSneakAttack5,
+        Constants::Feat::EpicImprovedSneakAttack6,
+        Constants::Feat::EpicImprovedSneakAttack7,
+        Constants::Feat::EpicImprovedSneakAttack8,
+        Constants::Feat::EpicImprovedSneakAttack9,
+        Constants::Feat::EpicImprovedSneakAttack10
     };
     bool hasSneakAttack = false;
     for (size_t i = 0; i < sizeof(sneakAttackFeats)/sizeof(sneakAttackFeats[0]); i++)
@@ -123,14 +123,14 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     {
         isSneakAttack = (!pAttackData->m_bRangedAttack || fDistance < SNEAK_ATTACK_DISTANCE);
     }
-    else if (pTarget->m_pStats->HasFeat(Constants::FEAT_UNCANNY_DODGE_2))
+    else if (pTarget->m_pStats->HasFeat(Constants::Feat::UncannyDodge2))
     {
-        const uint8_t uncannyClasses[] = 
+        const uint8_t uncannyClasses[] =
         {
-            Constants::CLASS_TYPE_BARBARIAN,
-            Constants::CLASS_TYPE_ROGUE,
-            Constants::CLASS_TYPE_ASSASSIN,
-            Constants::CLASS_TYPE_SHADOWDANCER
+            Constants::ClassType::Barbarian,
+            Constants::ClassType::Rogue,
+            Constants::ClassType::Assassin,
+            Constants::ClassType::Shadowdancer
         };
         int attackerLevels = 0, defenderLevels = 0;
 
@@ -155,7 +155,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
 
     if (isSneakAttack)
     {
-        if (pTarget->m_pStats->GetEffectImmunity(30 /*backstab*/, pThis, true))
+        if (pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::SneakAttack, pThis, true))
         {
             CNWCCMessageData *pData = new CNWCCMessageData;
             pData->SetObjectID(0, pTarget->m_idSelf);
@@ -179,34 +179,34 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
 
     CNWSCombatAttackData *pAttackData = pThis->m_pcCombatRound->GetAttack(pThis->m_pcCombatRound->m_nCurrentAttack);
 
-    if (pAttackData->m_nAttackType == Constants::FEAT_WHIRLWIND_ATTACK ||
-        pAttackData->m_nAttackType == Constants::FEAT_IMPROVED_WHIRLWIND)
+    if (pAttackData->m_nAttackType == Constants::Feat::WhirlwindAttack ||
+        pAttackData->m_nAttackType == Constants::Feat::ImprovedWhirlwind)
     {
         return;
     }
 
     const uint16_t deathAttackFeats[] =
     {
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_1,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_2,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_3,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_4,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_5,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_6,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_7,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_8,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_9,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_10,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_11,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_12,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_13,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_14,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_15,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_16,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_17,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_18,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_19,
-        Constants::FEAT_PRESTIGE_DEATH_ATTACK_20
+        Constants::Feat::PrestigeDeathAttack1,
+        Constants::Feat::PrestigeDeathAttack2,
+        Constants::Feat::PrestigeDeathAttack3,
+        Constants::Feat::PrestigeDeathAttack4,
+        Constants::Feat::PrestigeDeathAttack5,
+        Constants::Feat::PrestigeDeathAttack6,
+        Constants::Feat::PrestigeDeathAttack7,
+        Constants::Feat::PrestigeDeathAttack8,
+        Constants::Feat::PrestigeDeathAttack9,
+        Constants::Feat::PrestigeDeathAttack10,
+        Constants::Feat::PrestigeDeathAttack11,
+        Constants::Feat::PrestigeDeathAttack12,
+        Constants::Feat::PrestigeDeathAttack13,
+        Constants::Feat::PrestigeDeathAttack14,
+        Constants::Feat::PrestigeDeathAttack15,
+        Constants::Feat::PrestigeDeathAttack16,
+        Constants::Feat::PrestigeDeathAttack17,
+        Constants::Feat::PrestigeDeathAttack18,
+        Constants::Feat::PrestigeDeathAttack19,
+        Constants::Feat::PrestigeDeathAttack20
     };
     bool hasDeathAttack = false;
     for (size_t i = 0; i < sizeof(deathAttackFeats)/sizeof(deathAttackFeats[0]); i++)
@@ -236,14 +236,14 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
     {
         isDeathAttack = (!pAttackData->m_bRangedAttack || fDistance < SNEAK_ATTACK_DISTANCE);
     }
-    else if (pTarget->m_pStats->HasFeat(Constants::FEAT_UNCANNY_DODGE_2))
+    else if (pTarget->m_pStats->HasFeat(Constants::Feat::UncannyDodge2))
     {
-        const uint8_t uncannyClasses[] = 
+        const uint8_t uncannyClasses[] =
         {
-            Constants::CLASS_TYPE_BARBARIAN,
-            Constants::CLASS_TYPE_ROGUE,
-            Constants::CLASS_TYPE_ASSASSIN,
-            Constants::CLASS_TYPE_SHADOWDANCER
+            Constants::ClassType::Barbarian,
+            Constants::ClassType::Rogue,
+            Constants::ClassType::Assassin,
+            Constants::ClassType::Shadowdancer
         };
         int attackerLevels = 0, defenderLevels = 0;
 
@@ -268,7 +268,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
 
     if (isDeathAttack)
     {
-        if (pTarget->m_pStats->GetEffectImmunity(30 /*backstab*/, pThis, true))
+        if (pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::SneakAttack, pThis, true))
         {
             CNWCCMessageData *pData = new CNWCCMessageData;
             pData->SetObjectID(0, pTarget->m_idSelf);

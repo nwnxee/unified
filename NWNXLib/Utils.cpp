@@ -2,7 +2,9 @@
 #include "API/Globals.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CVirtualMachine.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 #include "API/Constants.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSAreaOfEffectObject.hpp"
@@ -57,43 +59,43 @@ void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner)
 
 API::CNWSArea* AsNWSArea(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_AREA)
+    if (obj && obj->m_nObjectType == ObjectType::Area)
         return static_cast<API::CNWSArea*>(obj);
     return nullptr;
 }
 API::CNWSAreaOfEffectObject* AsNWSAreaOfEffectObject(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_AREA_OF_EFFECT)
+    if (obj && obj->m_nObjectType == ObjectType::AreaOfEffect)
         return static_cast<API::CNWSAreaOfEffectObject*>(obj);
     return nullptr;
 }
 API::CNWSCreature* AsNWSCreature(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_CREATURE)
+    if (obj && obj->m_nObjectType == ObjectType::Creature)
         return static_cast<API::CNWSCreature*>(obj);
     return nullptr;
 }
 API::CNWSDoor* AsNWSDoor(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_DOOR)
+    if (obj && obj->m_nObjectType == ObjectType::Door)
         return static_cast<API::CNWSDoor*>(obj);
     return nullptr;
 }
 API::CNWSEncounter* AsNWSEncounter(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_ENCOUNTER)
+    if (obj && obj->m_nObjectType == ObjectType::Encounter)
         return static_cast<API::CNWSEncounter*>(obj);
     return nullptr;
 }
 API::CNWSItem* AsNWSItem(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_ITEM)
+    if (obj && obj->m_nObjectType == ObjectType::Item)
         return static_cast<API::CNWSItem*>(obj);
     return nullptr;
 }
 API::CNWSModule* AsNWSModule(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_MODULE)
+    if (obj && obj->m_nObjectType == ObjectType::Module)
         return static_cast<API::CNWSModule*>(obj);
     return nullptr;
 }
@@ -104,47 +106,47 @@ API::CNWSObject* AsNWSObject(API::CGameObject* obj)
 
     switch (obj->m_nObjectType)
     {
-        case OBJECT_TYPE_AREA_OF_EFFECT:
-        case OBJECT_TYPE_CREATURE:
-        case OBJECT_TYPE_DOOR:
-        case OBJECT_TYPE_ENCOUNTER:
-        case OBJECT_TYPE_ITEM:
-        case OBJECT_TYPE_PLACEABLE:
-        case OBJECT_TYPE_SOUND:
-        case OBJECT_TYPE_STORE:
-        case OBJECT_TYPE_TRIGGER:
-        case OBJECT_TYPE_WAYPOINT:
+        case ObjectType::AreaOfEffect:
+        case ObjectType::Creature:
+        case ObjectType::Door:
+        case ObjectType::Encounter:
+        case ObjectType::Item:
+        case ObjectType::Placeable:
+        case ObjectType::Sound:
+        case ObjectType::Store:
+        case ObjectType::Trigger:
+        case ObjectType::Waypoint:
             return static_cast<API::CNWSObject*>(obj);
     }
     return nullptr;
 }
 API::CNWSPlaceable* AsNWSPlaceable(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_PLACEABLE)
+    if (obj && obj->m_nObjectType == ObjectType::Placeable)
         return static_cast<API::CNWSPlaceable*>(obj);
     return nullptr;
 }
 API::CNWSSoundObject* AsNWSSoundObject(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_SOUND)
+    if (obj && obj->m_nObjectType == ObjectType::Sound)
         return static_cast<API::CNWSSoundObject*>(obj);
     return nullptr;
 }
 API::CNWSStore* AsNWSStore(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_STORE)
+    if (obj && obj->m_nObjectType == ObjectType::Store)
         return static_cast<API::CNWSStore*>(obj);
     return nullptr;
 }
 API::CNWSTrigger* AsNWSTrigger(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_TRIGGER)
+    if (obj && obj->m_nObjectType == ObjectType::Trigger)
         return static_cast<API::CNWSTrigger*>(obj);
     return nullptr;
 }
 API::CNWSWaypoint* AsNWSWaypoint(API::CGameObject* obj)
 {
-    if (obj && obj->m_nObjectType == OBJECT_TYPE_WAYPOINT)
+    if (obj && obj->m_nObjectType == ObjectType::Waypoint)
         return static_cast<API::CNWSWaypoint*>(obj);
     return nullptr;
 }
@@ -152,6 +154,10 @@ API::CNWSWaypoint* AsNWSWaypoint(API::CGameObject* obj)
 API::CGameObject* GetGameObject(API::Types::ObjectID objectId)
 {
     return API::Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+}
+API::CNWSModule* GetModule()
+{
+    return static_cast<API::CNWSModule*>(API::Globals::AppManager()->m_pServerExoApp->GetModule());
 }
 
 bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner)
@@ -161,13 +167,13 @@ bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner)
 
     switch (pOwner->m_nObjectType)
     {
-        case OBJECT_TYPE_CREATURE:
+        case ObjectType::Creature:
             return AsNWSCreature(pOwner)->AcquireItem(&pItem, OBJECT_INVALID, OBJECT_INVALID, 0xFF, 0xFF, true, true);
-        case OBJECT_TYPE_PLACEABLE:
+        case ObjectType::Placeable:
             return AsNWSPlaceable(pOwner)->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
-        case OBJECT_TYPE_STORE:
+        case ObjectType::Store:
             return AsNWSStore(pOwner)->AcquireItem(pItem, true, 0xFF, 0xFF);
-        case OBJECT_TYPE_ITEM:
+        case ObjectType::Item:
             return AsNWSItem(pOwner)->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
     }
     return false;
@@ -180,34 +186,34 @@ bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y
 
     switch (pObject->m_nObjectType)
     {
-        case OBJECT_TYPE_CREATURE:
+        case ObjectType::Creature:
             AsNWSCreature(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_PLACEABLE:
+        case ObjectType::Placeable:
             AsNWSPlaceable(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_WAYPOINT:
+        case ObjectType::Waypoint:
             AsNWSWaypoint(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_DOOR:
+        case ObjectType::Door:
             AsNWSDoor(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_STORE:
+        case ObjectType::Store:
             AsNWSStore(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_TRIGGER:
+        case ObjectType::Trigger:
             AsNWSTrigger(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_ENCOUNTER:
+        case ObjectType::Encounter:
             AsNWSEncounter(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_ITEM:
+        case ObjectType::Item:
             AsNWSItem(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_AREA_OF_EFFECT:
+        case ObjectType::AreaOfEffect:
             AsNWSAreaOfEffectObject(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
-        case OBJECT_TYPE_SOUND:
+        case ObjectType::Sound:
             AsNWSSoundObject(pObject)->AddToArea(pArea, true);
             return true;
         default:
@@ -265,6 +271,39 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
         }
     }
     return true;
+}
+
+API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject)
+{
+    if (!pObject)
+        return nullptr;
+
+    switch (pObject->m_nObjectType)
+    {
+        case ObjectType::Area:
+            return &static_cast<API::CNWSArea*>(pObject)->m_ScriptVars;
+        case ObjectType::Module:
+            return &static_cast<API::CNWSModule*>(pObject)->m_ScriptVars;
+        default:
+            return &static_cast<API::CNWSObject*>(pObject)->m_ScriptVars;
+    }
+}
+
+void DestroyGameEffect(API::CGameEffect* pEffect)
+{
+    if (pEffect)
+    {
+        auto *srv = API::Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal;
+        srv->m_pVirtualMachineCommandImplementer->DestroyGameDefinedStructure(0, pEffect);
+    }
+}
+
+std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID, uint8_t bGender)
+{
+    API::CExoString str;
+    locStr.GetStringLoc(nID, &str, bGender);
+
+    return std::string(str.CStr());
 }
 
 }

@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  nwserver:
+    hostname: nwserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    stdin_open: true
+    tty: true
+    volumes:
+      - ${PWD-.}/logs:/nwn/run/logs.0
+      - ${PWD-.}/server/:/nwn/home
+    restart: unless-stopped
+    ports:
+      - "5121:5121/udp"

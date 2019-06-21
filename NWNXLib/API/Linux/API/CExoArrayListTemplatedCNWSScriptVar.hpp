@@ -15,16 +15,9 @@ struct CExoArrayListTemplatedCNWSScriptVar
     int32_t num;
     int32_t array_size;
 
-    // The below are auto generated stubs.
-    CExoArrayListTemplatedCNWSScriptVar() = default;
-    CExoArrayListTemplatedCNWSScriptVar(const CExoArrayListTemplatedCNWSScriptVar&) = default;
-    CExoArrayListTemplatedCNWSScriptVar& operator=(const CExoArrayListTemplatedCNWSScriptVar&) = default;
-
-    ~CExoArrayListTemplatedCNWSScriptVar();
     void Allocate(int32_t);
 };
 
-void CExoArrayListTemplatedCNWSScriptVar__CExoArrayListTemplatedCNWSScriptVarDtor(CExoArrayListTemplatedCNWSScriptVar* thisPtr);
 void CExoArrayListTemplatedCNWSScriptVar__Allocate(CExoArrayListTemplatedCNWSScriptVar* thisPtr, int32_t);
 
 }

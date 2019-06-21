@@ -18,7 +18,6 @@
 #include "CResHelperTemplatedCResIFO2014u.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -27,6 +26,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CERFFile;
 struct CExoArrayListTemplatedNWPlayerCharacterList_stPtr;
+struct CExoArrayListTemplatedunsignedlong;
 struct CNWSArea;
 struct CNWSPlayer;
 struct CNWSPlayerTURD;
@@ -48,6 +48,8 @@ struct CNWSModule
     CExoLinkedListTemplatedCNWSPlayerTURD m_lstTURDList;
     CExoLocString m_lsModuleDescription;
     CExoString m_sModuleAltTLKFile;
+    CExoArrayListTemplatedCExoString m_lstManifestHashes;
+    int32_t m_bNWSyncPublishHaks;
     NWModuleHeader_st* m_pModuleHeader;
     NWModuleEntryInfo_st* m_pModuleEntryInfo;
     CExoString m_sModuleResourceName;

@@ -4,6 +4,7 @@
 
 #include "CBaseExoApp.hpp"
 #include "CExoArrayListTemplatedCExoString.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CExoNet.hpp"
 #include "CExoNetExtendableBuffer.hpp"
 #include "CNetLayerSessionInfo.hpp"

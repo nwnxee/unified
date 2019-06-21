@@ -17,6 +17,7 @@ class Patching;
 class Config;
 class Messaging;
 class PerObjectStorage;
+class Commands;
 
 class EventsProxy;
 class HooksProxy;
@@ -27,6 +28,7 @@ class PatchingProxy;
 class ConfigProxy;
 class MessagingProxy;
 class PerObjectStorageProxy;
+class CommandsProxy;
 
 }
 

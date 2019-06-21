@@ -1,4 +1,4 @@
-# NWNX:EE (build 8179)
+# NWNX:EE (build 8186) ([Changelog](CHANGELOG.md))
 
 ## What is NWNX:EE?
 
@@ -22,7 +22,7 @@ Only Linux is currently supported. It is possible to run NWNX:EE on Windows usin
 
 ## How do I use it?
 
-First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the CircleCI link at the top of the GitHub repository page, log in, then navigate to the build list and choose artifacts.
+First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the [Releases](https://github.com/nwnxee/unified/releases) tab at the top of the GitHub repository page. Keep in mind these are generally only updated whenever a new NWN patch is released.
 
 ## Integrating NWNX:EE into your module
 

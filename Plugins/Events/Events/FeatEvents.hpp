@@ -15,14 +15,13 @@ public:
     FeatEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-        static void UseFeatHook
+        static int32_t UseFeatHook
         (
-            NWNXLib::Services::Hooks::CallType type, 
-            NWNXLib::API::CNWSCreature* thisPtr, 
-            uint16_t nFeat, 
-            uint16_t nSubFeat, 
-            NWNXLib::API::Types::ObjectID oidTarget, 
-            NWNXLib::API::Types::ObjectID oidArea, 
+            NWNXLib::API::CNWSCreature* thisPtr,
+            uint16_t nFeat,
+            uint16_t nSubFeat,
+            NWNXLib::API::Types::ObjectID oidTarget,
+            NWNXLib::API::Types::ObjectID oidArea,
             NWNXLib::API::Vector* pvTarget
         );
 };

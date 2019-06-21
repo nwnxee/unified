@@ -6,6 +6,8 @@
 #include "CExoLinkedListTemplatedCRes.hpp"
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
+#include "NWSync__CNWSync.hpp"
+#include "RESID.hpp"
 
 namespace NWNXLib {
 
@@ -29,6 +31,7 @@ struct CExoResMan
     CExoLinkedListTemplatedCExoKeyTable m_lstDirectoryKeyTables;
     CExoLinkedListTemplatedCExoKeyTable m_lstEncapsulatedKeyTables;
     CExoLinkedListTemplatedCExoKeyTable m_lstImageKeyTables;
+    CExoLinkedListTemplatedCExoKeyTable m_lstManifestKeyTables;
     CExoLinkedListTemplatedCRes m_lstToBeFreed;
     CExoLinkedListTemplatedCRes m_lstAsyncResQueue;
     CRes* m_pCurrentAsyncRes;
@@ -39,6 +42,7 @@ struct CExoResMan
     uint32_t m_nTotalOldReleases;
     uint32_t m_nTotalNewReleases;
     int32_t m_bOverrideAll;
+    NWSync__CNWSync m_pNWSync;
 
     // The below are auto generated stubs.
     CExoResMan(const CExoResMan&) = default;
@@ -49,6 +53,7 @@ struct CExoResMan
     int32_t AddEncapsulatedResourceFile(const CExoString&);
     int32_t AddFixedKeyTableFile(const CExoString&);
     int32_t AddKeyTable(const CExoString&, uint32_t, unsigned char*);
+    int32_t AddManifest(const CExoString&);
     int32_t AddResourceDirectory(const CExoString&);
     int32_t AddResourceImageFile(const CExoString&, unsigned char*);
     int32_t CancelRequest(CRes*);
@@ -66,7 +71,7 @@ struct CExoResMan
     int32_t GetIsStaticType(uint16_t);
     int32_t GetKeyEntry(const CResRef&, uint16_t, CExoKeyTable**, CKeyTableEntry**);
     int32_t GetNewResRef(const CResRef&, uint16_t, CResRef&);
-    uint32_t GetResID(const CResRef&, uint16_t);
+    RESID GetResID(const CResRef&, uint16_t);
     CRes* GetResObject(const CResRef&, uint16_t);
     CExoStringList* GetResOfType(uint16_t, CRes*);
     CExoStringList* GetResOfType(uint16_t, int32_t);
@@ -85,6 +90,7 @@ struct CExoResMan
     int32_t RemoveFixedKeyTableFile(const CExoString&);
     void RemoveFromToBeFreedList(CRes*);
     int32_t RemoveKeyTable(const CExoString&, uint32_t, int32_t);
+    int32_t RemoveManifest(const CExoString&);
     int32_t RemoveResourceDirectory(const CExoString&);
     int32_t RemoveResourceImageFile(const CExoString&);
     int32_t Request(CRes*);
@@ -96,6 +102,7 @@ struct CExoResMan
     int32_t ServiceFromEncapsulatedRaw(CRes*, int32_t, char*);
     int32_t ServiceFromImage(CRes*, int32_t);
     int32_t ServiceFromImageRaw(CRes*, int32_t, char*);
+    int32_t ServiceFromManifest(CRes*, int32_t);
     int32_t ServiceFromResFile(CRes*, int32_t);
     int32_t ServiceFromResFileRaw(CRes*, int32_t, char*);
     void SetResObject(const CResRef&, uint16_t, CRes*);
@@ -105,6 +112,7 @@ struct CExoResMan
     int32_t UpdateEncapsulatedResourceFile(const CExoString&);
     int32_t UpdateFixedKeyTableFile(const CExoString&);
     int32_t UpdateKeyTable(const CExoString&, uint32_t);
+    int32_t UpdateManifest(const CExoString&);
     int32_t UpdateResourceDirectory(const CExoString&);
     int32_t WipeDirectory(CExoString, int32_t, int32_t, int32_t, int32_t);
 };
@@ -114,6 +122,7 @@ void CExoResMan__CExoResManDtor(CExoResMan* thisPtr);
 int32_t CExoResMan__AddEncapsulatedResourceFile(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__AddFixedKeyTableFile(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__AddKeyTable(CExoResMan* thisPtr, const CExoString&, uint32_t, unsigned char*);
+int32_t CExoResMan__AddManifest(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__AddResourceDirectory(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__AddResourceImageFile(CExoResMan* thisPtr, const CExoString&, unsigned char*);
 int32_t CExoResMan__CancelRequest(CExoResMan* thisPtr, CRes*);
@@ -131,7 +140,7 @@ int32_t CExoResMan__GetFreeDiskSpace(CExoResMan* thisPtr, const CExoString&, uin
 int32_t CExoResMan__GetIsStaticType(CExoResMan* thisPtr, uint16_t);
 int32_t CExoResMan__GetKeyEntry(CExoResMan* thisPtr, const CResRef&, uint16_t, CExoKeyTable**, CKeyTableEntry**);
 int32_t CExoResMan__GetNewResRef(CExoResMan* thisPtr, const CResRef&, uint16_t, CResRef&);
-uint32_t CExoResMan__GetResID(CExoResMan* thisPtr, const CResRef&, uint16_t);
+RESID CExoResMan__GetResID(CExoResMan* thisPtr, const CResRef&, uint16_t);
 CRes* CExoResMan__GetResObject(CExoResMan* thisPtr, const CResRef&, uint16_t);
 CExoStringList* CExoResMan__GetResOfType__0(CExoResMan* thisPtr, uint16_t, CRes*);
 CExoStringList* CExoResMan__GetResOfType__1(CExoResMan* thisPtr, uint16_t, int32_t);
@@ -150,6 +159,7 @@ int32_t CExoResMan__RemoveFile(CExoResMan* thisPtr, const CExoString&, uint16_t)
 int32_t CExoResMan__RemoveFixedKeyTableFile(CExoResMan* thisPtr, const CExoString&);
 void CExoResMan__RemoveFromToBeFreedList(CExoResMan* thisPtr, CRes*);
 int32_t CExoResMan__RemoveKeyTable(CExoResMan* thisPtr, const CExoString&, uint32_t, int32_t);
+int32_t CExoResMan__RemoveManifest(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__RemoveResourceDirectory(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__RemoveResourceImageFile(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__Request(CExoResMan* thisPtr, CRes*);
@@ -161,6 +171,7 @@ int32_t CExoResMan__ServiceFromEncapsulated(CExoResMan* thisPtr, CRes*, int32_t)
 int32_t CExoResMan__ServiceFromEncapsulatedRaw(CExoResMan* thisPtr, CRes*, int32_t, char*);
 int32_t CExoResMan__ServiceFromImage(CExoResMan* thisPtr, CRes*, int32_t);
 int32_t CExoResMan__ServiceFromImageRaw(CExoResMan* thisPtr, CRes*, int32_t, char*);
+int32_t CExoResMan__ServiceFromManifest(CExoResMan* thisPtr, CRes*, int32_t);
 int32_t CExoResMan__ServiceFromResFile(CExoResMan* thisPtr, CRes*, int32_t);
 int32_t CExoResMan__ServiceFromResFileRaw(CExoResMan* thisPtr, CRes*, int32_t, char*);
 void CExoResMan__SetResObject(CExoResMan* thisPtr, const CResRef&, uint16_t, CRes*);
@@ -170,6 +181,7 @@ void CExoResMan__Update(CExoResMan* thisPtr, uint32_t);
 int32_t CExoResMan__UpdateEncapsulatedResourceFile(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__UpdateFixedKeyTableFile(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__UpdateKeyTable(CExoResMan* thisPtr, const CExoString&, uint32_t);
+int32_t CExoResMan__UpdateManifest(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__UpdateResourceDirectory(CExoResMan* thisPtr, const CExoString&);
 int32_t CExoResMan__WipeDirectory(CExoResMan* thisPtr, CExoString, int32_t, int32_t, int32_t, int32_t);
 

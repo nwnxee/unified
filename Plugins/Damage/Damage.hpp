@@ -8,29 +8,49 @@ using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
 struct DamageDataStr
 {
-   uint32_t oidDamager;
-   int32_t  vDamage[13];
+    uint32_t oidDamager;
+    int32_t  vDamage[13];
+};
+
+struct AttackDataStr
+{
+    uint32_t oidTarget;
+    int16_t  vDamage[13];
+    uint8_t  nAttackNumber;
+    uint8_t  nAttackResult;
+    uint8_t  nAttackType;
+    uint8_t  nSneakAttack;
+    uint8_t  bRanged;
 };
 
 namespace Damage {
 
 class Damage : public NWNXLib::Plugin
 {
-      public:
-      Damage(const Plugin::CreateParams& params);
-         virtual ~Damage();
+public:
+    Damage(const Plugin::CreateParams& params);
+    virtual ~Damage();
 
-      private:      
-         ArgumentStack SetDamageEventScript(ArgumentStack&& args);
-         ArgumentStack GetEventData(ArgumentStack&& args);
-         ArgumentStack SetEventData(ArgumentStack&& args);
+private:
+    ArgumentStack SetEventScript(ArgumentStack&& args);
+    ArgumentStack GetDamageEventData(ArgumentStack&& args);
+    ArgumentStack SetDamageEventData(ArgumentStack&& args);
+    ArgumentStack GetAttackEventData(ArgumentStack&& args);
+    ArgumentStack SetAttackEventData(ArgumentStack&& args);
+    ArgumentStack DealDamage(ArgumentStack&& args);
 
-         NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
+    NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
 
-         static int32_t OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame);
-      
-         std::string m_DamageScript; 
-         DamageDataStr m_DamageData;
+    static int32_t OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame);
+    static void OnSignalDamage(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSCreature *pThis, NWNXLib::API::CNWSObject *pTarget, uint32_t nAttacks);
+    static void OnCombatAttack(NWNXLib::API::CNWSCreature *pThis, NWNXLib::API::CNWSObject *pTarget, std::string script, uint8_t attackNumber);
+
+    static std::string GetEventScript(NWNXLib::API::CNWSObject *pObject, const std::string &event);
+
+    std::unordered_map<std::string,std::string> m_EventScripts;
+
+    DamageDataStr m_DamageData;
+    AttackDataStr m_AttackData;
 };
 
 }

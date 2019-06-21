@@ -7,10 +7,12 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSCombatRound.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Utils.hpp"
 
 #include <cstring>
+#include <bitset>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -19,21 +21,21 @@ static ViewPtr<Damage::Damage> g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
-   return new Plugin::Info
-   {
-      "Damage",
-      "Damage related functions",
-      "Bhaal (original nwnx2 plugin from Baaleos)",
-      "marca.argentea at gmail.com",
-      1,
-      true
-   };
+    return new Plugin::Info
+    {
+        "Damage",
+        "Damage related functions",
+        "Bhaal (original nwnx2 plugin from Baaleos)",
+        "marca.argentea at gmail.com",
+        1,
+        true
+    };
 }
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 {
-   g_plugin = new Damage::Damage(params);
-   return g_plugin;
+    g_plugin = new Damage::Damage(params);
+    return g_plugin;
 }
 
 namespace Damage {
@@ -43,109 +45,233 @@ Damage::Damage(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(func) \
-      GetServices()->m_events->RegisterEvent(#func, std::bind(&Damage::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, std::bind(&Damage::func, this, std::placeholders::_1))
 
-      REGISTER(SetDamageEventScript);
-      REGISTER(GetEventData);
-      REGISTER(SetEventData);
+    REGISTER(SetEventScript);
+    REGISTER(GetDamageEventData);
+    REGISTER(SetDamageEventData);
+    REGISTER(GetAttackEventData);
+    REGISTER(SetAttackEventData);
+    REGISTER(DealDamage);
 
 #undef REGISTER
 
-   GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnApplyDamage>(&Damage::OnApplyDamage);
-   m_OnApplyDamageHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyDamage);
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnApplyDamage>(&Damage::OnApplyDamage);
+    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__SignalMeleeDamage, void>(&Damage::OnSignalDamage);
+    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__SignalRangedDamage, void>(&Damage::OnSignalDamage);
 
-   m_DamageScript="";
+    m_OnApplyDamageHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyDamage);
+
+    m_EventScripts["DAMAGE"] = "";
+    m_EventScripts["ATTACK"] = "";
 }
 
 Damage::~Damage()
 {
 }
 
-ArgumentStack Damage::SetDamageEventScript(ArgumentStack&& args)
+ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
 {
-   ArgumentStack stack;
-   Types::ObjectID oidOwner = Constants::OBJECT_INVALID;
-   std::string script = Services::Events::ExtractArgument<std::string>(args);
+    ArgumentStack stack;
+    const std::string event = Services::Events::ExtractArgument<std::string>(args);
+    const std::string script = Services::Events::ExtractArgument<std::string>(args);
+    Types::ObjectID oidOwner = Services::Events::ExtractArgument<Types::ObjectID>(args);
 
-   // If compiled with old NSS, they won't be pushing the object after the script, so need to handle that.
-   try
-   {
-      oidOwner = Services::Events::ExtractArgument<Types::ObjectID>(args);
-   }
-   catch(std::runtime_error e)
-   {
-      LOG_WARNING("Please update nwnx_damage.nss and recompile your scripts");
-   }
+    if (oidOwner == Constants::OBJECT_INVALID)
+    {
+        m_EventScripts[event] = script;
+        LOG_INFO("Set Global %s Event Script to %s", event.c_str(), script.c_str());
+    }
+    else
+    {
+        if (script != "")
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script);
+            LOG_INFO("Set object 0x%08x %s Event Script to %s", oidOwner, event.c_str(), script.c_str());
+        }
+        else
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(oidOwner, event + "_EVENT_SCRIPT");
+            LOG_INFO("Clearing %s Event Script for object 0x%08x", event.c_str(), oidOwner);
+        }
+    }
 
-   if (oidOwner == Constants::OBJECT_INVALID)
-   {
-      m_DamageScript = script;
-      LOG_INFO("Set Global Damage Event Script to %s", m_DamageScript.c_str());
-   }
-   else
-   {
-      if (script != "")
-      {
-         g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, "DAMAGE_EVENT_SCRIPT", script);
-         LOG_INFO("Set object 0x%08x Damage Event Script to %s", oidOwner, script.c_str());
-      }
-      else
-      {
-         g_plugin->GetServices()->m_perObjectStorage->Remove(oidOwner, "DAMAGE_EVENT_SCRIPT");
-         LOG_INFO("Clearing Damage Event Script for object 0x%08x", oidOwner);
-      }
-   }
-
-   return stack;
+    return stack;
 }
 
-ArgumentStack Damage::GetEventData(ArgumentStack&&)
+std::string Damage::GetEventScript(NWNXLib::API::CNWSObject *pObject, const std::string &event)
 {
-   ArgumentStack stack;
-   
-   for(int k=12; k>=0; k--)
-   {
-      Services::Events::InsertArgument(stack, m_DamageData.vDamage[k]);
-   }   
-   Services::Events::InsertArgument(stack, m_DamageData.oidDamager);
-   
-   return stack;   
+    auto posScript = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pObject, event + "_EVENT_SCRIPT");
+    return posScript ? *posScript : g_plugin->m_EventScripts[event];
 }
 
-ArgumentStack Damage::SetEventData(ArgumentStack&& args)
+//--------------------------- Damage Event ------------------------------------
+
+ArgumentStack Damage::GetDamageEventData(ArgumentStack&&)
 {
-   ArgumentStack stack;
-    
-   for(int k=0; k<13; k++)
-   {
-      m_DamageData.vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
-   }      
-   
-   return stack;   
+    ArgumentStack stack;
+
+    for (int k = 12; k >= 0; k--)
+    {
+        Services::Events::InsertArgument(stack, m_DamageData.vDamage[k]);
+    }
+    Services::Events::InsertArgument(stack, m_DamageData.oidDamager);
+
+    return stack;
 }
 
+ArgumentStack Damage::SetDamageEventData(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    for (int k = 0; k < 13; k++)
+    {
+        m_DamageData.vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
+    }
+
+    return stack;
+}
 
 int32_t Damage::OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame)
 {
-   Damage& plugin = *g_plugin;
-   auto posScript = plugin.GetServices()->m_perObjectStorage->Get<std::string>(pObject, "DAMAGE_EVENT_SCRIPT");
-   std::string script = posScript ? *posScript : plugin.m_DamageScript;
+    std::string script = GetEventScript(pObject, "DAMAGE");
 
-   if (!script.empty())
-   {
-      // We only run the OnDamage event for creatures.
-      if (Utils::AsNWSCreature(pObject))
-      {
-         // Prepare the data for the nwscript
-         plugin.m_DamageData.oidDamager = pEffect->m_oidCreator;
+    if (!script.empty())
+    {
+        // We only run the OnDamage event for creatures.
+        if (Utils::AsNWSCreature(pObject))
+        {
+            // Prepare the data for the nwscript
+            g_plugin->m_DamageData.oidDamager = pEffect->m_oidCreator;
 
-         std::memcpy(plugin.m_DamageData.vDamage, pEffect->m_nParamInteger, sizeof(plugin.m_DamageData.vDamage));
-         Utils::ExecuteScript(script, pObject->m_idSelf);
-         std::memcpy(pEffect->m_nParamInteger, plugin.m_DamageData.vDamage, sizeof(plugin.m_DamageData.vDamage));
-      }
-   }
+            std::memcpy(g_plugin->m_DamageData.vDamage, pEffect->m_nParamInteger, sizeof(g_plugin->m_DamageData.vDamage));
+            Utils::ExecuteScript(script, pObject->m_idSelf);
+            std::memcpy(pEffect->m_nParamInteger, g_plugin->m_DamageData.vDamage, sizeof(g_plugin->m_DamageData.vDamage));
+        }
+    }
 
-   return plugin.m_OnApplyDamageHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);
+    return g_plugin->m_OnApplyDamageHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);
+}
+
+//--------------------------- Attack Event ------------------------------------
+
+ArgumentStack Damage::GetAttackEventData(ArgumentStack&&)
+{
+    ArgumentStack stack;
+
+    Services::Events::InsertArgument(stack, m_AttackData.nSneakAttack);
+    Services::Events::InsertArgument(stack, m_AttackData.nAttackType);
+    Services::Events::InsertArgument(stack, m_AttackData.nAttackResult);
+    Services::Events::InsertArgument(stack, m_AttackData.nAttackNumber);
+    for (int k = 12; k >= 0; k--)
+    {
+        Services::Events::InsertArgument(stack, m_AttackData.vDamage[k]);
+    }
+    Services::Events::InsertArgument(stack, m_AttackData.oidTarget);
+
+    return stack;
+}
+
+ArgumentStack Damage::SetAttackEventData(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    for (int k = 0; k < 13; k++)
+    {
+        m_AttackData.vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
+    }
+    m_AttackData.nAttackResult = Services::Events::ExtractArgument<int32_t>(args);
+
+    return stack;
+}
+
+void Damage::OnSignalDamage(Services::Hooks::CallType type, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks)
+{
+    // only call once, either before or after original
+    if ( type == Services::Hooks::CallType::BEFORE_ORIGINAL )
+    {
+        std::string script = GetEventScript(pThis, "ATTACK");
+        if ( !script.empty() )
+        {
+            // m_nCurrentAttack points to the attack *after* this flurry
+            uint8_t attackNumberOffset = pThis->m_pcCombatRound->m_nCurrentAttack - nAttacks;
+            // trigger script once per attack in the flurry
+            for ( uint8_t i = 0; i < nAttacks; i++ )
+                OnCombatAttack(pThis, pTarget, script, attackNumberOffset + i);
+        }
+    }
+}
+
+void Damage::OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::string script, uint8_t attackNumber)
+{
+    AttackDataStr& attackData = g_plugin->m_AttackData;
+    CNWSCombatRound *combatRound = pThis->m_pcCombatRound;
+    CNWSCombatAttackData *combatAttackData = combatRound->GetAttack(attackNumber);
+    // Prepare the data for the nwscript
+    attackData.oidTarget = pTarget->m_idSelf;
+    attackData.nAttackNumber = attackNumber + 1; // 1-based for backwards compatibility
+    attackData.nAttackResult = combatAttackData->m_nAttackResult;
+    attackData.nAttackType = combatAttackData->m_nWeaponAttackType;
+    attackData.nSneakAttack = combatAttackData->m_bSneakAttack + (combatAttackData->m_bDeathAttack << 1);
+    std::memcpy(attackData.vDamage, combatAttackData->m_nDamage, sizeof(attackData.vDamage));
+    // run script, then copy back attack data
+    Utils::ExecuteScript(script, pThis->m_idSelf);
+    std::memcpy(combatAttackData->m_nDamage, attackData.vDamage, sizeof(attackData.vDamage));
+    combatAttackData->m_nAttackResult = attackData.nAttackResult;
+}
+
+//--------------------------- Dealing Damage ----------------------------------
+
+ArgumentStack Damage::DealDamage(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int vDamage[13];
+    std::bitset<13> positive;
+
+    // read input
+    uint32_t oidSource = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    uint32_t oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    for (int k = 0; k < 12; k++)
+    {
+        vDamage[k] = Services::Events::ExtractArgument<int32_t>(args);
+        // need to distinguish between no damage dealt, and damage reduced to 0
+        positive[k] = vDamage[k] > 0;
+    }
+    int damagePower = Services::Events::ExtractArgument<int32_t>(args);
+
+    CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
+    CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
+    ASSERT_OR_THROW(pTarget != nullptr);
+
+    // apply damage immunity and resistance
+    for (int k = 0; k < 12; k++)
+    {
+        if ( vDamage[k] > 0 )
+            vDamage[k] = pTarget->DoDamageImmunity(pSource, vDamage[k], 1 << k, false, false);
+        if ( vDamage[k] > 0 )
+            vDamage[k] = pTarget->DoDamageResistance(pSource, vDamage[k], 1 << k, false, false, false);
+    }
+    // apply DR (combine physical damage for this)
+    vDamage[12] = vDamage[0] + vDamage[1] + vDamage[2];
+    positive[12] = positive[0] || positive[1] || positive[2];
+    if (vDamage[12] > 0)
+        vDamage[12] = pTarget->DoDamageReduction(pSource, vDamage[12], damagePower, false, false);
+
+    // create damage effect ...
+    CGameEffect *pEffect = new CGameEffect(true);
+    pEffect->m_nType = 38;
+    pEffect->SetCreator(oidSource);
+    pEffect->SetNumIntegers(19);
+    for (int k = 0; k < 3; k++)
+        pEffect->SetInteger(k, -1);
+    for (int k = 3; k < 13; k++)
+        pEffect->SetInteger(k, positive[k] ? vDamage[k] : -1);
+    pEffect->SetInteger(17, true); // combat damage
+    // ... and apply it
+    pTarget->ApplyEffect(pEffect, false, true);
+
+    return stack;
 }
 
 }

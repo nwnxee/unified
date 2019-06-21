@@ -2,7 +2,14 @@
 #include "API/CGameObject.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSObject.hpp"
+#include "API/CNWSPlayer.hpp"
+#include "API/CNWSPlayerTURD.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CExoLinkedListInternal.hpp"
+#include "API/CExoLinkedListNode.hpp"
 #include "API/Constants.hpp"
+
+#include <sstream>
 
 namespace NWNXLib {
 
@@ -118,13 +125,53 @@ PerObjectStorage::ObjectStorage::~ObjectStorage()
         for (auto it: *m_PointerMap)
         {
             auto ptr = it.second.first;
-            auto cleanup = it.second.second;
-            cleanup(ptr);
+            if (auto cleanup = it.second.second)
+                cleanup(ptr);
         }
     }
 }
 
+void PerObjectStorage::ObjectStorage::CloneFrom(PerObjectStorage::ObjectStorage *other)
+{
+    if (!other)
+        return;
 
+    if (other->m_IntMap)
+        m_IntMap = std::make_unique<IntMap>(*other->m_IntMap);
+    if (other->m_FloatMap)
+        m_FloatMap = std::make_unique<FloatMap>(*other->m_FloatMap);
+    if (other->m_StringMap)
+        m_StringMap = std::make_unique<StringMap>(*other->m_StringMap);
+    if (other->m_PointerMap)
+        m_PointerMap = std::make_unique<PointerMap>(*other->m_PointerMap);
+}
+
+std::string PerObjectStorage::ObjectStorage::DumpToString()
+{
+    std::stringstream ss;
+    ss << "Object ID: " << std::hex << m_oidOwner << std::endl;
+    if (m_IntMap)
+    {
+        for (auto it: *m_IntMap)
+            ss << it.first << " = " << std::dec << it.second << std::endl;
+    }
+    if (m_FloatMap)
+    {
+        for (auto it: *m_FloatMap)
+            ss << it.first << " = " << it.second << std::endl;
+    }
+    if (m_StringMap)
+    {
+        for (auto it: *m_StringMap)
+            ss << it.first << " = " << it.second << std::endl;
+    }
+    if (m_PointerMap)
+    {
+        for (auto it: *m_PointerMap)
+            ss << it.first << " = " << it.second.first << std::endl;
+    }
+    return ss.str();
+}
 
 PerObjectStorageProxy::PerObjectStorageProxy(PerObjectStorage& perObjectStorage, std::string pluginName)
     : ServiceProxy<PerObjectStorage>(perObjectStorage)
@@ -209,7 +256,6 @@ void PerObjectStorage::DestroyObjectStorage(API::CGameObject *pGameObject)
 {
     if (pGameObject->m_pNwnxData)
     {
-        LOG_DEBUG("Destroying object storage for objectId:0x%08x", pGameObject->m_idSelf);
         delete static_cast<PerObjectStorage::ObjectStorage*>(pGameObject->m_pNwnxData);
         pGameObject->m_pNwnxData = nullptr;
     }
@@ -225,7 +271,32 @@ void PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType 
     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
         DestroyObjectStorage(static_cast<API::CGameObject*>(pThis));
 }
-
+void PerObjectStorage::CNWSPlayer__EatTURD_hook(Services::Hooks::CallType type, API::CNWSPlayer* thisPtr, API::CNWSPlayerTURD* pTURD)
+{
+    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    {
+        GetObjectStorage(thisPtr->m_oidNWSObject)->CloneFrom(GetObjectStorage(pTURD));
+    }
+}
+void PerObjectStorage::CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type, API::CNWSPlayer* thisPtr)
+{
+    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+    {
+        // Be very, very paranoid. Bad things happen when the TURD list doesn't exist
+        // This can happen when you BootPC() the very first PC to connect to your sever
+        //     https://github.com/nwnxee/unified/issues/319
+        if (auto turdlist = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
+        {
+            if (auto *pHead = turdlist->pHead)
+            {
+                if (auto *pTURD = static_cast<API::CNWSPlayerTURD*>(pHead->pObject))
+                {
+                    GetObjectStorage(pTURD)->CloneFrom(GetObjectStorage(thisPtr->m_oidNWSObject));
+                }
+            }
+        }
+    }
+}
 
 }
 }

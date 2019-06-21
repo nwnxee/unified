@@ -27,16 +27,7 @@ struct CScriptParseTreeNode
     int32_t nType;
     CExoString* m_psTypeName;
     int32_t m_nStackPointer;
-
-    // The below are auto generated stubs.
-    CScriptParseTreeNode() = default;
-    CScriptParseTreeNode(const CScriptParseTreeNode&) = default;
-    CScriptParseTreeNode& operator=(const CScriptParseTreeNode&) = default;
-
-    ~CScriptParseTreeNode();
 };
-
-void CScriptParseTreeNode__CScriptParseTreeNodeDtor(CScriptParseTreeNode* thisPtr);
 
 }
 

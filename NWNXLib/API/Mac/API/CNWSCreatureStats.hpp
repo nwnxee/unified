@@ -9,7 +9,6 @@
 #include "CExoString.hpp"
 #include "CNWSCreatureStats_ClassInfo.hpp"
 #include "CResRef.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedshort.hpp"
 
 namespace NWNXLib {
 
@@ -18,6 +17,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CCombatInformation;
 struct CExoArrayListTemplatedCNWSStats_SpellLikeAbility;
+struct CExoArrayListTemplatedunsignedshort;
 struct CNWClass;
 struct CNWCreatureStatsUpdate;
 struct CNWLevelStats;

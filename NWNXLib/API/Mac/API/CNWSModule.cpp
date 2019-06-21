@@ -4,6 +4,7 @@
 
 #include "CERFFile.hpp"
 #include "CExoArrayListTemplatedNWPlayerCharacterList_stPtr.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CNWSArea.hpp"
 #include "CNWSPlayer.hpp"
 #include "CNWSPlayerTURD.hpp"

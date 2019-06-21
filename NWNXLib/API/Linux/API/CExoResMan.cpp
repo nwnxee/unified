@@ -38,6 +38,11 @@ int32_t CExoResMan::AddKeyTable(const CExoString& a0, uint32_t a1, unsigned char
     return CExoResMan__AddKeyTable(this, a0, a1, a2);
 }
 
+int32_t CExoResMan::AddManifest(const CExoString& a0)
+{
+    return CExoResMan__AddManifest(this, a0);
+}
+
 int32_t CExoResMan::AddResourceDirectory(const CExoString& a0)
 {
     return CExoResMan__AddResourceDirectory(this, a0);
@@ -123,7 +128,7 @@ int32_t CExoResMan::GetNewResRef(const CResRef& a0, uint16_t a1, CResRef& a2)
     return CExoResMan__GetNewResRef(this, a0, a1, a2);
 }
 
-uint32_t CExoResMan::GetResID(const CResRef& a0, uint16_t a1)
+RESID CExoResMan::GetResID(const CResRef& a0, uint16_t a1)
 {
     return CExoResMan__GetResID(this, a0, a1);
 }
@@ -218,6 +223,11 @@ int32_t CExoResMan::RemoveKeyTable(const CExoString& a0, uint32_t a1, int32_t a2
     return CExoResMan__RemoveKeyTable(this, a0, a1, a2);
 }
 
+int32_t CExoResMan::RemoveManifest(const CExoString& a0)
+{
+    return CExoResMan__RemoveManifest(this, a0);
+}
+
 int32_t CExoResMan::RemoveResourceDirectory(const CExoString& a0)
 {
     return CExoResMan__RemoveResourceDirectory(this, a0);
@@ -273,6 +283,11 @@ int32_t CExoResMan::ServiceFromImageRaw(CRes* a0, int32_t a1, char* a2)
     return CExoResMan__ServiceFromImageRaw(this, a0, a1, a2);
 }
 
+int32_t CExoResMan::ServiceFromManifest(CRes* a0, int32_t a1)
+{
+    return CExoResMan__ServiceFromManifest(this, a0, a1);
+}
+
 int32_t CExoResMan::ServiceFromResFile(CRes* a0, int32_t a1)
 {
     return CExoResMan__ServiceFromResFile(this, a0, a1);
@@ -316,6 +331,11 @@ int32_t CExoResMan::UpdateFixedKeyTableFile(const CExoString& a0)
 int32_t CExoResMan::UpdateKeyTable(const CExoString& a0, uint32_t a1)
 {
     return CExoResMan__UpdateKeyTable(this, a0, a1);
+}
+
+int32_t CExoResMan::UpdateManifest(const CExoString& a0)
+{
+    return CExoResMan__UpdateManifest(this, a0);
 }
 
 int32_t CExoResMan::UpdateResourceDirectory(const CExoString& a0)
@@ -366,6 +386,14 @@ int32_t CExoResMan__AddKeyTable(CExoResMan* thisPtr, const CExoString& a0, uint3
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__AddKeyTable);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2);
+}
+
+int32_t CExoResMan__AddManifest(CExoResMan* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoResMan*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__AddManifest);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
 }
 
 int32_t CExoResMan__AddResourceDirectory(CExoResMan* thisPtr, const CExoString& a0)
@@ -504,9 +532,9 @@ int32_t CExoResMan__GetNewResRef(CExoResMan* thisPtr, const CResRef& a0, uint16_
     return func(thisPtr, a0, a1, a2);
 }
 
-uint32_t CExoResMan__GetResID(CExoResMan* thisPtr, const CResRef& a0, uint16_t a1)
+RESID CExoResMan__GetResID(CExoResMan* thisPtr, const CResRef& a0, uint16_t a1)
 {
-    using FuncPtrType = uint32_t(__attribute__((cdecl)) *)(CExoResMan*, const CResRef&, uint16_t);
+    using FuncPtrType = RESID(__attribute__((cdecl)) *)(CExoResMan*, const CResRef&, uint16_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__GetResID);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
@@ -656,6 +684,14 @@ int32_t CExoResMan__RemoveKeyTable(CExoResMan* thisPtr, const CExoString& a0, ui
     return func(thisPtr, a0, a1, a2);
 }
 
+int32_t CExoResMan__RemoveManifest(CExoResMan* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoResMan*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__RemoveManifest);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
+}
+
 int32_t CExoResMan__RemoveResourceDirectory(CExoResMan* thisPtr, const CExoString& a0)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoResMan*, const CExoString&);
@@ -744,6 +780,14 @@ int32_t CExoResMan__ServiceFromImageRaw(CExoResMan* thisPtr, CRes* a0, int32_t a
     return func(thisPtr, a0, a1, a2);
 }
 
+int32_t CExoResMan__ServiceFromManifest(CExoResMan* thisPtr, CRes* a0, int32_t a1)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoResMan*, CRes*, int32_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__ServiceFromManifest);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1);
+}
+
 int32_t CExoResMan__ServiceFromResFile(CExoResMan* thisPtr, CRes* a0, int32_t a1)
 {
     using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoResMan*, CRes*, int32_t);
@@ -814,6 +858,14 @@ int32_t CExoResMan__UpdateKeyTable(CExoResMan* thisPtr, const CExoString& a0, ui
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__UpdateKeyTable);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
+}
+
+int32_t CExoResMan__UpdateManifest(CExoResMan* thisPtr, const CExoString& a0)
+{
+    using FuncPtrType = int32_t(__attribute__((cdecl)) *)(CExoResMan*, const CExoString&);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoResMan__UpdateManifest);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0);
 }
 
 int32_t CExoResMan__UpdateResourceDirectory(CExoResMan* thisPtr, const CExoString& a0)

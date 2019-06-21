@@ -38,12 +38,10 @@ struct CExtendedServerInfo
     CExtendedServerInfo& operator=(const CExtendedServerInfo&) = default;
 
     CExtendedServerInfo();
-    ~CExtendedServerInfo();
     CExtendedServerInfo* operator=(CNetLayerSessionInfo&);
 };
 
 void CExtendedServerInfo__CExtendedServerInfoCtor(CExtendedServerInfo* thisPtr);
-void CExtendedServerInfo__CExtendedServerInfoDtor(CExtendedServerInfo* thisPtr);
 CExtendedServerInfo* CExtendedServerInfo__OperatorAssignment(CExtendedServerInfo* thisPtr, CNetLayerSessionInfo&);
 
 }

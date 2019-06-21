@@ -33,6 +33,9 @@ struct CServerInfo
     CAutoSave m_AutoSave;
     CPersistantWorldOptions m_PersistantWorldOptions;
     CServerNetOptions m_NetOptions;
+    CExoString m_sNWSyncHash;
+    CExoString m_sNWSyncUrl;
+    int32_t m_bNWSyncPublishHaks;
     int32_t m_bConversationMultiPlayer;
     int32_t m_bConversationMultiPlayerViewOnly;
     int32_t m_nDifficulty;
@@ -43,13 +46,11 @@ struct CServerInfo
     CServerInfo& operator=(const CServerInfo&) = default;
 
     CServerInfo();
-    ~CServerInfo();
     int32_t FindOptionIndex(CExoString, CExoString);
     void SetDifficultyLevel(int32_t, int32_t);
 };
 
 void CServerInfo__CServerInfoCtor__0(CServerInfo* thisPtr);
-void CServerInfo__CServerInfoDtor(CServerInfo* thisPtr);
 int32_t CServerInfo__FindOptionIndex(CServerInfo* thisPtr, CExoString, CExoString);
 void CServerInfo__SetDifficultyLevel(CServerInfo* thisPtr, int32_t, int32_t);
 

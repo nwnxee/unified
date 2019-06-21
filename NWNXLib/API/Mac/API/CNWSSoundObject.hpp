@@ -3,9 +3,9 @@
 #include <cstdint>
 
 #include "CExoArrayListTemplatedCResRef.hpp"
+#include "CExoArrayListTemplatedunsignedlong.hpp"
 #include "CNWSObject.hpp"
 #include "Vector.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 #include "unknown_CNWSSoundObjectTimeOfDay.hpp"
 
 namespace NWNXLib {

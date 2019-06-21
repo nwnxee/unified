@@ -88,6 +88,16 @@ int32_t CExoString::FindNot(char a0, int32_t a1)
     return CExoString__FindNot(this, a0, a1);
 }
 
+CExoString CExoString::FormatBytes(uint64_t a0)
+{
+    return CExoString__FormatBytes(a0);
+}
+
+CExoString CExoString::FormatDuration(uint64_t a0)
+{
+    return CExoString__FormatDuration(a0);
+}
+
 int32_t CExoString::GetLength()
 {
     return CExoString__GetLength(this);
@@ -196,6 +206,11 @@ int32_t CExoString::operator>=(const char* a0)
 CExoString CExoString::Right(int32_t a0)
 {
     return CExoString__Right(this, a0);
+}
+
+CExoString CExoString::Strip(int32_t a0, int32_t a1, const char* a2)
+{
+    return CExoString__Strip(this, a0, a1, a2);
 }
 
 int32_t CExoString::StripNonAlphaNumeric(int32_t a0, int32_t a1, int32_t a2)
@@ -339,6 +354,22 @@ int32_t CExoString__FindNot(CExoString* thisPtr, char a0, int32_t a1)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__FindNot);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1);
+}
+
+CExoString CExoString__FormatBytes(uint64_t a0)
+{
+    using FuncPtrType = CExoString(*)(uint64_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__FormatBytes);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(a0);
+}
+
+CExoString CExoString__FormatDuration(uint64_t a0)
+{
+    using FuncPtrType = CExoString(*)(uint64_t);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__FormatDuration);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(a0);
 }
 
 int32_t CExoString__GetLength(CExoString* thisPtr)
@@ -515,6 +546,14 @@ CExoString CExoString__Right(CExoString* thisPtr, int32_t a0)
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__Right);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0);
+}
+
+CExoString CExoString__Strip(CExoString* thisPtr, int32_t a0, int32_t a1, const char* a2)
+{
+    using FuncPtrType = CExoString(__attribute__((cdecl)) *)(CExoString*, int32_t, int32_t, const char*);
+    uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CExoString__Strip);
+    FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
+    return func(thisPtr, a0, a1, a2);
 }
 
 int32_t CExoString__StripNonAlphaNumeric(CExoString* thisPtr, int32_t a0, int32_t a1, int32_t a2)

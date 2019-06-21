@@ -1,201 +1,604 @@
 #include "Events/DMActionEvents.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
+#include "API/CGameObjectArray.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWSPlayer.hpp"
-#include "API/CNWSCreature.hpp"
-#include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/Types.hpp"
-#include "API/Version.hpp"
 #include "API/Constants.hpp"
+#include "API/Globals.hpp"
 #include "Events.hpp"
 #include "Services/Patching/Patching.hpp"
 #include "Utils.hpp"
+#include <vector>
+
+
 namespace Events {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
+using namespace NWNXLib::API::Constants;
 using namespace NWNXLib::Platform;
+
+static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerDungeonMasterMessageHook = nullptr;
 
 DMActionEvents::DMActionEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerDungeonMasterMessage, int32_t,
-        CNWSMessage*, CNWSPlayer*, uint8_t, int32_t>(&HandleDMMessageHook);
-}
-template <typename T>
-static T PeekMessage(CNWSMessage *pMessage, int32_t offset)
-{
-    static_assert(std::is_pod<T>::value);
-    T value;
-    uint8_t *ptr = pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset;
-    std::memcpy(&value, ptr, sizeof(T));
-    return value;
+    Events::InitOnFirstSubscribe("NWNX_ON_DM_.*", [hooker]() {
+        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerDungeonMasterMessage>(&HandleDMMessageHook);
+        m_HandlePlayerToServerDungeonMasterMessageHook = hooker->FindHookByAddress(Functions::CNWSMessage__HandlePlayerToServerDungeonMasterMessage);
+    });
 }
 
-void DMActionEvents::HandleDMMessageHook(Services::Hooks::CallType type,
-    CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup)
+int32_t DMActionEvents::HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                        const std::string &event, int32_t alignmentType = 0)
 {
-    // unused variabes
-    (void)(sizeof(thisPtr) & sizeof(bGroup));
+    int32_t retVal;
+    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
+    std::string amount = std::to_string(Utils::PeekMessage<int32_t>(pMessage, 0));
+    std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(pMessage, 4) & 0x7FFFFFFF);
 
-    const bool before = (type == Services::Hooks::CallType::BEFORE_ORIGINAL);
-    const char *suffix = before ? "_BEFORE" : "_AFTER";
+    auto PushAndSignalGiveEvent = [&](std::string ev) -> bool {
+        Events::PushEventData("AMOUNT", amount);
+        Events::PushEventData("OBJECT", target);
+        if (alignmentType > 0)
+        {
+            Events::PushEventData("ALIGNMENT_TYPE", std::to_string(alignmentType));
+        }
+        return Events::SignalEvent(ev, oidDM);
+    };
+
+    if (PushAndSignalGiveEvent(event + "_BEFORE"))
+    {
+        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignalGiveEvent(event + "_AFTER");
+
+    return retVal;
+}
+
+int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                        const std::string &event)
+{
+    int32_t retVal;
+    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
+    int32_t offset = 0;
+    int32_t groupSize = 1;
+
+    if (bGroup)
+    {
+        groupSize = Utils::PeekMessage<int32_t>(pMessage, offset);
+        offset += sizeof(groupSize);
+    }
+
+    std::vector<Types::ObjectID> targets;
+    targets.reserve(groupSize);
+
+    for (int32_t target = 0; target < groupSize; target++)
+    {
+        targets.push_back(Utils::PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
+        offset += sizeof(Types::ObjectID);
+    }
+
+    auto PushAndSignalGroupEvent = [&](std::string ev) -> bool {
+        Events::PushEventData("NUM_TARGETS", std::to_string(groupSize));
+        for(int32_t target = 0; target < groupSize; target++)
+        {
+            Events::PushEventData("TARGET_" + std::to_string(target + 1), Utils::ObjectIDToString(targets[target]));
+        }
+        return Events::SignalEvent(ev, oidDM);
+    };
+
+    if (PushAndSignalGroupEvent(event + "_BEFORE"))
+    {
+        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignalGroupEvent(event + "_AFTER");
+
+    return retVal;
+}
+
+int32_t DMActionEvents::HandleSingleTargetEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                                const std::string &event)
+{
+    int32_t retVal;
+    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
+    std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(pMessage, 0) & 0x7FFFFFFF);
+
+    auto PushAndSignalSingleTargetEvent = [&](std::string ev) -> bool {
+        Events::PushEventData("TARGET", target);
+        return Events::SignalEvent(ev, oidDM);
+    };
+
+    if (PushAndSignalSingleTargetEvent(event + "_BEFORE"))
+    {
+        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignalSingleTargetEvent(event + "_AFTER");
+
+    return retVal;
+}
+
+int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup,
+                                            const std::string &event)
+{
+    int32_t retVal;
+    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
+    int32_t offset = 0;
+    int32_t groupSize = 1;
+    std::vector<Types::ObjectID> targets;
+
+    std::string targetArea = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF); offset += sizeof(Types::ObjectID);
+    std::string x = std::to_string(Utils::PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+    std::string y = std::to_string(Utils::PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+    std::string z = std::to_string(Utils::PeekMessage<float>(pMessage, offset)); offset += sizeof(float);
+
+    if (nMinor == MessageDungeonMasterMinor::GotoPointTarget)
+    {
+        if (bGroup)
+        {
+            groupSize = Utils::PeekMessage<int32_t>(pMessage, offset);
+            offset += sizeof(groupSize);
+        }
+
+        targets.reserve(groupSize);
+
+        for (int32_t target = 0; target < groupSize; target++)
+        {
+            targets.push_back(Utils::PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
+            offset += sizeof(Types::ObjectID);
+        }
+    }
+
+    auto PushAndSignalTeleportEvent = [&](std::string ev) -> bool {
+        Events::PushEventData("TARGET_AREA", targetArea);
+        Events::PushEventData("POS_X", x);
+        Events::PushEventData("POS_Y", y);
+        Events::PushEventData("POS_Z", z);
+        if (nMinor == MessageDungeonMasterMinor::GotoPointTarget)
+        {
+            Events::PushEventData("NUM_TARGETS", std::to_string(groupSize));
+            for(int32_t target = 0; target < groupSize; target++)
+            {
+                Events::PushEventData("TARGET_" + std::to_string(target + 1), Utils::ObjectIDToString(targets[target]));
+            }
+        }
+        return Events::SignalEvent(ev, oidDM);
+    };
+
+    if (PushAndSignalTeleportEvent(event + "_BEFORE"))
+    {
+        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignalTeleportEvent(event + "_AFTER");
+
+    return retVal;
+}
+
+int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor, int32_t bGroup)
+{
+    int32_t retVal;
     std::string event = "NWNX_ON_DM_";
+    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
 
-    Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
+    auto DefaultSignalEvent = [&]() -> void {
+        if (Events::SignalEvent(event + "_BEFORE", oidDM))
+        {
+            retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+        }
+        else
+        {
+            retVal  = false;
+        }
+        Events::SignalEvent(event + "_AFTER", oidDM);
+    };
 
     switch (nMinor)
     {
-        case 0x0a:
-            event += "SPAWN_CREATURE";
+        case MessageDungeonMasterMinor::SpawnCreature:
+        case MessageDungeonMasterMinor::SpawnItem:
+        case MessageDungeonMasterMinor::SpawnPlaceable:
+        case MessageDungeonMasterMinor::SpawnWaypoint:
+        case MessageDungeonMasterMinor::SpawnTrigger:
+        case MessageDungeonMasterMinor::SpawnEncounter:
+        case MessageDungeonMasterMinor::SpawnPortal:
+        {
+            event += "SPAWN_OBJECT";
+            int32_t offset = 0;
+
+            std::string area = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF); offset += sizeof(Types::ObjectID);
+            std::string object = Utils::ObjectIDToString(Globals::AppManager()->m_pServerExoApp->GetObjectArray()->m_nNextObjectArrayID[0]);
+            int32_t objectType;
+            std::string x = std::to_string(Utils::PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
+            std::string y = std::to_string(Utils::PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
+            std::string z = std::to_string(Utils::PeekMessage<float>(thisPtr, offset));
+
+            switch (nMinor)
+            {
+                case MessageDungeonMasterMinor::SpawnCreature:
+                    objectType = ObjectType::Creature;
+                    break;
+                case MessageDungeonMasterMinor::SpawnItem:
+                    objectType = ObjectType::Item;
+                    break;
+                case MessageDungeonMasterMinor::SpawnPlaceable:
+                    objectType = ObjectType::Placeable;
+                    break;
+                case MessageDungeonMasterMinor::SpawnWaypoint:
+                    objectType = ObjectType::Waypoint;
+                    break;
+                case MessageDungeonMasterMinor::SpawnTrigger:
+                    objectType = ObjectType::Trigger;
+                    break;
+                case MessageDungeonMasterMinor::SpawnEncounter:
+                    objectType = ObjectType::Encounter;
+                    break;
+                case MessageDungeonMasterMinor::SpawnPortal:
+                    objectType = ObjectType::Portal;
+                    break;
+
+                default:
+                    break;
+            }
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("AREA", area);
+                Events::PushEventData("OBJECT", object);
+                Events::PushEventData("OBJECT_TYPE", std::to_string(objectType));
+                Events::PushEventData("POS_X", x);
+                Events::PushEventData("POS_Y", y);
+                Events::PushEventData("POS_Z", z);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
             break;
-        case 0x0b:
-            event += "SPAWN_ITEM";
-            break;
-        case 0x0c:
-            event += "SPAWN_TRIGGER";
-            break;
-        case 0x0d:
-            event += "SPAWN_WAYPOINT";
-            break;
-        case 0x0e:
-            event += "SPAWN_ENCOUNTER";
-            break;
-        case 0x0f:
-            event += "SPAWN_PORTAL";
-            break;
-        case 0x10:
-            event += "SPAWN_PLACEABLE";
-            break;
-        case 0x11:
+        }
+        case MessageDungeonMasterMinor::Difficulty:
+        {
             event += "CHANGE_DIFFICULTY";
+
+            std::string difficulty = std::to_string(Utils::PeekMessage<int32_t>(thisPtr, 0));
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("DIFFICULTY_SETTING", difficulty);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
             break;
-        case 0x12:
+        }
+        case MessageDungeonMasterMinor::ViewInventory:
+        {
             event += "VIEW_INVENTORY";
+
+            std::string openInventory = std::to_string(Utils::PeekMessage<int32_t>(thisPtr, 0));
+            std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("OPEN_INVENTORY", openInventory);
+                Events::PushEventData("TARGET", target);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
             break;
-        case 0x13:
+        }
+        case MessageDungeonMasterMinor::SpawnTrapOnObject:
+        {
             event += "SPAWN_TRAP_ON_OBJECT";
+
+            std::string area = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+            std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("AREA", area);
+                Events::PushEventData("TARGET", target);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
             break;
-        case 0x20:
+        }
+        case MessageDungeonMasterMinor::Heal:
+        {
             event += "HEAL";
+            retVal = HandleGroupEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x21:
+        }
+        case MessageDungeonMasterMinor::Kill:
+        {
             event += "KILL";
+            retVal = HandleGroupEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x22:
-            event += "JUMP";
+        }
+        case MessageDungeonMasterMinor::Goto:
+        {
+            event += "GOTO";
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x23:
+        }
+        case MessageDungeonMasterMinor::Possess:
+        {
             event += "POSSESS";
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x24:
-            event += "TOGGLE_IMMORTAL";
+        }
+        case MessageDungeonMasterMinor::Impersonate:
+        {
+            event += "POSSESS_FULL_POWER";
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x25:
+        }
+        case MessageDungeonMasterMinor::Invulnerable:
+        {
+            event += "TOGGLE_INVULNERABLE";
+            retVal = HandleGroupEvent(thisPtr, pPlayer, nMinor, bGroup, event);
+            break;
+        }
+        case MessageDungeonMasterMinor::Rest:
+        {
             event += "FORCE_REST";
+            retVal = HandleGroupEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x26:
+        }
+        case MessageDungeonMasterMinor::Limbo:
+        {
             event += "LIMBO";
+            retVal = HandleGroupEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x2b:
+        }
+        case MessageDungeonMasterMinor::ToggleAI:
+        {
             event += "TOGGLE_AI";
+            retVal = HandleGroupEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x2c:
+        }
+        case MessageDungeonMasterMinor::ToggleLock:
+        {
             event += "TOGGLE_LOCK";
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x2d:
+        }
+        case MessageDungeonMasterMinor::DisableTrap:
+        {
             event += "DISABLE_TRAP";
+            retVal = HandleSingleTargetEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x30:
+        }
+        case MessageDungeonMasterMinor::Manifest:
+        {
             event += "APPEAR";
+            DefaultSignalEvent();
             break;
-        case 0x31:
+        }
+        case MessageDungeonMasterMinor::Unmanifest:
+        {
             event += "DISAPPEAR";
+            DefaultSignalEvent();
             break;
-        case 0x32:
+        }
+        case MessageDungeonMasterMinor::Immortal:
+        {
             event += "TOGGLE_IMMORTAL";
+            retVal = HandleGroupEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x50:
+        }
+        case MessageDungeonMasterMinor::GotoPoint:
+        {
             event += "JUMP_TO_POINT";
+            retVal = HandleTeleportEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
-        case 0x60:
+        }
+        case MessageDungeonMasterMinor::GiveXP:
         {
             event += "GIVE_XP";
-            static std::string amount;
-            static std::string target;
-            if (before) // Need to persist for AFTER as well
-            {
-                amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
-            }
-            Events::PushEventData("AMOUNT", amount);
-            Events::PushEventData("TARGET", target);
+            retVal = HandleGiveEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
-        case 0x61:
+        case MessageDungeonMasterMinor::GiveLevel:
         {
             event += "GIVE_LEVEL";
-            static std::string numLevels;
-            static std::string target;
-            if (before) // Need to persist for AFTER as well
-            {
-                numLevels = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
-            }
-            Events::PushEventData("NUM_LEVELS", numLevels);
-            Events::PushEventData("TARGET", target);
+            retVal = HandleGiveEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
-        case 0x62:
+        case MessageDungeonMasterMinor::GiveGold:
         {
             event += "GIVE_GOLD";
-            static std::string amount;
-            static std::string target;
-            if (before) // Need to persist for AFTER as well
-            {
-                amount = std::to_string(PeekMessage<int32_t>(thisPtr, 0));
-                target = Utils::ObjectIDToString(PeekMessage<Types::ObjectID>(thisPtr, 4));
-            }
-            Events::PushEventData("AMOUNT", amount);
-            Events::PushEventData("TARGET", target);
+            retVal = HandleGiveEvent(thisPtr, pPlayer, nMinor, bGroup, event);
             break;
         }
-        case 0x63:
-        case 0x64: // Not a typo.
+        case MessageDungeonMasterMinor::SetFaction:
+        case MessageDungeonMasterMinor::SetFactionByName:
+        {
             event += "SET_FACTION";
+            DefaultSignalEvent();
             break;
-        case 0x80:
+        }
+        case MessageDungeonMasterMinor::GiveItem:
+        {
             event += "GIVE_ITEM";
-            break;
-        case 0x81:
-            event += "TAKE_ITEM";
-            break;
-        case 0x82:
-            event += "JUMP_TARGET_TO_POINT";
-            break;
-        case 0x83:
-            event += "JUMP_ALL_PLAYERS_TO_POINT";
-            break;
-        case 0x84:
-            event += "SET_STAT";
-            break;
-        case 0x85:
-            event += "GET_VARIABLE";
-            break;
-        case 0x86:
-            event += "SET_VARIABLE";
-            break;
-        case 0x87:
-            event += "SET_TIME";
-            break;
-        case 0x88:
-            event += "SET_DATE";
-            break;
 
+            std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+            std::string item = Utils::ObjectIDToString(Globals::AppManager()->m_pServerExoApp->GetObjectArray()->m_nNextObjectArrayID[0]);
+
+            auto PushAndSignal = [&](std::string ev) -> bool {
+                Events::PushEventData("TARGET", target);
+                Events::PushEventData("ITEM", item);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignal(event + "_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal(event +"_AFTER");
+            break;
+        }
+        case MessageDungeonMasterMinor::TakeItem:
+        {
+            event += "TAKE_ITEM";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::GotoPointTarget:
+        {
+            event += "JUMP_TARGET_TO_POINT";
+            retVal = HandleTeleportEvent(thisPtr, pPlayer, nMinor, bGroup, event);
+            break;
+        }
+        case MessageDungeonMasterMinor::GotoPointAllPlayers:
+        {
+            event += "JUMP_ALL_PLAYERS_TO_POINT";
+            retVal = HandleTeleportEvent(thisPtr, pPlayer, nMinor, bGroup, event);
+            break;
+        }
+        case MessageDungeonMasterMinor::SetStat:
+        {
+            event += "SET_STAT";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::GetVar:
+        {
+            event += "GET_VARIABLE";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::SetVar:
+        {
+            event += "SET_VARIABLE";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::SetTime:
+        {
+            event += "SET_TIME";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::SetDate:
+        {
+            event += "SET_DATE";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::SetFactionReputation:
+        {
+            event += "SET_FACTION_REPUTATION";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::GetFactionReputation:
+        {
+            event += "GET_FACTION_REPUTATION";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::DumpLocals:
+        {
+            event += "DUMP_LOCALS";
+            DefaultSignalEvent();
+            break;
+        }
+        case MessageDungeonMasterMinor::GiveGoodAlignment:
+        case MessageDungeonMasterMinor::GiveEvilAlignment:
+        case MessageDungeonMasterMinor::GiveLawfulAlignment:
+        case MessageDungeonMasterMinor::GiveChaoticAlignment:
+        {
+            event += "GIVE_ALIGNMENT";
+
+            int32_t alignmentType = 0;
+            switch (nMinor)
+            {
+                case MessageDungeonMasterMinor::GiveGoodAlignment:
+                    alignmentType = Alignment::Good;
+                    break;
+                case MessageDungeonMasterMinor::GiveEvilAlignment:
+                    alignmentType = Alignment::Evil;
+                    break;
+                case MessageDungeonMasterMinor::GiveLawfulAlignment:
+                    alignmentType = Alignment::Lawful;
+                    break;
+                case MessageDungeonMasterMinor::GiveChaoticAlignment:
+                    alignmentType = Alignment::Chaotic;
+                    break;
+
+                default:
+                    break;
+            }
+
+            retVal = HandleGiveEvent(thisPtr, pPlayer, nMinor, bGroup, event, alignmentType);
+            break;
+        }
         default:
-            return;
+            retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            break;
     }
 
-    Events::SignalEvent(event + suffix, oidDM);
+    return retVal;
 }
 
 }

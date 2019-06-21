@@ -7,7 +7,6 @@
 #include "CNWMessage.hpp"
 #include "CResRef.hpp"
 #include "Vector.hpp"
-#include "unknown_CExoArrayListTemplatedunsignedlong.hpp"
 
 namespace NWNXLib {
 
@@ -16,6 +15,7 @@ namespace API {
 // Forward class declarations (defined in the source file)
 struct CExoArrayListTemplatedCEffectIconObjectPtr;
 struct CExoArrayListTemplatedCLoopingVisualEffectPtr;
+struct CExoArrayListTemplatedunsignedlong;
 struct CExoLinkedListNode;
 struct CGameObject;
 struct CGameObjectArray;

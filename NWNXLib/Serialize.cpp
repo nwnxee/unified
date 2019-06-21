@@ -1,4 +1,5 @@
 #include "Serialize.hpp"
+#include "Encoding.hpp"
 
 #include "Assert.hpp"
 #include "API/Types.hpp"
@@ -17,48 +18,6 @@
 
 #include <string.h>
 
-static const char base64_key[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-static std::string base64_encode(const std::vector<uint8_t>& in)
-{
-    std::string out;
-
-    int val=0, valb=-6;
-    for (uint8_t c : in) {
-        val = (val<<8) + c;
-        valb += 8;
-        while (valb>=0) {
-            out.push_back(base64_key[(val>>valb)&0x3F]);
-            valb-=6;
-        }
-    }
-    if (valb>-6)
-        out.push_back(base64_key[((val<<8)>>(valb+8))&0x3F]);
-    while (out.size()%4)
-        out.push_back('=');
-    return out;
-}
-
-static std::vector<uint8_t> base64_decode(const std::string &in)
-{
-    std::vector<uint8_t> out;
-
-    std::vector<int> T(256,-1);
-    for (int i=0; i<64; i++)
-        T[(uint8_t)(base64_key[i])] = i;
-
-    int val=0, valb=-8;
-    for (char c : in) {
-        if (T[(uint8_t)c] == -1)
-            break;
-        val = (val<<6) + T[(uint8_t)c];
-        valb += 6;
-        if (valb>=0) {
-            out.push_back(uint8_t((val>>valb)&0xFF));
-            valb-=8;
-        }
-    }
-    return out;
-}
 
 
 namespace NWNXLib {
@@ -76,7 +35,7 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
 
     switch (pObject->m_nObjectType)
     {
-        case API::Constants::OBJECT_TYPE_CREATURE:
+        case API::Constants::ObjectType::Creature:
         {
             API::CNWSCreature *pCreature = static_cast<API::CNWSCreature*>(pObject);
             if (resGff.CreateGFFFile(&resStruct, "BIC ", "V2.0"))
@@ -109,12 +68,12 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
             }                                                                    \
         } while(0)
 
-        case API::Constants::OBJECT_TYPE_ITEM:      SERIALIZE(Item,      "UTI ", 0); break;
-        case API::Constants::OBJECT_TYPE_PLACEABLE: SERIALIZE(Placeable, "UTP ", 0);    break;
-        case API::Constants::OBJECT_TYPE_WAYPOINT:  SERIALIZE(Waypoint,  "UTW ");    break;
-        case API::Constants::OBJECT_TYPE_STORE:     SERIALIZE(Store,     "UTM ", 0);    break;
-        case API::Constants::OBJECT_TYPE_DOOR:      SERIALIZE(Door,      "UTD ");    break;
-        case API::Constants::OBJECT_TYPE_TRIGGER:   SERIALIZE(Trigger,   "UTT ");    break;
+        case API::Constants::ObjectType::Item:      SERIALIZE(Item,      "UTI ", 0); break;
+        case API::Constants::ObjectType::Placeable: SERIALIZE(Placeable, "UTP ", 0);    break;
+        case API::Constants::ObjectType::Waypoint:  SERIALIZE(Waypoint,  "UTW ");    break;
+        case API::Constants::ObjectType::Store:     SERIALIZE(Store,     "UTM ", 0);    break;
+        case API::Constants::ObjectType::Door:      SERIALIZE(Door,      "UTD ");    break;
+        case API::Constants::ObjectType::Trigger:   SERIALIZE(Trigger,   "UTT ");    break;
 #undef SERIALIZE
 
         default:
@@ -136,7 +95,11 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     if (serialized.size() < 14*4) // GFF header size
         return nullptr;
 
-    if (!resGff.GetDataFromPointer((void*)serialized.data(), (int32_t)serialized.size()))
+    // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
+    // so need a copy for them to play with since the vector can't relinquish its own.
+    uint8_t *data = new uint8_t[serialized.size()];
+    memcpy(data, serialized.data(), serialized.size());
+    if (!resGff.GetDataFromPointer((void*)data, (int32_t)serialized.size()))
         return nullptr;
 
     resGff.InitializeForWriting();
@@ -193,12 +156,12 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
 
 std::string SerializeGameObjectB64(API::CGameObject *pObject, bool bStripPCFlags)
 {
-    return base64_encode(SerializeGameObject(pObject, bStripPCFlags));
+    return Encoding::ToBase64(SerializeGameObject(pObject, bStripPCFlags));
 }
 
 API::CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
 {
-    return DeserializeGameObject(base64_decode(serializedB64));
+    return DeserializeGameObject(Encoding::FromBase64(serializedB64));
 }
 
 } // NWNXLib

@@ -10,11 +10,15 @@ using namespace NWNXLib;
 
 AssociateEvents::AssociateEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestSharedHook<API::Functions::CNWSCreature__AddAssociate, void,
-        API::CNWSCreature*, API::Types::ObjectID, uint16_t>(&AddAssociateHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_ADD_ASSOCIATE_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CNWSCreature__AddAssociate, void,
+            API::CNWSCreature*, API::Types::ObjectID, uint16_t>(&AddAssociateHook);
+    });
 
-    hooker->RequestSharedHook<API::Functions::CNWSCreature__RemoveAssociate, void,
-        API::CNWSCreature*, API::Types::ObjectID>(&RemoveAssociateHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_REMOVE_ASSOCIATE_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CNWSCreature__RemoveAssociate, void,
+            API::CNWSCreature*, API::Types::ObjectID>(&RemoveAssociateHook);
+    });
 }
 
 void AssociateEvents::AddAssociateHook(Services::Hooks::CallType type, API::CNWSCreature* thisPtr, API::Types::ObjectID assocId, uint16_t)

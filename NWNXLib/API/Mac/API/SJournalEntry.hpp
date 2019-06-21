@@ -22,15 +22,7 @@ struct SJournalEntry
     int32_t bQuestCompleted;
     int32_t bQuestDisplayed;
     int32_t bUpdated;
-
-    // The below are auto generated stubs.
-    SJournalEntry(const SJournalEntry&) = default;
-    SJournalEntry& operator=(const SJournalEntry&) = default;
-
-    SJournalEntry();
 };
-
-void SJournalEntry__SJournalEntryCtor(SJournalEntry* thisPtr);
 
 }
 

@@ -27,8 +27,8 @@ void main()
     string sCreate = "";
     string sInsert = "";
 
-    /* MySQL version */
-    if (db_type == "MYSQL")
+    /* MySQL and SQLite version */
+    if (db_type == "MYSQL" || db_type == "SQLITE")
     {
         sCreate = "CREATE TABLE sql_test (" +
                   "colInt INT, colFloat FLOAT, colStr VARCHAR(256)," +
@@ -119,7 +119,7 @@ void main()
         }
 
         string test2 = "";
-        if (db_type == "MYSQL")
+        if (db_type == "MYSQL" || db_type == "SQLITE")
         {
             test2="INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(1337,0.0,'xxx',1337,?)";
         }
@@ -177,7 +177,7 @@ void main()
 
     // now do some elegant inserts
     string test3 = "";
-    if (db_type == "MYSQL")
+    if (db_type == "MYSQL" || db_type == "SQLITE")
     {
         test3 = "insert into stress_test values ( ?, ?, ? )";
     }
@@ -207,14 +207,17 @@ void main()
     b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcdefghij')");
     report ("good insert", b);
 
-    b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcde000fghij')");
-    report ("bad insert", !b);
-    if (!b) {
-       WriteTimestampedLogEntry("There should be an error a couple rows up.");
+    if (db_type != "SQLITE")
+    {// SQLite doesn't care about size constraints of columns
+        b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcde000fghij')");
+        report ("bad insert", !b);
+        if (!b) {
+        WriteTimestampedLogEntry("There should be an error a couple rows up.");
+        }
     }
 
     string test4 = "";
-    if (db_type == "MYSQL")
+    if (db_type == "MYSQL" || db_type == "SQLITE")
     {
         test3 = "insert into error_test values ( ? )";
     }
