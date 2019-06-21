@@ -8,7 +8,7 @@ int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType);
 
 int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation)
 {
-    switch ( nAnimation )
+    switch (nAnimation)
     {
         case ANIMATION_LOOPING_PAUSE: nAnimation = 0; break;
         case ANIMATION_LOOPING_PAUSE2: nAnimation = 52; break;
