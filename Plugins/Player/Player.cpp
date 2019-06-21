@@ -23,6 +23,8 @@
 #include "API/CNWSPlayerInventoryGUI.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
+#include "API/CNWSJournal.hpp"
+#include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/Constants.hpp"
@@ -91,6 +93,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetObjectVisualTransformOverride);
     REGISTER(ApplyLoopingVisualEffectToObject);
     REGISTER(SetPlaceableNameOverride);
+    REGISTER(GetQuestCompleted);
 
 #undef REGISTER
 
@@ -1026,6 +1029,38 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                                                    "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
         }
     }
+    return stack;
+}
+
+ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+
+    if (auto *pPlayer = player(args))
+    {
+        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        const auto questTag = Services::Events::ExtractArgument<std::string>(args);
+
+        if (pCreature && pCreature->m_pJournal)
+        {
+            auto entries = pCreature->m_pJournal->m_lstEntries;
+            if (entries.num > 0)
+            {
+                auto pEntry = entries.element;
+                for (int i = 0; i < entries.num; i++, pEntry++)
+                {
+                    if (pEntry->szPlot_Id.CStr() == questTag)
+                    {
+                        retval = pEntry->bQuestCompleted;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 

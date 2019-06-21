@@ -42,6 +42,7 @@ private:
     ArgumentStack SetObjectVisualTransformOverride  (ArgumentStack&& args);
     ArgumentStack ApplyLoopingVisualEffectToObject  (ArgumentStack&& args);
     ArgumentStack SetPlaceableNameOverride          (ArgumentStack&& args);
+    ArgumentStack GetQuestCompleted                 (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
