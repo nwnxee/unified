@@ -168,7 +168,7 @@ void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, strin
 
 // Get's whether a quest has been completed by a player
 // Returns -1 if they don't have the journal entry
-int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
+int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 
 const string NWNX_Player = "NWNX_Player";
 
