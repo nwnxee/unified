@@ -151,6 +151,7 @@ The following plugins were added:
 - Player: SetObjectVisualTransformOverride()
 - Player: ApplyLoopingVisualEffectToObject()
 - Player: SetPlaceableNameOverride()
+- Player: GetQuestCompleted()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
