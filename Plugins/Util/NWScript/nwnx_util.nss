@@ -58,10 +58,16 @@ string NWNX_Util_GetFirstResRef(int nType, string sRegexFilter = "", int bModule
 // Get the next resref
 // Returns "" if no resref is found
 string NWNX_Util_GetNextResRef();
-
 // Get the ticks per second of the server
 // Useful to dynamically detect lag and adjust behavior accordingly
 int NWNX_Util_GetServerTicksPerSecond();
+// Get the nNthLast created object of nObjectType
+// - nObjectType: Does not take the NWScript OBJECT_TYPE_* constants
+//                Use NWNX_Consts_TranslateNWScriptObjectType() to get their
+//                NWNX equivalent.
+// * Return value: The last created object. On error, this returns OBJECT_INVALID.
+object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
+
 
 const string NWNX_Util = "NWNX_Util";
 
@@ -205,4 +211,15 @@ int NWNX_Util_GetServerTicksPerSecond()
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1)
+{
+    string sFunc = "GetLastCreatedObject";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nNthLast);
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nObjectType);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
 }

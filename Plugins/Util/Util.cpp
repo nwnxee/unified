@@ -15,6 +15,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CWorldTimer.hpp"
+#include "API/CGameObjectArray.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
@@ -73,6 +74,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetFirstResRef);
     REGISTER(GetNextResRef);
     REGISTER(GetServerTicksPerSecond);
+    REGISTER(GetLastCreatedObject);
 
 #undef REGISTER
 
@@ -361,6 +363,43 @@ ArgumentStack Util::GetServerTicksPerSecond(ArgumentStack&&)
 {
     ArgumentStack stack;
     Services::Events::InsertArgument(stack, m_tickCount);
+    return stack;
+}
+
+ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    Types::ObjectID retVal = Constants::OBJECT_INVALID;
+
+    const auto objectType = Services::Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(objectType >= 0);
+    const auto nthLast = Services::Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(nthLast > 0);
+
+    auto pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
+    int count = 1;
+    CGameObject *pObject;
+
+    for(int nObjectID = pGameObjectArray->m_nNextObjectArrayID[0] - 1; nObjectID >= 0; nObjectID--)
+    {
+        if(!pGameObjectArray->GetGameObject(nObjectID, &pObject))
+        {
+            if (pObject && (pObject->m_nObjectType == objectType || objectType == 0))
+            {
+                if (count == nthLast)
+                {
+                    retVal = pObject->m_idSelf;
+                    break;
+                }
+                else
+                {
+                    count++;
+                }
+            }
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
 

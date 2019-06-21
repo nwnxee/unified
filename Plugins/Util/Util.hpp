@@ -32,6 +32,7 @@ private:
     ArgumentStack GetFirstResRef(ArgumentStack&& args);
     ArgumentStack GetNextResRef(ArgumentStack&& args);
     ArgumentStack GetServerTicksPerSecond(ArgumentStack&& args);
+    ArgumentStack GetLastCreatedObject(ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
