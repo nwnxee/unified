@@ -75,7 +75,7 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__LoadFeatInfo, void, CNWRules*>(&LoadFeatInfoHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__LoadSkillInfo, void, CNWRules*>(&LoadSkillInfoHook);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetSkillRank,
         int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
 
@@ -86,20 +86,17 @@ SkillRanks::~SkillRanks()
 {
 }
 
-void SkillRanks::LoadFeatInfoHook(Services::Hooks::CallType type, API::CNWRules*)
+void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, API::CNWRules* pRules)
 {
     // We only want to do this in the AFTER
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    if (before || !Globals::Rules())
+    if (before || !pRules)
         return;
 
-    C2DA featTwoda(CResRef("Feat"), 0);
-    featTwoda.Load2DArray();
-
     // Initialize our vector for each skill
-    g_plugin->m_skillFeatMap.assign(Globals::Rules()->m_nNumSkills, {});
+    g_plugin->m_skillFeatMap.assign(pRules->m_nNumSkills, {});
 
-    for (int featId = 0; featId <= featTwoda.m_nNumRows; featId++)
+    for (int featId = 0; featId < pRules->m_nNumFeats; featId++)
     {
         SkillFeats skillFeats { };
         switch (featId)

@@ -23,6 +23,8 @@
 #include "API/CNWSPlayerInventoryGUI.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
+#include "API/CNWSJournal.hpp"
+#include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/Constants.hpp"
@@ -91,6 +93,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetObjectVisualTransformOverride);
     REGISTER(ApplyLoopingVisualEffectToObject);
     REGISTER(SetPlaceableNameOverride);
+    REGISTER(GetQuestCompleted);
 
 #undef REGISTER
 
@@ -902,23 +905,31 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static Maybe<int> visualEffect;
+                        static bool bKeyExists;
+                        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
+                                                Utils::ObjectIDToString(pObject->m_idSelf);
 
                         if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                         {
-                            visualEffect = g_plugin->GetServices()->m_perObjectStorage->Get<int>(oidObjectToUpdate,
-                                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+                            auto search = g_plugin->m_LVEData.find(key);
+                            bKeyExists = search != g_plugin->m_LVEData.end();
 
-                            if (visualEffect)
+                            if (bKeyExists)
                             {
-                                pObject->AddLoopingVisualEffect(*visualEffect, Constants::OBJECT_INVALID, 0);
+                                for(auto visualEffect : search->second)
+                                {
+                                    pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
+                                }
                             }
                         }
                         else
                         {
-                            if (visualEffect)
+                            if (bKeyExists)
                             {
-                                pObject->RemoveLoopingVisualEffect(*visualEffect);
+                                for(auto visualEffect : g_plugin->m_LVEData[key])
+                                {
+                                    pObject->RemoveLoopingVisualEffect(visualEffect);
+                                }
                             }
                         }
                     }
@@ -935,15 +946,19 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect <= 65535);
 
+        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidTarget);
+
         if (visualEffect < 0)
         {
-            GetServices()->m_perObjectStorage->Remove(oidTarget,
-                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+            m_LVEData.erase(key);
+        }
+        else if (m_LVEData[key].find(visualEffect) != m_LVEData[key].end())
+        {
+            m_LVEData[key].erase(visualEffect);
         }
         else
         {
-            GetServices()->m_perObjectStorage->Set(oidTarget,
-                    "LVE_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), visualEffect);
+            m_LVEData[key].insert(visualEffect);
         }
     }
     return stack;
@@ -1014,6 +1029,38 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                                                    "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
         }
     }
+    return stack;
+}
+
+ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retval = -1;
+
+    if (auto *pPlayer = player(args))
+    {
+        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        const auto questTag = Services::Events::ExtractArgument<std::string>(args);
+
+        if (pCreature && pCreature->m_pJournal)
+        {
+            auto entries = pCreature->m_pJournal->m_lstEntries;
+            if (entries.num > 0)
+            {
+                auto pEntry = entries.element;
+                for (int i = 0; i < entries.num; i++, pEntry++)
+                {
+                    if (pEntry->szPlot_Id.CStr() == questTag)
+                    {
+                        retval = pEntry->bQuestCompleted;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 
