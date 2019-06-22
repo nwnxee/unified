@@ -55,7 +55,6 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     REGISTER(SetSpellswordIgnoreSpellFailure)
     REGISTER(SetUndeadSlayerImmunity)
     REGISTER(SetSubraceDayEffects)
-    REGISTER(GetQuestCompleted)
 
 #undef REGISTER
 
@@ -338,35 +337,6 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
         pCreature->ApplyEffect(eff2, true, true);
     }
 
-    return stack;
-}
-
-ArgumentStack Layonara::GetQuestCompleted(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    int32_t retval = -1;
-
-    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto questTag = Services::Events::ExtractArgument<std::string>(args);
-
-    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
-    if (pCreature && pCreature->m_pJournal)
-    {
-        auto entries = pCreature->m_pJournal->m_lstEntries;
-        if (entries.num > 0)
-        {
-            auto pEntry = entries.element;
-            for (int i = 0; i < entries.num; i++, pEntry++)
-            {
-                if (pEntry->szPlot_Id.CStr() == questTag)
-                {
-                    retval = pEntry->bQuestCompleted;
-                    break;
-                }
-            }
-        }
-    }
-    Services::Events::InsertArgument(stack, retval);
     return stack;
 }
 
