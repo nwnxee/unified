@@ -13,6 +13,7 @@ find_package(Sanitizers)
 
 set(TARGET_NWN_BUILD 8186)
 set(PLUGIN_PREFIX NWNX_)
+set(NWNX64 1)
 
 # Disables PIC which plays havoc with our absolute address function jumps.
 set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
@@ -61,7 +62,7 @@ else()
         set(WARNING_FLAGS_CXX "-Wall -Wextra")
     endif()
 
-    set(NWNX_STANDARD_FLAGS "-m32 -march=pentium4 -fdiagnostics-show-option -fno-omit-frame-pointer -fno-pic -fno-strict-aliasing")
+    set(NWNX_STANDARD_FLAGS "-m64 -march=x86-64 -fdiagnostics-show-option -fno-omit-frame-pointer -fPIC -fno-strict-aliasing")
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")

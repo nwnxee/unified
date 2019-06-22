@@ -18,7 +18,7 @@ FIND_PATH(SQLITE3_INCLUDE_DIR sqlite3.h
 SET(SQLITE3_NAMES sqlite3)
 FIND_LIBRARY(SQLITE3_LIBRARY
   NAMES ${SQLITE3_NAMES}
-  PATHS /usr/lib /usr/local/lib /usr/lib/i386-linux-gnu/
+  PATHS /usr/lib /usr/local/lib
 )
 
 IF (SQLITE3_INCLUDE_DIR AND SQLITE3_LIBRARY)
