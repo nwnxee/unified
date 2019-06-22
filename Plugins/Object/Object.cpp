@@ -28,6 +28,8 @@
 #include "Serialize.hpp"
 #include "Utils.hpp"
 
+#include <cstring>
+
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
@@ -81,6 +83,8 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetPlaceableIsStatic);
     REGISTER(GetAutoRemoveKey);
     REGISTER(SetAutoRemoveKey);
+    REGISTER(GetTriggerGeometry);
+    REGISTER(SetTriggerGeometry);
 
 #undef REGISTER
 }
@@ -488,6 +492,102 @@ ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
             default:
                 LOG_WARNING("NWNX_Object_SetAutoRemoveKey() called on non door/placeable object.");
                 break;
+        }
+    }
+
+    return stack;
+}
+
+ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retVal;
+
+    if (auto *pObject = object(args))
+    {
+        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
+        {
+            retVal.reserve(32 * pTrigger->m_nVertices);
+
+            for(int i = 0; i < pTrigger->m_nVertices; i++)
+            {
+                retVal += "{" + std::to_string(pTrigger->m_pvVertices[i].x) + ", " +
+                                std::to_string(pTrigger->m_pvVertices[i].y) + ", " +
+                                std::to_string(pTrigger->m_pvVertices[i].z) + "}";
+            }
+        }
+        else
+        {
+            LOG_WARNING("NWNX_Object_GetTriggerGeometry() called on non trigger object.");
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
+
+        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
+        {
+            auto str = sGeometry.c_str();
+            std::vector<Vector> vecVerts;
+            Vector vec = {};
+
+            do {
+                int cnt = std::sscanf(str, "{%f,%f,%f", &vec.x, &vec.y, &vec.z);
+
+                if (cnt != 2 && cnt != 3)
+                {
+                    LOG_NOTICE("NWNX_Object_SetTriggerGeometry() invalid geometry string at: %s", str);
+                    break;
+                }
+
+                if (cnt == 2)
+                    vec.z = pTrigger->GetArea()->ComputeHeight(vec);
+
+                vecVerts.push_back(vec);
+            } while ((str = std::strstr(str + 1, "{")));
+
+            if (vecVerts.size() > 2)
+            {
+                CNWSArea *pArea = pTrigger->GetArea();
+                pTrigger->RemoveFromArea();
+
+                if (pTrigger->m_pvVertices)
+                    delete[] pTrigger->m_pvVertices;
+                if (pTrigger->m_pnOutlineVertices)
+                    delete[] pTrigger->m_pnOutlineVertices;
+
+                pTrigger->m_nVertices = vecVerts.size();
+                pTrigger->m_nOutlineVertices = vecVerts.size();
+
+                pTrigger->m_pvVertices = new Vector[pTrigger->m_nVertices];
+                pTrigger->m_pnOutlineVertices = new int32_t[pTrigger->m_nVertices];
+
+                for(int i = 0; i < pTrigger->m_nVertices; i++)
+                {
+                    pTrigger->m_pvVertices[i] = vecVerts[i];
+                    pTrigger->m_pnOutlineVertices[i] = i;
+                }
+
+                pTrigger->AddToArea(pArea, pTrigger->m_pvVertices[0].x, pTrigger->m_pvVertices[0].y, pTrigger->m_pvVertices[0].z, false);
+            }
+            else
+            {
+                LOG_WARNING("NWNX_Object_SetTriggerGeometry() called with less than 3 vertices.");
+            }
+        }
+        else
+        {
+            LOG_WARNING("NWNX_Object_SetTriggerGeometry() called on non trigger object.");
         }
     }
 
