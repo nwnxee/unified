@@ -1,3 +1,5 @@
+return()
+
 find_package(PkgConfig)
 
 if (PKGCONFIG_FOUND)

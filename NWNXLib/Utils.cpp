@@ -245,7 +245,7 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
         switch (pVar1->m_nType)
         {
             case 1:
-                if (pVars2->GetInt(pVar1->m_sName) != reinterpret_cast<int32_t>(pVar1->m_pValue))
+                if (pVars2->GetInt(pVar1->m_sName) != static_cast<int32_t>(reinterpret_cast<intptr_t>(pVar1->m_pValue)))
                     return false;
                 break;
             case 2:
@@ -257,7 +257,7 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
                     return false;
                 break;
             case 4:
-                if (pVars2->GetObject(pVar1->m_sName) != reinterpret_cast<uint32_t>(pVar1->m_pValue))
+                if (pVars2->GetObject(pVar1->m_sName) != static_cast<uint32_t>(reinterpret_cast<uintptr_t>(pVar1->m_pValue)))
                     return false;
                 break;
             case 5:

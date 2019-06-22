@@ -29,7 +29,7 @@ uint32_t PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(CNWSCre
 {
     // If at risk of destroying the item, inflate charge count temporarily to bypass the destroy
     // event, then set it back to mark the spells as unusable.
-    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((Types::ObjectID)pNode->m_pParameter[0]));
+    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((Types::ObjectID)(uintptr_t)pNode->m_pParameter[0]));
     if (pItem && pItem->m_nNumCharges <= 5)
     {
         pItem->m_nNumCharges += 10;

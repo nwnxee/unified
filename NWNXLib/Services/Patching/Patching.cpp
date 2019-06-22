@@ -247,7 +247,7 @@ void PatchingProxy::ClearPatch(const uintptr_t address)
     m_registrationTokens.erase(token);
 }
 
-std::vector<uint8_t> PatchingProxy::GetNoopToFill(const uint32_t length)
+std::vector<uint8_t> PatchingProxy::GetNoopToFill(const size_t length)
 {
     ASSERT(length > 0);
 

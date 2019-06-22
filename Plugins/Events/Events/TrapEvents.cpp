@@ -47,7 +47,7 @@ uint32_t TrapEvents::HandleTrapHook(
     uint32_t retVal;
     std::string sAux;
 
-    Events::PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uint32_t)(pNode->m_pParameter[0])));
+    Events::PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
 
     if (Events::SignalEvent("NWNX_ON_TRAP_" + event + "_BEFORE", pCreature->m_idSelf, &sAux))
     {
@@ -60,7 +60,7 @@ uint32_t TrapEvents::HandleTrapHook(
             retVal = 3; //CNWSObject::ACTION_FAILED;
     }
 
-    Events::PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uint32_t)(pNode->m_pParameter[0])));
+    Events::PushEventData("TRAP_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[0])));
     Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
 
     Events::SignalEvent("NWNX_ON_TRAP_" + event + "_AFTER", pCreature->m_idSelf);

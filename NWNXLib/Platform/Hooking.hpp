@@ -36,10 +36,10 @@ namespace Hooking {
     #define NWNX_HOOK_LANDING_STDCALL NWNX_HOOK_PLATFORM_STDCALL
     #define NWNX_HOOK_LANDING_FASTCALL NWNX_HOOK_PLATFORM_FASTCALL
 #else
-    #define NWNX_HOOK_PLATFORM_CDECL __attribute__((cdecl))
-    #define NWNX_HOOK_PLATFORM_THISCALL __attribute__((thiscall))
-    #define NWNX_HOOK_PLATFORM_STDCALL __attribute__((stdcall))
-    #define NWNX_HOOK_PLATFORM_FASTCALL __attribute__((fastcall))
+    #define NWNX_HOOK_PLATFORM_CDECL //__attribute__((cdecl))
+    #define NWNX_HOOK_PLATFORM_THISCALL //__attribute__((thiscall))
+    #define NWNX_HOOK_PLATFORM_STDCALL //__attribute__((stdcall))
+    #define NWNX_HOOK_PLATFORM_FASTCALL //__attribute__((fastcall))
 
     #define NWNX_HOOK_POINTER_CDECL NWNX_HOOK_PLATFORM_CDECL
     #define NWNX_HOOK_POINTER_THISCALL NWNX_HOOK_PLATFORM_CDECL // THISCALL is the same as CDECL on Linux.
