@@ -52,9 +52,9 @@ void NWNX_Race_LoadRacialModifiers(string sColumnName = "RacialModsTable")
                 string sParam1 = Get2DAString(sRaceModTable, "Param1", iRaceMod);
                 string sParam2 = Get2DAString(sRaceModTable, "Param2", iRaceMod);
                 string sParam3 = Get2DAString(sRaceModTable, "Param3", iRaceMod);
-                int iParam1 = sParam1 == "" ? UNSET_VALUE : StringToInt(sParam1);
-                int iParam2 = sParam2 == "" ? UNSET_VALUE : StringToInt(sParam2);
-                int iParam3 = sParam3 == "" ? UNSET_VALUE : StringToInt(sParam3);
+                int iParam1 = sParam1 == "" ? 0xDEADBEEF : StringToInt(sParam1);
+                int iParam2 = sParam2 == "" ? 0xDEADBEEF : StringToInt(sParam2);
+                int iParam3 = sParam3 == "" ? 0xDEADBEEF : StringToInt(sParam3);
                 NWNX_Race_SetRacialModifier(iRace, NWNX_Race_GetModifierConstant(sType), iParam1, iParam2, iParam3);
             }
         }
