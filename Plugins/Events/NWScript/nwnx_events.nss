@@ -130,6 +130,28 @@
         OBJECT_SELF = The item triggering the event
 
     Note: Use of NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_* conflicts with object event handler profiling
+
+    NWNX_ON_ITEM_USE_LORE_BEFORE
+    NWNX_ON_ITEM_USE_LORE_AFTER
+
+    Usage:
+        OBJECT_SELF = The player attempting to identify an item with their lore skill
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_PAY_TO_IDENTIFY_BEFORE
+    NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER
+
+    Usage:
+        OBJECT_SELF = The player attempting to pay to identify an item
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+        STORE                   object      Convert to object with NWNX_Object_StringToObject()
+
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER

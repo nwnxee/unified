@@ -31,6 +31,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added Sticky Player Name Reserved event allowing builders to use another method instead of knownservernames.2da to validate player names and cd keys
 - Events: Added Level{Up|UpAutomatic|Down} events to LevelEvents
 - Events: Added WebHook Success/Failure events with rate limit feedback
+- Events: Added UseLoreOnItem and PayToIdentifyItem events
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
@@ -49,6 +50,7 @@ The following plugins were added:
 - **Encounter**: Adds functions exposing additional encounter properties
 - **Feedback**: Allows combatlog, feedback and 'quest journal updated' messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
+- **Race**: Provides the ability to specify a variety of inate modifiers for new or existing races or subraces via script or 2da
 - **Regex**: Adds functions to search and replace strings using regular expressions.
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
@@ -152,6 +154,7 @@ The following plugins were added:
 - Player: ApplyLoopingVisualEffectToObject()
 - Player: SetPlaceableNameOverride()
 - Player: GetQuestCompleted()
+- Race: SetRacialModifier()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
