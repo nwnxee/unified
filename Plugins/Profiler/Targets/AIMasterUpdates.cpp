@@ -2,7 +2,7 @@
 
 #include "API/Constants.hpp"
 #include "API/CExoLinkedListInternal.hpp"
-#include "API/CExoLinkedListTemplatedCServerAIEventNode.hpp"
+#include "API/CExoLinkedList.hpp"
 #include "API/CServerAIMaster.hpp"
 #include "API/Functions.hpp"
 #include "ProfilerMacros.hpp"

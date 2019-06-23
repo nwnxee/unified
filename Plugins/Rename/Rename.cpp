@@ -17,7 +17,7 @@
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoString.hpp"
 #include "API/CLastUpdateObject.hpp"
-#include "API/CExoLinkedListTemplatedCNWSClient.hpp"
+#include "API/CExoLinkedList.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"

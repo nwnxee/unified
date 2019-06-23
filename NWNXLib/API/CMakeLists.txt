@@ -1,8 +1,4 @@
-if(WIN32)
-    set(APIDIR "Windows")
-elseif(UNIX)
-    set(APIDIR "Linux")
-endif()
+nwnxlib_add("Globals.cpp")
+set(NWN_API_INCLUDE "ApiExtensions.hpp")
 
-#nwnxlib_add("Globals.cpp" "${APIDIR}/API/UnityBuild.cpp")
-set(APIDIR ${CMAKE_CURRENT_SOURCE_DIR}/${APIDIR} PARENT_SCOPE)
+#set(APIDIR ${CMAKE_CURRENT_SOURCE_DIR}/${APIDIR} PARENT_SCOPE)

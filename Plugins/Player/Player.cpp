@@ -10,7 +10,7 @@
 #include "API/CNWSScriptVar.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CServerExoAppInternal.hpp"
-#include "API/CExoArrayListTemplatedCNWSScriptVar.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSQuickbarButton.hpp"
 #include "API/CGameEffect.hpp"
@@ -24,7 +24,6 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSJournal.hpp"
-#include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/Constants.hpp"
@@ -990,9 +989,6 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                                 swapName = newName.c_str();
 
                                 std::swap(swapName, pPlaceable->m_sDisplayName);
-
-                                // TODO: This might get removed next patch?
-                                pPlaceable->m_bUpdateDisplayName = true;
                             }
                         }
                         else
@@ -1000,9 +996,6 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                             if (name)
                             {
                                 std::swap(swapName, pPlaceable->m_sDisplayName);
-
-                                // TODO: This might get removed next patch?
-                                pPlaceable->m_bUpdateDisplayName = true;
                             }
                         }
                     }

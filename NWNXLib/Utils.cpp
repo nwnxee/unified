@@ -245,24 +245,24 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
         switch (pVar1->m_nType)
         {
             case 1:
-                if (pVars2->GetInt(pVar1->m_sName) != static_cast<int32_t>(reinterpret_cast<intptr_t>(pVar1->m_pValue)))
+                if (pVars2->GetInt(pVar1->m_sName) != pVar1->m_uValue.m_int)
                     return false;
                 break;
             case 2:
-                if (pVars2->GetFloat(pVar1->m_sName) != *reinterpret_cast<float*>(&pVar1->m_pValue))
+                if (pVars2->GetFloat(pVar1->m_sName) != pVar1->m_uValue.m_float)
                     return false;
                 break;
             case 3:
-                if (pVars2->GetString(pVar1->m_sName) != *static_cast<API::CExoString*>(pVar1->m_pValue))
+                if (pVars2->GetString(pVar1->m_sName) != *pVar1->m_uValue.m_string)
                     return false;
                 break;
             case 4:
-                if (pVars2->GetObject(pVar1->m_sName) != static_cast<uint32_t>(reinterpret_cast<uintptr_t>(pVar1->m_pValue)))
+                if (pVars2->GetObject(pVar1->m_sName) != pVar1->m_uValue.m_objectId)
                     return false;
                 break;
             case 5:
             {
-                API::CScriptLocation loc1 = *reinterpret_cast<API::CScriptLocation*>(pVar1->m_pValue);
+                API::CScriptLocation& loc1 = *pVar1->m_uValue.m_location;
                 API::CScriptLocation loc2 = pVars2->GetLocation(pVar1->m_sName);
                 if (loc1.m_oArea != loc2.m_oArea || loc1.m_vPosition != loc2.m_vPosition || loc1.m_vOrientation != loc2.m_vOrientation)
                     return false;

@@ -64,7 +64,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
 
                             if (area)
                             {
-                                areaName = std::string(area->m_cResRef.m_resRef, area->m_cResRef.GetLength());
+                                areaName = std::string(area->m_cResRef.GetResRef(), area->m_cResRef.GetLength());
                             }
                         }
 

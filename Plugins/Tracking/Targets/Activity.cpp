@@ -1,7 +1,7 @@
 #include "Targets/Activity.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CExoLinkedListInternal.hpp"
-#include "API/CExoLinkedListTemplatedCNWSClient.hpp"
+#include "API/CExoLinkedList.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CNWSPlayer.hpp"
@@ -59,7 +59,7 @@ void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInter
 
                 if (area)
                 {
-                    areaName = std::string(area->m_cResRef.m_resRef, area->m_cResRef.GetLength());
+                    areaName = std::string(area->m_cResRef.GetResRef(), area->m_cResRef.GetLength());
                 }
 
                 if (creature->m_pStats->m_bIsDM || creature->m_nAssociateType == 7 || creature->m_nAssociateType == 8)

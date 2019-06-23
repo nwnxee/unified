@@ -80,7 +80,7 @@ public:
 private:
     std::vector<Patching::RegistrationToken> m_registrationTokens;
 
-    std::vector<uint8_t> GetNoopToFill(const uintptr_t length);
+    std::vector<uint8_t> GetNoopToFill(const size_t length);
 };
 
 #include "Services/Patching/Patching.inl"

@@ -29,10 +29,7 @@ add_sanitizers(NWNXLib)
 
 target_compile_definitions(NWNXLib PRIVATE "-DPLUGIN_NAME=\"NWNXLib\"")
 
-message(${APIDIR})
-
-# APIDIR is defined inside the API subdirectory..
-target_include_directories(NWNXLib PUBLIC "." "${APIDIR}")
+target_include_directories(NWNXLib PUBLIC "." "API")
 
 if(UNIX)
     # We need this for dlopen/dlclose/dlsym.

@@ -39,7 +39,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
 
                 if (area)
                 {
-                    std::string areaName = std::string(area->m_cResRef.m_resRef, 16);
+                    std::string areaName = std::string(area->m_cResRef.GetResRef(), 16);
                     tags.emplace_back("Area", areaName.empty() ? "(unknown)" : std::move(areaName));
                 }
             }

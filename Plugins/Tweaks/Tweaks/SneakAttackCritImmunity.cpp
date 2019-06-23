@@ -112,7 +112,9 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     if (pAttackData->m_bRangedAttack)
     {
         Vector v = pThis->m_vPosition;
-        v -= pTarget->m_vPosition;
+        v.x -= pTarget->m_vPosition.x;
+        v.y -= pTarget->m_vPosition.y;
+        v.z -= pTarget->m_vPosition.z;
         fDistance = v.x*v.x + v.y*v.y + v.z*v.z;
     }
 
@@ -225,7 +227,9 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
     if (pAttackData->m_bRangedAttack)
     {
         Vector v = pThis->m_vPosition;
-        v -= pTarget->m_vPosition;
+        v.x -= pTarget->m_vPosition.x;
+        v.y -= pTarget->m_vPosition.y;
+        v.z -= pTarget->m_vPosition.z;
         fDistance = v.x*v.x + v.y*v.y + v.z*v.z;
     }
 

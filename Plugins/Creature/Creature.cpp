@@ -7,8 +7,7 @@
 #include "API/CNWLevelStats.hpp"
 #include "API/CNWSStats_Spell.hpp"
 #include "API/CNWSStats_SpellLikeAbility.hpp"
-#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
-#include "API/CExoArrayListTemplatedshortunsignedint.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
 #include "API/Constants.hpp"
@@ -307,11 +306,9 @@ ArgumentStack Creature::GetMeetsFeatRequirements(ArgumentStack&& args)
         const auto feat = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
           ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
-        // TODO: Need to clean up these templated arraylist APIs
-        CExoArrayListTemplatedshortunsignedint unused = {};
+        CExoArrayList<uint16_t> unused = {};
 
-        retVal = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat),
-                    reinterpret_cast<CExoArrayListTemplatedunsignedshort*>(&unused));
+        retVal = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat), &unused);
         free(unused.element);
     }
     Services::Events::InsertArgument(stack, retVal);

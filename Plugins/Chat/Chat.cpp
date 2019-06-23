@@ -2,7 +2,6 @@
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CNWSClient.hpp"
-#include "API/CNWSDungeonMaster.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/Constants.hpp"
