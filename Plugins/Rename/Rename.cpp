@@ -167,8 +167,17 @@ void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
         observerOid = observerPlayer->m_oidNWSObject;
 
     // There's a moment when a player is just logging in that pStats doesn't exist yet.
-    if (targetCreature == nullptr || targetCreature->m_pStats == nullptr || targetCreature->m_pStats->m_bIsDM ||
-            (observerCreature != nullptr && (observerCreature->m_pStats == nullptr || observerCreature->m_pStats->m_bIsDM)))
+    // Also don't do renames for DM or DM Possessed creatures
+    if (targetCreature == nullptr ||
+        targetCreature->m_pStats == nullptr ||
+        targetCreature->m_pStats->m_bIsDM ||
+        targetCreature->m_nAssociateType == 7 ||
+        targetCreature->m_nAssociateType == 8 ||
+        (observerCreature != nullptr &&
+         (observerCreature->m_pStats == nullptr ||
+          observerCreature->m_pStats->m_bIsDM ||
+          observerCreature->m_nAssociateType == 7 ||
+          observerCreature->m_nAssociateType == 8)))
     {
         return;
     }
