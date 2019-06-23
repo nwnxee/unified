@@ -428,10 +428,8 @@ int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, Types::ObjectID ite
     return retVal;
 }
 
-int32_t ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID item, Types::ObjectID store)
+void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID item, Types::ObjectID store)
 {
-    int32_t retVal;
-
     auto PushAndSignal = [&](std::string ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
         Events::PushEventData("STORE", Utils::ObjectIDToString(store));
@@ -440,14 +438,10 @@ int32_t ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID
 
     if (PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_BEFORE"))
     {
-        retVal = m_PayToIdenfifyItemHook->CallOriginal<int32_t>(thisPtr, item, store);
+        m_PayToIdenfifyItemHook->CallOriginal<int32_t>(thisPtr, item, store);
     }
-    else
-        retVal = false;
 
     PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER");
-
-    return retVal;
 }
 
 }
