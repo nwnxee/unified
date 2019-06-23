@@ -24,15 +24,13 @@ const int NWNX_RACE_MODIFIER_SPELLIMMUNITY = 20;
 const int NWNX_RACE_MODIFIER_SRCHARGEN     = 21;
 const int NWNX_RACE_MODIFIER_SRINCLEVEL    = 22;
 
-const int UNSET_VALUE = 0xDEADBEEF;
-
 // Set a racial modifier
-void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = UNSET_VALUE, int iParam3 = UNSET_VALUE);
+void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF);
 
 const string NWNX_Race = "NWNX_Race";
 
 
-void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = UNSET_VALUE, int iParam3 = UNSET_VALUE)
+void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF)
 {
     string sFunc = "SetRacialModifier";
 
