@@ -31,6 +31,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added Sticky Player Name Reserved event allowing builders to use another method instead of knownservernames.2da to validate player names and cd keys
 - Events: Added Level{Up|UpAutomatic|Down} events to LevelEvents
 - Events: Added WebHook Success/Failure events with rate limit feedback
+- Events: Added UseLoreOnItem and PayToIdentifyItem events
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave

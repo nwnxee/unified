@@ -25,6 +25,8 @@ static Hooking::FunctionHook* m_LearnScrollHook = nullptr;
 static Hooking::FunctionHook* m_RunEquipHook = nullptr;
 static Hooking::FunctionHook* m_RunUnequipHook = nullptr;
 static Hooking::FunctionHook* m_ItemEventHandlerHook = nullptr;
+static Hooking::FunctionHook* m_UseLoreOnItemHook = nullptr;
+static Hooking::FunctionHook* m_PayToIdenfifyItemHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
@@ -75,6 +77,16 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::CNWSItem__EventHandler>(&ItemEventHandlerHook);
         m_ItemEventHandlerHook = hooker->FindHookByAddress(API::Functions::CNWSItem__EventHandler);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_USE_LORE_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseLoreOnItem>(&UseLoreOnItemHook);
+        m_UseLoreOnItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseLoreOnItem);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_PAY_TO_IDENTIFY_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__PayToIdentifyItem>(&PayToIdentifyItemHook);
+        m_PayToIdenfifyItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__PayToIdentifyItem);
     });
 }
 
@@ -393,6 +405,49 @@ void ItemEvents::ItemEventHandlerHook(
             CallOriginal();
             break;
     }
+}
+
+int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, Types::ObjectID item)
+{
+    int32_t retVal;
+
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_USE_LORE_BEFORE"))
+    {
+        retVal = m_UseLoreOnItemHook->CallOriginal<int32_t>(thisPtr, item);
+    }
+    else
+        retVal = false;
+
+    PushAndSignal("NWNX_ON_ITEM_USE_LORE_AFTER");
+
+    return retVal;
+}
+
+int32_t ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID item, Types::ObjectID store)
+{
+    int32_t retVal;
+
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
+        Events::PushEventData("STORE", Utils::ObjectIDToString(store));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_BEFORE"))
+    {
+        retVal = m_PayToIdenfifyItemHook->CallOriginal<int32_t>(thisPtr, item, store);
+    }
+    else
+        retVal = false;
+
+    PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER");
+
+    return retVal;
 }
 
 }
