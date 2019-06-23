@@ -13,6 +13,7 @@
 #include "API/Functions.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
 #include <cmath>
 #include <list>
@@ -78,12 +79,30 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__LoadSkillInfo, void, CNWRules*>(&LoadSkillInfoHook);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetSkillRank,
         int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreatureStats__SaveClassInfo, void, CNWSCreatureStats*, CResGFF*, CResStruct*>(&SaveClassInfoHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSPlayer__ValidateCharacter, int32_t, CNWSPlayer*, int32_t*>(&ValidateCharacterHook);
 
     m_blindnessMod = 4;
 }
 
 SkillRanks::~SkillRanks()
 {
+}
+
+void SkillRanks::ValidateCharacterHook(
+        Services::Hooks::CallType cType,
+        CNWSPlayer *,
+        int32_t*)
+{
+    g_plugin->m_ValidatingOrSaving = cType == Services::Hooks::CallType::BEFORE_ORIGINAL;
+}
+
+void SkillRanks::SaveClassInfoHook(
+        Services::Hooks::CallType cType,
+        CNWSCreatureStats *,
+        CResGFF *, CResStruct *)
+{
+    g_plugin->m_ValidatingOrSaving = cType == Services::Hooks::CallType::BEFORE_ORIGINAL;
 }
 
 void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, API::CNWRules* pRules)
@@ -95,6 +114,18 @@ void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, API::CNWRules
 
     // Initialize our vector for each skill
     g_plugin->m_skillFeatMap.assign(pRules->m_nNumSkills, {});
+
+    // Initialize our vector for any messages received
+    g_plugin->m_skillRaceMod.assign(pRules->m_nNumSkills, {});
+
+    g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
+                                                           [](const std::vector<std::string> message)
+                                                           {
+                                                               auto nSkill = std::stoi(message[0]);
+                                                               auto nRace = std::stoi(message[1]);
+                                                               auto nMod = std::stoi(message[2]);
+                                                               g_plugin->m_skillRaceMod[nSkill][nRace] = nMod;
+                                                           });
 
     for (int featId = 0; featId < pRules->m_nNumFeats; featId++)
     {
@@ -561,6 +592,11 @@ int32_t SkillRanks::GetSkillRankHook(
         return 127;
 
     int32_t baseRank = thisPtr->m_lstSkillRanks[nSkill];
+
+    // We want the base rank to be affected by our racial adjustments in all cases but validating or saving the PC
+    if (!g_plugin->m_ValidatingOrSaving)
+        baseRank += g_plugin->m_skillRaceMod[nSkill][thisPtr->m_nRace];
+
     if (bBaseOnly)
         return baseRank;
 
