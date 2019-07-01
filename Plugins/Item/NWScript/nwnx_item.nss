@@ -61,6 +61,30 @@ int NWNX_Item_GetBaseArmorClass(object oItem);
 // Get oItem's minimum level needed to equip
 int NWNX_Item_GetMinEquipLevel(object oItem);
 
+// Cache item appearances
+void NWNX_Item_CacheAppearances();
+
+// Blacklist item appearance
+void NWNX_Item_BlacklistAppearance(int nBaseItem, string sBot = "*", string sMid = "*", string sTop = "*", string sBotC = "*", string sMidC = "*", string sTopC = "*");
+
+// Sync appearance number (all parts use same value whenever one of them randomly is selected
+void NWNX_Item_SyncAppearance(int nBaseItem, string sPart);
+
+// Get random appearance
+int NWNX_Item_GetRandomAppearance(object oItem, int nPart = 0);
+
+// Get next valid appearance
+int NWNX_Item_GetNextAppearance(object oItem, int nPart = 0);
+
+// Get previous valid appearance
+int NWNX_Item_GetPreviousAppearance(object oItem, int nPart = 0);
+
+// Get next valid color
+int NWNX_Item_GetNextColor(object oItem, int nPart = 0);
+
+// Get previous valid color
+int NWNX_Item_GetPreviousColor(object oItem, int nPart = 0);
+
 void NWNX_Item_SetWeight(object oItem, int w)
 {
     string sFunc = "SetWeight";
@@ -172,4 +196,84 @@ int NWNX_Item_GetMinEquipLevel(object oItem)
 
     NWNX_CallFunction(NWNX_Item, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Item, sFunc);
+}
+
+void NWNX_Item_CacheAppearances()
+{
+    string sFunc = "CacheAppearances";
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+}
+
+void NWNX_Item_BlacklistAppearance(int nBaseItem, string sBot = "*", string sMid = "*", string sTop = "*", string sBotC = "*", string sMidC = "*", string sTopC = "*")
+{
+    string sFunc = "BlacklistAppearance";
+    NWNX_PushArgumentString(NWNX_Item, sFunc, sTopC);
+    NWNX_PushArgumentString(NWNX_Item, sFunc, sMidC);
+    NWNX_PushArgumentString(NWNX_Item, sFunc, sBotC);
+    NWNX_PushArgumentString(NWNX_Item, sFunc, sTop);
+    NWNX_PushArgumentString(NWNX_Item, sFunc, sMid);
+    NWNX_PushArgumentString(NWNX_Item, sFunc, sBot);
+    NWNX_PushArgumentInt(NWNX_Item, sFunc, nBaseItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+}
+
+void NWNX_Item_SyncAppearance(int nBaseItem, string sPart)
+{
+    string sFunc = "SyncAppearance";
+    NWNX_PushArgumentString(NWNX_Item, sFunc, sPart);
+    NWNX_PushArgumentInt(NWNX_Item, sFunc, nBaseItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetRandomAppearance(object oItem, int nPart = 0)
+{
+    string sFunc = "GetRandomAppearance";
+    NWNX_PushArgumentInt(NWNX_Item, sFunc, nPart);
+    NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return  NWNX_GetReturnValueInt(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetNextAppearance(object oItem, int nPart = 0)
+{
+    string sFunc = "GetNextAppearance";
+    NWNX_PushArgumentInt(NWNX_Item, sFunc, nPart);
+    NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return  NWNX_GetReturnValueInt(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetPreviousAppearance(object oItem, int nPart = 0)
+{
+    string sFunc = "GetPreviousAppearance";
+    NWNX_PushArgumentInt(NWNX_Item, sFunc, nPart);
+    NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return  NWNX_GetReturnValueInt(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetNextColor(object oItem, int nPart = 0)
+{
+    string sFunc = "GetNextColor";
+    NWNX_PushArgumentInt(NWNX_Item, sFunc, nPart);
+    NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return  NWNX_GetReturnValueInt(NWNX_Item, sFunc);
+}
+
+int NWNX_Item_GetPreviousColor(object oItem, int nPart = 0)
+{
+    string sFunc = "GetPreviousColor";
+    NWNX_PushArgumentInt(NWNX_Item, sFunc, nPart);
+    NWNX_PushArgumentObject(NWNX_Item, sFunc, oItem);
+
+    NWNX_CallFunction(NWNX_Item, sFunc);
+    return  NWNX_GetReturnValueInt(NWNX_Item, sFunc);
 }
