@@ -19,7 +19,6 @@ public:
     virtual ~Item();
 
 private:
-
     enum ModelChange
     {
         NextAppearance     = 0,
@@ -30,7 +29,8 @@ private:
 
     unordered_map<std::string, vector<uint16_t>>                             m_BaseItemSimpleAppearances;
     unordered_map<std::string, unordered_map<uint8_t, vector<uint16_t>>>     m_BaseItemConfigurableAppearances;
-    unordered_map<std::string, std::list<std::pair<std::tuple<int8_t, int8_t, int8_t>, std::tuple<int8_t, int8_t, int8_t>>>> m_BaseItemBlackListAppearances;
+    unordered_map<std::string, std::list<std::pair<std::tuple<int8_t, int8_t, int8_t>,
+                               std::tuple<int8_t, int8_t, int8_t>>>> m_BaseItemBlackListAppearances;
     ArgumentStack SetWeight                 (ArgumentStack&& args);
     ArgumentStack SetBaseGoldPieceValue     (ArgumentStack&& args);
     ArgumentStack GetBaseGoldPieceValue     (ArgumentStack&& args);
