@@ -155,6 +155,7 @@ The following plugins were added:
 - Player: SetPlaceableNameOverride()
 - Player: GetQuestCompleted()
 - Race: SetRacialModifier()
+- Race: GetParentRace()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
