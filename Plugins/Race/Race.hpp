@@ -25,6 +25,7 @@ private:
     bool m_ShowEffectIcon;
 
     ArgumentStack SetRacialModifier(ArgumentStack&& args);
+    ArgumentStack GetParentRace(ArgumentStack&& args);
 
     enum RaceModifier
     {
