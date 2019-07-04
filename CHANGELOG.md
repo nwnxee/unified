@@ -85,6 +85,7 @@ The following plugins were added:
 - Area: {Get|Set}SunMoonColors()
 - Area: CreateTransition()
 - Area: {Get|Set}TileAnimationLoop()
+- Chat: SetChatHearingDistance()
 - Creature: GetAttackBonus()
 - Creature: GetHighestLevelOfFeat()
 - Creature: GetFeatRemainingUses()

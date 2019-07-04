@@ -26,6 +26,8 @@ private:
 
     std::string m_chatScript;
     bool m_skipMessage;
+    bool m_customHearingDistances;
+    std::unordered_map<NWNXLib::API::Constants::ChatChannel::TYPE, float> m_hearingDistances;
     uint32_t m_depth;
 
     static void SendServerToPlayerChatMessage(NWNXLib::API::CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, NWNXLib::API::Types::ObjectID sender,
@@ -38,6 +40,7 @@ private:
     NWNXLib::Services::Events::ArgumentStack OnGetMessage(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetSender(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetTarget(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnSetChatHearingDistance(NWNXLib::Services::Events::ArgumentStack&& args);
 };
 
 }

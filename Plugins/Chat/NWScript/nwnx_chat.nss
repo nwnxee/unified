@@ -43,6 +43,11 @@ object NWNX_Chat_GetSender();
 // Must be called from an chat or system script handler.
 object NWNX_Chat_GetTarget();
 
+// Sets the distance with which the player hears talks or whispers
+// If listener is OBJECT_INVALID then it will be server wide
+// Per player settings override server wide
+void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK);
+
 int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SELF, object target = OBJECT_INVALID)
 {
     NWNX_PushArgumentObject("NWNX_Chat", "SEND_MESSAGE", target);
@@ -86,4 +91,12 @@ object NWNX_Chat_GetTarget()
 {
     NWNX_CallFunction("NWNX_Chat", "GET_TARGET");
     return NWNX_GetReturnValueObject("NWNX_Chat", "GET_TARGET");
+}
+
+void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
+{
+    NWNX_PushArgumentInt("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", channel);
+    NWNX_PushArgumentObject("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", listener);
+    NWNX_PushArgumentFloat("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", distance);
+    NWNX_CallFunction("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE");
 }
