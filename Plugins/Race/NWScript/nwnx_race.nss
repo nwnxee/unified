@@ -27,6 +27,9 @@ const int NWNX_RACE_MODIFIER_SRINCLEVEL    = 22;
 // Set a racial modifier
 void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF);
 
+// Returns the parent race if applicable, if not it just returns the race passed in
+int NWNX_Race_GetParentRace(int iRace);
+
 const string NWNX_Race = "NWNX_Race";
 
 
@@ -41,4 +44,14 @@ void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 =
     NWNX_PushArgumentInt(NWNX_Race, sFunc, iRace);
 
     NWNX_CallFunction(NWNX_Race, sFunc);
+}
+
+int NWNX_Race_GetParentRace(int iRace)
+{
+    string sFunc = "GetParentRace";
+
+    NWNX_PushArgumentInt(NWNX_Race, sFunc, iRace);
+
+    NWNX_CallFunction(NWNX_Race, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Race, sFunc);
 }

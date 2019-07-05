@@ -59,6 +59,7 @@ Race::Race(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Race::func, this, std::placeholders::_1))
 
     REGISTER(SetRacialModifier);
+    REGISTER(GetParentRace);
 
 #undef REGISTER
 
@@ -435,12 +436,18 @@ void Race::GetTotalEffectBonusHook(
     auto server = Globals::AppManager()->m_pServerExoApp;
     static uint16_t attackBonusLimit;
     static uint16_t skillBonusLimit;
+
+    // We only swap to the parent race for the target when using GetTotalEffectBonus
+    CNWSCreature* tgtCreature = nullptr;
+    if (pObject != nullptr)
+    {
+        tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
+        SetOrRestoreRace(cType, nullptr, tgtCreature->m_pStats);
+    }
+
     if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {
         auto nRace = pCreature->m_pStats->m_nRace;
-        CNWSCreature* tgtCreature = nullptr;
-        if (pObject)
-            tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
         auto sRace = std::to_string(nRace);
         if (nEffectBonusType == 1)
         {
@@ -608,10 +615,13 @@ void Race::SetOrRestoreRace(
     static uint16_t originalTgtRace;
     if (before)
     {
-        auto parentRace = g_plugin->m_RaceParent[pCreatureStats->m_nRace];
-        originalRace = pCreatureStats->m_nRace;
-        if (parentRace != RacialType::Invalid)
-            pCreatureStats->m_nRace = parentRace;
+        if (pCreatureStats != nullptr)
+        {
+	    auto parentRace = g_plugin->m_RaceParent[pCreatureStats->m_nRace];
+            originalRace = pCreatureStats->m_nRace;
+            if (parentRace != RacialType::Invalid)
+                pCreatureStats->m_nRace = parentRace;
+        }
         if (pTgtCreatureStats != nullptr)
         {
             auto versusParentRace = g_plugin->m_RaceParent[pTgtCreatureStats->m_nRace];
@@ -620,7 +630,7 @@ void Race::SetOrRestoreRace(
                 pTgtCreatureStats->m_nRace = versusParentRace;
         }
     }
-    if (!before && originalRace != pCreatureStats->m_nRace)
+    if (!before && pCreatureStats != nullptr && originalRace != pCreatureStats->m_nRace)
     {
         pCreatureStats->m_nRace = originalRace;
     }
@@ -945,6 +955,16 @@ ArgumentStack Race::SetRacialModifier(ArgumentStack&& args)
 
     SetRaceModifier(raceId, raceMod, param1, param2, param3);
 
+    return stack;
+}
+
+ArgumentStack Race::GetParentRace(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    auto raceId = Services::Events::ExtractArgument<int>(args);
+    auto parentRace = g_plugin->m_RaceParent[raceId] == RacialType::Invalid ? raceId : g_plugin->m_RaceParent[raceId];
+    Services::Events::InsertArgument(stack, parentRace);
     return stack;
 }
 
