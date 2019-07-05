@@ -184,6 +184,7 @@ The following plugins were added:
 - Util: Get2DARowCount()
 - Util: Get{First|Next}ResRef()
 - Util: GetServerTicksPerSecond()
+- Util: GetLastCreatedObject()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()
