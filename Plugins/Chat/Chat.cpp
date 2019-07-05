@@ -9,7 +9,6 @@
 #include "API/CServerInfo.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
-#include "API/CServerExoAppInternal.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListTemplatedCNWSClient.hpp"
 #include "API/CExoLinkedListNode.hpp"
