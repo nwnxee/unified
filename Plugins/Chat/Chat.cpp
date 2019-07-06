@@ -67,6 +67,7 @@ Chat::Chat(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("GET_SENDER", std::bind(&Chat::OnGetSender, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_TARGET", std::bind(&Chat::OnGetTarget, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("SET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnSetChatHearingDistance, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("GET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnGetChatHearingDistance, this, std::placeholders::_1));
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__SendServerToPlayerChatMessage>(&Chat::SendServerToPlayerChatMessage);
     m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__SendServerToPlayerChatMessage);
@@ -330,6 +331,26 @@ Events::ArgumentStack Chat::OnSetChatHearingDistance(Events::ArgumentStack&& arg
         return stack;
     }
 
+    return stack;
+}
+
+Events::ArgumentStack Chat::OnGetChatHearingDistance(Events::ArgumentStack&& args)
+{
+    Events::ArgumentStack stack;
+    const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
+    float retVal;
+    if (playerOid == Constants::OBJECT_INVALID)
+    {
+        retVal = m_hearingDistances[channel];
+    }
+    else
+    {
+        auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+        auto playerHearingDistance = *pPOS->Get<float>(playerOid, "HEARING_DISTANCE:" + std::to_string(channel));
+        retVal = playerHearingDistance > 0 ? playerHearingDistance : m_hearingDistances[channel];
+    }
+    Events::InsertArgument(stack, retVal);
     return stack;
 }
 

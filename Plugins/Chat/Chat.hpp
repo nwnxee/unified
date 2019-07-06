@@ -41,6 +41,7 @@ private:
     NWNXLib::Services::Events::ArgumentStack OnGetSender(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnGetTarget(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnSetChatHearingDistance(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack OnGetChatHearingDistance(NWNXLib::Services::Events::ArgumentStack&& args);
 };
 
 }

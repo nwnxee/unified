@@ -48,6 +48,10 @@ object NWNX_Chat_GetTarget();
 // Per player settings override server wide
 void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK);
 
+// Gets the distance with which the player hears talks or whisper
+// OBJECT_INVALID listener returns server setting
+float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK);
+
 int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SELF, object target = OBJECT_INVALID)
 {
     NWNX_PushArgumentObject("NWNX_Chat", "SEND_MESSAGE", target);
@@ -99,4 +103,12 @@ void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_I
     NWNX_PushArgumentObject("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", listener);
     NWNX_PushArgumentFloat("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", distance);
     NWNX_CallFunction("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE");
+}
+
+float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
+{
+    NWNX_PushArgumentInt("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE", channel);
+    NWNX_PushArgumentObject("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE", listener);
+    NWNX_CallFunction("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE");
+    return NWNX_GetReturnValueFloat("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE");
 }
