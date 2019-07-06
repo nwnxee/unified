@@ -73,6 +73,7 @@ int32_t ClientEvents::SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPla
         Events::PushEventData("PLAYER_NAME", pPlayerInfo->m_sPlayerName.CStr());
         Events::PushEventData("CDKEY", pPlayerInfo->m_lstKeys[0].sPublic.CStr());
         Events::PushEventData("IS_DM", std::to_string(pPlayerInfo->m_bGameMasterPrivileges));
+        Events::PushEventData("IP_ADDRESS", pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr());
         return Events::SignalEvent(ev, Utils::GetModule()->m_idSelf, &reason);
     };
 

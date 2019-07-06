@@ -360,6 +360,7 @@
         PLAYER_NAME             string      Player name of the connecting client
         CDKEY                   string      Public cdkey of the connecting client
         IS_DM                   int         Whether the client is connect as DM (1/0)
+        IP_ADDRESS              string      The IP address of the connecting client
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_START_COMBAT_ROUND_BEFORE
     NWNX_ON_START_COMBAT_ROUND_AFTER
