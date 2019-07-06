@@ -442,7 +442,10 @@ void Race::GetTotalEffectBonusHook(
     if (pObject != nullptr)
     {
         tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
-        SetOrRestoreRace(cType, nullptr, tgtCreature->m_pStats);
+        if (tgtCreature)
+        {
+            SetOrRestoreRace(cType, nullptr, tgtCreature->m_pStats);
+        }
     }
 
     if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
