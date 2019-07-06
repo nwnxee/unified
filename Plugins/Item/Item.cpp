@@ -963,13 +963,13 @@ ArgumentStack Item::GetNextPreviousAppearanceColor(ArgumentStack& args, uint8_t 
                         {
                             while ((v[index] / 10 == currentKey / 10 || IsBlacklisted(pItem, part, v[index])) &&
                                    v[index] != v.front())
-                                index++;
+                                index--;
                             if (v[index] == v.front())
                             {
                                 index = v.size() - 1;
                                 while ((v[index] / 10 == currentKey / 10 || IsBlacklisted(pItem, part, v[index])) &&
                                        v[index] != v.front())
-                                    index++;
+                                    index--;
                                 if (v[index] == v.front() && IsBlacklisted(pItem, part, v[index]))
                                 {
                                     retVal = -1;
