@@ -5,3 +5,6 @@ docker push $DOCKER_REPO:$SOURCE_COMMIT
 SHORT_COMMIT_HASH=${SOURCE_COMMIT:0:7}
 docker tag $IMAGE_NAME $DOCKER_REPO:$SHORT_COMMIT_HASH
 docker push $DOCKER_REPO:$SHORT_COMMIT_HASH
+
+# Trigger the build of :latest-full
+curl -v -H "Content-Type: application/json" --data '{"docker_tag": "latest-full"}' -X POST $FULL_BUILD_TRIGGER_URL
