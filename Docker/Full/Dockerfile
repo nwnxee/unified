@@ -1,4 +1,6 @@
-FROM $DOCKER_REPO:$SOURCE_COMMIT
+ARG IMAGE
+ARG TAG
+FROM $IMAGE:$TAG
 
 # Create man directive so update-alternatives can successfully configure java
 RUN mkdir -p /usr/share/man/man1
