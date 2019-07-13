@@ -752,7 +752,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
                 LOG_ERROR("%s: Damage Immunity modifier improperly set.", raceName);
                 break;
             }
-            g_plugin->m_RaceDmgReduction[raceId][param1] = param2;
+            g_plugin->m_RaceDmgImmunity[raceId][param1] = param2;
             if (param2 > 0)
                 LOG_INFO("%s: Setting Damage Immunity vs %s to %d%%.", raceName, Constants::DamageType::ToString(param1), param2);
             else
