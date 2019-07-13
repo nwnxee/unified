@@ -7,4 +7,4 @@ docker tag $IMAGE_NAME $DOCKER_REPO:$SHORT_COMMIT_HASH
 docker push $DOCKER_REPO:$SHORT_COMMIT_HASH
 
 # Trigger the build of :latest-full
-curl -v -H "Content-Type: application/json" --data '{"docker_tag": "latest-full"}' -X POST $FULL_BUILD_TRIGGER_URL
+curl -v -H "Content-Type: application/json" --data '{"docker_tag": "latest-full"}' -X POST $CASCADING_BUILD_TRIGGER_URL
