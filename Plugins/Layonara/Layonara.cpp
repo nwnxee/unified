@@ -613,12 +613,12 @@ ArgumentStack Layonara::CombineRunes(ArgumentStack&& args)
     auto tgtGem = tgtParts[2];
     auto tgtPower = tgtParts[3];
 
-    if ((gem != tgtGem) || (power + tgtPower > 3)|| ((rune & tgtRune) != 0 && rune != tgtRune))
-        retVal = "";
-    else if (rune == tgtRune)
+    if (rune == tgtRune && gem == tgtGem && (power + tgtPower <= 3))
         retVal = "rune_" + std::to_string(rune) + "_" + std::to_string(gem) + "_" + std::to_string(power + tgtPower);
-    else
+    else if ((rune & tgtRune) == 0 && power == tgtPower && gem == tgtGem)
         retVal = "rune_" + std::to_string(rune | tgtRune) + "_" + std::to_string(gem) + "_" + std::to_string(power);
+    else
+        retVal = "";
 
     Services::Events::InsertArgument(stack, retVal);
     return stack;
