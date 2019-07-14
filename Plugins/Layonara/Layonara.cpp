@@ -547,7 +547,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
         auto *link = new API::CGameEffect(true);
         link->m_oidCreator = pCreature->m_idSelf;
         link->m_nType = EffectTrueType::Link;
-        link->m_nSubType = EffectSubType::Magical | EffectDurationType::Temporary;
+        link->m_nSubType = EffectSubType::Extraordinary | EffectDurationType::Temporary;
         link->m_fDuration = fDuration;
         link->m_sCustomTag = "NWNX_Layonara_Rune";
         link->m_nSpellId = 489;
