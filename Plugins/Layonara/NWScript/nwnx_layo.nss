@@ -23,6 +23,15 @@ void NWNX_Layonara_SetUndeadSlayerImmunity(object creature, int nImmunity);
 // Subrace Effects for Daytime
 void NWNX_Layonara_SetSubraceDayEffects(object creature, int nActive = TRUE);
 
+// Apply Rune
+void NWNX_Layonara_ApplyRune(object creature, object item);
+
+// Combine Runes
+string NWNX_Layonara_CombineRunes(object target, object item);
+
+// Get Rune Description
+string NWNX_Layonara_GetRuneDescription(object item);
+
 void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
@@ -101,4 +110,37 @@ void NWNX_Layonara_SetSubraceDayEffects(object creature, int nActive = TRUE)
     NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_ApplyRune(object creature, object item)
+{
+    string sFunc = "ApplyRune";
+
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, item);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+string NWNX_Layonara_CombineRunes(object target, object item)
+{
+    string sFunc = "CombineRunes";
+
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, item);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, target);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Layonara, sFunc);
+}
+
+string NWNX_Layonara_GetRuneDescription(object item)
+{
+    string sFunc = "GetRuneDescription";
+
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, item);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Layonara, sFunc);
 }
