@@ -160,10 +160,10 @@ int32_t ItemEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem, uin
                                 int32_t bAllowEncumbrance, int32_t bMergeItem)
 {
     int32_t retVal;
-    auto *pItemContainer = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
+    auto *pContainer = Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent);
 
-    if(!pItemContainer)
-    {// Early out if parent isn't an item or Bad Things(tm) happen
+    if(!Utils::AsNWSItem(pContainer) && !Utils::AsNWSPlaceable(pContainer))
+    {
         return m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
     }
 
