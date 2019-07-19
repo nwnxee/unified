@@ -64,7 +64,8 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
             API::CNWS##_type *p = static_cast<API::CNWS##_type*>(pObject);       \
             if (resGff.CreateGFFFile(&resStruct, _gff_header, "V2.0"))           \
             {                                                                    \
-                p->SaveObjectState(&resGff, &resStruct);                         \
+                if(!Utils::AsNWSItem(pObject))                                   \
+                    p->SaveObjectState(&resGff, &resStruct);                     \
                 if (p->Save##_type(&resGff, &resStruct, ##__VA_ARGS__))          \
                     resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength); \
             }                                                                    \
@@ -132,7 +133,8 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
             delete p;                                                                       \
             return nullptr;                                                                 \
         }                                                                                   \
-        p->LoadObjectState(&resGff, &resStruct);                                            \
+        if (!Utils::AsNWSItem(p))                                                           \
+            p->LoadObjectState(&resGff, &resStruct);                                        \
         return static_cast<API::CGameObject*>(p);                                           \
     } while(0)
 
