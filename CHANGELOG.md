@@ -212,5 +212,6 @@ The following plugins were added:
 - Chat: Fix recursive message skipping
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
+- Core: Serialization now stores locals and effects for all objects, instead of only items
 
 [Unreleased]: https://github.com/nwnxee/unified/compare/build8186-2...HEAD
