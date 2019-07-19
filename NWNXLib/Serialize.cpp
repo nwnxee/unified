@@ -46,6 +46,7 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
                     std::swap(bIsPC, pCreature->m_pStats->m_bIsPC);
                 }
 
+                pCreature->SaveObjectState(&resGff, &resStruct);
                 if (pCreature->SaveCreature(&resGff, &resStruct, 0, 0, 0, 0))
                     resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
 
@@ -119,6 +120,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
             delete pCreature;
             return nullptr;
         }
+        pCreature->LoadObjectState(&resGff, &resStruct);
         return static_cast<API::CGameObject*>(pCreature);
     }
 
