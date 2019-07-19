@@ -64,7 +64,8 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
             API::CNWS##_type *p = static_cast<API::CNWS##_type*>(pObject);       \
             if (resGff.CreateGFFFile(&resStruct, _gff_header, "V2.0"))           \
             {                                                                    \
-                if(!Utils::AsNWSItem(p))                                         \
+                /* CNWSItem already makes this call in SaveItem */               \
+                if (!Utils::AsNWSItem(p))                                        \
                     p->SaveObjectState(&resGff, &resStruct);                     \
                 if (p->Save##_type(&resGff, &resStruct, ##__VA_ARGS__))          \
                     resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength); \
@@ -72,9 +73,9 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
         } while(0)
 
         case API::Constants::ObjectType::Item:      SERIALIZE(Item,      "UTI ", 0); break;
-        case API::Constants::ObjectType::Placeable: SERIALIZE(Placeable, "UTP ", 0);    break;
+        case API::Constants::ObjectType::Placeable: SERIALIZE(Placeable, "UTP ", 0); break;
         case API::Constants::ObjectType::Waypoint:  SERIALIZE(Waypoint,  "UTW ");    break;
-        case API::Constants::ObjectType::Store:     SERIALIZE(Store,     "UTM ", 0);    break;
+        case API::Constants::ObjectType::Store:     SERIALIZE(Store,     "UTM ", 0); break;
         case API::Constants::ObjectType::Door:      SERIALIZE(Door,      "UTD ");    break;
         case API::Constants::ObjectType::Trigger:   SERIALIZE(Trigger,   "UTT ");    break;
 #undef SERIALIZE
@@ -133,6 +134,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
             delete p;                                                                       \
             return nullptr;                                                                 \
         }                                                                                   \
+        /* CNWSItem already makes this call in LoadItem */                                  \
         if (!Utils::AsNWSItem(p))                                                           \
             p->LoadObjectState(&resGff, &resStruct);                                        \
         return static_cast<API::CGameObject*>(p);                                           \
