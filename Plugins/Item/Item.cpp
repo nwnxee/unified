@@ -602,6 +602,11 @@ ArgumentStack Item::BlacklistAppearance(ArgumentStack&& args)
     auto midc = Services::Events::ExtractArgument<std::string>(args);
     auto topc = Services::Events::ExtractArgument<std::string>(args);
 
+    uint16_t modelType = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItem)->m_nModelType;
+    uint8_t rangeCheck = 25;
+    if (modelType == Constants::ItemAppearanceType::SimpleModel || modelType == Constants::ItemAppearanceType::SimpleModel)
+        rangeCheck = 255;
+
     std::vector<int8_t> bot_range;
     if (bot == "*")
     {
@@ -609,7 +614,7 @@ ArgumentStack Item::BlacklistAppearance(ArgumentStack&& args)
     }
     else
     {
-        for (int i = 1; i <= 25; i++)
+        for (int i = 1; i <= rangeCheck; i++)
         {
             if (check_range(bot.c_str(), i))
             {
@@ -868,7 +873,7 @@ ArgumentStack Item::GetNextPreviousAppearanceColor(ArgumentStack& args, uint8_t 
                             {
                                 index = 0;
                                 while (IsBlacklisted(pItem, part, v[index]) && v[index] != v.back())
-                                    index--;
+                                    index++;
                                 if (index == v.size() - 1)
                                 {
                                     retVal = -1;
@@ -894,6 +899,8 @@ ArgumentStack Item::GetNextPreviousAppearanceColor(ArgumentStack& args, uint8_t 
                         if (itr != v.cend())
                         {
                             index = std::distance(v.begin(), itr) - 1;
+                            if (index > 255)
+                                index = v.size() - 1;
                             while (IsBlacklisted(pItem, part, v[index]) && v[index] != v.front())
                                 index--;
                             if (v[index] == v.front() && IsBlacklisted(pItem, part, v[index]))
