@@ -349,7 +349,7 @@ ArgumentStack ItemAppearance::BlacklistAppearance(ArgumentStack&& args)
 
     uint16_t modelType = Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseItem)->m_nModelType;
     uint8_t rangeCheck = 25;
-    if (modelType == Constants::ItemAppearanceType::SimpleModel || modelType == Constants::ItemAppearanceType::SimpleModel)
+    if (modelType == Constants::ItemAppearanceType::SimpleModel || modelType == Constants::ItemAppearanceType::WeaponColor)
         rangeCheck = 255;
 
     std::vector<int8_t> bot_range;
