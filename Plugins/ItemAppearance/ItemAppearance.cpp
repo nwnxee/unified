@@ -24,7 +24,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
   return new Plugin::Info
   {
     "ItemAppearance",
-    "Functions exposing additional item properties",
+    "Functions exposing additional item appearance functionality",
     "orth",
     "plenarius@gmail.com",
     3,
