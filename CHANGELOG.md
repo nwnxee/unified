@@ -47,6 +47,7 @@ The following plugins were added:
 - **CombatModes**: Allows subscribing to Combat Mode toggle events. The Events plugin is needed to subscribe to the CombatMode events
 - **Effect**: Provides various utility functions to manipulate builtin effect types
 - **Experimental**: Adds experimental functionality that's not really useful for the general user. The following environmental variable needs to be true for the plugin to load: `NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN=y`
+- **ELC**: A customisable replacement for ValidateCharacter: ELC & ILR
 - **Encounter**: Adds functions exposing additional encounter properties
 - **Feedback**: Allows combatlog, feedback and 'quest journal updated' messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
@@ -118,6 +119,18 @@ The following plugins were added:
 - Encounter: SetPlayerTriggeredOnly()
 - Encounter: GetResetTime()
 - Encounter: SetResetTime()
+- ELC: SetELCScript()
+- ELC: EnableCustomELCCheck()
+- ELC: SkipValidationFailure()
+- ELC: GetValidationFailureType()
+- ELC: GetValidationFailureSubType()
+- ELC: GetValidationFailureMessageStrRef()
+- ELC: SetValidationFailureMessageStrRef()
+- ELC: GetValidationFailureItem();
+- ELC: GetValidationFailureLevel();
+- ELC: GetValidationFailureSkillID();
+- ELC: GetValidationFailureFeatID();
+- ELC: GetValidationFailureSpellID();
 - Events: GetCurrentEvent()
 - Feedback: Get{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog|JournalUpdated}MessageHidden()
