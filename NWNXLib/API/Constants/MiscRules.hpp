@@ -422,14 +422,51 @@ namespace Alignment
     constexpr const char* ToString(const unsigned value)
     {
         constexpr const char* TYPE_STRINGS[] =
-                {
-                        "All",
-                        "Neutral",
-                        "Lawful",
-                        "Chaotic",
-                        "Good",
-                        "Evil",
-                };
+        {
+            "All",
+            "Neutral",
+            "Lawful",
+            "Chaotic",
+            "Good",
+            "Evil",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
+namespace MovementRate
+{
+    enum TYPE
+    {
+        PC                  = 0,
+        Immobile            = 1,
+        VerySlow            = 2,
+        Slow                = 3,
+        Normal              = 4,
+        Fast                = 5,
+        VeryFast            = 6,
+        Default             = 7,
+        DMFast              = 8,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 8;
+    static_assert(MAX == DMFast);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "PC",
+            "Immobile",
+            "Very Slow",
+            "Slow",
+            "Normal",
+            "Fast",
+            "Very Fast",
+            "Default",
+            "DM Fast",
+        };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
     }
