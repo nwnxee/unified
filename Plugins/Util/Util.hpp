@@ -2,6 +2,7 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/Hooks/Hooks.hpp"
 #include "API/Types.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
@@ -27,6 +28,15 @@ private:
     ArgumentStack GetMinutesPerHour(ArgumentStack&& args);
     ArgumentStack SetMinutesPerHour(ArgumentStack&& args);
     ArgumentStack EncodeStringForURL(ArgumentStack&& args);
+    ArgumentStack Get2DARowCount(ArgumentStack&& args);
+    ArgumentStack GetFirstResRef(ArgumentStack&& args);
+    ArgumentStack GetNextResRef(ArgumentStack&& args);
+    ArgumentStack GetServerTicksPerSecond(ArgumentStack&& args);
+    ArgumentStack GetLastCreatedObject(ArgumentStack&& args);
+
+    size_t m_resRefIndex;
+    std::vector<std::string> m_listResRefs;
+    int m_tickCount;
 };
 
 }

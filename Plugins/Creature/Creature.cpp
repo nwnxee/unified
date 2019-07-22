@@ -130,6 +130,10 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetOriginalName);
     REGISTER(GetOriginalName);
     REGISTER(SetSpellResistance);
+    REGISTER(SetAnimalCompanionCreatureType);
+    REGISTER(SetFamiliarCreatureType);
+    REGISTER(SetAnimalCompanionName);
+    REGISTER(SetFamiliarName);
 
 #undef REGISTER
 }
@@ -1546,20 +1550,22 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto which = Services::Events::ExtractArgument<int32_t>(args);
-        const auto value = Services::Events::ExtractArgument<int32_t>(args); ASSERT_OR_THROW(value >= -128); ASSERT_OR_THROW(value <= 127);
+        const auto value = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(value >= -128);
+          ASSERT_OR_THROW(value <= 127);
         int8_t base;
         switch (which)
         {
             case Constants::SavingThrow::Reflex:
-                base = pCreature->m_pStats->m_nReflexSavingThrowMisc + pCreature->m_pStats->GetBaseReflexSavingThrow();
+                base = pCreature->m_pStats->GetBaseReflexSavingThrow();
                 pCreature->m_pStats->m_nReflexSavingThrowMisc = value - base;
                 break;
             case Constants::SavingThrow::Fortitude:
-                base = pCreature->m_pStats->m_nFortSavingThrowMisc + pCreature->m_pStats->GetBaseFortSavingThrow();
+                base = pCreature->m_pStats->GetBaseFortSavingThrow();
                 pCreature->m_pStats->m_nFortSavingThrowMisc = value - base;
                 break;
             case Constants::SavingThrow::Will:
-                base = pCreature->m_pStats->m_nWillSavingThrowMisc + pCreature->m_pStats->GetBaseWillSavingThrow();
+                base = pCreature->m_pStats->GetBaseWillSavingThrow();
                 pCreature->m_pStats->m_nWillSavingThrowMisc = value - base;
                 break;
             default:
@@ -1886,4 +1892,55 @@ ArgumentStack Creature::SetSpellResistance(ArgumentStack&& args)
     }
     return stack;
 }
+
+ArgumentStack Creature::SetAnimalCompanionCreatureType(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto creatureType = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(creatureType >= 0);
+
+        pCreature->m_pStats->m_nAnimalCompanionCreatureType = creatureType;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetFamiliarCreatureType(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto creatureType = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(creatureType >= 0);
+
+        pCreature->m_pStats->m_nFamiliarCreatureType = creatureType;
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetAnimalCompanionName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto name = Services::Events::ExtractArgument<std::string>(args);
+
+        pCreature->m_pStats->m_sAnimalCompanionName = CExoString(name.c_str());
+    }
+    return stack;
+}
+
+ArgumentStack Creature::SetFamiliarName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto name = Services::Events::ExtractArgument<std::string>(args);
+
+        pCreature->m_pStats->m_sFamiliarName = CExoString(name.c_str());
+    }
+    return stack;
+}
+
 }

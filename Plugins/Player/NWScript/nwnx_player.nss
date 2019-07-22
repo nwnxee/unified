@@ -147,7 +147,6 @@ void NWNX_Player_SetAreaExplorationState(object player, object area, string str)
 //       -1 to clear the override
 void NWNX_Player_SetRestAnimation(object oPlayer, int nAnimation);
 
-
 // Override a visual transform on the given object that only oPlayer will see.
 // - oObject can be any valid Creature, Placeable, Item or Door.
 // - nTransform is one of OBJECT_VISUAL_TRANSFORM_* or -1 to remove the override
@@ -155,15 +154,21 @@ void NWNX_Player_SetRestAnimation(object oPlayer, int nAnimation);
 void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject, int nTransform, float fValue);
 
 // Apply a looping visualeffect to target that only player can see
+// visualeffect: VFX_DUR_*, call again to remove an applied effect
+//               -1 to remove all effects
 //
-// Note: Only works with looping effects: VFX_DUR_*, -1 to remove the effect
-// Only a single effect per player/target pair, will overwrite effects from previous calls
+// Note: Only really works with looping effects: VFX_DUR_*
+//       Other types *kind* of work, they'll play when reentering the area and the object is in view
+//       or when they come back in view range.
 void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect);
 
 // Override the name of placeable for player only
 // "" to clear the override
 void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, string name);
 
+// Gets whether a quest has been completed by a player
+// Returns -1 if they don't have the journal entry
+int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -557,4 +562,14 @@ void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, strin
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
+{
+    string sFunc = "GetQuestCompleted";
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sQuestName);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return  NWNX_GetReturnValueInt(NWNX_Player, sFunc);
 }

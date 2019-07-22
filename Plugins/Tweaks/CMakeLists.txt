@@ -10,4 +10,5 @@ add_plugin(Tweaks
     "Tweaks/PreserveDepletedItems.cpp"
     "Tweaks/HideDMsOnCharList.cpp"
     "Tweaks/DisableMonkAbilitiesWhenPolymorphed.cpp"
+    "Tweaks/StringToIntBaseToAuto.cpp"
 )

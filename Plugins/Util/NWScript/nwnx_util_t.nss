@@ -57,5 +57,15 @@ void main()
     string sStringForURL = "This is a test, yes.";
     report("EncodeStringForURL", NWNX_Util_EncodeStringForURL(sStringForURL) == "This+is+a+test%2C+yes.");
 
+    string sTwoDA = "bodybag";
+    report("Get2DARowCount", NWNX_Util_Get2DARowCount(sTwoDA) == 7);
+
+    report("GetFirstResRef", NWNX_Util_GetFirstResRef(NWNX_UTIL_RESREF_TYPE_NSS, "nwnx_util.*") != "");
+    report("GetNextResRef", NWNX_Util_GetNextResRef() != "");
+
+    report("GetServerTicksPerSecond", NWNX_Util_GetServerTicksPerSecond() > 0);
+
+    report("GetLastCreatedObject", GetIsObjectValid(NWNX_Util_GetLastCreatedObject(4/*OBJECT_TYPE_AREA*/, 1)));
+
     WriteTimestampedLogEntry("NWNX_Util unit test end.");
 }

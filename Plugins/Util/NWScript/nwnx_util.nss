@@ -44,6 +44,29 @@ int NWNX_Util_GetMinutesPerHour();
 void NWNX_Util_SetMinutesPerHour(int minutes);
 // Encodes a string for usage in a URL
 string NWNX_Util_EncodeStringForURL(string str);
+// Gets the row count for a 2da
+int NWNX_Util_Get2DARowCount(string str);
+// Get the first resref of nType
+// - nType: NWNX_UTIL_RESREF_TYPE_*
+// - sRegexFilter: Lets you filter out resrefs using a regexfilter
+//                 For example: "nwnx_.*" gets you all scripts prefixed with nwnx_
+//                 when using the NSS resref type.
+// - bModuleResourcesOnly: If TRUE only custom resources will be returned
+//
+// Returns "" if no resref is found
+string NWNX_Util_GetFirstResRef(int nType, string sRegexFilter = "", int bModuleResourcesOnly = TRUE);
+// Get the next resref
+// Returns "" if no resref is found
+string NWNX_Util_GetNextResRef();
+// Get the ticks per second of the server
+// Useful to dynamically detect lag and adjust behavior accordingly
+int NWNX_Util_GetServerTicksPerSecond();
+// Get the nNthLast created object of nObjectType
+// - nObjectType: Does not take the NWScript OBJECT_TYPE_* constants
+//                Use NWNX_Consts_TranslateNWScriptObjectType() to get their
+//                NWNX equivalent.
+// * Return value: The last created object. On error, this returns OBJECT_INVALID.
+object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
 
 
 const string NWNX_Util = "NWNX_Util";
@@ -150,4 +173,53 @@ string NWNX_Util_EncodeStringForURL(string sURL)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_Get2DARowCount(string str)
+{
+    string sFunc = "Get2DARowCount";
+    NWNX_PushArgumentString(NWNX_Util, sFunc, str);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetFirstResRef(int nType, string sRegexFilter = "", int bModuleResourcesOnly = TRUE)
+{
+    string sFunc = "GetFirstResRef";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, bModuleResourcesOnly);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sRegexFilter);
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nType);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetNextResRef()
+{
+    string sFunc = "GetNextResRef";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetServerTicksPerSecond()
+{
+    string sFunc = "GetServerTicksPerSecond";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1)
+{
+    string sFunc = "GetLastCreatedObject";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nNthLast);
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nObjectType);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
 }

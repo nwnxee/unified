@@ -31,11 +31,13 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added Sticky Player Name Reserved event allowing builders to use another method instead of knownservernames.2da to validate player names and cd keys
 - Events: Added Level{Up|UpAutomatic|Down} events to LevelEvents
 - Events: Added WebHook Success/Failure events with rate limit feedback
+- Events: Added UseLoreOnItem and PayToIdentifyItem events
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
 - Tweaks: DisableMonkAbilitiesWhenPolymorphed
+- Tweaks: StringToIntBaseToAuto
 - Weapon: Feat and Base Item names were added to LOG_INFO feedback
 - WebHook: Added support for richer Slack-compatible messages
 ##### New Plugins
@@ -49,6 +51,7 @@ The following plugins were added:
 - **Encounter**: Adds functions exposing additional encounter properties
 - **Feedback**: Allows combatlog, feedback and 'quest journal updated' messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
+- **Race**: Provides the ability to specify a variety of inate modifiers for new or existing races or subraces via script or 2da
 - **Regex**: Adds functions to search and replace strings using regular expressions.
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names
 - **Reveal**: Adds functions to allow the selective revealing of a stealthed character to another character or their party.
@@ -83,6 +86,8 @@ The following plugins were added:
 - Area: {Get|Set}SunMoonColors()
 - Area: CreateTransition()
 - Area: {Get|Set}TileAnimationLoop()
+- Chat: GetChatHearingDistance()
+- Chat: SetChatHearingDistance()
 - Creature: GetAttackBonus()
 - Creature: GetHighestLevelOfFeat()
 - Creature: GetFeatRemainingUses()
@@ -94,6 +99,8 @@ The following plugins were added:
 - Creature: SetSpellResistance()
 - Creature: GetPrePolymorphAbilityScore()
 - Creature: {Get|Set}MovementRateFactor()
+- Creature: Set{AnimalCompanion|Familiar}CreatureType()
+- Creature: Set{AnimalCompanion|Familiar}Name()
 - Damage: SetAttackEventScript()
 - Damage: GetAttackEventData()
 - Damage: SetAttackEventData()
@@ -139,6 +146,7 @@ The following plugins were added:
 - Object: GetPlaceableIsStatic()
 - Object: SetPlaceableIsStatic()
 - Object: {Get|Set}AutoRemoveKey()
+- Object: {Get|Set}TriggerGeometry()
 - Player: ShowVisualEffect()
 - Player: ForcePlaceableInventoryWindow()
 - Player: MusicBackgroundChangeDay()
@@ -160,6 +168,9 @@ The following plugins were added:
 - Player: SetObjectVisualTransformOverride()
 - Player: ApplyLoopingVisualEffectToObject()
 - Player: SetPlaceableNameOverride()
+- Player: GetQuestCompleted()
+- Race: SetRacialModifier()
+- Race: GetParentRace()
 - Regex: Search()
 - Regex: Replace()
 - Rename: SetPCNameOverride()
@@ -185,12 +196,17 @@ The following plugins were added:
 - Util: GetMinutesPerHour()
 - Util: SetMinutesPerHour()
 - Util: EncodeStringForURL()
+- Util: Get2DARowCount()
+- Util: Get{First|Next}ResRef()
+- Util: GetServerTicksPerSecond()
+- Util: GetLastCreatedObject()
 - Visibility: GetVisibilityOverride()
 - Visibility: SetVisibilityOverride()
 - Weapon: SetWeaponIsMonkWeapon()
 
 ### Changed
 - Core: The nwnx.txt logfile will now be written to the UserDirectory
+- Chat: LOG_DEBUG suppresses player to player tell specifics
 - Docker: Set default log level to 6
 - Docker: Skip all plugins except ServerLogRedirector by default
 - Redis: Lots of stuff, be sure to update the redis nwscripts!
@@ -209,5 +225,6 @@ The following plugins were added:
 - Chat: Fix recursive message skipping
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
+- Core: Serialization now stores locals and effects for all objects, instead of only items
 
 [Unreleased]: https://github.com/nwnxee/unified/compare/build8186-2...HEAD

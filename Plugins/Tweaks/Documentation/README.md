@@ -17,3 +17,4 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_DISABLE_SHADOWS`: true or false
 * `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST`: true or false
 * `NWNX_TWEAKS_DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED`: true or false
+* `NWNX_TWEAKS_STRINGTOINT_BASE_TO_AUTO`: true or false

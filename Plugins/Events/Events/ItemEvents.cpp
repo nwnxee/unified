@@ -19,12 +19,13 @@ using namespace NWNXLib::API::Constants;
 static Hooking::FunctionHook* m_UseItemHook = nullptr;
 static Hooking::FunctionHook* m_OpenInventoryHook = nullptr;
 static Hooking::FunctionHook* m_CloseInventoryHook = nullptr;
-static Hooking::FunctionHook* m_AddItemHook = nullptr;
 static Hooking::FunctionHook* m_FindItemWithBaseItemIdHook = nullptr;
 static Hooking::FunctionHook* m_LearnScrollHook = nullptr;
 static Hooking::FunctionHook* m_RunEquipHook = nullptr;
 static Hooking::FunctionHook* m_RunUnequipHook = nullptr;
 static Hooking::FunctionHook* m_ItemEventHandlerHook = nullptr;
+static Hooking::FunctionHook* m_UseLoreOnItemHook = nullptr;
+static Hooking::FunctionHook* m_PayToIdenfifyItemHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
@@ -41,15 +42,6 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_CLOSE_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::CNWSItem__CloseInventory>(&CloseInventoryHook);
         m_CloseInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__CloseInventory);
-    });
-
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_ADD_ITEM_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CItemRepository__AddItem>(&AddItemHook);
-        m_AddItemHook = hooker->FindHookByAddress(API::Functions::CItemRepository__AddItem);
-    });
-
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CItemRepository__RemoveItem, int32_t>(&RemoveItemHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_AMMO_RELOAD_.*", [hooker]() {
@@ -75,6 +67,16 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::CNWSItem__EventHandler>(&ItemEventHandlerHook);
         m_ItemEventHandlerHook = hooker->FindHookByAddress(API::Functions::CNWSItem__EventHandler);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_USE_LORE_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseLoreOnItem>(&UseLoreOnItemHook);
+        m_UseLoreOnItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseLoreOnItem);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_PAY_TO_IDENTIFY_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__PayToIdentifyItem>(&PayToIdentifyItemHook);
+        m_PayToIdenfifyItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__PayToIdentifyItem);
     });
 }
 
@@ -142,51 +144,6 @@ void ItemEvents::CloseInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidCloser
     }
 
     PushAndSignal("NWNX_ON_ITEM_INVENTORY_CLOSE_AFTER");
-}
-
-int32_t ItemEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem, uint8_t x, uint8_t y,
-                                int32_t bAllowEncumbrance, int32_t bMergeItem)
-{
-    int32_t retVal;
-    auto *pItemContainer = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
-
-    if(!pItemContainer)
-    {// Early out if parent isn't an item or Bad Things(tm) happen
-        return m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
-    }
-
-    auto PushAndSignal = [&](std::string ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString(ppItem && *ppItem ? (**ppItem).m_idSelf : OBJECT_INVALID));
-        return Events::SignalEvent(ev, thisPtr->m_oidParent);
-    };
-
-    if (PushAndSignal("NWNX_ON_ITEM_INVENTORY_ADD_ITEM_BEFORE"))
-    {
-        retVal = m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
-    }
-    else
-    {
-        retVal = false;
-    }
-
-    PushAndSignal("NWNX_ON_ITEM_INVENTORY_ADD_ITEM_AFTER");
-
-    return retVal;
-}
-
-void ItemEvents::RemoveItemHook(Services::Hooks::CallType type, CItemRepository* thisPtr, CNWSItem* pItem)
-{
-    auto *pItemContainer = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
-
-    if(!pItemContainer)
-    {// Early out if parent isn't an item or Bad Things(tm) happen
-        return;
-    }
-
-    // Only a shared hook for RemoveItem because skipping it also makes Bad Things(tm) happen
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
-    Events::SignalEvent(before ? "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_BEFORE" : "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_AFTER", thisPtr->m_oidParent);
 }
 
 uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32_t baseItem, int32_t nTh)
@@ -393,6 +350,43 @@ void ItemEvents::ItemEventHandlerHook(
             CallOriginal();
             break;
     }
+}
+
+int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, Types::ObjectID item)
+{
+    int32_t retVal;
+
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_USE_LORE_BEFORE"))
+    {
+        retVal = m_UseLoreOnItemHook->CallOriginal<int32_t>(thisPtr, item);
+    }
+    else
+        retVal = false;
+
+    PushAndSignal("NWNX_ON_ITEM_USE_LORE_AFTER");
+
+    return retVal;
+}
+
+void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID item, Types::ObjectID store)
+{
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
+        Events::PushEventData("STORE", Utils::ObjectIDToString(store));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_BEFORE"))
+    {
+        m_PayToIdenfifyItemHook->CallOriginal<int32_t>(thisPtr, item, store);
+    }
+
+    PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER");
 }
 
 }

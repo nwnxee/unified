@@ -97,7 +97,6 @@ namespace SavingThrow
     enum TYPE
     {
         All          = 0,
-        None         = 0,
         Fortitude    = 1,
         Reflex       = 2,
         Will         = 3,
@@ -109,7 +108,7 @@ namespace SavingThrow
     {
         constexpr const char* TYPE_STRINGS[] =
         {
-            "All/None",
+            "All",
             "Fortitude",
             "Reflex",
             "Will",
