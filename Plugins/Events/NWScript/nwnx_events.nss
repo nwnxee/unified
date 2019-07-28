@@ -740,9 +740,9 @@
         Variable Name           Type        Notes
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_INVENTORY_ADD_GOLD_BEFORE
-    NWNX_ON_INVENTORY_ADD_GOLD_BEFORE
+    NWNX_ON_INVENTORY_ADD_GOLD_AFTER
     NWNX_ON_INVENTORY_REMOVE_GOLD_BEFORE
-    NWNX_ON_INVENTORY_REMOVE_GOLD_BEFORE
+    NWNX_ON_INVENTORY_REMOVE_GOLD_AFTER
 
     WARNING: While these events are skippable, you should be very careful about doing so.
              It's very easy to create situations where players can dupe their gold or worse.
