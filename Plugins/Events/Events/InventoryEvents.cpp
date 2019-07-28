@@ -27,7 +27,7 @@ static NWNXLib::Hooking::FunctionHook* m_RemoveGoldHook = nullptr;
 
 InventoryEvents::InventoryEvents(ViewPtr<Services::HooksProxy> hooker)
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_.*", [hooker]()
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", [hooker]()
     {
         hooker->RequestExclusiveHook<API::Functions::CNWSMessage__HandlePlayerToServerGuiInventoryMessage>(
                 &HandlePlayerToServerGuiInventoryMessageHook);
