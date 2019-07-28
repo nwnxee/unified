@@ -67,9 +67,9 @@ private:
             Types::ObjectID,
             int32_t, int32_t, int32_t, int32_t, CExoString*);
 
-    static void SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType, CNWSPlayer*, CNWSPlayer*);
-    static void SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID);
-    static void RestorePlayerName(CNWSCreature *targetCreature);
+    static void SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType, CNWSPlayer*, CNWSPlayer*, bool playerList=false);
+    static void SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID, bool playerList=false);
+    static void RestorePlayerName(CNWSCreature *targetCreature, bool playerList=false);
     void GlobalNameChange(NWNXLib::Services::Hooks::CallType, Types::PlayerID, Types::PlayerID);
 
     CExoLocString ContainString(const std::string& str);
