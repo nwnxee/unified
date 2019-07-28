@@ -87,13 +87,10 @@ ArgumentStack Item::SetWeight(ArgumentStack&& args)
         const auto w = Services::Events::ExtractArgument<int32_t>(args);
         pItem->m_nWeight = w;
         auto oidPossessor = pItem->m_oidPossessor;
-        if (oidPossessor)
+        auto pCreature = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidPossessor));
+        if (pCreature)
         {
-            auto pCreature = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidPossessor));
-            if (pCreature)
-            {
-                pCreature->UpdateEncumbranceState(true);
-            }
+            pCreature->UpdateEncumbranceState(true);
         }
     }
     return stack;
