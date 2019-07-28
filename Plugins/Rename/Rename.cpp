@@ -82,7 +82,6 @@ Rename::Rename(const Plugin::CreateParams& params)
 
     m_RenameOnModuleCharList = GetServices()->m_config->Get<int32_t>("ON_MODULE_CHAR_LIST", 0);
     m_RenameOnPlayerList = GetServices()->m_config->Get<bool>("ON_PLAYER_LIST", true);
-    m_RenameOnSelf = GetServices()->m_config->Get<bool>("ON_SELF", true);
 
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__WriteGameObjUpdate_UpdateObject,
             int32_t, CNWSMessage *, CNWSPlayer *, CNWSObject *, CLastUpdateObject *, uint32_t, uint32_t>(
@@ -210,10 +209,7 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
     else
     {
         std::string allClients = Utils::ObjectIDToString(Constants::PLAYERID_ALL_CLIENTS);
-        if (plugin.m_RenameOnSelf || targetOid != observerOid)
-            displayName = *pPOS->Get<std::string>(targetOid, displayNameKey + ":" + allClients);
-        else
-            displayName = "";
+        displayName = *pPOS->Get<std::string>(targetOid, displayNameKey + ":" + allClients);
         overrideName = *pPOS->Get<std::string>(targetOid, overrideNameKey + ":" + allClients);
         if (playerList)
         {

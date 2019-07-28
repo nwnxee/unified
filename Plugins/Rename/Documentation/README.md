@@ -22,7 +22,6 @@ Due to the conflict with this plugin and the Tweaks plugin to hide classes on th
 | -------------   | :----: | :----: |----------------------------- |
 | `NWNX_RENAME_ON_MODULE_CHAR_LIST` | 0-3 | 0 | This is the listing of players from the character selection screen before entering the server. Setting the value to 1 overrides their names if a global rename has been set, 2 also hides class information, 3 hides class information but keeps names as their original.
 | `NWNX_RENAME_ON_PLAYER_LIST` | true or false | true | Renames the player name on the player list as well.
-| `NWNX_RENAME_ON_SELF` | true or false | true | Global overrides will impact how the PC sees their own character name as well. Note: If you set this to `false` but set a personal override where the observer and target are the same then that personal override will function.
 
 ## Sample Include
 
