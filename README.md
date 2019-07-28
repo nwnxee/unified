@@ -54,14 +54,18 @@ Optionally, you can use Docker to run the server with pre-built NWNX binaries. R
 
 ## Running the server (Docker)
 
-`nwnxee/unified` supports the following tags:
+`nwnxee/unified` supports the following [tags](https://cloud.docker.com/repository/docker/nwnxee/unified/tags):
 
+* `[commit-hash]` (7 characters and 40)
+* `[commit-hash]-full`
 * `latest`
 * `latest-full`
-* `[versiontag]` (replace with a github tag, like `build8166`)
-* `[versiontag]-full`
+* `[tag]`
+* `[tag]-full`
 
-Most users are fine running `nwnxee/unified:latest`. The `-full` versions include all the heavier run dependencies, and is only necessary if you use the mono or the jvm plugin.
+Due to Docker's local image cache we recommend using the `[commit-hash]` tag to explicitly state which nwnx build to run. In comparison, the `latest` tag will usually hit the image cache and return an outdated build, as you have to run `docker pull nwnxee/unified` to update the `latest` image in your cache. Using the `[commit-hash]` tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.
+
+The `-full` versions include all the heavier run dependencies, and is only necessary if you use the plugins mono or jvm.
 
 Note, the image named `nwnxee/nwserver` exists for legacy reasons but is no longer actively maintained.
 
