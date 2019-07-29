@@ -738,6 +738,21 @@
 
     Event data:
         Variable Name           Type        Notes
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INVENTORY_ADD_GOLD_BEFORE
+    NWNX_ON_INVENTORY_ADD_GOLD_AFTER
+    NWNX_ON_INVENTORY_REMOVE_GOLD_BEFORE
+    NWNX_ON_INVENTORY_REMOVE_GOLD_AFTER
+
+    WARNING: While these events are skippable, you should be very careful about doing so.
+             It's very easy to create situations where players can dupe their gold or worse.
+
+    Usage:
+        OBJECT_SELF = The creature gaining or losing gold
+
+    Event data:
+        Variable Name           Type        Notes
+        GOLD                    INT         The amount of gold added or removed
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -805,6 +820,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Barter event (START only)
 // - Trap events
 // - Sticky Player Name event
+// - Add/RemoveGold events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
