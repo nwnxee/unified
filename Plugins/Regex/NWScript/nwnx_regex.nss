@@ -1,13 +1,13 @@
 #include "nwnx"
 
+const string NWNX_Regex = "NWNX_Regex";
+
 // Returns whether the string matches the regular expression
 int NWNX_Regex_Search(string str, string regex);
 
 // Replaces any matches of the regular expression with a string
 string NWNX_Regex_Replace(string str, string regex, string replace="", int firstOnly=0);
 
-
-const string NWNX_Regex = "NWNX_Regex";
 
 int NWNX_Regex_Search(string str, string regex)
 {

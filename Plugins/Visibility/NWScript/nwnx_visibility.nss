@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Visibility = "NWNX_Visibility";
+
 const int NWNX_VISIBILITY_DEFAULT   = -1;
 const int NWNX_VISIBILITY_VISIBLE   = 0;
 const int NWNX_VISIBILITY_HIDDEN    = 1;
@@ -39,9 +41,6 @@ int NWNX_Visibility_GetVisibilityOverride(object player, object target);
 // to NWNX_VISIBILITY_HIDDEN or NWNX_VISIBILITY_DM_ONLY but the player's state is
 // set to NWNX_VISIBILITY_VISIBLE for the target, the object will be visible to the player
 void NWNX_Visibility_SetVisibilityOverride(object player, object target, int override);
-
-
-const string NWNX_Visibility = "NWNX_Visibility";
 
 
 int NWNX_Visibility_GetVisibilityOverride(object player, object target)

@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Chat = "NWNX_Chat";
+
 const int NWNX_CHAT_CHANNEL_PLAYER_TALK     = 1;
 const int NWNX_CHAT_CHANNEL_PLAYER_SHOUT    = 2;
 const int NWNX_CHAT_CHANNEL_PLAYER_WHISPER  = 3;
@@ -52,63 +54,82 @@ void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_I
 // OBJECT_INVALID listener returns server setting
 float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK);
 
+
 int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SELF, object target = OBJECT_INVALID)
 {
-    NWNX_PushArgumentObject("NWNX_Chat", "SEND_MESSAGE", target);
-    NWNX_PushArgumentObject("NWNX_Chat", "SEND_MESSAGE", sender);
-    NWNX_PushArgumentString("NWNX_Chat", "SEND_MESSAGE", message);
-    NWNX_PushArgumentInt("NWNX_Chat", "SEND_MESSAGE", channel);
-    NWNX_CallFunction("NWNX_Chat", "SEND_MESSAGE");
-    return NWNX_GetReturnValueInt("NWNX_Chat", "SEND_MESSAGE");
+    string sFunc = "SEND_MESSAGE";
+
+    NWNX_PushArgumentObject(NWNX_Chat, sFunc, target);
+    NWNX_PushArgumentObject(NWNX_Chat, sFunc, sender);
+    NWNX_PushArgumentString(NWNX_Chat, sFunc, message);
+    NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
+    NWNX_CallFunction(NWNX_Chat, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Chat, sFunc);
 }
 
 void NWNX_Chat_RegisterChatScript(string script)
 {
-    NWNX_PushArgumentString("NWNX_Chat", "REGISTER_CHAT_SCRIPT", script);
-    NWNX_CallFunction("NWNX_Chat", "REGISTER_CHAT_SCRIPT");
+    string sFunc = "REGISTER_CHAT_SCRIPT";
+
+    NWNX_PushArgumentString(NWNX_Chat, sFunc, script);
+    NWNX_CallFunction(NWNX_Chat, sFunc);
 }
 
 void NWNX_Chat_SkipMessage()
 {
-    NWNX_CallFunction("NWNX_Chat", "SKIP_MESSAGE");
+    string sFunc = "SKIP_MESSAGE";
+
+    NWNX_CallFunction(NWNX_Chat, sFunc);
 }
 
 int NWNX_Chat_GetChannel()
 {
-    NWNX_CallFunction("NWNX_Chat", "GET_CHANNEL");
-    return NWNX_GetReturnValueInt("NWNX_Chat", "GET_CHANNEL");
+    string sFunc = "GET_CHANNEL";
+
+    NWNX_CallFunction(NWNX_Chat, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Chat, sFunc);
 }
 
 string NWNX_Chat_GetMessage()
 {
-    NWNX_CallFunction("NWNX_Chat", "GET_MESSAGE");
-    return NWNX_GetReturnValueString("NWNX_Chat", "GET_MESSAGE");
+    string sFunc = "GET_MESSAGE";
+
+    NWNX_CallFunction(NWNX_Chat, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Chat, sFunc);
 }
 
 object NWNX_Chat_GetSender()
 {
-    NWNX_CallFunction("NWNX_Chat", "GET_SENDER");
-    return NWNX_GetReturnValueObject("NWNX_Chat", "GET_SENDER");
+    string sFunc = "GET_SENDER";
+
+    NWNX_CallFunction(NWNX_Chat, sFunc);
+    return NWNX_GetReturnValueObject(NWNX_Chat, sFunc);
 }
 
 object NWNX_Chat_GetTarget()
 {
-    NWNX_CallFunction("NWNX_Chat", "GET_TARGET");
-    return NWNX_GetReturnValueObject("NWNX_Chat", "GET_TARGET");
+    string sFunc = "GET_TARGET";
+
+    NWNX_CallFunction(NWNX_Chat, sFunc);
+    return NWNX_GetReturnValueObject(NWNX_Chat, sFunc);
 }
 
 void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
 {
-    NWNX_PushArgumentInt("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", channel);
-    NWNX_PushArgumentObject("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", listener);
-    NWNX_PushArgumentFloat("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE", distance);
-    NWNX_CallFunction("NWNX_Chat", "SET_CHAT_HEARING_DISTANCE");
+    string sFunc = "SET_CHAT_HEARING_DISTANCE";
+
+    NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
+    NWNX_PushArgumentObject(NWNX_Chat, sFunc, listener);
+    NWNX_PushArgumentFloat(NWNX_Chat, sFunc, distance);
+    NWNX_CallFunction(NWNX_Chat, sFunc);
 }
 
 float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
 {
-    NWNX_PushArgumentInt("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE", channel);
-    NWNX_PushArgumentObject("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE", listener);
-    NWNX_CallFunction("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE");
-    return NWNX_GetReturnValueFloat("NWNX_Chat", "GET_CHAT_HEARING_DISTANCE");
+    string sFunc = "GET_CHAT_HEARING_DISTANCE";
+
+    NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
+    NWNX_PushArgumentObject(NWNX_Chat, sFunc, listener);
+    NWNX_CallFunction(NWNX_Chat, sFunc);
+    return NWNX_GetReturnValueFloat(NWNX_Chat, sFunc);
 }

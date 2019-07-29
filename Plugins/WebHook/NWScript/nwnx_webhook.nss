@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_WebHook = "NWNX_WebHook";
+
 // Send a slack compatible webhook
 void NWNX_WebHook_SendWebHookHTTPS(string host, string path, string message, string username = "", int mrkdwn = 1);
 
@@ -7,15 +9,16 @@ void NWNX_WebHook_SendWebHookHTTPS(string host, string path, string message, str
 // is already constructed. So it just resends the WebHook with an optional delay
 void NWNX_WebHook_ResendWebHookHTTPS(string host, string path, string sMessage, float delay = 0.0f);
 
+
 void NWNX_WebHook_SendWebHookHTTPS(string host, string path, string message, string username = "", int mrkdwn = 1)
 {
     string sFunc = "SEND_WEBHOOK_HTTPS";
-    NWNX_PushArgumentInt("NWNX_WebHook", sFunc, mrkdwn);
-    NWNX_PushArgumentString("NWNX_WebHook", sFunc, username);
-    NWNX_PushArgumentString("NWNX_WebHook", sFunc, message);
-    NWNX_PushArgumentString("NWNX_WebHook", sFunc, path);
-    NWNX_PushArgumentString("NWNX_WebHook", sFunc, host);
-    NWNX_CallFunction("NWNX_WebHook", sFunc);
+    NWNX_PushArgumentInt(NWNX_WebHook, sFunc, mrkdwn);
+    NWNX_PushArgumentString(NWNX_WebHook, sFunc, username);
+    NWNX_PushArgumentString(NWNX_WebHook, sFunc, message);
+    NWNX_PushArgumentString(NWNX_WebHook, sFunc, path);
+    NWNX_PushArgumentString(NWNX_WebHook, sFunc, host);
+    NWNX_CallFunction(NWNX_WebHook, sFunc);
 }
 
 void NWNX_WebHook_ResendWebHookHTTPS(string host, string path, string sMessage, float delay = 0.0f)
