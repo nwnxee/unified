@@ -150,11 +150,9 @@ CNWSPlayer *Rename::player(Types::ObjectID playerId)
 }
 
 void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
-                                    CNWSPlayer *targetPlayer, CNWSPlayer *observerPlayer)
+                                    CNWSPlayer *targetPlayer, CNWSPlayer *observerPlayer, bool playerList)
 {
-    if (targetPlayer == nullptr ||
-        observerPlayer == nullptr ||
-        targetPlayer == observerPlayer)
+    if (targetPlayer == nullptr || observerPlayer == nullptr)
         return;
 
     auto *targetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(targetPlayer->m_oidNWSObject);
@@ -183,13 +181,13 @@ void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
     }
 
     if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
-        SetPlayerNameAsObservedBy(targetCreature, observerOid);
+        SetPlayerNameAsObservedBy(targetCreature, observerOid, playerList);
     else
-        RestorePlayerName(targetCreature);
+        RestorePlayerName(targetCreature, playerList);
 
 }
 
-void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID observerOid)
+void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID observerOid, bool playerList)
 {
     Rename &plugin = *g_plugin;
     auto targetOid = targetCreature->m_idSelf;
@@ -200,8 +198,11 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
     std::string overrideName = *pPOS->Get<std::string>(targetOid, overrideNameKeyObserver);
     if (!displayName.empty())
     {
-        targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(overrideName);
-        targetCreature->m_pStats->m_lsLastName = plugin.ContainString("");
+        if (playerList)
+        {
+            targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(overrideName);
+            targetCreature->m_pStats->m_lsLastName = plugin.ContainString("");
+        }
         targetCreature->m_sDisplayName = displayName.c_str();
         LOG_DEBUG("Observer %x will see %x as %s due to personal override", observerOid, targetOid, overrideName.c_str());
     }
@@ -210,17 +211,17 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
         std::string allClients = Utils::ObjectIDToString(Constants::PLAYERID_ALL_CLIENTS);
         displayName = *pPOS->Get<std::string>(targetOid, displayNameKey + ":" + allClients);
         overrideName = *pPOS->Get<std::string>(targetOid, overrideNameKey + ":" + allClients);
-        if (!displayName.empty())
+        if (playerList)
         {
             targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(overrideName);
             targetCreature->m_pStats->m_lsLastName = plugin.ContainString("");
-            targetCreature->m_sDisplayName = displayName.c_str();
-            LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.c_str());
         }
+        targetCreature->m_sDisplayName = displayName.c_str();
+        LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.c_str());
     }
 }
 
-void Rename::RestorePlayerName(CNWSCreature *targetCreature)
+void Rename::RestorePlayerName(CNWSCreature *targetCreature, bool playerList)
 {
     Rename &plugin = *g_plugin;
     auto *pPOS = plugin.GetServices()->m_perObjectStorage.get();
@@ -228,9 +229,14 @@ void Rename::RestorePlayerName(CNWSCreature *targetCreature)
     std::string lsLastName = *pPOS->Get<std::string>(targetCreature->m_idSelf, lastNameKey);
     if (!lsFirstName.empty())
     {
-        targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(lsFirstName);
-        targetCreature->m_pStats->m_lsLastName = plugin.ContainString(lsLastName);
-        targetCreature->m_sDisplayName = "";
+        std::string allClients = Utils::ObjectIDToString(Constants::PLAYERID_ALL_CLIENTS);
+        std::string displayName = *pPOS->Get<std::string>(targetCreature->m_idSelf, displayNameKey + ":" + allClients);
+        if (playerList)
+        {
+            targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(lsFirstName);
+            targetCreature->m_pStats->m_lsLastName = plugin.ContainString(lsLastName);
+        }
+        targetCreature->m_sDisplayName = displayName.c_str();
     }
 }
 
@@ -501,7 +507,7 @@ void Rename::GlobalNameChange(
                 }
             }
             if (m_RenameOnPlayerList)
-                SetOrRestorePlayerName(cType, targetPlayer, observerPlayer);
+                SetOrRestorePlayerName(cType, targetPlayer, observerPlayer, true);
         }
     }
 }
@@ -602,13 +608,12 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
 
         if (observerPlayerId == Constants::PLAYERID_ALL_CLIENTS)
         {
-            // Get all the connected players except the targetPlayerId, we don't update their own name with ALL_CLIENTS
             auto *playerList = server->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
 
             for (auto *head = playerList->pHead; head; head = head->pNext)
             {
                 auto *client = static_cast<API::CNWSClient*>(head->pObject);
-                if (client && client->m_nPlayerID != targetPlayerId)
+                if (client)
                     playersToNotify.emplace_back(client->m_nPlayerID);
             }
         }
