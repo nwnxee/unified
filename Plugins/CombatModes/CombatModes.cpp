@@ -40,7 +40,7 @@ namespace CombatModes {
 static Hooking::FunctionHook* g_SetCombatModeHook = nullptr;
 
 CombatModes::CombatModes(const Plugin::CreateParams& params)
-    : Plugin(params)
+    : Plugin(params), m_Skipped(false), m_FlurryOfBlows(false)
 {
     GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSCreature__SetCombatMode, void, API::CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
     g_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSCreature__SetCombatMode);
