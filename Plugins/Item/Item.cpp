@@ -4,6 +4,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSItem.hpp"
+#include "API/CNWSCreature.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 
@@ -85,6 +86,12 @@ ArgumentStack Item::SetWeight(ArgumentStack&& args)
     {
         const auto w = Services::Events::ExtractArgument<int32_t>(args);
         pItem->m_nWeight = w;
+        auto oidPossessor = pItem->m_oidPossessor;
+        auto pCreature = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidPossessor));
+        if (pCreature)
+        {
+            pCreature->UpdateEncumbranceState(true);
+        }
     }
     return stack;
 }
