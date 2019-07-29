@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Appearance = "NWNX_Appearance";
+
 const int NWNX_APPEARANCE_TYPE_APPEARANCE       = 0;
 const int NWNX_APPEARANCE_TYPE_GENDER           = 1;
 const int NWNX_APPEARANCE_TYPE_HITPOINTS        = 2;
@@ -57,8 +59,6 @@ void NWNX_Appearance_SetOverride(object oPlayer, object oCreature, int nType, in
 // - oCreature can be a PC
 // Returns -1 when not set
 int NWNX_Appearance_GetOverride(object oPlayer, object oCreature, int nType);
-
-const string NWNX_Appearance = "NWNX_Appearance";
 
 
 void NWNX_Appearance_SetOverride(object oPlayer, object oCreature, int nType, int nValue)

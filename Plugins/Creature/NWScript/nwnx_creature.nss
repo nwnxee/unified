@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Creature = "NWNX_Creature";
+
 const int NWNX_CREATURE_MOVEMENT_RATE_PC        = 0;
 const int NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE  = 1;
 const int NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW = 2;
@@ -346,9 +348,6 @@ void NWNX_Creature_SetAnimalCompanionName(object creature, string name);
 
 // Set creature's familiar's name
 void NWNX_Creature_SetFamiliarName(object creature, string name);
-
-
-const string NWNX_Creature = "NWNX_Creature";
 
 
 void NWNX_Creature_AddFeat(object creature, int feat)

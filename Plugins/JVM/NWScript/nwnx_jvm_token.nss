@@ -2,9 +2,10 @@
 
 void call_token(string token, object caller = OBJECT_SELF) 
 {
-    NWNX_PushArgumentObject("NWNX_JVM", "Event", caller);
-    NWNX_PushArgumentString("NWNX_JVM", "Event", token);
-    NWNX_CallFunction("NWNX_JVM", "Token");
+    string sFunc = "Event";
+    NWNX_PushArgumentObject(NWNX_JVM, sFunc, caller);
+    NWNX_PushArgumentString(NWNX_JVM, sFunc, token);
+    NWNX_CallFunction(NWNX_JVM, "Token");
 }
 
 void main() 

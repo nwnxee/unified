@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Encounter = "NWNX_Encounter";
+
 struct NWNX_Encounter_CreatureListEntry
 {
     string resref;
@@ -36,9 +38,6 @@ int NWNX_Encounter_GetResetTime(object encounter);
 
 // Set the reset time of encounter
 void NWNX_Encounter_SetResetTime(object encounter, int resetTime);
-
-
-const string NWNX_Encounter = "NWNX_Encounter";
 
 
 int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter)
