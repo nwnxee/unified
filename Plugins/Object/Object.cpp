@@ -613,6 +613,7 @@ ArgumentStack Object::RemoveIconEffect(ArgumentStack&& args)
             if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
             {
                 pObject->RemoveEffect(eff);
+                break;
             }
         }
     }
@@ -636,6 +637,7 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
             if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
             {
                 pObject->RemoveEffect(eff);
+                break;
             }
         }
 
