@@ -626,6 +626,7 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
     if (auto *pObject = object(args))
     {
         const auto nIcon = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nIcon > 0);
         const auto fDuration = Services::Events::ExtractArgument<float>(args);
 
         for (int i = 0; i < pObject->m_appliedEffects.num; i++)
