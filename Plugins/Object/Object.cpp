@@ -35,8 +35,6 @@ using namespace NWNXLib::API;
 
 static ViewPtr<Object::Object> g_plugin;
 
-const auto MODULE_OID = 0;
-
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
     return new Plugin::Info
@@ -642,7 +640,7 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         }
 
         auto *effIcon = new API::CGameEffect(true);
-        effIcon->m_oidCreator = MODULE_OID;
+        effIcon->m_oidCreator = 0;
         effIcon->m_nType      = Constants::EffectTrueType::Icon;
         effIcon->m_nSubType   = Constants::EffectSubType::Supernatural;
         effIcon->m_bShowIcon  = true;
