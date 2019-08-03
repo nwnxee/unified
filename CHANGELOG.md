@@ -33,6 +33,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added WebHook Success/Failure events with rate limit feedback
 - Events: Added UseLoreOnItem and PayToIdentifyItem events
 - Events: Added {Add|Remove}Gold events to InventoryEvents
+- Events: Added PVP Attitude Change event
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
