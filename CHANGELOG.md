@@ -41,6 +41,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Tweaks: StringToIntBaseToAuto
 - Weapon: Feat and Base Item names were added to LOG_INFO feedback
 - WebHook: Added support for richer Slack-compatible messages
+- Util: Added the environment variable `NWNX_UTIL_PRE_MODULE_START_SCRIPT=scriptname` which lets you set a nwscript that runs before the OnModuleLoad event
 ##### New Plugins
 The following plugins were added:
 - **Appearance**: Allows the appearance and some other things of creatures to be overridden per player
