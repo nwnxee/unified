@@ -454,7 +454,6 @@ void Race::ApplyEffectHook(
         CGameEffect *eff,
         int32_t)
 {
-
     if(cType == Services::Hooks::CallType::BEFORE_ORIGINAL )
     {
         CNWSCreature* tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
@@ -475,14 +474,11 @@ void Race::ApplyEffectHook(
         API::CGameEffect *effNew;
         for(std::vector<uint16_t>::iterator nChild = vChild.begin(); nChild != vChild.end(); ++nChild)
         {
-
-
             effNew = new API::CGameEffect(true);
             int32_t i;
             effNew->m_nNumIntegers=effNew->m_nNumIntegers;
             for(i=0;i<eff->m_nNumIntegers;i++)
                 effNew->m_nParamInteger[i] = eff->m_nParamInteger[i];
-
             effNew->m_nID=eff->m_nID;
             effNew->m_oidCreator = eff->m_oidCreator;
             effNew->m_nType = eff->m_nType;
@@ -498,8 +494,6 @@ void Race::ApplyEffectHook(
             effNew->m_bSkipOnLoad=eff->m_bSkipOnLoad;
             effNew->m_nSpellId=eff->m_nSpellId;
             effNew->m_sCustomTag=eff->m_sCustomTag;
-
-
             for(i=0;i<4;i++)
             {
                 effNew->m_nParamFloat[i]=eff->m_nParamFloat[i];
