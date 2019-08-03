@@ -21,6 +21,8 @@
 #include "API/CNWSWaypoint.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CNWSScriptVar.hpp"
+#include "API/CServerAIMaster.hpp"
+#include "API/CScriptEvent.hpp"
 #include "API/CScriptLocation.hpp"
 #include "API/CExoString.hpp"
 
@@ -304,6 +306,64 @@ std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID, uint8_t bG
     locStr.GetStringLoc(nID, &str, bGender);
 
     return std::string(str.CStr());
+}
+
+void AddStealthEvent(int which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent();
+    pScriptEvent->m_nType = ScriptEvent::OnPerception;
+    pScriptEvent->SetInteger(0, which);
+    pScriptEvent->SetObjectID(0, oidTarget);
+    pAIMaster->AddEventDeltaTime(0, 0, oidTarget, oidSelf, Event::SignalEvent, pScriptEvent);
+}
+
+void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent;
+    pScriptEvent->m_nType = ScriptEvent::OnObjectEnter;
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+}
+
+void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent;
+    pScriptEvent->m_nType = ScriptEvent::OnObjectExit;
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+}
+
+void AddOnAcquireItemEvent(
+        API::Types::ObjectID oidItemAcquired,
+        API::Types::ObjectID oidItemAcquiredBy,
+        API::Types::ObjectID oidItemAcquiredFrom,
+        int32_t stackSize)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent();
+    pScriptEvent->m_nType = ScriptEvent::OnAcquireItem;
+    pScriptEvent->SetObjectID(0, oidItemAcquired);
+    pScriptEvent->SetObjectID(1, oidItemAcquiredBy);
+    pScriptEvent->SetObjectID(2, oidItemAcquiredFrom);
+    pScriptEvent->SetInteger(0, stackSize);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemAcquired, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
+}
+
+void AddOnLoseItemEvent(
+        API::Types::ObjectID oidItemLost,
+        API::Types::ObjectID oidItemLostBy)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent();
+    pScriptEvent->m_nType = ScriptEvent::OnLoseItem;
+    pScriptEvent->SetObjectID(0, oidItemLost);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
 }
 
 }
