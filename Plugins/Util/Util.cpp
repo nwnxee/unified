@@ -19,6 +19,7 @@
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
+#include "Services/Config/Config.hpp"
 
 #include <string>
 #include <stdio.h>
@@ -97,6 +98,19 @@ Util::Util(const Plugin::CreateParams& params)
                         g_plugin->m_tickCount = ticks;
                         previous = current;
                         ticks = 1;
+                    }
+                }
+            });
+
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSModule__LoadModuleFinish, uint32_t>(
+            +[](Services::Hooks::CallType type, CNWSModule*)
+            {
+                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                {
+                    if (auto startScript = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT"))
+                    {
+                        LOG_NOTICE("Running module start script: %s", startScript->c_str());
+                        Utils::ExecuteScript(*startScript, 0);
                     }
                 }
             });
