@@ -40,6 +40,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Tweaks: HideDMsOnCharList
 - Tweaks: DisableMonkAbilitiesWhenPolymorphed
 - Tweaks: StringToIntBaseToAuto
+- Tweaks: DeadCreatureFiresOnAreaExit
 - Weapon: Feat and Base Item names were added to LOG_INFO feedback
 - WebHook: Added support for richer Slack-compatible messages
 ##### New Plugins
