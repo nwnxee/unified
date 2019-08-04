@@ -10,6 +10,7 @@
 #include "Tweaks/HideDMsOnCharList.hpp"
 #include "Tweaks/DisableMonkAbilitiesWhenPolymorphed.hpp"
 #include "Tweaks/StringToIntBaseToAuto.hpp"
+#include "Tweaks/MaxLevel.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -132,6 +133,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Setting StringToInt() base to auto to allow for conversion of hex strings to proper values.");
         m_StringToIntBaseToAuto = std::make_unique<StringToIntBaseToAuto>(GetServices()->m_hooks.get());
+    }
+    auto maxLevel = GetServices()->m_config->Get<int32_t>("MAX_LEVEL", 40);
+    if (maxLevel != 40)
+    {
+        LOG_INFO("Setting Maximum Level to %d.", maxLevel);
+        m_MaxLevel = std::make_unique<MaxLevel>(GetServices()->m_hooks.get(), maxLevel);
     }
 }
 
