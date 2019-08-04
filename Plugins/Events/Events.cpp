@@ -275,15 +275,19 @@ Services::Events::ArgumentStack Events::OnEventResult(Services::Events::Argument
 
 Services::Events::ArgumentStack Events::OnGetCurrentEvent(Services::Events::ArgumentStack&&)
 {
+    std::string retVal;
+
     if (m_eventDepth == 0 || m_eventData.empty())
     {
-        throw std::runtime_error("Attempted to get the current event in an invalid context.");
+        retVal = "";
+    }
+    else
+    {
+        retVal = g_plugin->m_eventData.top().m_EventName;
     }
 
-    std::string eventName = g_plugin->m_eventData.top().m_EventName;
-
     Services::Events::ArgumentStack stack;
-    Services::Events::InsertArgument(stack, eventName);
+    Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
 

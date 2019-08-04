@@ -837,7 +837,7 @@ void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
 //
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+// Returns "" on error
 string NWNX_Events_GetCurrentEvent();
 
 
