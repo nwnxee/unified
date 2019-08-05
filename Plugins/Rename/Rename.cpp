@@ -211,13 +211,16 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
         std::string allClients = Utils::ObjectIDToString(Constants::PLAYERID_ALL_CLIENTS);
         displayName = *pPOS->Get<std::string>(targetOid, displayNameKey + ":" + allClients);
         overrideName = *pPOS->Get<std::string>(targetOid, overrideNameKey + ":" + allClients);
-        if (playerList)
+        if (playerList && !overrideName.empty())
         {
             targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(overrideName);
             targetCreature->m_pStats->m_lsLastName = plugin.ContainString("");
         }
-        targetCreature->m_sDisplayName = displayName.c_str();
-        LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.c_str());
+        if (!displayName.empty())
+        {
+            targetCreature->m_sDisplayName = displayName.c_str();
+            LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.c_str());
+        }
     }
 }
 
@@ -236,7 +239,10 @@ void Rename::RestorePlayerName(CNWSCreature *targetCreature, bool playerList)
             targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(lsFirstName);
             targetCreature->m_pStats->m_lsLastName = plugin.ContainString(lsLastName);
         }
-        targetCreature->m_sDisplayName = displayName.c_str();
+        if (!displayName.empty())
+        {
+            targetCreature->m_sDisplayName = displayName.c_str();
+        }
     }
 }
 
