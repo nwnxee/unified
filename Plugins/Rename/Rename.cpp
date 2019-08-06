@@ -82,6 +82,7 @@ Rename::Rename(const Plugin::CreateParams& params)
 
     m_RenameOnModuleCharList = GetServices()->m_config->Get<int32_t>("ON_MODULE_CHAR_LIST", 0);
     m_RenameOnPlayerList = GetServices()->m_config->Get<bool>("ON_PLAYER_LIST", true);
+    m_RenameAllowDM = GetServices()->m_config->Get<bool>("ALLOW_DM", false);
 
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__WriteGameObjUpdate_UpdateObject,
             int32_t, CNWSMessage *, CNWSPlayer *, CNWSObject *, CLastUpdateObject *, uint32_t, uint32_t>(
@@ -165,17 +166,14 @@ void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
         observerOid = observerPlayer->m_oidNWSObject;
 
     // There's a moment when a player is just logging in that pStats doesn't exist yet.
-    // Also don't do renames for DM or DM Possessed creatures
-    if (targetCreature == nullptr ||
-        targetCreature->m_pStats == nullptr ||
-        targetCreature->m_pStats->m_bIsDM ||
-        targetCreature->m_nAssociateType == 7 ||
-        targetCreature->m_nAssociateType == 8 ||
-        (observerCreature != nullptr &&
-         (observerCreature->m_pStats == nullptr ||
-          observerCreature->m_pStats->m_bIsDM ||
-          observerCreature->m_nAssociateType == 7 ||
-          observerCreature->m_nAssociateType == 8)))
+    if (targetCreature == nullptr || targetCreature->m_pStats == nullptr || (!g_plugin->m_RenameAllowDM &&
+                                                                             (targetCreature->m_pStats->m_bIsDM ||
+                                                                              targetCreature->m_nAssociateType == 7 ||
+                                                                              targetCreature->m_nAssociateType == 8)) ||
+        (observerCreature != nullptr && (observerCreature->m_pStats == nullptr || (!g_plugin->m_RenameAllowDM &&
+                                                                                   (observerCreature->m_pStats->m_bIsDM ||
+                                                                                    observerCreature->m_nAssociateType == 7 ||
+                                                                                    observerCreature->m_nAssociateType == 8)))))
     {
         return;
     }
@@ -634,7 +632,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
             bool success = false;
             auto *observerPlayerObject = static_cast<API::CNWSPlayer*>(server->GetClientObjectByPlayerId(pid, 0));
 
-            if (observerPlayerObject != nullptr)
+            if (observerPlayerObject != nullptr && (g_plugin->m_RenameAllowDM || observerPlayerObject->m_nCharacterType != Constants::CharacterType::DM))
             {
                 // Write a message notifying an object update.
                 message->CreateWriteMessage(0x400, pid, 1);
