@@ -108,9 +108,11 @@ Race::Race(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__CreateDefaultQuickButtons, void, CNWSCreature*>(&CreateDefaultQuickButtonsHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreatureStats__LevelUpAutomatic, int32_t, CNWSCreatureStats*, uint8_t, int32_t, uint8_t>(&LevelUpAutomaticHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreatureStats__GetMeetsPrestigeClassRequirements, int32_t, CNWSCreatureStats*, CNWClass*>(&GetMeetsPrestigeClassRequirementsHook);
+
     //Don't swap, check as both parent and child race
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__CheckItemRaceRestrictions>(&CheckItemRaceRestrictionsHook);
     m_CheckRacialResHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__CheckItemRaceRestrictions);
+
     // Need to set up default parent race to invalid before the on module load sets up the parents
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__LoadRaceInfo, void, CNWRules *>(&LoadRaceInfoHook);
 }
@@ -472,33 +474,34 @@ void Race::ApplyEffectHook(
         }
         std::vector<uint16_t> vChild = g_plugin->m_ChildRaces[eff->m_nParamInteger[nRaceParam]];
         API::CGameEffect *effNew;
-        for(std::vector<uint16_t>::iterator nChild = vChild.begin(); nChild != vChild.end(); ++nChild)
+        int32_t i;
+        for(uint16_t & nChild : vChild)
         {
             effNew = new API::CGameEffect(true);
             effNew->m_nNumIntegers = eff->m_nNumIntegers;
-            for(i=0;i<eff->m_nNumIntegers;i++)
+            for(i = 0; i < eff->m_nNumIntegers; i++)
                 effNew->m_nParamInteger[i] = eff->m_nParamInteger[i];
-            effNew->m_nID=eff->m_nID;
+            effNew->m_nID = eff->m_nID;
             effNew->m_oidCreator = eff->m_oidCreator;
             effNew->m_nType = eff->m_nType;
             effNew->m_nSubType = eff->m_nSubType;
             effNew->m_fDuration = eff->m_fDuration;
             effNew->m_nExpiryCalendarDay = eff->m_nExpiryCalendarDay;
             effNew->m_nExpiryTimeOfDay = eff->m_nExpiryTimeOfDay;
-            effNew->m_nParamInteger[nRaceParam]=*nChild;
-            effNew->m_nItemPropertySourceId=eff->m_nItemPropertySourceId;
+            effNew->m_nParamInteger[nRaceParam] = nChild;
+            effNew->m_nItemPropertySourceId = eff->m_nItemPropertySourceId;
             effNew->m_bExpose = eff->m_bExpose;
             effNew->m_bShowIcon = eff->m_bShowIcon;
             effNew->m_nCasterLevel = eff->m_nCasterLevel;
-            effNew->m_bSkipOnLoad=eff->m_bSkipOnLoad;
-            effNew->m_nSpellId=eff->m_nSpellId;
-            effNew->m_sCustomTag=eff->m_sCustomTag;
-            for(i=0;i<4;i++)
+            effNew->m_bSkipOnLoad = eff->m_bSkipOnLoad;
+            effNew->m_nSpellId = eff->m_nSpellId;
+            effNew->m_sCustomTag = eff->m_sCustomTag;
+            for(i = 0; i < 4; i++)
             {
                 effNew->m_nParamFloat[i]=eff->m_nParamFloat[i];
                 effNew->m_oidParamObjectID[i]=eff->m_oidParamObjectID[i];
             }
-            for(i=0;i<6;i++)
+            for(i = 0; i < 6; i++)
                 effNew->m_sParamString[i]=eff->m_sParamString[i];
             tgtCreature->ApplyEffect(effNew, false, true);
         }
@@ -699,7 +702,7 @@ void Race::SetOrRestoreRace(
     {
         if (pCreatureStats != nullptr)
         {
-	    auto parentRace = g_plugin->m_RaceParent[pCreatureStats->m_nRace];
+            auto parentRace = g_plugin->m_RaceParent[pCreatureStats->m_nRace];
             originalRace = pCreatureStats->m_nRace;
             if (parentRace != RacialType::Invalid)
                 pCreatureStats->m_nRace = parentRace;
@@ -754,6 +757,7 @@ void Race::GetMeetsPrestigeClassRequirementsHook(
 {
     SetOrRestoreRace(cType, pCreatureStats);
 }
+
 int32_t Race::CheckItemRaceRestrictionsHook(CNWSCreature *pCreature, CNWSItem *pItem)
 {
 
@@ -762,8 +766,9 @@ int32_t Race::CheckItemRaceRestrictionsHook(CNWSCreature *pCreature, CNWSItem *p
     if(pItem->GetPropertyByTypeExists(64, nOriginal) || pItem->GetPropertyByTypeExists(64, g_plugin->m_RaceParent[nOriginal]))
         return true;
     //fail safe, call original function
-    return g_plugin->m_CheckRacialResHook->CallOriginal<int32_t>(pCreature, pItem);;
+    return g_plugin->m_CheckRacialResHook->CallOriginal<int32_t>(pCreature, pItem);
 }
+
 void Race::LoadRaceInfoHook(Services::Hooks::CallType type, CNWRules*)
 {
     // We only want to do this in the AFTER
