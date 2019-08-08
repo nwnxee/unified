@@ -1,5 +1,4 @@
 #include "SkillRanks.hpp"
-#include "API/C2DA.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWSArea.hpp"
@@ -51,6 +50,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 {
+    //TODO-64bit: This plugin will have to undergo a thorough review/rework due to the new ruleset.2da
     g_plugin = new SkillRanks::SkillRanks(params);
     return g_plugin;
 }
@@ -79,8 +79,6 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__LoadSkillInfo, void, CNWRules*>(&LoadSkillInfoHook);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetSkillRank,
         int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreatureStats__SaveClassInfo, void, CNWSCreatureStats*, CResGFF*, CResStruct*>(&SaveClassInfoHook);
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSPlayer__ValidateCharacter, int32_t, CNWSPlayer*, int32_t*>(&ValidateCharacterHook);
 
     m_blindnessMod = 4;
 }
@@ -577,10 +575,6 @@ int32_t SkillRanks::GetSkillRankHook(
 
     int32_t baseRank = thisPtr->m_lstSkillRanks[nSkill];
 
-    // We want the base rank to be affected by our racial adjustments in all cases but validating or saving the PC
-    if (!g_plugin->m_ValidatingOrSaving)
-        baseRank += g_plugin->m_skillRaceMod[nSkill][thisPtr->m_nRace];
-
     if (bBaseOnly)
         return baseRank;
 
@@ -588,6 +582,9 @@ int32_t SkillRanks::GetSkillRankHook(
         return 0;
 
     int32_t retVal = baseRank + thisPtr->m_pBaseCreature->GetTotalEffectBonus(5, pVersus, 0, 0, 0, 0, nSkill, -1, 0);
+
+    // Add any racial modifiers broadcasted from the Race plugin
+    retVal += g_plugin->m_skillRaceMod[nSkill][thisPtr->m_nRace];
 
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_pBaseCreature->m_oidArea);
 
