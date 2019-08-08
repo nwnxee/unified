@@ -475,8 +475,7 @@ void Race::ApplyEffectHook(
         for(std::vector<uint16_t>::iterator nChild = vChild.begin(); nChild != vChild.end(); ++nChild)
         {
             effNew = new API::CGameEffect(true);
-            int32_t i;
-            effNew->m_nNumIntegers=effNew->m_nNumIntegers;
+            effNew->m_nNumIntegers = eff->m_nNumIntegers;
             for(i=0;i<eff->m_nNumIntegers;i++)
                 effNew->m_nParamInteger[i] = eff->m_nParamInteger[i];
             effNew->m_nID=eff->m_nID;
