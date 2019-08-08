@@ -871,7 +871,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
         }
         case FEAT:
         {
-            if (param2 == (int32_t)0xDEADBEEF || param2 <= 0)
+            if (param2 <= 0)
             {
                 LOG_ERROR("%s: Feat modifier improperly set.", raceName);
                 break;
