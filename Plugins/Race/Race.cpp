@@ -760,13 +760,26 @@ void Race::GetMeetsPrestigeClassRequirementsHook(
 
 int32_t Race::CheckItemRaceRestrictionsHook(CNWSCreature *pCreature, CNWSItem *pItem)
 {
+    // Checks if there are any racial use limitations on the item or if they passed their UMD check
+    if (!pItem->GetPropertyByTypeExists(Constants::ItemProperty::UseLimitationRacialType, 0) ||
+         pCreature->CheckUseMagicDeviceSkill(pItem, 1) == 1)
+        return 1;
 
-    int32_t nOriginal = pCreature->m_pStats->m_nRace;
-    // 64 Is ITEM_PROPERTY_USE_RESTRICTION_RACE
-    if(pItem->GetPropertyByTypeExists(64, nOriginal) || pItem->GetPropertyByTypeExists(64, g_plugin->m_RaceParent[nOriginal]))
-        return true;
-    //fail safe, call original function
-    return g_plugin->m_CheckRacialResHook->CallOriginal<int32_t>(pCreature, pItem);
+    int32_t nRace = pCreature->m_pStats->m_nRace;
+
+    for (int i = 0; i < pItem->m_lstPassiveProperties.num; i++)
+    {
+        if (pItem->GetPassiveProperty(i)->m_nPropertyName == Constants::ItemProperty::UseLimitationRacialType)
+        {
+            auto raceToCheck = pItem->GetPassiveProperty(i)->m_nSubType;
+            if (nRace == raceToCheck || g_plugin->m_RaceParent[nRace] == raceToCheck)
+            {
+                return 1;
+            }
+        }
+    }
+    return 0;
+
 }
 
 void Race::LoadRaceInfoHook(Services::Hooks::CallType type, CNWRules*)
@@ -779,7 +792,6 @@ void Race::LoadRaceInfoHook(Services::Hooks::CallType type, CNWRules*)
     auto twoda = Globals::Rules()->m_p2DArrays->GetCached2DA("RACIALTYPES", true);
     for (int raceId = 0; raceId < twoda->m_nNumRows; raceId++)
     {
-        std::string sRace = std::to_string(raceId);
         g_plugin->m_RaceParent[raceId] = RacialType::Invalid;
     }
 }
