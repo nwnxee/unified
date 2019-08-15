@@ -10,6 +10,7 @@
 #include "Tweaks/HideDMsOnCharList.hpp"
 #include "Tweaks/DisableMonkAbilitiesWhenPolymorphed.hpp"
 #include "Tweaks/StringToIntBaseToAuto.hpp"
+#include "Tweaks/PreserveActionsOnDMPossess.hpp"
 #include "Tweaks/MaxLevel.hpp"
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
 
@@ -105,11 +106,17 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         LOG_INFO("Monk abilities (ac, speed, attacks) will be disabled during polymorph");
         m_DisableMonkAbilitiesWhenPolymorphed = std::make_unique<DisableMonkAbilitiesWhenPolymorphed>(GetServices()->m_hooks.get());
     }
+
     if (GetServices()->m_config->Get<bool>("STRINGTOINT_BASE_TO_AUTO", false))
     {
         LOG_INFO("Setting StringToInt() base to auto to allow for conversion of hex strings to proper values.");
         m_StringToIntBaseToAuto = std::make_unique<StringToIntBaseToAuto>(GetServices()->m_hooks.get());
     }
+
+    if (GetServices()->m_config->Get<bool>("PRESERVE_ACTIONS_ON_DM_POSSESS", false))
+    {
+        LOG_INFO("DMs possessing a creature will no longer clear their actions");
+        m_PreserveActionsOnDMPossess = std::make_unique<PreserveActionsOnDMPossess>(GetServices()->m_hooks.get());
     auto maxLevel = GetServices()->m_config->Get<int32_t>("MAX_LEVEL", 40);
     if (maxLevel != 40)
     {
