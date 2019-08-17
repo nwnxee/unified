@@ -20,6 +20,7 @@ public:
     virtual ~Layonara();
 
 private:
+    static void SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff=false);
     static NWNXLib::API::CNWSItem *GetItemInSlotHook(NWNXLib::API::CNWSInventory*, uint32_t);
     NWNXLib::Hooking::FunctionHook* m_GetItemInSlotHook;
 
@@ -66,6 +67,8 @@ private:
     ArgumentStack ApplyRune                       (ArgumentStack&& args);
     ArgumentStack CombineRunes                    (ArgumentStack&& args);
     ArgumentStack GetRuneDescription              (ArgumentStack&& args);
+    ArgumentStack SetQuiver                       (ArgumentStack&& args);
+    ArgumentStack SetQuiverArrows                 (ArgumentStack&& args);
 };
 
 }
