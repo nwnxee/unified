@@ -146,7 +146,13 @@ void Layonara::SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff)
 
     auto pItem = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Arrows);
 
+    if (!pItem || pItem->m_nBaseItem == Constants::BaseItem::Bolt)
+        pItem = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Bolts);
+
     if (!pItem)
+        return;
+
+    if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::OnHitCastSpell, 124))
         return;
 
     uint8_t iPropOffset = 3;
