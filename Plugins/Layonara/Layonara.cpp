@@ -8,6 +8,8 @@
 #include "API/CNWFeat.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSInventory.hpp"
 #include "API/CNWSJournal.hpp"
 #include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/Constants.hpp"
@@ -62,10 +64,13 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     REGISTER(ApplyRune)
     REGISTER(CombineRunes)
     REGISTER(GetRuneDescription)
+    REGISTER(SetQuiver)
+    REGISTER(SetQuiverArrows)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSInventory__GetItemInSlot>(&Layonara::GetItemInSlotHook);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSInventory__GetItemInSlot>(
+            &Layonara::GetItemInSlotHook);
     m_GetItemInSlotHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSInventory__GetItemInSlot);
     m_GemBonuses[Gems::GRE] = {SavingThrowType::Poison, SavingThrow::All, Skill::Listen, DamageType::Positive,
                                Ability::Strength, Ability::Charisma, -1, -1, -1, -1};
@@ -124,6 +129,62 @@ CNWSItem *Layonara::GetItemInSlotHook(CNWSInventory *pThis, uint32_t nSlot)
     else if (nSlot == 0x23800)
         nSlot = 0x01000;
     return g_plugin->m_GetItemInSlotHook->CallOriginal<CNWSItem*>(pThis, nSlot);
+}
+
+void Layonara::SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff)
+{
+    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+    {
+        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
+        if (eff->m_sCustomTag == "QuiverArrows")
+        {
+            pCreature->RemoveEffectById(eff->m_nID);
+        }
+    }
+    if (bOff)
+        return;
+
+    auto pItem = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Arrows);
+
+    if (!pItem)
+        return;
+
+    uint8_t iPropOffset = 3;
+    const uint16_t arrowFXStart = 1204;
+    auto racialType = pCreature->m_pStats->m_nRace;
+    auto raceOffset = racialType;
+    if (racialType == 4 || racialType == 6)
+        raceOffset = 5;
+    else if (racialType == 5)
+        raceOffset = 4;
+
+    if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonus, 8))
+        iPropOffset = 9;
+    else if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonus, 10))
+        iPropOffset = 7;
+    else if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonus, 9))
+        iPropOffset = 2;
+    else if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonus, 7))
+        iPropOffset = 8;
+    else if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonus, 6))
+        iPropOffset = 4;
+    else if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonusVSRacialGroup, 24))
+        iPropOffset = 1;
+    else if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonusVSRacialGroup, 0))
+        iPropOffset = 6;
+
+    auto *eff = new API::CGameEffect(true);
+    eff->m_oidCreator         = 0;
+    eff->m_nType              = EffectTrueType::VisualEffect;
+    eff->m_nSubType           = EffectSubType::Supernatural;
+    eff->m_bShowIcon          = 0;
+    eff->m_bExpose            = true;
+    eff->m_nParamInteger[0]   = arrowFXStart + (iPropOffset * 12) + (raceOffset * 2) + pCreature->m_pStats->m_nGender;
+    eff->m_nSubType |= EffectDurationType::Permanent;
+    eff->m_sCustomTag = "QuiverArrows";
+    eff->m_nSpellId = 1201;
+
+    pCreature->ApplyEffect(eff, false, true);
 }
 
 ArgumentStack Layonara::SetEquippableSlots(ArgumentStack&& args)
@@ -728,6 +789,75 @@ ArgumentStack Layonara::GetRuneDescription(ArgumentStack&& args)
     retVal = retVal + "\nThe rune's effects will last for " + std::to_string(fDuration/60) + " minutes.\n";
 
     Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto nColor = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+
+    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+    {
+        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
+        if (eff->m_sCustomTag == "Quiver" || eff->m_sCustomTag == "QuiverArrows")
+        {
+            pCreature->RemoveEffectById(eff->m_nID);
+        }
+    }
+
+    if (nColor == -1)
+    {
+        SetArrowsEffect(pCreature, true);
+        return stack;
+    }
+
+    const uint16_t quiverFXStart = 1084;
+    auto racialType = pCreature->m_pStats->m_nRace;
+    auto raceOffset = racialType;
+    if (racialType == 4 || racialType == 6)
+        raceOffset = 5;
+    else if (racialType == 5)
+        raceOffset = 4;
+
+    auto *eff = new API::CGameEffect(true);
+    eff->m_oidCreator         = 0;
+    eff->m_nType              = EffectTrueType::VisualEffect;
+    eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
+    eff->m_bShowIcon          = 0;
+    eff->m_nParamInteger[0]   = quiverFXStart + (nColor * 12) + (raceOffset * 2) + pCreature->m_pStats->m_nGender;
+    eff->m_sCustomTag         = "Quiver";
+    eff->m_bExpose            = true;
+    pCreature->ApplyEffect(eff, true, true);
+
+    SetArrowsEffect(pCreature);
+
+    return stack;
+}
+
+ArgumentStack Layonara::SetQuiverArrows(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
+    SetArrowsEffect(pCreature);
+
     return stack;
 }
 

@@ -32,6 +32,12 @@ string NWNX_Layonara_CombineRunes(object target, object item);
 // Get Rune Description
 string NWNX_Layonara_GetRuneDescription(object item);
 
+// Quiver Effect
+void NWNX_Layonara_SetQuiver(object creature, int nColor);
+
+// Quiver Arrow Effects
+void NWNX_Layonara_SetQuiverArrows(object creature);
+
 void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
@@ -143,4 +149,23 @@ string NWNX_Layonara_GetRuneDescription(object item)
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_SetQuiver(object creature, int nColor)
+{
+    string sFunc = "SetQuiver";
+
+    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nColor);
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_SetQuiverArrows(object creature)
+{
+    string sFunc = "SetQuiverArrows";
+
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
