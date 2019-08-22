@@ -160,6 +160,7 @@ The following plugins were added:
 - Player: ApplyLoopingVisualEffectToObject()
 - Player: SetPlaceableNameOverride()
 - Player: GetQuestCompleted()
+- Player: SetPersistentLocation()
 - Race: SetRacialModifier()
 - Race: GetParentRace()
 - Regex: Search()
