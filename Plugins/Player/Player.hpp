@@ -18,10 +18,6 @@ public:
     virtual ~Player();
 
 private:
-    static void LoadCharacterFinishHook(
-            NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CServerExoAppInternal*,
-            NWNXLib::API::CNWSPlayer*, int32_t, int32_t);
     ArgumentStack ForcePlaceableExamineWindow       (ArgumentStack&& args);
     ArgumentStack ForcePlaceableInventoryWindow     (ArgumentStack&& args);
     ArgumentStack StartGuiTimingBar                 (ArgumentStack&& args);
@@ -51,6 +47,9 @@ private:
     ArgumentStack SetPersistentLocation             (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
+
+    static void LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CServerExoAppInternal*,
+                                        NWNXLib::API::CNWSPlayer*, int32_t, int32_t);
 
     std::map<std::string, NWNXLib::API::ObjectVisualTransformData> m_OVTData;
     std::map<std::string, std::set<uint16_t>> m_LVEData;
