@@ -25,9 +25,9 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSJournal.hpp"
+#include "API/CNWSWaypoint.hpp"
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
-#include "API/CNWSWaypoint.hpp"
 #include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
@@ -1099,9 +1099,12 @@ void Player::LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType cType,
 
         auto bFirstConnectOnly = g_plugin->m_PersistentLocationWP[sKey].second;
 
-        // If they don't have a TURD yet they're logging in for the first time since a reset
+        // Delete the key if this is the first connect and we're only setting the location on first connect
         if (bFirstConnectOnly && !Utils::GetModule()->GetPlayerTURDFromList(pPlayer))
+        {
             g_plugin->m_PersistentLocationWP.erase(sKey);
+        }
+        // The TURD exists already meaning its not the first connect
         else if (bFirstConnectOnly)
             return;
 
@@ -1115,6 +1118,7 @@ void Player::LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType cType,
             pCreature->m_bDesiredAreaUpdateComplete = false;
             pCreature->m_vOrientation = pWP->m_vOrientation;
             pPlayer->m_bFromTURD = true;
+            // We don't need the WP any more if we're only setting the location on first connect
             if (bFirstConnectOnly)
             {
                 pWP->RemoveFromArea();
