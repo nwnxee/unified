@@ -2,6 +2,7 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/Hooks/Hooks.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include <map>
 #include <set>
@@ -17,6 +18,11 @@ public:
     virtual ~Player();
 
 private:
+    std::unordered_map<std::string, NWNXLib::API::Types::ObjectID> m_PersistentLocationWP;
+    static void LoadCharacterFinishHook(
+            NWNXLib::Services::Hooks::CallType,
+            NWNXLib::API::CServerExoAppInternal*,
+            NWNXLib::API::CNWSPlayer*, int32_t, int32_t);
     ArgumentStack ForcePlaceableExamineWindow       (ArgumentStack&& args);
     ArgumentStack ForcePlaceableInventoryWindow     (ArgumentStack&& args);
     ArgumentStack StartGuiTimingBar                 (ArgumentStack&& args);
@@ -43,6 +49,7 @@ private:
     ArgumentStack ApplyLoopingVisualEffectToObject  (ArgumentStack&& args);
     ArgumentStack SetPlaceableNameOverride          (ArgumentStack&& args);
     ArgumentStack GetQuestCompleted                 (ArgumentStack&& args);
+    ArgumentStack SetPersistentLocation             (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

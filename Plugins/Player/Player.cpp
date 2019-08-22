@@ -24,6 +24,10 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSJournal.hpp"
+#include "API/CNetLayer.hpp"
+#include "API/CNetLayerPlayerInfo.hpp"
+#include "API/CNWSWaypoint.hpp"
+#include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/Constants.hpp"
@@ -64,6 +68,8 @@ namespace Player {
 Player::Player(const Plugin::CreateParams& params)
     : Plugin(params)
 {
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__LoadCharacterFinish,
+            void, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t>(&Player::LoadCharacterFinishHook);
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Player::func, this, std::placeholders::_1))
 
@@ -93,6 +99,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(ApplyLoopingVisualEffectToObject);
     REGISTER(SetPlaceableNameOverride);
     REGISTER(GetQuestCompleted);
+    REGISTER(SetPersistentLocation);
 
 #undef REGISTER
 
@@ -1054,6 +1061,61 @@ ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
     }
 
     Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+void Player::LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType cType,
+                                       NWNXLib::API::CServerExoAppInternal *,
+                                       NWNXLib::API::CNWSPlayer* pPlayer,
+                                       int32_t,
+                                       int32_t)
+{
+    if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL && !g_plugin->m_PersistentLocationWP.empty())
+    {
+        auto mod = Utils::GetModule();
+
+        // They're logging in for the first time since a reset/crash
+        if (!mod->GetPlayerTURDFromList(pPlayer))
+        {
+            auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+            auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
+
+            // We key our persistent location based upon the cdkey and the bic filename
+            std::string sCDKey = pPlayerInfo->GetPublicCDKey(0).CStr();
+            std::string sCommunityName = pPlayer->GetPlayerName().CStr();
+            std::string sResRef = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
+            std::string sKey = sCDKey + "!" + sCommunityName + "!" + sResRef;
+            auto wpOID = g_plugin->m_PersistentLocationWP[sKey];
+            if (!wpOID)
+                return;
+
+            g_plugin->m_PersistentLocationWP.erase(sKey);
+
+            // Fake some changes to their area/position as though they had a TURD
+            if (auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID)))
+            {
+                auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+                pCreature->m_oidDesiredArea = pWP->m_oidArea;
+                pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
+                pCreature->m_bDesiredAreaUpdateComplete = false;
+                pCreature->m_vOrientation = pWP->m_vOrientation;
+                pPlayer->m_bFromTURD = true;
+                pWP->RemoveFromArea();
+            }
+        }
+    }
+}
+
+ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto sCDKey = Services::Events::ExtractArgument<std::string>(args);
+    const auto sCommunityName = Services::Events::ExtractArgument<std::string>(args);
+    const auto sResRef = Services::Events::ExtractArgument<std::string>(args);
+    const auto wpOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    std::string sKey = sCDKey + "!" + sCommunityName + "!" + sResRef;
+    g_plugin->m_PersistentLocationWP[sKey] = wpOid;
+
     return stack;
 }
 

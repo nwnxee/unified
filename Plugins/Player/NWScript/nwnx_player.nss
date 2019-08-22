@@ -170,6 +170,11 @@ void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, strin
 // Returns -1 if they don't have the journal entry
 int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 
+// Builders can place waypoints on module load representing where a PC should start
+// This will require storing the PCs cd key and/or community name and bic_filename (NWNX_Player_GetBicFileName)
+// (You can pass in empty CD Key or Community Name strings depending on your vault setup, but both can't be empty)
+void NWNX_Player_SetPersistentLocation(string sCDKey, string sCommunityName, string sResRef, object oWP);
+
 const string NWNX_Player = "NWNX_Player";
 
 
@@ -572,4 +577,16 @@ int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
 
     NWNX_CallFunction(NWNX_Player, sFunc);
     return  NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetPersistentLocation(string sCDKey, string sCommunityName, string sResRef, object oWP)
+{
+    string sFunc = "SetPersistentLocation";
+
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oWP);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sResRef);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sCommunityName);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sCDKey);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }
