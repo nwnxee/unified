@@ -18,7 +18,6 @@ public:
     virtual ~Player();
 
 private:
-    std::unordered_map<std::string, NWNXLib::API::Types::ObjectID> m_PersistentLocationWP;
     static void LoadCharacterFinishHook(
             NWNXLib::Services::Hooks::CallType,
             NWNXLib::API::CServerExoAppInternal*,
@@ -55,6 +54,7 @@ private:
 
     std::map<std::string, NWNXLib::API::ObjectVisualTransformData> m_OVTData;
     std::map<std::string, std::set<uint16_t>> m_LVEData;
+    std::unordered_map<std::string, std::pair<NWNXLib::API::Types::ObjectID, bool>> m_PersistentLocationWP;
 };
 
 }

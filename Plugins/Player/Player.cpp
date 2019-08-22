@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerInfo.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
@@ -1070,36 +1071,46 @@ void Player::LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType cType,
                                        int32_t,
                                        int32_t)
 {
-    if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL && !g_plugin->m_PersistentLocationWP.empty())
+    if (cType == Services::Hooks::CallType::AFTER_ORIGINAL && !g_plugin->m_PersistentLocationWP.empty())
     {
-        auto mod = Utils::GetModule();
-
-        // They're logging in for the first time since a reset/crash
-        if (!mod->GetPlayerTURDFromList(pPlayer))
+        std::string sKey;
+        std::string sResRef = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
+        if (Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
+        {
+            std::string sCommunityName = pPlayer->GetPlayerName().CStr();
+            sKey = sCommunityName + "!" + sResRef;
+        }
+        else
         {
             auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
             auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
-
-            // We key our persistent location based upon the cdkey and the bic filename
             std::string sCDKey = pPlayerInfo->GetPublicCDKey(0).CStr();
-            std::string sCommunityName = pPlayer->GetPlayerName().CStr();
-            std::string sResRef = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
-            std::string sKey = sCDKey + "!" + sCommunityName + "!" + sResRef;
-            auto wpOID = g_plugin->m_PersistentLocationWP[sKey];
-            if (!wpOID)
-                return;
+            sKey = sCDKey + "!" + sResRef;
+        }
+        auto wpOID = g_plugin->m_PersistentLocationWP[sKey].first;
+        if (!wpOID)
+            return;
 
+        auto bFirstConnectOnly = g_plugin->m_PersistentLocationWP[sKey].second;
+
+        // If they don't have a TURD yet they're logging in for the first time since a reset
+        if (bFirstConnectOnly && !Utils::GetModule()->GetPlayerTURDFromList(pPlayer))
             g_plugin->m_PersistentLocationWP.erase(sKey);
+        else if (bFirstConnectOnly)
+            return;
 
-            // Fake some changes to their area/position as though they had a TURD
-            if (auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID)))
+        // Fake some changes to their area/position as though they had a TURD
+        auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
+        if (pWP)
+        {
+            auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+            pCreature->m_oidDesiredArea = pWP->m_oidArea;
+            pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
+            pCreature->m_bDesiredAreaUpdateComplete = false;
+            pCreature->m_vOrientation = pWP->m_vOrientation;
+            pPlayer->m_bFromTURD = true;
+            if (bFirstConnectOnly)
             {
-                auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
-                pCreature->m_oidDesiredArea = pWP->m_oidArea;
-                pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
-                pCreature->m_bDesiredAreaUpdateComplete = false;
-                pCreature->m_vOrientation = pWP->m_vOrientation;
-                pPlayer->m_bFromTURD = true;
                 pWP->RemoveFromArea();
             }
         }
@@ -1109,12 +1120,13 @@ void Player::LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType cType,
 ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    const auto sCDKey = Services::Events::ExtractArgument<std::string>(args);
-    const auto sCommunityName = Services::Events::ExtractArgument<std::string>(args);
+    const auto sCDKeyOrCommunityName = Services::Events::ExtractArgument<std::string>(args);
     const auto sResRef = Services::Events::ExtractArgument<std::string>(args);
     const auto wpOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    std::string sKey = sCDKey + "!" + sCommunityName + "!" + sResRef;
-    g_plugin->m_PersistentLocationWP[sKey] = wpOid;
+    const auto bFirstConnectOnly = Services::Events::ExtractArgument<int32_t>(args);
+
+    std::string sKey = sCDKeyOrCommunityName + "!" + sResRef;
+    g_plugin->m_PersistentLocationWP[sKey] = std::make_pair(wpOid, bFirstConnectOnly);
 
     return stack;
 }
