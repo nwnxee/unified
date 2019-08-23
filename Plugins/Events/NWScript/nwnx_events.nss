@@ -752,7 +752,18 @@
 
     Event data:
         Variable Name           Type        Notes
-        GOLD                    INT         The amount of gold added or removed
+        GOLD                    int         The amount of gold added or removed
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_PVP_ATTITUDE_CHANGE_BEFORE
+    NWNX_ON_PVP_ATTITUDE_CHANGE_AFTER
+
+    Usage:
+        OBJECT_SELF = The player performing the attitude change
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
+        ATTITUDE                int         0 = Dislike, 1 = Like
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -821,6 +832,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Trap events
 // - Sticky Player Name event
 // - Add/RemoveGold events
+// - PVP Attitude Change events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
@@ -837,7 +849,7 @@ void NWNX_Events_SetEventResult(string data);
 
 // Returns the current event name
 //
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+// Returns "" on error
 string NWNX_Events_GetCurrentEvent();
 
 

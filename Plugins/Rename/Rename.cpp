@@ -82,6 +82,7 @@ Rename::Rename(const Plugin::CreateParams& params)
 
     m_RenameOnModuleCharList = GetServices()->m_config->Get<int32_t>("ON_MODULE_CHAR_LIST", 0);
     m_RenameOnPlayerList = GetServices()->m_config->Get<bool>("ON_PLAYER_LIST", true);
+    m_RenameAllowDM = GetServices()->m_config->Get<bool>("ALLOW_DM", false);
 
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__WriteGameObjUpdate_UpdateObject,
             int32_t, CNWSMessage *, CNWSPlayer *, CNWSObject *, CLastUpdateObject *, uint32_t, uint32_t>(
@@ -165,17 +166,14 @@ void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
         observerOid = observerPlayer->m_oidNWSObject;
 
     // There's a moment when a player is just logging in that pStats doesn't exist yet.
-    // Also don't do renames for DM or DM Possessed creatures
-    if (targetCreature == nullptr ||
-        targetCreature->m_pStats == nullptr ||
-        targetCreature->m_pStats->m_bIsDM ||
-        targetCreature->m_nAssociateType == 7 ||
-        targetCreature->m_nAssociateType == 8 ||
-        (observerCreature != nullptr &&
-         (observerCreature->m_pStats == nullptr ||
-          observerCreature->m_pStats->m_bIsDM ||
-          observerCreature->m_nAssociateType == 7 ||
-          observerCreature->m_nAssociateType == 8)))
+    if (targetCreature == nullptr || targetCreature->m_pStats == nullptr || (!g_plugin->m_RenameAllowDM &&
+                                                                             (targetCreature->m_pStats->m_bIsDM ||
+                                                                              targetCreature->m_nAssociateType == 7 ||
+                                                                              targetCreature->m_nAssociateType == 8)) ||
+        (observerCreature != nullptr && (observerCreature->m_pStats == nullptr || (!g_plugin->m_RenameAllowDM &&
+                                                                                   (observerCreature->m_pStats->m_bIsDM ||
+                                                                                    observerCreature->m_nAssociateType == 7 ||
+                                                                                    observerCreature->m_nAssociateType == 8)))))
     {
         return;
     }
@@ -211,13 +209,16 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
         std::string allClients = Utils::ObjectIDToString(Constants::PLAYERID_ALL_CLIENTS);
         displayName = *pPOS->Get<std::string>(targetOid, displayNameKey + ":" + allClients);
         overrideName = *pPOS->Get<std::string>(targetOid, overrideNameKey + ":" + allClients);
-        if (playerList)
+        if (playerList && !overrideName.empty())
         {
             targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(overrideName);
             targetCreature->m_pStats->m_lsLastName = plugin.ContainString("");
         }
-        targetCreature->m_sDisplayName = displayName.c_str();
-        LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.c_str());
+        if (!displayName.empty())
+        {
+            targetCreature->m_sDisplayName = displayName.c_str();
+            LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.c_str());
+        }
     }
 }
 
@@ -236,7 +237,10 @@ void Rename::RestorePlayerName(CNWSCreature *targetCreature, bool playerList)
             targetCreature->m_pStats->m_lsFirstName = plugin.ContainString(lsFirstName);
             targetCreature->m_pStats->m_lsLastName = plugin.ContainString(lsLastName);
         }
-        targetCreature->m_sDisplayName = displayName.c_str();
+        if (!displayName.empty())
+        {
+            targetCreature->m_sDisplayName = displayName.c_str();
+        }
     }
 }
 
@@ -628,7 +632,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
             bool success = false;
             auto *observerPlayerObject = static_cast<API::CNWSPlayer*>(server->GetClientObjectByPlayerId(pid, 0));
 
-            if (observerPlayerObject != nullptr)
+            if (observerPlayerObject != nullptr && (g_plugin->m_RenameAllowDM || observerPlayerObject->m_nCharacterType != Constants::CharacterType::DM))
             {
                 // Write a message notifying an object update.
                 message->CreateWriteMessage(0x400, pid, 1);
