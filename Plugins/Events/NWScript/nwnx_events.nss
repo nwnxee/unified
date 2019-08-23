@@ -764,6 +764,20 @@
         Variable Name           Type        Notes
         TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
         ATTITUDE                int         0 = Dislike, 1 = Like
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE
+    NWNX_ON_INPUT_WALK_TO_WAYPOINT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player clicking somewhere
+
+    Event data:
+        Variable Name           Type        Notes
+        AREA                    object      Convert to object with NWNX_Object_StringToObject()
+        POS_X                   float
+        POS_Y                   float
+        POS_Z                   float
+        RUN_TO_POINT            int         TRUE if player is running, FALSE if player is walking (eg when shift clicking)
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
