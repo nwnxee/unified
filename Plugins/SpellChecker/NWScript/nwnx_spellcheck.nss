@@ -1,4 +1,7 @@
 #include "nwnx"
+
+const string NWNX_SpellChecker = "NWNX_SpellChecker";
+
 // The functions below can be performance heavy, do limit how many calls and/or how long of a sentence is passed
 // Make use of delaycommands and assign commands
 
@@ -11,8 +14,6 @@ string NWNX_SpellChecker_FindMisspell(string sentence);
 // Returns blank if no errors or if .so file is improperly installed
 string NWNX_SpellChecker_GetSuggestSpell(string word);
 
-
-const string NWNX_SpellChecker = "NWNX_SpellChecker";
 
 string NWNX_SpellChecker_FindMisspell(string sentence)
 {

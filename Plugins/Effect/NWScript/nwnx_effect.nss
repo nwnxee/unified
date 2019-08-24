@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Effect = "NWNX_Effect";
+
 struct NWNX_EffectUnpacked
 {
     int nEffectId;
@@ -50,24 +52,26 @@ struct NWNX_EffectUnpacked
 
 // Convert native effect type to unpacked structure
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e);
+
 // Convert unpacked effect structure to native type
 effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e);
+
 // Set a script with optional data that runs when an effect expires
 // Only works for TEMPORARY and PERMANENT effects applied to an object
 //
 // Note: OBJECT_SELF in the script is the object the effect is applied to
 effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data = "");
+
 // Get the data set with NWNX_Effect_SetEffectExpiredScript()
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN A SCRIPT THAT WAS EXECUTED BY NWNX_Effect_SetEffectExpiredScript()
 string NWNX_Effect_GetEffectExpiredData();
+
 // Get the effect creator of NWNX_Effect_SetEffectExpiredScript()
 //
 // THIS SHOULD ONLY BE CALLED FROM WITHIN A SCRIPT THAT WAS EXECUTED BY NWNX_Effect_SetEffectExpiredScript()
 object NWNX_Effect_GetEffectExpiredCreator();
 
-
-const string NWNX_Effect = "NWNX_Effect";
 
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
 {

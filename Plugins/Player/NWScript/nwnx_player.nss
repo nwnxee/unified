@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Player = "NWNX_Player";
+
 struct NWNX_Player_QuickBarSlot
 {
     object oItem;
@@ -170,12 +172,11 @@ void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, strin
 // Returns -1 if they don't have the journal entry
 int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 
-const string NWNX_Player = "NWNX_Player";
-
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 {
     string sFunc = "ForcePlaceableExamineWindow";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -185,6 +186,7 @@ void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable)
 {
     string sFunc = "ForcePlaceableInventoryWindow";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -242,6 +244,7 @@ void NWNX_Player_StopGuiTimingBar(object player, string script = "")
 void NWNX_Player_SetAlwaysWalk(object player, int bWalk=TRUE)
 {
     string sFunc = "SetAlwaysWalk";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, bWalk);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -300,6 +303,7 @@ void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_Qui
 string NWNX_Player_GetBicFileName(object player)
 {
     string sFunc = "GetBicFileName";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
     NWNX_CallFunction(NWNX_Player, sFunc);
     return NWNX_GetReturnValueString(NWNX_Player, sFunc);
@@ -369,6 +373,7 @@ int NWNX_Player_GetVisibilityOverride(object player, object target)
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
 {
     string sFunc = "ShowVisualEffect";
+
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.x);
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.y);
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.z);
@@ -381,6 +386,7 @@ void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
 void NWNX_Player_MusicBackgroundChangeDay(object player, int track)
 {
     string sFunc = "ChangeBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
     NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool day = TRUE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -391,6 +397,7 @@ void NWNX_Player_MusicBackgroundChangeDay(object player, int track)
 void NWNX_Player_MusicBackgroundChangeNight(object player, int track)
 {
     string sFunc = "ChangeBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
     NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool day = FALSE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -401,6 +408,7 @@ void NWNX_Player_MusicBackgroundChangeNight(object player, int track)
 void NWNX_Player_MusicBackgroundStart(object player)
 {
     string sFunc = "PlayBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool play = TRUE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -410,6 +418,7 @@ void NWNX_Player_MusicBackgroundStart(object player)
 void NWNX_Player_MusicBackgroundStop(object player)
 {
     string sFunc = "PlayBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool play = FALSE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -419,6 +428,7 @@ void NWNX_Player_MusicBackgroundStop(object player)
 void NWNX_Player_MusicBattleChange(object player, int track)
 {
     string sFunc = "ChangeBattleMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -428,6 +438,7 @@ void NWNX_Player_MusicBattleChange(object player, int track)
 void NWNX_Player_MusicBattleStart(object player)
 {
     string sFunc = "PlayBattleMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool play = TRUE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -437,6 +448,7 @@ void NWNX_Player_MusicBattleStart(object player)
 void NWNX_Player_MusicBattleStop(object player)
 {
     string sFunc = "PlayBattleMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool play = FALSE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -446,6 +458,7 @@ void NWNX_Player_MusicBattleStop(object player)
 void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_INVALID)
 {
     string sFunc = "PlaySound";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sound);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -456,6 +469,7 @@ void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_I
 void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
 {
     string sFunc = "SetPlaceableUsable";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, usable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -466,6 +480,7 @@ void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
 void NWNX_Player_SetRestDuration(object player, int duration)
 {
     string sFunc = "SetRestDuration";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, duration);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -475,6 +490,7 @@ void NWNX_Player_SetRestDuration(object player, int duration)
 void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect)
 {
     string sFunc = "ApplyInstantVisualEffectToObject";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -485,6 +501,7 @@ void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, 
 void NWNX_Player_UpdateCharacterSheet(object player)
 {
     string sFunc = "UpdateCharacterSheet";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
@@ -504,6 +521,7 @@ void NWNX_Player_OpenInventory(object player, object target, int open = TRUE)
 string NWNX_Player_GetAreaExplorationState(object player, object area)
 {
     string sFunc = "GetAreaExplorationState";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, area);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -514,6 +532,7 @@ string NWNX_Player_GetAreaExplorationState(object player, object area)
 void NWNX_Player_SetAreaExplorationState(object player, object area, string str)
 {
     string sFunc = "SetAreaExplorationState";
+
     NWNX_PushArgumentString(NWNX_Player, sFunc, str);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, area);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -546,6 +565,7 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
 void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect)
 {
     string sFunc = "ApplyLoopingVisualEffectToObject";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -567,6 +587,7 @@ void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, strin
 int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
 {
     string sFunc = "GetQuestCompleted";
+    
     NWNX_PushArgumentString(NWNX_Player, sFunc, sQuestName);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 

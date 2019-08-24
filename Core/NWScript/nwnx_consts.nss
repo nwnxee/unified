@@ -2,6 +2,7 @@
 
 // Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.
 int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation);
+
 // Translates OBJECT_TYPE_* constants to their NWNX equivalent.
 int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType);
 
