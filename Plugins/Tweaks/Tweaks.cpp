@@ -135,7 +135,7 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Setting StringToInt() base to auto to allow for conversion of hex strings to proper values.");
         m_StringToIntBaseToAuto = std::make_unique<StringToIntBaseToAuto>(GetServices()->m_hooks.get());
-    }      
+    }
 
     if (GetServices()->m_config->Get<bool>("DEAD_CREATURES_TRIGGER_ON_AREA_EXIT", false))
     {
