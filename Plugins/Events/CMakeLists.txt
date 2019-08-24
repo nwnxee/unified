@@ -21,4 +21,5 @@ add_plugin(Events
     "Events/TrapEvents.cpp"
     "Events/TimingBarEvents.cpp"
     "Events/LevelEvents.cpp"
-    "Events/PVPEvents.cpp")
+    "Events/PVPEvents.cpp"
+    "Events/InputEvents.cpp")

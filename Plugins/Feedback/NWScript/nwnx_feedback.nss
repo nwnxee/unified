@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Feedback = "NWNX_Feedback";
+
 // Gets if feedback message nMessage is hidden.
 // Notes:
 // If oPC == OBJECT_INVALID it will return the global state:
@@ -96,9 +98,6 @@ void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist);
 // ***
 // For a list of the various combatlog / feedback messages see below.
 // ***
-
-const string NWNX_Feedback = "NWNX_Feedback";
-
 
 int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
 {

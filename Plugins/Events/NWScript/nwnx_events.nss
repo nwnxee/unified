@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Events = "NWNX_Events";
+
 ////////////////////////////////////////////////////////////////////////////////
 /* The following events are exposed by this plugin:
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,6 +153,17 @@
         Variable Name           Type        Notes
         ITEM                    object      Convert to object with NWNX_Object_StringToObject()
         STORE                   object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_SPLIT_BEFORE
+    NWNX_ON_ITEM_SPLIT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player attempting to split an item
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+        NUMBER_SPLIT_OFF        int
 
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
@@ -764,6 +777,20 @@
         Variable Name           Type        Notes
         TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
         ATTITUDE                int         0 = Dislike, 1 = Like
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE
+    NWNX_ON_INPUT_WALK_TO_WAYPOINT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player clicking somewhere
+
+    Event data:
+        Variable Name           Type        Notes
+        AREA                    object      Convert to object with NWNX_Object_StringToObject()
+        POS_X                   float
+        POS_Y                   float
+        POS_Z                   float
+        RUN_TO_POINT            int         TRUE if player is running, FALSE if player is walking (eg when shift clicking)
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -855,46 +882,60 @@ string NWNX_Events_GetCurrentEvent();
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
-    NWNX_PushArgumentString("NWNX_Events", "SUBSCRIBE_EVENT", script);
-    NWNX_PushArgumentString("NWNX_Events", "SUBSCRIBE_EVENT", evt);
-    NWNX_CallFunction("NWNX_Events", "SUBSCRIBE_EVENT");
+    string sFunc = "SUBSCRIBE_EVENT";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, script);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 void NWNX_Events_PushEventData(string tag, string data)
 {
-    NWNX_PushArgumentString("NWNX_Events", "PUSH_EVENT_DATA", data);
-    NWNX_PushArgumentString("NWNX_Events", "PUSH_EVENT_DATA", tag);
-    NWNX_CallFunction("NWNX_Events", "PUSH_EVENT_DATA");
+    string sFunc = "PUSH_EVENT_DATA";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, data);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, tag);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 int NWNX_Events_SignalEvent(string evt, object target)
 {
-    NWNX_PushArgumentObject("NWNX_Events", "SIGNAL_EVENT", target);
-    NWNX_PushArgumentString("NWNX_Events", "SIGNAL_EVENT", evt);
-    NWNX_CallFunction("NWNX_Events", "SIGNAL_EVENT");
-    return NWNX_GetReturnValueInt("NWNX_Events", "SIGNAL_EVENT");
+    string sFunc = "SIGNAL_EVENT";
+
+    NWNX_PushArgumentObject(NWNX_Events, sFunc, target);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Events, sFunc);
 }
 
 string NWNX_Events_GetEventData(string tag)
 {
-    NWNX_PushArgumentString("NWNX_Events", "GET_EVENT_DATA", tag);
-    NWNX_CallFunction("NWNX_Events", "GET_EVENT_DATA");
-    return NWNX_GetReturnValueString("NWNX_Events", "GET_EVENT_DATA");
+    string sFunc = "GET_EVENT_DATA";
+    
+    NWNX_PushArgumentString(NWNX_Events, sFunc, tag);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Events, sFunc);
 }
 
 void NWNX_Events_SkipEvent()
 {
-    NWNX_CallFunction("NWNX_Events", "SKIP_EVENT");
+    string sFunc = "SKIP_EVENT";
+
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 void NWNX_Events_SetEventResult(string data)
 {
-    NWNX_PushArgumentString("NWNX_Events", "EVENT_RESULT", data);
-    NWNX_CallFunction("NWNX_Events", "EVENT_RESULT");
+    string sFunc = "EVENT_RESULT";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, data);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 string NWNX_Events_GetCurrentEvent()
 {
-    NWNX_CallFunction("NWNX_Events", "GET_CURRENT_EVENT");
-    return NWNX_GetReturnValueString("NWNX_Events", "GET_CURRENT_EVENT");
+    string sFunc = "GET_CURRENT_EVENT";
+
+    NWNX_CallFunction(NWNX_Events, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Events, sFunc);
 }
