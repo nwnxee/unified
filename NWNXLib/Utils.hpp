@@ -68,6 +68,7 @@ void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidA
 void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea);
 void AddOnAcquireItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy, API::Types::ObjectID oidFrom, int32_t stackSize);
 void AddOnLoseItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy);
+void AddDestroyObjectEvent(API::Types::ObjectID oid);
 }
 
 }
