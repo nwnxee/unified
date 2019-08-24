@@ -174,7 +174,7 @@ int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 // This will require storing the PC's cd key or community name (depending on how you store in your vault)
 // and bic_filename (NWNX_Player_GetBicFileName) along with routinely updating their location in some
 // persistent method. (OnRest, OnAreaEnter, OnClentExit)
-void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sResRef, object oWP, int bFirstConnectOnly = TRUE);
+void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE);
 
 const string NWNX_Player = "NWNX_Player";
 
@@ -579,13 +579,13 @@ int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
     NWNX_CallFunction(NWNX_Player, sFunc);
     return  NWNX_GetReturnValueInt(NWNX_Player, sFunc);
 }
-void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sResRef, object oWP, int bFirstConnectOnly = TRUE)
+void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE)
 {
     string sFunc = "SetPersistentLocation";
 
     NWNX_PushArgumentInt(NWNX_Player, sFunc, bFirstConnectOnly);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oWP);
-    NWNX_PushArgumentString(NWNX_Player, sFunc, sResRef);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sBicFileName);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sCDKeyOrCommunityName);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
