@@ -1115,7 +1115,7 @@ void Player::LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType cType,
             // We don't need the WP any more if we're only setting the location on first connect
             if (bFirstConnectOnly)
             {
-                pWP->RemoveFromArea();
+                Utils::AddDestroyObjectEvent(pWP->m_idSelf);
             }
         }
     }
