@@ -152,6 +152,17 @@
         ITEM                    object      Convert to object with NWNX_Object_StringToObject()
         STORE                   object      Convert to object with NWNX_Object_StringToObject()
 
+    NWNX_ON_ITEM_SPLIT_BEFORE
+    NWNX_ON_ITEM_SPLIT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player attempting to split an item
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+        NUMBER_SPLIT_OFF        int
+
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
