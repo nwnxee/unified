@@ -366,5 +366,12 @@ void AddOnLoseItemEvent(
     pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
 }
 
+void AddDestroyObjectEvent(API::Types::ObjectID oid)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
+}
+
 }
 }
