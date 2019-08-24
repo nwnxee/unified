@@ -373,5 +373,6 @@ void AddDestroyObjectEvent(API::Types::ObjectID oid)
     pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
 }
 
+
 }
 }
