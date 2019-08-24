@@ -1074,18 +1074,18 @@ void Player::LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType cType,
     if (cType == Services::Hooks::CallType::AFTER_ORIGINAL && !g_plugin->m_PersistentLocationWP.empty())
     {
         std::string sKey;
-        std::string sResRef = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
+        std::string sBicFileName = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
         if (Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
         {
             std::string sCommunityName = pPlayer->GetPlayerName().CStr();
-            sKey = sCommunityName + "!" + sResRef;
+            sKey = sCommunityName + "!" + sBicFileName;
         }
         else
         {
             auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
             auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
             std::string sCDKey = pPlayerInfo->GetPublicCDKey(0).CStr();
-            sKey = sCDKey + "!" + sResRef;
+            sKey = sCDKey + "!" + sBicFileName;
         }
         auto wpOID = g_plugin->m_PersistentLocationWP[sKey].first;
         if (!wpOID)
@@ -1125,11 +1125,11 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
 {
     ArgumentStack stack;
     const auto sCDKeyOrCommunityName = Services::Events::ExtractArgument<std::string>(args);
-    const auto sResRef = Services::Events::ExtractArgument<std::string>(args);
+    const auto sBicFileName = Services::Events::ExtractArgument<std::string>(args);
     const auto wpOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto bFirstConnectOnly = Services::Events::ExtractArgument<int32_t>(args);
 
-    std::string sKey = sCDKeyOrCommunityName + "!" + sResRef;
+    std::string sKey = sCDKeyOrCommunityName + "!" + sBicFileName;
     g_plugin->m_PersistentLocationWP[sKey] = std::make_pair(wpOid, bFirstConnectOnly);
 
     return stack;
