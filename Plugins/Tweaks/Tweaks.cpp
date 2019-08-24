@@ -142,7 +142,7 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         LOG_INFO("Dead creatures will fire on area exit.");
         m_DeadCreatureFiresOnAreaExit = std::make_unique<DeadCreatureFiresOnAreaExit>(GetServices()->m_hooks.get());
     }
-      
+
     if (GetServices()->m_config->Get<bool>("PRESERVE_ACTIONS_ON_DM_POSSESS", false))
     {
         LOG_INFO("DMs possessing a creature will no longer clear their actions");
