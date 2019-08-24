@@ -48,9 +48,6 @@ private:
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
-    static void LoadCharacterFinishHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CServerExoAppInternal*,
-                                        NWNXLib::API::CNWSPlayer*, int32_t, int32_t);
-
     std::map<std::string, NWNXLib::API::ObjectVisualTransformData> m_OVTData;
     std::map<std::string, std::set<uint16_t>> m_LVEData;
     std::unordered_map<std::string, std::pair<NWNXLib::API::Types::ObjectID, bool>> m_PersistentLocationWP;
