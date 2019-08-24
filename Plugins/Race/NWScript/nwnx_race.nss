@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Race = "NWNX_Race";
+
 const int NWNX_RACE_MODIFIER_INVALID       = 0;
 const int NWNX_RACE_MODIFIER_AB            = 1;
 const int NWNX_RACE_MODIFIER_ABVSRACE      = 2;
@@ -29,8 +31,6 @@ void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 =
 
 // Returns the parent race if applicable, if not it just returns the race passed in
 int NWNX_Race_GetParentRace(int iRace);
-
-const string NWNX_Race = "NWNX_Race";
 
 
 void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF)

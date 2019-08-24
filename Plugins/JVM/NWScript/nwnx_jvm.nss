@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_JVM = "NWNX_JVM";
+
 /*
   This sends event 'ev' to your JVM. Does not return anything.
 */
@@ -8,7 +10,9 @@ void NWNX_JVM_EVENT(string ev, object caller = OBJECT_SELF);
 
 void NWNX_JVM_EVENT(string ev, object caller = OBJECT_SELF)
 {
-    NWNX_PushArgumentObject("NWNX_JVM", "Event", caller);
-    NWNX_PushArgumentString("NWNX_JVM", "Event", ev);
-    NWNX_CallFunction("NWNX_JVM", "Event");
+    string sFunc = "Event";
+
+    NWNX_PushArgumentObject(NWNX_JVM, sFunc, caller);
+    NWNX_PushArgumentString(NWNX_JVM, sFunc, ev);
+    NWNX_CallFunction(NWNX_JVM, sFunc);
 }

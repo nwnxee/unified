@@ -25,6 +25,7 @@
 #include "Events/TimingBarEvents.hpp"
 #include "Events/LevelEvents.hpp"
 #include "Events/PVPEvents.hpp"
+#include "Events/InputEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -106,6 +107,7 @@ Events::Events(const Plugin::CreateParams& params)
     m_timingBarEvents   = std::make_unique<TimingBarEvents>(GetServices()->m_hooks);
     m_levelEvents       = std::make_unique<LevelEvents>(GetServices()->m_hooks);
     m_PVPEvents         = std::make_unique<PVPEvents>(GetServices()->m_hooks);
+    m_inputEvents       = std::make_unique<InputEvents>(GetServices()->m_hooks);
 }
 
 Events::~Events()

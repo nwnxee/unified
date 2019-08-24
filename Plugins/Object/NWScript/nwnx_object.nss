@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Object = "NWNX_Object";
+
 // Area event handlers
 const int NWNX_OBJECT_SCRIPT_AREA_ON_HEARTBEAT                  = 0;
 const int NWNX_OBJECT_SCRIPT_AREA_ON_USER_DEFINED               = 1;
@@ -176,9 +178,6 @@ void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0);
 // Remove an icon effect from an object that was added by the
 // NWNX_Object_AddIconEffect function.
 void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
-
-const string NWNX_Object = "NWNX_Object";
-
 
 int NWNX_Object_GetLocalVariableCount(object obj)
 {

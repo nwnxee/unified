@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Time = "NWNX_Time";
+
 // Returns the current date in the format (mm/dd/yyyy)
 string NWNX_Time_GetSystemDate();
 
@@ -16,8 +18,6 @@ struct NWNX_Time_HighResTimestamp
 };
 struct NWNX_Time_HighResTimestamp NWNX_Time_GetHighResTimeStamp();
 
-
-const string NWNX_Time = "NWNX_Time";
 
 string NWNX_Time_GetSystemDate()
 {

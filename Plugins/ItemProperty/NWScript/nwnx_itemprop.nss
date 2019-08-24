@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_ItemProperty = "NWNX_ItemProperty";
+
 struct NWNX_IPUnpacked
 {
     int nItemPropertyId;
@@ -23,8 +25,6 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip);
 // Convert unpacked itemproperty structure to native type
 itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked ip);
 
-
-const string NWNX_ItemProperty = "NWNX_ItemProperty";
 
 struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
 {

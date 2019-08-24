@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Administration = "NWNX_Administration";
+
 const int NWNX_ADMINISTRATION_OPTION_ALL_KILLABLE               = 0;  // TRUE/FALSE
 const int NWNX_ADMINISTRATION_OPTION_NON_PARTY_KILLABLE         = 1;  // TRUE/FALSE
 const int NWNX_ADMINISTRATION_OPTION_REQUIRE_RESURRECTION       = 2;  // TRUE/FALSE
@@ -55,13 +57,16 @@ void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup = 
 // Ban a given IP - get via GetPCIPAddress()
 void NWNX_Administration_AddBannedIP(string ip);
 void NWNX_Administration_RemoveBannedIP(string ip);
+
 // Ban a given public cdkey - get via GetPCPublicCDKey
 void NWNX_Administration_AddBannedCDKey(string key);
 void NWNX_Administration_RemoveBannedCDKey(string key);
+
 // Ban a given player name - get via GetPCPlayerName
 // NOTE: Players can easily change their names
 void NWNX_Administration_AddBannedPlayerName(string playername);
 void NWNX_Administration_RemoveBannedPlayerName(string playername);
+
 // Get a list of all banned IPs/Keys/names as a string
 string NWNX_Administration_GetBannedList();
 
@@ -81,36 +86,48 @@ void NWNX_Administration_DeleteTURD(string playerName, string characterName);
 
 string NWNX_Administration_GetPlayerPassword()
 {
-    NWNX_CallFunction("NWNX_Administration", "GET_PLAYER_PASSWORD");
-    return NWNX_GetReturnValueString("NWNX_Administration", "GET_PLAYER_PASSWORD");
+    string sFunc = "GET_PLAYER_PASSWORD";
+
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_SetPlayerPassword(string password)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "SET_PLAYER_PASSWORD", password);
-    NWNX_CallFunction("NWNX_Administration", "SET_PLAYER_PASSWORD");
+    string sFunc = "SET_PLAYER_PASSWORD";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, password);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_ClearPlayerPassword()
 {
-    NWNX_CallFunction("NWNX_Administration", "CLEAR_PLAYER_PASSWORD");
+    string sFunc = "CLEAR_PLAYER_PASSWORD";
+
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 string NWNX_Administration_GetDMPassword()
 {
-    NWNX_CallFunction("NWNX_Administration", "GET_DM_PASSWORD");
-    return NWNX_GetReturnValueString("NWNX_Administration", "GET_DM_PASSWORD");
+    string sFunc = "GET_DM_PASSWORD";
+
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_SetDMPassword(string password)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "SET_DM_PASSWORD", password);
-    NWNX_CallFunction("NWNX_Administration", "SET_DM_PASSWORD");
+    string sFunc = "SET_DM_PASSWORD";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, password);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_ShutdownServer()
 {
-    NWNX_CallFunction("NWNX_Administration", "SHUTDOWN_SERVER");
+    string sFunc = "SHUTDOWN_SERVER";
+
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_BootPCWithMessage(object pc, int strref)
@@ -121,78 +138,104 @@ void NWNX_Administration_BootPCWithMessage(object pc, int strref)
 
 void NWNX_Administration_DeletePlayerCharacter(object pc, int bPreserveBackup)
 {
-    NWNX_PushArgumentInt("NWNX_Administration", "DELETE_PLAYER_CHARACTER", bPreserveBackup);
-    NWNX_PushArgumentObject("NWNX_Administration", "DELETE_PLAYER_CHARACTER", pc);
-    NWNX_CallFunction("NWNX_Administration", "DELETE_PLAYER_CHARACTER");
+    string sFunc = "DELETE_PLAYER_CHARACTER";
+
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, bPreserveBackup);
+    NWNX_PushArgumentObject(NWNX_Administration, sFunc, pc);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_AddBannedIP(string ip)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_IP", ip);
-    NWNX_CallFunction("NWNX_Administration", "ADD_BANNED_IP");
+    string sFunc = "ADD_BANNED_IP";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, ip);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_RemoveBannedIP(string ip)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_IP", ip);
-    NWNX_CallFunction("NWNX_Administration", "REMOVE_BANNED_IP");
+    string sFunc = "REMOVE_BANNED_IP";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, ip);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_AddBannedCDKey(string key)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_CDKEY", key);
-    NWNX_CallFunction("NWNX_Administration", "ADD_BANNED_CDKEY");
+    string sFunc = "ADD_BANNED_CDKEY";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, key);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_RemoveBannedCDKey(string key)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_CDKEY", key);
-    NWNX_CallFunction("NWNX_Administration", "REMOVE_BANNED_CDKEY");
+    string sFunc = "REMOVE_BANNED_CDKEY";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, key);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_AddBannedPlayerName(string playername)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "ADD_BANNED_PLAYER_NAME", playername);
-    NWNX_CallFunction("NWNX_Administration", "ADD_BANNED_PLAYER_NAME");
+    string sFunc = "ADD_BANNED_PLAYER_NAME";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, playername);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_RemoveBannedPlayerName(string playername)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "REMOVE_BANNED_PLAYER_NAME", playername);
-    NWNX_CallFunction("NWNX_Administration", "REMOVE_BANNED_PLAYER_NAME");
+    string sFunc = "REMOVE_BANNED_PLAYER_NAME";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, playername);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 string NWNX_Administration_GetBannedList()
 {
-    NWNX_CallFunction("NWNX_Administration", "GET_BANNED_LIST");
-    return NWNX_GetReturnValueString("NWNX_Administration", "GET_BANNED_LIST");
+    string sFunc = "GET_BANNED_LIST";
+
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
 }
 
 
 void NWNX_Administration_SetModuleName(string name)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "SET_MODULE_NAME", name);
-    NWNX_CallFunction("NWNX_Administration", "SET_MODULE_NAME");
+    string sFunc = "SET_MODULE_NAME";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, name);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_SetServerName(string name)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "SET_SERVER_NAME", name);
-    NWNX_CallFunction("NWNX_Administration", "SET_SERVER_NAME");
+    string sFunc = "SET_SERVER_NAME";
+    
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, name);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 int NWNX_Administration_GetPlayOption(int option)
 {
-    NWNX_PushArgumentInt("NWNX_Administration", "GET_PLAY_OPTION", option);
-    NWNX_CallFunction("NWNX_Administration", "GET_PLAY_OPTION");
+    string sFunc = "GET_PLAY_OPTION";
 
-    return NWNX_GetReturnValueInt("NWNX_Administration", "GET_PLAY_OPTION");
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, option);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_SetPlayOption(int option, int value)
 {
-    NWNX_PushArgumentInt("NWNX_Administration", "SET_PLAY_OPTION", value);
-    NWNX_PushArgumentInt("NWNX_Administration", "SET_PLAY_OPTION", option);
-    NWNX_CallFunction("NWNX_Administration", "SET_PLAY_OPTION");
+    string sFunc = "SET_PLAY_OPTION";
+
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, option);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_DeleteTURD(string playerName, string characterName)
 {
-    NWNX_PushArgumentString("NWNX_Administration", "DELETE_TURD", characterName);
-    NWNX_PushArgumentString("NWNX_Administration", "DELETE_TURD", playerName);
-    NWNX_CallFunction("NWNX_Administration", "DELETE_TURD");
+    string sFunc = "DELETE_TURD";
+
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, characterName);
+    NWNX_PushArgumentString(NWNX_Administration, sFunc, playerName);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }

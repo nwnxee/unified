@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Util = "NWNX_Util";
+
 const int NWNX_UTIL_RESREF_TYPE_NSS       = 2009;
 const int NWNX_UTIL_RESREF_TYPE_NCS       = 2010;
 const int NWNX_UTIL_RESREF_TYPE_AREA_ARE  = 2012;
@@ -67,9 +69,6 @@ int NWNX_Util_GetServerTicksPerSecond();
 //                NWNX equivalent.
 // * Return value: The last created object. On error, this returns OBJECT_INVALID.
 object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
-
-
-const string NWNX_Util = "NWNX_Util";
 
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
