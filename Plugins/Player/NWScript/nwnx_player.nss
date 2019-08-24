@@ -178,8 +178,6 @@ int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 // persistent method. (OnRest, OnAreaEnter, OnClentExit)
 void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE);
 
-const string NWNX_Player = "NWNX_Player";
-
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 {
