@@ -2,7 +2,7 @@
 
 ## Description
 
-This plugin allows for the builder to add new races or subraces and define many traits for the races via 2da entry or scripting.
+This plugin allows for the builder to add new races or subraces and define many traits for the races via 2da entry or scripting. This plugin also applies effects, and weapon properties, versus a parent race to effect a child race, as well as effects vs that specific child race.
 
 ## Environmental Variables
 

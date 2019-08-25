@@ -26,6 +26,7 @@ static Hooking::FunctionHook* m_RunUnequipHook = nullptr;
 static Hooking::FunctionHook* m_ItemEventHandlerHook = nullptr;
 static Hooking::FunctionHook* m_UseLoreOnItemHook = nullptr;
 static Hooking::FunctionHook* m_PayToIdenfifyItemHook = nullptr;
+static Hooking::FunctionHook* m_SplitItemHook = nullptr;
 
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
@@ -77,6 +78,11 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_PAY_TO_IDENTIFY_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::CNWSCreature__PayToIdentifyItem>(&PayToIdentifyItemHook);
         m_PayToIdenfifyItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__PayToIdentifyItem);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_SPLIT_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__SplitItem>(&SplitItemHook);
+        m_SplitItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__SplitItem);
     });
 }
 
@@ -387,6 +393,22 @@ void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID it
     }
 
     PushAndSignal("NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER");
+}
+
+void ItemEvents::SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItem, int32_t nNumberToSplitOff)
+{
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem->m_idSelf));
+        Events::PushEventData("NUMBER_SPLIT_OFF", std::to_string(nNumberToSplitOff));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_SPLIT_BEFORE"))
+    {
+        m_SplitItemHook->CallOriginal<void>(thisPtr, pItem, nNumberToSplitOff);
+    }
+
+    PushAndSignal("NWNX_ON_ITEM_SPLIT_AFTER");
 }
 
 }

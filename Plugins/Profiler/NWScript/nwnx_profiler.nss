@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Profiler = "NWNX_Profiler";
+
 // These functions are for advanced users to instrument their nwscript code.
 
 // Push a timing metric scope - note that every push must be matched by a corresponding pop.
@@ -24,20 +26,25 @@ void NWNX_Profiler_PushPerfScope(string name, string tag0_tag = "", string tag0_
 // Pops a timing metric - one must already be pushed.
 void NWNX_Profiler_PopPerfScope();
 
+
 void NWNX_Profiler_PushPerfScope(string name, string tag0_tag = "", string tag0_value = "")
 {
-    NWNX_PushArgumentString("NWNX_Profiler", "PUSH_PERF_SCOPE", name);
+    string sFunc = "PUSH_PERF_SCOPE";
+
+    NWNX_PushArgumentString(NWNX_Profiler, sFunc, name);
 
     if (tag0_value != "" && tag0_tag != "")
     {
-        NWNX_PushArgumentString("NWNX_Profiler", "PUSH_PERF_SCOPE", tag0_value);
-        NWNX_PushArgumentString("NWNX_Profiler", "PUSH_PERF_SCOPE", tag0_tag);
+        NWNX_PushArgumentString(NWNX_Profiler, sFunc, tag0_value);
+        NWNX_PushArgumentString(NWNX_Profiler, sFunc, tag0_tag);
     }
 
-    NWNX_CallFunction("NWNX_Profiler", "PUSH_PERF_SCOPE");
+    NWNX_CallFunction(NWNX_Profiler, sFunc);
 }
 
 void NWNX_Profiler_PopPerfScope()
 {
-    NWNX_CallFunction("NWNX_Profiler", "POP_PERF_SCOPE");
+    string sFunc = "POP_PERF_SCOPE";
+
+    NWNX_CallFunction(NWNX_Profiler, sFunc);
 }

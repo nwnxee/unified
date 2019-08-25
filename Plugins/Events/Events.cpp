@@ -24,6 +24,8 @@
 #include "Events/TrapEvents.hpp"
 #include "Events/TimingBarEvents.hpp"
 #include "Events/LevelEvents.hpp"
+#include "Events/PVPEvents.hpp"
+#include "Events/InputEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
@@ -104,6 +106,8 @@ Events::Events(const Plugin::CreateParams& params)
     m_trapEvents        = std::make_unique<TrapEvents>(GetServices()->m_hooks);
     m_timingBarEvents   = std::make_unique<TimingBarEvents>(GetServices()->m_hooks);
     m_levelEvents       = std::make_unique<LevelEvents>(GetServices()->m_hooks);
+    m_PVPEvents         = std::make_unique<PVPEvents>(GetServices()->m_hooks);
+    m_inputEvents       = std::make_unique<InputEvents>(GetServices()->m_hooks);
 }
 
 Events::~Events()
@@ -275,15 +279,19 @@ Services::Events::ArgumentStack Events::OnEventResult(Services::Events::Argument
 
 Services::Events::ArgumentStack Events::OnGetCurrentEvent(Services::Events::ArgumentStack&&)
 {
+    std::string retVal;
+
     if (m_eventDepth == 0 || m_eventData.empty())
     {
-        throw std::runtime_error("Attempted to get the current event in an invalid context.");
+        retVal = "";
+    }
+    else
+    {
+        retVal = g_plugin->m_eventData.top().m_EventName;
     }
 
-    std::string eventName = g_plugin->m_eventData.top().m_EventName;
-
     Services::Events::ArgumentStack stack;
-    Services::Events::InsertArgument(stack, eventName);
+    Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
 

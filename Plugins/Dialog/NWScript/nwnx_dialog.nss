@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Dialog = "NWNX_Dialog";
+
 const int NWNX_DIALOG_NODE_TYPE_INVALID                = -1;
 const int NWNX_DIALOG_NODE_TYPE_STARTING_NODE          = 0;
 const int NWNX_DIALOG_NODE_TYPE_ENTRY_NODE             = 1;
@@ -45,11 +47,10 @@ string NWNX_Dialog_GetCurrentNodeText(int language=NWNX_DIALOG_LANGUAGE_ENGLISH,
 void NWNX_Dialog_SetCurrentNodeText(string text, int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE);
 
 
-const string NWNX_Dialog = "NWNX_Dialog";
-
 int NWNX_Dialog_GetCurrentNodeType()
 {
     string sFunc = "GetCurrentNodeType";
+
     NWNX_CallFunction(NWNX_Dialog, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
 }
@@ -57,6 +58,7 @@ int NWNX_Dialog_GetCurrentNodeType()
 int NWNX_Dialog_GetCurrentScriptType()
 {
     string sFunc = "GetCurrentScriptType";
+
     NWNX_CallFunction(NWNX_Dialog, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
 }
@@ -64,6 +66,7 @@ int NWNX_Dialog_GetCurrentScriptType()
 int NWNX_Dialog_GetCurrentNodeID()
 {
     string sFunc = "GetCurrentNodeID";
+
     NWNX_CallFunction(NWNX_Dialog, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
 }
@@ -71,6 +74,7 @@ int NWNX_Dialog_GetCurrentNodeID()
 int NWNX_Dialog_GetCurrentNodeIndex()
 {
     string sFunc = "GetCurrentNodeIndex";
+
     NWNX_CallFunction(NWNX_Dialog, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Dialog, sFunc);
 }
@@ -78,6 +82,7 @@ int NWNX_Dialog_GetCurrentNodeIndex()
 string NWNX_Dialog_GetCurrentNodeText(int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE)
 {
     string sFunc = "GetCurrentNodeText";
+
     NWNX_PushArgumentInt(NWNX_Dialog, sFunc, gender);
     NWNX_PushArgumentInt(NWNX_Dialog, sFunc, language);
     NWNX_CallFunction(NWNX_Dialog, sFunc);
@@ -87,6 +92,7 @@ string NWNX_Dialog_GetCurrentNodeText(int language=NWNX_DIALOG_LANGUAGE_ENGLISH,
 void NWNX_Dialog_SetCurrentNodeText(string text, int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE)
 {
     string sFunc = "SetCurrentNodeText";
+    
     NWNX_PushArgumentInt(NWNX_Dialog, sFunc, gender);
     NWNX_PushArgumentInt(NWNX_Dialog, sFunc, language);
     NWNX_PushArgumentString(NWNX_Dialog, sFunc, text);

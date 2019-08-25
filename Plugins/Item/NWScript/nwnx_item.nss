@@ -61,6 +61,7 @@ int NWNX_Item_GetBaseArmorClass(object oItem);
 // Get oItem's minimum level needed to equip
 int NWNX_Item_GetMinEquipLevel(object oItem);
 
+
 void NWNX_Item_SetWeight(object oItem, int w)
 {
     string sFunc = "SetWeight";

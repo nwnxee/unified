@@ -14,6 +14,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Core: Allow changing default plugin state from 'load all' to 'skip all' with the following environment variable: `NWNX_CORE_SKIP_ALL=y`. Use `NWNX_PLUGIN_SKIP=n` to enable specific plugins in this case.
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
 - Core: Added the environment variable `NWNX_CORE_SHUTDOWN_SCRIPT=scriptname` which lets you set a nwscript that runs when the server shuts down
+- Core: Added Util functions to call various script events
 - Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents, InventoryEvents, BarterEvents, TrapEvents, TimingBarEvents, LevelEvents, WebHookEvents
 - Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents, QuickChatEvents, InventoryEvents, BarterEvents (START only), TrapEvents, StickyPlayerNameReservedEvent
 - Events: You can now get the current event name with a nwscript function
@@ -33,14 +34,20 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added WebHook Success/Failure events with rate limit feedback
 - Events: Added UseLoreOnItem and PayToIdentifyItem events
 - Events: Added {Add|Remove}Gold events to InventoryEvents
+- Events: Added PVP Attitude Change event
+- Events: Added SplitItem event to ItemEvents
+- Events: Added WalkToWaypoint event to InputEvents
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
 - Tweaks: DisableQuickSave
 - Tweaks: HideDMsOnCharList
 - Tweaks: DisableMonkAbilitiesWhenPolymorphed
 - Tweaks: StringToIntBaseToAuto
+- Tweaks: DeadCreatureFiresOnAreaExit
+- Tweaks: PreserveActionsOnDMPossess
 - Weapon: Feat and Base Item names were added to LOG_INFO feedback
 - WebHook: Added support for richer Slack-compatible messages
+- Util: Added the environment variable `NWNX_UTIL_PRE_MODULE_START_SCRIPT=scriptname` which lets you set a nwscript that runs before the OnModuleLoad event
 ##### New Plugins
 The following plugins were added:
 - **Appearance**: Allows the appearance and some other things of creatures to be overridden per player
@@ -171,6 +178,7 @@ The following plugins were added:
 - Player: ApplyLoopingVisualEffectToObject()
 - Player: SetPlaceableNameOverride()
 - Player: GetQuestCompleted()
+- Player: SetPersistentLocation()
 - Race: SetRacialModifier()
 - Race: GetParentRace()
 - Regex: Search()

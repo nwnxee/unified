@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Area = "NWNX_Area";
+
 const int NWNX_AREA_PVP_SETTING_NO_PVP              = 0;
 const int NWNX_AREA_PVP_SETTING_PARTY_PVP           = 1;
 const int NWNX_AREA_PVP_SETTING_FULL_PVP            = 2;
@@ -123,9 +125,6 @@ int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int
 //
 // NOTE: Requires clients to re-enter the area for it to take effect
 void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
-
-
-const string NWNX_Area = "NWNX_Area";
 
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)

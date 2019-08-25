@@ -23,6 +23,7 @@ public:
 private:
     int32_t m_RenameOnModuleCharList;
     bool m_RenameOnPlayerList;
+    bool m_RenameAllowDM;
 
     static void WriteGameObjUpdate_UpdateObjectHook(
             Services::Hooks::CallType,
