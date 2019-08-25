@@ -48,7 +48,7 @@ void MaxLevel::ReloadAllHook(Services::Hooks::CallType type, CNWRules* pRules)
 int32_t MaxLevel::CNWSCreatureStats__CanLevelUp_hook(CNWSCreatureStats* pStats)
 {
     auto pCreature = pStats->m_pBaseCreature;
-    if ((pCreature->m_nAssociateType >= 5 && pCreature->m_nAssociateType <=8) || pCreature->m_nAssociateType == 2)
+    if ((pCreature->m_nAssociateType >= 5 && pCreature->m_nAssociateType <= 8) || pCreature->m_nAssociateType == 2)
     {
         return false;
     }
