@@ -12,7 +12,7 @@
 #include "Tweaks/StringToIntBaseToAuto.hpp"
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
 #include "Tweaks/PreserveActionsOnDMPossess.hpp"
-#include "Tweaks/MaxLevel.hp
+#include "Tweaks/MaxLevel.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -148,6 +148,7 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("DMs possessing a creature will no longer clear their actions");
         m_PreserveActionsOnDMPossess = std::make_unique<PreserveActionsOnDMPossess>(GetServices()->m_hooks.get());
+    }
 
     auto maxLevel = GetServices()->m_config->Get<int32_t>("MAX_LEVEL", 40);
     if (maxLevel != 40)
