@@ -14,10 +14,17 @@ public:
 
 private:
     static void ReloadAllHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWRules* rules);
-    static int32_t CNWSCreatureStats__CanLevelUp_hook(NWNXLib::API::CNWSCreatureStats*);
-    static NWNXLib::Hooking::FunctionHook* pCanLevelUp_hook;
+    static void LoadSpellGainTableHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWClass* pClass, NWNXLib::API::CExoString *pTable);
+    static uint8_t GetSpellGainHook(NWNXLib::API::CNWClass*, uint8_t, uint8_t);
+    static uint8_t GetSpellsKnownPerLevelHook(NWNXLib::API::CNWClass *, uint8_t, uint8_t, uint8_t, uint16_t, uint8_t);
+    static int32_t CanLevelUpHook(NWNXLib::API::CNWSCreatureStats*);
+    static void SummonAssociateHook(NWNXLib::API::CNWSCreature *, NWNXLib::API::CResRef, NWNXLib::API::CExoString *, uint16_t);
+    static void LevelDownHook(NWNXLib::API::CNWSCreatureStats *, NWNXLib::API::CNWLevelStats *);
+    static NWNXLib::Hooking::FunctionHook* pCanLevelUpHook;
     static uint8_t m_maxLevel;
     static uint32_t m_nExperienceTableAdded[20];
+    static std::unordered_map<uint16_t, std::unordered_map<uint8_t, std::unordered_map<uint8_t, uint8_t>>> m_nSpellGainTableAdded;
+    static std::unordered_map<uint16_t, std::unordered_map<uint8_t, uint8_t>> m_nSpellLevelsPerLevelAdded;
 };
 
 }
