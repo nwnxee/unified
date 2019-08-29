@@ -51,7 +51,9 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
         "Daz",
         "daztek@gmail.com",
         1,
-        true
+        true,
+        0,
+        8186
     };
 }
 
@@ -468,7 +470,6 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     pCreatureStats->GetAbilityModsFromFeats(&pCreatureStats->m_lstFeats, nMods, true, false);
 
     // Get our base ability stats
-
     nAbility[Ability::Strength] = (pCreature->m_bIsPolymorphed ?
             pCreature->m_nPrePolymorphSTR : pCreatureStats->m_nStrengthBase) + nMods[Ability::Strength];
     nAbility[Ability::Dexterity] = (pCreature->m_bIsPolymorphed ?
@@ -593,8 +594,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     uint16_t nSkillPointsRemaining = 0;
 
     std::vector<uint8_t> listSkillRanks;
-    listSkillRanks.resize(pRules->m_nNumSkills);
-    std::fill(listSkillRanks.begin(), listSkillRanks.end(), 0);
+    listSkillRanks.resize(pRules->m_nNumSkills, 0);
 
     std::set<uint16_t> listFeats;
     std::set<uint16_t> listChosenFeats;
