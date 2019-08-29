@@ -25,6 +25,7 @@ private:
     static void ItemEventHandlerHook(NWNXLib::API::CNWSItem*, uint32_t, NWNXLib::API::Types::ObjectID, void*, uint32_t, uint32_t);
     static int32_t UseLoreOnItemHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID);
     static void PayToIdentifyItemHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID);
+    static void SplitItemHook(NWNXLib::API::CNWSCreature*, NWNXLib::API::CNWSItem*, int32_t);
 };
 
 }

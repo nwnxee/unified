@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerInfo.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
@@ -24,6 +25,9 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSJournal.hpp"
+#include "API/CNWSWaypoint.hpp"
+#include "API/CNetLayer.hpp"
+#include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
@@ -94,6 +98,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(ApplyLoopingVisualEffectToObject);
     REGISTER(SetPlaceableNameOverride);
     REGISTER(GetQuestCompleted);
+    REGISTER(SetPersistentLocation);
 
 #undef REGISTER
 
@@ -1061,6 +1066,79 @@ ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
     }
 
     Services::Events::InsertArgument(stack, retval);
+    return stack;
+}
+
+ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
+{
+    static bool bSetPersistentLocationHook;
+    if (!bSetPersistentLocationHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__LoadCharacterFinish, void>(
+                +[](Services::Hooks::CallType cType, CServerExoAppInternal*, CNWSPlayer *pPlayer, int32_t, int32_t) -> void
+                {
+                    if (cType == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    {
+                        std::string sKey;
+                        std::string sBicFileName = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
+                        if (Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_PersistantWorldOptions.bServerVaultByPlayerName)
+                        {
+                            std::string sCommunityName = pPlayer->GetPlayerName().CStr();
+                            sKey = sCommunityName + "!" + sBicFileName;
+                        }
+                        else
+                        {
+                            auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+                            auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
+                            std::string sCDKey = pPlayerInfo->GetPublicCDKey(0).CStr();
+                            sKey = sCDKey + "!" + sBicFileName;
+                        }
+                        auto wpOID = g_plugin->m_PersistentLocationWP[sKey].first;
+                        if (!wpOID)
+                            return;
+
+                        auto bFirstConnectOnly = g_plugin->m_PersistentLocationWP[sKey].second;
+
+                        // Delete the key if this is the first connect and we're only setting the location on first connect
+                        if (bFirstConnectOnly && !Utils::GetModule()->GetPlayerTURDFromList(pPlayer))
+                        {
+                            g_plugin->m_PersistentLocationWP.erase(sKey);
+                        }
+                            // The TURD exists already meaning its not the first connect
+                        else if (bFirstConnectOnly)
+                            return;
+
+                        // Fake some changes to their area/position as though they had a TURD
+                        auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
+                        if (pWP)
+                        {
+                            auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+                            pCreature->m_oidDesiredArea = pWP->m_oidArea;
+                            pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
+                            pCreature->m_bDesiredAreaUpdateComplete = false;
+                            pCreature->m_vOrientation = pWP->m_vOrientation;
+                            pPlayer->m_bFromTURD = true;
+                            // We don't need the WP any more if we're only setting the location on first connect
+                            if (bFirstConnectOnly)
+                            {
+                                Utils::AddDestroyObjectEvent(pWP->m_idSelf);
+                            }
+                        }
+                    }
+                });
+
+        bSetPersistentLocationHook = true;
+    }
+
+    ArgumentStack stack;
+    const auto sCDKeyOrCommunityName = Services::Events::ExtractArgument<std::string>(args);
+    const auto sBicFileName = Services::Events::ExtractArgument<std::string>(args);
+    const auto wpOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto bFirstConnectOnly = Services::Events::ExtractArgument<int32_t>(args);
+
+    std::string sKey = sCDKeyOrCommunityName + "!" + sBicFileName;
+    g_plugin->m_PersistentLocationWP[sKey] = std::make_pair(wpOid, bFirstConnectOnly);
+
     return stack;
 }
 

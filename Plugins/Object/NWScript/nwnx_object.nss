@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_Object = "NWNX_Object";
+
 // Area event handlers
 const int NWNX_OBJECT_SCRIPT_AREA_ON_HEARTBEAT                  = 0;
 const int NWNX_OBJECT_SCRIPT_AREA_ON_USER_DEFINED               = 1;
@@ -168,9 +170,14 @@ string NWNX_Object_GetTriggerGeometry(object oTrigger);
 // Example: "{1.0, 1.0, 0.0}{4.0, 1.0, 0.0}{4.0, 4.0, 0.0}{1.0, 4.0, 0.0}"
 void NWNX_Object_SetTriggerGeometry(object oTrigger, string sGeometry);
 
+// Add an effect to an object that displays an icon and has no other effect.
+// See effecticons.2da for a list of possible effect icons. If a duration is
+// specified, the effect is temporary, otherwise it's permanent.
+void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0);
 
-const string NWNX_Object = "NWNX_Object";
-
+// Remove an icon effect from an object that was added by the
+// NWNX_Object_AddIconEffect function.
+void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 
 int NWNX_Object_GetLocalVariableCount(object obj)
 {
@@ -461,5 +468,24 @@ void NWNX_Object_SetTriggerGeometry(object oTrigger, string sGeometry)
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sGeometry);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oTrigger);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0)
+{
+    string sFunc = "AddIconEffect";
+
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, fDuration);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nIcon);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
+{
+    string sFunc = "RemoveIconEffect";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nIcon);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }

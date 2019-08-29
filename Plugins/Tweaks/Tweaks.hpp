@@ -16,6 +16,8 @@ class PreserveDepletedItems;
 class HideDMsOnCharList;
 class DisableMonkAbilitiesWhenPolymorphed;
 class StringToIntBaseToAuto;
+class DeadCreatureFiresOnAreaExit;
+class PreserveActionsOnDMPossess;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -35,6 +37,8 @@ private:
     std::unique_ptr<HideDMsOnCharList> m_HideDMsOnCharList;
     std::unique_ptr<DisableMonkAbilitiesWhenPolymorphed> m_DisableMonkAbilitiesWhenPolymorphed;
     std::unique_ptr<StringToIntBaseToAuto> m_StringToIntBaseToAuto;
+    std::unique_ptr<DeadCreatureFiresOnAreaExit> m_DeadCreatureFiresOnAreaExit;
+    std::unique_ptr<PreserveActionsOnDMPossess> m_PreserveActionsOnDMPossess;
 };
 
 }

@@ -1,22 +1,31 @@
 #include "nwnx"
 
+const string NWNX_Lua = "NWNX_Lua";
+
+
 void NWNX_Lua_EvalVoid(string sCode)
 {
-    NWNX_PushArgumentString("NWNX_Lua", "EVALVOID", sCode);
-    NWNX_CallFunction("NWNX_Lua", "EVALVOID");
+    string sFunc = "EVALVOID";
+
+    NWNX_PushArgumentString(NWNX_Lua, sFunc, sCode);
+    NWNX_CallFunction(NWNX_Lua, sFunc);
 }
 
 string NWNX_Lua_Eval(string sCode)
 {
-    NWNX_PushArgumentString("NWNX_Lua", "EVAL", sCode);
-    NWNX_CallFunction("NWNX_Lua", "EVAL");
-    return NWNX_GetReturnValueString("NWNX_Lua", "EVAL");
+    string sFunc = "EVAL";
+
+    NWNX_PushArgumentString(NWNX_Lua, sFunc, sCode);
+    NWNX_CallFunction(NWNX_Lua, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Lua, sFunc);
 }
 
 void NWNX_Lua_RunEvent(string sEvent, object oObject, string sExtra="")
 {
-    NWNX_PushArgumentString("NWNX_Lua", "EVENT", sExtra);
-    NWNX_PushArgumentObject("NWNX_Lua", "EVENT", oObject);
-    NWNX_PushArgumentString("NWNX_Lua", "EVENT", sEvent);
-    NWNX_CallFunction("NWNX_Lua", "EVENT");
+    string sFunc = "EVENT";
+
+    NWNX_PushArgumentString(NWNX_Lua, sFunc, sExtra);
+    NWNX_PushArgumentObject(NWNX_Lua, sFunc, oObject);
+    NWNX_PushArgumentString(NWNX_Lua, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Lua, sFunc);
 }
