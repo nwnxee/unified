@@ -20,6 +20,7 @@ private:
     static int32_t CanLevelUpHook(NWNXLib::API::CNWSCreatureStats*);
     static void SummonAssociateHook(NWNXLib::API::CNWSCreature *, NWNXLib::API::CResRef, NWNXLib::API::CExoString *, uint16_t);
     static void LevelDownHook(NWNXLib::API::CNWSCreatureStats *, NWNXLib::API::CNWLevelStats *);
+    static uint32_t GetExpNeededForLevelUpHook(NWNXLib::API::CNWSCreatureStats *);
     static void GetServerInfoFromIniFileHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CServerExoAppInternal *);
     static NWNXLib::Hooking::FunctionHook* pCanLevelUpHook;
     static uint8_t m_maxLevel;
