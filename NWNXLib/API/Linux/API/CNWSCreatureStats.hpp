@@ -187,7 +187,7 @@ struct CNWSCreatureStats
     int32_t FeatAcquired(uint16_t, CExoArrayListTemplatedunsignedshort*, int32_t);
     int32_t FeatRequirementsMet(uint16_t, CExoArrayListTemplatedunsignedshort*);
     int32_t FeatRequirementsMetAfterLevelUp(uint16_t, CNWLevelStats*, unsigned char);
-    void GetAbilityModsFromFeats(CExoArrayListTemplatedunsignedshort*, int32_t*, int32_t, int32_t);
+    void GetAbilityModsFromFeats(CExoArrayListTemplatedshortunsignedint*, int32_t*, int32_t, int32_t);
     char GetACNaturalBase(int32_t);
     CExoString GetAlignmentString();
     int16_t GetArmorClassVersus(CNWSCreature*, int32_t);
@@ -295,7 +295,7 @@ struct CNWSCreatureStats
     unsigned char GetSpellsOfLevelReady(unsigned char, unsigned char);
     unsigned char GetSpellsPerDayLeft(unsigned char, unsigned char);
     unsigned char GetSpellUsesLeft(uint32_t, unsigned char, unsigned char, unsigned char);
-    void GetStatBonusesFromFeats(CExoArrayListTemplatedunsignedshort*, int32_t*, unsigned char);
+    void GetStatBonusesFromFeats(CExoArrayListTemplatedshortunsignedint*, int32_t*, unsigned char);
     float GetStatById(int32_t);
     unsigned char GetSTRStat();
     CExoString* GetTag();
@@ -396,7 +396,7 @@ void CNWSCreatureStats__DecrementSpellsPerDayLeft(CNWSCreatureStats* thisPtr, un
 int32_t CNWSCreatureStats__FeatAcquired(CNWSCreatureStats* thisPtr, uint16_t, CExoArrayListTemplatedunsignedshort*, int32_t);
 int32_t CNWSCreatureStats__FeatRequirementsMet(CNWSCreatureStats* thisPtr, uint16_t, CExoArrayListTemplatedunsignedshort*);
 int32_t CNWSCreatureStats__FeatRequirementsMetAfterLevelUp(CNWSCreatureStats* thisPtr, uint16_t, CNWLevelStats*, unsigned char);
-void CNWSCreatureStats__GetAbilityModsFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedunsignedshort*, int32_t*, int32_t, int32_t);
+void CNWSCreatureStats__GetAbilityModsFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedshortunsignedint*, int32_t*, int32_t, int32_t);
 char CNWSCreatureStats__GetACNaturalBase(CNWSCreatureStats* thisPtr, int32_t);
 CExoString CNWSCreatureStats__GetAlignmentString(CNWSCreatureStats* thisPtr);
 int16_t CNWSCreatureStats__GetArmorClassVersus(CNWSCreatureStats* thisPtr, CNWSCreature*, int32_t);
@@ -504,7 +504,7 @@ char CNWSCreatureStats__GetSpellResistance(CNWSCreatureStats* thisPtr);
 unsigned char CNWSCreatureStats__GetSpellsOfLevelReady(CNWSCreatureStats* thisPtr, unsigned char, unsigned char);
 unsigned char CNWSCreatureStats__GetSpellsPerDayLeft(CNWSCreatureStats* thisPtr, unsigned char, unsigned char);
 unsigned char CNWSCreatureStats__GetSpellUsesLeft(CNWSCreatureStats* thisPtr, uint32_t, unsigned char, unsigned char, unsigned char);
-void CNWSCreatureStats__GetStatBonusesFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedunsignedshort*, int32_t*, unsigned char);
+void CNWSCreatureStats__GetStatBonusesFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedshortunsignedint*, int32_t*, unsigned char);
 float CNWSCreatureStats__GetStatById(CNWSCreatureStats* thisPtr, int32_t);
 unsigned char CNWSCreatureStats__GetSTRStat(CNWSCreatureStats* thisPtr);
 CExoString* CNWSCreatureStats__GetTag(CNWSCreatureStats* thisPtr);
