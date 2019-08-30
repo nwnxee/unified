@@ -129,7 +129,7 @@ uint8_t MaxLevel::GetSpellGainHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSp
     if ( nLevel <= 40 )
     {
         if ( nSpellLevel < pClass->m_lstSpellLevelsPerLevel[nLevel] )
-            result = *pClass->m_lstSpellGainTable[nLevel];
+            result = pClass->m_lstSpellGainTable[nLevel][nSpellLevel];
     }
     else if (m_maxLevel > 40)
     {
@@ -227,7 +227,7 @@ int32_t MaxLevel::CanLevelUpHook(CNWSCreatureStats* pStats)
     auto xp = pStats->m_nExperience;
     uint32_t xp_threshold = 0;
     if (totalLevels <= 40)
-        xp_threshold = Globals::Rules()->m_nExperienceTable[totalLevels-1];
+        xp_threshold = Globals::Rules()->m_nExperienceTable[totalLevels];
     else if (m_maxLevel > 40)
         xp_threshold = m_nExperienceTableAdded[totalLevels-40];
     else
