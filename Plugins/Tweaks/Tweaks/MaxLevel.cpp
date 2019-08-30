@@ -128,8 +128,8 @@ uint8_t MaxLevel::GetSpellGainHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSp
 
     if ( nLevel <= 40 )
     {
-        if ( nSpellLevel < pClass->m_lstSpellLevelsPerLevel[nLevel] )
-            result = pClass->m_lstSpellGainTable[nLevel][nSpellLevel];
+        if ( nSpellLevel < pClass->m_lstSpellLevelsPerLevel[nLevel - 1] )
+            result = pClass->m_lstSpellGainTable[nLevel - 1][nSpellLevel];
     }
     else if (m_maxLevel > 40)
     {
@@ -150,7 +150,7 @@ uint8_t MaxLevel::GetSpellsKnownPerLevelHook(
                           Globals::Rules()->m_lstRaces[nRace].m_nCHAAdjust + nCHABase > nSpellLevel + 10)))
     {
         if (nLevel <= 40)
-            result = pClass->m_lstSpellLevelsPerLevel[nLevel];
+            result = pClass->m_lstSpellLevelsPerLevel[nLevel - 1];
         else if (m_maxLevel > 40)
             result = m_nSpellLevelsPerLevelAdded[pClass->m_nName][nLevel - 41];
     }
