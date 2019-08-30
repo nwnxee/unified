@@ -129,7 +129,7 @@ uint8_t MaxLevel::GetSpellGainHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSp
     if ( nLevel <= 40 )
     {
         if ( nSpellLevel < pClass->m_lstSpellLevelsPerLevel[nLevel] )
-            result = *pClass->m_lstSpellGainTable[nLevel][nSpellLevel];
+            result = pClass->m_lstSpellGainTable[nLevel][nSpellLevel];
     }
     else if (m_maxLevel > 40)
     {
