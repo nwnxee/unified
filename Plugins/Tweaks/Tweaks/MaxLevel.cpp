@@ -31,6 +31,7 @@ std::unordered_map<uint16_t, std::unordered_map<uint8_t, uint8_t>> MaxLevel::m_n
 
 static Hooking::FunctionHook* g_SummonAssociateHook = nullptr;
 static Hooking::FunctionHook* g_LevelDownHook = nullptr;
+static Hooking::FunctionHook* g_GetExpNeededForLevelUpHook = nullptr;
 
 MaxLevel::MaxLevel(ViewPtr<Services::HooksProxy> hooker, uint8_t maxLevel)
 {
@@ -39,6 +40,8 @@ MaxLevel::MaxLevel(ViewPtr<Services::HooksProxy> hooker, uint8_t maxLevel)
     hooker->RequestSharedHook<Functions::CServerExoAppInternal__GetServerInfoFromIniFile, void, CServerExoAppInternal*>(&GetServerInfoFromIniFileHook);
     hooker->RequestExclusiveHook<Functions::CNWSCreatureStats__LevelDown>(&LevelDownHook);
     g_LevelDownHook = hooker->FindHookByAddress(API::Functions::CNWSCreatureStats__LevelDown);
+    hooker->RequestExclusiveHook<Functions::CNWSCreatureStats__GetExpNeededForLevelUp>(&GetExpNeededForLevelUpHook);
+    g_GetExpNeededForLevelUpHook = hooker->FindHookByAddress(API::Functions::CNWSCreatureStats__GetExpNeededForLevelUp);
     hooker->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(&CanLevelUpHook);
     hooker->RequestExclusiveHook<Functions::CNWClass__GetSpellGain>(&GetSpellGainHook);
     hooker->RequestExclusiveHook<Functions::CNWClass__GetSpellsKnownPerLevel>(&GetSpellsKnownPerLevelHook);
@@ -46,6 +49,25 @@ MaxLevel::MaxLevel(ViewPtr<Services::HooksProxy> hooker, uint8_t maxLevel)
     g_SummonAssociateHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__SummonAssociate);
     hooker->RequestSharedHook<Functions::CNWRules__ReloadAll, void, CNWRules*>(&ReloadAllHook);
     hooker->RequestSharedHook<Functions::CNWClass__LoadSpellGainTable, void, CNWClass*, CExoString*>(&LoadSpellGainTableHook);
+}
+
+uint32_t MaxLevel::GetExpNeededForLevelUpHook(NWNXLib::API::CNWSCreatureStats *pStats)
+{
+    uint8_t levels = 0;
+    uint32_t xp_threshold = 0;
+    for (int i = 0; i < pStats->m_nNumMultiClasses; i++)
+    {
+        levels += pStats->m_ClassInfo[i].m_nLevel;
+    }
+    if (levels <= 39 || m_maxLevel <= 40)
+    {
+        xp_threshold = Globals::Rules()->m_nExperienceTable[levels+1];
+    }
+    else
+    {
+        xp_threshold = m_nExperienceTableAdded[levels-40];
+    }
+    return xp_threshold;
 }
 
 // Merely cosmetic for the Server Lobby and Information windows
@@ -179,8 +201,9 @@ void MaxLevel::ReloadAllHook(Services::Hooks::CallType type, CNWRules* pRules)
         twoda->GetINTEntry(40 + i, 1, &xpLevel);
         if (!xpLevel)
         {
-            LOG_ERROR("No xp thresholds set for level %d!. Max level set to 40.", 41 + i);
+            LOG_ERROR("No xp thresholds set for level %d!. Max level reverted to 40.", 41 + i);
             m_maxLevel = 40;
+            return;
         }
         else
             m_nExperienceTableAdded[i] = xpLevel;
@@ -205,8 +228,11 @@ int32_t MaxLevel::CanLevelUpHook(CNWSCreatureStats* pStats)
     uint32_t xp_threshold = 0;
     if (totalLevels <= 40)
         xp_threshold = Globals::Rules()->m_nExperienceTable[totalLevels-1];
-    else
+    else if (m_maxLevel > 40)
         xp_threshold = m_nExperienceTableAdded[totalLevels-40];
+    else
+        xp_threshold = Globals::Rules()->m_nExperienceTable[39];
+
 
     if (!pStats->m_bIsPC)
         return 1;
