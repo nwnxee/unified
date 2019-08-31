@@ -97,9 +97,6 @@ Race::Race(const Plugin::CreateParams& params)
     // Completely rewritten in NWNX for Race plugin so we can add our Initiative changes
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__ResolveInitiative, void, CNWSCreature*>(&ResolveInitiativeHook);
 
-    // We trick ValidateCharacter by removing racial feats before and adding them back after
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSPlayer__ValidateCharacter, int32_t, CNWSPlayer*, int32_t*>(&ValidateCharacterHook);
-
     // If a level up has been confirmed we rerun the racial applications in case of new feats, level based adjustments etc.
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__SendServerToPlayerLevelUp_Confirmation, int32_t, CNWSMessage*, Types::PlayerID, int32_t>(&SendServerToPlayerLevelUp_ConfirmationHook);
 
@@ -623,54 +620,6 @@ void Race::ResolveInitiativeHook(CNWSCreature *pCreature)
     }
 }
 
-void Race::ValidateCharacterHook(
-        Services::Hooks::CallType cType,
-        CNWSPlayer *pPlayer,
-        int32_t*)
-{
-    auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-    auto nRace = pCreature->m_pStats->m_nRace;
-    if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
-    {
-        for (auto &featDetails : g_plugin->m_RaceFeat[nRace])
-        {
-            auto featId = featDetails.first;
-            auto featLevel = featDetails.second;
-            if (featLevel > pCreature->m_pStats->m_lstLevelStats.num)
-                continue;
-            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[featLevel-1];
-            std::list<uint16_t> levelFeats;
-            for (int i = 0; i < pLevelStats->m_lstFeats.num; i++)
-            {
-                if (pLevelStats->m_lstFeats.element[i] != featId)
-                {
-                    levelFeats.push_back(pLevelStats->m_lstFeats.element[i]);
-                }
-            }
-            pLevelStats->ClearFeats();
-            for (auto &feat : levelFeats)
-            {
-                pLevelStats->AddFeat(feat);
-            }
-            pCreature->m_pStats->RemoveFeat(featId);
-        }
-    }
-    else
-    {
-        for (auto &featDetails : g_plugin->m_RaceFeat[nRace])
-        {
-            auto featId = featDetails.first;
-            auto featLevel = featDetails.second;
-            if (featLevel > pCreature->m_pStats->m_lstLevelStats.num)
-                continue;
-            auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[featLevel-1];
-            pLevelStats->AddFeat(featId);
-            pCreature->m_pStats->AddFeat(featId);
-        }
-    }
-
-}
-
 void Race::SendServerToPlayerLevelUp_ConfirmationHook(
         Services::Hooks::CallType cType,
         CNWSMessage *,
@@ -888,6 +837,69 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
         }
         case FEAT:
         {
+            static bool bValidateCharacterHook;
+
+            if (!bValidateCharacterHook)
+            {
+                try
+                {
+                    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSPlayer__ValidateCharacter, int32_t>(
+                            +[](Services::Hooks::CallType cType, CNWSPlayer *pPlayer, int32_t *) -> void
+                            {
+                                auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(
+                                        pPlayer->m_oidNWSObject);
+                                auto nRace = pCreature->m_pStats->m_nRace;
+                                if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                                {
+                                    for (auto &featDetails : g_plugin->m_RaceFeat[nRace])
+                                    {
+                                        auto featId = featDetails.first;
+                                        auto featLevel = featDetails.second;
+                                        if (featLevel > pCreature->m_pStats->m_lstLevelStats.num)
+                                        {
+                                            continue;
+                                        }
+                                        auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[featLevel - 1];
+                                        std::list<uint16_t> levelFeats;
+                                        for (int i = 0; i < pLevelStats->m_lstFeats.num; i++)
+                                        {
+                                            if (pLevelStats->m_lstFeats.element[i] != featId)
+                                            {
+                                                levelFeats.push_back(pLevelStats->m_lstFeats.element[i]);
+                                            }
+                                        }
+                                        pLevelStats->ClearFeats();
+                                        for (auto &feat : levelFeats)
+                                        {
+                                            pLevelStats->AddFeat(feat);
+                                        }
+                                        pCreature->m_pStats->RemoveFeat(featId);
+                                    }
+                                }
+                                else
+                                {
+                                    for (auto &featDetails : g_plugin->m_RaceFeat[nRace])
+                                    {
+                                        auto featId = featDetails.first;
+                                        auto featLevel = featDetails.second;
+                                        if (featLevel > pCreature->m_pStats->m_lstLevelStats.num)
+                                        {
+                                            continue;
+                                        }
+                                        auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[featLevel - 1];
+                                        pLevelStats->AddFeat(featId);
+                                        pCreature->m_pStats->AddFeat(featId);
+                                    }
+                                }
+                            });
+
+                    bValidateCharacterHook = true;
+                } catch (...)
+                {
+                    LOG_ERROR("%s: ValidateCharacter() unable to be hooked. Are you using NWNX_ELC? Feat modifier can not be applied!", raceName);
+                    break;
+                }
+            }
             if (param2 <= 0)
             {
                 LOG_ERROR("%s: Feat modifier improperly set.", raceName);
