@@ -83,14 +83,13 @@ private:
     static void DoEffect(CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
     static void ApplyRaceEffects(CNWSCreature*);
     static void SetOrRestoreRace(Hooks::CallType, CNWSCreatureStats*, CNWSCreatureStats* = nullptr);
-    static void SetRaceModifier(int32_t, RaceModifier, int32_t, int32_t, int32_t);
+    void SetRaceModifier(int32_t, RaceModifier, int32_t, int32_t, int32_t);
 
     static void ResolveInitiativeHook(CNWSCreature*);
 
     static void PostProcessHook(Hooks::CallType, CNWSCreature*);
     static void ResetFeatRemainingUsesHook(Hooks::CallType, CNWSCreatureStats*);
     static void CreateDefaultQuickButtonsHook(Hooks::CallType, CNWSCreature*);
-    static void ValidateCharacterHook(Hooks::CallType, CNWSPlayer*, int32_t*);
     static void SendServerToPlayerLevelUp_ConfirmationHook(Hooks::CallType, CNWSMessage*, Types::PlayerID, int32_t);
     static void LevelUpAutomaticHook(Hooks::CallType, CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
     static void GetFavoredEnemyBonusHook(Hooks::CallType, CNWSCreatureStats*, CNWSCreature*);
