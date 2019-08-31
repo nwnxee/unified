@@ -140,7 +140,7 @@ int32_t CNWSCreatureStats::FeatRequirementsMetAfterLevelUp(uint16_t a0, CNWLevel
     return CNWSCreatureStats__FeatRequirementsMetAfterLevelUp(this, a0, a1, a2);
 }
 
-void CNWSCreatureStats::GetAbilityModsFromFeats(CExoArrayListTemplatedunsignedshort* a0, int32_t* a1, int32_t a2, int32_t a3)
+void CNWSCreatureStats::GetAbilityModsFromFeats(CExoArrayListTemplatedshortunsignedint* a0, int32_t* a1, int32_t a2, int32_t a3)
 {
     return CNWSCreatureStats__GetAbilityModsFromFeats(this, a0, a1, a2, a3);
 }
@@ -680,7 +680,7 @@ unsigned char CNWSCreatureStats::GetSpellUsesLeft(uint32_t a0, unsigned char a1,
     return CNWSCreatureStats__GetSpellUsesLeft(this, a0, a1, a2, a3);
 }
 
-void CNWSCreatureStats::GetStatBonusesFromFeats(CExoArrayListTemplatedunsignedshort* a0, int32_t* a1, unsigned char a2)
+void CNWSCreatureStats::GetStatBonusesFromFeats(CExoArrayListTemplatedshortunsignedint* a0, int32_t* a1, unsigned char a2)
 {
     return CNWSCreatureStats__GetStatBonusesFromFeats(this, a0, a1, a2);
 }
@@ -1247,9 +1247,9 @@ int32_t CNWSCreatureStats__FeatRequirementsMetAfterLevelUp(CNWSCreatureStats* th
     return func(thisPtr, a0, a1, a2);
 }
 
-void CNWSCreatureStats__GetAbilityModsFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedunsignedshort* a0, int32_t* a1, int32_t a2, int32_t a3)
+void CNWSCreatureStats__GetAbilityModsFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedshortunsignedint* a0, int32_t* a1, int32_t a2, int32_t a3)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreatureStats*, CExoArrayListTemplatedunsignedshort*, int32_t*, int32_t, int32_t);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreatureStats*, CExoArrayListTemplatedshortunsignedint*, int32_t*, int32_t, int32_t);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSCreatureStats__GetAbilityModsFromFeats);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2, a3);
@@ -2111,9 +2111,9 @@ unsigned char CNWSCreatureStats__GetSpellUsesLeft(CNWSCreatureStats* thisPtr, ui
     return func(thisPtr, a0, a1, a2, a3);
 }
 
-void CNWSCreatureStats__GetStatBonusesFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedunsignedshort* a0, int32_t* a1, unsigned char a2)
+void CNWSCreatureStats__GetStatBonusesFromFeats(CNWSCreatureStats* thisPtr, CExoArrayListTemplatedshortunsignedint* a0, int32_t* a1, unsigned char a2)
 {
-    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreatureStats*, CExoArrayListTemplatedunsignedshort*, int32_t*, unsigned char);
+    using FuncPtrType = void(__attribute__((cdecl)) *)(CNWSCreatureStats*, CExoArrayListTemplatedshortunsignedint*, int32_t*, unsigned char);
     uintptr_t address = Platform::ASLR::GetRelocatedAddress(Functions::CNWSCreatureStats__GetStatBonusesFromFeats);
     FuncPtrType func = reinterpret_cast<FuncPtrType>(address);
     return func(thisPtr, a0, a1, a2);
