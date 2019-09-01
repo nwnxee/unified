@@ -62,11 +62,11 @@ using namespace NWNXLib::API::Constants;
 MaxLevel::MaxLevel(const Plugin::CreateParams& params)
         : Plugin(params)
 {
-    m_maxLevel = GetServices()->m_config->Get<int>("MAX", 40);
+    m_maxLevel = GetServices()->m_config->Get<int>("MAX", CORE_MAX_LEVEL);
     if (m_maxLevel > MAX_LEVEL_MAX)
         m_maxLevel = MAX_LEVEL_MAX;
 
-    if (m_maxLevel > 40)
+    if (m_maxLevel > CORE_MAX_LEVEL)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::CServerExoAppInternal__GetServerInfoFromIniFile, void, CServerExoAppInternal *>(&GetServerInfoFromIniFileHook);
         GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__ReloadAll, void, CNWRules *>(&ReloadAllHook);
