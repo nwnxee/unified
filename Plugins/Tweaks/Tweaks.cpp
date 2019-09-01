@@ -12,7 +12,6 @@
 #include "Tweaks/StringToIntBaseToAuto.hpp"
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
 #include "Tweaks/PreserveActionsOnDMPossess.hpp"
-#include "Tweaks/MaxLevel.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -150,12 +149,6 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         m_PreserveActionsOnDMPossess = std::make_unique<PreserveActionsOnDMPossess>(GetServices()->m_hooks.get());
     }
 
-    auto maxLevel = GetServices()->m_config->Get<int32_t>("MAX_LEVEL", 40);
-    if (maxLevel > 40)
-    {
-        LOG_INFO("Setting Maximum Level to %d.", maxLevel);
-        m_MaxLevel = std::make_unique<MaxLevel>(GetServices()->m_hooks.get(), maxLevel);
-    }
 }
 
 Tweaks::~Tweaks()

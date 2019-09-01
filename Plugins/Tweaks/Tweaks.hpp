@@ -18,7 +18,6 @@ class DisableMonkAbilitiesWhenPolymorphed;
 class StringToIntBaseToAuto;
 class DeadCreatureFiresOnAreaExit;
 class PreserveActionsOnDMPossess;
-class MaxLevel;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -40,7 +39,6 @@ private:
     std::unique_ptr<StringToIntBaseToAuto> m_StringToIntBaseToAuto;
     std::unique_ptr<DeadCreatureFiresOnAreaExit> m_DeadCreatureFiresOnAreaExit;
     std::unique_ptr<PreserveActionsOnDMPossess> m_PreserveActionsOnDMPossess;
-    std::unique_ptr<MaxLevel> m_MaxLevel;
 };
 
 }
