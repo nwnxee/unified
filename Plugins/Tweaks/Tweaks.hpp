@@ -16,7 +16,6 @@ class PreserveDepletedItems;
 class HideDMsOnCharList;
 class DisableMonkAbilitiesWhenPolymorphed;
 class StringToIntBaseToAuto;
-class PreserveActionsOnDMPossess;
 class MaxLevel;
 class DeadCreatureFiresOnAreaExit;
 class PreserveActionsOnDMPossess
@@ -42,7 +41,6 @@ private:
     std::unique_ptr<PreserveActionsOnDMPossess> m_PreserveActionsOnDMPossess;
     std::unique_ptr<DeadCreatureFiresOnAreaExit> m_DeadCreatureFiresOnAreaExit;
     std::unique_ptr<PreserveActionsOnDMPossess> m_PreserveActionsOnDMPossess;
-    std::unique_ptr<MaxLevel> m_MaxLevel;
 };
 
 }
