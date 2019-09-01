@@ -62,7 +62,7 @@ using namespace NWNXLib::API::Constants;
 MaxLevel::MaxLevel(const Plugin::CreateParams& params)
         : Plugin(params)
 {
-    m_maxLevel = GetServices()->m_config->Get<int>("MAX", CORE_MAX_LEVEL);
+    m_maxLevel = GetServices()->m_config->Get<int>("MAX", (uint8_t)CORE_MAX_LEVEL);
     if (m_maxLevel > MAX_LEVEL_MAX)
         m_maxLevel = MAX_LEVEL_MAX;
 
