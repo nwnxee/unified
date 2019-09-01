@@ -9,6 +9,9 @@ This plugin extends the maximum level possibility from 40 to 60. The plugin prov
 | ------------- | :---: | :-----: | ----- |
 | `NWNX_MAXLEVEL_MAX` | 41-60 | null | Maximum level you wish to support.
 
+## Required Plugins
+* The `NWNX_ELC` plugin is also needed to bypass the level restriction. No configuration is necessary though, merely loading this plugin is sufficient.
+
 ## Issues
 
 * Spellcasters may not change spells when levelling up
