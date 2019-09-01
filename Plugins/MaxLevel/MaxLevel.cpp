@@ -123,12 +123,12 @@ void MaxLevel::ReloadAllHook(Services::Hooks::CallType type, CNWRules* pRules)
 int32_t MaxLevel::CanLevelUpHook(CNWSCreatureStats* pStats)
 {
     auto pCreature = pStats->m_pBaseCreature;
-    if ((pCreature->m_nAssociateType >= 5 && pCreature->m_nAssociateType <= 8) || pCreature->m_nAssociateType == 2)
+    if ((pCreature->m_nAssociateType >= 5 && pCreature->m_nAssociateType <= 8) || pCreature->m_nAssociateType == 3)
         return 0;
 
     int32_t totalLevels = pStats->GetLevel(false);
 
-    if (totalLevels >= g_plugin->m_maxLevel)
+    if ((!pStats->m_bIsPC && totalLevels >= 60) || totalLevels >= g_plugin->m_maxLevel)
         return 0;
 
     if (!pStats->m_bIsPC)
