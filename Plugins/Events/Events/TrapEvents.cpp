@@ -55,7 +55,7 @@ uint32_t TrapEvents::HandleTrapHook(
     }
     else
     {
-        retVal = std::stoul(sAux);
+        retVal = atoi(sAux.c_str());
         if(retVal == 0)
             retVal = 3; //CNWSObject::ACTION_FAILED;
     }
