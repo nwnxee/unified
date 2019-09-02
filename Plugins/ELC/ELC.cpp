@@ -2,10 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/CTlkTable.hpp"
 #include "API/CServerInfo.hpp"
-#include "API/CJoiningRestrictions.hpp"
-#include "API/CPlayOptions.hpp"
 #include "API/CExoString.hpp"
 #include "API/CExoLocString.hpp"
 #include "API/Constants.hpp"
@@ -14,7 +11,6 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "API/CNWSCreatureStats_ClassInfo.hpp"
 #include "API/CNWLevelStats.hpp"
 #include "API/CNWSInventory.hpp"
 #include "API/CNWSItem.hpp"
@@ -30,6 +26,7 @@
 #include "API/C2DA.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Config/Config.hpp"
+#include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
 
 #include <set>
@@ -205,6 +202,9 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
         return g_plugin->m_validationFailureMessageStrRef;
     };
+
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
+            {"VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
 
     // *** Server Restrictions **********************************************************************************************
     CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
@@ -1840,6 +1840,9 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             LOG_WARNING("NWNX_ELC: Skipping Custom ELC Check because an ELC script is not set!");
         }
     }
+
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
+            {"VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
 
     return 0;
 }

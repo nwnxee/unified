@@ -1,5 +1,7 @@
 #include "nwnx"
 
+const string NWNX_ELC = "NWNX_ELC";
+
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_NONE                     = 0;
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_CHARACTER                = 1;
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_ITEM                     = 2;
@@ -139,9 +141,6 @@ int NWNX_ELC_GetValidationFailureFeatID();
 // NOTE: Only to be called in the ELC Script during a
 // NWNX_ELC_VALIDATION_FAILURE_TYPE_SPELL validation failure.
 int NWNX_ELC_GetValidationFailureSpellID();
-
-
-const string NWNX_ELC = "NWNX_ELC";
 
 
 void NWNX_ELC_SetELCScript(string sScript)
