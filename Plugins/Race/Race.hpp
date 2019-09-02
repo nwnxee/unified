@@ -87,7 +87,7 @@ private:
 
     static void ResolveInitiativeHook(CNWSCreature*);
 
-    static void PostProcessHook(Hooks::CallType, CNWSCreature*);
+    static void LoadCharacterFinishHook(Hooks::CallType, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t);
     static void ResetFeatRemainingUsesHook(Hooks::CallType, CNWSCreatureStats*);
     static void CreateDefaultQuickButtonsHook(Hooks::CallType, CNWSCreature*);
     static void HandleValidateCharacter(Types::ObjectID, bool);
