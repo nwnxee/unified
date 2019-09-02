@@ -59,6 +59,7 @@ The following plugins were added:
 - **Encounter**: Adds functions exposing additional encounter properties
 - **Feedback**: Allows combatlog, feedback and 'quest journal updated' messages to be hidden globally or per player
 - **ItemProperty**: Provides various utility functions to manipulate builtin itemproperty types
+- **MaxLevel**: Extends support for levels up to 60
 - **Race**: Provides the ability to specify a variety of inate modifiers for new or existing races or subraces via script or 2da
 - **Regex**: Adds functions to search and replace strings using regular expressions.
 - **Rename**: Adds functions to facilitate renaming, overriding and customization of player names

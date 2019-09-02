@@ -62,11 +62,11 @@ using namespace NWNXLib::API::Constants;
 MaxLevel::MaxLevel(const Plugin::CreateParams& params)
         : Plugin(params)
 {
-    m_maxLevel = GetServices()->m_config->Get<int>("MAX", 40);
+    m_maxLevel = GetServices()->m_config->Get<int>("MAX", (uint8_t)CORE_MAX_LEVEL);
     if (m_maxLevel > MAX_LEVEL_MAX)
         m_maxLevel = MAX_LEVEL_MAX;
 
-    if (m_maxLevel > 40)
+    if (m_maxLevel > CORE_MAX_LEVEL)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::CServerExoAppInternal__GetServerInfoFromIniFile, void, CServerExoAppInternal *>(&GetServerInfoFromIniFileHook);
         GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__ReloadAll, void, CNWRules *>(&ReloadAllHook);
@@ -123,12 +123,12 @@ void MaxLevel::ReloadAllHook(Services::Hooks::CallType type, CNWRules* pRules)
 int32_t MaxLevel::CanLevelUpHook(CNWSCreatureStats* pStats)
 {
     auto pCreature = pStats->m_pBaseCreature;
-    if ((pCreature->m_nAssociateType >= 5 && pCreature->m_nAssociateType <= 8) || pCreature->m_nAssociateType == 2)
+    if ((pCreature->m_nAssociateType >= 5 && pCreature->m_nAssociateType <= 8) || pCreature->m_nAssociateType == 3)
         return 0;
 
     int32_t totalLevels = pStats->GetLevel(false);
 
-    if (totalLevels >= g_plugin->m_maxLevel)
+    if ((!pStats->m_bIsPC && totalLevels >= 60) || totalLevels >= g_plugin->m_maxLevel)
         return 0;
 
     if (!pStats->m_bIsPC)
