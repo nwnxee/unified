@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerInfo.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWLevelStats.hpp"
@@ -180,7 +181,7 @@ ArgumentStack Creature::AddFeatByLevel(ArgumentStack&& args)
           ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
 
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
@@ -232,7 +233,7 @@ ArgumentStack Creature::GetFeatCountByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
 
         if (level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
@@ -253,7 +254,7 @@ ArgumentStack Creature::GetFeatByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
 
         if (level <= pCreature->m_pStats->m_lstLevelStats.num)
@@ -450,7 +451,7 @@ ArgumentStack Creature::GetClassByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
 
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
@@ -1005,7 +1006,7 @@ ArgumentStack Creature::GetMaxHitPointsByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
@@ -1025,7 +1026,7 @@ ArgumentStack Creature::SetMaxHitPointsByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
         const auto value = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(value >= 0);
           ASSERT_OR_THROW(value <= 255);
