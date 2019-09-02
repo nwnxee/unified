@@ -68,7 +68,7 @@ Race::Race(const Plugin::CreateParams& params)
     m_ShowEffectIcon = GetServices()->m_config->Get<bool>("SHOW_EFFECT_ICON", false);
 
     // Most racial adjustments are done here using effects only once per server reset or after a level up
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__PostProcess, void, CNWSCreature*>(&PostProcessHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::CServerExoAppInternal__LoadCharacterFinish, void, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t>(&LoadCharacterFinishHook);
 
     // We want the racial bonuses to not count toward limits
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__GetTotalEffectBonus, int32_t, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t>(&GetTotalEffectBonusHook);
@@ -373,17 +373,16 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
     pPOS->Set(pCreature->m_idSelf, "RACEMODS_ADDED_LEVEL", nLevel);
 }
 
-void Race::PostProcessHook(
+void Race::LoadCharacterFinishHook(
         Services::Hooks::CallType cType,
-        CNWSCreature *pCreature)
+        CServerExoAppInternal *,
+        CNWSPlayer *pPlayer, int32_t, int32_t)
 {
     // We only want to do this in the AFTER
     if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
         return;
-
-    pCreature->m_bApplyingPostProcessEffects = true;
+    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
     g_plugin->ApplyRaceEffects(pCreature);
-    pCreature->m_bApplyingPostProcessEffects = false;
 }
 
 void Race::SavingThrowRollHook(
