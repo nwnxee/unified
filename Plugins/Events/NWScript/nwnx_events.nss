@@ -860,6 +860,7 @@ string NWNX_Events_GetEventData(string tag);
 // - Sticky Player Name event
 // - Add/RemoveGold events
 // - PVP Attitude Change events
+// - {Enter|Exit}Stealth events
 void NWNX_Events_SkipEvent();
 
 // Set the return value of the event.
@@ -911,7 +912,7 @@ int NWNX_Events_SignalEvent(string evt, object target)
 string NWNX_Events_GetEventData(string tag)
 {
     string sFunc = "GET_EVENT_DATA";
-    
+
     NWNX_PushArgumentString(NWNX_Events, sFunc, tag);
     NWNX_CallFunction(NWNX_Events, sFunc);
     return NWNX_GetReturnValueString(NWNX_Events, sFunc);
