@@ -6,10 +6,14 @@
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CNWFeat.hpp"
+#include "API/CNWSArea.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSInventory.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CNWSPlaceable.hpp"
+#include "API/CNWSTrigger.hpp"
 #include "API/CNWSJournal.hpp"
 #include "API/CExoArrayListTemplatedSJournalEntry.hpp"
 #include "API/Constants.hpp"
@@ -66,6 +70,7 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     REGISTER(GetRuneDescription)
     REGISTER(SetQuiver)
     REGISTER(SetQuiverArrows)
+    REGISTER(CreateVFXAtTransitionCentroid)
 
 #undef REGISTER
 
@@ -864,6 +869,81 @@ ArgumentStack Layonara::SetQuiverArrows(ArgumentStack&& args)
     auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
     SetArrowsEffect(pCreature);
 
+    return stack;
+}
+
+Vector compute2DPolygonCentroid(const Vector* vertices, int vertexCount)
+{
+    Vector centroid = {0, 0, vertices[0].z};
+    float signedArea = 0.0;
+    float x0, y0, x1, y1, a;
+
+    int i=0;
+    for (i=0; i<vertexCount-1; ++i)
+    {
+        x0 = vertices[i].x;
+        y0 = vertices[i].y;
+        x1 = vertices[i+1].x;
+        y1 = vertices[i+1].y;
+        a = x0*y1 - x1*y0;
+        signedArea += a;
+        centroid.x += (x0 + x1)*a;
+        centroid.y += (y0 + y1)*a;
+    }
+
+    x0 = vertices[i].x;
+    y0 = vertices[i].y;
+    x1 = vertices[0].x;
+    y1 = vertices[0].y;
+    a = x0*y1 - x1*y0;
+    signedArea += a;
+    centroid.x += (x0 + x1)*a;
+    centroid.y += (y0 + y1)*a;
+
+    signedArea *= 0.5;
+    centroid.x /= 6.0 * signedArea;
+    centroid.y /= 6.0 * signedArea;
+
+    return centroid;
+}
+
+ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
+{
+    ArgumentStack stack;
+
+    auto pModule = Utils::GetModule();
+    auto areaList = pModule->m_lstModuleAreaID;
+    for (int i = 0; i < areaList.num; i++)
+    {
+        std::vector<std::pair<Vector, CExoString>> transitions;
+        auto pArea = Utils::AsNWSArea(Utils::GetGameObject(areaList.element[i]));
+        uint32_t oid;
+        // Find all our transitions and build our pairs
+        if (pArea->GetFirstObjectInArea(oid))
+        {
+            while (oid != Constants::OBJECT_INVALID)
+            {
+                auto pTrigger = Utils::AsNWSTrigger(Utils::GetGameObject(oid));
+                if (pTrigger != nullptr && pTrigger->m_pTransition.LookupTarget() != nullptr)
+                {
+                    Vector centroid = compute2DPolygonCentroid(pTrigger->m_pvVertices, pTrigger->m_nVertices);
+                    transitions.emplace_back(centroid, CExoString("AT_") + pTrigger->m_pTransition.m_sTransitionTarget);
+                }
+                if (!pArea->GetNextObjectInArea(oid))
+                    break;
+            }
+        }
+        // Add the transitions after we loop through the objects
+        for(auto const& AT: transitions)
+        {
+            auto vPos = AT.first;
+            auto sTag = AT.second;
+            auto *placeable = new CNWSPlaceable(API::Constants::OBJECT_INVALID);
+            placeable->LoadFromTemplate(CResRef("at_vfx"), &sTag);
+            placeable->SetPosition(vPos, 0);
+            placeable->AddToArea(pArea, vPos.x, vPos.y, vPos.z, false);
+        }
+    }
     return stack;
 }
 
