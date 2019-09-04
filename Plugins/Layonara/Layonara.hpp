@@ -69,6 +69,7 @@ private:
     ArgumentStack GetRuneDescription              (ArgumentStack&& args);
     ArgumentStack SetQuiver                       (ArgumentStack&& args);
     ArgumentStack SetQuiverArrows                 (ArgumentStack&& args);
+    ArgumentStack CreateVFXAtTransitionCentroid   (ArgumentStack&& args);
 };
 
 }

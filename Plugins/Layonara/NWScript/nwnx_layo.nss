@@ -38,6 +38,9 @@ void NWNX_Layonara_SetQuiver(object creature, int nColor);
 // Quiver Arrow Effects
 void NWNX_Layonara_SetQuiverArrows(object creature);
 
+// Place new AT VFX at centroid of transitions
+void NWNX_Layonara_CreateVFXAtTransitionCentroid();
+
 void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
@@ -166,6 +169,13 @@ void NWNX_Layonara_SetQuiverArrows(object creature)
     string sFunc = "SetQuiverArrows";
 
     NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
+void NWNX_Layonara_CreateVFXAtTransitionCentroid()
+{
+    string sFunc = "CreateVFXAtTransitionCentroid";
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
