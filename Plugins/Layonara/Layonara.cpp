@@ -941,7 +941,7 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
             auto *placeable = new CNWSPlaceable(API::Constants::OBJECT_INVALID);
             placeable->LoadFromTemplate(CResRef("at_vfx"), &sTag);
             placeable->SetPosition(vPos, 0);
-            placeable->AddToArea(pArea, vPos.x, vPos.y, vPos.z, false);
+            placeable->AddToArea(pArea, vPos.x, vPos.y, pArea->ComputeHeight(vPos), false);
         }
     }
     return stack;
