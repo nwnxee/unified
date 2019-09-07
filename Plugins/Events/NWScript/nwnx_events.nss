@@ -880,6 +880,16 @@ void NWNX_Events_SetEventResult(string data);
 // Returns "" on error
 string NWNX_Events_GetCurrentEvent();
 
+// Toggles DispatchListMode for sEvent+sScript
+// If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list.
+void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable);
+
+// Add oObject to the dispatch list for sEvent+sScript.
+void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject);
+
+// Remove oObject from the dispatch list for sEvent+sScript.
+void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
+
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
@@ -939,4 +949,34 @@ string NWNX_Events_GetCurrentEvent()
 
     NWNX_CallFunction(NWNX_Events, sFunc);
     return NWNX_GetReturnValueString(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable)
+{
+    string sFunc = "ToggleDispatchListMode";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, bEnable);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject)
+{
+    string sFunc = "AddObjectToDispatchList";
+
+    NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject)
+{
+    string sFunc = "RemoveObjectFromDispatchList";
+
+    NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
