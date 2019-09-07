@@ -603,33 +603,36 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
             effects.push_back(eff);
         }
     }
-
-    // Now link them all
-    bool first = true;
-    CGameEffect *prevFx;
-    for(auto iter = effects.begin(); iter != effects.end(); iter++)
+    if (!effects.empty())
     {
-        auto &fx = *iter;
-        if (first)
+        // Now link them all
+        bool first = true;
+        CGameEffect *prevFx;
+        for(auto iter = effects.begin(); iter != effects.end(); iter++)
         {
-            prevFx = fx;
-            first = false;
-            continue;
+            auto &fx = *iter;
+            if (first)
+            {
+                prevFx = fx;
+                first = false;
+                continue;
+            }
+            auto *link = new API::CGameEffect(true);
+            link->m_oidCreator = pCreature->m_idSelf;
+            link->m_nType = EffectTrueType::Link;
+            link->m_nSubType = EffectSubType::Extraordinary | EffectDurationType::Temporary;
+            link->m_fDuration = fDuration;
+            link->m_sCustomTag = "NWNX_Layonara_Rune";
+            link->m_nSpellId = 489;
+            link->m_bShowIcon = 1;
+            link->SetLinked(prevFx, fx);
+            link->UpdateLinked();
+            prevFx = link;
         }
-        auto *link = new API::CGameEffect(true);
-        link->m_oidCreator = pCreature->m_idSelf;
-        link->m_nType = EffectTrueType::Link;
-        link->m_nSubType = EffectSubType::Extraordinary | EffectDurationType::Temporary;
-        link->m_fDuration = fDuration;
-        link->m_sCustomTag = "NWNX_Layonara_Rune";
-        link->m_nSpellId = 489;
-        link->m_bShowIcon = 1;
-        link->SetLinked(prevFx, fx);
-        link->UpdateLinked();
-        prevFx = link;
-    }
 
-    pCreature->ApplyEffect(prevFx, false, false);
+        pCreature->ApplyEffect(prevFx, false, false);
+
+    }
 
     return stack;
 }
