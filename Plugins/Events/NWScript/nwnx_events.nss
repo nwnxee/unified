@@ -801,6 +801,10 @@ const string NWNX_Events = "NWNX_Events";
     Event data:
         Variable Name           Type        Notes
         MATERIAL_TYPE           int         See surfacemat.2da for values
+
+    Note:
+        After a PC transitions to a new area, a surface material change event
+        won't fire until after the PC moves.        
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
