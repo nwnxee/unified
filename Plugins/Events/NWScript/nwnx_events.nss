@@ -791,6 +791,20 @@ const string NWNX_Events = "NWNX_Events";
         POS_Y                   float
         POS_Z                   float
         RUN_TO_POINT            int         TRUE if player is running, FALSE if player is walking (eg when shift clicking)
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_MATERIALCHANGE_BEFORE
+    NWNX_ON_MATERIALCHANGE_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature walking on a different surface material
+
+    Event data:
+        Variable Name           Type        Notes
+        MATERIAL_TYPE           int         See surfacemat.2da for values
+
+    Note:
+        After a PC transitions to a new area, a surface material change event
+        won't fire until after the PC moves.        
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
