@@ -27,10 +27,10 @@ void MaterialChangeEvents::SetPositionHook(Services::Hooks::CallType type, API::
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)
     {
-        auto oArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_oidArea);
-        if (oArea == nullptr)
+        auto pArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_oidArea);
+        if (pArea == nullptr)
             return;
-        auto iMat = oArea->GetSurfaceMaterial(vPos);
+        auto iMat = pArea->GetSurfaceMaterial(vPos);
         if (!m_objectCurrentMaterial.count(thisPtr->m_idSelf) || iMat != m_objectCurrentMaterial[thisPtr->m_idSelf])
         {
             Events::PushEventData("MATERIAL_TYPE", std::to_string(iMat));
