@@ -33,6 +33,7 @@ class TimingBarEvents;
 class LevelEvents;
 class PVPEvents;
 class InputEvents;
+class MaterialChangeEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -114,6 +115,7 @@ private:
     std::unique_ptr<LevelEvents> m_levelEvents;
     std::unique_ptr<PVPEvents> m_PVPEvents;
     std::unique_ptr<InputEvents> m_inputEvents;
+    std::unique_ptr<MaterialChangeEvents> m_matChangeEvents;
 };
 
 }

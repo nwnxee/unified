@@ -22,4 +22,5 @@ add_plugin(Events
     "Events/TimingBarEvents.cpp"
     "Events/LevelEvents.cpp"
     "Events/PVPEvents.cpp"
-    "Events/InputEvents.cpp")
+    "Events/InputEvents.cpp"
+    "Events/MaterialChangeEvents.cpp")
