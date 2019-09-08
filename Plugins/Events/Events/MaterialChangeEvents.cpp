@@ -28,6 +28,8 @@ void MaterialChangeEvents::SetPositionHook(Services::Hooks::CallType type, API::
     if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)
     {
         auto oArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_oidArea);
+        if (oArea == nullptr)
+            return;
         auto iMat = oArea->GetSurfaceMaterial(vPos);
         if (!m_objectCurrentMaterial.count(thisPtr->m_idSelf) || iMat != m_objectCurrentMaterial[thisPtr->m_idSelf])
         {
