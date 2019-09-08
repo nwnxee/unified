@@ -128,7 +128,7 @@ int32_t MaxLevel::CanLevelUpHook(CNWSCreatureStats* pStats)
 
     int32_t totalLevels = pStats->GetLevel(false);
 
-    if ((!pStats->m_bIsPC && totalLevels >= 60) || totalLevels >= g_plugin->m_maxLevel)
+    if ((!pStats->m_bIsPC && totalLevels >= MAX_LEVEL_MAX) || (pStats->m_bIsPC && totalLevels >= g_plugin->m_maxLevel))
         return 0;
 
     if (!pStats->m_bIsPC)

@@ -1581,33 +1581,40 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
     static NWNXLib::Hooking::FunctionHook* pCanLevelUp_hook;
     static NWNXLib::Hooking::FunctionHook* pValidateLevelUp_hook;
     static bool bSkipLevelUpValidation = false;
-    if (!pCanLevelUp_hook)
+    if (!pValidateLevelUp_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(
-            +[](CNWSCreatureStats *pThis) -> int32_t
-            {
-                if (bSkipLevelUpValidation)
-                {
-                    // NPCs can have at most 60 levels
-                    ASSERT(!pThis->m_bIsPC);
-                    return pThis->GetLevel(false) < 60;
-                }
-                return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
-            });
-        pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__CanLevelUp);
+        try
+        {
+            GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(
+                    +[](CNWSCreatureStats *pThis) -> int32_t
+                    {
+                        if (bSkipLevelUpValidation)
+                        {
+                            // NPCs can have at most 60 levels
+                            ASSERT(!pThis->m_bIsPC);
+                            return pThis->GetLevel(false) < 60;
+                        }
+                        return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
+                    });
+            pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__CanLevelUp);
+        }
+        catch (...)
+        {
+            LOG_NOTICE("NWNX_MaxLevel will manage CanLevelUp.");
+        }
 
         GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__ValidateLevelUp>(
-            +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
-            {
-                if (bSkipLevelUpValidation)
+                +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
                 {
-                    ASSERT(!pThis->m_bIsPC);
-                    pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
-                    pThis->UpdateCombatInformation();
-                    return 0;
-                }
-                return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
-            });
+                    if (bSkipLevelUpValidation)
+                    {
+                        ASSERT(!pThis->m_bIsPC);
+                        pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
+                        pThis->UpdateCombatInformation();
+                        return 0;
+                    }
+                    return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
+                });
         pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__ValidateLevelUp);
     }
 
