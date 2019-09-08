@@ -35,7 +35,9 @@ void MaterialChangeEvents::SetPositionHook(Services::Hooks::CallType type, API::
         {
             Events::PushEventData("MATERIAL_TYPE", std::to_string(iMat));
             Events::SignalEvent(before ? "NWNX_ON_MATERIALCHANGE_BEFORE" : "NWNX_ON_MATERIALCHANGE_AFTER", thisPtr->m_idSelf);
-            m_objectCurrentMaterial[thisPtr->m_idSelf] = iMat;
+
+            if (!before)
+                m_objectCurrentMaterial[thisPtr->m_idSelf] = iMat;
         }
     }
 }
