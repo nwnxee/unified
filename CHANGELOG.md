@@ -141,6 +141,9 @@ The following plugins were added:
 - ELC: GetValidationFailureFeatID();
 - ELC: GetValidationFailureSpellID();
 - Events: GetCurrentEvent()
+- Events: ToggleDispatchListMode()
+- Events: AddObjectToDispatchList()
+- Events: RemoveObjectFromDispatchList()
 - Feedback: Get{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog|JournalUpdated}MessageHidden()
 - Feedback: Set{Feedback|CombatLog}MessageMode()
