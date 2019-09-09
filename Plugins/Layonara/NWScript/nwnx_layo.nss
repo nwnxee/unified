@@ -41,6 +41,9 @@ void NWNX_Layonara_SetQuiverArrows(object creature);
 // Place new AT VFX at centroid of transitions
 void NWNX_Layonara_CreateVFXAtTransitionCentroid();
 
+// Surface material change
+void NWNX_Layonara_ClearSurfaceMaterial(object creature);
+
 void NWNX_Layonara_SetEquippableSlots(int nBaseItem, int nSlots)
 {
     string sFunc = "SetEquippableSlots";
@@ -179,3 +182,13 @@ void NWNX_Layonara_CreateVFXAtTransitionCentroid()
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
 }
+
+void NWNX_Layonara_ClearSurfaceMaterial(object creature)
+{
+    string sFunc = "ClearSurfaceMaterial";
+
+    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Layonara, sFunc);
+}
+
