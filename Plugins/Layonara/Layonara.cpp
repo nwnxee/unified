@@ -1,7 +1,10 @@
 #include "Layonara.hpp"
 
 #include "API/CAppManager.hpp"
+#include "API/CScriptEvent.hpp"
+#include "API/CServerAIMaster.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CWorldTimer.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
@@ -71,11 +74,14 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     REGISTER(SetQuiver)
     REGISTER(SetQuiverArrows)
     REGISTER(CreateVFXAtTransitionCentroid)
+    REGISTER(ClearSurfaceMaterial)
 
 #undef REGISTER
 
     GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSInventory__GetItemInSlot>(
             &Layonara::GetItemInSlotHook);
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSObject__SetPosition, void,
+            API::CNWSObject*, API::Vector, int32_t>(&SetPositionHook);
     m_GetItemInSlotHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSInventory__GetItemInSlot);
     m_GemBonuses[Gems::GRE] = {SavingThrowType::Poison, SavingThrow::All, Skill::Listen, DamageType::Positive,
                                Ability::Strength, Ability::Charisma, -1, -1, -1, -1};
@@ -116,6 +122,15 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     m_PhysicalDamageTypes.push_back(DamageType::Bludgeoning);
     m_PhysicalDamageTypes.push_back(DamageType::Piercing);
     m_PhysicalDamageTypes.push_back(DamageType::Slashing);
+
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::DIRT] = 33;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::DIRTPATH] = 33;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::STONEPATH] = 33;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::WATER] = -25;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::MUD] = -20;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::SWAMP] = -20;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::SNOW] = -5;
+    m_SurfaceMaterialSpeeds[SurfaceMaterials::SAND] = -5;
 }
 
 Layonara::~Layonara()
@@ -141,7 +156,7 @@ void Layonara::SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff)
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "QuiverArrows")
+        if (eff->m_sCustomTag == "NWNX_Layonara_QuiverArrows")
         {
             pCreature->RemoveEffectById(eff->m_nID);
         }
@@ -192,7 +207,7 @@ void Layonara::SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff)
     eff->m_bExpose            = true;
     eff->m_nParamInteger[0]   = arrowFXStart + (iPropOffset * 12) + (raceOffset * 2) + pCreature->m_pStats->m_nGender;
     eff->m_nSubType |= EffectDurationType::Permanent;
-    eff->m_sCustomTag = "QuiverArrows";
+    eff->m_sCustomTag = "NWNX_Layonara_QuiverArrows";
     eff->m_nSpellId = 1201;
 
     pCreature->ApplyEffect(eff, false, true);
@@ -234,7 +249,7 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "DuelistCannyDefense")
+        if (eff->m_sCustomTag == "NWNX_Layonara_DuelistCannyDefense")
         {
             pCreature->RemoveEffect(eff);
         }
@@ -253,7 +268,7 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
         eff->m_nParamInteger[3]   = 0;
         eff->m_nParamInteger[4]   = 0;
         eff->m_nParamInteger[5]   = 4103;
-        eff->m_sCustomTag         = "DuelistCannyDefense";
+        eff->m_sCustomTag         = "NWNX_Layonara_DuelistCannyDefense";
         pCreature->ApplyEffect(eff, true, true);
     }
 
@@ -277,7 +292,7 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "DuelistGrace")
+        if (eff->m_sCustomTag == "NWNX_Layonara_DuelistGrace")
         {
             pCreature->RemoveEffect(eff);
         }
@@ -294,7 +309,7 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
         eff->m_nParamInteger[1]   = SavingThrow::Reflex;
         eff->m_nParamInteger[2]   = SavingThrowType::All;
         eff->m_nParamInteger[3]   = RacialType::Invalid;
-        eff->m_sCustomTag         = "DuelistGrace";
+        eff->m_sCustomTag         = "NWNX_Layonara_DuelistGrace";
         pCreature->ApplyEffect(eff, true, true);
     }
 
@@ -318,7 +333,7 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "DuelistElaborateParry")
+        if (eff->m_sCustomTag == "NWNX_Layonara_DuelistElaborateParry")
         {
             pCreature->RemoveEffect(eff);
         }
@@ -334,7 +349,7 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
         eff->m_nParamInteger[0]   = Skill::Parry;
         eff->m_nParamInteger[1]   = nBonus;
         eff->m_nParamInteger[2]   = RacialType::Invalid;
-        eff->m_sCustomTag         = "DuelistElaborateParry";
+        eff->m_sCustomTag         = "NWNX_Layonara_DuelistElaborateParry";
         pCreature->ApplyEffect(eff, true, true);
     }
 
@@ -358,7 +373,7 @@ ArgumentStack Layonara::SetSpellswordIgnoreSpellFailure(ArgumentStack&& args)
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "SpellswordIgnoreSpellFailure")
+        if (eff->m_sCustomTag == "NWNX_Layonara_SpellswordIgnoreSpellFailure")
         {
             pCreature->RemoveEffect(eff);
         }
@@ -372,7 +387,7 @@ ArgumentStack Layonara::SetSpellswordIgnoreSpellFailure(ArgumentStack&& args)
         eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
         eff->m_bShowIcon          = 0;
         eff->m_nParamInteger[0]   = nBonus;
-        eff->m_sCustomTag         = "SpellswordIgnoreSpellFailure";
+        eff->m_sCustomTag         = "NWNX_Layonara_SpellswordIgnoreSpellFailure";
         pCreature->ApplyEffect(eff, true, true);
     }
 
@@ -422,7 +437,7 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "SubraceDayEffects")
+        if (eff->m_sCustomTag == "NWNX_Layonara_SubraceDayEffects")
         {
             pCreature->RemoveEffectById(eff->m_nID);
         }
@@ -438,7 +453,7 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
         eff->m_nParamInteger[0]   = 2;
         eff->m_nParamInteger[1]   = 0;
         eff->m_nParamInteger[2]   = RacialType::Invalid;
-        eff->m_sCustomTag         = "SubraceDayEffects";
+        eff->m_sCustomTag         = "NWNX_Layonara_SubraceDayEffects";
         pCreature->ApplyEffect(eff, true, true);
 
         auto *eff2 = new API::CGameEffect(true);
@@ -450,7 +465,7 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
         eff2->m_nParamInteger[1]   = SavingThrow::All;
         eff2->m_nParamInteger[2]   = SavingThrowType::All;
         eff2->m_nParamInteger[3]   = RacialType::Invalid;
-        eff2->m_sCustomTag         = "SubraceDayEffects";
+        eff2->m_sCustomTag         = "NWNX_Layonara_SubraceDayEffects";
         pCreature->ApplyEffect(eff2, true, true);
     }
 
@@ -823,7 +838,7 @@ ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "Quiver" || eff->m_sCustomTag == "QuiverArrows")
+        if (eff->m_sCustomTag == "NWNX_Layonara_Quiver" || eff->m_sCustomTag == "NWNX_Layonara_QuiverArrows")
         {
             pCreature->RemoveEffectById(eff->m_nID);
         }
@@ -849,7 +864,7 @@ ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
     eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
     eff->m_bShowIcon          = 0;
     eff->m_nParamInteger[0]   = quiverFXStart + (nColor * 12) + (raceOffset * 2) + pCreature->m_pStats->m_nGender;
-    eff->m_sCustomTag         = "Quiver";
+    eff->m_sCustomTag         = "NWNX_Layonara_Quiver";
     eff->m_bExpose            = true;
     pCreature->ApplyEffect(eff, true, true);
 
@@ -950,4 +965,90 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
     return stack;
 }
 
+void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* thisPtr, API::Vector vPos, int32_t)
+{
+    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+        return;
+
+    if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)
+    {
+        auto pServer = Globals::AppManager()->m_pServerExoApp;
+        auto pCreature = pServer->GetCreatureByGameObjectID(thisPtr->m_idSelf);
+        auto pMaster = pServer->GetCreatureByGameObjectID(pCreature->m_oidMaster);
+        if ((pMaster != nullptr && !pMaster->m_bPlayerCharacter) ||
+            pCreature->m_pStats->m_bIsDM || pCreature->m_nAssociateType == 7 || pCreature->m_nAssociateType == 8 ||
+            !pCreature->m_bPlayerCharacter)
+        {
+            return;
+        }
+        auto pArea = pServer->GetAreaByGameObjectID(thisPtr->m_oidArea);
+        if (pArea == nullptr)
+            return;
+        auto iMat = pArea->GetSurfaceMaterial(vPos);
+        if (!g_plugin->m_objectCurrentMaterial.count(thisPtr->m_idSelf) ||
+             g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] != iMat)
+        {
+            auto *pAIMaster = pServer->GetServerAIMaster();
+            auto nDelayDays = pServer->GetWorldTimer()->GetCalendarDayFromSeconds(1.0f);
+            auto nDelayTime = pServer->GetWorldTimer()->GetTimeOfDayFromSeconds(1.0f);
+            for (int i = 0; i < thisPtr->m_appliedEffects.num; i++)
+            {
+                auto eff = (CGameEffect*)thisPtr->m_appliedEffects.element[i];
+                if (eff->m_sCustomTag == "NWNX_Layonara_SurfMatMovement")
+                {
+                    pAIMaster->AddEventDeltaTime(nDelayDays, nDelayTime, 0, pCreature->m_idSelf, Event::RemoveEffect, eff);
+                }
+            }
+
+            auto nCurrentMovement = pCreature->GetMovementRateFactor();
+            int32_t effectChange = (2.0 - nCurrentMovement) * g_plugin->m_SurfaceMaterialSpeeds[iMat];
+            auto bHasStride = pCreature->m_pStats->HasFeat(Constants::Feat::WoodlandStride);
+            auto bSlowImmune = pCreature->m_pStats->GetEffectImmunity(Constants::ImmunityType::Slow, nullptr, true);
+            if (effectChange > 0 || (effectChange < 0 && !bHasStride && !bSlowImmune))
+            {
+                auto *eff = new API::CGameEffect(true);
+                eff->m_oidCreator = 0;
+                eff->m_nType = EffectTrueType::MovementSpeedIncrease;
+                eff->m_nSubType = EffectSubType::Supernatural | EffectDurationType::Permanent;
+                eff->m_nParamInteger[0] = effectChange;
+                eff->m_bShowIcon = 0;
+                eff->m_bExpose = true;
+
+                auto *iconEff = new API::CGameEffect(true);
+                iconEff->m_oidCreator = 0;
+                iconEff->m_nType = EffectTrueType::Icon;
+                iconEff->m_nSubType = EffectSubType::Supernatural | EffectDurationType::Permanent;
+                iconEff->SetNumIntegers(1);
+                iconEff->m_nParamInteger[0] = effectChange < 0 ? 38 : 37;
+                iconEff->m_bExpose = true;
+
+                auto *link = new API::CGameEffect(true);
+                link->m_oidCreator = 0;
+                link->m_nType = EffectTrueType::Link;
+                link->m_nSubType = EffectSubType::Supernatural | EffectDurationType::Permanent;
+                link->m_sCustomTag = "NWNX_Layonara_SurfMatMovement";
+                link->SetLinked(eff, iconEff);
+                link->UpdateLinked();
+                pAIMaster->AddEventDeltaTime(nDelayDays + 0.1f, nDelayTime + 0.1f, 0, pCreature->m_idSelf, Event::ApplyEffect, link);
+            }
+            g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] = iMat;
+        }
+    }
+}
+
+ArgumentStack Layonara::ClearSurfaceMaterial(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
+        return stack;
+    }
+
+    g_plugin->m_objectCurrentMaterial.erase(creatureId);
+
+    return stack;
+}
 }
