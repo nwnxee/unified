@@ -12,6 +12,7 @@
 #include "Tweaks/StringToIntBaseToAuto.hpp"
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
 #include "Tweaks/PreserveActionsOnDMPossess.hpp"
+#include "Tweaks/FixGreaterSanctuaryBug.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -149,6 +150,11 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         m_PreserveActionsOnDMPossess = std::make_unique<PreserveActionsOnDMPossess>(GetServices()->m_hooks.get());
     }
 
+    if (GetServices()->m_config->Get<bool>("FIX_GREATER_SANCTUARY_BUG", false))
+    {
+        LOG_INFO("Greater sanctuary bug fixed.");
+        m_FixGreaterSanctuaryBug = std::make_unique<FixGreaterSanctuaryBug>(GetServices()->m_hooks.get());
+    }
 }
 
 Tweaks::~Tweaks()
