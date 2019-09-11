@@ -782,7 +782,7 @@ const string NWNX_Events = "NWNX_Events";
     NWNX_ON_INPUT_WALK_TO_WAYPOINT_AFTER
 
     Usage:
-        OBJECT_SELF = The player clicking somewhere
+        OBJECT_SELF = The player clicking somewhere to move
 
     Event data:
         Variable Name           Type        Notes
@@ -804,7 +804,30 @@ const string NWNX_Events = "NWNX_Events";
 
     Note:
         After a PC transitions to a new area, a surface material change event
-        won't fire until after the PC moves.        
+        won't fire until after the PC moves.
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE
+    NWNX_ON_INPUT_ATTACK_OBJECT_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature attacking
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        PASSIVE                 int         TRUE / FALSE
+        CLEAR_ALL_ACTIONS       int         TRUE / FALSE
+        ADD_TO_FRONT            int         TRUE / FALSE
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE
+    NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature forcibly moving
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
 *///////////////////////////////////////////////////////////////////////////////
 
 /*

@@ -19,6 +19,14 @@ InputEvents::InputEvents(ViewPtr<Services::HooksProxy> hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::CNWSMessage__HandlePlayerToServerInputWalkToWaypoint, int32_t>(&HandlePlayerToServerInputWalkToWaypointHook);
     });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CNWSCreature__AddAttackActions, int32_t>(&AddAttackActionsHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::CNWSCreature__AddMoveToPointActionToFront, int32_t>(&AddMoveToPointActionToFrontHook);
+    });
 }
 
 void InputEvents::HandlePlayerToServerInputWalkToWaypointHook(Services::Hooks::CallType type, CNWSMessage *pMessage, CNWSPlayer *pPlayer)
@@ -54,5 +62,30 @@ void InputEvents::HandlePlayerToServerInputWalkToWaypointHook(Services::Hooks::C
     Events::SignalEvent(before ? "NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE" : "NWNX_ON_INPUT_WALK_TO_WAYPOINT_AFTER", pPlayer->m_oidNWSObject);
 }
 
+void InputEvents::AddAttackActionsHook(Services::Hooks::CallType type, CNWSCreature *pCreature, Types::ObjectID oidTarget,
+        int32_t bPassive, int32_t bClearAllActions, int32_t bAddToFront)
+{
+    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
+
+    Events::PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
+    Events::PushEventData("PASSIVE", std::to_string(bPassive));
+    Events::PushEventData("CLEAR_ALL_ACTIONS", std::to_string(bClearAllActions));
+    Events::PushEventData("ADD_TO_FRONT", std::to_string(bAddToFront));
+
+    Events::SignalEvent(before ? "NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE" : "NWNX_ON_INPUT_ATTACK_OBJECT_AFTER", pCreature->m_idSelf);
 }
 
+void InputEvents::AddMoveToPointActionToFrontHook(Services::Hooks::CallType type, CNWSCreature *pCreature, uint16_t, Vector,
+        Types::ObjectID, Types::ObjectID oidObjectMovingTo, int32_t, float, float, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t)
+{
+    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
+
+    if (oidObjectMovingTo != Constants::OBJECT_INVALID)
+    {
+        Events::PushEventData("TARGET", Utils::ObjectIDToString(oidObjectMovingTo));
+
+        Events::SignalEvent(before ? "NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE" : "NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER", pCreature->m_idSelf);
+    }
+}
+
+}
