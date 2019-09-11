@@ -15,4 +15,5 @@ add_plugin(Tweaks
     "Tweaks/MaxLevel.cpp"
     "Tweaks/DeadCreatureFiresOnAreaExit.cpp"
     "Tweaks/PreserveActionsOnDMPossess.cpp"
+    "Tweaks/FixGreaterSanctuaryBug.cpp"
 )
