@@ -1,1 +1,1 @@
-add_subdirectory(BeaEngine)
+add_subdirectory(subhook)

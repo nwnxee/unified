@@ -3,7 +3,7 @@ typename std::enable_if<std::is_base_of<CallingConvention::CallingConvention, Co
 Ret>::type FunctionHook::CallOriginal(Params ... args)
 {
     using FuncPtrType = decltype(Convention::template PointerValue<Ret, Params ...>());
-    FuncPtrType funcPtr = reinterpret_cast<FuncPtrType>(m_trampoline.data());
+    FuncPtrType funcPtr = reinterpret_cast<FuncPtrType>(m_trampoline);
     return static_cast<Ret>(funcPtr(args ...));
 }
 

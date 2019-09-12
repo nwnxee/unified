@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMa
 # -DSANITIZE_ADDRESS=On
 find_package(Sanitizers)
 
-set(TARGET_NWN_BUILD 8186)
+set(TARGET_NWN_BUILD 8190)
 set(PLUGIN_PREFIX NWNX_)
 set(NWNX64 1)
 
@@ -114,3 +114,4 @@ endforeach(plugin)
 foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
     add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
 endforeach(addplugin)
+
