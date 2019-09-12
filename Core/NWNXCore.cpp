@@ -185,7 +185,7 @@ void NWNXCore::InitialSetupHooks()
                     if (node)
                     {
                         auto *resref = (API::CResRef*)node->pObject;
-                        LOG_DEBUG("(%i/%i) Trying to load area with resref: %s", nAreasLoaded + 1,  nAreasToLoad, resref->m_resRef);
+                        LOG_DEBUG("(%i/%i) Trying to load area with resref: %s", nAreasLoaded + 1,  nAreasToLoad, resref->GetResRefStr());
                     }
                 }
             });
