@@ -37,4 +37,4 @@ if(UNIX)
 endif()
 
 # For hooks -- pulled in from External.
-target_link_libraries(NWNXLib BeaEngine)
+target_link_libraries(NWNXLib subhook)

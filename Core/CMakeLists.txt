@@ -15,3 +15,4 @@ target_link_libraries(Core NWNXLib)
 
 # The name defined here will be ignored when loading plugins.
 add_definitions(-DNWNX_CORE_PLUGIN_NAME="${PLUGIN_PREFIX}Core")
+target_link_libraries(Core "${CMAKE_SOURCE_DIR}/aliases.ld")

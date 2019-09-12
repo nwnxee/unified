@@ -63,12 +63,13 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
             API::CNWS##_type *p = static_cast<API::CNWS##_type*>(pObject);       \
             if (resGff.CreateGFFFile(&resStruct, _gff_header, "V2.0"))           \
             {                                                                    \
+                p->SaveObjectState(&resGff, &resStruct);                         \
                 if (p->Save##_type(&resGff, &resStruct, ##__VA_ARGS__))          \
                     resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength); \
             }                                                                    \
         } while(0)
 
-        case API::Constants::ObjectType::Item:      SERIALIZE(Item,      "UTI ", 0); break;
+        case API::Constants::ObjectType::Item:      SERIALIZE(Item,      "UTI ", true); break;
         case API::Constants::ObjectType::Placeable: SERIALIZE(Placeable, "UTP ", 0);    break;
         case API::Constants::ObjectType::Waypoint:  SERIALIZE(Waypoint,  "UTW ");    break;
         case API::Constants::ObjectType::Store:     SERIALIZE(Store,     "UTM ", 0);    break;
@@ -129,6 +130,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
             delete p;                                                                       \
             return nullptr;                                                                 \
         }                                                                                   \
+        p->LoadObjectState(&resGff, &resStruct);                                            \
         return static_cast<API::CGameObject*>(p);                                           \
     } while(0)
 

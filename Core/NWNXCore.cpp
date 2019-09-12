@@ -12,7 +12,6 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Metrics/Metrics.hpp"
-#include "Services/Patching/Patching.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
@@ -82,12 +81,13 @@ NWNXCore::NWNXCore()
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
     // crash before the version check happens.
-
+    std::printf("Starting NWNX...\n");
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 
-    m_createServerHook = std::make_unique<FunctionHook>("CreateServer",
+    m_createServerHook = std::make_unique<FunctionHook>(
         Platform::ASLR::GetRelocatedAddress(API::Functions::CAppManager__CreateServer),
+//        Platform::ASLR::GetRelocatedAddress(0x00000000000cfee0ull),
         reinterpret_cast<uintptr_t>(&CreateServerHandler));
 }
 
@@ -106,7 +106,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_plugins = std::make_unique<Plugins>();
     services->m_tasks = std::make_unique<Tasks>();
     services->m_metrics = std::make_unique<Metrics>();
-    services->m_patching = std::make_unique<Patching>();
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
@@ -124,7 +123,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_plugins = std::make_unique<Services::PluginsProxy>(*m_services->m_plugins);
     proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
-    proxyServices->m_patching = std::make_unique<Services::PatchingProxy>(*m_services->m_patching);
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);

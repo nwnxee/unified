@@ -20,7 +20,6 @@
 #include "ViewPtr.hpp"
 #include "Platform/FileSystem.hpp"
 #include "Services/Tasks/Tasks.hpp"
-#include "Services/Patching/Patching.hpp"
 #include <cstdlib>
 #include <unistd.h>
 #include <signal.h>
