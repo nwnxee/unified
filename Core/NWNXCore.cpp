@@ -6,6 +6,9 @@
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CExoLinkedListInternal.hpp"
+#include "API/CExoLinkedListNode.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Debug.hpp"
 #include "Platform/FileSystem.hpp"
@@ -167,6 +170,27 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSArea__CNWSAreaDtor__0, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__EatTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__DropTURD, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
+
+    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSModule__LoadModuleInProgress, uint32_t>(
+            +[](Services::Hooks::CallType type, API::CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
+            {
+                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                {
+                    int index = nAreasLoaded;
+                    auto *node = pModule->m_lstModuleArea.m_pcExoLinkedListInternal->pHead;
+                    while (node && index)
+                    {
+                        node = node->pNext;
+                        index--;
+                    }
+
+                    if (node)
+                    {
+                        auto *resref = (API::CResRef*)node->pObject;
+                        LOG_DEBUG("(%i/%i) Trying to load area with resref: %s", nAreasLoaded + 1,  nAreasToLoad, resref->GetResRefStr());
+                    }
+                }
+            });
 }
 
 void NWNXCore::InitialVersionCheck()
