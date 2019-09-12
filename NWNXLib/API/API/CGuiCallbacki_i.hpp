@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "int.hpp"
-#include "CGuiCallbackr1<int.hpp"
 #include "CGuiFni_i.hpp"
+#include "CGuiCallbackr1<int.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

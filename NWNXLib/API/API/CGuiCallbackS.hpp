@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoString.hpp"
 #include "CGuiCallbackv1<void.hpp"
 #include "CGuiFnS.hpp"
-#include "CExoString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

@@ -2,21 +2,21 @@
 #include "nwn_api.hpp"
 
 #include "CNWSPlayerLUOAppearanceInfo.hpp"
-#include "Vector.hpp"
 #include "CExoString.hpp"
-#include "CResRef.hpp"
-#include "MaterialShaderParam.hpp"
-#include "CExoArrayList.hpp"
-#include "CExoLocString.hpp"
 #include "ObjectVisualTransformData.hpp"
+#include "Vector.hpp"
+#include "CResRef.hpp"
+#include "CExoArrayList.hpp"
+#include "MaterialShaderParam.hpp"
+#include "CExoLocString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CLastUpdateObject)
 #endif
 
-struct CLoopingVisualEffect;
 struct CNWSPlayerLUOQuickbarItemButton;
+struct CLoopingVisualEffect;
 
 
 typedef int BOOL;

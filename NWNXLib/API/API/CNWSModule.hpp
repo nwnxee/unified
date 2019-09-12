@@ -1,42 +1,42 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "NWMODULEEXPANSION.hpp"
-#include "CExoLinkedList.hpp"
-#include "CGameObject.hpp"
 #include "CResIFO.hpp"
-#include "CExoArrayList.hpp"
-#include "CNWSTagNode.hpp"
 #include "NWMODULECUTSCENE.hpp"
-#include "CExoString.hpp"
-#include "Vector.hpp"
-#include "NWPLAYERLISTITEM.hpp"
+#include "CNWSPlayerTURD.hpp"
 #include "CExoLocString.hpp"
 #include "CNWSScriptVarTable.hpp"
-#include "CWorldJournalEntry.hpp"
+#include "Vector.hpp"
+#include "CNWSTagNode.hpp"
 #include "CResRef.hpp"
 #include "CResHelper.hpp"
-#include "CNWSPlayerTURD.hpp"
+#include "CExoArrayList.hpp"
+#include "CWorldJournalEntry.hpp"
+#include "CGameObject.hpp"
+#include "CExoLinkedList.hpp"
+#include "NWPLAYERLISTITEM.hpp"
+#include "CExoString.hpp"
+#include "NWMODULEEXPANSION.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSModule)
 #endif
 
-struct NWMODULEENTRYINFO;
-struct CNWSPlayer;
-struct CResGFF;
-struct CERFFile;
-struct NWMODULEHEADER;
 struct CPathfindInformation;
 struct CNWSArea;
-struct NWPLAYERCHARACTERLISTITEM;
+struct CNWSPlayer;
+struct CResGFF;
 struct CResStruct;
+struct CERFFile;
+struct NWMODULEHEADER;
+struct NWPLAYERCHARACTERLISTITEM;
+struct NWMODULEENTRYINFO;
 
 
+typedef uint32_t STRREF;
 typedef uint16_t RESTYPE;
 typedef int BOOL;
-typedef uint32_t STRREF;
 typedef uint32_t OBJECT_ID;
 
 

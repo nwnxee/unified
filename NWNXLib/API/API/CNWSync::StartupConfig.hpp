@@ -2,7 +2,6 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "StartupConfig.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -17,13 +16,10 @@ struct CNWSync::StartupConfig
 {
     CExoString m_path;
     StorageType m_storageType;
-    CompressionAlgorithm m_compressionType;
+    NWCompressedBuffer::CompressionAlgorithm m_compressionType;
     size_t m_sqlShardCount;
 
     StartupConfig();
-    StartupConfig(const StartupConfig &);
-    StartupConfig(StartupConfig & &);
-    StartupConfig & operator=(const StartupConfig &);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSync::StartupConfig

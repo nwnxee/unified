@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWSTransition)
 #endif
 
-struct CNWSObject;
 struct CResStruct;
+struct CNWSObject;
 struct CResGFF;
 
 

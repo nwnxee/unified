@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResNCS.hpp"
 #include "CResHelper.hpp"
+#include "CResNCS.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

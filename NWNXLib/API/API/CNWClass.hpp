@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWClass)
 #endif
 
-struct CNWClass_Skill;
 struct CNWRules;
+struct CNWClass_Skill;
 struct CNWClass_Feat;
 
 
@@ -38,6 +38,8 @@ struct CNWClass
     CNWClass_Feat * m_lstFeatTable;
     uint16_t m_nNumFeats;
     uint8_t m_lstBonusFeatsTable[60];
+    int8_t m_lstAbilityGainTable[60][6];
+    int8_t m_lstNaturalACGainTable[60];
     uint8_t m_nPrimaryAbility;
     uint8_t m_pnRecommendedAbilities[6];
     uint8_t m_nClassRestrictions;
@@ -74,6 +76,7 @@ struct CNWClass
     void LoadBonusFeatsTable(CExoString sTable);
     void LoadSpellGainTable(CExoString sTable);
     void LoadSpellKnownTable(CExoString sTable);
+    void LoadStatGainTable(CExoString sTable);
     BOOL IsSkillUseable(uint16_t nSkill);
     BOOL IsSkillClassSkill(uint16_t nSkill);
     BOOL GetIsAlignmentAllowed(uint8_t nGoodEvilConst, uint8_t nLawChaosConst);
@@ -84,6 +87,8 @@ struct CNWClass
     BOOL IsGrantedFeat(uint16_t nFeat, uint8_t & nLevelGranted);
     BOOL IsFeatUseable(uint16_t nFeat);
     uint8_t GetLevelGranted(uint16_t nFeat);
+    int8_t GetAbilityGainForLevel(int ability, int level);
+    int8_t GetNaturalACGainForLevel(int level);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWClass

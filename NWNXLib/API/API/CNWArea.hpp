@@ -9,8 +9,8 @@
 NWN_API_PROLOGUE(CNWArea)
 #endif
 
-struct CGameObject;
 struct CPathfindInformation;
+struct CGameObject;
 
 
 typedef int BOOL;

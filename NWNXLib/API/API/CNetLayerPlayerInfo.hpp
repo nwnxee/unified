@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "CExoArrayList.hpp"
 #include "CNetLayerPlayerCDKeyInfo.hpp"
+#include "CExoArrayList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

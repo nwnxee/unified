@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CBaseExoApp.hpp"
 #include "CExoString.hpp"
-#include "CResRef.hpp"
-#include "CExoArrayList.hpp"
 #include "List.hpp"
+#include "CResRef.hpp"
+#include "CBaseExoApp.hpp"
+#include "CExoArrayList.hpp"
 #include "CExoLocString.hpp"
 
 
@@ -13,28 +13,28 @@
 NWN_API_PROLOGUE(CServerExoApp)
 #endif
 
-struct CNWSEncounter;
-struct CGameObjectArray;
-struct CNWSCreature;
-struct CNWSModule;
-struct CGameObject;
-struct CConnectionLib;
-struct CNWSWaypoint;
 struct CNWSPlayer;
-struct CNWSAreaOfEffectObject;
-struct CServerExoAppInternal;
-struct CCodeBase;
-struct CNWSSoundObject;
-struct CWorldTimer;
-struct CNWSItem;
-struct CNWSDoor;
-struct CNWSTrigger;
-struct CNWSArea;
-struct CNWSStore;
-struct CNWSPlaceable;
 struct CNetLayer;
 struct CNWSClient;
+struct CNWSTrigger;
+struct CWorldTimer;
+struct CNWSSoundObject;
+struct CNWSDoor;
+struct CNWSPlaceable;
+struct CNWSAreaOfEffectObject;
+struct CNWSArea;
+struct CNWSModule;
 struct CServerAIMaster;
+struct CNWSEncounter;
+struct CConnectionLib;
+struct CNWSWaypoint;
+struct CNWSCreature;
+struct CGameObject;
+struct CNWSStore;
+struct CCampaignDB;
+struct CGameObjectArray;
+struct CServerExoAppInternal;
+struct CNWSItem;
 
 
 typedef int BOOL;
@@ -153,7 +153,7 @@ struct CServerExoApp : CBaseExoApp
     void InitiateModuleForPlayer(void * pPlayer);
     void HandleGameSpyToServerMessage(int32_t nKeyId, void * pOutBuf, int nIndex = - 1);
     CConnectionLib * GetConnectionLib();
-    CCodeBase * GetCodeBase();
+    CCampaignDB * GetCampaignDB();
     BOOL GetPlayerAddressData(uint32_t nConnectionId, uint32_t * nProtocol, uint8_t * * pNetAddress1, uint8_t * * pNetAddress2, uint32_t * nPort);
     BOOL GetFactionOfObject(OBJECT_ID oObject, int32_t * nFaction);
     uint32_t ResolvePlayerByFirstName(const CExoString & sName);
@@ -190,17 +190,17 @@ struct CServerExoApp : CBaseExoApp
     BOOL GetStickyCombatModesEnabled();
     void SetStickyCombatModesEnabled(BOOL v);
     int32_t GetAttackBonusLimit();
-    void SetAttackBonusLimit(int32_t newLimit);
+    void SetAttackBonusLimit(int32_t newLimit, BOOL isModuleOverride = false);
     int32_t GetDamageBonusLimit();
-    void SetDamageBonusLimit(int32_t newLimit);
+    void SetDamageBonusLimit(int32_t newLimit, BOOL isModuleOverride = false);
     int32_t GetSavingThrowBonusLimit();
-    void SetSavingThrowBonusLimit(int32_t newLimit);
+    void SetSavingThrowBonusLimit(int32_t newLimit, BOOL isModuleOverride = false);
     int32_t GetAbilityBonusLimit();
-    void SetAbilityBonusLimit(int32_t newLimit);
+    void SetAbilityBonusLimit(int32_t newLimit, BOOL isModuleOverride = false);
     int32_t GetAbilityPenaltyLimit();
-    void SetAbilityPenaltyLimit(int32_t newLimit);
+    void SetAbilityPenaltyLimit(int32_t newLimit, BOOL isModuleOverride = false);
     int32_t GetSkillBonusLimit();
-    void SetSkillBonusLimit(int32_t newLimit);
+    void SetSkillBonusLimit(int32_t newLimit, BOOL isModuleOverride = false);
     CExoString GetHostedPublicInternetAddressAndPort();
     BOOL SetDDCipherForModule(CExoString moduleName);
 

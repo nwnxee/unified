@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoPackedFile.hpp"
 #include "RESID.hpp"
 #include "CExoLocString.hpp"
-#include "CExoPackedFile.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

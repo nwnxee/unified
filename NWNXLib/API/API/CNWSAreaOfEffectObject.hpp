@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "Vector.hpp"
 #include "CExoString.hpp"
 #include "CNWSObject.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

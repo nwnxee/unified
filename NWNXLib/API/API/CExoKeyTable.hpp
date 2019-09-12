@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoLinkedList.hpp"
 #include "RESID.hpp"
+#include "CExoString.hpp"
 #include "CKeyTableInfo.hpp"
 
 
@@ -12,10 +12,10 @@ NWN_API_PROLOGUE(CExoKeyTable)
 #endif
 
 struct CRes;
-struct CResRef;
-struct CExoStringList;
 struct CExoPackedFile;
 struct CKeyTableEntry;
+struct CResRef;
+struct CExoStringList;
 
 
 typedef uint16_t RESTYPE;

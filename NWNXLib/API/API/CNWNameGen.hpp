@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CResLTR.hpp"
+#include "CExoString.hpp"
 #include "CResHelper.hpp"
 
 

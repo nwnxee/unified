@@ -1,52 +1,52 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoLinkedList.hpp"
-#include "CResRef.hpp"
+#include "CExoString.hpp"
 #include "CNWSClient.hpp"
-#include "CExoArrayList.hpp"
 #include "List.hpp"
+#include "CResRef.hpp"
+#include "CExoArrayList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CServerExoAppInternal)
 #endif
 
-struct CNWSEncounter;
-struct CGameObjectArray;
-struct CNWSCreature;
-struct CNWSModule;
-struct CGameObject;
-struct SSubNetProfile;
-struct CConnectionLib;
-struct CServerInfo;
 struct CNWSPlayer;
-struct CNWSWaypoint;
-struct CNWSAreaOfEffectObject;
-struct CNWSMessage;
-struct CCodeBase;
+struct CNetLayer;
+struct CNWSTrigger;
 struct CWorldTimer;
 struct CNWSSoundObject;
-struct CNWSItem;
-struct CNWPlaceMeshManager;
 struct CNWSDoor;
-struct CFactionManager;
-struct CNWSTrigger;
-struct CNWSArea;
-struct CNWSStore;
 struct CNWSPlaceable;
+struct SSubNetProfile;
+struct CNWSAreaOfEffectObject;
+struct CNWSArea;
 struct C2DA;
-struct CNetLayer;
-struct CNWVirtualMachineCommands;
+struct CNWSModule;
+struct CFactionManager;
 struct CServerAIMaster;
+struct CNWPlaceMeshManager;
+struct CNWSEncounter;
+struct CConnectionLib;
+struct CGameObject;
+struct CNWSCreature;
+struct CNWSWaypoint;
+struct CNWSStore;
+struct CCampaignDB;
+struct CGameObjectArray;
+struct CServerInfo;
+struct CNWSMessage;
+struct CNWSItem;
+struct CNWVirtualMachineCommands;
 
 
 typedef uint32_t STRREF;
-typedef uint32_t OBJECT_ID;
+typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint16_t RESTYPE;
 typedef int BOOL;
-typedef CExoLinkedListNode * CExoLinkedListPosition;
+typedef uint32_t OBJECT_ID;
 
 
 struct CServerExoAppInternal
@@ -76,7 +76,7 @@ struct CServerExoAppInternal
     CWorldTimer * m_pPauseTimer;
     CFactionManager * m_pFactionManager;
     CConnectionLib * m_pConnectionLib;
-    CCodeBase * m_pCodeBase;
+    CCampaignDB * m_pCampaignDB;
     CGameObjectArray * m_pGameObjArray;
     OBJECT_ID m_oidModule;
     CExoLinkedList<CNWSClient> * m_pNWSPlayerList;
@@ -128,6 +128,12 @@ struct CServerExoAppInternal
     int32_t m_AbilityBonusLimit;
     int32_t m_AbilityPenaltyLimit;
     int32_t m_SkillBonusLimit;
+    int32_t m_AttackBonusLimitModule;
+    int32_t m_DamageBonusLimitModule;
+    int32_t m_SavingThrowBonusLimitModule;
+    int32_t m_AbilityBonusLimitModule;
+    int32_t m_AbilityPenaltyLimitModule;
+    int32_t m_SkillBonusLimitModule;
 
     CServerExoAppInternal();
     ~CServerExoAppInternal();

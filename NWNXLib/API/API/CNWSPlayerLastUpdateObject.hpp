@@ -1,21 +1,21 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoArrayList.hpp"
 #include "CNWSStats_SpellLikeAbility.hpp"
 #include "CNWActionNode.hpp"
+#include "CExoArrayList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSPlayerLastUpdateObject)
 #endif
 
-struct CSpell_Add;
-struct CNWSStats_Spell;
-struct CNWVisibilityNode;
-struct CFeatUseListEntry;
 struct CSpell_Delete;
 struct CEffectIconObject;
+struct CNWVisibilityNode;
+struct CNWSStats_Spell;
+struct CFeatUseListEntry;
+struct CSpell_Add;
 
 
 typedef int BOOL;
@@ -43,13 +43,13 @@ struct CNWSPlayerLastUpdateObject
     uint8_t * m_pAutoMapTileData;
     OBJECT_ID m_oidAutoMapArea;
     CExoArrayList<CNWVisibilityNode *> m_lstVisibilityList;
-    CExoArrayList<uint32_t> m_pKnownSpellList[1];
-    CExoArrayList<CNWSStats_Spell *> m_pMemorizedSpellList[1];
+    CExoArrayList<uint32_t> m_pKnownSpellList[3][10];
+    CExoArrayList<CNWSStats_Spell *> m_pMemorizedSpellList[3][10];
     CExoArrayList<uint32_t> m_lstKnownSpellsToDelete[3];
     CExoArrayList<uint32_t> m_lstKnownSpellsToAdd[3];
     CExoArrayList<CSpell_Delete *> m_lstMemorizedSpellsToDelete[3];
     CExoArrayList<CSpell_Add *> m_lstMemorizedSpellsToAdd[3];
-    uint8_t m_pKnownSpellUsesLeft[1];
+    uint8_t m_pKnownSpellUsesLeft[3][10];
     CExoArrayList<CEffectIconObject *> m_aEffectIcons;
     CExoArrayList<CNWSStats_SpellLikeAbility> * m_pSpellLikeAbilityList;
 

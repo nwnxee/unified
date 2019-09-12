@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "CResRef.hpp"
 #include "CRes2DA.hpp"
+#include "CResRef.hpp"
 #include "CResHelper.hpp"
 
 

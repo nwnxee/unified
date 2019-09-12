@@ -23,7 +23,7 @@ struct CNWDoorSurfaceMesh : CResHelper<CResDWK, 2052>
     int32_t m_pnTriangles[3];
     int32_t * m_ppnTriangles[3];
     int32_t * m_ppnTriangleMaterial[3];
-    Vector m_pvOpenLocations[6];
+    Vector m_pvOpenLocations[3][2];
 
     CNWDoorSurfaceMesh();
     ~CNWDoorSurfaceMesh();

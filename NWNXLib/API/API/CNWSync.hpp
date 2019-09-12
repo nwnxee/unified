@@ -2,23 +2,21 @@
 #include "nwn_api.hpp"
 
 #include "ResRefBatchInsertEntry.hpp"
-#include "AsyncHousekeepingStatus.hpp"
 #include "CExoString.hpp"
-#include "DataBlockRef.hpp"
-#include "ManifestMetaData.hpp"
-#include "ManifestInfo.hpp"
 #include "MappingBatchInsertEntry.hpp"
 #include "CExoArrayList.hpp"
+#include "ManifestInfo.hpp"
+#include "AsyncHousekeepingStatus.hpp"
+#include "DataBlockRef.hpp"
+#include "ManifestMetaData.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSync)
 #endif
 
-struct NWSync::CNWSyncInternal;
 struct NWSync::StorageProvider;
-struct RuntimeConfig;
-struct CNWSync::StartupConfig;
+struct NWSync::CNWSyncInternal;
 
 
 typedef uint16_t RESTYPE;
@@ -31,9 +29,10 @@ struct CNWSync
     CNWSyncInternal * m_internal;
 
     CNWSync();
+    ~CNWSync();
     bool IsAvailable();
-    bool Configure(const CNWSync::StartupConfig & config);
-    RuntimeConfig & GetRuntimeConfig();
+    bool Configure();
+    void Deconfigure();
     bool HasManifest(const CExoString & manifestSha1);
     bool HasResRef(const CExoString & resrefSha1);
     CExoArrayList<CExoString> FilterMissingResRefs(const CExoArrayList<CExoString> & resrefShas);

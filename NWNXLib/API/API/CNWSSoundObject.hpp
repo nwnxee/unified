@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CNWSObject.hpp"
 #include "Vector.hpp"
 #include "CResRef.hpp"
-#include "CNWSObject.hpp"
 #include "CExoArrayList.hpp"
 
 

@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CGuiCallbackv2<void.hpp"
 #include "CGuiFnii.hpp"
 #include "int.hpp"
-#include "CGuiCallbackv2<void.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

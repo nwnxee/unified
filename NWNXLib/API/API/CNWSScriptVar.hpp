@@ -17,12 +17,12 @@ struct CNWSScriptVar
     CExoString m_sName;
     uint32_t m_nType;
     union {
-    int32_t m_int;
-    float m_float;
-    OBJECT_ID m_objectId;
-    struct CExoString* m_string;
-    struct CScriptLocation* m_location;
-} m_uValue;
+        int32_t m_int;
+        float m_float;
+        OBJECT_ID m_objectId;
+        struct CExoString* m_string;
+        struct CScriptLocation* m_location;
+    } m_uValue;
 
 
 

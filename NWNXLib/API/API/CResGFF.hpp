@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CRes.hpp"
 #include "CExoString.hpp"
+#include "CRes.hpp"
 #include "CResRef.hpp"
 #include "CExoLocString.hpp"
 
@@ -11,13 +11,13 @@
 NWN_API_PROLOGUE(CResGFF)
 #endif
 
-struct CResList;
-struct CResGFFLabel;
-struct CExoFile;
 struct CResGFFField;
 struct CResGFFStruct;
-struct CResGFFFileHeader;
+struct CExoFile;
 struct CResStruct;
+struct CResGFFFileHeader;
+struct CResGFFLabel;
+struct CResList;
 
 
 typedef uint16_t RESTYPE;

@@ -1,6 +1,7 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CachedRulesetEntry.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
 
@@ -9,14 +10,14 @@
 NWN_API_PROLOGUE(CNWRules)
 #endif
 
-struct CNWDomain;
-struct CTwoDimArrays;
-struct CNWClass;
-struct CNWFeat;
-struct CNWBaseItemArray;
 struct CNWRace;
-struct CNWSkill;
+struct CNWFeat;
+struct CNWClass;
+struct CNWBaseItemArray;
+struct CTwoDimArrays;
 struct CNWSpellArray;
+struct CNWDomain;
+struct CNWSkill;
 
 
 typedef int BOOL;
@@ -45,7 +46,8 @@ struct CNWRules
     CNWSkill * m_lstSkills;
     CNWDomain * m_lstDomains;
     CTwoDimArrays * m_p2DArrays;
-    uint8_t m_nDifficultyOptions[1];
+    uint8_t m_nDifficultyOptions[5][7];
+    std::unordered_map<std::string, CachedRulesetEntry> m_ruleset_2da_cache;
 
     CNWRules();
     virtual ~CNWRules();
@@ -69,12 +71,16 @@ struct CNWRules
     int32_t GetDamageIndexFromFlags(uint32_t nDamageFlags);
     void ReloadAll();
     void UnloadAll();
+    CExoString GetRulesetStringEntry(const CExoString & label, CExoString whenMissing);
+    int32_t GetRulesetIntEntry(const CExoString & label, int32_t whenMissing);
+    float GetRulesetFloatEntry(const CExoString & label, float whenMissing);
     void LoadFeatInfo();
     void LoadClassInfo();
     void LoadRaceInfo();
     void LoadSkillInfo();
     void LoadDomainInfo();
     void LoadDifficultyInfo();
+    void LoadRulesetInfo();
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWRules

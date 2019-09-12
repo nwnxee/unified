@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResRef.hpp"
 #include "CNWSObject.hpp"
+#include "CResRef.hpp"
 #include "CExoLocString.hpp"
 
 

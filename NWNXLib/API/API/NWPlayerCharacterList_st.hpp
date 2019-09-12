@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "NWPlayerCharacterListClass_st.hpp"
-#include "CExoArrayList.hpp"
 #include "CResRef.hpp"
+#include "CExoArrayList.hpp"
+#include "NWPlayerCharacterListClass_st.hpp"
 #include "CExoLocString.hpp"
 
 

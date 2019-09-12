@@ -9,9 +9,9 @@ NWN_API_PROLOGUE(CTlkTable)
 #endif
 
 struct STR_RES;
-struct CTlkFile;
-struct CTlkTableToken;
 struct CTlkTableTokenCustom;
+struct CTlkTableToken;
+struct CTlkFile;
 
 
 typedef int BOOL;

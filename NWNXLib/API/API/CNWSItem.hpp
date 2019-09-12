@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoArrayList.hpp"
 #include "CExoString.hpp"
-#include "CResRef.hpp"
 #include "CNWSObject.hpp"
 #include "CNWItemProperty.hpp"
+#include "CResRef.hpp"
+#include "CExoArrayList.hpp"
 #include "CNWItem.hpp"
 #include "CExoLocString.hpp"
 
@@ -14,11 +14,11 @@
 NWN_API_PROLOGUE(CNWSItem)
 #endif
 
-struct CResGFF;
-struct CNWSCreature;
 struct CNWSArea;
-struct CItemRepository;
+struct CResGFF;
 struct CResStruct;
+struct CItemRepository;
+struct CNWSCreature;
 
 
 typedef int BOOL;
@@ -78,7 +78,7 @@ struct CNWSItem : CNWItem, CNWSObject
     void ComputeWeight();
     BOOL SaveItem(CResGFF * pRes, CResStruct * pStruct, BOOL bExportingChar = false);
     BOOL AcquireItem(CNWSItem * * pItem, OBJECT_ID oidPossessor = 0x7f000000, uint8_t x = - 1, uint8_t y = - 1, BOOL bDisplayFeedback = true);
-    BOOL SaveContainerItems(CResGFF * pRes, CResStruct * pStruct);
+    BOOL SaveContainerItems(CResGFF * pRes, CResStruct * pStruct, BOOL bExportingChar);
     BOOL SaveItemProperties(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadDataFromGff(CResGFF * pRes, CResStruct * pCreatureStruct, BOOL bIsInsideAContainer = false);
     void RemoveFromArea();

@@ -8,32 +8,32 @@
 NWN_API_PROLOGUE(CGameObject)
 #endif
 
-struct CNWSEncounter;
-struct CNWSCreature;
-struct CNWSModule;
-struct CNWCStore;
-struct CNWCCreature;
-struct CNWCArea;
-struct CNWCTrigger;
-struct CNWCProjectile;
 struct CNWCObject;
-struct CNWSWaypoint;
-struct CNWCAreaOfEffectObject;
-struct CNWSAreaOfEffectObject;
-struct CNWCSoundObject;
-struct CNWSSoundObject;
-struct CNWSItem;
-struct CNWSDoor;
-struct CNWSTrigger;
-struct CNWSArea;
-struct CNWSStore;
-struct CNWCModule;
-struct CNWSPlaceable;
-struct CNWCDoor;
-struct CNWSObject;
 struct CNWCItem;
 struct CNWSPlayerTURD;
+struct CNWCArea;
+struct CNWSTrigger;
+struct CNWSSoundObject;
+struct CNWSDoor;
+struct CNWSPlaceable;
+struct CNWSAreaOfEffectObject;
+struct CNWSArea;
+struct CNWCModule;
+struct CNWSModule;
 struct CNWCPlaceable;
+struct CNWCDoor;
+struct CNWCTrigger;
+struct CNWSEncounter;
+struct CNWSCreature;
+struct CNWSWaypoint;
+struct CNWCCreature;
+struct CNWCAreaOfEffectObject;
+struct CNWSStore;
+struct CNWCProjectile;
+struct CNWSObject;
+struct CNWCSoundObject;
+struct CNWSItem;
+struct CNWCStore;
 
 
 typedef uint32_t OBJECT_ID;

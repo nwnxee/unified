@@ -8,9 +8,9 @@
 NWN_API_PROLOGUE(CExoInput)
 #endif
 
+struct CExoInputInternal;
 struct CExoInputEvent;
 struct CExoFile;
-struct CExoInputInternal;
 
 
 typedef int BOOL;

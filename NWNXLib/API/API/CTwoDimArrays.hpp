@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "C2DA.hpp"
 #include "CExoString.hpp"
 #include "CExoLinkedList.hpp"
-#include "C2DA.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -101,6 +101,7 @@ struct CTwoDimArrays
     C2DA * m_pPartsRobe;
     C2DA * m_pItemValue;
     C2DA * m_pPackages;
+    C2DA * m_pRuleset;
     C2DA * m_pXpBase;
     C2DA * m_pRangesTable;
     C2DA * m_pPolymorphTable;

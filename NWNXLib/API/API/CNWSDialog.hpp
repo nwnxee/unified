@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CExoLinkedList.hpp"
-#include "CNWSDialogPlayer.hpp"
 #include "CResRef.hpp"
+#include "CNWSDialogPlayer.hpp"
 #include "CExoLocString.hpp"
 
 
@@ -11,12 +11,12 @@
 NWN_API_PROLOGUE(CNWSDialog)
 #endif
 
-struct CResGFF;
 struct CNWSDialogSpeaker;
+struct CNWSDialogLinkEntry;
+struct CResGFF;
+struct CNWSDialogEntry;
 struct CExoString;
 struct CNWSObject;
-struct CNWSDialogEntry;
-struct CNWSDialogLinkEntry;
 struct CNWSDialogReply;
 
 

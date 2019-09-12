@@ -1,39 +1,40 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLocString.hpp"
-#include "NWAREAEXPANSION.hpp"
-#include "CExoString.hpp"
-#include "CResARE.hpp"
+#include "CNWArea.hpp"
 #include "CExoLinkedList.hpp"
-#include "CResRef.hpp"
+#include "CExoString.hpp"
 #include "CNWSScriptVarTable.hpp"
 #include "Vector.hpp"
-#include "CGameObject.hpp"
+#include "CResRef.hpp"
 #include "CResHelper.hpp"
 #include "CExoArrayList.hpp"
-#include "CNWArea.hpp"
+#include "NWAREAEXPANSION.hpp"
+#include "CGameObject.hpp"
+#include "CNWSUUID.hpp"
+#include "CResARE.hpp"
+#include "CExoLocString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSArea)
 #endif
 
+struct CNWSPlayer;
+struct CPathfindInformation;
 struct NWAREAHEADER;
 struct CResGFF;
-struct CNWSCreature;
-struct CNWSAreaGridTransTableEntry;
-struct CNWSAreaGridSuccessors;
-struct CPathfindInformation;
-struct CNWSPlayer;
-struct CNWTileSet;
+struct CGameEffect;
+struct CERFFile;
 struct CNWSTile;
-struct CNWSAmbientSound;
-struct CGameObject;
+struct CNWSAreaGridTransTableEntry;
 struct CResStruct;
 struct CNWSAreaInterTileSuccessors;
-struct CERFFile;
-struct CGameEffect;
+struct CGameObject;
+struct CNWSCreature;
+struct CNWTileSet;
+struct CNWSAreaGridSuccessors;
+struct CNWSAmbientSound;
 
 
 typedef int BOOL;
@@ -42,6 +43,7 @@ typedef uint32_t OBJECT_ID;
 
 struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
 {
+    CNWSUUID m_pUUID;
     int32_t m_nPlayersInArea;
     CExoArrayList<OBJECT_ID> m_pTrapList;
     int32_t m_nObjectByNameIndex;
@@ -106,7 +108,6 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
 
     CNWSArea(CResRef cResRef, BOOL bSetAutoRequest, OBJECT_ID oidId = 0x7f000000);
     ~CNWSArea();
-    CNWSArea(const CNWSArea &);
     virtual CNWSArea * AsNWSArea();
     virtual CNWSArea * NWAreaAsNWSArea();
     BOOL AddObjectToArea(OBJECT_ID id, BOOL bRunScripts = true);

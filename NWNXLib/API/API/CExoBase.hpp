@@ -10,14 +10,14 @@
 NWN_API_PROLOGUE(CExoBase)
 #endif
 
-struct CExoConfig;
+struct CExoBaseInternal;
 struct CExoIdentity;
+struct CExoConfig;
 struct CExoIni;
-struct CExoRand;
 struct CExoDebug;
+struct CExoRand;
 struct CExoAliasList;
 struct CExoTimers;
-struct CExoBaseInternal;
 
 
 typedef uint16_t RESTYPE;

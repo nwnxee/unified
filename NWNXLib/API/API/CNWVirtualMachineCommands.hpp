@@ -11,8 +11,8 @@ NWN_API_PROLOGUE(CNWVirtualMachineCommands)
 
 struct CResGFF;
 struct C2DA;
-typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 struct CResStruct;
+typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 
 
 typedef int BOOL;
@@ -177,6 +177,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandEventScriptManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandEventSpellCastAt(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandExecuteScript(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandExecuteScriptChunk(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandExploreAreaForPlayer(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandExportAllCharacters(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandExportSingleCharacter(int32_t nCommandId, int32_t nParameters);
@@ -413,6 +414,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetPortraitResRef(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetPosition(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetRacialType(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetRandomUUID(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetReflexAdjustedDamage(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetReflexSavingThrow(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetReputation(int32_t nCommandId, int32_t nParameters);
@@ -635,6 +637,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandTileExplorationManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTimeConversions(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandTestString(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandUUIDManagement(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandUnequipItem(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandUnpossessFamiliar(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandVector(int32_t nCommandId, int32_t nParameters);

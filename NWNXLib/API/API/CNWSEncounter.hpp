@@ -2,11 +2,11 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
+#include "CNWSObject.hpp"
 #include "Vector.hpp"
 #include "CResRef.hpp"
-#include "CNWSObject.hpp"
-#include "CEncounterListEntry.hpp"
 #include "CExoArrayList.hpp"
+#include "CEncounterListEntry.hpp"
 #include "CExoLocString.hpp"
 
 
@@ -14,10 +14,10 @@
 NWN_API_PROLOGUE(CNWSEncounter)
 #endif
 
-struct CEncounterSpawnPoint;
-struct CResGFF;
 struct CNWSArea;
+struct CResGFF;
 struct CResStruct;
+struct CEncounterSpawnPoint;
 
 
 typedef int BOOL;

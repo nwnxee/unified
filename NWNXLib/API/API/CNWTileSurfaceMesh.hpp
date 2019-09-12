@@ -3,21 +3,21 @@
 
 #include "Vector.hpp"
 #include "CResRef.hpp"
+#include "CResHelper.hpp"
 #include "CResWOK.hpp"
 #include "CNWTileSurfaceMeshLocalInfo.hpp"
-#include "CResHelper.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWTileSurfaceMesh)
 #endif
 
-struct CPathfindInfoIntraTileSuccessors;
-struct CNWTileSurfaceMeshHashTableEntry;
-struct CNWTile;
-struct CNWTileSurfaceMeshAABBNode;
 struct CPathfindInformation;
 struct CNWArea;
+struct CNWTileSurfaceMeshHashTableEntry;
+struct CPathfindInfoIntraTileSuccessors;
+struct CNWTile;
+struct CNWTileSurfaceMeshAABBNode;
 
 
 typedef int BOOL;

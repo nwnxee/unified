@@ -35,6 +35,13 @@ struct CNWRace
     int32_t m_nAge;
     uint16_t m_nDefaultAppearance;
     CExoString m_sIcon;
+    int32_t m_nExtraFeatsAtFirstLevel;
+    int32_t m_nExtraSkillPointsPerLevel;
+    int32_t m_nFirstLevelSkillPointsMultiplier;
+    int32_t m_nAbilitiesPointBuyNumber;
+    int32_t m_nNormalFeatEveryNthLevel;
+    int32_t m_nNumberNormalFeatsEveryNthLevel;
+    int32_t m_nSkillPointModifierAbility;
 
     CNWRace();
     ~CNWRace();

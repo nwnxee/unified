@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CGuiFn.hpp"
 #include "CGuiFnX.hpp"
+#include "CGuiFn.hpp"
 #include "CGuiCallbackBase.hpp"
 
 

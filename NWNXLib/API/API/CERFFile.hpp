@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CERFRes.hpp"
-#include "NWERFHEADER.hpp"
 #include "CExoLinkedList.hpp"
+#include "NWERFHEADER.hpp"
+#include "CERFRes.hpp"
 #include "CERFString.hpp"
 #include "CERFKey.hpp"
 
@@ -12,9 +12,9 @@
 NWN_API_PROLOGUE(CERFFile)
 #endif
 
-struct CRes;
-struct CExoString;
 struct CExoFile;
+struct CExoString;
+struct CRes;
 
 
 typedef uint16_t RESTYPE;

@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "CExoLinkedList.hpp"
 #include "EXOLOCSTRING.hpp"
+#include "CExoLinkedList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

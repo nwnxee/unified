@@ -1,36 +1,36 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CNWSStats_SpellLikeAbility.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
-#include "CExoArrayList.hpp"
-#include "CNWSStats_SpellLikeAbility.hpp"
-#include "CExoLocString.hpp"
 #include "CNWSCreatureStats_ClassInfo.hpp"
+#include "CExoArrayList.hpp"
+#include "CExoLocString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSCreatureStats)
 #endif
 
-struct CNWLevelStats;
-struct CNWCreatureStatsUpdate;
-struct CNWClass;
-struct CNWSItem;
 struct CResGFF;
-struct CNWSCreature;
-struct CFeatUseListEntry;
-struct CNWSObject;
-struct CCombatInformation;
+struct CNWCreatureStatsUpdate;
 struct CNWLevelStats;
-struct CNWSCreatureAppearanceInfo;
-struct CNWSpell;
 struct CResStruct;
+struct CNWClass;
+struct CNWSObject;
+struct CNWSpell;
+struct CNWSItem;
+struct CFeatUseListEntry;
+struct CCombatInformation;
+struct CNWSCreatureAppearanceInfo;
+struct CNWSCreature;
+struct CNWLevelStats;
 
 
+typedef uint32_t OBJECT_ID;
 typedef int BOOL;
 typedef uint32_t STRREF;
-typedef uint32_t OBJECT_ID;
 
 
 struct CNWSCreatureStats
@@ -161,6 +161,7 @@ struct CNWSCreatureStats
     CExoString m_sAnimalCompanionName;
     CExoString m_sFamiliarName;
     CExoString m_sDeity;
+    uint32_t m_nLatestDataMigration;
 
     CNWSCreatureStats(CNWSCreature * pCreature);
     ~CNWSCreatureStats();
@@ -228,6 +229,7 @@ struct CNWSCreatureStats
     char GetTotalWISBonus();
     uint8_t GetCHAStat();
     char GetTotalCHABonus();
+    int8_t GetClassesAbilityAdjust(int ability);
     void SetSTRBase(uint8_t nValue);
     void SetDEXBase(uint8_t nValue);
     void SetCONBase(uint8_t nValue, BOOL bRecalculateHP = true);
@@ -251,9 +253,7 @@ struct CNWSCreatureStats
     uint16_t GetHighestLevelOfFeat(uint16_t nFeat);
     BOOL FeatRequirementsMetAfterLevelUp(uint16_t nFeatID, CNWLevelStats * pLevelUpStats, uint8_t nSchool);
     uint8_t GetFeatSourceClass(uint16_t nFeat);
-    void GetStatBonusesFromFeats(CExoArrayList<uint16_t> * m_pFeats, int32_t * pMods, uint8_t nDragonLevel = 0);
-    void GetAbilityModsFromFeats(CExoArrayList<uint16_t> * m_pFeats, int32_t * pMods, BOOL bSubtractBonuses = false, BOOL bLevelingDown = false);
-    void ComputeFeatBonuses(CExoArrayList<uint16_t> * m_pFeats, BOOL bSubtractBonuses = false, BOOL bLevelingDown = false);
+    void ComputeFeatBonuses(CExoArrayList<uint16_t> * m_pFeats, BOOL bSubtractBonuses = false);
     void RemoveFeat(uint16_t nFeat);
     void ClearFeats();
     uint16_t GetBonusFeat(uint16_t nIndex);
@@ -368,6 +368,7 @@ struct CNWSCreatureStats
     float GetStatById(int32_t nId);
     void SetStatById(int32_t nId, float nStat);
     BOOL GetIsWeaponOfChoice(uint32_t nBaseItemType);
+    void RunDataMigrations();
     BOOL GetIsInKnownSpellList(uint8_t nMultiClass, uint32_t nSpellID);
     BOOL CheckSpellSuitability(int32_t nSpellId, CNWSpell * pSpell, int32_t nCategory, int32_t nMaxCR, int32_t nSpellLevel, int32_t nSpellSlot, int32_t nClass, BOOL bCheckMetamagic, uint8_t & nMetaType, int32_t nMasterSpellId = - 1);
 

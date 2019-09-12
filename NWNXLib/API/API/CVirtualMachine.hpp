@@ -1,25 +1,26 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CVirtualMachineFile.hpp"
 #include "Vector.hpp"
 #include "CVirtualMachineScript.hpp"
-#include "CVirtualMachineStack.hpp"
 #include "CExoArrayList.hpp"
-#include "CVirtualMachineFile.hpp"
+#include "CVirtualMachineStack.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CVirtualMachine)
 #endif
 
-struct CScriptLog;
 struct CResGFF;
 struct CExoString;
+struct CResStruct;
+struct CScriptLog;
 struct CVirtualMachineCmdImplementer;
+struct CScriptCompiler;
 struct CVirtualMachineDebuggingContext;
 struct CVirtualMachineCache;
 struct CScriptLog;
-struct CResStruct;
 
 
 typedef int BOOL;
@@ -28,6 +29,7 @@ typedef uint32_t OBJECT_ID;
 
 struct CVirtualMachine
 {
+    CScriptCompiler * m_pJitCompiler;
     int32_t m_nReturnValueParameterType;
     void * m_pReturnValue;
     uint32_t m_nInstructionsExecuted;
@@ -57,6 +59,7 @@ struct CVirtualMachine
     CVirtualMachine();
     ~CVirtualMachine();
     BOOL RunScript(CExoString * psFileName, OBJECT_ID oid, BOOL bOidValid = true);
+    int32_t RunScriptChunk(const CExoString & sScriptChunk, OBJECT_ID oid, BOOL bOidValid = true, BOOL bWrapIntoMain = true);
     BOOL RunScriptSituation(void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid = true);
     BOOL GetRunScriptReturnValue(int32_t * nParameterType, void * * pParameter);
     void SetDebugGUIFlag(BOOL bValue);
@@ -83,6 +86,7 @@ struct CVirtualMachine
     BOOL PushInstructionPtr(int32_t nInstructionPointer);
     int32_t ReadScriptFile(CExoString * sFileName);
     int32_t RunScriptFile(int32_t nInstructionPointer);
+    int32_t SetUpJITCompiledScript(const CExoString & sScriptChunk, BOOL bWrapIntoMain);
     int32_t SetUpScriptSituation(CVirtualMachineScript * pScript);
     void Debugger(int32_t * pnCurrentInstructionPointer);
     BOOL StackPopCommand_Internal(CVirtualMachineScript * * pScript);

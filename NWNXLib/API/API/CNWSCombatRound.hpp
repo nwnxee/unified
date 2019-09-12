@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CNWSCombatAttackData.hpp"
-#include "CNWSCombatRoundAction.hpp"
 #include "CExoLinkedList.hpp"
+#include "CNWSCombatRoundAction.hpp"
 #include "CExoArrayList.hpp"
 
 
@@ -11,10 +11,10 @@
 NWN_API_PROLOGUE(CNWSCombatRound)
 #endif
 
-struct CNWSItem;
 struct CResGFF;
-struct CNWSCreature;
 struct CResStruct;
+struct CNWSCreature;
+struct CNWSItem;
 
 
 typedef int BOOL;

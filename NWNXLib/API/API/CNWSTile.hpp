@@ -3,17 +3,17 @@
 
 #include "Vector.hpp"
 #include "CResRef.hpp"
-#include "CNWTile.hpp"
 #include "CExoArrayList.hpp"
+#include "CNWTile.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSTile)
 #endif
 
-struct CNWTileData;
 struct CPathfindInformation;
 struct CNWArea;
+struct CNWTileData;
 
 
 typedef int BOOL;

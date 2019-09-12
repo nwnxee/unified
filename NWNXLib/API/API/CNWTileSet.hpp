@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResHelper.hpp"
-#include "Vector.hpp"
 #include "CExoString.hpp"
+#include "Vector.hpp"
 #include "CResRef.hpp"
 #include "CResSET.hpp"
+#include "CResHelper.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

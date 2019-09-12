@@ -2,25 +2,25 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "CExoArrayList.hpp"
 #include "CScriptCompilerIncludeFileStackEntry.hpp"
+#include "CExoArrayList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CScriptCompiler)
 #endif
 
-struct CScriptCompilerSymbolTableEntry;
-struct CScriptCompilerKeyWordEntry;
-struct CScriptCompilerStackEntry;
-struct CScriptParseTreeNode;
 struct CScriptParseTreeNodeBlock;
-struct CScriptCompilerIdentifierHashTableEntry;
-struct CScriptCompilerIdListEntry;
-struct CScriptCompilerStructureFieldEntry;
-struct CExoStringList;
-struct CScriptCompilerStructureEntry;
 struct CScriptCompilerVarStackEntry;
+struct CScriptCompilerStackEntry;
+struct CScriptCompilerStructureEntry;
+struct CScriptCompilerIdListEntry;
+struct CScriptCompilerIdentifierHashTableEntry;
+struct CScriptCompilerStructureFieldEntry;
+struct CScriptCompilerSymbolTableEntry;
+struct CExoStringList;
+struct CScriptParseTreeNode;
+struct CScriptCompilerKeyWordEntry;
 
 
 typedef int BOOL;
@@ -173,7 +173,7 @@ struct CScriptCompiler
     void SetCompileConditionalFile(BOOL nValue);
     void SetCompileConditionalOrMain(BOOL nValue);
     int32_t CompileFile(const CExoString & sFileName);
-    int32_t CompileScriptChunk(const CExoString & sScriptChunk);
+    int32_t CompileScriptChunk(const CExoString & sScriptChunk, BOOL bWrapIntoMain);
     int32_t CompileScriptConditional(const CExoString & sScriptConditional);
     int32_t GetCompiledScriptCode(char * * pnCode, int32_t * nCodeSize);
     void ClearCompiledScriptCode();

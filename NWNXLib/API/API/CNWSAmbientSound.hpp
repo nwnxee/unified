@@ -1,16 +1,16 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWAmbientSound.hpp"
 #include "CExoArrayList.hpp"
+#include "CNWAmbientSound.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSAmbientSound)
 #endif
 
-struct CNWSMessage;
 struct CResStruct;
+struct CNWSMessage;
 struct CResGFF;
 
 
