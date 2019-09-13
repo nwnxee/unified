@@ -37,7 +37,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added {Add|Remove}Gold events to InventoryEvents
 - Events: Added PVP Attitude Change event
 - Events: Added SplitItem event to ItemEvents
-- Events: Added WalkToWaypoint event to InputEvents
+- Events: Added WalkToWaypoint, AttackObject and ForceMoveToObject events to InputEvents
 - Events: Added Surface Material Change events
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
