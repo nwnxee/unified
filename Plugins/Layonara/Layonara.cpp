@@ -982,15 +982,15 @@ void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* 
             return;
         }
         auto pArea = pServer->GetAreaByGameObjectID(thisPtr->m_oidArea);
-        if (pArea == nullptr)
+        if (pArea == nullptr || pArea->m_refTileSet == "ttu01")
             return;
         auto iMat = pArea->GetSurfaceMaterial(vPos);
         if (!g_plugin->m_objectCurrentMaterial.count(thisPtr->m_idSelf) ||
              g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] != iMat)
         {
             auto *pAIMaster = pServer->GetServerAIMaster();
-            auto nDelayDays = pServer->GetWorldTimer()->GetCalendarDayFromSeconds(1.0f);
-            auto nDelayTime = pServer->GetWorldTimer()->GetTimeOfDayFromSeconds(1.0f);
+            auto nDelayDays = pServer->GetWorldTimer()->GetCalendarDayFromSeconds(0.0f);
+            auto nDelayTime = pServer->GetWorldTimer()->GetTimeOfDayFromSeconds(0.0f);
             for (int i = 0; i < thisPtr->m_appliedEffects.num; i++)
             {
                 auto eff = (CGameEffect*)thisPtr->m_appliedEffects.element[i];
@@ -1001,7 +1001,8 @@ void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* 
             }
 
             auto nCurrentMovement = pCreature->GetMovementRateFactor();
-            int32_t effectChange = (2.0 - nCurrentMovement) * g_plugin->m_SurfaceMaterialSpeeds[iMat];
+            int32_t nSpeed = g_plugin->m_SurfaceMaterialSpeeds[iMat];
+            int32_t effectChange = (2.0 - nCurrentMovement) * nSpeed;
             auto bHasStride = pCreature->m_pStats->HasFeat(Constants::Feat::WoodlandStride);
             auto bSlowImmune = pCreature->m_pStats->GetEffectImmunity(Constants::ImmunityType::Slow, nullptr, true);
             if (effectChange > 0 || (effectChange < 0 && !bHasStride && !bSlowImmune))
@@ -1029,7 +1030,7 @@ void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* 
                 link->m_sCustomTag = "NWNX_Layonara_SurfMatMovement";
                 link->SetLinked(eff, iconEff);
                 link->UpdateLinked();
-                pAIMaster->AddEventDeltaTime(nDelayDays + 0.1f, nDelayTime + 0.1f, 0, pCreature->m_idSelf, Event::ApplyEffect, link);
+                pAIMaster->AddEventDeltaTime(nDelayDays, nDelayTime, 0, pCreature->m_idSelf, Event::ApplyEffect, link);
             }
             g_plugin->m_objectCurrentMaterial[thisPtr->m_idSelf] = iMat;
         }
