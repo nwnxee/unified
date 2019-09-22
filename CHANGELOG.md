@@ -15,6 +15,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Core: Allow passing engine structures to nwnx (Effect/Itemproperty)
 - Core: Added the environment variable `NWNX_CORE_SHUTDOWN_SCRIPT=scriptname` which lets you set a nwscript that runs when the server shuts down
 - Core: Added Util functions to call various script events
+- Core: NWNX will now log the resref of areas it's trying to load when running log level `7`
 - Events: New events: SkillEvents, MapEvents, EffectEvents, QuickChatEvents, InventoryEvents, BarterEvents, TrapEvents, TimingBarEvents, LevelEvents, WebHookEvents
 - Events: The following events are now skippable: FeatEvents, ItemEvents, HealersKitEvents, CombatModeEvents, PartyEvents, SkillEvents, MapEvents, PolymorphEvents, DMActionEvents, ClientConnectEvents, SpellEvents, QuickChatEvents, InventoryEvents, BarterEvents (START only), TrapEvents, StickyPlayerNameReservedEvent, StealthEvent
 - Events: You can now get the current event name with a nwscript function
@@ -36,7 +37,7 @@ NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recomp
 - Events: Added {Add|Remove}Gold events to InventoryEvents
 - Events: Added PVP Attitude Change event
 - Events: Added SplitItem event to ItemEvents
-- Events: Added WalkToWaypoint event to InputEvents
+- Events: Added WalkToWaypoint, AttackObject and ForceMoveToObject events to InputEvents
 - Events: Added Surface Material Change events
 - Profiler: Support profiler perf scopes via nwscript
 - SQL: Added support for SQLite
