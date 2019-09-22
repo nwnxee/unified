@@ -6,6 +6,7 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "ViewPtr.hpp"
+#include <unordered_set>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -21,9 +22,14 @@ public:
     virtual ~Rename();
 
 private:
+    std::unordered_map<Types::ObjectID, std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoString, int32_t>>> m_RenamePlayerNames;
+    std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoString, int32_t>>::iterator m_RenamePlayerNamesIter;
+    std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoLocString, CExoLocString>> m_RenameOriginalNames;
     int32_t m_RenameOnModuleCharList;
+    std::unordered_set<Types::PlayerID> m_RenameAddedToPlayerList;
     bool m_RenameOnPlayerList;
     bool m_RenameAllowDM;
+    std::string m_RenameAnonymousPlayerName;
 
     static void WriteGameObjUpdate_UpdateObjectHook(
             Services::Hooks::CallType,
