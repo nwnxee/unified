@@ -77,6 +77,7 @@ Rename::Rename(const Plugin::CreateParams& params)
 
     REGISTER(SetPCNameOverride);
     REGISTER(GetPCNameOverride);
+    REGISTER(ClearPCNameOverride);
 
 #undef REGISTER
 
@@ -537,6 +538,67 @@ std::string Rename::GenerateRandomPlayerName(size_t length)
     return randomPlayername;
 }
 
+void Rename::SendNameUpdate(CNWSCreature *targetCreature, Types::PlayerID observerPlayerId)
+{
+    std::vector<Types::PlayerID> playersToNotify;
+    auto *server = Globals::AppManager()->m_pServerExoApp;
+
+    if (observerPlayerId == Constants::PLAYERID_ALL_CLIENTS)
+    {
+        auto *playerList = server->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
+
+        for (auto *head = playerList->pHead; head; head = head->pNext)
+        {
+            auto *client = static_cast<API::CNWSClient*>(head->pObject);
+            if (client)
+                playersToNotify.emplace_back(client->m_nPlayerID);
+        }
+    }
+    else
+    {
+        playersToNotify.emplace_back(observerPlayerId);
+    }
+
+    auto *message = static_cast<CNWSMessage*>(server->GetNWSMessage());
+    for (auto &pid : playersToNotify)
+    {
+        bool success = false;
+        auto *observerPlayerObject = static_cast<API::CNWSPlayer*>(server->GetClientObjectByPlayerId(pid, 0));
+        if (observerPlayerObject == nullptr)
+            continue;
+        auto targets = g_plugin->m_RenamePlayerNames[targetCreature->m_idSelf];
+
+        // If the update is to all clients but the observer has a personal override of the target's name then skip
+        if (observerPlayerId == Constants::PLAYERID_ALL_CLIENTS && targets.count(observerPlayerObject->m_oidNWSObject))
+            continue;
+
+        if (g_plugin->m_RenameAllowDM || observerPlayerObject->m_nCharacterType != Constants::CharacterType::DM)
+        {
+            // Write a message notifying an object update.
+            message->CreateWriteMessage(0x400, pid, 1);
+
+            // We don't need one for our update.
+            // However, the appearance update is contingent on receiving a pointer which isn't nullptr.
+            auto *lastUpdateObj = reinterpret_cast<API::CLastUpdateObject*>(0xDEADBEEF);
+            message->WriteGameObjUpdate_UpdateObject(observerPlayerObject, targetCreature, lastUpdateObj, 0, 0x400);
+
+            uint8_t *data = nullptr;
+            uint32_t size = 0;
+
+            if (message->GetWriteMessage(&data, &size) && size)
+            {
+                message->SendServerToPlayerMessage(pid, 5, 1, data, size);
+                success = true;
+            }
+
+            if (m_RenameOnPlayerList)
+                message->SendServerToPlayerPlayerList_All(observerPlayerObject);
+        }
+        LOG_DEBUG("%s sending name update message for observer (PlayerID): '0x%08x', target (ObjectID): '0x%08x'.",
+                  success ? "Succeeded" : "Failed", pid, targetCreature->m_idSelf);
+    }
+}
+
 ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -607,56 +669,9 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
         // SendServerToPlayerPlayerList_Add and weird things happen(tm)
         if (m_RenameOnPlayerList && !*pPOS->Get<int>(targetPlayerId, addedToPlayerListKey))
             return stack;
-
-        std::vector<Types::PlayerID> playersToNotify;
-
-        if (observerPlayerId == Constants::PLAYERID_ALL_CLIENTS)
-        {
-            auto *playerList = server->m_pcExoAppInternal->m_pNWSPlayerList->m_pcExoLinkedListInternal;
-
-            for (auto *head = playerList->pHead; head; head = head->pNext)
-            {
-                auto *client = static_cast<API::CNWSClient*>(head->pObject);
-                if (client)
-                    playersToNotify.emplace_back(client->m_nPlayerID);
-            }
-        }
-        else
-        {
-            playersToNotify.emplace_back(observerPlayerId);
         }
 
-        auto *message = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
-        for (auto &pid : playersToNotify)
-        {
-            bool success = false;
-            auto *observerPlayerObject = static_cast<API::CNWSPlayer*>(server->GetClientObjectByPlayerId(pid, 0));
-
-            if (observerPlayerObject != nullptr && (g_plugin->m_RenameAllowDM || observerPlayerObject->m_nCharacterType != Constants::CharacterType::DM))
-            {
-                // Write a message notifying an object update.
-                message->CreateWriteMessage(0x400, pid, 1);
-
-                // We don't need one for our update.
-                // However, the appearance update is contingent on receiving a pointer which isn't nullptr.
-                auto *lastUpdateObj = reinterpret_cast<API::CLastUpdateObject*>(0xDEADBEEF);
-                message->WriteGameObjUpdate_UpdateObject(observerPlayerObject, targetObject, lastUpdateObj, 0, 0x400);
-
-                uint8_t *data = nullptr;
-                uint32_t size = 0;
-
-                if (message->GetWriteMessage(&data, &size) && size)
-                {
-                    message->SendServerToPlayerMessage(pid, 5, 1, data, size);
-                    success = true;
-                }
-
-                if (m_RenameOnPlayerList)
-                    message->SendServerToPlayerPlayerList_All(observerPlayerObject);
-            }
-            LOG_DEBUG("%s sending name update message for observer (PlayerID): '0x%08x', target (ObjectID): '0x%08x'.",
-                                                  success ? "Succeeded" : "Failed", pid, targetOid);
-        }
+        SendNameUpdate(targetCreature, observerPlayerId);
     }
     return stack;
 }
@@ -689,6 +704,62 @@ ArgumentStack Rename::GetPCNameOverride(ArgumentStack &&args)
         }
     }
     Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Rename::ClearPCNameOverride(ArgumentStack &&args)
+{
+    ArgumentStack stack;
+    auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto observerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    bool bClearAll = Services::Events::ExtractArgument<int32_t>(args);
+    auto *server = Globals::AppManager()->m_pServerExoApp;
+
+    const auto observerPlayerId =
+            observerOid == Constants::OBJECT_INVALID ? Constants::PLAYERID_ALL_CLIENTS
+                                                     : server->GetPlayerIDByGameObjectID(observerOid);
+
+    if (observerPlayerId == Constants::PLAYERID_INVALIDID)
+    {
+        LOG_ERROR("The target observer '0x%08x' is not a valid player.", observerPlayerId);
+        return stack;
+    }
+
+    //clears global override for target PC
+    if (observerOid == Constants::OBJECT_INVALID && !bClearAll)
+    {
+        auto *targetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(playerOid);
+        m_RenamePlayerNames[playerOid].erase(Constants::OBJECT_INVALID);
+        SendNameUpdate(targetCreature, Constants::PLAYERID_ALL_CLIENTS);
+    }
+    // clears global override and all personal overrides for that target PC
+    else if (observerOid == Constants::OBJECT_INVALID)
+    {
+        auto *targetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(playerOid);
+        m_RenamePlayerNames.erase(playerOid);
+        SendNameUpdate(targetCreature, Constants::PLAYERID_ALL_CLIENTS);
+    }
+    // clears all personal overrides for the observer for any targets
+    else if (playerOid == Constants::OBJECT_INVALID)
+    {
+        for (auto tgt = m_RenamePlayerNames.cbegin(), next_tgt = tgt; tgt != m_RenamePlayerNames.cend(); tgt = next_tgt)
+        {
+            ++next_tgt;
+            if (m_RenamePlayerNames[tgt->first].erase(observerOid))
+            {
+                auto *targetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(tgt->first);
+                if (targetCreature)
+                    SendNameUpdate(targetCreature, observerPlayerId);
+            }
+        }
+    }
+    // clears personal override for that observer for target oPC
+    else
+    {
+        auto *targetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(playerOid);
+        m_RenamePlayerNames[playerOid].erase(observerOid);
+        SendNameUpdate(targetCreature, observerPlayerId);
+    }
     return stack;
 }
 

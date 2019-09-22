@@ -76,8 +76,11 @@ private:
     CExoLocString ContainString(const std::string& str);
     std::string GenerateRandomPlayerName(size_t length);
 
+    void SendNameUpdate(CNWSCreature *targetCreature, Types::PlayerID observerPlayerId);
+
     ArgumentStack SetPCNameOverride(ArgumentStack&& args);
     ArgumentStack GetPCNameOverride(ArgumentStack&& args);
+    ArgumentStack ClearPCNameOverride(ArgumentStack&& args);
 
     CNWSPlayer *player(Types::ObjectID playerId);
 };
