@@ -192,6 +192,7 @@ The following plugins were added:
 - Regex: Replace()
 - Rename: SetPCNameOverride()
 - Rename: GetPCNameOverride()
+- Rename: ClearPCNameOverride()
 - Reveal: RevealTo()
 - Reveal: SetRevealToParty()
 - SkillRanks: GetSkillFeat()
