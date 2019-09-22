@@ -124,6 +124,13 @@ Rename::Rename(const Plugin::CreateParams& params)
     else
         LOG_INFO("Not renaming PCs in the player list.");
 
+    if (m_RenameAllowDM)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__SendServerToPlayerDungeonMasterUpdatePartyList__1,
+                int32_t, CNWSMessage*, Types::PlayerID>(&SendServerToPlayerDungeonMasterUpdatePartyListHook);
+        LOG_INFO("DMs will be included with rename logic.");
+    }
+
     // TODO: When shared hooks are executed by exclusive hooks change this to HandlePlayerToServerParty
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__SendServerToPlayerPopUpGUIPanel,
             int32_t, CNWSMessage*, Types::ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*>(&SendServerToPlayerPopUpGUIPanelHook);
@@ -352,6 +359,14 @@ void Rename::SendServerToPlayerChatHook(
     SetOrRestorePlayerName(cType, targetPlayer, observerPlayer);
 }
 
+void Rename::SendServerToPlayerDungeonMasterUpdatePartyListHook(
+        Services::Hooks::CallType cType,
+        CNWSMessage*,
+        Types::PlayerID observerPlayerId)
+{
+    g_plugin->GlobalNameChange(cType, observerPlayerId, Constants::PLAYERID_ALL_PLAYERS);
+}
+
 void Rename::SendServerToPlayerPlayerList_AllHook(
         Services::Hooks::CallType cType,
         CNWSMessage*,
@@ -367,7 +382,7 @@ void Rename::SendServerToPlayerPlayerList_AddHook(
         Types::PlayerID observerPlayerId,
         CNWSPlayer *targetPlayer)
 {
-    if (observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
+    if (!g_plugin->m_RenameAllowDM && observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
         return;
 
     Rename& plugin = *g_plugin;
@@ -385,7 +400,7 @@ void Rename::SendServerToPlayerPlayerList_DeleteHook(
         Types::PlayerID observerPlayerId,
         CNWSPlayer *targetPlayer)
 {
-    if (observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
+    if (!g_plugin->m_RenameAllowDM && observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
         return;
 
     if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)

@@ -47,6 +47,10 @@ private:
             CNWSMessage*,
             Types::PlayerID,
             CNWSPlayer*);
+    static void SendServerToPlayerDungeonMasterUpdatePartyListHook(
+            NWNXLib::Services::Hooks::CallType,
+            CNWSMessage*,
+            Types::PlayerID);
     static void SendServerToPlayerExamineGui_CreatureDataHook(
             Services::Hooks::CallType,
             CNWSMessage*,
