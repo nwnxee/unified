@@ -23,7 +23,6 @@ public:
 
 private:
     std::unordered_map<Types::ObjectID, std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoString, int32_t>>> m_RenamePlayerNames;
-    std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoString, int32_t>>::iterator m_RenamePlayerNamesIter;
     std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoLocString, CExoLocString>> m_RenameOriginalNames;
     int32_t m_RenameOnModuleCharList;
     std::unordered_set<Types::PlayerID> m_RenameAddedToPlayerList;
