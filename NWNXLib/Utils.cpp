@@ -25,6 +25,7 @@
 #include "API/CScriptEvent.hpp"
 #include "API/CScriptLocation.hpp"
 #include "API/CExoString.hpp"
+#include "API/CExoArrayListTemplatedunsignedlong.hpp"
 
 #include <sstream>
 
@@ -204,8 +205,18 @@ bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y
             AsNWSStore(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Trigger:
-            AsNWSTrigger(pObject)->AddToArea(pArea, x, y, z, true);
+        {
+            auto pTrigger = AsNWSTrigger(pObject);
+            pTrigger->AddToArea(pArea, x, y, z, true);
+
+            // If pTrigger is a trap it needs to be added to the area's trap list for it to be detectable for players.
+            if (pTrigger->m_bTrap)
+            {
+                auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_pTrapList);
+                pList->Add(pTrigger->m_idSelf);
+            }
             return true;
+        }
         case ObjectType::Encounter:
             AsNWSEncounter(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
