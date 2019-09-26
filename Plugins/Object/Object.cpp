@@ -580,7 +580,7 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
                     pTrigger->m_pnOutlineVertices[i] = i;
                 }
 
-                pTrigger->AddToArea(pArea, pTrigger->m_pvVertices[0].x, pTrigger->m_pvVertices[0].y, pTrigger->m_pvVertices[0].z, false);
+                Utils::AddToArea(pTrigger, pArea, pTrigger->m_pvVertices[0].x, pTrigger->m_pvVertices[0].y, pTrigger->m_pvVertices[0].z);
             }
             else
             {
