@@ -25,10 +25,10 @@ public: // Structures
         using Version = uint32_t;
 
     public:
-        Info(std::string&& name,
-            std::string&& description,
-            std::string&& author,
-            std::string&& contact,
+        Info(std::string name,
+            std::string description,
+            std::string author,
+            std::string contact,
             const Version version,
             const bool hotswap,
             const uint32_t flags = 0,
