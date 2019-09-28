@@ -190,8 +190,8 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
     auto targetOid = targetCreature->m_idSelf;
     if (g_plugin->m_RenamePlayerNames[targetOid].count(observerOid))
     {
-        auto&[displayName, overrideName, bPlayerNameState] = g_plugin->m_RenamePlayerNames[targetOid][observerOid];
-        (void) bPlayerNameState;
+        auto displayName = std::get<0>(g_plugin->m_RenamePlayerNames[targetOid][observerOid]);
+        auto overrideName = std::get<1>(g_plugin->m_RenamePlayerNames[targetOid][observerOid]);
         if (playerList)
         {
             targetCreature->m_pStats->m_lsFirstName = g_plugin->ContainString(overrideName.CStr());
@@ -202,8 +202,8 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
     }
     else if (g_plugin->m_RenamePlayerNames[targetOid].count(Constants::OBJECT_INVALID))
     {
-        auto&[displayName, overrideName, bPlayerNameState] = g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID];
-        (void) bPlayerNameState;
+        auto displayName = std::get<0>(g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID]);
+        auto overrideName = std::get<1>(g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID]);
         if (playerList)
         {
             targetCreature->m_pStats->m_lsFirstName = g_plugin->ContainString(overrideName.CStr());
@@ -218,8 +218,8 @@ void Rename::RestorePlayerName(CNWSCreature *targetCreature, bool playerList)
 {
     if (g_plugin->m_RenameOriginalNames.count(targetCreature->m_idSelf))
     {
-        auto&[playerName, lsFirstName, lsLastName] = g_plugin->m_RenameOriginalNames[targetCreature->m_idSelf];
-        (void) playerName;
+        auto lsFirstName = std::get<1>(g_plugin->m_RenameOriginalNames[targetCreature->m_idSelf]);
+        auto lsLastName = std::get<2>(g_plugin->m_RenameOriginalNames[targetCreature->m_idSelf]);
         if (playerList)
         {
             targetCreature->m_pStats->m_lsFirstName = lsFirstName;
