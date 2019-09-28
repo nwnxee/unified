@@ -41,7 +41,8 @@ Encounter::Encounter(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Encounter::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetNumberOfCreaturesInEncounterList);
     REGISTER(GetEncounterCreatureByIndex);

@@ -50,7 +50,8 @@ SQL::SQL(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(name, func) \
-    GetServices()->m_events->RegisterEvent(name, std::bind(&SQL::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(name, \
+        [this](Events::ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER("PREPARE_QUERY",                  OnPrepareQuery);
     REGISTER("EXECUTE_PREPARED_QUERY",         OnExecutePreparedQuery);
