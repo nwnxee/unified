@@ -81,7 +81,7 @@ Plugins::RegistrationToken Plugins::LoadPlugin(const std::string& path, Plugin::
 
     try
     {
-        iter.first->second.m_plugin = std::unique_ptr<Plugin>(pluginLoadFuncPtr(std::forward<Plugin::CreateParams>(params)));
+        iter.first->second.m_plugin = std::unique_ptr<Plugin>(pluginLoadFuncPtr(std::move(params)));
     }
     catch (const std::runtime_error&)
     {
