@@ -434,8 +434,8 @@ const string NWNX_Events = "NWNX_Events";
         SPELL_LEVEL             int
         SPELL_SLOT              int
 ////////////////////////////////////////////////////////////////////////////////
-    NWNX_ON_USE_HEALER_KIT_BEFORE
-    NWNX_ON_USE_HEALER_KIT_AFTER
+    NWNX_ON_HEALER_KIT_BEFORE
+    NWNX_ON_HEALER_KIT_AFTER
 
     Usage:
         OBJECT_SELF = The creature using the Healer's Kit

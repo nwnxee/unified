@@ -25,6 +25,7 @@
 #include "API/CScriptEvent.hpp"
 #include "API/CScriptLocation.hpp"
 #include "API/CExoString.hpp"
+#include "API/CExoArrayListTemplatedunsignedlong.hpp"
 
 #include <sstream>
 
@@ -192,20 +193,50 @@ bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y
             AsNWSCreature(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Placeable:
-            AsNWSPlaceable(pObject)->AddToArea(pArea, x, y, z, true);
+        {
+            auto *pPlaceable = AsNWSPlaceable(pObject);
+            pPlaceable->AddToArea(pArea, x, y, z, true);
+
+            // If pDoor is trapped it needs to be added to the area's trap list for it to be detectable by players.
+            if (pPlaceable->m_bTrapFlag)
+            {
+                auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_pTrapList);
+                pList->Add(pPlaceable->m_idSelf);
+            }
             return true;
+        }
         case ObjectType::Waypoint:
             AsNWSWaypoint(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Door:
-            AsNWSDoor(pObject)->AddToArea(pArea, x, y, z, true);
+        {
+            auto *pDoor = AsNWSDoor(pObject);
+            pDoor->AddToArea(pArea, x, y, z, true);
+
+            // If pDoor is trapped it needs to be added to the area's trap list for it to be detectable by players.
+            if (pDoor->m_bTrapped)
+            {
+                auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_pTrapList);
+                pList->Add(pDoor->m_idSelf);
+            }
             return true;
+        }
         case ObjectType::Store:
             AsNWSStore(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Trigger:
-            AsNWSTrigger(pObject)->AddToArea(pArea, x, y, z, true);
+        {
+            auto *pTrigger = AsNWSTrigger(pObject);
+            pTrigger->AddToArea(pArea, x, y, z, true);
+
+            // If pTrigger is a trap it needs to be added to the area's trap list for it to be detectable by players.
+            if (pTrigger->m_bTrap)
+            {
+                auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_pTrapList);
+                pList->Add(pTrigger->m_idSelf);
+            }
             return true;
+        }
         case ObjectType::Encounter:
             AsNWSEncounter(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
