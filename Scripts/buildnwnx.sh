@@ -48,7 +48,7 @@ if [ ${CLEAN} == 0 ]; then
     fi
 fi
 
-mkdir ./build-nwnx
+mkdir -p ./build-nwnx
 pushd ./build-nwnx
 
 cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE $SANITIZE $TOOLCHAIN ..
