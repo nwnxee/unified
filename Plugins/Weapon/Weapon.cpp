@@ -49,7 +49,8 @@ Weapon::Weapon(const Plugin::CreateParams& params)
   : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Weapon::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetWeaponFocusFeat);
     REGISTER(SetEpicWeaponFocusFeat);

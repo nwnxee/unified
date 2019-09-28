@@ -38,7 +38,8 @@ Regex::Regex(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Regex::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(Search);
     REGISTER(Replace);

@@ -62,7 +62,8 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&SkillRanks::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetSkillFeat);
     REGISTER(SetSkillFeat);
