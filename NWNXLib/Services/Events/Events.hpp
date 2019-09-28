@@ -28,11 +28,11 @@ public: // Structures
         Maybe<API::CGameEffect*>    m_effect;
 
         // Constructors
-        Argument(const int32_t& v)                : m_int(v)    { }
-        Argument(const float& v)                  : m_float(v)  { }
-        Argument(const API::Types::ObjectID& v)   : m_object(v) { }
-        Argument(const std::string& v)            : m_string(std::move(v)) { }
-        Argument(API::CGameEffect* v)             : m_effect(v) { }
+        Argument(int32_t v)                : m_int(v)    { }
+        Argument(float v)                  : m_float(v)  { }
+        Argument(API::Types::ObjectID v)   : m_object(v) { }
+        Argument(std::string v)            : m_string(std::move(v)) { }
+        Argument(API::CGameEffect* v)      : m_effect(v) { }
 
         template <typename T> Maybe<T>& Get();
         std::string toString();
