@@ -73,7 +73,7 @@ Events::RegistrationToken Events::RegisterEvent(const std::string& pluginName, c
     EventData eventData = { pluginName, eventName };
     auto eventDataInternal = std::make_unique<EventDataInternal>();
     eventDataInternal->m_data = eventData;
-    eventDataInternal->m_callback = std::forward<FunctionCallback>(cb);
+    eventDataInternal->m_callback = std::move(cb);
     events.emplace_back(std::move(eventDataInternal));
 
     return { std::move(eventData) };
@@ -121,7 +121,7 @@ EventsProxy::~EventsProxy()
 
 void EventsProxy::RegisterEvent(const std::string& eventName, Events::FunctionCallback&& cb)
 {
-    m_registrationTokens.push_back(m_proxyBase.RegisterEvent(m_pluginName, eventName, std::forward<Events::FunctionCallback>(cb)));
+    m_registrationTokens.push_back(m_proxyBase.RegisterEvent(m_pluginName, eventName, std::move(cb)));
 }
 
 void EventsProxy::ClearEvent(const std::string& eventName)
