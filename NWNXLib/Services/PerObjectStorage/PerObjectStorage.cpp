@@ -51,7 +51,7 @@ void PerObjectStorage::Set(API::CGameObject *pGameObject, const std::string& key
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
-        pOS->GetStringMap()[key] = value;
+        pOS->GetStringMap().emplace(key, std::move(value));
     }
 }
 void PerObjectStorage::Set(API::CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup)
@@ -193,7 +193,7 @@ void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, const std::string
 }
 void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, const std::string& key, std::string value)
 {
-    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value);
+    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, std::move(value));
 }
 void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup)
 {
