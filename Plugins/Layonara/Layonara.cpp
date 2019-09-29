@@ -59,23 +59,23 @@ Layonara::Layonara(const Plugin::CreateParams& params)
   : Plugin(params)
 {
 #define REGISTER(func)              \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Layonara::func, this, std::placeholders::_1));
-
-    REGISTER(SetEquippableSlots)
-    REGISTER(SetHostileFeat)
-    REGISTER(SetDuelistCannyDefense)
-    REGISTER(SetDuelistGrace)
-    REGISTER(SetDuelistElaborateParry)
-    REGISTER(SetSpellswordIgnoreSpellFailure)
-    REGISTER(SetUndeadSlayerImmunity)
-    REGISTER(SetSubraceDayEffects)
-    REGISTER(ApplyRune)
-    REGISTER(CombineRunes)
-    REGISTER(GetRuneDescription)
-    REGISTER(SetQuiver)
-    REGISTER(SetQuiverArrows)
-    REGISTER(CreateVFXAtTransitionCentroid)
-    REGISTER(ClearSurfaceMaterial)
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
+    REGISTER(SetEquippableSlots);
+    REGISTER(SetHostileFeat);
+    REGISTER(SetDuelistCannyDefense);
+    REGISTER(SetDuelistGrace);
+    REGISTER(SetDuelistElaborateParry);
+    REGISTER(SetSpellswordIgnoreSpellFailure);
+    REGISTER(SetUndeadSlayerImmunity);
+    REGISTER(SetSubraceDayEffects);
+    REGISTER(ApplyRune);
+    REGISTER(CombineRunes);
+    REGISTER(GetRuneDescription);
+    REGISTER(SetQuiver);
+    REGISTER(SetQuiverArrows);
+    REGISTER(CreateVFXAtTransitionCentroid);
+    REGISTER(ClearSurfaceMaterial);
 
 #undef REGISTER
 
