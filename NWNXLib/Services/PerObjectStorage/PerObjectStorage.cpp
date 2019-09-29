@@ -174,10 +174,10 @@ std::string PerObjectStorage::ObjectStorage::DumpToString()
 }
 
 PerObjectStorageProxy::PerObjectStorageProxy(PerObjectStorage& perObjectStorage, std::string pluginName)
-    : ServiceProxy<PerObjectStorage>(perObjectStorage)
+    : ServiceProxy<PerObjectStorage>(perObjectStorage), m_pluginName(std::move(pluginName))
 {
-    m_pluginName = pluginName;
 }
+
 PerObjectStorageProxy::~PerObjectStorageProxy()
 {
     // TODO cleanup all storage from this plugin
