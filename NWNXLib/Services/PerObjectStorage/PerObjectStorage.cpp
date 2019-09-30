@@ -33,28 +33,28 @@ PerObjectStorage::ObjectStorage* PerObjectStorage::GetObjectStorage(API::Types::
 }
 
 
-void PerObjectStorage::Set(API::CGameObject *pGameObject, std::string key, int value)
+void PerObjectStorage::Set(API::CGameObject *pGameObject, const std::string& key, int value)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
         pOS->GetIntMap()[key] = value;
     }
 }
-void PerObjectStorage::Set(API::CGameObject *pGameObject, std::string key, float value)
+void PerObjectStorage::Set(API::CGameObject *pGameObject, const std::string& key, float value)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
         pOS->GetFloatMap()[key] = value;
     }
 }
-void PerObjectStorage::Set(API::CGameObject *pGameObject, std::string key, std::string value)
+void PerObjectStorage::Set(API::CGameObject *pGameObject, const std::string& key, std::string value)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
-        pOS->GetStringMap()[key] = value;
+        pOS->GetStringMap().emplace(key, std::move(value));
     }
 }
-void PerObjectStorage::Set(API::CGameObject *pGameObject, std::string key, void *value, CleanupFunc cleanup)
+void PerObjectStorage::Set(API::CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
@@ -64,7 +64,7 @@ void PerObjectStorage::Set(API::CGameObject *pGameObject, std::string key, void 
 
 
 
-void PerObjectStorage::Remove(API::CGameObject *pGameObject, std::string key)
+void PerObjectStorage::Remove(API::CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
@@ -174,39 +174,39 @@ std::string PerObjectStorage::ObjectStorage::DumpToString()
 }
 
 PerObjectStorageProxy::PerObjectStorageProxy(PerObjectStorage& perObjectStorage, std::string pluginName)
-    : ServiceProxy<PerObjectStorage>(perObjectStorage)
+    : ServiceProxy<PerObjectStorage>(perObjectStorage), m_pluginName(std::move(pluginName))
 {
-    m_pluginName = pluginName;
 }
+
 PerObjectStorageProxy::~PerObjectStorageProxy()
 {
     // TODO cleanup all storage from this plugin
 }
 
-void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, std::string key, int value)
+void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, const std::string& key, int value)
 {
     m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value);
 }
-void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, std::string key, float value)
+void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, const std::string& key, float value)
 {
     m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value);
 }
-void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, std::string key, std::string value)
+void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, const std::string& key, std::string value)
 {
-    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value);
+    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, std::move(value));
 }
-void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup)
+void PerObjectStorageProxy::Set(API::CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup)
 {
     m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value, cleanup);
 }
 
-void PerObjectStorageProxy::Remove(API::CGameObject *pGameObject, std::string key)
+void PerObjectStorageProxy::Remove(API::CGameObject *pGameObject, const std::string& key)
 {
     m_proxyBase.Remove(pGameObject, m_pluginName + "!" + key);
 }
 
 
-template <> Maybe<int> PerObjectStorage::Get<int>(API::CGameObject *pGameObject, std::string key)
+template <> Maybe<int> PerObjectStorage::Get<int>(API::CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
@@ -217,7 +217,7 @@ template <> Maybe<int> PerObjectStorage::Get<int>(API::CGameObject *pGameObject,
     }
     return Maybe<int>();
 }
-template <> Maybe<float> PerObjectStorage::Get<float>(API::CGameObject *pGameObject, std::string key)
+template <> Maybe<float> PerObjectStorage::Get<float>(API::CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
@@ -228,7 +228,7 @@ template <> Maybe<float> PerObjectStorage::Get<float>(API::CGameObject *pGameObj
     }
     return Maybe<float>();
 }
-template <> Maybe<std::string> PerObjectStorage::Get<std::string>(API::CGameObject *pGameObject, std::string key)
+template <> Maybe<std::string> PerObjectStorage::Get<std::string>(API::CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
@@ -240,7 +240,7 @@ template <> Maybe<std::string> PerObjectStorage::Get<std::string>(API::CGameObje
     return Maybe<std::string>();
 }
 
-template <> Maybe<void*> PerObjectStorage::Get<void*>(API::CGameObject *pGameObject, std::string key)
+template <> Maybe<void*> PerObjectStorage::Get<void*>(API::CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {

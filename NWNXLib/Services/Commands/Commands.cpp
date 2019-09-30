@@ -16,7 +16,6 @@ Commands::Commands()
 Commands::~Commands()
 {
     g_commands = nullptr;
-
 }
 
 bool Commands::RegisterCommand(const std::string& cmd, CommandFunc func)
@@ -87,20 +86,18 @@ void Commands::RunScheduledCommands()
     m_commandQueue.clear();
 }
 
-
 CommandsProxy::CommandsProxy(Commands& commands)
     : ServiceProxy<Commands>(commands)
 {
 }
+
 CommandsProxy::~CommandsProxy()
 {
-    for (auto cmd: m_RegisteredCommands)
+    for (const std::string& cmd : m_RegisteredCommands)
     {
         m_proxyBase.UnregisterCommand(cmd);
     }
-    m_RegisteredCommands.clear();
 }
-
 
 bool CommandsProxy::RegisterCommand(const std::string& cmd, Commands::CommandFunc func)
 {
@@ -111,6 +108,7 @@ bool CommandsProxy::RegisterCommand(const std::string& cmd, Commands::CommandFun
     }
     return false;
 }
+
 void CommandsProxy::UnregisterCommand(const std::string& cmd)
 {
     if (m_RegisteredCommands.find(cmd) != m_RegisteredCommands.end())

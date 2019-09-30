@@ -19,17 +19,17 @@ class PerObjectStorage : public ServiceBase
 {
 public:
     using CleanupFunc = void (*)(void*);
-    void Set(API::CGameObject *pGameObject, std::string key, int value);
-    void Set(API::CGameObject *pGameObject, std::string key, float value);
-    void Set(API::CGameObject *pGameObject, std::string key, std::string value);
-    void Set(API::CGameObject *pGameObject, std::string key, void *value, CleanupFunc cleanup = nullptr);
+    void Set(API::CGameObject *pGameObject, const std::string& key, int value);
+    void Set(API::CGameObject *pGameObject, const std::string& key, float value);
+    void Set(API::CGameObject *pGameObject, const std::string& key, std::string value);
+    void Set(API::CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
     template <typename T> Maybe<T>
-    Get(API::CGameObject *pGameObject, std::string key);
+    Get(API::CGameObject *pGameObject, const std::string& key);
 
     // Removes without cleanup
-    void Remove(API::CGameObject *pGameObject, std::string key);
+    void Remove(API::CGameObject *pGameObject, const std::string& key);
 
     PerObjectStorage();
     ~PerObjectStorage();
@@ -77,47 +77,47 @@ public:
     PerObjectStorageProxy(PerObjectStorage& perObjectStorage, std::string pluginName);
     ~PerObjectStorageProxy();
 
-    void Set(API::CGameObject *pGameObject, std::string key, int value);
-    void Set(API::CGameObject *pGameObject, std::string key, float value);
-    void Set(API::CGameObject *pGameObject, std::string key, std::string value);
-    void Set(API::CGameObject *pGameObject, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
+    void Set(API::CGameObject *pGameObject, const std::string& key, int value);
+    void Set(API::CGameObject *pGameObject, const std::string& key, float value);
+    void Set(API::CGameObject *pGameObject, const std::string& key, std::string value);
+    void Set(API::CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
     template <typename T> Maybe<T>
-    Get(API::CGameObject *pGameObject, std::string key)
+    Get(API::CGameObject *pGameObject, const std::string& key)
     {
         return m_proxyBase.Get<T>(pGameObject, m_pluginName + "!" + key);
     }
 
     // Removes without cleanup
-    void Remove(API::CGameObject *pGameObject, std::string key);
+    void Remove(API::CGameObject *pGameObject, const std::string& key);
 
     //
     // Interfaces using objectID instead of CGameObject pointer
     //
-    void Set(API::Types::ObjectID object, std::string key, int value)
+    void Set(API::Types::ObjectID object, const std::string& key, int value)
     {
         return Set(Utils::GetGameObject(object), key, value);
     }
-    void Set(API::Types::ObjectID object, std::string key, float value)
+    void Set(API::Types::ObjectID object, const std::string& key, float value)
     {
         return Set(Utils::GetGameObject(object), key, value);
     }
-    void Set(API::Types::ObjectID object, std::string key, std::string value)
+    void Set(API::Types::ObjectID object, const std::string& key, std::string value)
     {
         return Set(Utils::GetGameObject(object), key, value);
     }
-    void Set(API::Types::ObjectID object, std::string key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
+    void Set(API::Types::ObjectID object, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
     {
         return Set(Utils::GetGameObject(object), key, value, cleanup);
     }
     template <typename T> Maybe<T>
-    Get(API::Types::ObjectID object, std::string key)
+    Get(API::Types::ObjectID object, const std::string& key)
     {
         return Get<T>(Utils::GetGameObject(object), key);
     }
 
-    void Remove(API::Types::ObjectID object, std::string key)
+    void Remove(API::Types::ObjectID object, const std::string& key)
     {
         return Remove(Utils::GetGameObject(object), key);
     }

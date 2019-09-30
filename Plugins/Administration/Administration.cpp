@@ -58,7 +58,8 @@ Administration::Administration(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(name, func) \
-    GetServices()->m_events->RegisterEvent(name, std::bind(&Administration::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(name, \
+        [this](Events::ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER("GET_PLAYER_PASSWORD",           OnGetPlayerPassword);
     REGISTER("SET_PLAYER_PASSWORD",           OnSetPlayerPassword);
