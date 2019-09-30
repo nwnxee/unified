@@ -15,7 +15,8 @@ done
 
 pushd Binaries
 
-zip -r NWScript.zip NWScript
+echo "Zipping NWScripts..."
+zip -r NWScript.zip NWScript > /dev/null
 
 pushd NWScript
 for i in `find . -name *.nss`; do
