@@ -117,10 +117,11 @@ PerObjectStorage::ObjectStorage::PointerMap& PerObjectStorage::ObjectStorage::Ge
 PerObjectStorage::ObjectStorage::ObjectStorage(API::Types::ObjectID owner)
 {
     m_oidOwner = owner;
+    m_bCloned = false;
 }
 PerObjectStorage::ObjectStorage::~ObjectStorage()
 {
-    if (m_PointerMap)
+    if (m_PointerMap && !m_bCloned)
     {
         for (auto it: *m_PointerMap)
         {
@@ -135,6 +136,8 @@ void PerObjectStorage::ObjectStorage::CloneFrom(PerObjectStorage::ObjectStorage 
 {
     if (!other)
         return;
+
+    other->m_bCloned = true;
 
     if (other->m_IntMap)
         m_IntMap = std::make_unique<IntMap>(*other->m_IntMap);

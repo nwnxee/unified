@@ -60,6 +60,7 @@ private:
         std::string DumpToString();
 
         API::Types::ObjectID        m_oidOwner;
+        bool                        m_bCloned;
         std::unique_ptr<IntMap>     m_IntMap;
         std::unique_ptr<FloatMap>   m_FloatMap;
         std::unique_ptr<StringMap>  m_StringMap;
