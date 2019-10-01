@@ -1,15 +1,15 @@
 defaults: &defaults
-  working_directory: ~/nwnxee
+  working_directory: ~/plenarius
 
 version: 2
 jobs:
   build:
     <<: *defaults
     docker:
-      - image: nwnxee/builder
+      - image: plenarius/builder
     steps:
       - attach_workspace:
-          at: ~/nwnxee
+          at: ~/plenarius
       - checkout
       - run: CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
       - run: make all
@@ -28,13 +28,13 @@ jobs:
     machine: true
     steps:
       - attach_workspace:
-          at: ~/nwnxee
+          at: ~/plenarius
       - run: go get -u github.com/tcnksm/ghr
-      - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG ~/nwnxee/Binaries/
+      - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG ~/plenarius/Binaries/
 
 workflows:
   version: 2
-  build_nwnxee:
+  build_plenarius:
     jobs:
       - build:
           filters:
