@@ -13,6 +13,8 @@
 #include "API/Functions.hpp"
 #include <list>
 #include <random>
+#include <algorithm>
+#include <iostream>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
