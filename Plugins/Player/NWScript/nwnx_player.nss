@@ -178,6 +178,9 @@ int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 // persistent method. (OnRest, OnAreaEnter, OnClentExit)
 void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE);
 
+// Force a item name to be updated. Workaround for bug that occurs
+// when updating item names in open containers.
+void NWNX_Player_UpdateItemName(object oPlayer, object oItem);
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 {
@@ -609,6 +612,16 @@ void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBic
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oWP);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sBicFileName);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sCDKeyOrCommunityName);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_UpdateItemName(object oPlayer, object oItem)
+{
+    string sFunc = "UpdateItemName";
+
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oItem);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
 }

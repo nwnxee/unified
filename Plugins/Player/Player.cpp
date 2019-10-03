@@ -100,6 +100,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetPlaceableNameOverride);
     REGISTER(GetQuestCompleted);
     REGISTER(SetPersistentLocation);
+    REGISTER(UpdateItemName);
 
 #undef REGISTER
 
@@ -1140,6 +1141,25 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
     std::string sKey = sCDKeyOrCommunityName + "!" + sBicFileName;
     g_plugin->m_PersistentLocationWP[sKey] = std::make_pair(wpOid, bFirstConnectOnly);
 
+    return stack;
+}
+
+ArgumentStack Player::UpdateItemName(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pPlayer = player(args))
+    {
+        auto oidItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
+
+        auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem));
+        auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+
+        if (pItem && pMessage)
+        {
+            pMessage->SendServerToPlayerUpdateItemName(pPlayer, pItem);
+        }
+    }
     return stack;
 }
 
