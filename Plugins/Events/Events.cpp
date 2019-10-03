@@ -194,10 +194,10 @@ bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID tar
         }
     }
 
-    g_plugin->m_eventData.pop();
-
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, result ? *result : ""});
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, g_plugin->m_eventData.top().m_Result});
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED", { eventName, skipped ? "1" : "0"});
+
+    g_plugin->m_eventData.pop();
 
     return !skipped;
 }
