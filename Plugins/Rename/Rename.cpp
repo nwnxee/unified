@@ -188,6 +188,8 @@ void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
 void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID observerOid, bool playerList)
 {
     auto targetOid = targetCreature->m_idSelf;
+    if (!g_plugin->m_RenamePlayerNames.count(targetOid))
+        return;
     if (g_plugin->m_RenamePlayerNames[targetOid].count(observerOid))
     {
         auto displayName = std::get<0>(g_plugin->m_RenamePlayerNames[targetOid][observerOid]);
@@ -404,11 +406,12 @@ int32_t Rename::SendServerToPlayerPopUpGUIPanelHook(
         auto *server = Globals::AppManager()->m_pServerExoApp;
         auto *observerCreature = server->GetCreatureByGameObjectID(observerOid);
         auto targetOid = observerCreature->m_oidInvitedToPartyBy;
-        if (g_plugin->m_RenamePlayerNames[targetOid].count(observerOid))
+        if (g_plugin->m_RenamePlayerNames.count(targetOid) && g_plugin->m_RenamePlayerNames[targetOid].count(observerOid))
         {
             *p_sStringReference = std::get<0>(g_plugin->m_RenamePlayerNames[targetOid][observerOid]);
         }
-        else if (g_plugin->m_RenamePlayerNames[targetOid].count(Constants::OBJECT_INVALID))
+        else if (g_plugin->m_RenamePlayerNames.count(targetOid) &&
+                 g_plugin->m_RenamePlayerNames[targetOid].count(Constants::OBJECT_INVALID))
         {
             *p_sStringReference = std::get<0>(g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID]);
         }
@@ -473,7 +476,8 @@ void Rename::GlobalNameChange(
             auto *targetPlayer = static_cast<API::CNWSPlayer*>(server->GetClientObjectByPlayerId(targetPid, 0));
             auto targetOid = targetPlayer->m_oidNWSObject;
             auto *targetCreature = server->GetCreatureByGameObjectID(targetOid);
-            if (targetCreature)
+            if (targetCreature && g_plugin->m_RenamePlayerNames.count(targetOid) &&
+                g_plugin->m_RenamePlayerNames[targetOid].count(Constants::OBJECT_INVALID))
             {
                 auto playerNameOverrideState = std::get<2>(g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID]);
                 if (playerNameOverrideState)
