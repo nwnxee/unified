@@ -5,7 +5,7 @@ find_package(Doxygen)
 if(DOXYGEN_FOUND)
     set(DOXYGEN_LAYOUT_FILE ${CMAKE_SOURCE_DIR}/docgen/DoxygenLayout.xml)
     set(DOXYGEN_FILE_PATTERNS *.nss;*.md)
-    set(DOXYGEN_EXCLUDE_PATTERNS */Plugins/*/NWScript/*_t.nss; */Plugins/*/NWScript/*_t?.nss;
+    set(DOXYGEN_EXCLUDE_PATTERNS */*-nwnx/*; */Plugins/*/NWScript/*_t.nss; */Plugins/*/NWScript/*_t?.nss;
                                  */Plugins/JVM/build/nwscript.nss; */Plugins/JVM/build/consts.nss;
                                  */Plugins/Redis/cpp_redis)
     set(DOXYGEN_EXTENSION_MAPPING nss=C++)
