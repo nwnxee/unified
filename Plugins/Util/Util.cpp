@@ -110,7 +110,7 @@ Util::Util(const Plugin::CreateParams& params)
                 {
                     if (auto startScript = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT"))
                     {
-                        LOG_NOTICE("Running module start script: %s", startScript->c_str());
+                        LOG_NOTICE("Running module start script: %s", *startScript);
                         Utils::ExecuteScript(*startScript, 0);
                     }
                 }

@@ -56,7 +56,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
 
         if (scanned < 4 || abi != NWNX_ABI_VERSION)
         {
-            LOG_WARNING("Bad NWNX ABI call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript().c_str());
+            LOG_WARNING("Bad NWNX ABI call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript());
             LOG_WARNING("NWNX ABI has changed. Please update your \"nwnx.nss\" file and recompile all scripts.");
         }
         else
@@ -70,7 +70,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
     }
     else if (startsWith(str, "NWNX!"))
     {
-        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript().c_str());
+        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript());
         const char *cmd = str.m_sString + 5;
         if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
             !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||

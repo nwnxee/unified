@@ -28,11 +28,11 @@ void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     const NWNXLib::Maybe<std::string> database = config->Get<std::string>("DATABASE");
     if (database)
     {
-        LOG_DEBUG("DB set to %s", (*database).c_str());
+        LOG_DEBUG("DB set to %s", (*database));
     }
 
-    LOG_INFO("Connection info:  host=%s username=%s", host.c_str(), username.c_str());
-    LOG_DEBUG("               :  password=%s", password.c_str());
+    LOG_INFO("Connection info:  host=%s username=%s", host, username);
+    LOG_DEBUG("               :  password=%s", password);
 
     if (!mysql_real_connect(&m_mysql, host.c_str(), username.c_str(), password.c_str(), database ? (*database).c_str() : nullptr, 0, nullptr, 0))
     {
@@ -41,7 +41,7 @@ void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 
     if (auto charset = config->Get<std::string>("CHARACTER_SET"))
     {
-        LOG_INFO("Connection character set is '%s'", charset->c_str());
+        LOG_INFO("Connection character set is '%s'", *charset);
         if (mysql_set_character_set(&m_mysql, charset->c_str()))
             LOG_ERROR("Unable to set the character set");
     }
@@ -63,7 +63,7 @@ bool MySQL::IsConnected()
 
 bool MySQL::PrepareQuery(const Query& query)
 {
-    LOG_DEBUG("Preparing query %s\n", query.c_str());
+    LOG_DEBUG("Preparing query %s\n", query);
 
     if (m_stmt)
         mysql_stmt_close(m_stmt);
@@ -72,7 +72,7 @@ bool MySQL::PrepareQuery(const Query& query)
     if (!m_stmt)
     {
         m_lastError.assign(mysql_error(&m_mysql));
-        LOG_WARNING("Failed to initialize statement: %s", m_lastError.c_str());
+        LOG_WARNING("Failed to initialize statement: %s", m_lastError);
         return false;
     }
 
@@ -87,7 +87,7 @@ bool MySQL::PrepareQuery(const Query& query)
     else
     {
         m_lastError.assign(mysql_stmt_error(m_stmt));
-        LOG_WARNING("Failed to prepare statement: %s", m_lastError.c_str());
+        LOG_WARNING("Failed to prepare statement: %s", m_lastError);
         mysql_stmt_close(m_stmt);
         m_stmt = nullptr;
     }
@@ -211,7 +211,7 @@ void MySQL::PrepareFloat(int32_t position, float value)
 }
 void MySQL::PrepareString(int32_t position, const std::string& value)
 {
-    LOG_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value);
 
     ASSERT_OR_THROW(position >= 0);
     size_t pos = static_cast<size_t>(position);

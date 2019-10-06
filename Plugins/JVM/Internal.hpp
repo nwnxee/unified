@@ -82,7 +82,7 @@ class Internal {
     }
 
     jobject NewGlobalClassRef(JNIEnv* env, const std::string& clz) {
-        LOG_INFO("Looking up class: %s", clz.c_str());
+        LOG_INFO("Looking up class: %s", clz);
         jclass local = JNICHECKED(env, FindClass(clz.c_str()));
         if (!local)
             throw std::runtime_error("Class not found: " + clz);
@@ -91,7 +91,7 @@ class Internal {
     }
 
     jmethodID FindClassMethod(JNIEnv* env, jclass clz, const std::string& meth, const std::string& sig) {
-        LOG_INFO("Looking up static method: %s", meth.c_str());
+        LOG_INFO("Looking up static method: %s", meth);
         jmethodID ret = JNICHECKED(env, GetStaticMethodID(clz, meth.c_str(), sig.c_str()));
         if (!ret)
             throw std::runtime_error("Static method not found: " + meth);
@@ -99,7 +99,7 @@ class Internal {
     }
 
     jmethodID FindMethod(JNIEnv* env, jclass clz, const std::string& meth, const std::string& sig) {
-        LOG_INFO("Looking up method: %s", meth.c_str());
+        LOG_INFO("Looking up method: %s", meth);
         jmethodID ret = JNICHECKED(env, GetMethodID(clz, meth.c_str(), sig.c_str()));
         if (!ret)
             throw std::runtime_error("Method not found: " + meth);

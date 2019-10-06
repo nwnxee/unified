@@ -37,19 +37,19 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     if (auto* event = GetEventData(pluginName, eventName))
     {
         LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
-            eventName.c_str(), pluginName.c_str());
+            eventName, pluginName);
         try
         {
             event->m_returns = event->m_callback(std::move(event->m_arguments));
         }
         catch (const std::exception& err)
         {
-            LOG_ERROR("Plugin '%s' failed event '%s'. Error: %s", pluginName.c_str(), eventName.c_str(), err.what());
+            LOG_ERROR("Plugin '%s' failed event '%s'. Error: %s", pluginName, eventName, err.what());
         }
     }
     else
     {
-        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName, eventName);
     }
 }
 
@@ -151,7 +151,7 @@ template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::Object
 template<> Maybe<std::string>&          Events::Argument::Get<std::string>()         { return m_string; }
 template<> Maybe<API::CGameEffect*>&    Events::Argument::Get<API::CGameEffect*>()   { return m_effect; }
 
-std::string Events::Argument::toString()
+std::string Events::Argument::toString() const
 {
     if (m_int)    return std::to_string(*m_int);
     if (m_float)  return std::to_string(*m_float);
@@ -164,4 +164,10 @@ std::string Events::Argument::toString()
 
 }
 
+}
+
+std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg)
+{
+    os << arg.toString();
+    return os;
 }

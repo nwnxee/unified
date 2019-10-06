@@ -199,7 +199,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
                         g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
 
                         LOG_DEBUG("Running script '%s' on object '%x' with data '%s'",
-                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
+                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData);
 
                         ++g_plugin->m_effectExpiredDepth;
                         Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
