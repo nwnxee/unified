@@ -792,8 +792,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static ObjectVisualTransformData objectVisualTransformData;
-                        static bool bKeyExists;
+                        static ObjectVisualTransformData *pObjectVisualTransformData;
 
                         if (pObject->m_nObjectType == Constants::ObjectType::Creature ||
                             pObject->m_nObjectType == Constants::ObjectType::Placeable ||
@@ -802,24 +801,21 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                         {
                             if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                             {
-                                const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
-                                                        Utils::ObjectIDToString(pObject->m_idSelf);
-
-                                auto search = g_plugin->m_OVTData.find(key);
-                                bKeyExists = search != g_plugin->m_OVTData.end();
-
-                                if (bKeyExists)
+                                if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
+                                        "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                                 {
-                                    objectVisualTransformData = search->second;
-                                    std::swap(objectVisualTransformData, pObject->m_pVisualTransformData);
+                                    pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
+                                }
+                                else
+                                {
+                                    pObjectVisualTransformData = nullptr;
                                 }
                             }
-                            else
+
+                            if (pObjectVisualTransformData)
                             {
-                                if (bKeyExists)
-                                {
-                                    std::swap(objectVisualTransformData, pObject->m_pVisualTransformData);
-                                }
+                                // Note: pObject->m_pVisualTransformData is pretending to be a pointer
+                                std::swap(*pObjectVisualTransformData, pObject->m_pVisualTransformData);
                             }
                         }
                     }
@@ -837,57 +833,71 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
         const auto transform = Services::Events::ExtractArgument<int32_t>(args);
         const auto value = Services::Events::ExtractArgument<float>(args);
 
-        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidObject);
-
-        if (transform == -1)
+        if (transform < 0)
         {
-            m_OVTData.erase(key);
+            if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObject,
+                    "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            {
+                auto pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
+
+                g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+                delete pObjectVisualTransformData;
+            }
         }
         else
         {
-            if (m_OVTData.find(key) == m_OVTData.end())
-            {
-                ObjectVisualTransformData data = {};
-                data.m_scale = Vector{1.0f, 1.0f, 1.0f};
-                data.m_rotate = Vector{0.0f, 0.0f, 0.0f};
-                data.m_translate = Vector{0.0f, 0.0f, 0.0f};
-                data.m_animationSpeed = 1.0f;
+            ObjectVisualTransformData *pObjectVisualTransformData;
 
-                m_OVTData[key] = data;
+            if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObject,
+                    "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            {
+                pObjectVisualTransformData = static_cast<ObjectVisualTransformData*>(*objectVisualTransformData);
+            }
+            else
+            {
+                pObjectVisualTransformData = new ObjectVisualTransformData();
+                pObjectVisualTransformData->m_scale = Vector{1.0f, 1.0f, 1.0f};
+                pObjectVisualTransformData->m_rotate = Vector{0.0f, 0.0f, 0.0f};
+                pObjectVisualTransformData->m_translate = Vector{0.0f, 0.0f, 0.0f};
+                pObjectVisualTransformData->m_animationSpeed = 1.0f;
+
+                g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
+                        pObjectVisualTransformData, [](void*p) { delete static_cast<ObjectVisualTransformData*>(p); });
             }
 
             switch (transform)
             {
                 case Constants::ObjectVisualTransform::Scale:
-                    m_OVTData[key].m_scale.x = value;
+                    pObjectVisualTransformData->m_scale.x = value;
                     break;
 
                 case Constants::ObjectVisualTransform::RotateX:
-                    m_OVTData[key].m_rotate.x = value;
+                    pObjectVisualTransformData->m_rotate.x = value;
                     break;
 
                 case Constants::ObjectVisualTransform::RotateY:
-                    m_OVTData[key].m_rotate.y = value;
+                    pObjectVisualTransformData->m_rotate.y = value;
                     break;
 
                 case Constants::ObjectVisualTransform::RotateZ:
-                    m_OVTData[key].m_rotate.z = value;
+                    pObjectVisualTransformData->m_rotate.z = value;
                     break;
 
                 case Constants::ObjectVisualTransform::TranslateX:
-                    m_OVTData[key].m_translate.x = value;
+                    pObjectVisualTransformData->m_translate.x = value;
                     break;
 
                 case Constants::ObjectVisualTransform::TranslateY:
-                    m_OVTData[key].m_translate.y = value;
+                    pObjectVisualTransformData->m_translate.y = value;
                     break;
 
                 case Constants::ObjectVisualTransform::TranslateZ:
-                    m_OVTData[key].m_translate.z = value;
+                    pObjectVisualTransformData->m_translate.z = value;
                     break;
 
                 case Constants::ObjectVisualTransform::AnimationSpeed:
-                    m_OVTData[key].m_animationSpeed = value;
+                    pObjectVisualTransformData->m_animationSpeed = value;
                     break;
 
                 default:
@@ -912,18 +922,23 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static bool bKeyExists;
-                        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" +
-                                                Utils::ObjectIDToString(pObject->m_idSelf);
+                        static std::set<uint16_t> *pLoopingVisualEffectSet;
 
                         if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                         {
-                            auto search = g_plugin->m_LVEData.find(key);
-                            bKeyExists = search != g_plugin->m_LVEData.end();
-
-                            if (bKeyExists)
+                            if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
+                                    "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                             {
-                                for(auto visualEffect : search->second)
+                                pLoopingVisualEffectSet = static_cast<std::set<uint16_t> *>(*loopingVisualEffectSet);
+                            }
+                            else
+                            {
+                                pLoopingVisualEffectSet = nullptr;
+                            }
+
+                            if (pLoopingVisualEffectSet)
+                            {
+                                for(auto visualEffect : *pLoopingVisualEffectSet)
                                 {
                                     pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
                                 }
@@ -931,9 +946,9 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                         }
                         else
                         {
-                            if (bKeyExists)
+                            if (pLoopingVisualEffectSet)
                             {
-                                for(auto visualEffect : g_plugin->m_LVEData[key])
+                                for(auto visualEffect : *pLoopingVisualEffectSet)
                                 {
                                     pObject->RemoveLoopingVisualEffect(visualEffect);
                                 }
@@ -953,19 +968,43 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect <= 65535);
 
-        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidTarget);
-
         if (visualEffect < 0)
         {
-            m_LVEData.erase(key);
-        }
-        else if (m_LVEData[key].find(visualEffect) != m_LVEData[key].end())
-        {
-            m_LVEData[key].erase(visualEffect);
+            if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidTarget,
+                    "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            {
+                auto pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
+
+                g_plugin->GetServices()->m_perObjectStorage->Remove(oidTarget, "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+                delete pLoopingVisualEffectSet;
+            }
         }
         else
         {
-            m_LVEData[key].insert(visualEffect);
+            std::set<uint16_t> *pLoopingVisualEffectSet;
+
+            if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidTarget,
+                    "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            {
+                pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
+            }
+            else
+            {
+                pLoopingVisualEffectSet = new std::set<uint16_t>();
+
+                g_plugin->GetServices()->m_perObjectStorage->Set(oidTarget, "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
+                        pLoopingVisualEffectSet, [](void*p) { delete static_cast<std::set<uint16_t>*>(p); });
+            }
+
+            if (pLoopingVisualEffectSet->find(visualEffect) != pLoopingVisualEffectSet->end())
+            {
+                pLoopingVisualEffectSet->erase(visualEffect);
+            }
+            else
+            {
+                pLoopingVisualEffectSet->insert(visualEffect);
+            }
         }
     }
     return stack;
