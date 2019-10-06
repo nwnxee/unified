@@ -1,7 +1,16 @@
+/// @defgroup creature Creature
+/// @brief Functions exposing additional creature properties.
+/// @{
+/// @file nwnx_creature.nss
 #include "nwnx"
 
-const string NWNX_Creature = "NWNX_Creature";
+const string NWNX_Creature = "NWNX_Creature"; ///< @private
 
+/// @name Creature Movement Rates
+/// @anchor creature_movement_rates
+///
+/// The various types of movement rates.
+/// @{
 const int NWNX_CREATURE_MOVEMENT_RATE_PC        = 0;
 const int NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE  = 1;
 const int NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW = 2;
@@ -11,13 +20,25 @@ const int NWNX_CREATURE_MOVEMENT_RATE_FAST      = 5;
 const int NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST = 6;
 const int NWNX_CREATURE_MOVEMENT_RATE_DEFAULT   = 7;
 const int NWNX_CREATURE_MOVEMENT_RATE_DM_FAST   = 8;
+/// @}
 
+/// @name Creature Movement Types
+/// @anchor creature_movement_types
+///
+/// The various types of movement types.
+/// @{
 const int NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY      = 0;
 const int NWNX_CREATURE_MOVEMENT_TYPE_WALK            = 1;
 const int NWNX_CREATURE_MOVEMENT_TYPE_RUN             = 2;
 const int NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP        = 3;
 const int NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS  = 4;
+/// @}
 
+/// @name Cleric Domains
+/// @anchor cleric_domains
+///
+/// The clerical domains.
+/// @{
 const int NWNX_CREATURE_CLERIC_DOMAIN_AIR         = 0;
 const int NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL      = 1;
 const int NWNX_CREATURE_CLERIC_DOMAIN_DEATH       = 3;
@@ -37,318 +58,560 @@ const int NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL      = 18;
 const int NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY    = 19;
 const int NWNX_CREATURE_CLERIC_DOMAIN_WAR         = 20;
 const int NWNX_CREATURE_CLERIC_DOMAIN_WATER       = 21;
+/// @}
 
+/// @name Bonus Types
+/// @anchor bonus_types
+///
+/// Used with NWNX_Creature_GetTotalEffectBonus() these are the types of temporary bonuses from effects.
+/// @{
 const int NWNX_CREATURE_BONUS_TYPE_ATTACK        = 1;
 const int NWNX_CREATURE_BONUS_TYPE_DAMAGE        = 2;
 const int NWNX_CREATURE_BONUS_TYPE_SAVING_THROW  = 3;
 const int NWNX_CREATURE_BONUS_TYPE_ABILITY       = 4;
 const int NWNX_CREATURE_BONUS_TYPE_SKILL         = 5;
 const int NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK  = 6;
+/// @}
 
+/// @struct NWNX_Creature_SpecialAbility
+/// @brief A creature special ability.
 struct NWNX_Creature_SpecialAbility
 {
-    int id;
-    int ready;
-    int level;
+    int id; ///< The spell id
+    int ready; ///< Whether it can be used
+    int level; ///< The level of the ability
 };
 
+/// @struct NWNX_Creature_MemorisedSpell
+/// @brief A memorised spell structure.
 struct NWNX_Creature_MemorisedSpell
 {
-    int id;
-    int ready;
-    int meta;
-    int domain;
+    int id; ///< Spell ID
+    int ready; ///< Whether the spell can be cast
+    int meta; ///< Metamagic type, if any
+    int domain; ///< Clerical domain, if any
 };
 
-// Gives the provided creature the provided feat.
+/// @brief Gives the creature a feat.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @remark Consider also using NWNX_Creature_AddFeatByLevel() to properly allocate the feat to a level
 void NWNX_Creature_AddFeat(object creature, int feat);
 
-// Gives the provided creature the provided feat.
-// Adds the feat to the stat list at the provided level.
+/// @brief Gives the creature a feat assigned at a level
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @param level The level they gained the feat.
+/// @remark Adds the feat to the stat list at the provided level.
 void NWNX_Creature_AddFeatByLevel(object creature, int feat, int level);
 
-// Removes from the provided creature the provided feat.
+/// @brief Removes a feat from a creature.
+/// @param creature The creature object.
+/// @param feat The feat id.
 void NWNX_Creature_RemoveFeat(object creature, int feat);
 
+/// @brief Determines if the creature knows a feat.
+/// @note This differs from native `GetHasFeat` which returns FALSE if the feat has no more uses per day.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @return TRUE if the creature has the feat, regardless if they have any usages left or not.
 int NWNX_Creature_GetKnowsFeat(object creature, int feat);
 
-// Returns the count of feats learned at the provided level.
+/// @brief Returns the count of feats learned at the provided level.
+/// @param creature The creature object.
+/// @param level The level.
+/// @return The count of feats.
 int NWNX_Creature_GetFeatCountByLevel(object creature, int level);
 
-// Returns the feat learned at the provided level at the provided index.
-// Index bounds: 0 <= index < NWNX_Creature_GetFeatCountByLevel(creature, level).
+/// @brief Returns the feat learned at the level and index.
+/// @param creature The creature object.
+/// @param level The level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetFeatCountByLevel().
+/// @return The feat id at the index.
 int NWNX_Creature_GetFeatByLevel(object creature, int level, int index);
 
-// Returns the total number of feats known by creature
+/// @brief Get the total number of feats known by creature.
+/// @param creature The creature object.
+/// @return The total feat count for the creature.
 int NWNX_Creature_GetFeatCount(object creature);
 
-// Returns the creature's feat at a given index
-// Index bounds: 0 <= index < NWNX_Creature_GetFeatCount(creature);
+/// @brief Returns the creature's feat at a given index
+/// @param creature The creature object.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetFeatCount();
+/// @return The feat id at the index.
 int NWNX_Creature_GetFeatByIndex(object creature, int index);
 
-// Returns TRUE if creature meets all requirements to take given feat
+/// @brief Gets if creature meets feat requirements.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @return TRUE if creature meets all requirements to take given feat
 int NWNX_Creature_GetMeetsFeatRequirements(object creature, int feat);
 
-// Returns the special ability of the provided creature at the provided index.
-// Index bounds: 0 <= index < NWNX_Creature_GetSpecialAbilityCount(creature).
-struct NWNX_Creature_SpecialAbility NWNX_Creature_GetSpecialAbility(object creature, int index);
-
-// Returns the count of special ability count of the provided creature.
+/// @brief Gets the count of special abilities of the creature.
+/// @param creature The creature object.
+/// @return The total special ability count.
 int NWNX_Creature_GetSpecialAbilityCount(object creature);
 
-// Adds the provided special ability to the provided creature.
+/// @brief Returns the creature's special ability at a given index.
+/// @param creature The creature object.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetSpecialAbilityCount().
+/// @return An NWNX_Creature_SpecialAbility struct.
+struct NWNX_Creature_SpecialAbility NWNX_Creature_GetSpecialAbility(object creature, int index);
+
+/// @brief Adds a special ability to a creature.
+/// @param creature The creature object.
+/// @param ability An NWNX_Creature_SpecialAbility struct.
 void NWNX_Creature_AddSpecialAbility(object creature, struct NWNX_Creature_SpecialAbility ability);
 
-// Removes the provided special ability from the provided creature.
-// Index bounds: 0 <= index < NWNX_Creature_GetSpecialAbilityCount(creature).
+/// @brief Removes a special ability from a creature.
+/// @param creature The creature object.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetSpecialAbilityCount().
 void NWNX_Creature_RemoveSpecialAbility(object creature, int index);
 
-// Sets the special ability at the provided index for the provided creature to the provided ability.
-// Index bounds: 0 <= index < NWNX_Creature_GetSpecialAbilityCount(creature).
+/// @brief Sets a special ability at the index for the creature.
+/// @param creature The creature object.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetSpecialAbilityCount().
+/// @param ability An NWNX_Creature_SpecialAbility struct.
 void NWNX_Creature_SetSpecialAbility(object creature, int index, struct NWNX_Creature_SpecialAbility ability);
 
-// Returns the class taken by the provided creature at the provided level.
+/// @brief Get the class taken by the creature at the provided level.
+/// @param creature The creature object.
+/// @param level The level.
+/// @return The class id.
 int NWNX_Creature_GetClassByLevel(object creature, int level);
 
-// Sets the base AC for the provided creature.
+/// @brief Sets the base AC for the creature.
+/// @param creature The creature object.
+/// @param ac The base AC to set for the creature.
 void NWNX_Creature_SetBaseAC(object creature, int ac);
 
-// Returns the base AC for the provided creature.
+/// @brief Get the base AC for the creature.
+/// @param creature The creature object.
+/// @return The base AC.
 int NWNX_Creature_GetBaseAC(object creature);
 
-// DEPRECATED. Please use NWNX_Creature_SetRawAbilityScore now. This will be removed in future NWNX releases.
-// Sets the provided ability score of provided creature to the provided value.
+/// @brief Sets the ability score of the creature to the value.
+/// @param creature The creature object.
+/// @param ability The ability constant.
+/// @param value The value to set.
+/// @deprecated Use NWNX_Creature_SetRawAbilityScore(). This will be removed in future NWNX releases.
 void NWNX_Creature_SetAbilityScore(object creature, int ability, int value);
 
-// Sets the provided ability score of provided creature to the provided value. Does not apply racial bonuses/penalties.
+/// @brief Sets the ability score of the creature to the provided value.
+/// @note Does not apply racial bonuses/penalties.
+/// @param creature The creature object.
+/// @param ability The ability constant.
+/// @param value The value to set.
 void NWNX_Creature_SetRawAbilityScore(object creature, int ability, int value);
 
-// Gets the provided ability score of provided creature. Does not apply racial bonuses/penalties.
+/// @brief Gets the ability score of the creature.
+/// @note Does not apply racial bonuses/penalties.
+/// @param creature The creature object.
+/// @param ability The ability constant.
+/// @return The ability score.
 int NWNX_Creature_GetRawAbilityScore(object creature, int ability);
 
-// Adjusts the provided ability score of a provided creature. Does not apply racial bonuses/penalties.
+/// @brief Adjusts the ability score of a creature.
+/// @note Does not apply racial bonuses/penalties.
+/// @param creature The creature object.
+/// @param ability The ability constant.
+/// @param modifier The modifier value.
 void NWNX_Creature_ModifyRawAbilityScore(object creature, int ability, int modifier);
 
-// Gets the raw ability score a polymorphed creature had prior to polymorphing. Str/Dex/Con only.
+/// @brief Gets the raw ability score a polymorphed creature had prior to polymorphing.
+/// @note For Strength, Dexterity and Constitution only.
+/// @param creature The creature object.
+/// @param ability The ability constant.
+/// @return The raw ability score.
 int NWNX_Creature_GetPrePolymorphAbilityScore(object creature, int ability);
 
-// Gets the memorised spell of the provided creature for the provided class, level, and index.
-// Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
-struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index);
-
-// Gets the count of memorised spells of the provided class and level belonging to the provided creature.
+/// @brief Gets the count of memorised spells for a creature's class at a level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @return The memorised spell count.
 int NWNX_Creature_GetMemorisedSpellCountByLevel(object creature, int class, int level);
 
-// Sets the memorised spell of the provided creature for the provided class, level, and index.
-// Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
+/// @brief Gets the memorised spell at a class level's index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
+/// @return An NWNX_Creature_MemorisedSpell() struct.
+struct NWNX_Creature_MemorisedSpell NWNX_Creature_GetMemorisedSpell(object creature, int class, int level, int index);
+
+/// @brief Sets the memorised spell at a class level's index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
+/// @param spell An NWNX_Creature_MemorisedSpell() struct.
 void NWNX_Creature_SetMemorisedSpell(object creature, int class, int level, int index, struct NWNX_Creature_MemorisedSpell spell);
 
-// Gets the remaining spell slots (innate casting) for the provided creature for the provided class and level.
+/// @brief Gets the remaining spell slots (innate casting) at a class level's index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @return The remaining spell slot count.
 int NWNX_Creature_GetRemainingSpellSlots(object creature, int class, int level);
 
-// Sets the remaining spell slots (innate casting) for the provided creature for the provided class and level.
+/// @brief Sets the remaining spell slots (innate casting) at a class level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param slots The remaining spell slots to set.
 void NWNX_Creature_SetRemainingSpellSlots(object creature, int class, int level, int slots);
 
-// Gets the maximum count of spell slots for the proivded creature for the provided class and level.
+/// @brief Gets the maximum spell slots (innate casting) at a class level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @return The maximum spell slot count.
 int NWNX_Creature_GetMaxSpellSlots(object creature, int class, int level);
 
-// Get the spell at index in level in creature's spellbook from class.
-int NWNX_Creature_GetKnownSpell(object creature, int class, int level, int index);
-
+/// @brief Gets the known spell count (innate casting) at a class level.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @return The known spell count.
 int NWNX_Creature_GetKnownSpellCount(object creature, int class, int level);
 
-// Remove a spell from creature's spellbook for class.
-void NWNX_Creature_RemoveKnownSpell(object creature, int class, int level, int spellId);
+/// @brief Gets the known spell at a class level's index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetKnownSpellCount().
+/// @return The spell id.
+int NWNX_Creature_GetKnownSpell(object creature, int class, int level, int index);
 
-// Add a new spell to creature's spellbook for class.
+/// @brief Remove a spell from creature's spellbook for class.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param spellId The spell to remove.
 void NWNX_Creature_AddKnownSpell(object creature, int class, int level, int spellId);
 
-// Clear a specific spell from the creature's spellbook for class
+/// @brief Remove a spell from creature's spellbook for class.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param spellId The spell to remove.
+void NWNX_Creature_RemoveKnownSpell(object creature, int class, int level, int spellId);
+
+/// @brief Clear a specific spell from the creature's spellbook for class
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param spellId The spell to clear.
 void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spellId);
 
-// Clear the memorised spell of the provided creature for the provided class, level and index. */
-// Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel(creature, class, level).
+/// @brief Clear the memorised spell of the creature for the class, level and index.
+/// @param creature The creature object.
+/// @param class The class id from classes.2da. (Not class index 0-2)
+/// @param level The spell level.
+/// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
 void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
 
-// Gets the maximum hit points for creature for level.
-int NWNX_Creature_GetMaxHitPointsByLevel(object creature, int level);
-
-// Sets the maximum hit points for creature for level to nValue.
-void NWNX_Creature_SetMaxHitPointsByLevel(object creature, int level, int value);
-
-// Set creature's movement rate.
-void NWNX_Creature_SetMovementRate(object creature, int rate);
-
-// Returns the creature's current movement rate factor (base = 1.0)
-float NWNX_Creature_GetMovementRateFactor(object creature);
-
-// Sets the creature's current movement rate factor (base = 1.0)
-void NWNX_Creature_SetMovementRateFactor(object creature, float rate);
-
-// Set creature's raw good/evil alignment value.
-void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value);
-
-// Set creature's raw law/chaos alignment value.
-void NWNX_Creature_SetAlignmentLawChaos(object creature, int value);
-
-// Gets one of creature's cleric domains (either 1 or 2).
-int NWNX_Creature_GetClericDomain(object creature, int index);
-
-// Sets one of creature's cleric domains (either 1 or 2).
-void NWNX_Creature_SetClericDomain(object creature, int index, int domain);
-
-// Gets whether or not creature has a specialist school of wizardry.
+/// @brief Gets whether or not creature has a specialist school of wizardry.
+/// @param creature The creature object.
+/// @return TRUE if the wizard specializes.
 int NWNX_Creature_GetWizardSpecialization(object creature);
 
-// Sets creature's wizard specialist school.
+/// @brief Sets creature's wizard specialist school.
+/// @param creature The creature object.
+/// @param school The wizard school constant.
 void NWNX_Creature_SetWizardSpecialization(object creature, int school);
 
-// Get the soundset index for creature.
-int NWNX_Creature_GetSoundset(object creature);
+/// @brief Gets the maximum hit points for creature for level.
+/// @param creature The creature object.
+/// @param level The level.
+/// @return The maximum hit points a creature can have for the class at the provided level.
+int NWNX_Creature_GetMaxHitPointsByLevel(object creature, int level);
 
-// Set the soundset index for creature.
-void NWNX_Creature_SetSoundset(object creature, int soundset);
+/// @brief Sets the maximum hit points for creature.
+/// @param creature The creature object.
+/// @param level The level.
+/// @param value The amount to set the max hit points.
+void NWNX_Creature_SetMaxHitPointsByLevel(object creature, int level, int value);
 
-// Set the base ranks in a skill for creature
-void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
+/// @brief Set creature's movement rate.
+/// @param creature The creature object.
+/// @param rate The movement rate.
+void NWNX_Creature_SetMovementRate(object creature, int rate);
 
-// Set the class ID in a particular position for a creature.
-// Position should be 0, 1, or 2.
-// ClassID should be a valid ID number in classes.2da and be between 0 and 255.
-void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
+/// @brief Returns the creature's current movement rate factor.
+/// @remark Base movement rate factor is 1.0.
+/// @param creature The creature object.
+/// @return The current movement rate factor.
+float NWNX_Creature_GetMovementRateFactor(object creature);
 
-// Set the level at the given position for a creature. A creature should already
-// have a class in that position.
-// Position should be 0, 1, or 2.
-void NWNX_Creature_SetLevelByPosition(object creature, int position, int level);
+/// @brief Sets the creature's current movement rate factor.
+/// @note Base movement rate factor is 1.0.
+/// @param creature The creature object.
+/// @param rate The rate to set.
+void NWNX_Creature_SetMovementRateFactor(object creature, float rate);
 
-// Set creature's base attack bonus (BAB)
-// Modifying the BAB will also affect the creature's attacks per round and its
-// eligability for feats, prestige classes, etc.
-// The BAB value should be between 0 and 254.
-// Setting BAB to 0 will cause the creature to revert to its original BAB based
-// on its classes and levels. A creature can never have an actual BAB of zero.
-// NOTE: The base game has a function SetBaseAttackBonus(), which actually sets
-//       the bonus attacks per round for a creature, not the BAB.
-void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
-
-// Gets the creatures current attacks per round (using equipped weapon)
-// bBaseAPR - If true, will return the base attacks per round, based on BAB and
-//            equipped weapons, regardless of overrides set by
-//            calls to SetBaseAttackBonus() builtin function.
-int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
-
-// Sets the creature gender
-void NWNX_Creature_SetGender(object creature, int gender);
-
-// Restore all creature feat uses
-void NWNX_Creature_RestoreFeats(object creature);
-
-// Restore all creature special ability uses
-void NWNX_Creature_RestoreSpecialAbilities(object creature);
-
-// Restore all creature spells per day for given level.
-// If level is -1, all spells are restored
-void NWNX_Creature_RestoreSpells(object creature, int level = -1);
-
-// Restore uses for all items carried by the creature
-void NWNX_Creature_RestoreItems(object creature);
-
-// Sets the creature size. Use CREATURE_SIZE_* constants
-void NWNX_Creature_SetSize(object creature, int size);
-
-// Gets the creature's remaining unspent skill points
-int NWNX_Creature_GetSkillPointsRemaining(object creature);
-
-// Sets the creature's remaining unspent skill points
-void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
-
-// Sets the creature's racial type
-void NWNX_Creature_SetRacialType(object creature, int racialtype);
-
-// Returns the creature's current movement type (NWNX_CREATURE_MOVEMENT_TYPE_*)
+/// @brief Returns the creature's current movement type
+/// @param creature The creature object.
+/// @return An NWNX_CREATURE_MOVEMENT_TYPE_* constant.
 int NWNX_Creature_GetMovementType(object creature);
 
-// Sets the maximum movement rate a creature can have while walking (not running)
-// This allows a creature with movement speed enhancemens to walk at a normal rate.
-// Setting the value to -1.0 will remove the cap.
-// Default value is 2000.0, which is the base human walk speed.
+/// @brief Sets the maximum movement rate a creature can have while walking (not running)
+/// @remark This allows a creature with movement speed enhancements to walk at a normal rate.
+/// @param creature The creature object.
+/// @param fWalkRate The walk rate to apply. Setting the value to -1.0 will remove the cap.
+/// Default value is 2000.0, which is the base human walk speed.
 void NWNX_Creature_SetWalkRateCap(object creature, float fWalkRate = 2000.0f);
 
-// Sets the creature's gold without sending a feedback message
+/// @brief Set creature's raw good/evil alignment value.
+/// @param creature The creature object.
+/// @param value The value to set.
+void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value);
+
+/// @brief Set creature's raw law/chaos alignment value.
+/// @param creature The creature object.
+/// @param value The value to set.
+void NWNX_Creature_SetAlignmentLawChaos(object creature, int value);
+
+/// @brief Gets one of creature's cleric domains.
+/// @param creature The creature object.
+/// @param index The first or second domain.
+int NWNX_Creature_GetClericDomain(object creature, int index);
+
+/// @brief Sets one of creature's cleric domains.
+/// @param creature The creature object.
+/// @param index The first or second domain.
+/// @param domain The domain constant to set.
+void NWNX_Creature_SetClericDomain(object creature, int index, int domain);
+
+/// @brief Get the soundset index for creature.
+/// @param creature The creature object.
+/// @return The soundset used by the creature.
+int NWNX_Creature_GetSoundset(object creature);
+
+/// @brief Set the soundset index for creature.
+/// @param creature The creature object.
+/// @param soundset The soundset index.
+void NWNX_Creature_SetSoundset(object creature, int soundset);
+
+/// @brief Set the base ranks in a skill for creature
+/// @param creature The creature object.
+/// @param skill The skill id.
+/// @param rank The value to set as the skill rank.
+void NWNX_Creature_SetSkillRank(object creature, int skill, int rank);
+
+/// @brief Set the class ID in a particular position for a creature.
+/// @param creature The creature object.
+/// @param position Should be 0, 1, or 2 depending on how many classes the creature
+/// has and which is to be modified.
+/// @param classID A valid ID number in classes.2da and between 0 and 255.
+void NWNX_Creature_SetClassByPosition(object creature, int position, int classID);
+
+/// @brief Set the level at the given position for a creature.
+/// @note A creature should already have a class in that position.
+/// @param creature The creature object.
+/// @param position Should be 0, 1, or 2 depending on how many classes the creature
+/// has and which is to be modified.
+/// @param level The level to set.
+void NWNX_Creature_SetLevelByPosition(object creature, int position, int level);
+
+/// @brief Set creature's base attack bonus (BAB).
+/// @note Modifying the BAB will also affect the creature's attacks per round and its
+/// eligibility for feats, prestige classes, etc.
+/// @param creature The creature object.
+/// @param bab The BAB value. Should be between 0 and 254. Setting BAB to 0 will cause the
+/// creature to revert to its original BAB based on its classes and levels. A creature can
+/// never have an actual BAB of zero.
+/// @remark The base game has a function SetBaseAttackBonus(), which actually sets
+/// the bonus attacks per round for a creature, not the BAB.
+void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
+
+/// @brief Gets the creatures current attacks per round (using equipped weapon).
+/// @param creature The creature object.
+/// @param bBaseAPR If TRUE, will return the base attacks per round, based on BAB and
+/// equipped weapons, regardless of overrides set by calls to SetBaseAttackBonus() builtin function.
+/// @return The attacks per round.
+int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
+
+/// @brief Sets the creature gender.
+/// @param creature The creature object.
+/// @param gender The GENDER_ constant.
+void NWNX_Creature_SetGender(object creature, int gender);
+
+/// @brief Restore all creature feat uses.
+/// @param creature The creature object.
+void NWNX_Creature_RestoreFeats(object creature);
+
+/// @brief Restore all creature special ability uses.
+/// @param creature The creature object.
+void NWNX_Creature_RestoreSpecialAbilities(object creature);
+
+/// @brief Restore all creature spells per day for given level.
+/// @param creature The creature object.
+/// @param level The level to restore. If -1, all spells are restored.
+void NWNX_Creature_RestoreSpells(object creature, int level = -1);
+
+/// @brief Restore uses for all items carried by the creature.
+/// @param creature The creature object.
+void NWNX_Creature_RestoreItems(object creature);
+
+/// @brief Sets the creature size.
+/// @param creature The creature object.
+/// @param size Use CREATURE_SIZE_* constants.
+void NWNX_Creature_SetSize(object creature, int size);
+
+/// @brief Gets the creature's remaining unspent skill points.
+/// @param creature The creature object.
+/// @return The remaining unspent skill points.
+int NWNX_Creature_GetSkillPointsRemaining(object creature);
+
+/// @brief Sets the creature's remaining unspent skill points.
+/// @param creature The creature object.
+/// @param skillpoints The value to set.
+void NWNX_Creature_SetSkillPointsRemaining(object creature, int skillpoints);
+
+/// @brief Sets the creature's racial type
+/// @param creature The creature object.
+/// @param racialtype The racial type to set.
+void NWNX_Creature_SetRacialType(object creature, int racialtype);
+
+/// @brief Sets the creature's gold without sending a feedback message
+/// @param creature The creature object.
+/// @param gold The amount of gold to set for their creature.
 void NWNX_Creature_SetGold(object creature, int gold);
 
-// Sets corpse decay time in milliseconds
+/// @brief Sets corpse decay time in milliseconds
+/// @param creature The creature object.
+/// @param nDecayTime The corpse decay time.
 void NWNX_Creature_SetCorpseDecayTime(object creature, int nDecayTime);
 
-// Returns the creature's base save and any modifiers set in the toolset
+/// @brief Gets the creature's base save.
+/// @param creature The creature object.
+/// @param which One of SAVING_THROW_FORT, SAVING_THROW_REFLEX or SAVING_THROW_WILL
+/// @return The base save value.
+/// @note This will include any modifiers set in the toolset.
 int NWNX_Creature_GetBaseSavingThrow(object creature, int which);
 
-// Sets the base saving throw of the creature
+/// @brief Sets the creature's base save.
+/// @param creature The creature object.
+/// @param which One of SAVING_THROW_FORT, SAVING_THROW_REFLEX or SAVING_THROW_WILL
+/// @param value The base save value.
 void NWNX_Creature_SetBaseSavingThrow(object creature, int which, int value);
 
-// Add count levels of class to the creature, bypassing all validation
-// This will not work on player characters
+/// @brief Add levels of class to the creature, bypassing all validation
+/// @param creature The creature object.
+/// @param class The class id.
+/// @param count The amount of levels of class to add.
+/// @note This will not work on player characters.
 void NWNX_Creature_LevelUp(object creature, int class, int count=1);
 
-// Remove last count levels from a creature
-// This will not work on player characters
+/// @brief Remove last levels from a creature.
+/// @param creature The creature object.
+/// @param count The amount of levels to decrement.
+/// @note This will not work on player characters.
 void NWNX_Creature_LevelDown(object creature, int count=1);
 
-// Sets the creature's challenge rating
+/// @brief Sets the creature's challenge rating
+/// @param creature The creature object.
+/// @param fCR The challenge rating.
 void NWNX_Creature_SetChallengeRating(object creature, float fCR);
 
-// Returns the creature's highest attack bonus based on its own stats
-// NOTE: AB vs. <Type> and +AB on Gauntlets are excluded
-//
-// int isMelee values:
-//   TRUE: Get Melee/Unarmed Attack Bonus
-//   FALSE: Get Ranged Attack Bonus
-//   -1: Get Attack Bonus depending on the weapon creature has equipped in its right hand
-//       Defaults to Melee Attack Bonus if weapon is invalid or no weapon
+/// @brief Returns the creature's highest attack bonus based on its own stats.
+/// @note AB vs. Type and +AB on Gauntlets are excluded
+/// @param creature The creature object.
+/// @param isMelee
+///   * TRUE: Get Melee/Unarmed Attack Bonus
+///   * FALSE: Get Ranged Attack Bonus
+///   * -1: Get Attack Bonus depending on the weapon creature has equipped in its right hand
+///       Defaults to Melee Attack Bonus if weapon is invalid or no weapon
+/// @param isTouchAttack If the attack was a touch attack.
+/// @param isOffhand If the attack was with the offhand.
+/// @param includeBaseAttackBonus Should the result include the base attack bonus.
+/// @return The highest attack bonus.
 int NWNX_Creature_GetAttackBonus(object creature, int isMelee = -1, int isTouchAttack = FALSE, int isOffhand = FALSE, int includeBaseAttackBonus = TRUE);
 
-// Get highest level version of feat posessed by creature (e.g. for barbarian rage)
+/// @brief Get highest level version of feat possessed by creature.
+/// @remark For feats that increment in power, for example, barbarian rage.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @return The highest level version of the feat.
 int NWNX_Creature_GetHighestLevelOfFeat(object creature, int feat);
 
-// Get feat remaining uses of a creature
+/// @brief Get feat remaining uses.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @return The amount of remaining uses.
 int NWNX_Creature_GetFeatRemainingUses(object creature, int feat);
 
-// Get feat total uses of a creature
+/// @brief Get feat total uses.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @return The total uses.
 int NWNX_Creature_GetFeatTotalUses(object creature, int feat);
 
-// Set feat remaining uses of a creature
+/// @brief Set feat remaining uses.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @param uses The amount of remaining uses.
 void NWNX_Creature_SetFeatRemainingUses(object creature, int feat, int uses);
 
-// Get total effect bonus
-int NWNX_Creature_GetTotalEffectBonus(object creature, int bonusType=NWNX_CREATURE_BONUS_TYPE_ATTACK, object target=OBJECT_INVALID, int isElemental=0,
-    int isForceMax=0, int savetype=-1, int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE);
+/// @brief Get total effect bonus
+/// @remark This exposes the actual bonus value beyond a player's base scores to attack, damage bonus, saves,
+/// skills, ability scores, and touch attack provided by spells, equipment, potions etc.
+/// @param creature The creature object.
+/// @param bonusType A @ref bonus_types "Bonus Type"
+/// @param target A target object. Used to calculate bonuses versus specific races, alignments, etc.
+/// @param isElemental If a damage bonus includes elemental damage.
+/// @param isForceMax If the bonus should return the maximum possible.
+/// @param savetype A SAVING_THROW_* constant.
+/// @param saveSpecificType A SAVING_THROW_TYPE_* constant.
+/// @param skill A skill id.
+/// @param abilityScore An ABILITY_* constant.
+/// @param isOffhand Whether the attack is an offhand attack.
+/// @return The bonus value.
+int NWNX_Creature_GetTotalEffectBonus(object creature, int bonusType=NWNX_CREATURE_BONUS_TYPE_ATTACK,
+        object target=OBJECT_INVALID, int isElemental=0, int isForceMax=0, int savetype=-1,
+        int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE);
 
-// Set the original first or last name of creature
-//
-// For PCs this will persist to the .bic file if saved. Requires a relog to update.
+/// @brief Set the original first or last name of creature
+/// @param creature The creature object.
+/// @param name The name to give the creature.
+/// @param isLastName TRUE to change their last name, FALSE for first.
+/// @note For PCs this will persist to the .bic file if saved. Requires a relog to update.
 void NWNX_Creature_SetOriginalName(object creature, string name, int isLastName);
 
-// Get the original first or last name of creature
+/// @brief Get the original first or last name of creature
+/// @param creature The creature object.
+/// @param isLastName TRUE to get last name, FALSE for first name.
+/// @return The original first or last name of the creature.
 string NWNX_Creature_GetOriginalName(object creature, int isLastName);
 
-// Set creature's spell resistance
+/// @brief Set creature's spell resistance
+/// @param creature The creature object.
+/// @param sr The spell resistance.
+/// @warning This setting will be overwritten by effects and once those effects fade the old setting (typically 0) will be set.
 void NWNX_Creature_SetSpellResistance(object creature, int sr);
 
-// Get creature's animal companion creature type
-// type = ANIMAL_COMPANION_CREATURE_TYPE_*
+/// @brief Set creature's animal companion creature type
+/// @param creature The master creature object.
+/// @param type The type from ANIMAL_COMPANION_CREATURE_TYPE_*.
 void NWNX_Creature_SetAnimalCompanionCreatureType(object creature, int type);
 
-// Set creature's familiar creature type
-// type = FAMILIAR_CREATURE_TYPE_*
+/// @brief Set creature's familiar creature type
+/// @param creature The master creature object.
+/// @param type The type from FAMILIAR_CREATURE_TYPE_*.
 void NWNX_Creature_SetFamiliarCreatureType(object creature, int type);
 
-// Set creature's animal companion's name
+/// @brief Set creature's animal companion's name
+/// @param creature The master creature object.
+/// @param name The name to give their animal companion.
 void NWNX_Creature_SetAnimalCompanionName(object creature, string name);
 
-// Set creature's familiar's name
+/// @brief Set creature's familiar's name
+/// @param creature The master creature object.
+/// @param name The name to give their familiar.
 void NWNX_Creature_SetFamiliarName(object creature, string name);
 
+/// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
 {

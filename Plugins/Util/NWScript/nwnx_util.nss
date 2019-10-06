@@ -1,7 +1,16 @@
+/// @defgroup util Util
+/// @brief Provides various utility functions that don't have a better home
+/// @{
+/// @file nwnx_util.nss
 #include "nwnx"
 
-const string NWNX_Util = "NWNX_Util";
+const string NWNX_Util = "NWNX_Util"; ///< @private
 
+/// @name Resref Types
+/// @anchor resref_types
+/// Constants for the various types of resrefs.
+///
+/// @{
 const int NWNX_UTIL_RESREF_TYPE_NSS       = 2009;
 const int NWNX_UTIL_RESREF_TYPE_NCS       = 2010;
 const int NWNX_UTIL_RESREF_TYPE_AREA_ARE  = 2012;
@@ -17,59 +26,106 @@ const int NWNX_UTIL_RESREF_TYPE_DOOR      = 2042;
 const int NWNX_UTIL_RESREF_TYPE_PLACEABLE = 2044;
 const int NWNX_UTIL_RESREF_TYPE_STORE     = 2051;
 const int NWNX_UTIL_RESREF_TYPE_WAYPOINT  = 2058;
+///@}
 
-// Returns the name of the currently executing script.
-// If depth is >0, it will return the name of the script that called this one via ExecuteScript()
+/// @brief Gets the name of the currently executing script.
+/// @note If depth is > 0, it will return the name of the script that called this one via ExecuteScript().
+/// @param depth to seek the executing script.
+/// @return The name of the currently executing script.
 string NWNX_Util_GetCurrentScriptName(int depth = 0);
-// Returns a string that contains all characters at their position (e.g. 'A' at 65).
-// The character at index 0 is a space.
+
+/// @brief Gets a string that contains the ascii table.
+/// @note The character at index 0 is a space.
+/// @return A string that contains all characters at their position (e.g. 'A' at 65).
 string NWNX_Util_GetAsciiTableString();
-// Returns an integer hash of a string
+
+/// @brief Gets an integer hash of a string.
+/// @param str The string to hash.
+/// @return The hashed string as an integer.
 int NWNX_Util_Hash(string str);
-// Gets the value of customTokenNumber
+
+/// @brief Gets the value of customTokenNumber.
+/// @param customTokenNumber The token number to query.
+/// @return The string representation of the token value.
 string NWNX_Util_GetCustomToken(int customTokenNumber);
-// Convert an effect type to an IP type
+
+/// @brief Convert an effect type to an itemproperty type.
+/// @param e The effect to convert to an itemproperty.
+/// @return The converted itemproperty.
 itemproperty NWNX_Util_EffectToItemProperty(effect e);
-// Convert an IP type to an effect type
+
+///
+/// @brief Convert an itemproperty type to an effect type.
+/// @param ip The itemproperty to convert to an effect.
+/// @return The converted effect.
 effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
-// Generate a v4 UUID.
+
+/// @brief Generates a v4 UUID.
+/// @return A UUID string.
 string NWNX_Util_GenerateUUID();
-// Strip any color codes from a string
+
+/// @brief Strip any color codes from a string.
+/// @param str The string to strip of color.
+/// @return The new string without any color codes.
 string NWNX_Util_StripColors(string str);
-// Is a valid resref
+
+/// @brief Determines if the supplied resref exists.
+/// @param resref The resref to check.
+/// @param type The @ref resref_types "Resref Type".
+/// @return TRUE/FALSE
 int NWNX_Util_IsValidResRef(string resref, int type = NWNX_UTIL_RESREF_TYPE_CREATURE);
-// Retrieve an environment variable
+
+/// @brief Retrieves an environment variable.
+/// @param sVarname The environment variable to query.
+/// @return The value of the environment variable.
 string NWNX_Util_GetEnvironmentVariable(string sVarname);
-// Gets the module real life minutes per in game hour
+
+/// @brief Gets the module real life minutes per in game hour.
+/// @return The minutes per hour.
 int NWNX_Util_GetMinutesPerHour();
-// Set module real life minutes per in game hour
+
+/// @brief Set module real life minutes per in game hour.
+/// @param minutes The minutes per hour.
 void NWNX_Util_SetMinutesPerHour(int minutes);
-// Encodes a string for usage in a URL
+
+/// @anchor util_encode_url
+/// @brief Encodes a string for usage in a URL.
+/// @param str The string to encode for a URL.
+/// @return The url encoded string.
 string NWNX_Util_EncodeStringForURL(string str);
-// Gets the row count for a 2da
+
+/// @anchor twoda_row_count
+/// @brief Gets the row count for a 2da.
+/// @param str The 2da to check (do not include the .2da).
+/// @return The amount of rows in the 2da.
 int NWNX_Util_Get2DARowCount(string str);
-// Get the first resref of nType
-// - nType: NWNX_UTIL_RESREF_TYPE_*
-// - sRegexFilter: Lets you filter out resrefs using a regexfilter
-//                 For example: "nwnx_.*" gets you all scripts prefixed with nwnx_
-//                 when using the NSS resref type.
-// - bModuleResourcesOnly: If TRUE only custom resources will be returned
-//
-// Returns "" if no resref is found
+
+/// @brief Get the first resref of nType.
+/// @param nType A @ref resref_types "Resref Type".
+/// @param sRegexFilter Lets you filter out resrefs using a regexfilter.
+/// For example: **nwnx_.\*** gets you all scripts prefixed with nwnx_
+/// when using the NSS resref type.
+/// @param bModuleResourcesOnly If TRUE only custom resources will be returned.
+/// @return The first resref found or "" if none is found.
 string NWNX_Util_GetFirstResRef(int nType, string sRegexFilter = "", int bModuleResourcesOnly = TRUE);
-// Get the next resref
-// Returns "" if no resref is found
+
+/// @brief Get the next resref.
+/// @return The next resref found or "" if none is found.
 string NWNX_Util_GetNextResRef();
-// Get the ticks per second of the server
-// Useful to dynamically detect lag and adjust behavior accordingly
+
+/// @brief Get the ticks per second of the server.
+/// @remark Useful to dynamically detect lag and adjust behavior accordingly.
+/// @return The ticks per second.
 int NWNX_Util_GetServerTicksPerSecond();
-// Get the nNthLast created object of nObjectType
-// - nObjectType: Does not take the NWScript OBJECT_TYPE_* constants
-//                Use NWNX_Consts_TranslateNWScriptObjectType() to get their
-//                NWNX equivalent.
-// * Return value: The last created object. On error, this returns OBJECT_INVALID.
+
+/// @brief Get the last created object.
+/// @param nObjectType Does not take the NWScript OBJECT_TYPE_* constants.
+/// Use @ref consts_translate_obj_type "NWNX_Consts_TranslateNWScriptObjectType()" to get their NWNX equivalent.
+/// @param nNthLast The nth last object created.
+/// @return The last created object. On error, this returns OBJECT_INVALID.
 object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
 
+/// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
 {

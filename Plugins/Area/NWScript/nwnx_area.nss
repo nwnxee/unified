@@ -1,131 +1,196 @@
+/// @defgroup area Area
+/// @brief Functions exposing additional area properties as well as creating transitions.
+/// @{
+/// @file nwnx_area.nss
 #include "nwnx"
 
-const string NWNX_Area = "NWNX_Area";
+const string NWNX_Area = "NWNX_Area"; ///< @private
 
+/// @name Area PVP Settings
+/// @anchor area_pvp
+/// @{
 const int NWNX_AREA_PVP_SETTING_NO_PVP              = 0;
 const int NWNX_AREA_PVP_SETTING_PARTY_PVP           = 1;
 const int NWNX_AREA_PVP_SETTING_FULL_PVP            = 2;
 const int NWNX_AREA_PVP_SETTING_SERVER_DEFAULT      = 3;
+/// @}
 
+/// @name Area Weather Settings
+/// @anchor area_weather
+/// @{
 const int NWNX_AREA_WEATHER_CHANCE_RAIN             = 0;
 const int NWNX_AREA_WEATHER_CHANCE_SNOW             = 1;
 const int NWNX_AREA_WEATHER_CHANCE_LIGHTNING        = 2;
+/// @}
 
+/// @name Area Day Night Cycle Settings
+/// @anchor area_daynight
+/// @{
 const int NWNX_AREA_DAYNIGHTCYCLE_CYCLE_DAY_NIGHT   = 0;
 const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_BRIGHT     = 1;
 const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK       = 2;
+/// @}
 
+/// @name Area Sun/Moon Color Settings
+/// @anchor area_color
+/// @{
 const int NWNX_AREA_COLOR_TYPE_MOON_AMBIENT         = 0;
 const int NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE         = 1;
 const int NWNX_AREA_COLOR_TYPE_SUN_AMBIENT          = 2;
 const int NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE          = 3;
+/// @}
 
-// Gets the number of players in area
+/// @brief Gets the number of players in area.
+/// @param area The area object.
+/// @return The player count for the area.
 int NWNX_Area_GetNumberOfPlayersInArea(object area);
 
-// Gets the creature that last entered area
+/// @brief Gets the creature that last entered area.
+/// @param area The area object.
+/// @return The most recent creature to enter the area.
 object NWNX_Area_GetLastEntered(object area);
 
-// Gets the creature that last left area
+/// @brief Gets the creature that last left area
+/// @param area The area object.
 object NWNX_Area_GetLastLeft(object area);
 
-// Get the PVP setting of area
-// Returns NWNX_AREA_PVP_SETTING_*
+/// @brief Get the PVP setting of area
+/// @param area The area object.
+/// @return Returns the @ref area_pvp "PVP Setting" for the area.
 int NWNX_Area_GetPVPSetting(object area);
 
-// Set the PVP setting of area
-// pvpSetting = NWNX_AREA_PVP_SETTING_*
+/// @brief Set the PVP setting of area
+/// @param area The area object.
+/// @param pvpSetting One of @ref area_pvp the "PVP Settings".
 void NWNX_Area_SetPVPSetting(object area, int pvpSetting);
 
-// Get the spot modifier of area
+/// @brief Get the spot modifier of area
+/// @param area The area object.
+/// @return The value of the Spot skill modifier for this area.
 int NWNX_Area_GetAreaSpotModifier(object area);
 
-// Set the spot modifier of area
+/// @brief Set the spot modifier of area
+/// @param area The area object.
+/// @param spotModifier The modifier to the Spot skill for this area.
+/// @sa NWNX_SkillRanks_SetAreaModifier() to change any skill modifier.
 void NWNX_Area_SetAreaSpotModifier(object area, int spotModifier);
 
-// Get the listen modifer of area
+/// @brief Get the listen modifer of area
+/// @param area The area object.
+/// @return The value of the Listen skill modifier for this area.
 int NWNX_Area_GetAreaListenModifier(object area);
 
-// Set the listen modifier of area
+/// @brief Set the listen modifier of area
+/// @param area The area object.
+/// @param listenModifier The modifier to the Listen skill for this area.
+/// @sa NWNX_SkillRanks_SetAreaModifier() to change any skill modifier.
 void NWNX_Area_SetAreaListenModifier(object area, int listenModifier);
 
-// Returns TRUE if resting is not allowed in area
+/// @brief Checks the No Resting area flag
+/// @param area The area object.
+/// @return TRUE if resting is not allowed in area.
 int NWNX_Area_GetNoRestingAllowed(object area);
 
-// Set whether resting is allowed in area
-// TRUE: Resting not allowed
-// FALSE: Resting allowed
+/// @brief Set whether to disable resting in the area.
+/// @param area The area object.
+/// @param bNoRestingAllowed TRUE to disable resting in the area.
 void NWNX_Area_SetNoRestingAllowed(object area, int bNoRestingAllowed);
 
-// Get the wind power in area
+/// @brief Get the wind power in area
+/// @param area The area object.
+/// @return The wind power for the area. (0-2)
 int NWNX_Area_GetWindPower(object area);
 
-// Set the wind power in area
-// windPower = 0-2
+/// @brief Set the wind power in area
+/// @param area The area object.
+/// @param windPower Set to 0, 1 or 2.
 void NWNX_Area_SetWindPower(object area, int windPower);
 
-// Get the weather chance of type in area
-// type = NWNX_AREA_WEATHER_CHANCE_*
+/// @brief Get the weather chance of type in area
+/// @param type A @ref area_weather "Weather Setting".
+/// @param area The area object.
+/// @return The percentage chance for the weather type. (0-100)
 int NWNX_Area_GetWeatherChance(object area, int type);
 
-// Set the weather chance of type in area
-// type = NWNX_AREA_WEATHER_CHANCE_*
-// chance = 0-100
+/// @brief Set the weather chance of type in area
+/// @param area The area object.
+/// @param type A @ref area_weather "Weather Setting".
+/// @param chance The chance this weather event occurs.
 void NWNX_Area_SetWeatherChance(object area, int type, int chance);
 
-// Get the fog clip distance in area
+/// @brief Get the fog clip distance in area
+/// @param area The area object.
+/// @return The fog clip distance.
 float NWNX_Area_GetFogClipDistance(object area);
 
-// Set the fog clip distance in area
+/// @brief Set the fog clip distance in area
+/// @param area The area object.
+/// @param distance The new fog clip distance.
 void NWNX_Area_SetFogClipDistance(object area, float distance);
 
-// Get the shadow opacity of area
+/// @brief Get the shadow opacity of area
+/// @param area The area object.
+/// @return The shadow opacity for the area. (0-100)
 int NWNX_Area_GetShadowOpacity(object area);
 
-// Set the shadow opacity of area
-// shadowOpacity = 0-100
+/// @brief Set the shadow opacity of area
+/// @param area The area object.
+/// @param shadowOpacity The shadow opacity to set for the area (0-100).
 void NWNX_Area_SetShadowOpacity(object area, int shadowOpacity);
 
-// Get the day/night cycle of area
-// Returns NWNX_AREA_DAYNIGHTCYCLE_*
+/// @brief Get the day/night cycle of area
+/// @param area The area object.
+/// @return The @ref area_daynight "Day Night Cycle Setting".
 int NWNX_Area_GetDayNightCycle(object area);
 
-// Set the day/night cycle of area
-// type = NWNX_AREA_DAYNIGHTCYCLE_*
+/// @brief Set the day/night cycle of area
+/// @param area The area object.
+/// @param type = A @ref area_daynight "Day Night Cycle Setting".
 void NWNX_Area_SetDayNightCycle(object area, int type);
 
-// Get the Sun/Moon Ambient/Diffuse colors of area
-// type = NWNX_AREA_COLOR_TYPE_*
-//
-// Returns FOG_COLOR_* or a custom value, -1 on error
+/// @brief Get the Sun/Moon Ambient/Diffuse colors of area
+/// @param area The area object.
+/// @param type = A @ref area_color "Sun/Moon Color Setting".
+/// @return A FOG_COLOR_* or a custom value, -1 on error.
 int NWNX_Area_GetSunMoonColors(object area, int type);
 
-// Set the Sun/Moon Ambient/Diffuse colors of area
+/// @brief Set the Sun/Moon Ambient/Diffuse colors of area
 // type = NWNX_AREA_COLOR_TYPE_*
-// color = FOG_COLOR_*
-//
-// The color can also be represented as a hex RGB number if specific color shades are desired.
-// The format of a hex specified color would be 0xFFEEDD where
-// FF would represent the amount of red in the color
-// EE would represent the amount of green in the color
-// DD would represent the amount of blue in the color.
+/// @param area The area object.
+/// @param type = A @ref area_color "Sun/Moon Color Setting".
+/// @param color = A FOG_COLOR_*.
+/// @note The color can also be represented as a hex RGB number if specific color shades are desired.
+/// The format of a hex specified color would be 0xFFEEDD where
+///  * FF would represent the amount of red in the color
+///  * EE would represent the amount of green in the color
+///  * DD would represent the amount of blue in the color.
 void NWNX_Area_SetSunMoonColors(object area, int type, int color);
 
-// Create and returns a transition (square shaped of specified size) at a location
-// Valid object types for the target are DOOR or WAYPOINT.
-// If a tag is specified the returning object will have that tag
+/// @brief Create and returns a transition (square shaped of specified size) at a location.
+/// @param area The area object.
+/// @param target A door or waypoint object.
+/// @param x,y,z The position to create the transition.
+/// @param size The size of the square.
+/// @param tag If specified, the returning object will have this tag.
+/// @sa NWNX_Object_SetTriggerGeometry() if you wish to draw the transition as something other than a square.
 object NWNX_Area_CreateTransition(object area, object target, float x, float y, float z, float size = 2.0f, string tag="");
 
-// Get the state of a tile animation loop
-// nAnimLoop = 1-3
+/// @brief Get the state of a tile animation loop
+/// @param oArea The area object.
+/// @param fTileX, fTileY The coordinates of the tile.
+/// @param nAnimLoop The loop to check. (1-3)
+/// @return TRUE if the loop is enabled.
 int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop);
 
-// Set the state of a tile animation loop
-// nAnimLoop = 1-3
-//
-// NOTE: Requires clients to re-enter the area for it to take effect
+/// @brief Set the state of a tile animation loop
+/// @param oArea The area object.
+/// @param fTileX, fTileY The coordinates of the tile.
+/// @param nAnimLoop The loop to set (1-3).
+/// @param bEnabled TRUE or FALSE.
+/// @note Requires clients to re-enter the area for it to take effect
 void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
 
+/// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
 {

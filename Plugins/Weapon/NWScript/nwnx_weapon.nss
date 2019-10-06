@@ -1,75 +1,116 @@
+/// @defgroup weapon Weapon
+/// @brief Functions exposing additional weapon properties.
+/// @{
+/// @file nwnx_weapon.nss
 #include "nwnx"
 
-const string NWNX_Weapon = "NWNX_Weapon";
+const string NWNX_Weapon = "NWNX_Weapon"; ///< @private
 
-// Otpions constants to be used with NWNX_Weapon_SetOption function
-const int NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS = 0; // Greater Focus AB bonus
-const int NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS = 1; // Greater Spec. DAM bonus
+/// @name Weapons Options
+/// @anchor wpn_opts
+///
+/// Options constants to be used with NWNX_Weapon_SetOption function.
+/// @{
+const int NWNX_WEAPON_OPT_GRTFOCUS_AB_BONUS = 0; ///< Greater Focus Attack Bonus
+const int NWNX_WEAPON_OPT_GRTSPEC_DAM_BONUS = 1; ///< Greater Specialization Damage Bonus
+///@}
 
 // Get Event Data Constants
-const int NWNX_WEAPON_GETDATA_DC = 0; // Get Devastating Critical Data
+const int NWNX_WEAPON_GETDATA_DC = 0; ///< Get Devastating Critical Data
 
 // Set Event Data Constants
-const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0; // Set Devastating Critical Bypass
+const int NWNX_WEAPON_SETDATA_DC_BYPASS = 0; ///< Set Devastating Critical Bypass
 
-struct NWNX_Weapon_DevastatingCriticalEvent_Data // Devastating critical event data
+/// Devastating critical event data
+struct NWNX_Weapon_DevastatingCriticalEvent_Data
 {
-    object oWeapon;
-    object oTarget;
-    int nDamage;
+    object oWeapon; ///< The weapon used to cause the event.
+    object oTarget; ///< The target hit with a devastating critical.
+    int nDamage; ///< The damage points delivered.
 };
 
-// Set nFeat as weapon focus feat for nBaseItem
+/// @brief Set nFeat as weapon focus feat for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat);
 
-// Set required creature size for weapon nBaseItem to be finessable
+/// @brief Set required creature size for a weapon base item to be finessable.
+/// @param nBaseItem The base item id.
+/// @param nSize The creature size minimum to consider this weapon finessable.
 void NWNX_Weapon_SetWeaponFinesseSize(int nBaseItem, int nSize);
 
-// Set weapon nBaseItem to be considered as unarmed for weapon finesse feat
+/// @brief Set weapon base item to be considered as unarmed for weapon finesse feat.
+/// @param nBaseItem The base item id.
 void NWNX_Weapon_SetWeaponUnarmed(int nBaseItem);
 
-// Set nFeat as weapon improved critical feat for nBaseItem
+/// @brief Set a feat as weapon improved critical for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetWeaponImprovedCriticalFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as weapon specialization feat for nBaseItem
+/// @brief Set a feat as weapon specialization for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetWeaponSpecializationFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as epic weapon focus feat for nBaseItem
+/// @brief Set a feat as epic weapon focus for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetEpicWeaponFocusFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as epic weapon specialization feat for nBaseItem
+/// @brief Set a feat as epic weapon specialization for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetEpicWeaponSpecializationFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as epic weapon overwhelming critical feat for nBaseItem
+/// @brief Set a feat as epic weapon overwhelming critical for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetEpicWeaponOverwhelmingCriticalFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as epic weapon devastating critical feat for nBaseItem
+/// @brief Set a feat as epic weapon devastating critical for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as weapon of choice feat for nBaseItem
+/// @brief Set a feat as weapon of choice for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetWeaponOfChoiceFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as greater weapon specialization feat for nBaseItem
+/// @brief Set a feat as greater weapon specialization for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetGreaterWeaponSpecializationFeat(int nBaseItem, int nFeat);
 
-// Set nFeat as greater weapon focus feat for nBaseItem
+/// @brief Set a feat as greater weapon focus for a base item.
+/// @param nBaseItem The base item id.
+/// @param nFeat The feat to set.
 void NWNX_Weapon_SetGreaterWeaponFocusFeat(int nBaseItem, int nFeat);
 
-// Set nBaseItem as monk weapon
+/// @brief Set base item as monk weapon.
+/// @param nBaseItem The base item id.
 void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem);
 
-// Set plugin options
+/// @brief Set plugin options.
+/// @param nOption The option to change from @ref wpn_opts "Weapon Options".
+/// @param nVal The new value of the option.
 void NWNX_Weapon_SetOption(int nOption, int nVal);
 
-// Set Devastating Critical Event Script
+/// @brief Set Devastating Critical Event Script.
+/// @param sScript The script to call when a Devastating Critical occurs.
 void NWNX_Weapon_SetDevastatingCriticalEventScript(string sScript);
 
-// Get Devastating Critical Event Data (to use only on Devastating Critical Event Script)
-struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriticallEventData();
+/// @brief Get Devastating Critical Event Data.
+/// @note This is only for use with the Devastating Critical Event Script.
+/// @return An NWNX_Weapon_DevastatingCriticalEvent_Data struct.
+struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriticalEventData();
 
-// Bypass Devastating Crtical (to use only on Devastating Critical Event Script)
+/// @brief Bypass Devastating Critical.
+/// @note This is only for use with the Devastating Critical Event Script.
 void NWNX_Weapon_BypassDevastatingCritical();
 
+/// @}
 
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
 {
@@ -242,4 +283,3 @@ struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriti
 
     return data;
 }
-
