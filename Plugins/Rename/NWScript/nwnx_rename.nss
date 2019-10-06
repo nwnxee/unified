@@ -22,7 +22,7 @@ const int NWNX_RENAME_PLAYERNAME_ANONYMOUS = 3; ///< Use the value of the NWNX_R
 /// @param sSuffix The suffix for their character name.
 /// @param iPlayerNameState How to change the Community Name, use @ref rename_comm_name_override_type "Community Name Override Type".
 /// @param oObserver If specified, the character name will appear to that specific observer as set, this overrides a global setting.
-/// @warning Will not persist through saving, resets or logout.
+/// @note Will not persist through saving, resets or logout.
 void NWNX_Rename_SetPCNameOverride(object oTarget, string sNewName, string sPrefix = "" , string sSuffix = "" ,
                                    int iPlayerNameState = NWNX_RENAME_PLAYERNAME_DEFAULT, object oObserver = OBJECT_INVALID);
 

@@ -12,7 +12,7 @@ jobs:
           at: ~/nwnxee
       - checkout
       - run: CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
-      - run: make all
+      - run: make all -j2
       - run: Scripts/packageNWScript.sh
       - run: Scripts/packageJarFile.sh
       - run: zip Binaries/NWNX-EE.zip Binaries/NWNX_*.so Binaries/*.jar
@@ -70,6 +70,7 @@ jobs:
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dotfiles --message "[skip ci] Updates" --dist Documentation/light
+
 workflows:
   version: 2
   build_nwnxee:
@@ -79,13 +80,12 @@ workflows:
             tags:
               only: /.*/
       - docs-build:
-          requires:
-            - build
           filters:
             tags:
               only: /.*/
       - docs-deploy:
           requires:
+            - build
             - docs-build
       - deploy:
           requires:
