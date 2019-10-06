@@ -117,4 +117,3 @@ endforeach(plugin)
 foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
     add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
 endforeach(addplugin)
-
