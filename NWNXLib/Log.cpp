@@ -5,8 +5,10 @@
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 
+#include <string>
 #include <cstring>
-#include <unordered_map>
+#include <vector>
+#include <algorithm>
 
 namespace NWNXLib {
 
@@ -72,21 +74,32 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     }
 }
 
-// Unfortunately this needs to be backed by an std::string rather than a const char* because the C++ standard library
-// doesn't provide a hashing function for a const char* and I'm too lazy to write or copy/paste one.
-// Small perf hit when logging.
-static std::unordered_map<std::string, Channel::Enum> s_LogLevelMap;
+static std::vector<std::pair<std::string, Channel::Enum>> s_LogLevelMap;
 
 Channel::Enum GetLogLevel(const char* plugin)
 {
     // TODO: Is this thread safe? I think so if we're just looking up but I don't know.
-    auto entry = s_LogLevelMap.find(plugin);
+    auto entry = std::find_if(std::begin(s_LogLevelMap), std::end(s_LogLevelMap),
+        [plugin](const auto& pair) { return pair.first == plugin; });
     return entry == std::end(s_LogLevelMap) ? Channel::SEV_NOTICE : entry->second;
 }
 
 void SetLogLevel(const char* plugin, Channel::Enum logLevel)
 {
-    s_LogLevelMap[plugin] = logLevel;
+    // No point in adding plugin to log level map if it's requesting the default log level.
+    if (logLevel != Channel::SEV_NOTICE) { return; }
+
+    auto entry = std::find_if(std::begin(s_LogLevelMap), std::end(s_LogLevelMap),
+        [plugin](const auto& pair) { return pair.first == plugin; });
+    
+    if (entry == std::end(s_LogLevelMap)) 
+    {
+        s_LogLevelMap.emplace_back(plugin, logLevel);
+    }
+    else 
+    {
+        entry->second = logLevel;
+    }    
 }
 
 }
