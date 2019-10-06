@@ -200,7 +200,7 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
             targetCreature->m_pStats->m_lsLastName = g_plugin->ContainString("");
         }
         targetCreature->m_sDisplayName = displayName;
-        LOG_DEBUG("Observer %x will see %x as %s due to personal override", observerOid, targetOid, overrideName);
+        LOG_DEBUG("Observer %x will see %x as %s due to personal override", observerOid, targetOid, overrideName.m_sString);
     }
     else if (g_plugin->m_RenamePlayerNames[targetOid].count(Constants::OBJECT_INVALID))
     {
@@ -212,7 +212,7 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::Obje
             targetCreature->m_pStats->m_lsLastName = g_plugin->ContainString("");
         }
         targetCreature->m_sDisplayName = displayName;
-        LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName);
+        LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.m_sString);
     }
 }
 

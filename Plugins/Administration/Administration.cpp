@@ -99,7 +99,7 @@ Events::ArgumentStack Administration::OnGetPlayerPassword(Events::ArgumentStack&
 Events::ArgumentStack Administration::OnSetPlayerPassword(Events::ArgumentStack&& args)
 {
     const auto newPass = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Set player password to '%s'.", newPass.c_str());
+    LOG_NOTICE("Set player password to '%s'.", newPass);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword(newPass.c_str());
     return Events::ArgumentStack();
 }
@@ -123,7 +123,7 @@ Events::ArgumentStack Administration::OnGetDMPassword(Events::ArgumentStack&&)
 Events::ArgumentStack Administration::OnSetDMPassword(Events::ArgumentStack&& args)
 {
     const auto newPass = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Set DM password to '%s'.", newPass.c_str());
+    LOG_NOTICE("Set DM password to '%s'.", newPass);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetGameMasterPassword(newPass.c_str());
     return Events::ArgumentStack();
 }
@@ -167,11 +167,11 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
 
     std::string filename = servervault + playerdir + "/" + bicname + ".bic";
 
-    LOG_NOTICE("Deleting %s %s", filename.c_str(), bPreserveBackup ? "(backed up)" : "(no backup)");
+    LOG_NOTICE("Deleting %s %s", filename, bPreserveBackup ? "(backed up)" : "(no backup)");
 
     if (!Platform::FileSystem::FileExists(filename))
     {
-        LOG_ERROR("File %s not found.", filename.c_str());
+        LOG_ERROR("File %s not found.", filename);
         return Events::ArgumentStack();
     }
 
@@ -201,7 +201,7 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
 Events::ArgumentStack Administration::OnAddBannedIP(Events::ArgumentStack&& args)
 {
     const auto ip = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Banning IP %s", ip.c_str());
+    LOG_NOTICE("Banning IP %s", ip);
     Globals::AppManager()->m_pServerExoApp->AddIPToBannedList(ip.c_str());
     return Events::ArgumentStack();
 }
@@ -209,7 +209,7 @@ Events::ArgumentStack Administration::OnAddBannedIP(Events::ArgumentStack&& args
 Events::ArgumentStack Administration::OnRemoveBannedIP(Events::ArgumentStack&& args)
 {
     const auto ip = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Unbanning IP %s", ip.c_str());
+    LOG_NOTICE("Unbanning IP %s", ip);
     Globals::AppManager()->m_pServerExoApp->RemoveIPFromBannedList(ip.c_str());
     return Events::ArgumentStack();
 }
@@ -217,7 +217,7 @@ Events::ArgumentStack Administration::OnRemoveBannedIP(Events::ArgumentStack&& a
 Events::ArgumentStack Administration::OnAddBannedCDKey(Events::ArgumentStack&& args)
 {
     const auto key = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Banning CDKey %s", key.c_str());
+    LOG_NOTICE("Banning CDKey %s", key);
     Globals::AppManager()->m_pServerExoApp->AddCDKeyToBannedList(key.c_str());
     return Events::ArgumentStack();
 }
@@ -225,7 +225,7 @@ Events::ArgumentStack Administration::OnAddBannedCDKey(Events::ArgumentStack&& a
 Events::ArgumentStack Administration::OnRemoveBannedCDKey(Events::ArgumentStack&& args)
 {
     const auto key = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Unbanning CDKey %s", key.c_str());
+    LOG_NOTICE("Unbanning CDKey %s", key);
     Globals::AppManager()->m_pServerExoApp->RemoveCDKeyFromBannedList(key.c_str());
     return Events::ArgumentStack();
 }
@@ -233,7 +233,7 @@ Events::ArgumentStack Administration::OnRemoveBannedCDKey(Events::ArgumentStack&
 Events::ArgumentStack Administration::OnAddBannedPlayerName(Events::ArgumentStack&& args)
 {
     const auto playername = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Banning Player name %s", playername.c_str());
+    LOG_NOTICE("Banning Player name %s", playername);
     Globals::AppManager()->m_pServerExoApp->AddPlayerNameToBannedList(playername.c_str());
     return Events::ArgumentStack();
 }
@@ -241,7 +241,7 @@ Events::ArgumentStack Administration::OnAddBannedPlayerName(Events::ArgumentStac
 Events::ArgumentStack Administration::OnRemoveBannedPlayerName(Events::ArgumentStack&& args)
 {
     const auto playername = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Unbanning Player name %s", playername.c_str());
+    LOG_NOTICE("Unbanning Player name %s", playername);
     Globals::AppManager()->m_pServerExoApp->RemovePlayerNameFromBannedList(playername.c_str());
     return Events::ArgumentStack();
 }
@@ -258,7 +258,7 @@ Events::ArgumentStack Administration::OnGetBannedList(Events::ArgumentStack&&)
 Events::ArgumentStack Administration::OnSetModuleName(Events::ArgumentStack&& args)
 {
     const auto newName = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Set module name to '%s'.", newName.c_str());
+    LOG_NOTICE("Set module name to '%s'.", newName);
     Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pServerInfo->m_sModuleName = newName.c_str();
     return Events::ArgumentStack();
 }
@@ -266,7 +266,7 @@ Events::ArgumentStack Administration::OnSetModuleName(Events::ArgumentStack&& ar
 Events::ArgumentStack Administration::OnSetServerName(Events::ArgumentStack&& args)
 {
     const auto newName = Events::ExtractArgument<std::string>(args);
-    LOG_NOTICE("Set server name to '%s'.", newName.c_str());
+    LOG_NOTICE("Set server name to '%s'.", newName);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetSessionName(CExoString(newName.c_str()));
     return Events::ArgumentStack();
 }
@@ -565,7 +565,7 @@ Events::ArgumentStack Administration::OnDeleteTURD(Events::ArgumentStack&& args)
 
     if (foundNode)
     {
-        LOG_NOTICE("Deleted TURD of %s (%s)", characterName.c_str(), playerName.c_str());
+        LOG_NOTICE("Deleted TURD of %s (%s)", characterName, playerName);
         Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal->Remove(foundNode);
     }
 

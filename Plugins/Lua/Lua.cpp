@@ -98,7 +98,7 @@ namespace Lua {
         // Dont call any NWN function in this script like SetLocalString(), GetModule() etc
         // the module is not loaded and you can have strange errors with premature crash
         // the trick is to load/require the remainig scripts on the module_load event     
-        LOG_DEBUG("Loding preload script: %s", preloadScript.c_str()); 
+        LOG_DEBUG("Loding preload script: %s", preloadScript); 
         if(luaL_dofile(m_luaInstance, preloadScript.c_str()))
         {
             LOG_ERROR("Error loading preload script: %s", lua_tostring(m_luaInstance, -1)); 
@@ -211,7 +211,7 @@ namespace Lua {
 
         SetObjectSelf(); 
 
-        LOG_DEBUG("Eval request code: %s", code.c_str()); 
+        LOG_DEBUG("Eval request code: %s", code); 
         
         if(luaL_dostring(m_luaInstance, code.c_str()))
         {
@@ -240,7 +240,7 @@ namespace Lua {
 
         SetObjectSelf();  
 
-        LOG_DEBUG("Evalvoid request code: %s", code.c_str());
+        LOG_DEBUG("Evalvoid request code: %s", code);
 
         if(luaL_dostring(m_luaInstance, code.c_str()))
         {
@@ -287,7 +287,7 @@ namespace Lua {
         
         SetObjectSelf();
 
-        LOG_DEBUG("Event %s on OBJECT: 0x%x", eventStr.c_str(), objectId);  
+        LOG_DEBUG("Event %s on OBJECT: 0x%x", eventStr, objectId);  
 
         lua_rawgeti(m_luaInstance, LUA_REGISTRYINDEX, m_eventFunction);  /* function to be called */
         lua_pushstring(m_luaInstance, eventStr.c_str());   /* push 1st argument */
@@ -296,7 +296,7 @@ namespace Lua {
         
         if (lua_pcall(m_luaInstance, 3, 0, 0) != 0)
         {
-            LOG_ERROR("Error on Event %s, object 0x%x: %s", eventStr.c_str(), objectId, lua_tostring(m_luaInstance, -1));
+            LOG_ERROR("Error on Event %s, object 0x%x: %s", eventStr, objectId, lua_tostring(m_luaInstance, -1));
         }
         
         lua_settop(m_luaInstance, 0);
