@@ -21,7 +21,7 @@ Advantages of using the prepared version are numerous
 
 A legacy (albeit contrived) example might look like this:
 
-```
+```cpp
 //This is a silly, non-sensical function.
 int SomeUsefulFunction(object oPC, object oBoard)
 {
@@ -51,7 +51,7 @@ int SomeUsefulFunction(object oPC, object oBoard)
 
 The simple, straight forward converted version using exising code as much as possible and with copious comments:
 
-```
+```cpp
 //This is a silly, non-sensical function.
 int SomeUsefulFunction(object oPC, object oBoard)
 {
@@ -93,7 +93,7 @@ int SomeUsefulFunction(object oPC, object oBoard)
 
 A more optimal approach that utilizies the parameterized query to avoid having to escape the input data:
 
-```
+```cpp
 //This is a silly, non-sensical function.
 int SomeUsefulFunction(object oPC, object oBoard)
 {
@@ -146,7 +146,7 @@ int SomeUsefulFunction(object oPC, object oBoard)
 
 There is a function to retrieve the specfic database type to enable multi-platform support through conditional logic.
 
-```
+```cpp
 void main()
 {
     WriteTimestampedLogEntry("Multi-Platform example..");

@@ -77,3 +77,49 @@ void main()
     NWNX_Damage_SetDamageEventData(data);
 }
 ```
+
+Hellball script example using DealDamage
+
+```c
+#include "x2_i0_spells"
+#include "nwnx_damage"
+
+void main()
+{
+    int nSpellDC = GetEpicSpellSaveDC(OBJECT_SELF);
+    effect eKnock = EffectKnockdown();
+    effect eExplode = EffectVisualEffect(464);
+    location lTarget = GetSpellTargetLocation();
+
+    ApplyEffectAtLocation(DURATION_TYPE_INSTANT, eExplode, lTarget);
+    // roll damage once
+    struct NWNX_Damage_DamageData damage, half;
+    damage.iAcid        = d6(10);
+    damage.iElectrical  = d6(10);
+    damage.iFire        = d6(10);
+    damage.iSonic       = d6(10);
+    half.iAcid          = damage.iAcid / 2;
+    half.iElectrical    = damage.iElectrical / 2;
+    half.iFire          = damage.iFire / 2;
+    half.iSonic         = damage.iSonic / 2;
+    // apply damage
+    object oTarget = GetFirstObjectInShape(SHAPE_SPHERE, 20.0f, lTarget, TRUE, OBJECT_TYPE_CREATURE);
+    while (GetIsObjectValid(oTarget))
+    {
+        if (spellsIsTarget(oTarget, SPELL_TARGET_STANDARDHOSTILE, OBJECT_SELF))
+        {
+            SignalEvent(oTarget, EventSpellCastAt(OBJECT_SELF, GetSpellId()));
+            float fDelay = GetDistanceBetweenLocations(lTarget, GetLocation(oTarget))/20 + 0.5f;
+            // no we don't care about evasion. there is no evasion to hellball
+            if (MySavingThrow(SAVING_THROW_REFLEX,oTarget,nSpellDC,SAVING_THROW_TYPE_SPELL,OBJECT_SELF,fDelay) > 0)
+                DelayCommand(fDelay, NWNX_Damage_DealDamage(half, oTarget));
+            else
+            {
+                DelayCommand(fDelay, NWNX_Damage_DealDamage(damage, oTarget));
+                DelayCommand(fDelay + 0.3f, ApplyEffectToObject(DURATION_TYPE_INSTANT, eKnock, oTarget));
+            }
+        }
+        oTarget = GetNextObjectInShape(SHAPE_SPHERE, 20.0f, lTarget, TRUE, OBJECT_TYPE_CREATURE);
+    }
+}
+```

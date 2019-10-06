@@ -49,7 +49,8 @@ The NWNX_Weapon_SetOption function can be used to define the attack and damage b
 
 This script just print some info to the log and then bypass the devastating critcial 50% of the time. You have to set your script with NWNX_Weapon_SetDevastatingCriticalEventScript("name_of_your_script") (in the OnModuleLoad script for example)
 
-```#include "nwnx_weapon"
+```cpp
+#include "nwnx_weapon"
 
 void main()
 {
