@@ -1,13 +1,25 @@
+/// @defgroup regex Regex
+/// @brief Provide regular expression functions.
+/// @{
+/// @file nwnx_regex.nss
 #include "nwnx"
 
-const string NWNX_Regex = "NWNX_Regex";
+const string NWNX_Regex = "NWNX_Regex"; ///< @private
 
-// Returns whether the string matches the regular expression
+/// @param str The string to search.
+/// @param regex The regular expression to use when searching.
+/// @return TRUE if string matches the regular expression.
 int NWNX_Regex_Search(string str, string regex);
 
-// Replaces any matches of the regular expression with a string
-string NWNX_Regex_Replace(string str, string regex, string replace="", int firstOnly=0);
+/// @brief Replaces any matches of the regular expression with a string.
+/// @param str The string to search.
+/// @param regex The regular expression to use when searching.
+/// @param replace The string to replace the matches with.
+/// @param firstOnly Set to TRUE to only replace the first match.
+/// @return A new string with any replacements made.
+string NWNX_Regex_Replace(string str, string regex, string replace = "", int firstOnly = FALSE);
 
+/// @}
 
 int NWNX_Regex_Search(string str, string regex)
 {

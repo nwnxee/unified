@@ -1,205 +1,24 @@
+/// @defgroup feedback Feedback
+/// @brief Allows combatlog, feedback and journal updated messages to be hidden globally or per player.
+/// @note
+/// * If oPC == OBJECT_INVALID it will get/set the global state:
+///    * TRUE = Message is globally hidden
+///    * FALSE = Message is not globally hidden
+/// * If oPC is a valid player it will get/set the personal state:
+///    * TRUE = Message is hidden for oPC
+///    * FALSE = Message is not hidden for oPC
+///    * -1 = Personal state is not set for Message
+/// @{
+/// @file nwnx_feedback.nss
 #include "nwnx"
 
-const string NWNX_Feedback = "NWNX_Feedback";
+const string NWNX_Feedback = "NWNX_Feedback"; ///< @private
 
-// Gets if feedback message nMessage is hidden.
-// Notes:
-// If oPC == OBJECT_INVALID it will return the global state:
-//    TRUE      nMessage is globally hidden
-//    FALSE     nMessage is not globally hidden
-// If oPC is a valid player it will return the personal state:
-//    TRUE      nMessage is hidden for oPC
-//    FALSE     nMessage is not hidden for oPC
-//    -1        Personal state is not set
-int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID);
-
-// Sets if feedback message nMessage is hidden.
-// Notes:
-// nMessage = NWNX_FEEDBACK_* > See Below
-// If oPC == OBJECT_INVALID it will set the global state:
-//    TRUE      nMessage is globally hidden
-//    FALSE     nMessage is not globally hidden
-// If oPC is a valid player it will set the personal state:
-//    TRUE      nMessage is hidden for oPC
-//    FALSE     nMessage is not hidden for oPC
-//    -1        Remove the personal state
-//
-// Personal state overrides the global state which means if a global state is set
-// to TRUE but the personal state is set to FALSE, the message will be shown to oPC
-void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID);
-
-// Gets if combatlog message nMessage is hidden.
-// Notes:
-// If oPC == OBJECT_INVALID it will return the global state:
-//    TRUE      nMessage is globally hidden
-//    FALSE     nMessage is not globally hidden
-// If oPC is a valid player it will return the personal state:
-//    TRUE      nMessage is hidden for oPC
-//    FALSE     nMessage is not hidden for oPC
-//    -1        Personal state is not set
-int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_INVALID);
-
-// Sets if combatlog message nMessage is hidden.
-// Notes:
-// nMessage = NWNX_FEEDBACK_COMBATLOG_* > See Below
-// If oPC == OBJECT_INVALID it will set the global state:
-//    TRUE      nMessage is globally hidden
-//    FALSE     nMessage is not globally hidden
-// If oPC is a valid player it will set the personal state:
-//    TRUE      nMessage is hidden for oPC
-//    FALSE     nMessage is not hidden for oPC
-//    -1        Remove the personal state
-//
-// Personal state overrides the global state which means if a global state is set
-// to TRUE but the personal state is set to FALSE, the message will be shown to oPC
-void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID);
-
-// Gets if journal updated messages are hidden.
-// Notes:
-// If oPC == OBJECT_INVALID it will return the global state:
-//    TRUE      Journal updated messages are globally hidden
-//    FALSE     Journal updated messages are not globally hidden
-// If oPC is a valid player it will return the personal state:
-//    TRUE      Journal updated messages are hidden for oPC
-//    FALSE     Journal updated messages are not hidden for oPC
-//    -1        Personal state is not set
-int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID);
-
-// Sets if journal updated messages are hidden.
-// Notes:
-// If oPC == OBJECT_INVALID it will set the global state:
-//    TRUE      Journal updated messages are globally hidden
-//    FALSE     Journal updated messages are not globally hidden
-// If oPC is a valid player it will set the personal state:
-//    TRUE      Journal updated messages are hidden for oPC
-//    FALSE     Journal updated messages are not hidden for oPC
-//    -1        Remove the personal state
-//
-// Personal state overrides the global state which means if a global state is set
-// to TRUE but the personal state is set to FALSE, the message will be shown to oPC
-void NWNX_Feedback_SetJournalUpdatedMessageHidden(int nState, object oPC = OBJECT_INVALID);
-
-// Set whether to use a blacklist or whitelist mode for feedback messages
-// Default: Blacklist
-//
-// TRUE = Whitelist, all messages hidden by default
-// FALSE = Blacklist, all messages shown by default
-void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist);
-
-// Set whether to use a blacklist or whitelist mode for combatlog messages
-// Default: Blacklist
-//
-// TRUE = Whitelist, all messages hidden by default
-// FALSE = Blacklist, all messages shown by default
-//
-// NOTE: If using Whitelist, be sure to whitelist NWNX_FEEDBACK_COMBATLOG_FEEDBACK for feedback messages to work
-void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist);
-
-// ***
-// For a list of the various combatlog / feedback messages see below.
-// ***
-
-int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
-{
-    string sFunc = "GetMessageHidden";
-    int nMessageType = 0;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
-}
-
-void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID)
-{
-    string sFunc = "SetMessageHidden";
-    int nMessageType = 0;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nState);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-}
-
-int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
-{
-    string sFunc = "GetMessageHidden";
-    int nMessageType = 1;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
-}
-
-void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int nState, object oPC = OBJECT_INVALID)
-{
-    string sFunc = "SetMessageHidden";
-    int nMessageType = 1;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nState);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-}
-
-int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID)
-{
-    string sFunc = "GetMessageHidden";
-    int nMessageType = 2;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-
-    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
-}
-
-void NWNX_Feedback_SetJournalUpdatedMessageHidden(int nState, object oPC = OBJECT_INVALID)
-{
-    string sFunc = "SetMessageHidden";
-    int nMessageType = 2;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nState);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-}
-
-void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)
-{
-    string sFunc = "SetFeedbackMode";
-    int nMessageType = 0;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-}
-
-void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)
-{
-    string sFunc = "SetFeedbackMode";
-    int nMessageType = 1;
-
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
-    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
-    NWNX_CallFunction(NWNX_Feedback, sFunc);
-}
-
-/*
-// CombatLog Messages
-// For use with NWNX_Feedback_SetCombatLogMessageHidden() and
-//              NWNX_Feedback_GetCombatLogMessageHidden()
-
+/// @name Combat Log Message Types
+/// @anchor combat_log_msgs
+/// @{
 const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE    = 1;
+/*
 const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_DAMAGE       = 2;
 const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DAMAGE      = 3;
 const int NWNX_FEEDBACK_COMBATLOG_COMPLEX_DEATH       = 4;
@@ -240,13 +59,15 @@ const int NWNX_FEEDBACK_COMBATLOG_UNLOCKACHIEVEMENT   = 20;
 // 20 -> Unused
 */
 
-/*
-// Feedback Messages
-// For use with NWNX_Feedback_SetFeedbackMessageHidden() and
-//              NWNX_Feedback_GetFeedbackMessageHidden()
+/// @}
 
-// Skill Feedback Messages
+/// @name Feedback Message Types
+/// @anchor feedback_msgs
+/// @{
+
 const int NWNX_FEEDBACK_SKILL_CANT_USE                     = 0;
+/*
+/// Skill Feedback Messages
 const int NWNX_FEEDBACK_SKILL_CANT_USE_TIMER               = 1;
 const int NWNX_FEEDBACK_SKILL_ANIMALEMPATHY_VALID_TARGETS  = 2;
 const int NWNX_FEEDBACK_SKILL_TAUNT_VALID_TARGETS          = 3;
@@ -262,14 +83,14 @@ const int NWNX_FEEDBACK_SKILL_HEAL_TARGET_NOT_DISPSND      = 55;
 const int NWNX_FEEDBACK_SKILL_HEAL_VALID_TARGETS           = 56;
 const int NWNX_FEEDBACK_SKILL_STEALTH_IN_COMBAT            = 60;
 
-// Miscellaneous Targetting Messages
+/// Miscellaneous Targetting Messages
 const int NWNX_FEEDBACK_TARGET_UNAWARE                     = 6;
 const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_STATUS         = 7;
 const int NWNX_FEEDBACK_ACTION_NOT_POSSIBLE_PVP            = 187;
 const int NWNX_FEEDBACK_ACTION_CANT_REACH_TARGET           = 218;
 const int NWNX_FEEDBACK_ACTION_NO_LOOT                     = 247;
 
-// Miscellaneous Feedback Messages
+/// Miscellaneous Feedback Messages
 const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_TO_RUN       = 8;
 const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_WALK_SLOW    = 9;
 const int NWNX_FEEDBACK_WEIGHT_TOO_ENCUMBERED_CANT_PICKUP  = 10;
@@ -284,7 +105,7 @@ const int NWNX_FEEDBACK_JOURNALUPDATED                     = 184; // Doesn't act
                                                                   // NWNX_Feedback_{Get/Set}JournalUpdatedMessageHidden()
 const int NWNX_FEEDBACK_BARTER_CANCELLED                   = 185;
 
-// Mode activation/deactivation Messages
+/// Mode activation/deactivation Messages
 const int NWNX_FEEDBACK_DETECT_MODE_ACTIVATED              = 83;
 const int NWNX_FEEDBACK_DETECT_MODE_DEACTIVATED            = 84;
 const int NWNX_FEEDBACK_STEALTH_MODE_ACTIVATED             = 85;
@@ -312,7 +133,7 @@ const int NWNX_FEEDBACK_DIRTY_FIGHTING_MODE_DEACTIVATED    = 238;
 const int NWNX_FEEDBACK_DEFENSIVE_STANCE_MODE_ACTIVATED    = 252;
 const int NWNX_FEEDBACK_DEFENSIVE_STANCE_MODE_DEACTIVATED  = 253;
 
-// Equipping Feedback Messages
+/// Equipping Feedback Messages
 const int NWNX_FEEDBACK_EQUIP_SKILL_SPELL_MODIFIERS        = 71;
 const int NWNX_FEEDBACK_EQUIP_UNIDENTIFIED                 = 76;
 const int NWNX_FEEDBACK_EQUIP_MONK_ABILITIES               = 77;
@@ -335,7 +156,7 @@ const int NWNX_FEEDBACK_EQUIP_CLASS                        = 208;
 const int NWNX_FEEDBACK_EQUIP_RACE                         = 209;
 const int NWNX_FEEDBACK_UNEQUIP_NO_ARMOR_COMBAT            = 194;
 
-// Action Feedback Messages
+/// Action Feedback Messages
 const int NWNX_FEEDBACK_OBJECT_LOCKED                      = 13;
 const int NWNX_FEEDBACK_OBJECT_NOT_LOCKED                  = 14;
 const int NWNX_FEEDBACK_OBJECT_SPECIAL_KEY                 = 15;
@@ -373,7 +194,7 @@ const int NWNX_FEEDBACK_DROPITEM_CANT_DROP                 = 245;
 const int NWNX_FEEDBACK_DROPITEM_CANT_GIVE                 = 246;
 const int NWNX_FEEDBACK_CLIENT_SERVER_SPELL_MISMATCH       = 259;
 
-// Combat feedback messages
+/// Combat feedback messages
 const int NWNX_FEEDBACK_COMBAT_RUNNING_OUT_OF_AMMO         = 24;
 const int NWNX_FEEDBACK_COMBAT_OUT_OF_AMMO                 = 25;
 const int NWNX_FEEDBACK_COMBAT_HENCHMAN_OUT_OF_AMMO        = 241;
@@ -391,7 +212,7 @@ const int NWNX_FEEDBACK_COMBAT_MASSIVE_DAMAGE              = 235;
 const int NWNX_FEEDBACK_COMBAT_SAVED_VS_MASSIVE_DAMAGE     = 254;
 const int NWNX_FEEDBACK_COMBAT_SAVED_VS_DEVASTATING_CRITICAL = 257;
 
-// Feat Feedback Messages
+/// Feat Feedback Messages
 const int NWNX_FEEDBACK_FEAT_SAP_VALID_TARGETS             = 26;
 const int NWNX_FEEDBACK_FEAT_KNOCKDOWN_VALID_TARGETS       = 27;
 const int NWNX_FEEDBACK_FEAT_IMPKNOCKDOWN_VALID_TARGETS    = 28;
@@ -405,7 +226,7 @@ const int NWNX_FEEDBACK_FEAT_USE_UNARMED                   = 198;
 const int NWNX_FEEDBACK_FEAT_USES                          = 199;
 const int NWNX_FEEDBACK_FEAT_USE_WEAPON_OF_CHOICE          = 243;
 
-// Party Feedback Messages
+/// Party Feedback Messages
 const int NWNX_FEEDBACK_PARTY_NEW_LEADER                   = 31;
 const int NWNX_FEEDBACK_PARTY_MEMBER_KICKED                = 32;
 const int NWNX_FEEDBACK_PARTY_KICKED_YOU                   = 33;
@@ -427,7 +248,7 @@ const int NWNX_FEEDBACK_PARTY_CANNOT_KICK_FROM_THE_ONE_PARTY = 197;
 const int NWNX_FEEDBACK_PARTY_YOU_INVITED_NON_SINGLETON    = 202;
 const int NWNX_FEEDBACK_PVP_REACTION_DISLIKESYOU           = 203;
 
-// Item Feedback Messages
+/// Item Feedback Messages
 const int NWNX_FEEDBACK_ITEM_RECEIVED                      = 50;
 const int NWNX_FEEDBACK_ITEM_LOST                          = 51;
 const int NWNX_FEEDBACK_ITEM_EJECTED                       = 96;
@@ -435,7 +256,7 @@ const int NWNX_FEEDBACK_ITEM_USE_UNIDENTIFIED              = 97;
 const int NWNX_FEEDBACK_ITEM_GOLD_GAINED                   = 148;
 const int NWNX_FEEDBACK_ITEM_GOLD_LOST                     = 149;
 
-// Spell Scroll Learning
+/// Spell Scroll Learning
 const int NWNX_FEEDBACK_LEARN_SCROLL_NOT_SCROLL            = 78;
 const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_CLASS      = 79;
 const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_LEVEL      = 80;
@@ -446,11 +267,11 @@ const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_KNOWN      = 221;
 const int NWNX_FEEDBACK_LEARN_SCROLL_CANT_LEARN_DIVINE     = 224;
 const int NWNX_FEEDBACK_LEARN_SCROLL_SUCCESS               = 222;
 
-// Floaty text feedback
+/// Floaty text feedback
 const int NWNX_FEEDBACK_FLOATY_TEXT_STRREF                 = 93;
 const int NWNX_FEEDBACK_FLOATY_TEXT_STRING                 = 94;
 
-// store feedback
+/// Store feedback
 const int NWNX_FEEDBACK_CANNOT_SELL_PLOT_ITEM              = 99;
 const int NWNX_FEEDBACK_CANNOT_SELL_CONTAINER              = 100;
 const int NWNX_FEEDBACK_CANNOT_SELL_ITEM                   = 101;
@@ -461,14 +282,14 @@ const int NWNX_FEEDBACK_STORE_NOT_ENOUGH_GOLD              = 249;
 const int NWNX_FEEDBACK_CANNOT_SELL_STOLEN_ITEM            = 250;
 const int NWNX_FEEDBACK_CANNOT_SELL_RESTRICTED_ITEM        = 251;
 
-// Portal control feedback
+/// Portal control feedback
 const int NWNX_FEEDBACK_PORTAL_TIMEDOUT                    = 104;
 const int NWNX_FEEDBACK_PORTAL_INVALID                     = 105;
 
-// Chat feedback
+/// Chat feedback
 const int NWNX_FEEDBACK_CHAT_TELL_PLAYER_NOT_FOUND         = 106;
 
-// Alignment Feedback
+/// Alignment Feedback
 const int NWNX_FEEDBACK_ALIGNMENT_SHIFT                    = 108;
 const int NWNX_FEEDBACK_ALIGNMENT_PARTY_SHIFT              = 111;
 const int NWNX_FEEDBACK_ALIGNMENT_CHANGE                   = 109;
@@ -479,7 +300,7 @@ const int NWNX_FEEDBACK_ALIGNMENT_RESTRICTED_WARNING_GAIN  = 112;
 const int NWNX_FEEDBACK_ALIGNMENT_EPITOME_GAINED           = 113;
 const int NWNX_FEEDBACK_ALIGNMENT_EPITOME_LOST             = 114;
 
-// Immunity Feedback
+/// Immunity Feedback
 const int NWNX_FEEDBACK_IMMUNITY_DISEASE                   = 125;
 const int NWNX_FEEDBACK_IMMUNITY_CRITICAL_HIT              = 126;
 const int NWNX_FEEDBACK_IMMUNITY_DEATH_MAGIC               = 127;
@@ -503,7 +324,7 @@ const int NWNX_FEEDBACK_IMMUNITY_ENTANGLE                  = 144;
 const int NWNX_FEEDBACK_IMMUNITY_SILENCE                   = 145;
 const int NWNX_FEEDBACK_IMMUNITY_SLOW                      = 146;
 
-// Associates
+/// Associates
 const int NWNX_FEEDBACK_ASSOCIATE_SUMMONED                 = 154;
 const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING              = 155;
 const int NWNX_FEEDBACK_ASSOCIATE_UNSUMMONING_BECAUSE_REST = 156;
@@ -523,6 +344,7 @@ const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_GIVE_ITEM = 179;
 const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_TAKE_ITEM = 180;
 const int NWNX_FEEDBACK_ASSOCIATE_POSSESSED_CANNOT_USE_CONTAINER = 181;
 
+/// Miscellaneous Feedback
 const int NWNX_FEEDBACK_SCRIPT_ERROR                       = 160;
 const int NWNX_FEEDBACK_ACTION_LIST_OVERFLOW               = 161;
 const int NWNX_FEEDBACK_EFFECT_LIST_OVERFLOW               = 162;
@@ -532,7 +354,7 @@ const int NWNX_FEEDBACK_EFFECT_LIST_WIPE_OVERFLOW          = 165;
 const int NWNX_FEEDBACK_SEND_MESSAGE_TO_PC                 = 204;
 const int NWNX_FEEDBACK_SEND_MESSAGE_TO_PC_STRREF          = 242;
 
-// Misc GUI feedback
+/// Misc GUI feedback
 const int NWNX_FEEDBACK_GUI_ONLY_PARTY_LEADER_MAY_CLICK    = 201;
 const int NWNX_FEEDBACK_PAUSED                             = 205;
 const int NWNX_FEEDBACK_UNPAUSED                           = 206;
@@ -547,3 +369,151 @@ const int NWNX_FEEDBACK_CAMERA_CHASECAM                    = 258;
 const int NWNX_FEEDBACK_SAVING                             = 225;
 const int NWNX_FEEDBACK_SAVE_COMPLETE                      = 226;
 */
+/// @}
+
+/// @brief Gets if feedback message is hidden.
+/// @param nMessage The message identifier from @ref feedback_msgs "Feedback Messages".
+/// @param oPC The PC or OBJECT_INVALID for a global setting.
+/// @return TRUE if the message is hidden.
+int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID);
+
+/// @brief Sets if feedback message is hidden.
+/// @param nMessage The message identifier.
+/// @param isHidden TRUE/FALSE
+/// @param oPC The PC or OBJECT_INVALID for a global setting.
+/// @note Personal state overrides the global state which means if a global state is set
+/// to TRUE but the personal state is set to FALSE, the message will be shown to the PC.
+void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID);
+
+/// @brief Gets if combat log message is hidden.
+/// @param nMessage The message identifier from @ref combat_log_msgs "Combat Log Messages".
+/// @param oPC The PC or OBJECT_INVALID for a global setting.
+/// @return TRUE if the message is hidden.
+int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_INVALID);
+
+/// @brief Sets if combat log message is hidden.
+/// @param nMessage The message identifier.
+/// @param isHidden TRUE/FALSE
+/// @param oPC The PC or OBJECT_INVALID for a global setting.
+/// @note Personal state overrides the global state which means if a global state is set
+/// to TRUE but the personal state is set to FALSE, the message will be shown to the PC.
+void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID);
+
+/// @brief Gets if the journal update message is hidden.
+/// @param oPC The PC or OBJECT_INVALID for a global setting.
+/// @return TRUE if the message is hidden.
+int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID);
+
+/// @brief Sets if journal update message is hidden.
+/// @param isHidden TRUE/FALSE
+/// @param oPC The PC or OBJECT_INVALID for a global setting.
+/// @note Personal state overrides the global state which means if a global state is set
+/// to TRUE but the personal state is set to FALSE, the message will be shown to the PC.
+void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC = OBJECT_INVALID);
+
+/// @brief Set whether to use a blacklist or whitelist mode for feedback messages
+/// @param bWhitelist TRUE for all messages to be hidden by default, default FALSE.
+void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist);
+
+
+/// @brief Set whether to use a blacklist or whitelist mode for combat log messages
+/// @param bWhitelist TRUE for all messages to be hidden by default, default FALSE.
+/// @note If using Whitelist, be sure to whitelist NWNX_FEEDBACK_COMBATLOG_FEEDBACK for feedback messages to work.
+void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist);
+
+/// @}
+
+int NWNX_Feedback_GetFeedbackMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "GetMessageHidden";
+    int nMessageType = 0;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetFeedbackMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "SetMessageHidden";
+    int nMessageType = 0;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+int NWNX_Feedback_GetCombatLogMessageHidden(int nMessage, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "GetMessageHidden";
+    int nMessageType = 1;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetCombatLogMessageHidden(int nMessage, int isHidden, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "SetMessageHidden";
+    int nMessageType = 1;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessage);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+int NWNX_Feedback_GetJournalUpdatedMessageHidden(object oPC = OBJECT_INVALID)
+{
+    string sFunc = "GetMessageHidden";
+    int nMessageType = 2;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetJournalUpdatedMessageHidden(int isHidden, object oPC = OBJECT_INVALID)
+{
+    string sFunc = "SetMessageHidden";
+    int nMessageType = 2;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, isHidden);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, 0);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_PushArgumentObject(NWNX_Feedback, sFunc, oPC);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetFeedbackMessageMode(int bWhitelist)
+{
+    string sFunc = "SetFeedbackMode";
+    int nMessageType = 0;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}
+
+void NWNX_Feedback_SetCombatLogMessageMode(int bWhitelist)
+{
+    string sFunc = "SetFeedbackMode";
+    int nMessageType = 1;
+
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, bWhitelist);
+    NWNX_PushArgumentInt(NWNX_Feedback, sFunc, nMessageType);
+    NWNX_CallFunction(NWNX_Feedback, sFunc);
+}

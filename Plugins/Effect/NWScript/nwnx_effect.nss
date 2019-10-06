@@ -1,77 +1,89 @@
+/// @defgroup effect Effect
+/// @brief Utility functions to manipulate the builtin effect type.
+/// @{
+/// @file nwnx_effect.nss
 #include "nwnx"
 
-const string NWNX_Effect = "NWNX_Effect";
+const string NWNX_Effect = "NWNX_Effect"; ///< @private
 
+/// An unpacked effect
 struct NWNX_EffectUnpacked
 {
-    int nEffectId;
-    int nType;
-    int nSubType;
+    int nEffectId; ///< @todo Describe
+    int nType; ///< @todo Describe
+    int nSubType; ///< @todo Describe
 
-    float fDuration;
-    int nExpiryCalendarDay;
-    int nExpiryTimeOfDay;
+    float fDuration; ///< @todo Describe
+    int nExpiryCalendarDay; ///< @todo Describe
+    int nExpiryTimeOfDay; ///< @todo Describe
 
-    object oCreator;
-    int nSpellId;
-    int bExpose;
-    int bShowIcon;
-    int nCasterLevel;
+    object oCreator; ///< @todo Describe
+    int nSpellId; ///< @todo Describe
+    int bExpose; ///< @todo Describe
+    int bShowIcon; ///< @todo Describe
+    int nCasterLevel; ///< @todo Describe
 
-    effect eLinkLeft;
-    int bLinkLeftValid;
-    effect eLinkRight;
-    int bLinkRightValid;
+    effect eLinkLeft; ///< @todo Describe
+    int bLinkLeftValid; ///< @todo Describe
+    effect eLinkRight; ///< @todo Describe
+    int bLinkRightValid; ///< @todo Describe
 
-    int nNumIntegers;
-    int nParam0;
-    int nParam1;
-    int nParam2;
-    int nParam3;
-    int nParam4;
-    int nParam5;
-    int nParam6;
-    int nParam7;
-    float fParam0;
-    float fParam1;
-    float fParam2;
-    float fParam3;
-    string sParam0;
-    string sParam1;
-    string sParam2;
-    string sParam3;
-    string sParam4;
-    string sParam5;
-    object oParam0;
-    object oParam1;
-    object oParam2;
-    object oParam3;
+    int nNumIntegers; ///< @todo Describe
+    int nParam0; ///< @todo Describe
+    int nParam1; ///< @todo Describe
+    int nParam2; ///< @todo Describe
+    int nParam3; ///< @todo Describe
+    int nParam4; ///< @todo Describe
+    int nParam5; ///< @todo Describe
+    int nParam6; ///< @todo Describe
+    int nParam7; ///< @todo Describe
+    float fParam0; ///< @todo Describe
+    float fParam1; ///< @todo Describe
+    float fParam2; ///< @todo Describe
+    float fParam3; ///< @todo Describe
+    string sParam0; ///< @todo Describe
+    string sParam1; ///< @todo Describe
+    string sParam2; ///< @todo Describe
+    string sParam3; ///< @todo Describe
+    string sParam4; ///< @todo Describe
+    string sParam5; ///< @todo Describe
+    object oParam0; ///< @todo Describe
+    object oParam1; ///< @todo Describe
+    object oParam2; ///< @todo Describe
+    object oParam3; ///< @todo Describe
 
-    string sTag;
+    string sTag; ///< @todo Describe
 };
 
-// Convert native effect type to unpacked structure
+/// @brief Convert native effect type to unpacked structure.
+/// @param e The effect to convert.
+/// @return A constructed NWNX_EffectUnpacked.
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e);
 
-// Convert unpacked effect structure to native type
+/// @brief Convert unpacked effect structure to native type.
+/// @param e The NWNX_EffectUnpacked structure to convert.
+/// @return The effect.
 effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e);
 
-// Set a script with optional data that runs when an effect expires
-// Only works for TEMPORARY and PERMANENT effects applied to an object
-//
-// Note: OBJECT_SELF in the script is the object the effect is applied to
+/// @brief Set a script with optional data that runs when an effect expires
+/// @param e The effect.
+/// @param script The script to run when the effect expires.
+/// @param data Any other data you wish to send back to the script.
+/// @remark OBJECT_SELF in the script is the object the effect is applied to.
+/// @note Only works for TEMPORARY and PERMANENT effects applied to an object.
 effect NWNX_Effect_SetEffectExpiredScript(effect e, string script, string data = "");
 
-// Get the data set with NWNX_Effect_SetEffectExpiredScript()
-//
-// THIS SHOULD ONLY BE CALLED FROM WITHIN A SCRIPT THAT WAS EXECUTED BY NWNX_Effect_SetEffectExpiredScript()
+/// @brief Get the data set with NWNX_Effect_SetEffectExpiredScript()
+/// @note Should only be called from a script set with NWNX_Effect_SetEffectExpiredScript().
+/// @return The data attached to the effect.
 string NWNX_Effect_GetEffectExpiredData();
 
-// Get the effect creator of NWNX_Effect_SetEffectExpiredScript()
-//
-// THIS SHOULD ONLY BE CALLED FROM WITHIN A SCRIPT THAT WAS EXECUTED BY NWNX_Effect_SetEffectExpiredScript()
+/// @brief Get the effect creator.
+/// @note Should only be called from a script set with NWNX_Effect_SetEffectExpiredScript().
+/// @return The object from which the effect originated.
 object NWNX_Effect_GetEffectExpiredCreator();
 
+/// @}
 
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
 {

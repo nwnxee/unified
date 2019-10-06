@@ -1,23 +1,33 @@
+/// @defgroup time Time
+/// @brief Provides various time related functions
+/// @{
+/// @file nwnx_time.nss
 #include "nwnx"
 
-const string NWNX_Time = "NWNX_Time";
+const string NWNX_Time = "NWNX_Time"; ///< @private
 
-// Returns the current date in the format (mm/dd/yyyy)
+/// @brief Returns the current date.
+/// @return The date in the format (mm/dd/yyyy).
 string NWNX_Time_GetSystemDate();
 
-// Returns current time in the format (24:mm:ss)
+/// @brief Returns current time.
+/// @return The current time in the format (24:mm:ss).
 string NWNX_Time_GetSystemTime();
 
-// Returns the number of seconds since midnight on January 1, 1970
+/// @return Returns the number of seconds since midnight on January 1, 1970.
 int NWNX_Time_GetTimeStamp();
 
-// Returns the number of seconds since midnight on January 1, 1970
+/// @brief A high resolution timestamp
 struct NWNX_Time_HighResTimestamp
 {
-    int seconds, microseconds;
+    int seconds; ///< Seconds since epoch
+    int microseconds; ///< Microseconds
 };
+
+/// @return Returns the number of microseconds since midnight on January 1, 1970.
 struct NWNX_Time_HighResTimestamp NWNX_Time_GetHighResTimeStamp();
 
+/// @}
 
 string NWNX_Time_GetSystemDate()
 {

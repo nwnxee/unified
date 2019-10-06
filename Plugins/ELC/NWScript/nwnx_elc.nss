@@ -1,7 +1,15 @@
+/// @defgroup elc ELC
+/// @brief Replacement for ValidateCharacter: ELC & ILR
+/// @{
+/// @file nwnx_elc.nss
 #include "nwnx"
 
-const string NWNX_ELC = "NWNX_ELC";
+const string NWNX_ELC = "NWNX_ELC"; ///< @private
 
+
+/// @anchor elc_fail_type
+/// @name ELC Failure Types
+/// @{
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_NONE                     = 0;
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_CHARACTER                = 1;
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_ITEM                     = 2;
@@ -9,9 +17,15 @@ const int NWNX_ELC_VALIDATION_FAILURE_TYPE_SKILL                    = 3;
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_FEAT                     = 4;
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_SPELL                    = 5;
 const int NWNX_ELC_VALIDATION_FAILURE_TYPE_CUSTOM                   = 6;
+/// @}
 
-/*
+/// @anchor elc_fail_subtype
+/// @name ELC Failure Subtypes
+/// @note By default these constants are commented out to avoid a
+/// limitation on constants. Uncomment them as needed.
+/// @{
 const int NWNX_ELC_SUBTYPE_NONE                                     = 0;
+/*
 const int NWNX_ELC_SUBTYPE_SERVER_LEVEL_RESTRICTION                 = 1;
 const int NWNX_ELC_SUBTYPE_LEVEL_HACK                               = 2;
 const int NWNX_ELC_SUBTYPE_COLORED_NAME                             = 3;
@@ -63,85 +77,78 @@ const int NWNX_ELC_SUBTYPE_SKILL_LIST_COMPARISON                    = 48;
 const int NWNX_ELC_SUBTYPE_FEAT_LIST_COMPARISON                     = 49;
 const int NWNX_ELC_SUBTYPE_MISC_SAVING_THROW                        = 50;
 const int NWNX_ELC_SUBTYPE_NUM_FEAT_COMPARISON                      = 51;
-*/
+ */
+/// @}
 
-// Sets the script that runs whenever a ELC validation failure happens
+/// @brief Sets the script that runs whenever an ELC validation failure happens
+/// @param sScript The script name.
 void NWNX_ELC_SetELCScript(string sScript);
 
-// Enables a custom ELC Check that will call the ELC Script with the
-// NWNX_ELC_VALIDATION_FAILURE_TYPE_CUSTOM type.
-//
-// NOTE: Only runs if you have an ELC script set, be sure to skip this check if a player doesn't fail your custom check
-//       otherwise they won't be able to log in
+/// @brief Enables a custom ELC Check that will call the ELC Script with the
+/// NWNX_ELC_VALIDATION_FAILURE_TYPE_CUSTOM type.
+/// @param bEnabled TRUE to use this check.
+/// @note Only runs if you have an ELC script set, be sure to skip this check
+/// if a player doesn't fail your custom check otherwise they won't be able to log in
 void NWNX_ELC_EnableCustomELCCheck(int bEnabled);
 
-// Skip an ELC Validation Failure Event
-// This will allow a character to bypass an ELC failure
-//
-// NOTE: Only to be called in the ELC Script
+/// @brief Skip an ELC Validation Failure Event
+/// @note Only to be called in the ELC Script
 void NWNX_ELC_SkipValidationFailure();
 
-// Get the validation failure type
-// Returns NWNX_ELC_VALIDATION_FAILURE_TYPE_*
-//
-// NOTE: Only to be called in the ELC Script
+/// @brief Get the validation failure type
+/// @return A @ref elc_fail_type "Validation Failure Type"
+/// @note Only to be called in the ELC Script
 int NWNX_ELC_GetValidationFailureType();
 
-// Get the validation failure subtype
-// Returns NWNX_ELC_VALIDATION_FAILURE_SUBTYPE_*
-//
-// NOTE: Only to be called in the ELC Script
+/// @brief Get the validation failure subtype
+/// @return A @ref elc_fail_subtype "Validation Failure Subtype"
+/// @note Only to be called in the ELC Script
 int NWNX_ELC_GetValidationFailureSubType();
 
-// Get the failure message talk table strref the player receives
-//
-// NOTE: Only to be called in the ELC Script
+/// @brief Get the failure message
+/// @return The talk table strref the player receives.
+/// @note Only to be called in the ELC Script
 int NWNX_ELC_GetValidationFailureMessageStrRef();
 
-// Set the failure message talk table strref the player receives
-// nStrRef: a talk table entry, must be >0
-//
-// NOTE: Only to be called in the ELC Script
+/// @brief Set the failure message
+/// @param nStrRef The talk table strref the player receives, must be > 0.
+/// @note Only to be called in the ELC Script
 void NWNX_ELC_SetValidationFailureMessageStrRef(int nStrRef);
 
-// Get the item that failed ILR validation
-// Returns OBJECT_INVALID on error
-//
-// NOTE: Only to be called in the ELC Script during a
-// NWNX_ELC_VALIDATION_FAILURE_TYPE_ITEM validation failure.
+/// @brief Get the item that failed ILR validation
+/// @return The object that caused the ILR validation failure. Returns OBJECT_INVALID on error.
+/// @note Only to be called in the ELC Script during a
+/// NWNX_ELC_VALIDATION_FAILURE_TYPE_ITEM validation failure.
 object NWNX_ELC_GetValidationFailureItem();
 
-// Get the character level at which the validation failure occurred
-// Returns -1 on error
-// May not always return a level, depending on where the failure occurred
-//
-// NOTE: Only to be called in the ELC Script
+/// @brief Get the character level at which the validation failure occurred
+/// @return The character level or -1 on error.
+/// @remark May not always return a level, depending on where the failure occurred.
+/// @note Only to be called in the ELC Script
 int NWNX_ELC_GetValidationFailureLevel();
 
-// Get the ID of the skill that failed ELC validation
-// Returns -1 on error
-// May not always return a skill id, depending on the validation failure subtype
-//
-// NOTE: Only to be called in the ELC Script during a
-// NWNX_ELC_VALIDATION_FAILURE_TYPE_SKILL validation failure.
+/// @brief Get the ID of the skill that failed ELC validation
+/// @return The skill ID or -1 on error.
+/// @remark May not always return a skill id, depending on the validation failure subtype.
+/// @note Only to be called in the ELC Script during a
+/// NWNX_ELC_VALIDATION_FAILURE_TYPE_SKILL validation failure.
 int NWNX_ELC_GetValidationFailureSkillID();
 
-// Get the ID of the feat that failed ELC validation
-// Returns -1 on error
-// May not always return a feat id, depending on the validation failure subtype
-//
-// NOTE: Only to be called in the ELC Script during a
-// NWNX_ELC_VALIDATION_FAILURE_TYPE_FEAT validation failure.
+/// @brief Get the ID of the feat that failed ELC validation
+/// @return The feat ID or -1 on error
+/// @remark May not always return a feat id, depending on the validation failure subtype.
+/// @note Only to be called in the ELC Script during a
+/// NWNX_ELC_VALIDATION_FAILURE_TYPE_FEAT validation failure.
 int NWNX_ELC_GetValidationFailureFeatID();
 
-// Get the ID of the spell that failed ELC validation
-// Returns -1 on error
-// May not always return a spell id, depending on the validation failure subtype
-//
-// NOTE: Only to be called in the ELC Script during a
-// NWNX_ELC_VALIDATION_FAILURE_TYPE_SPELL validation failure.
+/// @brief Get the ID of the spell that failed ELC validation
+/// @return The spell ID or -1 on error
+/// @remark May not always return a spell id, depending on the validation failure subtype.
+/// @note Only to be called in the ELC Script during a
+/// NWNX_ELC_VALIDATION_FAILURE_TYPE_SPELL validation failure.
 int NWNX_ELC_GetValidationFailureSpellID();
 
+/// @}
 
 void NWNX_ELC_SetELCScript(string sScript)
 {
