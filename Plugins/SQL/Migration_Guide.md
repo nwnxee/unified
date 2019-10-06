@@ -8,14 +8,14 @@ The previous plugin only had one execution style:  the SQL_ExecDirect() function
 
 The new SQL Plugin has two methods of operation:
 
-1.  The same ExecDirect type functionality (via ``NWNX_SQL_ExecuteQuery("...")``)
-1.  Prepared Statements simiar to that of Java and C# where a SQL string is prepared (via ``NWNX_SQL_PrepareQuery(...)``) with place holders, then script variables are bound to the variables, then the executed (via ``NWNX_SQL_ExecutePreparedQuery()``).
+1.  The same ExecDirect type functionality via NWNX_SQL_ExecuteQuery()
+2.  Prepared Statements similar to that of Java and C# where a SQL string is prepared via NWNX_SQL_PrepareQuery() with placeholders, then script variables are bound to the variables, then executed via NWNX_SQL_ExecutePreparedQuery().
 
 Advantages of using the prepared version are numerous
 
 1.  No need to escape/un-escape values for things that cause string SQL statements problems (like single quotes or SQL injection issues).  Bound data is taken as is and treated as data that won't affect the validity of the SQL statement.
-1. The ability to serialize/un-serialize ObjectIDs and Objects to and from the database.
-1.  Probably some others, too!
+2.  The ability to serialize/un-serialize ObjectIDs and Objects to and from the database.
+3.  Probably some others, too!
 
 ### Examples
 
@@ -49,7 +49,7 @@ int SomeUsefulFunction(object oPC, object oBoard)
 
 ```
 
-The simple, straight forward converted version using exising code as much as possible and with copious comments:
+The simple, straight forward converted version using existing code as much as possible and with copious comments:
 
 ```cpp
 //This is a silly, non-sensical function.
@@ -91,7 +91,7 @@ int SomeUsefulFunction(object oPC, object oBoard)
 }
 ```
 
-A more optimal approach that utilizies the parameterized query to avoid having to escape the input data:
+A more optimal approach that utilizes the parameterized query to avoid having to escape the input data:
 
 ```cpp
 //This is a silly, non-sensical function.
@@ -144,7 +144,7 @@ int SomeUsefulFunction(object oPC, object oBoard)
 
 ### Multi-Platform Support
 
-There is a function to retrieve the specfic database type to enable multi-platform support through conditional logic.
+There is a function to retrieve the specific database type to enable multi-platform support through conditional logic.
 
 ```cpp
 void main()

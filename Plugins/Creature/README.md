@@ -3,5 +3,3 @@
 ## Description
 
 Functions exposing additional creature properties.
-
-## Environment Variables

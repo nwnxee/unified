@@ -2,10 +2,6 @@
 
 Ported form nwnx2 plugin from Baaleos.
 
-## Environment Variables
-
-None.
-
 ## Description
 
 This plugin allows to run a script just before a damage is applied to a creature, and allows to modify the amount and type of the damage.

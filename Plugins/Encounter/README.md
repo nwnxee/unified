@@ -3,5 +3,3 @@
 ## Description
 
 Functions exposing additional encounter properties
-
-## Environment Variables

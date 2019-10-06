@@ -25,29 +25,29 @@ NWNX_Weapon_SetWeaponFocusFeat(BASE_ITEM_KATAR, FEAT_WEAPON_FOCUS_KATAR);
 
 Script function | Description  
 ----------------|-------------
-NWNX_Weapon_SetWeaponFocusFeat | Associate a weapon focus feat to a weapon 
-NWNX_Weapon_SetWeaponFinesseSize | Define the required creature size for a weapon in order to be finessable
-NWNX_Weapon_SetWeaponUnarmed | Set the weapon to be considered unarmed regarding the finesse feat
-NWNX_Weapon_SetWeaponImprovedCriticalFeat | Associate a weapon improved critical feat to a weapon 
-NWNX_Weapon_SetWeaponSpecializationFeat | Associate a weapon specialization feat to a weapon 
-NWNX_Weapon_SetEpicWeaponFocusFeat | Associate an epic weapon focus feat to a weapon 
-NWNX_Weapon_SetEpicWeaponSpecializationFeat | Associate an epic weapon specialization feat to a weapon 
-NWNX_Weapon_SetEpicWeaponOverwhelmingCriticalFeat | Associate an epic weapon overwhelming critical feat to a weapon 
-NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat | Associate an epic weapon devastating critical feat to a weapon 
-NWNX_Weapon_SetWeaponOfChoiceFeat | Associate a weapon of choice feat to a weapon 
-NWNX_Weapon_SetGreaterWeaponFocusFeat | Associate a greater weapon focus feat (default: +1 attack bonus) to a weapon
-NWNX_Weapon_SetGreaterWeaponSpecializationFeat | Associate a greater weapon specialization feat (default: +2 damage bonus) to a weapon
-NWNX_Weapon_SetWeaponIsMonkWeapon | Set the weapon to be considered a monk weapon
-NWNX_Weapon_SetOption | Set different options of the plugin
-NWNX_Weapon_SetDevastatingCriticalEventScript | Set a script to be called when a devastating critical event occurs
-NWNX_Weapon_GetDevastatingCriticalEventData | Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)
-NWNX_Weapon_BypassDevastatingCritical | Must be called inside the devastating critical event script. If called, no devastating critical will occur.
+NWNX_Weapon_SetWeaponFocusFeat() | Associate a weapon focus feat to a weapon 
+NWNX_Weapon_SetWeaponFinesseSize() | Define the required creature size for a weapon in order to be finessable
+NWNX_Weapon_SetWeaponUnarmed() | Set the weapon to be considered unarmed regarding the finesse feat
+NWNX_Weapon_SetWeaponImprovedCriticalFeat() | Associate a weapon improved critical feat to a weapon 
+NWNX_Weapon_SetWeaponSpecializationFeat() | Associate a weapon specialization feat to a weapon 
+NWNX_Weapon_SetEpicWeaponFocusFeat() | Associate an epic weapon focus feat to a weapon 
+NWNX_Weapon_SetEpicWeaponSpecializationFeat() | Associate an epic weapon specialization feat to a weapon 
+NWNX_Weapon_SetEpicWeaponOverwhelmingCriticalFeat() | Associate an epic weapon overwhelming critical feat to a weapon 
+NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat() | Associate an epic weapon devastating critical feat to a weapon 
+NWNX_Weapon_SetWeaponOfChoiceFeat() | Associate a weapon of choice feat to a weapon 
+NWNX_Weapon_SetGreaterWeaponFocusFeat() | Associate a greater weapon focus feat (default: +1 attack bonus) to a weapon
+NWNX_Weapon_SetGreaterWeaponSpecializationFeat() | Associate a greater weapon specialization feat (default: +2 damage bonus) to a weapon
+NWNX_Weapon_SetWeaponIsMonkWeapon() | Set the weapon to be considered a monk weapon
+NWNX_Weapon_SetOption() | Set different options of the plugin
+NWNX_Weapon_SetDevastatingCriticalEventScript() | Set a script to be called when a devastating critical event occurs
+NWNX_Weapon_GetDevastatingCriticalEventData() | Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)
+NWNX_Weapon_BypassDevastatingCritical() | Must be called inside the devastating critical event script. If called, no devastating critical will occur.
 
-The NWNX_Weapon_SetOption function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively. 
+The NWNX_Weapon_SetOption() function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively. 
 
 ## Example for Critical Event Script
 
-This script just print some info to the log and then bypass the devastating critcial 50% of the time. You have to set your script with NWNX_Weapon_SetDevastatingCriticalEventScript("name_of_your_script") (in the OnModuleLoad script for example)
+This script just prints some info to the log and then bypasses the devastating critical 50% of the time. You have to set your script with NWNX_Weapon_SetDevastatingCriticalEventScript() (in the OnModuleLoad script for example)
 
 ```cpp
 #include "nwnx_weapon"

@@ -2,13 +2,12 @@
 
 ## Description
 
-
 This plugin facilitates renaming, overriding and customization of player names.
 
 Script function | Description  
 ----------------|-------------
-NWNX_Rename_SetPCNameOverride | Set a PCs floaty/chat name(sPrefix+sNewName+sSuffix) and name (sNewName) on the player list. If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OVERRIDE the player name will change to (sNewName) on tells. If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OBFUSCATE the player name will be set to a random string.
-NWNX_Rename_GetPCNameOverride | Gets the PCs name as seen by a specified target or all clients.
+NWNX_Rename_SetPCNameOverride() | Set a PCs floaty/chat name(sPrefix+sNewName+sSuffix) and name (sNewName) on the player list. If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OVERRIDE the player name will change to (sNewName) on tells. If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OBFUSCATE the player name will be set to a random string.
+NWNX_Rename_GetPCNameOverride() | Gets the PCs name as seen by a specified target or all clients.
 
 If `iPlayerNameState` is set to `NWNX_RENAME_PLAYERNAME_DEFAULT` the player name will be untouched. DMs and the player themselves will still see their original player name regardless of option set. Will not persist through saving, resets or logout.
 
