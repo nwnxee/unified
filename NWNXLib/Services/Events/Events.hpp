@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <ostream>
 #include <tuple>
 #include <stack>
 #include <unordered_map>
@@ -35,7 +36,7 @@ public: // Structures
         Argument(API::CGameEffect* v)      : m_effect(v) { }
 
         template <typename T> Maybe<T>& Get();
-        std::string toString();
+        std::string toString() const;
     };
 
     using ArgumentStack = std::stack<Argument>;
@@ -108,3 +109,5 @@ private:
 }
 
 }
+
+std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg);

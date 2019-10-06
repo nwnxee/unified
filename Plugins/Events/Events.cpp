@@ -125,7 +125,7 @@ Events::~Events()
 
 void Events::PushEventData(const std::string tag, const std::string data)
 {
-    LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag.c_str(), data.c_str());
+    LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag, data);
     g_plugin->CreateNewEventDataIfNeeded();
     g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
 }
@@ -149,7 +149,7 @@ std::string Events::GetEventData(const std::string tag)
     }
 
     retVal=data->second;
-    LOG_DEBUG("Getting event data: '%s' -> '%s'.", tag.c_str(), retVal.c_str());
+    LOG_DEBUG("Getting event data: '%s' -> '%s'.", tag, retVal);
     return retVal;
 }
 
@@ -164,7 +164,7 @@ bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID tar
     for (const auto& script : g_plugin->m_eventMap[eventName])
     {
         auto DispatchEvent = [&]() -> void {
-            LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName.c_str(), script.c_str());
+            LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName, script);
             API::CExoString scriptExoStr = script.c_str();
 
             ++g_plugin->m_eventDepth;
@@ -215,7 +215,7 @@ void Events::RunEventInit(const std::string& eventName)
         if (std::regex_search(eventName, std::regex(it.first)))
         {
             LOG_DEBUG("Running init function for events '%s' (requested by event '%s')",
-                        it.first.c_str(), eventName.c_str());
+                        it.first, eventName);
             it.second();
             erase.push_back(it.first);
         }
@@ -240,7 +240,7 @@ ArgumentStack Events::OnSubscribeEvent(ArgumentStack&& args)
         throw std::runtime_error("Attempted to subscribe to an event with a script that already subscribed!");
     }
 
-    LOG_INFO("Script '%s' subscribed to event '%s'.", script.c_str(), event.c_str());
+    LOG_INFO("Script '%s' subscribed to event '%s'.", script, event);
     eventVector.emplace_back(std::move(script));
 
     return ArgumentStack();
@@ -295,7 +295,7 @@ ArgumentStack Events::OnEventResult(ArgumentStack&& args)
 
     m_eventData.top().m_Result = data;
 
-    LOG_DEBUG("Received event result '%s'.", data.c_str());
+    LOG_DEBUG("Received event result '%s'.", data);
 
     return ArgumentStack();
 }

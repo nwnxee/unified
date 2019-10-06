@@ -141,7 +141,7 @@ ArgumentStack Weapon::SetWeaponFocusFeat(ArgumentStack&& args)
     m_WeaponFocusMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -160,7 +160,7 @@ ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
     m_GreaterWeaponFocusMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Greater Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Greater Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -179,7 +179,7 @@ ArgumentStack Weapon::SetEpicWeaponFocusFeat(ArgumentStack&& args)
     m_EpicWeaponFocusMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Epic Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Epic Weapon Focus Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -197,7 +197,7 @@ ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
 
     m_WeaponFinesseSizeMap.insert({w_bitem, size});
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Weapon Finesse Size %d added for Base Item Type %d [%s]", size, w_bitem, baseItemName.CStr());
+    LOG_INFO("Weapon Finesse Size %d added for Base Item Type %d [%s]", size, w_bitem, baseItemName);
 
     return stack;
 }
@@ -212,7 +212,7 @@ ArgumentStack Weapon::SetWeaponUnarmed(ArgumentStack&& args)
 
     m_WeaponUnarmedSet.insert(w_bitem);
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Base Item Type %d [%s] set as unarmed weapon", w_bitem, baseItemName.CStr());
+    LOG_INFO("Base Item Type %d [%s] set as unarmed weapon", w_bitem, baseItemName);
 
    return stack;
 }
@@ -228,7 +228,7 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
 
     m_MonkWeaponSet.insert(w_bitem);
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Base Item Type %d [%s] set as monk weapon", w_bitem, baseItemName.CStr());
+    LOG_INFO("Base Item Type %d [%s] set as monk weapon", w_bitem, baseItemName);
 
     if (bFirstTime)
     {
@@ -257,7 +257,7 @@ ArgumentStack Weapon::SetWeaponImprovedCriticalFeat(ArgumentStack&& args)
     m_WeaponImprovedCriticalMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Improved Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Improved Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -276,7 +276,7 @@ ArgumentStack Weapon::SetWeaponSpecializationFeat(ArgumentStack&& args)
     m_WeaponSpecializationMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -295,7 +295,7 @@ ArgumentStack Weapon::SetGreaterWeaponSpecializationFeat(ArgumentStack&& args)
     m_GreaterWeaponSpecializationMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Greater Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Greater Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -314,7 +314,7 @@ ArgumentStack Weapon::SetEpicWeaponSpecializationFeat(ArgumentStack&& args)
     m_EpicWeaponSpecializationMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Epic Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Epic Weapon Specialization Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -333,7 +333,7 @@ ArgumentStack Weapon::SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args
     m_EpicWeaponOverwhelmingCriticalMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Overwhelming Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Overwhelming Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -352,7 +352,7 @@ ArgumentStack Weapon::SetEpicWeaponDevastatingCriticalFeat(ArgumentStack&& args)
     m_EpicWeaponDevastatingCriticalMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Devastating Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Devastating Critical Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -371,7 +371,7 @@ ArgumentStack Weapon::SetWeaponOfChoiceFeat(ArgumentStack&& args)
     m_WeaponOfChoiceMap.insert({w_bitem, feat});
     auto featName = Globals::Rules()->GetFeat(feat)->GetNameText();
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
-    LOG_INFO("Weapon of Choice Feat %d [%s] added for Base Item Type %d [%s]", feat, featName.CStr(), w_bitem, baseItemName.CStr());
+    LOG_INFO("Weapon of Choice Feat %d [%s] added for Base Item Type %d [%s]", feat, featName, w_bitem, baseItemName);
 
     return stack;
 }
@@ -402,7 +402,7 @@ ArgumentStack Weapon::SetDevastatingCriticalEventScript(ArgumentStack&& args)
     ArgumentStack stack;
 
     m_DCScript = Services::Events::ExtractArgument<std::string>(args);
-    LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript.c_str());
+    LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript);
 
     return stack;
 }

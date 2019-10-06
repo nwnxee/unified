@@ -10,7 +10,7 @@ static Commands *g_commands;
 Commands::Commands()
 {
     g_commands = this;
-    RegisterCommand("nwnx_commands_test", [](std::string& s){ LOG_NOTICE("Selftest command. Args: '%s'", s.c_str()); });
+    RegisterCommand("nwnx_commands_test", [](std::string& s){ LOG_NOTICE("Selftest command. Args: '%s'", s); });
 }
 
 Commands::~Commands()
@@ -24,19 +24,19 @@ bool Commands::RegisterCommand(const std::string& cmd, CommandFunc func)
     if (it == m_commandMap.end())
     {
         m_commandMap[cmd] = func;
-        LOG_INFO("Registering command '%s'", cmd.c_str());
+        LOG_INFO("Registering command '%s'", cmd);
         return true;
     }
     else
     {
-        LOG_WARNING("Command '%s' already registered", cmd.c_str());
+        LOG_WARNING("Command '%s' already registered", cmd);
         return false;
     }
 }
 
 void Commands::UnregisterCommand(const std::string& cmd)
 {
-    LOG_INFO("Unregistering command '%s'", cmd.c_str());
+    LOG_INFO("Unregistering command '%s'", cmd);
     m_commandMap.erase(cmd);
 }
 
@@ -63,7 +63,7 @@ bool Commands::ScheduleCommand(std::string cmdline)
     if (it != m_commandMap.end())
     {
         m_commandQueue.emplace_back(cmd, args);
-        LOG_DEBUG("Scheduled command '%s' with args '%s'", cmd.c_str(), args.c_str());
+        LOG_DEBUG("Scheduled command '%s' with args '%s'", cmd, args);
         return true;
     }
 
@@ -75,7 +75,7 @@ void Commands::RunScheduledCommands()
     std::lock_guard<std::mutex> guard(m_queueLock);
     for (auto item: m_commandQueue)
     {
-        LOG_DEBUG("Running command '%s', args: '%s'", item.first.c_str(), item.second.c_str());
+        LOG_DEBUG("Running command '%s', args: '%s'", item.first, item.second);
         auto it = m_commandMap.find(item.first);
         if (it != m_commandMap.end())
         {
