@@ -934,7 +934,7 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object o
 /// Remove oObject from the dispatch list for sEvent+sScript.
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
 
-/// @{
+/// @}
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
