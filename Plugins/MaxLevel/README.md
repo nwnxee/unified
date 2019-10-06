@@ -16,7 +16,6 @@ This plugin extends the maximum level possibility from 40 to 60. The plugin prov
 
 * Spellcasters may not change spells when levelling up
 * Next Level XP on Character Sheet shows an incorrect value
-* The hook to `CNWSCreatureStats::CanLevelUp` used in this plugin conflicts with its usage in the `NWNX_Creature_LevelUp` function. There are workarounds for this but would require changing some source, removing the hook in NWNX_Creature.
 
 ## Setup
 * Define your max levels variable in your server environment. 

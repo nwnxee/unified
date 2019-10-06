@@ -3,5 +3,3 @@
 ## Description
 
 Functions exposing additional object properties
-
-## Environment Variables

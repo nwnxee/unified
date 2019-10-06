@@ -10,7 +10,7 @@ Events exist for SUCCESS or FAILURE.
 
 ## Limitations
 
-For added security, it is highly recommended to set your webhook path as an environment variable and use `NWNX_Util_GetEnvironmentVariable` to construct your path.
+For added security, it is highly recommended to set your webhook path as an environment variable and use NWNX_Util_GetEnvironmentVariable() to construct your path.
 
 ## Example usage
 

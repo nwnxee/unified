@@ -3,5 +3,3 @@
 ## Description
 
 Allows subscribing to Combat Mode toggle events
-
-## Environment Variables

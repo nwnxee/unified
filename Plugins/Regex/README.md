@@ -3,5 +3,3 @@
 ## Description
 
 Provide regular expression functions.
-
-## Environment Variables

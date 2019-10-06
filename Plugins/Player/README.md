@@ -4,8 +4,6 @@
 
 Functions exposing additional player properties and commands.
 
-## Environment Variables
-
 ## Function Documentation and Examples
 
 #### SetPersistentLocation()

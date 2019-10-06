@@ -46,7 +46,7 @@ Allows users to call Lua code with NWScript binding.
 
 
 ## Documentation
-This plugin let you execute Lua code inside *NWscript* via two functions `NWNX_Lua_EvalVoid()` and `NWNX_Lua_Eval()`, the second one returning (as string) the result of the Lua code execution. With the `NWNX_Lua_RunEvent()` function you can generate events in NWScript, receive them on the Lua side and executing all the Lua functions registered to listen to that event in order of priority. For details on events just look at the three `*Event()` functions in `preload.lua`. 
+This plugin let you execute Lua code inside *NWscript* via two functions NWNX_Lua_EvalVoid() and NWNX_Lua_Eval(), the second one returning (as string) the result of the Lua code execution. With the NWNX_Lua_RunEvent() function you can generate events in NWScript, receive them on the Lua side and executing all the Lua functions registered to listen to that event in order of priority. For details on events just look at the three `*Event()` functions in `preload.lua`. 
 Lastly the *run script hook* permit to run a Lua function before a script is executed in the module, with returning values from the function having special effects: from skipping the script execution to being treated as a StartingConditional() result (for details see the configuration section). 
 
 In the Lua space all the basics NWScript functions are already defined, that by simply requiring the file `nwn.lua`. 

@@ -2,6 +2,4 @@
 
 ## Description
 
-Allows the appearance and some other things of creatures to be overridden per player
-
-## Environment Variables
+Allows the appearance and some other things of creatures to be overridden per player.
