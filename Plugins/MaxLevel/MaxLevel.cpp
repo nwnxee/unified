@@ -210,21 +210,21 @@ void MaxLevel::LoadSpellGainTableHook(Services::Hooks::CallType type, CNWClass* 
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
         return;
 
-    auto *twoda = new C2DA(CResRef(pTable->CStr()), 1);
-    twoda->Load2DArray();
+    C2DA twoda(pTable->CStr(), true);
+    twoda.Load2DArray();
 
     for (int i = CORE_MAX_LEVEL; i < g_plugin->m_maxLevel; i++)
     {
         int32_t numSpellLevels = 0;
         uint8_t lastFoundSpellGainLevel = CORE_MAX_LEVEL;
-        twoda->GetINTEntry(i, "NumSpellLevels", &numSpellLevels);
+        twoda.GetINTEntry(i, "NumSpellLevels", &numSpellLevels);
 
         // If they don't have this set then default to the last found level
         if (!numSpellLevels)
         {
             LOG_WARNING("No spell gain row found for Level %d for %s Class. Defaulting to Level %d.",
                     1 + i, pClass->GetNameText(), lastFoundSpellGainLevel);
-            twoda->GetINTEntry(lastFoundSpellGainLevel - 1, "NumSpellLevels", &numSpellLevels);
+            twoda.GetINTEntry(lastFoundSpellGainLevel - 1, "NumSpellLevels", &numSpellLevels);
         }
         g_plugin->m_nSpellLevelsPerLevelAdded[pClass->m_nName][i] = numSpellLevels;
 
@@ -232,10 +232,10 @@ void MaxLevel::LoadSpellGainTableHook(Services::Hooks::CallType type, CNWClass* 
         for (int j = 0; j < numSpellLevels; j++)
         {
             int32_t iNumSpells = 0;
-            twoda->GetINTEntry(i, 2 + j, &iNumSpells);
+            twoda.GetINTEntry(i, 2 + j, &iNumSpells);
             if (!iNumSpells)
             {
-                twoda->GetINTEntry(lastFoundSpellGainLevel - 1, 2 + j, &iNumSpells);
+                twoda.GetINTEntry(lastFoundSpellGainLevel - 1, 2 + j, &iNumSpells);
             }
             else
             {
@@ -275,8 +275,8 @@ void MaxLevel::LoadSpellKnownTableHook(Services::Hooks::CallType type, CNWClass*
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
         return;
 
-    auto *twoda = new C2DA(CResRef(pTable->CStr()), 1);
-    twoda->Load2DArray();
+    C2DA twoda(pTable->CStr(), true);
+    twoda.Load2DArray();
 
     for (int i = CORE_MAX_LEVEL; i < g_plugin->m_maxLevel; i++)
     {
@@ -286,10 +286,10 @@ void MaxLevel::LoadSpellKnownTableHook(Services::Hooks::CallType type, CNWClass*
         for (int j = 0; j < g_plugin->m_nSpellLevelsPerLevelAdded[pClass->m_nName][i - 1]; j++)
         {
             int32_t iNumSpells = 0;
-            twoda->GetINTEntry(i, 2 + j, &iNumSpells);
+            twoda.GetINTEntry(i, 2 + j, &iNumSpells);
             if (!iNumSpells)
             {
-                twoda->GetINTEntry(lastFoundSpellKnownLevel - 1, 2 + j, &iNumSpells);
+                twoda.GetINTEntry(lastFoundSpellKnownLevel - 1, 2 + j, &iNumSpells);
             }
             else
             {
