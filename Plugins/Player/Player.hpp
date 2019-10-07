@@ -45,6 +45,7 @@ private:
     ArgumentStack SetPlaceableNameOverride          (ArgumentStack&& args);
     ArgumentStack GetQuestCompleted                 (ArgumentStack&& args);
     ArgumentStack SetPersistentLocation             (ArgumentStack&& args);
+    ArgumentStack UpdateItemName                    (ArgumentStack&& args);    
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 

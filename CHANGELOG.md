@@ -186,6 +186,7 @@ The following plugins were added:
 - Player: SetPlaceableNameOverride()
 - Player: GetQuestCompleted()
 - Player: SetPersistentLocation()
+- Player: UpdateItemName()
 - Race: SetRacialModifier()
 - Race: GetParentRace()
 - Regex: Search()

@@ -19,7 +19,7 @@ public:
 private:
     static NWNXLib::API::CNWSPlayer *Player(ArgumentStack& args);
     static void ComputeGameObjectUpdateForObjectHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSMessage*,
-            NWNXLib::API::CNWSPlayer*, NWNXLib::API::CNWSObject*, NWNXLib::API::CGameObjectArray*, NWNXLib::API::Types::ObjectID);
+        NWNXLib::API::CNWSPlayer*, NWNXLib::API::CNWSObject*, NWNXLib::API::CGameObjectArray*, NWNXLib::API::Types::ObjectID);
 
     enum OverrideType {
         AppearanceType  = 0,
@@ -41,21 +41,19 @@ private:
     {
         std::bitset<OverrideType_MAX> bitSet;
 
-        uint16_t appearanceType;
-        uint8_t gender;
-        int32_t currentHitPoints;
-        uint8_t hairColor;
-        uint8_t skinColor;
-        uint8_t phenoType;
-        uint8_t headType;
-        uint16_t soundSet;
-        uint32_t tailType;
-        uint32_t wingType;
-        int32_t footstepSound;
-        uint16_t portraitId;
+        uint16_t appearanceType     = 0;
+        uint8_t gender              = 0;
+        int32_t currentHitPoints    = 0;
+        uint8_t hairColor           = 0;
+        uint8_t skinColor           = 0;
+        uint8_t phenoType           = 0;
+        uint8_t headType            = 0;
+        uint16_t soundSet           = 0;
+        uint32_t tailType           = 0;
+        uint32_t wingType           = 0;
+        int32_t footstepSound       = 0;
+        uint16_t portraitId         = 0;
     };
-
-    std::map<std::string, AppearanceOverrideData> m_AppearanceOverrideData;
 
     template <typename T>
     static void SwapIntValue(bool, T&, T&);

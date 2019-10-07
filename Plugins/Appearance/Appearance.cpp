@@ -6,9 +6,9 @@
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWSPlayer.hpp"
-#include "API/CNWSCreatureAppearanceInfo.hpp"
 #include "API/CNWSCreature.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "ViewPtr.hpp"
 
 
@@ -45,7 +45,7 @@ Appearance::Appearance(const Plugin::CreateParams& params)
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
-        
+
     REGISTER(SetOverride);
     REGISTER(GetOverride);
 
@@ -53,7 +53,6 @@ Appearance::Appearance(const Plugin::CreateParams& params)
 
     GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>
             (&ComputeGameObjectUpdateForObjectHook);
-
 }
 
 Appearance::~Appearance()
@@ -84,30 +83,35 @@ void Appearance::ComputeGameObjectUpdateForObjectHook(Services::Hooks::CallType 
 {
     if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
     {
-        static AppearanceOverrideData *aod;
+        static AppearanceOverrideData *pAOD;
 
         if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
         {
-            auto search = g_plugin->m_AppearanceOverrideData.find(
-                    Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidObjectToUpdate));
-
-            aod = search != g_plugin->m_AppearanceOverrideData.end() ? &search->second : nullptr;
+            if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
+                    Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            {
+                pAOD = static_cast<AppearanceOverrideData*>(*appearanceOverrideData);
+            }
+            else
+            {
+                pAOD = nullptr;
+            }
         }
 
-        if (aod)
+        if (pAOD)
         {
-            SwapIntValue(aod->bitSet[AppearanceType], aod->appearanceType, pCreature->m_cAppearance.m_nAppearanceType);
-            SwapIntValue(aod->bitSet[Gender], aod->gender, pCreature->m_cAppearance.m_nGender);
-            SwapIntValue(aod->bitSet[HitPoints], aod->currentHitPoints, pCreature->m_nCurrentHitPoints);
-            SwapIntValue(aod->bitSet[HairColor], aod->hairColor, pCreature->m_cAppearance.m_nHairColor);
-            SwapIntValue(aod->bitSet[SkinColor], aod->skinColor, pCreature->m_cAppearance.m_nSkinColor);
-            SwapIntValue(aod->bitSet[PhenoType], aod->phenoType, pCreature->m_cAppearance.m_nPhenoType);
-            SwapIntValue(aod->bitSet[HeadType], aod->headType, pCreature->m_cAppearance.m_nHeadVariation);
-            SwapIntValue(aod->bitSet[SoundSet], aod->soundSet, pCreature->m_nSoundSet);
-            SwapIntValue(aod->bitSet[TailType], aod->tailType, pCreature->m_cAppearance.m_nTailVariation);
-            SwapIntValue(aod->bitSet[WingType], aod->wingType, pCreature->m_cAppearance.m_nWingVariation);
-            SwapIntValue(aod->bitSet[FootstepSound], aod->footstepSound, pCreature->m_nFootstepType);
-            SwapIntValue(aod->bitSet[Portrait], aod->portraitId, pCreature->m_nPortraitId);
+            SwapIntValue(pAOD->bitSet[AppearanceType], pAOD->appearanceType, pCreature->m_cAppearance.m_nAppearanceType);
+            SwapIntValue(pAOD->bitSet[Gender], pAOD->gender, pCreature->m_cAppearance.m_nGender);
+            SwapIntValue(pAOD->bitSet[HitPoints], pAOD->currentHitPoints, pCreature->m_nCurrentHitPoints);
+            SwapIntValue(pAOD->bitSet[HairColor], pAOD->hairColor, pCreature->m_cAppearance.m_nHairColor);
+            SwapIntValue(pAOD->bitSet[SkinColor], pAOD->skinColor, pCreature->m_cAppearance.m_nSkinColor);
+            SwapIntValue(pAOD->bitSet[PhenoType], pAOD->phenoType, pCreature->m_cAppearance.m_nPhenoType);
+            SwapIntValue(pAOD->bitSet[HeadType], pAOD->headType, pCreature->m_cAppearance.m_nHeadVariation);
+            SwapIntValue(pAOD->bitSet[SoundSet], pAOD->soundSet, pCreature->m_nSoundSet);
+            SwapIntValue(pAOD->bitSet[TailType], pAOD->tailType, pCreature->m_cAppearance.m_nTailVariation);
+            SwapIntValue(pAOD->bitSet[WingType], pAOD->wingType, pCreature->m_cAppearance.m_nWingVariation);
+            SwapIntValue(pAOD->bitSet[FootstepSound], pAOD->footstepSound, pCreature->m_nFootstepType);
+            SwapIntValue(pAOD->bitSet[Portrait], pAOD->portraitId, pCreature->m_nPortraitId);
         }
     }
 }
@@ -148,63 +152,72 @@ ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
           ASSERT_OR_THROW(type < OverrideType_MAX);
         const auto value = Services::Events::ExtractArgument<int32_t>(args);
 
-        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidCreature);
-        AppearanceOverrideData *aod = &m_AppearanceOverrideData[key];
+        AppearanceOverrideData* pAOD;
+        if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidCreature, Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+        {
+            pAOD = static_cast<AppearanceOverrideData*>(*appearanceOverrideData);
+        }
+        else
+        {
+            auto *pAppearanceOverrideData = new AppearanceOverrideData();
+            g_plugin->GetServices()->m_perObjectStorage->Set(oidCreature, Utils::ObjectIDToString(pPlayer->m_oidNWSObject), pAppearanceOverrideData,
+                                                             [](void*p) { delete static_cast<AppearanceOverrideData*>(p); });
+            pAOD = pAppearanceOverrideData;
+        }
 
         switch(type)
         {
             case AppearanceType:
-                SetIntValue(type, value, aod->bitSet, aod->appearanceType);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->appearanceType);
                 break;
 
             case Gender:
-                SetIntValue(type, value, aod->bitSet, aod->gender);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->gender);
                 break;
 
             case HitPoints:
-                SetIntValue(type, value, aod->bitSet, aod->currentHitPoints);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->currentHitPoints);
                 break;
 
             case HairColor:
-                SetIntValue(type, value, aod->bitSet, aod->hairColor);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->hairColor);
                 break;
 
             case SkinColor:
-                SetIntValue(type, value, aod->bitSet, aod->skinColor);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->skinColor);
                 break;
 
             case PhenoType:
-                SetIntValue(type, value, aod->bitSet, aod->phenoType);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->phenoType);
                 break;
 
             case HeadType:
-                SetIntValue(type, value, aod->bitSet, aod->headType);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->headType);
                 break;
 
             case SoundSet:
-                SetIntValue(type, value, aod->bitSet, aod->soundSet);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->soundSet);
                 break;
 
             case TailType:
-                SetIntValue(type, value, aod->bitSet, aod->tailType);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->tailType);
                 break;
 
             case WingType:
-                SetIntValue(type, value, aod->bitSet, aod->wingType);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->wingType);
                 break;
 
             case FootstepSound:
-                SetIntValue(type, value, aod->bitSet, aod->footstepSound);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->footstepSound);
                 break;
 
             case Portrait:
-                SetIntValue(type, value, aod->bitSet, aod->portraitId);
+                SetIntValue(type, value, pAOD->bitSet, pAOD->portraitId);
                 break;
 
             default:
                 break;
         }
-
     }
 
     return stack;
@@ -223,62 +236,61 @@ ArgumentStack Appearance::GetOverride(ArgumentStack&& args)
           ASSERT_OR_THROW(type >= 0);
           ASSERT_OR_THROW(type < OverrideType_MAX);
 
-        const std::string key = Utils::ObjectIDToString(pPlayer->m_oidNWSObject) + "_" + Utils::ObjectIDToString(oidCreature);
-
-        if (m_AppearanceOverrideData.find(key) != m_AppearanceOverrideData.end())
+        if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidCreature,
+                Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
         {
-            AppearanceOverrideData *aod = &m_AppearanceOverrideData[key];
+            auto *pAOD = static_cast<AppearanceOverrideData*>(*appearanceOverrideData);
 
-            if(aod->bitSet[type])
+            if(pAOD->bitSet[type])
             {
                 switch(type)
                 {
                     case AppearanceType:
-                        retVal = aod->appearanceType;
+                        retVal = pAOD->appearanceType;
                         break;
 
                     case Gender:
-                        retVal = aod->gender;
+                        retVal = pAOD->gender;
                         break;
 
                     case HitPoints:
-                        retVal = aod->currentHitPoints;
+                        retVal = pAOD->currentHitPoints;
                         break;
 
                     case HairColor:
-                        retVal = aod->hairColor;
+                        retVal = pAOD->hairColor;
                         break;
 
                     case SkinColor:
-                        retVal = aod->skinColor;
+                        retVal = pAOD->skinColor;
                         break;
 
                     case PhenoType:
-                        retVal = aod->phenoType;
+                        retVal = pAOD->phenoType;
                         break;
 
                     case HeadType:
-                        retVal = aod->headType;
+                        retVal = pAOD->headType;
                         break;
 
                     case SoundSet:
-                        retVal = aod->soundSet;
+                        retVal = pAOD->soundSet;
                         break;
 
                     case TailType:
-                        retVal = aod->tailType;
+                        retVal = pAOD->tailType;
                         break;
 
                     case WingType:
-                        retVal = aod->wingType;
+                        retVal = pAOD->wingType;
                         break;
 
                     case FootstepSound:
-                        retVal = aod->footstepSound;
+                        retVal = pAOD->footstepSound;
                         break;
 
                     case Portrait:
-                        retVal = aod->portraitId;
+                        retVal = pAOD->portraitId;
                         break;
 
                     default:
