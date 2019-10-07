@@ -230,7 +230,7 @@ void NWNX_Administration_AddBannedPlayerName(string playerName)
     NWNX_PushArgumentString(NWNX_Administration, sFunc, playerName);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
-void NWNX_Administration_RemoveBannedPlayerName(string playername)
+void NWNX_Administration_RemoveBannedPlayerName(string playerName)
 {
     string sFunc = "REMOVE_BANNED_PLAYER_NAME";
 
