@@ -1,5 +1,8 @@
-# NWNX:EE (build 8186) {#mainpage}
-[TOC]
+# NWNX:EE (build 8186)
+
+@mainpage
+@tableofcontents
+
 ## What is NWNX:EE?
 
 NWNX:EE stands for Neverwinter Nights Extender: Enhanced Edition. In a nutshell, NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
