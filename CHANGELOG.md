@@ -103,6 +103,7 @@ The following plugins were added:
 - Area: {Get|Set}SunMoonColors()
 - Area: CreateTransition()
 - Area: {Get|Set}TileAnimationLoop()
+- Area: TestDirectLine()
 - Chat: GetChatHearingDistance()
 - Chat: SetChatHearingDistance()
 - Creature: GetAttackBonus()

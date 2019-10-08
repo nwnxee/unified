@@ -190,6 +190,20 @@ int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int
 /// @note Requires clients to re-enter the area for it to take effect
 void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
 
+/// @brief Test to see if there's a direct, walkable line between two points in the area.
+/// @param oArea The area object.
+/// @param fStartX, fStartY The starting points.
+/// @param fEndX, fEndY The ending points.
+/// @param fPerSpace The personal space of a creature. Found in appearance.2da.
+/// @param fHeight The height of a creature. Found in appearance.2da.
+/// @param bIgnoreDoors Whether to ignore doors in the check.
+/// @return
+///  * 1 if there is a direct walkable line.
+///  * -1 if the line is blocked by terrain.
+///  * -2 if the line is blocked by a placeable.
+///  * -3 if the line is blocked by a creature.
+int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float fEndX, float fEndY, float fPerSpace, float fHeight, int bIgnoreDoors=FALSE);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -458,4 +472,23 @@ void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, in
     NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
 
     NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+
+int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float fEndX, float fEndY, float fPerSpace, float fHeight, int bIgnoreDoors=FALSE)
+{
+    string sFunc = "TestDirectLine";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, bIgnoreDoors);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fHeight);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fPerSpace);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fEndY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fEndX);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fStartY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fStartX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
 }
