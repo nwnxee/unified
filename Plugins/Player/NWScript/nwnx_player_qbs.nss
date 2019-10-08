@@ -1,5 +1,12 @@
+/// @addtogroup player
+/// @{
+/// @file nwnx_player_qbs.nss
+/// @brief Helper script for quickbar management.
 #include "nwnx_player"
 
+/// @name Quickbar Slot Types
+/// @anchor qbs_types
+/// @{
 const int NWNX_PLAYER_QBS_TYPE_EMPTY                        = 0;
 const int NWNX_PLAYER_QBS_TYPE_ITEM                         = 1;
 const int NWNX_PLAYER_QBS_TYPE_SPELL                        = 2;
@@ -18,40 +25,42 @@ const int NWNX_PLAYER_QBS_TYPE_BARTER                       = 41;
 const int NWNX_PLAYER_QBS_TYPE_QUICK_CHAT                   = 42;
 const int NWNX_PLAYER_QBS_TYPE_CANCELPOLYMORPH              = 43;
 const int NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY             = 44;
+/// @}
 
-
-// Create an empty QBS of given type
+/// Create an empty QBS of given type
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Empty(int type = NWNX_PLAYER_QBS_TYPE_EMPTY);
-// Create a QBS for using an item
+/// Create a QBS for using an item
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseItem(object oItem, int nPropertyID = 0);
-// Create a QBS for equipping an item
+/// Create a QBS for equipping an item
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_EquipItem(object oItem, object oSecondaryItem = OBJECT_INVALID);
-// Create a QBS for casting a spell
+/// Create a QBS for casting a spell
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_CastSpell(int nSpell, int nClassIndex = 0, int nMetamagic = METAMAGIC_NONE, int nDomainLevel = -1);
-// Create a QBS for using a skill
+/// Create a QBS for using a skill
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseSkill(int nSkill);
-// Create a QBS for using a feat
+/// Create a QBS for using a feat
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseFeat(int nFeat);
-// Create a QBS for starting a dialog
+/// Create a QBS for starting a dialog
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_StartDialog();
-// Create a QBS for attacking
+/// Create a QBS for attacking
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Attack();
-// Create a QBS for emoting
+/// Create a QBS for emoting
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Emote(int nEmote);
-// Create a QBS for toggling a mode
+/// Create a QBS for toggling a mode
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_ToggleMode(int nMode);
-// Create a QBS for examining
+/// Create a QBS for examining
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Examine();
-// Create a QBS for bartering
+/// Create a QBS for bartering
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Barter();
-// Create a QBS for quickchat command
+/// Create a QBS for quickchat command
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_QuickChat(int nCommand);
-// Create a QBS for examining
+/// Create a QBS for examining
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_PossessFamiliar();
-// Create a QBS for casting a spell
+/// Create a QBS for casting a spell
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_UseSpecialAbility(int nSpell, int nCasterLevel);
-// Create a QBS for running a command
+/// Create a QBS for running a command
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Command(string sCommandLabel, string sCommandLine);
+
+/// @}
 
 
 struct NWNX_Player_QuickBarSlot NWNX_Player_QBS_Empty(int type = NWNX_PLAYER_QBS_TYPE_EMPTY)

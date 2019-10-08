@@ -1,44 +1,67 @@
+/// @defgroup encounter Encounter
+/// @brief Functions exposing additional encounter properties.
+/// @{
+/// @file nwnx_encounter.nss
 #include "nwnx"
 
-const string NWNX_Encounter = "NWNX_Encounter";
+const string NWNX_Encounter = "NWNX_Encounter"; ///< @private
 
+/// @brief A creature list entry for an encounter.
 struct NWNX_Encounter_CreatureListEntry
 {
-    string resref;
-    float challengeRating;
-    int unique;
+    string resref; ///< The resref.
+    float challengeRating; ///< The challenge rating.
+    int unique; ///< Creature will be unique to the encounter.
 };
 
-// Get the number of creatures in the encounter list
+/// @brief Get the number of creatures in the encounter list
+/// @param encounter The encounter object.
+/// @return The number of creatures in the encounter list.
 int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter);
 
-// Gets the encounter creature list entry at the specified index
-// Index bounds: 0 <= index < NWNX_Encounter_GetNumberOfCreaturesInEncounterList(encounter)
+/// @brief Gets the encounter creature list entry at the specified index
+/// @param encounter The encounter object.
+/// @param index The index of the creature in the encounter list.
+/// @return An NWNX_Encounter_CreatureListEntry.
 struct NWNX_Encounter_CreatureListEntry NWNX_Encounter_GetEncounterCreatureByIndex(object encounter, int index);
 
-// Set the encounter creature list entry at the specified index
-// Index bounds: 0 <= index < NWNX_Encounter_GetNumberOfCreaturesInEncounterList(encounter)
+/// @brief Set the encounter creature list entry at the specified index
+/// @param encounter The encounter object.
+/// @param index The index of the creature in the encounter list.
+/// @param creatureEntry The NWNX_Encounter_CreatureListEntry.
 void NWNX_Encounter_SetEncounterCreatureByIndex(object encounter, int index, struct NWNX_Encounter_CreatureListEntry creatureEntry);
 
-// Get the faction id of encounter
+/// @brief Get the faction id of encounter
+/// @param encounter The encounter object.
+/// @return The faction id.
 int NWNX_Encounter_GetFactionId(object encounter);
 
-// Set the faction id of encounter
+/// @brief Set the faction id of encounter.
+/// @param encounter The encounter object.
+/// @param factionId The faction id.
 void NWNX_Encounter_SetFactionId(object encounter, int factionId);
 
-// Get if encounter is player triggered only
+/// @brief Get if encounter is player triggered only.
+/// @param encounter The encounter object.
+/// @return TRUE is encounter is player triggered only.
 int NWNX_Encounter_GetPlayerTriggeredOnly(object encounter);
 
-// Set if encounter is player triggered only
-// playerTriggeredOnly = TRUE/FALSE
+/// @brief Set if encounter is player triggered only.
+/// @param encounter The encounter object.
+/// @param playerTriggeredOnly TRUE/FALSE
 void NWNX_Encounter_SetPlayerTriggeredOnly(object encounter, int playerTriggeredOnly);
 
-// Get the reset time of encounter
+/// @brief Get the reset time of encounter.
+/// @param encounter The encounter object.
+/// @return The seconds the encounter is defined to reset.
 int NWNX_Encounter_GetResetTime(object encounter);
 
-// Set the reset time of encounter
+/// @brief Set the reset time of encounter.
+/// @param encounter The encounter object.
+/// @param resetTime The seconds the encounter will reset.
 void NWNX_Encounter_SetResetTime(object encounter, int resetTime);
 
+/// @}
 
 int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter)
 {

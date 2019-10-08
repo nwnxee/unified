@@ -1,6 +1,10 @@
+/// @defgroup events Events
+/// @brief Provides an interface for plugins to create event-based systems, and exposes some events through that interface.
+/// @{
+/// @file nwnx_events.nss
 #include "nwnx"
 
-const string NWNX_Events = "NWNX_Events";
+const string NWNX_Events = "NWNX_Events"; ///< @private
 
 ////////////////////////////////////////////////////////////////////////////////
 /* The following events are exposed by this plugin:
@@ -852,81 +856,85 @@ const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;
 const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
 */
 
-// Scripts can subscribe to events.
-// Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
-// Others can be signalled via script code (see NWNX_Events_SignalEvent).
+/// @brief Scripts can subscribe to events.
+///
+/// Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
+/// Others can be signalled via script code via NWNX_Events_SignalEvent().
+/// @param evt The event name.
+/// @param script The script to call when the event fires.
 void NWNX_Events_SubscribeEvent(string evt, string script);
 
-// Pushes event data at the provided tag, which subscribers can access with GetEventData.
-// This should be called BEFORE SignalEvent.
+/// Pushes event data at the provided tag, which subscribers can access with GetEventData.
+/// This should be called BEFORE SignalEvent.
 void NWNX_Events_PushEventData(string tag, string data);
 
-// Signals an event. This will dispatch a notification to all subscribed handlers.
-// Returns TRUE if anyone was subscribed to the event, FALSE otherwise.
+/// Signals an event. This will dispatch a notification to all subscribed handlers.
+/// Returns TRUE if anyone was subscribed to the event, FALSE otherwise.
 int NWNX_Events_SignalEvent(string evt, object target);
 
-// Retrieves the event data for the currently executing script.
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+/// Retrieves the event data for the currently executing script.
+/// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 string NWNX_Events_GetEventData(string tag);
 
-// Skips execution of the currently executing event.
-// If this is a NWNX event, that means that the base function call won't be called.
-// This won't impact any other subscribers, nor dispatch for before / after functions.
-// For example, if you are subscribing to NWNX_ON_EXAMINE_OBJECT_BEFORE, and you skip ...
-// - The other subscribers will still be called.
-// - The original function in the base game will be skipped.
-// - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
-//
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
-// ONLY WORKS WITH THE FOLLOWING EVENTS:
-// - Feat events
-// - Item events
-// - Healer's Kit event
-// - CombatMode events
-// - Party events
-// - Skill events
-// - Map events
-// - Listen/Spot Detection events
-// - Polymorph events
-// - DMAction events
-// - Client connect event
-// - Spell events
-// - QuickChat events
-// - Barter event (START only)
-// - Trap events
-// - Sticky Player Name event
-// - Add/RemoveGold events
-// - PVP Attitude Change events
-// - {Enter|Exit}Stealth events
+/// Skips execution of the currently executing event.
+/// If this is a NWNX event, that means that the base function call won't be called.
+/// This won't impact any other subscribers, nor dispatch for before / after functions.
+/// For example, if you are subscribing to NWNX_ON_EXAMINE_OBJECT_BEFORE, and you skip ...
+/// - The other subscribers will still be called.
+/// - The original function in the base game will be skipped.
+/// - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
+///
+/// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+/// ONLY WORKS WITH THE FOLLOWING EVENTS:
+/// - Feat events
+/// - Item events
+/// - Healer's Kit event
+/// - CombatMode events
+/// - Party events
+/// - Skill events
+/// - Map events
+/// - Listen/Spot Detection events
+/// - Polymorph events
+/// - DMAction events
+/// - Client connect event
+/// - Spell events
+/// - QuickChat events
+/// - Barter event (START only)
+/// - Trap events
+/// - Sticky Player Name event
+/// - Add/RemoveGold events
+/// - PVP Attitude Change events
+/// - {Enter|Exit}Stealth events
 void NWNX_Events_SkipEvent();
 
-// Set the return value of the event.
-//
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
-// ONLY WORKS WITH THE FOLLOWING EVENTS:
-// - Healer's Kit event
-// - Listen/Spot Detection events -> "1" or "0"
-// - OnClientConnectBefore -> Reason for disconnect if skipped
-// - Ammo Reload event -> Forced ammunition returned
-// - Trap events -> "1" or "0"
-// - Sticky Player Name event -> "1" or "0"
+/// Set the return value of the event.
+///
+/// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+/// ONLY WORKS WITH THE FOLLOWING EVENTS:
+/// - Healer's Kit event
+/// - Listen/Spot Detection events -> "1" or "0"
+/// - OnClientConnectBefore -> Reason for disconnect if skipped
+/// - Ammo Reload event -> Forced ammunition returned
+/// - Trap events -> "1" or "0"
+/// - Sticky Player Name event -> "1" or "0"
 void NWNX_Events_SetEventResult(string data);
 
-// Returns the current event name
-//
-// Returns "" on error
+/// Returns the current event name
+///
+/// Returns "" on error
 string NWNX_Events_GetCurrentEvent();
 
-// Toggles DispatchListMode for sEvent+sScript
-// If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list.
+/// Toggles DispatchListMode for sEvent+sScript
+/// If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list.
 void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable);
 
-// Add oObject to the dispatch list for sEvent+sScript.
+/// Add oObject to the dispatch list for sEvent+sScript.
 void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject);
 
-// Remove oObject from the dispatch list for sEvent+sScript.
+/// Remove oObject from the dispatch list for sEvent+sScript.
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
 
+/// @}
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {

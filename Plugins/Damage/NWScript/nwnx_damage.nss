@@ -1,91 +1,112 @@
+/// @defgroup damage Damage
+/// @brief Run a script before damage and attack events allowing for modification. Includes function to arbitrarily apply damage.
+/// @{
+/// @file nwnx_damage.nss
 #include "nwnx"
 
-const string NWNX_Damage = "NWNX_Damage";
+const string NWNX_Damage = "NWNX_Damage"; ///< @private
 
-struct NWNX_Damage_DamageEventData // Damage event data
+/// @struct NWNX_Damage_DamageEventData
+/// @brief Damage Event Data
+struct NWNX_Damage_DamageEventData
 {
-    object oDamager;
-    int iBludgeoning;
-    int iPierce;
-    int iSlash;
-    int iMagical;
-    int iAcid;
-    int iCold;
-    int iDivine;
-    int iElectrical;
-    int iFire;
-    int iNegative;
-    int iPositive;
-    int iSonic;
-    int iBase;
+    object oDamager; ///< The object that inflicted the damage.
+    int iBludgeoning; ///< Bludgeoning damage
+    int iPierce; ///< Piercing damage
+    int iSlash; ///< Slashing damage
+    int iMagical; ///< Magical damage
+    int iAcid; ///< Acid damage
+    int iCold; ///< Cold damage
+    int iDivine; ///< Divine damage
+    int iElectrical; ///< Electrical damage
+    int iFire; ///< Fire damage
+    int iNegative; ///< Negative damage
+    int iPositive; ///< Positive damage
+    int iSonic; ///< Sonic damage
+    int iBase; ///< Base damage
 };
 
+/// @struct NWNX_Damage_AttackEventData
+/// @brief Attack Event Data
 struct NWNX_Damage_AttackEventData
 {
-    object oTarget;
-    int iBludgeoning;
-    int iPierce;
-    int iSlash;
-    int iMagical;
-    int iAcid;
-    int iCold;
-    int iDivine;
-    int iElectrical;
-    int iFire;
-    int iNegative;
-    int iPositive;
-    int iSonic;
-    int iBase;
-    int iAttackNumber; // 1-based index of the attack in current combat round
-    int iAttackResult; // 1=hit, 3=critical hit, 4=miss, 8=concealed
-    int iAttackType;   // 1=main hand, 2=offhand, 3-5=creature, 6=haste
-    int iSneakAttack;  // 0=neither, 1=sneak attack, 2=death attack, 3=both
+    object oTarget; ///< The target who took the damage
+    int iBludgeoning; ///< Bludgeoning damage
+    int iPierce; ///< Piercing damage
+    int iSlash; ///< Slashing damage
+    int iMagical; ///< Magical damage
+    int iAcid; ///< Acid damage
+    int iCold; ///< Cold damage
+    int iDivine; ///< Divine damage
+    int iElectrical; ///< Electrical damage
+    int iFire; ///< Fire damage
+    int iNegative; ///< Negative damage
+    int iPositive; ///< Positive damage
+    int iSonic; ///< Sonic damage
+    int iBase; ///< Base damage
+    int iAttackNumber; ///< 1-based index of the attack in current combat round
+    int iAttackResult; ///< 1=hit, 3=critical hit, 4=miss, 8=concealed
+    int iAttackType;   ///< 1=main hand, 2=offhand, 3-5=creature, 6=haste
+    int iSneakAttack;  ///< 0=neither, 1=sneak attack, 2=death attack, 3=both
 };
 
-// for DealDamage
+/// @struct NWNX_Damage_DamageData
+/// @brief Used for DealDamage
 struct NWNX_Damage_DamageData
 {
-    int iBludgeoning;
-    int iPierce;
-    int iSlash;
-    int iMagical;
-    int iAcid;
-    int iCold;
-    int iDivine;
-    int iElectrical;
-    int iFire;
-    int iNegative;
-    int iPositive;
-    int iSonic;
-    int iPower; // for overcoming DR
+    int iBludgeoning; ///< Bludgeoning damage
+    int iPierce; ///< Piercing damage
+    int iSlash; ///< Slashing damage
+    int iMagical; ///< Magical damage
+    int iAcid; ///< Acid damage
+    int iCold; ///< Cold damage
+    int iDivine; ///< Divine damage
+    int iElectrical; ///< Electrical damage
+    int iFire; ///< Fire damage
+    int iNegative; ///< Negative damage
+    int iPositive; ///< Positive damage
+    int iSonic; ///< Sonic damage
+    int iPower; ///< For overcoming DR
 };
 
-// Set Damage Event Script
-// If oOwner is OBJECT_INVALID, this sets the script globally for all creatures
-// If oOwner is valid, it will set it only for that creature.
+/// @brief Sets the script to run with a damage event.
+/// @param sScript The script that will handle the damage event.
+/// @param oOwner An object if only executing for a specific object or OBJECT_INVALID for global.
 void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID);
 
-// Get Damage Event Data (to use only on Damage Event Script)
+/// @brief Get Damage Event Data
+/// @return A NWNX_Damage_DamageEventData struct.
+/// @note To use only in the Damage Event Script.
 struct NWNX_Damage_DamageEventData NWNX_Damage_GetDamageEventData();
 
-// Set Damage Event Data (to use only on Damage Event Script)
+/// @brief Set Damage Event Data
+/// @param data A NWNX_Damage_DamageEventData struct.
+/// @note To use only in the Damage Event Script.
 void NWNX_Damage_SetDamageEventData(struct NWNX_Damage_DamageEventData data);
 
-// Set Attack Event Script
-// If oOwner is OBJECT_INVALID, this sets the script globally for all creatures
-// If oOwner is valid, it will set it only for that creature.
+/// @brief Sets the script to run with an attack event.
+/// @param sScript The script that will handle the attack event.
+/// @param oOwner An object if only executing for a specific object or OBJECT_INVALID for global.
 void NWNX_Damage_SetAttackEventScript(string sScript, object oOwner=OBJECT_INVALID);
 
-// Get Attack Event data (use only in Attack Event script)
+/// @brief Get Attack Event Data
+/// @return A NWNX_Damage_AttackEventData struct.
+/// @note To use only in the Attack Event Script.
 struct NWNX_Damage_AttackEventData NWNX_Damage_GetAttackEventData();
 
-// Set Attack Event data (use only in Attack Event script)
+/// @brief Set Attack Event Data
+/// @param data A NWNX_Damage_AttackEventData struct.
+/// @note To use only in the Attack Event Script.
 void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 
-// Deal damage to target - permits multiple damage types and checks enhancement bonus for overcoming DR
+/// @brief Deal damage to a target.
+/// @remark Permits multiple damage types and checks enhancement bonus for overcoming DR.
+/// @param data A NWNX_Damage_DamageData struct.
+/// @param oTarget The target object on whom the damage is dealt.
+/// @param oSource The source of the damage.
 void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource=OBJECT_SELF);
 
-//--------------------------- Implementation ----------------------------------
+/// @}
 
 void NWNX_Damage_SetDamageEventScript(string sScript, object oOwner=OBJECT_INVALID)
 {

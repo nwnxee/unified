@@ -94,6 +94,9 @@ add_subdirectory(NWNXLib)
 # The core shared library.
 add_subdirectory(Core)
 
+# The documentation generation.
+add_subdirectory(docgen)
+
 # Detect every plugin and store it in plugins . . .
 file(GLOB plugins Plugins/*/CMakeLists.txt)
 

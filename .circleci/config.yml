@@ -12,7 +12,7 @@ jobs:
           at: ~/nwnxee
       - checkout
       - run: CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
-      - run: make all
+      - run: make all -j2
       - run: Scripts/packageNWScript.sh
       - run: Scripts/packageJarFile.sh
       - run: zip Binaries/NWNX-EE.zip Binaries/NWNX_*.so Binaries/*.jar
@@ -23,6 +23,22 @@ jobs:
             - Binaries
       - store_artifacts:
           path: Binaries
+  docs-build:
+    <<: *defaults
+    docker:
+      - image: plenarius/nwnxee-doc-builder:0.0.3
+    steps:
+      - attach_workspace:
+          at: ~/nwnxee
+      - checkout
+      - run: CC="gcc -m32" CXX="g++ -m32" cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .
+      - run: make docs
+      - run: make dark-docs
+      - persist_to_workspace:
+          root: Documentation/
+          paths:
+            - light
+            - dark
   deploy:
     <<: *defaults
     machine: true
@@ -31,6 +47,29 @@ jobs:
           at: ~/nwnxee
       - run: go get -u github.com/tcnksm/ghr
       - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG ~/nwnxee/Binaries/
+  docs-deploy:
+    docker:
+      - image: node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: Documentation
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install -g --silent gh-pages@2.0.1
+            git config user.email "ci-build@nwnx.io"
+            git config user.name "ci-build"
+      - add_ssh_keys:
+          fingerprints:
+            - "2c:48:0b:5e:9c:d0:99:80:4b:57:1d:0e:09:16:5a:67"
+      - run:
+          name: Move dark into a subdirectory of light for pages
+          command: |
+            mv Documentation/dark Documentation/light/
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dotfiles --message "[skip ci] Updates" --dist Documentation/light
 
 workflows:
   version: 2
@@ -40,6 +79,18 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - docs-build:
+          filters:
+            tags:
+              only: /.*/
+      - docs-deploy:
+          requires:
+            - build
+            - docs-build
+          filters:
+            branches:
+              only:
+                - master      
       - deploy:
           requires:
             - build
