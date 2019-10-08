@@ -76,3 +76,12 @@ void SetLogLevel(const char* plugin, Channel::Enum logLevel);
 }
 
 }
+
+namespace NWNXLib::API 
+{ 
+    class CExoString;
+    class CResRef; 
+}
+
+std::ostream& operator<<(std::ostream& out, const NWNXLib::API::CExoString& str);
+std::ostream& operator<<(std::ostream& out, const NWNXLib::API::CResRef& str);
