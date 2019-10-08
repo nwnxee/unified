@@ -65,3 +65,20 @@ void SetLogLevel(const char* plugin, Channel::Enum logLevel)
 }
 
 }
+
+#include "API/Linux/API/CExoString.hpp"
+#include "API/Linux/API/CResRef.hpp"
+
+std::ostream& operator<<(std::ostream& out, const NWNXLib::API::CExoString& str) 
+{
+    out << str.m_sString;
+    return out;
+}
+
+std::ostream& operator<<(std::ostream& out, const NWNXLib::API::CResRef& str) 
+{
+    char buffer[17] = {0};
+    std::memcpy(buffer, str.m_resRefLowerCase, 16);
+    out << buffer;
+    return out;
+}
