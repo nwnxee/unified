@@ -45,12 +45,10 @@ private:
     ArgumentStack SetPlaceableNameOverride          (ArgumentStack&& args);
     ArgumentStack GetQuestCompleted                 (ArgumentStack&& args);
     ArgumentStack SetPersistentLocation             (ArgumentStack&& args);
-    ArgumentStack UpdateItemName                    (ArgumentStack&& args);    
+    ArgumentStack UpdateItemName                    (ArgumentStack&& args);
 
     NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
 
-    std::map<std::string, NWNXLib::API::ObjectVisualTransformData> m_OVTData;
-    std::map<std::string, std::set<uint16_t>> m_LVEData;
     std::unordered_map<std::string, std::pair<NWNXLib::API::Types::ObjectID, bool>> m_PersistentLocationWP;
 };
 
