@@ -1,4 +1,7 @@
-# NWNX:EE (build 8186) ([Changelog](CHANGELOG.md))
+# NWNX:EE (build 8186)
+
+@mainpage
+@tableofcontents
 
 ## What is NWNX:EE?
 
@@ -39,7 +42,7 @@ Given the binaries, follow these steps:
         export LD_PRELOAD="./NWNX_Core.so"
         ./nwserver-linux
 
-3.  You can optionally configure plugins using environment variables. At the moment you will need to search the plugin documentation to find the correct environment variables: each plugin, located in the Plugins/ folder in the source tree, has a Documentation folder which contains some information about the plugin. Please note that not all environment variables will be documented so you may need to dig through the source code.
+3.  You can optionally configure plugins using environment variables. At the moment you will need to search the plugin documentation to find the correct environment variables: each plugin, located in the Plugins/ folder in the source tree, has a README.md which contains some information about the plugin. Please note that not all environment variables will be documented so you may need to dig through the source code.
 
 4.  You can skip a particular plugin by adding a line that looks like this before starting nwserver-linux:
 

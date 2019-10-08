@@ -1,11 +1,19 @@
+/// @ingroup race
+/// @file nwnx_race_2da.nss
+/// @brief Parse a column in the racialtypes.2da to load the modifiers.
 #include "nwnx_race"
 #include "nwnx_util"
 
-// Translate a modifier type from a string to its constant
+/// @ingroup race
+/// @brief Translate a modifier type from a string to its constant.
+/// @param raceMod The string representation of the constant.
+/// @return The constant for the race modifier.
 int NWNX_Race_GetModifierConstant(string raceMod);
 
-// Load the 2da racial modifiers. This loops through racialtypes and checks for a RacialModsTable entry
-// then sets the racial modifiers appropriately
+/// @ingroup race
+/// @brief Loops through racialtypes.2da and checks for a the column for racial modifications and sets them.
+/// @note Requires NWNX_Util_Get2DARowCount()
+/// @param sColumnName The column name in the racialtypes.2da that defines the 2da for the racial mods.
 void NWNX_Race_LoadRacialModifiers(string sColumnName = "RacialModsTable");
 
 int NWNX_Race_GetModifierConstant(string raceMod)

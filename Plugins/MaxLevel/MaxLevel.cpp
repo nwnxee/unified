@@ -283,13 +283,13 @@ void MaxLevel::LoadSpellKnownTableHook(Services::Hooks::CallType type, CNWClass*
         uint8_t lastFoundSpellKnownLevel = CORE_MAX_LEVEL;
 
         // Now find the spells known per level for each spell level
-        for (int j = 0; j < g_plugin->m_nSpellLevelsPerLevelAdded[pClass->m_nName][i - 1]; j++)
+        for (int j = 0; j < g_plugin->m_nSpellLevelsPerLevelAdded[pClass->m_nName][i]; j++)
         {
             int32_t iNumSpells = 0;
-            twoda.GetINTEntry(i, 2 + j, &iNumSpells);
+            twoda.GetINTEntry(i, 1 + j, &iNumSpells);
             if (!iNumSpells)
             {
-                twoda.GetINTEntry(lastFoundSpellKnownLevel - 1, 2 + j, &iNumSpells);
+                twoda.GetINTEntry(lastFoundSpellKnownLevel - 1, 1 + j, &iNumSpells);
             }
             else
             {
@@ -306,24 +306,35 @@ uint8_t MaxLevel::GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, u
                                              uint16_t nRace, uint8_t nCHABase)
 {
     uint8_t result = 0;
-    auto spellLvlsPerLvl = pClass->m_lstSpellLevelsPerLevel[nLevel - 1];
-    auto spellLvlsPerLvlAdded = g_plugin->m_nSpellLevelsPerLevelAdded[pClass->m_nName][nLevel - 1];
-    auto raceChaAdjust = Globals::Rules()->m_lstRaces[nRace].m_nCHAAdjust;
-    if (((nLevel <= CORE_MAX_LEVEL && nSpellLevel < spellLvlsPerLvl) ||
-         (nLevel > CORE_MAX_LEVEL && nSpellLevel < spellLvlsPerLvlAdded)) && pClass->m_lstSpellKnownTable &&
-        (nClass != API::Constants::ClassType::Bard ||
-         ((nLevel <= CORE_MAX_LEVEL && pClass->m_lstSpellKnownTable[nLevel - 1][nSpellLevel]) ||
-          (nLevel > CORE_MAX_LEVEL && g_plugin->m_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel])) ||
-         raceChaAdjust + nCHABase > nSpellLevel + 10))
+    uint8_t spellLevelsPerLevel = 0;
+    uint8_t spellsKnownPerSpellLevel = 0;
+    uint8_t spellsKnownPreviousSpellLevel = 0;
+
+    if (pClass->m_lstSpellKnownTable)
     {
         if (nLevel <= CORE_MAX_LEVEL)
         {
-            result = pClass->m_lstSpellKnownTable[nLevel - 1][nSpellLevel];
+            spellLevelsPerLevel = pClass->m_lstSpellLevelsPerLevel[nLevel - 1];
+            spellsKnownPerSpellLevel = pClass->m_lstSpellKnownTable[nLevel - 1][nSpellLevel];
+            spellsKnownPreviousSpellLevel = pClass->m_lstSpellKnownTable[nLevel - 1][nSpellLevel - 1];
         }
         else
         {
-            result = g_plugin->m_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel];
+            spellLevelsPerLevel = g_plugin->m_nSpellLevelsPerLevelAdded[pClass->m_nName][nLevel - 1];
+            spellsKnownPerSpellLevel = g_plugin->m_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel];
+            if (nLevel == CORE_MAX_LEVEL + 1)
+                spellsKnownPreviousSpellLevel = pClass->m_lstSpellKnownTable[CORE_MAX_LEVEL][nSpellLevel - 1];
+            else
+                spellsKnownPreviousSpellLevel = g_plugin->m_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel - 1];
         }
+    }
+
+    if (nSpellLevel < spellLevelsPerLevel
+        && (nClass != API::Constants::ClassType::Bard
+            || spellsKnownPreviousSpellLevel
+            || Globals::Rules()->m_lstRaces[nRace].m_nCHAAdjust + nCHABase > nSpellLevel + 10))
+    {
+        result = spellsKnownPerSpellLevel;
     }
     return result;
 }

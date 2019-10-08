@@ -1,9 +1,19 @@
-/* This file contains various NWScript <-> NWNX Constants Translation Table functions */
+/// @defgroup consts NWNX Constants
+/// @brief Provides various NWScript <-> NWNX Constants Translation Table functions
+/// @{
+/// @file nwnx_consts.nss
+///
 
-// Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.
+/// @anchor consts_translate_anim_type
+/// @brief Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.
+/// @param nAnimation The nwn animation constant
+/// @return The NWNX equivalent of the constant
 int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation);
 
-// Translates OBJECT_TYPE_* constants to their NWNX equivalent.
+/// @anchor consts_translate_obj_type
+/// @brief Translates OBJECT_TYPE_* constants to their NWNX equivalent.
+/// @param nObjectType The nwn object type
+/// @return The NWNX equivalent of the constant
 int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType);
 
 
@@ -96,3 +106,4 @@ int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType)
 
     return nObjectType;
 }
+/// @} // End of consts

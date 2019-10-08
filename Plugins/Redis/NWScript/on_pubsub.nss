@@ -1,3 +1,7 @@
+/// @ingroup redis
+/// @brief Script to handle PubSub event
+/// @{
+/// @file on_pubsub.nss
 #include "nwnx_redis_ps"
 
 void main()
@@ -7,3 +11,4 @@ void main()
   WriteTimestampedLogEntry("Pubsub Event: channel=" + data.channel +
     " message=" + data.message);
 }
+/// @}
