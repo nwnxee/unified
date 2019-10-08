@@ -1,0 +1,36 @@
+var group__object =
+[
+    [ "nwnx_object.nss", "nwnx__object_8nss.html", null ],
+    [ "NWNX_Object_LocalVariable", "structNWNX__Object__LocalVariable.html", [
+      [ "type", "structNWNX__Object__LocalVariable.html#a8d610962730ec74152b0fca0a45fce6d", null ],
+      [ "key", "structNWNX__Object__LocalVariable.html#a71602dfd910b91f55beda204d293e7c4", null ]
+    ] ],
+    [ "NWNX_Object_GetLocalVariableCount", "group__object.html#ga11f4a73b409e6d3726f84fd4c556344c", null ],
+    [ "NWNX_Object_GetLocalVariable", "group__object.html#gaf2230d31bc03edaa2b5a1be654846a46", null ],
+    [ "NWNX_Object_StringToObject", "group__object.html#ga785dbe351d67f4fb128ba801021f23a6", null ],
+    [ "NWNX_Object_GetEventHandler", "group__object.html#ga26969e5e0f2101dc3f3a70de068d0f19", null ],
+    [ "NWNX_Object_SetEventHandler", "group__object.html#ga8b6fdba0a7380658d21cb749906580aa", null ],
+    [ "NWNX_Object_SetPosition", "group__object.html#ga0ed4762c38e89497b6cdf03cfd7fca28", null ],
+    [ "NWNX_Object_SetCurrentHitPoints", "group__object.html#gad42e6039777c646447c61fae4d216fdd", null ],
+    [ "NWNX_Object_SetMaxHitPoints", "group__object.html#gaf2b9688d3adfe9569f8659eebe864822", null ],
+    [ "NWNX_Object_GetPortrait", "group__object.html#ga2cac6f44d330bd2415462bb226fd3e5a", null ],
+    [ "NWNX_Object_SetPortrait", "group__object.html#ga3740ccf9c898e193fef5ebdc3c7857ba", null ],
+    [ "NWNX_Object_Serialize", "group__object.html#ga037ae0502bb24d81f64b0f053ca00028", null ],
+    [ "NWNX_Object_Deserialize", "group__object.html#gad151049205ee996b9e779b848f7eac6e", null ],
+    [ "NWNX_Object_GetDialogResref", "group__object.html#gacc402018cb67fd3d026fb212a99dfd53", null ],
+    [ "NWNX_Object_SetDialogResref", "group__object.html#gaa4a17ad56ec387fa8a7b4b457a92efc2", null ],
+    [ "NWNX_Object_SetAppearance", "group__object.html#gabcaf1ce1cbb578b4a905fbab29881fe6", null ],
+    [ "NWNX_Object_GetAppearance", "group__object.html#gaf02bee319a038d174a28ae608f1ecc8b", null ],
+    [ "NWNX_Object_GetHasVisualEffect", "group__object.html#gaf420c6847263a7c01dc0a78edaa27f2f", null ],
+    [ "NWNX_Object_CheckFit", "group__object.html#gada4e6d07ef4da5e3c1dd58a16ed0b52f", null ],
+    [ "NWNX_Object_GetDamageImmunity", "group__object.html#gab22a03b2e474ca9b40172ecd623115dd", null ],
+    [ "NWNX_Object_AddToArea", "group__object.html#ga3037db60c526f5ddfd2f2c934c6c5fe8", null ],
+    [ "NWNX_Object_GetPlaceableIsStatic", "group__object.html#ga1d756724555adaee80ec12a102bb4c69", null ],
+    [ "NWNX_Object_SetPlaceableIsStatic", "group__object.html#ga85410e9584fd04df21b8facb74d79075", null ],
+    [ "NWNX_Object_GetAutoRemoveKey", "group__object.html#ga2fdf79d12491d8da974b94d5d6399a31", null ],
+    [ "NWNX_Object_SetAutoRemoveKey", "group__object.html#gac7fc2d9777342a9d3bd19bc0da79b6cd", null ],
+    [ "NWNX_Object_GetTriggerGeometry", "group__object.html#ga2f86d560eb6cf0e0502fe161482acdaf", null ],
+    [ "NWNX_Object_SetTriggerGeometry", "group__object.html#ga3ba2a01f7ba3088280c122708bb0ba84", null ],
+    [ "NWNX_Object_AddIconEffect", "group__object.html#ga6536ea0753ecd950170841649053e566", null ],
+    [ "NWNX_Object_RemoveIconEffect", "group__object.html#ga9fb809f301e75d9fcdc64ed0fd8bb4ce", null ]
+];

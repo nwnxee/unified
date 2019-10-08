@@ -1,0 +1,26 @@
+var nwnx__chat_8nss =
+[
+    [ "NWNX_Chat_SendMessage", "group__chat.html#ga9e1b1e6237ddac7f84fa183cf08126ee", null ],
+    [ "NWNX_Chat_RegisterChatScript", "group__chat.html#ga46736cec1065353724348b35cc85aece", null ],
+    [ "NWNX_Chat_SkipMessage", "group__chat.html#gab8ea39914a0ac0df6ece2c27dcffe11a", null ],
+    [ "NWNX_Chat_GetChannel", "group__chat.html#ga4625e8e2a54540c0c66d25ea8d81aaa5", null ],
+    [ "NWNX_Chat_GetMessage", "group__chat.html#ga60765184fbf4cd54eee8ca339c04e1e1", null ],
+    [ "NWNX_Chat_GetSender", "group__chat.html#gae4927fd1888e43d8e67bfdfdf804ca86", null ],
+    [ "NWNX_Chat_GetTarget", "group__chat.html#gaca25d73bc1545aad13ff55fa5bd41f58", null ],
+    [ "NWNX_Chat_SetChatHearingDistance", "group__chat.html#ga8a5cc439da4c24b8b5a3c8bcdff3b9ab", null ],
+    [ "NWNX_Chat_GetChatHearingDistance", "group__chat.html#ga7c337b8768878b05b12bd8f880b56d42", null ],
+    [ "NWNX_Chat", "group__chat.html#gab963fc085bf11e56dea52f95a0c8fb7e", null ],
+    [ "NWNX_CHAT_CHANNEL_PLAYER_TALK", "group__chat.html#ga5a426e375b1a4086410fa68540ccc5df", null ],
+    [ "NWNX_CHAT_CHANNEL_PLAYER_SHOUT", "group__chat.html#gaa86f5284764e4bdbfa497def002d7779", null ],
+    [ "NWNX_CHAT_CHANNEL_PLAYER_WHISPER", "group__chat.html#gab1ef141d5d50d45dead5dac918f1b7bd", null ],
+    [ "NWNX_CHAT_CHANNEL_PLAYER_TELL", "group__chat.html#gae86a7e7cb68f8d6bdaf4e4bedd34d189", null ],
+    [ "NWNX_CHAT_CHANNEL_SERVER_MSG", "group__chat.html#ga22ca905e6091ee72ba11489571af4c90", null ],
+    [ "NWNX_CHAT_CHANNEL_PLAYER_PARTY", "group__chat.html#ga7d5b4cfe353e30821c0818e5e39193a2", null ],
+    [ "NWNX_CHAT_CHANNEL_PLAYER_DM", "group__chat.html#ga63678395c7088907d5d5431afc95ebaf", null ],
+    [ "NWNX_CHAT_CHANNEL_DM_TALK", "group__chat.html#gacff930ad85a52a0496e0ccdfe94e2ee3", null ],
+    [ "NWNX_CHAT_CHANNEL_DM_SHOUT", "group__chat.html#ga1179172acc694c0b43d8dd9d8570716b", null ],
+    [ "NWNX_CHAT_CHANNEL_DM_WHISPER", "group__chat.html#gad3d752e8cf68af744ef301aa68a317a9", null ],
+    [ "NWNX_CHAT_CHANNEL_DM_TELL", "group__chat.html#ga4da1ed59c06b1b620006a00e2d849ef7", null ],
+    [ "NWNX_CHAT_CHANNEL_DM_PARTY", "group__chat.html#gaf89ebd57d9c7d66a3ae0e030cfe3d1c2", null ],
+    [ "NWNX_CHAT_CHANNEL_DM_DM", "group__chat.html#ga293b444cb6fd729d453b1a4d3d6e5f06", null ]
+];
