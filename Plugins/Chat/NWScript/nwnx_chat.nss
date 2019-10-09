@@ -72,7 +72,7 @@ object NWNX_Chat_GetTarget();
 void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK);
 
 /// @brief Gets the distance with which the player hears talks or whisper
-/// @param listener The listener, if OBJECT_INVALUD then will return server wide setting.
+/// @param listener The listener, if OBJECT_INVALID then will return server wide setting.
 /// @param channel The @ref chat_channels "channel". Only applicable for talk and whisper.
 float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK);
 
