@@ -112,7 +112,8 @@ void NWNX_Administration_SetModuleName(string name);
 /// @param name The name to give the server.
 void NWNX_Administration_SetServerName(string name);
 
-/// @brief Get an @ref admin_opts "Administration Options" value.
+/// @brief Get an @ref admin_opts "Administration Option" value.
+/// @param option An @ref admin_opts "Administration Option".
 /// @return The current setting for the supplied option from @ref admin_opts "Administration Options".
 int NWNX_Administration_GetPlayOption(int option);
 
