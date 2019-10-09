@@ -19,12 +19,17 @@ void NWNX_Layonara_SetHostileFeat(int nFeatID, int bHostile);
 /// @brief Enable the Duelist Canny Defense effects
 /// @param creature The creature object.
 /// @param nBonus The bonus amount.
-void NWNX_Layonara_DuelistCannyDefense(object creature, int nBonus);
+void NWNX_Layonara_SetDuelistCannyDefense(object creature, int nBonus);
 
 /// @brief Enable the Duelist Grace effects.
 /// @param creature The creature object.
 /// @param nBonus The bonus amount.
 void NWNX_Layonara_SetDuelistGrace(object creature, int nBonus);
+
+/// @brief Enable the Duelist Elaborate Parry effects.
+/// @param creature The creature object.
+/// @param nBonus The bonus amount.
+void NWNX_Layonara_SetDuelistElaborateParry(object creature, int nBonus)
 
 /// @brief Enable the Spellsword Ignore Spell Failure effects.
 /// @param creature The creature object.
