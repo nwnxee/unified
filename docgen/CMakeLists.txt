@@ -20,6 +20,7 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_STRIP_FROM_PATH ${CMAKE_SOURCE_DIR}/)
     set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Documentation)
     set(DOXYGEN_HTML_OUTPUT light)
+    set(DOXYGEN_HTML_HEADER ${CMAKE_SOURCE_DIR}/docgen/html_header.html)
     set(DOXYGEN_HTML_FOOTER ${CMAKE_SOURCE_DIR}/docgen/html_light_footer.html)
     # Run "make docs" to create the doxygen documentation
     doxygen_add_docs(
