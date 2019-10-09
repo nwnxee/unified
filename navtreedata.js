@@ -22,7 +22,7 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "NWNX-Unified", "index.html", [
+  [ "NWNX:EE", "index.html", [
     [ "What is NWNX:EE?", "index.html#autotoc_md246", null ],
     [ "What versions of the server are supported?", "index.html#autotoc_md247", null ],
     [ "What platforms are supported?", "index.html#autotoc_md248", null ],
@@ -304,13 +304,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__area.html#gae5afc2a9aa6c4071741253704ed505cc",
-"group__damage.html",
-"group__object.html#ga48f3cfc67d34168a35271438a397b7ae",
-"group__redis.html#ga608f081efa201f75c5d53d40eef4e953",
-"group__webhook.html#ga619daabd1f5b9034e0b9326524a0562d",
-"md_Plugins_WebHook_README.html#autotoc_md237",
-"nwnx__redis_8nss.html#afb9f4c4230ffd293a803cdcb93c24432"
+"group__area.html#gae29cb6e1a135419a3018b0425ad65d39",
+"group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17",
+"group__object.html#ga3c15b2a9cbf7e85588792483667537ab",
+"group__redis.html#ga54287d82441086cf187b5768af08490d",
+"group__weapon.html#gafe32575ade4d17e4a9daa9017e439ad0",
+"md_Plugins_Weapon_README.html#autotoc_md235",
+"nwnx__redis_8nss.html#adc04223eee8837fa3dc8c140dc05dda0",
+"structNWNX__WebHook__Message.html#a916266d0a0a14ebdcd227583fc006bcf"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
