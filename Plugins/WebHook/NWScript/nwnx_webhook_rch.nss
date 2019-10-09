@@ -54,6 +54,7 @@ struct NWNX_WebHook_Message {
     int iField10Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
 };
 
+/// @private We don't need this to be a part of the docs.
 /// @brief Helper function to convert 0 or 1 to false or true.
 /// @param iBool The integer representation of the boolean.
 /// @return The string representation (true or false) of the boolean.
