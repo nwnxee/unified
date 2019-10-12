@@ -35,7 +35,7 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
     {
         m_dbName = database->c_str();
 
-        LOG_INFO("SQLite Database name set to %s", m_dbName.c_str());
+        LOG_INFO("SQLite Database name set to %s", m_dbName);
     }
 
     // Save the database file to UserDirectory/database
@@ -63,7 +63,7 @@ bool SQLite::IsConnected()
 
 bool SQLite::PrepareQuery(const Query& query)
 {
-    LOG_DEBUG("Preparing query: %s", query.c_str());
+    LOG_DEBUG("Preparing query: %s", query);
 
     sqlite3_finalize(m_stmt);
 
@@ -78,7 +78,7 @@ bool SQLite::PrepareQuery(const Query& query)
     else
     {
         m_lastError.assign(sqlite3_errmsg(m_dbConn));
-        LOG_WARNING("Failed to prepare statement: %s", m_lastError.c_str());
+        LOG_WARNING("Failed to prepare statement: %s", m_lastError);
         sqlite3_finalize(m_stmt);
         m_stmt = nullptr;
     }
@@ -96,7 +96,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
 
     for (unsigned int i = 0; i < m_paramCount; i++)
     {
-        LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i].c_str(), i);
+        LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i], i);
         // Params in SQLite are 1 based
         int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i].c_str(), -1, NULL);
 
@@ -104,7 +104,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         {
             m_lastError.assign(sqlite3_errmsg(m_dbConn));
 
-            LOG_WARNING("Failed to bind params: %s", m_lastError.c_str());
+            LOG_WARNING("Failed to bind params: %s", m_lastError);
 
             return NWNXLib::Maybe<ResultSet>(); // Failed query, bind error.
         }
@@ -153,7 +153,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
     }
 
     m_lastError.assign(sqlite3_errmsg(m_dbConn));
-    LOG_WARNING("Query failed due to error '%s'", m_lastError.c_str());
+    LOG_WARNING("Query failed due to error '%s'", m_lastError);
 
     return NWNXLib::Maybe<ResultSet>(); // Failed query.
 }
@@ -178,7 +178,7 @@ void SQLite::PrepareFloat(int32_t position, float value)
 
 void SQLite::PrepareString(int32_t position, const std::string& value)
 {
-    LOG_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value);
 
     ASSERT_OR_THROW(position >= 0);
 

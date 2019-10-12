@@ -183,7 +183,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
         if (!g_plugin->m_elcScript.empty())
         {
             LOG_DEBUG("Running ELC Script '%s' on object '%x' with Type '%i', subType '%i' and strRef '%i'",
-                      g_plugin->m_elcScript.c_str(), pPlayer->m_oidNWSObject,
+                      g_plugin->m_elcScript, pPlayer->m_oidNWSObject,
                       g_plugin->m_validationFailureType, g_plugin->m_validationFailureSubType,
                       g_plugin->m_validationFailureMessageStrRef);
 
