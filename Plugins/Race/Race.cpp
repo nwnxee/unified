@@ -477,6 +477,8 @@ void Race::ApplyEffectHook(
     if(cType == Services::Hooks::CallType::BEFORE_ORIGINAL )
     {
         CNWSCreature* tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
+        if (tgtCreature == nullptr)
+            return;
         uint8_t nRaceParam;
         //get the proper parameter that contains race
         switch(eff->m_nType)
