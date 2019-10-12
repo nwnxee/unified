@@ -132,7 +132,7 @@ Setup</h1>
 <ul>
 <li>Define your max levels variable in your server environment. <div class="fragment"><div class="line">export NWNX_MAXLEVEL_MAX=45</div>
 </div><!-- fragment --></li>
-<li>If you provide a <code>-maxlevel</code> argument in your server start up or have <code>MaxCharLevel</code> defined in your <b>nwnplayer.ini</b> make sure those values are changed as well.</li>
+<li>If you provide a <code>-maxlevel</code> argument in your server start up or have <code>MaxCharLevel</code> defined in your <b>nwnplayer.ini</b> make sure those values are changed as well. It is safe to ignore the message at startup stating <code>Server: Invalid argument to -maxlevel</code>.</li>
 <li>Add your XP thresholds to your <b>exptable.2da</b> <div class="fragment"><div class="line">...</div>
 <div class="line">40  41  35935000    </div>
 <div class="line">41  42  39935000    </div>
@@ -141,7 +141,7 @@ Setup</h1>
 <div class="line">44  45  63935000    </div>
 <div class="line">45  46  0xFFFFFFF   </div>
 </div><!-- fragment --></li>
-<li>(Optional) Edit the class spell gain and spell known 2da files to provide more spells as levels progress. These are <b>cls_spgn_???.2da</b> and <b>cls_spkn_???.2da</b>. </li>
+<li>(Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are <b>cls_spgn_???.2da</b>. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -150,7 +150,7 @@ Setup</h1>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Oct 9 2019 14:17:12 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Oct 12 2019 17:35:01 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
