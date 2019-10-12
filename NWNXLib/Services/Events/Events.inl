@@ -64,6 +64,12 @@ void Events::InsertArgument(ArgumentStack& stack, T&& arg)
     stack.emplace(std::forward<T>(arg));
 }
 
+template <typename... Ts>
+void Events::InsertArguments(ArgumentStack& stack, Ts&& ... args)
+{
+    (Events::InsertArgument(stack, std::forward<Ts>(args)), ...);
+}
+
 template <typename T>
 T Events::ExtractArgument(ArgumentStack& arguments)
 {
