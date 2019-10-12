@@ -57,7 +57,7 @@ public:
     ~Events();
 
     template <typename T>
-    void Push(const std::string& pluginName, const std::string& eventName, const T& value);
+    void Push(const std::string& pluginName, const std::string& eventName, T&& value);
 
     template <typename T>
     Maybe<T> Pop(const std::string& pluginName, const std::string& eventName);
@@ -68,7 +68,7 @@ public:
     void ClearEvent(RegistrationToken&& token);
 
     template <typename T>
-    static void InsertArgument(ArgumentStack& stack, T arg);
+    static void InsertArgument(ArgumentStack& stack, T&& arg);
 
     template <typename T>
     static T ExtractArgument(ArgumentStack& arguments);

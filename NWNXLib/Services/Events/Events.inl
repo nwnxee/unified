@@ -1,10 +1,10 @@
 
 template <typename T>
-void Events::Push(const std::string& pluginName, const std::string& eventName, const T& value)
+void Events::Push(const std::string& pluginName, const std::string& eventName, T&& value)
 {
     if (auto* event = GetEventData(pluginName, eventName))
     {
-        event->m_arguments.push(Events::Argument(value));
+        event->m_arguments.emplace(std::forward<T>(value));
         LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
             event->m_arguments.top().toString().c_str(), eventName.c_str(), pluginName.c_str());
     }
@@ -59,9 +59,9 @@ template<> Maybe<std::string>&          Events::Argument::Get<std::string>();
 template<> Maybe<API::CGameEffect*>&    Events::Argument::Get<API::CGameEffect*>();
 
 template <typename T>
-void Events::InsertArgument(ArgumentStack& stack, T arg)
+void Events::InsertArgument(ArgumentStack& stack, T&& arg)
 {
-    stack.push(Events::Argument(arg));
+    stack.emplace(std::forward<T>(arg));
 }
 
 template <typename T>
