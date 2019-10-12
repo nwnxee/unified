@@ -13,19 +13,21 @@ for i in `find . -name NWScript`; do
     done 
 done
 
-pushd Binaries
+pushd Binaries >> /dev/null
+
+mkdir -p Tests
+TESTS=$(find .. -name "*_t.nss")
+cp $TESTS ./Tests
+
+echo "void main() {" > Tests/nwnx_t.nss
+for f in $TESTS; do
+    echo "    ExecuteScript(\"`basename $f .nss`\", OBJECT_SELF);" >> Tests/nwnx_t.nss
+done
+echo "}" >> Tests/nwnx_t.nss
 
 echo "Zipping NWScripts..."
-zip -r NWScript.zip NWScript > /dev/null
+zip -FSr NWScript.zip Tests NWScript > /dev/null
+rm -r ./Tests
+rm -r ./NWScript
 
-pushd NWScript
-for i in `find . -name *.nss`; do
-    rm $i 
-done
-for d in *; do
-    rmdir -p $d
-done
-popd
-rmdir -p NWScript
-
-popd
+popd >> /dev/null
