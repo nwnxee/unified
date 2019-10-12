@@ -33,4 +33,4 @@ export NWNX_MAXLEVEL_MAX=45
 44	45	63935000	
 45	46	0xFFFFFFF	
 ```
-* (Optional) Edit the class spell gain 2da file to provide more spells as levels progress. These are **cls_spgn_???.2da***. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40.
+* (Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are **cls_spgn_???.2da***. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40.
