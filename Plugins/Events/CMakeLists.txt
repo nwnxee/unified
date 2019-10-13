@@ -20,4 +20,7 @@ add_plugin(Events
     "Events/InventoryEvents.cpp"
     "Events/TrapEvents.cpp"
     "Events/TimingBarEvents.cpp"
-    "Events/LevelEvents.cpp")
+    "Events/LevelEvents.cpp"
+    "Events/PVPEvents.cpp"
+    "Events/InputEvents.cpp"
+    "Events/MaterialChangeEvents.cpp")

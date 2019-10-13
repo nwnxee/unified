@@ -1,7 +1,21 @@
-/* This file contains various NWScript <-> NWNX Constants Translation Table functions */
+/// @defgroup consts NWNX Constants
+/// @brief Provides various NWScript <-> NWNX Constants Translation Table functions
+/// @{
+/// @file nwnx_consts.nss
+///
 
-// Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.
+/// @anchor consts_translate_anim_type
+/// @brief Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.
+/// @param nAnimation The nwn animation constant
+/// @return The NWNX equivalent of the constant
 int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation);
+
+/// @anchor consts_translate_obj_type
+/// @brief Translates OBJECT_TYPE_* constants to their NWNX equivalent.
+/// @param nObjectType The nwn object type
+/// @return The NWNX equivalent of the constant
+int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType);
+
 
 int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation)
 {
@@ -72,3 +86,24 @@ int NWNX_Consts_TranslateNWScriptAnimation(int nAnimation)
 
     return nAnimation;
 }
+
+int NWNX_Consts_TranslateNWScriptObjectType(int nObjectType)
+{
+    switch(nObjectType)
+    {
+        case OBJECT_TYPE_ALL: nObjectType = 0; break;
+        case OBJECT_TYPE_AREA_OF_EFFECT: nObjectType = 11; break;
+        case OBJECT_TYPE_CREATURE: nObjectType = 5; break;
+        case OBJECT_TYPE_DOOR: nObjectType = 10; break;
+        case OBJECT_TYPE_ENCOUNTER: nObjectType = 13; break;
+        case OBJECT_TYPE_ITEM: nObjectType = 6; break;
+        case OBJECT_TYPE_PLACEABLE: nObjectType = 9; break;
+        case OBJECT_TYPE_STORE: nObjectType = 14; break;
+        case OBJECT_TYPE_TRIGGER: nObjectType = 7; break;
+        case OBJECT_TYPE_WAYPOINT: nObjectType = 12; break;
+        default: nObjectType = 0; break;
+    }
+
+    return nObjectType;
+}
+/// @} // End of consts

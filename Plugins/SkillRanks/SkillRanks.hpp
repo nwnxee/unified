@@ -29,6 +29,7 @@ private:
 
     static void LoadSkillInfoHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWRules*);
     static int32_t GetSkillRankHook(NWNXLib::API::CNWSCreatureStats*, uint8_t, NWNXLib::API::CNWSObject*, int32_t);
+
     uint8_t m_blindnessMod;
 
     struct SkillFeats {
@@ -44,6 +45,7 @@ private:
     };
 
     std::vector<std::map<uint32_t, SkillFeats>> m_skillFeatMap;
+    std::vector<std::map<uint32_t, uint16_t>> m_skillRaceMod;
 };
 
 }

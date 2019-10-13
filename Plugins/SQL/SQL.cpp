@@ -50,7 +50,8 @@ SQL::SQL(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(name, func) \
-    GetServices()->m_events->RegisterEvent(name, std::bind(&SQL::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(name, \
+        [this](Events::ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER("PREPARE_QUERY",                  OnPrepareQuery);
     REGISTER("EXECUTE_PREPARED_QUERY",         OnExecutePreparedQuery);
@@ -81,7 +82,7 @@ SQL::SQL(const Plugin::CreateParams& params)
     std::string type = GetServices()->m_config->Get<std::string>("TYPE", "MYSQL");
     std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
 
-    LOG_INFO("Connecting to type %s", type.c_str());
+    LOG_INFO("Connecting to type %s", type);
     if (type == "MYSQL")
     {
 #if defined(NWNX_SQL_MYSQL_SUPPORT)
@@ -204,7 +205,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
             // Prepared arguments are not, however, so we can still recover
             if (!m_target->PrepareQuery(m_activeQuery))
             {
-                LOG_ERROR("Recovery PrepareQuery() failed: %s", m_target->GetLastError().c_str());
+                LOG_ERROR("Recovery PrepareQuery() failed: %s", m_target->GetLastError());
                 Events::InsertArgument(stack, 0);
                 return stack;
             }
@@ -248,19 +249,19 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
         {
             // this was not a result set type query
             LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Rows affected: '%u'.",
-                queryId, m_activeQuery.c_str(), m_target->GetAffectedRows());
+                queryId, m_activeQuery, m_target->GetAffectedRows());
         }
         else
         {
             LOG_INFO("Successful SQL query. Query ID: '%i', Query: '%s', Results Count: '%u'.",
-                queryId, m_activeQuery.c_str(), m_activeResults.size());
+                queryId, m_activeQuery, m_activeResults.size());
         }
     }
     else
     {
-        LOG_WARNING("Failed SQL query. Query ID: '%i', Query: '%s'.", queryId, m_activeQuery.c_str());
+        LOG_WARNING("Failed SQL query. Query ID: '%i', Query: '%s'.", queryId, m_activeQuery);
         std::string lastError = m_target->GetLastError();
-        LOG_WARNING("Failure Message. Query ID: '%i', \"%s\"", queryId, lastError.c_str());
+        LOG_WARNING("Failure Message. Query ID: '%i', \"%s\"", queryId, lastError);
     }
 
     return stack;
@@ -318,7 +319,7 @@ Events::ArgumentStack SQL::OnPreparedString(Events::ArgumentStack&& args)
     std::string value = Events::ExtractArgument<std::string>(args);
     if (position >= m_target->GetPreparedQueryParamCount())
     {
-        LOG_WARNING("Prepared argument (pos:%d, value:'%s') out of bounds", position, value.c_str());
+        LOG_WARNING("Prepared argument (pos:%d, value:'%s') out of bounds", position, value);
     }
     else
     {

@@ -61,7 +61,8 @@ Object::Object(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Object::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetLocalVariableCount);
     REGISTER(GetLocalVariable);
@@ -85,6 +86,8 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetAutoRemoveKey);
     REGISTER(GetTriggerGeometry);
     REGISTER(SetTriggerGeometry);
+    REGISTER(RemoveIconEffect);
+    REGISTER(AddIconEffect);
 
 #undef REGISTER
 }
@@ -578,7 +581,7 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
                     pTrigger->m_pnOutlineVertices[i] = i;
                 }
 
-                pTrigger->AddToArea(pArea, pTrigger->m_pvVertices[0].x, pTrigger->m_pvVertices[0].y, pTrigger->m_pvVertices[0].z, false);
+                Utils::AddToArea(pTrigger, pArea, pTrigger->m_pvVertices[0].x, pTrigger->m_pvVertices[0].y, pTrigger->m_pvVertices[0].z);
             }
             else
             {
@@ -589,6 +592,77 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
         {
             LOG_WARNING("NWNX_Object_SetTriggerGeometry() called on non trigger object.");
         }
+    }
+
+    return stack;
+}
+
+ArgumentStack Object::RemoveIconEffect(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto nIcon = Services::Events::ExtractArgument<int32_t>(args);
+
+        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
+        {
+            auto *eff = pObject->m_appliedEffects.element[i];
+
+            if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
+            {
+                pObject->RemoveEffect(eff);
+                break;
+            }
+        }
+    }
+
+    return stack;
+}
+
+ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pObject = object(args))
+    {
+        const auto nIcon = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nIcon > 0);
+        const auto fDuration = Services::Events::ExtractArgument<float>(args);
+
+        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
+        {
+            auto *eff = pObject->m_appliedEffects.element[i];
+
+            if (eff->m_sCustomTag == "NWNX_Object_IconEffect" && eff->m_nParamInteger[0] == nIcon)
+            {
+                pObject->RemoveEffect(eff);
+                break;
+            }
+        }
+
+        auto *effIcon = new API::CGameEffect(true);
+        effIcon->m_oidCreator = 0;
+        effIcon->m_nType      = Constants::EffectTrueType::Icon;
+        effIcon->m_nSubType   = Constants::EffectSubType::Supernatural;
+        effIcon->m_bShowIcon  = true;
+        effIcon->m_bExpose    = true;
+        effIcon->m_sCustomTag = "NWNX_Object_IconEffect";
+
+        effIcon->SetNumIntegers(1);
+        effIcon->m_nParamInteger[0] = nIcon;
+
+        if (fDuration > 0.0)
+        {
+            effIcon->m_nSubType |= Constants::EffectDurationType::Temporary;
+            effIcon->m_fDuration = fDuration;
+        }
+        else
+        {
+            effIcon->m_nSubType |= Constants::EffectDurationType::Permanent;
+        }
+
+        pObject->ApplyEffect(effIcon, false, true);
     }
 
     return stack;

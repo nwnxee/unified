@@ -1,4 +1,7 @@
-# NWNX:EE (build 8186) ([Changelog](CHANGELOG.md))
+# NWNX:EE (build 8186)
+
+@mainpage
+@tableofcontents
 
 ## What is NWNX:EE?
 
@@ -18,7 +21,7 @@ The most recent build of NWN:EE that is supported can be discovered at the top o
 
 ## What platforms are supported?
 
-Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. Many discussions have taken place regarding work on a native Windows port of NWNX:EE. It has been tackled several times in the past, but none of those attempts have seem fruition - complications have arisen in the course of the work. We know how we would do it, and estimate the time required for the task to be between 2 and 4 weeks of full-time work, but nobody with the skillset necessary to take on the project has the time or interest at the moment to do so. Therefore, users should not expect a native Windows port from a member of the team in the near future. (contributions welcome!)
+Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. Many discussions have taken place regarding work on a native Windows port of NWNX:EE. It has been tackled several times in the past, but none of those attempts have seen fruition - complications have arisen in the course of the work. We know how we would do it, and estimate the time required for the task to be between 2 and 4 weeks of full-time work, but nobody with the skillset necessary to take on the project has the time or interest at the moment to do so. Therefore, users should not expect a native Windows port from a member of the team in the near future. (contributions welcome!)
 
 ## How do I use it?
 
@@ -39,7 +42,7 @@ Given the binaries, follow these steps:
         export LD_PRELOAD="./NWNX_Core.so"
         ./nwserver-linux
 
-3.  You can optionally configure plugins using environment variables. At the moment you will need to search the plugin documentation to find the correct environment variables: each plugin, located in the Plugins/ folder in the source tree, has a Documentation folder which contains some information about the plugin. Please note that not all environment variables will be documented so you may need to dig through the source code.
+3.  You can optionally configure plugins using environment variables. At the moment you will need to search the plugin documentation to find the correct environment variables: each plugin, located in the Plugins/ folder in the source tree, has a README.md which contains some information about the plugin. Please note that not all environment variables will be documented so you may need to dig through the source code.
 
 4.  You can skip a particular plugin by adding a line that looks like this before starting nwserver-linux:
 
@@ -54,14 +57,18 @@ Optionally, you can use Docker to run the server with pre-built NWNX binaries. R
 
 ## Running the server (Docker)
 
-`nwnxee/unified` supports the following tags:
+`nwnxee/unified` supports the following [tags](https://cloud.docker.com/repository/docker/nwnxee/unified/tags):
 
+* `[commit-hash]` (7 characters and 40)
+* `[commit-hash]-full`
 * `latest`
 * `latest-full`
-* `[versiontag]` (replace with a github tag, like `build8166`)
-* `[versiontag]-full`
+* `[tag]`
+* `[tag]-full`
 
-Most users are fine running `nwnxee/unified:latest`. The `-full` versions include all the heavier run dependencies, and is only necessary if you use the mono or the jvm plugin.
+Due to Docker's local image cache we recommend using the `[commit-hash]` tag to explicitly state which nwnx build to run. In comparison, the `latest` tag will usually hit the image cache and return an outdated build, as you have to run `docker pull nwnxee/unified` to update the `latest` image in your cache. Using the `[commit-hash]` tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.
+
+The `-full` versions include all the heavier run dependencies, and is only necessary if you use the plugins mono or jvm.
 
 Note, the image named `nwnxee/nwserver` exists for legacy reasons but is no longer actively maintained.
 

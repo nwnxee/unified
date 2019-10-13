@@ -9,13 +9,15 @@ namespace Events {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
+static NWNXLib::Hooking::FunctionHook* m_SetStealthModeHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_DoSpotDetectionHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_DoListenDetectionHook = nullptr;
 
 StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_E.*_STEALTH_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSCreature__SetStealthMode, void, API::CNWSCreature*, uint8_t>(&SetStealthModeHook);
+        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__SetStealthMode>(&SetStealthModeHook);
+        m_SetStealthModeHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__SetStealthMode);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", [hooker]() {
@@ -29,21 +31,36 @@ StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
     });
 }
 
-void StealthEvents::SetStealthModeHook(Services::Hooks::CallType type, API::CNWSCreature* thisPtr, uint8_t mode)
+void StealthEvents::SetStealthModeHook(API::CNWSCreature* thisPtr, uint8_t nStealthMode)
 {
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    const bool willBeStealthed = mode != 0;
-
-    static bool currentlyStealthed;
-    currentlyStealthed = before ? thisPtr->m_nStealthMode != 0 : currentlyStealthed;
+    const bool willBeStealthed = nStealthMode != 0;
+    const bool currentlyStealthed = thisPtr->m_nStealthMode != 0;
 
     if (!currentlyStealthed && willBeStealthed)
     {
-        Events::SignalEvent(before ? "NWNX_ON_ENTER_STEALTH_BEFORE" : "NWNX_ON_ENTER_STEALTH_AFTER", thisPtr->m_idSelf);
+        if (Events::SignalEvent("NWNX_ON_ENTER_STEALTH_BEFORE", thisPtr->m_idSelf))
+        {
+            m_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
+        }
+        else
+        {
+            thisPtr->ClearActivities(1);
+        }
+
+        Events::SignalEvent("NWNX_ON_ENTER_STEALTH_AFTER", thisPtr->m_idSelf);
     }
     else
     {
-        Events::SignalEvent(before ? "NWNX_ON_EXIT_STEALTH_BEFORE" : "NWNX_ON_EXIT_STEALTH_AFTER", thisPtr->m_idSelf);
+        if (Events::SignalEvent("NWNX_ON_EXIT_STEALTH_BEFORE", thisPtr->m_idSelf))
+        {
+            m_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
+        }
+        else
+        {
+            thisPtr->SetActivity(1, true);
+        }
+
+        Events::SignalEvent("NWNX_ON_EXIT_STEALTH_AFTER", thisPtr->m_idSelf);
     }
 }
 

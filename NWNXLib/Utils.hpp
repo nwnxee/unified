@@ -63,6 +63,12 @@ T PeekMessage(API::CNWSMessage *pMessage, int32_t offset)
     return value;
 }
 
+void AddStealthEvent(int32_t which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget);
+void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea);
+void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea);
+void AddOnAcquireItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy, API::Types::ObjectID oidFrom, int32_t stackSize);
+void AddOnLoseItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy);
+void AddDestroyObjectEvent(API::Types::ObjectID oid);
 }
 
 }

@@ -7,6 +7,9 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <set>
+
+using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
 namespace Events {
 
@@ -31,6 +34,9 @@ class InventoryEvents;
 class TrapEvents;
 class TimingBarEvents;
 class LevelEvents;
+class PVPEvents;
+class InputEvents;
+class MaterialChangeEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -69,13 +75,16 @@ private: // Structures
     using EventMapType = std::unordered_map<std::string, std::vector<std::string>>;
 
 private:
-    NWNXLib::Services::Events::ArgumentStack OnSubscribeEvent(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnPushEventData(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSignalEvent(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetEventData(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSkipEvent(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnEventResult(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetCurrentEvent(NWNXLib::Services::Events::ArgumentStack&& args);
+    ArgumentStack OnSubscribeEvent(ArgumentStack&& args);
+    ArgumentStack OnPushEventData(ArgumentStack&& args);
+    ArgumentStack OnSignalEvent(ArgumentStack&& args);
+    ArgumentStack OnGetEventData(ArgumentStack&& args);
+    ArgumentStack OnSkipEvent(ArgumentStack&& args);
+    ArgumentStack OnEventResult(ArgumentStack&& args);
+    ArgumentStack OnGetCurrentEvent(ArgumentStack&& args);
+    ArgumentStack ToggleDispatchListMode(ArgumentStack&& args);
+    ArgumentStack AddObjectToDispatchList(ArgumentStack&& args);
+    ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args);
 
     // Pushes a brand new event data onto the event data stack, set up with the correct defaults.
     // Only does it if needed though, based on the current event depth!
@@ -88,6 +97,7 @@ private:
     uint8_t m_eventDepth;
 
     std::unordered_map<std::string, std::function<void(void)>> m_initList;
+    std::unordered_map<std::string, std::set<NWNXLib::API::Types::ObjectID>> m_dispatchList;
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
     std::unique_ptr<BarterEvents> m_barterEvents;
@@ -110,6 +120,9 @@ private:
     std::unique_ptr<TrapEvents> m_trapEvents;
     std::unique_ptr<TimingBarEvents> m_timingBarEvents;
     std::unique_ptr<LevelEvents> m_levelEvents;
+    std::unique_ptr<PVPEvents> m_PVPEvents;
+    std::unique_ptr<InputEvents> m_inputEvents;
+    std::unique_ptr<MaterialChangeEvents> m_matChangeEvents;
 };
 
 }

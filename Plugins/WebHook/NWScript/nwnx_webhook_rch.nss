@@ -1,57 +1,72 @@
+/// @ingroup webhook
+/// @file nwnx_webhook_rch.nss
+/// @brief Create richer webhook messages suitable for Discord
 #include "nwnx_webhook"
 
+/// @ingroup webhook
+/// @brief For more information on these fields see https://birdie0.github.io/discord-webhooks-guide/
+/// @note URL fields may require NWNX_Util_EncodeStringForURL().
 struct NWNX_WebHook_Message {
-    string sUsername;
-    string sText;
-    string sAvatarURL;
-    string sColor;
-    string sAuthorName;
-    string sAuthorURL;
-    string sAuthorIconURL;
-    string sTitle;
-    string sURL;
-    string sDescription;
-    string sThumbnailURL;
-    string sImageURL;
-    string sFooterText;
-    string sFooterURL;
-    int iTimestamp;
-    string sField1Name;
-    string sField1Value;
-    int iField1Inline;
-    string sField2Name;
-    string sField2Value;
-    int iField2Inline;
-    string sField3Name;
-    string sField3Value;
-    int iField3Inline;
-    string sField4Name;
-    string sField4Value;
-    int iField4Inline;
-    string sField5Name;
-    string sField5Value;
-    int iField5Inline;
-    string sField6Name;
-    string sField6Value;
-    int iField6Inline;
-    string sField7Name;
-    string sField7Value;
-    int iField7Inline;
-    string sField8Name;
-    string sField8Value;
-    int iField8Inline;
-    string sField9Name;
-    string sField9Value;
-    int iField9Inline;
-    string sField10Name;
-    string sField10Value;
-    int iField10Inline;
+    string sUsername; ///< https://birdie0.github.io/discord-webhooks-guide/structure/username.html
+    string sText; ///< https://birdie0.github.io/discord-webhooks-guide/structure/content.html
+    string sAvatarURL; ///< https://birdie0.github.io/discord-webhooks-guide/structure/avatar_url.html
+    string sColor; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/color.html
+    string sAuthorName; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/author.html
+    string sAuthorURL; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/author.html
+    string sAuthorIconURL; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/author.html
+    string sTitle; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/title.html
+    string sURL; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/url.html
+    string sDescription; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/description.html
+    string sThumbnailURL; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/thumbnail.html
+    string sImageURL; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/image.html
+    string sFooterText; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/footer.html
+    string sFooterURL; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/footer.html
+    int iTimestamp; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/timestamp.html
+    string sField1Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField1Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField1Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField2Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField2Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField2Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField3Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField3Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField3Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField4Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField4Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField4Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField5Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField5Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField5Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField6Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField6Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField6Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField7Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField7Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField7Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField8Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField8Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField8Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField9Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField9Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField9Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField10Name; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    string sField10Value; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
+    int iField10Inline; ///< https://birdie0.github.io/discord-webhooks-guide/structure/embed/fields.html
 };
 
-// Helper function
+/// @private We don't need this to be a part of the docs.
+/// @brief Helper function to convert 0 or 1 to false or true.
+/// @param iBool The integer representation of the boolean.
+/// @return The string representation (true or false) of the boolean.
 string IntToBoolString(int iBool);
 
-// Constructs the Slack-compatible JSON message from the struct
+/// @ingroup webhook
+/// @brief Builds and sends a rich webhook message based on the constructed NWNX_WebHook_Message.
+/// @param host The web server to send the hook.
+/// @param path The path to the hook.
+/// @param stMessage A constructed NWNX_Webhook_Message.
+/// @param mrkdwn Set to false if you do not wish your message's markdown be parsed.
+/// @warning Your path must end with /slack if using a Discord webhook.
 string NWNX_WebHook_BuildMessageForWebHook(string host, string path, struct NWNX_WebHook_Message stMessage, int mrkdwn = 1);
 
 string IntToBoolString(int iBool)

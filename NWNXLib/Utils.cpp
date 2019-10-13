@@ -21,8 +21,11 @@
 #include "API/CNWSWaypoint.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CNWSScriptVar.hpp"
+#include "API/CServerAIMaster.hpp"
+#include "API/CScriptEvent.hpp"
 #include "API/CScriptLocation.hpp"
 #include "API/CExoString.hpp"
+#include "API/CExoArrayList.hpp"
 
 #include <sstream>
 
@@ -190,20 +193,47 @@ bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y
             AsNWSCreature(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Placeable:
-            AsNWSPlaceable(pObject)->AddToArea(pArea, x, y, z, true);
+        {
+            auto *pPlaceable = AsNWSPlaceable(pObject);
+            pPlaceable->AddToArea(pArea, x, y, z, true);
+
+            // If pDoor is trapped it needs to be added to the area's trap list for it to be detectable by players.
+            if (pPlaceable->m_bTrapFlag)
+            {
+                pArea->m_pTrapList.Add(pPlaceable->m_idSelf);
+            }
             return true;
+        }
         case ObjectType::Waypoint:
             AsNWSWaypoint(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Door:
-            AsNWSDoor(pObject)->AddToArea(pArea, x, y, z, true);
+        {
+            auto *pDoor = AsNWSDoor(pObject);
+            pDoor->AddToArea(pArea, x, y, z, true);
+
+            // If pDoor is trapped it needs to be added to the area's trap list for it to be detectable by players.
+            if (pDoor->m_bTrapped)
+            {
+                pArea->m_pTrapList.Add(pDoor->m_idSelf);
+            }
             return true;
+        }
         case ObjectType::Store:
             AsNWSStore(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Trigger:
-            AsNWSTrigger(pObject)->AddToArea(pArea, x, y, z, true);
+        {
+            auto *pTrigger = AsNWSTrigger(pObject);
+            pTrigger->AddToArea(pArea, x, y, z, true);
+
+            // If pTrigger is a trap it needs to be added to the area's trap list for it to be detectable by players.
+            if (pTrigger->m_bTrap)
+            {
+                pArea->m_pTrapList.Add(pTrigger->m_idSelf);
+            }
             return true;
+        }
         case ObjectType::Encounter:
             AsNWSEncounter(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
@@ -304,6 +334,71 @@ std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID, uint8_t bG
     locStr.GetStringLoc(nID, &str, bGender);
 
     return std::string(str.CStr());
+}
+
+void AddStealthEvent(int which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent();
+    pScriptEvent->m_nType = ScriptEvent::OnPerception;
+    pScriptEvent->SetInteger(0, which);
+    pScriptEvent->SetObjectID(0, oidTarget);
+    pAIMaster->AddEventDeltaTime(0, 0, oidTarget, oidSelf, Event::SignalEvent, pScriptEvent);
+}
+
+void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent;
+    pScriptEvent->m_nType = ScriptEvent::OnObjectEnter;
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+}
+
+void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent;
+    pScriptEvent->m_nType = ScriptEvent::OnObjectExit;
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
+}
+
+void AddOnAcquireItemEvent(
+        API::Types::ObjectID oidItemAcquired,
+        API::Types::ObjectID oidItemAcquiredBy,
+        API::Types::ObjectID oidItemAcquiredFrom,
+        int32_t stackSize)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent();
+    pScriptEvent->m_nType = ScriptEvent::OnAcquireItem;
+    pScriptEvent->SetObjectID(0, oidItemAcquired);
+    pScriptEvent->SetObjectID(1, oidItemAcquiredBy);
+    pScriptEvent->SetObjectID(2, oidItemAcquiredFrom);
+    pScriptEvent->SetInteger(0, stackSize);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemAcquired, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
+}
+
+void AddOnLoseItemEvent(
+        API::Types::ObjectID oidItemLost,
+        API::Types::ObjectID oidItemLostBy)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    auto *pScriptEvent = new API::CScriptEvent();
+    pScriptEvent->m_nType = ScriptEvent::OnLoseItem;
+    pScriptEvent->SetObjectID(0, oidItemLost);
+    pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
+}
+
+void AddDestroyObjectEvent(API::Types::ObjectID oid)
+{
+    auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+
+    pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
 }
 
 }

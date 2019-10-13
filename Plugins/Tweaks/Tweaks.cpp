@@ -10,6 +10,9 @@
 #include "Tweaks/HideDMsOnCharList.hpp"
 #include "Tweaks/DisableMonkAbilitiesWhenPolymorphed.hpp"
 #include "Tweaks/StringToIntBaseToAuto.hpp"
+#include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
+#include "Tweaks/PreserveActionsOnDMPossess.hpp"
+#include "Tweaks/FixGreaterSanctuaryBug.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -103,10 +106,29 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         LOG_INFO("Monk abilities (ac, speed, attacks) will be disabled during polymorph");
         m_DisableMonkAbilitiesWhenPolymorphed = std::make_unique<DisableMonkAbilitiesWhenPolymorphed>(GetServices()->m_hooks.get());
     }
+
     if (GetServices()->m_config->Get<bool>("STRINGTOINT_BASE_TO_AUTO", false))
     {
         LOG_INFO("Setting StringToInt() base to auto to allow for conversion of hex strings to proper values.");
         m_StringToIntBaseToAuto = std::make_unique<StringToIntBaseToAuto>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("DEAD_CREATURES_TRIGGER_ON_AREA_EXIT", false))
+    {
+        LOG_INFO("Dead creatures will fire on area exit.");
+        m_DeadCreatureFiresOnAreaExit = std::make_unique<DeadCreatureFiresOnAreaExit>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("PRESERVE_ACTIONS_ON_DM_POSSESS", false))
+    {
+        LOG_INFO("DMs possessing a creature will no longer clear their actions");
+        m_PreserveActionsOnDMPossess = std::make_unique<PreserveActionsOnDMPossess>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("FIX_GREATER_SANCTUARY_BUG", false))
+    {
+        LOG_INFO("Greater sanctuary bug fixed.");
+        m_FixGreaterSanctuaryBug = std::make_unique<FixGreaterSanctuaryBug>(GetServices()->m_hooks.get());
     }
 }
 

@@ -45,7 +45,8 @@ Damage::Damage(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Damage::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetEventScript);
     REGISTER(GetDamageEventData);
@@ -80,19 +81,19 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
     if (oidOwner == Constants::OBJECT_INVALID)
     {
         m_EventScripts[event] = script;
-        LOG_INFO("Set Global %s Event Script to %s", event.c_str(), script.c_str());
+        LOG_INFO("Set Global %s Event Script to %s", event, script);
     }
     else
     {
         if (script != "")
         {
             g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script);
-            LOG_INFO("Set object 0x%08x %s Event Script to %s", oidOwner, event.c_str(), script.c_str());
+            LOG_INFO("Set object 0x%08x %s Event Script to %s", oidOwner, event, script);
         }
         else
         {
             g_plugin->GetServices()->m_perObjectStorage->Remove(oidOwner, event + "_EVENT_SCRIPT");
-            LOG_INFO("Clearing %s Event Script for object 0x%08x", event.c_str(), oidOwner);
+            LOG_INFO("Clearing %s Event Script for object 0x%08x", event, oidOwner);
         }
     }
 

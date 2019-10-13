@@ -44,7 +44,8 @@ Effect::Effect(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Effect::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(PackEffect);
     REGISTER(UnpackEffect);
@@ -198,7 +199,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
                         g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
 
                         LOG_DEBUG("Running script '%s' on object '%x' with data '%s'",
-                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
+                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData);
 
                         ++g_plugin->m_effectExpiredDepth;
                         Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);

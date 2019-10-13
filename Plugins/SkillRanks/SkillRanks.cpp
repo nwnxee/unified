@@ -1,5 +1,4 @@
 #include "SkillRanks.hpp"
-#include "API/C2DA.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWSArea.hpp"
@@ -13,6 +12,7 @@
 #include "API/Functions.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
 #include <cmath>
 #include <list>
@@ -50,6 +50,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 {
+    //TODO-64bit: This plugin will have to undergo a thorough review/rework due to the new ruleset.2da
     g_plugin = new SkillRanks::SkillRanks(params);
     return g_plugin;
 }
@@ -61,7 +62,8 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&SkillRanks::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetSkillFeat);
     REGISTER(SetSkillFeat);
@@ -95,6 +97,18 @@ void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, API::CNWRules
 
     // Initialize our vector for each skill
     g_plugin->m_skillFeatMap.assign(pRules->m_nNumSkills, {});
+
+    // Initialize our vector for any messages received
+    g_plugin->m_skillRaceMod.assign(pRules->m_nNumSkills, {});
+
+    g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
+                                                           [](const std::vector<std::string> message)
+                                                           {
+                                                               auto nSkill = std::stoi(message[0]);
+                                                               auto nRace = std::stoi(message[1]);
+                                                               auto nMod = std::stoi(message[2]);
+                                                               g_plugin->m_skillRaceMod[nSkill][nRace] = nMod;
+                                                           });
 
     for (int featId = 0; featId < pRules->m_nNumFeats; featId++)
     {
@@ -561,6 +575,7 @@ int32_t SkillRanks::GetSkillRankHook(
         return 127;
 
     int32_t baseRank = thisPtr->m_lstSkillRanks[nSkill];
+
     if (bBaseOnly)
         return baseRank;
 
@@ -568,6 +583,9 @@ int32_t SkillRanks::GetSkillRankHook(
         return 0;
 
     int32_t retVal = baseRank + thisPtr->m_pBaseCreature->GetTotalEffectBonus(5, pVersus, 0, 0, 0, 0, nSkill, -1, 0);
+
+    // Add any racial modifiers broadcasted from the Race plugin
+    retVal += g_plugin->m_skillRaceMod[nSkill][thisPtr->m_nRace];
 
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_pBaseCreature->m_oidArea);
 

@@ -8,7 +8,7 @@ namespace API {
 
 namespace Functions {
 
-NWNX_EXPECT_VERSION(8186);
+NWNX_EXPECT_VERSION(8192);
 
 constexpr uintptr_t C2DA__C2DACtor__0 = 0x00041400;
 constexpr uintptr_t C2DA__C2DACtor__1 = 0x000414A0;

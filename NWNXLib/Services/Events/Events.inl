@@ -6,11 +6,11 @@ void Events::Push(const std::string& pluginName, const std::string& eventName, c
     {
         event->m_arguments.push(Events::Argument(value));
         LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
-            event->m_arguments.top().toString().c_str(), eventName.c_str(), pluginName.c_str());
+            event->m_arguments.top(), eventName, pluginName);
     }
     else
     {
-        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName, eventName);
     }
 }
 
@@ -22,7 +22,7 @@ Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName
         if (event->m_returns.empty())
         {
             LOG_ERROR("Plugin '%s', event '%s': Tried to get a return value when one did not exist.",
-                pluginName.c_str(), eventName.c_str());
+                pluginName, eventName);
             return Maybe<T>();
         }
 
@@ -30,12 +30,12 @@ Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName
         if (!data)
         {
             LOG_ERROR("Plugin '%s', event '%s': Type mismatch in return values",
-                pluginName.c_str(), eventName.c_str());
+                pluginName, eventName);
         }
         else
         {
             LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
-                event->m_returns.top().toString().c_str(), eventName.c_str(), pluginName.c_str());
+                event->m_returns.top(), eventName, pluginName);
 
             // I'm probably using all these moves wrong..
             T real = std::move(*data);
@@ -45,7 +45,7 @@ Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName
     }
     else
     {
-        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName, eventName);
     }
     return Maybe<T>();
 }

@@ -41,10 +41,10 @@ void Redis::Reconfigure()
                 Get<std::string>("PUBSUB_CHANNELS", ""), ',');
 
         LOG_INFO("Reconfiguring for redis at %s:%d",
-                                   m_internal->m_config.m_host.c_str(),
+                                   m_internal->m_config.m_host,
                                    m_internal->m_config.m_port);
 
-        LOG_INFO("PubSub: Using NWScript: %s", m_internal->m_config.m_pubsub_script.c_str());
+        LOG_INFO("PubSub: Using NWScript: %s", m_internal->m_config.m_pubsub_script);
 
         try
         {
@@ -60,7 +60,7 @@ void Redis::Reconfigure()
         auto bound = std::bind(&Redis::OnPubsub, this, _1, _2);
         for (auto& ch : m_internal->m_config.m_pubsub_channels)
         {
-            LOG_INFO("PubSub: Subscribing to %s", ch.c_str());
+            LOG_INFO("PubSub: Subscribing to %s", ch);
             m_internal->m_connection_pubsub.psubscribe(ch, bound);
         }
         m_internal->m_connection_pubsub.commit();

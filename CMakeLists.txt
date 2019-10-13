@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMa
 # -DSANITIZE_ADDRESS=On
 find_package(Sanitizers)
 
-set(TARGET_NWN_BUILD 8190)
+set(TARGET_NWN_BUILD 8192)
 set(PLUGIN_PREFIX NWNX_)
 set(NWNX64 1)
 
@@ -95,6 +95,9 @@ add_subdirectory(NWNXLib)
 # The core shared library.
 add_subdirectory(Core)
 
+# The documentation generation.
+add_subdirectory(docgen)
+
 # Detect every plugin and store it in plugins . . .
 file(GLOB plugins Plugins/*/CMakeLists.txt)
 
@@ -114,4 +117,3 @@ endforeach(plugin)
 foreach(addplugin $ENV{NWNX_ADDITIONAL_PLUGINS})
     add_subdirectory(${addplugin} ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
 endforeach(addplugin)
-

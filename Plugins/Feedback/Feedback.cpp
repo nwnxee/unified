@@ -51,8 +51,9 @@ Feedback::Feedback(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Feedback::func, this, std::placeholders::_1))
-
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
+        
     REGISTER(GetMessageHidden);
     REGISTER(SetMessageHidden);
     REGISTER(SetFeedbackMode);

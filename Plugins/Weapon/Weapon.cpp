@@ -49,7 +49,8 @@ Weapon::Weapon(const Plugin::CreateParams& params)
   : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Weapon::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetWeaponFocusFeat);
     REGISTER(SetEpicWeaponFocusFeat);
@@ -401,7 +402,7 @@ ArgumentStack Weapon::SetDevastatingCriticalEventScript(ArgumentStack&& args)
     ArgumentStack stack;
 
     m_DCScript = Services::Events::ExtractArgument<std::string>(args);
-    LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript.c_str());
+    LOG_INFO("Set Devastating Critical Event Script to %s", m_DCScript);
 
     return stack;
 }

@@ -2,7 +2,7 @@
 #include "API/CExoString.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/Globals.hpp"
-#include "API/Version.hpp"
+#include "API/Constants.hpp"
 #include "Events/AssociateEvents.hpp"
 #include "Events/BarterEvents.hpp"
 #include "Events/ClientEvents.hpp"
@@ -24,13 +24,19 @@
 #include "Events/TrapEvents.hpp"
 #include "Events/TimingBarEvents.hpp"
 #include "Events/LevelEvents.hpp"
+#include "Events/PVPEvents.hpp"
+#include "Events/InputEvents.hpp"
+#include "Events/MaterialChangeEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "ViewPtr.hpp"
 #include <algorithm>
 #include <regex>
+#include <string>
 
 using namespace NWNXLib;
+using namespace NWNXLib::API;
+using namespace NWNXLib::API::Constants;
 
 static ViewPtr<Events::Events> g_plugin;
 
@@ -61,6 +67,7 @@ Events::Events(const Plugin::CreateParams& params)
     if (g_plugin == nullptr) // :(
         g_plugin = this;
 
+    // TODO-64bit: Bring this stuff more in line with how the other plugins handle this
     GetServices()->m_events->RegisterEvent("SUBSCRIBE_EVENT", std::bind(&Events::OnSubscribeEvent, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("PUSH_EVENT_DATA", std::bind(&Events::OnPushEventData, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("SIGNAL_EVENT", std::bind(&Events::OnSignalEvent, this, std::placeholders::_1));
@@ -68,6 +75,9 @@ Events::Events(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("SKIP_EVENT", std::bind(&Events::OnSkipEvent, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("EVENT_RESULT", std::bind(&Events::OnEventResult, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_CURRENT_EVENT", std::bind(&Events::OnGetCurrentEvent, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("ToggleDispatchListMode", std::bind(&Events::ToggleDispatchListMode, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("AddObjectToDispatchList", std::bind(&Events::AddObjectToDispatchList, this, std::placeholders::_1));
+    GetServices()->m_events->RegisterEvent("RemoveObjectFromDispatchList", std::bind(&Events::RemoveObjectFromDispatchList, this, std::placeholders::_1));
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
         [](const std::vector<std::string> message)
@@ -104,6 +114,9 @@ Events::Events(const Plugin::CreateParams& params)
     m_trapEvents        = std::make_unique<TrapEvents>(GetServices()->m_hooks);
     m_timingBarEvents   = std::make_unique<TimingBarEvents>(GetServices()->m_hooks);
     m_levelEvents       = std::make_unique<LevelEvents>(GetServices()->m_hooks);
+    m_PVPEvents         = std::make_unique<PVPEvents>(GetServices()->m_hooks);
+    m_inputEvents       = std::make_unique<InputEvents>(GetServices()->m_hooks);
+    m_matChangeEvents   = std::make_unique<MaterialChangeEvents>(GetServices()->m_hooks);
 }
 
 Events::~Events()
@@ -112,11 +125,10 @@ Events::~Events()
 
 void Events::PushEventData(const std::string tag, const std::string data)
 {
-    LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag.c_str(), data.c_str());
+    LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag, data);
     g_plugin->CreateNewEventDataIfNeeded();
     g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
 }
-
 
 std::string Events::GetEventData(const std::string tag)
 {
@@ -137,11 +149,11 @@ std::string Events::GetEventData(const std::string tag)
     }
 
     retVal=data->second;
-    LOG_DEBUG("Getting event data: '%s' -> '%s'.", tag.c_str(), retVal.c_str());
+    LOG_DEBUG("Getting event data: '%s' -> '%s'.", tag, retVal);
     return retVal;
 }
 
-bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectID target, std::string *result)
+bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID target, std::string *result)
 {
     bool skipped = false;
 
@@ -151,26 +163,41 @@ bool Events::SignalEvent(const std::string& eventName, const API::Types::ObjectI
 
     for (const auto& script : g_plugin->m_eventMap[eventName])
     {
-        LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName.c_str(), script.c_str());
-        API::CExoString scriptExoStr = script.c_str();
+        auto DispatchEvent = [&]() -> void {
+            LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName, script);
+            API::CExoString scriptExoStr = script.c_str();
 
-        ++g_plugin->m_eventDepth;
-        API::Globals::VirtualMachine()->RunScript(&scriptExoStr, target, 1);
+            ++g_plugin->m_eventDepth;
+            API::Globals::VirtualMachine()->RunScript(&scriptExoStr, target, 1);
 
-        skipped |= g_plugin->m_eventData.top().m_Skipped;
+            skipped |= g_plugin->m_eventData.top().m_Skipped;
 
-        if (result)
+            if (result)
+            {
+                *result = g_plugin->m_eventData.top().m_Result;
+            }
+
+            --g_plugin->m_eventDepth;
+        };
+
+        auto eventDispatchList = g_plugin->m_dispatchList.find(eventName + script);
+        if (eventDispatchList != g_plugin->m_dispatchList.end())
         {
-            *result = g_plugin->m_eventData.top().m_Result;
+            if(eventDispatchList->second.find(target) != eventDispatchList->second.end())
+            {
+                DispatchEvent();
+            }
         }
-
-        --g_plugin->m_eventDepth;
+        else
+        {
+            DispatchEvent();
+        }
     }
 
-    g_plugin->m_eventData.pop();
-
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, result ? *result : ""});
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, g_plugin->m_eventData.top().m_Result});
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED", { eventName, skipped ? "1" : "0"});
+
+    g_plugin->m_eventData.pop();
 
     return !skipped;
 }
@@ -188,7 +215,7 @@ void Events::RunEventInit(const std::string& eventName)
         if (std::regex_search(eventName, std::regex(it.first)))
         {
             LOG_DEBUG("Running init function for events '%s' (requested by event '%s')",
-                        it.first.c_str(), eventName.c_str());
+                        it.first, eventName);
             it.second();
             erase.push_back(it.first);
         }
@@ -200,7 +227,7 @@ void Events::RunEventInit(const std::string& eventName)
 
 }
 
-Services::Events::ArgumentStack Events::OnSubscribeEvent(Services::Events::ArgumentStack&& args)
+ArgumentStack Events::OnSubscribeEvent(ArgumentStack&& args)
 {
     const auto event = Services::Events::ExtractArgument<std::string>(args);
     auto script = Services::Events::ExtractArgument<std::string>(args);
@@ -213,39 +240,39 @@ Services::Events::ArgumentStack Events::OnSubscribeEvent(Services::Events::Argum
         throw std::runtime_error("Attempted to subscribe to an event with a script that already subscribed!");
     }
 
-    LOG_INFO("Script '%s' subscribed to event '%s'.", script.c_str(), event.c_str());
+    LOG_INFO("Script '%s' subscribed to event '%s'.", script, event);
     eventVector.emplace_back(std::move(script));
 
-    return Services::Events::ArgumentStack();
+    return ArgumentStack();
 }
 
-Services::Events::ArgumentStack Events::OnPushEventData(Services::Events::ArgumentStack&& args)
+ArgumentStack Events::OnPushEventData(ArgumentStack&& args)
 {
     const auto tag = Services::Events::ExtractArgument<std::string>(args);
     const auto data = Services::Events::ExtractArgument<std::string>(args);
     PushEventData(tag, data);
-    return Services::Events::ArgumentStack();
+    return ArgumentStack();
 }
 
-Services::Events::ArgumentStack Events::OnSignalEvent(Services::Events::ArgumentStack&& args)
+ArgumentStack Events::OnSignalEvent(ArgumentStack&& args)
 {
     const auto event = Services::Events::ExtractArgument<std::string>(args);
-    const auto object = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
+    const auto object = Services::Events::ExtractArgument<Types::ObjectID>(args);
     bool signalled = SignalEvent(event, object);
-    Services::Events::ArgumentStack stack;
+    ArgumentStack stack;
     Services::Events::InsertArgument(stack, signalled ? 1 : 0);
     return stack;
 }
 
-Services::Events::ArgumentStack Events::OnGetEventData(Services::Events::ArgumentStack&& args)
+ArgumentStack Events::OnGetEventData(ArgumentStack&& args)
 {
     std::string data = GetEventData(Services::Events::ExtractArgument<std::string>(args));
-    Services::Events::ArgumentStack stack;
+    ArgumentStack stack;
     Services::Events::InsertArgument(stack, data);
     return stack;
 }
 
-Services::Events::ArgumentStack Events::OnSkipEvent(Services::Events::ArgumentStack&&)
+ArgumentStack Events::OnSkipEvent(ArgumentStack&&)
 {
     if (m_eventDepth == 0 || m_eventData.empty())
     {
@@ -255,10 +282,10 @@ Services::Events::ArgumentStack Events::OnSkipEvent(Services::Events::ArgumentSt
 
     LOG_DEBUG("Skipping last event.");
 
-    return Services::Events::ArgumentStack();
+    return ArgumentStack();
 }
 
-Services::Events::ArgumentStack Events::OnEventResult(Services::Events::ArgumentStack&& args)
+ArgumentStack Events::OnEventResult(ArgumentStack&& args)
 {
     if (m_eventDepth == 0 || m_eventData.empty())
     {
@@ -268,22 +295,84 @@ Services::Events::ArgumentStack Events::OnEventResult(Services::Events::Argument
 
     m_eventData.top().m_Result = data;
 
-    LOG_DEBUG("Received event result '%s'.", data.c_str());
+    LOG_DEBUG("Received event result '%s'.", data);
 
-    return Services::Events::ArgumentStack();
+    return ArgumentStack();
 }
 
-Services::Events::ArgumentStack Events::OnGetCurrentEvent(Services::Events::ArgumentStack&&)
+ArgumentStack Events::OnGetCurrentEvent(ArgumentStack&&)
 {
+    std::string retVal;
+
     if (m_eventDepth == 0 || m_eventData.empty())
     {
-        throw std::runtime_error("Attempted to get the current event in an invalid context.");
+        retVal = "";
+    }
+    else
+    {
+        retVal = g_plugin->m_eventData.top().m_EventName;
     }
 
-    std::string eventName = g_plugin->m_eventData.top().m_EventName;
+    ArgumentStack stack;
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
 
-    Services::Events::ArgumentStack stack;
-    Services::Events::InsertArgument(stack, eventName);
+ArgumentStack Events::ToggleDispatchListMode(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!eventName.empty());
+    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptName.empty());
+    const bool bEnable = Services::Events::ExtractArgument<int32_t>(args) != 0;
+
+    if (bEnable)
+        g_plugin->m_dispatchList[eventName+scriptName];
+    else
+        g_plugin->m_dispatchList.erase(eventName+scriptName);
+
+    return stack;
+}
+
+ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!eventName.empty());
+    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptName.empty());
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
+    if (eventDispatchList != g_plugin->m_dispatchList.end())
+    {
+        eventDispatchList->second.insert(oidObject);
+    }
+
+    return stack;
+}
+
+ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!eventName.empty());
+    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptName.empty());
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
+    if (eventDispatchList != g_plugin->m_dispatchList.end())
+    {
+        eventDispatchList->second.erase(oidObject);
+    }
+
     return stack;
 }
 

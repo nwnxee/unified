@@ -1,26 +1,44 @@
+/// @defgroup player Player
+/// @brief Functions exposing additional player properties.
+/// @{
+/// @file nwnx_player.nss
 #include "nwnx"
 
+const string NWNX_Player = "NWNX_Player"; ///< @private
+
+/// @tableofcontents
+
+/// @brief A quickbar slot.
 struct NWNX_Player_QuickBarSlot
 {
-    object oItem;
-    object oSecondaryItem;
-    int    nObjectType;
-    int    nMultiClass;
-    string sResRef;
-    string sCommandLabel;
-    string sCommandLine;
-    string sToolTip;
-    int    nINTParam1;
-    int    nMetaType;
-    int    nDomainLevel;
-    int    nAssociateType;
-    object oAssociate;
+    object oItem; ///< @todo Describe
+    object oSecondaryItem; ///< @todo Describe
+    int    nObjectType; ///< @todo Describe
+    int    nMultiClass; ///< @todo Describe
+    string sResRef; ///< @todo Describe
+    string sCommandLabel; ///< @todo Describe
+    string sCommandLine; ///< @todo Describe
+    string sToolTip; ///< @todo Describe
+    int    nINTParam1; ///< @todo Describe
+    int    nMetaType; ///< @todo Describe
+    int    nDomainLevel; ///< @todo Describe
+    int    nAssociateType; ///< @todo Describe
+    object oAssociate; ///< @todo Describe
 };
-
+/// @name Visibility Types
+/// @deprecated Use @ref vis_types "NWNX_Visibility Visibility Types" instead.
+/// The various types of visibilities.
+/// @{
 const int NWNX_PLAYER_VISIBILITY_DEFAULT = 0;
 const int NWNX_PLAYER_VISIBILITY_HIDDEN  = 1;
 const int NWNX_PLAYER_VISIBILITY_VISIBLE = 2;
+/// @}
 
+/// @name Timing Bar Types
+/// @anchor timing_bar_types
+///
+/// The various types of timing bars.
+/// @{
 const int NWNX_PLAYER_TIMING_BAR_TRAP_FLAG     = 1;
 const int NWNX_PLAYER_TIMING_BAR_TRAP_RECOVER  = 2;
 const int NWNX_PLAYER_TIMING_BAR_TRAP_DISARM   = 3;
@@ -30,152 +48,216 @@ const int NWNX_PLAYER_TIMING_BAR_REST          = 6;
 const int NWNX_PLAYER_TIMING_BAR_UNLOCK        = 7;
 const int NWNX_PLAYER_TIMING_BAR_LOCK          = 8;
 const int NWNX_PLAYER_TIMING_BAR_CUSTOM        = 10;
+/// @}
 
-// Force display placeable examine window for player
-// If used on a placeable in a different area than the player, the portait will not be shown.
+/// @brief Force display placeable examine window for player
+/// @note If used on a placeable in a different area than the player, the portait will not be shown.
+/// @param player The player object.
+/// @param placeable The placeable object.
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable);
 
-// Force opens the target object's inventory for the player.
-// A few notes about this function:
-// - If the placeable is in a different area than the player, the portrait will not be shown
-// - The placeable's open/close animations will be played
-// - Clicking the 'close' button will cause the player to walk to the placeable;
-//     If the placeable is in a different area, the player will just walk to the edge
-//     of the current area and stop. This action can be cancelled manually.
-// - Walking will close the placeable automatically.
+/// @brief Force opens the target object's inventory for the player.
+/// @note
+/// * If the placeable is in a different area than the player, the portrait will not be shown
+/// * The placeable's open/close animations will be played
+/// * Clicking the 'close' button will cause the player to walk to the placeable If the placeable is in a
+/// different area, the player will just walk to the edge of the current area and stop.
+/// This action can be cancelled manually.
+/// * Walking will close the placeable automatically.
+/// @param player The player object.
+/// @param placeable The placeable object.
 void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable);
 
-// Starts displaying a timing bar.
-// Will run a script at the end of the timing bar, if specified.
-// The type variable lets you set a pre-defined text, use NWNX_PLAYER_TIMING_BAR_*
+/// @brief Starts displaying a timing bar.
+/// @param player The player object.
+/// @param seconds The length of time the timing bar will complete.
+/// @param script The script to run at the bar's completion.
+/// @param type The @ref timing_bar_types "Timing Bar Type"
+/// @remark Only one timing bar can be ran at the same time.
 void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "", int type = NWNX_PLAYER_TIMING_BAR_CUSTOM);
 
-// Stops displaying a timing bar.
-// Runs a script if specified.
+/// @brief Stop displaying a timing bar.
+/// @param player The player object.
+/// @param script The script to run when stopped.
 void NWNX_Player_StopGuiTimingBar(object player, string script = "");
 
-// Sets whether the player should always walk when given movement commands.
-// If true, clicking on the ground or using WASD will trigger walking instead of running.
+/// @brief Sets whether the player should always walk when given movement commands.
+/// @param player The player object.
+/// @param bWalk TRUE to set the player to always walk.
+/// @remark Clicking on the ground or using WASD will trigger walking instead of running.
 void NWNX_Player_SetAlwaysWalk(object player, int bWalk=TRUE);
 
-// Gets the player's quickbar slot info
+/// @brief Gets the player's quickbar slot info
+/// @param player The player object.
+/// @param slot Slot ID 0-35
+/// @return An NWNX_Player_QuickBarSlot struct.
 struct NWNX_Player_QuickBarSlot NWNX_Player_GetQuickBarSlot(object player, int slot);
 
-// Sets a player's quickbar slot
+/// @brief Sets the player's quickbar slot info
+/// @param player The player object.
+/// @param slot Slot ID 0-35
+/// @param qbs An NWNX_Player_QuickBarSlot struct.
 void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_QuickBarSlot qbs);
 
-// Get the name of the .bic file associated with the player's character.
+/// @brief Get the name of the .bic file associated with the player's character.
+/// @param player The player object.
+/// @return The filename for this player's bic. (Not including the ".bic")
 string NWNX_Player_GetBicFileName(object player);
 
-// Overrides the default visibility rules about how player perceives the target object.
-// NWNX_PLAYER_VISIBILITY_DEFAULT - Restore normal behavior
-// NWNX_PLAYER_VISIBILITY_HIDDEN - Object is always hidden from the player
-// NWNX_PLAYER_VISIBILITY_VISIBLE - Object is always shown to the player
-//
-// DEPRECATED - Use NWNX_Visibility_SetVisibilityOverride instead
+/// @brief Overrides the default visibility rules about how player perceives the target object.
+/// @deprecated Use NWNX_Visibility_SetVisibilityOverride() instead
 void NWNX_Player_SetVisibilityOverride(object player, object target, int override);
 
-// Queries the existing visibility override for given (player, object) pair
-// Returns NWNX_PLAYER_VISIBILITY_DEFAULT if no override exists
-//
-// DEPRECATED - Use NWNX_Visibility_GetVisibilityOverride instead
+/// @brief Queries the existing visibility override for given (player, object) pair
+/// @deprecated Use NWNX_Visibility_GetVisibilityOverride() instead
 int NWNX_Player_GetVisibilityOverride(object player, object target);
 
-// Plays the VFX at the target position in current area for the given player only
+/// @brief Plays the VFX at the target position in current area for the given player only
+/// @param player The player object.
+/// @param effectId The effect id.
+/// @param position The position to play the visual effect.
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position);
 
-// Changes the daytime music track for the given player only
+/// @brief Changes the daytime music track for the given player only
+/// @param player The player object.
+/// @param track The track id to play.
 void NWNX_Player_MusicBackgroundChangeDay(object player, int track);
 
-// Changes the nighttime music track for the given player only
+/// @brief Changes the nighttime music track for the given player only
+/// @param player The player object.
+/// @param track The track id to play.
 void NWNX_Player_MusicBackgroundChangeNight(object player, int track);
 
-// Starts the background music for the given player only
+/// @brief Starts the background music for the given player only
+/// @param player The player object.
 void NWNX_Player_MusicBackgroundStart(object player);
 
-// Stops the background music for the given player only
+/// @brief Stops the background music for the given player only
+/// @param player The player object.
 void NWNX_Player_MusicBackgroundStop(object player);
 
-// Changes the battle music track for the given player only
+/// @brief Changes the battle music track for the given player only
+/// @param player The player object.
+/// @param track The track id to play.
 void NWNX_Player_MusicBattleChange(object player, int track);
 
-// Starts the battle music for the given player only
+/// @brief Starts the battle music for the given player only
+/// @param player The player object.
 void NWNX_Player_MusicBattleStart(object player);
 
-// Stops the background music for the given player only
+/// @brief Stops the battle music for the given player only
+/// @param player The player object.
 void NWNX_Player_MusicBattleStop(object player);
 
-// Play a sound at the location of target for the given player only
-// If target is OBJECT_INVALID the sound will play at the location of the player
+/// @brief Play a sound at the location of target for the given player only
+/// @param player The player object.
+/// @param sound The sound resref.
+/// @param target The target object for the sound to originate. If target OBJECT_INVALID the sound
+/// will play at the location of the player.
 void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_INVALID);
 
-// Toggle a placeable's usable flag for the given player only
+/// @brief Toggle a placeable's usable flag for the given player only
+/// @param player The player object.
+/// @param placeable The placeable object.
+/// @param usable TRUE for usable.
 void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable);
 
-// Override player's rest duration
-// Duration is in milliseconds, 1000 = 1 second
-// Minimum duration of 10ms
-// -1 clears the override
+/// @brief Override player's rest duration
+/// @param player The player object.
+/// @param duration The duration of rest in milliseconds, 1000 = 1 second. Minimum duration of 10ms. -1 clears the override.
 void NWNX_Player_SetRestDuration(object player, int duration);
 
-// Apply visualeffect to target that only player can see
-//
-// Note: Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_*
+/// @brief Apply visualeffect to target that only player can see
+/// @param player The player object.
+/// @param target The target object to play the effect upon.
+/// @param visualeffect The visual effect id.
+/// @note Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_*
 void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect);
 
-// Refreshes the players character sheet
-// Note: You may need to use DelayCommand if you're manipulating values
-// through nwnx and forcing a UI refresh, 0.5s seemed to be fine
+/// @brief Refreshes the players character sheet
+/// @param player The player object.
+/// @note You may need to use DelayCommand if you're manipulating values
+/// through nwnx and forcing a UI refresh, 0.5s seemed to be fine
 void NWNX_Player_UpdateCharacterSheet(object player);
 
-// Allows player to open target's inventory
-// Target must be a creature or another player
-//
-// Note: only works if player and target are in the same area
+/// @brief Allows player to open target's inventory
+/// @param player The player object.
+/// @param target The target object, must be a creature or another player.
+/// @param open TRUE to open.
+/// @remark Only works if player and target are in the same area.
 void NWNX_Player_OpenInventory(object player, object target, int open = TRUE);
 
-// Get player's area exploration state
+/// @brief Get player's area exploration state
+/// @param player The player object.
+/// @param area The area object.
+/// @return A string representation of the tiles explored for that area.
 string NWNX_Player_GetAreaExplorationState(object player, object area);
 
-// Set player's area exploration state (str is an encoded string obtained with NWNX_Player_GetAreaExplorationState)
+/// @brief Set player's area exploration state.
+/// @param player The player object.
+/// @param area The area object.
+/// @param str An encoded string obtained with NWNX_Player_GetAreaExplorationState()
 void NWNX_Player_SetAreaExplorationState(object player, object area, string str);
 
-// Override oPlayer's rest animation to nAnimation
-//
-// NOTE: nAnimation does not take ANIMATION_LOOPING_* or ANIMATION_FIREFORGET_* constants
-//       Use NWNX_Consts_TranslateNWScriptAnimation() in nwnx_consts.nss to get their NWNX equivalent
-//       -1 to clear the override
+/// @brief Override player's rest animation.
+/// @param oPlayer The player object.
+/// @param nAnimation The NWNX animation id. This does not take ANIMATION_LOOPING_* or
+/// ANIMATION_FIREFORGET_* constants. Instead use NWNX_Consts_TranslateNWScriptAnimation() to get
+/// the NWNX equivalent. -1 to clear the override.
 void NWNX_Player_SetRestAnimation(object oPlayer, int nAnimation);
 
-// Override a visual transform on the given object that only oPlayer will see.
-// - oObject can be any valid Creature, Placeable, Item or Door.
-// - nTransform is one of OBJECT_VISUAL_TRANSFORM_* or -1 to remove the override
-// - fValue depends on the transformation to apply.
+/// @brief Override a visual transform on the given object that only player will see.
+/// @param oPlayer The player object.
+/// @param oObject The target object. Can be any valid Creature, Placeable, Item or Door.
+/// @param nTransform One of OBJECT_VISUAL_TRANSFORM_* or -1 to remove the override.
+/// @param fValue Depends on the transformation to apply.
 void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject, int nTransform, float fValue);
 
-// Apply a looping visualeffect to target that only player can see
-// visualeffect: VFX_DUR_*, call again to remove an applied effect
-//               -1 to remove all effects
-//
-// Note: Only really works with looping effects: VFX_DUR_*
-//       Other types *kind* of work, they'll play when reentering the area and the object is in view
-//       or when they come back in view range.
+/// @brief Apply a looping visualeffect to a target that only player can see
+/// @param player The player object.
+/// @param target The target object.
+/// @param visualeffect A VFX_DUR_*. Calling again will remove an applied effect. -1 to remove all effects
+/// @note Only really works with looping effects: VFX_DUR_*. Other types *kind* of work, they'll play when
+/// reentering the area and the object is in view or when they come back in view range.
 void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect);
 
-// Override the name of placeable for player only
-// "" to clear the override
+/// @brief Override the name of placeable for player only
+/// @param player The player object.
+/// @param placeable The placeable object.
+/// @param name The name for the placeable for this player, "" to clear the override.
 void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, string name);
 
-// Gets whether a quest has been completed by a player
-// Returns -1 if they don't have the journal entry
+/// @brief Gets whether a quest has been completed by a player
+/// @param player The player object.
+/// @param sQuestName The name identifier of the quest from the Journal Editor.
+/// @return TRUE if the quest has been completed. -1 if the player does not have the journal entry.
 int NWNX_Player_GetQuestCompleted(object player, string sQuestName);
 
-const string NWNX_Player = "NWNX_Player";
+/// @brief Place waypoints on module load representing where a PC should start
+///
+/// This will require storing the PC's cd key or community name (depending on how you store in your vault)
+/// and bic_filename along with routinely updating their location in some persistent method like OnRest,
+/// OnAreaEnter and OnClentExit.
+///
+/// @param sCDKeyOrCommunityName The Public CD Key or Community Name of the player, this will depend on your vault type.
+/// @param sBicFileName The filename for the character. Retrieved with NWNX_Player_GetBicFileName().
+/// @param oWP The waypoint object to place where the PC should start.
+/// @param bFirstConnectOnly Set to FALSE if you would like the PC to go to this location every time they login instead
+/// of just every server restart.
+void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE);
 
+/// @brief Force an item name to be updated.
+/// @note This is a workaround for bug that occurs when updating item names in open containers.
+/// @param oPlayer The player object.
+/// @param oItem The item object.
+void NWNX_Player_UpdateItemName(object oPlayer, object oItem);
+
+/// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 {
     string sFunc = "ForcePlaceableExamineWindow";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -185,13 +267,14 @@ void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
 void NWNX_Player_ForcePlaceableInventoryWindow(object player, object placeable)
 {
     string sFunc = "ForcePlaceableInventoryWindow";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_INTERNAL_StopGuiTimingBar(object player, string script = "", int id = -1)
+void NWNX_Player_INTERNAL_StopGuiTimingBar(object player, string script = "", int id = -1) ///< @private
 {
     int activeId = GetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ACTIVE");
     // Either the timing event was never started, or it already finished.
@@ -216,7 +299,6 @@ void NWNX_Player_INTERNAL_StopGuiTimingBar(object player, string script = "", in
 
 void NWNX_Player_StartGuiTimingBar(object player, float seconds, string script = "", int type = NWNX_PLAYER_TIMING_BAR_CUSTOM)
 {
-    // only one timing bar at a time!
     if (GetLocalInt(player, "NWNX_PLAYER_GUI_TIMING_ACTIVE"))
         return;
 
@@ -242,6 +324,7 @@ void NWNX_Player_StopGuiTimingBar(object player, string script = "")
 void NWNX_Player_SetAlwaysWalk(object player, int bWalk=TRUE)
 {
     string sFunc = "SetAlwaysWalk";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, bWalk);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -300,6 +383,7 @@ void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_Qui
 string NWNX_Player_GetBicFileName(object player)
 {
     string sFunc = "GetBicFileName";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
     NWNX_CallFunction(NWNX_Player, sFunc);
     return NWNX_GetReturnValueString(NWNX_Player, sFunc);
@@ -369,6 +453,7 @@ int NWNX_Player_GetVisibilityOverride(object player, object target)
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
 {
     string sFunc = "ShowVisualEffect";
+
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.x);
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.y);
     NWNX_PushArgumentFloat(NWNX_Player, sFunc, position.z);
@@ -381,6 +466,7 @@ void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
 void NWNX_Player_MusicBackgroundChangeDay(object player, int track)
 {
     string sFunc = "ChangeBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
     NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool day = TRUE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -391,6 +477,7 @@ void NWNX_Player_MusicBackgroundChangeDay(object player, int track)
 void NWNX_Player_MusicBackgroundChangeNight(object player, int track)
 {
     string sFunc = "ChangeBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
     NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool day = FALSE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -401,6 +488,7 @@ void NWNX_Player_MusicBackgroundChangeNight(object player, int track)
 void NWNX_Player_MusicBackgroundStart(object player)
 {
     string sFunc = "PlayBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool play = TRUE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -410,6 +498,7 @@ void NWNX_Player_MusicBackgroundStart(object player)
 void NWNX_Player_MusicBackgroundStop(object player)
 {
     string sFunc = "PlayBackgroundMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool play = FALSE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -419,6 +508,7 @@ void NWNX_Player_MusicBackgroundStop(object player)
 void NWNX_Player_MusicBattleChange(object player, int track)
 {
     string sFunc = "ChangeBattleMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, track);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -428,6 +518,7 @@ void NWNX_Player_MusicBattleChange(object player, int track)
 void NWNX_Player_MusicBattleStart(object player)
 {
     string sFunc = "PlayBattleMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, TRUE); // bool play = TRUE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -437,6 +528,7 @@ void NWNX_Player_MusicBattleStart(object player)
 void NWNX_Player_MusicBattleStop(object player)
 {
     string sFunc = "PlayBattleMusic";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, FALSE); // bool play = FALSE
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -446,6 +538,7 @@ void NWNX_Player_MusicBattleStop(object player)
 void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_INVALID)
 {
     string sFunc = "PlaySound";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sound);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -456,6 +549,7 @@ void NWNX_Player_PlaySound(object player, string sound, object target = OBJECT_I
 void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
 {
     string sFunc = "SetPlaceableUsable";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, usable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, placeable);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -466,6 +560,7 @@ void NWNX_Player_SetPlaceableUsable(object player, object placeable, int usable)
 void NWNX_Player_SetRestDuration(object player, int duration)
 {
     string sFunc = "SetRestDuration";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, duration);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -475,6 +570,7 @@ void NWNX_Player_SetRestDuration(object player, int duration)
 void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, int visualeffect)
 {
     string sFunc = "ApplyInstantVisualEffectToObject";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -485,6 +581,7 @@ void NWNX_Player_ApplyInstantVisualEffectToObject(object player, object target, 
 void NWNX_Player_UpdateCharacterSheet(object player)
 {
     string sFunc = "UpdateCharacterSheet";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
@@ -504,6 +601,7 @@ void NWNX_Player_OpenInventory(object player, object target, int open = TRUE)
 string NWNX_Player_GetAreaExplorationState(object player, object area)
 {
     string sFunc = "GetAreaExplorationState";
+
     NWNX_PushArgumentObject(NWNX_Player, sFunc, area);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
@@ -514,6 +612,7 @@ string NWNX_Player_GetAreaExplorationState(object player, object area)
 void NWNX_Player_SetAreaExplorationState(object player, object area, string str)
 {
     string sFunc = "SetAreaExplorationState";
+
     NWNX_PushArgumentString(NWNX_Player, sFunc, str);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, area);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -546,6 +645,7 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
 void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect)
 {
     string sFunc = "ApplyLoopingVisualEffectToObject";
+
     NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
@@ -567,9 +667,32 @@ void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, strin
 int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
 {
     string sFunc = "GetQuestCompleted";
+    
     NWNX_PushArgumentString(NWNX_Player, sFunc, sQuestName);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
     return  NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE)
+{
+    string sFunc = "SetPersistentLocation";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, bFirstConnectOnly);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oWP);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sBicFileName);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sCDKeyOrCommunityName);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_UpdateItemName(object oPlayer, object oItem)
+{
+    string sFunc = "UpdateItemName";
+
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oItem);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }

@@ -1,4 +1,10 @@
+/// @defgroup events Events
+/// @brief Provides an interface for plugins to create event-based systems, and exposes some events through that interface.
+/// @{
+/// @file nwnx_events.nss
 #include "nwnx"
+
+const string NWNX_Events = "NWNX_Events"; ///< @private
 
 ////////////////////////////////////////////////////////////////////////////////
 /* The following events are exposed by this plugin:
@@ -130,6 +136,39 @@
         OBJECT_SELF = The item triggering the event
 
     Note: Use of NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_* conflicts with object event handler profiling
+
+    NWNX_ON_ITEM_USE_LORE_BEFORE
+    NWNX_ON_ITEM_USE_LORE_AFTER
+
+    Usage:
+        OBJECT_SELF = The player attempting to identify an item with their lore skill
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_PAY_TO_IDENTIFY_BEFORE
+    NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER
+
+    Usage:
+        OBJECT_SELF = The player attempting to pay to identify an item
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+        STORE                   object      Convert to object with NWNX_Object_StringToObject()
+
+    NWNX_ON_ITEM_SPLIT_BEFORE
+    NWNX_ON_ITEM_SPLIT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player attempting to split an item
+
+    Event data:
+        Variable Name           Type        Notes
+        ITEM                    object      Convert to object with NWNX_Object_StringToObject()
+        NUMBER_SPLIT_OFF        int
+
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_USE_FEAT_BEFORE
     NWNX_ON_USE_FEAT_AFTER
@@ -338,6 +377,7 @@
         PLAYER_NAME             string      Player name of the connecting client
         CDKEY                   string      Public cdkey of the connecting client
         IS_DM                   int         Whether the client is connect as DM (1/0)
+        IP_ADDRESS              string      The IP address of the connecting client
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_START_COMBAT_ROUND_BEFORE
     NWNX_ON_START_COMBAT_ROUND_AFTER
@@ -398,8 +438,8 @@
         SPELL_LEVEL             int
         SPELL_SLOT              int
 ////////////////////////////////////////////////////////////////////////////////
-    NWNX_ON_USE_HEALER_KIT_BEFORE
-    NWNX_ON_USE_HEALER_KIT_AFTER
+    NWNX_ON_HEALER_KIT_BEFORE
+    NWNX_ON_HEALER_KIT_AFTER
 
     Usage:
         OBJECT_SELF = The creature using the Healer's Kit
@@ -715,6 +755,83 @@
 
     Event data:
         Variable Name           Type        Notes
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INVENTORY_ADD_GOLD_BEFORE
+    NWNX_ON_INVENTORY_ADD_GOLD_AFTER
+    NWNX_ON_INVENTORY_REMOVE_GOLD_BEFORE
+    NWNX_ON_INVENTORY_REMOVE_GOLD_AFTER
+
+    WARNING: While these events are skippable, you should be very careful about doing so.
+             It's very easy to create situations where players can dupe their gold or worse.
+
+    Usage:
+        OBJECT_SELF = The creature gaining or losing gold
+
+    Event data:
+        Variable Name           Type        Notes
+        GOLD                    int         The amount of gold added or removed
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_PVP_ATTITUDE_CHANGE_BEFORE
+    NWNX_ON_PVP_ATTITUDE_CHANGE_AFTER
+
+    Usage:
+        OBJECT_SELF = The player performing the attitude change
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET_OBJECT_ID        object      Convert to object with NWNX_Object_StringToObject()
+        ATTITUDE                int         0 = Dislike, 1 = Like
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE
+    NWNX_ON_INPUT_WALK_TO_WAYPOINT_AFTER
+
+    Usage:
+        OBJECT_SELF = The player clicking somewhere to move
+
+    Event data:
+        Variable Name           Type        Notes
+        AREA                    object      Convert to object with NWNX_Object_StringToObject()
+        POS_X                   float
+        POS_Y                   float
+        POS_Z                   float
+        RUN_TO_POINT            int         TRUE if player is running, FALSE if player is walking (eg when shift clicking)
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_MATERIALCHANGE_BEFORE
+    NWNX_ON_MATERIALCHANGE_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature walking on a different surface material
+
+    Event data:
+        Variable Name           Type        Notes
+        MATERIAL_TYPE           int         See surfacemat.2da for values
+
+    Note:
+        After a PC transitions to a new area, a surface material change event
+        won't fire until after the PC moves.
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE
+    NWNX_ON_INPUT_ATTACK_OBJECT_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature attacking
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
+        PASSIVE                 int         TRUE / FALSE
+        CLEAR_ALL_ACTIONS       int         TRUE / FALSE
+        ADD_TO_FRONT            int         TRUE / FALSE
+////////////////////////////////////////////////////////////////////////////////
+    NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE
+    NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER
+
+    Usage:
+        OBJECT_SELF = The creature forcibly moving
+
+    Event data:
+        Variable Name           Type        Notes
+        TARGET                  object      Convert to object with NWNX_Object_StringToObject()
 *///////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -739,111 +856,172 @@ const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;
 const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
 */
 
-// Scripts can subscribe to events.
-// Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
-// Others can be signalled via script code (see NWNX_Events_SignalEvent).
+/// @brief Scripts can subscribe to events.
+///
+/// Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants).
+/// Others can be signalled via script code via NWNX_Events_SignalEvent().
+/// @param evt The event name.
+/// @param script The script to call when the event fires.
 void NWNX_Events_SubscribeEvent(string evt, string script);
 
-// Pushes event data at the provided tag, which subscribers can access with GetEventData.
-// This should be called BEFORE SignalEvent.
+/// Pushes event data at the provided tag, which subscribers can access with GetEventData.
+/// This should be called BEFORE SignalEvent.
 void NWNX_Events_PushEventData(string tag, string data);
 
-// Signals an event. This will dispatch a notification to all subscribed handlers.
-// Returns TRUE if anyone was subscribed to the event, FALSE otherwise.
+/// Signals an event. This will dispatch a notification to all subscribed handlers.
+/// Returns TRUE if anyone was subscribed to the event, FALSE otherwise.
 int NWNX_Events_SignalEvent(string evt, object target);
 
-// Retrieves the event data for the currently executing script.
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+/// Retrieves the event data for the currently executing script.
+/// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 string NWNX_Events_GetEventData(string tag);
 
-// Skips execution of the currently executing event.
-// If this is a NWNX event, that means that the base function call won't be called.
-// This won't impact any other subscribers, nor dispatch for before / after functions.
-// For example, if you are subscribing to NWNX_ON_EXAMINE_OBJECT_BEFORE, and you skip ...
-// - The other subscribers will still be called.
-// - The original function in the base game will be skipped.
-// - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
-//
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
-// ONLY WORKS WITH THE FOLLOWING EVENTS:
-// - Feat events
-// - Item events
-// - Healer's Kit event
-// - CombatMode events
-// - Party events
-// - Skill events
-// - Map events
-// - Listen/Spot Detection events
-// - Polymorph events
-// - DMAction events
-// - Client connect event
-// - Spell events
-// - QuickChat events
-// - Barter event (START only)
-// - Trap events
-// - Sticky Player Name event
+/// Skips execution of the currently executing event.
+/// If this is a NWNX event, that means that the base function call won't be called.
+/// This won't impact any other subscribers, nor dispatch for before / after functions.
+/// For example, if you are subscribing to NWNX_ON_EXAMINE_OBJECT_BEFORE, and you skip ...
+/// - The other subscribers will still be called.
+/// - The original function in the base game will be skipped.
+/// - The matching after event (NWNX_ON_EXAMINE_OBJECT_AFTER) will also be executed.
+///
+/// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+/// ONLY WORKS WITH THE FOLLOWING EVENTS:
+/// - Feat events
+/// - Item events
+/// - Healer's Kit event
+/// - CombatMode events
+/// - Party events
+/// - Skill events
+/// - Map events
+/// - Listen/Spot Detection events
+/// - Polymorph events
+/// - DMAction events
+/// - Client connect event
+/// - Spell events
+/// - QuickChat events
+/// - Barter event (START only)
+/// - Trap events
+/// - Sticky Player Name event
+/// - Add/RemoveGold events
+/// - PVP Attitude Change events
+/// - {Enter|Exit}Stealth events
 void NWNX_Events_SkipEvent();
 
-// Set the return value of the event.
-//
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
-// ONLY WORKS WITH THE FOLLOWING EVENTS:
-// - Healer's Kit event
-// - Listen/Spot Detection events -> "1" or "0"
-// - OnClientConnectBefore -> Reason for disconnect if skipped
-// - Ammo Reload event -> Forced ammunition returned
-// - Trap events -> "1" or "0"
-// - Sticky Player Name event -> "1" or "0"
+/// Set the return value of the event.
+///
+/// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+/// ONLY WORKS WITH THE FOLLOWING EVENTS:
+/// - Healer's Kit event
+/// - Listen/Spot Detection events -> "1" or "0"
+/// - OnClientConnectBefore -> Reason for disconnect if skipped
+/// - Ammo Reload event -> Forced ammunition returned
+/// - Trap events -> "1" or "0"
+/// - Sticky Player Name event -> "1" or "0"
 void NWNX_Events_SetEventResult(string data);
 
-// Returns the current event name
-//
-// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
+/// Returns the current event name
+///
+/// Returns "" on error
 string NWNX_Events_GetCurrentEvent();
 
+/// Toggles DispatchListMode for sEvent+sScript
+/// If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list.
+void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable);
+
+/// Add oObject to the dispatch list for sEvent+sScript.
+void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject);
+
+/// Remove oObject from the dispatch list for sEvent+sScript.
+void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
+
+/// @}
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
-    NWNX_PushArgumentString("NWNX_Events", "SUBSCRIBE_EVENT", script);
-    NWNX_PushArgumentString("NWNX_Events", "SUBSCRIBE_EVENT", evt);
-    NWNX_CallFunction("NWNX_Events", "SUBSCRIBE_EVENT");
+    string sFunc = "SUBSCRIBE_EVENT";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, script);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 void NWNX_Events_PushEventData(string tag, string data)
 {
-    NWNX_PushArgumentString("NWNX_Events", "PUSH_EVENT_DATA", data);
-    NWNX_PushArgumentString("NWNX_Events", "PUSH_EVENT_DATA", tag);
-    NWNX_CallFunction("NWNX_Events", "PUSH_EVENT_DATA");
+    string sFunc = "PUSH_EVENT_DATA";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, data);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, tag);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 int NWNX_Events_SignalEvent(string evt, object target)
 {
-    NWNX_PushArgumentObject("NWNX_Events", "SIGNAL_EVENT", target);
-    NWNX_PushArgumentString("NWNX_Events", "SIGNAL_EVENT", evt);
-    NWNX_CallFunction("NWNX_Events", "SIGNAL_EVENT");
-    return NWNX_GetReturnValueInt("NWNX_Events", "SIGNAL_EVENT");
+    string sFunc = "SIGNAL_EVENT";
+
+    NWNX_PushArgumentObject(NWNX_Events, sFunc, target);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Events, sFunc);
 }
 
 string NWNX_Events_GetEventData(string tag)
 {
-    NWNX_PushArgumentString("NWNX_Events", "GET_EVENT_DATA", tag);
-    NWNX_CallFunction("NWNX_Events", "GET_EVENT_DATA");
-    return NWNX_GetReturnValueString("NWNX_Events", "GET_EVENT_DATA");
+    string sFunc = "GET_EVENT_DATA";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, tag);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Events, sFunc);
 }
 
 void NWNX_Events_SkipEvent()
 {
-    NWNX_CallFunction("NWNX_Events", "SKIP_EVENT");
+    string sFunc = "SKIP_EVENT";
+
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 void NWNX_Events_SetEventResult(string data)
 {
-    NWNX_PushArgumentString("NWNX_Events", "EVENT_RESULT", data);
-    NWNX_CallFunction("NWNX_Events", "EVENT_RESULT");
+    string sFunc = "EVENT_RESULT";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, data);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 string NWNX_Events_GetCurrentEvent()
 {
-    NWNX_CallFunction("NWNX_Events", "GET_CURRENT_EVENT");
-    return NWNX_GetReturnValueString("NWNX_Events", "GET_CURRENT_EVENT");
+    string sFunc = "GET_CURRENT_EVENT";
+
+    NWNX_CallFunction(NWNX_Events, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable)
+{
+    string sFunc = "ToggleDispatchListMode";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, bEnable);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject)
+{
+    string sFunc = "AddObjectToDispatchList";
+
+    NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject)
+{
+    string sFunc = "RemoveObjectFromDispatchList";
+
+    NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
 }

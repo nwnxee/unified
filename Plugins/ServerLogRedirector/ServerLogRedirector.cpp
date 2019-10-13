@@ -92,7 +92,7 @@ void ServerLogRedirector::WriteToLogFileHook(Hooks::CallType type,
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {
         std::string str = TrimMessage(message);
-        LOG_INFO("(Server) %s", str.c_str());
+        LOG_INFO("(Server) %s", str);
     }
 }
 
@@ -102,7 +102,7 @@ void ServerLogRedirector::WriteToErrorFileHook(Hooks::CallType type,
     if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
     {
         std::string str = TrimMessage(message);
-        LOG_INFO("(Error) %s", str.c_str());
+        LOG_INFO("(Error) %s", str);
     }
 }
 
