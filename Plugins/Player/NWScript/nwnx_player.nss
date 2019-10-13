@@ -674,6 +674,7 @@ int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
     NWNX_CallFunction(NWNX_Player, sFunc);
     return  NWNX_GetReturnValueInt(NWNX_Player, sFunc);
 }
+
 void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE)
 {
     string sFunc = "SetPersistentLocation";

@@ -192,6 +192,20 @@ void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, in
 
 /// @}
 
+/// @param fStartX, fStartY The starting points.
+/// @param fEndX, fEndY The ending points.
+/// @param fPerSpace The personal space of a creature. Found in appearance.2da.
+/// @param fHeight The height of a creature. Found in appearance.2da.
+/// @param bIgnoreDoors Whether to ignore doors in the check.
+/// @return
+///  * 1 if there is a direct walkable line.
+///  * -1 if the line is blocked by terrain.
+///  * -2 if the line is blocked by a placeable.
+///  * -3 if the line is blocked by a creature.
+int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float fEndX, float fEndY, float fPerSpace, float fHeight, int bIgnoreDoors=FALSE);
+
+/// @}
+
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
 {
     string sFunc = "GetNumberOfPlayersInArea";

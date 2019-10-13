@@ -18,8 +18,7 @@
 #include "API/CNWSPlaceable.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSJournal.hpp"
-#include "API/CExoArrayListTemplatedSJournalEntry.hpp"
-#include "API/CExoArrayListTemplatedunsignedlong.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -961,8 +960,7 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
             placeable->LoadFromTemplate(CResRef("at_vfx"), &sTag);
             placeable->SetPosition(vPos, 0);
             placeable->AddToArea(pArea, vPos.x, vPos.y, pArea->ComputeHeight(vPos), false);
-            auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_aGameObjects);
-            pList->Add(placeable->m_idSelf);
+            pArea->m_aGameObjects.Add(placeable->m_idSelf);
         }
     }
     return stack;

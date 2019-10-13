@@ -468,6 +468,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     // Calculate Ability Scores
     uint8_t nAbility[6] = {0};
     int32_t nMods[6] = {0};
+    // TODO: FIX 64 BIT
     pCreatureStats->GetAbilityModsFromFeats(&pCreatureStats->m_lstFeats, nMods, true, false);
 
     // Get our base ability stats
@@ -703,13 +704,14 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
         // Add the stat bonus from feats
         int32_t nStatMods[6] = {0};
-        pCreatureStats->GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, nReportedDragonLevel);
-
-        // Update our ability values
-        for (int nAbilityIndex = 0; nAbilityIndex < 6; nAbilityIndex++)
-        {
-            nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
-        }
+        // TODO: FIX 64 BIT
+//        pCreatureStats->GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, nReportedDragonLevel);
+//
+//        // Update our ability values
+//        for (int nAbilityIndex = 0; nAbilityIndex < 6; nAbilityIndex++)
+//        {
+//            nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
+//        }
 
 // *** Check Hit Die ********************************************************************************************************
         if (pLevelStats->m_nHitDie > pCreatureStats->GetHitDie(nMultiClassLeveledUpIn, nClassLeveledUpIn))

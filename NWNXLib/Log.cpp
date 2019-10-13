@@ -66,8 +66,8 @@ void SetLogLevel(const char* plugin, Channel::Enum logLevel)
 
 }
 
-#include "API/Linux/API/CExoString.hpp"
-#include "API/Linux/API/CResRef.hpp"
+#include "API/API/CExoString.hpp"
+#include "API/API/CResRef.hpp"
 
 std::ostream& operator<<(std::ostream& out, const NWNXLib::API::CExoString& str) 
 {

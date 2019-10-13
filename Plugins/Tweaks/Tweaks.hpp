@@ -16,7 +16,6 @@ class PreserveDepletedItems;
 class HideDMsOnCharList;
 class DisableMonkAbilitiesWhenPolymorphed;
 class StringToIntBaseToAuto;
-class MaxLevel;
 class DeadCreatureFiresOnAreaExit;
 class PreserveActionsOnDMPossess;
 class FixGreaterSanctuaryBug;

@@ -28,7 +28,7 @@
 #include "API/CNWSWaypoint.hpp"
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
-#include "API/CExoArrayListTemplatedSJournalEntry.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/Constants.hpp"
@@ -1125,7 +1125,7 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
                         {
                             auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
                             auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
-                            std::string sCDKey = pPlayerInfo->GetPublicCDKey(0).CStr();
+                            std::string sCDKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
                             sKey = sCDKey + "!" + sBicFileName;
                         }
                         auto wpOID = g_plugin->m_PersistentLocationWP[sKey].first;

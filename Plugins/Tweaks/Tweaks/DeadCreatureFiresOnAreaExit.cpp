@@ -3,7 +3,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/CExoArrayListTemplatedunsignedlong.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 
@@ -28,8 +28,7 @@ DeadCreatureFiresOnAreaExit::DeadCreatureFiresOnAreaExit(ViewPtr<Services::Hooks
 
 int32_t DeadCreatureFiresOnAreaExit::CNWSArea__RemoveObjectFromArea_hook(CNWSArea *pArea, Types::ObjectID objectId)
 {
-    auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_aGameObjects);
-    pList->Remove(objectId);
+    pArea->m_aGameObjects.Remove(objectId);
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
     if ( pGameObject )

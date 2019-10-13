@@ -10,7 +10,7 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CExoLinkedListInternal.hpp"
-#include "API/CExoLinkedListTemplatedCNWSClient.hpp"
+#include "API/CExoLinkedList.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/Functions.hpp"
@@ -151,7 +151,9 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
                             distance = pDistance;
 
                             auto v = listenerObj->m_vPosition;
-                            v -= speakerPos;
+                            v.x -= speakerPos.x;
+                            v.y -= speakerPos.y;
+                            v.z -= speakerPos.z;
                             float vSquared = v.x*v.x + v.y*v.y + v.z*v.z;
                             if (speakerArea == listenerObj->GetArea() && vSquared <= distance*distance)
                             {
