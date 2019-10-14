@@ -62,7 +62,7 @@ jobs:
             git config user.name "ci-build"
       - add_ssh_keys:
           fingerprints:
-            - "2c:48:0b:5e:9c:d0:99:80:4b:57:1d:0e:09:16:5a:67"
+            - "5f:bd:64:bb:9e:4e:27:5e:44:34:2c:d4:5a:8c:2d:e7"
       - run:
           name: Move dark into a subdirectory of light for pages
           command: |
