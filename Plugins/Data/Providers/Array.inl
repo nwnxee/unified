@@ -11,7 +11,7 @@ T ArrayImpl<T>::At(const NWNXLib::API::Types::ObjectID oid, const std::string& t
 
     if (index >= size || index < 0)
     {
-        LOG_ERROR("Index %i (size %i) out of bounds for array %s, returning default value.", index, size, tag.c_str());
+        LOG_ERROR("Index %i (size %i) out of bounds for array %s, returning default value.", index, size, tag);
         return T();
     }
 

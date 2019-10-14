@@ -187,7 +187,7 @@ void NWNXCore::InitialSetupHooks()
                     if (node)
                     {
                         auto *resref = (API::CResRef*)node->pObject;
-                        LOG_DEBUG("(%i/%i) Trying to load area with resref: %s", nAreasLoaded + 1,  nAreasToLoad, resref->GetResRefStr());
+                        LOG_DEBUG("(%i/%i) Trying to load area with resref: %s", nAreasLoaded + 1,  nAreasToLoad, resref);
                     }
                 }
             });
@@ -226,7 +226,7 @@ void NWNXCore::InitialSetupPlugins()
     const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
     const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
 
-    LOG_INFO("Loading plugins from: %s", pluginDir.c_str());
+    LOG_INFO("Loading plugins from: %s", pluginDir);
 
     std::vector<std::string> sortedDynamicLibraries;
 
@@ -259,21 +259,21 @@ void NWNXCore::InitialSetupPlugins()
 
         if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
         {
-            LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension.c_str());
+            LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
             continue;
         }
 
         try
         {
-            LOG_DEBUG("Loading plugin %s", pluginName.c_str());
+            LOG_DEBUG("Loading plugin %s", pluginName);
             auto registrationToken = m_services->m_plugins->LoadPlugin(CombinePaths(pluginDir, pluginName), std::move(params));
             auto data = *m_services->m_plugins->FindPluginById(registrationToken.m_id);
-            LOG_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name.c_str(), data.m_info->m_version, data.m_info->m_author.c_str());
+            LOG_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name, data.m_info->m_version, data.m_info->m_author);
             m_pluginProxyServiceMap.insert(std::make_pair(std::move(registrationToken), std::move(services)));
         }
         catch (const std::runtime_error& err)
         {
-            LOG_ERROR("Failed to load plugin (%s) because '%s'.", pluginName.c_str(), err.what());
+            LOG_ERROR("Failed to load plugin (%s) because '%s'.", pluginName, err.what());
             throw;
         }
     }
@@ -308,11 +308,11 @@ void NWNXCore::UnloadPlugin(std::pair<Services::Plugins::RegistrationToken,
     try
     {
         m_services->m_plugins->UnloadPlugin(std::forward<Plugins::RegistrationToken>(plugin.first), Plugin::UnloadReason::SHUTTING_DOWN);
-        LOG_INFO("Unloaded plugin %d (%s).", pluginId, pluginName.c_str());
+        LOG_INFO("Unloaded plugin %d (%s).", pluginId, pluginName);
     }
     catch (const std::runtime_error& err)
     {
-        LOG_ERROR("Received error '%s' when unloading plugin %d (%s).", err.what(), pluginId, pluginName.c_str());
+        LOG_ERROR("Received error '%s' when unloading plugin %d (%s).", err.what(), pluginId, pluginName);
     }
 }
 
@@ -380,7 +380,7 @@ void NWNXCore::DestroyServerHandler(API::CAppManager* app)
     {
         if (API::Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
         {
-            LOG_NOTICE("Running module shutdown script: %s", shutdownScript->c_str());
+            LOG_NOTICE("Running module shutdown script: %s", shutdownScript);
             Utils::ExecuteScript(*shutdownScript, 0);
         }
     }

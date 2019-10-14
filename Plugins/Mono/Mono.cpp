@@ -85,7 +85,7 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     std::string assembly = GetServices()->m_config->Require<std::string>("ASSEMBLY");
 
-    LOG_INFO("Loading assembly %s.", assembly.c_str());
+    LOG_INFO("Loading assembly %s.", assembly);
     g_Assembly = mono_domain_assembly_open(g_Domain, assembly.c_str());
 
     if (!g_Assembly)
@@ -241,7 +241,7 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
     { // RUN C# SCRIPT
         auto runScripts = [&]()
         {
-            LOG_DEBUG("Invoking NWN.Scripts.%s::Main on OID 0x%x.", scriptNameAsLower.c_str(), objId);
+            LOG_DEBUG("Invoking NWN.Scripts.%s::Main on OID 0x%x.", scriptNameAsLower, objId);
 
             MonoObject* ex = nullptr;
             void* pushArgs[1] = { &objId };
@@ -256,7 +256,7 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
                 {
                     LOG_WARNING("The stack pointer before (%d) and after (%d) were different "
                         "- stack over/underflow in script NWN.Scripts.%s::Main?",
-                        spBefore, spAfter, scriptNameAsLower.c_str());
+                        spBefore, spAfter, scriptNameAsLower);
                 }
 
                 if (ret)
@@ -277,7 +277,7 @@ bool Mono::RunMonoScript(const char* scriptName, Types::ObjectID objId, bool val
             if (ex)
             {
                 char* exMsg = mono_string_to_utf8(mono_object_to_string(ex, nullptr));
-                LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main: %s", scriptNameAsLower.c_str(), exMsg);
+                LOG_WARNING("Caught unhandled exception when invoking NWN.Scripts.%s::Main: %s", scriptNameAsLower, exMsg);
                 mono_free(exMsg);
             }
         };
