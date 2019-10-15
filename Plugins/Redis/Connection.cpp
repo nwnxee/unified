@@ -8,8 +8,6 @@
 #include <mutex>
 #include <chrono>
 
-#include "Util.h"
-
 namespace Redis
 {
 
@@ -63,7 +61,7 @@ void Redis::LogQuery(const std::vector<std::string>& v, const cpp_redis::reply& 
         std::move(fields),
         std::move(tags));
 
-    auto qstr = str_implode(v);
+    auto qstr = Utils::join(v);
     auto rstr = RedisReplyAsString(r);
 
     if (r.is_error())
