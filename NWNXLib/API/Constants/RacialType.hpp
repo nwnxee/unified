@@ -65,6 +65,8 @@ namespace RacialType
             "Giant",
             "Magical Beast",
             "Outsider",
+            "(invalid)",
+            "(invalid)",
             "Shapechanger",
             "Undead",
             "Vermin",

@@ -2182,7 +2182,7 @@ namespace Feat
             "Player Tool 10",
         };
 
-        return (value > PlayerTool10) ? "(invalid)" : TYPE_STRINGS[value];
+        return (value > PlayerTool10) ? "(unknown)" : TYPE_STRINGS[value];
     }
 }
 
