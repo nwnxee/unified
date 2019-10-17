@@ -1,4 +1,5 @@
-/// @defgroup consts NWNX Constants
+/// @ingroup nwnx
+/// @addtogroup consts NWNX Constants
 /// @brief Provides various NWScript <-> NWNX Constants Translation Table functions
 /// @{
 /// @file nwnx_consts.nss
