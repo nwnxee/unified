@@ -120,7 +120,7 @@ int NWNX_Util_GetServerTicksPerSecond();
 
 /// @brief Get the last created object.
 /// @param nObjectType Does not take the NWScript OBJECT_TYPE_* constants.
-/// Use @ref consts_translate_obj_type "NWNX_Consts_TranslateNWScriptObjectType()" to get their NWNX equivalent.
+/// Use NWNX_Consts_TranslateNWScriptObjectType() to get their NWNX equivalent.
 /// @param nNthLast The nth last object created.
 /// @return The last created object. On error, this returns OBJECT_INVALID.
 object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
