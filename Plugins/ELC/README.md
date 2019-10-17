@@ -1,9 +1,9 @@
-# ELC Plugin Reference
+@page elc Readme
+@ingroup elc 
 
-## Description
+An NWNX replacement for ValidateCharacter: ELC & ILR
 
-A NWNX replacement for ValidateCharacter: ELC & ILR
-
+## Notes
 If enabled and used without setting an ELC script it will function just like ELC/ILR in the base game.
 
 This is a pretty advanced plugin and may at times require you to dive into the source code to figure out what's going on.

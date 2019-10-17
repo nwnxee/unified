@@ -1,6 +1,6 @@
-# MaxLevel Plugin Reference
-
-## Description
+@addtogroup maxlevel MaxLevel
+@page maxlevel Readme
+@ingroup maxlevel
 
 This plugin extends the maximum level possibility from 40 to 60. The plugin provides normal level up alerting and procedure with a few minor issues. Feats and Ability Points follow their normal progression. Spell counts known and gained can be configured for the additional levels.
 

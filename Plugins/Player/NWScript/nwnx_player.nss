@@ -1,12 +1,10 @@
-/// @defgroup player Player
+/// @addtogroup player
 /// @brief Functions exposing additional player properties.
 /// @{
 /// @file nwnx_player.nss
 #include "nwnx"
 
 const string NWNX_Player = "NWNX_Player"; ///< @private
-
-/// @tableofcontents
 
 /// @brief A quickbar slot.
 struct NWNX_Player_QuickBarSlot

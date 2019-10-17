@@ -1,6 +1,5 @@
-# Ruby Plugin Reference
-
-## Description
+@page ruby Readme
+@ingroup ruby 
 
 Allows users to execute arbitrary Ruby from the game.
 

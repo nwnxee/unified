@@ -1,4 +1,4 @@
-/// @defgroup lua LUA
+/// @addtogroup lua LUA
 /// @brief Execute Lua code and generate events in NWScript
 /// @{
 /// @file nwnx_lua.nss
@@ -21,6 +21,7 @@ string NWNX_Lua_Eval(string sCode);
 /// For details on events just look at the three *Event() functions in preload.lua.
 void NWNX_Lua_RunEvent(string sEvent, object oObject, string sExtra="");
 
+/// @}
 
 void NWNX_Lua_EvalVoid(string sCode)
 {
@@ -48,4 +49,3 @@ void NWNX_Lua_RunEvent(string sEvent, object oObject, string sExtra="")
     NWNX_PushArgumentString(NWNX_Lua, sFunc, sEvent);
     NWNX_CallFunction(NWNX_Lua, sFunc);
 }
-/// @} // End of LUA plugin

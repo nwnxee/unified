@@ -1,4 +1,4 @@
-/// @defgroup ruby Ruby
+/// @addtogroup ruby Ruby
 /// @brief Allows users to execute arbitrary Ruby from the game.
 /// @{
 /// @file nwnx_ruby.nss

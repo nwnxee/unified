@@ -1,5 +1,5 @@
-# CombatModes Plugin Reference
+@addtogroup combatmodes Combat Modes
+@page combatmodes Readme
+@ingroup combatmodes
 
-## Description
-
-Allows subscribing to Combat Mode toggle events
+Allows subscribing to Combat Mode toggle @ref events.

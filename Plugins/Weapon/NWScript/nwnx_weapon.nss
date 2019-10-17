@@ -1,4 +1,4 @@
-/// @defgroup weapon Weapon
+/// @addtogroup weapon Weapon
 /// @brief Functions exposing additional weapon properties.
 /// @{
 /// @file nwnx_weapon.nss

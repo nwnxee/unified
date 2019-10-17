@@ -1,4 +1,4 @@
-/// @defgroup webhook Webhook
+/// @addtogroup webhook Webhook
 /// @brief Send messages to external entities through web hooks.
 /// @{
 /// @file nwnx_webhook.nss

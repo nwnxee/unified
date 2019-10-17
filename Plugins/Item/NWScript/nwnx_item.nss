@@ -1,4 +1,4 @@
-/// @defgroup item Item
+/// @addtogroup item Item
 /// @brief Functions exposing additional item properties.
 /// @{
 /// @file nwnx_item.nss

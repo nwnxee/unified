@@ -1,5 +1,4 @@
-# Encounter Plugin Reference
-
-## Description
+@page encounter Readme
+@ingroup encounter 
 
 Functions exposing additional encounter properties

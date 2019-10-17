@@ -3,8 +3,8 @@
   <!-- Navigation index tabs for HTML output -->
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
-    <tab type="usergroup" visible="yes" title="Documentation" url="[none]">
-      <tab type="pages" visible="yes" title="" intro=""/>
+    <tab type="usergroup" visible="no" title="Documentation" url="[none]">
+      <tab type="pages" visible="no" title="" intro=""/>
     </tab>
     <tab type="modules" visible="yes" title="Plugins and Core Lib Functions" intro="The plugins and core libraries are listed below:"/>
     <tab type="namespaces" visible="yes" title="">
@@ -135,10 +135,13 @@
 
   <!-- Layout definition for a group page -->
   <group>
-    <briefdescription visible="yes"/>
-    <groupgraph visible="$GROUP_GRAPHS"/>
+    <briefdescription visible="no"/>
+    <memberdef>
+      <pagedocs/>
+    </memberdef>
+    <groupgraph visible="no"/>
     <memberdecl>
-      <nestedgroups visible="yes" title=""/>
+      <nestedgroups visible="yes" title="Function Groups"/>
       <dirs visible="yes" title=""/>
       <files visible="yes" title=""/>
       <namespaces visible="yes" title=""/>
@@ -156,11 +159,9 @@
       <events title=""/>
       <properties title=""/>
       <friends title=""/>
-      <membergroups visible="yes"/>
+      <membergroups visible="no"/>
     </memberdecl>
-    <detaileddescription title=""/>
     <memberdef>
-      <pagedocs/>
       <inlineclasses title=""/>
       <defines title=""/>
       <typedefs title=""/>

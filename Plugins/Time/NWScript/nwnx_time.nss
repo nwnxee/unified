@@ -1,4 +1,4 @@
-/// @defgroup time Time
+/// @addtogroup time Time
 /// @brief Provides various time related functions
 /// @{
 /// @file nwnx_time.nss
