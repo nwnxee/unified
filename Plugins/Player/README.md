@@ -1,6 +1,5 @@
-# Player Plugin Reference
-
-## Description
+@page player Readme
+@ingroup player
 
 Functions exposing additional player properties and commands.
 
@@ -47,7 +46,8 @@ void main()
 ```
 
 In this example make you would make sure to reset the `persistent_locs_loaded` back to 0 for all players `OnModuleLoad`.
-
+```c
         string sSQL = "UPDATE player_tracking SET persistent_locs_loaded = 0";
         NWNX_SQL_PrepareQuery(sSQL);
         NWNX_SQL_ExecutePreparedQuery();
+```

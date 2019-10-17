@@ -1,4 +1,4 @@
-/// @defgroup creature Creature
+/// @addtogroup creature Creature
 /// @brief Functions exposing additional creature properties.
 /// @{
 /// @file nwnx_creature.nss

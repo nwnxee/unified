@@ -1,4 +1,4 @@
-/// @defgroup elc ELC
+/// @addtogroup elc ELC
 /// @brief Replacement for ValidateCharacter: ELC & ILR
 /// @{
 /// @file nwnx_elc.nss

@@ -1,6 +1,10 @@
+/// @addtogroup data Data
+/// @brief Provides a number of data structures for NWN code to use (simulated arrays)
+/// @{
+/// @file nwnx_data.nss
 #include "nwnx"
 
-const string NWNX_Data = "NWNX_Data";
+const string NWNX_Data = "NWNX_Data"; ///< @private
 
 const int NWNX_DATA_INVALID_INDEX = -1;
 const int NWNX_DATA_TYPE_FLOAT = 0;
@@ -8,66 +12,102 @@ const int NWNX_DATA_TYPE_INTEGER = 1;
 const int NWNX_DATA_TYPE_OBJECT = 2;
 const int NWNX_DATA_TYPE_STRING = 3;
 
-// ------ ARRAY API ------
-
-// Returns the element at the index.
+/// @defgroup data_array_at Array At
+/// @brief Returns the element at the index.
+/// @ingroup data
+/// @param obj The object.
+/// @param tag The tag.
+/// @param index The index.
+/// @return The element of associated type.
+/// @{
 float NWNX_Data_Array_At_Flt(object obj, string tag, int index);
 int NWNX_Data_Array_At_Int(object obj, string tag, int index);
 object NWNX_Data_Array_At_Obj(object obj, string tag, int index);
 string NWNX_Data_Array_At_Str(object obj, string tag, int index);
+/// @}
 
-// Clears the entire array, such that size==0.
+
+/// Clears the entire array, such that size==0.
 void NWNX_Data_Array_Clear(int type, object obj, string tag);
 
-// Returns TRUE if the collection contains the element.
+/// @defgroup data_array_contains Array Contains
+/// @brief Checks if array contains the element.
+/// @ingroup data
+/// @param obj The object.
+/// @param tag The tag.
+/// @param element The element.
+/// @return TRUE if the collection contains the element.
+/// @{
 int NWNX_Data_Array_Contains_Flt(object obj, string tag, float element);
 int NWNX_Data_Array_Contains_Int(object obj, string tag, int element);
 int NWNX_Data_Array_Contains_Obj(object obj, string tag, object element);
 int NWNX_Data_Array_Contains_Str(object obj, string tag, string element);
+/// @}
 
-// Copies the array of name otherTag over the array of name tag.
+/// Copies the array of name otherTag over the array of name tag.
 void NWNX_Data_Array_Copy(int type, object obj, string tag, string otherTag);
 
-// Erases the element at index, and shuffles any elements from index size-1 to index + 1 left.
+/// Erases the element at index, and shuffles any elements from index size-1 to index + 1 left.
 void NWNX_Data_Array_Erase(int type, object obj, string tag, int index);
 
-// Returns the index at which the element is located, or ARRAY_INVALID_INDEX.
+/// @defgroup data_array_find Array Find
+/// @brief Get the index at which the element is located.
+/// @ingroup data
+/// @param obj The object.
+/// @param tag The tag.
+/// @param element The element.
+/// @return Returns the index at which the element is located, or ARRAY_INVALID_INDEX.
+/// @{
 int NWNX_Data_Array_Find_Flt(object obj, string tag, float element);
 int NWNX_Data_Array_Find_Int(object obj, string tag, int element);
 int NWNX_Data_Array_Find_Obj(object obj, string tag, object element);
 int NWNX_Data_Array_Find_Str(object obj, string tag, string element);
+/// @}
 
-// Inserts the element at the index, where size > index >= 0.
+/// @defgroup data_array_insert Array Insert
+/// @brief Inserts the element at the index, where size > index >= 0.
+/// @ingroup data
+/// @param obj The object.
+/// @param tag The tag.
+/// @param index The index.
+/// @param element The element.
+/// @{
 void NWNX_Data_Array_Insert_Flt(object obj, string tag, int index, float element);
 void NWNX_Data_Array_Insert_Int(object obj, string tag, int index, int element);
 void NWNX_Data_Array_Insert_Obj(object obj, string tag, int index, object element);
 void NWNX_Data_Array_Insert_Str(object obj, string tag, int index, string element);
+/// @}
 
-// Pushes an element to the back of the collection.
-// Functionally identical to an insert at index size-1.
+/// @defgroup data_array_pushback Array Pushback
+/// @brief Pushes an element to the back of the collection.
+/// @remark Functionally identical to an insert at index size-1.
+/// @ingroup data
+/// @param obj The object.
+/// @param tag The tag.
+/// @param element The element.
+/// @{
 void NWNX_Data_Array_PushBack_Flt(object obj, string tag, float element);
 void NWNX_Data_Array_PushBack_Int(object obj, string tag, int element);
 void NWNX_Data_Array_PushBack_Obj(object obj, string tag, object element);
 void NWNX_Data_Array_PushBack_Str(object obj, string tag, string element);
+/// @}
 
-// Resizes the array. If the array is shrinking, it chops off elements at the ned.
+/// Resizes the array. If the array is shrinking, it chops off elements at the ned.
 void NWNX_Data_Array_Resize(int type, object obj, string tag, int size);
 
-// Reorders the array such each possible permutation of elements has equal probability of appearance.
+/// Reorders the array such each possible permutation of elements has equal probability of appearance.
 void NWNX_Data_Array_Shuffle(int type, object obj, string tag);
 
-// Returns the size of the array.
+/// Returns the size of the array.
 int NWNX_Data_Array_Size(int type, object obj, string tag);
 
-// Sorts the collection based on descending order.
+/// Sorts the collection based on descending order.
 void NWNX_Data_Array_SortAscending(int type, object obj, string tag);
 
-// Sorts the collection based on descending order.
+/// Sorts the collection based on descending order.
 void NWNX_Data_Array_SortDescending(int type, object obj, string tag);
 
-//
-// ------
-//
+/// @}
 
 float NWNX_Data_Array_At_Flt(object obj, string tag, int index)
 {

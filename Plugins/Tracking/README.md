@@ -1,6 +1,5 @@
-# Tracking Plugin Reference
-
-## Description
+@page tracking Readme
+@ingroup tracking 
 
 Exposes a number of metrics regarding tracking events in the game.
 

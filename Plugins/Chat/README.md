@@ -1,6 +1,5 @@
-# Chat Plugin Reference
-
-## Description
+@page chat Readme
+@ingroup chat
 
 Allows chat events to be captured, skipped, and manual chat messages to be dispatched.
 

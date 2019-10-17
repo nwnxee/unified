@@ -1,5 +1,4 @@
-# Dialog Plugin Reference
-
-## Description
+@page dialog Readme
+@ingroup dialog 
 
 Functions exposing additional dialog properties

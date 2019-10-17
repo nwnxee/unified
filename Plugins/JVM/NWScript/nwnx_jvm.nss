@@ -1,12 +1,17 @@
+/// @addtogroup jvm JVM
+/// @brief Java Virtual Machine support for NWNXEE
+/// @{
+/// @file nwnx_jvm.nss
 #include "nwnx"
 
-const string NWNX_JVM = "NWNX_JVM";
+const string NWNX_JVM = "NWNX_JVM"; ///< @private
 
-/*
-  This sends event 'ev' to your JVM. Does not return anything.
-*/
+/// @brief Sends an event to your JVM.
+/// @param ev The event name.
+/// @param caller The caller object.
 void NWNX_JVM_EVENT(string ev, object caller = OBJECT_SELF);
 
+/// @}
 
 void NWNX_JVM_EVENT(string ev, object caller = OBJECT_SELF)
 {

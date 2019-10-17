@@ -1,6 +1,5 @@
-# SpellChecker Plugin Reference
-
-## Description
+@page spellchecker Readme
+@ingroup spellchecker
 
 Spell checking through Hunspell 1.4.1 and up
 
@@ -9,27 +8,27 @@ Spell checking through Hunspell 1.4.1 and up
 Note: More heavily tested on 1.4.1 but works on 1.6.
 
 Hunspell is installed by default on some systems, if it's not:
-sudo apt-get install libhunspell-1.4-0:i386
+`sudo apt-get install libhunspell-1.4-0:i386`
 
 If you wish to build (which you likely do if you're here) This also includes the necessary files above
-sudo apt-get install libhunspell-dev:i386
+`sudo apt-get install libhunspell-dev:i386`
 
 
-Alternatively, you can find hunspells source here: https://github.com/hunspell/hunspell/releases
+Alternatively, you can find hunspell's source here: https://github.com/hunspell/hunspell/releases
 
 For easily installed dictionary list:
 
-apt-cache search hunspell
+`apt-cache search hunspell`
 
-sudo apt-get install hunspell-en-us for English (United States)
+`sudo apt-get install hunspell-en-us for English (United States)`
 
 
 The package requires a 32-bit version of libhunspell.so
 
-If this doesn't exist with your OS's i386 libaries and you have libhunspell 1.4 or above installed try running:
+If this doesn't exist with your OS's i386 libraries and you have libhunspell 1.4 or above installed try running:
 
 Example for Debian:
-sudo ln -s /usr/lib/i386-linux-gnu/libhunspell-1.4.so.0 /usr/lib/i386-linux-gnu/libhunspell.so
+`sudo ln -s /usr/lib/i386-linux-gnu/libhunspell-1.4.so.0 /usr/lib/i386-linux-gnu/libhunspell.so`
 
 You can also use the above method to update hunspell to a newer version (may not be supported)
 

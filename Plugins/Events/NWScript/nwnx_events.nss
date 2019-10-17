@@ -1,4 +1,4 @@
-/// @defgroup events Events
+/// @addtogroup events Events
 /// @brief Provides an interface for plugins to create event-based systems, and exposes some events through that interface.
 /// @{
 /// @file nwnx_events.nss

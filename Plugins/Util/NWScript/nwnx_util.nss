@@ -1,4 +1,4 @@
-/// @defgroup util Util
+/// @addtogroup util Util
 /// @brief Provides various utility functions that don't have a better home
 /// @{
 /// @file nwnx_util.nss

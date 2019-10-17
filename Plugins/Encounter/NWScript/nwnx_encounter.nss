@@ -1,4 +1,4 @@
-/// @defgroup encounter Encounter
+/// @addtogroup encounter Encounter
 /// @brief Functions exposing additional encounter properties.
 /// @{
 /// @file nwnx_encounter.nss

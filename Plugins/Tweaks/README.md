@@ -1,6 +1,5 @@
-# Tweaks Plugin Reference
-
-## Description
+@page tweaks readme
+@ingroup tweaks 
 
 Tweaks stuff. See below.
 
