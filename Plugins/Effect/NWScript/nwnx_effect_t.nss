@@ -18,7 +18,11 @@ void printeff(struct NWNX_EffectUnpacked n)
     s += "nCasterLevel = " + IntToString(n.nCasterLevel) + "\n";
 
     s += "bLinkLeftValid = " + IntToString(n.bLinkLeftValid) + "\n";
+    struct NWNX_EffectUnpacked link = NWNX_Effect_UnpackEffect(n.eLinkLeft);
+    s += "bLinkLeft (nType) = " + IntToString(link.nType) + "\n";
     s += "bLinkRightValid = " + IntToString(n.bLinkRightValid) + "\n";
+    link = NWNX_Effect_UnpackEffect(n.eLinkRight);
+    s += "bLinkRight (nType) = " + IntToString(link.nType) + "\n";
 
     s += "nNumIntegers = " + IntToString(n.nNumIntegers) + "\n";
     s += "nParam0 = " + IntToString(n.nParam0) + "\n";
@@ -61,7 +65,9 @@ void main()
 {
     WriteTimestampedLogEntry("NWNX_Effect unit test begin..");
 
-    effect e = EffectCurse(1, 2, 3, 4, 5, 6);
+    effect eCurse = EffectCurse(1, 2, 3, 4, 5, 6);
+    effect eVis = EffectVisualEffect(VFX_DUR_PROT_STONESKIN);
+    effect e = EffectLinkEffects(eCurse, eVis);
     e = TagEffect(e, "NWNX_EFFECT_TEST");
 
     struct NWNX_EffectUnpacked unpacked = NWNX_Effect_UnpackEffect(e);
