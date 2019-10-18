@@ -2,4 +2,4 @@
 @page combatmodes Readme
 @ingroup combatmodes
 
-Allows subscribing to Combat Mode toggle @ref events.
+Allows subscribing to Combat Mode toggle @ref events "Events".
