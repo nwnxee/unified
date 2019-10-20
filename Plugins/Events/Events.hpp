@@ -80,11 +80,11 @@ private:
     ArgumentStack OnSignalEvent(ArgumentStack&& args);
     ArgumentStack OnGetEventData(ArgumentStack&& args);
     ArgumentStack OnSkipEvent(ArgumentStack&& args);
-    ArgumentStack OnEventResult(ArgumentStack&& args);
+    ArgumentStack OnSetEventResult(ArgumentStack&& args);
     ArgumentStack OnGetCurrentEvent(ArgumentStack&& args);
-    ArgumentStack ToggleDispatchListMode(ArgumentStack&& args);
-    ArgumentStack AddObjectToDispatchList(ArgumentStack&& args);
-    ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args);
+    ArgumentStack OnToggleDispatchListMode(ArgumentStack&& args);
+    ArgumentStack OnAddObjectToDispatchList(ArgumentStack&& args);
+    ArgumentStack OnRemoveObjectFromDispatchList(ArgumentStack&& args);
 
     // Pushes a brand new event data onto the event data stack, set up with the correct defaults.
     // Only does it if needed though, based on the current event depth!
