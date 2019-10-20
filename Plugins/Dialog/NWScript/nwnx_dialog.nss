@@ -1,4 +1,4 @@
-/// @defgroup dialog Dialog
+/// @addtogroup dialog Dialog
 /// @brief Functions exposing additional dialog properties
 /// @{
 /// @file nwnx_dialog.nss

@@ -1,6 +1,6 @@
-# Mono Plugin Reference
-
-## Description
+@addtogroup mono Mono
+@page mono Readme
+@ingroup mono 
 
 Allow users to see sharp. More specifically, this plugin enables developers to write scripts in C# using the Mono framework.
 
@@ -14,7 +14,7 @@ Allow users to see sharp. More specifically, this plugin enables developers to w
 
 - To export a script, follow this structure, where the class name is the name of the .nss script you want to replace. If I had m_hb set to the module heartbeat script, with the following code, when the m_hb would be called in nwscript, it is instead called in C#:
 
-```
+```cs
 namespace NWN.Scripts
 {
     class m_hb
@@ -27,10 +27,9 @@ namespace NWN.Scripts
 }
 ```
 
--- This also works for StartingConditionals. Just give your main function a return value as such, and return NWScript.TR
-UE or NWScript.FALSE.
+ - This also works for StartingConditionals. Just give your main function a return value as such, and return NWScript.TRUE or NWScript.FALSE.
 
-```
+```cs
 static int Main()
 {
     return NWScript.GetLevelByClass(NWScript.CLASS_TYPE_CLERIC, NWScript.GetPCSpeaker()) != 0 ? NWScript.TRUE : NWScript.FALSE;
@@ -39,7 +38,7 @@ static int Main()
 
 - If you want to use the nwscript API, make sure to compile the various INTERNAL_*.cs files in the CSharpAPI folder. Here are some examples of using the API:
 
-```
+```cs
 NWScript.SendMessageToPC(NWScript.GetFirstPC(), "Rawr! It is me! Mario");
 NWScript.DelayCommand(1.0f, () => NWScript.SendMessageToPC(NWScript.GetFirstPC(), "Hello! This is a delayed command."));
 NWScript.AssignCommand(NWScript.GetFirstPC(), () => NWScript.ActionDoCommand(
@@ -48,7 +47,7 @@ NWScript.AssignCommand(NWScript.GetFirstPC(), () => NWScript.ActionDoCommand(
 
 - To compile your scripts, invoke csc as such:
 
-```
+```sh
     csc -platform:x86 -t:library -out:[yourbinarypathgoeshere.so] INTERNAL_Internal.cs [other INTERNAL_*.cs scripts go here ...] [your scripts go here ...]
 ```
 
@@ -72,14 +71,13 @@ There is no support for hotloading yet.
 
 ## Environment Variables
 
-```
-ASSEMBLY [mandatory]: The path to the compiled binary containing your C# code. Mandatory.
-SCRIPT_METRICS [optional]: Whether metrics are exported for script execution timings.
-CLOSURE_METRICS [optional]: Whether metrics are exported for closure timings.
-MAIN_LOOP_METRICS [optional]: Whether metrics are exported for main loop tick timings.
-CONFIG_PATH [optional]: The path to the Mono config file. Advanced users only.
-BASE_DIRECTORY [optional]: The path to the directory where your code lives. This is necessary if you need to access App.config files. Used in conjunction with the APP_CONFIG environment variable. Both must be set to use App.config files.
-APP_CONFIG [optional]: The path to the App.config file used for your project. Used in conjunction with the BASE_DIRECTORY environment variable. Both must be set to use App.config files.
-ALLOW_REMOTE_DEBUGGING [optional]: If specified to true, will block until a remote debugger has been attached.
-
-```
+| Variable Name                       |  Type  | Default Value | Required |
+| ----------------------------------- | :----: | ------------- | :------: |
+| `NWNX_MONO_ASSEMBLY`                | string | _none_        | Yes |
+| `NWNX_MONO_SCRIPT_METRICS`          | int | true        | No |
+| `NWNX_MONO_CLOSURE_METRICS`          | int | true        | No |
+| `NWNX_MONO_MAIN_LOOP_METRICS`          | int | true        | No |
+| `NWNX_MONO_ASSEMBLY`                | string | _none_        | No |
+| `NWNX_MONO_CONFIG_PATH`                | string | _none_        | No |
+| `NWNX_MONO_APP_CONFIG`                | string | _none_        | No |
+| `NWNX_MONO_ALLOW_REMOTE_DEBUGGING`          | int | false        | No |

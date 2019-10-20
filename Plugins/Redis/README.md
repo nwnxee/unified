@@ -1,6 +1,5 @@
-# Redis Plugin Reference
-
-## Description
+@page redis Readme
+@ingroup redis 
 
 This plugin allows you to connect to a redis server. If you don't know what redis is, I'd suggest reading up here in detail: redis.io.
 

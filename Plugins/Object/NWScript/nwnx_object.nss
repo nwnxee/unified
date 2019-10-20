@@ -1,4 +1,4 @@
-/// @defgroup object Object
+/// @addtogroup object Object
 /// @brief Functions exposing additional object properties.
 /// @{
 /// @file nwnx_object.nss
@@ -7,7 +7,7 @@
 const string NWNX_Object = "NWNX_Object"; ///< @private
 
 /// @name Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native GetEventScript() and SetEventScript()
+/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
 /// @{
 const int NWNX_OBJECT_SCRIPT_AREA_ON_HEARTBEAT                  = 0;
 const int NWNX_OBJECT_SCRIPT_AREA_ON_USER_DEFINED               = 1;
@@ -16,7 +16,7 @@ const int NWNX_OBJECT_SCRIPT_AREA_ON_EXIT                       = 3;
 /// @}
 
 /// @name Module Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native GetEventScript() and SetEventScript()
+/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
 /// @{
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_HEARTBEAT                = 0;
 const int NWNX_OBJECT_SCRIPT_MODULE_ON_USER_DEFINED             = 1;
@@ -38,7 +38,7 @@ const int NWNX_OBJECT_SCRIPT_MODULE_ON_PLAYER_CHAT              = 17;
 /// @}
 
 /// @name Creature Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native GetEventScript() and SetEventScript()
+/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
 /// @{
 const int NWNX_OBJECT_SCRIPT_CREATURE_ON_HEARTBEAT              = 0;
 const int NWNX_OBJECT_SCRIPT_CREATURE_ON_NOTICE                 = 1;
@@ -56,7 +56,7 @@ const int NWNX_OBJECT_SCRIPT_CREATURE_ON_BLOCKED                = 12;
 /// @}
 
 /// @name Placeable Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native GetEventScript() and SetEventScript()
+/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
 /// @{
 const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_CLOSED              = 0;
 const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_DAMAGED             = 1;
@@ -113,14 +113,14 @@ object NWNX_Object_StringToObject(string id);
 /// @brief Gets the event handler
 /// @param obj The object.
 /// @param handler The event handler.
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native GetEventScript()
+/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript}
 string NWNX_Object_GetEventHandler(object obj, int handler);
 
 /// @brief Sets the event handler
 /// @param obj The object.
 /// @param handler The event handler.
 /// @param script The script to call.
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native SetEventScript()
+/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{SetEventScript}
 void NWNX_Object_SetEventHandler(object obj, int handler, string script);
 
 /// @brief Set an object's position.
@@ -142,14 +142,14 @@ void NWNX_Object_SetMaxHitPoints(object obj, int hp);
 /// @brief Get the name of the portrait
 /// @param obj The object.
 /// @return The portrait name.
-/// @deprecated Use GetPortraitResRef() built-in function instead
+/// @deprecated Use @nwn{GetPortraitResRef} built-in function instead
 string NWNX_Object_GetPortrait(object obj);
 
 /// @brief Set the portrait object is using.
 /// @param obj The object.
 /// @param portrait The filename of the portrait.
 /// @warning The portrait string must be no more than 15 characters long.
-/// @deprecated Use native SetPortraitResRef() built-in function instead.
+/// @deprecated Use native @nwn{SetPortraitResRef} built-in function instead.
 void NWNX_Object_SetPortrait(object obj, string portrait);
 
 /// @brief Serialize a full object to a base64 string

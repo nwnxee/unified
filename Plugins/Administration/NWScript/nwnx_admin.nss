@@ -1,4 +1,4 @@
-/// @defgroup admin Administration
+/// @addtogroup admin Administration
 /// @brief Various admin related functions
 /// @{
 /// @file nwnx_admin.nss
@@ -64,7 +64,7 @@ void NWNX_Administration_ShutdownServer();
 /// @brief Boots the a player from the server with the provided strref as message.
 /// @param oPC The player to boot.
 /// @param strref The string reference of the message to send the PC being booted.
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native BootPC now.
+/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{BootPC} now.
 void NWNX_Administration_BootPCWithMessage(object oPC, int strref);
 
 /// @brief Deletes the player character from the servervault

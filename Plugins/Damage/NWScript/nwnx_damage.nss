@@ -1,4 +1,4 @@
-/// @defgroup damage Damage
+/// @addtogroup damage Damage
 /// @brief Run a script before damage and attack events allowing for modification. Includes function to arbitrarily apply damage.
 /// @{
 /// @file nwnx_damage.nss

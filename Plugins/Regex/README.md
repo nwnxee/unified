@@ -1,5 +1,4 @@
-# Regex Plugin Reference
-
-## Description
+@page regex Readme
+@ingroup regex 
 
 Provide regular expression functions.

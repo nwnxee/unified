@@ -1,4 +1,4 @@
-/// @defgroup race Race
+/// @addtogroup race Race
 /// @brief Define racial and subrace characteristics.
 /// @{
 /// @file nwnx_race.nss

@@ -1,4 +1,4 @@
-/// @defgroup effect Effect
+/// @addtogroup effect Effect
 /// @brief Utility functions to manipulate the builtin effect type.
 /// @{
 /// @file nwnx_effect.nss

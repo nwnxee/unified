@@ -1,6 +1,5 @@
-# ThreadWatchdog Plugin Reference
-
-## Description
+@page threadwatchdog Readme
+@ingroup threadwatchdog 
 
 Monitors the server for stalls and kills it when it meets a threshold.
 

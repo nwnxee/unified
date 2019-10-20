@@ -1,4 +1,4 @@
-/// @defgroup reveal Reveal
+/// @addtogroup reveal Reveal
 /// @brief Allows the selective revealing of a stealthing character to another character or their party.
 /// @{
 /// @file nwnx_reveal.nss

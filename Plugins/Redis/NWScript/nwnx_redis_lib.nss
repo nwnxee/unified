@@ -1,4 +1,4 @@
-/// @defgroup redis Redis
+/// @addtogroup redis Redis
 /// @brief Allows connection and interfacing with a redis server.
 /// @{
 /// @file nwnx_redis_lib.nss

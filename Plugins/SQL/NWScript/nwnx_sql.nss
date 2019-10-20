@@ -1,4 +1,4 @@
-/// @defgroup sql SQL
+/// @addtogroup sql SQL
 /// @brief Functions to interface with a database through SQL
 /// @{
 /// @file nwnx_sql.nss

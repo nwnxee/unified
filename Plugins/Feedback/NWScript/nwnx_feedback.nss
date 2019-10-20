@@ -1,4 +1,4 @@
-/// @defgroup feedback Feedback
+/// @addtogroup feedback Feedback
 /// @brief Allows combatlog, feedback and journal updated messages to be hidden globally or per player.
 /// @note
 /// * If oPC == OBJECT_INVALID it will get/set the global state:

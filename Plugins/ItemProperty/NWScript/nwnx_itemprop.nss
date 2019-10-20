@@ -1,4 +1,4 @@
-/// @defgroup itemproperty ItemProperty
+/// @addtogroup itemproperty ItemProperty
 /// @brief Utility functions to manipulate the builtin itemproperty type.
 /// @{
 /// @file nwnx_itemprop.nss
