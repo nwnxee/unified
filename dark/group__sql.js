@@ -1,5 +1,6 @@
 var group__sql =
 [
+    [ "Readme", "group__sql.html#sql", null ],
     [ "nwnx_sql.nss", "nwnx__sql_8nss.html", null ],
     [ "NWNX_SQL_PrepareQuery", "group__sql.html#gae2e0e27014d82accfe4a0e510720515f", null ],
     [ "NWNX_SQL_ExecutePreparedQuery", "group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13", null ],

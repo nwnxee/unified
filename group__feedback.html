@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -107,9 +108,8 @@ $(document).ready(function(){initNavTree('group__feedback.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Allows combatlog, feedback and journal updated messages to be hidden globally or per player.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="feedback"></a>Readme</h3><div class="textblock">Allows combatlog, feedback and journal updated messages to be hidden globally or per player </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__feedback_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__feedback_8nss.html">nwnx_feedback.nss</a></td></tr>
@@ -141,39 +141,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1e5a9e78de5d4d9d50f527dc245060b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">NWNX_Feedback_SetCombatLogMessageMode</a> (int bWhitelist)</td></tr>
 <tr class="memdesc:ga1e5a9e78de5d4d9d50f527dc245060b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether to use a blacklist or whitelist mode for combat log messages.  <a href="group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5">More...</a><br /></td></tr>
 <tr class="separator:ga1e5a9e78de5d4d9d50f527dc245060b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Combat Log Message Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp44f4a0960dce54549dbc5ad582900bab"></a><a class="anchor" id="combat_log_msgs"></a></p>
-</td></tr>
-<tr class="memitem:ga21220ae3bf760c377d8be60dfb141801"><td class="memItemLeft" align="right" valign="top"><a id="ga21220ae3bf760c377d8be60dfb141801"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE</b> = 1</td></tr>
-<tr class="separator:ga21220ae3bf760c377d8be60dfb141801"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Feedback Message Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp5a5ed303f6c795fedcf08d18e75e4be6"></a><a class="anchor" id="feedback_msgs"></a></p>
-</td></tr>
-<tr class="memitem:ga291f1b8003190dce13ff3472ee847d27"><td class="memItemLeft" align="right" valign="top"><a id="ga291f1b8003190dce13ff3472ee847d27"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_FEEDBACK_SKILL_CANT_USE</b> = 0</td></tr>
-<tr class="separator:ga291f1b8003190dce13ff3472ee847d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Allows combatlog, feedback and journal updated messages to be hidden globally or per player. </p>
-<dl class="section note"><dt>Note</dt><dd><ul>
-<li>If oPC == OBJECT_INVALID it will get/set the global state:<ul>
-<li>TRUE = Message is globally hidden</li>
-<li>FALSE = Message is not globally hidden</li>
-</ul>
-</li>
-<li>If oPC is a valid player it will get/set the personal state:<ul>
-<li>TRUE = Message is hidden for oPC</li>
-<li>FALSE = Message is not hidden for oPC</li>
-<li>-1 = Personal state is not set for Message </li>
-</ul>
-</li>
-</ul>
-</dd></dl>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gad0f1933e1f2957b798a75fca3c5b98d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gad0f1933e1f2957b798a75fca3c5b98d2">&#9670;&nbsp;</a></span>NWNX_Feedback_GetFeedbackMessageHidden()</h2>
@@ -475,13 +443,46 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_FEEDBACK_SK
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ga21220ae3bf760c377d8be60dfb141801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga21220ae3bf760c377d8be60dfb141801">&#9670;&nbsp;</a></span>NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_FEEDBACK_COMBATLOG_SIMPLE_ADJECTIVE = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__feedback_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__feedback_8nss_source.html">nwnx_feedback.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga291f1b8003190dce13ff3472ee847d27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga291f1b8003190dce13ff3472ee847d27">&#9670;&nbsp;</a></span>NWNX_FEEDBACK_SKILL_CANT_USE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_FEEDBACK_SKILL_CANT_USE = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__feedback_8nss_source.html#l00068">68</a> of file <a class="el" href="nwnx__feedback_8nss_source.html">nwnx_feedback.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

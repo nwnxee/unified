@@ -1,5 +1,6 @@
 var group__area =
 [
+    [ "Readme", "group__area.html#area", null ],
     [ "nwnx_area.nss", "nwnx__area_8nss.html", null ],
     [ "NWNX_Area_GetNumberOfPlayersInArea", "group__area.html#gaa7e6831063235acdb013fdc5846d00a7", null ],
     [ "NWNX_Area_GetLastEntered", "group__area.html#ga90447d876b274d5bbab292416ee3a462", null ],
@@ -27,5 +28,19 @@ var group__area =
     [ "NWNX_Area_CreateTransition", "group__area.html#ga375a5f37746e7d248292788987a7ccb9", null ],
     [ "NWNX_Area_GetTileAnimationLoop", "group__area.html#ga5bca6950ff8f896782ede7d59fc72d08", null ],
     [ "NWNX_Area_SetTileAnimationLoop", "group__area.html#ga28ba5d8f657c920be0ec69e2334fa74b", null ],
-    [ "NWNX_Area_TestDirectLine", "group__area.html#gaadd7e8c0aa2f77536fa499d38aca568d", null ]
+    [ "NWNX_Area_TestDirectLine", "group__area.html#gaadd7e8c0aa2f77536fa499d38aca568d", null ],
+    [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
+    [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
+    [ "NWNX_AREA_PVP_SETTING_FULL_PVP", "group__area.html#ga8a6f21649b08da34ecc397f7fd621176", null ],
+    [ "NWNX_AREA_PVP_SETTING_SERVER_DEFAULT", "group__area.html#ga5a68d1fd703f51fcb85b38915784902c", null ],
+    [ "NWNX_AREA_WEATHER_CHANCE_RAIN", "group__area.html#ga4b0afb02efc2fb84072e146b07c21725", null ],
+    [ "NWNX_AREA_WEATHER_CHANCE_SNOW", "group__area.html#gaff6d5d664b29aa9999a7c5de80a57d80", null ],
+    [ "NWNX_AREA_WEATHER_CHANCE_LIGHTNING", "group__area.html#ga90e1c5c66112049ec181b4ae82bdf704", null ],
+    [ "NWNX_AREA_DAYNIGHTCYCLE_CYCLE_DAY_NIGHT", "group__area.html#ga7dce428424e8ae3058dc9811f626358b", null ],
+    [ "NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_BRIGHT", "group__area.html#gae8bed347af6f5ccab595bbe436867e8d", null ],
+    [ "NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK", "group__area.html#ga9932f7ae3886ed89ece8868879f9214f", null ],
+    [ "NWNX_AREA_COLOR_TYPE_MOON_AMBIENT", "group__area.html#gab5dc36ec4d73bb7b7389c17e7b00e1fd", null ],
+    [ "NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE", "group__area.html#ga74f324663644c65869ba6aa3d0d9642a", null ],
+    [ "NWNX_AREA_COLOR_TYPE_SUN_AMBIENT", "group__area.html#gaa7f9c7e05048637669ccbeca9c8f3453", null ],
+    [ "NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE", "group__area.html#gab1c50d55eb9d0acd85cb327967baefbe", null ]
 ];

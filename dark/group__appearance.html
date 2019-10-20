@@ -28,8 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
-		<link href="custom.css" rel="stylesheet" type="text/css"/>
-<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
+		<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -109,9 +108,8 @@ $(document).ready(function(){initNavTree('group__appearance.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Allows the appearance and some other things of creatures to be overridden per player.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="appearance"></a>Readme</h3><div class="textblock">Allows the appearance and some other things of creatures to be overridden per player. </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__appearance_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__appearance_8nss.html">nwnx_appearance.nss</a></td></tr>
@@ -125,60 +123,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gacbfeb0e65785612fe0c50d5e6a1b9cee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#gacbfeb0e65785612fe0c50d5e6a1b9cee">NWNX_Appearance_GetOverride</a> (object oPlayer, object oCreature, int nType)</td></tr>
 <tr class="memdesc:gacbfeb0e65785612fe0c50d5e6a1b9cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a creature's appearance type for a player.  <a href="group__appearance.html#gacbfeb0e65785612fe0c50d5e6a1b9cee">More...</a><br /></td></tr>
 <tr class="separator:gacbfeb0e65785612fe0c50d5e6a1b9cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Appearance Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp1add0cce7a613188227aca916e8f5e17"></a><a class="anchor" id="appearance_types"></a> The various types of changes that can be made to how a PC is perceived. </p>
-</td></tr>
-<tr class="memitem:ga65cf82443790a3e6abd3ff328fdfefbe"><td class="memItemLeft" align="right" valign="top"><a id="ga65cf82443790a3e6abd3ff328fdfefbe"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga65cf82443790a3e6abd3ff328fdfefbe">NWNX_APPEARANCE_TYPE_APPEARANCE</a> = 0</td></tr>
-<tr class="memdesc:ga65cf82443790a3e6abd3ff328fdfefbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">APPEARANCE_TYPE_* or -1 to remove. <br /></td></tr>
-<tr class="separator:ga65cf82443790a3e6abd3ff328fdfefbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf39cd9dc8b45b45b9869c17b0ad74ecc"><td class="memItemLeft" align="right" valign="top"><a id="gaf39cd9dc8b45b45b9869c17b0ad74ecc"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#gaf39cd9dc8b45b45b9869c17b0ad74ecc">NWNX_APPEARANCE_TYPE_GENDER</a> = 1</td></tr>
-<tr class="memdesc:gaf39cd9dc8b45b45b9869c17b0ad74ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">GENDER_* or -1 to remove. <br /></td></tr>
-<tr class="separator:gaf39cd9dc8b45b45b9869c17b0ad74ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga965bfe6cb8e12082dd09b98c3333cfd4"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga965bfe6cb8e12082dd09b98c3333cfd4">NWNX_APPEARANCE_TYPE_HITPOINTS</a> = 2</td></tr>
-<tr class="memdesc:ga965bfe6cb8e12082dd09b98c3333cfd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">0-GetMaxHitPoints(oCreature) or -1 to remove  <a href="group__appearance.html#ga965bfe6cb8e12082dd09b98c3333cfd4">More...</a><br /></td></tr>
-<tr class="separator:ga965bfe6cb8e12082dd09b98c3333cfd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6a208bee1fa4735c1bf31a4367760ef3"><td class="memItemLeft" align="right" valign="top"><a id="ga6a208bee1fa4735c1bf31a4367760ef3"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga6a208bee1fa4735c1bf31a4367760ef3">NWNX_APPEARANCE_TYPE_HAIR_COLOR</a> = 3</td></tr>
-<tr class="memdesc:ga6a208bee1fa4735c1bf31a4367760ef3"><td class="mdescLeft">&#160;</td><td class="mdescRight">0-175 or -1 to remove <br /></td></tr>
-<tr class="separator:ga6a208bee1fa4735c1bf31a4367760ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab3a4d3beaadaac74bd883e1993599bdf"><td class="memItemLeft" align="right" valign="top"><a id="gab3a4d3beaadaac74bd883e1993599bdf"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#gab3a4d3beaadaac74bd883e1993599bdf">NWNX_APPEARANCE_TYPE_SKIN_COLOR</a> = 4</td></tr>
-<tr class="memdesc:gab3a4d3beaadaac74bd883e1993599bdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">0-175 or -1 to remove <br /></td></tr>
-<tr class="separator:gab3a4d3beaadaac74bd883e1993599bdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9a05396d725bcd3c2a855a26d26843c9"><td class="memItemLeft" align="right" valign="top"><a id="ga9a05396d725bcd3c2a855a26d26843c9"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga9a05396d725bcd3c2a855a26d26843c9">NWNX_APPEARANCE_TYPE_PHENOTYPE</a> = 5</td></tr>
-<tr class="memdesc:ga9a05396d725bcd3c2a855a26d26843c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">PHENOTYPE_* or -1 to remove. <br /></td></tr>
-<tr class="separator:ga9a05396d725bcd3c2a855a26d26843c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf601b870403113b2c559de40732adcd6"><td class="memItemLeft" align="right" valign="top"><a id="gaf601b870403113b2c559de40732adcd6"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#gaf601b870403113b2c559de40732adcd6">NWNX_APPEARANCE_TYPE_HEAD_TYPE</a> = 6</td></tr>
-<tr class="memdesc:gaf601b870403113b2c559de40732adcd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">0-? or -1 to remove <br /></td></tr>
-<tr class="separator:gaf601b870403113b2c559de40732adcd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga91511e3b70e17f6656c2ebe841a6ab94"><td class="memItemLeft" align="right" valign="top"><a id="ga91511e3b70e17f6656c2ebe841a6ab94"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga91511e3b70e17f6656c2ebe841a6ab94">NWNX_APPEARANCE_TYPE_SOUNDSET</a> = 7</td></tr>
-<tr class="memdesc:ga91511e3b70e17f6656c2ebe841a6ab94"><td class="mdescLeft">&#160;</td><td class="mdescRight">See soundset.2da or -1 to remove. <br /></td></tr>
-<tr class="separator:ga91511e3b70e17f6656c2ebe841a6ab94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2fcd956e0a0f733dc438c78f16502c36"><td class="memItemLeft" align="right" valign="top"><a id="ga2fcd956e0a0f733dc438c78f16502c36"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga2fcd956e0a0f733dc438c78f16502c36">NWNX_APPEARANCE_TYPE_TAIL_TYPE</a> = 8</td></tr>
-<tr class="memdesc:ga2fcd956e0a0f733dc438c78f16502c36"><td class="mdescLeft">&#160;</td><td class="mdescRight">CREATURE_TAIL_TYPE_* or see tailmodel.2da, -1 to remove. <br /></td></tr>
-<tr class="separator:ga2fcd956e0a0f733dc438c78f16502c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga644b04a8c340d3e31b4dd79a95a5a8d6"><td class="memItemLeft" align="right" valign="top"><a id="ga644b04a8c340d3e31b4dd79a95a5a8d6"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga644b04a8c340d3e31b4dd79a95a5a8d6">NWNX_APPEARANCE_TYPE_WING_TYPE</a> = 9</td></tr>
-<tr class="memdesc:ga644b04a8c340d3e31b4dd79a95a5a8d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">CREATURE_WING_TYPE_* or see wingmodel.2da, -1 to remove. <br /></td></tr>
-<tr class="separator:ga644b04a8c340d3e31b4dd79a95a5a8d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa8ab8ccbe3ff47192ef7367c1ea0e347"><td class="memItemLeft" align="right" valign="top"><a id="gaa8ab8ccbe3ff47192ef7367c1ea0e347"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#gaa8ab8ccbe3ff47192ef7367c1ea0e347">NWNX_APPEARANCE_TYPE_FOOTSTEP_SOUND</a> = 10</td></tr>
-<tr class="memdesc:gaa8ab8ccbe3ff47192ef7367c1ea0e347"><td class="mdescLeft">&#160;</td><td class="mdescRight">0-17 or see footstepsounds.2da, -1 to remove <br /></td></tr>
-<tr class="separator:gaa8ab8ccbe3ff47192ef7367c1ea0e347"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga132a6f839050229094581fe7dd7a2dc5"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__appearance.html#ga132a6f839050229094581fe7dd7a2dc5">NWNX_APPEARANCE_TYPE_PORTRAIT</a> = 11</td></tr>
-<tr class="memdesc:ga132a6f839050229094581fe7dd7a2dc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">See portraits.2da, -1 to remove.  <a href="group__appearance.html#ga132a6f839050229094581fe7dd7a2dc5">More...</a><br /></td></tr>
-<tr class="separator:ga132a6f839050229094581fe7dd7a2dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Allows the appearance and some other things of creatures to be overridden per player. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga4db3e3265de8c297a3ac75cf9c17af29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4db3e3265de8c297a3ac75cf9c17af29">&#9670;&nbsp;</a></span>NWNX_Appearance_SetOverride()</h2>
@@ -281,6 +226,42 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="ga65cf82443790a3e6abd3ff328fdfefbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga65cf82443790a3e6abd3ff328fdfefbe">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_APPEARANCE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_APPEARANCE = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>APPEARANCE_TYPE_* or -1 to remove. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaf39cd9dc8b45b45b9869c17b0ad74ecc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf39cd9dc8b45b45b9869c17b0ad74ecc">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_GENDER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_GENDER = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>GENDER_* or -1 to remove. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
 <a id="ga965bfe6cb8e12082dd09b98c3333cfd4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga965bfe6cb8e12082dd09b98c3333cfd4">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_HITPOINTS</h2>
 
@@ -297,6 +278,150 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <dl class="section note"><dt>Note</dt><dd>This is visual only. Does not change the Examine Window health status. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6a208bee1fa4735c1bf31a4367760ef3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6a208bee1fa4735c1bf31a4367760ef3">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_HAIR_COLOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_HAIR_COLOR = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>0-175 or -1 to remove </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab3a4d3beaadaac74bd883e1993599bdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab3a4d3beaadaac74bd883e1993599bdf">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_SKIN_COLOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_SKIN_COLOR = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>0-175 or -1 to remove </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00021">21</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga9a05396d725bcd3c2a855a26d26843c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9a05396d725bcd3c2a855a26d26843c9">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_PHENOTYPE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_PHENOTYPE = 5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>PHENOTYPE_* or -1 to remove. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00022">22</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaf601b870403113b2c559de40732adcd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf601b870403113b2c559de40732adcd6">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_HEAD_TYPE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_HEAD_TYPE = 6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>0-? or -1 to remove </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00023">23</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga91511e3b70e17f6656c2ebe841a6ab94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga91511e3b70e17f6656c2ebe841a6ab94">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_SOUNDSET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_SOUNDSET = 7</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>See soundset.2da or -1 to remove. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00024">24</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga2fcd956e0a0f733dc438c78f16502c36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2fcd956e0a0f733dc438c78f16502c36">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_TAIL_TYPE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_TAIL_TYPE = 8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CREATURE_TAIL_TYPE_* or see tailmodel.2da, -1 to remove. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00025">25</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga644b04a8c340d3e31b4dd79a95a5a8d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga644b04a8c340d3e31b4dd79a95a5a8d6">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_WING_TYPE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_WING_TYPE = 9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>CREATURE_WING_TYPE_* or see wingmodel.2da, -1 to remove. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00026">26</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaa8ab8ccbe3ff47192ef7367c1ea0e347"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa8ab8ccbe3ff47192ef7367c1ea0e347">&#9670;&nbsp;</a></span>NWNX_APPEARANCE_TYPE_FOOTSTEP_SOUND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_APPEARANCE_TYPE_FOOTSTEP_SOUND = 10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>0-17 or see footstepsounds.2da, -1 to remove </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__appearance_8nss_source.html#l00027">27</a> of file <a class="el" href="nwnx__appearance_8nss_source.html">nwnx_appearance.nss</a>.</p>
 
 </div>
 </div>
@@ -325,7 +450,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

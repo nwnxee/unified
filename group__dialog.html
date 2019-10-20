@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -107,9 +108,8 @@ $(document).ready(function(){initNavTree('group__dialog.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Functions exposing additional dialog properties.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="dialog"></a>Readme</h3><div class="textblock">Functions exposing additional dialog properties </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__dialog_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__dialog_8nss.html">nwnx_dialog.nss</a></td></tr>
@@ -129,81 +129,13 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8c91234a6de5b3389fd6e9ee02eaf4e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dialog.html#ga8c91234a6de5b3389fd6e9ee02eaf4e0">NWNX_Dialog_GetCurrentNodeIndex</a> ()</td></tr>
 <tr class="memdesc:ga8c91234a6de5b3389fd6e9ee02eaf4e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the index of the current node in the list of replies/entries.  <a href="group__dialog.html#ga8c91234a6de5b3389fd6e9ee02eaf4e0">More...</a><br /></td></tr>
 <tr class="separator:ga8c91234a6de5b3389fd6e9ee02eaf4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gada2778d904d1b04df9dce4847d090e9e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dialog.html#gada2778d904d1b04df9dce4847d090e9e">NWNX_Dialog_GetCurrentNodeText</a> (int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE)</td></tr>
+<tr class="memitem:gada2778d904d1b04df9dce4847d090e9e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dialog.html#gada2778d904d1b04df9dce4847d090e9e">NWNX_Dialog_GetCurrentNodeText</a> (int language=<a class="el" href="group__dialog.html#ga577d4d79535bad61994d4153fc3148d3">NWNX_DIALOG_LANGUAGE_ENGLISH</a>, int gender=GENDER_MALE)</td></tr>
 <tr class="memdesc:gada2778d904d1b04df9dce4847d090e9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the text of the current node.  <a href="group__dialog.html#gada2778d904d1b04df9dce4847d090e9e">More...</a><br /></td></tr>
 <tr class="separator:gada2778d904d1b04df9dce4847d090e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga75123d6a2fd1bcac7e8534e1a88b4e5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a">NWNX_Dialog_SetCurrentNodeText</a> (string text, int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE)</td></tr>
+<tr class="memitem:ga75123d6a2fd1bcac7e8534e1a88b4e5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a">NWNX_Dialog_SetCurrentNodeText</a> (string text, int language=<a class="el" href="group__dialog.html#ga577d4d79535bad61994d4153fc3148d3">NWNX_DIALOG_LANGUAGE_ENGLISH</a>, int gender=GENDER_MALE)</td></tr>
 <tr class="memdesc:ga75123d6a2fd1bcac7e8534e1a88b4e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text of the current node for given language/gender.  <a href="group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a">More...</a><br /></td></tr>
 <tr class="separator:ga75123d6a2fd1bcac7e8534e1a88b4e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Dialog Node Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp091c8b1c6ff3bd2390cc2adb2f866c11"></a><a class="anchor" id="dialog_node_types"></a></p>
-</td></tr>
-<tr class="memitem:gae8ad2a2e53334be13e9f7ee7801aa2a5"><td class="memItemLeft" align="right" valign="top"><a id="gae8ad2a2e53334be13e9f7ee7801aa2a5"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_NODE_TYPE_INVALID</b> = -1</td></tr>
-<tr class="separator:gae8ad2a2e53334be13e9f7ee7801aa2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacb964e127d344c642c7d75ba71b2b789"><td class="memItemLeft" align="right" valign="top"><a id="gacb964e127d344c642c7d75ba71b2b789"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_NODE_TYPE_STARTING_NODE</b> = 0</td></tr>
-<tr class="separator:gacb964e127d344c642c7d75ba71b2b789"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae28b55f82611017a8baf167bada8bb45"><td class="memItemLeft" align="right" valign="top"><a id="gae28b55f82611017a8baf167bada8bb45"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_NODE_TYPE_ENTRY_NODE</b> = 1</td></tr>
-<tr class="separator:gae28b55f82611017a8baf167bada8bb45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga82268b3d5591e6dd1474942b3f87b44f"><td class="memItemLeft" align="right" valign="top"><a id="ga82268b3d5591e6dd1474942b3f87b44f"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_NODE_TYPE_REPLY_NODE</b> = 2</td></tr>
-<tr class="separator:ga82268b3d5591e6dd1474942b3f87b44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Dialog Script Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp1f5885e052278ea50d4976ba325972ac"></a><a class="anchor" id="dialog_script_types"></a></p>
-</td></tr>
-<tr class="memitem:ga02897365405b702936fb2e2491c3dc70"><td class="memItemLeft" align="right" valign="top"><a id="ga02897365405b702936fb2e2491c3dc70"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_SCRIPT_TYPE_OTHER</b> = 0</td></tr>
-<tr class="separator:ga02897365405b702936fb2e2491c3dc70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad2f72b5b1fcec62eaa2b71efab2156e8"><td class="memItemLeft" align="right" valign="top"><a id="gad2f72b5b1fcec62eaa2b71efab2156e8"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_SCRIPT_TYPE_STARTING_CONDITIONAL</b> = 1</td></tr>
-<tr class="separator:gad2f72b5b1fcec62eaa2b71efab2156e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeb1527ee00e0753aa04336d6cba458fe"><td class="memItemLeft" align="right" valign="top"><a id="gaeb1527ee00e0753aa04336d6cba458fe"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_SCRIPT_TYPE_ACTION_TAKEN</b> = 2</td></tr>
-<tr class="separator:gaeb1527ee00e0753aa04336d6cba458fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Dialog Languages</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp2d9847e82943d6e12a5f19e3cef8039c"></a><a class="anchor" id="dialog_languages"></a></p>
-</td></tr>
-<tr class="memitem:ga577d4d79535bad61994d4153fc3148d3"><td class="memItemLeft" align="right" valign="top"><a id="ga577d4d79535bad61994d4153fc3148d3"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_ENGLISH</b> = 0</td></tr>
-<tr class="separator:ga577d4d79535bad61994d4153fc3148d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae488ccc9db370ebdf6fa923f0964e032"><td class="memItemLeft" align="right" valign="top"><a id="gae488ccc9db370ebdf6fa923f0964e032"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_FRENCH</b> = 1</td></tr>
-<tr class="separator:gae488ccc9db370ebdf6fa923f0964e032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac8c59facd3659310d99daf4a4aa77e00"><td class="memItemLeft" align="right" valign="top"><a id="gac8c59facd3659310d99daf4a4aa77e00"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_GERMAN</b> = 2</td></tr>
-<tr class="separator:gac8c59facd3659310d99daf4a4aa77e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6c2a664c692c5e3a5bd84a1a1a4f9f12"><td class="memItemLeft" align="right" valign="top"><a id="ga6c2a664c692c5e3a5bd84a1a1a4f9f12"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_ITALIAN</b> = 3</td></tr>
-<tr class="separator:ga6c2a664c692c5e3a5bd84a1a1a4f9f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b127836f03d2364863a1ad143b9c0dd"><td class="memItemLeft" align="right" valign="top"><a id="ga6b127836f03d2364863a1ad143b9c0dd"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_SPANISH</b> = 4</td></tr>
-<tr class="separator:ga6b127836f03d2364863a1ad143b9c0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8706494ed0cbd36894cc81b56434585c"><td class="memItemLeft" align="right" valign="top"><a id="ga8706494ed0cbd36894cc81b56434585c"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_POLISH</b> = 5</td></tr>
-<tr class="separator:ga8706494ed0cbd36894cc81b56434585c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6e3cea81a9a716f0c4d9dd7caad86299"><td class="memItemLeft" align="right" valign="top"><a id="ga6e3cea81a9a716f0c4d9dd7caad86299"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_KOREAN</b> = 128</td></tr>
-<tr class="separator:ga6e3cea81a9a716f0c4d9dd7caad86299"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6eb1d7feff5aa5f82fd0258575347494"><td class="memItemLeft" align="right" valign="top"><a id="ga6eb1d7feff5aa5f82fd0258575347494"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_CHINESE_TRADITIONAL</b> = 129</td></tr>
-<tr class="separator:ga6eb1d7feff5aa5f82fd0258575347494"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab2099dec23a537e86459a370683a54a1"><td class="memItemLeft" align="right" valign="top"><a id="gab2099dec23a537e86459a370683a54a1"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_CHINESE_SIMPLIFIED</b> = 130</td></tr>
-<tr class="separator:gab2099dec23a537e86459a370683a54a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6dcde21875f97e943fec3cd13742b4b4"><td class="memItemLeft" align="right" valign="top"><a id="ga6dcde21875f97e943fec3cd13742b4b4"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANGUAGE_JAPANESE</b> = 131</td></tr>
-<tr class="separator:ga6dcde21875f97e943fec3cd13742b4b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Functions exposing additional dialog properties. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gac27125df80f467600b814596e30b329e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac27125df80f467600b814596e30b329e">&#9670;&nbsp;</a></span>NWNX_Dialog_GetCurrentNodeType()</h2>
@@ -305,7 +237,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANG
           <td class="memname">string NWNX_Dialog_GetCurrentNodeText </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>language</em> = <code>NWNX_DIALOG_LANGUAGE_ENGLISH</code>, </td>
+          <td class="paramname"><em>language</em> = <code><a class="el" href="group__dialog.html#ga577d4d79535bad61994d4153fc3148d3">NWNX_DIALOG_LANGUAGE_ENGLISH</a></code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -350,7 +282,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANG
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>language</em> = <code>NWNX_DIALOG_LANGUAGE_ENGLISH</code>, </td>
+          <td class="paramname"><em>language</em> = <code><a class="el" href="group__dialog.html#ga577d4d79535bad61994d4153fc3148d3">NWNX_DIALOG_LANGUAGE_ENGLISH</a></code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -381,13 +313,286 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_DIALOG_LANG
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gae8ad2a2e53334be13e9f7ee7801aa2a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae8ad2a2e53334be13e9f7ee7801aa2a5">&#9670;&nbsp;</a></span>NWNX_DIALOG_NODE_TYPE_INVALID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_NODE_TYPE_INVALID = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="gacb964e127d344c642c7d75ba71b2b789"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacb964e127d344c642c7d75ba71b2b789">&#9670;&nbsp;</a></span>NWNX_DIALOG_NODE_TYPE_STARTING_NODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_NODE_TYPE_STARTING_NODE = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="gae28b55f82611017a8baf167bada8bb45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae28b55f82611017a8baf167bada8bb45">&#9670;&nbsp;</a></span>NWNX_DIALOG_NODE_TYPE_ENTRY_NODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_NODE_TYPE_ENTRY_NODE = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga82268b3d5591e6dd1474942b3f87b44f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga82268b3d5591e6dd1474942b3f87b44f">&#9670;&nbsp;</a></span>NWNX_DIALOG_NODE_TYPE_REPLY_NODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_NODE_TYPE_REPLY_NODE = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga02897365405b702936fb2e2491c3dc70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga02897365405b702936fb2e2491c3dc70">&#9670;&nbsp;</a></span>NWNX_DIALOG_SCRIPT_TYPE_OTHER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_SCRIPT_TYPE_OTHER = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00022">22</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="gad2f72b5b1fcec62eaa2b71efab2156e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad2f72b5b1fcec62eaa2b71efab2156e8">&#9670;&nbsp;</a></span>NWNX_DIALOG_SCRIPT_TYPE_STARTING_CONDITIONAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_SCRIPT_TYPE_STARTING_CONDITIONAL = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00023">23</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaeb1527ee00e0753aa04336d6cba458fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeb1527ee00e0753aa04336d6cba458fe">&#9670;&nbsp;</a></span>NWNX_DIALOG_SCRIPT_TYPE_ACTION_TAKEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_SCRIPT_TYPE_ACTION_TAKEN = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00024">24</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga577d4d79535bad61994d4153fc3148d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga577d4d79535bad61994d4153fc3148d3">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_ENGLISH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_ENGLISH = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="gae488ccc9db370ebdf6fa923f0964e032"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae488ccc9db370ebdf6fa923f0964e032">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_FRENCH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_FRENCH = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00031">31</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="gac8c59facd3659310d99daf4a4aa77e00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac8c59facd3659310d99daf4a4aa77e00">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_GERMAN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_GERMAN = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00032">32</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6c2a664c692c5e3a5bd84a1a1a4f9f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6c2a664c692c5e3a5bd84a1a1a4f9f12">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_ITALIAN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_ITALIAN = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00033">33</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6b127836f03d2364863a1ad143b9c0dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6b127836f03d2364863a1ad143b9c0dd">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_SPANISH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_SPANISH = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00034">34</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga8706494ed0cbd36894cc81b56434585c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8706494ed0cbd36894cc81b56434585c">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_POLISH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_POLISH = 5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00035">35</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6e3cea81a9a716f0c4d9dd7caad86299"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6e3cea81a9a716f0c4d9dd7caad86299">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_KOREAN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_KOREAN = 128</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00036">36</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6eb1d7feff5aa5f82fd0258575347494"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6eb1d7feff5aa5f82fd0258575347494">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_CHINESE_TRADITIONAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_CHINESE_TRADITIONAL = 129</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00037">37</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab2099dec23a537e86459a370683a54a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2099dec23a537e86459a370683a54a1">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_CHINESE_SIMPLIFIED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_CHINESE_SIMPLIFIED = 130</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00038">38</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6dcde21875f97e943fec3cd13742b4b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6dcde21875f97e943fec3cd13742b4b4">&#9670;&nbsp;</a></span>NWNX_DIALOG_LANGUAGE_JAPANESE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_DIALOG_LANGUAGE_JAPANESE = 131</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00039">39</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

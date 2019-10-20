@@ -1,5 +1,6 @@
 var group__time =
 [
+    [ "Readme", "group__time.html#time", null ],
     [ "nwnx_time.nss", "nwnx__time_8nss.html", null ],
     [ "NWNX_Time_HighResTimestamp", "structNWNX__Time__HighResTimestamp.html", [
       [ "seconds", "structNWNX__Time__HighResTimestamp.html#a9ead36e54ab4ced72197c5a6d8ffc70e", null ],

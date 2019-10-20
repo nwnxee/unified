@@ -28,8 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
-		<link href="custom.css" rel="stylesheet" type="text/css"/>
-<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
+		<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -115,20 +114,23 @@ $(document).ready(function(){initNavTree('nwnx__ruby_8nss_source.html','');});
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;EVALUATE&quot;</span>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    NWNX_PushArgumentString (NWNX_Ruby, sFunc, sCode);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    NWNX_CallFunction (NWNX_Ruby, sFunc);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">return</span> NWNX_GetReturnValueString (NWNX_Ruby, sFunc);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a> (NWNX_Ruby, sFunc, sCode);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a> (NWNX_Ruby, sFunc);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a> (NWNX_Ruby, sFunc);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="agroup__nwnx_html_ga5020d69354c6bead3824922b66282b6e"><div class="ttname"><a href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a></div><div class="ttdeci">string NWNX_GetReturnValueString(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00098">nwnx.nss:98</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga6e7ebe01f31c59279956f562609c964a"><div class="ttname"><a href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string pluginName, string functionName, string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00068">nwnx.nss:68</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00048">nwnx.nss:48</a></div></div>
 <div class="ttc" id="agroup__ruby_html_ga1be911de5fdb8bdd3df814f663f06f42"><div class="ttname"><a href="group__ruby.html#ga1be911de5fdb8bdd3df814f663f06f42">NWNX_Ruby_Evaluate</a></div><div class="ttdeci">string NWNX_Ruby_Evaluate(string sCode)</div><div class="ttdoc">Evaluates some ruby code.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__ruby_8nss_source.html#l00014">nwnx_ruby.nss:14</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_96ade152febc262a31be38f7a77ed436.html">Ruby</a></li><li class="navelem"><a class="el" href="dir_8808a4e2faeab328a83928bd340a3cf5.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__ruby_8nss.html">nwnx_ruby.nss</a></li>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:34 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

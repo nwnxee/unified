@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -107,9 +108,182 @@ $(document).ready(function(){initNavTree('group__rename.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Facilitates renaming, overriding and customization of player names.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="rename"></a>Readme</h3><div class="textblock">This plugin facilitates renaming, overriding and customization of player names.<dl class="section note"><dt>Note</dt><dd>Due to the conflict with this plugin and the <a class="el" href="tweaks.html">NWNX_Tweaks</a> plugin to hide classes on the module character listing, this module also provides that functionality.</dd></dl>
+<h2><a class="anchor" id="autotoc_md124"></a>
+Environment Variables</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Variable Name  </th><th class="markdownTableHeadCenter">Value  </th><th class="markdownTableHeadCenter">Default  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_RENAME_ON_MODULE_CHAR_LIST</code>  </td><td class="markdownTableBodyCenter">0-3  </td><td class="markdownTableBodyCenter">0  </td><td class="markdownTableBodyNone">This is the listing of players from the character selection screen before entering the server. Setting the value to 1 overrides their names if a global rename has been set, 2 also hides class information, 3 hides class information but keeps names as their original.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_RENAME_ON_PLAYER_LIST</code>  </td><td class="markdownTableBodyCenter">true or false  </td><td class="markdownTableBodyCenter">true  </td><td class="markdownTableBodyNone">Renames the player name on the player list as well.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_RENAME_ALLOW_DM</code>  </td><td class="markdownTableBodyCenter">true or false  </td><td class="markdownTableBodyCenter">false  </td><td class="markdownTableBodyNone">DM observers will see global or personal overrides as well as being able to have their own name overridden for other observers.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_RENAME_ANONYMOUS_NAME</code>  </td><td class="markdownTableBodyCenter">string  </td><td class="markdownTableBodyCenter">Someone  </td><td class="markdownTableBodyNone">When using <code>NWNX_Rename_SetPCNameOverride</code> with <code>NWNX_RENAME_PLAYERNAME_ANONYMOUS</code> this is the string used for the &lt;PlayerName&gt;   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md125"></a>
+Sample Include</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;nwnx_rename&quot;</span></div>
+<div class="line"><span class="comment">// For GetPlayerID function, set to your own lib that returns the unique player ID for your PW</span></div>
+<div class="line"><span class="comment">// Then replace GetPlayerID in this include to whatever your call is.</span></div>
+<div class="line"><span class="preprocessor">#include &quot;inc_pc_db&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> <span class="keywordtype">string</span> UNKNOWN_PLAYER = <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
+<div class="line"><span class="keyword">const</span> <span class="keywordtype">string</span> UNKNOWN_PLAYER_PREFIX = <span class="stringliteral">&quot;&lt;c~~~&gt;&quot;</span>;</div>
+<div class="line"><span class="keyword">const</span> <span class="keywordtype">string</span> UNKNOWN_PLAYER_SUFFIX = <span class="stringliteral">&quot;&lt;/c&gt;&quot;</span>;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> <span class="keywordtype">string</span> RENAMED_PLAYER_PREFIX = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><span class="keyword">const</span> <span class="keywordtype">string</span> RENAMED_PLAYER_SUFFIX = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// This should be fired on client enter as soon as possible, it loads all</span></div>
+<div class="line"><span class="comment">// the dynamic names for the PC for the other PCs connected and the dynamic</span></div>
+<div class="line"><span class="comment">// name for the other PCs for the connecting PC.</span></div>
+<div class="line"><span class="keywordtype">void</span> LoadNamesForPC(<span class="keywordtype">object</span> oPC);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Stores the info on the database</span></div>
+<div class="line"><span class="keywordtype">void</span> SetDynamicNameDB(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oOtherPC, <span class="keywordtype">string</span> sName, <span class="keywordtype">int</span> iDub = 0);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Returns whether the PC has dubbed the target PC already</span></div>
+<div class="line"><span class="keywordtype">int</span> GetDynamicNameIsDubbed(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oTarget);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// We use three custom commands =c intro, =c introparty and =c introarea (20m radius)</span></div>
+<div class="line"><span class="comment">// So the player could do =c intro Joe and the nearest player would then see the PCs</span></div>
+<div class="line"><span class="comment">// name as Joe</span></div>
+<div class="line"><span class="keywordtype">void</span> IntroducePlayers(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oTarget, <span class="keywordtype">string</span> sName, <span class="keywordtype">int</span> iType = 0);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Dub works the other way, a PC can dub someone what they wish to see as their</span></div>
+<div class="line"><span class="comment">// name. =c dub Joseph (nearest PC) would then change the target&#39;s name for the</span></div>
+<div class="line"><span class="comment">// caller to Joseph.</span></div>
+<div class="line"><span class="keywordtype">void</span> DubPlayer(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oTarget, <span class="keywordtype">string</span> sName);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> LoadNamesForPC(<span class="keywordtype">object</span> oPC)</div>
+<div class="line">{</div>
+<div class="line">    <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oPC, UNKNOWN_PLAYER, UNKNOWN_PLAYER_PREFIX,</div>
+<div class="line">                UNKNOWN_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga36cef09d9765eaa9e08d3eb4f5b223df">NWNX_RENAME_PLAYERNAME_OBFUSCATE</a>);</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordtype">int</span> nPCID = GetPlayerID(oPC);</div>
+<div class="line">    <span class="keywordtype">object</span> oOtherPC = GetFirstPC();</div>
+<div class="line">    <span class="keywordflow">while</span> (GetIsObjectValid(oOtherPC))</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordflow">if</span> (oOtherPC != oPC)</div>
+<div class="line">        {</div>
+<div class="line">            <span class="keywordtype">int</span> nOtherPCID = GetPlayerID(oOtherPC);</div>
+<div class="line">            <span class="keywordtype">string</span> sSQL = <span class="stringliteral">&quot;SELECT name FROM dynamic_names WHERE pc1 = ? AND pc2 = ?&quot;</span>;</div>
+<div class="line">            <a class="code" href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a>(sSQL);</div>
+<div class="line">            <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(0, nPCID);</div>
+<div class="line">            <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(1, nOtherPCID);</div>
+<div class="line">            <a class="code" href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a>();</div>
+<div class="line">            <span class="keywordflow">if</span> (<a class="code" href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a>())</div>
+<div class="line">            {</div>
+<div class="line">                <a class="code" href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a>();</div>
+<div class="line">                <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oOtherPC, <a class="code" href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a>(0),</div>
+<div class="line">                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oPC);</div>
+<div class="line">            }</div>
+<div class="line">            <a class="code" href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a>(sSQL);</div>
+<div class="line">            <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(0, nOtherPCID);</div>
+<div class="line">            <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(1, nPCID);</div>
+<div class="line">            <a class="code" href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a>();</div>
+<div class="line">            <span class="keywordflow">if</span> (<a class="code" href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a>())</div>
+<div class="line">            {</div>
+<div class="line">                <a class="code" href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a>();</div>
+<div class="line">                <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oPC, <a class="code" href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a>(0),</div>
+<div class="line">                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oOtherPC);</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+<div class="line">        oOtherPC = GetNextPC();</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> SetDynamicNameDB(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oOtherPC, <span class="keywordtype">string</span> sName, <span class="keywordtype">int</span> iDub = 0)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordtype">int</span> nPC1ID = GetPlayerID(oPC);</div>
+<div class="line">    <span class="keywordtype">int</span> nPC2ID = GetPlayerID(oOtherPC);</div>
+<div class="line">    <span class="keywordflow">if</span> (nPC1ID &amp;&amp; nPC2ID)</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordtype">string</span> sSQL = <span class="stringliteral">&quot;INSERT INTO dynamic_names (pc1, pc2, name, dub) &quot;</span>+</div>
+<div class="line">                      <span class="stringliteral">&quot;VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, dub = ?&quot;</span>;</div>
+<div class="line">        <a class="code" href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a>(sSQL);</div>
+<div class="line">        <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(0, nPC2ID);</div>
+<div class="line">        <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(1, nPC1ID);</div>
+<div class="line">        <a class="code" href="group__sql.html#ga585546f0c7907cecde5a59508cbf4535">NWNX_SQL_PreparedString</a>(2, sName);</div>
+<div class="line">        <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(3, iDub);</div>
+<div class="line">        <a class="code" href="group__sql.html#ga585546f0c7907cecde5a59508cbf4535">NWNX_SQL_PreparedString</a>(4, sName);</div>
+<div class="line">        <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(5, iDub);</div>
+<div class="line">        <a class="code" href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a>();</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> GetDynamicNameIsDubbed(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oTarget)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordtype">int</span> nPCID = GetPlayerID(oPC);</div>
+<div class="line">    <span class="keywordtype">int</span> nPCID2 = GetPlayerID(oTarget);</div>
+<div class="line">    <span class="keywordtype">int</span> iDub = 0;</div>
+<div class="line">    <span class="keywordtype">string</span> sSQL = <span class="stringliteral">&quot;SELECT dub FROM dynamic_names WHERE pc1 = ? AND pc2 = ?&quot;</span>;</div>
+<div class="line">    <a class="code" href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a>(sSQL);</div>
+<div class="line">    <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(0, nPCID);</div>
+<div class="line">    <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(1, nPCID2);</div>
+<div class="line">    <a class="code" href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a>();</div>
+<div class="line">    <span class="keywordflow">if</span> (<a class="code" href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a>())</div>
+<div class="line">    {</div>
+<div class="line">        <a class="code" href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a>();</div>
+<div class="line">        iDub = StringToInt(<a class="code" href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a>(0));</div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordflow">return</span> iDub;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> IntroducePlayers(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oTarget, <span class="keywordtype">string</span> sName, <span class="keywordtype">int</span> iType = 0)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordtype">int</span> nPC1ID = GetPlayerID(oPC);</div>
+<div class="line">    <span class="keywordtype">int</span> nPC2ID = GetPlayerID(oTarget);</div>
+<div class="line">    <span class="keywordflow">if</span> (nPC1ID == nPC2ID)</div>
+<div class="line">        <span class="keywordflow">return</span>;</div>
+<div class="line">    <span class="keywordtype">int</span> iDub = GetDynamicNameIsDubbed(oTarget, oPC);</div>
+<div class="line">    <span class="keywordtype">string</span> sMyName = <a class="code" href="group__rename.html#ga66b5aa3317d00607131d11ef25e79f2e">NWNX_Rename_GetPCNameOverride</a>(oPC, oTarget);</div>
+<div class="line">    <span class="keywordflow">if</span> (sMyName == <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line">        sMyName = <span class="stringliteral">&quot;Someone&quot;</span>;</div>
+<div class="line">    <span class="keywordtype">string</span> sTargetName = <a class="code" href="group__rename.html#ga66b5aa3317d00607131d11ef25e79f2e">NWNX_Rename_GetPCNameOverride</a>(oTarget, oPC);</div>
+<div class="line">    <span class="keywordflow">if</span> (sTargetName == <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line">        sTargetName = <span class="stringliteral">&quot;Someone&quot;</span>;</div>
+<div class="line">    <span class="keywordflow">if</span> (!iType)</div>
+<div class="line">        SendMessageToPC(oPC, <span class="stringliteral">&quot;Introducing yourself to &quot;</span> + sTargetName + <span class="stringliteral">&quot; as &quot;</span> + sName + <span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line">    <span class="keywordflow">if</span> (iDub)</div>
+<div class="line">        SendMessageToPC(oTarget, <span class="stringliteral">&quot;Someone wants you to know them as &quot;</span> + sName + <span class="stringliteral">&quot; but you&#39;ve &quot;</span>+</div>
+<div class="line">                                 <span class="stringliteral">&quot;already dubbed them &quot;</span> + sMyName + <span class="stringliteral">&quot; so it&#39;s ignored.&quot;</span>);</div>
+<div class="line">    <span class="keywordflow">else</span></div>
+<div class="line">    {</div>
+<div class="line">        SendMessageToPC(oTarget, sMyName + <span class="stringliteral">&quot; wants you to know them as &quot;</span> + sName + <span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line">        <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oPC, sName, RENAMED_PLAYER_PREFIX,</div>
+<div class="line">                        RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oTarget);</div>
+<div class="line">        SetDynamicNameDB(oPC, oTarget, sName);</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> DubPlayer(<span class="keywordtype">object</span> oPC, <span class="keywordtype">object</span> oTarget, <span class="keywordtype">string</span> sName)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordtype">string</span> sTargetName = <a class="code" href="group__rename.html#ga66b5aa3317d00607131d11ef25e79f2e">NWNX_Rename_GetPCNameOverride</a>(oTarget, oPC);</div>
+<div class="line">    <span class="keywordflow">if</span> (sTargetName == <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line">        sTargetName = <span class="stringliteral">&quot;Someone&quot;</span>;</div>
+<div class="line">    SendMessageToPC(oPC, sTargetName + <span class="stringliteral">&quot; will now be known as &quot;</span> + sName + <span class="stringliteral">&quot; to you.&quot;</span>);</div>
+<div class="line">    <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oTarget, sName, RENAMED_PLAYER_PREFIX,</div>
+<div class="line">                    RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oPC);</div>
+<div class="line">    SetDynamicNameDB(oTarget, oPC, sName, 1);</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>And a corresponding MySQL example DB structure:</p>
+<div class="fragment"><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `dynamic_names` (</div>
+<div class="line">  `id` <span class="keywordtype">int</span>(<span class="stringliteral">11</span>) unsigned <span class="keyword">NOT</span> <span class="stringliteral">NULL</span> AUTO_INCREMENT,</div>
+<div class="line">  `pc1` mediumint(<span class="stringliteral">8</span>) unsigned <span class="keyword">NOT</span> <span class="stringliteral">NULL</span>,</div>
+<div class="line">  `pc2` mediumint(<span class="stringliteral">8</span>) unsigned <span class="keyword">NOT</span> <span class="stringliteral">NULL</span>,</div>
+<div class="line">  `name` <span class="keywordtype">varchar</span>(<span class="stringliteral">40</span>) <span class="keyword">NOT</span> <span class="stringliteral">NULL</span>,</div>
+<div class="line">  `dub` tinyint(<span class="stringliteral">1</span>) <span class="keyword">DEFAULT</span> <span class="stringliteral">NULL</span>,</div>
+<div class="line">  <span class="keyword">PRIMARY</span> KEY (`id`),</div>
+<div class="line">  <span class="keyword">UNIQUE</span> KEY `pair` (`pc1`,`pc2`),</div>
+<div class="line">  KEY `pc1` (`pc1`),</div>
+<div class="line">  KEY `pc2` (`pc2`)</div>
+<div class="line">) ENGINE=InnoDB <span class="keyword">DEFAULT</span> CHARSET=utf8</div>
+</div><!-- fragment --> </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__rename_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__rename_8nss.html">nwnx_rename.nss</a></td></tr>
@@ -126,30 +300,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga575681e01d33e2f8307dd67372173d4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rename.html#ga575681e01d33e2f8307dd67372173d4e">NWNX_Rename_ClearPCNameOverride</a> (object oTarget, object oObserver=OBJECT_INVALID, int clearAll=FALSE)</td></tr>
 <tr class="memdesc:ga575681e01d33e2f8307dd67372173d4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears an overridden PC Name.  <a href="group__rename.html#ga575681e01d33e2f8307dd67372173d4e">More...</a><br /></td></tr>
 <tr class="separator:ga575681e01d33e2f8307dd67372173d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Community Name Override Type</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrpbd3162d3bd9fc24d061439e9b99206bd"></a><a class="anchor" id="rename_comm_name_override_type"></a></p>
-</td></tr>
-<tr class="memitem:gafc3e340ecdad9db153e72054bbef9208"><td class="memItemLeft" align="right" valign="top"><a id="gafc3e340ecdad9db153e72054bbef9208"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rename.html#gafc3e340ecdad9db153e72054bbef9208">NWNX_RENAME_PLAYERNAME_DEFAULT</a> = 0</td></tr>
-<tr class="memdesc:gafc3e340ecdad9db153e72054bbef9208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Don't rename. <br /></td></tr>
-<tr class="separator:gafc3e340ecdad9db153e72054bbef9208"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga36cef09d9765eaa9e08d3eb4f5b223df"><td class="memItemLeft" align="right" valign="top"><a id="ga36cef09d9765eaa9e08d3eb4f5b223df"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rename.html#ga36cef09d9765eaa9e08d3eb4f5b223df">NWNX_RENAME_PLAYERNAME_OBFUSCATE</a> = 1</td></tr>
-<tr class="memdesc:ga36cef09d9765eaa9e08d3eb4f5b223df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate random string for Community Name. <br /></td></tr>
-<tr class="separator:ga36cef09d9765eaa9e08d3eb4f5b223df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1f09701e202d238a7d1b96b4c2e3cb2c"><td class="memItemLeft" align="right" valign="top"><a id="ga1f09701e202d238a7d1b96b4c2e3cb2c"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a> = 2</td></tr>
-<tr class="memdesc:ga1f09701e202d238a7d1b96b4c2e3cb2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use character name specified. <br /></td></tr>
-<tr class="separator:ga1f09701e202d238a7d1b96b4c2e3cb2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga50f11a268a94cd196dab5ccf46609c51"><td class="memItemLeft" align="right" valign="top"><a id="ga50f11a268a94cd196dab5ccf46609c51"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rename.html#ga50f11a268a94cd196dab5ccf46609c51">NWNX_RENAME_PLAYERNAME_ANONYMOUS</a> = 3</td></tr>
-<tr class="memdesc:ga50f11a268a94cd196dab5ccf46609c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the value of the NWNX_RENAME_ANONYMOUS_NAME environment variable. <br /></td></tr>
-<tr class="separator:ga50f11a268a94cd196dab5ccf46609c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Facilitates renaming, overriding and customization of player names. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gaf3b4ba16315cc38473c5285eb913737e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf3b4ba16315cc38473c5285eb913737e">&#9670;&nbsp;</a></span>NWNX_Rename_SetPCNameOverride()</h2>
@@ -306,13 +457,97 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gafc3e340ecdad9db153e72054bbef9208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafc3e340ecdad9db153e72054bbef9208">&#9670;&nbsp;</a></span>NWNX_RENAME_PLAYERNAME_DEFAULT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_RENAME_PLAYERNAME_DEFAULT = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Don't rename. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__rename_8nss_source.html#l00012">12</a> of file <a class="el" href="nwnx__rename_8nss_source.html">nwnx_rename.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga36cef09d9765eaa9e08d3eb4f5b223df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga36cef09d9765eaa9e08d3eb4f5b223df">&#9670;&nbsp;</a></span>NWNX_RENAME_PLAYERNAME_OBFUSCATE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_RENAME_PLAYERNAME_OBFUSCATE = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate random string for Community Name. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__rename_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__rename_8nss_source.html">nwnx_rename.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga1f09701e202d238a7d1b96b4c2e3cb2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f09701e202d238a7d1b96b4c2e3cb2c">&#9670;&nbsp;</a></span>NWNX_RENAME_PLAYERNAME_OVERRIDE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_RENAME_PLAYERNAME_OVERRIDE = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use character name specified. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__rename_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__rename_8nss_source.html">nwnx_rename.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga50f11a268a94cd196dab5ccf46609c51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga50f11a268a94cd196dab5ccf46609c51">&#9670;&nbsp;</a></span>NWNX_RENAME_PLAYERNAME_ANONYMOUS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_RENAME_PLAYERNAME_ANONYMOUS = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use the value of the NWNX_RENAME_ANONYMOUS_NAME environment variable. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__rename_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__rename_8nss_source.html">nwnx_rename.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="agroup__sql_html_gab7ec4280f37f01bafe8ce01f30cc7f13"><div class="ttname"><a href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a></div><div class="ttdeci">int NWNX_SQL_ExecutePreparedQuery()</div><div class="ttdoc">Executes a query which has been prepared.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00110">nwnx_sql.nss:110</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga7c23e812ad23b10c0906c55941edf930"><div class="ttname"><a href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a></div><div class="ttdeci">void NWNX_SQL_PreparedInt(int position, int value)</div><div class="ttdoc">Set the int value of a prepared statement at given position.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00156">nwnx_sql.nss:156</a></div></div>
+<div class="ttc" id="agroup__rename_html_ga36cef09d9765eaa9e08d3eb4f5b223df"><div class="ttname"><a href="group__rename.html#ga36cef09d9765eaa9e08d3eb4f5b223df">NWNX_RENAME_PLAYERNAME_OBFUSCATE</a></div><div class="ttdeci">const int NWNX_RENAME_PLAYERNAME_OBFUSCATE</div><div class="ttdoc">Generate random string for Community Name.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00013">nwnx_rename.nss:13</a></div></div>
+<div class="ttc" id="agroup__rename_html_gaf3b4ba16315cc38473c5285eb913737e"><div class="ttname"><a href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a></div><div class="ttdeci">void NWNX_Rename_SetPCNameOverride(object oTarget, string sNewName, string sPrefix=&quot;&quot;, string sSuffix=&quot;&quot;, int iPlayerNameState=NWNX_RENAME_PLAYERNAME_DEFAULT, object oObserver=OBJECT_INVALID)</div><div class="ttdoc">Set a PC's character name and community name on the player list.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00046">nwnx_rename.nss:46</a></div></div>
+<div class="ttc" id="agroup__sql_html_gaefc1bce86231177b8f972a8c0dc91a0b"><div class="ttname"><a href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a></div><div class="ttdeci">void NWNX_SQL_ReadNextRow()</div><div class="ttdoc">Reads the next row of returned data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00139">nwnx_sql.nss:139</a></div></div>
+<div class="ttc" id="agroup__sql_html_gae2e0e27014d82accfe4a0e510720515f"><div class="ttname"><a href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a></div><div class="ttdeci">int NWNX_SQL_PrepareQuery(string query)</div><div class="ttdoc">Prepares the provided query for execution.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00101">nwnx_sql.nss:101</a></div></div>
+<div class="ttc" id="agroup__rename_html_ga1f09701e202d238a7d1b96b4c2e3cb2c"><div class="ttname"><a href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a></div><div class="ttdeci">const int NWNX_RENAME_PLAYERNAME_OVERRIDE</div><div class="ttdoc">Use character name specified.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00014">nwnx_rename.nss:14</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga60dd9ffe0369ff795d4e375452edec51"><div class="ttname"><a href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a></div><div class="ttdeci">string NWNX_SQL_ReadDataInActiveRow(int column=0)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00146">nwnx_sql.nss:146</a></div></div>
+<div class="ttc" id="agroup__rename_html_ga66b5aa3317d00607131d11ef25e79f2e"><div class="ttname"><a href="group__rename.html#ga66b5aa3317d00607131d11ef25e79f2e">NWNX_Rename_GetPCNameOverride</a></div><div class="ttdeci">string NWNX_Rename_GetPCNameOverride(object oTarget, object oObserver=OBJECT_INVALID)</div><div class="ttdoc">Gets a PC's name as overridden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00060">nwnx_rename.nss:60</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga38fdaf8c308512015849ac94ffede3bb"><div class="ttname"><a href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a></div><div class="ttdeci">int NWNX_SQL_ReadyToReadNextRow()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00131">nwnx_sql.nss:131</a></div></div>
+<div class="ttc" id="agroup__sql_html_ga585546f0c7907cecde5a59508cbf4535"><div class="ttname"><a href="group__sql.html#ga585546f0c7907cecde5a59508cbf4535">NWNX_SQL_PreparedString</a></div><div class="ttdeci">void NWNX_SQL_PreparedString(int position, string value)</div><div class="ttdoc">Set the string value of a prepared statement at given position.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00164">nwnx_sql.nss:164</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

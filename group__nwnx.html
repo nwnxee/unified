@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -100,90 +101,661 @@ $(document).ready(function(){initNavTree('group__nwnx.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#files">Files</a>  </div>
+<a href="#groups">Function Groups</a> &#124;
+<a href="#files">Files</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">NWNX</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The core functions that should be called by NWNX plugin developers.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:nwnx_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx_8nss.html">nwnx.nss</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadc430d6df00ece8e9cd208ba19701698"><td class="memItemLeft" align="right" valign="top"><a id="gadc430d6df00ece8e9cd208ba19701698"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_PushArgumentInt</b> (string pluginName, string functionName, int value)</td></tr>
-<tr class="separator:gadc430d6df00ece8e9cd208ba19701698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8d3c3b2724a4cdb2555455a4d6e1053b"><td class="memItemLeft" align="right" valign="top"><a id="ga8d3c3b2724a4cdb2555455a4d6e1053b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_PushArgumentFloat</b> (string pluginName, string functionName, float value)</td></tr>
-<tr class="separator:ga8d3c3b2724a4cdb2555455a4d6e1053b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9e802e758646d32b71f30f1578151938"><td class="memItemLeft" align="right" valign="top"><a id="ga9e802e758646d32b71f30f1578151938"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_PushArgumentObject</b> (string pluginName, string functionName, object value)</td></tr>
-<tr class="separator:ga9e802e758646d32b71f30f1578151938"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6e7ebe01f31c59279956f562609c964a"><td class="memItemLeft" align="right" valign="top"><a id="ga6e7ebe01f31c59279956f562609c964a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_PushArgumentString</b> (string pluginName, string functionName, string value)</td></tr>
-<tr class="separator:ga6e7ebe01f31c59279956f562609c964a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga070e2e6319eed3c965c496a4505f1434"><td class="memItemLeft" align="right" valign="top"><a id="ga070e2e6319eed3c965c496a4505f1434"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_PushArgumentEffect</b> (string pluginName, string functionName, effect value)</td></tr>
-<tr class="separator:ga070e2e6319eed3c965c496a4505f1434"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2591d1676fb7308c13284b6640b9df68"><td class="memItemLeft" align="right" valign="top"><a id="ga2591d1676fb7308c13284b6640b9df68"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_PushArgumentItemProperty</b> (string pluginName, string functionName, itemproperty value)</td></tr>
-<tr class="separator:ga2591d1676fb7308c13284b6640b9df68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabc581e541c864a29a2ec698945996f23"><td class="memItemLeft" align="right" valign="top"><a id="gabc581e541c864a29a2ec698945996f23"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_GetReturnValueInt</b> (string pluginName, string functionName)</td></tr>
-<tr class="separator:gabc581e541c864a29a2ec698945996f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6af62159954fb31011088f52b82fce03"><td class="memItemLeft" align="right" valign="top"><a id="ga6af62159954fb31011088f52b82fce03"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_GetReturnValueFloat</b> (string pluginName, string functionName)</td></tr>
-<tr class="separator:ga6af62159954fb31011088f52b82fce03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2314f3844fc63b5731fe41a678174790"><td class="memItemLeft" align="right" valign="top"><a id="ga2314f3844fc63b5731fe41a678174790"></a>
-object&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_GetReturnValueObject</b> (string pluginName, string functionName)</td></tr>
-<tr class="separator:ga2314f3844fc63b5731fe41a678174790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5020d69354c6bead3824922b66282b6e"><td class="memItemLeft" align="right" valign="top"><a id="ga5020d69354c6bead3824922b66282b6e"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_GetReturnValueString</b> (string pluginName, string functionName)</td></tr>
-<tr class="separator:ga5020d69354c6bead3824922b66282b6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga265e82b3283a4f1c7c18e34b83387d70"><td class="memItemLeft" align="right" valign="top"><a id="ga265e82b3283a4f1c7c18e34b83387d70"></a>
-effect&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_GetReturnValueEffect</b> (string pluginName, string functionName)</td></tr>
-<tr class="separator:ga265e82b3283a4f1c7c18e34b83387d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf0a53533256121ffee2e34abc349d1f8"><td class="memItemLeft" align="right" valign="top"><a id="gaf0a53533256121ffee2e34abc349d1f8"></a>
-itemproperty&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_GetReturnValueItemProperty</b> (string pluginName, string functionName)</td></tr>
-<tr class="separator:gaf0a53533256121ffee2e34abc349d1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1606607679c2b2846133ff14c380e2a5"><td class="memItemLeft" align="right" valign="top"><a id="ga1606607679c2b2846133ff14c380e2a5"></a>
-string&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_INTERNAL_BuildString</b> (string pluginName, string functionName, string operation)</td></tr>
-<tr class="separator:ga1606607679c2b2846133ff14c380e2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>The core functions that should be called by NWNX plugin developers. </p>
-<p>These following functions should be called by NWNX plugin developers, who should expose their own, more friendly headers.</p>
-<p>For example, this following function would wrap a call which passes three parameters, receives three back, and constructs a vector from the result. </p><div class="fragment"><div class="line">vector GetVectorFromCoords(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z)</div>
+
+<h3><a id="nwnx"></a>Core Functions</h3><div class="textblock"><h2><a class="anchor" id="autotoc_md15"></a>
+Core Functions For Plugin Developers</h2>
+<p>The core functions in <a class="el" href="nwnx_8nss.html">nwnx.nss</a> should be called by NWNX plugin developers, who should expose their own, more friendly headers.</p>
+<h4><a class="anchor" id="autotoc_md16"></a>
+Sample</h4>
+<p>This following function would wrap a call which passes three parameters, receives three back, and constructs a vector from the result. </p><div class="fragment"><div class="line">vector GetVectorFromCoords(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z)</div>
 <div class="line">{</div>
 <div class="line">    <span class="keywordtype">string</span> pluginName = <span class="stringliteral">&quot;NWNX_TestPlugin&quot;</span>;</div>
 <div class="line">    <span class="keywordtype">string</span> funcName = <span class="stringliteral">&quot;GiveMeBackTheSameValues&quot;</span>;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Note the inverse argument push order.</span></div>
 <div class="line">    <span class="comment">// C++-side, arguments will be consumed from right to left.</span></div>
-<div class="line">    NWNX_PushArgumentFloat(pluginName, funcName, z);</div>
-<div class="line">    NWNX_PushArgumentFloat(pluginName, funcName, y);</div>
-<div class="line">    NWNX_PushArgumentFloat(pluginName, funcName, x);</div>
+<div class="line">    <a class="code" href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">NWNX_PushArgumentFloat</a>(pluginName, funcName, z);</div>
+<div class="line">    <a class="code" href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">NWNX_PushArgumentFloat</a>(pluginName, funcName, y);</div>
+<div class="line">    <a class="code" href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">NWNX_PushArgumentFloat</a>(pluginName, funcName, x);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// This calls the function, which will prepare the return values.</span></div>
-<div class="line">    NWNX_CallFunction(pluginName, funcName);</div>
+<div class="line">    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(pluginName, funcName);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// C++-side pushes the return values in reverse order so we can consume them naturally here.</span></div>
-<div class="line">    <span class="keywordtype">float</span> _x = NWNX_GetReturnValueFloat(pluginName, funcName);</div>
-<div class="line">    <span class="keywordtype">float</span> _y = NWNX_GetReturnValueFloat(pluginName, funcName);</div>
-<div class="line">    <span class="keywordtype">float</span> _z = NWNX_GetReturnValueFloat(pluginName, funcName);</div>
+<div class="line">    <span class="keywordtype">float</span> _x = <a class="code" href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">NWNX_GetReturnValueFloat</a>(pluginName, funcName);</div>
+<div class="line">    <span class="keywordtype">float</span> _y = <a class="code" href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">NWNX_GetReturnValueFloat</a>(pluginName, funcName);</div>
+<div class="line">    <span class="keywordtype">float</span> _z = <a class="code" href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">NWNX_GetReturnValueFloat</a>(pluginName, funcName);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> vector(_x, _y, _z);</div>
 <div class="line">}</div>
-</div><!-- fragment --> </div><!-- contents -->
+</div><!-- fragment --> </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
+Function Groups</h2></td></tr>
+<tr class="memitem:group__consts"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__consts.html">NWNX Constants</a></td></tr>
+<tr class="memdesc:group__consts"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides various NWScript &lt;-&gt; NWNX Constants Translation Table functions. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:nwnx_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx_8nss.html">nwnx.nss</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gac59ae51d3e8c4f775ab7d1a18eab3fc4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a> (string pluginName, string functionName)</td></tr>
+<tr class="memdesc:gac59ae51d3e8c4f775ab7d1a18eab3fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scripting interface to NWNX.  <a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">More...</a><br /></td></tr>
+<tr class="separator:gac59ae51d3e8c4f775ab7d1a18eab3fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc430d6df00ece8e9cd208ba19701698"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a> (string pluginName, string functionName, int value)</td></tr>
+<tr class="memdesc:gadc430d6df00ece8e9cd208ba19701698"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">More...</a><br /></td></tr>
+<tr class="separator:gadc430d6df00ece8e9cd208ba19701698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8d3c3b2724a4cdb2555455a4d6e1053b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">NWNX_PushArgumentFloat</a> (string pluginName, string functionName, float value)</td></tr>
+<tr class="memdesc:ga8d3c3b2724a4cdb2555455a4d6e1053b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">More...</a><br /></td></tr>
+<tr class="separator:ga8d3c3b2724a4cdb2555455a4d6e1053b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9e802e758646d32b71f30f1578151938"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a> (string pluginName, string functionName, object value)</td></tr>
+<tr class="memdesc:ga9e802e758646d32b71f30f1578151938"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">More...</a><br /></td></tr>
+<tr class="separator:ga9e802e758646d32b71f30f1578151938"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6e7ebe01f31c59279956f562609c964a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a> (string pluginName, string functionName, string value)</td></tr>
+<tr class="memdesc:ga6e7ebe01f31c59279956f562609c964a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">More...</a><br /></td></tr>
+<tr class="separator:ga6e7ebe01f31c59279956f562609c964a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga070e2e6319eed3c965c496a4505f1434"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga070e2e6319eed3c965c496a4505f1434">NWNX_PushArgumentEffect</a> (string pluginName, string functionName, effect value)</td></tr>
+<tr class="memdesc:ga070e2e6319eed3c965c496a4505f1434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga070e2e6319eed3c965c496a4505f1434">More...</a><br /></td></tr>
+<tr class="separator:ga070e2e6319eed3c965c496a4505f1434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2591d1676fb7308c13284b6640b9df68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga2591d1676fb7308c13284b6640b9df68">NWNX_PushArgumentItemProperty</a> (string pluginName, string functionName, itemproperty value)</td></tr>
+<tr class="memdesc:ga2591d1676fb7308c13284b6640b9df68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pushes the specified type to the c++ side.  <a href="group__nwnx.html#ga2591d1676fb7308c13284b6640b9df68">More...</a><br /></td></tr>
+<tr class="separator:ga2591d1676fb7308c13284b6640b9df68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabc581e541c864a29a2ec698945996f23"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a> (string pluginName, string functionName)</td></tr>
+<tr class="memdesc:gabc581e541c864a29a2ec698945996f23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">More...</a><br /></td></tr>
+<tr class="separator:gabc581e541c864a29a2ec698945996f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6af62159954fb31011088f52b82fce03"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">NWNX_GetReturnValueFloat</a> (string pluginName, string functionName)</td></tr>
+<tr class="memdesc:ga6af62159954fb31011088f52b82fce03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">More...</a><br /></td></tr>
+<tr class="separator:ga6af62159954fb31011088f52b82fce03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2314f3844fc63b5731fe41a678174790"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga2314f3844fc63b5731fe41a678174790">NWNX_GetReturnValueObject</a> (string pluginName, string functionName)</td></tr>
+<tr class="memdesc:ga2314f3844fc63b5731fe41a678174790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga2314f3844fc63b5731fe41a678174790">More...</a><br /></td></tr>
+<tr class="separator:ga2314f3844fc63b5731fe41a678174790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5020d69354c6bead3824922b66282b6e"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a> (string pluginName, string functionName)</td></tr>
+<tr class="memdesc:ga5020d69354c6bead3824922b66282b6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">More...</a><br /></td></tr>
+<tr class="separator:ga5020d69354c6bead3824922b66282b6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga265e82b3283a4f1c7c18e34b83387d70"><td class="memItemLeft" align="right" valign="top">effect&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#ga265e82b3283a4f1c7c18e34b83387d70">NWNX_GetReturnValueEffect</a> (string pluginName, string functionName)</td></tr>
+<tr class="memdesc:ga265e82b3283a4f1c7c18e34b83387d70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#ga265e82b3283a4f1c7c18e34b83387d70">More...</a><br /></td></tr>
+<tr class="separator:ga265e82b3283a4f1c7c18e34b83387d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf0a53533256121ffee2e34abc349d1f8"><td class="memItemLeft" align="right" valign="top">itemproperty&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nwnx.html#gaf0a53533256121ffee2e34abc349d1f8">NWNX_GetReturnValueItemProperty</a> (string pluginName, string functionName)</td></tr>
+<tr class="memdesc:gaf0a53533256121ffee2e34abc349d1f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the specified type from the c++ side.  <a href="group__nwnx.html#gaf0a53533256121ffee2e34abc349d1f8">More...</a><br /></td></tr>
+<tr class="separator:gaf0a53533256121ffee2e34abc349d1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gac59ae51d3e8c4f775ab7d1a18eab3fc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac59ae51d3e8c4f775ab7d1a18eab3fc4">&#9670;&nbsp;</a></span>NWNX_CallFunction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_CallFunction </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Scripting interface to NWNX. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00048">48</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="gadc430d6df00ece8e9cd208ba19701698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc430d6df00ece8e9cd208ba19701698">&#9670;&nbsp;</a></span>NWNX_PushArgumentInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_PushArgumentInt </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pushes the specified type to the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00053">53</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga8d3c3b2724a4cdb2555455a4d6e1053b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8d3c3b2724a4cdb2555455a4d6e1053b">&#9670;&nbsp;</a></span>NWNX_PushArgumentFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_PushArgumentFloat </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pushes the specified type to the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00058">58</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga9e802e758646d32b71f30f1578151938"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9e802e758646d32b71f30f1578151938">&#9670;&nbsp;</a></span>NWNX_PushArgumentObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_PushArgumentObject </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pushes the specified type to the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00063">63</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6e7ebe01f31c59279956f562609c964a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6e7ebe01f31c59279956f562609c964a">&#9670;&nbsp;</a></span>NWNX_PushArgumentString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_PushArgumentString </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pushes the specified type to the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00068">68</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga070e2e6319eed3c965c496a4505f1434"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga070e2e6319eed3c965c496a4505f1434">&#9670;&nbsp;</a></span>NWNX_PushArgumentEffect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_PushArgumentEffect </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">effect&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pushes the specified type to the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00073">73</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga2591d1676fb7308c13284b6640b9df68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2591d1676fb7308c13284b6640b9df68">&#9670;&nbsp;</a></span>NWNX_PushArgumentItemProperty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_PushArgumentItemProperty </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">itemproperty&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pushes the specified type to the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+    <tr><td class="paramname">value</td><td>The value of specified type to push. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00078">78</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="gabc581e541c864a29a2ec698945996f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabc581e541c864a29a2ec698945996f23">&#9670;&nbsp;</a></span>NWNX_GetReturnValueInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_GetReturnValueInt </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the specified type from the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00083">83</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6af62159954fb31011088f52b82fce03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6af62159954fb31011088f52b82fce03">&#9670;&nbsp;</a></span>NWNX_GetReturnValueFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float NWNX_GetReturnValueFloat </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the specified type from the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00088">88</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga2314f3844fc63b5731fe41a678174790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2314f3844fc63b5731fe41a678174790">&#9670;&nbsp;</a></span>NWNX_GetReturnValueObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">object NWNX_GetReturnValueObject </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the specified type from the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00093">93</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5020d69354c6bead3824922b66282b6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5020d69354c6bead3824922b66282b6e">&#9670;&nbsp;</a></span>NWNX_GetReturnValueString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NWNX_GetReturnValueString </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the specified type from the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00098">98</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga265e82b3283a4f1c7c18e34b83387d70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga265e82b3283a4f1c7c18e34b83387d70">&#9670;&nbsp;</a></span>NWNX_GetReturnValueEffect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">effect NWNX_GetReturnValueEffect </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the specified type from the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00103">103</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaf0a53533256121ffee2e34abc349d1f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf0a53533256121ffee2e34abc349d1f8">&#9670;&nbsp;</a></span>NWNX_GetReturnValueItemProperty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">itemproperty NWNX_GetReturnValueItemProperty </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>pluginName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>functionName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the specified type from the c++ side. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pluginName</td><td>The plugin name. </td></tr>
+    <tr><td class="paramname">functionName</td><td>The function name (do not include NWNX_Plugin_). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of specified type. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx_8nss_source.html#l00109">109</a> of file <a class="el" href="nwnx_8nss_source.html">nwnx.nss</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="agroup__nwnx_html_ga6af62159954fb31011088f52b82fce03"><div class="ttname"><a href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">NWNX_GetReturnValueFloat</a></div><div class="ttdeci">float NWNX_GetReturnValueFloat(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00088">nwnx.nss:88</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga8d3c3b2724a4cdb2555455a4d6e1053b"><div class="ttname"><a href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">NWNX_PushArgumentFloat</a></div><div class="ttdeci">void NWNX_PushArgumentFloat(string pluginName, string functionName, float value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00058">nwnx.nss:58</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00048">nwnx.nss:48</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

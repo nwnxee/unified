@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -107,9 +108,16 @@ $(document).ready(function(){initNavTree('group__util.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Provides various utility functions that don't have a better home.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="util"></a>Readme</h3><div class="textblock">Provide various utility functions that don't have a better home<h2><a class="anchor" id="autotoc_md152"></a>
+Environment Variables</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Variable Name  </th><th class="markdownTableHeadCenter">Value  </th><th class="markdownTableHeadNone">Default  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_UTIL_PRE_MODULE_START_SCRIPT</code>  </td><td class="markdownTableBodyCenter">string  </td><td class="markdownTableBodyNone">Unset  </td><td class="markdownTableBodyNone">Allows you to set a NWScript that runs before the OnModuleLoad event   </td></tr>
+</table>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__util_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__util_8nss.html">nwnx_util.nss</a></td></tr>
@@ -141,7 +149,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga43dd7acf87d691012c9bd844aa07a178"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga43dd7acf87d691012c9bd844aa07a178">NWNX_Util_StripColors</a> (string str)</td></tr>
 <tr class="memdesc:ga43dd7acf87d691012c9bd844aa07a178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strip any color codes from a string.  <a href="group__util.html#ga43dd7acf87d691012c9bd844aa07a178">More...</a><br /></td></tr>
 <tr class="separator:ga43dd7acf87d691012c9bd844aa07a178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga4ea0cf79071aa794e483b1bc3d53c08b">NWNX_Util_IsValidResRef</a> (string resref, int type=NWNX_UTIL_RESREF_TYPE_CREATURE)</td></tr>
+<tr class="memitem:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga4ea0cf79071aa794e483b1bc3d53c08b">NWNX_Util_IsValidResRef</a> (string resref, int type=<a class="el" href="group__util.html#ga02270d9330db583ac0faba143e941236">NWNX_UTIL_RESREF_TYPE_CREATURE</a>)</td></tr>
 <tr class="memdesc:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the supplied resref exists.  <a href="group__util.html#ga4ea0cf79071aa794e483b1bc3d53c08b">More...</a><br /></td></tr>
 <tr class="separator:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab0151e2741596a3a9f1ece22c62f9c9b"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b">NWNX_Util_GetEnvironmentVariable</a> (string sVarname)</td></tr>
@@ -171,59 +179,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4dc71b0421a9bf57e18aa42b177d9b4b"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga4dc71b0421a9bf57e18aa42b177d9b4b">NWNX_Util_GetLastCreatedObject</a> (int nObjectType, int nNthLast=1)</td></tr>
 <tr class="memdesc:ga4dc71b0421a9bf57e18aa42b177d9b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the last created object.  <a href="group__util.html#ga4dc71b0421a9bf57e18aa42b177d9b4b">More...</a><br /></td></tr>
 <tr class="separator:ga4dc71b0421a9bf57e18aa42b177d9b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Resref Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp9acc5fcb81970c44914fd904eb1109f7"></a><a class="anchor" id="resref_types"></a>Constants for the various types of resrefs. </p>
-</td></tr>
-<tr class="memitem:ga44497bc0ee50b6fc9525d1fe40fed2e6"><td class="memItemLeft" align="right" valign="top"><a id="ga44497bc0ee50b6fc9525d1fe40fed2e6"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_NSS</b> = 2009</td></tr>
-<tr class="separator:ga44497bc0ee50b6fc9525d1fe40fed2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7c3717541176f4e20e5824aa2668dd0"><td class="memItemLeft" align="right" valign="top"><a id="gac7c3717541176f4e20e5824aa2668dd0"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_NCS</b> = 2010</td></tr>
-<tr class="separator:gac7c3717541176f4e20e5824aa2668dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga610bf05a8489288df5ce9ad2326bd54c"><td class="memItemLeft" align="right" valign="top"><a id="ga610bf05a8489288df5ce9ad2326bd54c"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_AREA_ARE</b> = 2012</td></tr>
-<tr class="separator:ga610bf05a8489288df5ce9ad2326bd54c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa3475205c5acd4e78df18d9e3620e06a"><td class="memItemLeft" align="right" valign="top"><a id="gaa3475205c5acd4e78df18d9e3620e06a"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_TWODA</b> = 2017</td></tr>
-<tr class="separator:gaa3475205c5acd4e78df18d9e3620e06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3e6a9ec855349ea41fda8ae3dce391ad"><td class="memItemLeft" align="right" valign="top"><a id="ga3e6a9ec855349ea41fda8ae3dce391ad"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_AREA_GIT</b> = 2023</td></tr>
-<tr class="separator:ga3e6a9ec855349ea41fda8ae3dce391ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1369c11a9efff4b4b78bd2ebb700a455"><td class="memItemLeft" align="right" valign="top"><a id="ga1369c11a9efff4b4b78bd2ebb700a455"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_ITEM</b> = 2025</td></tr>
-<tr class="separator:ga1369c11a9efff4b4b78bd2ebb700a455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga02270d9330db583ac0faba143e941236"><td class="memItemLeft" align="right" valign="top"><a id="ga02270d9330db583ac0faba143e941236"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_CREATURE</b> = 2027</td></tr>
-<tr class="separator:ga02270d9330db583ac0faba143e941236"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85fef98f04c945d6359f8ed7b3ae942e"><td class="memItemLeft" align="right" valign="top"><a id="ga85fef98f04c945d6359f8ed7b3ae942e"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_DIALOG</b> = 2029</td></tr>
-<tr class="separator:ga85fef98f04c945d6359f8ed7b3ae942e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3725322294e6bf0d6fa4f9dc87eb9145"><td class="memItemLeft" align="right" valign="top"><a id="ga3725322294e6bf0d6fa4f9dc87eb9145"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_TRIGGER</b> = 2032</td></tr>
-<tr class="separator:ga3725322294e6bf0d6fa4f9dc87eb9145"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae2d5cee2971f0adae36675e239737946"><td class="memItemLeft" align="right" valign="top"><a id="gae2d5cee2971f0adae36675e239737946"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_SOUND</b> = 2035</td></tr>
-<tr class="separator:gae2d5cee2971f0adae36675e239737946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga763a6401a1bb17dc61c3cca95c5cb343"><td class="memItemLeft" align="right" valign="top"><a id="ga763a6401a1bb17dc61c3cca95c5cb343"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_ENCOUNTER</b> = 2040</td></tr>
-<tr class="separator:ga763a6401a1bb17dc61c3cca95c5cb343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga84ca988d944a45915421d7765f7d4bbf"><td class="memItemLeft" align="right" valign="top"><a id="ga84ca988d944a45915421d7765f7d4bbf"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_DOOR</b> = 2042</td></tr>
-<tr class="separator:ga84ca988d944a45915421d7765f7d4bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafcfa036f8f9926036db37652ff31dc79"><td class="memItemLeft" align="right" valign="top"><a id="gafcfa036f8f9926036db37652ff31dc79"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_PLACEABLE</b> = 2044</td></tr>
-<tr class="separator:gafcfa036f8f9926036db37652ff31dc79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3de345eb5b81cd71a5250ba5d1b6ceb5"><td class="memItemLeft" align="right" valign="top"><a id="ga3de345eb5b81cd71a5250ba5d1b6ceb5"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_STORE</b> = 2051</td></tr>
-<tr class="separator:ga3de345eb5b81cd71a5250ba5d1b6ceb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2b85429483e9749a5c3527f5c9440619"><td class="memItemLeft" align="right" valign="top"><a id="ga2b85429483e9749a5c3527f5c9440619"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_WAYPOINT</b> = 2058</td></tr>
-<tr class="separator:ga2b85429483e9749a5c3527f5c9440619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Provides various utility functions that don't have a better home. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga972eafd2cce6e28be85212774a0a4cf4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga972eafd2cce6e28be85212774a0a4cf4">&#9670;&nbsp;</a></span>NWNX_Util_GetCurrentScriptName()</h2>
@@ -461,7 +417,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>type</em> = <code>NWNX_UTIL_RESREF_TYPE_CREATURE</code>&#160;</td>
+          <td class="paramname"><em>type</em> = <code><a class="el" href="group__util.html#ga02270d9330db583ac0faba143e941236">NWNX_UTIL_RESREF_TYPE_CREATURE</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -743,7 +699,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF
 <p>Get the last created object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nObjectType</td><td>Does not take the NWScript OBJECT_TYPE_* constants. Use <a class="el" href="group__consts.html#consts_translate_obj_type">NWNX_Consts_TranslateNWScriptObjectType()</a> to get their NWNX equivalent. </td></tr>
+    <tr><td class="paramname">nObjectType</td><td>Does not take the NWScript OBJECT_TYPE_* constants. Use <a class="el" href="group__consts.html#gaf5dad80b736ba0c80e15d1edddcdd6ae" title="Translates OBJECT_TYPE_* constants to their NWNX equivalent.">NWNX_Consts_TranslateNWScriptObjectType()</a> to get their NWNX equivalent. </td></tr>
     <tr><td class="paramname">nNthLast</td><td>The nth last object created. </td></tr>
   </table>
   </dd>
@@ -754,13 +710,254 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ga44497bc0ee50b6fc9525d1fe40fed2e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga44497bc0ee50b6fc9525d1fe40fed2e6">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_NSS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_NSS = 2009</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="gac7c3717541176f4e20e5824aa2668dd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7c3717541176f4e20e5824aa2668dd0">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_NCS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_NCS = 2010</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga610bf05a8489288df5ce9ad2326bd54c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga610bf05a8489288df5ce9ad2326bd54c">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_AREA_ARE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_AREA_ARE = 2012</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaa3475205c5acd4e78df18d9e3620e06a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa3475205c5acd4e78df18d9e3620e06a">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_TWODA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_TWODA = 2017</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga3e6a9ec855349ea41fda8ae3dce391ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3e6a9ec855349ea41fda8ae3dce391ad">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_AREA_GIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_AREA_GIT = 2023</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga1369c11a9efff4b4b78bd2ebb700a455"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1369c11a9efff4b4b78bd2ebb700a455">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_ITEM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_ITEM = 2025</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga02270d9330db583ac0faba143e941236"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga02270d9330db583ac0faba143e941236">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_CREATURE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_CREATURE = 2027</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga85fef98f04c945d6359f8ed7b3ae942e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85fef98f04c945d6359f8ed7b3ae942e">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_DIALOG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_DIALOG = 2029</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00021">21</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga3725322294e6bf0d6fa4f9dc87eb9145"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3725322294e6bf0d6fa4f9dc87eb9145">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_TRIGGER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_TRIGGER = 2032</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00022">22</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="gae2d5cee2971f0adae36675e239737946"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae2d5cee2971f0adae36675e239737946">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_SOUND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_SOUND = 2035</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00023">23</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga763a6401a1bb17dc61c3cca95c5cb343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga763a6401a1bb17dc61c3cca95c5cb343">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_ENCOUNTER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_ENCOUNTER = 2040</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00024">24</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga84ca988d944a45915421d7765f7d4bbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga84ca988d944a45915421d7765f7d4bbf">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_DOOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_DOOR = 2042</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00025">25</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="gafcfa036f8f9926036db37652ff31dc79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafcfa036f8f9926036db37652ff31dc79">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_PLACEABLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_PLACEABLE = 2044</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00026">26</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga3de345eb5b81cd71a5250ba5d1b6ceb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3de345eb5b81cd71a5250ba5d1b6ceb5">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_STORE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_STORE = 2051</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00027">27</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga2b85429483e9749a5c3527f5c9440619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2b85429483e9749a5c3527f5c9440619">&#9670;&nbsp;</a></span>NWNX_UTIL_RESREF_TYPE_WAYPOINT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_UTIL_RESREF_TYPE_WAYPOINT = 2058</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00028">28</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

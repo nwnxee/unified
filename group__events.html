@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -107,9 +108,8 @@ $(document).ready(function(){initNavTree('group__events.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Provides an interface for plugins to create event-based systems, and exposes some events through that interface.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="events"></a>Readme</h3><div class="textblock">Provides an interface for plugins to create event-based systems, and exposes some events through that interface. </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__events_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></td></tr>
@@ -134,17 +134,13 @@ Functions</h2></td></tr>
 <tr class="separator:ga3dd3ccd8df389359c21d5ca3f681718b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4134c20a643dc5d808fc0f758c71cd02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a> (string sEvent, string sScript, int bEnable)</td></tr>
 <tr class="separator:ga4134c20a643dc5d808fc0f758c71cd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae5b967429f0381813d7f6667dd8dcbe6"><td class="memItemLeft" align="right" valign="top"><a id="gae5b967429f0381813d7f6667dd8dcbe6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a> (string sEvent, string sScript, object oObject)</td></tr>
-<tr class="memdesc:gae5b967429f0381813d7f6667dd8dcbe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add oObject to the dispatch list for sEvent+sScript. <br /></td></tr>
+<tr class="memitem:gae5b967429f0381813d7f6667dd8dcbe6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a> (string sEvent, string sScript, object oObject)</td></tr>
+<tr class="memdesc:gae5b967429f0381813d7f6667dd8dcbe6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add oObject to the dispatch list for sEvent+sScript.  <a href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">More...</a><br /></td></tr>
 <tr class="separator:gae5b967429f0381813d7f6667dd8dcbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="memItemLeft" align="right" valign="top"><a id="ga5040b47f5949dbd59be0540e0ddd00ce"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a> (string sEvent, string sScript, object oObject)</td></tr>
-<tr class="memdesc:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove oObject from the dispatch list for sEvent+sScript. <br /></td></tr>
+<tr class="memitem:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a> (string sEvent, string sScript, object oObject)</td></tr>
+<tr class="memdesc:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove oObject from the dispatch list for sEvent+sScript.  <a href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">More...</a><br /></td></tr>
 <tr class="separator:ga5040b47f5949dbd59be0540e0ddd00ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Provides an interface for plugins to create event-based systems, and exposes some events through that interface. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga1f7aeeb1c0a8f4166b8d1dbefa521294"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga1f7aeeb1c0a8f4166b8d1dbefa521294">&#9670;&nbsp;</a></span>NWNX_Events_SubscribeEvent()</h2>
@@ -400,13 +396,89 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 
 </div>
 </div>
+<a id="gae5b967429f0381813d7f6667dd8dcbe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae5b967429f0381813d7f6667dd8dcbe6">&#9670;&nbsp;</a></span>NWNX_Events_AddObjectToDispatchList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Events_AddObjectToDispatchList </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>sEvent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>sScript</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oObject</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add oObject to the dispatch list for sEvent+sScript. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01009">1009</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5040b47f5949dbd59be0540e0ddd00ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5040b47f5949dbd59be0540e0ddd00ce">&#9670;&nbsp;</a></span>NWNX_Events_RemoveObjectFromDispatchList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Events_RemoveObjectFromDispatchList </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>sEvent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>sScript</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oObject</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Remove oObject from the dispatch list for sEvent+sScript. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01019">1019</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

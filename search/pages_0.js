@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['administration_20plugin_20reference_1824',['Administration Plugin Reference',['../md_Plugins_Administration_README.html',1,'']]],
-  ['appearance_20plugin_20reference_1825',['Appearance Plugin Reference',['../md_Plugins_Appearance_README.html',1,'']]],
-  ['area_20plugin_20reference_1826',['Area Plugin Reference',['../md_Plugins_Area_README.html',1,'']]]
+  ['changelog_2894',['Changelog',['../changelog.html',1,'']]],
+  ['core_20reference_2895',['Core Reference',['../md_Core_Documentation_README.html',1,'']]],
+  ['core_20functions_2896',['Core Functions',['../group__nwnx.html',1,'']]]
 ];

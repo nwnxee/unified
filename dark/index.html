@@ -28,8 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
-		<link href="custom.css" rel="stylesheet" type="text/css"/>
-<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
+		<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -106,22 +105,22 @@ $(document).ready(function(){initNavTree('index.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md246">What is NWNX:EE?</a></li>
-<li class="level1"><a href="#autotoc_md247">What versions of the server are supported?</a></li>
-<li class="level1"><a href="#autotoc_md248">What platforms are supported?</a></li>
-<li class="level1"><a href="#autotoc_md249">How do I use it?</a></li>
-<li class="level1"><a href="#autotoc_md250">Integrating NWNX:EE into your module</a></li>
-<li class="level1"><a href="#autotoc_md251">Running the server (native)</a></li>
-<li class="level1"><a href="#autotoc_md252">Running the server (Docker)</a></li>
-<li class="level1"><a href="#autotoc_md253">Compiling NWNX:EE (native)</a></li>
-<li class="level1"><a href="#autotoc_md254">Compiling NWNX:EE (docker)</a></li>
-<li class="level1"><a href="#autotoc_md255">Contributing code</a></li>
-<li class="level1"><a href="#autotoc_md256">Who makes NWNX:EE?</a></li>
-<li class="level1"><a href="#autotoc_md257">You&#39;re awesome, let me pay you</a></li>
-<li class="level1"><a href="#autotoc_md258">Contact</a></li>
+<ul><li class="level1"><a href="#autotoc_md166">What is NWNX:EE?</a></li>
+<li class="level1"><a href="#autotoc_md167">What versions of the server are supported?</a></li>
+<li class="level1"><a href="#autotoc_md168">What platforms are supported?</a></li>
+<li class="level1"><a href="#autotoc_md169">How do I use it?</a></li>
+<li class="level1"><a href="#autotoc_md170">Integrating NWNX:EE into your module</a></li>
+<li class="level1"><a href="#autotoc_md171">Running the server (native)</a></li>
+<li class="level1"><a href="#autotoc_md172">Running the server (Docker)</a></li>
+<li class="level1"><a href="#autotoc_md173">Compiling NWNX:EE (native)</a></li>
+<li class="level1"><a href="#autotoc_md174">Compiling NWNX:EE (docker)</a></li>
+<li class="level1"><a href="#autotoc_md175">Contributing code</a></li>
+<li class="level1"><a href="#autotoc_md176">Who makes NWNX:EE?</a></li>
+<li class="level1"><a href="#autotoc_md177">You&#39;re awesome, let me pay you</a></li>
+<li class="level1"><a href="#autotoc_md178">Contact</a></li>
 </ul>
 </div>
-<div class="textblock"><h1><a class="anchor" id="autotoc_md246"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md166"></a>
 What is NWNX:EE?</h1>
 <p>NWNX:EE stands for Neverwinter Nights Extender: Enhanced Edition. In a nutshell, NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.</p>
 <p>Using NWNX:EE, developers can make plugins to do anything they want, including but not limited to:</p>
@@ -131,19 +130,19 @@ What is NWNX:EE?</h1>
 <li>Modify existing mechanics that are conventionally difficult or impossible to change, such as the core combat rules or the path finding engine.</li>
 </ol>
 <p>NWNX:EE is not just for plugin developers. Module creators can use plugins created by the NWNX:EE contributors to expand the scripting and systems functionality of their modules.</p>
-<h1><a class="anchor" id="autotoc_md247"></a>
+<h1><a class="anchor" id="autotoc_md167"></a>
 What versions of the server are supported?</h1>
 <p>The most recent build of NWN:EE that is supported can be discovered at the top of this file. Please note that we do NOT support any server binaries other than the one in the dedicated server package. We support neither the binary released through the Beamdog client nor the one released through the Steam client. We release an update for each new version of the dedicated server package, which can be found here: <a href="https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support/p1">https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support/p1</a></p>
-<h1><a class="anchor" id="autotoc_md248"></a>
+<h1><a class="anchor" id="autotoc_md168"></a>
 What platforms are supported?</h1>
 <p>Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. Many discussions have taken place regarding work on a native Windows port of NWNX:EE. It has been tackled several times in the past, but none of those attempts have seen fruition - complications have arisen in the course of the work. We know how we would do it, and estimate the time required for the task to be between 2 and 4 weeks of full-time work, but nobody with the skillset necessary to take on the project has the time or interest at the moment to do so. Therefore, users should not expect a native Windows port from a member of the team in the near future. (contributions welcome!)</p>
-<h1><a class="anchor" id="autotoc_md249"></a>
+<h1><a class="anchor" id="autotoc_md169"></a>
 How do I use it?</h1>
 <p>First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the <a href="https://github.com/nwnxee/unified/releases">Releases</a> tab at the top of the GitHub repository page. Keep in mind these are generally only updated whenever a new NWN patch is released.</p>
-<h1><a class="anchor" id="autotoc_md250"></a>
+<h1><a class="anchor" id="autotoc_md170"></a>
 Integrating NWNX:EE into your module</h1>
 <p>The built binaries (when built using the build script or downloaded as artifacts) will contain a folder in which all of the script files associated with NWNX:EE live. Simply import these into your module and call the functions as you would any other scripting function. Some may not compile with the default compiler - it is safe to delete these scripts if you do not need to use the associated plugins.</p>
-<h1><a class="anchor" id="autotoc_md251"></a>
+<h1><a class="anchor" id="autotoc_md171"></a>
 Running the server (native)</h1>
 <p>Given the binaries, follow these steps:</p>
 <ol type="1">
@@ -160,7 +159,7 @@ export NWNX_JVM_LOG_LEVEL=7 # Log level for JVM, overrides default
 </pre></li>
 </ol>
 <p>Optionally, you can use Docker to run the server with pre-built NWNX binaries. Refer to the section below</p>
-<h1><a class="anchor" id="autotoc_md252"></a>
+<h1><a class="anchor" id="autotoc_md172"></a>
 Running the server (Docker)</h1>
 <p><code>nwnxee/unified</code> supports the following <a href="https://cloud.docker.com/repository/docker/nwnxee/unified/tags">tags</a>:</p>
 <ul>
@@ -182,7 +181,7 @@ Running the server (Docker)</h1>
 <li><a href="https://docs.docker.com/compose/">https://docs.docker.com/compose/</a></li>
 <li>Example compose file: <a href="https://github.com/Urothis/nwnxee-template/blob/master/docker-compose.yml">nwnxee-template</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md253"></a>
+<h1><a class="anchor" id="autotoc_md173"></a>
 Compiling NWNX:EE (native)</h1>
 <p>Please note that you need a modern C++ compiler to build NWNX:EE. The code is confirmed to build on GCC 6.4 + or Clang 4.0 +. It may be possible to build on an older compiler.</p>
 <p>Each plugin may have one or more dependencies that must be satisfied in order to build that plugin. Refer to each individual plugin's CMakeLists.txt to determine their dependencies.</p>
@@ -194,7 +193,7 @@ Compiling NWNX:EE (native)</h1>
 <ol type="1">
 <li>Execute CC=gcc -m32 CXX=g++ -m32 mkdir build &amp;&amp; cd build &amp;&amp; cmake .. &amp;&amp; make</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md254"></a>
+<h1><a class="anchor" id="autotoc_md174"></a>
 Compiling NWNX:EE (docker)</h1>
 <p>To build on Linux, MacOS, or Docker-Toolbox:</p>
 <ol type="1">
@@ -211,7 +210,7 @@ Compiling NWNX:EE (docker)</h1>
 <li>The Container will execute the ./scripts/buildnwnx.sh script</li>
 <li>To perform a clean build pass -FORCECLEAN eg './scripts/rundockerbuild.ps1 -FORCECLEAN'</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md255"></a>
+<h1><a class="anchor" id="autotoc_md175"></a>
 Contributing code</h1>
 <p>All contribution are welcome. The only requirement is that the code you contribute adheres to the following restrictions:</p>
 <ol type="1">
@@ -225,13 +224,13 @@ Contributing code</h1>
 <li>Avoid manual memory management. Use unique_ptr always. This helps transparent hotloading later!</li>
 </ol>
 <p>Most importantly, be sure never to manually write memory addresses or hooks yourself. These must ALWAYS go through the core systems to make sure that plugins can play nicely together.</p>
-<h1><a class="anchor" id="autotoc_md256"></a>
+<h1><a class="anchor" id="autotoc_md176"></a>
 Who makes NWNX:EE?</h1>
 <p>The project is an open source project created and maintained by community members for free in their spare time.</p>
-<h1><a class="anchor" id="autotoc_md257"></a>
+<h1><a class="anchor" id="autotoc_md177"></a>
 You're awesome, let me pay you</h1>
 <p>Thanks, but you should donate your dolla dolla bills to a good cause instead. If you really want to spend money to support NWN, consider donating to Neverwinter Vault to cover their sever hosting costs.</p>
-<h1><a class="anchor" id="autotoc_md258"></a>
+<h1><a class="anchor" id="autotoc_md178"></a>
 Contact</h1>
 <p>The team can be contacted on Discord using the invite at the following URL: <a href="https://discord.gg/hxTt8Fr">https://discord.gg/hxTt8Fr</a> </p>
 </div></div><!-- PageDoc -->
@@ -241,7 +240,7 @@ Contact</h1>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

@@ -1,5 +1,6 @@
 var group__item =
 [
+    [ "readme", "group__item.html#item", null ],
     [ "nwnx_item.nss", "nwnx__item_8nss.html", null ],
     [ "NWNX_Item_SetWeight", "group__item.html#ga9464b3a05fa000e593e9b5780c16c13e", null ],
     [ "NWNX_Item_SetBaseGoldPieceValue", "group__item.html#gadf40650ece667c4777475ef2a394ce39", null ],

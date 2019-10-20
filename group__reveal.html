@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -107,9 +108,8 @@ $(document).ready(function(){initNavTree('group__reveal.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Allows the selective revealing of a stealthing character to another character or their party.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="reveal"></a>Readme</h3><div class="textblock">This plugin allows the selective revealing of a stealthing character to another character or their party. </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__reveal_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__reveal_8nss.html">nwnx_reveal.nss</a></td></tr>
@@ -123,20 +123,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga88cfee3997f219dca4d75eb5c04e2df8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">NWNX_Reveal_SetRevealToParty</a> (object oHiding, int bReveal, int iDetectionMethod=<a class="el" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a>)</td></tr>
 <tr class="memdesc:ga88cfee3997f219dca4d75eb5c04e2df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether a character remains visible to their party through stealth.  <a href="group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8">More...</a><br /></td></tr>
 <tr class="separator:ga88cfee3997f219dca4d75eb5c04e2df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Reveal Detection Methods</h2></td></tr>
-<tr class="memitem:gae4bff87fefb21bef87fe4e021fb13ac7"><td class="memItemLeft" align="right" valign="top"><a id="gae4bff87fefb21bef87fe4e021fb13ac7"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__reveal.html#gae4bff87fefb21bef87fe4e021fb13ac7">NWNX_REVEAL_SEEN</a> = 1</td></tr>
-<tr class="memdesc:gae4bff87fefb21bef87fe4e021fb13ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seen. <br /></td></tr>
-<tr class="separator:gae4bff87fefb21bef87fe4e021fb13ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacd928190408f6d69e9448c84141bee7e"><td class="memItemLeft" align="right" valign="top"><a id="gacd928190408f6d69e9448c84141bee7e"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__reveal.html#gacd928190408f6d69e9448c84141bee7e">NWNX_REVEAL_HEARD</a> = 0</td></tr>
-<tr class="memdesc:gacd928190408f6d69e9448c84141bee7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heard. <br /></td></tr>
-<tr class="separator:gacd928190408f6d69e9448c84141bee7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Allows the selective revealing of a stealthing character to another character or their party. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga71f55177ffc85cd14a6981166dffb60a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga71f55177ffc85cd14a6981166dffb60a">&#9670;&nbsp;</a></span>NWNX_Reveal_RevealTo()</h2>
@@ -230,13 +217,50 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gae4bff87fefb21bef87fe4e021fb13ac7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae4bff87fefb21bef87fe4e021fb13ac7">&#9670;&nbsp;</a></span>NWNX_REVEAL_SEEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_REVEAL_SEEN = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Seen. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__reveal_8nss_source.html#l00011">11</a> of file <a class="el" href="nwnx__reveal_8nss_source.html">nwnx_reveal.nss</a>.</p>
+
+</div>
+</div>
+<a id="gacd928190408f6d69e9448c84141bee7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacd928190408f6d69e9448c84141bee7e">&#9670;&nbsp;</a></span>NWNX_REVEAL_HEARD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_REVEAL_HEARD = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Heard. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__reveal_8nss_source.html#l00012">12</a> of file <a class="el" href="nwnx__reveal_8nss_source.html">nwnx_reveal.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

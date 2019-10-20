@@ -28,8 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
-		<link href="custom.css" rel="stylesheet" type="text/css"/>
-<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
+		<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -110,9 +109,8 @@ $(document).ready(function(){initNavTree('group__creature.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Functions exposing additional creature properties.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="creature"></a>Readme</h3><div class="textblock">Functions exposing additional creature properties. </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__creature_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__creature_8nss.html">nwnx_creature.nss</a></td></tr>
@@ -354,7 +352,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga5144ab295c043bd4b1bea5d6244d8499"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499">NWNX_Creature_SetFeatRemainingUses</a> (object creature, int feat, int uses)</td></tr>
 <tr class="memdesc:ga5144ab295c043bd4b1bea5d6244d8499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set feat remaining uses.  <a href="group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499">More...</a><br /></td></tr>
 <tr class="separator:ga5144ab295c043bd4b1bea5d6244d8499"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf1b625ef87972302d67db93bee1ea4e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5">NWNX_Creature_GetTotalEffectBonus</a> (object creature, int bonusType=NWNX_CREATURE_BONUS_TYPE_ATTACK, object target=OBJECT_INVALID, int isElemental=0, int isForceMax=0, int savetype=-1, int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE)</td></tr>
+<tr class="memitem:gaf1b625ef87972302d67db93bee1ea4e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5">NWNX_Creature_GetTotalEffectBonus</a> (object creature, int bonusType=<a class="el" href="group__creature.html#ga56cd9112ddd13c2758c5753c195595f1">NWNX_CREATURE_BONUS_TYPE_ATTACK</a>, object target=OBJECT_INVALID, int isElemental=0, int isForceMax=0, int savetype=-1, int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE)</td></tr>
 <tr class="memdesc:gaf1b625ef87972302d67db93bee1ea4e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get total effect bonus.  <a href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5">More...</a><br /></td></tr>
 <tr class="separator:gaf1b625ef87972302d67db93bee1ea4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1ca18c6575ef041368e50f978441e7ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga1ca18c6575ef041368e50f978441e7ca">NWNX_Creature_SetOriginalName</a> (object creature, string name, int isLastName)</td></tr>
@@ -378,146 +376,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf847727f4e3352be4083bba10c0841bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf847727f4e3352be4083bba10c0841bf">NWNX_Creature_SetFamiliarName</a> (object creature, string name)</td></tr>
 <tr class="memdesc:gaf847727f4e3352be4083bba10c0841bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set creature's familiar's name.  <a href="group__creature.html#gaf847727f4e3352be4083bba10c0841bf">More...</a><br /></td></tr>
 <tr class="separator:gaf847727f4e3352be4083bba10c0841bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Creature Movement Rates</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrpb752d86e26c9a832c8f231c24e3e238e"></a><a class="anchor" id="creature_movement_rates"></a> The various types of movement rates. </p>
-</td></tr>
-<tr class="memitem:gafb79cfbb94206b01c958ff3c32f28cdb"><td class="memItemLeft" align="right" valign="top"><a id="gafb79cfbb94206b01c958ff3c32f28cdb"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_PC</b> = 0</td></tr>
-<tr class="separator:gafb79cfbb94206b01c958ff3c32f28cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga150b50e7ba879fbbce35dda891ec0d22"><td class="memItemLeft" align="right" valign="top"><a id="ga150b50e7ba879fbbce35dda891ec0d22"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE</b> = 1</td></tr>
-<tr class="separator:ga150b50e7ba879fbbce35dda891ec0d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga161c4a1c39d2293d77d00ef708663650"><td class="memItemLeft" align="right" valign="top"><a id="ga161c4a1c39d2293d77d00ef708663650"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW</b> = 2</td></tr>
-<tr class="separator:ga161c4a1c39d2293d77d00ef708663650"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga75ba02a6664ac24fc1673ae28e8c9810"><td class="memItemLeft" align="right" valign="top"><a id="ga75ba02a6664ac24fc1673ae28e8c9810"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_SLOW</b> = 3</td></tr>
-<tr class="separator:ga75ba02a6664ac24fc1673ae28e8c9810"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ef03e2fe509226c6da44655f98c3cc5"><td class="memItemLeft" align="right" valign="top"><a id="ga6ef03e2fe509226c6da44655f98c3cc5"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_NORMAL</b> = 4</td></tr>
-<tr class="separator:ga6ef03e2fe509226c6da44655f98c3cc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ec4fdfbd059de8f27ddd5ed0c34e756"><td class="memItemLeft" align="right" valign="top"><a id="ga6ec4fdfbd059de8f27ddd5ed0c34e756"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_FAST</b> = 5</td></tr>
-<tr class="separator:ga6ec4fdfbd059de8f27ddd5ed0c34e756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga76d1f48c7213ed0602a494ac6b639ec8"><td class="memItemLeft" align="right" valign="top"><a id="ga76d1f48c7213ed0602a494ac6b639ec8"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST</b> = 6</td></tr>
-<tr class="separator:ga76d1f48c7213ed0602a494ac6b639ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8a565245d8f2de0d44bb09f6002254a"><td class="memItemLeft" align="right" valign="top"><a id="gab8a565245d8f2de0d44bb09f6002254a"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_DEFAULT</b> = 7</td></tr>
-<tr class="separator:gab8a565245d8f2de0d44bb09f6002254a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85589bd3d90008ee8d2765e7b822e627"><td class="memItemLeft" align="right" valign="top"><a id="ga85589bd3d90008ee8d2765e7b822e627"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_DM_FAST</b> = 8</td></tr>
-<tr class="separator:ga85589bd3d90008ee8d2765e7b822e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Creature Movement Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp9137b444ccc019dbf6ecb1cb85cd54f8"></a><a class="anchor" id="creature_movement_types"></a> The various types of movement types. </p>
-</td></tr>
-<tr class="memitem:ga4dc701e0795a6b232fcecf3cfe7a10a7"><td class="memItemLeft" align="right" valign="top"><a id="ga4dc701e0795a6b232fcecf3cfe7a10a7"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY</b> = 0</td></tr>
-<tr class="separator:ga4dc701e0795a6b232fcecf3cfe7a10a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac87bd2be51450dda46576ebd3282153e"><td class="memItemLeft" align="right" valign="top"><a id="gac87bd2be51450dda46576ebd3282153e"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_WALK</b> = 1</td></tr>
-<tr class="separator:gac87bd2be51450dda46576ebd3282153e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga24b699c31e37531d6c0e09b70865ba55"><td class="memItemLeft" align="right" valign="top"><a id="ga24b699c31e37531d6c0e09b70865ba55"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_RUN</b> = 2</td></tr>
-<tr class="separator:ga24b699c31e37531d6c0e09b70865ba55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6dbe26ade937d00a1a3c55bdfc7d2e93"><td class="memItemLeft" align="right" valign="top"><a id="ga6dbe26ade937d00a1a3c55bdfc7d2e93"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP</b> = 3</td></tr>
-<tr class="separator:ga6dbe26ade937d00a1a3c55bdfc7d2e93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadfb3c03cca68f6508eb3c14131c4b6b4"><td class="memItemLeft" align="right" valign="top"><a id="gadfb3c03cca68f6508eb3c14131c4b6b4"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS</b> = 4</td></tr>
-<tr class="separator:gadfb3c03cca68f6508eb3c14131c4b6b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Cleric Domains</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrpf5386da34dc22a75cbde1e1ac3861f21"></a><a class="anchor" id="cleric_domains"></a> The clerical domains. </p>
-</td></tr>
-<tr class="memitem:ga9304a2c3f00f98f8ba26334e10497f5f"><td class="memItemLeft" align="right" valign="top"><a id="ga9304a2c3f00f98f8ba26334e10497f5f"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_AIR</b> = 0</td></tr>
-<tr class="separator:ga9304a2c3f00f98f8ba26334e10497f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6fbfb48651bf0192e5f33c5c8ddf486c"><td class="memItemLeft" align="right" valign="top"><a id="ga6fbfb48651bf0192e5f33c5c8ddf486c"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL</b> = 1</td></tr>
-<tr class="separator:ga6fbfb48651bf0192e5f33c5c8ddf486c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5349277c58e434dbb8be910d7c864ab6"><td class="memItemLeft" align="right" valign="top"><a id="ga5349277c58e434dbb8be910d7c864ab6"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_DEATH</b> = 3</td></tr>
-<tr class="separator:ga5349277c58e434dbb8be910d7c864ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab78074893d50b88935de699c0647df76"><td class="memItemLeft" align="right" valign="top"><a id="gab78074893d50b88935de699c0647df76"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION</b> = 4</td></tr>
-<tr class="separator:gab78074893d50b88935de699c0647df76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacd7efbcb70bffacb0f8bb08fcc5f2f04"><td class="memItemLeft" align="right" valign="top"><a id="gacd7efbcb70bffacb0f8bb08fcc5f2f04"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_EARTH</b> = 5</td></tr>
-<tr class="separator:gacd7efbcb70bffacb0f8bb08fcc5f2f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadd73aca4c6cac5a116638f7148fc6985"><td class="memItemLeft" align="right" valign="top"><a id="gadd73aca4c6cac5a116638f7148fc6985"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_EVIL</b> = 6</td></tr>
-<tr class="separator:gadd73aca4c6cac5a116638f7148fc6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga455eead9f9c5185af7024c276ee557c0"><td class="memItemLeft" align="right" valign="top"><a id="ga455eead9f9c5185af7024c276ee557c0"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_FIRE</b> = 7</td></tr>
-<tr class="separator:ga455eead9f9c5185af7024c276ee557c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga34030d81dd3ff20a18a96e336a3f97ca"><td class="memItemLeft" align="right" valign="top"><a id="ga34030d81dd3ff20a18a96e336a3f97ca"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_GOOD</b> = 8</td></tr>
-<tr class="separator:ga34030d81dd3ff20a18a96e336a3f97ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga937d119a9a85211c207e993df8ae08c3"><td class="memItemLeft" align="right" valign="top"><a id="ga937d119a9a85211c207e993df8ae08c3"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_HEALING</b> = 9</td></tr>
-<tr class="separator:ga937d119a9a85211c207e993df8ae08c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga62661d9a25a06c21d52a125bb76ba107"><td class="memItemLeft" align="right" valign="top"><a id="ga62661d9a25a06c21d52a125bb76ba107"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE</b> = 10</td></tr>
-<tr class="separator:ga62661d9a25a06c21d52a125bb76ba107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac098ee44bae961ce3e2cfb0189252533"><td class="memItemLeft" align="right" valign="top"><a id="gac098ee44bae961ce3e2cfb0189252533"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_MAGIC</b> = 13</td></tr>
-<tr class="separator:gac098ee44bae961ce3e2cfb0189252533"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaea7f7cd07d9f5738f25bbd6775fdcc09"><td class="memItemLeft" align="right" valign="top"><a id="gaea7f7cd07d9f5738f25bbd6775fdcc09"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_PLANT</b> = 14</td></tr>
-<tr class="separator:gaea7f7cd07d9f5738f25bbd6775fdcc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga88cdfc511d31aaf53089cd44a4e9d869"><td class="memItemLeft" align="right" valign="top"><a id="ga88cdfc511d31aaf53089cd44a4e9d869"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION</b> = 15</td></tr>
-<tr class="separator:ga88cdfc511d31aaf53089cd44a4e9d869"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4557ab082fc1670f9bbf1e167f653dd9"><td class="memItemLeft" align="right" valign="top"><a id="ga4557ab082fc1670f9bbf1e167f653dd9"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH</b> = 16</td></tr>
-<tr class="separator:ga4557ab082fc1670f9bbf1e167f653dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga48ec122c6baba05eb9563c7daefa61fb"><td class="memItemLeft" align="right" valign="top"><a id="ga48ec122c6baba05eb9563c7daefa61fb"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_SUN</b> = 17</td></tr>
-<tr class="separator:ga48ec122c6baba05eb9563c7daefa61fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5f007271da99de9be96d783c3b8f70af"><td class="memItemLeft" align="right" valign="top"><a id="ga5f007271da99de9be96d783c3b8f70af"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL</b> = 18</td></tr>
-<tr class="separator:ga5f007271da99de9be96d783c3b8f70af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1b5c0ec814404f0df67ae03333d708e2"><td class="memItemLeft" align="right" valign="top"><a id="ga1b5c0ec814404f0df67ae03333d708e2"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY</b> = 19</td></tr>
-<tr class="separator:ga1b5c0ec814404f0df67ae03333d708e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga76b73875c3340d038261f684189fbdf6"><td class="memItemLeft" align="right" valign="top"><a id="ga76b73875c3340d038261f684189fbdf6"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_WAR</b> = 20</td></tr>
-<tr class="separator:ga76b73875c3340d038261f684189fbdf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafea1002c0334de7fe9e98b874f6bd214"><td class="memItemLeft" align="right" valign="top"><a id="gafea1002c0334de7fe9e98b874f6bd214"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_WATER</b> = 21</td></tr>
-<tr class="separator:gafea1002c0334de7fe9e98b874f6bd214"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Bonus Types</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp149c452ee1e6c27413997f257ac9f640"></a><a class="anchor" id="bonus_types"></a> Used with <a class="el" href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5" title="Get total effect bonus.">NWNX_Creature_GetTotalEffectBonus()</a> these are the types of temporary bonuses from effects. </p>
-</td></tr>
-<tr class="memitem:ga56cd9112ddd13c2758c5753c195595f1"><td class="memItemLeft" align="right" valign="top"><a id="ga56cd9112ddd13c2758c5753c195595f1"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_ATTACK</b> = 1</td></tr>
-<tr class="separator:ga56cd9112ddd13c2758c5753c195595f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0330befe33005bcf51b745aacbf1b78e"><td class="memItemLeft" align="right" valign="top"><a id="ga0330befe33005bcf51b745aacbf1b78e"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_DAMAGE</b> = 2</td></tr>
-<tr class="separator:ga0330befe33005bcf51b745aacbf1b78e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga148e81a269561290db62a997fecaa828"><td class="memItemLeft" align="right" valign="top"><a id="ga148e81a269561290db62a997fecaa828"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_SAVING_THROW</b> = 3</td></tr>
-<tr class="separator:ga148e81a269561290db62a997fecaa828"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7b9092ad788130791274b2b73c25388"><td class="memItemLeft" align="right" valign="top"><a id="gac7b9092ad788130791274b2b73c25388"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_ABILITY</b> = 4</td></tr>
-<tr class="separator:gac7b9092ad788130791274b2b73c25388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6620ba952b09a01e86892f6dc1b2015a"><td class="memItemLeft" align="right" valign="top"><a id="ga6620ba952b09a01e86892f6dc1b2015a"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_SKILL</b> = 5</td></tr>
-<tr class="separator:ga6620ba952b09a01e86892f6dc1b2015a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa1e7668abb0a7b20830dbadc2ee1dc01"><td class="memItemLeft" align="right" valign="top"><a id="gaa1e7668abb0a7b20830dbadc2ee1dc01"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK</b> = 6</td></tr>
-<tr class="separator:gaa1e7668abb0a7b20830dbadc2ee1dc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Functions exposing additional creature properties. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gade3f03b0efb8d99a5797cf683dd3e9d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gade3f03b0efb8d99a5797cf683dd3e9d0">&#9670;&nbsp;</a></span>NWNX_Creature_AddFeat()</h2>
@@ -672,7 +531,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BO
 </div><div class="memdoc">
 
 <p>Determines if the creature knows a feat. </p>
-<dl class="section note"><dt>Note</dt><dd>This differs from native <code>GetHasFeat</code> which returns FALSE if the feat has no more uses per day. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This differs from native <a href="https://nwnlexicon.com/index.php?title=GetHasFeat" target="_blank">GetHasFeat</a> which returns FALSE if the feat has no more uses per day. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">creature</td><td>The creature object. </td></tr>
@@ -2757,7 +2616,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BO
   </table>
   </dd>
 </dl>
-<dl class="section remark"><dt>Remarks</dt><dd>The base game has a function SetBaseAttackBonus(), which actually sets the bonus attacks per round for a creature, not the BAB. </dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>The base game has a function <a href="https://nwnlexicon.com/index.php?title=SetBaseAttackBonus" target="_blank">SetBaseAttackBonus</a>, which actually sets the bonus attacks per round for a creature, not the BAB. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01175">1175</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
@@ -2793,7 +2652,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BO
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">creature</td><td>The creature object. </td></tr>
-    <tr><td class="paramname">bBaseAPR</td><td>If TRUE, will return the base attacks per round, based on BAB and equipped weapons, regardless of overrides set by calls to SetBaseAttackBonus() builtin function. </td></tr>
+    <tr><td class="paramname">bBaseAPR</td><td>If TRUE, will return the base attacks per round, based on BAB and equipped weapons, regardless of overrides set by calls to <a href="https://nwnlexicon.com/index.php?title=SetBaseAttackBonus" target="_blank">SetBaseAttackBonus</a> builtin function. </td></tr>
   </table>
   </dd>
 </dl>
@@ -3652,7 +3511,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BO
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>bonusType</em> = <code>NWNX_CREATURE_BONUS_TYPE_ATTACK</code>, </td>
+          <td class="paramname"><em>bonusType</em> = <code><a class="el" href="group__creature.html#ga56cd9112ddd13c2758c5753c195595f1">NWNX_CREATURE_BONUS_TYPE_ATTACK</a></code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -4016,13 +3875,638 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BO
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gafb79cfbb94206b01c958ff3c32f28cdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafb79cfbb94206b01c958ff3c32f28cdb">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_PC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_PC = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga150b50e7ba879fbbce35dda891ec0d22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga150b50e7ba879fbbce35dda891ec0d22">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga161c4a1c39d2293d77d00ef708663650"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga161c4a1c39d2293d77d00ef708663650">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga75ba02a6664ac24fc1673ae28e8c9810"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga75ba02a6664ac24fc1673ae28e8c9810">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_SLOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_SLOW = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6ef03e2fe509226c6da44655f98c3cc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6ef03e2fe509226c6da44655f98c3cc5">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_NORMAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_NORMAL = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6ec4fdfbd059de8f27ddd5ed0c34e756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6ec4fdfbd059de8f27ddd5ed0c34e756">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_FAST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_FAST = 5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga76d1f48c7213ed0602a494ac6b639ec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga76d1f48c7213ed0602a494ac6b639ec8">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST = 6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab8a565245d8f2de0d44bb09f6002254a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab8a565245d8f2de0d44bb09f6002254a">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_DEFAULT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_DEFAULT = 7</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00021">21</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga85589bd3d90008ee8d2765e7b822e627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85589bd3d90008ee8d2765e7b822e627">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_RATE_DM_FAST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_RATE_DM_FAST = 8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00022">22</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga4dc701e0795a6b232fcecf3cfe7a10a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4dc701e0795a6b232fcecf3cfe7a10a7">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gac87bd2be51450dda46576ebd3282153e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac87bd2be51450dda46576ebd3282153e">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_TYPE_WALK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_TYPE_WALK = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00031">31</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga24b699c31e37531d6c0e09b70865ba55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga24b699c31e37531d6c0e09b70865ba55">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_TYPE_RUN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_TYPE_RUN = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00032">32</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6dbe26ade937d00a1a3c55bdfc7d2e93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6dbe26ade937d00a1a3c55bdfc7d2e93">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00033">33</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gadfb3c03cca68f6508eb3c14131c4b6b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadfb3c03cca68f6508eb3c14131c4b6b4">&#9670;&nbsp;</a></span>NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00034">34</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga9304a2c3f00f98f8ba26334e10497f5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9304a2c3f00f98f8ba26334e10497f5f">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_AIR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_AIR = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00042">42</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6fbfb48651bf0192e5f33c5c8ddf486c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6fbfb48651bf0192e5f33c5c8ddf486c">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00043">43</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5349277c58e434dbb8be910d7c864ab6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5349277c58e434dbb8be910d7c864ab6">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_DEATH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_DEATH = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00044">44</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab78074893d50b88935de699c0647df76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab78074893d50b88935de699c0647df76">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00045">45</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gacd7efbcb70bffacb0f8bb08fcc5f2f04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacd7efbcb70bffacb0f8bb08fcc5f2f04">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_EARTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_EARTH = 5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00046">46</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gadd73aca4c6cac5a116638f7148fc6985"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadd73aca4c6cac5a116638f7148fc6985">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_EVIL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_EVIL = 6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00047">47</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga455eead9f9c5185af7024c276ee557c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga455eead9f9c5185af7024c276ee557c0">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_FIRE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_FIRE = 7</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00048">48</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga34030d81dd3ff20a18a96e336a3f97ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga34030d81dd3ff20a18a96e336a3f97ca">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_GOOD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_GOOD = 8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00049">49</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga937d119a9a85211c207e993df8ae08c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga937d119a9a85211c207e993df8ae08c3">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_HEALING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_HEALING = 9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00050">50</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga62661d9a25a06c21d52a125bb76ba107"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga62661d9a25a06c21d52a125bb76ba107">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE = 10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00051">51</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gac098ee44bae961ce3e2cfb0189252533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac098ee44bae961ce3e2cfb0189252533">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_MAGIC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_MAGIC = 13</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00052">52</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaea7f7cd07d9f5738f25bbd6775fdcc09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaea7f7cd07d9f5738f25bbd6775fdcc09">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_PLANT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_PLANT = 14</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00053">53</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga88cdfc511d31aaf53089cd44a4e9d869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga88cdfc511d31aaf53089cd44a4e9d869">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION = 15</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00054">54</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga4557ab082fc1670f9bbf1e167f653dd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4557ab082fc1670f9bbf1e167f653dd9">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH = 16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00055">55</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga48ec122c6baba05eb9563c7daefa61fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga48ec122c6baba05eb9563c7daefa61fb">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_SUN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_SUN = 17</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00056">56</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5f007271da99de9be96d783c3b8f70af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5f007271da99de9be96d783c3b8f70af">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL = 18</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00057">57</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga1b5c0ec814404f0df67ae03333d708e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1b5c0ec814404f0df67ae03333d708e2">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY = 19</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00058">58</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga76b73875c3340d038261f684189fbdf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga76b73875c3340d038261f684189fbdf6">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_WAR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_WAR = 20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00059">59</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gafea1002c0334de7fe9e98b874f6bd214"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafea1002c0334de7fe9e98b874f6bd214">&#9670;&nbsp;</a></span>NWNX_CREATURE_CLERIC_DOMAIN_WATER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_CLERIC_DOMAIN_WATER = 21</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00060">60</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga56cd9112ddd13c2758c5753c195595f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga56cd9112ddd13c2758c5753c195595f1">&#9670;&nbsp;</a></span>NWNX_CREATURE_BONUS_TYPE_ATTACK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_BONUS_TYPE_ATTACK = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00068">68</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga0330befe33005bcf51b745aacbf1b78e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0330befe33005bcf51b745aacbf1b78e">&#9670;&nbsp;</a></span>NWNX_CREATURE_BONUS_TYPE_DAMAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_BONUS_TYPE_DAMAGE = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00069">69</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga148e81a269561290db62a997fecaa828"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga148e81a269561290db62a997fecaa828">&#9670;&nbsp;</a></span>NWNX_CREATURE_BONUS_TYPE_SAVING_THROW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_BONUS_TYPE_SAVING_THROW = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00070">70</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gac7b9092ad788130791274b2b73c25388"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7b9092ad788130791274b2b73c25388">&#9670;&nbsp;</a></span>NWNX_CREATURE_BONUS_TYPE_ABILITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_BONUS_TYPE_ABILITY = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00071">71</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6620ba952b09a01e86892f6dc1b2015a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6620ba952b09a01e86892f6dc1b2015a">&#9670;&nbsp;</a></span>NWNX_CREATURE_BONUS_TYPE_SKILL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_BONUS_TYPE_SKILL = 5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00072">72</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaa1e7668abb0a7b20830dbadc2ee1dc01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa1e7668abb0a7b20830dbadc2ee1dc01">&#9670;&nbsp;</a></span>NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK = 6</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00073">73</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

@@ -1,5 +1,6 @@
 var group__effect =
 [
+    [ "Readme", "group__effect.html#effect", null ],
     [ "nwnx_effect.nss", "nwnx__effect_8nss.html", null ],
     [ "NWNX_EffectUnpacked", "structNWNX__EffectUnpacked.html", [
       [ "nEffectId", "structNWNX__EffectUnpacked.html#ae00c5b3c72a17aa8a7678027ec4befba", null ],

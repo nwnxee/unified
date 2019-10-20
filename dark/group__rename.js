@@ -1,5 +1,6 @@
 var group__rename =
 [
+    [ "Readme", "group__rename.html#rename", null ],
     [ "nwnx_rename.nss", "nwnx__rename_8nss.html", null ],
     [ "NWNX_Rename_SetPCNameOverride", "group__rename.html#gaf3b4ba16315cc38473c5285eb913737e", null ],
     [ "NWNX_Rename_GetPCNameOverride", "group__rename.html#ga66b5aa3317d00607131d11ef25e79f2e", null ],

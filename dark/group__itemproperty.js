@@ -1,5 +1,6 @@
 var group__itemproperty =
 [
+    [ "Readme", "group__itemproperty.html#itemproperty", null ],
     [ "nwnx_itemprop.nss", "nwnx__itemprop_8nss.html", null ],
     [ "NWNX_IPUnpacked", "structNWNX__IPUnpacked.html", [
       [ "nItemPropertyId", "structNWNX__IPUnpacked.html#a5151aeb7e5c6f2610b819084df277435", null ],

@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 		<meta name="generator" content="Doxygen 1.8.16"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>NWNX:EE: MaxLevel Plugin Reference</title>
+		<title>NWNX:EE: README</title>
                 <link href="logo-transparent.png" rel="shortcut icon" type="image/x-icon">
                 <link href="logo-transparent.png" rel="apple-touch-icon-precomposed">
 		<link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -100,55 +101,17 @@ $(document).ready(function(){initNavTree('md_Plugins_MaxLevel_README.html','');}
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">MaxLevel Plugin Reference </div>  </div>
+<div class="title">README </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md68"></a>
-Description</h1>
-<p>This plugin extends the maximum level possibility from 40 to 60. The plugin provides normal level up alerting and procedure with a few minor issues. Feats and Ability Points follow their normal progression. Spell counts known and gained can be configured for the additional levels.</p>
-<h1><a class="anchor" id="autotoc_md69"></a>
-Environment Variables</h1>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Variable Name  </th><th class="markdownTableHeadCenter">Value  </th><th class="markdownTableHeadCenter">Default  </th><th class="markdownTableHeadNone">Notes   </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>NWNX_MAXLEVEL_MAX</code>  </td><td class="markdownTableBodyCenter">41-60  </td><td class="markdownTableBodyCenter">null  </td><td class="markdownTableBodyNone">Maximum level you wish to support.   </td></tr>
-</table>
-<h1><a class="anchor" id="autotoc_md70"></a>
-Required Plugins</h1>
-<ul>
-<li>The <code>NWNX_ELC</code> plugin is also needed to bypass the level restriction. No configuration is necessary though, merely loading this plugin is sufficient.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md71"></a>
-Issues</h1>
-<ul>
-<li>Spellcasters may not change spells when levelling up</li>
-<li>Next Level XP on Character Sheet shows an incorrect value</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md72"></a>
-Setup</h1>
-<ul>
-<li>Define your max levels variable in your server environment. <div class="fragment"><div class="line">export NWNX_MAXLEVEL_MAX=45</div>
-</div><!-- fragment --></li>
-<li>If you provide a <code>-maxlevel</code> argument in your server start up or have <code>MaxCharLevel</code> defined in your <b>nwnplayer.ini</b> make sure those values are changed as well. It is safe to ignore the message at startup stating <code>Server: Invalid argument to -maxlevel</code>.</li>
-<li>Add your XP thresholds to your <b>exptable.2da</b> <div class="fragment"><div class="line">...</div>
-<div class="line">40  41  35935000    </div>
-<div class="line">41  42  39935000    </div>
-<div class="line">42  43  45935000    </div>
-<div class="line">43  44  53935000    </div>
-<div class="line">44  45  63935000    </div>
-<div class="line">45  46  0xFFFFFFF   </div>
-</div><!-- fragment --></li>
-<li>(Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are <b>cls_spgn_???.2da</b>. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40. </li>
-</ul>
-</div></div><!-- contents -->
+<div class="textblock"></div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

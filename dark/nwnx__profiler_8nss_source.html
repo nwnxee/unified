@@ -28,8 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
-		<link href="custom.css" rel="stylesheet" type="text/css"/>
-<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
+		<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -118,33 +117,35 @@ $(document).ready(function(){initNavTree('nwnx__profiler_8nss_source.html','');}
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;PUSH_PERF_SCOPE&quot;</span>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    NWNX_PushArgumentString(NWNX_Profiler, sFunc, name);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Profiler, sFunc, name);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">if</span> (tag0_value != <span class="stringliteral">&quot;&quot;</span> &amp;&amp; tag0_tag != <span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        NWNX_PushArgumentString(NWNX_Profiler, sFunc, tag0_value);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        NWNX_PushArgumentString(NWNX_Profiler, sFunc, tag0_tag);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Profiler, sFunc, tag0_value);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Profiler, sFunc, tag0_tag);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    }</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    NWNX_CallFunction(NWNX_Profiler, sFunc);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Profiler, sFunc);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="group__profiler.html#ga495550a915f20515c9be66513245fdb4">   55</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__profiler.html#ga495550a915f20515c9be66513245fdb4">NWNX_Profiler_PopPerfScope</a>()</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;POP_PERF_SCOPE&quot;</span>;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    NWNX_CallFunction(NWNX_Profiler, sFunc);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Profiler, sFunc);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__profiler_html_ga58c858bf7d10aaf6a166e78de69de79c"><div class="ttname"><a href="group__profiler.html#ga58c858bf7d10aaf6a166e78de69de79c">NWNX_Profiler_PushPerfScope</a></div><div class="ttdeci">void NWNX_Profiler_PushPerfScope(string name, string tag0_tag=&quot;&quot;, string tag0_value=&quot;&quot;)</div><div class="ttdoc">Push a timing metric scope - note that every push must be matched by a corresponding pop.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__profiler_8nss_source.html#l00040">nwnx_profiler.nss:40</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga6e7ebe01f31c59279956f562609c964a"><div class="ttname"><a href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string pluginName, string functionName, string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00068">nwnx.nss:68</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00048">nwnx.nss:48</a></div></div>
 <div class="ttc" id="agroup__profiler_html_ga495550a915f20515c9be66513245fdb4"><div class="ttname"><a href="group__profiler.html#ga495550a915f20515c9be66513245fdb4">NWNX_Profiler_PopPerfScope</a></div><div class="ttdeci">void NWNX_Profiler_PopPerfScope()</div><div class="ttdoc">Pops a timing metric.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__profiler_8nss_source.html#l00055">nwnx_profiler.nss:55</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_a46c4fd3222911991c647c19f5e48dd1.html">Profiler</a></li><li class="navelem"><a class="el" href="dir_e40c3357bfa44b841d731337599e1826.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__profiler_8nss.html">nwnx_profiler.nss</a></li>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:34 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

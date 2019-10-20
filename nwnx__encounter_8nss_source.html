@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -137,10 +138,10 @@ $(document).ready(function(){initNavTree('nwnx__encounter_8nss_source.html','');
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetNumberOfCreaturesInEncounterList&quot;</span>;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span> NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e">   76</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNWNX__Encounter__CreatureListEntry.html">NWNX_Encounter_CreatureListEntry</a> <a class="code" href="group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e">NWNX_Encounter_GetEncounterCreatureByIndex</a>(object encounter, int index)</div>
@@ -148,14 +149,14 @@ $(document).ready(function(){initNavTree('nwnx__encounter_8nss_source.html','');
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetEncounterCreatureByIndex&quot;</span>;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">struct </span><a class="code" href="structNWNX__Encounter__CreatureListEntry.html">NWNX_Encounter_CreatureListEntry</a> creatureEntry;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, index);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Encounter, sFunc, index);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601">unique</a> = NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566">challengeRating</a> = NWNX_GetReturnValueFloat(NWNX_Encounter, sFunc);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6">resref</a> = NWNX_GetReturnValueString(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601">unique</a> = <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566">challengeRating</a> = <a class="code" href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">NWNX_GetReturnValueFloat</a>(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6">resref</a> = <a class="code" href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> creatureEntry;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
@@ -164,95 +165,103 @@ $(document).ready(function(){initNavTree('nwnx__encounter_8nss_source.html','');
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetEncounterCreatureByIndex&quot;</span>;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601">unique</a>);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    NWNX_PushArgumentFloat(NWNX_Encounter, sFunc, creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566">challengeRating</a>);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    NWNX_PushArgumentString(NWNX_Encounter, sFunc, creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6">resref</a>);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, index);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Encounter, sFunc, creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601">unique</a>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <a class="code" href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">NWNX_PushArgumentFloat</a>(NWNX_Encounter, sFunc, creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566">challengeRating</a>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Encounter, sFunc, creatureEntry.<a class="code" href="structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6">resref</a>);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Encounter, sFunc, index);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
 <div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="group__encounter.html#ga63e14a9f74bbee43dd845a24491d232a">  106</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__encounter.html#ga63e14a9f74bbee43dd845a24491d232a">NWNX_Encounter_GetFactionId</a>(<span class="keywordtype">object</span> encounter)</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;{</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetFactionId&quot;</span>;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span> NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
 <div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="group__encounter.html#gad85333d88eb73973046fb706f02f6319">  116</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__encounter.html#gad85333d88eb73973046fb706f02f6319">NWNX_Encounter_SetFactionId</a>(<span class="keywordtype">object</span> encounter, <span class="keywordtype">int</span> factionId)</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;{</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetFactionId&quot;</span>;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, factionId);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Encounter, sFunc, factionId);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;}</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
 <div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="group__encounter.html#ga50d5e4ba9e9bd44bc30354ef815a5fa1">  126</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__encounter.html#ga50d5e4ba9e9bd44bc30354ef815a5fa1">NWNX_Encounter_GetPlayerTriggeredOnly</a>(<span class="keywordtype">object</span> encounter)</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetPlayerTriggeredOnly&quot;</span>;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordflow">return</span> NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
 <div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="group__encounter.html#gab4fb5b83a7852007af7714b3e6e33fd8">  136</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__encounter.html#gab4fb5b83a7852007af7714b3e6e33fd8">NWNX_Encounter_SetPlayerTriggeredOnly</a>(<span class="keywordtype">object</span> encounter, <span class="keywordtype">int</span> playerTriggeredOnly)</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;{</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetPlayerTriggeredOnly&quot;</span>;</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, playerTriggeredOnly);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Encounter, sFunc, playerTriggeredOnly);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;}</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
 <div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="group__encounter.html#gac5518f02ee12132540934acfcd58c780">  146</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__encounter.html#gac5518f02ee12132540934acfcd58c780">NWNX_Encounter_GetResetTime</a>(<span class="keywordtype">object</span> encounter)</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;{</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetResetTime&quot;</span>;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">return</span> NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
 <div class="line"><a name="l00156"></a><span class="lineno"><a class="line" href="group__encounter.html#ga1094adf1239743f918d6aaeddbdea885">  156</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__encounter.html#ga1094adf1239743f918d6aaeddbdea885">NWNX_Encounter_SetResetTime</a>(<span class="keywordtype">object</span> encounter, <span class="keywordtype">int</span> resetTime)</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;{</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetResetTime&quot;</span>;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, resetTime);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, encounter);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Encounter, sFunc, resetTime);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Encounter, sFunc, encounter);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    NWNX_CallFunction(NWNX_Encounter, sFunc);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Encounter, sFunc);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__encounter_html_ga7d6f20a2a2036d9bdff05235f3dd9f0e"><div class="ttname"><a href="group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e">NWNX_Encounter_GetEncounterCreatureByIndex</a></div><div class="ttdeci">struct NWNX_Encounter_CreatureListEntry NWNX_Encounter_GetEncounterCreatureByIndex(object encounter, int index)</div><div class="ttdoc">Gets the encounter creature list entry at the specified index.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00076">nwnx_encounter.nss:76</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga5020d69354c6bead3824922b66282b6e"><div class="ttname"><a href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a></div><div class="ttdeci">string NWNX_GetReturnValueString(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00098">nwnx.nss:98</a></div></div>
 <div class="ttc" id="agroup__encounter_html_ga1094adf1239743f918d6aaeddbdea885"><div class="ttname"><a href="group__encounter.html#ga1094adf1239743f918d6aaeddbdea885">NWNX_Encounter_SetResetTime</a></div><div class="ttdeci">void NWNX_Encounter_SetResetTime(object encounter, int resetTime)</div><div class="ttdoc">Set the reset time of encounter.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00156">nwnx_encounter.nss:156</a></div></div>
 <div class="ttc" id="agroup__encounter_html_gab4fb5b83a7852007af7714b3e6e33fd8"><div class="ttname"><a href="group__encounter.html#gab4fb5b83a7852007af7714b3e6e33fd8">NWNX_Encounter_SetPlayerTriggeredOnly</a></div><div class="ttdeci">void NWNX_Encounter_SetPlayerTriggeredOnly(object encounter, int playerTriggeredOnly)</div><div class="ttdoc">Set if encounter is player triggered only.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00136">nwnx_encounter.nss:136</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga6e7ebe01f31c59279956f562609c964a"><div class="ttname"><a href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string pluginName, string functionName, string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00068">nwnx.nss:68</a></div></div>
 <div class="ttc" id="agroup__encounter_html_ga63e14a9f74bbee43dd845a24491d232a"><div class="ttname"><a href="group__encounter.html#ga63e14a9f74bbee43dd845a24491d232a">NWNX_Encounter_GetFactionId</a></div><div class="ttdeci">int NWNX_Encounter_GetFactionId(object encounter)</div><div class="ttdoc">Get the faction id of encounter.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00106">nwnx_encounter.nss:106</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga6af62159954fb31011088f52b82fce03"><div class="ttname"><a href="group__nwnx.html#ga6af62159954fb31011088f52b82fce03">NWNX_GetReturnValueFloat</a></div><div class="ttdeci">float NWNX_GetReturnValueFloat(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00088">nwnx.nss:88</a></div></div>
 <div class="ttc" id="agroup__encounter_html_ga50d5e4ba9e9bd44bc30354ef815a5fa1"><div class="ttname"><a href="group__encounter.html#ga50d5e4ba9e9bd44bc30354ef815a5fa1">NWNX_Encounter_GetPlayerTriggeredOnly</a></div><div class="ttdeci">int NWNX_Encounter_GetPlayerTriggeredOnly(object encounter)</div><div class="ttdoc">Get if encounter is player triggered only.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00126">nwnx_encounter.nss:126</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga8d3c3b2724a4cdb2555455a4d6e1053b"><div class="ttname"><a href="group__nwnx.html#ga8d3c3b2724a4cdb2555455a4d6e1053b">NWNX_PushArgumentFloat</a></div><div class="ttdeci">void NWNX_PushArgumentFloat(string pluginName, string functionName, float value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00058">nwnx.nss:58</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_gabc581e541c864a29a2ec698945996f23"><div class="ttname"><a href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a></div><div class="ttdeci">int NWNX_GetReturnValueInt(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00083">nwnx.nss:83</a></div></div>
 <div class="ttc" id="astructNWNX__Encounter__CreatureListEntry_html"><div class="ttname"><a href="structNWNX__Encounter__CreatureListEntry.html">NWNX_Encounter_CreatureListEntry</a></div><div class="ttdoc">A creature list entry for an encounter.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00010">nwnx_encounter.nss:10</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00048">nwnx.nss:48</a></div></div>
 <div class="ttc" id="agroup__encounter_html_gac5518f02ee12132540934acfcd58c780"><div class="ttname"><a href="group__encounter.html#gac5518f02ee12132540934acfcd58c780">NWNX_Encounter_GetResetTime</a></div><div class="ttdeci">int NWNX_Encounter_GetResetTime(object encounter)</div><div class="ttdoc">Get the reset time of encounter.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00146">nwnx_encounter.nss:146</a></div></div>
 <div class="ttc" id="agroup__encounter_html_ga57d47ecbb856f487ee70f7fce6c4b3f4"><div class="ttname"><a href="group__encounter.html#ga57d47ecbb856f487ee70f7fce6c4b3f4">NWNX_Encounter_GetNumberOfCreaturesInEncounterList</a></div><div class="ttdeci">int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter)</div><div class="ttdoc">Get the number of creatures in the encounter list.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00066">nwnx_encounter.nss:66</a></div></div>
 <div class="ttc" id="astructNWNX__Encounter__CreatureListEntry_html_a9097b69d43e0f0e13d28b122f129c566"><div class="ttname"><a href="structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566">NWNX_Encounter_CreatureListEntry::challengeRating</a></div><div class="ttdeci">float challengeRating</div><div class="ttdoc">The challenge rating.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00013">nwnx_encounter.nss:13</a></div></div>
 <div class="ttc" id="agroup__encounter_html_gac6953a870158522005e6638d872a6f6a"><div class="ttname"><a href="group__encounter.html#gac6953a870158522005e6638d872a6f6a">NWNX_Encounter_SetEncounterCreatureByIndex</a></div><div class="ttdeci">void NWNX_Encounter_SetEncounterCreatureByIndex(object encounter, int index, struct NWNX_Encounter_CreatureListEntry creatureEntry)</div><div class="ttdoc">Set the encounter creature list entry at the specified index.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00093">nwnx_encounter.nss:93</a></div></div>
 <div class="ttc" id="astructNWNX__Encounter__CreatureListEntry_html_ad9fd36779fea2410a0c7c91ca019d601"><div class="ttname"><a href="structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601">NWNX_Encounter_CreatureListEntry::unique</a></div><div class="ttdeci">int unique</div><div class="ttdoc">Creature will be unique to the encounter.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00014">nwnx_encounter.nss:14</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_ga9e802e758646d32b71f30f1578151938"><div class="ttname"><a href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a></div><div class="ttdeci">void NWNX_PushArgumentObject(string pluginName, string functionName, object value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00063">nwnx.nss:63</a></div></div>
 <div class="ttc" id="astructNWNX__Encounter__CreatureListEntry_html_afd224e140c4b64e6ad8e9c20c7e265c6"><div class="ttname"><a href="structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6">NWNX_Encounter_CreatureListEntry::resref</a></div><div class="ttdeci">string resref</div><div class="ttdoc">The resref.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00012">nwnx_encounter.nss:12</a></div></div>
 <div class="ttc" id="agroup__encounter_html_gad85333d88eb73973046fb706f02f6319"><div class="ttname"><a href="group__encounter.html#gad85333d88eb73973046fb706f02f6319">NWNX_Encounter_SetFactionId</a></div><div class="ttdeci">void NWNX_Encounter_SetFactionId(object encounter, int factionId)</div><div class="ttdoc">Set the faction id of encounter.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__encounter_8nss_source.html#l00116">nwnx_encounter.nss:116</a></div></div>
+<div class="ttc" id="agroup__nwnx_html_gadc430d6df00ece8e9cd208ba19701698"><div class="ttname"><a href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a></div><div class="ttdeci">void NWNX_PushArgumentInt(string pluginName, string functionName, int value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00053">nwnx.nss:53</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_bf7b181b7d07eec0e4a023ccab1d7777.html">Encounter</a></li><li class="navelem"><a class="el" href="dir_e3ec0c5244f9043863c5012a1706e753.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__encounter_8nss.html">nwnx_encounter.nss</a></li>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

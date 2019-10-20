@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -103,10 +104,10 @@ $(document).ready(function(){initNavTree('md_Plugins_Weapon_README.html','');});
 <div class="title">Weapon Plugin Reference </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md232"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md154"></a>
 Environment Variables</h1>
 <p>None.</p>
-<h1><a class="anchor" id="autotoc_md233"></a>
+<h1><a class="anchor" id="autotoc_md155"></a>
 Description</h1>
 <p>Functions exposing additional weapon properties.</p>
 <p>Allows modifying which feats count as which for the weapon feats. Can be used to add feats like WEAPON_FOCUS_* to custom weapons. All you have to do is:</p>
@@ -119,7 +120,7 @@ Description</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> FEAT_WEAPON_FOCUS_KATAR = 3000; </div>
 <div class="line"><span class="keywordtype">int</span> BASE_ITEM_KATAR = 310;</div>
 <div class="line"><a class="code" href="group__weapon.html#gaa74f691d599e48f697719ea8731f11be">NWNX_Weapon_SetWeaponFocusFeat</a>(BASE_ITEM_KATAR, FEAT_WEAPON_FOCUS_KATAR);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md234"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md156"></a>
 Available functions</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -160,12 +161,12 @@ Available functions</h1>
 <td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73" title="Bypass Devastating Critical.">NWNX_Weapon_BypassDevastatingCritical()</a>  </td><td class="markdownTableBodyNone">Must be called inside the devastating critical event script. If called, no devastating critical will occur.   </td></tr>
 </table>
 <p>The <a class="el" href="group__weapon.html#gab865cdef1423787f87307127c2d66c1b" title="Set plugin options.">NWNX_Weapon_SetOption()</a> function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively.</p>
-<h1><a class="anchor" id="autotoc_md235"></a>
+<h1><a class="anchor" id="autotoc_md157"></a>
 Example for Critical Event Script</h1>
 <p>This script just prints some info to the log and then bypasses the devastating critical 50% of the time. You have to set your script with <a class="el" href="group__weapon.html#ga4c1988ef71d5aecb896e18544ac71a08" title="Set Devastating Critical Event Script.">NWNX_Weapon_SetDevastatingCriticalEventScript()</a> (in the OnModuleLoad script for example)</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;nwnx_weapon&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> main()</div>
+<div class="line"><span class="keywordtype">void</span> <a class="code" href="nwnx__jvm__token_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a>()</div>
 <div class="line">{</div>
 <div class="line">   <span class="keyword">struct </span><a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html">NWNX_Weapon_DevastatingCriticalEvent_Data</a> data = <a class="code" href="group__weapon.html#ga197c4fe02b6ad0b905bae126f262d8b7">NWNX_Weapon_GetDevastatingCriticalEventData</a>();</div>
 <div class="line">   <span class="keywordtype">object</span> oAttacker = OBJECT_SELF;</div>
@@ -187,6 +188,7 @@ Example for Critical Event Script</h1>
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__weapon_html_ga475625ae5cff73b4fe1361ea515cbd73"><div class="ttname"><a href="group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73">NWNX_Weapon_BypassDevastatingCritical</a></div><div class="ttdeci">void NWNX_Weapon_BypassDevastatingCritical()</div><div class="ttdoc">Bypass Devastating Critical.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00262">nwnx_weapon.nss:262</a></div></div>
+<div class="ttc" id="anwnx__jvm__token_8nss_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="nwnx__jvm__token_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__jvm__token_8nss_source.html#l00011">nwnx_jvm_token.nss:11</a></div></div>
 <div class="ttc" id="astructNWNX__Weapon__DevastatingCriticalEvent__Data_html_ad61f6ae678343f3781deacdb33efb27d"><div class="ttname"><a href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d">NWNX_Weapon_DevastatingCriticalEvent_Data::nDamage</a></div><div class="ttdeci">int nDamage</div><div class="ttdoc">The damage points delivered.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00029">nwnx_weapon.nss:29</a></div></div>
 <div class="ttc" id="agroup__weapon_html_ga197c4fe02b6ad0b905bae126f262d8b7"><div class="ttname"><a href="group__weapon.html#ga197c4fe02b6ad0b905bae126f262d8b7">NWNX_Weapon_GetDevastatingCriticalEventData</a></div><div class="ttdeci">struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriticalEventData()</div><div class="ttdoc">Get Devastating Critical Event Data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00272">nwnx_weapon.nss:272</a></div></div>
 <div class="ttc" id="astructNWNX__Weapon__DevastatingCriticalEvent__Data_html_a05c644a763be5a9e7614b16137de7c23"><div class="ttname"><a href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23">NWNX_Weapon_DevastatingCriticalEvent_Data::oTarget</a></div><div class="ttdeci">object oTarget</div><div class="ttdoc">The target hit with a devastating critical.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00028">nwnx_weapon.nss:28</a></div></div>
@@ -197,7 +199,7 @@ Example for Critical Event Script</h1>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

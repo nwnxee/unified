@@ -1,5 +1,6 @@
 var group__redis =
 [
+    [ "Readme", "group__redis.html#redis", null ],
     [ "nwnx_redis.nss", "nwnx__redis_8nss.html", null ],
     [ "nwnx_redis_lib.nss", "nwnx__redis__lib_8nss.html", null ],
     [ "nwnx_redis_ps.nss", "nwnx__redis__ps_8nss.html", null ],

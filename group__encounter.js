@@ -1,5 +1,6 @@
 var group__encounter =
 [
+    [ "Readme", "group__encounter.html#encounter", null ],
     [ "nwnx_encounter.nss", "nwnx__encounter_8nss.html", null ],
     [ "NWNX_Encounter_CreatureListEntry", "structNWNX__Encounter__CreatureListEntry.html", [
       [ "resref", "structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6", null ],

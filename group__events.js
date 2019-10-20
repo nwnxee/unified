@@ -1,5 +1,6 @@
 var group__events =
 [
+    [ "Readme", "group__events.html#events", null ],
     [ "nwnx_events.nss", "nwnx__events_8nss.html", null ],
     [ "NWNX_Events_SubscribeEvent", "group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294", null ],
     [ "NWNX_Events_PushEventData", "group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4", null ],

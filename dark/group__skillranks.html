@@ -28,8 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
-		<link href="custom.css" rel="stylesheet" type="text/css"/>
-<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
+		<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -110,9 +109,100 @@ $(document).ready(function(){initNavTree('group__skillranks.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Enhances and allows for manipulation of skill rank calculations including the ability to build custom skill related feats as well as modifying stock feats.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="skillranks"></a>Radme</h3><div class="textblock">Enhances and allows for manipulation of skill rank calculations including the ability to build custom skill related feats as well as modifying stock feats.<h2><a class="anchor" id="autotoc_md127"></a>
+Plugin Sample Usage</h2>
+<p>To create a new skill feat, builders create a <code>SkillFeat</code> structure and run functions on the <code>OnModuleLoad</code>.</p>
+<h4><a class="anchor" id="autotoc_md128"></a>
+Example 1</h4>
+<p>The builder wants to create a new skill called <b>Travel</b> and wants to add Skill Focus and Epic Skill Focus feats.</p>
+<ul>
+<li>Add the <b>Travel</b> skill definition to skills.2da</li>
+<li>Add the <b>Skill Focus Travel</b> and <b>Epic Skill Focus Travel</b> to feat.2da</li>
+<li>In the <code>OnModuleLoad</code> script enter the following: <div class="fragment"><div class="line"><span class="keyword">struct </span><a class="code" href="structNWNX__SkillRanks__SkillFeat.html">NWNX_SkillRanks_SkillFeat</a> skillFeat;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">iSkill</a> = 27; <span class="comment">// The row number for the new Travel skill</span></div>
+<div class="line">skillFeat.iFeat = 1801; <span class="comment">// The row number for the Skill Focus Travel feat</span></div>
+<div class="line">skillFeat.iModifier = 3;</div>
+<div class="line"><span class="comment">// Defining feats with the focusFeat setting helps with mass changing modifiers</span></div>
+<div class="line">skillFeat.focusFeat = 1;</div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
+<div class="line"> </div>
+<div class="line">skillFeat.iFeat = 1802; <span class="comment">// The row number for the Epic Skill Focus Travel feat</span></div>
+<div class="line">skillFeat.iModifier = 10;</div>
+<div class="line">skillFeat.focusFeat = 2; <span class="comment">// 2 for Epic Focus</span></div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
+</div><!-- fragment --></li>
+</ul>
+<h4><a class="anchor" id="autotoc_md129"></a>
+Example 2</h4>
+<p>The builder doesn't like the restriction on the <b>Trackless Step</b> feat which inhibits the skill bonus while Underground even if the Natural flag is set.</p>
+<ul>
+<li>In the <code>OnModuleLoad</code> script enter the following: <div class="fragment"><div class="line"><span class="keyword">struct </span><a class="code" href="structNWNX__SkillRanks__SkillFeat.html">NWNX_SkillRanks_SkillFeat</a> skillFeat = <a class="code" href="group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea">NWNX_SkillRanks_GetSkillFeat</a>(SKILL_HIDE, FEAT_TRACKLESS_STEP);</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369">iAreaFlagsForbidden</a> &amp;= ~(0x2);</div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat);</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">iSkill</a> = SKILL_MOVE_SILENTLY;</div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat);</div>
+</div><!-- fragment --></li>
+</ul>
+<h4><a class="anchor" id="autotoc_md130"></a>
+Example 3</h4>
+<p>The builder has created a new feat called <b>Doctor</b> which counts the creature's <b>Intelligence</b> instead of <b>Wisdom</b> if higher when calculating their <b>Heal</b> skill.</p><ul>
+<li>Add the Doctor feat to feat.2da.</li>
+<li>In the <code>OnModuleLoad</code> script enter the following: <div class="fragment"><div class="line"><span class="keyword">struct </span><a class="code" href="structNWNX__SkillRanks__SkillFeat.html">NWNX_SkillRanks_SkillFeat</a> skillFeat;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">iSkill</a> = SKILL_HEAL;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a">iFeat</a> = 1803; <span class="comment">// New feat row id</span></div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d">iKeyAbilityMask</a> = <a class="code" href="group__skillranks.html#ga00f0fbad3b10c1cd427c4dbc2467113d">NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</a> | <a class="code" href="group__skillranks.html#ga7dd3c741b09e4111f974d1bf61c35c1c">NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</a> | <a class="code" href="group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df">NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</a>;</div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
+</div><!-- fragment --></li>
+</ul>
+<h4><a class="anchor" id="autotoc_md131"></a>
+Example 4</h4>
+<p>The builder has created a new feat called <b>Moonlight Spy</b> which gives a <b>Listen</b>, <b>Search</b> and <b>Spot</b> bonus of 3 plus 1 for every 2 levels of <b>Assassin</b> or <b>Rogue</b> when the player is outdoors at night time.</p><ul>
+<li>Add the <b>Moonlight Spy</b> feat to feat.2da</li>
+<li>In the <code>OnModuleLoad</code> script enter the following: <div class="fragment"><div class="line"><span class="keyword">struct </span><a class="code" href="structNWNX__SkillRanks__SkillFeat.html">NWNX_SkillRanks_SkillFeat</a> skillFeat;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">iSkill</a> = SKILL_LISTEN;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a">iFeat</a> = 1804;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742">iModifier</a> = 3;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2">fClassLevelMod</a> = 0.5f;</div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7">iAreaFlagsRequired</a> = 0x4; <span class="comment">// Natural</span></div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369">iAreaFlagsForbidden</a> = 0x1 | 0x2; <span class="comment">// Not indoors or underground</span></div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3">iDayOrNight</a> = 2;</div>
+<div class="line">skillFeat = <a class="code" href="group__skillranks.html#gad83eb78b6cff3bac273bb17c32159f0d">NWNX_SkillRanks_AddSkillFeatClass</a>(skillFeat, CLASS_TYPE_ASSASSIN);</div>
+<div class="line">skillFeat = <a class="code" href="group__skillranks.html#gad83eb78b6cff3bac273bb17c32159f0d">NWNX_SkillRanks_AddSkillFeatClass</a>(skillFeat, CLASS_TYPE_ROGUE);</div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
+<div class="line"> </div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">iSkill</a> = SKILL_SEARCH;</div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
+<div class="line"> </div>
+<div class="line">skillFeat.<a class="code" href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">iSkill</a> = SKILL_SPOT;</div>
+<div class="line"><a class="code" href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a>(skillFeat, TRUE);</div>
+</div><!-- fragment --></li>
+</ul>
+<h4><a class="anchor" id="autotoc_md132"></a>
+Example 5</h4>
+<p>The builder wants all Skill Focus feats to increase the modifier by 5 and all Epic Skill Focus feats to increase the modifier by 12.</p><ul>
+<li>Change the TLK reference in the feat.2da for all Skill Focus feats from 424 to a new custom TLK entry that states: <div class="fragment"><div class="line">Type of Feat: General</div>
+<div class="line">Prerequisite: Able to use the skill.</div>
+<div class="line">Specifics: A character with this feat is adept at a certain skill, gaining a +5 bonus on all checks with it.</div>
+<div class="line">Use: Automatic. This feat may be selected multiple times, but the effects do not stack. It applies to a different skill in each case.</div>
+</div><!-- fragment --></li>
+<li>Change the TLK reference in the feat.2da for all Skill Focus feats from 4063 to a new custom TLK entry that states: <div class="fragment"><div class="line">Type of Feat: General</div>
+<div class="line">Prerequisite: 21st level, 20 ranks in the chosen skill.</div>
+<div class="line">Specifics: The character gains a +12 bonus on all skill checks with the chosen skill.</div>
+<div class="line">Use: Automatic.</div>
+</div><!-- fragment --></li>
+<li>In the <code>OnModuleLoad</code> script enter the following: <div class="fragment"><div class="line">NWNX_SkillRanks_SetSkillFeatFocusMod(5);</div>
+<div class="line">NWNX_SkillRanks_SetSkillFeatFocusMod(12, TRUE);</div>
+</div><!-- fragment --></li>
+</ul>
+<h4><a class="anchor" id="autotoc_md133"></a>
+Example 6</h4>
+<p>The builder has an area in her module called <em>The Great Library</em> where she wants all creatures to receive a bonus of 10 <b>Lore</b> whenever inside.</p><ul>
+<li>In the <code>OnModuleLoad</code> script enter the following: <div class="fragment"><div class="line"><span class="keywordtype">object</span> oArea = GetObjectByTag(<span class="stringliteral">&quot;greatlibrary&quot;</span>);</div>
+<div class="line"><a class="code" href="group__skillranks.html#ga98a356da26953e1b850c981ea52714e8">NWNX_SkillRanks_SetAreaModifier</a>(oArea, SKILL_LORE, 10);</div>
+</div><!-- fragment --> </li>
+</ul>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__skillranks_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__skillranks_8nss.html">nwnx_skillranks.nss</a></td></tr>
@@ -155,60 +245,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga98a356da26953e1b850c981ea52714e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga98a356da26953e1b850c981ea52714e8">NWNX_SkillRanks_SetAreaModifier</a> (object oArea, int iSkill, int iModifier)</td></tr>
 <tr class="memdesc:ga98a356da26953e1b850c981ea52714e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a skill modifier for the area.  <a href="group__skillranks.html#ga98a356da26953e1b850c981ea52714e8">More...</a><br /></td></tr>
 <tr class="separator:ga98a356da26953e1b850c981ea52714e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-SkillRanks Key Abilities</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp51771b8072b8bce136e78d6732e4c615"></a><a class="anchor" id="skr_key_abilities"></a> The abilities as bits </p>
-</td></tr>
-<tr class="memitem:ga1db13e2848c6df316ce2e4ac31b5e07a"><td class="memItemLeft" align="right" valign="top"><a id="ga1db13e2848c6df316ce2e4ac31b5e07a"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga1db13e2848c6df316ce2e4ac31b5e07a">NWNX_SKILLRANKS_KEY_ABILITY_STRENGTH</a> = 1</td></tr>
-<tr class="memdesc:ga1db13e2848c6df316ce2e4ac31b5e07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strength. <br /></td></tr>
-<tr class="separator:ga1db13e2848c6df316ce2e4ac31b5e07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga64778b20c08683a767c08b73380dd399"><td class="memItemLeft" align="right" valign="top"><a id="ga64778b20c08683a767c08b73380dd399"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga64778b20c08683a767c08b73380dd399">NWNX_SKILLRANKS_KEY_ABILITY_DEXTERITY</a> = 2</td></tr>
-<tr class="memdesc:ga64778b20c08683a767c08b73380dd399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dexterity. <br /></td></tr>
-<tr class="separator:ga64778b20c08683a767c08b73380dd399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac47488975fb36ec044386895c765f5ff"><td class="memItemLeft" align="right" valign="top"><a id="gac47488975fb36ec044386895c765f5ff"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#gac47488975fb36ec044386895c765f5ff">NWNX_SKILLRANKS_KEY_ABILITY_CONSTITUTION</a> = 4</td></tr>
-<tr class="memdesc:gac47488975fb36ec044386895c765f5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constitution. <br /></td></tr>
-<tr class="separator:gac47488975fb36ec044386895c765f5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga00f0fbad3b10c1cd427c4dbc2467113d"><td class="memItemLeft" align="right" valign="top"><a id="ga00f0fbad3b10c1cd427c4dbc2467113d"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga00f0fbad3b10c1cd427c4dbc2467113d">NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</a> = 8</td></tr>
-<tr class="memdesc:ga00f0fbad3b10c1cd427c4dbc2467113d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intelligence. <br /></td></tr>
-<tr class="separator:ga00f0fbad3b10c1cd427c4dbc2467113d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7dd3c741b09e4111f974d1bf61c35c1c"><td class="memItemLeft" align="right" valign="top"><a id="ga7dd3c741b09e4111f974d1bf61c35c1c"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga7dd3c741b09e4111f974d1bf61c35c1c">NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</a> = 16</td></tr>
-<tr class="memdesc:ga7dd3c741b09e4111f974d1bf61c35c1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wisdom. <br /></td></tr>
-<tr class="separator:ga7dd3c741b09e4111f974d1bf61c35c1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9fd8105318e74c9540e9a6a5820246c2"><td class="memItemLeft" align="right" valign="top"><a id="ga9fd8105318e74c9540e9a6a5820246c2"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga9fd8105318e74c9540e9a6a5820246c2">NWNX_SKILLRANKS_KEY_ABILITY_CHARISMA</a> = 32</td></tr>
-<tr class="memdesc:ga9fd8105318e74c9540e9a6a5820246c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Charisma. <br /></td></tr>
-<tr class="separator:ga9fd8105318e74c9540e9a6a5820246c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-SkillRanks Key Ability Calculation Method</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrpf626bb64ba3d9d8027fabaf7667b1776"></a><a class="anchor" id="skr_key_ability_calc_bits"></a> Constants used to calculate the ability modifier for a skill.</p>
-<dl class="section warning"><dt>Warning</dt><dd>Use only one of these calculations in your mask! If you use more than one the first will be used. </dd></dl>
-</td></tr>
-<tr class="memitem:ga9505c6e837397607102d8ac38c62b81f"><td class="memItemLeft" align="right" valign="top"><a id="ga9505c6e837397607102d8ac38c62b81f"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga9505c6e837397607102d8ac38c62b81f">NWNX_SKILLRANKS_KEY_ABILITY_CALC_MIN</a> = 64</td></tr>
-<tr class="memdesc:ga9505c6e837397607102d8ac38c62b81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the minimum value of the provided ability scores. <br /></td></tr>
-<tr class="separator:ga9505c6e837397607102d8ac38c62b81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacd135cb7afcf82c95e6ab9ffc5b294df"><td class="memItemLeft" align="right" valign="top"><a id="gacd135cb7afcf82c95e6ab9ffc5b294df"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df">NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</a> = 128</td></tr>
-<tr class="memdesc:gacd135cb7afcf82c95e6ab9ffc5b294df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the maximum value of the provided ability scores. <br /></td></tr>
-<tr class="separator:gacd135cb7afcf82c95e6ab9ffc5b294df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7f1d000a33a2f550e44fb9e26fce7da6"><td class="memItemLeft" align="right" valign="top"><a id="ga7f1d000a33a2f550e44fb9e26fce7da6"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#ga7f1d000a33a2f550e44fb9e26fce7da6">NWNX_SKILLRANKS_KEY_ABILITY_CALC_AVERAGE</a> = 256</td></tr>
-<tr class="memdesc:ga7f1d000a33a2f550e44fb9e26fce7da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the average value of the provided ability scores. <br /></td></tr>
-<tr class="separator:ga7f1d000a33a2f550e44fb9e26fce7da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa46c6263750af82bf35abd43dad103ee"><td class="memItemLeft" align="right" valign="top"><a id="gaa46c6263750af82bf35abd43dad103ee"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__skillranks.html#gaa46c6263750af82bf35abd43dad103ee">NWNX_SKILLRANKS_KEY_ABILITY_CALC_SUM</a> = 512</td></tr>
-<tr class="memdesc:gaa46c6263750af82bf35abd43dad103ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the sum of the provided ability scores. <br /></td></tr>
-<tr class="separator:gaa46c6263750af82bf35abd43dad103ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Enhances and allows for manipulation of skill rank calculations including the ability to build custom skill related feats as well as modifying stock feats. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gaa51909822635a455deba2201ebb35080"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa51909822635a455deba2201ebb35080">&#9670;&nbsp;</a></span>NWNX_SkillRanks_GetSkillFeatCountForSkill()</h2>
@@ -573,13 +610,210 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ga1db13e2848c6df316ce2e4ac31b5e07a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1db13e2848c6df316ce2e4ac31b5e07a">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_STRENGTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_STRENGTH = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Strength. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga64778b20c08683a767c08b73380dd399"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga64778b20c08683a767c08b73380dd399">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_DEXTERITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_DEXTERITY = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Dexterity. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="gac47488975fb36ec044386895c765f5ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac47488975fb36ec044386895c765f5ff">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_CONSTITUTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_CONSTITUTION = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constitution. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga00f0fbad3b10c1cd427c4dbc2467113d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga00f0fbad3b10c1cd427c4dbc2467113d">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE = 8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Intelligence. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7dd3c741b09e4111f974d1bf61c35c1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7dd3c741b09e4111f974d1bf61c35c1c">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_WISDOM = 16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wisdom. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00019">19</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga9fd8105318e74c9540e9a6a5820246c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9fd8105318e74c9540e9a6a5820246c2">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_CHARISMA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_CHARISMA = 32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Charisma. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00020">20</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga9505c6e837397607102d8ac38c62b81f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9505c6e837397607102d8ac38c62b81f">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_CALC_MIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_CALC_MIN = 64</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use the minimum value of the provided ability scores. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00029">29</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="gacd135cb7afcf82c95e6ab9ffc5b294df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacd135cb7afcf82c95e6ab9ffc5b294df">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX = 128</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use the maximum value of the provided ability scores. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7f1d000a33a2f550e44fb9e26fce7da6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7f1d000a33a2f550e44fb9e26fce7da6">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_CALC_AVERAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_CALC_AVERAGE = 256</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use the average value of the provided ability scores. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00031">31</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaa46c6263750af82bf35abd43dad103ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa46c6263750af82bf35abd43dad103ee">&#9670;&nbsp;</a></span>NWNX_SKILLRANKS_KEY_ABILITY_CALC_SUM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_SKILLRANKS_KEY_ABILITY_CALC_SUM = 512</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use the sum of the provided ability scores. </p>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__skillranks_8nss_source.html#l00032">32</a> of file <a class="el" href="nwnx__skillranks_8nss_source.html">nwnx_skillranks.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a0e294b3acd481896cc1c7ae349aa397a"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a">NWNX_SkillRanks_SkillFeat::iFeat</a></div><div class="ttdeci">int iFeat</div><div class="ttdoc">The feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00039">nwnx_skillranks.nss:39</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a349f2205b03ebd3c5ed0635dff56d2d2"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2">NWNX_SkillRanks_SkillFeat::fClassLevelMod</a></div><div class="ttdeci">float fClassLevelMod</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00060">nwnx_skillranks.nss:60</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a534688bf4035fb5b6040e3c798605369"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369">NWNX_SkillRanks_SkillFeat::iAreaFlagsForbidden</a></div><div class="ttdeci">int iAreaFlagsForbidden</div><div class="ttdoc">Used for feats like Stonecunning or Trackless Step which restrict skill modifiers by area types.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00066">nwnx_skillranks.nss:66</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gaf46fd7507a97f894f3e17b0d2c0e8eea"><div class="ttname"><a href="group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea">NWNX_SkillRanks_GetSkillFeat</a></div><div class="ttdeci">struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_GetSkillFeat(int iSkill, int iFeat)</div><div class="ttdoc">Returns a skill feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00180">nwnx_skillranks.nss:180</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_af74a42efd47b5f9bc738cd7b6759a4b7"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7">NWNX_SkillRanks_SkillFeat::iAreaFlagsRequired</a></div><div class="ttdeci">int iAreaFlagsRequired</div><div class="ttdoc">Used for feats like Stonecunning or Trackless Step which restrict skill modifiers by area types.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00063">nwnx_skillranks.nss:63</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gacd135cb7afcf82c95e6ab9ffc5b294df"><div class="ttname"><a href="group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df">NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_CALC_MAX</div><div class="ttdoc">Use the maximum value of the provided ability scores.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00030">nwnx_skillranks.nss:30</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a73f5be9c11646af553b30000b2a72da7"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7">NWNX_SkillRanks_SkillFeat::iSkill</a></div><div class="ttdeci">int iSkill</div><div class="ttdoc">The skill this feat impacts.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00038">nwnx_skillranks.nss:38</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_a1c26d25c176cfd36ce4a9007cddd7f0d"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d">NWNX_SkillRanks_SkillFeat::iKeyAbilityMask</a></div><div class="ttdeci">int iKeyAbilityMask</div><div class="ttdoc">Bitmask of abilities and method to calculate the ability modifier for a skill.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00080">nwnx_skillranks.nss:80</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_ga98a356da26953e1b850c981ea52714e8"><div class="ttname"><a href="group__skillranks.html#ga98a356da26953e1b850c981ea52714e8">NWNX_SkillRanks_SetAreaModifier</a></div><div class="ttdeci">void NWNX_SkillRanks_SetAreaModifier(object oArea, int iSkill, int iModifier)</div><div class="ttdoc">Sets a skill modifier for the area.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00275">nwnx_skillranks.nss:275</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html">NWNX_SkillRanks_SkillFeat</a></div><div class="ttdoc">A feat that manipulates skill ranks.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00036">nwnx_skillranks.nss:36</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_ac10e1f8652735b57a5bd1f1533a80742"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742">NWNX_SkillRanks_SkillFeat::iModifier</a></div><div class="ttdeci">int iModifier</div><div class="ttdoc">Skill feat bonus/penalty.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00042">nwnx_skillranks.nss:42</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_ga7dd3c741b09e4111f974d1bf61c35c1c"><div class="ttname"><a href="group__skillranks.html#ga7dd3c741b09e4111f974d1bf61c35c1c">NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_WISDOM</div><div class="ttdoc">Wisdom.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00019">nwnx_skillranks.nss:19</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gad83eb78b6cff3bac273bb17c32159f0d"><div class="ttname"><a href="group__skillranks.html#gad83eb78b6cff3bac273bb17c32159f0d">NWNX_SkillRanks_AddSkillFeatClass</a></div><div class="ttdeci">struct NWNX_SkillRanks_SkillFeat NWNX_SkillRanks_AddSkillFeatClass(struct NWNX_SkillRanks_SkillFeat skillFeat, int iClass)</div><div class="ttdoc">Add classes to a skill feat instead of working with the NWNX_SkillRanks_SkillFeat::sClasses string.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00225">nwnx_skillranks.nss:225</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_gac34e2d7aa9cfa7330914732fa6392e10"><div class="ttname"><a href="group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10">NWNX_SkillRanks_SetSkillFeat</a></div><div class="ttdeci">void NWNX_SkillRanks_SetSkillFeat(struct NWNX_SkillRanks_SkillFeat skillFeat, int createIfNonExistent=FALSE)</div><div class="ttdoc">Modifies or creates a skill feat.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00205">nwnx_skillranks.nss:205</a></div></div>
+<div class="ttc" id="astructNWNX__SkillRanks__SkillFeat_html_af739ed67510b85727943101c94b4b1f3"><div class="ttname"><a href="structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3">NWNX_SkillRanks_SkillFeat::iDayOrNight</a></div><div class="ttdeci">int iDayOrNight</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00070">nwnx_skillranks.nss:70</a></div></div>
+<div class="ttc" id="agroup__skillranks_html_ga00f0fbad3b10c1cd427c4dbc2467113d"><div class="ttname"><a href="group__skillranks.html#ga00f0fbad3b10c1cd427c4dbc2467113d">NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</a></div><div class="ttdeci">const int NWNX_SKILLRANKS_KEY_ABILITY_INTELLIGENCE</div><div class="ttdoc">Intelligence.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__skillranks_8nss_source.html#l00018">nwnx_skillranks.nss:18</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

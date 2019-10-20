@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -132,10 +133,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gaca25d73bc1545aad13ff55fa5bd41f58"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#gaca25d73bc1545aad13ff55fa5bd41f58">NWNX_Chat_GetTarget</a> ()</td></tr>
 <tr class="memdesc:gaca25d73bc1545aad13ff55fa5bd41f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the target of the message.  <a href="group__chat.html#gaca25d73bc1545aad13ff55fa5bd41f58">More...</a><br /></td></tr>
 <tr class="separator:gaca25d73bc1545aad13ff55fa5bd41f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8a5cc439da4c24b8b5a3c8bcdff3b9ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga8a5cc439da4c24b8b5a3c8bcdff3b9ab">NWNX_Chat_SetChatHearingDistance</a> (float distance, object listener=OBJECT_INVALID, int channel=NWNX_CHAT_CHANNEL_PLAYER_TALK)</td></tr>
+<tr class="memitem:ga8a5cc439da4c24b8b5a3c8bcdff3b9ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga8a5cc439da4c24b8b5a3c8bcdff3b9ab">NWNX_Chat_SetChatHearingDistance</a> (float distance, object listener=OBJECT_INVALID, int channel=<a class="el" href="group__chat.html#ga5a426e375b1a4086410fa68540ccc5df">NWNX_CHAT_CHANNEL_PLAYER_TALK</a>)</td></tr>
 <tr class="memdesc:ga8a5cc439da4c24b8b5a3c8bcdff3b9ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the distance with which the player hears talks or whispers.  <a href="group__chat.html#ga8a5cc439da4c24b8b5a3c8bcdff3b9ab">More...</a><br /></td></tr>
 <tr class="separator:ga8a5cc439da4c24b8b5a3c8bcdff3b9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7c337b8768878b05b12bd8f880b56d42"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga7c337b8768878b05b12bd8f880b56d42">NWNX_Chat_GetChatHearingDistance</a> (object listener=OBJECT_INVALID, int channel=NWNX_CHAT_CHANNEL_PLAYER_TALK)</td></tr>
+<tr class="memitem:ga7c337b8768878b05b12bd8f880b56d42"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga7c337b8768878b05b12bd8f880b56d42">NWNX_Chat_GetChatHearingDistance</a> (object listener=OBJECT_INVALID, int channel=<a class="el" href="group__chat.html#ga5a426e375b1a4086410fa68540ccc5df">NWNX_CHAT_CHANNEL_PLAYER_TALK</a>)</td></tr>
 <tr class="memdesc:ga7c337b8768878b05b12bd8f880b56d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the distance with which the player hears talks or whisper.  <a href="group__chat.html#ga7c337b8768878b05b12bd8f880b56d42">More...</a><br /></td></tr>
 <tr class="separator:ga7c337b8768878b05b12bd8f880b56d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -144,44 +145,31 @@ Variables</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Chat Channels</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="chat_channels"></a> Constants defining the various chat channels. </p>
 </div></td></tr>
-<tr class="memitem:ga5a426e375b1a4086410fa68540ccc5df"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_PLAYER_TALK</b> = 1</td></tr>
+<tr class="memitem:ga5a426e375b1a4086410fa68540ccc5df"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga5a426e375b1a4086410fa68540ccc5df">NWNX_CHAT_CHANNEL_PLAYER_TALK</a> = 1</td></tr>
 <tr class="separator:ga5a426e375b1a4086410fa68540ccc5df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa86f5284764e4bdbfa497def002d7779"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_PLAYER_SHOUT</b> = 2</td></tr>
+<tr class="memitem:gaa86f5284764e4bdbfa497def002d7779"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#gaa86f5284764e4bdbfa497def002d7779">NWNX_CHAT_CHANNEL_PLAYER_SHOUT</a> = 2</td></tr>
 <tr class="separator:gaa86f5284764e4bdbfa497def002d7779"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab1ef141d5d50d45dead5dac918f1b7bd"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_PLAYER_WHISPER</b> = 3</td></tr>
+<tr class="memitem:gab1ef141d5d50d45dead5dac918f1b7bd"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#gab1ef141d5d50d45dead5dac918f1b7bd">NWNX_CHAT_CHANNEL_PLAYER_WHISPER</a> = 3</td></tr>
 <tr class="separator:gab1ef141d5d50d45dead5dac918f1b7bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae86a7e7cb68f8d6bdaf4e4bedd34d189"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_PLAYER_TELL</b> = 4</td></tr>
+<tr class="memitem:gae86a7e7cb68f8d6bdaf4e4bedd34d189"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#gae86a7e7cb68f8d6bdaf4e4bedd34d189">NWNX_CHAT_CHANNEL_PLAYER_TELL</a> = 4</td></tr>
 <tr class="separator:gae86a7e7cb68f8d6bdaf4e4bedd34d189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga22ca905e6091ee72ba11489571af4c90"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_SERVER_MSG</b> = 5</td></tr>
+<tr class="memitem:ga22ca905e6091ee72ba11489571af4c90"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga22ca905e6091ee72ba11489571af4c90">NWNX_CHAT_CHANNEL_SERVER_MSG</a> = 5</td></tr>
 <tr class="separator:ga22ca905e6091ee72ba11489571af4c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7d5b4cfe353e30821c0818e5e39193a2"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_PLAYER_PARTY</b> = 6</td></tr>
+<tr class="memitem:ga7d5b4cfe353e30821c0818e5e39193a2"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga7d5b4cfe353e30821c0818e5e39193a2">NWNX_CHAT_CHANNEL_PLAYER_PARTY</a> = 6</td></tr>
 <tr class="separator:ga7d5b4cfe353e30821c0818e5e39193a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga63678395c7088907d5d5431afc95ebaf"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_PLAYER_DM</b> = 14</td></tr>
+<tr class="memitem:ga63678395c7088907d5d5431afc95ebaf"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga63678395c7088907d5d5431afc95ebaf">NWNX_CHAT_CHANNEL_PLAYER_DM</a> = 14</td></tr>
 <tr class="separator:ga63678395c7088907d5d5431afc95ebaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacff930ad85a52a0496e0ccdfe94e2ee3"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_DM_TALK</b> = 17</td></tr>
+<tr class="memitem:gacff930ad85a52a0496e0ccdfe94e2ee3"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#gacff930ad85a52a0496e0ccdfe94e2ee3">NWNX_CHAT_CHANNEL_DM_TALK</a> = 17</td></tr>
 <tr class="separator:gacff930ad85a52a0496e0ccdfe94e2ee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1179172acc694c0b43d8dd9d8570716b"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_DM_SHOUT</b> = 18</td></tr>
+<tr class="memitem:ga1179172acc694c0b43d8dd9d8570716b"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga1179172acc694c0b43d8dd9d8570716b">NWNX_CHAT_CHANNEL_DM_SHOUT</a> = 18</td></tr>
 <tr class="separator:ga1179172acc694c0b43d8dd9d8570716b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad3d752e8cf68af744ef301aa68a317a9"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_DM_WHISPER</b> = 19</td></tr>
+<tr class="memitem:gad3d752e8cf68af744ef301aa68a317a9"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#gad3d752e8cf68af744ef301aa68a317a9">NWNX_CHAT_CHANNEL_DM_WHISPER</a> = 19</td></tr>
 <tr class="separator:gad3d752e8cf68af744ef301aa68a317a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4da1ed59c06b1b620006a00e2d849ef7"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_DM_TELL</b> = 20</td></tr>
+<tr class="memitem:ga4da1ed59c06b1b620006a00e2d849ef7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga4da1ed59c06b1b620006a00e2d849ef7">NWNX_CHAT_CHANNEL_DM_TELL</a> = 20</td></tr>
 <tr class="separator:ga4da1ed59c06b1b620006a00e2d849ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf89ebd57d9c7d66a3ae0e030cfe3d1c2"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_DM_PARTY</b> = 22</td></tr>
+<tr class="memitem:gaf89ebd57d9c7d66a3ae0e030cfe3d1c2"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#gaf89ebd57d9c7d66a3ae0e030cfe3d1c2">NWNX_CHAT_CHANNEL_DM_PARTY</a> = 22</td></tr>
 <tr class="separator:gaf89ebd57d9c7d66a3ae0e030cfe3d1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga293b444cb6fd729d453b1a4d3d6e5f06"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNEL_DM_DM</b> = 30</td></tr>
+<tr class="memitem:ga293b444cb6fd729d453b1a4d3d6e5f06"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__chat.html#ga293b444cb6fd729d453b1a4d3d6e5f06">NWNX_CHAT_CHANNEL_DM_DM</a> = 30</td></tr>
 <tr class="separator:ga293b444cb6fd729d453b1a4d3d6e5f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -191,7 +179,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CHAT_CHANNE
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_e735e435158564b65b05ea806000d678.html">Chat</a></li><li class="navelem"><a class="el" href="dir_71d1690b6e4849cd42b048cdffbd5bdb.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__chat_8nss.html">nwnx_chat.nss</a></li>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

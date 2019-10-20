@@ -1,5 +1,6 @@
 var group__appearance =
 [
+    [ "Readme", "group__appearance.html#appearance", null ],
     [ "nwnx_appearance.nss", "nwnx__appearance_8nss.html", null ],
     [ "NWNX_Appearance_SetOverride", "group__appearance.html#ga4db3e3265de8c297a3ac75cf9c17af29", null ],
     [ "NWNX_Appearance_GetOverride", "group__appearance.html#gacbfeb0e65785612fe0c50d5e6a1b9cee", null ],

@@ -1,5 +1,6 @@
 var group__reveal =
 [
+    [ "Readme", "group__reveal.html#reveal", null ],
     [ "nwnx_reveal.nss", "nwnx__reveal_8nss.html", null ],
     [ "NWNX_Reveal_RevealTo", "group__reveal.html#ga71f55177ffc85cd14a6981166dffb60a", null ],
     [ "NWNX_Reveal_SetRevealToParty", "group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8", null ],

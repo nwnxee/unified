@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -346,7 +347,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga5144ab295c043bd4b1bea5d6244d8499"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499">NWNX_Creature_SetFeatRemainingUses</a> (object creature, int feat, int uses)</td></tr>
 <tr class="memdesc:ga5144ab295c043bd4b1bea5d6244d8499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set feat remaining uses.  <a href="group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499">More...</a><br /></td></tr>
 <tr class="separator:ga5144ab295c043bd4b1bea5d6244d8499"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf1b625ef87972302d67db93bee1ea4e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5">NWNX_Creature_GetTotalEffectBonus</a> (object creature, int bonusType=NWNX_CREATURE_BONUS_TYPE_ATTACK, object target=OBJECT_INVALID, int isElemental=0, int isForceMax=0, int savetype=-1, int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE)</td></tr>
+<tr class="memitem:gaf1b625ef87972302d67db93bee1ea4e5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5">NWNX_Creature_GetTotalEffectBonus</a> (object creature, int bonusType=<a class="el" href="group__creature.html#ga56cd9112ddd13c2758c5753c195595f1">NWNX_CREATURE_BONUS_TYPE_ATTACK</a>, object target=OBJECT_INVALID, int isElemental=0, int isForceMax=0, int savetype=-1, int saveSpecificType=-1, int skill=-1, int abilityScore=-1, int isOffhand=FALSE)</td></tr>
 <tr class="memdesc:gaf1b625ef87972302d67db93bee1ea4e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get total effect bonus.  <a href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5">More...</a><br /></td></tr>
 <tr class="separator:gaf1b625ef87972302d67db93bee1ea4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1ca18c6575ef041368e50f978441e7ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga1ca18c6575ef041368e50f978441e7ca">NWNX_Creature_SetOriginalName</a> (object creature, string name, int isLastName)</td></tr>
@@ -376,131 +377,92 @@ Variables</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Creature Movement Rates</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="creature_movement_rates"></a> The various types of movement rates. </p>
 </div></td></tr>
-<tr class="memitem:gafb79cfbb94206b01c958ff3c32f28cdb"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_PC</b> = 0</td></tr>
+<tr class="memitem:gafb79cfbb94206b01c958ff3c32f28cdb"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb">NWNX_CREATURE_MOVEMENT_RATE_PC</a> = 0</td></tr>
 <tr class="separator:gafb79cfbb94206b01c958ff3c32f28cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga150b50e7ba879fbbce35dda891ec0d22"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE</b> = 1</td></tr>
+<tr class="memitem:ga150b50e7ba879fbbce35dda891ec0d22"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22">NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE</a> = 1</td></tr>
 <tr class="separator:ga150b50e7ba879fbbce35dda891ec0d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga161c4a1c39d2293d77d00ef708663650"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW</b> = 2</td></tr>
+<tr class="memitem:ga161c4a1c39d2293d77d00ef708663650"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga161c4a1c39d2293d77d00ef708663650">NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW</a> = 2</td></tr>
 <tr class="separator:ga161c4a1c39d2293d77d00ef708663650"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga75ba02a6664ac24fc1673ae28e8c9810"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_SLOW</b> = 3</td></tr>
+<tr class="memitem:ga75ba02a6664ac24fc1673ae28e8c9810"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga75ba02a6664ac24fc1673ae28e8c9810">NWNX_CREATURE_MOVEMENT_RATE_SLOW</a> = 3</td></tr>
 <tr class="separator:ga75ba02a6664ac24fc1673ae28e8c9810"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ef03e2fe509226c6da44655f98c3cc5"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_NORMAL</b> = 4</td></tr>
+<tr class="memitem:ga6ef03e2fe509226c6da44655f98c3cc5"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga6ef03e2fe509226c6da44655f98c3cc5">NWNX_CREATURE_MOVEMENT_RATE_NORMAL</a> = 4</td></tr>
 <tr class="separator:ga6ef03e2fe509226c6da44655f98c3cc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ec4fdfbd059de8f27ddd5ed0c34e756"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_FAST</b> = 5</td></tr>
+<tr class="memitem:ga6ec4fdfbd059de8f27ddd5ed0c34e756"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga6ec4fdfbd059de8f27ddd5ed0c34e756">NWNX_CREATURE_MOVEMENT_RATE_FAST</a> = 5</td></tr>
 <tr class="separator:ga6ec4fdfbd059de8f27ddd5ed0c34e756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga76d1f48c7213ed0602a494ac6b639ec8"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST</b> = 6</td></tr>
+<tr class="memitem:ga76d1f48c7213ed0602a494ac6b639ec8"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga76d1f48c7213ed0602a494ac6b639ec8">NWNX_CREATURE_MOVEMENT_RATE_VERY_FAST</a> = 6</td></tr>
 <tr class="separator:ga76d1f48c7213ed0602a494ac6b639ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8a565245d8f2de0d44bb09f6002254a"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_DEFAULT</b> = 7</td></tr>
+<tr class="memitem:gab8a565245d8f2de0d44bb09f6002254a"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gab8a565245d8f2de0d44bb09f6002254a">NWNX_CREATURE_MOVEMENT_RATE_DEFAULT</a> = 7</td></tr>
 <tr class="separator:gab8a565245d8f2de0d44bb09f6002254a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85589bd3d90008ee8d2765e7b822e627"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_RATE_DM_FAST</b> = 8</td></tr>
+<tr class="memitem:ga85589bd3d90008ee8d2765e7b822e627"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga85589bd3d90008ee8d2765e7b822e627">NWNX_CREATURE_MOVEMENT_RATE_DM_FAST</a> = 8</td></tr>
 <tr class="separator:ga85589bd3d90008ee8d2765e7b822e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Creature Movement Types</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="creature_movement_types"></a> The various types of movement types. </p>
 </div></td></tr>
-<tr class="memitem:ga4dc701e0795a6b232fcecf3cfe7a10a7"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY</b> = 0</td></tr>
+<tr class="memitem:ga4dc701e0795a6b232fcecf3cfe7a10a7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga4dc701e0795a6b232fcecf3cfe7a10a7">NWNX_CREATURE_MOVEMENT_TYPE_STATIONARY</a> = 0</td></tr>
 <tr class="separator:ga4dc701e0795a6b232fcecf3cfe7a10a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac87bd2be51450dda46576ebd3282153e"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_WALK</b> = 1</td></tr>
+<tr class="memitem:gac87bd2be51450dda46576ebd3282153e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gac87bd2be51450dda46576ebd3282153e">NWNX_CREATURE_MOVEMENT_TYPE_WALK</a> = 1</td></tr>
 <tr class="separator:gac87bd2be51450dda46576ebd3282153e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga24b699c31e37531d6c0e09b70865ba55"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_RUN</b> = 2</td></tr>
+<tr class="memitem:ga24b699c31e37531d6c0e09b70865ba55"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga24b699c31e37531d6c0e09b70865ba55">NWNX_CREATURE_MOVEMENT_TYPE_RUN</a> = 2</td></tr>
 <tr class="separator:ga24b699c31e37531d6c0e09b70865ba55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6dbe26ade937d00a1a3c55bdfc7d2e93"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP</b> = 3</td></tr>
+<tr class="memitem:ga6dbe26ade937d00a1a3c55bdfc7d2e93"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga6dbe26ade937d00a1a3c55bdfc7d2e93">NWNX_CREATURE_MOVEMENT_TYPE_SIDESTEP</a> = 3</td></tr>
 <tr class="separator:ga6dbe26ade937d00a1a3c55bdfc7d2e93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadfb3c03cca68f6508eb3c14131c4b6b4"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS</b> = 4</td></tr>
+<tr class="memitem:gadfb3c03cca68f6508eb3c14131c4b6b4"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gadfb3c03cca68f6508eb3c14131c4b6b4">NWNX_CREATURE_MOVEMENT_TYPE_WALK_BACKWARDS</a> = 4</td></tr>
 <tr class="separator:gadfb3c03cca68f6508eb3c14131c4b6b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Cleric Domains</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="cleric_domains"></a> The clerical domains. </p>
 </div></td></tr>
-<tr class="memitem:ga9304a2c3f00f98f8ba26334e10497f5f"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_AIR</b> = 0</td></tr>
+<tr class="memitem:ga9304a2c3f00f98f8ba26334e10497f5f"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga9304a2c3f00f98f8ba26334e10497f5f">NWNX_CREATURE_CLERIC_DOMAIN_AIR</a> = 0</td></tr>
 <tr class="separator:ga9304a2c3f00f98f8ba26334e10497f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6fbfb48651bf0192e5f33c5c8ddf486c"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL</b> = 1</td></tr>
+<tr class="memitem:ga6fbfb48651bf0192e5f33c5c8ddf486c"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga6fbfb48651bf0192e5f33c5c8ddf486c">NWNX_CREATURE_CLERIC_DOMAIN_ANIMAL</a> = 1</td></tr>
 <tr class="separator:ga6fbfb48651bf0192e5f33c5c8ddf486c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5349277c58e434dbb8be910d7c864ab6"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_DEATH</b> = 3</td></tr>
+<tr class="memitem:ga5349277c58e434dbb8be910d7c864ab6"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga5349277c58e434dbb8be910d7c864ab6">NWNX_CREATURE_CLERIC_DOMAIN_DEATH</a> = 3</td></tr>
 <tr class="separator:ga5349277c58e434dbb8be910d7c864ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab78074893d50b88935de699c0647df76"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION</b> = 4</td></tr>
+<tr class="memitem:gab78074893d50b88935de699c0647df76"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gab78074893d50b88935de699c0647df76">NWNX_CREATURE_CLERIC_DOMAIN_DESTRUCTION</a> = 4</td></tr>
 <tr class="separator:gab78074893d50b88935de699c0647df76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacd7efbcb70bffacb0f8bb08fcc5f2f04"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_EARTH</b> = 5</td></tr>
+<tr class="memitem:gacd7efbcb70bffacb0f8bb08fcc5f2f04"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gacd7efbcb70bffacb0f8bb08fcc5f2f04">NWNX_CREATURE_CLERIC_DOMAIN_EARTH</a> = 5</td></tr>
 <tr class="separator:gacd7efbcb70bffacb0f8bb08fcc5f2f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadd73aca4c6cac5a116638f7148fc6985"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_EVIL</b> = 6</td></tr>
+<tr class="memitem:gadd73aca4c6cac5a116638f7148fc6985"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gadd73aca4c6cac5a116638f7148fc6985">NWNX_CREATURE_CLERIC_DOMAIN_EVIL</a> = 6</td></tr>
 <tr class="separator:gadd73aca4c6cac5a116638f7148fc6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga455eead9f9c5185af7024c276ee557c0"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_FIRE</b> = 7</td></tr>
+<tr class="memitem:ga455eead9f9c5185af7024c276ee557c0"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga455eead9f9c5185af7024c276ee557c0">NWNX_CREATURE_CLERIC_DOMAIN_FIRE</a> = 7</td></tr>
 <tr class="separator:ga455eead9f9c5185af7024c276ee557c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga34030d81dd3ff20a18a96e336a3f97ca"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_GOOD</b> = 8</td></tr>
+<tr class="memitem:ga34030d81dd3ff20a18a96e336a3f97ca"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga34030d81dd3ff20a18a96e336a3f97ca">NWNX_CREATURE_CLERIC_DOMAIN_GOOD</a> = 8</td></tr>
 <tr class="separator:ga34030d81dd3ff20a18a96e336a3f97ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga937d119a9a85211c207e993df8ae08c3"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_HEALING</b> = 9</td></tr>
+<tr class="memitem:ga937d119a9a85211c207e993df8ae08c3"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga937d119a9a85211c207e993df8ae08c3">NWNX_CREATURE_CLERIC_DOMAIN_HEALING</a> = 9</td></tr>
 <tr class="separator:ga937d119a9a85211c207e993df8ae08c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga62661d9a25a06c21d52a125bb76ba107"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE</b> = 10</td></tr>
+<tr class="memitem:ga62661d9a25a06c21d52a125bb76ba107"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga62661d9a25a06c21d52a125bb76ba107">NWNX_CREATURE_CLERIC_DOMAIN_KNOWLEDGE</a> = 10</td></tr>
 <tr class="separator:ga62661d9a25a06c21d52a125bb76ba107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac098ee44bae961ce3e2cfb0189252533"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_MAGIC</b> = 13</td></tr>
+<tr class="memitem:gac098ee44bae961ce3e2cfb0189252533"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gac098ee44bae961ce3e2cfb0189252533">NWNX_CREATURE_CLERIC_DOMAIN_MAGIC</a> = 13</td></tr>
 <tr class="separator:gac098ee44bae961ce3e2cfb0189252533"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaea7f7cd07d9f5738f25bbd6775fdcc09"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_PLANT</b> = 14</td></tr>
+<tr class="memitem:gaea7f7cd07d9f5738f25bbd6775fdcc09"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaea7f7cd07d9f5738f25bbd6775fdcc09">NWNX_CREATURE_CLERIC_DOMAIN_PLANT</a> = 14</td></tr>
 <tr class="separator:gaea7f7cd07d9f5738f25bbd6775fdcc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga88cdfc511d31aaf53089cd44a4e9d869"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION</b> = 15</td></tr>
+<tr class="memitem:ga88cdfc511d31aaf53089cd44a4e9d869"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga88cdfc511d31aaf53089cd44a4e9d869">NWNX_CREATURE_CLERIC_DOMAIN_PROTECTION</a> = 15</td></tr>
 <tr class="separator:ga88cdfc511d31aaf53089cd44a4e9d869"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4557ab082fc1670f9bbf1e167f653dd9"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH</b> = 16</td></tr>
+<tr class="memitem:ga4557ab082fc1670f9bbf1e167f653dd9"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga4557ab082fc1670f9bbf1e167f653dd9">NWNX_CREATURE_CLERIC_DOMAIN_STRENGTH</a> = 16</td></tr>
 <tr class="separator:ga4557ab082fc1670f9bbf1e167f653dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga48ec122c6baba05eb9563c7daefa61fb"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_SUN</b> = 17</td></tr>
+<tr class="memitem:ga48ec122c6baba05eb9563c7daefa61fb"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga48ec122c6baba05eb9563c7daefa61fb">NWNX_CREATURE_CLERIC_DOMAIN_SUN</a> = 17</td></tr>
 <tr class="separator:ga48ec122c6baba05eb9563c7daefa61fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5f007271da99de9be96d783c3b8f70af"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL</b> = 18</td></tr>
+<tr class="memitem:ga5f007271da99de9be96d783c3b8f70af"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga5f007271da99de9be96d783c3b8f70af">NWNX_CREATURE_CLERIC_DOMAIN_TRAVEL</a> = 18</td></tr>
 <tr class="separator:ga5f007271da99de9be96d783c3b8f70af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1b5c0ec814404f0df67ae03333d708e2"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY</b> = 19</td></tr>
+<tr class="memitem:ga1b5c0ec814404f0df67ae03333d708e2"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga1b5c0ec814404f0df67ae03333d708e2">NWNX_CREATURE_CLERIC_DOMAIN_TRICKERY</a> = 19</td></tr>
 <tr class="separator:ga1b5c0ec814404f0df67ae03333d708e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga76b73875c3340d038261f684189fbdf6"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_WAR</b> = 20</td></tr>
+<tr class="memitem:ga76b73875c3340d038261f684189fbdf6"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga76b73875c3340d038261f684189fbdf6">NWNX_CREATURE_CLERIC_DOMAIN_WAR</a> = 20</td></tr>
 <tr class="separator:ga76b73875c3340d038261f684189fbdf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafea1002c0334de7fe9e98b874f6bd214"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_CLERIC_DOMAIN_WATER</b> = 21</td></tr>
+<tr class="memitem:gafea1002c0334de7fe9e98b874f6bd214"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gafea1002c0334de7fe9e98b874f6bd214">NWNX_CREATURE_CLERIC_DOMAIN_WATER</a> = 21</td></tr>
 <tr class="separator:gafea1002c0334de7fe9e98b874f6bd214"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Bonus Types</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="bonus_types"></a> Used with <a class="el" href="group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5" title="Get total effect bonus.">NWNX_Creature_GetTotalEffectBonus()</a> these are the types of temporary bonuses from effects. </p>
 </div></td></tr>
-<tr class="memitem:ga56cd9112ddd13c2758c5753c195595f1"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_ATTACK</b> = 1</td></tr>
+<tr class="memitem:ga56cd9112ddd13c2758c5753c195595f1"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga56cd9112ddd13c2758c5753c195595f1">NWNX_CREATURE_BONUS_TYPE_ATTACK</a> = 1</td></tr>
 <tr class="separator:ga56cd9112ddd13c2758c5753c195595f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0330befe33005bcf51b745aacbf1b78e"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_DAMAGE</b> = 2</td></tr>
+<tr class="memitem:ga0330befe33005bcf51b745aacbf1b78e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga0330befe33005bcf51b745aacbf1b78e">NWNX_CREATURE_BONUS_TYPE_DAMAGE</a> = 2</td></tr>
 <tr class="separator:ga0330befe33005bcf51b745aacbf1b78e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga148e81a269561290db62a997fecaa828"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_SAVING_THROW</b> = 3</td></tr>
+<tr class="memitem:ga148e81a269561290db62a997fecaa828"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga148e81a269561290db62a997fecaa828">NWNX_CREATURE_BONUS_TYPE_SAVING_THROW</a> = 3</td></tr>
 <tr class="separator:ga148e81a269561290db62a997fecaa828"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7b9092ad788130791274b2b73c25388"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_ABILITY</b> = 4</td></tr>
+<tr class="memitem:gac7b9092ad788130791274b2b73c25388"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gac7b9092ad788130791274b2b73c25388">NWNX_CREATURE_BONUS_TYPE_ABILITY</a> = 4</td></tr>
 <tr class="separator:gac7b9092ad788130791274b2b73c25388"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6620ba952b09a01e86892f6dc1b2015a"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_SKILL</b> = 5</td></tr>
+<tr class="memitem:ga6620ba952b09a01e86892f6dc1b2015a"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga6620ba952b09a01e86892f6dc1b2015a">NWNX_CREATURE_BONUS_TYPE_SKILL</a> = 5</td></tr>
 <tr class="separator:ga6620ba952b09a01e86892f6dc1b2015a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa1e7668abb0a7b20830dbadc2ee1dc01"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK</b> = 6</td></tr>
+<tr class="memitem:gaa1e7668abb0a7b20830dbadc2ee1dc01"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaa1e7668abb0a7b20830dbadc2ee1dc01">NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK</a> = 6</td></tr>
 <tr class="separator:gaa1e7668abb0a7b20830dbadc2ee1dc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -510,7 +472,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_CREATURE_BO
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_efcc7e8cb6d48fa5ae53e4b1e4942f85.html">Creature</a></li><li class="navelem"><a class="el" href="dir_df2c9402d4c835b594b2af66d6709907.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__creature_8nss.html">nwnx_creature.nss</a></li>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

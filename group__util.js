@@ -1,5 +1,6 @@
 var group__util =
 [
+    [ "Readme", "group__util.html#util", null ],
     [ "nwnx_util.nss", "nwnx__util_8nss.html", null ],
     [ "NWNX_Util_GetCurrentScriptName", "group__util.html#ga972eafd2cce6e28be85212774a0a4cf4", null ],
     [ "NWNX_Util_GetAsciiTableString", "group__util.html#ga1e18a85480ecf06727502ef50937bc71", null ],
@@ -18,5 +19,20 @@ var group__util =
     [ "NWNX_Util_GetFirstResRef", "group__util.html#gadab94b9c74eca8a4532f4d29eaf34117", null ],
     [ "NWNX_Util_GetNextResRef", "group__util.html#ga30d0f9f68ff0ab060db725dec16e609a", null ],
     [ "NWNX_Util_GetServerTicksPerSecond", "group__util.html#gac9df9a6c3e6b9a8b767719c04a485188", null ],
-    [ "NWNX_Util_GetLastCreatedObject", "group__util.html#ga4dc71b0421a9bf57e18aa42b177d9b4b", null ]
+    [ "NWNX_Util_GetLastCreatedObject", "group__util.html#ga4dc71b0421a9bf57e18aa42b177d9b4b", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_NSS", "group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_NCS", "group__util.html#gac7c3717541176f4e20e5824aa2668dd0", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_AREA_ARE", "group__util.html#ga610bf05a8489288df5ce9ad2326bd54c", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_TWODA", "group__util.html#gaa3475205c5acd4e78df18d9e3620e06a", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_AREA_GIT", "group__util.html#ga3e6a9ec855349ea41fda8ae3dce391ad", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_ITEM", "group__util.html#ga1369c11a9efff4b4b78bd2ebb700a455", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_CREATURE", "group__util.html#ga02270d9330db583ac0faba143e941236", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_DIALOG", "group__util.html#ga85fef98f04c945d6359f8ed7b3ae942e", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_TRIGGER", "group__util.html#ga3725322294e6bf0d6fa4f9dc87eb9145", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_SOUND", "group__util.html#gae2d5cee2971f0adae36675e239737946", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_ENCOUNTER", "group__util.html#ga763a6401a1bb17dc61c3cca95c5cb343", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_DOOR", "group__util.html#ga84ca988d944a45915421d7765f7d4bbf", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_PLACEABLE", "group__util.html#gafcfa036f8f9926036db37652ff31dc79", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_STORE", "group__util.html#ga3de345eb5b81cd71a5250ba5d1b6ceb5", null ],
+    [ "NWNX_UTIL_RESREF_TYPE_WAYPOINT", "group__util.html#ga2b85429483e9749a5c3527f5c9440619", null ]
 ];

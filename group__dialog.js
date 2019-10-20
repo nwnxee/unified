@@ -1,10 +1,28 @@
 var group__dialog =
 [
+    [ "Readme", "group__dialog.html#dialog", null ],
     [ "nwnx_dialog.nss", "nwnx__dialog_8nss.html", null ],
     [ "NWNX_Dialog_GetCurrentNodeType", "group__dialog.html#gac27125df80f467600b814596e30b329e", null ],
     [ "NWNX_Dialog_GetCurrentScriptType", "group__dialog.html#ga56191da9be7b239b5e49e5d272944f27", null ],
     [ "NWNX_Dialog_GetCurrentNodeID", "group__dialog.html#gab982690e3426cf384e6e1ae32d9edc58", null ],
     [ "NWNX_Dialog_GetCurrentNodeIndex", "group__dialog.html#ga8c91234a6de5b3389fd6e9ee02eaf4e0", null ],
     [ "NWNX_Dialog_GetCurrentNodeText", "group__dialog.html#gada2778d904d1b04df9dce4847d090e9e", null ],
-    [ "NWNX_Dialog_SetCurrentNodeText", "group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a", null ]
+    [ "NWNX_Dialog_SetCurrentNodeText", "group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a", null ],
+    [ "NWNX_DIALOG_NODE_TYPE_INVALID", "group__dialog.html#gae8ad2a2e53334be13e9f7ee7801aa2a5", null ],
+    [ "NWNX_DIALOG_NODE_TYPE_STARTING_NODE", "group__dialog.html#gacb964e127d344c642c7d75ba71b2b789", null ],
+    [ "NWNX_DIALOG_NODE_TYPE_ENTRY_NODE", "group__dialog.html#gae28b55f82611017a8baf167bada8bb45", null ],
+    [ "NWNX_DIALOG_NODE_TYPE_REPLY_NODE", "group__dialog.html#ga82268b3d5591e6dd1474942b3f87b44f", null ],
+    [ "NWNX_DIALOG_SCRIPT_TYPE_OTHER", "group__dialog.html#ga02897365405b702936fb2e2491c3dc70", null ],
+    [ "NWNX_DIALOG_SCRIPT_TYPE_STARTING_CONDITIONAL", "group__dialog.html#gad2f72b5b1fcec62eaa2b71efab2156e8", null ],
+    [ "NWNX_DIALOG_SCRIPT_TYPE_ACTION_TAKEN", "group__dialog.html#gaeb1527ee00e0753aa04336d6cba458fe", null ],
+    [ "NWNX_DIALOG_LANGUAGE_ENGLISH", "group__dialog.html#ga577d4d79535bad61994d4153fc3148d3", null ],
+    [ "NWNX_DIALOG_LANGUAGE_FRENCH", "group__dialog.html#gae488ccc9db370ebdf6fa923f0964e032", null ],
+    [ "NWNX_DIALOG_LANGUAGE_GERMAN", "group__dialog.html#gac8c59facd3659310d99daf4a4aa77e00", null ],
+    [ "NWNX_DIALOG_LANGUAGE_ITALIAN", "group__dialog.html#ga6c2a664c692c5e3a5bd84a1a1a4f9f12", null ],
+    [ "NWNX_DIALOG_LANGUAGE_SPANISH", "group__dialog.html#ga6b127836f03d2364863a1ad143b9c0dd", null ],
+    [ "NWNX_DIALOG_LANGUAGE_POLISH", "group__dialog.html#ga8706494ed0cbd36894cc81b56434585c", null ],
+    [ "NWNX_DIALOG_LANGUAGE_KOREAN", "group__dialog.html#ga6e3cea81a9a716f0c4d9dd7caad86299", null ],
+    [ "NWNX_DIALOG_LANGUAGE_CHINESE_TRADITIONAL", "group__dialog.html#ga6eb1d7feff5aa5f82fd0258575347494", null ],
+    [ "NWNX_DIALOG_LANGUAGE_CHINESE_SIMPLIFIED", "group__dialog.html#gab2099dec23a537e86459a370683a54a1", null ],
+    [ "NWNX_DIALOG_LANGUAGE_JAPANESE", "group__dialog.html#ga6dcde21875f97e943fec3cd13742b4b4", null ]
 ];

@@ -1,14 +1,17 @@
 var searchData=
 [
-  ['effect_28',['Effect',['../group__effect.html',1,'']]],
-  ['elc_29',['ELC',['../group__elc.html',1,'']]],
-  ['elinkleft_30',['eLinkLeft',['../structNWNX__EffectUnpacked.html#afda0d34cd6152afc231de7fd7f9fd374',1,'NWNX_EffectUnpacked']]],
-  ['elinkright_31',['eLinkRight',['../structNWNX__EffectUnpacked.html#ab8aea15f6489112deb7f74f45b26f9c7',1,'NWNX_EffectUnpacked']]],
-  ['encounter_32',['Encounter',['../group__encounter.html',1,'']]],
-  ['events_33',['Events',['../group__events.html',1,'']]],
-  ['effect_20plugin_20reference_34',['Effect Plugin Reference',['../md_Plugins_Effect_README.html',1,'']]],
-  ['elc_20plugin_20reference_35',['ELC Plugin Reference',['../md_Plugins_ELC_README.html',1,'']]],
-  ['encounter_20plugin_20reference_36',['Encounter Plugin Reference',['../md_Plugins_Encounter_README.html',1,'']]],
-  ['events_20plugin_20reference_37',['Events Plugin Reference',['../md_Plugins_Events_README.html',1,'']]],
-  ['experimental_20plugin_20reference_38',['Experimental Plugin Reference',['../md_Plugins_Experimental_README.html',1,'']]]
+  ['echo_85',['ECHO',['../nwnx__redis__short_8nss.html#a9cb082433f38344c6170aa95400afa7c',1,'nwnx_redis_short.nss']]],
+  ['effect_86',['Effect',['../group__effect.html',1,'']]],
+  ['elc_87',['ELC',['../group__elc.html',1,'']]],
+  ['elinkleft_88',['eLinkLeft',['../structNWNX__EffectUnpacked.html#afda0d34cd6152afc231de7fd7f9fd374',1,'NWNX_EffectUnpacked']]],
+  ['elinkright_89',['eLinkRight',['../structNWNX__EffectUnpacked.html#ab8aea15f6489112deb7f74f45b26f9c7',1,'NWNX_EffectUnpacked']]],
+  ['encounter_90',['Encounter',['../group__encounter.html',1,'']]],
+  ['eval_91',['EVAL',['../nwnx__redis__short_8nss.html#a1aaf78e5d191a48bed74f7394ef2bca2',1,'nwnx_redis_short.nss']]],
+  ['evalsha_92',['EVALSHA',['../nwnx__redis__short_8nss.html#a0345d498ec3c04bcf6fc66da3e849eac',1,'nwnx_redis_short.nss']]],
+  ['events_93',['Events',['../group__events.html',1,'']]],
+  ['exec_94',['EXEC',['../nwnx__redis__short_8nss.html#aaa601d03e6111fa67670be0e14aa9bc6',1,'nwnx_redis_short.nss']]],
+  ['exists_95',['EXISTS',['../nwnx__redis__short_8nss.html#afb3937256478125b9a0a5afcbacedd73',1,'nwnx_redis_short.nss']]],
+  ['experimental_96',['Experimental',['../group__experimental.html',1,'']]],
+  ['expire_97',['EXPIRE',['../nwnx__redis__short_8nss.html#a81c56a4be8401235aea2b743712d26a8',1,'nwnx_redis_short.nss']]],
+  ['expireat_98',['EXPIREAT',['../nwnx__redis__short_8nss.html#a02c9479d34b11b3a3f30a0bc085b7e17',1,'nwnx_redis_short.nss']]]
 ];

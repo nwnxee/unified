@@ -1,5 +1,6 @@
 var group__player =
 [
+    [ "Readme", "group__player.html#player", null ],
     [ "nwnx_player.nss", "nwnx__player_8nss.html", null ],
     [ "nwnx_player_qbs.nss", "nwnx__player__qbs_8nss.html", null ],
     [ "NWNX_Player_QuickBarSlot", "structNWNX__Player__QuickBarSlot.html", [
@@ -65,5 +66,35 @@ var group__player =
     [ "NWNX_Player_QBS_QuickChat", "group__player.html#ga3d7c3bab92d3f4eba555187562b04f80", null ],
     [ "NWNX_Player_QBS_PossessFamiliar", "group__player.html#ga05adb853c1ef9a3b9e7e741f427a729e", null ],
     [ "NWNX_Player_QBS_UseSpecialAbility", "group__player.html#ga93b73395786bcc1c62df9dbb7d0aaeff", null ],
-    [ "NWNX_Player_QBS_Command", "group__player.html#ga6fa225d89c57e2650351d6fe36927e9a", null ]
+    [ "NWNX_Player_QBS_Command", "group__player.html#ga6fa225d89c57e2650351d6fe36927e9a", null ],
+    [ "NWNX_PLAYER_VISIBILITY_DEFAULT", "group__player.html#ga6bd08471733e29a200778d052eaa3e0e", null ],
+    [ "NWNX_PLAYER_VISIBILITY_HIDDEN", "group__player.html#gaead24df18d9fdeff8b6bd623671172e1", null ],
+    [ "NWNX_PLAYER_VISIBILITY_VISIBLE", "group__player.html#ga56deef9f821853145e9d3ba3d3789d9c", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_TRAP_RECOVER", "group__player.html#ga48977ad0f343886c83dcdd19b123ccc0", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_TRAP_DISARM", "group__player.html#ga7c31b1a2759034e5b4518c7c5b3cc704", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_TRAP_EXAMINE", "group__player.html#gaa77e5bcabd874733f5ccd0c11715fce9", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_TRAP_SET", "group__player.html#ga3f999ec52932aa229ba457897cd77039", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_REST", "group__player.html#gabd8a42c155d533c4f1d43d996a196404", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_UNLOCK", "group__player.html#gafdc911593d62608874e6ab34d2d04356", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_LOCK", "group__player.html#ga2fd3bac025586f796ff84d1037e00582", null ],
+    [ "NWNX_PLAYER_TIMING_BAR_CUSTOM", "group__player.html#gafdbff67476f10224316a5afaec5a33b2", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_EMPTY", "group__player.html#ga24e0da78fc6d24ff26f3a53f8630f0bd", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_ITEM", "group__player.html#gaddb0cc00ba26ce99f33e4ca1af67b6ff", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_SPELL", "group__player.html#ga2a358a7151bc26061a1c3030c398a706", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_SKILL", "group__player.html#ga465a1baa7a0b1a36fd6ef8c3be6bd5b6", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_FEAT", "group__player.html#ga279986e6859e86d4e0e8997f9448b583", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_DIALOG", "group__player.html#ga94fef51c2bc9006b20e0323c67a08dbe", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_ATTACK", "group__player.html#gaf30815c15f325ec660d973bd7b10b8f1", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_EMOTE", "group__player.html#ga3ecf719fed6b70dcfe6b4325f659fa29", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_ITEM_PROPERTY_CASTSPELL", "group__player.html#ga2f504adb87788d80bbecd6d38943659e", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_MODE_TOGGLE", "group__player.html#ga2d9829b1d193229b13522b8233e2f74a", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_COMMAND", "group__player.html#gac0241076c148532ffae1771b25b042fe", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_POSSESS_FAMILIAR", "group__player.html#ga4e7101b4c773d3e56722578ee474ec3f", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_ASSOCIATE_COMMAND", "group__player.html#ga72d450c30a4717ec50e4e5733131ed1a", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_EXAMINE", "group__player.html#ga63e7ba62339c8fedef7c52e05296bccc", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_BARTER", "group__player.html#gae50c9613431756c58a903dee94a1e876", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_QUICK_CHAT", "group__player.html#ga4231fe2be956d6093163f6ba7eab07d3", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_CANCELPOLYMORPH", "group__player.html#gab6501ae821575415ed090af3da56e070", null ],
+    [ "NWNX_PLAYER_QBS_TYPE_SPELLLIKEABILITY", "group__player.html#ga437385c6c111c59c8aaecd230c34c0c3", null ]
 ];

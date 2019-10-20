@@ -1,5 +1,6 @@
 var group__damage =
 [
+    [ "Readme", "group__damage.html#damage", null ],
     [ "nwnx_damage.nss", "nwnx__damage_8nss.html", null ],
     [ "NWNX_Damage_DamageEventData", "structNWNX__Damage__DamageEventData.html", [
       [ "oDamager", "structNWNX__Damage__DamageEventData.html#adcd2db4021271fd0cba8dfd90e096892", null ],

@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -135,7 +136,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ga43dd7acf87d691012c9bd844aa07a178"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga43dd7acf87d691012c9bd844aa07a178">NWNX_Util_StripColors</a> (string str)</td></tr>
 <tr class="memdesc:ga43dd7acf87d691012c9bd844aa07a178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strip any color codes from a string.  <a href="group__util.html#ga43dd7acf87d691012c9bd844aa07a178">More...</a><br /></td></tr>
 <tr class="separator:ga43dd7acf87d691012c9bd844aa07a178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga4ea0cf79071aa794e483b1bc3d53c08b">NWNX_Util_IsValidResRef</a> (string resref, int type=NWNX_UTIL_RESREF_TYPE_CREATURE)</td></tr>
+<tr class="memitem:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga4ea0cf79071aa794e483b1bc3d53c08b">NWNX_Util_IsValidResRef</a> (string resref, int type=<a class="el" href="group__util.html#ga02270d9330db583ac0faba143e941236">NWNX_UTIL_RESREF_TYPE_CREATURE</a>)</td></tr>
 <tr class="memdesc:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the supplied resref exists.  <a href="group__util.html#ga4ea0cf79071aa794e483b1bc3d53c08b">More...</a><br /></td></tr>
 <tr class="separator:ga4ea0cf79071aa794e483b1bc3d53c08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab0151e2741596a3a9f1ece22c62f9c9b"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gab0151e2741596a3a9f1ece22c62f9c9b">NWNX_Util_GetEnvironmentVariable</a> (string sVarname)</td></tr>
@@ -171,50 +172,35 @@ Variables</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Resref Types</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="resref_types"></a>Constants for the various types of resrefs. </p>
 </div></td></tr>
-<tr class="memitem:ga44497bc0ee50b6fc9525d1fe40fed2e6"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_NSS</b> = 2009</td></tr>
+<tr class="memitem:ga44497bc0ee50b6fc9525d1fe40fed2e6"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6">NWNX_UTIL_RESREF_TYPE_NSS</a> = 2009</td></tr>
 <tr class="separator:ga44497bc0ee50b6fc9525d1fe40fed2e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac7c3717541176f4e20e5824aa2668dd0"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_NCS</b> = 2010</td></tr>
+<tr class="memitem:gac7c3717541176f4e20e5824aa2668dd0"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gac7c3717541176f4e20e5824aa2668dd0">NWNX_UTIL_RESREF_TYPE_NCS</a> = 2010</td></tr>
 <tr class="separator:gac7c3717541176f4e20e5824aa2668dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga610bf05a8489288df5ce9ad2326bd54c"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_AREA_ARE</b> = 2012</td></tr>
+<tr class="memitem:ga610bf05a8489288df5ce9ad2326bd54c"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga610bf05a8489288df5ce9ad2326bd54c">NWNX_UTIL_RESREF_TYPE_AREA_ARE</a> = 2012</td></tr>
 <tr class="separator:ga610bf05a8489288df5ce9ad2326bd54c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa3475205c5acd4e78df18d9e3620e06a"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_TWODA</b> = 2017</td></tr>
+<tr class="memitem:gaa3475205c5acd4e78df18d9e3620e06a"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gaa3475205c5acd4e78df18d9e3620e06a">NWNX_UTIL_RESREF_TYPE_TWODA</a> = 2017</td></tr>
 <tr class="separator:gaa3475205c5acd4e78df18d9e3620e06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3e6a9ec855349ea41fda8ae3dce391ad"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_AREA_GIT</b> = 2023</td></tr>
+<tr class="memitem:ga3e6a9ec855349ea41fda8ae3dce391ad"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga3e6a9ec855349ea41fda8ae3dce391ad">NWNX_UTIL_RESREF_TYPE_AREA_GIT</a> = 2023</td></tr>
 <tr class="separator:ga3e6a9ec855349ea41fda8ae3dce391ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1369c11a9efff4b4b78bd2ebb700a455"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_ITEM</b> = 2025</td></tr>
+<tr class="memitem:ga1369c11a9efff4b4b78bd2ebb700a455"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga1369c11a9efff4b4b78bd2ebb700a455">NWNX_UTIL_RESREF_TYPE_ITEM</a> = 2025</td></tr>
 <tr class="separator:ga1369c11a9efff4b4b78bd2ebb700a455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga02270d9330db583ac0faba143e941236"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_CREATURE</b> = 2027</td></tr>
+<tr class="memitem:ga02270d9330db583ac0faba143e941236"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga02270d9330db583ac0faba143e941236">NWNX_UTIL_RESREF_TYPE_CREATURE</a> = 2027</td></tr>
 <tr class="separator:ga02270d9330db583ac0faba143e941236"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85fef98f04c945d6359f8ed7b3ae942e"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_DIALOG</b> = 2029</td></tr>
+<tr class="memitem:ga85fef98f04c945d6359f8ed7b3ae942e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga85fef98f04c945d6359f8ed7b3ae942e">NWNX_UTIL_RESREF_TYPE_DIALOG</a> = 2029</td></tr>
 <tr class="separator:ga85fef98f04c945d6359f8ed7b3ae942e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3725322294e6bf0d6fa4f9dc87eb9145"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_TRIGGER</b> = 2032</td></tr>
+<tr class="memitem:ga3725322294e6bf0d6fa4f9dc87eb9145"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga3725322294e6bf0d6fa4f9dc87eb9145">NWNX_UTIL_RESREF_TYPE_TRIGGER</a> = 2032</td></tr>
 <tr class="separator:ga3725322294e6bf0d6fa4f9dc87eb9145"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae2d5cee2971f0adae36675e239737946"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_SOUND</b> = 2035</td></tr>
+<tr class="memitem:gae2d5cee2971f0adae36675e239737946"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gae2d5cee2971f0adae36675e239737946">NWNX_UTIL_RESREF_TYPE_SOUND</a> = 2035</td></tr>
 <tr class="separator:gae2d5cee2971f0adae36675e239737946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga763a6401a1bb17dc61c3cca95c5cb343"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_ENCOUNTER</b> = 2040</td></tr>
+<tr class="memitem:ga763a6401a1bb17dc61c3cca95c5cb343"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga763a6401a1bb17dc61c3cca95c5cb343">NWNX_UTIL_RESREF_TYPE_ENCOUNTER</a> = 2040</td></tr>
 <tr class="separator:ga763a6401a1bb17dc61c3cca95c5cb343"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga84ca988d944a45915421d7765f7d4bbf"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_DOOR</b> = 2042</td></tr>
+<tr class="memitem:ga84ca988d944a45915421d7765f7d4bbf"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga84ca988d944a45915421d7765f7d4bbf">NWNX_UTIL_RESREF_TYPE_DOOR</a> = 2042</td></tr>
 <tr class="separator:ga84ca988d944a45915421d7765f7d4bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafcfa036f8f9926036db37652ff31dc79"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_PLACEABLE</b> = 2044</td></tr>
+<tr class="memitem:gafcfa036f8f9926036db37652ff31dc79"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gafcfa036f8f9926036db37652ff31dc79">NWNX_UTIL_RESREF_TYPE_PLACEABLE</a> = 2044</td></tr>
 <tr class="separator:gafcfa036f8f9926036db37652ff31dc79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3de345eb5b81cd71a5250ba5d1b6ceb5"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_STORE</b> = 2051</td></tr>
+<tr class="memitem:ga3de345eb5b81cd71a5250ba5d1b6ceb5"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga3de345eb5b81cd71a5250ba5d1b6ceb5">NWNX_UTIL_RESREF_TYPE_STORE</a> = 2051</td></tr>
 <tr class="separator:ga3de345eb5b81cd71a5250ba5d1b6ceb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2b85429483e9749a5c3527f5c9440619"><td class="memItemLeft" align="right" valign="top">
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF_TYPE_WAYPOINT</b> = 2058</td></tr>
+<tr class="memitem:ga2b85429483e9749a5c3527f5c9440619"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#ga2b85429483e9749a5c3527f5c9440619">NWNX_UTIL_RESREF_TYPE_WAYPOINT</a> = 2058</td></tr>
 <tr class="separator:ga2b85429483e9749a5c3527f5c9440619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -224,7 +210,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_UTIL_RESREF
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_3ec7a3c41058dbbcb810665d92fbc7cc.html">Util</a></li><li class="navelem"><a class="el" href="dir_24f7c2c26ff8bd3e2d958e2da4bb3e72.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__util_8nss.html">nwnx_util.nss</a></li>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

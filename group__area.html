@@ -28,6 +28,7 @@
 /* @license-end */
 </script>
 		<link href="doxygen.css" rel="stylesheet" type="text/css" />
+		<link href="custom.css" rel="stylesheet" type="text/css"/>
 	</head>
 	<body>
 	<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -107,9 +108,8 @@ $(document).ready(function(){initNavTree('group__area.html','');});
 </div><!--header-->
 <div class="contents">
 
-<p>Functions exposing additional area properties as well as creating transitions.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
+
+<h3><a id="area"></a>Readme</h3><div class="textblock">Functions exposing additional area properties as well as creating transitions. </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__area_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__area_8nss.html">nwnx_area.nss</a></td></tr>
@@ -198,71 +198,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gaadd7e8c0aa2f77536fa499d38aca568d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__area.html#gaadd7e8c0aa2f77536fa499d38aca568d">NWNX_Area_TestDirectLine</a> (object oArea, float fStartX, float fStartY, float fEndX, float fEndY, float fPerSpace, float fHeight, int bIgnoreDoors=FALSE)</td></tr>
 <tr class="memdesc:gaadd7e8c0aa2f77536fa499d38aca568d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test to see if there's a direct, walkable line between two points in the area.  <a href="group__area.html#gaadd7e8c0aa2f77536fa499d38aca568d">More...</a><br /></td></tr>
 <tr class="separator:gaadd7e8c0aa2f77536fa499d38aca568d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Area PVP Settings</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp2263ec85f69d55fd01170f329e81fa9f"></a><a class="anchor" id="area_pvp"></a></p>
-</td></tr>
-<tr class="memitem:gaf2a48df36736c711a5e967f0ad3bd45e"><td class="memItemLeft" align="right" valign="top"><a id="gaf2a48df36736c711a5e967f0ad3bd45e"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_PVP_SETTING_NO_PVP</b> = 0</td></tr>
-<tr class="separator:gaf2a48df36736c711a5e967f0ad3bd45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5197514db99c85e79fd5e6c7224aa84b"><td class="memItemLeft" align="right" valign="top"><a id="ga5197514db99c85e79fd5e6c7224aa84b"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_PVP_SETTING_PARTY_PVP</b> = 1</td></tr>
-<tr class="separator:ga5197514db99c85e79fd5e6c7224aa84b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8a6f21649b08da34ecc397f7fd621176"><td class="memItemLeft" align="right" valign="top"><a id="ga8a6f21649b08da34ecc397f7fd621176"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_PVP_SETTING_FULL_PVP</b> = 2</td></tr>
-<tr class="separator:ga8a6f21649b08da34ecc397f7fd621176"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5a68d1fd703f51fcb85b38915784902c"><td class="memItemLeft" align="right" valign="top"><a id="ga5a68d1fd703f51fcb85b38915784902c"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_PVP_SETTING_SERVER_DEFAULT</b> = 3</td></tr>
-<tr class="separator:ga5a68d1fd703f51fcb85b38915784902c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Area Weather Settings</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp6b5fbb2b53d8e1057f235c4e2557f200"></a><a class="anchor" id="area_weather"></a></p>
-</td></tr>
-<tr class="memitem:ga4b0afb02efc2fb84072e146b07c21725"><td class="memItemLeft" align="right" valign="top"><a id="ga4b0afb02efc2fb84072e146b07c21725"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_WEATHER_CHANCE_RAIN</b> = 0</td></tr>
-<tr class="separator:ga4b0afb02efc2fb84072e146b07c21725"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaff6d5d664b29aa9999a7c5de80a57d80"><td class="memItemLeft" align="right" valign="top"><a id="gaff6d5d664b29aa9999a7c5de80a57d80"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_WEATHER_CHANCE_SNOW</b> = 1</td></tr>
-<tr class="separator:gaff6d5d664b29aa9999a7c5de80a57d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga90e1c5c66112049ec181b4ae82bdf704"><td class="memItemLeft" align="right" valign="top"><a id="ga90e1c5c66112049ec181b4ae82bdf704"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_WEATHER_CHANCE_LIGHTNING</b> = 2</td></tr>
-<tr class="separator:ga90e1c5c66112049ec181b4ae82bdf704"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Area Day Night Cycle Settings</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp90dd3db92910047f29b26a4b6fbbc0c3"></a><a class="anchor" id="area_daynight"></a></p>
-</td></tr>
-<tr class="memitem:ga7dce428424e8ae3058dc9811f626358b"><td class="memItemLeft" align="right" valign="top"><a id="ga7dce428424e8ae3058dc9811f626358b"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_DAYNIGHTCYCLE_CYCLE_DAY_NIGHT</b> = 0</td></tr>
-<tr class="separator:ga7dce428424e8ae3058dc9811f626358b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae8bed347af6f5ccab595bbe436867e8d"><td class="memItemLeft" align="right" valign="top"><a id="gae8bed347af6f5ccab595bbe436867e8d"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_BRIGHT</b> = 1</td></tr>
-<tr class="separator:gae8bed347af6f5ccab595bbe436867e8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9932f7ae3886ed89ece8868879f9214f"><td class="memItemLeft" align="right" valign="top"><a id="ga9932f7ae3886ed89ece8868879f9214f"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK</b> = 2</td></tr>
-<tr class="separator:ga9932f7ae3886ed89ece8868879f9214f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="member-group"></a>
-Area Sun/Moon Color Settings</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrpf787b14f2cc0bf6c71c7e6289810aebe"></a><a class="anchor" id="area_color"></a></p>
-</td></tr>
-<tr class="memitem:gab5dc36ec4d73bb7b7389c17e7b00e1fd"><td class="memItemLeft" align="right" valign="top"><a id="gab5dc36ec4d73bb7b7389c17e7b00e1fd"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_COLOR_TYPE_MOON_AMBIENT</b> = 0</td></tr>
-<tr class="separator:gab5dc36ec4d73bb7b7389c17e7b00e1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga74f324663644c65869ba6aa3d0d9642a"><td class="memItemLeft" align="right" valign="top"><a id="ga74f324663644c65869ba6aa3d0d9642a"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE</b> = 1</td></tr>
-<tr class="separator:ga74f324663644c65869ba6aa3d0d9642a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa7f9c7e05048637669ccbeca9c8f3453"><td class="memItemLeft" align="right" valign="top"><a id="gaa7f9c7e05048637669ccbeca9c8f3453"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_COLOR_TYPE_SUN_AMBIENT</b> = 2</td></tr>
-<tr class="separator:gaa7f9c7e05048637669ccbeca9c8f3453"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab1c50d55eb9d0acd85cb327967baefbe"><td class="memItemLeft" align="right" valign="top"><a id="gab1c50d55eb9d0acd85cb327967baefbe"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE</b> = 3</td></tr>
-<tr class="separator:gab1c50d55eb9d0acd85cb327967baefbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Functions exposing additional area properties as well as creating transitions. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gaa7e6831063235acdb013fdc5846d00a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa7e6831063235acdb013fdc5846d00a7">&#9670;&nbsp;</a></span>NWNX_Area_GetNumberOfPlayersInArea()</h2>
@@ -1346,13 +1282,238 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>NWNX_AREA_COLOR_
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gaf2a48df36736c711a5e967f0ad3bd45e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf2a48df36736c711a5e967f0ad3bd45e">&#9670;&nbsp;</a></span>NWNX_AREA_PVP_SETTING_NO_PVP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_PVP_SETTING_NO_PVP = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00012">12</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5197514db99c85e79fd5e6c7224aa84b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5197514db99c85e79fd5e6c7224aa84b">&#9670;&nbsp;</a></span>NWNX_AREA_PVP_SETTING_PARTY_PVP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_PVP_SETTING_PARTY_PVP = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga8a6f21649b08da34ecc397f7fd621176"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8a6f21649b08da34ecc397f7fd621176">&#9670;&nbsp;</a></span>NWNX_AREA_PVP_SETTING_FULL_PVP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_PVP_SETTING_FULL_PVP = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5a68d1fd703f51fcb85b38915784902c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5a68d1fd703f51fcb85b38915784902c">&#9670;&nbsp;</a></span>NWNX_AREA_PVP_SETTING_SERVER_DEFAULT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_PVP_SETTING_SERVER_DEFAULT = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga4b0afb02efc2fb84072e146b07c21725"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4b0afb02efc2fb84072e146b07c21725">&#9670;&nbsp;</a></span>NWNX_AREA_WEATHER_CHANCE_RAIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_WEATHER_CHANCE_RAIN = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00021">21</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaff6d5d664b29aa9999a7c5de80a57d80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaff6d5d664b29aa9999a7c5de80a57d80">&#9670;&nbsp;</a></span>NWNX_AREA_WEATHER_CHANCE_SNOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_WEATHER_CHANCE_SNOW = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00022">22</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga90e1c5c66112049ec181b4ae82bdf704"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga90e1c5c66112049ec181b4ae82bdf704">&#9670;&nbsp;</a></span>NWNX_AREA_WEATHER_CHANCE_LIGHTNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_WEATHER_CHANCE_LIGHTNING = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00023">23</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7dce428424e8ae3058dc9811f626358b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7dce428424e8ae3058dc9811f626358b">&#9670;&nbsp;</a></span>NWNX_AREA_DAYNIGHTCYCLE_CYCLE_DAY_NIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_DAYNIGHTCYCLE_CYCLE_DAY_NIGHT = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00029">29</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="gae8bed347af6f5ccab595bbe436867e8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae8bed347af6f5ccab595bbe436867e8d">&#9670;&nbsp;</a></span>NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_BRIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_BRIGHT = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00030">30</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga9932f7ae3886ed89ece8868879f9214f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9932f7ae3886ed89ece8868879f9214f">&#9670;&nbsp;</a></span>NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00031">31</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab5dc36ec4d73bb7b7389c17e7b00e1fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab5dc36ec4d73bb7b7389c17e7b00e1fd">&#9670;&nbsp;</a></span>NWNX_AREA_COLOR_TYPE_MOON_AMBIENT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_COLOR_TYPE_MOON_AMBIENT = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00037">37</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga74f324663644c65869ba6aa3d0d9642a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga74f324663644c65869ba6aa3d0d9642a">&#9670;&nbsp;</a></span>NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00038">38</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaa7f9c7e05048637669ccbeca9c8f3453"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7f9c7e05048637669ccbeca9c8f3453">&#9670;&nbsp;</a></span>NWNX_AREA_COLOR_TYPE_SUN_AMBIENT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_COLOR_TYPE_SUN_AMBIENT = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00039">39</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab1c50d55eb9d0acd85cb327967baefbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab1c50d55eb9d0acd85cb327967baefbe">&#9670;&nbsp;</a></span>NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__area_8nss_source.html#l00040">40</a> of file <a class="el" href="nwnx__area_8nss_source.html">nwnx_area.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 20 2019 19:58:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Oct 20 2019 20:03:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

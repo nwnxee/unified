@@ -418,3 +418,9 @@ h1.glow, h2.glow, h3.glow,
 h4.glow, h5.glow, h6.glow {
 	text-shadow: 0 0 15px #67d8ef;
 }
+
+/*********************************************/
+/**             NWNX:EE Custom              **/
+/*********************************************/
+.contents h3 {display:none}
+.headertitle .title {font-size: 200%}
