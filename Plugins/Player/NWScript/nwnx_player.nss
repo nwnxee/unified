@@ -25,14 +25,6 @@ struct NWNX_Player_QuickBarSlot
     int    nAssociateType; ///< @todo Describe
     object oAssociate; ///< @todo Describe
 };
-/// @name Visibility Types
-/// @deprecated Use @ref vis_types "NWNX_Visibility Visibility Types" instead.
-/// The various types of visibilities.
-/// @{
-const int NWNX_PLAYER_VISIBILITY_DEFAULT = 0;
-const int NWNX_PLAYER_VISIBILITY_HIDDEN  = 1;
-const int NWNX_PLAYER_VISIBILITY_VISIBLE = 2;
-/// @}
 
 /// @name Timing Bar Types
 /// @anchor timing_bar_types
@@ -103,14 +95,6 @@ void NWNX_Player_SetQuickBarSlot(object player, int slot, struct NWNX_Player_Qui
 /// @param player The player object.
 /// @return The filename for this player's bic. (Not including the ".bic")
 string NWNX_Player_GetBicFileName(object player);
-
-/// @brief Overrides the default visibility rules about how player perceives the target object.
-/// @deprecated Use NWNX_Visibility_SetVisibilityOverride() instead
-void NWNX_Player_SetVisibilityOverride(object player, object target, int override);
-
-/// @brief Queries the existing visibility override for given (player, object) pair
-/// @deprecated Use NWNX_Visibility_GetVisibilityOverride() instead
-int NWNX_Player_GetVisibilityOverride(object player, object target);
 
 /// @brief Plays the VFX at the target position in current area for the given player only
 /// @param player The player object.
@@ -389,67 +373,6 @@ string NWNX_Player_GetBicFileName(object player)
     return NWNX_GetReturnValueString(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_SetVisibilityOverride(object player, object target, int override)
-{
-    WriteTimestampedLogEntry("NWNX_Player: SetVisibilityOverride() is deprecated. Use NWNX_Visibility: SetVisibilityOverride() instead");
-
-    string sFunc = "SetVisibilityOverride";
-    string NWNX_Visibility = "NWNX_Visibility";
-
-    switch(override)
-    {
-        case NWNX_PLAYER_VISIBILITY_DEFAULT:
-            override = -1;
-            break;
-
-        case NWNX_PLAYER_VISIBILITY_HIDDEN:
-            override = 1;
-            break;
-
-        case NWNX_PLAYER_VISIBILITY_VISIBLE:
-            override = 0;
-            break;
-    }
-
-    NWNX_PushArgumentInt(NWNX_Visibility, sFunc, override);
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, target);
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, player);
-
-    NWNX_CallFunction(NWNX_Visibility, sFunc);
-}
-
-int NWNX_Player_GetVisibilityOverride(object player, object target)
-{
-    WriteTimestampedLogEntry("NWNX_Player: GetVisibilityOverride() is deprecated. Use NWNX_Visibility: GetVisibilityOverride() instead");
-
-    string sFunc = "GetVisibilityOverride";
-    string NWNX_Visibility = "NWNX_Visibility";
-
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, target);
-    NWNX_PushArgumentObject(NWNX_Visibility, sFunc, player);
-
-    NWNX_CallFunction(NWNX_Visibility, sFunc);
-
-    int retVal = NWNX_GetReturnValueInt(NWNX_Visibility, sFunc);
-
-    switch(retVal)
-    {
-        case -1:
-            retVal = NWNX_PLAYER_VISIBILITY_DEFAULT;
-            break;
-
-        case 0:
-            retVal = NWNX_PLAYER_VISIBILITY_VISIBLE;
-            break;
-
-        case 1:
-            retVal = NWNX_PLAYER_VISIBILITY_HIDDEN;
-            break;
-    }
-
-    return retVal;
-}
-
 void NWNX_Player_ShowVisualEffect(object player, int effectId, vector position)
 {
     string sFunc = "ShowVisualEffect";
@@ -667,7 +590,7 @@ void NWNX_Player_SetPlaceableNameOverride(object player, object placeable, strin
 int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
 {
     string sFunc = "GetQuestCompleted";
-    
+
     NWNX_PushArgumentString(NWNX_Player, sFunc, sQuestName);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
