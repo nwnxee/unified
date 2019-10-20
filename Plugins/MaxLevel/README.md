@@ -13,25 +13,24 @@ This plugin extends the maximum level possibility from 40 to 60. The plugin prov
 * The `NWNX_ELC` plugin is also needed to bypass the level restriction. No configuration is necessary though, merely loading this plugin is sufficient.
 
 ## Issues
-
 * Spellcasters may not change spells when levelling up
 * Next Level XP on Character Sheet shows an incorrect value
 
 ## Setup
-* Define your max levels variable in your server environment. 
+* Define your max levels variable in your server environment.
 ```
 export NWNX_MAXLEVEL_MAX=45
 ```
-* If you provide a `-maxlevel` argument in your server start up or have `MaxCharLevel` defined in your **nwnplayer.ini** make sure those values are changed as well.
+* If you provide a `-maxlevel` argument in your server start up or have `MaxCharLevel` defined in your **nwnplayer.ini** make sure those values are changed as well. It is safe to ignore the message at startup stating `Server: Invalid argument to -maxlevel`.
 
 * Add your XP thresholds to your **exptable.2da**
 ```csv
 ...
-40	41	35935000	
-41	42	39935000	
-42	43	45935000	
-43	44	53935000	
-44	45	63935000	
-45	46	0xFFFFFFF	
+40	41	35935000
+41	42	39935000
+42	43	45935000
+43	44	53935000
+44	45	63935000
+45	46	0xFFFFFFF
 ```
-* (Optional) Edit the class spell gain and spell known 2da files to provide more spells as levels progress. These are **cls_spgn_???.2da** and **cls_spkn_???.2da**.
+* (Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are **cls_spgn_???.2da**. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40.

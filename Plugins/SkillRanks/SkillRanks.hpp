@@ -45,7 +45,7 @@ private:
     };
 
     std::vector<std::map<uint32_t, SkillFeats>> m_skillFeatMap;
-    std::vector<std::map<uint32_t, uint16_t>> m_skillRaceMod;
+    std::unordered_map<uint16_t, std::unordered_map<uint8_t, int32_t>> m_skillRaceMod;
 };
 
 }

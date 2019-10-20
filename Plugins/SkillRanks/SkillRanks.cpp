@@ -98,9 +98,6 @@ void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, CNWRules* pRu
     // Initialize our vector for each skill
     g_plugin->m_skillFeatMap.assign(pRules->m_nNumSkills, {});
 
-    // Initialize our vector for any messages received
-    g_plugin->m_skillRaceMod.assign(pRules->m_nNumSkills, {});
-
     g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
                                                            [](const std::vector<std::string> message)
                                                            {

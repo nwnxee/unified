@@ -220,6 +220,7 @@ template <> Maybe<int> PerObjectStorage::Get<int>(CGameObject *pGameObject, cons
     }
     return Maybe<int>();
 }
+
 template <> Maybe<float> PerObjectStorage::Get<float>(CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
@@ -231,6 +232,7 @@ template <> Maybe<float> PerObjectStorage::Get<float>(CGameObject *pGameObject, 
     }
     return Maybe<float>();
 }
+
 template <> Maybe<std::string> PerObjectStorage::Get<std::string>(CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))

@@ -143,10 +143,26 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bExpose);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bShowIcon);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nCasterLevel);
-    Services::Events::InsertArgument(stack, (CGameEffect*)eff->m_pLinkLeft);
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_pLinkLeft != nullptr));
-    Services::Events::InsertArgument(stack, (CGameEffect*)eff->m_pLinkRight);
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_pLinkRight != nullptr));
+
+    // The DestroyGameEffect at the end of this function will delete any linked effects
+    // as well so we make a copy of the linked effects and send those for unpacking
+    CGameEffect *leftLinkEff = nullptr;
+    if (eff->m_pLinkLeft != nullptr)
+    {
+        leftLinkEff = new CGameEffect(true);
+        leftLinkEff->CopyEffect(eff->m_pLinkLeft, 0);
+    }
+    Services::Events::InsertArgument(stack, leftLinkEff);
+    Services::Events::InsertArgument(stack, eff->m_pLinkLeft != nullptr);
+
+    CGameEffect *rightLinkEff = nullptr;
+    if (eff->m_pLinkRight != nullptr)
+    {
+        rightLinkEff = new CGameEffect(true);
+        rightLinkEff->CopyEffect(eff->m_pLinkRight, 0);
+    }
+    Services::Events::InsertArgument(stack, rightLinkEff);
+    Services::Events::InsertArgument(stack, eff->m_pLinkRight != nullptr);
 
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nNumIntegers);
     Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 0 ? eff->m_nParamInteger[0] : -1));

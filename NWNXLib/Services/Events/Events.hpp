@@ -33,7 +33,7 @@ public: // Structures
         Argument(float v)                  : m_float(v)  { }
         Argument(API::Types::ObjectID v)   : m_object(v) { }
         Argument(std::string v)            : m_string(std::move(v)) { }
-        Argument(CGameEffect* v)      : m_effect(v) { }
+        Argument(CGameEffect* v)           : m_effect(v) { }
 
         template <typename T> Maybe<T>& Get();
         std::string toString() const;

@@ -704,7 +704,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
         // Add the stat bonus from feats
         int32_t nStatMods[6] = {0};
-        // TODO: FIX 64 BIT
+        // TODO-64: FIX 64 BIT
 //        pCreatureStats->GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, nReportedDragonLevel);
 //
 //        // Update our ability values
@@ -712,6 +712,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 //        {
 //            nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
 //        }
+
 
 // *** Check Hit Die ********************************************************************************************************
         if (pLevelStats->m_nHitDie > pCreatureStats->GetHitDie(nMultiClassLeveledUpIn, nClassLeveledUpIn))

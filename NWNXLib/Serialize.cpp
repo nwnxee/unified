@@ -137,7 +137,7 @@ CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
         /* CNWSItem already makes this call in LoadItem */                                  \
         if (!Utils::AsNWSItem(p))                                                           \
             p->LoadObjectState(&resGff, &resStruct);                                        \
-        return static_cast<CGameObject*>(p);                                           \
+        return static_cast<CGameObject*>(p);                                                \
     } while(0)
 
     else if (sFileType == "UTI ")

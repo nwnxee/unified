@@ -477,6 +477,8 @@ void Race::ApplyEffectHook(
     if(cType == Services::Hooks::CallType::BEFORE_ORIGINAL )
     {
         CNWSCreature* tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
+        if (tgtCreature == nullptr)
+            return;
         uint8_t nRaceParam;
         //get the proper parameter that contains race
         switch(eff->m_nType)
@@ -844,7 +846,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
             }
             g_plugin->m_RaceABVsRace[raceId][param1] = param2;
             auto versusRaceName = Globals::Rules()->m_lstRaces[param1].GetNamePluralText();
-            LOG_INFO("%s: Setting Natural AB modifier vs %s to %d.", raceName, versusRaceName.CStr(), param2);
+            LOG_INFO("%s: Setting Natural AB modifier vs %s to %d.", raceName, versusRaceName, param2);
             break;
         }
         case AC:
@@ -862,7 +864,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
             }
             g_plugin->m_RaceACVsRace[raceId][param1] = param2;
             auto versusRaceName = Globals::Rules()->m_lstRaces[param1].GetNamePluralText();
-            LOG_INFO("%s: Setting Natural AC modifier vs %s to %d.", raceName, versusRaceName.CStr(), param2);
+            LOG_INFO("%s: Setting Natural AC modifier vs %s to %d.", raceName, versusRaceName, param2);
             break;
         }
         case CONCEALMENT:
@@ -921,7 +923,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
             }
             auto featName = Globals::Rules()->GetFeat(param1)->GetNameText();
             g_plugin->m_RaceFeat[raceId][param1] = param2;
-            LOG_INFO("%s: Granting %s Feat at level %d.", raceName, featName.CStr(), param2);
+            LOG_INFO("%s: Granting %s Feat at level %d.", raceName, featName, param2);
             break;
         }
         case FEATUSAGE:
@@ -933,7 +935,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
             }
             g_plugin->m_RaceFeatUsage[raceId][param1]= std::make_pair(param2, param3);
             auto featName = Globals::Rules()->GetFeat(param1)->GetNameText();
-            LOG_INFO("%s: Setting %s Feat Usage Per Day to %d + 1 for every %d level(s).", raceName, featName.CStr(), param2, param3);
+            LOG_INFO("%s: Setting %s Feat Usage Per Day to %d + 1 for every %d level(s).", raceName, featName, param2, param3);
             break;
         }
         case IMMUNITY:
@@ -968,7 +970,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
             g_plugin->m_RaceParent[raceId] = param1;
             g_plugin->m_ChildRaces[param1].push_back(raceId);
             auto parentRaceName = Globals::Rules()->m_lstRaces[param1].GetNameText();
-            LOG_INFO("%s: Setting parent race to %s.", raceName, parentRaceName.CStr());
+            LOG_INFO("%s: Setting parent race to %s.", raceName, parentRaceName);
             break;
         }
         case REGENERATION:
@@ -1032,7 +1034,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
 
             g_plugin->m_RaceSkill[raceId][param1] = param2;
             auto skillName = Globals::Rules()->m_lstSkills[param1].GetNameText();
-            LOG_INFO("%s: Setting Skill modifier of %d for %s.", raceName, param2, skillName.CStr());
+            LOG_INFO("%s: Setting Skill modifier of %d for %s.", raceName, param2, skillName);
             break;
         }
         case SPELLIMMUNITY:
@@ -1048,7 +1050,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
                 g_plugin->m_RaceSpellImmunities[raceId] = immunities;
             }
             auto spellName = Globals::Rules()->m_pSpellArray[0].GetSpell(param1)->GetSpellNameText();
-            LOG_INFO("%s: Setting %s Spell Immunity.", raceName, spellName.CStr());
+            LOG_INFO("%s: Setting %s Spell Immunity.", raceName, spellName);
             break;
         }
         case SRCHARGEN:

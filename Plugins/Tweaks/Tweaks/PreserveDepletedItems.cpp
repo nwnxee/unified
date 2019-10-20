@@ -27,14 +27,15 @@ PreserveDepletedItems::PreserveDepletedItems(ViewPtr<Services::HooksProxy> hooke
 
 uint32_t PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(CNWSCreature *pThis, CNWSObjectActionNode *pNode)
 {
-    // If at risk of destroying the item, inflate charge count temporarily to bypass the destroy
-    // event, then set it back to mark the spells as unusable.
+    // If at risk of destroying the item, set the item to plot, then set it back
+    // afterwards to its original value.
     auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((Types::ObjectID)(uintptr_t)pNode->m_pParameter[0]));
-    if (pItem && pItem->m_nNumCharges <= 5)
+    if (pItem && pItem->m_nNumCharges > 0 && pItem->m_nNumCharges <= 5)
     {
-        pItem->m_nNumCharges += 10;
+        int bPlot = pItem->m_bPlotObject;
+        pItem->m_bPlotObject = true;
         int32_t ret = pAIActionItemCastSpell_hook->CallOriginal<uint32_t>(pThis, pNode);
-        pItem->SetNumCharges(pItem->m_nNumCharges - 10, true /* update which properties are usable */);
+        pItem->m_bPlotObject = bPlot;
         return ret;
     }
     return pAIActionItemCastSpell_hook->CallOriginal<uint32_t>(pThis, pNode);

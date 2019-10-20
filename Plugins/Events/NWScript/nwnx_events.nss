@@ -550,10 +550,10 @@ const string NWNX_Events = "NWNX_Events"; ///< @private
 
     Event data:
         Variable Name           Type        Notes
-        PIN_X                   float
-        PIN_Y                   float
-        PIN_ID                  int
-        PIN_NOTE                string
+        PIN_X                   float       Not available in DESTROY event
+        PIN_Y                   float       Not available in DESTROY event
+        PIN_ID                  int         Not available in ADD events. Use GetLocalInt(oPC, "NW_TOTAL_MAP_PINS")
+        PIN_NOTE                string      Not available in DESTROY event
 ////////////////////////////////////////////////////////////////////////////////
     NWNX_ON_DO_LISTEN_DETECTION_BEFORE
     NWNX_ON_DO_LISTEN_DETECTION_AFTER

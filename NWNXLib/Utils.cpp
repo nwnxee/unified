@@ -29,8 +29,7 @@
 
 #include <sstream>
 
-namespace NWNXLib {
-namespace Utils {
+namespace NWNXLib::Utils {
 
 using namespace API::Constants;
 
@@ -401,5 +400,4 @@ void AddDestroyObjectEvent(API::Types::ObjectID oid)
     pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
 }
 
-}
 }
