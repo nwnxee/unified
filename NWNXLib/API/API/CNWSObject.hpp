@@ -47,9 +47,6 @@ typedef uint32_t OBJECT_ID;
 struct CNWSObject : CGameObject
 {
     CExoLocString m_sForGCC;
-    ObjectVisualTransformData m_pVisualTransformData;
-    CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
-    CNWSUUID m_pUUID;
     uint16_t m_nGroupID;
     uint16_t m_nLastGroupID;
     CExoString m_sTag;
@@ -136,6 +133,9 @@ struct CNWSObject : CGameObject
     BOOL m_bApplyingPostProcessEffects;
     BOOL m_bOpenDoorAnimationPlayed;
     CNWSTransition m_pTransition;
+    ObjectVisualTransformData m_pVisualTransformData;
+    CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
+    CNWSUUID m_pUUID;
 
     CNWSObject(uint8_t nObjectType, OBJECT_ID oidId = 0x7f000000, BOOL bCharacterObject = false, BOOL bAddObjectToArray = true);
     ~CNWSObject();

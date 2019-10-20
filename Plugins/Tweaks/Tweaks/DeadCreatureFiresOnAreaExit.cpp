@@ -19,10 +19,10 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* DeadCreatureFiresOnAreaExit::pRemoveObjectFromArea_hook;
 DeadCreatureFiresOnAreaExit::DeadCreatureFiresOnAreaExit(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSArea__RemoveObjectFromArea>
+    hooker->RequestExclusiveHook<Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj>
                                     (&CNWSArea__RemoveObjectFromArea_hook);
 
-    pRemoveObjectFromArea_hook = hooker->FindHookByAddress(Functions::CNWSArea__RemoveObjectFromArea);
+    pRemoveObjectFromArea_hook = hooker->FindHookByAddress(Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj);
 }
 
 

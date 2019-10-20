@@ -52,8 +52,8 @@ Visibility::Visibility(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__TestObjectVisible>(&Visibility::TestObjectVisibleHook);
-    m_TestObjectVisibilityHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__TestObjectVisible);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_>(&Visibility::TestObjectVisibleHook);
+    m_TestObjectVisibilityHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_);
 }
 
 Visibility::~Visibility()

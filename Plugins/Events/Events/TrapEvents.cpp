@@ -22,18 +22,18 @@ static NWNXLib::Hooking::FunctionHook* m_OnEnterTrapHook = nullptr;
 TrapEvents::TrapEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_TRAP_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AIActionDisarmTrap, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionDisarmTrapHook);
-        m_AIActionDisarmTrapHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__AIActionDisarmTrap);
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AIActionExamineTrap, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionExamineTrapHook);
-        m_AIActionExamineTrapHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__AIActionExamineTrap);
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AIActionFlagTrap, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionFlagTrapHook);
-        m_AIActionFlagTrapHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__AIActionFlagTrap);
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AIActionRecoverTrap, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionRecoverTrapHook);
-        m_AIActionRecoverTrapHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__AIActionRecoverTrap);
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AIActionSetTrap, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionSetTrapHook);
-        m_AIActionSetTrapHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__AIActionSetTrap);
-        hooker->RequestExclusiveHook<API::Functions::CNWSTrigger__OnEnterTrap, void, API::CNWSTrigger*, int32_t>(&OnEnterTrapHook);
-        m_OnEnterTrapHook = hooker->FindHookByAddress(API::Functions::CNWSTrigger__OnEnterTrap);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature18AIActionDisarmTrapEP20CNWSObjectActionNode, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionDisarmTrapHook);
+        m_AIActionDisarmTrapHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature18AIActionDisarmTrapEP20CNWSObjectActionNode);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature19AIActionExamineTrapEP20CNWSObjectActionNode, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionExamineTrapHook);
+        m_AIActionExamineTrapHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature19AIActionExamineTrapEP20CNWSObjectActionNode);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature16AIActionFlagTrapEP20CNWSObjectActionNode, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionFlagTrapHook);
+        m_AIActionFlagTrapHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature16AIActionFlagTrapEP20CNWSObjectActionNode);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature19AIActionRecoverTrapEP20CNWSObjectActionNode, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionRecoverTrapHook);
+        m_AIActionRecoverTrapHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature19AIActionRecoverTrapEP20CNWSObjectActionNode);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature15AIActionSetTrapEP20CNWSObjectActionNode, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionSetTrapHook);
+        m_AIActionSetTrapHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature15AIActionSetTrapEP20CNWSObjectActionNode);
+        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSTrigger11OnEnterTrapEi, void, API::CNWSTrigger*, int32_t>(&OnEnterTrapHook);
+        m_OnEnterTrapHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSTrigger11OnEnterTrapEi);
     });
 }
 

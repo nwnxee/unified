@@ -42,8 +42,8 @@ static Hooking::FunctionHook* g_SetCombatModeHook = nullptr;
 CombatModes::CombatModes(const Plugin::CreateParams& params)
     : Plugin(params), m_Skipped(false), m_FlurryOfBlows(false)
 {
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSCreature__SetCombatMode, void, API::CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
-    g_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSCreature__SetCombatMode);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, API::CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
+    g_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN12CNWSCreature13SetCombatModeEhi);
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
         [this](const std::vector<std::string> message)

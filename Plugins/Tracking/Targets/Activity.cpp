@@ -24,7 +24,7 @@ static ViewPtr<Services::MetricsProxy> g_metrics;
 Activity::Activity(ViewPtr<Services::MetricsProxy> metrics, ViewPtr<Services::HooksProxy> hooks)
 {
     g_metrics = metrics;
-    hooks->RequestSharedHook<Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopUpdate);
+    hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
     metrics->SetResampler("Activity", resampler, std::chrono::seconds(1));
 }

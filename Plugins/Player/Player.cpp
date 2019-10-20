@@ -172,7 +172,7 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
 
     if (!bHandlePlayerToServerInputCancelGuiTimingEventHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerInputCancelGuiTimingEvent, int32_t>(
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer, int32_t>(
                 +[](Services::Hooks::CallType type, CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> void
                 {
                     // Before or after doesn't matter, just pick one so it happens only once
@@ -258,7 +258,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 
     if (!pOnRemoveLimitMovementSpeed_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnRemoveLimitMovementSpeed>(
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect>(
             +[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
             {
                 // Don't remove the forced walk flag when various slowdown effects expire
@@ -268,7 +268,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 
                 return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
             });
-        pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnRemoveLimitMovementSpeed);
+        pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect);
     }
 
     ArgumentStack stack;
@@ -548,7 +548,7 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
 
     if (!bAIActionRestHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__AIActionRest, int32_t>(
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode, int32_t>(
             +[](Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
             {
                 static int32_t creatureLevel;
@@ -746,7 +746,7 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
 
     if (!bAIActionRestHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__AIActionRest, int32_t>(
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode, int32_t>(
                 +[](Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
                 {
                     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
@@ -786,7 +786,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
     if (!bSetObjectVisualTransformOverrideHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>(
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
                 +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
@@ -916,7 +916,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 
     if (!bApplyLoopingVisualEffectToObjectHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>(
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
                 +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
@@ -1016,7 +1016,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
 
     if (!bSetPlaceableNameOverrideHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>(
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
                 +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
@@ -1109,7 +1109,7 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
     static bool bSetPersistentLocationHook;
     if (!bSetPersistentLocationHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__LoadCharacterFinish, void>(
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN13CServerExoApp19LoadCharacterFinishEP10CNWSPlayerii, void>(
                 +[](Services::Hooks::CallType cType, CServerExoAppInternal*, CNWSPlayer *pPlayer, int32_t, int32_t) -> void
                 {
                     if (cType == Services::Hooks::CallType::AFTER_ORIGINAL)

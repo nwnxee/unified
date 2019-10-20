@@ -51,7 +51,8 @@ Appearance::Appearance(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForObject, int32_t>
+    GetServices()->m_hooks->RequestSharedHook
+        <Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>
             (&ComputeGameObjectUpdateForObjectHook);
 }
 

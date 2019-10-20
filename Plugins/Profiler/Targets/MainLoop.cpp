@@ -21,15 +21,15 @@ MainLoop::MainLoop(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET(hooker,
-        ExoAppMainLoop, API::Functions::CServerExoAppInternal__MainLoop,
+        ExoAppMainLoop, API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
         int32_t, API::CServerExoAppInternal*);
 
     DEFINE_PROFILER_TARGET(hooker,
-        ExoAppConnectionLibMainLoop, API::Functions::CServerExoAppInternal__ConnectionLibMainLoop,
+        ExoAppConnectionLibMainLoop, API::Functions::_ZN21CServerExoAppInternal21ConnectionLibMainLoopEv,
         void, API::CServerExoAppInternal*);
 
     DEFINE_PROFILER_TARGET(hooker,
-        ExoAppUpdateClientGameObjects, API::Functions::CServerExoAppInternal__UpdateClientGameObjects,
+        ExoAppUpdateClientGameObjects, API::Functions::_ZN21CServerExoAppInternal23UpdateClientGameObjectsEi,
         void, API::CServerExoAppInternal*, int32_t);
 }
 

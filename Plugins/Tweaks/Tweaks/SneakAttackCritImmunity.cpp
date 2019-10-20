@@ -23,13 +23,13 @@ NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveSneakAttack_hoo
 NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveDeathAttack_hook;
 SneakAttackCritImmunity::SneakAttackCritImmunity(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__ResolveSneakAttack>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_>
                                     (&CNWSCreature__ResolveSneakAttack_hook);
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__ResolveDeathAttack>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_>
                                     (&CNWSCreature__ResolveDeathAttack_hook);
 
-    pResolveSneakAttack_hook = hooker->FindHookByAddress(Functions::CNWSCreature__ResolveSneakAttack);
-    pResolveDeathAttack_hook = hooker->FindHookByAddress(Functions::CNWSCreature__ResolveDeathAttack);
+    pResolveSneakAttack_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_);
+    pResolveDeathAttack_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_);
 }
 
 

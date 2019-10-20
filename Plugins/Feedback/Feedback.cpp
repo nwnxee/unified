@@ -53,21 +53,21 @@ Feedback::Feedback(const Plugin::CreateParams& params)
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
-        
+
     REGISTER(GetMessageHidden);
     REGISTER(SetMessageHidden);
     REGISTER(SetFeedbackMode);
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSCreature__SendFeedbackMessage>(&SendFeedbackMessageHook);
-    m_SendFeedbackMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSCreature__SendFeedbackMessage);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer>(&SendFeedbackMessageHook);
+    m_SendFeedbackMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCCMessage>(&SendServerToPlayerCCMessageHook);
-    m_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCCMessage);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData>(&SendServerToPlayerCCMessageHook);
+    m_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerJournalUpdated>(&SendServerToPlayerJournalUpdatedHook);
-    m_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerJournalUpdated);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString>(&SendServerToPlayerJournalUpdatedHook);
+    m_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString);
 }
 
 Feedback::~Feedback()

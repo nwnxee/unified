@@ -29,47 +29,47 @@ ObjectEventHandlers::ObjectEventHandlers(ViewPtr<NWNXLib::Services::HooksProxy> 
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerArea, API::Functions::CNWSArea__EventHandler,
+        EventHandlerArea, API::Functions::_ZN8CNWSArea12EventHandlerEjjPvjj,
         void, API::CNWSArea*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerAreaOfEffect, API::Functions::CNWSAreaOfEffectObject__EventHandler,
+        EventHandlerAreaOfEffect, API::Functions::_ZN22CNWSAreaOfEffectObject12EventHandlerEjjPvjj,
         void, API::CNWSAreaOfEffectObject*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerCreature, API::Functions::CNWSCreature__EventHandler,
+        EventHandlerCreature, API::Functions::_ZN12CNWSCreature12EventHandlerEjjPvjj,
         void, API::CNWSCreature*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerDoor, API::Functions::CNWSDoor__EventHandler,
+        EventHandlerDoor, API::Functions::_ZN8CNWSDoor12EventHandlerEjjPvjj,
         void, API::CNWSDoor*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerEncounter, API::Functions::CNWSEncounter__EventHandler,
+        EventHandlerEncounter, API::Functions::_ZN13CNWSEncounter12EventHandlerEjjPvjj,
         void, API::CNWSEncounter*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerItem, API::Functions::CNWSItem__EventHandler,
+        EventHandlerItem, API::Functions::_ZN8CNWSItem12EventHandlerEjjPvjj,
         void, API::CNWSItem*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerModule, API::Functions::CNWSModule__EventHandler,
+        EventHandlerModule, API::Functions::_ZN10CNWSModule12EventHandlerEjjPvjj,
         void, API::CNWSModule*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerPlaceable, API::Functions::CNWSPlaceable__EventHandler,
+        EventHandlerPlaceable, API::Functions::_ZN13CNWSPlaceable12EventHandlerEjjPvjj,
         void, API::CNWSPlaceable*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerStore, API::Functions::CNWSStore__EventHandler,
+        EventHandlerStore, API::Functions::_ZN9CNWSStore12EventHandlerEjjPvjj,
         void, API::CNWSStore*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerTrigger, API::Functions::CNWSTrigger__EventHandler,
+        EventHandlerTrigger, API::Functions::_ZN11CNWSTrigger12EventHandlerEjjPvjj,
         void, API::CNWSTrigger*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        EventHandlerWaypoint, API::Functions::CNWSWaypoint__EventHandler,
+        EventHandlerWaypoint, API::Functions::_ZN12CNWSWaypoint12EventHandlerEjjPvjj,
         void, API::CNWSWaypoint*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 }
 

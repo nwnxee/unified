@@ -23,7 +23,7 @@ using namespace NWNXLib::API;
 
 HideDMsOnCharList::HideDMsOnCharList(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__HandlePlayerToServerPlayModuleCharacterList_Start>
+    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer>
         (&HandlePlayerToServerPlayModuleCharacterList_StartHook);
 }
 

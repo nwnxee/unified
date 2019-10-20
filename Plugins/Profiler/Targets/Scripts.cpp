@@ -92,7 +92,7 @@ Scripts::Scripts(const bool areaTimings, const bool typeTimings,
     g_typeTimings = typeTimings;
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        RunScript, API::Functions::CVirtualMachine__RunScript,
+        RunScript, API::Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
         bool, API::CVirtualMachine*, API::CExoString*, uint32_t, bool);
 }
 

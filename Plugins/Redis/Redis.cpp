@@ -41,7 +41,7 @@ using namespace NWNXLib::Hooking;
 Redis::Redis(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    GetServices()->m_hooks->RequestSharedHook<Functions::CVirtualMachineStack__ClearStack, void>(&CleanState);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN20CVirtualMachineStack10ClearStackEv, void>(&CleanState);
 
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 

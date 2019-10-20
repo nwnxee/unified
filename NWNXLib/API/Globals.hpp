@@ -3,13 +3,8 @@
 #include <cstdint>
 #include "API/Version.hpp"
 
-namespace NWNXLib {
+namespace NWNXLib::API {
 
-namespace API {
-
-#ifdef _WIN32
-    static_assert(false, "Windows is not suported.");
-#endif
 
 struct CExoBase;
 struct CExoResMan;
@@ -19,26 +14,46 @@ struct CAppManager;
 struct CTlkTable;
 struct CNWRules;
 struct CExoString;
+namespace Task {
+struct CExoTaskManager;
+}
 
 namespace Globals {
 
-constexpr uintptr_t g_exoBaseAddr        = 0x00BA7420; NWNX_EXPECT_VERSION(8192);
-constexpr uintptr_t g_exoResManAddr      = 0x00BA7418; NWNX_EXPECT_VERSION(8192);
-constexpr uintptr_t g_virtualMachineAddr = 0x00BA7410; NWNX_EXPECT_VERSION(8192);
-constexpr uintptr_t g_scriptCompilerAddr = 0x00BA7408; NWNX_EXPECT_VERSION(8192);
-constexpr uintptr_t g_appManagerAddr     = 0x00BA7400; NWNX_EXPECT_VERSION(8192);
-constexpr uintptr_t g_tlkTableAddr       = 0x00BA73F8; NWNX_EXPECT_VERSION(8192);
-constexpr uintptr_t g_nwRulesAddr        = 0x00BA73F0; NWNX_EXPECT_VERSION(8192);
+struct NWNXExportedGlobals
+{
+    CExoString            *psBuildNumber;
+    CExoBase              **ppExoBase;
+    CExoResMan            **ppExoResMan;
+    CVirtualMachine       **ppVirtualMachine;
+    CScriptCompiler       **ppScriptCompiler;
+    CAppManager           **ppAppManager;
+    CTlkTable             **ppTlkTable;
+    CNWRules              **ppRules;
+    Task::CExoTaskManager **ppExoTaskManager;
+    int32_t                *pbEnableCombatDebugging;
+    int32_t                *pbEnableSavingThrowDebugging;
+    int32_t                *pbEnableMovementSpeedDebugging;
+    int32_t                *pbEnableHitDieDebugging;
+    int32_t                *pbExitProgram;
+};
+extern NWNXExportedGlobals ExportedGlobals;
 
-extern CExoBase*        ExoBase();
-extern CExoResMan*      ExoResMan();
-extern CVirtualMachine* VirtualMachine();
-extern CScriptCompiler* ScriptCompiler();
-extern CAppManager*     AppManager();
-extern CTlkTable*       TlkTable();
-extern CNWRules*        Rules();
+inline CExoString*            BuildNumber()     { return ExportedGlobals.psBuildNumber; }
+inline CExoBase*              ExoBase()         { return *ExportedGlobals.ppExoBase; }
+inline CExoResMan*            ExoResMan()       { return *ExportedGlobals.ppExoResMan; }
+inline CVirtualMachine*       VirtualMachine()  { return *ExportedGlobals.ppVirtualMachine; }
+inline CScriptCompiler*       ScriptCompiler()  { return *ExportedGlobals.ppScriptCompiler; }
+inline CAppManager*           AppManager()      { return *ExportedGlobals.ppAppManager; }
+inline CTlkTable*             TlkTable()        { return *ExportedGlobals.ppTlkTable; }
+inline CNWRules*              Rules()           { return *ExportedGlobals.ppRules; }
+inline Task::CExoTaskManager* TaskManager()     { return *ExportedGlobals.ppExoTaskManager; }
 
-}
+inline int32_t* EnableCombatDebugging()         { return ExportedGlobals.pbEnableCombatDebugging; }
+inline int32_t* EnableSavingThrowDebugging()    { return ExportedGlobals.pbEnableSavingThrowDebugging; }
+inline int32_t* EnableMovementSpeedDebugging()  { return ExportedGlobals.pbEnableMovementSpeedDebugging; }
+inline int32_t* EnableHitDieDebugging()         { return ExportedGlobals.pbEnableHitDieDebugging; }
+inline int32_t* ExitProgram()                   { return ExportedGlobals.pbExitProgram; }
 
 }
 

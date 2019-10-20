@@ -19,7 +19,7 @@ FeatEvents::FeatEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", [hooker]() {
         hooker->RequestExclusiveHook<
-            NWNXLib::API::Functions::CNWSCreature__UseFeat,
+            NWNXLib::API::Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector,
             int32_t,
             NWNXLib::API::CNWSCreature*,
             uint16_t,
@@ -28,7 +28,7 @@ FeatEvents::FeatEvents(ViewPtr<Services::HooksProxy> hooker)
             NWNXLib::API::Types::ObjectID,
             NWNXLib::API::Vector*>(FeatEvents::UseFeatHook);
 
-        m_UseFeatHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseFeat);
+        m_UseFeatHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector);
     });
 }
 

@@ -25,8 +25,8 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerDungeonMasterMessag
 DMActionEvents::DMActionEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_DM_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerDungeonMasterMessage>(&HandleDMMessageHook);
-        m_HandlePlayerToServerDungeonMasterMessageHook = hooker->FindHookByAddress(Functions::CNWSMessage__HandlePlayerToServerDungeonMasterMessage);
+        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi>(&HandleDMMessageHook);
+        m_HandlePlayerToServerDungeonMasterMessageHook = hooker->FindHookByAddress(Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi);
     });
 }
 

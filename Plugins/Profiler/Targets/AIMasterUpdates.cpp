@@ -30,32 +30,32 @@ AIMasterUpdates::AIMasterUpdates(const bool overkill,
 {
     g_metrics = metrics;
 
-    hooker->RequestSharedHook<API::Functions::CServerAIMaster__UpdateState, void>(&AIMasterUpdate);
+    hooker->RequestSharedHook<API::Functions::_ZN15CServerAIMaster11UpdateStateEv, void>(&AIMasterUpdate);
 
     Resamplers::ResamplerFuncPtr resampler = &Resamplers::template Mean<uint32_t>;
     metrics->SetResampler("AIQueuedEvents", resampler, std::chrono::seconds(1));
     metrics->SetResampler("AIUpdateListObjects", resampler, std::chrono::seconds(1));
 
     DEFINE_PROFILER_TARGET(hooker,
-        AIMasterUpdateState, API::Functions::CServerAIMaster__UpdateState,
+        AIMasterUpdateState, API::Functions::_ZN15CServerAIMaster11UpdateStateEv,
         void, API::CServerAIMaster*);
 
     if (overkill)
     {
         DEFINE_PROFILER_TARGET_FAST(hooker,
-            EventPending, API::Functions::CServerAIMaster__EventPending,
+            EventPending, API::Functions::_ZN15CServerAIMaster12EventPendingEjj,
             bool, API::CServerAIMaster*, uint32_t, uint32_t);
 
         DEFINE_PROFILER_TARGET_FAST(hooker,
-            GetNextObject, API::Functions::CServerAIList__GetNextObject,
+            GetNextObject, API::Functions::_ZN13CServerAIList13GetNextObjectEv,
             API::CNWSObject*, API::CServerAIList*);
 
         DEFINE_PROFILER_TARGET_FAST(hooker,
-            GetPendingEvent, API::Functions::CServerAIMaster__GetPendingEvent,
+            GetPendingEvent, API::Functions::_ZN15CServerAIMaster15GetPendingEventEPjS0_S0_S0_S0_PPv,
             bool, API::CServerAIMaster*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, void**);
 
         DEFINE_PROFILER_TARGET_FAST(hooker,
-            UpdateDialog, API::Functions::CNWSObject__UpdateDialog,
+            UpdateDialog, API::Functions::_ZN10CNWSObject12UpdateDialogEv,
             bool, API::CNWSObject*);
     }
 }

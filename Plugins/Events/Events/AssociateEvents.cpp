@@ -11,12 +11,12 @@ using namespace NWNXLib;
 AssociateEvents::AssociateEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_ADD_ASSOCIATE_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSCreature__AddAssociate, void,
+        hooker->RequestSharedHook<API::Functions::_ZN12CNWSCreature12AddAssociateEjt, void,
             API::CNWSCreature*, API::Types::ObjectID, uint16_t>(&AddAssociateHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_REMOVE_ASSOCIATE_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSCreature__RemoveAssociate, void,
+        hooker->RequestSharedHook<API::Functions::_ZN12CNWSCreature15RemoveAssociateEj, void,
             API::CNWSCreature*, API::Types::ObjectID>(&RemoveAssociateHook);
     });
 }

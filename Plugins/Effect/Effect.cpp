@@ -187,7 +187,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
 
     if (!bOnEffectRemovedHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSEffectListHandler__OnEffectRemoved, int32_t>(
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect, int32_t>(
             +[](Services::Hooks::CallType type, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
             {
                 if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)

@@ -80,7 +80,7 @@ Util::Util(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
             +[](Services::Hooks::CallType type, CServerExoAppInternal*)
             {
                 static int ticks;
@@ -103,7 +103,7 @@ Util::Util(const Plugin::CreateParams& params)
                 }
             });
 
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSModule__LoadModuleFinish, uint32_t>(
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule16LoadModuleFinishEv, uint32_t>(
             +[](Services::Hooks::CallType type, CNWSModule*)
             {
                 if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)

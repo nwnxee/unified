@@ -24,20 +24,20 @@ static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
 ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_DISCONNECT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CServerExoAppInternal__RemovePCFromWorld, void,
+        hooker->RequestSharedHook<API::Functions::_ZN13CServerExoApp17RemovePCFromWorldEP10CNWSPlayer, void,
             CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_CONNECT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCharList, int32_t,
+        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer, int32_t,
             CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerCharListHook);
-        m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCharList);
+        m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CServerExoApp__CheckStickyPlayerNameReserved, int32_t,
+        hooker->RequestExclusiveHook<API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i, int32_t,
                 CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>(&CheckStickyPlayerNameReservedHook);
-        m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::CServerExoApp__CheckStickyPlayerNameReserved);
+        m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i);
     });
 }
 

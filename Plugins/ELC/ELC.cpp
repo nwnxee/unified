@@ -114,7 +114,7 @@ ELC::ELC(const Plugin::CreateParams& params)
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
-        
+
     REGISTER(SetELCScript);
     REGISTER(EnableCustomELCCheck);
     REGISTER(SkipValidationFailure);
@@ -130,7 +130,7 @@ ELC::ELC(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSPlayer__ValidateCharacter>(&ValidateCharacterHook);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi>(&ValidateCharacterHook);
 
     m_elcScript = GetServices()->m_config->Get<std::string>("ELC_SCRIPT", "");
     m_enableCustomELCCheck = GetServices()->m_config->Get<bool>("CUSTOM_ELC_CHECK", false);
@@ -468,8 +468,8 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     // Calculate Ability Scores
     uint8_t nAbility[6] = {0};
     int32_t nMods[6] = {0};
-    // TODO: FIX 64 BIT
-    pCreatureStats->GetAbilityModsFromFeats(&pCreatureStats->m_lstFeats, nMods, true, false);
+    // TODO-64: FIX 64 BIT
+    //pCreatureStats->GetAbilityModsFromFeats(&pCreatureStats->m_lstFeats, nMods, true, false);
 
     // Get our base ability stats
     nAbility[Ability::Strength] = (pCreature->m_bIsPolymorphed ?

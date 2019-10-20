@@ -20,7 +20,7 @@ CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_START_COMBAT_ROUND_.*", [hooker]() {
         hooker->RequestSharedHook<
-            API::Functions::CNWSCombatRound__StartCombatRound,
+            API::Functions::_ZN15CNWSCombatRound16StartCombatRoundEj,
             int32_t,
             API::CNWSCombatRound*,
             uint32_t>

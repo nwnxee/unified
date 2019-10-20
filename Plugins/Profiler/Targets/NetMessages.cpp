@@ -17,7 +17,7 @@ NetMessages::NetMessages(ViewPtr<Services::HooksProxy> hooker,
 {
     g_metrics = metrics;
 
-    hooker->RequestSharedHook<Functions::CNWSMessage__ComputeGameObjectUpdateForCategory, int32_t,
+    hooker->RequestSharedHook<Functions::_ZN11CNWSMessage34ComputeGameObjectUpdateForCategoryEjjP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayP29CNWSPlayerLUOSortedObjectListi, int32_t,
         CNWSMessage*,
         uint32_t,
         uint32_t,
@@ -27,7 +27,7 @@ NetMessages::NetMessages(ViewPtr<Services::HooksProxy> hooker,
         CNWSPlayerLUOSortedObjectList*,
         int32_t>(&ComputeGameObjectUpdateForCategory);
 
-    hooker->RequestSharedHook<Functions::CNWSMessage__SendServerToPlayerMessage, int32_t,
+    hooker->RequestSharedHook<Functions::_ZN11CNWSMessage25SendServerToPlayerMessageEjhhPhj, int32_t,
         CNWSMessage*,
         Types::PlayerID,
         uint8_t,
@@ -35,7 +35,7 @@ NetMessages::NetMessages(ViewPtr<Services::HooksProxy> hooker,
         uint8_t*,
         uint32_t>(&SendServerToPlayerMessageHook);
 
-    hooker->RequestSharedHook<Functions::CNWSMessage__HandlePlayerToServerMessage, int32_t,
+    hooker->RequestSharedHook<Functions::_ZN11CNWSMessage27HandlePlayerToServerMessageEjPhj, int32_t,
         CNWSMessage*,
         Types::PlayerID,
         uint8_t*,

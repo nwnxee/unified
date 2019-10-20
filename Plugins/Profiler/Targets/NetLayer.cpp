@@ -20,11 +20,11 @@ NetLayer::NetLayer(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET(hooker,
-        NetLayerProcessReceivedFrames, API::Functions::CNetLayer__ProcessReceivedFrames,
+        NetLayerProcessReceivedFrames, API::Functions::_ZN9CNetLayer21ProcessReceivedFramesEi,
         void, API::CNetLayer*, int32_t);
 
     DEFINE_PROFILER_TARGET(hooker,
-        NetLayerUpdateStatusLoop, API::Functions::CNetLayer__UpdateStatusLoop,
+        NetLayerUpdateStatusLoop, API::Functions::_ZN17CNetLayerInternal16UpdateStatusLoopEj,
         int32_t, API::CNetLayer*, uint32_t);
 }
 

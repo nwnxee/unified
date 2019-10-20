@@ -55,7 +55,7 @@ Pathing::Pathing(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        PlotPath, API::Functions::CNWSModule__PlotPath,
+        PlotPath, API::Functions::_ZN10CNWSModule8PlotPathEP20CPathfindInformationj,
         int32_t, API::CNWSModule*, API::CPathfindInformation*, uint32_t);
 }
 

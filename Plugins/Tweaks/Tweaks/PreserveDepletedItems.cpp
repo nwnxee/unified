@@ -18,10 +18,10 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* PreserveDepletedItems::pAIActionItemCastSpell_hook;
 PreserveDepletedItems::PreserveDepletedItems(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__AIActionItemCastSpell>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode>
                                     (&CNWSCreature__AIActionItemCastSpell_hook);
 
-    pAIActionItemCastSpell_hook = hooker->FindHookByAddress(Functions::CNWSCreature__AIActionItemCastSpell);
+    pAIActionItemCastSpell_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode);
 }
 
 

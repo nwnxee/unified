@@ -16,10 +16,10 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* CompareVarsForMerge::pCompareItem_hook;
 CompareVarsForMerge::CompareVarsForMerge(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSItem__CompareItem>
+    hooker->RequestExclusiveHook<Functions::_ZN8CNWSItem11CompareItemEPS_>
                                     (&CNWSItem__CompareItem_hook);
 
-    pCompareItem_hook = hooker->FindHookByAddress(Functions::CNWSItem__CompareItem);
+    pCompareItem_hook = hooker->FindHookByAddress(Functions::_ZN8CNWSItem11CompareItemEPS_);
 }
 
 int32_t CompareVarsForMerge::CNWSItem__CompareItem_hook(CNWSItem* thisPtr, CNWSItem* pOtherItem)

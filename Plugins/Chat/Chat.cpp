@@ -69,8 +69,8 @@ Chat::Chat(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("SET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnSetChatHearingDistance, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnGetChatHearingDistance, this, std::placeholders::_1));
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__SendServerToPlayerChatMessage>(&Chat::SendServerToPlayerChatMessage);
-    m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__SendServerToPlayerChatMessage);
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
+    m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_);
 }
 
 Chat::~Chat()

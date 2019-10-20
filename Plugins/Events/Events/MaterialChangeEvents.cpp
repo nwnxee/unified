@@ -17,7 +17,7 @@ static std::unordered_map<API::Types::ObjectID, int32_t> m_objectCurrentMaterial
 MaterialChangeEvents::MaterialChangeEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSObject__SetPosition, void,
+        hooker->RequestSharedHook<API::Functions::_ZN10CNWSObject11SetPositionE6Vectori, void,
                 API::CNWSObject*, API::Vector, int32_t>(&SetPositionHook);
     });
 }

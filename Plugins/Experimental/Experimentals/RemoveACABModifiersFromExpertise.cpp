@@ -18,6 +18,7 @@ static NWNXLib::Hooking::FunctionHook* m_GetAttackModifierVersusHook;
 
 RemoveACABModifiersFromExpertise::RemoveACABModifiersFromExpertise(ViewPtr<Services::HooksProxy> hooker)
 {
+    /* TODO-64: Remove, this is done in base game ruleset.2da now
     hooker->RequestExclusiveHook<Functions::CNWSCreatureStats__GetArmorClassVersus>(
             +[](CNWSCreatureStats *pThis, CNWSCreature *pAttacker, int32_t bVsTouchAttack) -> int16_t
             {
@@ -47,6 +48,7 @@ RemoveACABModifiersFromExpertise::RemoveACABModifiersFromExpertise(ViewPtr<Servi
                 return ret;
             });
     m_GetAttackModifierVersusHook = hooker->FindHookByAddress(Functions::CNWSCreatureStats__GetAttackModifierVersus);
+    */
 }
 
 }

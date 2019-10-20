@@ -11,15 +11,15 @@ using namespace NWNXLib;
 ExamineEvents::ExamineEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_CreatureData, int32_t,
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj, int32_t,
             API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineCreatureHook);
-        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_DoorData, int32_t,
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_DoorDataEP10CNWSPlayerj, int32_t,
             API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineDoorHook);
-        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_ItemData, int32_t,
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_ItemDataEP10CNWSPlayerj, int32_t,
             API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineItemHook);
-        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_PlaceableData, int32_t,
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage42SendServerToPlayerExamineGui_PlaceableDataEP10CNWSPlayerj, int32_t,
             API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExaminePlaceableHook);
-        hooker->RequestSharedHook<API::Functions::CNWSMessage__SendServerToPlayerExamineGui_TrapData, int32_t,
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_TrapDataEP10CNWSPlayerjP12CNWSCreaturei, int32_t,
             API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID, API::CNWSCreature*, int32_t>(&ExamineTrapHook);
     });
 }

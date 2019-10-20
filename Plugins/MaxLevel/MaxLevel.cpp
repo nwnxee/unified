@@ -68,18 +68,18 @@ MaxLevel::MaxLevel(const Plugin::CreateParams& params)
 
     if (m_maxLevel > CORE_MAX_LEVEL)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::CServerExoAppInternal__GetServerInfoFromIniFile, void, CServerExoAppInternal *>(&GetServerInfoFromIniFileHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__ReloadAll, void, CNWRules *>(&ReloadAllHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(&CanLevelUpHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetExpNeededForLevelUp>(&GetExpNeededForLevelUpHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__LevelDown>(&LevelDownHook);
-        m_LevelDownHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__LevelDown);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__SummonAssociate>(&SummonAssociateHook);
-        m_SummonAssociateHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__SummonAssociate);
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWClass__LoadSpellGainTable, void, CNWClass *, CExoString *>(&LoadSpellGainTableHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::CNWClass__LoadSpellKnownTable, void, CNWClass *, CExoString *>(&LoadSpellKnownTableHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWClass__GetSpellGain>(&GetSpellGainHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWClass__GetSpellsKnownPerLevel>( &GetSpellsKnownPerLevelHook);
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal24GetServerInfoFromIniFileEv, void, CServerExoAppInternal *>(&GetServerInfoFromIniFileHook);
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules9ReloadAllEv, void, CNWRules *>(&ReloadAllHook);
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(&CanLevelUpHook);
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats22GetExpNeededForLevelUpEv>(&GetExpNeededForLevelUpHook);
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats>(&LevelDownHook);
+        m_LevelDownHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats);
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt>(&SummonAssociateHook);
+        m_SummonAssociateHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt);
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWClass18LoadSpellGainTableE10CExoString, void, CNWClass *, CExoString *>(&LoadSpellGainTableHook);
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWClass19LoadSpellKnownTableE10CExoString, void, CNWClass *, CExoString *>(&LoadSpellKnownTableHook);
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN8CNWClass12GetSpellGainEhh>(&GetSpellGainHook);
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN8CNWClass22GetSpellsKnownPerLevelEhhhth>( &GetSpellsKnownPerLevelHook);
     }
 }
 
