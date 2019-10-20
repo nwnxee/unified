@@ -14,12 +14,12 @@ public:
     EffectEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void HandleEffectHook(const std::string&, NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSObject*,
-                                NWNXLib::API::CGameEffect*);
-    static void OnEffectAppliedHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSEffectListHandler*,
-                                NWNXLib::API::CNWSObject*, NWNXLib::API::CGameEffect*, int32_t);
-    static void OnEffectRemovedHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSEffectListHandler*,
-                                NWNXLib::API::CNWSObject*, NWNXLib::API::CGameEffect*);
+    static void HandleEffectHook(const std::string&, NWNXLib::Services::Hooks::CallType, CNWSObject*,
+                                CGameEffect*);
+    static void OnEffectAppliedHook(NWNXLib::Services::Hooks::CallType, CNWSEffectListHandler*,
+                                CNWSObject*, CGameEffect*, int32_t);
+    static void OnEffectRemovedHook(NWNXLib::Services::Hooks::CallType, CNWSEffectListHandler*,
+                                CNWSObject*, CGameEffect*);
 };
 
 }

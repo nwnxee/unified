@@ -162,7 +162,7 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
     }
     else
     {
-        playerdir = exoApp->GetNetLayer()->GetPlayerInfo(playerId)->m_lstKeys[0].sPublic.CStr();
+        playerdir = exoApp->GetNetLayer()->GetPlayerInfo(playerId)->m_lstKeys.element[0].sPublic.CStr();
     }
 
     std::string filename = servervault + playerdir + "/" + bicname + ".bic";

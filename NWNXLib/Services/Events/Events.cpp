@@ -149,7 +149,7 @@ template<> Maybe<int32_t>&              Events::Argument::Get<int32_t>()        
 template<> Maybe<float>&                Events::Argument::Get<float>()               { return m_float; }
 template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return m_object; }
 template<> Maybe<std::string>&          Events::Argument::Get<std::string>()         { return m_string; }
-template<> Maybe<API::CGameEffect*>&    Events::Argument::Get<API::CGameEffect*>()   { return m_effect; }
+template<> Maybe<CGameEffect*>&    Events::Argument::Get<CGameEffect*>()   { return m_effect; }
 
 std::string Events::Argument::toString() const
 {

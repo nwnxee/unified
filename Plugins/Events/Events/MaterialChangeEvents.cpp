@@ -18,11 +18,11 @@ MaterialChangeEvents::MaterialChangeEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN10CNWSObject11SetPositionE6Vectori, void,
-                API::CNWSObject*, API::Vector, int32_t>(&SetPositionHook);
+                CNWSObject*, Vector, int32_t>(&SetPositionHook);
     });
 }
 
-void MaterialChangeEvents::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* thisPtr, API::Vector vPos, int32_t)
+void MaterialChangeEvents::SetPositionHook(Services::Hooks::CallType type, CNWSObject* thisPtr, Vector vPos, int32_t)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)

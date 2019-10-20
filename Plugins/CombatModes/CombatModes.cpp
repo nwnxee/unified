@@ -42,7 +42,7 @@ static Hooking::FunctionHook* g_SetCombatModeHook = nullptr;
 CombatModes::CombatModes(const Plugin::CreateParams& params)
     : Plugin(params), m_Skipped(false), m_FlurryOfBlows(false)
 {
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, API::CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
     g_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN12CNWSCreature13SetCombatModeEhi);
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
@@ -64,7 +64,7 @@ CombatModes::~CombatModes()
 {
 }
 
-void CombatModes::SetCombatModeHook(API::CNWSCreature* thisPtr, uint8_t nNewMode, int32_t bForceNewMode)
+void CombatModes::SetCombatModeHook(CNWSCreature* thisPtr, uint8_t nNewMode, int32_t bForceNewMode)
 {
     //If Weapon plugin recquires flurry of blows
     if(g_plugin->m_FlurryOfBlows)

@@ -11,8 +11,8 @@ extern "C" {
 #endif
 }
 
-NWNXLib::API::CVirtualMachine* GetVm();
-NWNXLib::API::CNWVirtualMachineCommands* GetVmCommands();
+CVirtualMachine* GetVm();
+CNWVirtualMachineCommands* GetVmCommands();
 
 void LUA_InitNWScript(lua_State *L);
 

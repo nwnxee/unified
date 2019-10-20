@@ -261,7 +261,7 @@ void Profiler::HandleRecalibration(const std::chrono::time_point<std::chrono::hi
     }
 }
 
-void Profiler::MainLoopUpdate(Services::Hooks::CallType type, API::CServerExoAppInternal*)
+void Profiler::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInternal*)
 {
     if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
     {

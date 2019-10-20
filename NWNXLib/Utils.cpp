@@ -55,54 +55,54 @@ std::string GetCurrentScript()
 }
 void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner)
 {
-    API::CExoString exoStr = script.c_str();
+    CExoString exoStr = script.c_str();
     API::Globals::VirtualMachine()->RunScript(&exoStr, oidOwner, 1);
 }
 
 
-API::CNWSArea* AsNWSArea(API::CGameObject* obj)
+CNWSArea* AsNWSArea(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Area)
-        return static_cast<API::CNWSArea*>(obj);
+        return static_cast<CNWSArea*>(obj);
     return nullptr;
 }
-API::CNWSAreaOfEffectObject* AsNWSAreaOfEffectObject(API::CGameObject* obj)
+CNWSAreaOfEffectObject* AsNWSAreaOfEffectObject(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::AreaOfEffect)
-        return static_cast<API::CNWSAreaOfEffectObject*>(obj);
+        return static_cast<CNWSAreaOfEffectObject*>(obj);
     return nullptr;
 }
-API::CNWSCreature* AsNWSCreature(API::CGameObject* obj)
+CNWSCreature* AsNWSCreature(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Creature)
-        return static_cast<API::CNWSCreature*>(obj);
+        return static_cast<CNWSCreature*>(obj);
     return nullptr;
 }
-API::CNWSDoor* AsNWSDoor(API::CGameObject* obj)
+CNWSDoor* AsNWSDoor(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Door)
-        return static_cast<API::CNWSDoor*>(obj);
+        return static_cast<CNWSDoor*>(obj);
     return nullptr;
 }
-API::CNWSEncounter* AsNWSEncounter(API::CGameObject* obj)
+CNWSEncounter* AsNWSEncounter(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Encounter)
-        return static_cast<API::CNWSEncounter*>(obj);
+        return static_cast<CNWSEncounter*>(obj);
     return nullptr;
 }
-API::CNWSItem* AsNWSItem(API::CGameObject* obj)
+CNWSItem* AsNWSItem(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Item)
-        return static_cast<API::CNWSItem*>(obj);
+        return static_cast<CNWSItem*>(obj);
     return nullptr;
 }
-API::CNWSModule* AsNWSModule(API::CGameObject* obj)
+CNWSModule* AsNWSModule(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Module)
-        return static_cast<API::CNWSModule*>(obj);
+        return static_cast<CNWSModule*>(obj);
     return nullptr;
 }
-API::CNWSObject* AsNWSObject(API::CGameObject* obj)
+CNWSObject* AsNWSObject(CGameObject* obj)
 {
     if (!obj)
         return nullptr;
@@ -119,51 +119,51 @@ API::CNWSObject* AsNWSObject(API::CGameObject* obj)
         case ObjectType::Store:
         case ObjectType::Trigger:
         case ObjectType::Waypoint:
-            return static_cast<API::CNWSObject*>(obj);
+            return static_cast<CNWSObject*>(obj);
     }
     return nullptr;
 }
-API::CNWSPlaceable* AsNWSPlaceable(API::CGameObject* obj)
+CNWSPlaceable* AsNWSPlaceable(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Placeable)
-        return static_cast<API::CNWSPlaceable*>(obj);
+        return static_cast<CNWSPlaceable*>(obj);
     return nullptr;
 }
-API::CNWSSoundObject* AsNWSSoundObject(API::CGameObject* obj)
+CNWSSoundObject* AsNWSSoundObject(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Sound)
-        return static_cast<API::CNWSSoundObject*>(obj);
+        return static_cast<CNWSSoundObject*>(obj);
     return nullptr;
 }
-API::CNWSStore* AsNWSStore(API::CGameObject* obj)
+CNWSStore* AsNWSStore(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Store)
-        return static_cast<API::CNWSStore*>(obj);
+        return static_cast<CNWSStore*>(obj);
     return nullptr;
 }
-API::CNWSTrigger* AsNWSTrigger(API::CGameObject* obj)
+CNWSTrigger* AsNWSTrigger(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Trigger)
-        return static_cast<API::CNWSTrigger*>(obj);
+        return static_cast<CNWSTrigger*>(obj);
     return nullptr;
 }
-API::CNWSWaypoint* AsNWSWaypoint(API::CGameObject* obj)
+CNWSWaypoint* AsNWSWaypoint(CGameObject* obj)
 {
     if (obj && obj->m_nObjectType == ObjectType::Waypoint)
-        return static_cast<API::CNWSWaypoint*>(obj);
+        return static_cast<CNWSWaypoint*>(obj);
     return nullptr;
 }
 
-API::CGameObject* GetGameObject(API::Types::ObjectID objectId)
+CGameObject* GetGameObject(API::Types::ObjectID objectId)
 {
     return API::Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
 }
-API::CNWSModule* GetModule()
+CNWSModule* GetModule()
 {
-    return static_cast<API::CNWSModule*>(API::Globals::AppManager()->m_pServerExoApp->GetModule());
+    return static_cast<CNWSModule*>(API::Globals::AppManager()->m_pServerExoApp->GetModule());
 }
 
-bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner)
+bool AcquireItem(CNWSItem *pItem, CGameObject *pOwner)
 {
     if (!pOwner || !pItem)
         return false;
@@ -182,7 +182,7 @@ bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner)
     return false;
 }
 
-bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y, float z)
+bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
 {
     if (!pObject || !pArea)
         return false;
@@ -251,16 +251,16 @@ bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y
     }
 }
 
-bool operator==(API::Vector& v1, API::Vector& v2)
+bool operator==(Vector& v1, Vector& v2)
 {
     return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z;
 }
-bool operator!=(API::Vector& v1, API::Vector& v2)
+bool operator!=(Vector& v1, Vector& v2)
 {
     return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z;
 }
 
-bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *pVars2)
+bool CompareVariables(CNWSScriptVarTable *pVars1, CNWSScriptVarTable *pVars2)
 {
     // Fast paths
     if (pVars1->m_lVarList.num == 0 && pVars2->m_lVarList.num == 0)
@@ -271,7 +271,7 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
     // O(n^2) compare
     for (int32_t i = 0; i < pVars1->m_lVarList.num; i++)
     {
-        API::CNWSScriptVar *pVar1 = &pVars1->m_lVarList.element[i];
+        CNWSScriptVar *pVar1 = &pVars1->m_lVarList.element[i];
         switch (pVar1->m_nType)
         {
             case 1:
@@ -292,8 +292,8 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
                 break;
             case 5:
             {
-                API::CScriptLocation& loc1 = *pVar1->m_uValue.m_location;
-                API::CScriptLocation loc2 = pVars2->GetLocation(pVar1->m_sName);
+                CScriptLocation& loc1 = *pVar1->m_uValue.m_location;
+                CScriptLocation loc2 = pVars2->GetLocation(pVar1->m_sName);
                 if (loc1.m_oArea != loc2.m_oArea || loc1.m_vPosition != loc2.m_vPosition || loc1.m_vOrientation != loc2.m_vOrientation)
                     return false;
                 break;
@@ -303,7 +303,7 @@ bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *
     return true;
 }
 
-API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject)
+CNWSScriptVarTable *GetScriptVarTable(CGameObject *pObject)
 {
     if (!pObject)
         return nullptr;
@@ -311,15 +311,15 @@ API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject)
     switch (pObject->m_nObjectType)
     {
         case ObjectType::Area:
-            return &static_cast<API::CNWSArea*>(pObject)->m_ScriptVars;
+            return &static_cast<CNWSArea*>(pObject)->m_ScriptVars;
         case ObjectType::Module:
-            return &static_cast<API::CNWSModule*>(pObject)->m_ScriptVars;
+            return &static_cast<CNWSModule*>(pObject)->m_ScriptVars;
         default:
-            return &static_cast<API::CNWSObject*>(pObject)->m_ScriptVars;
+            return &static_cast<CNWSObject*>(pObject)->m_ScriptVars;
     }
 }
 
-void DestroyGameEffect(API::CGameEffect* pEffect)
+void DestroyGameEffect(CGameEffect* pEffect)
 {
     if (pEffect)
     {
@@ -328,9 +328,9 @@ void DestroyGameEffect(API::CGameEffect* pEffect)
     }
 }
 
-std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID, uint8_t bGender)
+std::string ExtractLocString(CExoLocString& locStr, int32_t nID, uint8_t bGender)
 {
-    API::CExoString str;
+    CExoString str;
     locStr.GetStringLoc(nID, &str, bGender);
 
     return std::string(str.CStr());
@@ -340,7 +340,7 @@ void AddStealthEvent(int which, API::Types::ObjectID oidSelf, API::Types::Object
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
-    auto *pScriptEvent = new API::CScriptEvent();
+    auto *pScriptEvent = new CScriptEvent();
     pScriptEvent->m_nType = ScriptEvent::OnPerception;
     pScriptEvent->SetInteger(0, which);
     pScriptEvent->SetObjectID(0, oidTarget);
@@ -351,7 +351,7 @@ void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidA
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
-    auto *pScriptEvent = new API::CScriptEvent;
+    auto *pScriptEvent = new CScriptEvent;
     pScriptEvent->m_nType = ScriptEvent::OnObjectEnter;
     pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
 }
@@ -360,7 +360,7 @@ void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidAr
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
-    auto *pScriptEvent = new API::CScriptEvent;
+    auto *pScriptEvent = new CScriptEvent;
     pScriptEvent->m_nType = ScriptEvent::OnObjectExit;
     pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
 }
@@ -373,7 +373,7 @@ void AddOnAcquireItemEvent(
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
-    auto *pScriptEvent = new API::CScriptEvent();
+    auto *pScriptEvent = new CScriptEvent();
     pScriptEvent->m_nType = ScriptEvent::OnAcquireItem;
     pScriptEvent->SetObjectID(0, oidItemAcquired);
     pScriptEvent->SetObjectID(1, oidItemAcquiredBy);
@@ -388,7 +388,7 @@ void AddOnLoseItemEvent(
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
-    auto *pScriptEvent = new API::CScriptEvent();
+    auto *pScriptEvent = new CScriptEvent();
     pScriptEvent->m_nType = ScriptEvent::OnLoseItem;
     pScriptEvent->SetObjectID(0, oidItemLost);
     pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);

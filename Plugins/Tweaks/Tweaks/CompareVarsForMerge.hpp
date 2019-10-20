@@ -13,7 +13,7 @@ public:
     CompareVarsForMerge(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static int32_t CNWSItem__CompareItem_hook(NWNXLib::API::CNWSItem*, NWNXLib::API::CNWSItem*);
+    static int32_t CNWSItem__CompareItem_hook(CNWSItem*, CNWSItem*);
     static NWNXLib::Hooking::FunctionHook* pCompareItem_hook;
 
 };

@@ -16,14 +16,14 @@ static NWNXLib::Hooking::FunctionHook* m_AIActionHealHook=nullptr;
 HealerKitEvents::HealerKitEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode, uint32_t, API::CNWSCreature*, API::CNWSObjectActionNode*>(&AIActionHealHook);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>(&AIActionHealHook);
         m_AIActionHealHook =  hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode);
     });
 }
 
 uint32_t HealerKitEvents::AIActionHealHook(
-    NWNXLib::API::CNWSCreature *pCreature,
-    NWNXLib::API::CNWSObjectActionNode *pNode)
+    CNWSCreature *pCreature,
+    CNWSObjectActionNode *pNode)
 {
     uint32_t retVal;
     std::string sAux;

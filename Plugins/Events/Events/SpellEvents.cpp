@@ -37,9 +37,9 @@ SpellEvents::SpellEvents(ViewPtr<Services::HooksProxy> hooker)
 
 void SpellEvents::CastSpellHook
 (
-    NWNXLib::API::CNWSObject* thisPtr,
+    CNWSObject* thisPtr,
     uint32_t spellID,
-    NWNXLib::API::Vector targetPosition,
+    Vector targetPosition,
     NWNXLib::API::Types::ObjectID oidTarget,
     int8_t multiClass,
     NWNXLib::API::Types::ObjectID oidItem,
@@ -81,7 +81,7 @@ void SpellEvents::CastSpellHook
 
 int32_t SpellEvents::SetMemorizedSpellSlotHook
 (
-    NWNXLib::API::CNWSCreatureStats* thisPtr,
+    CNWSCreatureStats* thisPtr,
     uint8_t multiClass,
     uint8_t slot,
     uint32_t spellID,
@@ -122,7 +122,7 @@ int32_t SpellEvents::SetMemorizedSpellSlotHook
 
 void SpellEvents::ClearMemorizedSpellSlotHook
 (
-    NWNXLib::API::CNWSCreatureStats* thisPtr,
+    CNWSCreatureStats* thisPtr,
     uint8_t multiClass,
     uint8_t level,
     uint8_t slot

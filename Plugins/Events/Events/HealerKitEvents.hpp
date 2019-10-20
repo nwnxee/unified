@@ -14,7 +14,7 @@ public:
     HealerKitEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static uint32_t AIActionHealHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
+    static uint32_t AIActionHealHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
 
 };
 

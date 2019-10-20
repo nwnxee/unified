@@ -21,16 +21,16 @@ private:
     NWNXLib::Hooking::FunctionHook* m_LevelDownHook;
     NWNXLib::Hooking::FunctionHook* m_SummonAssociateHook;
 
-    static void ReloadAllHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWRules* rules);
-    static void LoadSpellGainTableHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWClass* pClass, NWNXLib::API::CExoString *pTable);
-    static void LoadSpellKnownTableHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWClass* pClass, NWNXLib::API::CExoString *pTable);
-    static uint8_t GetSpellGainHook(NWNXLib::API::CNWClass*, uint8_t, uint8_t);
-    static uint8_t GetSpellsKnownPerLevelHook(NWNXLib::API::CNWClass *, uint8_t, uint8_t, uint8_t, uint16_t, uint8_t);
-    static int32_t CanLevelUpHook(NWNXLib::API::CNWSCreatureStats*);
-    static void SummonAssociateHook(NWNXLib::API::CNWSCreature *, NWNXLib::API::CResRef, NWNXLib::API::CExoString *, uint16_t);
-    static void LevelDownHook(NWNXLib::API::CNWSCreatureStats *, NWNXLib::API::CNWLevelStats *);
-    static uint32_t GetExpNeededForLevelUpHook(NWNXLib::API::CNWSCreatureStats *);
-    static void GetServerInfoFromIniFileHook(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CServerExoAppInternal *);
+    static void ReloadAllHook(NWNXLib::Services::Hooks::CallType type, CNWRules* rules);
+    static void LoadSpellGainTableHook(NWNXLib::Services::Hooks::CallType type, CNWClass* pClass, CExoString *pTable);
+    static void LoadSpellKnownTableHook(NWNXLib::Services::Hooks::CallType type, CNWClass* pClass, CExoString *pTable);
+    static uint8_t GetSpellGainHook(CNWClass*, uint8_t, uint8_t);
+    static uint8_t GetSpellsKnownPerLevelHook(CNWClass *, uint8_t, uint8_t, uint8_t, uint16_t, uint8_t);
+    static int32_t CanLevelUpHook(CNWSCreatureStats*);
+    static void SummonAssociateHook(CNWSCreature *, CResRef, CExoString *, uint16_t);
+    static void LevelDownHook(CNWSCreatureStats *, CNWLevelStats *);
+    static uint32_t GetExpNeededForLevelUpHook(CNWSCreatureStats *);
+    static void GetServerInfoFromIniFileHook(NWNXLib::Services::Hooks::CallType type, CServerExoAppInternal *);
 };
 
 }

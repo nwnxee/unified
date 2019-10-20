@@ -22,7 +22,7 @@ CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker)
         hooker->RequestSharedHook<
             API::Functions::_ZN15CNWSCombatRound16StartCombatRoundEj,
             int32_t,
-            API::CNWSCombatRound*,
+            CNWSCombatRound*,
             uint32_t>
             (
                 &StartCombatRoundHook
@@ -32,7 +32,7 @@ CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker)
 
 void CombatEvents::StartCombatRoundHook(
     Hooks::CallType type,
-    API::CNWSCombatRound* thisPtr,
+    CNWSCombatRound* thisPtr,
     uint32_t oidTarget)
 {
     const bool before = type == Hooks::CallType::BEFORE_ORIGINAL;

@@ -41,7 +41,7 @@ private:
     ArgumentStack RemoveIconEffect      (ArgumentStack&& args);
     ArgumentStack AddIconEffect         (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSObject *object(ArgumentStack& args);
+    CNWSObject *object(ArgumentStack& args);
 
 };
 

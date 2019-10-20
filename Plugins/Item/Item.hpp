@@ -28,7 +28,7 @@ private:
     ArgumentStack GetBaseArmorClass       (ArgumentStack&& args);
     ArgumentStack GetMinEquipLevel        (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSItem *item(ArgumentStack& args);
+    CNWSItem *item(ArgumentStack& args);
 };
 
 }

@@ -91,10 +91,10 @@ int32_t ClientEvents::SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPla
 }
 
 int32_t ClientEvents::CheckStickyPlayerNameReservedHook(
-        NWNXLib::API::CServerExoApp *pServer,
-        NWNXLib::API::CExoString *p_sClientCDKey,
-        NWNXLib::API::CExoString *p_sClientLegacyCDKey,
-        NWNXLib::API::CExoString *p_sPlayerName,
+        CServerExoApp *pServer,
+        CExoString *p_sClientCDKey,
+        CExoString *p_sClientLegacyCDKey,
+        CExoString *p_sPlayerName,
         int32_t nConnectionType)
 {
     int32_t retVal;

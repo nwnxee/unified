@@ -16,9 +16,9 @@ public:
 
 private:
     static void WriteToLogFileHook(NWNXLib::Services::Hooks::CallType,
-        NWNXLib::API::CExoDebugInternal*, NWNXLib::API::CExoString*);
+        CExoDebugInternal*, CExoString*);
     static void WriteToErrorFileHook(NWNXLib::Services::Hooks::CallType,
-        NWNXLib::API::CExoDebugInternal*, NWNXLib::API::CExoString*);
+        CExoDebugInternal*, CExoString*);
 };
 
 }

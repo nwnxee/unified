@@ -87,12 +87,12 @@ ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 }
 
 int32_t ItemEvents::UseItemHook(
-    API::CNWSCreature* thisPtr,
+    CNWSCreature* thisPtr,
     API::Types::ObjectID item,
     uint8_t propIndex,
     uint8_t subPropIndex,
     API::Types::ObjectID target,
-    API::Vector targetPosition,
+    Vector targetPosition,
     API::Types::ObjectID area)
 {
     int32_t retVal;
@@ -264,7 +264,7 @@ int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, Types::ObjectID oidSc
 }
 
 int32_t ItemEvents::RunEquipHook(
-        API::CNWSCreature* thisPtr,
+        CNWSCreature* thisPtr,
         API::Types::ObjectID item,
         uint32_t nInventorySlot,
         uint32_t oidFeedbackPlayer)
@@ -291,7 +291,7 @@ int32_t ItemEvents::RunEquipHook(
 }
 
 int32_t ItemEvents::RunUnequipHook(
-        API::CNWSCreature* thisPtr,
+        CNWSCreature* thisPtr,
         API::Types::ObjectID item,
         API::Types::ObjectID itemRepo,
         uint8_t x,
@@ -320,7 +320,7 @@ int32_t ItemEvents::RunUnequipHook(
 
 // hooks into CNWSItem::EventHandler
 void ItemEvents::ItemEventHandlerHook(
-        API::CNWSItem* thisPtr,
+        CNWSItem* thisPtr,
         uint32_t nEventId,
         NWNXLib::API::Types::ObjectID nCallerObjectId,
         void *pScript,

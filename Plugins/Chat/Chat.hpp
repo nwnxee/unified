@@ -30,8 +30,8 @@ private:
     std::unordered_map<NWNXLib::API::Constants::ChatChannel::TYPE, float> m_hearingDistances;
     uint32_t m_depth;
 
-    static void SendServerToPlayerChatMessage(NWNXLib::API::CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, NWNXLib::API::Types::ObjectID sender,
-        NWNXLib::API::CExoString message, NWNXLib::API::Types::ObjectID target, NWNXLib::API::CExoString* tellName);
+    static void SendServerToPlayerChatMessage(CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, NWNXLib::API::Types::ObjectID sender,
+        CExoString message, NWNXLib::API::Types::ObjectID target, CExoString* tellName);
 
     NWNXLib::Services::Events::ArgumentStack OnSendMessage(NWNXLib::Services::Events::ArgumentStack&& args);
     NWNXLib::Services::Events::ArgumentStack OnRegisterChatScript(NWNXLib::Services::Events::ArgumentStack&& args);

@@ -62,7 +62,7 @@ Reveal::Reveal(const Plugin::CreateParams& params)
 Reveal::~Reveal()
 {
 }
-int32_t Reveal::HookStealthDetection(NWNXLib::API::CNWSCreature* pObserverCreature, NWNXLib::API::CNWSCreature* pHidingCreature, int32_t bClearLOS, int32_t* bSeen, int32_t* bHeard, int32_t bTargetInvisible)
+int32_t Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreature* pHidingCreature, int32_t bClearLOS, int32_t* bSeen, int32_t* bHeard, int32_t bTargetInvisible)
 {
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
 

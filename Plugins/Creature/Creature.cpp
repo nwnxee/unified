@@ -1814,12 +1814,12 @@ ArgumentStack Creature::GetTotalEffectBonus(ArgumentStack&& args)
 
     if (auto *pCreature = creature(args))
     {
-        API::CNWSObject *versus = NULL;
+        CNWSObject *versus = NULL;
         const auto bonusType = Services::Events::ExtractArgument<int32_t>(args);
         const auto versus_id = Services::Events::ExtractArgument<Types::ObjectID>(args);
         if (versus_id != Constants::OBJECT_INVALID)
         {
-            API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);
+            CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);
             versus = Utils::AsNWSObject(pObject);
         }
 

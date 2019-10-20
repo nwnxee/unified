@@ -31,7 +31,7 @@ StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
     });
 }
 
-void StealthEvents::SetStealthModeHook(API::CNWSCreature* thisPtr, uint8_t nStealthMode)
+void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMode)
 {
     const bool willBeStealthed = nStealthMode != 0;
     const bool currentlyStealthed = thisPtr->m_nStealthMode != 0;

@@ -165,7 +165,7 @@ bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID tar
     {
         auto DispatchEvent = [&]() -> void {
             LOG_DEBUG("Dispatching notification for event '%s' to script '%s'.", eventName, script);
-            API::CExoString scriptExoStr = script.c_str();
+            CExoString scriptExoStr = script.c_str();
 
             ++g_plugin->m_eventDepth;
             API::Globals::VirtualMachine()->RunScript(&scriptExoStr, target, 1);

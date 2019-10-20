@@ -88,7 +88,7 @@ SkillRanks::~SkillRanks()
 {
 }
 
-void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, API::CNWRules* pRules)
+void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, CNWRules* pRules)
 {
     // We only want to do this in the AFTER
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;

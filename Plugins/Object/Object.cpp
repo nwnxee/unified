@@ -641,7 +641,7 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
             }
         }
 
-        auto *effIcon = new API::CGameEffect(true);
+        auto *effIcon = new CGameEffect(true);
         effIcon->m_oidCreator = 0;
         effIcon->m_nType      = Constants::EffectTrueType::Icon;
         effIcon->m_nSubType   = Constants::EffectSubType::Supernatural;

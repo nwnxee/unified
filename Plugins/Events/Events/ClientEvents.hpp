@@ -14,14 +14,14 @@ public:
 
 private:
     static void RemovePCFromWorldHook(NWNXLib::Services::Hooks::CallType type,
-        NWNXLib::API::CServerExoAppInternal*,
-        NWNXLib::API::CNWSPlayer*);
-    static int32_t SendServerToPlayerCharListHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*);
+        CServerExoAppInternal*,
+        CNWSPlayer*);
+    static int32_t SendServerToPlayerCharListHook(CNWSMessage*, CNWSPlayer*);
     static int32_t CheckStickyPlayerNameReservedHook(
-            NWNXLib::API::CServerExoApp*,
-            NWNXLib::API::CExoString*,
-            NWNXLib::API::CExoString*,
-            NWNXLib::API::CExoString*,
+            CServerExoApp*,
+            CExoString*,
+            CExoString*,
+            CExoString*,
             int32_t);
 };
 

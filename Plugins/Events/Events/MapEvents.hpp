@@ -13,9 +13,9 @@ public:
     MapEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static int32_t HandleMapPinSetMapPinAtMessageHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*);
-    static int32_t HandleMapPinChangePinMessageHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*);
-    static int32_t HandleMapPinDestroyMapPinMessageHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*);
+    static int32_t HandleMapPinSetMapPinAtMessageHook(CNWSMessage*, CNWSPlayer*);
+    static int32_t HandleMapPinChangePinMessageHook(CNWSMessage*, CNWSPlayer*);
+    static int32_t HandleMapPinDestroyMapPinMessageHook(CNWSMessage*, CNWSPlayer*);
 };
 
 }

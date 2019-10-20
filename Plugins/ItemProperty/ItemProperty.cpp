@@ -61,7 +61,7 @@ ItemProperty::~ItemProperty()
 ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    API::CGameEffect *ip = new API::CGameEffect(true);
+    CGameEffect *ip = new CGameEffect(true);
 
     // TODO-64bit: (effectId) Remove this, also on the nwscript side
     auto ipId         = Services::Events::ExtractArgument<int32_t>(args);
@@ -104,7 +104,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
 ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto ip = Services::Events::ExtractArgument<API::CGameEffect*>(args);
+    auto ip = Services::Events::ExtractArgument<CGameEffect*>(args);
 
     Services::Events::InsertArgument(stack, ip->GetString(0).CStr());
     Services::Events::InsertArgument(stack, (API::Types::ObjectID)ip->m_oidCreator);

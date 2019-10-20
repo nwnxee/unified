@@ -12,15 +12,15 @@ ExamineEvents::ExamineEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj, int32_t,
-            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineCreatureHook);
+            CNWSMessage*, CNWSPlayer*, API::Types::ObjectID>(&ExamineCreatureHook);
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_DoorDataEP10CNWSPlayerj, int32_t,
-            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineDoorHook);
+            CNWSMessage*, CNWSPlayer*, API::Types::ObjectID>(&ExamineDoorHook);
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_ItemDataEP10CNWSPlayerj, int32_t,
-            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExamineItemHook);
+            CNWSMessage*, CNWSPlayer*, API::Types::ObjectID>(&ExamineItemHook);
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage42SendServerToPlayerExamineGui_PlaceableDataEP10CNWSPlayerj, int32_t,
-            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID>(&ExaminePlaceableHook);
+            CNWSMessage*, CNWSPlayer*, API::Types::ObjectID>(&ExaminePlaceableHook);
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_TrapDataEP10CNWSPlayerjP12CNWSCreaturei, int32_t,
-            API::CNWSMessage*, API::CNWSPlayer*, API::Types::ObjectID, API::CNWSCreature*, int32_t>(&ExamineTrapHook);
+            CNWSMessage*, CNWSPlayer*, API::Types::ObjectID, CNWSCreature*, int32_t>(&ExamineTrapHook);
     });
 }
 
@@ -32,33 +32,33 @@ void ExamineEvents::HandleExamine(Services::Hooks::CallType type, API::Types::Ob
     Events::SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner);
 }
 
-void ExamineEvents::ExamineCreatureHook(Services::Hooks::CallType type, API::CNWSMessage*,
-    API::CNWSPlayer* examiner, API::Types::ObjectID examinee)
+void ExamineEvents::ExamineCreatureHook(Services::Hooks::CallType type, CNWSMessage*,
+    CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
     HandleExamine(type, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExamineDoorHook(Services::Hooks::CallType type, API::CNWSMessage*,
-    API::CNWSPlayer* examiner, API::Types::ObjectID examinee)
+void ExamineEvents::ExamineDoorHook(Services::Hooks::CallType type, CNWSMessage*,
+    CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
     HandleExamine(type, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExamineItemHook(Services::Hooks::CallType type, API::CNWSMessage*,
-    API::CNWSPlayer* examiner, API::Types::ObjectID examinee)
+void ExamineEvents::ExamineItemHook(Services::Hooks::CallType type, CNWSMessage*,
+    CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
     HandleExamine(type, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExaminePlaceableHook(Services::Hooks::CallType type, API::CNWSMessage*,
-    API::CNWSPlayer* examiner, API::Types::ObjectID examinee)
+void ExamineEvents::ExaminePlaceableHook(Services::Hooks::CallType type, CNWSMessage*,
+    CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
     HandleExamine(type, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExamineTrapHook(Services::Hooks::CallType type, API::CNWSMessage*,
-                                         API::CNWSPlayer* examiner, API::Types::ObjectID examinee,
-                                         API::CNWSCreature*, int32_t success)
+void ExamineEvents::ExamineTrapHook(Services::Hooks::CallType type, CNWSMessage*,
+                                         CNWSPlayer* examiner, API::Types::ObjectID examinee,
+                                         CNWSCreature*, int32_t success)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));

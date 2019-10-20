@@ -149,7 +149,7 @@ void Race::DoEffect(CNWSCreature *pCreature,
                     int32_t param4,
                     int32_t param5)
 {
-    auto *eff = new API::CGameEffect(true);
+    auto *eff = new CGameEffect(true);
     eff->m_oidCreator         = MODULE_OID;
     eff->m_nType              = nType;
     eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -491,11 +491,11 @@ void Race::ApplyEffectHook(
             default: nRaceParam = 2; break;
         }
         std::vector<uint16_t> vChild = g_plugin->m_ChildRaces[eff->m_nParamInteger[nRaceParam]];
-        API::CGameEffect *effNew;
+        CGameEffect *effNew;
         int32_t i;
         for(uint16_t & nChild : vChild)
         {
-            effNew = new API::CGameEffect(true);
+            effNew = new CGameEffect(true);
             effNew->m_nNumIntegers = eff->m_nNumIntegers;
             for(i = 0; i < eff->m_nNumIntegers; i++)
                 effNew->m_nParamInteger[i] = eff->m_nParamInteger[i];
@@ -709,7 +709,7 @@ void Race::SendServerToPlayerLevelUp_ConfirmationHook(
         if (bValidated)
         {
             auto *client = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(playerId, 0);
-            auto *pPlayer = static_cast<API::CNWSPlayer *>(client);
+            auto *pPlayer = static_cast<CNWSPlayer *>(client);
             auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
             ApplyRaceEffects(pCreature);
         }

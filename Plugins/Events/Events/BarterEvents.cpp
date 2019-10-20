@@ -67,7 +67,7 @@ int32_t BarterEvents::HandlePlayerToServerBarter_StartBarterHook(
 
 void BarterEvents::SetListAcceptedHook(
         NWNXLib::Services::Hooks::CallType type,
-        NWNXLib::API::CNWSBarter *pBarter,
+        CNWSBarter *pBarter,
         int32_t bAccepted)
 {
     if (pBarter && bAccepted)
@@ -93,7 +93,7 @@ void BarterEvents::SendServerToPlayerBarterCloseBarterHook(
 
 void BarterEvents::EndedBarter(
         NWNXLib::Services::Hooks::CallType type,
-        NWNXLib::API::CNWSBarter *pBarter,
+        CNWSBarter *pBarter,
         int32_t bAccepted)
 {
     CNWSBarter* otherBarter;

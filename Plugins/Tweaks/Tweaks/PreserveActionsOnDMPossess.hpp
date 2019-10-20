@@ -13,7 +13,7 @@ public:
     PreserveActionsOnDMPossess(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void CNWSCreature__PossessCreatureDM_hook(NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t);
+    static void CNWSCreature__PossessCreatureDM_hook(CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t);
 };
 
 }

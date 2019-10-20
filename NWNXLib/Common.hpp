@@ -1,8 +1,6 @@
 #pragma once
 
-namespace NWNXLib::API {
 #include "API/ALL_CLASSES.hpp"
-}
 
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
@@ -12,9 +10,7 @@ namespace NWNXLib::API {
 #include "Assert.hpp"
 #include "Log.hpp"
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Events;
 class Hooks;
@@ -35,7 +31,5 @@ class ConfigProxy;
 class MessagingProxy;
 class PerObjectStorageProxy;
 class CommandsProxy;
-
-}
 
 }

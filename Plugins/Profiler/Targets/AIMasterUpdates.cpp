@@ -18,11 +18,11 @@ using namespace NWNXLib::Services;
 
 static ViewPtr<MetricsProxy> g_metrics;
 
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, AIMasterUpdateState, void, API::CServerAIMaster*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventPending, bool, API::CServerAIMaster*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, GetNextObject, API::CNWSObject*, API::CServerAIList*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, GetPendingEvent, bool, API::CServerAIMaster*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, void**);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, UpdateDialog, bool, API::CNWSObject*);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, AIMasterUpdateState, void, CServerAIMaster*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventPending, bool, CServerAIMaster*, uint32_t, uint32_t);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, GetNextObject, CNWSObject*, CServerAIList*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, GetPendingEvent, bool, CServerAIMaster*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, void**);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, UpdateDialog, bool, CNWSObject*);
 
 AIMasterUpdates::AIMasterUpdates(const bool overkill,
     ViewPtr<HooksProxy> hooker,
@@ -38,29 +38,29 @@ AIMasterUpdates::AIMasterUpdates(const bool overkill,
 
     DEFINE_PROFILER_TARGET(hooker,
         AIMasterUpdateState, API::Functions::_ZN15CServerAIMaster11UpdateStateEv,
-        void, API::CServerAIMaster*);
+        void, CServerAIMaster*);
 
     if (overkill)
     {
         DEFINE_PROFILER_TARGET_FAST(hooker,
             EventPending, API::Functions::_ZN15CServerAIMaster12EventPendingEjj,
-            bool, API::CServerAIMaster*, uint32_t, uint32_t);
+            bool, CServerAIMaster*, uint32_t, uint32_t);
 
         DEFINE_PROFILER_TARGET_FAST(hooker,
             GetNextObject, API::Functions::_ZN13CServerAIList13GetNextObjectEv,
-            API::CNWSObject*, API::CServerAIList*);
+            CNWSObject*, CServerAIList*);
 
         DEFINE_PROFILER_TARGET_FAST(hooker,
             GetPendingEvent, API::Functions::_ZN15CServerAIMaster15GetPendingEventEPjS0_S0_S0_S0_PPv,
-            bool, API::CServerAIMaster*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, void**);
+            bool, CServerAIMaster*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, uint32_t*, void**);
 
         DEFINE_PROFILER_TARGET_FAST(hooker,
             UpdateDialog, API::Functions::_ZN10CNWSObject12UpdateDialogEv,
-            bool, API::CNWSObject*);
+            bool, CNWSObject*);
     }
 }
 
-void AIMasterUpdates::AIMasterUpdate(Hooks::CallType type, API::CServerAIMaster* thisPtr)
+void AIMasterUpdates::AIMasterUpdate(Hooks::CallType type, CServerAIMaster* thisPtr)
 {
     if (type != Hooks::CallType::BEFORE_ORIGINAL)
     {

@@ -56,7 +56,7 @@ template<> Maybe<int32_t>&              Events::Argument::Get<int32_t>();
 template<> Maybe<float>&                Events::Argument::Get<float>();
 template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>();
 template<> Maybe<std::string>&          Events::Argument::Get<std::string>();
-template<> Maybe<API::CGameEffect*>&    Events::Argument::Get<API::CGameEffect*>();
+template<> Maybe<CGameEffect*>&    Events::Argument::Get<CGameEffect*>();
 
 template <typename T>
 void Events::InsertArgument(ArgumentStack& stack, T arg)

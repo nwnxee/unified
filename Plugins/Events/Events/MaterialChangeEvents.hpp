@@ -13,7 +13,7 @@ public:
     MaterialChangeEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void SetPositionHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSObject*, NWNXLib::API::Vector, int32_t);
+    static void SetPositionHook(NWNXLib::Services::Hooks::CallType, CNWSObject*, Vector, int32_t);
 };
 
 }

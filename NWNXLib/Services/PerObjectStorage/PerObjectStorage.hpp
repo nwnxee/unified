@@ -19,25 +19,25 @@ class PerObjectStorage : public ServiceBase
 {
 public:
     using CleanupFunc = void (*)(void*);
-    void Set(API::CGameObject *pGameObject, const std::string& key, int value);
-    void Set(API::CGameObject *pGameObject, const std::string& key, float value);
-    void Set(API::CGameObject *pGameObject, const std::string& key, std::string value);
-    void Set(API::CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup = nullptr);
+    void Set(CGameObject *pGameObject, const std::string& key, int value);
+    void Set(CGameObject *pGameObject, const std::string& key, float value);
+    void Set(CGameObject *pGameObject, const std::string& key, std::string value);
+    void Set(CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
     template <typename T> Maybe<T>
-    Get(API::CGameObject *pGameObject, const std::string& key);
+    Get(CGameObject *pGameObject, const std::string& key);
 
     // Removes without cleanup
-    void Remove(API::CGameObject *pGameObject, const std::string& key);
+    void Remove(CGameObject *pGameObject, const std::string& key);
 
     PerObjectStorage();
     ~PerObjectStorage();
 
-    static void CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, API::CNWSObject* thisPtr);
-    static void CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, API::CNWSArea* thisPtr);
-    static void CNWSPlayer__EatTURD_hook(Services::Hooks::CallType type, API::CNWSPlayer* thisPtr, API::CNWSPlayerTURD* pTURD);
-    static void CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type, API::CNWSPlayer* thisPtr);
+    static void CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, CNWSObject* thisPtr);
+    static void CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, CNWSArea* thisPtr);
+    static void CNWSPlayer__EatTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD);
+    static void CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr);
 private:
     class ObjectStorage
     {
@@ -68,8 +68,8 @@ private:
     };
 
     static ObjectStorage* GetObjectStorage(API::Types::ObjectID object);
-    static ObjectStorage* GetObjectStorage(API::CGameObject *pGameObject);
-    static void DestroyObjectStorage(API::CGameObject *pGameObject);
+    static ObjectStorage* GetObjectStorage(CGameObject *pGameObject);
+    static void DestroyObjectStorage(CGameObject *pGameObject);
 };
 
 class PerObjectStorageProxy : public ServiceProxy<PerObjectStorage>
@@ -78,20 +78,20 @@ public:
     PerObjectStorageProxy(PerObjectStorage& perObjectStorage, std::string pluginName);
     ~PerObjectStorageProxy();
 
-    void Set(API::CGameObject *pGameObject, const std::string& key, int value);
-    void Set(API::CGameObject *pGameObject, const std::string& key, float value);
-    void Set(API::CGameObject *pGameObject, const std::string& key, std::string value);
-    void Set(API::CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
+    void Set(CGameObject *pGameObject, const std::string& key, int value);
+    void Set(CGameObject *pGameObject, const std::string& key, float value);
+    void Set(CGameObject *pGameObject, const std::string& key, std::string value);
+    void Set(CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
     template <typename T> Maybe<T>
-    Get(API::CGameObject *pGameObject, const std::string& key)
+    Get(CGameObject *pGameObject, const std::string& key)
     {
         return m_proxyBase.Get<T>(pGameObject, m_pluginName + "!" + key);
     }
 
     // Removes without cleanup
-    void Remove(API::CGameObject *pGameObject, const std::string& key);
+    void Remove(CGameObject *pGameObject, const std::string& key);
 
     //
     // Interfaces using objectID instead of CGameObject pointer

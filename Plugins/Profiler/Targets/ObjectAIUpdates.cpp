@@ -11,17 +11,17 @@ using namespace NWNXLib;
 
 static ViewPtr<Services::MetricsProxy> g_metrics;
 
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateArea, bool, API::CNWSArea*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateAreaOfEffect, bool, API::CNWSAreaOfEffectObject*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateCreature, bool, API::CNWSCreature*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateDoor, bool, API::CNWSDoor*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateEncounter, bool, API::CNWSEncounter*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateItem, bool, API::CNWSItem*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateModule, bool, API::CNWSModule*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdatePlaceable, bool, API::CNWSPlaceable*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateStore, bool, API::CNWSStore*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateTrigger, bool, API::CNWSTrigger*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateWaypoint, bool, API::CNWSWaypoint*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateArea, bool, CNWSArea*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateAreaOfEffect, bool, CNWSAreaOfEffectObject*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateCreature, bool, CNWSCreature*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateDoor, bool, CNWSDoor*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateEncounter, bool, CNWSEncounter*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateItem, bool, CNWSItem*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateModule, bool, CNWSModule*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdatePlaceable, bool, CNWSPlaceable*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateStore, bool, CNWSStore*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateTrigger, bool, CNWSTrigger*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateWaypoint, bool, CNWSWaypoint*);
 
 ObjectAIUpdates::ObjectAIUpdates(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
     ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
@@ -30,47 +30,47 @@ ObjectAIUpdates::ObjectAIUpdates(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateArea, API::Functions::_ZN8CNWSArea8AIUpdateEv,
-        bool, API::CNWSArea*);
+        bool, CNWSArea*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateAreaOfEffect, API::Functions::_ZN22CNWSAreaOfEffectObject8AIUpdateEv,
-        bool, API::CNWSAreaOfEffectObject*);
+        bool, CNWSAreaOfEffectObject*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateCreature, API::Functions::_ZN12CNWSCreature8AIUpdateEv,
-        bool, API::CNWSCreature*);
+        bool, CNWSCreature*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateDoor, API::Functions::_ZN8CNWSDoor8AIUpdateEv,
-        bool, API::CNWSDoor*);
+        bool, CNWSDoor*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateEncounter, API::Functions::_ZN13CNWSEncounter8AIUpdateEv,
-        bool, API::CNWSEncounter*);
+        bool, CNWSEncounter*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateItem, API::Functions::_ZN8CNWSItem8AIUpdateEv,
-        bool, API::CNWSItem*);
+        bool, CNWSItem*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateModule, API::Functions::_ZN10CNWSModule8AIUpdateEv,
-        bool, API::CNWSModule*);
+        bool, CNWSModule*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdatePlaceable, API::Functions::_ZN13CNWSPlaceable8AIUpdateEv,
-        bool, API::CNWSPlaceable*);
+        bool, CNWSPlaceable*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateStore, API::Functions::_ZN9CNWSStore8AIUpdateEv,
-        bool, API::CNWSStore*);
+        bool, CNWSStore*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateTrigger, API::Functions::_ZN11CNWSTrigger8AIUpdateEv,
-        bool, API::CNWSTrigger*);
+        bool, CNWSTrigger*);
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         AIUpdateWaypoint, API::Functions::_ZN12CNWSWaypoint8AIUpdateEv,
-        bool, API::CNWSWaypoint*);
+        bool, CNWSWaypoint*);
 }
 
 }

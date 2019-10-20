@@ -3,8 +3,6 @@
 #include <cstdint>
 #include "API/Version.hpp"
 
-namespace NWNXLib::API {
-
 
 struct CExoBase;
 struct CExoResMan;
@@ -18,7 +16,7 @@ namespace Task {
 struct CExoTaskManager;
 }
 
-namespace Globals {
+namespace NWNXLib::API::Globals {
 
 struct NWNXExportedGlobals
 {
@@ -54,7 +52,5 @@ inline int32_t* EnableSavingThrowDebugging()    { return ExportedGlobals.pbEnabl
 inline int32_t* EnableMovementSpeedDebugging()  { return ExportedGlobals.pbEnableMovementSpeedDebugging; }
 inline int32_t* EnableHitDieDebugging()         { return ExportedGlobals.pbEnableHitDieDebugging; }
 inline int32_t* ExitProgram()                   { return ExportedGlobals.pbExitProgram; }
-
-}
 
 }

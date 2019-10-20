@@ -140,9 +140,9 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
 
                     for (auto *head = playerList->pHead; head; head = head->pNext)
                     {
-                        auto *pClient = static_cast<API::CNWSClient*>(head->pObject);
+                        auto *pClient = static_cast<CNWSClient*>(head->pObject);
                         auto *listenerClient =  server->GetClientObjectByPlayerId(pClient->m_nPlayerID, 0);
-                        auto *listener = static_cast<API::CNWSPlayer*>(listenerClient);
+                        auto *listener = static_cast<CNWSPlayer*>(listenerClient);
                         auto *listenerObj = Utils::AsNWSObject(listener->GetGameObject());
 
                         auto pDistance = *pPOS->Get<float>(listenerObj->m_idSelf, "HEARING_DISTANCE:" + std::to_string(channel));

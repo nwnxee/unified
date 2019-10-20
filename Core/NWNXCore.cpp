@@ -169,7 +169,7 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer8DropTURDEv, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
 
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii, uint32_t>(
-            +[](Services::Hooks::CallType type, API::CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
+            +[](Services::Hooks::CallType type, CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
             {
                 if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                 {
@@ -183,7 +183,7 @@ void NWNXCore::InitialSetupHooks()
 
                     if (node)
                     {
-                        auto *resref = (API::CResRef*)node->pObject;
+                        auto *resref = (CResRef*)node->pObject;
                         LOG_DEBUG("(%i/%i) Trying to load area with resref: %s", nAreasLoaded + 1,  nAreasToLoad, resref->GetResRefStr());
                     }
                 }
@@ -195,7 +195,7 @@ void NWNXCore::InitialVersionCheck()
     const uintptr_t buildNumberAddr = Platform::DynamicLibraries::GetLoadedFuncAddr("GetBuildNumber");
     if (buildNumberAddr)
     {
-        API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
+        CExoString* versionAsStr = reinterpret_cast<CExoString*(*)()>(buildNumberAddr)();
         const uint32_t version = std::stoul(versionAsStr->m_sString);
 
         if (version != NWNX_TARGET_NWN_BUILD)
@@ -326,7 +326,7 @@ void NWNXCore::Shutdown()
     g_core = nullptr;
 }
 
-void NWNXCore::CreateServerHandler(API::CAppManager* app)
+void NWNXCore::CreateServerHandler(CAppManager* app)
 {
     g_core->InitialVersionCheck();
 
@@ -371,7 +371,7 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     app->CreateServer();
 }
 
-void NWNXCore::DestroyServerHandler(API::CAppManager* app)
+void NWNXCore::DestroyServerHandler(CAppManager* app)
 {
     if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
     {
@@ -390,7 +390,7 @@ void NWNXCore::DestroyServerHandler(API::CAppManager* app)
     RestoreCrashHandlers();
 }
 
-void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CServerExoAppInternal*)
+void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, CServerExoAppInternal*)
 {
     if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
     {

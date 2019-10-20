@@ -22,7 +22,7 @@
 
 namespace NWNXLib {
 
-std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripPCFlags)
+std::vector<uint8_t> SerializeGameObject(CGameObject *pObject, bool bStripPCFlags)
 {
     uint8_t *pData = nullptr;
     int32_t dataLength = 0;
@@ -30,14 +30,14 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
     if (!pObject)
         return std::vector<uint8_t>();
 
-    API::CResGFF    resGff;
-    API::CResStruct resStruct;
+    CResGFF    resGff;
+    CResStruct resStruct;
 
     switch (pObject->m_nObjectType)
     {
         case API::Constants::ObjectType::Creature:
         {
-            API::CNWSCreature *pCreature = static_cast<API::CNWSCreature*>(pObject);
+            CNWSCreature *pCreature = static_cast<CNWSCreature*>(pObject);
             if (resGff.CreateGFFFile(&resStruct, "BIC ", "V2.0"))
             {
                 int32_t bPlayerCharacter = 0, bIsPC = 0;
@@ -61,7 +61,7 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
 // These all use a common implementation, but unfortunately can't be called polymorphically.
 #define SERIALIZE(_type, _gff_header, ...)                                       \
         do {                                                                     \
-            API::CNWS##_type *p = static_cast<API::CNWS##_type*>(pObject);       \
+            CNWS##_type *p = static_cast<CNWS##_type*>(pObject);       \
             if (resGff.CreateGFFFile(&resStruct, _gff_header, "V2.0"))           \
             {                                                                    \
                 /* CNWSItem already makes this call in SaveItem */               \
@@ -88,13 +88,13 @@ std::vector<uint8_t> SerializeGameObject(API::CGameObject *pObject, bool bStripP
     return std::vector<uint8_t>(pData, pData+dataLength);
 }
 
-API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
+CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
 {
     if (serialized.size() == 0)
         return nullptr;
 
-    API::CResGFF    resGff;
-    API::CResStruct resStruct;
+    CResGFF    resGff;
+    CResStruct resStruct;
 
     if (serialized.size() < 14*4) // GFF header size
         return nullptr;
@@ -110,12 +110,12 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     if (!resGff.GetTopLevelStruct(&resStruct))
         return nullptr;
 
-    API::CExoString sFileType, sFileVersion;
+    CExoString sFileType, sFileVersion;
     resGff.GetGFFFileInfo(&sFileType, &sFileVersion);
 
     if (sFileType == "BIC " || sFileType == "GFF " || sFileType == "UTC ")
     {
-        API::CNWSCreature *pCreature = new API::CNWSCreature(API::Constants::OBJECT_INVALID, 0, 1);
+        CNWSCreature *pCreature = new CNWSCreature(API::Constants::OBJECT_INVALID, 0, 1);
 
         if (!pCreature->LoadCreature(&resGff, &resStruct, 0, 0, 0, 0))
         {
@@ -123,12 +123,12 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
             return nullptr;
         }
         pCreature->LoadObjectState(&resGff, &resStruct);
-        return static_cast<API::CGameObject*>(pCreature);
+        return static_cast<CGameObject*>(pCreature);
     }
 
 #define DESERIALIZE(_type, ...)                                                             \
     do {                                                                                    \
-        API::CNWS##_type *p = new API::CNWS##_type(API::Constants::OBJECT_INVALID);         \
+        CNWS##_type *p = new CNWS##_type(API::Constants::OBJECT_INVALID);         \
         if (!p->Load##_type(&resGff, &resStruct, ##__VA_ARGS__))                            \
         {                                                                                   \
             delete p;                                                                       \
@@ -137,7 +137,7 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
         /* CNWSItem already makes this call in LoadItem */                                  \
         if (!Utils::AsNWSItem(p))                                                           \
             p->LoadObjectState(&resGff, &resStruct);                                        \
-        return static_cast<API::CGameObject*>(p);                                           \
+        return static_cast<CGameObject*>(p);                                           \
     } while(0)
 
     else if (sFileType == "UTI ")
@@ -162,12 +162,12 @@ API::CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
     return nullptr;
 }
 
-std::string SerializeGameObjectB64(API::CGameObject *pObject, bool bStripPCFlags)
+std::string SerializeGameObjectB64(CGameObject *pObject, bool bStripPCFlags)
 {
     return Encoding::ToBase64(SerializeGameObject(pObject, bStripPCFlags));
 }
 
-API::CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
+CGameObject *DeserializeGameObjectB64(const std::string& serializedB64)
 {
     return DeserializeGameObject(Encoding::FromBase64(serializedB64));
 }

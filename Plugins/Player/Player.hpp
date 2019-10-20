@@ -47,7 +47,7 @@ private:
     ArgumentStack SetPersistentLocation             (ArgumentStack&& args);
     ArgumentStack UpdateItemName                    (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSPlayer *player(ArgumentStack& args);
+    CNWSPlayer *player(ArgumentStack& args);
 
     std::unordered_map<std::string, std::pair<NWNXLib::API::Types::ObjectID, bool>> m_PersistentLocationWP;
 };

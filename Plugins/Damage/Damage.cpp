@@ -100,7 +100,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
     return stack;
 }
 
-std::string Damage::GetEventScript(NWNXLib::API::CNWSObject *pObject, const std::string &event)
+std::string Damage::GetEventScript(CNWSObject *pObject, const std::string &event)
 {
     auto posScript = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pObject, event + "_EVENT_SCRIPT");
     return posScript ? *posScript : g_plugin->m_EventScripts[event];
@@ -133,7 +133,7 @@ ArgumentStack Damage::SetDamageEventData(ArgumentStack&& args)
     return stack;
 }
 
-int32_t Damage::OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame)
+int32_t Damage::OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, bool bLoadingGame)
 {
     std::string script = GetEventScript(pObject, "DAMAGE");
 

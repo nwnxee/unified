@@ -28,8 +28,8 @@ LevelEvents::LevelEvents(ViewPtr<HooksProxy> hooker)
 
 void LevelEvents::LevelUpHook(
         NWNXLib::Services::Hooks::CallType type,
-        NWNXLib::API::CNWSCreatureStats* thisPtr,
-        NWNXLib::API::CNWLevelStats*,
+        CNWSCreatureStats* thisPtr,
+        CNWLevelStats*,
         uint8_t, uint8_t, uint8_t, int32_t)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
@@ -40,7 +40,7 @@ void LevelEvents::LevelUpHook(
 
 void LevelEvents::LevelUpAutomaticHook(
         NWNXLib::Services::Hooks::CallType type,
-        NWNXLib::API::CNWSCreatureStats* thisPtr,
+        CNWSCreatureStats* thisPtr,
         uint8_t, int32_t, uint8_t)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
@@ -51,8 +51,8 @@ void LevelEvents::LevelUpAutomaticHook(
 
 void LevelEvents::LevelDownHook(
             NWNXLib::Services::Hooks::CallType type,
-            NWNXLib::API::CNWSCreatureStats* thisPtr,
-            NWNXLib::API::CNWLevelStats*)
+            CNWSCreatureStats* thisPtr,
+            CNWLevelStats*)
 {
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
 

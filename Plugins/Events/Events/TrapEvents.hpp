@@ -11,13 +11,13 @@ public:
     TrapEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static uint32_t HandleTrapHook(const std::string&, NWNXLib::Hooking::FunctionHook* originalTrapHook, NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
-    static uint32_t AIActionDisarmTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
-    static uint32_t AIActionExamineTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
-    static uint32_t AIActionFlagTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
-    static uint32_t AIActionRecoverTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
-    static uint32_t AIActionSetTrapHook(NWNXLib::API::CNWSCreature *pCreature, NWNXLib::API::CNWSObjectActionNode *pNode);
-    static void OnEnterTrapHook(NWNXLib::API::CNWSTrigger *pTrigger, int32_t bForceSet);
+    static uint32_t HandleTrapHook(const std::string&, NWNXLib::Hooking::FunctionHook* originalTrapHook, CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static uint32_t AIActionDisarmTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static uint32_t AIActionExamineTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static uint32_t AIActionFlagTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static uint32_t AIActionRecoverTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static uint32_t AIActionSetTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static void OnEnterTrapHook(CNWSTrigger *pTrigger, int32_t bForceSet);
 
 };
 
