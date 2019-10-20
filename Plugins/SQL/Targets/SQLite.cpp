@@ -40,7 +40,8 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 
     // Save the database file to UserDirectory/database
     static std::string dbPath = CombinePaths(
-        CombinePaths(std::string(Globals::ExoBase()->m_sUserDirectory.CStr()),  std::string("database")), m_dbName + ".sqlite3nwnxee");
+        CombinePaths(std::string(Globals::ExoBase()->m_sUserDirectory.CStr()),
+                std::string("database")), m_dbName + ".sqlite3nwnxee");
 
     if (sqlite3_open(dbPath.c_str(), &m_dbConn))
     {
@@ -51,7 +52,7 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 
 bool SQLite::IsConnected()
 {
-    bool bConnected = sqlite3_exec(m_dbConn, "SELECT 1", NULL, NULL, NULL) == SQLITE_OK;
+    bool bConnected = sqlite3_exec(m_dbConn, "SELECT 1", nullptr, nullptr, nullptr) == SQLITE_OK;
 
     if (!bConnected)
     {
@@ -67,7 +68,7 @@ bool SQLite::PrepareQuery(const Query& query)
 
     sqlite3_finalize(m_stmt);
 
-    bool success = sqlite3_prepare_v2(m_dbConn, query.c_str(), -1, &m_stmt, NULL) == SQLITE_OK;
+    bool success = sqlite3_prepare_v2(m_dbConn, query.c_str(), -1, &m_stmt, nullptr) == SQLITE_OK;
 
     if (success)
     {
@@ -98,7 +99,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
     {
         LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i], i);
         // Params in SQLite are 1 based
-        int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i].c_str(), -1, NULL);
+        int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i].c_str(), -1, nullptr);
 
         if (bindStatus != SQLITE_OK)
         {
