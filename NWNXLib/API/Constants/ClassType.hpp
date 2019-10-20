@@ -103,7 +103,7 @@ namespace ClassType
             "Purple Dragon Knight",
         };
 
-        return (value > PDK) ? "(invalid)" : TYPE_STRINGS[value];
+        return (value > PDK) ? "(unknown)" : TYPE_STRINGS[value];
     }
 }
 
