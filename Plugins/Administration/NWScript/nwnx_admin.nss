@@ -61,12 +61,6 @@ void NWNX_Administration_SetDMPassword(string password);
 /// @brief Signals the server to immediately shut down.
 void NWNX_Administration_ShutdownServer();
 
-/// @brief Boots the a player from the server with the provided strref as message.
-/// @param oPC The player to boot.
-/// @param strref The string reference of the message to send the PC being booted.
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native BootPC now.
-void NWNX_Administration_BootPCWithMessage(object oPC, int strref);
-
 /// @brief Deletes the player character from the servervault
 ///
 /// The PC will be immediately booted from the game with a "Delete Character" message
@@ -131,7 +125,8 @@ void NWNX_Administration_SetPlayOption(int option, int value);
 ///
 /// @param playerName The community (login name).
 /// @param characterName The character name.
-void NWNX_Administration_DeleteTURD(string playerName, string characterName);
+/// @return Returns TRUE if successful
+int NWNX_Administration_DeleteTURD(string playerName, string characterName);
 
 /// @}
 
@@ -179,12 +174,6 @@ void NWNX_Administration_ShutdownServer()
     string sFunc = "SHUTDOWN_SERVER";
 
     NWNX_CallFunction(NWNX_Administration, sFunc);
-}
-
-void NWNX_Administration_BootPCWithMessage(object oPC, int strref)
-{
-    WriteTimestampedLogEntry("NWNX_Administration: BootPCWithMessage() is deprecated. Use native BootPC() instead");
-    BootPC(oPC, GetStringByStrRef(strref));
 }
 
 void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup)
@@ -257,7 +246,7 @@ void NWNX_Administration_SetModuleName(string name)
 void NWNX_Administration_SetServerName(string name)
 {
     string sFunc = "SET_SERVER_NAME";
-    
+
     NWNX_PushArgumentString(NWNX_Administration, sFunc, name);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
@@ -281,11 +270,13 @@ void NWNX_Administration_SetPlayOption(int option, int value)
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
-void NWNX_Administration_DeleteTURD(string playerName, string characterName)
+int NWNX_Administration_DeleteTURD(string playerName, string characterName)
 {
     string sFunc = "DELETE_TURD";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, characterName);
     NWNX_PushArgumentString(NWNX_Administration, sFunc, playerName);
     NWNX_CallFunction(NWNX_Administration, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
 }
