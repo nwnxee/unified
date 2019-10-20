@@ -32,15 +32,6 @@ void main()
     report("StringToObject", NWNX_Object_StringToObject(sObj) == o);
     report("Negative: StringToObject", NWNX_Object_StringToObject("!@#!@#!@#!") == OBJECT_INVALID);
 
-
-    string sHandler = NWNX_Object_GetEventHandler(o, 0);
-    report("GetEventHandler", sHandler != "");
-
-    NWNX_Object_SetEventHandler(o, 0, "nwnx_object_t");
-    report("SetEventHandler", NWNX_Object_GetEventHandler(o, 0) == "nwnx_object_t");
-    // Restore original
-    NWNX_Object_SetEventHandler(o, 0, sHandler);
-
     vector vPos = GetPosition(o);
     vPos.x += 1;
     NWNX_Object_SetPosition(o, vPos);
@@ -57,12 +48,6 @@ void main()
     string dialog = "nwnxtest";
     NWNX_Object_SetDialogResref(o, dialog);
     report("SetDialogResRef/GetDialogResRef", NWNX_Object_GetDialogResref(o) == dialog);
-
-    string sPortrait = NWNX_Object_GetPortrait(o);
-    report("GetPortrait", sPortrait == "po_Chicken_");
-
-    NWNX_Object_SetPortrait(o, "po_Badger_");
-    report("SetPortrait", NWNX_Object_GetPortrait(o) == "po_Badger_");
 
     string sSerialized = NWNX_Object_Serialize(o);
     report("Serialize", sSerialized != "");
