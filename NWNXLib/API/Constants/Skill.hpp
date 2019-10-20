@@ -75,7 +75,7 @@ namespace Skill
             "Ride",
         };
 
-        return (value > Ride) ? "(invalid)" : TYPE_STRINGS[value];
+        return (value > Ride) ? "(unknown)" : TYPE_STRINGS[value];
     }
 }
 
