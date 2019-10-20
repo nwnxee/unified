@@ -2,16 +2,12 @@
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
-#include "API/CExoString.hpp"
 #include "API/CGameEffect.hpp"
 #include "API/Functions.hpp"
-#include "API/CVirtualMachine.hpp"
-#include "API/CNWSObject.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
 
 #include <string>
-#include <functional>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -62,9 +58,6 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
 {
     ArgumentStack stack;
     CGameEffect *ip = new CGameEffect(true);
-
-    // TODO-64bit: (effectId) Remove this, also on the nwscript side
-    auto ipId         = Services::Events::ExtractArgument<int32_t>(args);
 
     auto propname     = Services::Events::ExtractArgument<int32_t>(args);
     auto subtype      = Services::Events::ExtractArgument<int32_t>(args);
@@ -118,9 +111,6 @@ ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, ip->GetInteger(2));
     Services::Events::InsertArgument(stack, ip->GetInteger(1));
     Services::Events::InsertArgument(stack, ip->GetInteger(0));
-
-    // TODO-64bit: (effectId) Remove this, also on the nwscript side
-    Services::Events::InsertArgument(stack, 0);
 
     Utils::DestroyGameEffect(ip);
     return stack;
