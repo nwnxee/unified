@@ -77,7 +77,8 @@ namespace Core {
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
 NWNXCore::NWNXCore()
-    : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; })
+    : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; }),
+      m_ScriptChunkRecursion(0)
 {
     g_core = this;
 
@@ -188,6 +189,16 @@ void NWNXCore::InitialSetupHooks()
                     }
                 }
             });
+
+
+    if (!m_coreServices->m_config->Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
+    {
+        m_services->m_hooks->RequestSharedHook<API::Functions::_ZN25CNWVirtualMachineCommands32ExecuteCommandExecuteScriptChunkEii, int32_t>(
+                +[](Services::Hooks::CallType type, CNWVirtualMachineCommands*, int32_t, int32_t)
+                {
+                    g_core->m_ScriptChunkRecursion += (type == Services::Hooks::CallType::BEFORE_ORIGINAL) ? +1 : -1;
+                });
+    }
 }
 
 void NWNXCore::InitialVersionCheck()
