@@ -24,7 +24,7 @@ static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
 ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_DISCONNECT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN13CServerExoApp17RemovePCFromWorldEP10CNWSPlayer, void,
+        hooker->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal17RemovePCFromWorldEP10CNWSPlayer, void,
             CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
     });
 

@@ -43,7 +43,6 @@ typedef uint32_t OBJECT_ID;
 
 struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
 {
-    CNWSUUID m_pUUID;
     int32_t m_nPlayersInArea;
     CExoArrayList<OBJECT_ID> m_pTrapList;
     int32_t m_nObjectByNameIndex;
@@ -105,6 +104,7 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     int32_t m_nEnvironmentalAudio;
     uint16_t m_nLoadScreenID;
     CExoString m_sDisplayName;
+    CNWSUUID m_pUUID;
 
     CNWSArea(CResRef cResRef, BOOL bSetAutoRequest, OBJECT_ID oidId = 0x7f000000);
     ~CNWSArea();
