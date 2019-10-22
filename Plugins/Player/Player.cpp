@@ -1097,7 +1097,7 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
     static bool bSetPersistentLocationHook;
     if (!bSetPersistentLocationHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN13CServerExoApp19LoadCharacterFinishEP10CNWSPlayerii, void>(
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii, void>(
                 +[](Services::Hooks::CallType cType, CServerExoAppInternal*, CNWSPlayer *pPlayer, int32_t, int32_t) -> void
                 {
                     if (cType == Services::Hooks::CallType::AFTER_ORIGINAL)
