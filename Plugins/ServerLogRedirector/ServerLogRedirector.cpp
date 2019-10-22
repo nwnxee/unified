@@ -42,7 +42,7 @@ ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,
         void, CExoDebugInternal*, CExoString*>(&WriteToLogFileHook);
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN9CExoDebug16WriteToErrorFileERK10CExoString,
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
         void, CExoDebugInternal*, CExoString*>(&WriteToErrorFileHook);
 }
 
