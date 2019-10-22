@@ -1,8 +1,10 @@
-# SQL Plugin Reference
-
-## Description
+@page sql Readme
+@ingroup sql
 
 General data access, storage and manipulation of persistent data in a database.
+
+## Migration
+@ref sql_migrate "Migration from Legacy NWNX"
 
 ## Environment Variables
 

@@ -5,7 +5,6 @@
 namespace Experimental {
 
 class SuppressPlayerLoginInfo;
-class RemoveACABModifiersFromExpertise;
 
 class Experimental : public NWNXLib::Plugin
 {
@@ -15,7 +14,6 @@ public:
 
 private:
     std::unique_ptr<SuppressPlayerLoginInfo> m_SuppressPlayerLoginInfo;
-    std::unique_ptr<RemoveACABModifiersFromExpertise> m_RemoveACABModifiersFromExpertise;
 };
 
 }

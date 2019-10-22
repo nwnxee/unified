@@ -1,4 +1,4 @@
-/// @defgroup appearance Appearance
+/// @addtogroup appearance Appearance
 /// @brief Allows the appearance and some other things of creatures to be overridden per player.
 /// @{
 /// @file nwnx_appearance.nss
@@ -34,7 +34,7 @@ const int NWNX_APPEARANCE_TYPE_PORTRAIT         = 11;
 /// @brief Override a creature's appearance type for a player.
 /// @param oPlayer The player who will see/hear things differently.
 /// @param oCreature The target creature whose appearance type to alter for oPlayer. Can be a PC.
-/// @param nType The @ref appearance_types "Appearance Type" to set.
+/// @param nType The @ref appearance_types "Appearance Type" to set or -1 to fully remove override.
 /// @param nValue The new value for the appearance type.
 void NWNX_Appearance_SetOverride(object oPlayer, object oCreature, int nType, int nValue);
 

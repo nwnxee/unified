@@ -408,7 +408,10 @@ int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     if (auto nwnx = ProcessNWNX(sound))
     {
         ASSERT(nwnx->operation == "CALL"); // This one is used only for CALL ops
-        g_core->m_services->m_events->Call(nwnx->plugin, nwnx->event);
+        if (g_core->m_ScriptChunkRecursion == 0)
+            g_core->m_services->m_events->Call(nwnx->plugin, nwnx->event);
+        else
+            LOG_NOTICE("NWNX function '%s_%s' in ExecuteScriptChunk() was blocked due to configuration", nwnx->plugin, nwnx->event);
     }
     else
     {

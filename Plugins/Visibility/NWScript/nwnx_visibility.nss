@@ -1,4 +1,4 @@
-/// @defgroup visibility Visibility
+/// @addtogroup visibility Visibility
 /// @brief Functions to manipulate visibility of objects both globally or per observer
 /// @{
 /// @file nwnx_visibility.nss

@@ -1,4 +1,4 @@
-/// @defgroup rename Rename
+/// @addtogroup rename Rename
 /// @brief Facilitates renaming, overriding and customization of player names.
 /// @{
 /// @file nwnx_rename.nss

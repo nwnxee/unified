@@ -45,6 +45,7 @@ Array::Array(EventsProxy& events)
     events.RegisterEvent("ARRAY_SIZE", &Array::OnArraySize);
     events.RegisterEvent("ARRAY_SORT_ASCENDING", &Array::OnArraySortAscending);
     events.RegisterEvent("ARRAY_SORT_DESCENDING", &Array::OnArraySortDescending);
+    events.RegisterEvent("ARRAY_SET", &Array::OnArraySet);
 }
 
 Events::ArgumentStack Array::OnArrayAt(Events::ArgumentStack&& rawArgs)
@@ -263,6 +264,23 @@ Events::ArgumentStack Array::OnArraySortDescending(Events::ArgumentStack&& rawAr
         case ArrayType::INTEGER: ArrayImpl<int32_t>::SortDescending(args.oid, args.tag); break;
         case ArrayType::OBJECT: ArrayImpl<ObjectID>::SortDescending(args.oid, args.tag); break;
         case ArrayType::STRING: ArrayImpl<std::string>::SortDescending(args.oid, args.tag); break;
+        default: ASSERT_FAIL(); break;
+    }
+
+    return Events::ArgumentStack();
+}
+
+Events::ArgumentStack Array::OnArraySet(Events::ArgumentStack&& rawArgs)
+{
+    const CommonArgs args = ExtractCommonArgs(rawArgs);
+    const int32_t index = Events::ExtractArgument<int32_t>(rawArgs);
+
+    switch (args.type)
+    {
+        case ArrayType::FLOAT: ArrayImpl<float>::Set(args.oid, args.tag, index, Events::ExtractArgument<float>(rawArgs)); break;
+        case ArrayType::INTEGER: ArrayImpl<int32_t>::Set(args.oid, args.tag, index, Events::ExtractArgument<int32_t>(rawArgs)); break;
+        case ArrayType::OBJECT: ArrayImpl<ObjectID>::Set(args.oid, args.tag, index, Events::ExtractArgument<ObjectID>(rawArgs)); break;
+        case ArrayType::STRING: ArrayImpl<std::string>::Set(args.oid, args.tag, index, Events::ExtractArgument<std::string>(rawArgs)); break;
         default: ASSERT_FAIL(); break;
     }
 

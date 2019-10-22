@@ -1,4 +1,4 @@
-/// @defgroup profiler Profiler
+/// @addtogroup profiler Profiler
 /// @brief Functions to instrument nwscript code.
 /// @remark These functions are for advanced users.
 /// @{

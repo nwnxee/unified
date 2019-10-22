@@ -1,4 +1,4 @@
-/// @defgroup regex Regex
+/// @addtogroup regex Regex
 /// @brief Provide regular expression functions.
 /// @{
 /// @file nwnx_regex.nss

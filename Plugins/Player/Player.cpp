@@ -202,21 +202,9 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
     {
         const auto seconds = Services::Events::ExtractArgument<float>(args);
         const auto milliseconds = static_cast<uint32_t>(seconds * 1000.0f); // NWN expects milliseconds.
-
-        int32_t type;
-
-        //TODO-64Bit: Remove this try/catch block
-        try
-        {
-            type = Services::Events::ExtractArgument<int32_t>(args);
-        }
-        catch(...)
-        {
-            type = 10;
-        }
-
-        ASSERT_OR_THROW(type > 0);
-        ASSERT_OR_THROW(type <= 10);
+        const auto type = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(type > 0);
+          ASSERT_OR_THROW(type <= 10);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
@@ -1109,7 +1097,7 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
     static bool bSetPersistentLocationHook;
     if (!bSetPersistentLocationHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN13CServerExoApp19LoadCharacterFinishEP10CNWSPlayerii, void>(
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii, void>(
                 +[](Services::Hooks::CallType cType, CServerExoAppInternal*, CNWSPlayer *pPlayer, int32_t, int32_t) -> void
                 {
                     if (cType == Services::Hooks::CallType::AFTER_ORIGINAL)

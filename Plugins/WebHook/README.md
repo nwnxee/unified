@@ -1,6 +1,5 @@
-# WebHook Plugin Reference
-
-## Description
+@page webhook Readme
+@ingroup webhook 
 
 Allows the sending of WebHooks. At the moment, only slack application/json format is supported. See https://api.slack.com/incoming-webhooks.
 

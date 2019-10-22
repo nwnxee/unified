@@ -1,6 +1,5 @@
-# JVM Plugin Reference
-
-## Description
+@page jvm Readme
+@ingroup jvm 
 
 Java Virtual Machine support for NWNXEE
 

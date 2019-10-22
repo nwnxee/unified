@@ -1,4 +1,4 @@
-## NWNX:EE SQL Migration Guide
+@section sql_migrate Migration Guide
 
 Included below are some examples and guidance in migrating legacy NWNX ODBC style SQL code to the new NWNX:EE SQL Plugin.
 

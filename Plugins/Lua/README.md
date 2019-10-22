@@ -1,6 +1,5 @@
-# Lua Plugin Reference
-
-## Description
+@page lua Readme
+@ingroup lua 
 
 Allows users to call Lua code with NWScript binding.
 

@@ -1,6 +1,6 @@
-# Metrics_InfluxDB Plugin Reference
-
-## Description
+@addtogroup metrics_influxdb Metrics InfluxDB
+@page metrics_influxdb Readme
+@ingroup metrics_influxdb 
 
 Exports profiling information to Influx DB.
 

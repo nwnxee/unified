@@ -149,75 +149,93 @@ ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
         const auto oidCreature = Services::Events::ExtractArgument<Types::ObjectID>(args);
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(type >= 0);
           ASSERT_OR_THROW(type < OverrideType_MAX);
         const auto value = Services::Events::ExtractArgument<int32_t>(args);
 
-        AppearanceOverrideData* pAOD;
-        if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidCreature, Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+        if (type < 0)
         {
-            pAOD = static_cast<AppearanceOverrideData*>(*appearanceOverrideData);
+            if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void *>(oidCreature,
+                    Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            {
+               auto *pAOD = static_cast<AppearanceOverrideData *>(*appearanceOverrideData);
+
+                g_plugin->GetServices()->m_perObjectStorage->Remove(oidCreature, Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+               delete pAOD;
+            }
         }
         else
         {
-            auto *pAppearanceOverrideData = new AppearanceOverrideData();
-            g_plugin->GetServices()->m_perObjectStorage->Set(oidCreature, Utils::ObjectIDToString(pPlayer->m_oidNWSObject), pAppearanceOverrideData,
-                                                             [](void*p) { delete static_cast<AppearanceOverrideData*>(p); });
-            pAOD = pAppearanceOverrideData;
-        }
+            AppearanceOverrideData *pAOD;
+            if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void *>(oidCreature,
+                    Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
+            {
+                pAOD = static_cast<AppearanceOverrideData *>(*appearanceOverrideData);
+            }
+            else
+            {
+                auto *pAppearanceOverrideData = new AppearanceOverrideData();
+                g_plugin->GetServices()->m_perObjectStorage->Set(oidCreature,
+                                                                 Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
+                                                                 pAppearanceOverrideData,
+                                                                 [](void *p)
+                                                                 { delete static_cast<AppearanceOverrideData *>(p); });
+                pAOD = pAppearanceOverrideData;
+            }
 
-        switch(type)
-        {
-            case AppearanceType:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->appearanceType);
-                break;
+            switch (type)
+            {
+                case AppearanceType:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->appearanceType);
+                    break;
 
-            case Gender:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->gender);
-                break;
+                case Gender:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->gender);
+                    break;
 
-            case HitPoints:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->currentHitPoints);
-                break;
+                case HitPoints:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->currentHitPoints);
+                    break;
 
-            case HairColor:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->hairColor);
-                break;
+                case HairColor:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->hairColor);
+                    break;
 
-            case SkinColor:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->skinColor);
-                break;
+                case SkinColor:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->skinColor);
+                    break;
 
-            case PhenoType:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->phenoType);
-                break;
+                case PhenoType:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->phenoType);
+                    break;
 
-            case HeadType:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->headType);
-                break;
+                case HeadType:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->headType);
+                    break;
 
-            case SoundSet:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->soundSet);
-                break;
+                case SoundSet:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->soundSet);
+                    break;
 
-            case TailType:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->tailType);
-                break;
+                case TailType:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->tailType);
+                    break;
 
-            case WingType:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->wingType);
-                break;
+                case WingType:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->wingType);
+                    break;
 
-            case FootstepSound:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->footstepSound);
-                break;
+                case FootstepSound:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->footstepSound);
+                    break;
 
-            case Portrait:
-                SetIntValue(type, value, pAOD->bitSet, pAOD->portraitId);
-                break;
+                case Portrait:
+                    SetIntValue(type, value, pAOD->bitSet, pAOD->portraitId);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
 

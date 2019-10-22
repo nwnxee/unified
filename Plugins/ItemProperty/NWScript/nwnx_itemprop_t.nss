@@ -3,7 +3,6 @@
 void printip(struct NWNX_IPUnpacked n)
 {
     string s = "Unpacked IP: \n";
-    s += "nItemPropertyId = " + IntToString(n.nItemPropertyId) + "\n";
     s += "nProperty = " + IntToString(n.nProperty) + "\n";
     s += "nSubType = " + IntToString(n.nSubType) + "\n";
     s += "nCostTable = " + IntToString(n.nCostTable) + "\n";

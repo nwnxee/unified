@@ -1,19 +1,9 @@
-# Rename Plugin Reference
-
-## Description
+@page rename Readme
+@ingroup rename 
 
 This plugin facilitates renaming, overriding and customization of player names.
 
-Script function | Description  
-----------------|-------------
-NWNX_Rename_SetPCNameOverride() | Set a PCs floaty/chat name(sPrefix+sNewName+sSuffix) and name (sNewName) on the player list. If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OVERRIDE the player name will change to (sNewName) on tells. If (iPlayerNameState) is set to NWNX_RENAME_PLAYERNAME_OBFUSCATE the player name will be set to a random string.
-NWNX_Rename_GetPCNameOverride() | Gets the PCs name as seen by a specified target or all clients.
-
-If `iPlayerNameState` is set to `NWNX_RENAME_PLAYERNAME_DEFAULT` the player name will be untouched. DMs and the player themselves will still see their original player name regardless of option set. Will not persist through saving, resets or logout.
-
-If a target object is specified, only that target will see the PCs name as defined. This overrides a global rename.
-
-Due to the conflict with this plugin and the Tweaks plugin to hide classes on the module character listing, this module also provides that functionality.
+@note Due to the conflict with this plugin and the @ref tweaks "NWNX_Tweaks" plugin to hide classes on the module character listing, this module also provides that functionality.
 
 ## Environment Variables
 

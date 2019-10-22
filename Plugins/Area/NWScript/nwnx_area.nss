@@ -1,4 +1,4 @@
-/// @defgroup area Area
+/// @addtogroup area Area
 /// @brief Functions exposing additional area properties as well as creating transitions.
 /// @{
 /// @file nwnx_area.nss

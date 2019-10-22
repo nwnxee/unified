@@ -1,8 +1,5 @@
-# Damage Plugin Reference
-
-Ported form nwnx2 plugin from Baaleos.
-
-## Description
+@page damage Readme
+@ingroup damage
 
 This plugin allows to run a script just before a damage is applied to a creature, and allows to modify the amount and type of the damage.
 

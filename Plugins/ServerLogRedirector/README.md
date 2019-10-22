@@ -1,5 +1,4 @@
-# ServerLogRedirector Plugin Reference
-
-## Description
+@page serverlogredirector Readme
+@ingroup serverlogredirector 
 
 Redirects server log output to the NWNX logger.
