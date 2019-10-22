@@ -1,6 +1,5 @@
-# Profiler Plugin Reference
-
-## Description
+@page profiler Readme
+@ingroup profiler 
 
 Acquires shared hooks to expose various useful metrics.
 

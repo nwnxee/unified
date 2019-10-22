@@ -1,4 +1,4 @@
-/// @defgroup skillranks SkillRanks
+/// @addtogroup skillranks SkillRanks
 /// @brief Enhances and allows for manipulation of skill rank calculations including the ability to build custom
 /// skill related feats as well as modifying stock feats.
 /// @{

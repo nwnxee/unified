@@ -1,4 +1,4 @@
-/// @defgroup admin Administration
+/// @addtogroup admin Administration
 /// @brief Various admin related functions
 /// @{
 /// @file nwnx_admin.nss

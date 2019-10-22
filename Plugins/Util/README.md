@@ -1,6 +1,5 @@
-# Util Plugin Reference
-
-## Description
+@page util Readme
+@ingroup util 
 
 Provide various utility functions that don't have a better home
 

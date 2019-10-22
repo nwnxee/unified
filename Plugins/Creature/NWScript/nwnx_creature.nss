@@ -1,4 +1,4 @@
-/// @defgroup creature Creature
+/// @addtogroup creature Creature
 /// @brief Functions exposing additional creature properties.
 /// @{
 /// @file nwnx_creature.nss
@@ -111,7 +111,7 @@ void NWNX_Creature_AddFeatByLevel(object creature, int feat, int level);
 void NWNX_Creature_RemoveFeat(object creature, int feat);
 
 /// @brief Determines if the creature knows a feat.
-/// @note This differs from native `GetHasFeat` which returns FALSE if the feat has no more uses per day.
+/// @note This differs from native @nwn{GetHasFeat} which returns FALSE if the feat has no more uses per day.
 /// @param creature The creature object.
 /// @param feat The feat id.
 /// @return TRUE if the creature has the feat, regardless if they have any usages left or not.
@@ -421,14 +421,14 @@ void NWNX_Creature_SetLevelByPosition(object creature, int position, int level);
 /// @param bab The BAB value. Should be between 0 and 254. Setting BAB to 0 will cause the
 /// creature to revert to its original BAB based on its classes and levels. A creature can
 /// never have an actual BAB of zero.
-/// @remark The base game has a function SetBaseAttackBonus(), which actually sets
+/// @remark The base game has a function @nwn{SetBaseAttackBonus}, which actually sets
 /// the bonus attacks per round for a creature, not the BAB.
 void NWNX_Creature_SetBaseAttackBonus(object creature, int bab);
 
 /// @brief Gets the creatures current attacks per round (using equipped weapon).
 /// @param creature The creature object.
 /// @param bBaseAPR If TRUE, will return the base attacks per round, based on BAB and
-/// equipped weapons, regardless of overrides set by calls to SetBaseAttackBonus() builtin function.
+/// equipped weapons, regardless of overrides set by calls to @nwn{SetBaseAttackBonus} builtin function.
 /// @return The attacks per round.
 int NWNX_Creature_GetAttacksPerRound(object creature, int bBaseAPR = FALSE);
 

@@ -1,4 +1,4 @@
-/// @defgroup object Object
+/// @addtogroup object Object
 /// @brief Functions exposing additional object properties.
 /// @{
 /// @file nwnx_object.nss

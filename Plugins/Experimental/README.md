@@ -1,8 +1,10 @@
-# Experimental Plugin Reference
-
-## Description
+@addtogroup experimental Experimental
+@page experimental Readme
+@ingroup experimental
 
 Experimental functionality. Use this stuff at your own risk.
+
+## Notes
 
 The following environmental variable is required to load the plugin:
 

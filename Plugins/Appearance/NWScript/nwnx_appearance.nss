@@ -1,4 +1,4 @@
-/// @defgroup appearance Appearance
+/// @addtogroup appearance Appearance
 /// @brief Allows the appearance and some other things of creatures to be overridden per player.
 /// @{
 /// @file nwnx_appearance.nss

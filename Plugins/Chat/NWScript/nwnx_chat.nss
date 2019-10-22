@@ -1,4 +1,4 @@
-/// @defgroup chat Chat
+/// @addtogroup chat Chat
 /// @brief Functions related to chat.
 /// @{
 /// @file nwnx_chat.nss
