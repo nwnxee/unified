@@ -58,7 +58,7 @@ public:
     ~Events();
 
     template <typename T>
-    void Push(const std::string& pluginName, const std::string& eventName, const T& value);
+    void Push(const std::string& pluginName, const std::string& eventName, T&& value);
 
     template <typename T>
     Maybe<T> Pop(const std::string& pluginName, const std::string& eventName);
