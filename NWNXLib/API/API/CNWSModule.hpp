@@ -17,7 +17,7 @@
 #include "NWPLAYERLISTITEM.hpp"
 #include "CExoString.hpp"
 #include "NWMODULEEXPANSION.hpp"
-
+#include <vector>
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSModule)
@@ -40,6 +40,20 @@ typedef int BOOL;
 typedef uint32_t OBJECT_ID;
 
 
+    struct NWSyncAdvertisement 
+    {
+        struct Manifest
+        {
+            CExoString m_hash;
+            uint8_t m_flags;
+            uint8_t m_languageId;
+        };
+        CExoString m_primary_manifest;
+        std::vector<Manifest> m_additional_manifests;
+        CExoString m_url;
+    };
+
+
 struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
 {
     CExoLinkedList<NWMODULEEXPANSION> m_lstModuleExpansion;
@@ -51,13 +65,14 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoLinkedList<CNWSPlayerTURD> m_lstTURDList;
     CExoLocString m_lsModuleDescription;
     CExoString m_sModuleAltTLKFile;
-    CExoArrayList<CExoString> m_lstManifestHashes;
+NWSyncAdvertisement m_nwsyncData;
+//    CExoArrayList<CExoString> m_lstManifestHashes;
     BOOL m_bNWSyncPublishHaks;
     NWMODULEHEADER * m_pModuleHeader;
     NWMODULEENTRYINFO * m_pModuleEntryInfo;
     CExoString m_sModuleResourceName;
     int32_t m_nSourceType;
-    CExoString m_sManifestHash;
+//    CExoString m_sManifestHash;
     CExoString m_sDDResourceName;
     BOOL m_bIsDDModule;
     BOOL m_bIsDDDemoModule;
