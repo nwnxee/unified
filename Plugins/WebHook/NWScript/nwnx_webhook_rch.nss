@@ -86,7 +86,7 @@ string NWNX_WebHook_BuildMessageForWebHook(string host, string path, struct NWNX
     string message = "{";
 
     // Force a text string of at least a space
-    string sMainText = " ";
+    string sMainText = "";
 
     // The only way to turn off markdown for discord is to surround the text in backticks
     if (stMessage.sText != "")
