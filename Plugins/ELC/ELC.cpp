@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CServerInfo.hpp"
 #include "API/CExoString.hpp"
 #include "API/CExoLocString.hpp"
@@ -206,7 +207,9 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             {"VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
 
     // *** Server Restrictions **********************************************************************************************
-    CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    // TODO-64bit: FIX ME
+    //CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pServerInfo;
 
     *bFailedServerRestriction = false;
     uint8_t nCharacterLevel = pCreatureStats->GetLevel(false);
