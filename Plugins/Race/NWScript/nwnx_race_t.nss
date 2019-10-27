@@ -1,12 +1,5 @@
 #include "nwnx_race"
-
-void report(string func, int bSuccess)
-{
-    if (bSuccess)
-        WriteTimestampedLogEntry("NWNX_Race: " + func + "() success");
-    else
-        WriteTimestampedLogEntry("NWNX_Race: " + func + "() failed");
-}
+#include "nwnx_tests"
 
 void main()
 {
@@ -31,10 +24,10 @@ void main()
     int iNewImmune = GetIsImmune(oCreature, IMMUNITY_TYPE_CURSED);
     DestroyObject(oCreature);
 
-    report("SetRacialModifier SR", iSR == iNewSR - 10);
-    report("SetRacialModifier SkillRank", iSkillRank == iNewSkillRank - 5);
-    report("SetRacialModifier AC", iAC == iNewAC - 1);
-    report("SetRacialModifier Immunity", iImmune != iNewImmune);
+    NWNX_Tests_Report("NWNX_Race", "SetRacialModifier SR", iSR == iNewSR - 10);
+    NWNX_Tests_Report("NWNX_Race", "SetRacialModifier SkillRank", iSkillRank == iNewSkillRank - 5);
+    NWNX_Tests_Report("NWNX_Race", "SetRacialModifier AC", iAC == iNewAC - 1);
+    NWNX_Tests_Report("NWNX_Race", "SetRacialModifier Immunity", iImmune != iNewImmune);
 
     WriteTimestampedLogEntry("NWNX_Race unit test end.");
 }
