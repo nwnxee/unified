@@ -60,10 +60,6 @@ itemproperty NWNX_Util_EffectToItemProperty(effect e);
 /// @return The converted effect.
 effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
 
-/// @brief Generates a v4 UUID.
-/// @return A UUID string.
-string NWNX_Util_GenerateUUID();
-
 /// @brief Strip any color codes from a string.
 /// @param str The string to strip of color.
 /// @return The new string without any color codes.
@@ -172,13 +168,6 @@ effect NWNX_Util_ItemPropertyToEffect(itemproperty ip)
     NWNX_PushArgumentItemProperty(NWNX_Util, sFunc, ip);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueEffect(NWNX_Util, sFunc);
-}
-
-string NWNX_Util_GenerateUUID()
-{
-    string sFunc = "GenerateUUID";
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
 
 string NWNX_Util_StripColors(string str)
