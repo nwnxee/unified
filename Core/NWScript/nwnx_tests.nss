@@ -4,6 +4,10 @@
 /// @{
 /// @file nwnx_tests.nss
 
+/// @brief Reports the test results
+/// @param sPlugin The plugin calling the test.
+/// @param sTestName The name of the test.
+/// @param bSuccess TRUE if the test passed.
 void NWNX_Tests_Report(string sPlugin, string sTestName, int bSuccess);
 
 void NWNX_Tests_Report(string sPlugin, string sTestName, int bSuccess)
