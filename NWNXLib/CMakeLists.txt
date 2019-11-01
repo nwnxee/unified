@@ -23,6 +23,7 @@ add_subdirectory(External)
 add_subdirectory(Hooking)
 add_subdirectory(Platform)
 add_subdirectory(Services)
+add_subdirectory(Utils)
 
 add_library(NWNXLib STATIC "${NWNXLIB_SOURCE}")
 add_sanitizers(NWNXLib)

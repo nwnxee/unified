@@ -1,10 +1,10 @@
 
 template <typename T>
-void Events::Push(const std::string& pluginName, const std::string& eventName, const T& value)
+void Events::Push(const std::string& pluginName, const std::string& eventName, T&& value)
 {
     if (auto* event = GetEventData(pluginName, eventName))
     {
-        event->m_arguments.push(Events::Argument(value));
+        event->m_arguments.push(Events::Argument(std::forward<T>(value)));
         LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
             event->m_arguments.top(), eventName, pluginName);
     }
