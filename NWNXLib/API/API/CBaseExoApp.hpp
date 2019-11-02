@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoArrayList.hpp"
 #include "CExoLocString.hpp"
+#include "CExoString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -18,7 +18,6 @@ typedef int BOOL;
 struct CBaseExoApp
 {
 
-//    virtual ~CBaseExoApp();
     virtual BOOL AdmitNetworkAddress(uint32_t nProtocol, CExoString sAddress);
     virtual BOOL AdmitPlayerName(CExoString sPlayerName);
     virtual BOOL SetNetworkAddressBan(uint32_t nProtocol, CExoString sAddress, BOOL bBanPlayer);

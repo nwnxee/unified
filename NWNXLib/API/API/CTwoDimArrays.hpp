@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "C2DA.hpp"
 #include "CExoString.hpp"
 #include "CExoLinkedList.hpp"
+#include "C2DA.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

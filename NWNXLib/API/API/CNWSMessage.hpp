@@ -1,46 +1,46 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "Vector.hpp"
+#include "CNWMessage.hpp"
 #include "CResRef.hpp"
 #include "CExoArrayList.hpp"
+#include "CExoString.hpp"
+#include "Vector.hpp"
 #include "CExoLocString.hpp"
-#include "CNWMessage.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSMessage)
 #endif
 
+struct CNWSDoor;
 struct CNWSPlayer;
+struct CNWSArea;
+struct CNWSItem;
+struct CNWSPlayerLastUpdateObject;
+struct CLastUpdateObject;
+struct CGameObject;
+struct CNWSStore;
+struct CNWSPlayerLUOInventory;
 struct CNWSPlayerInventoryGUI;
+struct CNWSObject;
+struct CNWSPlayerLUOSortedObjectList;
+struct CNWSCreature;
+struct CGameObjectArray;
+struct CNWSAreaOfEffectObject;
+struct CNWSPlaceable;
+struct CNWSTrigger;
 struct CItemRepository;
 struct CNWCCMessageData;
 struct CNWSCombatAttackData;
-struct CEffectIconObject;
-struct CNWSPlayerLUOSortedObjectList;
-struct CNWSTrigger;
-struct CNWSDoor;
-struct CLoopingVisualEffect;
-struct CNWSPlaceable;
-struct CNWSAreaOfEffectObject;
-struct CLastUpdateObject;
-struct CNWSArea;
-struct CNWSPlayerLastUpdateObject;
-struct CGameObject;
-struct CNWSCreature;
-struct CNWSPlayerLUOInventory;
-struct CNWSStore;
-struct CGameObjectArray;
-struct CNWSObject;
 struct CLastUpdatePartyObject;
-struct CNWSItem;
+struct CEffectIconObject;
+struct CLoopingVisualEffect;
 
 
-typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint32_t STRREF;
 typedef int BOOL;
+typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint32_t OBJECT_ID;
 
 

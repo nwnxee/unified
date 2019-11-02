@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CExoFile.hpp"
 #include "TLK_FILE_HEADER.hpp"
+#include "CExoFile.hpp"
+#include "CExoString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

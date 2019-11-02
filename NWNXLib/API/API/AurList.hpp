@@ -1,26 +1,26 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "List.hpp"
+#include "AurList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
-NWN_API_PROLOGUE(List)
+NWN_API_PROLOGUE(AurList)
 #endif
 
 
 
 
 
-template <class Type> struct List
+template <class Type> struct AurList
 {
     Type * element;
     int32_t num;
     int32_t array_size;
 
-    List(int s = 0);
-    List(List<Type> & list);
-    ~List();
+    AurList(int s = 0);
+    AurList(AurList<Type> & list);
+    ~AurList();
     void allocate(int32_t s);
     void SetSize(int32_t s);
     void Pack();
@@ -31,16 +31,16 @@ template <class Type> struct List
     int32_t IndexOf(Type );
     void Remove(Type );
     void DelIndex(int32_t i);
-    List<Type> & operator=(List<Type> & list);
+    AurList<Type> & operator=(AurList<Type> & list);
 
 
-#ifdef NWN_CLASS_EXTENSION_List
-    NWN_CLASS_EXTENSION_List
+#ifdef NWN_CLASS_EXTENSION_AurList
+    NWN_CLASS_EXTENSION_AurList
 #endif
 };
 
 
 #ifdef NWN_API_EPILOGUE
-NWN_API_EPILOGUE(List)
+NWN_API_EPILOGUE(AurList)
 #endif
 

@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWTileSetManager)
 #endif
 
-struct CNWTileSet;
 struct CNWTilePathNode;
+struct CNWTileSet;
 
 
 

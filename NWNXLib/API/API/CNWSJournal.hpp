@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CExoArrayList.hpp"
 #include "SJournalEntry.hpp"
+#include "CExoArrayList.hpp"
+#include "CExoString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

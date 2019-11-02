@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLinkedList.hpp"
-#include "NWERFHEADER.hpp"
 #include "CERFRes.hpp"
-#include "CERFString.hpp"
+#include "CExoLinkedList.hpp"
 #include "CERFKey.hpp"
+#include "CERFString.hpp"
+#include "NWERFHEADER.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

@@ -9,8 +9,8 @@ NWN_API_PROLOGUE(KEYFILE_KEYENTRY)
 
 
 
-typedef uint8_t RESREF[16];
 typedef uint16_t RESTYPE;
+typedef uint8_t RESREF[16];
 
 
 struct KEYFILE_KEYENTRY

@@ -1,13 +1,14 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLinkedList.hpp"
 #include "RelayModeChange.hpp"
-#include "CExoString.hpp"
-#include "CNetLayerWindow.hpp"
-#include "IntendedConnectionData.hpp"
-#include "CExoArrayList.hpp"
 #include "CNetLayerPlayerInfo.hpp"
+#include "CExoArrayList.hpp"
+#include "NWSyncAdvertisement.hpp"
+#include "CExoString.hpp"
+#include "IntendedConnectionData.hpp"
+#include "CExoLinkedList.hpp"
+#include "CNetLayerWindow.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -15,8 +16,8 @@ NWN_API_PROLOGUE(CNetLayerInternal)
 #endif
 
 struct CNetLayerSessionInfo;
-struct CExoNet;
 struct CBaseExoApp;
+struct CExoNet;
 struct CExoNetExtendableBuffer;
 
 
@@ -43,8 +44,7 @@ struct CNetLayerInternal
     CExoString m_sGameMasterPassword;
     CExoString m_sServerAdminPassword;
     uint32_t m_nSessionMaxPlayers;
-    CExoString m_sNWSyncHash;
-    CExoString m_sNWSyncUrl;
+    NWSyncAdvertisement m_nwsyncData;
     BOOL m_bEnumerateSessions;
     BOOL m_bEnumerateSpecific;
     BOOL m_bEnumerateSpecificOverRelay;

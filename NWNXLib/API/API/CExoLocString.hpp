@@ -11,8 +11,8 @@ NWN_API_PROLOGUE(CExoLocString)
 struct CExoLocStringInternal;
 
 
-typedef int BOOL;
 typedef uint32_t STRREF;
+typedef int BOOL;
 
 
 struct CExoLocString

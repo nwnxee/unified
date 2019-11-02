@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CERFKey)
 #endif
 
-struct CExoString;
 struct CExoFile;
+struct CExoString;
 
 
 typedef int BOOL;

@@ -1,12 +1,12 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLinkedList.hpp"
-#include "CExoString.hpp"
-#include "CNWSObject.hpp"
 #include "CNWSPersonalReputation.hpp"
 #include "CExoArrayList.hpp"
+#include "CNWSObject.hpp"
 #include "CNWSObjectActionNode.hpp"
+#include "CExoString.hpp"
+#include "CExoLinkedList.hpp"
 #include "CExoLocString.hpp"
 
 
@@ -14,10 +14,10 @@
 NWN_API_PROLOGUE(CNWSPlayerTURD)
 #endif
 
-struct CNWSArea;
 struct CResGFF;
-struct CResStruct;
 struct CGameEffect;
+struct CNWSArea;
+struct CResStruct;
 
 
 typedef int BOOL;

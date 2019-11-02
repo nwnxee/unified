@@ -1,10 +1,10 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLinkedList.hpp"
+#include "AurList.hpp"
 #include "CStringFieldIDType.hpp"
+#include "CExoLinkedList.hpp"
 #include "CResStructHeader.hpp"
-#include "List.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -12,8 +12,8 @@ NWN_API_PROLOGUE(CResStructInternal)
 #endif
 
 struct CResStructLookUp;
-struct CResStructLookUp;
 struct CStringFieldIDType;
+struct CResStructLookUp;
 
 
 typedef int BOOL;
@@ -31,7 +31,7 @@ struct CResStructInternal
     CResStructInternal * m_pParent;
     uint32_t m_nParentIndex;
     BOOL m_bIncludeStringHashTable;
-    List< CStringFieldIDType> m_listStringFieldIDs;
+    AurList< CStringFieldIDType> m_listStringFieldIDs;
     int32_t m_nNumEmptyFields;
     int32_t m_nNumCopiedFields;
     CExoLinkedList<CResStructInternal> * m_pChildList;
@@ -39,7 +39,7 @@ struct CResStructInternal
     CResStructInternal(uint32_t nType);
     ~CResStructInternal();
     uint32_t WriteSideHashSearch(char * szFieldID);
-    void HashSortStringTable(List< CResStructLookUp *> * pOutputLookupPointers, List< CStringFieldIDType *> * pOutputFieldIDPointers);
+    void HashSortStringTable(AurList< CResStructLookUp *> * pOutputLookupPointers, AurList< CStringFieldIDType *> * pOutputFieldIDPointers);
 
 
 #ifdef NWN_CLASS_EXTENSION_CResStructInternal

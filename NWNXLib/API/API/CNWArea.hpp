@@ -1,16 +1,16 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "Vector.hpp"
 #include "CExoArrayList.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWArea)
 #endif
 
-struct CPathfindInformation;
 struct CGameObject;
+struct CPathfindInformation;
 
 
 typedef int BOOL;

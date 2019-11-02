@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CExoFile)
 #endif
 
-struct CExoString;
 struct CExoFileInternal;
+struct CExoString;
 
 
 typedef uint16_t RESTYPE;

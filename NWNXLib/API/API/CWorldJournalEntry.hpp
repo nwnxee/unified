@@ -10,8 +10,8 @@ NWN_API_PROLOGUE(CWorldJournalEntry)
 
 
 
-typedef int BOOL;
 typedef uint32_t STRREF;
+typedef int BOOL;
 
 
 struct CWorldJournalEntry

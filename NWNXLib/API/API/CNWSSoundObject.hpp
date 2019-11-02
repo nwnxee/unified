@@ -1,20 +1,20 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoArrayList.hpp"
+#include "CResRef.hpp"
 #include "CNWSObject.hpp"
 #include "Vector.hpp"
-#include "CResRef.hpp"
-#include "CExoArrayList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSSoundObject)
 #endif
 
-struct CNWSMessage;
-struct CResStruct;
-struct CNWSArea;
 struct CResGFF;
+struct CNWSMessage;
+struct CNWSArea;
+struct CResStruct;
 
 
 typedef int BOOL;

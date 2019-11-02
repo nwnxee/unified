@@ -7,9 +7,9 @@
 NWN_API_PROLOGUE(CNWSBarter)
 #endif
 
-struct CNWSPlayerLUOInventory;
 struct CItemRepository;
 struct CNWSCreature;
+struct CNWSPlayerLUOInventory;
 
 
 typedef int BOOL;

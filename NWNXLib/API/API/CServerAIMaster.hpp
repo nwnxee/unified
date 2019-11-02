@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoArrayList.hpp"
+#include "CExoString.hpp"
 #include "CServerAIList.hpp"
 #include "CExoLinkedList.hpp"
-#include "CExoString.hpp"
 #include "CServerAIEventNode.hpp"
-#include "CExoArrayList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -13,14 +13,14 @@ NWN_API_PROLOGUE(CServerAIMaster)
 #endif
 
 struct CResGFF;
+struct CNWSCreature;
+struct CServerExoAppInternal;
 struct CGameEffect;
-struct CResStruct;
 struct CNWSObject;
 struct CItemPropertyApplierRemover;
-struct CServerExoAppInternal;
-struct CNWItemProperty;
-struct CNWSCreature;
 struct CNWSItem;
+struct CNWItemProperty;
+struct CResStruct;
 struct CGameEffectApplierRemover;
 
 

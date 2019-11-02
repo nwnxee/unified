@@ -1,21 +1,21 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoArrayList.hpp"
 #include "CNWSStats_SpellLikeAbility.hpp"
 #include "CNWActionNode.hpp"
-#include "CExoArrayList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSPlayerLastUpdateObject)
 #endif
 
-struct CSpell_Delete;
-struct CEffectIconObject;
-struct CNWVisibilityNode;
 struct CNWSStats_Spell;
-struct CFeatUseListEntry;
+struct CEffectIconObject;
 struct CSpell_Add;
+struct CSpell_Delete;
+struct CNWVisibilityNode;
+struct CFeatUseListEntry;
 
 
 typedef int BOOL;

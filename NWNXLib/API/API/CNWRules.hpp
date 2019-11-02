@@ -2,8 +2,10 @@
 #include "nwn_api.hpp"
 
 #include "CachedRulesetEntry.hpp"
-#include "CExoString.hpp"
 #include "CResRef.hpp"
+#include "CExoString.hpp"
+#include <string>
+#include <unordered_map>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -12,12 +14,12 @@ NWN_API_PROLOGUE(CNWRules)
 
 struct CNWRace;
 struct CNWFeat;
+struct CTwoDimArrays;
 struct CNWClass;
 struct CNWBaseItemArray;
-struct CTwoDimArrays;
+struct CNWSkill;
 struct CNWSpellArray;
 struct CNWDomain;
-struct CNWSkill;
 
 
 typedef int BOOL;
