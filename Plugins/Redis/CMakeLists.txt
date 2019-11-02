@@ -7,7 +7,6 @@ add_plugin(Redis
   Config.cpp
   Connection.cpp
   PubSub.cpp
-  Util.cpp
 )
 
 target_link_libraries(Redis cpp_redis)

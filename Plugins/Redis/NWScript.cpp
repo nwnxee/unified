@@ -9,8 +9,6 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CExoString.hpp"
 
-#include "Util.h"
-
 namespace Redis
 {
 

@@ -397,7 +397,7 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
     {
         if (API::Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
         {
-            LOG_NOTICE("Running module shutdown script: %s", shutdownScript);
+            LOG_NOTICE("Running module shutdown script: %s", *shutdownScript);
             Utils::ExecuteScript(*shutdownScript, 0);
         }
     }
