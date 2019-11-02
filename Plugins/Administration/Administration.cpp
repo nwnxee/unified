@@ -54,29 +54,29 @@ Administration::Administration(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 
-#define REGISTER(name, func) \
-    GetServices()->m_events->RegisterEvent(name, \
-        [this](Events::ArgumentStack&& args){ return func(std::move(args)); })
+#define REGISTER(func) \
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
-    REGISTER("GET_PLAYER_PASSWORD",           OnGetPlayerPassword);
-    REGISTER("SET_PLAYER_PASSWORD",           OnSetPlayerPassword);
-    REGISTER("CLEAR_PLAYER_PASSWORD",         OnClearPlayerPassword);
-    REGISTER("GET_DM_PASSWORD",               OnGetDMPassword);
-    REGISTER("SET_DM_PASSWORD",               OnSetDMPassword);
-    REGISTER("SHUTDOWN_SERVER",               OnShutdownServer);
-    REGISTER("DELETE_PLAYER_CHARACTER",       OnDeletePlayerCharacter);
-    REGISTER("ADD_BANNED_IP",                 OnAddBannedIP);
-    REGISTER("REMOVE_BANNED_IP",              OnRemoveBannedIP);
-    REGISTER("ADD_BANNED_CDKEY",              OnAddBannedCDKey);
-    REGISTER("REMOVE_BANNED_CDKEY",           OnRemoveBannedCDKey);
-    REGISTER("ADD_BANNED_PLAYER_NAME",        OnAddBannedPlayerName);
-    REGISTER("REMOVE_BANNED_PLAYER_NAME",     OnRemoveBannedPlayerName);
-    REGISTER("GET_BANNED_LIST",               OnGetBannedList);
-    REGISTER("SET_MODULE_NAME",               OnSetModuleName);
-    REGISTER("SET_SERVER_NAME",               OnSetServerName);
-    REGISTER("GET_PLAY_OPTION",               OnGetPlayOption);
-    REGISTER("SET_PLAY_OPTION",               OnSetPlayOption);
-    REGISTER("DELETE_TURD",                   OnDeleteTURD);
+    REGISTER(GetPlayerPassword);
+    REGISTER(SetPlayerPassword);
+    REGISTER(ClearPlayerPassword);
+    REGISTER(GetDMPassword);
+    REGISTER(SetDMPassword);
+    REGISTER(ShutdownServer);
+    REGISTER(DeletePlayerCharacter);
+    REGISTER(AddBannedIP);
+    REGISTER(RemoveBannedIP);
+    REGISTER(AddBannedCDKey);
+    REGISTER(RemoveBannedCDKey);
+    REGISTER(AddBannedPlayerName);
+    REGISTER(RemoveBannedPlayerName);
+    REGISTER(GetBannedList);
+    REGISTER(SetModuleName);
+    REGISTER(SetServerName);
+    REGISTER(GetPlayOption);
+    REGISTER(SetPlayOption);
+    REGISTER(DeleteTURD);
 
 #undef REGISTER
 }
@@ -85,7 +85,7 @@ Administration::~Administration()
 {
 }
 
-Events::ArgumentStack Administration::OnGetPlayerPassword(Events::ArgumentStack&&)
+Events::ArgumentStack Administration::GetPlayerPassword(Events::ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerPassword();
     LOG_DEBUG("Returned player password '%s'.", password.m_sString);
@@ -94,7 +94,7 @@ Events::ArgumentStack Administration::OnGetPlayerPassword(Events::ArgumentStack&
     return stack;
 }
 
-Events::ArgumentStack Administration::OnSetPlayerPassword(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::SetPlayerPassword(Events::ArgumentStack&& args)
 {
     const auto newPass = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Set player password to '%s'.", newPass);
@@ -102,14 +102,14 @@ Events::ArgumentStack Administration::OnSetPlayerPassword(Events::ArgumentStack&
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnClearPlayerPassword(Events::ArgumentStack&&)
+Events::ArgumentStack Administration::ClearPlayerPassword(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Cleared player password.");
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetPlayerPassword("");
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnGetDMPassword(Events::ArgumentStack&&)
+Events::ArgumentStack Administration::GetDMPassword(Events::ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetGameMasterPassword();
     LOG_DEBUG("Returned DM password '%s'.", password.m_sString);
@@ -118,7 +118,7 @@ Events::ArgumentStack Administration::OnGetDMPassword(Events::ArgumentStack&&)
     return stack;
 }
 
-Events::ArgumentStack Administration::OnSetDMPassword(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::SetDMPassword(Events::ArgumentStack&& args)
 {
     const auto newPass = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Set DM password to '%s'.", newPass);
@@ -126,7 +126,7 @@ Events::ArgumentStack Administration::OnSetDMPassword(Events::ArgumentStack&& ar
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnShutdownServer(Events::ArgumentStack&&)
+Events::ArgumentStack Administration::ShutdownServer(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Shutting down the server!");
     if (kill(getpid(), SIGTERM) != 0)
@@ -136,7 +136,7 @@ Events::ArgumentStack Administration::OnShutdownServer(Events::ArgumentStack&&)
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStack&& args)
 {
     const auto objectId = Events::ExtractArgument<Types::ObjectID>(args);
     const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
@@ -196,7 +196,7 @@ Events::ArgumentStack Administration::OnDeletePlayerCharacter(Events::ArgumentSt
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnAddBannedIP(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::AddBannedIP(Events::ArgumentStack&& args)
 {
     const auto ip = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Banning IP %s", ip);
@@ -204,7 +204,7 @@ Events::ArgumentStack Administration::OnAddBannedIP(Events::ArgumentStack&& args
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnRemoveBannedIP(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::RemoveBannedIP(Events::ArgumentStack&& args)
 {
     const auto ip = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Unbanning IP %s", ip);
@@ -212,7 +212,7 @@ Events::ArgumentStack Administration::OnRemoveBannedIP(Events::ArgumentStack&& a
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnAddBannedCDKey(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::AddBannedCDKey(Events::ArgumentStack&& args)
 {
     const auto key = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Banning CDKey %s", key);
@@ -220,7 +220,7 @@ Events::ArgumentStack Administration::OnAddBannedCDKey(Events::ArgumentStack&& a
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnRemoveBannedCDKey(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::RemoveBannedCDKey(Events::ArgumentStack&& args)
 {
     const auto key = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Unbanning CDKey %s", key);
@@ -228,7 +228,7 @@ Events::ArgumentStack Administration::OnRemoveBannedCDKey(Events::ArgumentStack&
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnAddBannedPlayerName(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::AddBannedPlayerName(Events::ArgumentStack&& args)
 {
     const auto playername = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Banning Player name %s", playername);
@@ -236,7 +236,7 @@ Events::ArgumentStack Administration::OnAddBannedPlayerName(Events::ArgumentStac
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnRemoveBannedPlayerName(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::RemoveBannedPlayerName(Events::ArgumentStack&& args)
 {
     const auto playername = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Unbanning Player name %s", playername);
@@ -244,7 +244,7 @@ Events::ArgumentStack Administration::OnRemoveBannedPlayerName(Events::ArgumentS
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnGetBannedList(Events::ArgumentStack&&)
+Events::ArgumentStack Administration::GetBannedList(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
 
@@ -253,7 +253,7 @@ Events::ArgumentStack Administration::OnGetBannedList(Events::ArgumentStack&&)
     return stack;
 }
 
-Events::ArgumentStack Administration::OnSetModuleName(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::SetModuleName(Events::ArgumentStack&& args)
 {
     const auto newName = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Set module name to '%s'.", newName);
@@ -261,7 +261,7 @@ Events::ArgumentStack Administration::OnSetModuleName(Events::ArgumentStack&& ar
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnSetServerName(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::SetServerName(Events::ArgumentStack&& args)
 {
     const auto newName = Events::ExtractArgument<std::string>(args);
     LOG_NOTICE("Set server name to '%s'.", newName);
@@ -269,7 +269,7 @@ Events::ArgumentStack Administration::OnSetServerName(Events::ArgumentStack&& ar
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnGetPlayOption(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::GetPlayOption(Events::ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
     int32_t retVal = -1;
@@ -398,7 +398,7 @@ Events::ArgumentStack Administration::OnGetPlayOption(Events::ArgumentStack&& ar
     return stack;
 }
 
-Events::ArgumentStack Administration::OnSetPlayOption(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::SetPlayOption(Events::ArgumentStack&& args)
 {
     const auto option = Events::ExtractArgument<int32_t>(args);
     const auto value = Events::ExtractArgument<int32_t>(args);
@@ -527,7 +527,7 @@ Events::ArgumentStack Administration::OnSetPlayOption(Events::ArgumentStack&& ar
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Administration::OnDeleteTURD(Events::ArgumentStack&& args)
+Events::ArgumentStack Administration::DeleteTURD(Events::ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
 

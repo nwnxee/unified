@@ -207,9 +207,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             {"VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
 
     // *** Server Restrictions **********************************************************************************************
-    // TODO-64bit: FIX ME
-    //CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
-    CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pServerInfo;
+    CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
 
     *bFailedServerRestriction = false;
     uint8_t nCharacterLevel = pCreatureStats->GetLevel(false);
@@ -475,7 +473,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
     GetStatBonusesFromFeats(&pCreatureStats->m_lstFeats, nMods, true);
 
-    LOG_DEBUG("(GetStatBonusesFromFeats) STR: %i, DEX: %i, CON: %i, INT: %i, WIS: %i, CHA: %i", nMods[0], nMods[1], nMods[2], nMods[3], nMods[4], nMods[5]);
+    //LOG_DEBUG("(GetStatBonusesFromFeats) STR: %i, DEX: %i, CON: %i, INT: %i, WIS: %i, CHA: %i", nMods[0], nMods[1], nMods[2], nMods[3], nMods[4], nMods[5]);
 
     // Get our base ability stats
     nAbility[Ability::Strength] = (pCreature->m_bIsPolymorphed ?
