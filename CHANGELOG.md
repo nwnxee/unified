@@ -6,9 +6,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## Build8186 LTS
 
-https://github.com/nwnxee/unified/compare/build8186-2...HEAD
+Binaries and source code snapshot available at:
+
+https://github.com/nwnxee/unified/releases/tag/build8186-lts
+
 
 NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recompile all your scripts.
 
