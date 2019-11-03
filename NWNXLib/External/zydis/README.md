@@ -11,6 +11,11 @@
 
 <p align="center">Fast and lightweight x86/x86-64 disassembler library.</p>
 
+# NOTE
+
+This is a minimal copy of the original [Zydis repo](https://github.com/zyantific/zydis), including only the files necessary for NWNX to work.
+
+
 ## Features
 - Supports all x86 and x86-64 (AMD64) instructions and [extensions](./include/Zydis/Generated/EnumISAExt.h)
 - Optimized for high performance
