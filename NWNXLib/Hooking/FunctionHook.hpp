@@ -3,9 +3,7 @@
 #include "Hooking/CallingConvention.hpp"
 #include <array>
 #include <cstdint>
-
-struct subhook_struct;
-typedef struct subhook_struct *subhook_t;
+#include <External/subhook/subhook.h>
 
 namespace NWNXLib {
 
@@ -29,6 +27,7 @@ public:
 private:
     subhook_t m_subhook;
     void *    m_trampoline;
+    static int ZydisDisassemble(void *src, int *reloc_op_offset);
 };
 
 #include "FunctionHook.inl"
