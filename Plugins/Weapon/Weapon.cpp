@@ -86,8 +86,8 @@ Weapon::Weapon(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem>(&Weapon::GetWeaponSpecialization);
     m_GetWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem);
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem>(&Weapon::GetEpicWeaponSpecialization);
-    m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem);
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem>(&Weapon::GetEpicWeaponSpecialization);
+    m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem);
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem>(&Weapon::GetEpicWeaponOverwhelmingCritical);
     m_GetEpicWeaponOverwhelmingCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem);
