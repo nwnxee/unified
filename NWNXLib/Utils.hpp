@@ -7,6 +7,8 @@
 #include "API/CGameEffect.hpp"
 #include "API/CExoLocString.hpp"
 #include "API/CNWSMessage.hpp"
+#include "Utils/String.hpp"
+
 #include <string>
 #include <cstring>
 

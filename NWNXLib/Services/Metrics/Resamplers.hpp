@@ -28,7 +28,6 @@ public:
     template <typename T>
     static std::vector<MetricData> Max(std::vector<MetricData>&& data);
 
-    template <typename T>
     static std::vector<MetricData> Discard(std::vector<MetricData>&& data);
 
     template <typename T>
