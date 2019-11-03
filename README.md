@@ -1,7 +1,7 @@
-# NWNX:EE (build 8186)
+# NWNX:EE (build 8186 LTS)
 
-@mainpage
-@tableofcontents
+This is a Long Term Support (LTS) branch for the 32bit version of NWNX. This branch will receive bugfixes and security patches only, all feature development has switched over to the [64bit master branch](https://github.com/nwnxee/unified/tree/master).
+
 
 ## What is NWNX:EE?
 
