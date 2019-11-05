@@ -38,5 +38,4 @@ if(UNIX)
 endif()
 
 # For hooks -- pulled in from External.
-target_link_libraries(NWNXLib subhook)
-target_link_libraries(NWNXLib Zydis)
+target_link_libraries(NWNXLib funchook)
