@@ -18,7 +18,6 @@
 #include "API/CScriptCompiler.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
-#include "Serialize.hpp"
 #include "ViewPtr.hpp"
 #include "Services/Config/Config.hpp"
 

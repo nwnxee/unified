@@ -69,7 +69,7 @@ Race::Race(const Plugin::CreateParams& params)
     m_ShowEffectIcon = GetServices()->m_config->Get<bool>("SHOW_EFFECT_ICON", false);
 
     // Most racial adjustments are done here using effects only once per server reset or after a level up
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN13CServerExoApp19LoadCharacterFinishEP10CNWSPlayerii, void, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t>(&LoadCharacterFinishHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii, void, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t>(&LoadCharacterFinishHook);
 
     // We want the racial bonuses to not count toward limits
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, int32_t, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t>(&GetTotalEffectBonusHook);

@@ -198,7 +198,6 @@ void NWNXCore::InitialSetupHooks()
                 }
             });
 
-    // TODO-64Bit: This breaks stuff if it gets hooked, disabling it for now
     if (!m_coreServices->m_config->Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         m_services->m_hooks->RequestSharedHook<API::Functions::_ZN25CNWVirtualMachineCommands32ExecuteCommandExecuteScriptChunkEii, int32_t>(
