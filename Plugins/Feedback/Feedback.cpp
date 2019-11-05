@@ -110,7 +110,7 @@ int32_t Feedback::SendServerToPlayerJournalUpdatedHook(
     CNWSPlayer *pPlayer,
     int32_t bQuest,
     int32_t bCompleted,
-    CExoLocString *p_locName)
+    CExoLocString p_locName)
 {
     auto personalState = GetPersonalState(pPlayer->m_oidNWSObject, JOURNALUPDATED_MESSAGE, 0);
     auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(JOURNALUPDATED_MESSAGE, 0) : personalState;
