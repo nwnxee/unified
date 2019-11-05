@@ -164,6 +164,11 @@ void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0);
 /// @param nIcon The icon id.
 void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 
+/// @brief Export an object to the UserDirectory/nwnx folder.
+/// @param sFileName The filename without extension, 16 or less characters.
+/// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
+void NWNX_Object_Export(string sFileName, object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -414,5 +419,14 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
 
     NWNX_PushArgumentInt(NWNX_Object, sFunc, nIcon);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_Export(string sFileName, object oObject)
+{
+    string sFunc = "Export";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sFileName);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }

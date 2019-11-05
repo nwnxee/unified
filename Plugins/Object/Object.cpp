@@ -20,6 +20,7 @@
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CItemRepository.hpp"
+#include "API/CExoFile.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
@@ -88,6 +89,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetTriggerGeometry);
     REGISTER(RemoveIconEffect);
     REGISTER(AddIconEffect);
+    REGISTER(Export);
 
 #undef REGISTER
 }
@@ -663,6 +665,52 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         }
 
         pObject->ApplyEffect(effIcon, false, true);
+    }
+
+    return stack;
+}
+
+ArgumentStack Object::Export(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!fileName.empty());
+      ASSERT_OR_THROW(fileName.size() <= 16);
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    if (auto *pGameObject = Utils::GetGameObject(oidObject))
+    {
+        auto ExportObject = [&](RESTYPE resType) -> void
+        {
+            std::vector<uint8_t> serialized = SerializeGameObject(pGameObject, true);
+
+            if (!serialized.empty())
+            {
+                auto file = CExoFile(("NWNX:" + fileName).c_str(), resType, "wb");
+
+                if (file.FileOpened())
+                {
+                    file.Write(serialized.data(), serialized.size(), 1);
+                    file.Flush();
+                }
+            }
+        };
+
+        switch (pGameObject->m_nObjectType)
+        {
+            case Constants::ObjectType::Creature:   ExportObject(2027); break;
+            case Constants::ObjectType::Item:       ExportObject(2025); break;
+            case Constants::ObjectType::Placeable:  ExportObject(2044); break;
+            case Constants::ObjectType::Waypoint:   ExportObject(2058); break;
+            case Constants::ObjectType::Store:      ExportObject(2051); break;
+            case Constants::ObjectType::Door:       ExportObject(2042); break;
+            case Constants::ObjectType::Trigger:    ExportObject(2032); break;
+            default:
+                LOG_ERROR("Invalid object type for ExportObject");
+                break;
+        }
     }
 
     return stack;
