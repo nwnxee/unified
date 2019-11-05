@@ -779,7 +779,7 @@ int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature*
 }
 
 //This one is required for correctly update PC sheet
-int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, bool bOffHand, bool bIncludeBase, bool bTouchAttack)
+int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, int32_t bOffHand, int32_t bIncludeBase, int32_t bTouchAttack)
 {
     int32_t feat = -1;
     Weapon& plugin = *g_plugin;
@@ -816,14 +816,14 @@ int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, bool bOffHand, bo
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterFocusAttackBonus;
+        return nBonus + plugin.m_GreaterFocusAttackBonus;
     }
 
     return nBonus;
 }
 
 //This one is required for correctly update PC sheet
-int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, bool bIncludeBase, bool bTouchAttack)
+int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, int32_t bIncludeBase, int32_t bTouchAttack)
 {
     int32_t feat = -1;
     Weapon& plugin = *g_plugin;
@@ -851,13 +851,13 @@ int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, bool bIncludeBas
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterFocusAttackBonus;
+        return nBonus + plugin.m_GreaterFocusAttackBonus;
     }
 
     return nBonus;
 }
 
-int32_t Weapon::ToggleMode(CNWSCreature *pCreature, unsigned char nMode)
+int32_t Weapon::ToggleMode(CNWSCreature *pCreature, uint8_t nMode)
 {
     Weapon& plugin = *g_plugin;
     if (nMode == Constants::ToggleMode::FlurryOfBlows)
@@ -869,7 +869,7 @@ int32_t Weapon::ToggleMode(CNWSCreature *pCreature, unsigned char nMode)
     return plugin.m_ToggleModeHook->CallOriginal<int32_t>(pCreature, nMode);
 }
 
-int32_t Weapon::GetUseMonkAttackTables(CNWSCreatureStats* pStats, bool bForceUnarmed)
+int32_t Weapon::GetUseMonkAttackTables(CNWSCreatureStats* pStats, int32_t bForceUnarmed)
 {
     Weapon& plugin = *g_plugin;
     CNWSItem* pWeapon;
@@ -989,6 +989,5 @@ int Weapon::GetLevelByClass(CNWSCreatureStats *pStats, uint32_t nClassType)
 
     return 0;
 }
-
 
 }
