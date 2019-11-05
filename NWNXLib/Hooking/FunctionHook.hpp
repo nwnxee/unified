@@ -3,11 +3,13 @@
 #include "Hooking/CallingConvention.hpp"
 #include <array>
 #include <cstdint>
-#include <External/subhook/subhook.h>
 
-namespace NWNXLib {
+extern "C"
+{
+    #include "External/funchook/include/funchook.h"
+}
 
-namespace Hooking {
+namespace NWNXLib::Hooking {
 
 class FunctionHook final
 {
@@ -25,13 +27,10 @@ public:
     Ret>::type CallOriginal(Params ... args);
 
 private:
-    subhook_t m_subhook;
+    funchook_t *m_funchook;
     void *    m_trampoline;
-    static int ZydisDisassemble(void *src, int *reloc_op_offset);
 };
 
 #include "FunctionHook.inl"
-
-}
 
 }
