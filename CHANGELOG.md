@@ -13,13 +13,14 @@ NWNX 64 bit update for build ????
 - Core: NWNX will now create a `/nwnx` folder in your UserDirectory, its resman priority is slightly below the `/development` folder. Currently it's used by NWNX_Object_Export() and NWNX_Util_AddScript() to place their objects/scripts in.
 - Core: Added the environment variable `NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY`, setting this to true will delete all contents in the `/nwnx` folder on startup of the server. Default: false
 - Core: Added the environment variable `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY` which lets you change the resman priority of the `/nwnx` folder. Default: 70000000
-- Core: Added the following console commands: `runscript` `eval` `evalx` 
+- Core: Added the following console commands: `runscript`, `eval`, `evalx`, `loglevel`
   - `runscript <scriptname>`: Executes the given nwscript. Example: `runscript dm_killallplayers`
   - `eval <script chunk>`: Executes the given nwscript chunk. Example: `eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());`
   - `evalx <script chunk>`: Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: `evalx NWNX_Administration_ShutdownServer();`
+  - `loglevel <plugin> <loglevel>`: Sets the log level of the given plugin. Example: `loglevel Events 7`
 
 ##### New Plugins
-The following plugins were added:
+N/A
 
 ##### New NWScript Functions
 - Data: Array_Set()
@@ -36,6 +37,7 @@ The following plugins were added:
 - SQL: The SQLite database extension has been changed to `.sqlite3nwnxee`
 
 ### Deprecated
+N/A
 
 ### Removed
 - ~~The following plugins were removed: JVM, Mono~~
@@ -45,7 +47,7 @@ The following plugins were added:
 - Player: {Get|Set}VisibilityOverride()
 
 ### Fixed
-
+N/A
 
 ## [8186 LTS]
 

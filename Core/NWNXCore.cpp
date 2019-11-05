@@ -382,6 +382,33 @@ void NWNXCore::InitialSetupCommands()
             Globals::VirtualMachine()->RunScriptChunk(script, 0, true, false);
         }
     });
+
+    m_services->m_commands->RegisterCommand("loglevel", [](std::string& arg)
+    {
+        if (!arg.empty())
+        {
+            int space = arg.find_first_of(' ');
+            std::string plugin = arg.substr(0, space);
+            std::string level = arg.substr(space + 1);
+
+            if (g_core->m_services->m_plugins->FindPluginByName(plugin))
+            {
+                if (auto logLevel = Utils::from_string<uint32_t>(level))
+                {
+                    LOG_INFO("Setting log level of plugin '%s' to '%u'", plugin, *logLevel);
+                    Log::SetLogLevel(("NWNX_" + plugin).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
+                }
+                else
+                {
+                    LOG_INFO("'%s' is not a valid log level", level);
+                }
+            }
+            else
+            {
+                LOG_INFO("Plugin '%s' is not loaded", plugin);
+            }
+        }
+    });
 }
 
 void NWNXCore::UnloadPlugins()
