@@ -29,8 +29,8 @@ void ASLR::CalculateBaseAddress()
     NWNXLib::API::Globals::ExportedGlobals = reinterpret_cast<NWNXExportedGlobals(*)()>(whatItActuallyIs)();
 
     std::printf("=========================================\n");
-    std::printf("  Base address is:   0x%016llx\n", (uint64_t)s_baseAddress);
-    std::printf("  g_pExoBase is:     0x%016llx\n", (uint64_t)NWNXLib::API::Globals::ExportedGlobals.ppExoBase);
+    std::printf("  Base address is:   0x%016lx\n", (uint64_t)s_baseAddress);
+    std::printf("  g_pExoBase is:     0x%016lx\n", (uint64_t)NWNXLib::API::Globals::ExportedGlobals.ppExoBase);
 
 
     uint8_t *p = (uint8_t*)&NWNX_API_START;
