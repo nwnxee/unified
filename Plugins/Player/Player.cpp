@@ -157,7 +157,7 @@ ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
         const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
         const auto oidPlayer = pPlayer->m_oidNWSObject;
 
-        if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
+        if (auto *pPlaceable = Utils::GetGameObject(oidTarget)->AsNWSPlaceable())
         {
             pPlaceable->OpenInventory(oidPlayer);
         }
@@ -778,7 +778,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                 +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
-                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (auto *pObject = Utils::GetGameObject(oidObjectToUpdate)->AsNWSObject())
                     {
                         static ObjectVisualTransformData *pObjectVisualTransformData;
 
@@ -908,7 +908,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                 +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
-                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (auto *pObject = Utils::GetGameObject(oidObjectToUpdate)->AsNWSObject())
                     {
                         static std::set<uint16_t> *pLoopingVisualEffectSet;
 
@@ -1008,7 +1008,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                 +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
-                    if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
+                    if (auto *pPlaceable = Utils::GetGameObject(oidObjectToUpdate)->AsNWSPlaceable())
                     {
                         static Maybe<std::string> name;
                         static CExoString swapName;
@@ -1132,10 +1132,10 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
                             return;
 
                         // Fake some changes to their area/position as though they had a TURD
-                        auto *pWP = Utils::AsNWSWaypoint(Utils::GetGameObject(wpOID));
+                        auto *pWP = Utils::GetGameObject(wpOID)->AsNWSWaypoint();
                         if (pWP)
                         {
-                            auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+                            auto *pCreature = Utils::GetGameObject(pPlayer->m_oidNWSObject)->AsNWSCreature();
                             pCreature->m_oidDesiredArea = pWP->m_oidArea;
                             pCreature->m_vDesiredAreaLocation = pWP->m_vPosition;
                             pCreature->m_bDesiredAreaUpdateComplete = false;
@@ -1173,7 +1173,7 @@ ArgumentStack Player::UpdateItemName(ArgumentStack&& args)
         auto oidItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
           ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
 
-        auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem));
+        auto *pItem = Utils::GetGameObject(oidItem)->AsNWSItem();
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
 
         if (pItem && pMessage)
