@@ -1,13 +1,6 @@
-
-// Log currently generates warnings when no arguments are given to format string
-// TODO: Should really clean up the log so it doesn't warn in these cases
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 #include "Weapon.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "API/Functions.hpp"
 #include "API/CAppManager.hpp"
-#include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CNWSInventory.hpp"
@@ -441,7 +434,6 @@ ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
     return stack;
 }
 
-
 int32_t Weapon::GetWeaponFocus(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
 {
     int32_t feat = -1;
@@ -739,7 +731,6 @@ int32_t Weapon::GetRangedDamageBonus(CNWSCreatureStats* pStats)
 
     return nBonus;
 }
-
 
 int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature* pCreature)
 {
