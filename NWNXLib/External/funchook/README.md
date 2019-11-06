@@ -1,6 +1,11 @@
 Funchook - an API hook library
 ==============================
 
+# NOTE
+This is a minimal copy of the original [funchook repo](https://github.com/kubo/funchook), including only the files necessary for NWNX to work.
+
+---
+
 This library depends on [diStorm3][].
 
 [![Build Status](https://travis-ci.org/kubo/funchook.svg?branch=master)](https://travis-ci.org/kubo/funchook) [![Build status](https://ci.appveyor.com/api/projects/status/molkbu0csbshbnmh/branch/master?svg=true)](https://ci.appveyor.com/project/kubo/funchook/branch/master)

@@ -1,6 +1,11 @@
 Powerful Disassembler Library For x86/AMD64
 -----------
 
+# NOTE
+This is a minimal copy of the original [diStorm3 repo](https://github.com/gdabah/distorm/), including only the files necessary for NWNX to work.
+
+---
+
 Welcome to the diStorm3 binary stream disassembler library project.
 
 diStorm3 is really a decomposer, which means it takes an instruction and returns a binary structure which describes it rather than static text, which is great for advanced binary code analysis.
