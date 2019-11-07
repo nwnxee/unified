@@ -37,7 +37,7 @@ private:
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
     int m_tickCount;
-    CScriptCompiler *m_scriptCompiler;
+    std::unique_ptr<CScriptCompiler> m_scriptCompiler;
 };
 
 }
