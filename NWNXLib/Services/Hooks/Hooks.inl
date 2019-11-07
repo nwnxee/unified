@@ -36,7 +36,7 @@ Hooks::RegistrationToken>::type Hooks::RequestSharedHook(void(*funcPtr)(CallType
 
         auto newHookStorage = std::make_unique<HookStorage>();
         newHookStorage->m_type = Type::SHARED;
-        newHookStorage->m_hook = std::make_unique<Hooking::FunctionHook>(std::to_string(aslrAddress), aslrAddress, sharedHandlerAddress);
+        newHookStorage->m_hook = std::make_unique<Hooking::FunctionHook>(aslrAddress, sharedHandlerAddress);
         newHookStorage->m_subscribers.push_back(funcPtrAddr);
 
         HooksImpl::template HookLandingHolderDataShared<Address>::s_hook = newHookStorage->m_hook.get();
@@ -72,7 +72,7 @@ Hooks::RegistrationToken>::type Hooks::RequestExclusiveHook(Ret(*funcPtr)(Params
 
         auto newHookStorage = std::make_unique<HookStorage>();
         newHookStorage->m_type = Type::EXCLUSIVE;
-        newHookStorage->m_hook = std::make_unique<Hooking::FunctionHook>(std::to_string(aslrAddress), aslrAddress, sharedHandlerAddress);
+        newHookStorage->m_hook = std::make_unique<Hooking::FunctionHook>(aslrAddress, sharedHandlerAddress);
         newHookStorage->m_subscribers.emplace_back(funcPtrAddr);
 
         HooksImpl::template HookLandingHolderDataExclusive<Address>::s_addr = funcPtrAddr;

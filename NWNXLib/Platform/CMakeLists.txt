@@ -1,6 +1,5 @@
 nwnxlib_add(
     "ASLR.cpp"
-    "Assembly.cpp"
     "DynamicLibraries.cpp"
     "FileSystem.cpp"
     "Memory.cpp"

@@ -14,7 +14,7 @@ public:
         NWNXLib::ViewPtr<NWNXLib::Services::MetricsProxy> metrics);
 
 private:
-    static void AIMasterUpdate(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CServerAIMaster* thisPtr);
+    static void AIMasterUpdate(NWNXLib::Services::Hooks::CallType type, CServerAIMaster* thisPtr);
 };
 
 }

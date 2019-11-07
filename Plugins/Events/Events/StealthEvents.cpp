@@ -16,22 +16,22 @@ static NWNXLib::Hooking::FunctionHook* m_DoListenDetectionHook = nullptr;
 StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_E.*_STEALTH_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__SetStealthMode>(&SetStealthModeHook);
-        m_SetStealthModeHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__SetStealthMode);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature14SetStealthModeEh>(&SetStealthModeHook);
+        m_SetStealthModeHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature14SetStealthModeEh);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoListenDetection, int32_t>(&DoListenDetectionHook);
-        m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoListenDetection);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i, int32_t>(&DoListenDetectionHook);
+        m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_SPOT_DETECTION.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoSpotDetection, int32_t>(&DoSpotDetectionHook);
-        m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoSpotDetection);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i, int32_t>(&DoSpotDetectionHook);
+        m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i);
     });
 }
 
-void StealthEvents::SetStealthModeHook(API::CNWSCreature* thisPtr, uint8_t nStealthMode)
+void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMode)
 {
     const bool willBeStealthed = nStealthMode != 0;
     const bool currentlyStealthed = thisPtr->m_nStealthMode != 0;

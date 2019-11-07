@@ -57,11 +57,11 @@ Damage::Damage(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnApplyDamage>(&Damage::OnApplyDamage);
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__SignalMeleeDamage, void>(&Damage::OnSignalDamage);
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWSCreature__SignalRangedDamage, void>(&Damage::OnSignalDamage);
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti>(&Damage::OnApplyDamage);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, void>(&Damage::OnSignalDamage);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, void>(&Damage::OnSignalDamage);
 
-    m_OnApplyDamageHook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyDamage);
+    m_OnApplyDamageHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti);
 
     m_EventScripts["DAMAGE"] = "";
     m_EventScripts["ATTACK"] = "";
@@ -100,7 +100,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
     return stack;
 }
 
-std::string Damage::GetEventScript(NWNXLib::API::CNWSObject *pObject, const std::string &event)
+std::string Damage::GetEventScript(CNWSObject *pObject, const std::string &event)
 {
     auto posScript = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(pObject, event + "_EVENT_SCRIPT");
     return posScript ? *posScript : g_plugin->m_EventScripts[event];
@@ -133,14 +133,14 @@ ArgumentStack Damage::SetDamageEventData(ArgumentStack&& args)
     return stack;
 }
 
-int32_t Damage::OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame)
+int32_t Damage::OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, bool bLoadingGame)
 {
     std::string script = GetEventScript(pObject, "DAMAGE");
 
     if (!script.empty())
     {
         // We only run the OnDamage event for creatures.
-        if (Utils::AsNWSCreature(pObject))
+        if (pObject->AsNWSCreature())
         {
             // Prepare the data for the nwscript
             g_plugin->m_DamageData.oidDamager = pEffect->m_oidCreator;
@@ -242,7 +242,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
 
     CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
-    CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
+    CNWSObject *pTarget = Utils::GetGameObject(oidTarget)->AsNWSObject();
     ASSERT_OR_THROW(pTarget != nullptr);
 
     // apply damage immunity and resistance

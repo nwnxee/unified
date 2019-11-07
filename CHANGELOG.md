@@ -1,14 +1,58 @@
-# Changelog {#changelog}
-
-[TOC]
+# Changelog 
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## [Unreleased]
 
-https://github.com/nwnxee/unified/compare/build8186-2...HEAD
+NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.
+
+NOTE: There may be more breaking changes added here until the next official release happens.
+
+### Added
+- Core: Added the environment variable `NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK` to enable NWNX function calls in ExecuteScriptChunk(), by default these will be blocked
+- Core: NWNX will now create a `/nwnx` folder in your UserDirectory, its resman priority is slightly below the `/development` folder. Currently it's used by NWNX_Object_Export() and NWNX_Util_AddScript() to place their objects/scripts in.
+- Core: Added the environment variable `NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY`, setting this to true will delete all contents in the `/nwnx` folder on startup of the server. Default: false
+- Core: Added the environment variable `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY` which lets you change the resman priority of the `/nwnx` folder. Default: 70000000
+- Core: Added the following console commands: `runscript`, `eval`, `evalx`, `loglevel`
+  - `runscript <scriptname>`: Executes the given nwscript. Example: `runscript dm_killallplayers`
+  - `eval <script chunk>`: Executes the given nwscript chunk. Example: `eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());`
+  - `evalx <script chunk>`: Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: `evalx NWNX_Administration_ShutdownServer();`
+  - `loglevel <plugin> <loglevel>`: Sets the log level of the given plugin. Example: `loglevel Events 7`
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+- Data: Array_Set()
+- Object: Export()
+- Util: AddScript()
+
+### Changed
+- Administration: DeleteTURD() now returns TRUE on success
+- Data: Array_Insert() will now actually do an insert instead of a set
+- Effect: Removed the EffectID parameter from the struct
+- ELC: Updated with the new ruleset changes
+- Events: `NWNX_ON_ITEM_INVENTORY_{ADD|REMOVE}_ITEM_*` has been changed to `NWNX_ON_INVENTORY_{ADD|REMOVE}_ITEM_*`
+- Itemproperty: Removed the EffectID parameter from the struct
+- SQL: The SQLite database extension has been changed to `.sqlite3nwnxee`
+
+### Deprecated
+N/A
+
+### Removed
+- ~~The following plugins were removed: JVM, Mono~~
+- Administration: BootPC()
+- Experimental: RemoveACABModifiersFromExpertise
+- Object: {Get|Set}EventHandler(), {Get|Set}Portrait()
+- Player: {Get|Set}VisibilityOverride()
+- Util: GenerateUUID()
+
+### Fixed
+N/A
+
+## [8186 LTS]
 
 NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recompile all your scripts.
 
@@ -252,3 +296,6 @@ The following plugins were added:
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
+
+[Unreleased]: https://github.com/nwnxee/unified/compare/build8186-lts...HEAD
+[8186 LTS]: https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts

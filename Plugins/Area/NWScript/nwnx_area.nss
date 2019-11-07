@@ -190,6 +190,7 @@ int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int
 /// @note Requires clients to re-enter the area for it to take effect
 void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
 
+
 /// @brief Test to see if there's a direct, walkable line between two points in the area.
 /// @param oArea The area object.
 /// @param fStartX, fStartY The starting points.

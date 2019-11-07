@@ -17,9 +17,9 @@ public:
     virtual ~Appearance();
 
 private:
-    static NWNXLib::API::CNWSPlayer *Player(ArgumentStack& args);
-    static void ComputeGameObjectUpdateForObjectHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSMessage*,
-        NWNXLib::API::CNWSPlayer*, NWNXLib::API::CNWSObject*, NWNXLib::API::CGameObjectArray*, NWNXLib::API::Types::ObjectID);
+    static CNWSPlayer *Player(ArgumentStack& args);
+    static void ComputeGameObjectUpdateForObjectHook(NWNXLib::Services::Hooks::CallType, CNWSMessage*,
+        CNWSPlayer*, CNWSObject*, CGameObjectArray*, NWNXLib::API::Types::ObjectID);
 
     enum OverrideType {
         AppearanceType  = 0,

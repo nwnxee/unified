@@ -13,7 +13,7 @@ public:
     DeadCreatureFiresOnAreaExit(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static int32_t CNWSArea__RemoveObjectFromArea_hook(NWNXLib::API::CNWSArea*, NWNXLib::API::Types::ObjectID);
+    static int32_t CNWSArea__RemoveObjectFromArea_hook(CNWSArea*, NWNXLib::API::Types::ObjectID);
     static NWNXLib::Hooking::FunctionHook* pRemoveObjectFromArea_hook;
 };
 

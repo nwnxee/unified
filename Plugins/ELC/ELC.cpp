@@ -2,6 +2,7 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerExoAppInternal.hpp"
 #include "API/CServerInfo.hpp"
 #include "API/CExoString.hpp"
 #include "API/CExoLocString.hpp"
@@ -27,6 +28,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
+#include "Platform/ASLR.hpp"
 #include "ViewPtr.hpp"
 
 #include <set>
@@ -48,9 +50,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
         "Daz",
         "daztek@gmail.com",
         1,
-        true,
-        0,
-        8186
+        true
     };
 }
 
@@ -102,7 +102,6 @@ const int32_t STRREF_CUSTOM                                 = 164;
 const int32_t NUM_CREATURE_ITEM_SLOTS       = 4;
 const int32_t NUM_MULTICLASS                = 3;
 const int32_t CHARACTER_EPIC_LEVEL          = 21;
-const int32_t POINT_BUY_POINTS              = 30;
 const int32_t MIN_STARTING_ABILITY_VALUE    = 8;
 const int32_t MAX_STARTING_ABILITY_VALUE    = 18;
 const int32_t NUM_SPELL_LEVELS              = 10;
@@ -114,7 +113,7 @@ ELC::ELC(const Plugin::CreateParams& params)
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
-        
+
     REGISTER(SetELCScript);
     REGISTER(EnableCustomELCCheck);
     REGISTER(SkipValidationFailure);
@@ -130,7 +129,7 @@ ELC::ELC(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSPlayer__ValidateCharacter>(&ValidateCharacterHook);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi>(&ValidateCharacterHook);
 
     m_elcScript = GetServices()->m_config->Get<std::string>("ELC_SCRIPT", "");
     m_enableCustomELCCheck = GetServices()->m_config->Get<bool>("CUSTOM_ELC_CHECK", false);
@@ -161,7 +160,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     if (!pGameObject)
         return STRREF_CHARACTER_DOES_NOT_EXIST;
 
-    CNWSCreature *pCreature = Utils::AsNWSCreature(pGameObject);
+    CNWSCreature *pCreature = pGameObject->AsNWSCreature();
     if (!pCreature)
         return STRREF_CHARACTER_DOES_NOT_EXIST;
 
@@ -468,7 +467,13 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     // Calculate Ability Scores
     uint8_t nAbility[6] = {0};
     int32_t nMods[6] = {0};
-    pCreatureStats->GetAbilityModsFromFeats(&pCreatureStats->m_lstFeats, nMods, true, false);
+
+    auto GetStatBonusesFromFeats = reinterpret_cast<void(*)(CExoArrayList<uint16_t>*, int32_t*, int32_t)>(
+            Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN17CNWSCreatureStats23GetStatBonusesFromFeatsEP13CExoArrayListItEPii));
+
+    GetStatBonusesFromFeats(&pCreatureStats->m_lstFeats, nMods, true);
+
+    //LOG_DEBUG("(GetStatBonusesFromFeats) STR: %i, DEX: %i, CON: %i, INT: %i, WIS: %i, CHA: %i", nMods[0], nMods[1], nMods[2], nMods[3], nMods[4], nMods[5]);
 
     // Get our base ability stats
     nAbility[Ability::Strength] = (pCreature->m_bIsPolymorphed ?
@@ -507,7 +512,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
     // Point Buy System calculation
     uint8_t nAbilityAtLevel[6] = {0};
-    uint8_t nPointBuy = POINT_BUY_POINTS;
+    uint8_t nPointBuy = pRace->m_nAbilitiesPointBuyNumber;
     for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
     {
         nAbilityAtLevel[nAbilityIndex] = nAbility[nAbilityIndex];
@@ -589,17 +594,11 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
     // Init some vars
     uint8_t nMultiClassLevel[NUM_MULTICLASS] = {0};
-    bool bGainedDragonAbilities = false;
-    uint8_t nDragonLevel = 0;
-
     uint16_t nSkillPointsRemaining = 0;
-
     std::vector<uint8_t> listSkillRanks;
     listSkillRanks.resize(pRules->m_nNumSkills, 0);
-
     std::set<uint16_t> listFeats;
     std::set<uint16_t> listChosenFeats;
-
     // [nMultiClass][nSpellLevel] -> {SpellIDs}
     std::vector<std::map<uint32_t, std::set<uint32_t>>> listSpells;
     listSpells.resize(NUM_MULTICLASS);
@@ -680,33 +679,12 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             nAbilityAtLevel[pLevelStats->m_nAbilityGain]++;
         }
 
-        // Dragon Disciple Stuff
-        bool bNewDragonLevel = false;
-
-        // Is this a DD level?
-        if (nClassLeveledUpIn == ClassType::DragonDisciple)
-        {
-            nDragonLevel++;
-            bNewDragonLevel = true;
-        }
-
-        // Did we take the DragonAbilities Feat this level?
-        for (int i = 0; i < pLevelStats->m_lstFeats.num; i++)
-        {
-            if (pLevelStats->m_lstFeats.element[i] == Feat::DragonAbilities)
-            {
-                bGainedDragonAbilities = true;
-            }
-        }
-
-        uint8_t nReportedDragonLevel = (bGainedDragonAbilities && bNewDragonLevel) ? nDragonLevel : 0;
-
         // Add the stat bonus from feats
         int32_t nStatMods[6] = {0};
-        pCreatureStats->GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, nReportedDragonLevel);
+        GetStatBonusesFromFeats(&pLevelStats->m_lstFeats, nStatMods, false);
 
         // Update our ability values
-        for (int nAbilityIndex = 0; nAbilityIndex < 6; nAbilityIndex++)
+        for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
         {
             nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
         }
@@ -726,25 +704,39 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
 // *** Check Skills *********************************************************************************************************
         // Calculate the skillpoints we gained this level
+        auto GetSkillPointAbilityAdjust = [&]() -> int32_t {
+            switch (pRace->m_nSkillPointModifierAbility)
+            {
+                case Constants::Ability::Strength:
+                    return pRace->m_nSTRAdjust;
+                case Constants::Ability::Dexterity:
+                    return pRace->m_nDEXAdjust;
+                case Constants::Ability::Constitution:
+                    return pRace->m_nCONAdjust;
+                case Constants::Ability::Intelligence:
+                    return pRace->m_nINTAdjust;
+                case Constants::Ability::Wisdom:
+                    return pRace->m_nWISAdjust;
+                case Constants::Ability::Charisma:
+                    return pRace->m_nCHAAdjust;
+                default:
+                    return 0;
+            }
+        };
+
+        auto numSkillPoints = pRace->m_nSkillPointModifierAbility >= 0 && pRace->m_nSkillPointModifierAbility <= Ability::MAX ?
+                pCreatureStats->CalcStatModifier(nAbilityAtLevel[pRace->m_nSkillPointModifierAbility] + GetSkillPointAbilityAdjust()) : 0;
+
         if (nLevel == 1)
         {
-            nSkillPointsRemaining += 4 * std::max(1, pClassLeveledUpIn->m_nSkillPointBase +
-                pCreatureStats->CalcStatModifier(nAbilityAtLevel[Ability::Intelligence] + pRace->m_nINTAdjust));
-
-            if (pCreatureStats->m_nRace == RacialType::Human)
-            {
-                nSkillPointsRemaining += 4;
-            }
+            nSkillPointsRemaining += pRace->m_nFirstLevelSkillPointsMultiplier *
+                    std::max(1, pClassLeveledUpIn->m_nSkillPointBase + numSkillPoints);
+            nSkillPointsRemaining += pRace->m_nFirstLevelSkillPointsMultiplier * pRace->m_nExtraSkillPointsPerLevel;
         }
         else
         {
-            nSkillPointsRemaining += std::max(1, pClassLeveledUpIn->m_nSkillPointBase +
-                pCreatureStats->CalcStatModifier(nAbilityAtLevel[Ability::Intelligence] + pRace->m_nINTAdjust));
-
-            if (pCreatureStats->m_nRace == RacialType::Human)
-            {
-                nSkillPointsRemaining += 1;
-            }
+            nSkillPointsRemaining += std::max(1, pClassLeveledUpIn->m_nSkillPointBase + numSkillPoints);
+            nSkillPointsRemaining += pRace->m_nExtraSkillPointsPerLevel;
         }
 
         // Loop all the skills and check our LevelStats to see what changed
@@ -874,16 +866,16 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
         uint8_t nNumberNormalFeats = 0;
         uint8_t nNumberBonusFeats = 0;
 
-        // First and every third level gets a normal feat
-        if ((nLevel == 1) || (nLevel % 3 == 0))
+        // First and every nth level gets a normal feat
+        if ((nLevel == 1) || (nLevel % pRace->m_nNormalFeatEveryNthLevel == 0))
         {
-            nNumberNormalFeats = 1;
+            nNumberNormalFeats = pRace->m_nNumberNormalFeatsEveryNthLevel;
         }
 
-        // Humans get an extra feat at level 1
-        if ((nLevel == 1) && pCreatureStats->m_nRace == RacialType::Human)
+        // Add any extra first level feats
+        if (nLevel == 1)
         {
-            nNumberNormalFeats++;
+            nNumberNormalFeats += pRace->m_nExtraFeatsAtFirstLevel;
         }
 
         nNumberBonusFeats = pClassLeveledUpIn->GetBonusFeats(nMultiClassLevel[nMultiClassLeveledUpIn]);

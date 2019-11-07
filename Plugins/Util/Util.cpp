@@ -7,7 +7,6 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CResRef.hpp"
 #include "API/CExoResMan.hpp"
-#include "API/CExoString.hpp"
 #include "API/CExoStringList.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CTlkTable.hpp"
@@ -16,15 +15,16 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CWorldTimer.hpp"
 #include "API/CGameObjectArray.hpp"
+#include "API/CScriptCompiler.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
 #include "Services/Config/Config.hpp"
 
 #include <string>
-#include <stdio.h>
+#include <cstdio>
 #include <regex>
-#include <functional>
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -54,7 +54,8 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 namespace Util {
 
 Util::Util(const Plugin::CreateParams& params)
-    : Plugin(params)
+    : Plugin(params),
+      m_scriptCompiler(nullptr)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -65,7 +66,6 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(Hash);
     REGISTER(GetCustomToken);
     REGISTER(EffectTypeCast);
-    REGISTER(GenerateUUID);
     REGISTER(StripColors);
     REGISTER(IsValidResRef);
     REGISTER(GetEnvironmentVariable);
@@ -77,10 +77,11 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetNextResRef);
     REGISTER(GetServerTicksPerSecond);
     REGISTER(GetLastCreatedObject);
+    REGISTER(AddScript);
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
             +[](Services::Hooks::CallType type, CServerExoAppInternal*)
             {
                 static int ticks;
@@ -103,7 +104,7 @@ Util::Util(const Plugin::CreateParams& params)
                 }
             });
 
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSModule__LoadModuleFinish, uint32_t>(
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule16LoadModuleFinishEv, uint32_t>(
             +[](Services::Hooks::CallType type, CNWSModule*)
             {
                 if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
@@ -119,6 +120,7 @@ Util::Util(const Plugin::CreateParams& params)
 
 Util::~Util()
 {
+    delete m_scriptCompiler;
 }
 
 ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
@@ -198,28 +200,6 @@ ArgumentStack Util::EffectTypeCast(ArgumentStack&& args)
 {
     ArgumentStack stack;
     Services::Events::InsertArgument(stack, Services::Events::ExtractArgument<CGameEffect*>(args));
-    return stack;
-}
-
-ArgumentStack Util::GenerateUUID(ArgumentStack&&)
-{
-    ArgumentStack stack;
-    uint8_t bytes[16];
-    char uuid[38];
-
-    FILE *urandom = fopen("/dev/urandom", "rb");
-    ASSERT_OR_THROW(urandom);
-    ASSERT(fread(bytes, 1, 16, urandom) == 16);
-    fclose(urandom);
-
-    bytes[6] = 0x40 | (bytes[6] & 0x0F);
-    bytes[8] = 0x80 | (bytes[6] & 0x3F);
-
-    snprintf(uuid, 37, "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
-        bytes[0],bytes[1],bytes[2],bytes[3],bytes[4],bytes[5],bytes[6],bytes[7],
-        bytes[8],bytes[9],bytes[10],bytes[11],bytes[12],bytes[13],bytes[14],bytes[15]);
-
-    Services::Events::InsertArgument(stack, uuid);
     return stack;
 }
 
@@ -336,11 +316,11 @@ ArgumentStack Util::GetFirstResRef(ArgumentStack&& args)
 
     if (pList)
     {
-        std::regex rxg(regexFilter);
+        std::regex rgx(regexFilter);
 
         for (int i = 0; i < pList->m_nCount; i++)
         {
-            if (regexFilter.empty() || std::regex_match(pList->m_pStrings[i]->CStr(), rxg))
+            if (regexFilter.empty() || std::regex_match(pList->m_pStrings[i]->CStr(), rgx))
             {
                 m_listResRefs.emplace_back(pList->m_pStrings[i]->CStr());
             }
@@ -387,9 +367,9 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
     Types::ObjectID retVal = Constants::OBJECT_INVALID;
 
     const auto objectType = Services::Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW(objectType >= 0);
+      ASSERT_OR_THROW(objectType >= 0);
     const auto nthLast = Services::Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW(nthLast > 0);
+      ASSERT_OR_THROW(nthLast > 0);
 
     auto pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
     int count = 1;
@@ -415,6 +395,42 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
     }
 
     Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Util::AddScript(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = false;
+
+    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptName.empty());
+      ASSERT_OR_THROW(scriptName.size() <= 16);
+    const auto scriptData = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptData.empty());
+    const auto wrapIntoMain = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (!m_scriptCompiler)
+    {
+        m_scriptCompiler = new CScriptCompiler();
+        m_scriptCompiler->SetCompileDebugLevel(0);
+        m_scriptCompiler->SetCompileSymbolicOutput(0);
+        m_scriptCompiler->SetOptimizeBinaryCodeLength(true);
+        m_scriptCompiler->SetIdentifierSpecification("nwscript");
+        m_scriptCompiler->SetOutputAlias("NWNX");
+    }
+
+    if (m_scriptCompiler->CompileScriptChunk(scriptData.c_str(), wrapIntoMain != 0) == 0)
+    {
+        if (m_scriptCompiler->WriteFinalCodeToFile(scriptName.c_str()) == 0)
+        {
+            LOG_DEBUG("Adding Script '%s' with data: %s", scriptName, scriptData);
+            retVal = true;
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
     return stack;
 }
 

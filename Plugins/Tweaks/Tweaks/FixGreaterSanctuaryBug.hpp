@@ -13,7 +13,7 @@ public:
     FixGreaterSanctuaryBug(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void CNWSCreature__RemoveCombatInvisibilityEffects_hook(NWNXLib::API::CNWSCreature *);
+    static void CNWSCreature__RemoveCombatInvisibilityEffects_hook(CNWSCreature *);
 };
 
 }

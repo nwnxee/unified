@@ -18,7 +18,7 @@ using namespace NWNXLib::API::Constants;
 
 PreserveActionsOnDMPossess::PreserveActionsOnDMPossess(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__PossessCreatureDM>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature17PossessCreatureDMEjh>
                                     (&CNWSCreature__PossessCreatureDM_hook);
 }
 

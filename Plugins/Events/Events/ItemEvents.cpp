@@ -31,68 +31,68 @@ static Hooking::FunctionHook* m_SplitItemHook = nullptr;
 ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseItem>(&UseItemHook);
-        m_UseItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseItem);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorj>(&UseItemHook);
+        m_UseItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorj);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_OPEN_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSItem__OpenInventory>(&OpenInventoryHook);
-        m_OpenInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__OpenInventory);
+        hooker->RequestExclusiveHook<API::Functions::_ZN8CNWSItem13OpenInventoryEj>(&OpenInventoryHook);
+        m_OpenInventoryHook = hooker->FindHookByAddress(API::Functions::_ZN8CNWSItem13OpenInventoryEj);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_CLOSE_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSItem__CloseInventory>(&CloseInventoryHook);
-        m_CloseInventoryHook = hooker->FindHookByAddress(API::Functions::CNWSItem__CloseInventory);
+        hooker->RequestExclusiveHook<API::Functions::_ZN8CNWSItem14CloseInventoryEji>(&CloseInventoryHook);
+        m_CloseInventoryHook = hooker->FindHookByAddress(API::Functions::_ZN8CNWSItem14CloseInventoryEji);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_AMMO_RELOAD_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CItemRepository__FindItemWithBaseItemId>(&FindItemWithBaseItemIdHook);
-        m_FindItemWithBaseItemIdHook = hooker->FindHookByAddress(API::Functions::CItemRepository__FindItemWithBaseItemId);
+        hooker->RequestExclusiveHook<API::Functions::_ZN15CItemRepository22FindItemWithBaseItemIdEji>(&FindItemWithBaseItemIdHook);
+        m_FindItemWithBaseItemIdHook = hooker->FindHookByAddress(API::Functions::_ZN15CItemRepository22FindItemWithBaseItemIdEji);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_SCROLL_LEARN_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__LearnScroll>(&LearnScrollHook);
-        m_LearnScrollHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__LearnScroll);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature11LearnScrollEj>(&LearnScrollHook);
+        m_LearnScrollHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature11LearnScrollEj);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_EQUIP_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__RunEquip>(&RunEquipHook);
-        m_RunEquipHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__RunEquip);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature8RunEquipEjjj>(&RunEquipHook);
+        m_RunEquipHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature8RunEquipEjjj);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_UNEQUIP_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__RunUnequip>(&RunUnequipHook);
-        m_RunUnequipHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__RunUnequip);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10RunUnequipEjjhhij>(&RunUnequipHook);
+        m_RunUnequipHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature10RunUnequipEjjhhij);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSItem__EventHandler>(&ItemEventHandlerHook);
-        m_ItemEventHandlerHook = hooker->FindHookByAddress(API::Functions::CNWSItem__EventHandler);
+        hooker->RequestExclusiveHook<API::Functions::_ZN8CNWSItem12EventHandlerEjjPvjj>(&ItemEventHandlerHook);
+        m_ItemEventHandlerHook = hooker->FindHookByAddress(API::Functions::_ZN8CNWSItem12EventHandlerEjjPvjj);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_USE_LORE_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseLoreOnItem>(&UseLoreOnItemHook);
-        m_UseLoreOnItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseLoreOnItem);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13UseLoreOnItemEj>(&UseLoreOnItemHook);
+        m_UseLoreOnItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature13UseLoreOnItemEj);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_PAY_TO_IDENTIFY_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__PayToIdentifyItem>(&PayToIdentifyItemHook);
-        m_PayToIdenfifyItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__PayToIdentifyItem);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature17PayToIdentifyItemEjj>(&PayToIdentifyItemHook);
+        m_PayToIdenfifyItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature17PayToIdentifyItemEjj);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_SPLIT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__SplitItem>(&SplitItemHook);
-        m_SplitItemHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__SplitItem);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi>(&SplitItemHook);
+        m_SplitItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi);
     });
 }
 
 int32_t ItemEvents::UseItemHook(
-    API::CNWSCreature* thisPtr,
+    CNWSCreature* thisPtr,
     API::Types::ObjectID item,
     uint8_t propIndex,
     uint8_t subPropIndex,
     API::Types::ObjectID target,
-    API::Vector targetPosition,
+    Vector targetPosition,
     API::Types::ObjectID area)
 {
     int32_t retVal;
@@ -163,7 +163,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
     }
 
-    auto *pItemHolder = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
+    auto *pItemHolder = Utils::GetGameObject(thisPtr->m_oidParent)->AsNWSCreature();
 
     if(!pItemHolder)
     {
@@ -181,7 +181,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
             return true;
 
-        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId));
+        auto *pItem = Utils::GetGameObject(objectId)->AsNWSItem();
         if (!pItem)
         {
             LOG_WARNING("Item does not exist, falling back to original call.");
@@ -264,7 +264,7 @@ int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, Types::ObjectID oidSc
 }
 
 int32_t ItemEvents::RunEquipHook(
-        API::CNWSCreature* thisPtr,
+        CNWSCreature* thisPtr,
         API::Types::ObjectID item,
         uint32_t nInventorySlot,
         uint32_t oidFeedbackPlayer)
@@ -291,7 +291,7 @@ int32_t ItemEvents::RunEquipHook(
 }
 
 int32_t ItemEvents::RunUnequipHook(
-        API::CNWSCreature* thisPtr,
+        CNWSCreature* thisPtr,
         API::Types::ObjectID item,
         API::Types::ObjectID itemRepo,
         uint8_t x,
@@ -320,7 +320,7 @@ int32_t ItemEvents::RunUnequipHook(
 
 // hooks into CNWSItem::EventHandler
 void ItemEvents::ItemEventHandlerHook(
-        API::CNWSItem* thisPtr,
+        CNWSItem* thisPtr,
         uint32_t nEventId,
         NWNXLib::API::Types::ObjectID nCallerObjectId,
         void *pScript,

@@ -21,10 +21,10 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* DisableQuicksave::pSaveGame_hook;
 DisableQuicksave::DisableQuicksave(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CServerExoAppInternal__SaveGame>
+    hooker->RequestExclusiveHook<Functions::_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_>
                                     (&CServerExoAppInternal__SaveGame_hook);
 
-    pSaveGame_hook = hooker->FindHookByAddress(Functions::CServerExoAppInternal__SaveGame);
+    pSaveGame_hook = hooker->FindHookByAddress(Functions::_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_);
 }
 
 int32_t DisableQuicksave::CServerExoAppInternal__SaveGame_hook
@@ -42,7 +42,7 @@ int32_t DisableQuicksave::CServerExoAppInternal__SaveGame_hook
     {
         if (pPlayer)
         {
-            auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidPCObject));
+            auto *pCreature = Utils::GetGameObject(pPlayer->m_oidPCObject)->AsNWSCreature();
             LOG_NOTICE("Quicksave attempt by %s blocked.", pCreature ? pCreature->m_pStats->GetFullName() : "(unknown)");
         }
         return 0;

@@ -15,11 +15,11 @@ public:
 
 private:
     static void HandlePlayerToServerInputWalkToWaypointHook(NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*);
-    static void AddAttackActionsHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*,
+            CNWSMessage*, CNWSPlayer*);
+    static void AddAttackActionsHook(NWNXLib::Services::Hooks::CallType, CNWSCreature*,
             NWNXLib::API::Types::ObjectID, int32_t, int32_t, int32_t);
-    static void AddMoveToPointActionToFrontHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*, uint16_t,
-            NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t, float, float,
+    static void AddMoveToPointActionToFrontHook(NWNXLib::Services::Hooks::CallType, CNWSCreature*, uint16_t,
+            Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t, float, float,
             int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);
 };
 

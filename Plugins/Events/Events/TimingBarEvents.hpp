@@ -15,12 +15,12 @@ public:
 private:
     static void HandlePlayerToServerInputCancelGuiTimingEventHook(
             NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CNWSMessage*,
-            NWNXLib::API::CNWSPlayer*);
+            CNWSMessage*,
+            CNWSPlayer*);
     static void SendServerToPlayerGuiTimingEventHook(
             NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CNWSMessage*,
-            NWNXLib::API::CNWSPlayer*,
+            CNWSMessage*,
+            CNWSPlayer*,
             int32_t, uint8_t, uint32_t);
 };
 

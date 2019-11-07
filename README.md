@@ -1,4 +1,4 @@
-# NWNX:EE (build 8186)
+# NWNX:EE (build 8192 - dev build)
 
 @mainpage
 @tableofcontents

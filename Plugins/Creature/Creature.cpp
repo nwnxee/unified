@@ -8,8 +8,7 @@
 #include "API/CNWLevelStats.hpp"
 #include "API/CNWSStats_Spell.hpp"
 #include "API/CNWSStats_SpellLikeAbility.hpp"
-#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
-#include "API/CExoArrayListTemplatedshortunsignedint.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
 #include "API/Constants.hpp"
@@ -309,11 +308,9 @@ ArgumentStack Creature::GetMeetsFeatRequirements(ArgumentStack&& args)
         const auto feat = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
           ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
-        // TODO: Need to clean up these templated arraylist APIs
-        CExoArrayListTemplatedshortunsignedint unused = {};
+        CExoArrayList<uint16_t> unused = {};
 
-        retVal = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat),
-                    reinterpret_cast<CExoArrayListTemplatedunsignedshort*>(&unused));
+        retVal = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat), &unused);
         free(unused.element);
     }
     Services::Events::InsertArgument(stack, retVal);
@@ -1464,7 +1461,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
 
     if (!pGetWalkRate_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__GetWalkRate>(
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature11GetWalkRateEv>(
             +[](CNWSCreature *pThis) -> float
             {
                 float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
@@ -1473,7 +1470,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
                 return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
 
             });
-        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__GetWalkRate);
+        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature11GetWalkRateEv);
     }
 
     if (auto *pCreature = creature(args))
@@ -1589,7 +1586,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
     {
         try
         {
-            GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(
+            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(
                     +[](CNWSCreatureStats *pThis) -> int32_t
                     {
                         if (bSkipLevelUpValidation)
@@ -1600,14 +1597,14 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                         }
                         return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
                     });
-            pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__CanLevelUp);
+            pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv);
         }
         catch (...)
         {
             LOG_NOTICE("NWNX_MaxLevel will manage CanLevelUp.");
         }
 
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__ValidateLevelUp>(
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
                 +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
                 {
                     if (bSkipLevelUpValidation)
@@ -1619,7 +1616,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                     }
                     return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
                 });
-        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__ValidateLevelUp);
+        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh);
     }
 
     if (auto *pCreature = creature(args))
@@ -1817,13 +1814,13 @@ ArgumentStack Creature::GetTotalEffectBonus(ArgumentStack&& args)
 
     if (auto *pCreature = creature(args))
     {
-        API::CNWSObject *versus = NULL;
+        CNWSObject *versus = nullptr;
         const auto bonusType = Services::Events::ExtractArgument<int32_t>(args);
         const auto versus_id = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
         if (versus_id != Constants::OBJECT_INVALID)
         {
-            API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);
-            versus = Utils::AsNWSObject(pObject);
+            versus = Utils::GetGameObject(versus_id)->AsNWSObject();
         }
 
         const auto isElementalDamage = Services::Events::ExtractArgument<int32_t>(args);

@@ -60,10 +60,6 @@ itemproperty NWNX_Util_EffectToItemProperty(effect e);
 /// @return The converted effect.
 effect NWNX_Util_ItemPropertyToEffect(itemproperty ip);
 
-/// @brief Generates a v4 UUID.
-/// @return A UUID string.
-string NWNX_Util_GenerateUUID();
-
 /// @brief Strip any color codes from a string.
 /// @param str The string to strip of color.
 /// @return The new string without any color codes.
@@ -125,6 +121,14 @@ int NWNX_Util_GetServerTicksPerSecond();
 /// @return The last created object. On error, this returns OBJECT_INVALID.
 object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
 
+/// @brief Compiles and adds a script to the UserDirectory/nwnx folder.
+/// @note Will override existing scripts that are in the module.
+/// @param sFileName The script filename without extension, 16 or less characters.
+/// @param sScriptData The script data to compile
+/// @param bWrapIntoMain Set to TRUE to wrap sScriptData into void main(){}.
+/// @return TRUE on success.
+int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -172,13 +176,6 @@ effect NWNX_Util_ItemPropertyToEffect(itemproperty ip)
     NWNX_PushArgumentItemProperty(NWNX_Util, sFunc, ip);
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueEffect(NWNX_Util, sFunc);
-}
-
-string NWNX_Util_GenerateUUID()
-{
-    string sFunc = "GenerateUUID";
-    NWNX_CallFunction(NWNX_Util, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
 
 string NWNX_Util_StripColors(string str)
@@ -277,4 +274,16 @@ object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE)
+{
+    string sFunc = "AddScript";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, bWrapIntoMain);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptData);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }

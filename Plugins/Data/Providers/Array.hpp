@@ -28,6 +28,7 @@ public:
     static int32_t Size(const NWNXLib::API::Types::ObjectID oid, const std::string& tag);
     static void SortAscending(const NWNXLib::API::Types::ObjectID oid, const std::string& tag);
     static void SortDescending(const NWNXLib::API::Types::ObjectID oid, const std::string& tag);
+    static void Set(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t index, T&& element);
 
 private:
     // Maps from object -> { array tag, vector }.
@@ -53,6 +54,7 @@ private:
     static NWNXLib::Services::Events::ArgumentStack OnArraySize(NWNXLib::Services::Events::ArgumentStack&& args);
     static NWNXLib::Services::Events::ArgumentStack OnArraySortAscending(NWNXLib::Services::Events::ArgumentStack&& args);
     static NWNXLib::Services::Events::ArgumentStack OnArraySortDescending(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack OnArraySet(NWNXLib::Services::Events::ArgumentStack&& args);
 
     friend class ArrayImpl<float>;
     friend class ArrayImpl<int32_t>;

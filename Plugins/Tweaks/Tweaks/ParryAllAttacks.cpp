@@ -18,17 +18,17 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* ParryAllAttacks::pResolveAttackRoll_hook;
 ParryAllAttacks::ParryAllAttacks(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__ResolveAttackRoll>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>
                                     (&CNWSCreature__ResolveAttackRoll_hook);
 
-    pResolveAttackRoll_hook = hooker->FindHookByAddress(Functions::CNWSCreature__ResolveAttackRoll);
+    pResolveAttackRoll_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject);
 }
 
 
 void ParryAllAttacks::CNWSCreature__ResolveAttackRoll_hook(CNWSCreature *pThis, CNWSObject *pTarget)
 {
     int32_t bRoundPaused = false;
-    if (auto *pCreature = Utils::AsNWSCreature(pTarget))
+    if (auto *pCreature = pTarget->AsNWSCreature())
     {
         if (pCreature->m_nCombatMode == Constants::CombatMode::Parry &&
             pCreature->m_pcCombatRound->m_nParryActions > 0 &&
@@ -40,7 +40,7 @@ void ParryAllAttacks::CNWSCreature__ResolveAttackRoll_hook(CNWSCreature *pThis, 
     }
     pResolveAttackRoll_hook->CallOriginal<void>(pThis, pTarget);
     if (bRoundPaused)
-        Utils::AsNWSCreature(pTarget)->m_pcCombatRound->m_bRoundPaused = true;
+        pTarget->AsNWSCreature()->m_pcCombatRound->m_bRoundPaused = true;
 }
 
 

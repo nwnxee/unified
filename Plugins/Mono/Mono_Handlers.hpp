@@ -16,8 +16,8 @@ namespace Mono {
 extern MonoDomain* g_Domain;
 extern MonoAssembly* g_Assembly;
 
-NWNXLib::API::CVirtualMachine* GetVm();
-NWNXLib::API::CNWVirtualMachineCommands* GetVmCommands();
+CVirtualMachine* GetVm();
+CNWVirtualMachineCommands* GetVmCommands();
 
 void CallBuiltIn(int32_t id);
 
@@ -25,23 +25,23 @@ void StackPushInteger(int32_t value);
 void StackPushFloat(float value);
 void StackPushString(MonoString* value);
 void StackPushObject(uint32_t value);
-void StackPushVector(NWNXLib::API::Vector value);
-void StackPushEffect(NWNXLib::API::CGameEffect* value);
-void StackPushEvent(NWNXLib::API::CScriptEvent* value);
-void StackPushLocation(NWNXLib::API::CScriptLocation* value);
-void StackPushTalent(NWNXLib::API::CScriptTalent* value);
-void StackPushItemProperty(NWNXLib::API::CGameEffect* value);
+void StackPushVector(Vector value);
+void StackPushEffect(CGameEffect* value);
+void StackPushEvent(CScriptEvent* value);
+void StackPushLocation(CScriptLocation* value);
+void StackPushTalent(CScriptTalent* value);
+void StackPushItemProperty(CGameEffect* value);
 
 int32_t StackPopInteger();
 float StackPopFloat();
 MonoString* StackPopString();
 uint32_t StackPopObject();
-NWNXLib::API::Vector StackPopVector();
-NWNXLib::API::CGameEffect* StackPopEffect();
-NWNXLib::API::CScriptEvent* StackPopEvent();
-NWNXLib::API::CScriptLocation* StackPopLocation();
-NWNXLib::API::CScriptTalent* StackPopTalent();
-NWNXLib::API::CGameEffect* StackPopItemProperty();
+Vector StackPopVector();
+CGameEffect* StackPopEffect();
+CScriptEvent* StackPopEvent();
+CScriptLocation* StackPopLocation();
+CScriptTalent* StackPopTalent();
+CGameEffect* StackPopItemProperty();
 
 void FreeEffect(void* ptr);
 void FreeEvent(void* ptr);

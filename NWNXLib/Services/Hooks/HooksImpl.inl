@@ -85,6 +85,20 @@ struct HooksImpl::HookLandingHolderShared<Hooking::CallingConvention::FastCall>
     }
 };
 
+template <>
+struct HooksImpl::HookLandingHolderShared<Hooking::CallingConvention::SystemV>
+{
+    template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
+    static NWNX_HOOK_LANDING_SYSTEMV Ret HookLanding(NWNX_HOOK_LANDING_PARAMETERS_SYSTEMV(FirstParam arg1, Params ... args))
+    {
+        std::vector<uintptr_t>* subs = HooksImpl::template HookLandingHolderDataShared<Address>::s_subs;
+        Hooking::FunctionHook* hook = HooksImpl::template HookLandingHolderDataShared<Address>::s_hook;
+        ScopedCallbackDispatcher<FirstParam, Params ...> scbd(subs, arg1, args ...);
+        return hook->CallOriginal<Hooking::CallingConvention::SystemV, Ret>(arg1, args ...);
+    }
+};
+
+
 template <uintptr_t Address>
 uintptr_t HooksImpl::HookLandingHolderDataExclusive<Address>::s_addr;
 
@@ -129,6 +143,18 @@ struct HooksImpl::HookLandingHolderExclusive<Hooking::CallingConvention::FastCal
 {
     template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
     static NWNX_HOOK_LANDING_FASTCALL Ret HookLanding(NWNX_HOOK_LANDING_PARAMETERS_FASTCALL(FirstParam arg1, Params ... args))
+    {
+        using FuncPtrType = Ret(*)(FirstParam, Params ...);
+        FuncPtrType callback = reinterpret_cast<FuncPtrType>(HooksImpl::template HookLandingHolderDataExclusive<Address>::s_addr);
+        return callback(arg1, args ...);
+    }
+};
+
+template <>
+struct HooksImpl::HookLandingHolderExclusive<Hooking::CallingConvention::SystemV>
+{
+    template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
+    static NWNX_HOOK_LANDING_SYSTEMV Ret HookLanding(NWNX_HOOK_LANDING_PARAMETERS_SYSTEMV(FirstParam arg1, Params ... args))
     {
         using FuncPtrType = Ret(*)(FirstParam, Params ...);
         FuncPtrType callback = reinterpret_cast<FuncPtrType>(HooksImpl::template HookLandingHolderDataExclusive<Address>::s_addr);

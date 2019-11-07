@@ -107,6 +107,20 @@ void NWNX_Data_Array_SortAscending(int type, object obj, string tag);
 /// Sorts the collection based on descending order.
 void NWNX_Data_Array_SortDescending(int type, object obj, string tag);
 
+/// @defgroup data_array_set Array Set
+/// @brief Sets the element at the index, where size > index >= 0.
+/// @ingroup data
+/// @param obj The object.
+/// @param tag The tag.
+/// @param index The index.
+/// @param element The element.
+/// @{
+void NWNX_Data_Array_Set_Flt(object obj, string tag, int index, float element);
+void NWNX_Data_Array_Set_Int(object obj, string tag, int index, int element);
+void NWNX_Data_Array_Set_Obj(object obj, string tag, int index, object element);
+void NWNX_Data_Array_Set_Str(object obj, string tag, int index, string element);
+/// @}
+
 /// @}
 
 float NWNX_Data_Array_At_Flt(object obj, string tag, int index)
@@ -356,11 +370,12 @@ void NWNX_Data_Array_PushBack_Str(object obj, string tag, string element)
 
 void NWNX_Data_Array_Resize(int type, object obj, string tag, int size)
 {
-    NWNX_PushArgumentInt(NWNX_Data, "ARRAY_RESIZE", size);
-    NWNX_PushArgumentString(NWNX_Data, "ARRAY_RESIZE", tag);
-    NWNX_PushArgumentObject(NWNX_Data, "ARRAY_RESIZE", obj);
-    NWNX_PushArgumentInt(NWNX_Data, "ARRAY_RESIZE", type);
-    NWNX_CallFunction(NWNX_Data, "ARRAY_RESIZE");
+    string sFunc = "ARRAY_RESIZE";
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, size);
+    NWNX_PushArgumentString(NWNX_Data, sFunc, tag);
+    NWNX_PushArgumentObject(NWNX_Data, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, type);
+    NWNX_CallFunction(NWNX_Data, sFunc);
 }
 
 void NWNX_Data_Array_Shuffle(int type, object obj, string tag)
@@ -397,5 +412,49 @@ void NWNX_Data_Array_SortDescending(int type, object obj, string tag)
     NWNX_PushArgumentString(NWNX_Data, sFunc, tag);
     NWNX_PushArgumentObject(NWNX_Data, sFunc, obj);
     NWNX_PushArgumentInt(NWNX_Data, sFunc, type);
+    NWNX_CallFunction(NWNX_Data, sFunc);
+}
+
+void NWNX_Data_Array_Set_Flt(object obj, string tag, int index, float element)
+{
+    string sFunc = "ARRAY_SET";
+    NWNX_PushArgumentFloat(NWNX_Data, sFunc, element);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, index);
+    NWNX_PushArgumentString(NWNX_Data, sFunc, tag);
+    NWNX_PushArgumentObject(NWNX_Data, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, NWNX_DATA_TYPE_FLOAT);
+    NWNX_CallFunction(NWNX_Data, sFunc);
+}
+
+void NWNX_Data_Array_Set_Int(object obj, string tag, int index, int element)
+{
+    string sFunc = "ARRAY_SET";
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, element);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, index);
+    NWNX_PushArgumentString(NWNX_Data, sFunc, tag);
+    NWNX_PushArgumentObject(NWNX_Data, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, NWNX_DATA_TYPE_INTEGER);
+    NWNX_CallFunction(NWNX_Data, sFunc);
+}
+
+void NWNX_Data_Array_Set_Obj(object obj, string tag, int index, object element)
+{
+    string sFunc = "ARRAY_SET";
+    NWNX_PushArgumentObject(NWNX_Data, sFunc, element);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, index);
+    NWNX_PushArgumentString(NWNX_Data, sFunc, tag);
+    NWNX_PushArgumentObject(NWNX_Data,sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, NWNX_DATA_TYPE_OBJECT);
+    NWNX_CallFunction(NWNX_Data, sFunc);
+}
+
+void NWNX_Data_Array_Set_Str(object obj, string tag, int index, string element)
+{
+    string sFunc = "ARRAY_SET";
+    NWNX_PushArgumentString(NWNX_Data, sFunc, element);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, index);
+    NWNX_PushArgumentString(NWNX_Data, sFunc, tag);
+    NWNX_PushArgumentObject(NWNX_Data, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Data, sFunc, NWNX_DATA_TYPE_STRING);
     NWNX_CallFunction(NWNX_Data, sFunc);
 }

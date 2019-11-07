@@ -16,7 +16,7 @@ using namespace NWNXLib::API;
 
 HideClassesOnCharList::HideClassesOnCharList(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerPlayModuleCharacterListResponse>
+    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji>
         (&SendServerToPlayerPlayModuleCharacterListResponseHook);
 }
 

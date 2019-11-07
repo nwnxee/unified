@@ -9,7 +9,6 @@ const string NWNX_Effect = "NWNX_Effect"; ///< @private
 /// An unpacked effect
 struct NWNX_EffectUnpacked
 {
-    int nEffectId; ///< @todo Describe
     int nType; ///< @todo Describe
     int nSubType; ///< @todo Describe
 
@@ -136,7 +135,6 @@ struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
 
     n.nSubType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
     n.nType = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
-    n.nEffectId = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
 
     return n;
 }
@@ -144,7 +142,6 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
 {
     string sFunc = "PackEffect";
 
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nEffectId);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSubType);
 

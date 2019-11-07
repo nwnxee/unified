@@ -368,7 +368,7 @@ Events::ArgumentStack SQL::OnPreparedObjectFull(Events::ArgumentStack&& args)
     }
     else
     {
-        API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
+        CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
         m_target->PrepareString(position, SerializeGameObjectB64(pObject));
     }
     return Events::ArgumentStack();
@@ -389,18 +389,18 @@ Events::ArgumentStack SQL::OnReadFullObjectInActiveRow(Events::ArgumentStack&& a
 
     std::string serialized = m_activeRow[column];
     API::Types::ObjectID retval = API::Constants::OBJECT_INVALID;
-    if (API::CGameObject *pObject = DeserializeGameObjectB64(serialized))
+    if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
     {
         retval = static_cast<API::Types::ObjectID>(pObject->m_idSelf);
         ASSERT(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
 
-        API::CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
-        if (auto *pArea = Utils::AsNWSArea(pOwner))
+        CGameObject *pOwner = Utils::GetGameObject(owner);
+        if (auto *pArea = pOwner->AsNWSArea())
         {
             if (!Utils::AddToArea(pObject, pArea, x, y, z))
                 LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", retval, owner, x, y, z);
         }
-        else if (auto *pItem = Utils::AsNWSItem(pObject))
+        else if (auto *pItem = pObject->AsNWSItem())
         {
             if (!Utils::AcquireItem(pItem, pOwner))
                 LOG_WARNING("Failed to 'acquire' deserialized item %x by owner %x", retval, owner);

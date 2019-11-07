@@ -20,13 +20,13 @@ PlayerDyingHitPointLimit::PlayerDyingHitPointLimit(ViewPtr<Services::HooksProxy>
 {
     m_hplimit = hplimit;
 
-    hooker->RequestExclusiveHook<API::Functions::CNWSObject__GetIsPCDying>(&CNWSObject__GetIsPCDying_Hook);
-    hooker->RequestExclusiveHook<API::Functions::CNWSObject__GetDead>(&CNWSObject__GetDead_Hook);
+    hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSObject12GetIsPCDyingEv>(&CNWSObject__GetIsPCDying_Hook);
+    hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSObject7GetDeadEv>(&CNWSObject__GetDead_Hook);
 }
 
 int32_t PlayerDyingHitPointLimit::CNWSObject__GetIsPCDying_Hook(CNWSObject* thisPtr)
 {
-    if (auto *pCreature = Utils::AsNWSCreature(thisPtr))
+    if (auto *pCreature = thisPtr->AsNWSCreature())
     {
         if (pCreature->m_bPlayerCharacter || pCreature->GetIsPossessedFamiliar())
         {
@@ -40,7 +40,7 @@ int32_t PlayerDyingHitPointLimit::CNWSObject__GetIsPCDying_Hook(CNWSObject* this
 int32_t PlayerDyingHitPointLimit::CNWSObject__GetDead_Hook(CNWSObject* thisPtr)
 {
     int16_t hp = thisPtr->GetCurrentHitPoints(false);
-    if (auto *pCreature = Utils::AsNWSCreature(thisPtr))
+    if (auto *pCreature = thisPtr->AsNWSCreature())
     {
         if (pCreature->m_bPlayerCharacter || pCreature->GetIsPossessedFamiliar())
         {

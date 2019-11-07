@@ -14,7 +14,7 @@ public:
     QuickChatEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static int32_t HandlePlayerToServerQuickChatMessageHook(NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*, uint8_t);
+    static int32_t HandlePlayerToServerQuickChatMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);
 };
 
 }

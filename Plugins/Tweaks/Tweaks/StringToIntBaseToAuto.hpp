@@ -13,7 +13,7 @@ public:
     StringToIntBaseToAuto(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static int32_t CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook(CNWVirtualMachineCommands*, int32_t, int32_t);
 };
 
 }

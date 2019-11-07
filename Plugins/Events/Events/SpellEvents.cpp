@@ -20,26 +20,26 @@ static Hooking::FunctionHook* m_ClearMemorizedSpellSlotHook = nullptr;
 SpellEvents::SpellEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_CAST_SPELL_.*", [hooker]() {
-        hooker->RequestExclusiveHook<NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact>(&CastSpellHook);
-        m_SpellCastAndImpactHook = hooker->FindHookByAddress(NWNXLib::API::Functions::CNWSObject__SpellCastAndImpact);
+        hooker->RequestExclusiveHook<NWNXLib::API::Functions::_ZN10CNWSObject18SpellCastAndImpactEj6Vectorjhjiihi>(&CastSpellHook);
+        m_SpellCastAndImpactHook = hooker->FindHookByAddress(NWNXLib::API::Functions::_ZN10CNWSObject18SpellCastAndImpactEj6Vectorjhjiihi);
     });
 
     Events::InitOnFirstSubscribe("NWNX_SET_MEMORIZED_SPELL_SLOT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<NWNXLib::API::Functions::CNWSCreatureStats__SetMemorizedSpellSlot>(&SetMemorizedSpellSlotHook);
-        m_SetMemorizedSpellSlotHook = hooker->FindHookByAddress(NWNXLib::API::Functions::CNWSCreatureStats__SetMemorizedSpellSlot);
+        hooker->RequestExclusiveHook<NWNXLib::API::Functions::_ZN17CNWSCreatureStats21SetMemorizedSpellSlotEhhjhhi>(&SetMemorizedSpellSlotHook);
+        m_SetMemorizedSpellSlotHook = hooker->FindHookByAddress(NWNXLib::API::Functions::_ZN17CNWSCreatureStats21SetMemorizedSpellSlotEhhjhhi);
     });
 
     Events::InitOnFirstSubscribe("NWNX_CLEAR_MEMORIZED_SPELL_.*", [hooker]() {
-        hooker->RequestExclusiveHook<NWNXLib::API::Functions::CNWSCreatureStats__ClearMemorizedSpellSlot>(&ClearMemorizedSpellSlotHook);
-        m_ClearMemorizedSpellSlotHook = hooker->FindHookByAddress(NWNXLib::API::Functions::CNWSCreatureStats__ClearMemorizedSpellSlot);
+        hooker->RequestExclusiveHook<NWNXLib::API::Functions::_ZN17CNWSCreatureStats23ClearMemorizedSpellSlotEhhh>(&ClearMemorizedSpellSlotHook);
+        m_ClearMemorizedSpellSlotHook = hooker->FindHookByAddress(NWNXLib::API::Functions::_ZN17CNWSCreatureStats23ClearMemorizedSpellSlotEhhh);
     });
 }
 
 void SpellEvents::CastSpellHook
 (
-    NWNXLib::API::CNWSObject* thisPtr,
+    CNWSObject* thisPtr,
     uint32_t spellID,
-    NWNXLib::API::Vector targetPosition,
+    Vector targetPosition,
     NWNXLib::API::Types::ObjectID oidTarget,
     int8_t multiClass,
     NWNXLib::API::Types::ObjectID oidItem,
@@ -81,7 +81,7 @@ void SpellEvents::CastSpellHook
 
 int32_t SpellEvents::SetMemorizedSpellSlotHook
 (
-    NWNXLib::API::CNWSCreatureStats* thisPtr,
+    CNWSCreatureStats* thisPtr,
     uint8_t multiClass,
     uint8_t slot,
     uint32_t spellID,
@@ -102,7 +102,7 @@ int32_t SpellEvents::SetMemorizedSpellSlotHook
     Events::PushEventData("SPELL_FROMCLIENT", std::to_string(fromClient));
 
     retVal = Events::SignalEvent("NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE", thisPtr->m_pBaseCreature->m_idSelf, &sBeforeEventResult)
-             ? m_SetMemorizedSpellSlotHook->CallOriginal<int32_t>(thisPtr, multiClass, slot, spellID, domain, meta, fromClient) : 
+             ? m_SetMemorizedSpellSlotHook->CallOriginal<int32_t>(thisPtr, multiClass, slot, spellID, domain, meta, fromClient) :
              sBeforeEventResult == "1";
 
     Events::PushEventData("SPELL_CLASS", std::to_string(multiClass));
@@ -122,7 +122,7 @@ int32_t SpellEvents::SetMemorizedSpellSlotHook
 
 void SpellEvents::ClearMemorizedSpellSlotHook
 (
-    NWNXLib::API::CNWSCreatureStats* thisPtr,
+    CNWSCreatureStats* thisPtr,
     uint8_t multiClass,
     uint8_t level,
     uint8_t slot

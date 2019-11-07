@@ -21,24 +21,24 @@ private:
     ArgumentStack SetFeedbackMode           (ArgumentStack&& args);
 
     static void SendFeedbackMessageHook(
-        NWNXLib::API::CNWSCreature* pCreature,
+        CNWSCreature* pCreature,
         uint16_t nFeedbackID,
-        NWNXLib::API::CNWCCMessageData* pData,
-        NWNXLib::API::CNWSPlayer* pPlayer);
+        CNWCCMessageData* pData,
+        CNWSPlayer* pPlayer);
 
     static int32_t SendServerToPlayerCCMessageHook(
-        NWNXLib::API::CNWSMessage* pMessage,
+        CNWSMessage* pMessage,
         uint32_t nPlayerId,
         uint8_t nMinor,
-        NWNXLib::API::CNWCCMessageData* pMessageData,
-        NWNXLib::API::CNWSCombatAttackData* pAttackData);
+        CNWCCMessageData* pMessageData,
+        CNWSCombatAttackData* pAttackData);
 
     static int32_t SendServerToPlayerJournalUpdatedHook(
-        NWNXLib::API::CNWSMessage* pMessage,
-        NWNXLib::API::CNWSPlayer* pPlayer,
+        CNWSMessage* pMessage,
+        CNWSPlayer* pPlayer,
         int32_t bQuest,
         int32_t bCompleted,
-        NWNXLib::API::CExoLocString* p_locName);
+        CExoLocString locName);
 
     static bool GetGlobalState(int32_t messageType, int32_t messageId);
     static int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);

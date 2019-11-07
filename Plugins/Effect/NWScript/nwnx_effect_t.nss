@@ -3,7 +3,6 @@
 void printeff(struct NWNX_EffectUnpacked n)
 {
     string s = "Unpacked effect: \n";
-    s += "nEffectId = " + IntToString(n.nEffectId) + "\n";
     s += "nType = " + IntToString(n.nType) + "\n";
     s += "nSubType = " + IntToString(n.nSubType) + "\n";
 

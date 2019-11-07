@@ -3,7 +3,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/CExoArrayListTemplatedunsignedlong.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 
@@ -19,22 +19,21 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* DeadCreatureFiresOnAreaExit::pRemoveObjectFromArea_hook;
 DeadCreatureFiresOnAreaExit::DeadCreatureFiresOnAreaExit(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSArea__RemoveObjectFromArea>
+    hooker->RequestExclusiveHook<Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj>
                                     (&CNWSArea__RemoveObjectFromArea_hook);
 
-    pRemoveObjectFromArea_hook = hooker->FindHookByAddress(Functions::CNWSArea__RemoveObjectFromArea);
+    pRemoveObjectFromArea_hook = hooker->FindHookByAddress(Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj);
 }
 
 
 int32_t DeadCreatureFiresOnAreaExit::CNWSArea__RemoveObjectFromArea_hook(CNWSArea *pArea, Types::ObjectID objectId)
 {
-    auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_aGameObjects);
-    pList->Remove(objectId);
+    pArea->m_aGameObjects.Remove(objectId);
 
-    auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+    auto *pGameObject = Utils::GetGameObject(objectId);
     if ( pGameObject )
     {
-        auto pCreature = Utils::AsNWSCreature(pGameObject);
+        auto pCreature = pGameObject->AsNWSCreature();
         if (pCreature)
         {
             if (Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(objectId))
