@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['call_5ftoken_27',['call_token',['../nwnx__jvm__token_8nss.html#a885cc613caa5ea3487907da6f8d430ea',1,'nwnx_jvm_token.nss']]],
-  ['challengerating_28',['challengeRating',['../structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566',1,'NWNX_Encounter_CreatureListEntry']]],
-  ['changelog_29',['Changelog',['../changelog.html',1,'']]],
+  ['call_5ftoken_28',['call_token',['../nwnx__jvm__token_8nss.html#a885cc613caa5ea3487907da6f8d430ea',1,'nwnx_jvm_token.nss']]],
+  ['challengerating_29',['challengeRating',['../structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566',1,'NWNX_Encounter_CreatureListEntry']]],
   ['changelog_2emd_30',['CHANGELOG.md',['../CHANGELOG_8md.html',1,'']]],
   ['channel_31',['channel',['../structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa',1,'NWNX_Redis_PubSubMessageData']]],
   ['chat_32',['Chat',['../group__chat.html',1,'']]],
@@ -43,6 +42,7 @@ var searchData=
   ['config_5frewrite_67',['CONFIG_REWRITE',['../nwnx__redis__short_8nss.html#aeecb99ea593e92fd539d68343df04240',1,'nwnx_redis_short.nss']]],
   ['config_5fset_68',['CONFIG_SET',['../nwnx__redis__short_8nss.html#a1af006c9794f2b37aedafc9143635fca',1,'nwnx_redis_short.nss']]],
   ['creature_69',['Creature',['../group__creature.html',1,'']]],
-  ['core_20reference_70',['Core Reference',['../md_Core_Documentation_README.html',1,'']]],
-  ['core_20functions_71',['Core Functions',['../group__nwnx.html',1,'']]]
+  ['changelog_70',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['core_20reference_71',['Core Reference',['../md_Core_Documentation_README.html',1,'']]],
+  ['core_20functions_72',['Core Functions',['../group__nwnx.html',1,'']]]
 ];

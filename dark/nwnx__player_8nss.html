@@ -143,12 +143,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gab069612709c6b5357500da1f420bde37"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#gab069612709c6b5357500da1f420bde37">NWNX_Player_GetBicFileName</a> (object player)</td></tr>
 <tr class="memdesc:gab069612709c6b5357500da1f420bde37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of the .bic file associated with the player's character.  <a href="group__player.html#gab069612709c6b5357500da1f420bde37">More...</a><br /></td></tr>
 <tr class="separator:gab069612709c6b5357500da1f420bde37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga22683f3f356138f781d8bd25f53fbc1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga22683f3f356138f781d8bd25f53fbc1b">NWNX_Player_SetVisibilityOverride</a> (object player, object target, int override)</td></tr>
-<tr class="memdesc:ga22683f3f356138f781d8bd25f53fbc1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the default visibility rules about how player perceives the target object.  <a href="group__player.html#ga22683f3f356138f781d8bd25f53fbc1b">More...</a><br /></td></tr>
-<tr class="separator:ga22683f3f356138f781d8bd25f53fbc1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6998098a310413ea3e35266587c89d6f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga6998098a310413ea3e35266587c89d6f">NWNX_Player_GetVisibilityOverride</a> (object player, object target)</td></tr>
-<tr class="memdesc:ga6998098a310413ea3e35266587c89d6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the existing visibility override for given (player, object) pair.  <a href="group__player.html#ga6998098a310413ea3e35266587c89d6f">More...</a><br /></td></tr>
-<tr class="separator:ga6998098a310413ea3e35266587c89d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga237db89fac702f2b9f404a33c63e7b93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga237db89fac702f2b9f404a33c63e7b93">NWNX_Player_ShowVisualEffect</a> (object player, int effectId, vector position)</td></tr>
 <tr class="memdesc:ga237db89fac702f2b9f404a33c63e7b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays the VFX at the target position in current area for the given player only.  <a href="group__player.html#ga237db89fac702f2b9f404a33c63e7b93">More...</a><br /></td></tr>
 <tr class="separator:ga237db89fac702f2b9f404a33c63e7b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,15 +215,6 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Visibility Types</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated:</a></b></dt><dd>Use <a class="el" href="group__visibility.html#vis_types">NWNX_Visibility Visibility Types</a> instead. The various types of visibilities.</dd></dl>
-</div></td></tr>
-<tr class="memitem:ga6bd08471733e29a200778d052eaa3e0e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga6bd08471733e29a200778d052eaa3e0e">NWNX_PLAYER_VISIBILITY_DEFAULT</a> = 0</td></tr>
-<tr class="separator:ga6bd08471733e29a200778d052eaa3e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaead24df18d9fdeff8b6bd623671172e1"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#gaead24df18d9fdeff8b6bd623671172e1">NWNX_PLAYER_VISIBILITY_HIDDEN</a> = 1</td></tr>
-<tr class="separator:gaead24df18d9fdeff8b6bd623671172e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga56deef9f821853145e9d3ba3d3789d9c"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga56deef9f821853145e9d3ba3d3789d9c">NWNX_PLAYER_VISIBILITY_VISIBLE</a> = 2</td></tr>
-<tr class="separator:ga56deef9f821853145e9d3ba3d3789d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Timing Bar Types</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="timing_bar_types"></a> The various types of timing bars. </p>
 </div></td></tr>
@@ -259,7 +244,7 @@ Variables</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_d90d35e7a4c53163d70fc449fc96c95f.html">Player</a></li><li class="navelem"><a class="el" href="dir_74eb7d1146c85797e2e5ace6439ccaf8.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__player_8nss.html">nwnx_player.nss</a></li>
 				<li class="footer">
-					Generated on Sun Nov 3 2019 14:53:27 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 7 2019 10:54:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

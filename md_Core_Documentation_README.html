@@ -104,10 +104,10 @@ $(document).ready(function(){initNavTree('md_Core_Documentation_README.html','')
 <div class="title">Core Reference </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md9"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md18"></a>
 Description</h1>
 <p>The core of NWNXEE that does all the things.</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 Environment Variables</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -128,10 +128,30 @@ Environment Variables</h1>
 <td class="markdownTableBodyNone"><code>NWNX_CORE_CRASH_ON_ASSERT_FAILURE</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Sets whether an ASSERT failure hard crashes the server.   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_CORE_SHUTDOWN_SCRIPT</code>  </td><td class="markdownTableBodyCenter">string  </td><td class="markdownTableBodyNone">Unset  </td><td class="markdownTableBodyNone">Sets which NWScript to run when the module shuts down.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">When enabled, allows the ExecuteScriptChunk() function to call NWScript NWNX functions.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">When enabled, the UserDirectory/nwnx folder will be cleaned on startup, meaning all contents will be deleted.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code>  </td><td class="markdownTableBodyCenter">int  </td><td class="markdownTableBodyNone">70000000  </td><td class="markdownTableBodyNone">Sets the resman priority of the UserDirectory/nwnx folder.   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
+Console Commands</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Command  </th><th class="markdownTableHeadNone">Description   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>runscript &lt;script name&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript. Example: <code>runscript dm_killallplayers</code>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>eval &lt;script chunk&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript chunk. Example: <code>eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());</code>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>evalx &lt;script chunk&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: <code>evalx <a class="el" href="group__admin.html#ga637a42678c8d730015dba00efddef6aa" title="Signals the server to immediately shut down.">NWNX_Administration_ShutdownServer()</a>;</code>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>loglevel &lt;plugin&gt; &lt;loglevel&gt;</code>  </td><td class="markdownTableBodyNone">Sets the log level of the given plugin. Example: <code>loglevel Events 7</code>   </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Plugin Management</h1>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Environment Variable Configuration</h2>
 <p>Configuration of NWNX plugins are controlled by environment variables exported prior to starting the <code>nwserver</code> binary. Typical usage would be in the script used to start the server.</p>
 <p>Basic control of the plugin includes enabling/disabling the plugin and setting the logging level of the plugin. The following format is used for all plugins:</p>
@@ -139,7 +159,7 @@ Environment Variable Configuration</h2>
 <li>NWNX_&lt;x&gt;_LOG_LEVEL</li>
 <li>NWNX_&lt;x&gt;_SKIP</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Plugin Loading</h2>
 <p>Inclusion or exclusion of the plugin at server startup time is contolled by the environment variable <code>NWNX_&lt;x&gt;_SKIP</code> where &lt;x&gt; is the plugin name (all caps).</p>
 <ul>
@@ -148,7 +168,7 @@ Plugin Loading</h2>
 </ul>
 <p><b>Example</b> </p><div class="fragment"><div class="line"># Load the sql plugin at startup</div>
 <div class="line">export NWNX_SQL_SKIP=N</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md24"></a>
 Plugin Log Level</h2>
 <p>The default plugin log level is the same as the overall Core logging level.</p>
 <p>It can be changed, however, by assinging a value to <code>NWNX_&lt;x&gt;_LOG_LEVEL</code> (where &lt;x&gt; is the plugin name in all caps) in the same manner as the Core logging level. See the Core documentation for a description of available logging levels.</p>
@@ -161,7 +181,7 @@ Plugin Log Level</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 3 2019 14:53:26 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 7 2019 10:54:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

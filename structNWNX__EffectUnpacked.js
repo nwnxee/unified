@@ -1,6 +1,5 @@
 var structNWNX__EffectUnpacked =
 [
-    [ "nEffectId", "structNWNX__EffectUnpacked.html#ae00c5b3c72a17aa8a7678027ec4befba", null ],
     [ "nType", "structNWNX__EffectUnpacked.html#a50ac28a82740b466e44088470b411582", null ],
     [ "nSubType", "structNWNX__EffectUnpacked.html#ab31d1e6bf3a66d482598d900eea7f511", null ],
     [ "fDuration", "structNWNX__EffectUnpacked.html#ad75877f6bc06555539531b274ac5ad38", null ],

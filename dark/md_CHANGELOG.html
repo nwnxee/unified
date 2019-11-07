@@ -81,7 +81,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('changelog.html','');});
+$(document).ready(function(){initNavTree('md_CHANGELOG.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -104,27 +104,68 @@ $(document).ready(function(){initNavTree('changelog.html','');});
 <div class="title">Changelog </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md0">Unreleased</a><ul><li class="level2"><a href="#autotoc_md1">Added</a><ul><ul><li class="level4"><a href="#autotoc_md2">New Plugins</a></li>
-<li class="level4"><a href="#autotoc_md3">New NWScript Functions</a></li>
-</ul>
-</ul>
-</li>
-<li class="level2"><a href="#autotoc_md4">Changed</a></li>
-<li class="level2"><a href="#autotoc_md5">Deprecated</a></li>
-<li class="level2"><a href="#autotoc_md6">Removed</a></li>
-<li class="level2"><a href="#autotoc_md7">Fixed</a></li>
-</ul>
-</li>
-</ul>
-</div>
 <div class="textblock"><p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
-<h1><a class="anchor" id="autotoc_md0"></a>
-Unreleased</h1>
-<p><a href="https://github.com/nwnxee/unified/compare/build8186-2...HEAD">https://github.com/nwnxee/unified/compare/build8186-2...HEAD</a></p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+&lt;a href="https://github.com/nwnxee/unified/compare/build8186-lts...HEAD"&gt;Unreleased&lt;/a&gt;</h1>
+<p>NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.</p>
+<p>NOTE: There may be more breaking changes added here until the next official release happens.</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Added</h2>
+<ul>
+<li>Core: Added the environment variable <code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK</code> to enable NWNX function calls in ExecuteScriptChunk(), by default these will be blocked</li>
+<li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga091bdd0e7c99ed5254ca138db05d7156" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gab1af1db0c6538b394ffd81b2b349ee2c" title="Compiles and adds a script to the UserDirectory/nwnx folder.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
+<li>Core: Added the environment variable <code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>, setting this to true will delete all contents in the <code>/nwnx</code> folder on startup of the server. Default: false</li>
+<li>Core: Added the environment variable <code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code> which lets you change the resman priority of the <code>/nwnx</code> folder. Default: 70000000</li>
+<li>Core: Added the following console commands: <code>runscript</code>, <code>eval</code>, <code>evalx</code>, <code>loglevel</code><ul>
+<li><code>runscript &lt;scriptname&gt;</code>: Executes the given nwscript. Example: <code>runscript dm_killallplayers</code></li>
+<li><code>eval &lt;script chunk&gt;</code>: Executes the given nwscript chunk. Example: <code>eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());</code></li>
+<li><code>evalx &lt;script chunk&gt;</code>: Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: <code>evalx <a class="el" href="group__admin.html#ga637a42678c8d730015dba00efddef6aa" title="Signals the server to immediately shut down.">NWNX_Administration_ShutdownServer()</a>;</code></li>
+<li><code>loglevel &lt;plugin&gt; &lt;loglevel&gt;</code>: Sets the log level of the given plugin. Example: <code>loglevel Events 7</code></li>
+</ul>
+</li>
+</ul>
+<h4><a class="anchor" id="autotoc_md3"></a>
+New Plugins</h4>
+<p>N/A</p>
+<h4><a class="anchor" id="autotoc_md4"></a>
+New NWScript Functions</h4>
+<ul>
+<li>Data: Array_Set()</li>
+<li>Object: Export()</li>
+<li>Util: AddScript()</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md5"></a>
+Changed</h2>
+<ul>
+<li>Administration: DeleteTURD() now returns TRUE on success</li>
+<li>Data: Array_Insert() will now actually do an insert instead of a set</li>
+<li>Effect: Removed the EffectID parameter from the struct</li>
+<li>ELC: Updated with the new ruleset changes</li>
+<li>Events: <code>NWNX_ON_ITEM_INVENTORY_{ADD|REMOVE}_ITEM_*</code> has been changed to <code>NWNX_ON_INVENTORY_{ADD|REMOVE}_ITEM_*</code></li>
+<li>Itemproperty: Removed the EffectID parameter from the struct</li>
+<li>SQL: The SQLite database extension has been changed to <code>.sqlite3nwnxee</code></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Deprecated</h2>
+<p>N/A</p>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Removed</h2>
+<ul>
+<li><strike>The following plugins were removed: JVM, Mono</strike></li>
+<li>Administration: BootPC()</li>
+<li>Experimental: RemoveACABModifiersFromExpertise</li>
+<li>Object: {Get|Set}EventHandler(), {Get|Set}Portrait()</li>
+<li>Player: {Get|Set}VisibilityOverride()</li>
+<li>Util: GenerateUUID()</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Fixed</h2>
+<p>N/A</p>
+<h1><a class="anchor" id="autotoc_md9"></a>
+&lt;a href="https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts"&gt;8186 LTS&lt;/a&gt;</h1>
 <p>NOTICE: The ABI has changed, please make sure to update your <a class="el" href="nwnx_8nss.html">nwnx.nss</a> and recompile all your scripts.</p>
-<h2><a class="anchor" id="autotoc_md1"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Added</h2>
 <ul>
 <li>Added support to skip building certain plugins by setting an environment variable, for example: <code>NWNX_SKIP_PLUGINS="JVM;Lua;Mono;Ruby;SpellChecker"</code></li>
@@ -171,7 +212,7 @@ Added</h2>
 <li>WebHook: Added support for richer Slack-compatible messages</li>
 <li>Util: Added the environment variable <code>NWNX_UTIL_PRE_MODULE_START_SCRIPT=scriptname</code> which lets you set a nwscript that runs before the OnModuleLoad event </li>
 </ul>
-<h4><a class="anchor" id="autotoc_md2"></a>
+<h4><a class="anchor" id="autotoc_md11"></a>
 New Plugins</h4>
 <p>The following plugins were added:</p><ul>
 <li><b>Appearance</b>: Allows the appearance and some other things of creatures to be overridden per player</li>
@@ -191,7 +232,7 @@ New Plugins</h4>
 <li><b>SkillRanks</b>: Adds functions to create feats and perform actions that manipulate the calculations of skill ranks</li>
 <li><b>Visibility</b>: Allows the visibility of objects to be overridden globally or per player </li>
 </ul>
-<h4><a class="anchor" id="autotoc_md3"></a>
+<h4><a class="anchor" id="autotoc_md12"></a>
 New NWScript Functions</h4>
 <ul>
 <li>Administration: GetPlayOption()</li>
@@ -348,7 +389,7 @@ New NWScript Functions</h4>
 <li>Visibility: SetVisibilityOverride()</li>
 <li>Weapon: SetWeaponIsMonkWeapon()</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Changed</h2>
 <ul>
 <li>Core: The nwnx.txt logfile will now be written to the UserDirectory</li>
@@ -360,18 +401,18 @@ Changed</h2>
 <li>Events: Changed <code>NUM_LEVELS</code> to <code>AMOUNT</code> for DMActionEvent GiveLevel</li>
 <li>Player: StartGuiTimingBar() now accepts a type for pre-defined text</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Deprecated</h2>
 <ul>
 <li>Player: {Get/Set}VisibilityOverride() are deprecated, please use the new Visibility plugin!</li>
 <li>Object: {Get/Set}Portrait() are deprecated, please use the native {Get/Set}PortraitResRef() functions instead!</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Removed</h2>
 <ul>
 <li>The following plugins were removed: Names, BehaviourTree</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 Fixed</h2>
 <ul>
 <li>Administration: Fixed a nullptr crash in Get{DM/Player}Password()</li>
@@ -387,7 +428,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 3 2019 14:53:27 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Nov 7 2019 10:54:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

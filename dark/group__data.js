@@ -6,6 +6,7 @@ var group__data =
     [ "Array Find", "group__data__array__find.html", "group__data__array__find" ],
     [ "Array Insert", "group__data__array__insert.html", "group__data__array__insert" ],
     [ "Array Pushback", "group__data__array__pushback.html", "group__data__array__pushback" ],
+    [ "Array Set", "group__data__array__set.html", "group__data__array__set" ],
     [ "nwnx_data.nss", "nwnx__data_8nss.html", null ],
     [ "NWNX_Data_Array_Clear", "group__data.html#gadda884088a0abed7c48eb4a6f8c4e60d", null ],
     [ "NWNX_Data_Array_Copy", "group__data.html#gafb57f9efc8ca816818cfa57edfd08c43", null ],

@@ -3,7 +3,6 @@ var group__itemproperty =
     [ "Readme", "group__itemproperty.html#itemproperty", null ],
     [ "nwnx_itemprop.nss", "nwnx__itemprop_8nss.html", null ],
     [ "NWNX_IPUnpacked", "structNWNX__IPUnpacked.html", [
-      [ "nItemPropertyId", "structNWNX__IPUnpacked.html#a5151aeb7e5c6f2610b819084df277435", null ],
       [ "nProperty", "structNWNX__IPUnpacked.html#a240e9078eb102d6be03ec5e517b083f9", null ],
       [ "nSubType", "structNWNX__IPUnpacked.html#a28d5dd1ff936a69a03304c96ee3f1f5a", null ],
       [ "nCostTable", "structNWNX__IPUnpacked.html#ab280d7238552e633946cfc1cc1bf2571", null ],
