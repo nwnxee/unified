@@ -21,7 +21,6 @@ private:
     ArgumentStack Hash(ArgumentStack&& args);
     ArgumentStack GetCustomToken(ArgumentStack&& args);
     ArgumentStack EffectTypeCast(ArgumentStack&& args);
-    ArgumentStack GenerateUUID(ArgumentStack&& args);
     ArgumentStack StripColors(ArgumentStack&& args);
     ArgumentStack IsValidResRef(ArgumentStack&& args);
     ArgumentStack GetEnvironmentVariable(ArgumentStack&& args);
