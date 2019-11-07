@@ -39,6 +39,16 @@ const int NWNX_ADMINISTRATION_OPTION_RESET_ENCOUNTER_SPAWN_POOL = 25; // TRUE/FA
 const int NWNX_ADMINISTRATION_OPTION_HIDE_HITPOINTS_GAINED      = 26; // TRUE/FALSE
 /// @}
 
+/// @name Administration Debug Types
+/// @anchor admin_debug
+///
+/// @{
+const int NWNX_ADMINISTRATION_DEBUG_COMBAT                      = 0;  // TRUE/FALSE
+const int NWNX_ADMINISTRATION_DEBUG_SAVING_THROW                = 1;  // TRUE/FALSE
+const int NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED              = 2;  // TRUE/FALSE
+const int NWNX_ADMINISTRATION_DEBUG_HIT_DIE                     = 3;  // TRUE/FALSE
+/// @}
+
 /// @brief Gets the current player password.
 /// @return The current player password.
 string NWNX_Administration_GetPlayerPassword();
@@ -127,6 +137,16 @@ void NWNX_Administration_SetPlayOption(int option, int value);
 /// @param characterName The character name.
 /// @return Returns TRUE if successful
 int NWNX_Administration_DeleteTURD(string playerName, string characterName);
+
+/// @brief Get an @ref admin_debug "Administration Debug Type" value.
+/// @param type An @ref admin_debug "Administration Debug Type".
+/// @return The current value for the supplied debug type from @ref admin_debug "Administration Debug Types".
+int NWNX_Administration_GetDebugValue(int type);
+
+/// @brief Set an @ref admin_debug "Administration Debug Type" to a value.
+/// @param type The debug type to adjust from @ref admin_debug "Administration Debug Types".
+/// @param state The new state for the debug type, TRUE or FALSE
+void NWNX_Administration_SetDebugValue(int type, int state);
 
 /// @}
 
@@ -279,4 +299,23 @@ int NWNX_Administration_DeleteTURD(string playerName, string characterName)
     NWNX_CallFunction(NWNX_Administration, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
+}
+
+int NWNX_Administration_GetDebugValue(int type)
+{
+    string sFunc = "GetDebugValue";
+
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, type);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
+}
+
+void NWNX_Administration_SetDebugValue(int type, int state)
+{
+    string sFunc = "SetDebugValue";
+
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, state);
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, type);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }

@@ -25,6 +25,7 @@ NOTE: There may be more breaking changes added here until the next official rele
 N/A
 
 ##### New NWScript Functions
+- Administration: {Get|Set}DebugValue()
 - Data: Array_Set()
 - Object: Export()
 - Util: AddScript()
