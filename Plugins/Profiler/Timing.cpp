@@ -74,7 +74,7 @@ void FastTimer::Calibrate(const size_t runs, ViewPtr<HooksProxy> hooks, ViewPtr<
     std::vector<std::chrono::nanoseconds> hookedResults;
     std::vector<std::chrono::nanoseconds> unhookedResults;
 
-    hooks->RequestSharedHook<Functions::_ZN16CExoBaseInternal10CheckForCDEj, bool>(&ProfilerCalibrateHookFuncWithScope);
+    hooks->RequestSharedHook<Functions::_ZN16CExoBaseInternal10CheckForCDEj, int32_t>(&ProfilerCalibrateHookFuncWithScope);
 
     for (size_t i = 0; i < runs; ++i)
     {

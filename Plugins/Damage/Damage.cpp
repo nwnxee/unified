@@ -140,7 +140,7 @@ int32_t Damage::OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject,
     if (!script.empty())
     {
         // We only run the OnDamage event for creatures.
-        if (Utils::AsNWSCreature(pObject))
+        if (pObject->AsNWSCreature())
         {
             // Prepare the data for the nwscript
             g_plugin->m_DamageData.oidDamager = pEffect->m_oidCreator;
@@ -242,7 +242,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
 
     CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
-    CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
+    CNWSObject *pTarget = Utils::GetGameObject(oidTarget)->AsNWSObject();
     ASSERT_OR_THROW(pTarget != nullptr);
 
     // apply damage immunity and resistance

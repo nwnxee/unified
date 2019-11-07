@@ -160,7 +160,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     if (!pGameObject)
         return STRREF_CHARACTER_DOES_NOT_EXIST;
 
-    CNWSCreature *pCreature = Utils::AsNWSCreature(pGameObject);
+    CNWSCreature *pCreature = pGameObject->AsNWSCreature();
     if (!pCreature)
         return STRREF_CHARACTER_DOES_NOT_EXIST;
 

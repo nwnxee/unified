@@ -59,8 +59,8 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
                         if (objectType >= ObjectType::Area)
                         {
                             CNWSArea* area = objectType == ObjectType::Area
-                                ? static_cast<CNWSArea*>(obj)
-                                : server->GetAreaByGameObjectID(static_cast<CNWSObject*>(obj)->m_oidArea);
+                                ? obj->AsNWSArea()
+                                : server->GetAreaByGameObjectID(obj->AsNWSObject()->m_oidArea);
 
                             if (area)
                             {
@@ -81,7 +81,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
             return tags;
         }
     ),
-    bool, CVirtualMachine*, CExoString*, uint32_t, bool);
+    int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t);
 
 Scripts::Scripts(const bool areaTimings, const bool typeTimings,
     ViewPtr<NWNXLib::Services::HooksProxy> hooker,
@@ -93,7 +93,7 @@ Scripts::Scripts(const bool areaTimings, const bool typeTimings,
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
         RunScript, API::Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
-        bool, CVirtualMachine*, CExoString*, uint32_t, bool);
+        int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t);
 }
 
 }

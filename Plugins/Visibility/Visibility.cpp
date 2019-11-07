@@ -80,7 +80,7 @@ int32_t Visibility::TestObjectVisibleHook(
     }
     else if (globalOverride != -1)
     {
-        bInvisible = (globalOverride == 2) ? !Utils::AsNWSCreature(pPlayerGameObject)->m_pStats->m_bIsDM : !!globalOverride;
+        bInvisible = (globalOverride == 2) ? !pPlayerGameObject->AsNWSCreature()->m_pStats->m_bIsDM : !!globalOverride;
     }
 
     return bInvisible ? false : g_plugin->m_TestObjectVisibilityHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);

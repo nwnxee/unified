@@ -33,10 +33,12 @@ private:
     ArgumentStack GetNextResRef(ArgumentStack&& args);
     ArgumentStack GetServerTicksPerSecond(ArgumentStack&& args);
     ArgumentStack GetLastCreatedObject(ArgumentStack&& args);
+    ArgumentStack AddScript(ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
     int m_tickCount;
+    CScriptCompiler *m_scriptCompiler;
 };
 
 }

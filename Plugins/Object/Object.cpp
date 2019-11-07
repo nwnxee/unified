@@ -20,6 +20,7 @@
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CItemRepository.hpp"
+#include "API/CExoFile.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
@@ -88,6 +89,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetTriggerGeometry);
     REGISTER(RemoveIconEffect);
     REGISTER(AddIconEffect);
+    REGISTER(Export);
 
 #undef REGISTER
 }
@@ -107,7 +109,7 @@ CNWSObject *Object::object(ArgumentStack& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    return Utils::AsNWSObject(pGameObject);
+    return pGameObject->AsNWSObject();
 }
 
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
@@ -243,11 +245,11 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     std::string retval = "";
     if (auto *pObject = object(args))
     {
-        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        if (auto *pCreature = pObject->AsNWSCreature())
             retval = pCreature->GetDialogResref().GetResRefStr();
-        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        else if (auto *pPlaceable = pObject->AsNWSPlaceable())
             retval = pPlaceable->GetDialogResref().GetResRefStr();
-        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
+        else if (auto *pDoor = pObject->AsNWSDoor())
             retval = pDoor->GetDialogResref().GetResRefStr();
         else
             retval = pObject->GetDialogResref().GetResRefStr();
@@ -264,11 +266,11 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
         const auto dialog = Services::Events::ExtractArgument<std::string>(args);
         CResRef resref = CResRef(dialog.c_str());
 
-        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        if (auto *pCreature = pObject->AsNWSCreature())
             pCreature->m_pStats->m_cDialog = resref;
-        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        else if (auto *pPlaceable = pObject->AsNWSPlaceable())
             pPlaceable->m_cDialog = resref;
-        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
+        else if (auto *pDoor = pObject->AsNWSDoor())
             pDoor->m_cDialog = resref;
     }
 
@@ -279,7 +281,7 @@ ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retval = 0;
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
     {
         retval = pPlaceable->m_nAppearance;
     }
@@ -291,7 +293,7 @@ ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
     {
         const auto app = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(app <= 65535);
@@ -334,11 +336,11 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
     {
         CItemRepository *pRepo;
 
-        if (auto *pCreature = Utils::AsNWSCreature(pObject))
+        if (auto *pCreature = pObject->AsNWSCreature())
             pRepo = pCreature->m_pcItemRepository;
-        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        else if (auto *pPlaceable = pObject->AsNWSPlaceable())
             pRepo = pPlaceable->m_pcItemRepository;
-        else if (auto *pItem = Utils::AsNWSItem(pObject))
+        else if (auto *pItem = pObject->AsNWSItem())
             pRepo = pItem->m_pItemRepository;
         else
         {
@@ -414,7 +416,7 @@ ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retval = -1;
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
     {
         retval = pPlaceable->m_bStaticObject;
     }
@@ -426,7 +428,7 @@ ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
 ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
     {
         const auto isStatic = Services::Events::ExtractArgument<int32_t>(args);
         ASSERT_OR_THROW(isStatic >= 0);
@@ -456,11 +458,11 @@ ArgumentStack Object::GetAutoRemoveKey(ArgumentStack&& args)
         switch (pObject->m_nObjectType)
         {
             case Constants::ObjectType::Door:
-                retVal = Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey;
+                retVal = pObject->AsNWSDoor()->m_bAutoRemoveKey;
                 break;
 
             case Constants::ObjectType::Placeable:
-                retVal = Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey;
+                retVal = pObject->AsNWSPlaceable()->m_bAutoRemoveKey;
                 break;
 
             default:
@@ -485,11 +487,11 @@ ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
         switch (pObject->m_nObjectType)
         {
             case Constants::ObjectType::Door:
-                Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey = bRemoveKey;
+                pObject->AsNWSDoor()->m_bAutoRemoveKey = bRemoveKey;
                 break;
 
             case Constants::ObjectType::Placeable:
-                Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey = bRemoveKey;
+                pObject->AsNWSPlaceable()->m_bAutoRemoveKey = bRemoveKey;
                 break;
 
             default:
@@ -508,7 +510,7 @@ ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
 
     if (auto *pObject = object(args))
     {
-        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
+        if (auto *pTrigger = pObject->AsNWSTrigger())
         {
             retVal.reserve(32 * pTrigger->m_nVertices);
 
@@ -538,7 +540,7 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
     {
         const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
 
-        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
+        if (auto *pTrigger = pObject->AsNWSTrigger())
         {
             auto str = sGeometry.c_str();
             std::vector<Vector> vecVerts;
@@ -663,6 +665,52 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         }
 
         pObject->ApplyEffect(effIcon, false, true);
+    }
+
+    return stack;
+}
+
+ArgumentStack Object::Export(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!fileName.empty());
+      ASSERT_OR_THROW(fileName.size() <= 16);
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    if (auto *pGameObject = Utils::GetGameObject(oidObject))
+    {
+        auto ExportObject = [&](RESTYPE resType) -> void
+        {
+            std::vector<uint8_t> serialized = SerializeGameObject(pGameObject, true);
+
+            if (!serialized.empty())
+            {
+                auto file = CExoFile(("NWNX:" + fileName).c_str(), resType, "wb");
+
+                if (file.FileOpened())
+                {
+                    file.Write(serialized.data(), serialized.size(), 1);
+                    file.Flush();
+                }
+            }
+        };
+
+        switch (pGameObject->m_nObjectType)
+        {
+            case Constants::ObjectType::Creature:   ExportObject(2027); break;
+            case Constants::ObjectType::Item:       ExportObject(2025); break;
+            case Constants::ObjectType::Placeable:  ExportObject(2044); break;
+            case Constants::ObjectType::Waypoint:   ExportObject(2058); break;
+            case Constants::ObjectType::Store:      ExportObject(2051); break;
+            case Constants::ObjectType::Door:       ExportObject(2042); break;
+            case Constants::ObjectType::Trigger:    ExportObject(2032); break;
+            default:
+                LOG_ERROR("Invalid object type for ExportObject");
+                break;
+        }
     }
 
     return stack;

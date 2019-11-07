@@ -237,7 +237,7 @@ string NWNX_Administration_GetBannedList()
 
 void NWNX_Administration_SetModuleName(string name)
 {
-    string sFunc = "SetModuleName(";
+    string sFunc = "SetModuleName";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, name);
     NWNX_CallFunction(NWNX_Administration, sFunc);

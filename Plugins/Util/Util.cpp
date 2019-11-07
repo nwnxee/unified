@@ -7,7 +7,6 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CResRef.hpp"
 #include "API/CExoResMan.hpp"
-#include "API/CExoString.hpp"
 #include "API/CExoStringList.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CTlkTable.hpp"
@@ -16,15 +15,16 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CWorldTimer.hpp"
 #include "API/CGameObjectArray.hpp"
+#include "API/CScriptCompiler.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "ViewPtr.hpp"
 #include "Services/Config/Config.hpp"
 
 #include <string>
-#include <stdio.h>
+#include <cstdio>
 #include <regex>
-#include <functional>
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -54,7 +54,8 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 namespace Util {
 
 Util::Util(const Plugin::CreateParams& params)
-    : Plugin(params)
+    : Plugin(params),
+      m_scriptCompiler(nullptr)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -77,6 +78,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetNextResRef);
     REGISTER(GetServerTicksPerSecond);
     REGISTER(GetLastCreatedObject);
+    REGISTER(AddScript);
 
 #undef REGISTER
 
@@ -119,6 +121,7 @@ Util::Util(const Plugin::CreateParams& params)
 
 Util::~Util()
 {
+    delete m_scriptCompiler;
 }
 
 ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
@@ -336,11 +339,11 @@ ArgumentStack Util::GetFirstResRef(ArgumentStack&& args)
 
     if (pList)
     {
-        std::regex rxg(regexFilter);
+        std::regex rgx(regexFilter);
 
         for (int i = 0; i < pList->m_nCount; i++)
         {
-            if (regexFilter.empty() || std::regex_match(pList->m_pStrings[i]->CStr(), rxg))
+            if (regexFilter.empty() || std::regex_match(pList->m_pStrings[i]->CStr(), rgx))
             {
                 m_listResRefs.emplace_back(pList->m_pStrings[i]->CStr());
             }
@@ -387,9 +390,9 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
     Types::ObjectID retVal = Constants::OBJECT_INVALID;
 
     const auto objectType = Services::Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW(objectType >= 0);
+      ASSERT_OR_THROW(objectType >= 0);
     const auto nthLast = Services::Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW(nthLast > 0);
+      ASSERT_OR_THROW(nthLast > 0);
 
     auto pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
     int count = 1;
@@ -415,6 +418,42 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
     }
 
     Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Util::AddScript(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = false;
+
+    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptName.empty());
+      ASSERT_OR_THROW(scriptName.size() <= 16);
+    const auto scriptData = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptData.empty());
+    const auto wrapIntoMain = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (!m_scriptCompiler)
+    {
+        m_scriptCompiler = new CScriptCompiler();
+        m_scriptCompiler->SetCompileDebugLevel(0);
+        m_scriptCompiler->SetCompileSymbolicOutput(0);
+        m_scriptCompiler->SetOptimizeBinaryCodeLength(true);
+        m_scriptCompiler->SetIdentifierSpecification("nwscript");
+        m_scriptCompiler->SetOutputAlias("NWNX");
+    }
+
+    if (m_scriptCompiler->CompileScriptChunk(scriptData.c_str(), wrapIntoMain != 0) == 0)
+    {
+        if (m_scriptCompiler->WriteFinalCodeToFile(scriptName.c_str()) == 0)
+        {
+            LOG_DEBUG("Adding Script '%s' with data: %s", scriptName, scriptData);
+            retVal = true;
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
     return stack;
 }
 

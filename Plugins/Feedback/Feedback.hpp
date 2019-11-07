@@ -38,7 +38,7 @@ private:
         CNWSPlayer* pPlayer,
         int32_t bQuest,
         int32_t bCompleted,
-        CExoLocString* p_locName);
+        CExoLocString locName);
 
     static bool GetGlobalState(int32_t messageType, int32_t messageId);
     static int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);

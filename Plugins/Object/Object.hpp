@@ -40,6 +40,7 @@ private:
     ArgumentStack SetTriggerGeometry    (ArgumentStack&& args);
     ArgumentStack RemoveIconEffect      (ArgumentStack&& args);
     ArgumentStack AddIconEffect         (ArgumentStack&& args);
+    ArgumentStack Export                (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 
