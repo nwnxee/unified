@@ -21,6 +21,8 @@ var group__admin =
     [ "NWNX_Administration_GetPlayOption", "group__admin.html#ga3a1b04f6d6e0dfbb82905351f52f7cab", null ],
     [ "NWNX_Administration_SetPlayOption", "group__admin.html#ga01ff71c99811d58888fe1cf6108e7a5d", null ],
     [ "NWNX_Administration_DeleteTURD", "group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587", null ],
+    [ "NWNX_Administration_GetDebugValue", "group__admin.html#ga16d786b08817407d55d982dc909ceb22", null ],
+    [ "NWNX_Administration_SetDebugValue", "group__admin.html#gaf5da81550e4fce290abfe3e1e9e240d0", null ],
     [ "NWNX_ADMINISTRATION_OPTION_ALL_KILLABLE", "group__admin.html#ga16e9040f025d25e8b2618da19ebf8224", null ],
     [ "NWNX_ADMINISTRATION_OPTION_NON_PARTY_KILLABLE", "group__admin.html#ga4cc68cb2745ea97afd38f8faaa101511", null ],
     [ "NWNX_ADMINISTRATION_OPTION_REQUIRE_RESURRECTION", "group__admin.html#gaa56ff043d20aae8044c88779cfa19403", null ],
@@ -47,5 +49,9 @@ var group__admin =
     [ "NWNX_ADMINISTRATION_OPTION_USE_MAX_HITPOINTS", "group__admin.html#ga4aac84a0e0d1b8eb8cf53ae2df9e4a32", null ],
     [ "NWNX_ADMINISTRATION_OPTION_RESTORE_SPELLS_USES", "group__admin.html#gad56bd806fc09e6395b7a1ce7bde3058b", null ],
     [ "NWNX_ADMINISTRATION_OPTION_RESET_ENCOUNTER_SPAWN_POOL", "group__admin.html#ga47e9cb52c719592063eeea164d92b5a1", null ],
-    [ "NWNX_ADMINISTRATION_OPTION_HIDE_HITPOINTS_GAINED", "group__admin.html#gabfe310b49ceb74689e5a70b0bf5d3d35", null ]
+    [ "NWNX_ADMINISTRATION_OPTION_HIDE_HITPOINTS_GAINED", "group__admin.html#gabfe310b49ceb74689e5a70b0bf5d3d35", null ],
+    [ "NWNX_ADMINISTRATION_DEBUG_COMBAT", "group__admin.html#gac6c0c822dfeedf1df82ad39f2c664691", null ],
+    [ "NWNX_ADMINISTRATION_DEBUG_SAVING_THROW", "group__admin.html#ga4fb71a8cd99ccd530dbeccd89820a9df", null ],
+    [ "NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED", "group__admin.html#ga9094a95e0bc955700c951fe4ce75bed4", null ],
+    [ "NWNX_ADMINISTRATION_DEBUG_HIT_DIE", "group__admin.html#ga1480fbbb3ea71dfe8e6c8536bba08089", null ]
 ];

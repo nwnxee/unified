@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['geoadd_1544',['GEOADD',['../nwnx__redis__short_8nss.html#a3744b71d4fa9b9363fdc997909a864a2',1,'nwnx_redis_short.nss']]],
-  ['geodist_1545',['GEODIST',['../nwnx__redis__short_8nss.html#a40db82e7d1ef791e660aad47632735e9',1,'nwnx_redis_short.nss']]],
-  ['geohash_1546',['GEOHASH',['../nwnx__redis__short_8nss.html#a45aadab55c525e4684658c94b3ae0f0f',1,'nwnx_redis_short.nss']]],
-  ['geopos_1547',['GEOPOS',['../nwnx__redis__short_8nss.html#aec2eeb0a9594a51ef04a484fcec5ec85',1,'nwnx_redis_short.nss']]],
-  ['georadius_1548',['GEORADIUS',['../nwnx__redis__short_8nss.html#a9b811303e0835cdacf528183a73a790f',1,'nwnx_redis_short.nss']]],
-  ['georadiusbymember_1549',['GEORADIUSBYMEMBER',['../nwnx__redis__short_8nss.html#ae76e50982756c8c36c308c154a44c6cc',1,'nwnx_redis_short.nss']]],
-  ['get_1550',['GET',['../nwnx__redis__short_8nss.html#a3ef0bab4ce4f18dff779e435a21a0145',1,'nwnx_redis_short.nss']]],
-  ['getbit_1551',['GETBIT',['../nwnx__redis__short_8nss.html#a71f5308ce35c90b21c13642778d1936a',1,'nwnx_redis_short.nss']]],
-  ['getrange_1552',['GETRANGE',['../nwnx__redis__short_8nss.html#adceda53de8c2d5e1cb03b55dfe00436d',1,'nwnx_redis_short.nss']]],
-  ['getset_1553',['GETSET',['../nwnx__redis__short_8nss.html#a22ff63475aafe0b74924663c682d4d17',1,'nwnx_redis_short.nss']]]
+  ['geoadd_1550',['GEOADD',['../nwnx__redis__short_8nss.html#a3744b71d4fa9b9363fdc997909a864a2',1,'nwnx_redis_short.nss']]],
+  ['geodist_1551',['GEODIST',['../nwnx__redis__short_8nss.html#a40db82e7d1ef791e660aad47632735e9',1,'nwnx_redis_short.nss']]],
+  ['geohash_1552',['GEOHASH',['../nwnx__redis__short_8nss.html#a45aadab55c525e4684658c94b3ae0f0f',1,'nwnx_redis_short.nss']]],
+  ['geopos_1553',['GEOPOS',['../nwnx__redis__short_8nss.html#aec2eeb0a9594a51ef04a484fcec5ec85',1,'nwnx_redis_short.nss']]],
+  ['georadius_1554',['GEORADIUS',['../nwnx__redis__short_8nss.html#a9b811303e0835cdacf528183a73a790f',1,'nwnx_redis_short.nss']]],
+  ['georadiusbymember_1555',['GEORADIUSBYMEMBER',['../nwnx__redis__short_8nss.html#ae76e50982756c8c36c308c154a44c6cc',1,'nwnx_redis_short.nss']]],
+  ['get_1556',['GET',['../nwnx__redis__short_8nss.html#a3ef0bab4ce4f18dff779e435a21a0145',1,'nwnx_redis_short.nss']]],
+  ['getbit_1557',['GETBIT',['../nwnx__redis__short_8nss.html#a71f5308ce35c90b21c13642778d1936a',1,'nwnx_redis_short.nss']]],
+  ['getrange_1558',['GETRANGE',['../nwnx__redis__short_8nss.html#adceda53de8c2d5e1cb03b55dfe00436d',1,'nwnx_redis_short.nss']]],
+  ['getset_1559',['GETSET',['../nwnx__redis__short_8nss.html#a22ff63475aafe0b74924663c682d4d17',1,'nwnx_redis_short.nss']]]
 ];
