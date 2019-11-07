@@ -1,6 +1,6 @@
 #pragma once
 
-#include "API/NWNXLibApi.hpp"
+#include "API/ALL_CLASSES.hpp"
 
 extern "C" {
 #include "lua.h"
