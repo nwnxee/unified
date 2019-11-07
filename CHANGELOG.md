@@ -45,6 +45,7 @@ N/A
 - Experimental: RemoveACABModifiersFromExpertise
 - Object: {Get|Set}EventHandler(), {Get|Set}Portrait()
 - Player: {Get|Set}VisibilityOverride()
+- Util: GenerateUUID()
 
 ### Fixed
 N/A
