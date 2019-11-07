@@ -65,6 +65,7 @@ public:
     Maybe<PluginData> FindPluginByName(const std::string& name) const;
     Maybe<PluginData> FindPluginByPath(const std::string& path) const;
     std::vector<PluginData> GetPlugins() const;
+    std::string GetCanonicalPluginName(const std::string& name) const;
 
 private:
     PluginMap m_plugins;
@@ -82,6 +83,7 @@ public:
     Maybe<Plugins::PluginData> FindPluginByName(const std::string& name) const;
     Maybe<Plugins::PluginData> FindPluginByPath(const std::string& path) const;
     std::vector<Plugins::PluginData> GetPlugins() const;
+    std::string GetCanonicalPluginName(const std::string& name) const;
 };
 
 }
