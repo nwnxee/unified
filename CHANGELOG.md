@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-NWNX 64 bit update for build ????
+NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.
+
+NOTE: There may be more breaking changes added here until the next official release happens.
 
 ### Added
 - Core: Added the environment variable `NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK` to enable NWNX function calls in ExecuteScriptChunk(), by default these will be blocked
