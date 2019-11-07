@@ -40,7 +40,7 @@ int32_t PolymorphEvents::OnApplyPolymorphHook
 {
     int32_t retVal;
 
-    if (!Utils::AsNWSCreature(pObject))
+    if (!pObject->AsNWSCreature())
         return 1; // delete
 
     int32_t type = pEffect->GetInteger(0);
@@ -68,7 +68,7 @@ int32_t PolymorphEvents::OnRemovePolymorphHook
 {
     int32_t retVal;
 
-    if (!Utils::AsNWSCreature(pObject))
+    if (!pObject->AsNWSCreature())
         return 1; // delete
 
     if (Events::SignalEvent("NWNX_ON_UNPOLYMORPH_BEFORE", pObject->m_idSelf))

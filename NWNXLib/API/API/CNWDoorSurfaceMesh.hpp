@@ -1,10 +1,10 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "Vector.hpp"
-#include "CResRef.hpp"
 #include "CResHelper.hpp"
+#include "CResRef.hpp"
 #include "CResDWK.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

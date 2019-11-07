@@ -1,13 +1,6 @@
-
-// Log currently generates warnings when no arguments are given to format string
-// TODO: Should really clean up the log so it doesn't warn in these cases
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 #include "Weapon.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "API/Functions.hpp"
 #include "API/CAppManager.hpp"
-#include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CNWSInventory.hpp"
@@ -86,8 +79,8 @@ Weapon::Weapon(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem>(&Weapon::GetWeaponSpecialization);
     m_GetWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem);
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem>(&Weapon::GetEpicWeaponSpecialization);
-    m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem);
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem>(&Weapon::GetEpicWeaponSpecialization);
+    m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem);
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem>(&Weapon::GetEpicWeaponOverwhelmingCritical);
     m_GetEpicWeaponOverwhelmingCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem);
@@ -441,7 +434,6 @@ ArgumentStack Weapon::SetEventData(ArgumentStack&& args)
     return stack;
 }
 
-
 int32_t Weapon::GetWeaponFocus(CNWSCreatureStats* pStats, CNWSItem* pWeapon)
 {
     int32_t feat = -1;
@@ -740,7 +732,6 @@ int32_t Weapon::GetRangedDamageBonus(CNWSCreatureStats* pStats)
     return nBonus;
 }
 
-
 int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature* pCreature)
 {
     Weapon& plugin = *g_plugin;
@@ -779,7 +770,7 @@ int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature*
 }
 
 //This one is required for correctly update PC sheet
-int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, bool bOffHand, bool bIncludeBase, bool bTouchAttack)
+int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, int32_t bOffHand, int32_t bIncludeBase, int32_t bTouchAttack)
 {
     int32_t feat = -1;
     Weapon& plugin = *g_plugin;
@@ -816,14 +807,14 @@ int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, bool bOffHand, bo
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterFocusAttackBonus;
+        return nBonus + plugin.m_GreaterFocusAttackBonus;
     }
 
     return nBonus;
 }
 
 //This one is required for correctly update PC sheet
-int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, bool bIncludeBase, bool bTouchAttack)
+int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, int32_t bIncludeBase, int32_t bTouchAttack)
 {
     int32_t feat = -1;
     Weapon& plugin = *g_plugin;
@@ -851,13 +842,13 @@ int32_t Weapon::GetRangedAttackBonus(CNWSCreatureStats* pStats, bool bIncludeBas
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterFocusAttackBonus;
+        return nBonus + plugin.m_GreaterFocusAttackBonus;
     }
 
     return nBonus;
 }
 
-int32_t Weapon::ToggleMode(CNWSCreature *pCreature, unsigned char nMode)
+int32_t Weapon::ToggleMode(CNWSCreature *pCreature, uint8_t nMode)
 {
     Weapon& plugin = *g_plugin;
     if (nMode == Constants::ToggleMode::FlurryOfBlows)
@@ -869,7 +860,7 @@ int32_t Weapon::ToggleMode(CNWSCreature *pCreature, unsigned char nMode)
     return plugin.m_ToggleModeHook->CallOriginal<int32_t>(pCreature, nMode);
 }
 
-int32_t Weapon::GetUseMonkAttackTables(CNWSCreatureStats* pStats, bool bForceUnarmed)
+int32_t Weapon::GetUseMonkAttackTables(CNWSCreatureStats* pStats, int32_t bForceUnarmed)
 {
     Weapon& plugin = *g_plugin;
     CNWSItem* pWeapon;
@@ -989,6 +980,5 @@ int Weapon::GetLevelByClass(CNWSCreatureStats *pStats, uint32_t nClassType)
 
     return 0;
 }
-
 
 }

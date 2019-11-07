@@ -30,15 +30,6 @@ template<> std::vector<MetricData> Resamplers::Max<int32_t>(std::vector<MetricDa
 template<> std::vector<MetricData> Resamplers::Max<uint32_t>(std::vector<MetricData>&&);
 template<> std::vector<MetricData> Resamplers::Max<float>(std::vector<MetricData>&&);
 
-template<> std::vector<MetricData> Resamplers::Discard<std::chrono::nanoseconds>(std::vector<MetricData>&&);
-template<> std::vector<MetricData> Resamplers::Discard<int64_t>(std::vector<MetricData>&&);
-template<> std::vector<MetricData> Resamplers::Discard<uint64_t>(std::vector<MetricData>&&);
-template<> std::vector<MetricData> Resamplers::Discard<double>(std::vector<MetricData>&&);
-template<> std::vector<MetricData> Resamplers::Discard<int32_t>(std::vector<MetricData>&&);
-template<> std::vector<MetricData> Resamplers::Discard<uint32_t>(std::vector<MetricData>&&);
-template<> std::vector<MetricData> Resamplers::Discard<float>(std::vector<MetricData>&&);
-
-
 template <typename T>
 std::vector<MetricData> Resamplers::Sum(std::vector<MetricData>&& data,
     std::function<T(const std::string&)>&& fromString,

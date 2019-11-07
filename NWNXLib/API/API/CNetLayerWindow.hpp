@@ -1,15 +1,15 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "List.hpp"
+#include "AurList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNetLayerWindow)
 #endif
 
-struct z_stream;
 struct CNetLayerInternal;
+struct z_stream;
 
 
 typedef int BOOL;
@@ -46,10 +46,10 @@ struct CNetLayerWindow
     BOOL m_pbTimeOutDelay[16];
     uint16_t m_pIncomingBuffers[16];
     BOOL m_pbArrived[16];
-    List<uint16_t> m_lQueueOutgoingHiFrames;
-    List<uint16_t> m_lQueueOutgoingLoFrames;
-    List<uint16_t> m_lQueueIncomingHiFrames;
-    List<uint16_t> m_lQueueIncomingLoFrames;
+    AurList<uint16_t> m_lQueueOutgoingHiFrames;
+    AurList<uint16_t> m_lQueueOutgoingLoFrames;
+    AurList<uint16_t> m_lQueueIncomingHiFrames;
+    AurList<uint16_t> m_lQueueIncomingLoFrames;
     uint8_t m_pLowPriorityHoldBuffer[CEXONET_MAX_MESSAGE_LENGTH];
     uint8_t m_pHighPriorityHoldBuffer[CEXONET_MAX_MESSAGE_LENGTH];
     uint32_t m_nLowPriorityHoldBufferSize;

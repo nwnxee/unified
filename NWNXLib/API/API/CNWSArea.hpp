@@ -1,40 +1,40 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWArea.hpp"
-#include "CExoLinkedList.hpp"
-#include "CExoString.hpp"
-#include "CNWSScriptVarTable.hpp"
-#include "Vector.hpp"
-#include "CResRef.hpp"
 #include "CResHelper.hpp"
+#include "CNWSScriptVarTable.hpp"
 #include "CExoArrayList.hpp"
+#include "CResRef.hpp"
+#include "CNWArea.hpp"
 #include "NWAREAEXPANSION.hpp"
+#include "CExoString.hpp"
+#include "CExoLinkedList.hpp"
+#include "Vector.hpp"
 #include "CGameObject.hpp"
-#include "CNWSUUID.hpp"
-#include "CResARE.hpp"
 #include "CExoLocString.hpp"
+#include "CResARE.hpp"
+#include "CNWSUUID.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSArea)
 #endif
 
+struct CNWSAreaGridSuccessors;
 struct CNWSPlayer;
-struct CPathfindInformation;
-struct NWAREAHEADER;
+struct CNWSAreaInterTileSuccessors;
 struct CResGFF;
-struct CGameEffect;
+struct CGameObject;
+struct CPathfindInformation;
 struct CERFFile;
+struct CNWTileSet;
+struct CNWSCreature;
+struct NWAREAHEADER;
 struct CNWSTile;
+struct CNWSAmbientSound;
+struct CGameEffect;
 struct CNWSAreaGridTransTableEntry;
 struct CResStruct;
-struct CNWSAreaInterTileSuccessors;
-struct CGameObject;
-struct CNWSCreature;
-struct CNWTileSet;
-struct CNWSAreaGridSuccessors;
-struct CNWSAmbientSound;
 
 
 typedef int BOOL;

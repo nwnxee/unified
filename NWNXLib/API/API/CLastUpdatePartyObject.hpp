@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "Vector.hpp"
 #include "CResRef.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

@@ -447,13 +447,13 @@ extern "C" {
             retval = static_cast<uint32_t>(pObject->m_idSelf);
             ASSERT(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
 
-            CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);
-            if (auto *pArea = Utils::AsNWSArea(pOwner))
+            CGameObject *pOwner = Utils::GetGameObject(owner);
+            if (auto *pArea = pOwner->AsNWSArea())
             {
                 if (!Utils::AddToArea(pObject, pArea, v->x, v->y, v->z))
                     LOG_WARNING("Failed to add object %x to area %x (%f,%f,%f)", retval, owner, v->x, v->y, v->z);
             }
-            else if (auto *pItem = Utils::AsNWSItem(pObject))
+            else if (auto *pItem = pObject->AsNWSItem())
             {
                 if (!Utils::AcquireItem(pItem, pOwner))
                     LOG_WARNING("Failed to 'acquire' deserialized item %x by owner %x", retval, owner);

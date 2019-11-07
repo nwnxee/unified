@@ -1,14 +1,15 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CPlayOptions.hpp"
-#include "CServerNetOptions.hpp"
-#include "CJoiningRestrictions.hpp"
-#include "CExoString.hpp"
-#include "CResetOption.hpp"
-#include "CPersistantWorldOptions.hpp"
 #include "CServerOptionLookup.hpp"
+#include "CJoiningRestrictions.hpp"
+#include "CPersistantWorldOptions.hpp"
+#include "NWSyncAdvertisement.hpp"
+#include "CExoString.hpp"
+#include "CPlayOptions.hpp"
 #include "CAutoSave.hpp"
+#include "CServerNetOptions.hpp"
+#include "CResetOption.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -38,8 +39,7 @@ struct CServerInfo
     CAutoSave m_AutoSave;
     CPersistantWorldOptions m_PersistantWorldOptions;
     CServerNetOptions m_NetOptions;
-    CExoString m_sNWSyncHash;
-    CExoString m_sNWSyncUrl;
+    NWSyncAdvertisement m_nwsyncData;
     BOOL m_bNWSyncPublishHaks;
     BOOL m_bConversationMultiPlayer;
     BOOL m_bConversationMultiPlayerViewOnly;

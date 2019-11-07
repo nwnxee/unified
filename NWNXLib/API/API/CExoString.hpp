@@ -1,6 +1,7 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include <string>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -24,6 +25,9 @@ struct CExoString
     CExoString(const CExoString & source);
     CExoString(const char * source, int32_t length);
     CExoString(int32_t value);
+    CExoString(const std::string & other);
+    CExoString & operator=(const std::string & other);
+    void string();
     ~CExoString();
     CExoString & operator=(const CExoString & string);
     CExoString & operator=(const char * string);

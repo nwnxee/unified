@@ -1,16 +1,8 @@
-
-// Log currently generates warnings when no arguments are given to format string
-// TODO: Should really clean up the log so it doesn't warn in these cases
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 #include "SpellChecker.hpp"
 
 #include "API/CAppManager.hpp"
-#include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
-#include <sstream>
-#include <dlfcn.h>
 #include <hunspell/hunspell.hxx>
 #include <iostream>
 #include "Services/Config/Config.hpp"
@@ -51,7 +43,7 @@ SpellChecker::SpellChecker(const Plugin::CreateParams& params)
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
-        
+
     REGISTER(FindMisspell);
     REGISTER(GetSuggestSpell);
     SpellChecker::Init(GetServices()->m_config);

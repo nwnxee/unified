@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWSForcedAction)
 #endif
 
-struct CResStruct;
 struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

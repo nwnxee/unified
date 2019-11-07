@@ -19,5 +19,8 @@ void main()
     NWNX_Administration_SetPlayOption(NWNX_ADMINISTRATION_OPTION_EXAMINE_EFFECTS, TRUE);
     NWNX_Tests_Report("NWNX_Administration", "{Set/Get}PlayOption", NWNX_Administration_GetPlayOption(NWNX_ADMINISTRATION_OPTION_EXAMINE_EFFECTS));
 
+    NWNX_Administration_SetDebugValue(NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED, TRUE);
+    report("{Set/Get}DebugValue", NWNX_Administration_GetDebugValue(NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED));
+
     WriteTimestampedLogEntry("NWNX_Administration unit test end.");
 }

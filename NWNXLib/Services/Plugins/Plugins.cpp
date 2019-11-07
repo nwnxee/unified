@@ -225,7 +225,7 @@ Maybe<Plugins::PluginData> PluginsProxy::FindPluginByName(const std::string& nam
 
 Maybe<Plugins::PluginData> PluginsProxy::FindPluginByPath(const std::string& path) const
 {
-    return m_proxyBase.FindPluginByName(path);
+    return m_proxyBase.FindPluginByPath(path);
 }
 
 std::vector<Plugins::PluginData> PluginsProxy::GetPlugins() const

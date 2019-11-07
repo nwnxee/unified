@@ -1,57 +1,44 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResIFO.hpp"
-#include "NWMODULECUTSCENE.hpp"
-#include "CNWSPlayerTURD.hpp"
-#include "CExoLocString.hpp"
-#include "CNWSScriptVarTable.hpp"
-#include "Vector.hpp"
-#include "CNWSTagNode.hpp"
-#include "CResRef.hpp"
-#include "CResHelper.hpp"
-#include "CExoArrayList.hpp"
-#include "CWorldJournalEntry.hpp"
 #include "CGameObject.hpp"
-#include "CExoLinkedList.hpp"
-#include "NWPLAYERLISTITEM.hpp"
-#include "CExoString.hpp"
+#include "CExoLocString.hpp"
+#include "CResHelper.hpp"
 #include "NWMODULEEXPANSION.hpp"
-#include <vector>
+#include "NWMODULECUTSCENE.hpp"
+#include "CResIFO.hpp"
+#include "CExoLinkedList.hpp"
+#include "CNWSPlayerTURD.hpp"
+#include "NWPLAYERLISTITEM.hpp"
+#include "CWorldJournalEntry.hpp"
+#include "CResRef.hpp"
+#include "CExoArrayList.hpp"
+#include "CNWSTagNode.hpp"
+#include "CExoString.hpp"
+#include "Vector.hpp"
+#include "CNWSScriptVarTable.hpp"
+#include "NWSyncAdvertisement.hpp"
+
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSModule)
 #endif
 
-struct CPathfindInformation;
-struct CNWSArea;
-struct CNWSPlayer;
 struct CResGFF;
-struct CResStruct;
-struct CERFFile;
+struct CNWSPlayer;
 struct NWMODULEHEADER;
 struct NWPLAYERCHARACTERLISTITEM;
+struct CPathfindInformation;
+struct CNWSArea;
+struct CERFFile;
 struct NWMODULEENTRYINFO;
+struct CResStruct;
 
 
 typedef uint32_t STRREF;
 typedef uint16_t RESTYPE;
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
-
-
-    struct NWSyncAdvertisement 
-    {
-        struct Manifest
-        {
-            CExoString m_hash;
-            uint8_t m_flags;
-            uint8_t m_languageId;
-        };
-        CExoString m_primary_manifest;
-        std::vector<Manifest> m_additional_manifests;
-        CExoString m_url;
-    };
 
 
 struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
@@ -65,14 +52,12 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoLinkedList<CNWSPlayerTURD> m_lstTURDList;
     CExoLocString m_lsModuleDescription;
     CExoString m_sModuleAltTLKFile;
-NWSyncAdvertisement m_nwsyncData;
-//    CExoArrayList<CExoString> m_lstManifestHashes;
+    NWSyncAdvertisement m_nwsyncData;
     BOOL m_bNWSyncPublishHaks;
     NWMODULEHEADER * m_pModuleHeader;
     NWMODULEENTRYINFO * m_pModuleEntryInfo;
     CExoString m_sModuleResourceName;
     int32_t m_nSourceType;
-//    CExoString m_sManifestHash;
     CExoString m_sDDResourceName;
     BOOL m_bIsDDModule;
     BOOL m_bIsDDDemoModule;

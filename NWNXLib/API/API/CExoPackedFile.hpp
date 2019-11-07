@@ -47,6 +47,7 @@ struct CExoPackedFile
     virtual void ReadResourceAsync(RESID nID, void * pData, uint32_t nSize, uint32_t nDataOffset);
     virtual BOOL LoadHeader(uint8_t nType = 0);
     virtual BOOL UnloadHeader();
+    uint32_t ReadNWCompressedBuffer(void * outBuffer, uint32_t outBufSize, uint32_t readLength);
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoPackedFile

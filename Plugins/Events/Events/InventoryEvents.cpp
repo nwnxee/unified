@@ -160,10 +160,10 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
 {
     int32_t retVal;
 
-    auto *pContainer = Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent);
+    auto *pContainer = Utils::GetGameObject(thisPtr->m_oidParent);
 
     // Early out if parent isn't an item or placeable or Bad Things(tm) happen
-    if(!Utils::AsNWSItem(pContainer) && !Utils::AsNWSPlaceable(pContainer))
+    if(!pContainer->AsNWSItem() && !pContainer->AsNWSPlaceable())
     {
         return m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
     }
@@ -189,11 +189,10 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
 
 void InventoryEvents::RemoveItemHook(Services::Hooks::CallType type, CItemRepository* thisPtr, CNWSItem* pItem)
 {
-
-    auto *pContainer = Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent);
+    auto *pContainer = Utils::GetGameObject(thisPtr->m_oidParent);
 
     // Early out if parent isn't an item or placeable or Bad Things(tm) happen
-    if(!Utils::AsNWSItem(pContainer) && !Utils::AsNWSPlaceable(pContainer))
+    if(!pContainer->AsNWSItem() && !pContainer->AsNWSPlaceable())
     {
         return;
     }

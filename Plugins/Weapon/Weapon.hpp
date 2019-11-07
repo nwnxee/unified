@@ -70,7 +70,7 @@ private:
     NWNXLib::Hooking::FunctionHook* m_GetAttackModifierVersusHook;
     NWNXLib::Hooking::FunctionHook* m_ToggleModeHook;
 
-    static int32_t GetWeaponFocus                   (CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetWeaponFocus                   (CNWSCreatureStats *pStats, CNWSItem* pItem);
     static int32_t GetEpicWeaponFocus               (CNWSCreatureStats *pStats, CNWSItem *pItem);
     static int32_t GetWeaponFinesse                 (CNWSCreatureStats *pStats, CNWSItem *pItem);
     static int32_t GetWeaponImprovedCritical        (CNWSCreatureStats *pStats, CNWSItem *pItem);
@@ -82,11 +82,11 @@ private:
     static int32_t GetMeleeDamageBonus              (CNWSCreatureStats *pStats, int32_t bOffHand, uint8_t nCreatureWeaponIndex);
     static int32_t GetRangedDamageBonus             (CNWSCreatureStats *pStats);
     static int32_t GetDamageBonus                   (CNWSCreatureStats *pStats, CNWSCreature *pCreature, int32_t bOffHand);
-    static int32_t GetMeleeAttackBonus              (CNWSCreatureStats *pStats, bool bOffHand, bool bIncludeBase, bool bTouchAttack);
-    static int32_t GetRangedAttackBonus             (CNWSCreatureStats *pStats, bool bIncludeBase, bool bTouchAttack);
+    static int32_t GetMeleeAttackBonus              (CNWSCreatureStats *pStats, int32_t bOffHand, int32_t bIncludeBase, int32_t bTouchAttack);
+    static int32_t GetRangedAttackBonus             (CNWSCreatureStats *pStats, int32_t bIncludeBase, int32_t bTouchAttack);
     static int32_t GetAttackModifierVersus          (CNWSCreatureStats *pStats, CNWSCreature* pCreature);
-    static int32_t GetUseMonkAttackTables           (CNWSCreatureStats *pStats, bool bForceUnarmed);
-    static int32_t ToggleMode                       (CNWSCreature *pCreature, unsigned char nMode);
+    static int32_t GetUseMonkAttackTables           (CNWSCreatureStats *pStats, int32_t bForceUnarmed);
+    static int32_t ToggleMode                       (CNWSCreature *pCreature, uint8_t nMode);
 
     std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
     std::map<std::uint32_t, std::uint32_t> m_EpicWeaponFocusMap;

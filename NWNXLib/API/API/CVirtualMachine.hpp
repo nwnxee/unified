@@ -1,25 +1,25 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CVirtualMachineFile.hpp"
-#include "Vector.hpp"
-#include "CVirtualMachineScript.hpp"
 #include "CExoArrayList.hpp"
+#include "CVirtualMachineScript.hpp"
+#include "Vector.hpp"
 #include "CVirtualMachineStack.hpp"
+#include "CVirtualMachineFile.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CVirtualMachine)
 #endif
 
+struct CVirtualMachineDebuggingContext;
 struct CResGFF;
-struct CExoString;
+struct CScriptCompiler;
+struct CVirtualMachineCache;
 struct CResStruct;
 struct CScriptLog;
+struct CExoString;
 struct CVirtualMachineCmdImplementer;
-struct CScriptCompiler;
-struct CVirtualMachineDebuggingContext;
-struct CVirtualMachineCache;
 struct CScriptLog;
 
 

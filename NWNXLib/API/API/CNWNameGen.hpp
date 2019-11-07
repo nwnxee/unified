@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResLTR.hpp"
-#include "CExoString.hpp"
 #include "CResHelper.hpp"
+#include "CExoString.hpp"
+#include "CResLTR.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

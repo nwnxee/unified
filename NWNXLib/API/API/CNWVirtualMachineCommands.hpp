@@ -10,9 +10,9 @@ NWN_API_PROLOGUE(CNWVirtualMachineCommands)
 #endif
 
 struct CResGFF;
+typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 struct C2DA;
 struct CResStruct;
-typedef int32_t (*pfCVMCommands)(int32_t, int32_t);
 
 
 typedef int BOOL;

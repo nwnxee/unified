@@ -32,8 +32,7 @@ Maybe<std::string> Config::Get(const std::string& section, const std::string& ke
 
     if (trim)
     {
-        v.erase(0, v.find_first_not_of(" \n\r\t"));
-        v.erase(v.find_last_not_of(" \n\r\t") + 1);
+        Utils::trim(v);
     }
 
     if (v.empty())

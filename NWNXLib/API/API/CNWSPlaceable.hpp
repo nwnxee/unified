@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CNWSObject.hpp"
-#include "Vector.hpp"
 #include "CResRef.hpp"
 #include "CExoArrayList.hpp"
+#include "CNWSObject.hpp"
+#include "CExoString.hpp"
+#include "Vector.hpp"
 #include "CExoLocString.hpp"
 
 
@@ -13,12 +13,12 @@
 NWN_API_PROLOGUE(CNWSPlaceable)
 #endif
 
-struct CNWSArea;
 struct CResGFF;
-struct CResStruct;
+struct CNWSArea;
+struct CNWSObjectActionNode;
 struct CItemRepository;
 struct CNWSItem;
-struct CNWSObjectActionNode;
+struct CResStruct;
 
 
 typedef int BOOL;

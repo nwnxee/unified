@@ -417,7 +417,7 @@ int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     {
         if (thisPtr->m_bValidObjectRunScript)
         {
-            if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(thisPtr->m_oidObjectRunScript)))
+            if (auto *obj = Utils::GetGameObject(thisPtr->m_oidObjectRunScript)->AsNWSObject())
             {
                 if (obj->m_bAbleToModifyActionQueue)
                 {

@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLinkedList.hpp"
 #include "CResRef.hpp"
+#include "CExoLinkedList.hpp"
 #include "CNWSDialogPlayer.hpp"
 #include "CExoLocString.hpp"
 
@@ -11,13 +11,13 @@
 NWN_API_PROLOGUE(CNWSDialog)
 #endif
 
-struct CNWSDialogSpeaker;
-struct CNWSDialogLinkEntry;
 struct CResGFF;
-struct CNWSDialogEntry;
-struct CExoString;
-struct CNWSObject;
 struct CNWSDialogReply;
+struct CNWSObject;
+struct CNWSDialogLinkEntry;
+struct CNWSDialogSpeaker;
+struct CExoString;
+struct CNWSDialogEntry;
 
 
 typedef int BOOL;

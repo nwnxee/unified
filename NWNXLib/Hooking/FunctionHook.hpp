@@ -4,12 +4,12 @@
 #include <array>
 #include <cstdint>
 
-struct subhook_struct;
-typedef struct subhook_struct *subhook_t;
+extern "C"
+{
+    #include "External/funchook/include/funchook.h"
+}
 
-namespace NWNXLib {
-
-namespace Hooking {
+namespace NWNXLib::Hooking {
 
 class FunctionHook final
 {
@@ -27,12 +27,10 @@ public:
     Ret>::type CallOriginal(Params ... args);
 
 private:
-    subhook_t m_subhook;
+    funchook_t *m_funchook;
     void *    m_trampoline;
 };
 
 #include "FunctionHook.inl"
-
-}
 
 }

@@ -1,12 +1,13 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLinkedList.hpp"
-#include "RESID.hpp"
-#include "CExoString.hpp"
-#include "CRes.hpp"
 #include "CExoArrayList.hpp"
+#include "CNWSync.hpp"
+#include "CExoString.hpp"
+#include "CExoLinkedList.hpp"
+#include "CRes.hpp"
 #include "CExoLocString.hpp"
+#include "RESID.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -14,11 +15,11 @@ NWN_API_PROLOGUE(CExoResMan)
 #endif
 
 struct CExoKeyTable;
-struct CExoFile;
-struct CExoKeyTable;
 struct CKeyTableEntry;
 struct CResRef;
+struct CExoFile;
 struct CExoStringList;
+struct CExoKeyTable;
 
 
 typedef uint16_t RESTYPE;
@@ -41,7 +42,7 @@ struct CExoResMan
     uint32_t m_nTotalOldReleases;
     uint32_t m_nTotalNewReleases;
     BOOL m_bOverrideAll;
-    NWSync::CNWSync m_pNWSync;
+    CNWSync m_pNWSync;
 
     CExoResMan();
     ~CExoResMan();
@@ -59,7 +60,7 @@ struct CExoResMan
     CExoStringList * GetResOfType(RESTYPE nType, CRes * pRes);
     RESID GetResID(const CResRef & cResRef, RESTYPE nType);
     uint32_t GetTotalPhysicalMemory();
-    int32_t ReleaseResObject(CRes * pRes);
+    int32_t ReleaseResObject(CRes * pRes, bool bDontCache = false);
     BOOL RemoveEncapsulatedResourceFile(const CExoString & sName, BOOL bEmitWarningOnFailure = true);
     BOOL RemoveResourceImageFile(const CExoString & sName);
     BOOL RemoveFixedKeyTableFile(const CExoString & sName);
@@ -95,6 +96,7 @@ struct CExoResMan
     void RemoveFromToBeFreedList(CRes * pRes);
     BOOL AddKeyTable(uint32_t nPriority, const CExoString & sName, uint32_t nTableType, uint8_t * pCipher = nullptr, BOOL bDetectChanges = false);
     BOOL RemoveKeyTable(const CExoString & sName, uint32_t nTableType, BOOL bEmitWarningOnFailure = true);
+    size_t CountKeyTablesOf(int32_t type, const CExoString & sName = "");
     BOOL WipeDirectory(CExoString sDirectory, BOOL bDeleteAllFiles, BOOL bRemoveDirectory, BOOL bDeleteAllSubDirectoryFiles, BOOL bDeleteAllSubDirectories);
     BOOL Free(CRes * pRes);
     BOOL FreeChunk();

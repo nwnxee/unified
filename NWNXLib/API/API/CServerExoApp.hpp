@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "List.hpp"
-#include "CResRef.hpp"
-#include "CBaseExoApp.hpp"
 #include "CExoArrayList.hpp"
+#include "CResRef.hpp"
+#include "AurList.hpp"
+#include "CBaseExoApp.hpp"
+#include "CExoString.hpp"
 #include "CExoLocString.hpp"
 
 
@@ -13,28 +13,28 @@
 NWN_API_PROLOGUE(CServerExoApp)
 #endif
 
-struct CNWSPlayer;
-struct CNetLayer;
-struct CNWSClient;
-struct CNWSTrigger;
-struct CWorldTimer;
-struct CNWSSoundObject;
 struct CNWSDoor;
-struct CNWSPlaceable;
-struct CNWSAreaOfEffectObject;
+struct CNWSPlayer;
 struct CNWSArea;
-struct CNWSModule;
-struct CServerAIMaster;
+struct CNWSItem;
+struct CNWSClient;
 struct CNWSEncounter;
-struct CConnectionLib;
-struct CNWSWaypoint;
-struct CNWSCreature;
 struct CGameObject;
 struct CNWSStore;
-struct CCampaignDB;
-struct CGameObjectArray;
+struct CWorldTimer;
+struct CNetLayer;
+struct CNWSModule;
 struct CServerExoAppInternal;
-struct CNWSItem;
+struct CNWSCreature;
+struct CGameObjectArray;
+struct CNWSAreaOfEffectObject;
+struct CNWSWaypoint;
+struct CNWSPlaceable;
+struct CNWSTrigger;
+struct CConnectionLib;
+struct CCampaignDB;
+struct CServerAIMaster;
+struct CNWSSoundObject;
 
 
 typedef int BOOL;
@@ -142,7 +142,7 @@ struct CServerExoApp : CBaseExoApp
     BOOL GetPauseState(uint8_t nState);
     uint8_t GetActivePauseState();
     void SetPauseState(uint8_t nState, BOOL bPause);
-    List<OBJECT_ID> * GetActiveExclusionList();
+    AurList<OBJECT_ID> * GetActiveExclusionList();
     void AddToExclusionList(OBJECT_ID oidExclude, uint8_t nList);
     void RemoveFromExclusionList(OBJECT_ID oidExclude, uint8_t nList);
     BOOL IsOnActiveExclusionList(OBJECT_ID oidExclude);

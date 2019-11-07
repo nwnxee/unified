@@ -1,1 +1,1 @@
-add_subdirectory(subhook)
+add_subdirectory(funchook)

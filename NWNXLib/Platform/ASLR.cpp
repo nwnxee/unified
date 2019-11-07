@@ -28,25 +28,26 @@ void ASLR::CalculateBaseAddress()
     using NWNXLib::API::Globals::NWNXExportedGlobals;
     NWNXLib::API::Globals::ExportedGlobals = reinterpret_cast<NWNXExportedGlobals(*)()>(whatItActuallyIs)();
 
-    std::printf("=====================================\n");
-    std::printf("  Base address is:   0x%016llx\n", s_baseAddress);
-    std::printf("  g_pExoBase is:     0x%016llx\n", NWNXLib::API::Globals::ExportedGlobals.ppExoBase);
-    //std::printf("  BuildNumber is:    %s\n", NWNXLib::API::Globals::ExportedGlobals.psBuildNumber->m_sString);
-    std::printf("=====================================\n");
+    std::printf("=========================================\n");
+    std::printf("  Base address is:   0x%016lx\n", (uint64_t)s_baseAddress);
+    std::printf("  g_pExoBase is:     0x%016lx\n", (uint64_t)NWNXLib::API::Globals::ExportedGlobals.ppExoBase);
 
 
     uint8_t *p = (uint8_t*)&NWNX_API_START;
     uint8_t *end = (uint8_t*)&NWNX_API_END;
+    uint32_t count = 0;
     Memory::ProtectAddress((uintptr_t)p, end - p, Memory::MemoryProtectionFlags::READ_WRITE_EXECUTE);
     while (p != end)
     {
         if (*(uintptr_t*)p == 0x0000abcd12345678)
         {
-            std::printf("Correcting ASLR at address %p\n", p);
             *(uintptr_t*)p = s_baseAddress;
+            count++;
         }
         p++;
     }
+    std::printf("  Corrected %d ASLR addresses\n", count);
+    std::printf("=========================================\n");
 }
 
 uintptr_t ASLR::GetRelocatedAddress(const uintptr_t address)

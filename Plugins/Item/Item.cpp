@@ -72,7 +72,7 @@ CNWSItem *Item::item(ArgumentStack& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    auto *pItem = Utils::AsNWSItem(pGameObject);
+    auto *pItem = pGameObject->AsNWSItem();
     if (!pItem)
         LOG_NOTICE("NWNX_Item function called on non item object");
 
@@ -88,7 +88,7 @@ ArgumentStack Item::SetWeight(ArgumentStack&& args)
         const auto w = Services::Events::ExtractArgument<int32_t>(args);
         pItem->m_nWeight = w;
         auto oidPossessor = pItem->m_oidPossessor;
-        auto pCreature = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidPossessor));
+        auto pCreature = Utils::GetGameObject(oidPossessor)->AsNWSCreature();
         if (pCreature)
         {
             pCreature->UpdateEncumbranceState(true);

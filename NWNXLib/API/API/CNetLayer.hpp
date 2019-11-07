@@ -1,18 +1,19 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoArrayList.hpp"
+#include "CExoString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNetLayer)
 #endif
 
-struct CNetLayerSessionInfo;
-struct CNetLayerInternal;
-struct CBaseExoApp;
 struct CNetLayerPlayerInfo;
+struct CNetLayerSessionInfo;
+struct CBaseExoApp;
+struct NWSyncAdvertisement;
+struct CNetLayerInternal;
 
 
 typedef int BOOL;
@@ -114,9 +115,8 @@ struct CNetLayer
     BOOL GetEnumerateSpecificOverRelay();
     void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken);
     CExoString GetRouterPortMapDescription();
-    void SetNWSyncData(const CExoString & hash, const CExoString & url);
-    CExoString GetNWSyncHash();
-    CExoString GetNWSyncURL();
+    void SetNWSyncData(const NWSyncAdvertisement & datra);
+    const NWSyncAdvertisement & GetNWSyncData();
 
 
 #ifdef NWN_CLASS_EXTENSION_CNetLayer

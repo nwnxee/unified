@@ -1,16 +1,16 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoPackedFile.hpp"
 #include "RESID.hpp"
+#include "CExoPackedFile.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoResFile)
 #endif
 
-struct BIFFFILE_VARRESENTRY;
 struct BIFFFILE_HEADER;
+struct BIFFFILE_VARRESENTRY_E1;
 
 
 typedef int BOOL;
@@ -18,8 +18,9 @@ typedef int BOOL;
 
 struct CExoResFile : CExoPackedFile
 {
+    BIFFFILE_Version m_nVersion;
     BIFFFILE_HEADER * m_pBiffHeader;
-    BIFFFILE_VARRESENTRY * m_pBiffVarResEntry;
+    BIFFFILE_VARRESENTRY_E1 * m_pBiffVarResEntry;
 
     CExoResFile();
     ~CExoResFile();

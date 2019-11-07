@@ -39,6 +39,16 @@ const int NWNX_ADMINISTRATION_OPTION_RESET_ENCOUNTER_SPAWN_POOL = 25; // TRUE/FA
 const int NWNX_ADMINISTRATION_OPTION_HIDE_HITPOINTS_GAINED      = 26; // TRUE/FALSE
 /// @}
 
+/// @name Administration Debug Types
+/// @anchor admin_debug
+///
+/// @{
+const int NWNX_ADMINISTRATION_DEBUG_COMBAT                      = 0;  // TRUE/FALSE
+const int NWNX_ADMINISTRATION_DEBUG_SAVING_THROW                = 1;  // TRUE/FALSE
+const int NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED              = 2;  // TRUE/FALSE
+const int NWNX_ADMINISTRATION_DEBUG_HIT_DIE                     = 3;  // TRUE/FALSE
+/// @}
+
 /// @brief Gets the current player password.
 /// @return The current player password.
 string NWNX_Administration_GetPlayerPassword();
@@ -128,11 +138,21 @@ void NWNX_Administration_SetPlayOption(int option, int value);
 /// @return Returns TRUE if successful
 int NWNX_Administration_DeleteTURD(string playerName, string characterName);
 
+/// @brief Get an @ref admin_debug "Administration Debug Type" value.
+/// @param type An @ref admin_debug "Administration Debug Type".
+/// @return The current value for the supplied debug type from @ref admin_debug "Administration Debug Types".
+int NWNX_Administration_GetDebugValue(int type);
+
+/// @brief Set an @ref admin_debug "Administration Debug Type" to a value.
+/// @param type The debug type to adjust from @ref admin_debug "Administration Debug Types".
+/// @param state The new state for the debug type, TRUE or FALSE
+void NWNX_Administration_SetDebugValue(int type, int state);
+
 /// @}
 
 string NWNX_Administration_GetPlayerPassword()
 {
-    string sFunc = "GET_PLAYER_PASSWORD";
+    string sFunc = "GetPlayerPassword";
 
     NWNX_CallFunction(NWNX_Administration, sFunc);
     return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
@@ -140,7 +160,7 @@ string NWNX_Administration_GetPlayerPassword()
 
 void NWNX_Administration_SetPlayerPassword(string password)
 {
-    string sFunc = "SET_PLAYER_PASSWORD";
+    string sFunc = "SetPlayerPassword";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, password);
     NWNX_CallFunction(NWNX_Administration, sFunc);
@@ -148,14 +168,14 @@ void NWNX_Administration_SetPlayerPassword(string password)
 
 void NWNX_Administration_ClearPlayerPassword()
 {
-    string sFunc = "CLEAR_PLAYER_PASSWORD";
+    string sFunc = "ClearPlayerPassword";
 
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 string NWNX_Administration_GetDMPassword()
 {
-    string sFunc = "GET_DM_PASSWORD";
+    string sFunc = "GetDMPassword";
 
     NWNX_CallFunction(NWNX_Administration, sFunc);
     return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
@@ -163,7 +183,7 @@ string NWNX_Administration_GetDMPassword()
 
 void NWNX_Administration_SetDMPassword(string password)
 {
-    string sFunc = "SET_DM_PASSWORD";
+    string sFunc = "SetDMPassword";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, password);
     NWNX_CallFunction(NWNX_Administration, sFunc);
@@ -171,14 +191,14 @@ void NWNX_Administration_SetDMPassword(string password)
 
 void NWNX_Administration_ShutdownServer()
 {
-    string sFunc = "SHUTDOWN_SERVER";
+    string sFunc = "ShutdownServer";
 
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
 void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup)
 {
-    string sFunc = "DELETE_PLAYER_CHARACTER";
+    string sFunc = "DeletePlayerCharacter";
 
     NWNX_PushArgumentInt(NWNX_Administration, sFunc, bPreserveBackup);
     NWNX_PushArgumentObject(NWNX_Administration, sFunc, oPC);
@@ -187,49 +207,49 @@ void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup)
 
 void NWNX_Administration_AddBannedIP(string ip)
 {
-    string sFunc = "ADD_BANNED_IP";
+    string sFunc = "AddBannedIP";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, ip);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_RemoveBannedIP(string ip)
 {
-    string sFunc = "REMOVE_BANNED_IP";
+    string sFunc = "RemoveBannedIP";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, ip);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_AddBannedCDKey(string key)
 {
-    string sFunc = "ADD_BANNED_CDKEY";
+    string sFunc = "AddBannedCDKey";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, key);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_RemoveBannedCDKey(string key)
 {
-    string sFunc = "REMOVE_BANNED_CDKEY";
+    string sFunc = "RemoveBannedCDKey";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, key);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_AddBannedPlayerName(string playerName)
 {
-    string sFunc = "ADD_BANNED_PLAYER_NAME";
+    string sFunc = "AddBannedPlayerName";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, playerName);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 void NWNX_Administration_RemoveBannedPlayerName(string playerName)
 {
-    string sFunc = "REMOVE_BANNED_PLAYER_NAME";
+    string sFunc = "RemoveBannedPlayerName";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, playerName);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 string NWNX_Administration_GetBannedList()
 {
-    string sFunc = "GET_BANNED_LIST";
+    string sFunc = "GetBannedList";
 
     NWNX_CallFunction(NWNX_Administration, sFunc);
     return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
@@ -237,7 +257,7 @@ string NWNX_Administration_GetBannedList()
 
 void NWNX_Administration_SetModuleName(string name)
 {
-    string sFunc = "SET_MODULE_NAME";
+    string sFunc = "SetModuleName";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, name);
     NWNX_CallFunction(NWNX_Administration, sFunc);
@@ -245,7 +265,7 @@ void NWNX_Administration_SetModuleName(string name)
 
 void NWNX_Administration_SetServerName(string name)
 {
-    string sFunc = "SET_SERVER_NAME";
+    string sFunc = "SetServerName";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, name);
     NWNX_CallFunction(NWNX_Administration, sFunc);
@@ -253,7 +273,7 @@ void NWNX_Administration_SetServerName(string name)
 
 int NWNX_Administration_GetPlayOption(int option)
 {
-    string sFunc = "GET_PLAY_OPTION";
+    string sFunc = "GetPlayOption";
 
     NWNX_PushArgumentInt(NWNX_Administration, sFunc, option);
     NWNX_CallFunction(NWNX_Administration, sFunc);
@@ -263,7 +283,7 @@ int NWNX_Administration_GetPlayOption(int option)
 
 void NWNX_Administration_SetPlayOption(int option, int value)
 {
-    string sFunc = "SET_PLAY_OPTION";
+    string sFunc = "SetPlayOption";
 
     NWNX_PushArgumentInt(NWNX_Administration, sFunc, value);
     NWNX_PushArgumentInt(NWNX_Administration, sFunc, option);
@@ -272,11 +292,30 @@ void NWNX_Administration_SetPlayOption(int option, int value)
 
 int NWNX_Administration_DeleteTURD(string playerName, string characterName)
 {
-    string sFunc = "DELETE_TURD";
+    string sFunc = "DeleteTURD";
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, characterName);
     NWNX_PushArgumentString(NWNX_Administration, sFunc, playerName);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
+}
+
+int NWNX_Administration_GetDebugValue(int type)
+{
+    string sFunc = "GetDebugValue";
+
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, type);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
+}
+
+void NWNX_Administration_SetDebugValue(int type, int state)
+{
+    string sFunc = "SetDebugValue";
+
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, state);
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, type);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
 }

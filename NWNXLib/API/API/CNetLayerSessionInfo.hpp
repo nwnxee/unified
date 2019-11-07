@@ -1,6 +1,7 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "NWSyncAdvertisement.hpp"
 #include "CExoString.hpp"
 
 
@@ -32,8 +33,7 @@ struct CNetLayerSessionInfo
     BOOL m_bRecievedBNXR;
     uint32_t m_nLastUpdate;
     CExoString m_sVisibleAddress;
-    CExoString m_sNWSyncHash;
-    CExoString m_sNWSyncUrl;
+    NWSyncAdvertisement m_nwsyncData;
 
     CNetLayerSessionInfo();
     ~CNetLayerSessionInfo();

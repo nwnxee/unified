@@ -1,51 +1,51 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoLinkedList.hpp"
-#include "CExoString.hpp"
-#include "CNWSClient.hpp"
-#include "List.hpp"
-#include "CResRef.hpp"
 #include "CExoArrayList.hpp"
+#include "AurList.hpp"
+#include "CResRef.hpp"
+#include "CExoString.hpp"
+#include "CExoLinkedList.hpp"
+#include "CNWSClient.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CServerExoAppInternal)
 #endif
 
-struct CNWSPlayer;
-struct CNetLayer;
-struct CNWSTrigger;
-struct CWorldTimer;
-struct CNWSSoundObject;
 struct CNWSDoor;
-struct CNWSPlaceable;
-struct SSubNetProfile;
-struct CNWSAreaOfEffectObject;
-struct CNWSArea;
-struct C2DA;
-struct CNWSModule;
-struct CFactionManager;
-struct CServerAIMaster;
 struct CNWPlaceMeshManager;
-struct CNWSEncounter;
-struct CConnectionLib;
-struct CGameObject;
-struct CNWSCreature;
-struct CNWSWaypoint;
-struct CNWSStore;
-struct CCampaignDB;
-struct CGameObjectArray;
+struct CNWSPlayer;
+struct CNWSArea;
 struct CServerInfo;
-struct CNWSMessage;
 struct CNWSItem;
+struct CNWSEncounter;
+struct CGameObject;
+struct CNWSStore;
+struct SSubNetProfile;
+struct C2DA;
+struct CWorldTimer;
+struct CNetLayer;
+struct CNWSModule;
+struct CNWSCreature;
+struct CGameObjectArray;
+struct CNWSAreaOfEffectObject;
+struct CNWSWaypoint;
+struct CNWSPlaceable;
+struct CNWSTrigger;
 struct CNWVirtualMachineCommands;
+struct CFactionManager;
+struct CConnectionLib;
+struct CCampaignDB;
+struct CServerAIMaster;
+struct CNWSSoundObject;
+struct CNWSMessage;
 
 
-typedef uint32_t STRREF;
-typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint16_t RESTYPE;
 typedef int BOOL;
+typedef CExoLinkedListNode * CExoLinkedListPosition;
+typedef uint32_t STRREF;
 typedef uint32_t OBJECT_ID;
 
 
@@ -83,8 +83,8 @@ struct CServerExoAppInternal
     CExoLinkedList<CNWSClient> * m_pNWSSysAdminList;
     CNWPlaceMeshManager * m_pPlaceMeshManager;
     BOOL m_bDebugMode;
-    List<OBJECT_ID> * m_lstPauseExclusionList;
-    List<OBJECT_ID> * m_lstTimestopExclusionList;
+    AurList<OBJECT_ID> * m_lstPauseExclusionList;
+    AurList<OBJECT_ID> * m_lstTimestopExclusionList;
     uint8_t m_nPauseState;
     BOOL m_bDoingStartNewModule;
     BOOL m_bMoveToModulePending;
@@ -219,7 +219,7 @@ struct CServerExoAppInternal
     uint8_t GetActivePauseState();
     void SetPauseState(uint8_t nState, BOOL bPause);
     void ClearPauseState();
-    List<OBJECT_ID> * GetActiveExclusionList();
+    AurList<OBJECT_ID> * GetActiveExclusionList();
     void AddToExclusionList(OBJECT_ID oidExclude, uint8_t nList);
     void RemoveFromExclusionList(OBJECT_ID oidExclude, uint8_t nList);
     BOOL IsOnActiveExclusionList(OBJECT_ID oidExclude);

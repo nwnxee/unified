@@ -15,9 +15,6 @@ set(TARGET_NWN_BUILD 8192)
 set(PLUGIN_PREFIX NWNX_)
 set(NWNX64 1)
 
-# Disables PIC which plays havoc with our absolute address function jumps.
-set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
-
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
 function(add_plugin target)
     add_library(${target} MODULE ${ARGN})

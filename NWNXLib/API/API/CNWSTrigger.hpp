@@ -1,11 +1,11 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CNWSObject.hpp"
-#include "Vector.hpp"
-#include "CResRef.hpp"
 #include "CExoArrayList.hpp"
+#include "CResRef.hpp"
+#include "CNWSObject.hpp"
+#include "CExoString.hpp"
+#include "Vector.hpp"
 #include "CExoLocString.hpp"
 
 
@@ -13,10 +13,10 @@
 NWN_API_PROLOGUE(CNWSTrigger)
 #endif
 
-struct CNWSArea;
 struct CResGFF;
-struct CResStruct;
+struct CNWSArea;
 struct CScriptLocation;
+struct CResStruct;
 
 
 typedef int BOOL;

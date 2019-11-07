@@ -1,17 +1,17 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoPackedFile.hpp"
 #include "ENCAPSULATED_KEYLISTENTRY.hpp"
 #include "RESID.hpp"
+#include "CExoPackedFile.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoResourceImageFile)
 #endif
 
-struct ENCAPSULATED_HEADER;
 struct ENCAPSULATED_RESLISTENTRY;
+struct ENCAPSULATED_HEADER;
 
 
 typedef int BOOL;

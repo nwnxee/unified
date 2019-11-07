@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResTLK.hpp"
 #include "CResHelper.hpp"
 #include "CTlkFile.hpp"
+#include "CResTLK.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

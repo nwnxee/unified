@@ -174,8 +174,7 @@ namespace Lua {
                     if (token)
                     {
                         g_plugin->OnToken(oid, token + 1);
-                        CVirtualMachineScript__CVirtualMachineScriptDtor(script);
-                        free(script);
+                        delete script;
                     }
                     return 1;
                 }
