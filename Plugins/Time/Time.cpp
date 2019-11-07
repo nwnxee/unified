@@ -1,16 +1,9 @@
-
-// Log currently generates warnings when no arguments are given to format string
-// TODO: Should really clean up the log so it doesn't warn in these cases
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 #include "Time.hpp"
 
 #include "API/CAppManager.hpp"
-#include "API/CServerExoApp.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include <chrono>
-#include <sstream>
 #include <iomanip>
 
 using namespace NWNXLib;

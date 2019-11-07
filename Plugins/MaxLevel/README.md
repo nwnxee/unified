@@ -17,7 +17,7 @@ This plugin extends the maximum level possibility from 40 to 60. The plugin prov
 * Next Level XP on Character Sheet shows an incorrect value
 
 ## Setup
-* Define your max levels variable in your server environment. 
+* Define your max levels variable in your server environment.
 ```
 export NWNX_MAXLEVEL_MAX=45
 ```
@@ -26,11 +26,11 @@ export NWNX_MAXLEVEL_MAX=45
 * Add your XP thresholds to your **exptable.2da**
 ```csv
 ...
-40	41	35935000	
-41	42	39935000	
-42	43	45935000	
-43	44	53935000	
-44	45	63935000	
-45	46	0xFFFFFFF	
+40	41	35935000
+41	42	39935000
+42	43	45935000
+43	44	53935000
+44	45	63935000
+45	46	0xFFFFFFF
 ```
 * (Optional) Edit the class spell gain 2da files to provide more spells as levels progress. These are **cls_spgn_???.2da**. The spell known 2da is not worth changing as there's currently no client interface for PCs to change their known spells past level 40.

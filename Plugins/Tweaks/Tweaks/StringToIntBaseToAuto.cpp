@@ -16,7 +16,7 @@ using namespace NWNXLib::API::Constants;
 
 StringToIntBaseToAuto::StringToIntBaseToAuto(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWVirtualMachineCommands__ExecuteCommandStringConversions>
+    hooker->RequestExclusiveHook<Functions::_ZN25CNWVirtualMachineCommands31ExecuteCommandStringConversionsEii>
                                     (&CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook);
 }
 

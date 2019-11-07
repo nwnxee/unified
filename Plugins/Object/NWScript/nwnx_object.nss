@@ -6,75 +6,6 @@
 
 const string NWNX_Object = "NWNX_Object"; ///< @private
 
-/// @name Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
-/// @{
-const int NWNX_OBJECT_SCRIPT_AREA_ON_HEARTBEAT                  = 0;
-const int NWNX_OBJECT_SCRIPT_AREA_ON_USER_DEFINED               = 1;
-const int NWNX_OBJECT_SCRIPT_AREA_ON_ENTER                      = 2;
-const int NWNX_OBJECT_SCRIPT_AREA_ON_EXIT                       = 3;
-/// @}
-
-/// @name Module Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
-/// @{
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_HEARTBEAT                = 0;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_USER_DEFINED             = 1;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_LOAD                     = 2;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_ENTER                    = 4;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_LEAVE                    = 5;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_ACTIVATE                 = 6;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_ACQUIRE                  = 7;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_UNACQUIRE                = 8;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_DEATH                    = 9;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_DYING                    = 10;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_RESPAWN                  = 11;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_REST                     = 12;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_LEVEL_UP                 = 13;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_CUTSCENE_ABORT           = 14;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_EQUIP_ITEM               = 15;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_UNEQUIP_ITEM             = 16;
-const int NWNX_OBJECT_SCRIPT_MODULE_ON_PLAYER_CHAT              = 17;
-/// @}
-
-/// @name Creature Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
-/// @{
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_HEARTBEAT              = 0;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_NOTICE                 = 1;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_SPELL_CAST_AT          = 2;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_MELEE_ATTACKED         = 3;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_DAMAGED                = 4;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_DISTURBED              = 5;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_END_COMBAT_ROUND       = 6;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_DIALOGUE               = 7;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_SPAWN_IN               = 8;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_RESTED                 = 9;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_DEATH                  = 10;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_USER_DEFINED_EVENT     = 11;
-const int NWNX_OBJECT_SCRIPT_CREATURE_ON_BLOCKED                = 12;
-/// @}
-
-/// @name Placeable Event Handlers
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript} and @nwn{SetEventScript}
-/// @{
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_CLOSED              = 0;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_DAMAGED             = 1;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_DEATH               = 2;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_DISARM              = 3;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_HEARTBEAT           = 4;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_INVENTORY_DISTURBED = 5;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_LOCK                = 6;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_MELEE_ATTACKED      = 7;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_OPEN                = 8;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_SPELL_CAST_AT       = 9;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_TRAP_TRIGGERED      = 10;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_UNLOCK              = 11;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_USED                = 12;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_USER_DEFINED_EVENT  = 13;
-const int NWNX_OBJECT_SCRIPT_PLACEABLE_ON_DIALOGUE            = 14;
-/// @}
-
 /// @anchor object_localvar_types
 /// @name Local Variable Types
 /// @{
@@ -110,19 +41,6 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 /// @remark This is the counterpart to ObjectToString.
 object NWNX_Object_StringToObject(string id);
 
-/// @brief Gets the event handler
-/// @param obj The object.
-/// @param handler The event handler.
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{GetEventScript}
-string NWNX_Object_GetEventHandler(object obj, int handler);
-
-/// @brief Sets the event handler
-/// @param obj The object.
-/// @param handler The event handler.
-/// @param script The script to call.
-/// @deprecated Will be removed in NWNX:EE 64 bit, use native @nwn{SetEventScript}
-void NWNX_Object_SetEventHandler(object obj, int handler, string script);
-
 /// @brief Set an object's position.
 /// @param obj The object.
 /// @param pos A vector position.
@@ -138,19 +56,6 @@ void NWNX_Object_SetCurrentHitPoints(object obj, int hp);
 /// @param obj The object.
 /// @param hp The maximum hit points.
 void NWNX_Object_SetMaxHitPoints(object obj, int hp);
-
-/// @brief Get the name of the portrait
-/// @param obj The object.
-/// @return The portrait name.
-/// @deprecated Use @nwn{GetPortraitResRef} built-in function instead
-string NWNX_Object_GetPortrait(object obj);
-
-/// @brief Set the portrait object is using.
-/// @param obj The object.
-/// @param portrait The filename of the portrait.
-/// @warning The portrait string must be no more than 15 characters long.
-/// @deprecated Use native @nwn{SetPortraitResRef} built-in function instead.
-void NWNX_Object_SetPortrait(object obj, string portrait);
 
 /// @brief Serialize a full object to a base64 string
 /// @param obj The object.
@@ -259,6 +164,11 @@ void NWNX_Object_AddIconEffect(object obj, int nIcon, float fDuration=0.0);
 /// @param nIcon The icon id.
 void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 
+/// @brief Export an object to the UserDirectory/nwnx folder.
+/// @param sFileName The filename without extension, 16 or less characters.
+/// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
+void NWNX_Object_Export(string sFileName, object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -294,52 +204,6 @@ object NWNX_Object_StringToObject(string id)
     return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
 }
 
-string NWNX_Object_GetEventHandler(object obj, int handler)
-{
-    WriteTimestampedLogEntry("NWNX_Object: GetEventHandler() is deprecated. Use native GetEventScript() instead");
-    switch (GetObjectType(obj))
-    {
-        case OBJECT_TYPE_CREATURE:       handler += 5000;  break;
-        case OBJECT_TYPE_TRIGGER:        handler += 7000;  break;
-        case OBJECT_TYPE_DOOR:           handler += 10000; break;
-        case OBJECT_TYPE_AREA_OF_EFFECT: handler += 11000; break;
-        case OBJECT_TYPE_PLACEABLE:      handler += 9000;  break;
-        case OBJECT_TYPE_STORE:          handler += 14000; break;
-        case OBJECT_TYPE_ENCOUNTER:      handler += 13000; break;
-        default:
-            if (obj == GetModule())
-                handler += 3000;
-            else if (GetIsAreaNatural(obj) != AREA_INVALID)
-                handler += 4000;
-            else
-                return "";
-    }
-    return GetEventScript(obj, handler);
-}
-
-void NWNX_Object_SetEventHandler(object obj, int handler, string script)
-{
-    WriteTimestampedLogEntry("NWNX_Object: SetEventHandler() is deprecated. Use native SetEventScript() instead");
-    switch (GetObjectType(obj))
-    {
-        case OBJECT_TYPE_CREATURE:       handler += 5000;  break;
-        case OBJECT_TYPE_TRIGGER:        handler += 7000;  break;
-        case OBJECT_TYPE_DOOR:           handler += 10000; break;
-        case OBJECT_TYPE_AREA_OF_EFFECT: handler += 11000; break;
-        case OBJECT_TYPE_PLACEABLE:      handler += 9000;  break;
-        case OBJECT_TYPE_STORE:          handler += 14000; break;
-        case OBJECT_TYPE_ENCOUNTER:      handler += 13000; break;
-        default:
-            if (obj == GetModule())
-                handler += 3000;
-            else if (GetIsAreaNatural(obj) != AREA_INVALID)
-                handler += 4000;
-            else
-                return;
-    }
-    SetEventScript(obj, handler, script);
-}
-
 void NWNX_Object_SetPosition(object obj, vector pos)
 {
     string sFunc = "SetPosition";
@@ -370,20 +234,6 @@ void NWNX_Object_SetMaxHitPoints(object creature, int hp)
     NWNX_PushArgumentObject(NWNX_Object, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
-}
-
-string NWNX_Object_GetPortrait(object creature)
-{
-    WriteTimestampedLogEntry("NWNX_Object: GetPortrait() is deprecated. Use native GetPortraitResRef() instead");
-
-    return GetPortraitResRef(creature);
-}
-
-void NWNX_Object_SetPortrait(object creature, string portrait)
-{
-    WriteTimestampedLogEntry("NWNX_Object: SetPortrait() is deprecated. Use native SetPortraitResRef() instead");
-
-    SetPortraitResRef(creature, portrait);
 }
 
 string NWNX_Object_Serialize(object obj)
@@ -569,5 +419,14 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon)
 
     NWNX_PushArgumentInt(NWNX_Object, sFunc, nIcon);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_Export(string sFileName, object oObject)
+{
+    string sFunc = "Export";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sFileName);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }

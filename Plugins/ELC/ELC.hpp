@@ -104,7 +104,7 @@ private:
     int32_t m_ELCFeatID;
     int32_t m_ELCSpellID;
 
-    static int32_t ValidateCharacterHook(NWNXLib::API::CNWSPlayer*, int32_t*);
+    static int32_t ValidateCharacterHook(CNWSPlayer*, int32_t*);
 
     ArgumentStack SetELCScript                      (ArgumentStack&& args);
     ArgumentStack EnableCustomELCCheck              (ArgumentStack&& args);

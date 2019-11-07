@@ -9,7 +9,7 @@
 #include "API/CNWSMessage.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
-#include "API/CExoLinkedListTemplatedCNWSClient.hpp"
+#include "API/CExoLinkedList.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/Functions.hpp"
@@ -23,7 +23,7 @@ using namespace NWNXLib::API;
 
 HideDMsOnCharList::HideDMsOnCharList(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__HandlePlayerToServerPlayModuleCharacterList_Start>
+    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer>
         (&HandlePlayerToServerPlayModuleCharacterList_StartHook);
 }
 

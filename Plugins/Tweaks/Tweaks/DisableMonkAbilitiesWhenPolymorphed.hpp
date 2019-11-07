@@ -13,7 +13,7 @@ public:
     DisableMonkAbilitiesWhenPolymorphed(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static int32_t CNWSCreature__GetUseMonkAbilities_hook(NWNXLib::API::CNWSCreature*);
+    static int32_t CNWSCreature__GetUseMonkAbilities_hook(CNWSCreature*);
     static NWNXLib::Hooking::FunctionHook* pGetUseMonkAbilities_hook;
 };
 

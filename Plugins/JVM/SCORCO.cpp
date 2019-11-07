@@ -69,11 +69,12 @@ void* Internal::OnRCO(CCodeBase* thisptr, CExoString &sDatabase, CExoString &sVa
 void Internal::BindSCORCO()
 {
     g_internal = this;
-
+/* todo-64
     m_parent->GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CCodeBase__AddBinaryData>(&Internal::OnSCO);
     g_scoHook = m_parent->GetServices()->m_hooks->FindHookByAddress(API::Functions::CCodeBase__AddBinaryData);
     m_parent->GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CCodeBase__GetBinaryData>(&Internal::OnRCO);
     g_rcoHook = m_parent->GetServices()->m_hooks->FindHookByAddress(API::Functions::CCodeBase__GetBinaryData);
+*/
 }
 
 void Internal::UnbindSCORCO()

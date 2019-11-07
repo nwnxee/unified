@@ -9,13 +9,17 @@
 #include "API/CNWSModule.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListNode.hpp"
+#include "API/CExoResMan.hpp"
+#include "API/CExoBase.hpp"
+#include "API/CExoAliasList.hpp"
+#include "API/CVirtualMachine.hpp"
+#include "API/CExoStringList.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Debug.hpp"
 #include "Platform/FileSystem.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Metrics/Metrics.hpp"
-#include "Services/Patching/Patching.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
@@ -24,9 +28,12 @@
 #include "Encoding.hpp"
 
 #include <csignal>
+#include <regex>
 
 using namespace NWNXLib;
+using namespace NWNXLib::API;
 using namespace NWNXLib::Hooking;
+using namespace Platform::FileSystem;
 
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
@@ -78,19 +85,20 @@ namespace Core {
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
 NWNXCore::NWNXCore()
-    : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; })
+    : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; }),
+      m_ScriptChunkRecursion(0)
 {
     g_core = this;
 
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
     // crash before the version check happens.
-
+    std::printf("Starting NWNX...\n");
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 
-    m_createServerHook = std::make_unique<FunctionHook>("CreateServer",
-        Platform::ASLR::GetRelocatedAddress(API::Functions::CAppManager__CreateServer),
+    m_createServerHook = std::make_unique<FunctionHook>(
+        Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN11CAppManager12CreateServerEv),
         reinterpret_cast<uintptr_t>(&CreateServerHandler));
 }
 
@@ -109,7 +117,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_plugins = std::make_unique<Plugins>();
     services->m_tasks = std::make_unique<Tasks>();
     services->m_metrics = std::make_unique<Metrics>();
-    services->m_patching = std::make_unique<Patching>();
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
@@ -127,7 +134,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_plugins = std::make_unique<Services::PluginsProxy>(*m_services->m_plugins);
     proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
-    proxyServices->m_patching = std::make_unique<Services::PatchingProxy>(*m_services->m_patching);
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
@@ -157,22 +163,22 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Servi
 
 void NWNXCore::InitialSetupHooks()
 {
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandSetVar>(&SetVarHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandGetVar>(&GetVarHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandTagEffect>(&TagEffectHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandTagItemProperty>(&TagItemPropertyHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CNWVirtualMachineCommands__ExecuteCommandPlaySound>(&PlaySoundHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii>(&SetVarHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii>(&GetVarHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii>(&TagEffectHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii>(&TagItemPropertyHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii>(&PlaySoundHandler);
 
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::CAppManager__DestroyServer>(&DestroyServerHandler);
-    m_services->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopInternalHandler);
+    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CAppManager13DestroyServerEv>(&DestroyServerHandler);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopInternalHandler);
 
-    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSObject__CNWSObjectDtor__0, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSArea__CNWSAreaDtor__0, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__EatTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSPlayer__DropTURD, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObjectD0Ev, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSAreaD0Ev, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer8DropTURDEv, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
 
-    m_services->m_hooks->RequestSharedHook<API::Functions::CNWSModule__LoadModuleInProgress, uint32_t>(
-            +[](Services::Hooks::CallType type, API::CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii, uint32_t>(
+            +[](Services::Hooks::CallType type, CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
             {
                 if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
                 {
@@ -186,20 +192,37 @@ void NWNXCore::InitialSetupHooks()
 
                     if (node)
                     {
-                        auto *resref = (API::CResRef*)node->pObject;
+                        auto *resref = (CResRef*)node->pObject;
                         LOG_DEBUG("(%i/%i) Trying to load area with resref: %s", nAreasLoaded + 1,  nAreasToLoad, *resref);
                     }
                 }
+            });
+
+    if (!m_coreServices->m_config->Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
+    {
+        m_services->m_hooks->RequestSharedHook<API::Functions::_ZN25CNWVirtualMachineCommands32ExecuteCommandExecuteScriptChunkEii, int32_t>(
+                +[](Services::Hooks::CallType type, CNWVirtualMachineCommands*, int32_t, int32_t)
+                {
+                    g_core->m_ScriptChunkRecursion += (type == Services::Hooks::CallType::BEFORE_ORIGINAL) ? +1 : -1;
+                });
+    }
+
+    // TODO-64Bit: Temp fix for POS
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN11CGameObjectC2Ehj, void>(
+            +[](Services::Hooks::CallType type, CGameObject* pThis, uint8_t, uint32_t)
+            {
+                if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    pThis->m_pNwnxData = nullptr;
             });
 }
 
 void NWNXCore::InitialVersionCheck()
 {
-    const uintptr_t buildNumberAddr = Platform::DynamicLibraries::GetLoadedFuncAddr("GetBuildNumber");
-    if (buildNumberAddr)
+    CExoString *pBuildNumber = Globals::BuildNumber();
+
+    if (pBuildNumber)
     {
-        API::CExoString* versionAsStr = reinterpret_cast<API::CExoString*(*)()>(buildNumberAddr)();
-        const uint32_t version = std::stoul(versionAsStr->m_sString);
+        const uint32_t version = std::stoul(pBuildNumber->m_sString);
 
         if (version != NWNX_TARGET_NWN_BUILD)
         {
@@ -218,12 +241,10 @@ void NWNXCore::InitialVersionCheck()
 
 void NWNXCore::InitialSetupPlugins()
 {
-    using namespace Platform::FileSystem;
-
     constexpr static const char* pluginPrefix = NWNX_PLUGIN_PREFIX;
     const std::string prefix = pluginPrefix;
 
-    const std::string pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
+    const auto pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
     const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir);
@@ -279,6 +300,117 @@ void NWNXCore::InitialSetupPlugins()
     }
 }
 
+void NWNXCore::InitialSetupResourceDirectory()
+{
+    auto cleanDirectory = m_coreServices->m_config->Get<bool>("CLEAN_UP_NWNX_RESOURCE_DIRECTORY", false);
+    auto priority = m_coreServices->m_config->Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
+
+    m_services->m_tasks->QueueOnMainThread(
+        [cleanDirectory, priority]
+        {
+            CExoString sAlias = CExoString("NWNX:");
+            CExoString sPath = CExoString(CombinePaths(
+                    std::string(Globals::ExoBase()->m_sUserDirectory.CStr()), "nwnx").c_str());
+
+            LOG_INFO("Setting up '%s' resource directory with path: %s", sAlias, sPath);
+
+            Globals::ExoBase()->m_pcExoAliasList->Add(sAlias, sPath);
+
+            if (!Globals::ExoResMan()->CreateDirectory(sAlias))
+            {
+                if (cleanDirectory)
+                {
+                    LOG_INFO("Cleaning up '%s' resource directory", sAlias);
+                    Globals::ExoResMan()->CleanDirectory(sAlias, true, true);
+                }
+            }
+
+            Globals::ExoResMan()->AddResourceDirectory(sAlias, priority, true);
+        });
+}
+
+void NWNXCore::InitialSetupCommands()
+{
+    m_services->m_commands->RegisterCommand("runscript", [](std::string& arg)
+    {
+        if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
+            return;
+
+        if (!arg.empty())
+        {
+            LOG_INFO("Executing console command: 'runscript' with args: %s", arg);
+            Utils::ExecuteScript(arg, 0);
+        }
+    });
+
+    m_services->m_commands->RegisterCommand("eval", [](std::string& arg)
+    {
+        if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
+            return;
+
+        if (!arg.empty())
+        {
+            LOG_INFO("Executing console command: 'eval' with args: %s", arg);
+            bool bWrapIntoMain = arg.find("void main()") == std::string::npos;
+            Globals::VirtualMachine()->RunScriptChunk(arg, 0, true, bWrapIntoMain);
+        }
+    });
+
+    m_services->m_commands->RegisterCommand("evalx", [](std::string& arg)
+    {
+        if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
+            return;
+
+        static std::string nwnxHeaders;
+        if (nwnxHeaders.empty())
+        {
+            if (auto *pList = Globals::ExoResMan()->GetResOfType(2009, true))
+            {
+                std::regex rgx("nwnx_[a-z]*");
+                for (int i = 0; i < pList->m_nCount; i++)
+                {
+                    if (std::regex_match(pList->m_pStrings[i]->CStr(), rgx))
+                        nwnxHeaders += "#include \"" + std::string(pList->m_pStrings[i]->CStr()) + "\" ";
+                }
+            }
+        }
+
+        if (!arg.empty())
+        {
+            LOG_INFO("Executing console command: 'evalx' with args: %s", arg);
+            std::string script = nwnxHeaders + (arg.find("void main()") == std::string::npos ? "void main() { " + arg + " }" : arg);
+            Globals::VirtualMachine()->RunScriptChunk(script, 0, true, false);
+        }
+    });
+
+    m_services->m_commands->RegisterCommand("loglevel", [](std::string& arg)
+    {
+        if (!arg.empty())
+        {
+            int space = arg.find_first_of(' ');
+            std::string plugin = arg.substr(0, space);
+            std::string level = arg.substr(space + 1);
+
+            if (g_core->m_services->m_plugins->FindPluginByName(plugin))
+            {
+                if (auto logLevel = Utils::from_string<uint32_t>(level))
+                {
+                    LOG_INFO("Setting log level of plugin '%s' to '%u'", plugin, *logLevel);
+                    Log::SetLogLevel(("NWNX_" + plugin).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
+                }
+                else
+                {
+                    LOG_INFO("'%s' is not a valid log level", level);
+                }
+            }
+            else
+            {
+                LOG_INFO("Plugin '%s' is not loaded", plugin);
+            }
+        }
+    });
+}
+
 void NWNXCore::UnloadPlugins()
 {
     using PairType = std::pair<Services::Plugins::RegistrationToken, std::unique_ptr<Services::ProxyServiceList>>;
@@ -329,7 +461,7 @@ void NWNXCore::Shutdown()
     g_core = nullptr;
 }
 
-void NWNXCore::CreateServerHandler(API::CAppManager* app)
+void NWNXCore::CreateServerHandler(CAppManager* app)
 {
     g_core->InitialVersionCheck();
 
@@ -362,6 +494,8 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
         {
             g_core->InitialSetupHooks();
             g_core->InitialSetupPlugins();
+            g_core->InitialSetupResourceDirectory();
+            g_core->InitialSetupCommands();
         }
         catch (const std::runtime_error& ex)
         {
@@ -374,11 +508,11 @@ void NWNXCore::CreateServerHandler(API::CAppManager* app)
     app->CreateServer();
 }
 
-void NWNXCore::DestroyServerHandler(API::CAppManager* app)
+void NWNXCore::DestroyServerHandler(CAppManager* app)
 {
     if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
     {
-        if (API::Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
+        if (Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
         {
             LOG_NOTICE("Running module shutdown script: %s", *shutdownScript);
             Utils::ExecuteScript(*shutdownScript, 0);
@@ -393,7 +527,7 @@ void NWNXCore::DestroyServerHandler(API::CAppManager* app)
     RestoreCrashHandlers();
 }
 
-void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, API::CServerExoAppInternal*)
+void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, CServerExoAppInternal*)
 {
     if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
     {

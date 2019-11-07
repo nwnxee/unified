@@ -52,8 +52,8 @@ Visibility::Visibility(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__TestObjectVisible>(&Visibility::TestObjectVisibleHook);
-    m_TestObjectVisibilityHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__TestObjectVisible);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_>(&Visibility::TestObjectVisibleHook);
+    m_TestObjectVisibilityHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_);
 }
 
 Visibility::~Visibility()
@@ -80,7 +80,7 @@ int32_t Visibility::TestObjectVisibleHook(
     }
     else if (globalOverride != -1)
     {
-        bInvisible = (globalOverride == 2) ? !Utils::AsNWSCreature(pPlayerGameObject)->m_pStats->m_bIsDM : !!globalOverride;
+        bInvisible = (globalOverride == 2) ? !pPlayerGameObject->AsNWSCreature()->m_pStats->m_bIsDM : !!globalOverride;
     }
 
     return bInvisible ? false : g_plugin->m_TestObjectVisibilityHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);

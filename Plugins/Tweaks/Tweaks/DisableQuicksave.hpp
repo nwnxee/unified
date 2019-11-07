@@ -13,8 +13,8 @@ public:
     DisableQuicksave(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static int32_t CServerExoAppInternal__SaveGame_hook(NWNXLib::API::CServerExoAppInternal*, uint32_t,
-        NWNXLib::API::CExoString&, NWNXLib::API::CExoString&, NWNXLib::API::CNWSPlayer*, int32_t, NWNXLib::API::CExoString&);
+    static int32_t CServerExoAppInternal__SaveGame_hook(CServerExoAppInternal*, uint32_t,
+        CExoString&, CExoString&, CNWSPlayer*, int32_t, CExoString&);
     static NWNXLib::Hooking::FunctionHook* pSaveGame_hook;
 };
 

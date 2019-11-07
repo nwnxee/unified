@@ -3,6 +3,8 @@
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 
+using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+
 namespace Administration {
 
 class Administration : public NWNXLib::Plugin
@@ -11,26 +13,27 @@ public:
     Administration(const Plugin::CreateParams& params);
     virtual ~Administration();
 
-    NWNXLib::Services::Events::ArgumentStack OnGetPlayerPassword(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSetPlayerPassword(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnClearPlayerPassword(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetDMPassword(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSetDMPassword(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnShutdownServer(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnDeletePlayerCharacter(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnAddBannedIP(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnRemoveBannedIP(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnAddBannedCDKey(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnRemoveBannedCDKey(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnAddBannedPlayerName(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnRemoveBannedPlayerName(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetBannedList(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSetModuleName(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSetServerName(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetPlayOption(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSetPlayOption(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnDeleteTURD(NWNXLib::Services::Events::ArgumentStack&& args);
-
+    ArgumentStack GetPlayerPassword         (ArgumentStack&& args);
+    ArgumentStack SetPlayerPassword         (ArgumentStack&& args);
+    ArgumentStack ClearPlayerPassword       (ArgumentStack&& args);
+    ArgumentStack GetDMPassword             (ArgumentStack&& args);
+    ArgumentStack SetDMPassword             (ArgumentStack&& args);
+    ArgumentStack ShutdownServer            (ArgumentStack&& args);
+    ArgumentStack DeletePlayerCharacter     (ArgumentStack&& args);
+    ArgumentStack AddBannedIP               (ArgumentStack&& args);
+    ArgumentStack RemoveBannedIP            (ArgumentStack&& args);
+    ArgumentStack AddBannedCDKey            (ArgumentStack&& args);
+    ArgumentStack RemoveBannedCDKey         (ArgumentStack&& args);
+    ArgumentStack AddBannedPlayerName       (ArgumentStack&& args);
+    ArgumentStack RemoveBannedPlayerName    (ArgumentStack&& args);
+    ArgumentStack GetBannedList             (ArgumentStack&& args);
+    ArgumentStack SetModuleName             (ArgumentStack&& args);
+    ArgumentStack SetServerName             (ArgumentStack&& args);
+    ArgumentStack GetPlayOption             (ArgumentStack&& args);
+    ArgumentStack SetPlayOption             (ArgumentStack&& args);
+    ArgumentStack DeleteTURD                (ArgumentStack&& args);
+    ArgumentStack GetDebugValue             (ArgumentStack&& args);
+    ArgumentStack SetDebugValue             (ArgumentStack&& args);
 };
 
 }

@@ -94,7 +94,7 @@ private:
     std::unique_ptr<cpp_redis::redis_client> PoolMakeFunc();
 
     static void CleanState(NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CVirtualMachine*);
+            CVirtualMachine*);
 };
 
 }

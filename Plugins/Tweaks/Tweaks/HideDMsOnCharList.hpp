@@ -13,7 +13,7 @@ public:
 
 private:
     static int32_t HandlePlayerToServerPlayModuleCharacterList_StartHook(
-        NWNXLib::API::CNWSMessage*, NWNXLib::API::CNWSPlayer*);
+        CNWSMessage*, CNWSPlayer*);
 };
 
 }

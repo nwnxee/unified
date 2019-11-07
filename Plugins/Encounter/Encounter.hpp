@@ -25,7 +25,7 @@ private:
     ArgumentStack GetResetTime                              (ArgumentStack&& args);
     ArgumentStack SetResetTime                              (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSEncounter *encounter(ArgumentStack& args);
+    CNWSEncounter *encounter(ArgumentStack& args);
 
 };
 

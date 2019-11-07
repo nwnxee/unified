@@ -17,15 +17,15 @@ using namespace NWNXLib::API::Constants;
 InputEvents::InputEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSMessage__HandlePlayerToServerInputWalkToWaypoint, int32_t>(&HandlePlayerToServerInputWalkToWaypointHook);
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer, int32_t>(&HandlePlayerToServerInputWalkToWaypointHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSCreature__AddAttackActions, int32_t>(&AddAttackActionsHook);
+        hooker->RequestSharedHook<API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii, int32_t>(&AddAttackActionsHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSCreature__AddMoveToPointActionToFront, int32_t>(&AddMoveToPointActionToFrontHook);
+        hooker->RequestSharedHook<API::Functions::_ZN12CNWSCreature27AddMoveToPointActionToFrontEt6Vectorjjiffiiiiii, int32_t>(&AddMoveToPointActionToFrontHook);
     });
 }
 

@@ -16,16 +16,16 @@ static Hooking::FunctionHook* m_OnRemovePolymorphHook = nullptr;
 PolymorphEvents::PolymorphEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_POLYMORPH_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnApplyPolymorph,
+        hooker->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti,
             int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
             (PolymorphEvents::OnApplyPolymorphHook);
-        m_OnApplyPolymorphHook = hooker->FindHookByAddress(Functions::CNWSEffectListHandler__OnApplyPolymorph);
+        m_OnApplyPolymorphHook = hooker->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti);
     });
     Events::InitOnFirstSubscribe("NWNX_ON_UNPOLYMORPH_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::CNWSEffectListHandler__OnRemovePolymorph,
+        hooker->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect,
             int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>
             (PolymorphEvents::OnRemovePolymorphHook);
-        m_OnRemovePolymorphHook = hooker->FindHookByAddress(Functions::CNWSEffectListHandler__OnRemovePolymorph);
+        m_OnRemovePolymorphHook = hooker->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect);
     });
 
 }
@@ -40,7 +40,7 @@ int32_t PolymorphEvents::OnApplyPolymorphHook
 {
     int32_t retVal;
 
-    if (!Utils::AsNWSCreature(pObject))
+    if (!pObject->AsNWSCreature())
         return 1; // delete
 
     int32_t type = pEffect->GetInteger(0);
@@ -68,7 +68,7 @@ int32_t PolymorphEvents::OnRemovePolymorphHook
 {
     int32_t retVal;
 
-    if (!Utils::AsNWSCreature(pObject))
+    if (!pObject->AsNWSCreature())
         return 1; // delete
 
     if (Events::SignalEvent("NWNX_ON_UNPOLYMORPH_BEFORE", pObject->m_idSelf))

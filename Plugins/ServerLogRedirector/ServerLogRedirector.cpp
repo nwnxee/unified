@@ -39,10 +39,10 @@ ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
     : Plugin(params)
 {
     // Hook logging so it always emits to stdout/stderr.
-    GetServices()->m_hooks->RequestSharedHook<Functions::CExoDebugInternal__WriteToLogFile,
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,
         void, CExoDebugInternal*, CExoString*>(&WriteToLogFileHook);
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::CExoDebugInternal__WriteToErrorFile,
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
         void, CExoDebugInternal*, CExoString*>(&WriteToErrorFileHook);
 }
 

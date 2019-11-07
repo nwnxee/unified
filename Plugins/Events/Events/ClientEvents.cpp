@@ -11,7 +11,6 @@
 #include "API/Globals.hpp"
 #include "API/Version.hpp"
 #include "Events.hpp"
-#include "Services/Patching/Patching.hpp"
 
 namespace Events {
 
@@ -25,20 +24,20 @@ static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
 ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_DISCONNECT_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CServerExoAppInternal__RemovePCFromWorld, void,
+        hooker->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal17RemovePCFromWorldEP10CNWSPlayer, void,
             CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_CONNECT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCharList, int32_t,
+        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer, int32_t,
             CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerCharListHook);
-        m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCharList);
+        m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CServerExoApp__CheckStickyPlayerNameReserved, int32_t,
+        hooker->RequestExclusiveHook<API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i, int32_t,
                 CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>(&CheckStickyPlayerNameReservedHook);
-        m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::CServerExoApp__CheckStickyPlayerNameReserved);
+        m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i);
     });
 }
 
@@ -72,7 +71,7 @@ int32_t ClientEvents::SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPla
     std::string reason;
     auto PushAndSignal = [&](std::string ev) -> bool {
         Events::PushEventData("PLAYER_NAME", pPlayerInfo->m_sPlayerName.CStr());
-        Events::PushEventData("CDKEY", pPlayerInfo->GetPublicCDKey(0).CStr());
+        Events::PushEventData("CDKEY", pPlayerInfo->m_lstKeys[0].sPublic.CStr());
         Events::PushEventData("IS_DM", std::to_string(pPlayerInfo->m_bGameMasterPrivileges));
         Events::PushEventData("IP_ADDRESS", pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr());
         return Events::SignalEvent(ev, Utils::GetModule()->m_idSelf, &reason);
@@ -92,10 +91,10 @@ int32_t ClientEvents::SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPla
 }
 
 int32_t ClientEvents::CheckStickyPlayerNameReservedHook(
-        NWNXLib::API::CServerExoApp *pServer,
-        NWNXLib::API::CExoString *p_sClientCDKey,
-        NWNXLib::API::CExoString *p_sClientLegacyCDKey,
-        NWNXLib::API::CExoString *p_sPlayerName,
+        CServerExoApp *pServer,
+        CExoString *p_sClientCDKey,
+        CExoString *p_sClientLegacyCDKey,
+        CExoString *p_sPlayerName,
         int32_t nConnectionType)
 {
     int32_t retVal;

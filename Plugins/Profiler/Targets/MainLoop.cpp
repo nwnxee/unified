@@ -11,9 +11,9 @@ using namespace NWNXLib;
 
 static ViewPtr<Services::MetricsProxy> g_metrics;
 
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppMainLoop, int32_t, API::CServerExoAppInternal*);
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppConnectionLibMainLoop, void, API::CServerExoAppInternal*);
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppUpdateClientGameObjects, void, API::CServerExoAppInternal*, int32_t);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppMainLoop, int32_t, CServerExoAppInternal*);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppConnectionLibMainLoop, void, CServerExoAppInternal*);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppUpdateClientGameObjects, void, CServerExoAppInternal*, int32_t);
 
 MainLoop::MainLoop(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
     ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
@@ -21,16 +21,16 @@ MainLoop::MainLoop(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET(hooker,
-        ExoAppMainLoop, API::Functions::CServerExoAppInternal__MainLoop,
-        int32_t, API::CServerExoAppInternal*);
+        ExoAppMainLoop, API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+        int32_t, CServerExoAppInternal*);
 
     DEFINE_PROFILER_TARGET(hooker,
-        ExoAppConnectionLibMainLoop, API::Functions::CServerExoAppInternal__ConnectionLibMainLoop,
-        void, API::CServerExoAppInternal*);
+        ExoAppConnectionLibMainLoop, API::Functions::_ZN21CServerExoAppInternal21ConnectionLibMainLoopEv,
+        void, CServerExoAppInternal*);
 
     DEFINE_PROFILER_TARGET(hooker,
-        ExoAppUpdateClientGameObjects, API::Functions::CServerExoAppInternal__UpdateClientGameObjects,
-        void, API::CServerExoAppInternal*, int32_t);
+        ExoAppUpdateClientGameObjects, API::Functions::_ZN21CServerExoAppInternal23UpdateClientGameObjectsEi,
+        void, CServerExoAppInternal*, int32_t);
 }
 
 }

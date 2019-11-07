@@ -13,8 +13,8 @@ public:
     AssociateEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void AddAssociateHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID, uint16_t);
-    static void RemoveAssociateHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSCreature*, NWNXLib::API::Types::ObjectID);
+    static void AddAssociateHook(NWNXLib::Services::Hooks::CallType, CNWSCreature*, NWNXLib::API::Types::ObjectID, uint16_t);
+    static void RemoveAssociateHook(NWNXLib::Services::Hooks::CallType, CNWSCreature*, NWNXLib::API::Types::ObjectID);
 };
 
 }

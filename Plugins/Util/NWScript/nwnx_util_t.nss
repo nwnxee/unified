@@ -33,9 +33,6 @@ void main()
     e = NWNX_Util_ItemPropertyToEffect(ip);
     report("EffectToItemProperty_ItemPropertyToEffect", GetEffectTag(e) == "NWNX_UTIL_TEST");
 
-    string uuid = NWNX_Util_GenerateUUID();
-    report("GenerateUUID", GetStringLength(uuid) == 36);
-
     string sRedString = StringToRGBString("stripped colors.", STRING_COLOR_RED);
     str = "This is a <cfff>test</c> of "+sRedString;
     string strip_colors = NWNX_Util_StripColors(str);

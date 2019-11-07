@@ -67,6 +67,18 @@ struct FastCall : public CallingConvention
     static Ret(NWNX_HOOK_LANDING_FASTCALL * LandingValue())(Params ...);
 };
 
+struct SystemV : public CallingConvention
+{
+    template <typename Ret, typename ... Params>
+    static Ret(NWNX_HOOK_PLATFORM_SYSTEMV * PlatformValue())(Params ...);
+
+    template <typename Ret, typename ... Params>
+    static Ret(NWNX_HOOK_POINTER_SYSTEMV * PointerValue())(Params ...);
+
+    template <typename Ret, typename ... Params>
+    static Ret(NWNX_HOOK_LANDING_SYSTEMV * LandingValue())(Params ...);
+};
+
 }
 
 }

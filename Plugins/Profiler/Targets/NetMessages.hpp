@@ -15,17 +15,17 @@ public:
 
 private:
     static void ComputeGameObjectUpdateForCategory(NWNXLib::Services::Hooks::CallType,
-        NWNXLib::API::CNWSMessage*,
+        CNWSMessage*,
         uint32_t,
         uint32_t,
-        NWNXLib::API::CNWSPlayer*,
-        NWNXLib::API::CNWSObject*,
-        NWNXLib::API::CGameObjectArray*,
-        NWNXLib::API::CNWSPlayerLUOSortedObjectList*,
+        CNWSPlayer*,
+        CNWSObject*,
+        CGameObjectArray*,
+        CNWSPlayerLUOSortedObjectList*,
         int32_t);
 
     static void SendServerToPlayerMessageHook(NWNXLib::Services::Hooks::CallType,
-        NWNXLib::API::CNWSMessage*,
+        CNWSMessage*,
         NWNXLib::API::Types::PlayerID,
         uint8_t,
         uint8_t,
@@ -33,7 +33,7 @@ private:
         uint32_t);
 
     static void HandlePlayerToServerMessageHook(NWNXLib::Services::Hooks::CallType,
-        NWNXLib::API::CNWSMessage*,
+        CNWSMessage*,
         NWNXLib::API::Types::PlayerID,
         uint8_t*,
         uint32_t);

@@ -14,7 +14,7 @@ public:
     virtual ~ThreadWatchdog();
 
 private:
-    static void MainLoopUpdate(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CServerExoAppInternal*);
+    static void MainLoopUpdate(NWNXLib::Services::Hooks::CallType type, CServerExoAppInternal*);
     std::unique_ptr<std::thread> m_watchdog;
 };
 

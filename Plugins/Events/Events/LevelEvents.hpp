@@ -15,17 +15,17 @@ public:
 private:
     static void LevelUpHook(
             NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CNWSCreatureStats*,
-            NWNXLib::API::CNWLevelStats*,
+            CNWSCreatureStats*,
+            CNWLevelStats*,
             uint8_t, uint8_t, uint8_t, int32_t);
     static void LevelUpAutomaticHook(
             NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CNWSCreatureStats*,
+            CNWSCreatureStats*,
             uint8_t, int32_t, uint8_t);
     static void LevelDownHook(
             NWNXLib::Services::Hooks::CallType,
-            NWNXLib::API::CNWSCreatureStats*,
-            NWNXLib::API::CNWLevelStats*);
+            CNWSCreatureStats*,
+            CNWLevelStats*);
 };
 
 }

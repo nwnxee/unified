@@ -29,31 +29,29 @@ InventoryEvents::InventoryEvents(ViewPtr<Services::HooksProxy> hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", [hooker]()
     {
-        hooker->RequestExclusiveHook<API::Functions::CNWSMessage__HandlePlayerToServerGuiInventoryMessage>(
+        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh>(
                 &HandlePlayerToServerGuiInventoryMessageHook);
         m_HandlePlayerToServerGuiInventoryMessageHook = hooker->FindHookByAddress(
-                API::Functions::CNWSMessage__HandlePlayerToServerGuiInventoryMessage);
+                API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh);
     });
 
-    // TODO-64bit: Rename the NWNX_ON_ITEM_INVENTORY_* to NWNX_ON_INVENTORY_* in this file
-    //  Note the wildcard hook above will need to be updated too
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_ADD_ITEM_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CItemRepository__AddItem>(&AddItemHook);
-        m_AddItemHook = hooker->FindHookByAddress(API::Functions::CItemRepository__AddItem);
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_ITEM_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii>(&AddItemHook);
+        m_AddItemHook = hooker->FindHookByAddress(API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CItemRepository__RemoveItem, int32_t>(&RemoveItemHook);
+    Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_ITEM_.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::_ZN15CItemRepository10RemoveItemEP8CNWSItem, int32_t>(&RemoveItemHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_GOLD_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__AddGold>(&AddGoldHook);
-        m_AddGoldHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__AddGold);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature7AddGoldEii>(&AddGoldHook);
+        m_AddGoldHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature7AddGoldEii);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_GOLD_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__RemoveGold>(&RemoveGoldHook);
-        m_RemoveGoldHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__RemoveGold);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10RemoveGoldEii>(&RemoveGoldHook);
+        m_RemoveGoldHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature10RemoveGoldEii);
     });
 }
 
@@ -162,10 +160,10 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
 {
     int32_t retVal;
 
-    auto *pContainer = Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent);
+    auto *pContainer = Utils::GetGameObject(thisPtr->m_oidParent);
 
     // Early out if parent isn't an item or placeable or Bad Things(tm) happen
-    if(!Utils::AsNWSItem(pContainer) && !Utils::AsNWSPlaceable(pContainer))
+    if(!pContainer->AsNWSItem() && !pContainer->AsNWSPlaceable())
     {
         return m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
     }
@@ -175,7 +173,7 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
         return Events::SignalEvent(ev, thisPtr->m_oidParent);
     };
 
-    if (PushAndSignal("NWNX_ON_ITEM_INVENTORY_ADD_ITEM_BEFORE"))
+    if (PushAndSignal("NWNX_ON_INVENTORY_ADD_ITEM_BEFORE"))
     {
         retVal = m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
     }
@@ -184,18 +182,17 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
         retVal = false;
     }
 
-    PushAndSignal("NWNX_ON_ITEM_INVENTORY_ADD_ITEM_AFTER");
+    PushAndSignal("NWNX_ON_INVENTORY_ADD_ITEM_AFTER");
 
     return retVal;
 }
 
 void InventoryEvents::RemoveItemHook(Services::Hooks::CallType type, CItemRepository* thisPtr, CNWSItem* pItem)
 {
-
-    auto *pContainer = Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent);
+    auto *pContainer = Utils::GetGameObject(thisPtr->m_oidParent);
 
     // Early out if parent isn't an item or placeable or Bad Things(tm) happen
-    if(!Utils::AsNWSItem(pContainer) && !Utils::AsNWSPlaceable(pContainer))
+    if(!pContainer->AsNWSItem() && !pContainer->AsNWSPlaceable())
     {
         return;
     }
@@ -203,7 +200,7 @@ void InventoryEvents::RemoveItemHook(Services::Hooks::CallType type, CItemReposi
     // Only a shared hook for RemoveItem because skipping it also makes Bad Things(tm) happen
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem ? pItem->m_idSelf : OBJECT_INVALID));
-    Events::SignalEvent(before ? "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_BEFORE" : "NWNX_ON_ITEM_INVENTORY_REMOVE_ITEM_AFTER", thisPtr->m_oidParent);
+    Events::SignalEvent(before ? "NWNX_ON_INVENTORY_REMOVE_ITEM_BEFORE" : "NWNX_ON_INVENTORY_REMOVE_ITEM_AFTER", thisPtr->m_oidParent);
 }
 
 void InventoryEvents::AddGoldHook(CNWSCreature *pCreature, int32_t nGold, int32_t bDisplayFeedBack)

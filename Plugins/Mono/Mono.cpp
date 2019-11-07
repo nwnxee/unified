@@ -73,7 +73,7 @@ Mono::Mono(const Plugin::CreateParams& params)
 
     Maybe<std::string> baseDirectory = GetServices()->m_config->Get<std::string>("BASE_DIRECTORY");
     Maybe<std::string> appConfig = GetServices()->m_config->Get<std::string>("APP_CONFIG");
-    
+
     if(baseDirectory && appConfig)
     {
         mono_domain_set_config(g_Domain, baseDirectory->c_str(), appConfig->c_str());
@@ -133,6 +133,7 @@ Mono::Mono(const Plugin::CreateParams& params)
     mono_add_internal_call("NWN.Internal::ClosureDelayCommand_Native", reinterpret_cast<const void*>(&ClosureDelayCommand));
     mono_add_internal_call("NWN.Internal::ClosureActionDoCommand_Native", reinterpret_cast<const void*>(&ClosureActionDoCommand));
 
+/* todo-64
     GetServices()->m_hooks->RequestExclusiveHook<Functions::CVirtualMachine__RunScript, int32_t>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
         {
@@ -192,6 +193,7 @@ Mono::Mono(const Plugin::CreateParams& params)
             g_plugin->ExecuteMainLoopTick(s_Frame++);
         }
     );
+    */
 }
 
 Mono::~Mono()

@@ -70,23 +70,23 @@ private:
     NWNXLib::Hooking::FunctionHook* m_GetAttackModifierVersusHook;
     NWNXLib::Hooking::FunctionHook* m_ToggleModeHook;
 
-    static int32_t GetWeaponFocus                   (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetEpicWeaponFocus               (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetWeaponFinesse                 (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetWeaponImprovedCritical        (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetWeaponSpecialization          (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetEpicWeaponSpecialization      (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetEpicWeaponOverwhelmingCritical(NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetEpicWeaponDevastatingCritical (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSItem *pItem);
-    static int32_t GetIsWeaponOfChoice              (NWNXLib::API::CNWSCreatureStats *pStats, uint32_t nBaseItem);
-    static int32_t GetMeleeDamageBonus              (NWNXLib::API::CNWSCreatureStats *pStats, int32_t bOffHand, uint8_t nCreatureWeaponIndex);
-    static int32_t GetRangedDamageBonus             (NWNXLib::API::CNWSCreatureStats *pStats);
-    static int32_t GetDamageBonus                   (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSCreature *pCreature, int32_t bOffHand);
-    static int32_t GetMeleeAttackBonus              (NWNXLib::API::CNWSCreatureStats *pStats, bool bOffHand, bool bIncludeBase, bool bTouchAttack);
-    static int32_t GetRangedAttackBonus             (NWNXLib::API::CNWSCreatureStats *pStats, bool bIncludeBase, bool bTouchAttack);
-    static int32_t GetAttackModifierVersus          (NWNXLib::API::CNWSCreatureStats *pStats, NWNXLib::API::CNWSCreature* pCreature);
-    static int32_t GetUseMonkAttackTables           (NWNXLib::API::CNWSCreatureStats *pStats, bool bForceUnarmed);
-    static int32_t ToggleMode                       (NWNXLib::API::CNWSCreature *pCreature, unsigned char nMode);
+    static int32_t GetWeaponFocus                   (CNWSCreatureStats *pStats, CNWSItem* pItem);
+    static int32_t GetEpicWeaponFocus               (CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetWeaponFinesse                 (CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetWeaponImprovedCritical        (CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetWeaponSpecialization          (CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetEpicWeaponSpecialization      (CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetEpicWeaponOverwhelmingCritical(CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetEpicWeaponDevastatingCritical (CNWSCreatureStats *pStats, CNWSItem *pItem);
+    static int32_t GetIsWeaponOfChoice              (CNWSCreatureStats *pStats, uint32_t nBaseItem);
+    static int32_t GetMeleeDamageBonus              (CNWSCreatureStats *pStats, int32_t bOffHand, uint8_t nCreatureWeaponIndex);
+    static int32_t GetRangedDamageBonus             (CNWSCreatureStats *pStats);
+    static int32_t GetDamageBonus                   (CNWSCreatureStats *pStats, CNWSCreature *pCreature, int32_t bOffHand);
+    static int32_t GetMeleeAttackBonus              (CNWSCreatureStats *pStats, int32_t bOffHand, int32_t bIncludeBase, int32_t bTouchAttack);
+    static int32_t GetRangedAttackBonus             (CNWSCreatureStats *pStats, int32_t bIncludeBase, int32_t bTouchAttack);
+    static int32_t GetAttackModifierVersus          (CNWSCreatureStats *pStats, CNWSCreature* pCreature);
+    static int32_t GetUseMonkAttackTables           (CNWSCreatureStats *pStats, int32_t bForceUnarmed);
+    static int32_t ToggleMode                       (CNWSCreature *pCreature, uint8_t nMode);
 
     std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
     std::map<std::uint32_t, std::uint32_t> m_EpicWeaponFocusMap;
@@ -103,9 +103,9 @@ private:
     std::set<std::uint32_t>  m_WeaponUnarmedSet;
     std::set<std::uint32_t>  m_MonkWeaponSet;
 
-    bool GetIsWeaponLight  (NWNXLib::API::CNWSCreatureStats* pInfo, NWNXLib::API::CNWSItem* pWeapon, bool bFinesse);
-    bool GetIsUnarmedWeapon(NWNXLib::API::CNWSItem* pWeapon);
-    int  GetLevelByClass   (NWNXLib::API::CNWSCreatureStats* pStats, uint32_t nClassType);
+    bool GetIsWeaponLight  (CNWSCreatureStats* pInfo, CNWSItem* pWeapon, bool bFinesse);
+    bool GetIsUnarmedWeapon(CNWSItem* pWeapon);
+    int  GetLevelByClass   (CNWSCreatureStats* pStats, uint32_t nClassType);
 
     // Devastating Critical data
     DevastatingCriticalDataStr m_DCData;

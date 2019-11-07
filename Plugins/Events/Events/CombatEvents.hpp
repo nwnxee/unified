@@ -17,7 +17,7 @@ private:
     static void StartCombatRoundHook
     (
         NWNXLib::Services::Hooks::CallType,
-        NWNXLib::API::CNWSCombatRound*,
+        CNWSCombatRound*,
         uint32_t
     );
     static NWNXLib::ViewPtr<NWNXLib::Hooking::FunctionHook> m_hook;

@@ -13,7 +13,7 @@ public:
 
 private:
     static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(
-        NWNXLib::API::CNWSMessage*, NWNXLib::API::Types::PlayerID,
+        CNWSMessage*, NWNXLib::API::Types::PlayerID,
         NWNXLib::API::Types::ObjectID, int32_t);
 };
 

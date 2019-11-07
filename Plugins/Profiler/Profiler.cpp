@@ -140,7 +140,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     if (g_recalibrate || g_tickrate)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopUpdate);
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
     }
 
     // Resamples all of the automated timing data.
@@ -261,7 +261,7 @@ void Profiler::HandleRecalibration(const std::chrono::time_point<std::chrono::hi
     }
 }
 
-void Profiler::MainLoopUpdate(Services::Hooks::CallType type, API::CServerExoAppInternal*)
+void Profiler::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInternal*)
 {
     if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
     {

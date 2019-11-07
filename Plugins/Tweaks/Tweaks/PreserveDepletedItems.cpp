@@ -18,10 +18,10 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* PreserveDepletedItems::pAIActionItemCastSpell_hook;
 PreserveDepletedItems::PreserveDepletedItems(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__AIActionItemCastSpell>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode>
                                     (&CNWSCreature__AIActionItemCastSpell_hook);
 
-    pAIActionItemCastSpell_hook = hooker->FindHookByAddress(Functions::CNWSCreature__AIActionItemCastSpell);
+    pAIActionItemCastSpell_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode);
 }
 
 
@@ -29,7 +29,7 @@ uint32_t PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(CNWSCre
 {
     // If at risk of destroying the item, set the item to plot, then set it back
     // afterwards to its original value.
-    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((Types::ObjectID)pNode->m_pParameter[0]));
+    auto *pItem = Utils::GetGameObject((Types::ObjectID)(uintptr_t)pNode->m_pParameter[0])->AsNWSItem();
     if (pItem && pItem->m_nNumCharges > 0 && pItem->m_nNumCharges <= 5)
     {
         int bPlot = pItem->m_bPlotObject;

@@ -23,13 +23,13 @@ NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveSneakAttack_hoo
 NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveDeathAttack_hook;
 SneakAttackCritImmunity::SneakAttackCritImmunity(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__ResolveSneakAttack>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_>
                                     (&CNWSCreature__ResolveSneakAttack_hook);
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__ResolveDeathAttack>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_>
                                     (&CNWSCreature__ResolveDeathAttack_hook);
 
-    pResolveSneakAttack_hook = hooker->FindHookByAddress(Functions::CNWSCreature__ResolveSneakAttack);
-    pResolveDeathAttack_hook = hooker->FindHookByAddress(Functions::CNWSCreature__ResolveDeathAttack);
+    pResolveSneakAttack_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_);
+    pResolveDeathAttack_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_);
 }
 
 
@@ -112,7 +112,9 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     if (pAttackData->m_bRangedAttack)
     {
         Vector v = pThis->m_vPosition;
-        v -= pTarget->m_vPosition;
+        v.x -= pTarget->m_vPosition.x;
+        v.y -= pTarget->m_vPosition.y;
+        v.z -= pTarget->m_vPosition.z;
         fDistance = v.x*v.x + v.y*v.y + v.z*v.z;
     }
 
@@ -225,7 +227,9 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
     if (pAttackData->m_bRangedAttack)
     {
         Vector v = pThis->m_vPosition;
-        v -= pTarget->m_vPosition;
+        v.x -= pTarget->m_vPosition.x;
+        v.y -= pTarget->m_vPosition.y;
+        v.z -= pTarget->m_vPosition.z;
         fDistance = v.x*v.x + v.y*v.y + v.z*v.z;
     }
 

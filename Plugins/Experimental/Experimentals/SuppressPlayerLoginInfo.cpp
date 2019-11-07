@@ -19,16 +19,16 @@ NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerPlayerList_DeleteHook;
 
 SuppressPlayerLoginInfo::SuppressPlayerLoginInfo(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerPlayerList_Add, int32_t>(&SendServerToPlayerPlayerList_AddHook);
-    m_SendServerToPlayerPlayerList_AddHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerPlayerList_Add);
+    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer, int32_t>(&SendServerToPlayerPlayerList_AddHook);
+    m_SendServerToPlayerPlayerList_AddHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer);
 
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerPlayerList_All, int32_t>(&SendServerToPlayerPlayerList_AllHook);
-    m_SendServerToPlayerPlayerList_AllHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerPlayerList_All);
+    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AllEP10CNWSPlayer, int32_t>(&SendServerToPlayerPlayerList_AllHook);
+    m_SendServerToPlayerPlayerList_AllHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AllEP10CNWSPlayer);
 
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerPlayerList_Delete, int32_t>(&SendServerToPlayerPlayerList_DeleteHook);
-    m_SendServerToPlayerPlayerList_DeleteHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerPlayerList_Delete);
+    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage35SendServerToPlayerPlayerList_DeleteEjP10CNWSPlayer, int32_t>(&SendServerToPlayerPlayerList_DeleteHook);
+    m_SendServerToPlayerPlayerList_DeleteHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage35SendServerToPlayerPlayerList_DeleteEjP10CNWSPlayer);
 
-    hooker->RequestExclusiveHook<API::Functions::CNWSMessage__HandlePlayerToServerPlayModuleCharacterList_Start>
+    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer>
         (&HandlePlayerToServerPlayModuleCharacterList_StartHook);
 }
 

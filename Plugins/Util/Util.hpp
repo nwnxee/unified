@@ -21,7 +21,6 @@ private:
     ArgumentStack Hash(ArgumentStack&& args);
     ArgumentStack GetCustomToken(ArgumentStack&& args);
     ArgumentStack EffectTypeCast(ArgumentStack&& args);
-    ArgumentStack GenerateUUID(ArgumentStack&& args);
     ArgumentStack StripColors(ArgumentStack&& args);
     ArgumentStack IsValidResRef(ArgumentStack&& args);
     ArgumentStack GetEnvironmentVariable(ArgumentStack&& args);
@@ -33,10 +32,12 @@ private:
     ArgumentStack GetNextResRef(ArgumentStack&& args);
     ArgumentStack GetServerTicksPerSecond(ArgumentStack&& args);
     ArgumentStack GetLastCreatedObject(ArgumentStack&& args);
+    ArgumentStack AddScript(ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
     int m_tickCount;
+    CScriptCompiler *m_scriptCompiler;
 };
 
 }

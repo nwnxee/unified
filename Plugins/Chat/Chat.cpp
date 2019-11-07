@@ -2,7 +2,6 @@
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CNWSClient.hpp"
-#include "API/CNWSDungeonMaster.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSObject.hpp"
@@ -11,7 +10,7 @@
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CExoLinkedListInternal.hpp"
-#include "API/CExoLinkedListTemplatedCNWSClient.hpp"
+#include "API/CExoLinkedList.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/Functions.hpp"
@@ -70,8 +69,8 @@ Chat::Chat(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent("SET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnSetChatHearingDistance, this, std::placeholders::_1));
     GetServices()->m_events->RegisterEvent("GET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnGetChatHearingDistance, this, std::placeholders::_1));
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSMessage__SendServerToPlayerChatMessage>(&Chat::SendServerToPlayerChatMessage);
-    m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSMessage__SendServerToPlayerChatMessage);
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
+    m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_);
 }
 
 Chat::~Chat()
@@ -128,7 +127,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
                     channel == Constants::ChatChannel::DmWhisper)
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto pSpeaker = Utils::AsNWSObject(server->GetGameObject(sender));
+                    auto *pSpeaker = server->GetGameObject(sender)->AsNWSObject();
                     auto distance = g_plugin->m_hearingDistances[channel];
                     auto speakerPos = Vector{0.0f, 0.0f, 0.0f};
                     CNWSArea *speakerArea = nullptr;
@@ -141,10 +140,10 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
 
                     for (auto *head = playerList->pHead; head; head = head->pNext)
                     {
-                        auto *pClient = static_cast<API::CNWSClient*>(head->pObject);
+                        auto *pClient = static_cast<CNWSClient*>(head->pObject);
                         auto *listenerClient =  server->GetClientObjectByPlayerId(pClient->m_nPlayerID, 0);
-                        auto *listener = static_cast<API::CNWSPlayer*>(listenerClient);
-                        auto *listenerObj = Utils::AsNWSObject(listener->GetGameObject());
+                        auto *listener = static_cast<CNWSPlayer*>(listenerClient);
+                        auto *listenerObj = listener->GetGameObject()->AsNWSObject();
 
                         auto pDistance = *pPOS->Get<float>(listenerObj->m_idSelf, "HEARING_DISTANCE:" + std::to_string(channel));
                         if (pDistance >= 0)
@@ -152,7 +151,9 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
                             distance = pDistance;
 
                             auto v = listenerObj->m_vPosition;
-                            v -= speakerPos;
+                            v.x -= speakerPos.x;
+                            v.y -= speakerPos.y;
+                            v.z -= speakerPos.z;
                             float vSquared = v.x*v.x + v.y*v.y + v.z*v.z;
                             if (speakerArea == listenerObj->GetArea() && vSquared <= distance*distance)
                             {

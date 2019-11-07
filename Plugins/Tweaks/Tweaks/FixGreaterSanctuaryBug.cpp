@@ -14,7 +14,7 @@ using namespace NWNXLib::API;
 
 FixGreaterSanctuaryBug::FixGreaterSanctuaryBug(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__RemoveCombatInvisibilityEffects>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature31RemoveCombatInvisibilityEffectsEv>
                                     (&CNWSCreature__RemoveCombatInvisibilityEffects_hook);
 }
 
@@ -25,7 +25,7 @@ void FixGreaterSanctuaryBug::CNWSCreature__RemoveCombatInvisibilityEffects_hook(
     int startPtr = invPtr>sanctPtr ? sanctPtr : invPtr;
 
     std::vector<uint64_t> remove(128);
-    for (int k = startPtr; k < pThis->m_appliedEffects.num; k++) 
+    for (int k = startPtr; k < pThis->m_appliedEffects.num; k++)
     {
         auto eff = pThis->m_appliedEffects.element[k];
         if( eff->m_nType == 63 ||
@@ -34,8 +34,8 @@ void FixGreaterSanctuaryBug::CNWSCreature__RemoveCombatInvisibilityEffects_hook(
             remove.push_back(eff->m_nID);
         }
     }
-    
-    for (auto id: remove) 
+
+    for (auto id: remove)
         pThis->RemoveEffectById(id);
 }
 
