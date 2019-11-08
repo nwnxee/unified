@@ -54,9 +54,6 @@ public: // Structures
     };
 
 public:
-    Events();
-    ~Events();
-
     template <typename T>
     void Push(const std::string& pluginName, const std::string& eventName, T&& value);
 
