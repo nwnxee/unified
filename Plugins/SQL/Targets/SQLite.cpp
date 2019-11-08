@@ -38,7 +38,7 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 
     // Save the database file to UserDirectory/database
     static std::string dbPath = Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/database/")
-            + m_dbName + std::string(".sqlite3");
+            + m_dbName + std::string(".sqlite3nwnxee");
 
     if (sqlite3_open(dbPath.c_str(), &m_dbConn))
     {
