@@ -3,7 +3,6 @@
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/Constants.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/CNWSModule.hpp"
@@ -16,7 +15,6 @@
 #include "API/CExoStringList.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Debug.hpp"
-#include "Platform/FileSystem.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Metrics/Metrics.hpp"
@@ -29,11 +27,14 @@
 
 #include <csignal>
 #include <regex>
+#include <dirent.h>
+#include <unistd.h>
+#include <cstdio>
+#include <sstream>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Hooking;
-using namespace Platform::FileSystem;
 
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
@@ -244,25 +245,39 @@ void NWNXCore::InitialSetupPlugins()
     constexpr static const char* pluginPrefix = NWNX_PLUGIN_PREFIX;
     const std::string prefix = pluginPrefix;
 
-    const auto pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
+    char cwd[PATH_MAX];
+    ASSERT_OR_THROW(getcwd(cwd, sizeof(cwd)) != nullptr);
+
+    const auto pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", cwd);
     const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir);
 
-    std::vector<std::string> sortedDynamicLibraries;
+    std::vector<std::string> files;
+    DIR* dir = opendir(pluginDir.c_str());
 
-    for (auto& dynamicLibrary : GetAllDynamicLibrariesInDirectory(pluginDir))
+    if (dir != nullptr)
     {
-        sortedDynamicLibraries.emplace_back(std::move(dynamicLibrary.first));
+        dirent* directoryEntry = readdir(dir);
+
+        while (directoryEntry != nullptr)
+        {
+            if (directoryEntry->d_type == DT_UNKNOWN || directoryEntry->d_type == DT_REG)
+            {
+                files.emplace_back(directoryEntry->d_name);
+            }
+            directoryEntry = readdir(dir);
+        }
+        closedir(dir);
     }
 
     // Sort by file name, so at least plugins are loaded in deterministic order.
-    std::sort(std::begin(sortedDynamicLibraries), std::end(sortedDynamicLibraries));
+    std::sort(std::begin(files), std::end(files));
 
-    for (auto& dynamicLibrary : sortedDynamicLibraries)
+    for (auto& dynamicLibrary : files)
     {
         const std::string& pluginName = dynamicLibrary;
-        const std::string pluginNameWithoutExtension = StripExtensionFromFileName(pluginName);
+        const std::string pluginNameWithoutExtension = pluginName.substr(0, pluginName.find_last_of('.'));
 
         if (pluginNameWithoutExtension == NWNX_CORE_PLUGIN_NAME || pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
         {
@@ -287,7 +302,9 @@ void NWNXCore::InitialSetupPlugins()
         try
         {
             LOG_DEBUG("Loading plugin %s", pluginName);
-            auto registrationToken = m_services->m_plugins->LoadPlugin(CombinePaths(pluginDir, pluginName), std::move(params));
+            std::stringstream ss;
+            ss << pluginDir << "/" << pluginName;
+            auto registrationToken = m_services->m_plugins->LoadPlugin(ss.str(), std::move(params));
             auto data = *m_services->m_plugins->FindPluginById(registrationToken.m_id);
             LOG_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name, data.m_info->m_version, data.m_info->m_author);
             m_pluginProxyServiceMap.insert(std::make_pair(std::move(registrationToken), std::move(services)));
@@ -309,8 +326,7 @@ void NWNXCore::InitialSetupResourceDirectory()
         [cleanDirectory, priority]
         {
             CExoString sAlias = CExoString("NWNX:");
-            CExoString sPath = CExoString(CombinePaths(
-                    std::string(Globals::ExoBase()->m_sUserDirectory.CStr()), "nwnx").c_str());
+            CExoString sPath = CExoString(Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
 
             LOG_INFO("Setting up '%s' resource directory with path: %s", sAlias, sPath);
 
