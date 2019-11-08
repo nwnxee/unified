@@ -82,6 +82,7 @@ void RestoreCrashHandlers()
 
 namespace Core {
 
+static NWNXCore s_core;
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
 NWNXCore::NWNXCore()

@@ -1,18 +1,10 @@
 #pragma once
 
 #include <cstdint>
+#include <x86intrin.h>
 
-#ifdef _WIN32
-    #include <intrin.h>
-#else
-    #include <x86intrin.h>
-#endif
 
-namespace NWNXLib {
-
-namespace Platform {
-
-namespace Time {
+namespace NWNXLib::Platform::Time {
 
 struct Date
 {
@@ -28,9 +20,5 @@ Date ConstructDateFromSystemTime();
 inline uint64_t GetFastTimestamp();
 
 #include "Time.inl"
-
-}
-
-}
 
 }
