@@ -120,7 +120,7 @@ Util::Util(const Plugin::CreateParams& params)
 
 Util::~Util()
 {
-    delete m_scriptCompiler;
+
 }
 
 ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
@@ -412,7 +412,7 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
 
     if (!m_scriptCompiler)
     {
-        m_scriptCompiler = new CScriptCompiler();
+        m_scriptCompiler = std::make_unique<CScriptCompiler>();
         m_scriptCompiler->SetCompileDebugLevel(0);
         m_scriptCompiler->SetCompileSymbolicOutput(0);
         m_scriptCompiler->SetOptimizeBinaryCodeLength(true);
