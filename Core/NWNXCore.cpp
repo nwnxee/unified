@@ -246,7 +246,7 @@ void NWNXCore::InitialSetupPlugins()
     const std::string prefix = pluginPrefix;
 
     char cwd[PATH_MAX];
-    ASSERT_OR_THROW(getcwd(cwd, sizeof(cwd)) != nullptr);
+    ASSERT(getcwd(cwd, sizeof(cwd)) != nullptr);
 
     const auto pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", cwd);
     const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
