@@ -331,32 +331,32 @@ void NWNXCore::InitialSetupResourceDirectory()
 
 void NWNXCore::InitialSetupCommands()
 {
-    m_services->m_commands->RegisterCommand("runscript", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("runscript", [](std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
 
-        if (!arg.empty())
+        if (!args.empty())
         {
-            LOG_INFO("Executing console command: 'runscript' with args: %s", arg);
-            Utils::ExecuteScript(arg, 0);
+            LOG_INFO("Executing console command: 'runscript' with args: %s", args);
+            Utils::ExecuteScript(args, 0);
         }
     });
 
-    m_services->m_commands->RegisterCommand("eval", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("eval", [](std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
 
-        if (!arg.empty())
+        if (!args.empty())
         {
-            LOG_INFO("Executing console command: 'eval' with args: %s", arg);
-            bool bWrapIntoMain = arg.find("void main()") == std::string::npos;
-            Globals::VirtualMachine()->RunScriptChunk(arg, 0, true, bWrapIntoMain);
+            LOG_INFO("Executing console command: 'eval' with args: %s", args);
+            bool bWrapIntoMain = args.find("void main()") == std::string::npos;
+            Globals::VirtualMachine()->RunScriptChunk(args, 0, true, bWrapIntoMain);
         }
     });
 
-    m_services->m_commands->RegisterCommand("evalx", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("evalx", [](std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -375,28 +375,30 @@ void NWNXCore::InitialSetupCommands()
             }
         }
 
-        if (!arg.empty())
+        if (!args.empty())
         {
-            LOG_INFO("Executing console command: 'evalx' with args: %s", arg);
-            std::string script = nwnxHeaders + (arg.find("void main()") == std::string::npos ? "void main() { " + arg + " }" : arg);
+            LOG_INFO("Executing console command: 'evalx' with args: %s", args);
+            std::string script = nwnxHeaders + (args.find("void main()") == std::string::npos ? "void main() { " + args + " }" : args);
             Globals::VirtualMachine()->RunScriptChunk(script, 0, true, false);
         }
     });
 
-    m_services->m_commands->RegisterCommand("loglevel", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("loglevel", [](std::string& args)
     {
-        if (!arg.empty())
+        if (!args.empty())
         {
-            int space = arg.find_first_of(' ');
-            std::string plugin = arg.substr(0, space);
-            std::string level = arg.substr(space + 1);
+            size_t space = args.find_first_of(' ');
+            std::string plugin = args.substr(0, space);
+            std::string level = args.substr(space + 1);
 
-            if (g_core->m_services->m_plugins->FindPluginByName(plugin))
+            std::string pluginName = g_core->m_services->m_plugins->GetCanonicalPluginName(plugin);
+
+            if (!pluginName.empty())
             {
                 if (auto logLevel = Utils::from_string<uint32_t>(level))
                 {
-                    LOG_INFO("Setting log level of plugin '%s' to '%u'", plugin, *logLevel);
-                    Log::SetLogLevel(("NWNX_" + plugin).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
+                    LOG_INFO("Setting log level of plugin '%s' to '%u'", pluginName, *logLevel);
+                    Log::SetLogLevel(("NWNX_" + pluginName).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
                 }
                 else
                 {

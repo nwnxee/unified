@@ -170,6 +170,16 @@ std::vector<Plugins::PluginData> Plugins::GetPlugins() const
     return plugins;
 }
 
+std::string Plugins::GetCanonicalPluginName(const std::string& name) const
+{
+    for (auto pluginData : GetPlugins())
+    {
+        if (!strcasecmp(name.c_str(), pluginData.m_info.Get()->m_name.c_str()))
+            return pluginData.m_info.Get()->m_name;
+    }
+    return "";
+}
+
 void Plugins::UnloadPluginInternal(PluginMap::iterator plugin, const Plugin::UnloadReason reason)
 {
     ASSERT(plugin != m_plugins.end());
@@ -231,6 +241,11 @@ Maybe<Plugins::PluginData> PluginsProxy::FindPluginByPath(const std::string& pat
 std::vector<Plugins::PluginData> PluginsProxy::GetPlugins() const
 {
     return m_proxyBase.GetPlugins();
+}
+
+std::string PluginsProxy::GetCanonicalPluginName(const std::string& name) const
+{
+    return m_proxyBase.GetCanonicalPluginName(name);
 }
 
 }
