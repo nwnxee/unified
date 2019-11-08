@@ -59,6 +59,10 @@ echo "[*] Port: ${NWN_PORT:-5121}/udp"
 copycrashlog() {
   inotifywait -mq -e moved_to -e create "$1" --format "%f" | while read f
   do
+    # copy the cryptographic_secret just to make sure
+    if [[ $f = cryptographic_secret ]]; then
+      backup_cryptographic_secret
+    fi
     # check if the file is a crash log file
     if [[ $f = nwserver-crash*.log ]]; then
       echo "The server crashed, trying to save crash data ($f) into your mounted server home."
