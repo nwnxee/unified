@@ -38,7 +38,7 @@ private:
     bool m_finished;
 };
 
-class Tasks : public ServiceBase
+class Tasks
 {
 public: // Structures
     using ThreadWorkItem = std::function<void()>;

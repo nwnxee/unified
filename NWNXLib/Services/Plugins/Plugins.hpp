@@ -12,7 +12,7 @@
 
 namespace NWNXLib::Services {
 
-class Plugins : public ServiceBase
+class Plugins
 {
 public: // Structures
     using PluginID = uint8_t;

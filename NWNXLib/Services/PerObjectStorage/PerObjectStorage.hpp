@@ -15,7 +15,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-class PerObjectStorage : public ServiceBase
+class PerObjectStorage
 {
 public:
     using CleanupFunc = void (*)(void*);

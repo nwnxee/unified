@@ -22,7 +22,7 @@ namespace Services {
 // In the case of shared hook mode, a landing site is magically generated (using thiscall
 // calling convention) and events are dispatched to each hook one-by-one.
 
-class Hooks : public ServiceBase
+class Hooks
 {
 public: // Structures
     enum class Type

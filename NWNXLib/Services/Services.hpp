@@ -38,12 +38,6 @@ struct ProxyServiceList
     std::unique_ptr<CommandsProxy> m_commands;
 };
 
-struct ServiceBase
-{
-public:
-    ServiceBase() { }
-};
-
 template <typename T>
 struct ServiceProxy
 {
