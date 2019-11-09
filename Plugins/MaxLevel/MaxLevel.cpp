@@ -194,7 +194,7 @@ void MaxLevel::SummonAssociateHook(CNWSCreature *pCreature, CResRef cResRef, CEx
 {
     auto cUsedResRef = cResRef;
     std::string sResRef = cResRef.GetResRef();
-    if (!Globals::ExoResMan()->Exists(cResRef, 2027, nullptr))
+    if (!Globals::ExoResMan()->Exists(cResRef, Constants::ResRefType::UTC, nullptr))
     {
         std::regex re("(.*)[4-9][0-9]");
         std::string sNewResRef = std::regex_replace(sResRef,re,"$0140");
