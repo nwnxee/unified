@@ -60,7 +60,7 @@ SpellChecker::~SpellChecker()
 
 uintptr_t SpellChecker::EstbSymFunction(const std::string& symbol)
 {
-    uintptr_t var = reinterpret_cast<uintptr_t>(SpellChecker::handle, dlsym(symbol.c_str()));
+    uintptr_t var = reinterpret_cast<uintptr_t>(dlsym(SpellChecker::handle, symbol.c_str()));
 
     if (!var)
     {
