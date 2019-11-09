@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Platform/DynamicLibraries.hpp"
 #include "Plugin.hpp"
 #include "Services/Services.hpp"
 #include "ViewPtr.hpp"
@@ -11,9 +10,7 @@
 #include <vector>
 #include <optional>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Plugins : public ServiceBase
 {
@@ -46,7 +43,7 @@ private: // Structures
         std::string m_path;
         std::unique_ptr<Plugin::Info> m_info;
         std::unique_ptr<Plugin> m_plugin;
-        Platform::DynamicLibraries::HandleType m_handle;
+        void* m_handle;
         PluginInfoFuncPtr m_pluginInfoFunc;
         PluginLoadFuncPtr m_pluginLoadFunc;
         PluginUnloadFuncPtr m_pluginUnloadFunc;
@@ -85,7 +82,5 @@ public:
     std::vector<Plugins::PluginData> GetPlugins() const;
     std::string GetCanonicalPluginName(const std::string& name) const;
 };
-
-}
 
 }
