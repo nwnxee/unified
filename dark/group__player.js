@@ -49,6 +49,7 @@ var group__player =
     [ "NWNX_Player_GetQuestCompleted", "group__player.html#ga3ffe0a778fbdba1d6dc131d544d76971", null ],
     [ "NWNX_Player_SetPersistentLocation", "group__player.html#ga6044329c0cd5af08851f8f7e5aa34202", null ],
     [ "NWNX_Player_UpdateItemName", "group__player.html#gacac5076de03030e5d2c8fd210d63248d", null ],
+    [ "NWNX_Player_PossessCreature", "group__player.html#gacfe74084d5751ac57a20e450e2e81301", null ],
     [ "NWNX_Player_QBS_Empty", "group__player.html#ga12d642ac5b5fad0078ace6c222c7ab38", null ],
     [ "NWNX_Player_QBS_UseItem", "group__player.html#ga86c1edebbcfd652b79adf34e73b9c317", null ],
     [ "NWNX_Player_QBS_EquipItem", "group__player.html#gafcca025e7811f1b7babab77d6ef5d115", null ],
