@@ -101,6 +101,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(GetQuestCompleted);
     REGISTER(SetPersistentLocation);
     REGISTER(UpdateItemName);
+    REGISTER(PossessCreature);
 
 #undef REGISTER
 
@@ -1181,6 +1182,151 @@ ArgumentStack Player::UpdateItemName(ArgumentStack&& args)
             pMessage->SendServerToPlayerUpdateItemName(pPlayer, pItem);
         }
     }
+    return stack;
+}
+
+ArgumentStack Player::PossessCreature(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    const auto possessorId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto possessedId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto bMindImmune = Services::Events::ExtractArgument<int>(args);
+    const auto bCreateQB = Services::Events::ExtractArgument<int>(args);
+
+    auto pServer = Globals::AppManager()->m_pServerExoApp;
+    auto *pPossessor = pServer->GetCreatureByGameObjectID(possessorId);
+    if (!pPossessor || !pPossessor->m_bPlayerCharacter)
+    {
+        LOG_ERROR("Attempt to possess a creature with an invalid possessor.");
+        Services::Events::InsertArgument(stack, 0);
+        return stack;
+    }
+    auto *pPossessed = pServer->GetCreatureByGameObjectID(possessedId);
+    if (!pPossessed || pPossessed->m_bPlayerCharacter)
+    {
+        LOG_ERROR("Attempt to possess an invalid creature.");
+        Services::Events::InsertArgument(stack, 0);
+        return stack;
+    }
+    if (pPossessor->m_oidArea != pPossessed->m_oidArea)
+    {
+        LOG_ERROR("Attempt to possess a creature not in the current area.");
+        Services::Events::InsertArgument(stack, 0);
+        return stack;
+    }
+    if (pServer->GetIsControlledByPlayer(possessedId))
+    {
+        LOG_ERROR("Attempt to possess a creature already possessed.");
+        Services::Events::InsertArgument(stack, 0);
+        return stack;
+    }
+    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+    auto possessedOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
+    if (possessedOidPOS)
+    {
+        LOG_ERROR("Attempt to possess a creature while already possessing.");
+        Services::Events::InsertArgument(stack, 0);
+        return stack;
+    }
+    static NWNXLib::Hooking::FunctionHook* pUnsummonMyselfHook;
+    static NWNXLib::Hooking::FunctionHook* pPossessFamiliarHook;
+
+    if (!pUnsummonMyselfHook)
+    {
+        // When a PC is logging off we don't want this creature to unsummon themselves
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature14UnsummonMyselfEv>(
+                +[](CNWSCreature *pPossessed) -> void
+                {
+                    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+                    auto possessorOidPOS = *pPOS->Get<int>(pPossessed->m_idSelf, "possessorOid");
+                    auto pServer = Globals::AppManager()->m_pServerExoApp;
+                    auto *pPossessor = pServer->GetCreatureByGameObjectID(possessorOidPOS);
+                    if (pPossessor)
+                    {
+                        pPossessor->UnpossessFamiliar();
+                        pPossessor->RemoveAssociate(pPossessed->m_idSelf);
+                        pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
+                        pPOS->Remove(pPossessed->m_idSelf, "possessorOid");
+                    }
+                    else
+                    {
+                        pUnsummonMyselfHook->CallOriginal<void>(pPossessed);
+                    }
+                });
+        pUnsummonMyselfHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature14UnsummonMyselfEv);
+
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15PossessFamiliarEv>(
+                +[](CNWSCreature *pPossessor) -> void
+                {
+                    auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+                    auto possessorOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessorOid");
+                    if (possessorOidPOS)
+                    {
+                        LOG_ERROR("Attempt to possess a familiar while already possessing.");
+                    }
+                    else
+                    {
+                        pPossessFamiliarHook->CallOriginal<void>(pPossessor);
+                    }
+                });
+        pPossessFamiliarHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature15PossessFamiliarEv);
+
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature17UnpossessFamiliarEv, int32_t>(
+                +[](Services::Hooks::CallType type, CNWSCreature *pPossessor) -> void
+                {
+                    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    {
+                        auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
+                        auto possessedOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
+                        if (possessedOidPOS)
+                        {
+                            pPossessor->RemoveAssociate(possessedOidPOS);
+                            pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
+                            pPOS->Remove(possessedOidPOS, "possessorOid");
+                        }
+                    }
+                });
+    }
+
+    // If they already have a familiar we temporarily remove it as an associate
+    // then we add the possessed creature as a familiar. We then add the regular familiar back.
+    // This is because PossessFamiliar looks for the first associate of type familiar.
+    auto pFamiliarId = pPossessor->GetAssociateId(3, 1);
+    if (pFamiliarId)
+        pPossessor->RemoveAssociate(pFamiliarId);
+
+    pPossessor->AddAssociate(possessedId, 3);
+    pPossessor->PossessFamiliar();
+
+    if (pFamiliarId)
+        pPossessor->AddAssociate(pFamiliarId, 3);
+
+    if (bCreateQB)
+        pPossessed->CreateDefaultQuickButtons();
+
+    pPOS->Set(possessorId, "possessedOid", (int32_t)possessedId);
+    pPOS->Set(possessedId, "possessorOid", (int32_t)possessorId);
+
+    // Familiar possession gives the possessor mind immunity, we remove it if we don't want that
+    if (!bMindImmune)
+    {
+        for (int i = 0; i < pPossessor->m_appliedEffects.num; i++)
+        {
+            auto *eff = pPossessor->m_appliedEffects.element[i];
+            if (eff->m_nType == Constants::EffectTrueType::Immunity &&
+                eff->m_nSubType == Constants::EffectSubType::Magical &&
+                eff->m_oidCreator == pPossessor->m_idSelf &&
+                eff->m_fDuration == 4.0f &&
+                eff->m_nCasterLevel == -1 &&
+                eff->m_nParamInteger[0] == Constants::ImmunityType::MindSpells &&
+                eff->m_nParamInteger[1] == Constants::RacialType::Invalid)
+            {
+                pPossessor->RemoveEffectById(eff->m_nID);
+                break;
+            }
+        }
+    }
+    Services::Events::InsertArgument(stack, 1);
     return stack;
 }
 

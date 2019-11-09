@@ -17,7 +17,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-class Events : public ServiceBase
+class Events
 {
 public: // Structures
     struct Argument

@@ -9,7 +9,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-class Config : public ServiceBase
+class Config
 {
 public:
     Config();

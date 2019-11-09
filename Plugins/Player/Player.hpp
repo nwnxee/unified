@@ -46,6 +46,7 @@ private:
     ArgumentStack GetQuestCompleted                 (ArgumentStack&& args);
     ArgumentStack SetPersistentLocation             (ArgumentStack&& args);
     ArgumentStack UpdateItemName                    (ArgumentStack&& args);
+    ArgumentStack PossessCreature                   (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 
