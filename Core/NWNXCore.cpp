@@ -381,7 +381,7 @@ void NWNXCore::InitialSetupCommands()
         static std::string nwnxHeaders;
         if (nwnxHeaders.empty())
         {
-            if (auto *pList = Globals::ExoResMan()->GetResOfType(2009, true))
+            if (auto *pList = Globals::ExoResMan()->GetResOfType(2009, false))
             {
                 std::regex rgx("nwnx_[a-z]*");
                 for (int i = 0; i < pList->m_nCount; i++)
