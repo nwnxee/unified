@@ -234,6 +234,22 @@ void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBic
 /// @param oItem The item object.
 void NWNX_Player_UpdateItemName(object oPlayer, object oItem);
 
+/// @brief Possesses a creature by temporarily making them a familiar
+/// @details This command allows a PC to possess an NPC by temporarily adding them as a familiar. It will work
+/// if the player already has an existing familiar. The creatures must be in the same area. Unpossession can be
+/// done with the regular @nwn{UnpossessFamiliar} commands.
+/// @note The possessed creature will send automap data back to the possessor.
+/// If you wish to prevent this you may wish to use NWNX_Player_GetAreaExplorationState() and
+/// NWNX_Player_SetAreaExplorationState() before and after the possession.
+/// @note The possessing creature will be left wherever they were when beginning the possession. You may wish
+/// to use @nwn{EffectCutsceneImmobilize} and @nwn{EffectCutsceneGhost} to hide them.
+/// @param oPossessor The possessor player object.
+/// @param oPossessed The possessed creature object. Only works on NPCs.
+/// @param bMindImmune If FALSE will remove the mind immunity effect on the possessor.
+/// @param bCreateDefaultQB If TRUE will populate the quick bar with default buttons.
+/// @return TRUE if possession succeeded.
+int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindImmune = TRUE, int bCreateDefaultQB = FALSE);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -593,7 +609,7 @@ int NWNX_Player_GetQuestCompleted(object player, string sQuestName)
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
-    return  NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
 }
 
 void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly = TRUE)
@@ -616,4 +632,17 @@ void NWNX_Player_UpdateItemName(object oPlayer, object oItem)
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindImmune = TRUE, int bCreateDefaultQB = FALSE)
+{
+    string sFunc = "PossessCreature";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, bCreateDefaultQB);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, bMindImmune);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPossessed);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPossessor);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
 }

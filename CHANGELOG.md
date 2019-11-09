@@ -28,6 +28,7 @@ N/A
 - Administration: {Get|Set}DebugValue()
 - Data: Array_Set()
 - Object: Export()
+- Player: PossessCreature()
 - Util: AddScript()
 
 ### Changed
