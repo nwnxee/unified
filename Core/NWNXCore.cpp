@@ -489,6 +489,14 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
 
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
+    Log::SetMessageFormat
+    (
+        g_core->m_coreServices->m_config->Get<bool>("LOG_TIMESTAMP", true),
+        g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true),
+        g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true),
+        g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true)
+    );
+
 
     if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
     {

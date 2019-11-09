@@ -7,9 +7,20 @@
 #include <cstring>
 #include <unordered_map>
 
+#include "External/rang/rang.hpp"
+
 namespace NWNXLib {
 
 namespace Log {
+
+void SetMessageFormat(bool timestamp, bool plugin, bool source, bool color)
+{
+    s_PrintTimestamp = timestamp;
+    s_PrintPlugin = plugin;
+    s_PrintSource = source;
+    rang::setControlMode(color ? rang::control::Auto : rang::control::Off);
+    LOG_INFO("%s %s %s %s", timestamp, plugin, source, color);
+}
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message)
 {
@@ -19,7 +30,16 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
         return;
     }
 
-    std::printf("%s\n", message);
+    switch (channel)
+    {
+        case Channel::SEV_DEBUG:   std::cout << rang::fg::gray << rang::style::dim;  break;
+        case Channel::SEV_INFO:    std::cout << rang::fg::gray;                      break;
+        case Channel::SEV_NOTICE:  std::cout;                                        break;
+        case Channel::SEV_WARNING: std::cout << rang::fg::yellow;                    break;
+        case Channel::SEV_ERROR:   std::cout << rang::fg::red << rang::style::dim;   break;
+        case Channel::SEV_FATAL:   std::cout << rang::fg::red << rang::style::bold;  break;
+    }
+    std::cout << message << rang::style::reset << rang::fg::reset  << std::endl;
 
     // Also write to a file - this could be done in a much nicer way but I just want to retain the old functionality
     // for now. We can change this later if we want or need to.
