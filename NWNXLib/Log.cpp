@@ -1,6 +1,5 @@
 #include "Log.hpp"
 #include "Assert.hpp"
-#include "Platform/FileSystem.hpp"
 #include "Platform/Debug.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
@@ -24,9 +23,8 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
 
     // Also write to a file - this could be done in a much nicer way but I just want to retain the old functionality
     // for now. We can change this later if we want or need to.
-    using namespace Platform::FileSystem;
 
-    static std::string logPath = CombinePaths(CombinePaths(std::string(API::Globals::ExoBase()->m_sUserDirectory.CStr()), std::string("logs.0")), "nwnx.txt");
+    static std::string logPath = API::Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/logs.0/nwnx.txt");
     static FILE* logFile = std::fopen(logPath.c_str(), "a+");
 
     if (logFile)
@@ -34,9 +32,6 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
         std::fprintf(logFile, "%s\n", message);
         std::fflush(logFile);
     }
-
-    Platform::Debug::OutputDebugString(message);
-    Platform::Debug::OutputDebugString("\n");
 
     if (channel == Channel::SEV_FATAL)
     {

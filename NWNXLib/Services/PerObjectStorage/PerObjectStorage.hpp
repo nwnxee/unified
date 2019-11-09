@@ -1,7 +1,6 @@
 #pragma once
 
 #include "API/Types.hpp"
-#include "Maybe.hpp"
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Utils.hpp"
@@ -10,6 +9,7 @@
 #include <memory>
 #include <utility>
 #include <unordered_map>
+#include <optional>
 
 namespace NWNXLib {
 
@@ -25,7 +25,7 @@ public:
     void Set(CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
-    template <typename T> Maybe<T>
+    template <typename T> std::optional<T>
     Get(CGameObject *pGameObject, const std::string& key);
 
     // Removes without cleanup
@@ -84,7 +84,7 @@ public:
     void Set(CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
-    template <typename T> Maybe<T>
+    template <typename T> std::optional<T>
     Get(CGameObject *pGameObject, const std::string& key)
     {
         return m_proxyBase.Get<T>(pGameObject, m_pluginName + "!" + key);
@@ -112,7 +112,7 @@ public:
     {
         return Set(Utils::GetGameObject(object), key, value, cleanup);
     }
-    template <typename T> Maybe<T>
+    template <typename T> std::optional<T>
     Get(API::Types::ObjectID object, const std::string& key)
     {
         return Get<T>(Utils::GetGameObject(object), key);

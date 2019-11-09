@@ -3,7 +3,6 @@
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/Constants.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/CNWSModule.hpp"
@@ -16,7 +15,6 @@
 #include "API/CExoStringList.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Debug.hpp"
-#include "Platform/FileSystem.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Metrics/Metrics.hpp"
@@ -29,11 +27,14 @@
 
 #include <csignal>
 #include <regex>
+#include <dirent.h>
+#include <unistd.h>
+#include <cstdio>
+#include <sstream>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Hooking;
-using namespace Platform::FileSystem;
 
 static void (*nwn_crash_handler)(int);
 extern "C" void nwnx_signal_handler(int sig)
@@ -82,6 +83,7 @@ void RestoreCrashHandlers()
 
 namespace Core {
 
+static NWNXCore s_core;
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
 
 NWNXCore::NWNXCore()
@@ -244,25 +246,39 @@ void NWNXCore::InitialSetupPlugins()
     constexpr static const char* pluginPrefix = NWNX_PLUGIN_PREFIX;
     const std::string prefix = pluginPrefix;
 
-    const auto pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", GetCurDirectory());
+    char cwd[PATH_MAX];
+    ASSERT(getcwd(cwd, sizeof(cwd)) != nullptr);
+
+    const auto pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", cwd);
     const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir);
 
-    std::vector<std::string> sortedDynamicLibraries;
+    std::vector<std::string> files;
+    DIR* dir = opendir(pluginDir.c_str());
 
-    for (auto& dynamicLibrary : GetAllDynamicLibrariesInDirectory(pluginDir))
+    if (dir != nullptr)
     {
-        sortedDynamicLibraries.emplace_back(std::move(dynamicLibrary.first));
+        dirent* directoryEntry = readdir(dir);
+
+        while (directoryEntry != nullptr)
+        {
+            if (directoryEntry->d_type == DT_UNKNOWN || directoryEntry->d_type == DT_REG)
+            {
+                files.emplace_back(directoryEntry->d_name);
+            }
+            directoryEntry = readdir(dir);
+        }
+        closedir(dir);
     }
 
     // Sort by file name, so at least plugins are loaded in deterministic order.
-    std::sort(std::begin(sortedDynamicLibraries), std::end(sortedDynamicLibraries));
+    std::sort(std::begin(files), std::end(files));
 
-    for (auto& dynamicLibrary : sortedDynamicLibraries)
+    for (auto& dynamicLibrary : files)
     {
         const std::string& pluginName = dynamicLibrary;
-        const std::string pluginNameWithoutExtension = StripExtensionFromFileName(pluginName);
+        const std::string pluginNameWithoutExtension = pluginName.substr(0, pluginName.find_last_of('.'));
 
         if (pluginNameWithoutExtension == NWNX_CORE_PLUGIN_NAME || pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
         {
@@ -287,7 +303,9 @@ void NWNXCore::InitialSetupPlugins()
         try
         {
             LOG_DEBUG("Loading plugin %s", pluginName);
-            auto registrationToken = m_services->m_plugins->LoadPlugin(CombinePaths(pluginDir, pluginName), std::move(params));
+            std::stringstream ss;
+            ss << pluginDir << "/" << pluginName;
+            auto registrationToken = m_services->m_plugins->LoadPlugin(ss.str(), std::move(params));
             auto data = *m_services->m_plugins->FindPluginById(registrationToken.m_id);
             LOG_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name, data.m_info->m_version, data.m_info->m_author);
             m_pluginProxyServiceMap.insert(std::make_pair(std::move(registrationToken), std::move(services)));
@@ -309,8 +327,7 @@ void NWNXCore::InitialSetupResourceDirectory()
         [cleanDirectory, priority]
         {
             CExoString sAlias = CExoString("NWNX:");
-            CExoString sPath = CExoString(CombinePaths(
-                    std::string(Globals::ExoBase()->m_sUserDirectory.CStr()), "nwnx").c_str());
+            CExoString sPath = CExoString(Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
 
             LOG_INFO("Setting up '%s' resource directory with path: %s", sAlias, sPath);
 
@@ -331,32 +348,32 @@ void NWNXCore::InitialSetupResourceDirectory()
 
 void NWNXCore::InitialSetupCommands()
 {
-    m_services->m_commands->RegisterCommand("runscript", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("runscript", [](std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
 
-        if (!arg.empty())
+        if (!args.empty())
         {
-            LOG_INFO("Executing console command: 'runscript' with args: %s", arg);
-            Utils::ExecuteScript(arg, 0);
+            LOG_INFO("Executing console command: 'runscript' with args: %s", args);
+            Utils::ExecuteScript(args, 0);
         }
     });
 
-    m_services->m_commands->RegisterCommand("eval", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("eval", [](std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
 
-        if (!arg.empty())
+        if (!args.empty())
         {
-            LOG_INFO("Executing console command: 'eval' with args: %s", arg);
-            bool bWrapIntoMain = arg.find("void main()") == std::string::npos;
-            Globals::VirtualMachine()->RunScriptChunk(arg, 0, true, bWrapIntoMain);
+            LOG_INFO("Executing console command: 'eval' with args: %s", args);
+            bool bWrapIntoMain = args.find("void main()") == std::string::npos;
+            Globals::VirtualMachine()->RunScriptChunk(args, 0, true, bWrapIntoMain);
         }
     });
 
-    m_services->m_commands->RegisterCommand("evalx", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("evalx", [](std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -364,7 +381,7 @@ void NWNXCore::InitialSetupCommands()
         static std::string nwnxHeaders;
         if (nwnxHeaders.empty())
         {
-            if (auto *pList = Globals::ExoResMan()->GetResOfType(2009, true))
+            if (auto *pList = Globals::ExoResMan()->GetResOfType(2009, false))
             {
                 std::regex rgx("nwnx_[a-z]*");
                 for (int i = 0; i < pList->m_nCount; i++)
@@ -375,28 +392,30 @@ void NWNXCore::InitialSetupCommands()
             }
         }
 
-        if (!arg.empty())
+        if (!args.empty())
         {
-            LOG_INFO("Executing console command: 'evalx' with args: %s", arg);
-            std::string script = nwnxHeaders + (arg.find("void main()") == std::string::npos ? "void main() { " + arg + " }" : arg);
+            LOG_INFO("Executing console command: 'evalx' with args: %s", args);
+            std::string script = nwnxHeaders + (args.find("void main()") == std::string::npos ? "void main() { " + args + " }" : args);
             Globals::VirtualMachine()->RunScriptChunk(script, 0, true, false);
         }
     });
 
-    m_services->m_commands->RegisterCommand("loglevel", [](std::string& arg)
+    m_services->m_commands->RegisterCommand("loglevel", [](std::string& args)
     {
-        if (!arg.empty())
+        if (!args.empty())
         {
-            int space = arg.find_first_of(' ');
-            std::string plugin = arg.substr(0, space);
-            std::string level = arg.substr(space + 1);
+            size_t space = args.find_first_of(' ');
+            std::string plugin = args.substr(0, space);
+            std::string level = args.substr(space + 1);
 
-            if (g_core->m_services->m_plugins->FindPluginByName(plugin))
+            std::string pluginName = g_core->m_services->m_plugins->GetCanonicalPluginName(plugin);
+
+            if (!pluginName.empty())
             {
                 if (auto logLevel = Utils::from_string<uint32_t>(level))
                 {
-                    LOG_INFO("Setting log level of plugin '%s' to '%u'", plugin, *logLevel);
-                    Log::SetLogLevel(("NWNX_" + plugin).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
+                    LOG_INFO("Setting log level of plugin '%s' to '%u'", pluginName, *logLevel);
+                    Log::SetLogLevel(("NWNX_" + pluginName).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
                 }
                 else
                 {
@@ -476,7 +495,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
         Encoding::SetDefaultLocale(*locale);
     }
 
-    Maybe<bool> crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
+    auto crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
     if (crashOnAssertFailure)
     {
         Assert::SetCrashOnFailure(*crashOnAssertFailure);

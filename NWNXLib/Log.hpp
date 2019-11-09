@@ -1,10 +1,10 @@
 #pragma once
 
 #include "External/tinyformat/tinyformat.hpp"
-#include "Platform/Time.hpp"
 #include <cstdio>
 #include <cstring>
 #include <sstream>
+#include <ctime>
 
 namespace NWNXLib {
 

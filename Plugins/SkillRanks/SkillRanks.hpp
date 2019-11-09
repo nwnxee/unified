@@ -44,7 +44,7 @@ private:
         uint16_t nKeyAbilityMask;
     };
 
-    std::vector<std::map<uint32_t, SkillFeats>> m_skillFeatMap;
+    std::unordered_map<uint8_t, std::unordered_map<uint16_t, SkillFeats>> m_skillFeatMap;
     std::unordered_map<uint16_t, std::unordered_map<uint8_t, int32_t>> m_skillRaceMod;
 };
 

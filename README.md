@@ -46,12 +46,12 @@ Given the binaries, follow these steps:
 
 4.  You can skip a particular plugin by adding a line that looks like this before starting nwserver-linux:
 
-        export NWNX_JVM_SKIP=true
+        export NWNX_LUA_SKIP=true
 
 5.  You can set the log levels like this, which governs the verbosity of log output, with 1 being the least verbose and 7 being the most verbose.
 
         export NWNX_CORE_LOG_LEVEL=7 # Default log level for core and all plugins
-        export NWNX_JVM_LOG_LEVEL=7 # Log level for JVM, overrides default
+        export NWNX_LUA_LOG_LEVEL=7 # Log level for LUA, overrides default
 
 Optionally, you can use Docker to run the server with pre-built NWNX binaries. Refer to the section below
 
@@ -60,15 +60,10 @@ Optionally, you can use Docker to run the server with pre-built NWNX binaries. R
 `nwnxee/unified` supports the following [tags](https://cloud.docker.com/repository/docker/nwnxee/unified/tags):
 
 * `[commit-hash]` (7 characters and 40)
-* `[commit-hash]-full`
 * `latest`
-* `latest-full`
 * `[tag]`
-* `[tag]-full`
 
 Due to Docker's local image cache we recommend using the `[commit-hash]` tag to explicitly state which nwnx build to run. In comparison, the `latest` tag will usually hit the image cache and return an outdated build, as you have to run `docker pull nwnxee/unified` to update the `latest` image in your cache. Using the `[commit-hash]` tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.
-
-The `-full` versions include all the heavier run dependencies, and is only necessary if you use the plugins mono or jvm.
 
 Note, the image named `nwnxee/nwserver` exists for legacy reasons but is no longer actively maintained.
 

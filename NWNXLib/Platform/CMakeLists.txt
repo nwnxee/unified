@@ -1,8 +1,3 @@
 nwnxlib_add(
     "ASLR.cpp"
-    "DynamicLibraries.cpp"
-    "FileSystem.cpp"
-    "Memory.cpp"
-    "Syslog.cpp"
-    "Time.cpp"
     "Debug.cpp")

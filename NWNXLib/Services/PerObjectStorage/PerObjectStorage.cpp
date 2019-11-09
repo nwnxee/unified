@@ -209,52 +209,52 @@ void PerObjectStorageProxy::Remove(CGameObject *pGameObject, const std::string& 
 }
 
 
-template <> Maybe<int> PerObjectStorage::Get<int>(CGameObject *pGameObject, const std::string& key)
+template <> std::optional<int> PerObjectStorage::Get<int>(CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
         auto map = pOS->GetIntMap();
         auto it = map.find(key);
         if (it != map.end())
-            return Maybe<int>(it->second);
+            return std::make_optional<int>(it->second);
     }
-    return Maybe<int>();
+    return std::optional<int>();
 }
 
-template <> Maybe<float> PerObjectStorage::Get<float>(CGameObject *pGameObject, const std::string& key)
+template <> std::optional<float> PerObjectStorage::Get<float>(CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
         auto map = pOS->GetFloatMap();
         auto it = map.find(key);
         if (it != map.end())
-            return Maybe<float>(it->second);
+            return std::make_optional<float>(it->second);
     }
-    return Maybe<float>();
+    return std::optional<float>();
 }
 
-template <> Maybe<std::string> PerObjectStorage::Get<std::string>(CGameObject *pGameObject, const std::string& key)
+template <> std::optional<std::string> PerObjectStorage::Get<std::string>(CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
         auto map = pOS->GetStringMap();
         auto it = map.find(key);
         if (it != map.end())
-            return Maybe<std::string>(it->second);
+            return std::make_optional<std::string>(it->second);
     }
-    return Maybe<std::string>();
+    return std::optional<std::string>();
 }
 
-template <> Maybe<void*> PerObjectStorage::Get<void*>(CGameObject *pGameObject, const std::string& key)
+template <> std::optional<void*> PerObjectStorage::Get<void*>(CGameObject *pGameObject, const std::string& key)
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
         auto map = pOS->GetPointerMap();
         auto it = map.find(key);
         if (it != map.end())
-            return Maybe<void*>(it->second.first);
+            return std::make_optional<void*>(it->second.first);
     }
-    return Maybe<void*>();
+    return std::optional<void*>();
 }
 
 void PerObjectStorage::DestroyObjectStorage(CGameObject *pGameObject)

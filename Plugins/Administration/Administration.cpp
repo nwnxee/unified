@@ -16,7 +16,6 @@
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
 #include "ViewPtr.hpp"
-#include "Platform/FileSystem.hpp"
 #include "Services/Tasks/Tasks.hpp"
 
 #include <unistd.h>
@@ -169,7 +168,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
 
     LOG_NOTICE("Deleting %s %s", filename, bPreserveBackup ? "(backed up)" : "(no backup)");
 
-    if (!Platform::FileSystem::FileExists(filename))
+    if( access( filename.c_str(), F_OK ) == -1 )
     {
         LOG_ERROR("File %s not found.", filename);
         return Events::ArgumentStack();
@@ -185,13 +184,13 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
             {
                 std::string backup = filename + ".deleted";
                 int i = 0;
-                while (Platform::FileSystem::FileExists(backup + std::to_string(i)))
+                while ( access( backup.append(std::to_string(i)).c_str(), F_OK ) != -1 )
                     i++;
-                Platform::FileSystem::RenameFile(filename, backup + std::to_string(i));
+                rename(filename.c_str(), backup.append(std::to_string(i)).c_str());
             }
             else
             {
-                Platform::FileSystem::RemoveFile(filename);
+                unlink(filename.c_str());
             }
         });
 

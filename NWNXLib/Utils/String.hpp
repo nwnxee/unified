@@ -2,24 +2,20 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 
-namespace NWNXLib {
-
-template <typename T>
-class Maybe;
-
-namespace Utils {
+namespace NWNXLib::Utils {
 
 // String conversions...
 template <typename T>
-Maybe<T> from_string(const std::string& str) = delete;
-template<> Maybe<bool> from_string(const std::string& str);
-template<> Maybe<int32_t> from_string(const std::string& str);
-template<> Maybe<uint32_t> from_string(const std::string& str);
-template<> Maybe<int64_t> from_string(const std::string& str);
-template<> Maybe<uint64_t> from_string(const std::string& str);
-template<> Maybe<float> from_string(const std::string& str);
-template<> Maybe<double> from_string(const std::string& str);
+std::optional<T> from_string(const std::string& str) = delete;
+template<> std::optional<bool> from_string(const std::string& str);
+template<> std::optional<int32_t> from_string(const std::string& str);
+template<> std::optional<uint32_t> from_string(const std::string& str);
+template<> std::optional<int64_t> from_string(const std::string& str);
+template<> std::optional<uint64_t> from_string(const std::string& str);
+template<> std::optional<float> from_string(const std::string& str);
+template<> std::optional<double> from_string(const std::string& str);
 
 // Trim functions...
 std::string& ltrim(std::string& str);
@@ -30,5 +26,4 @@ std::string& trim(std::string& str);
 std::string join(const std::vector<std::string>& str, const char* delim = " ");
 std::vector<std::string> split(const std::string& str, char delim, bool skipEmpty = true, bool trimmed = true);
 
-}
 }

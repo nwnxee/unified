@@ -17,6 +17,7 @@
 #include "Utils.hpp"
 
 #include <cstring>
+#include <optional>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -35,7 +36,7 @@ struct Command
 
 static const int  NWNX_ABI_VERSION = 2;
 
-Maybe<Command> ProcessNWNX(const CExoString& str)
+std::optional<Command> ProcessNWNX(const CExoString& str)
 {
     auto startsWith = [](const CExoString& str, const char *prefix) -> bool
     {
@@ -65,7 +66,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
             cmd.plugin    = plugin;
             cmd.event     = event;
             cmd.operation = operation;
-            return Maybe<Command>(cmd);
+            return std::make_optional<>(cmd);
         }
     }
     else if (startsWith(str, "NWNX!"))
@@ -84,7 +85,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
         }
     }
 
-    return Maybe<Command>();
+    return std::optional<Command>();
 }
 
 }

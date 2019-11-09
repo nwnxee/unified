@@ -2,7 +2,6 @@
 
 #include "API/Types.hpp"
 #include "API/CGameEffect.hpp"
-#include "Maybe.hpp"
 #include "Services/Services.hpp"
 
 #include <cstdint>
@@ -12,6 +11,7 @@
 #include <stack>
 #include <unordered_map>
 #include <vector>
+#include <optional>
 
 namespace NWNXLib {
 
@@ -22,11 +22,11 @@ class Events : public ServiceBase
 public: // Structures
     struct Argument
     {
-        Maybe<int32_t>              m_int;
-        Maybe<float>                m_float;
-        Maybe<API::Types::ObjectID> m_object;
-        Maybe<std::string>          m_string;
-        Maybe<CGameEffect*>    m_effect;
+        std::optional<int32_t>              m_int;
+        std::optional<float>                m_float;
+        std::optional<API::Types::ObjectID> m_object;
+        std::optional<std::string>          m_string;
+        std::optional<CGameEffect*>         m_effect;
 
         // Constructors
         Argument(int32_t v)                : m_int(v)    { }
@@ -35,7 +35,7 @@ public: // Structures
         Argument(std::string v)            : m_string(std::move(v)) { }
         Argument(CGameEffect* v)           : m_effect(v) { }
 
-        template <typename T> Maybe<T>& Get();
+        template <typename T> std::optional<T>& Get();
         std::string toString() const;
     };
 
@@ -61,7 +61,7 @@ public:
     void Push(const std::string& pluginName, const std::string& eventName, T&& value);
 
     template <typename T>
-    Maybe<T> Pop(const std::string& pluginName, const std::string& eventName);
+    std::optional<T> Pop(const std::string& pluginName, const std::string& eventName);
 
     void Call(const std::string& pluginName, const std::string& eventName);
 
