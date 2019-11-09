@@ -7,7 +7,7 @@
 
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
-using HandleType = NWNXLib::Platform::DynamicLibraries::HandleType;
+using HandleType = void*;
 
 namespace SpellChecker {
 
