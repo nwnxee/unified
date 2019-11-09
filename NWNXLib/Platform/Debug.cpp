@@ -5,11 +5,7 @@
 #include <execinfo.h>
 #include <signal.h>
 
-namespace NWNXLib {
-
-namespace Platform {
-
-namespace Debug {
+namespace NWNXLib::Platform::Debug {
 
 bool IsDebuggerPresent()
 {
@@ -28,11 +24,6 @@ bool IsDebuggerPresent()
     }
     fclose(f);
     return present;
-}
-
-void OutputDebugString(const char *str)
-{
-    (void)str;
 }
 
 std::string GetStackTrace(uint8_t levels)
@@ -55,10 +46,6 @@ std::string GetStackTrace(uint8_t levels)
         }
     }
     return std::string(buffer);
-}
-
-}
-
 }
 
 }
