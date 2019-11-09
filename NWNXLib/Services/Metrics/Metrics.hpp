@@ -16,7 +16,7 @@ namespace Services {
 
 class Tasks;
 
-class Metrics : public ServiceBase
+class Metrics
 {
 public: // Structures
     using MetricDataCallback = std::function<void(const std::vector<MetricData>&)>;
