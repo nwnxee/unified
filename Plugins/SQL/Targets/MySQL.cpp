@@ -22,10 +22,10 @@ MySQL::~MySQL()
 
 void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 {
-    const std::string host = config->Get<std::string>("HOST", "localhost");
-    const std::string username = config->Require<std::string>("USERNAME");
-    const std::string password = config->Require<std::string>("PASSWORD");
-    const NWNXLib::Maybe<std::string> database = config->Get<std::string>("DATABASE");
+    const auto host     = config->Get<std::string>("HOST", "localhost");
+    const auto username = config->Require<std::string>("USERNAME");
+    const auto password = config->Require<std::string>("PASSWORD");
+    const auto database = config->Get<std::string>("DATABASE");
     if (database)
     {
         LOG_DEBUG("DB set to %s", (*database));
@@ -94,7 +94,7 @@ bool MySQL::PrepareQuery(const Query& query)
     return success;
 }
 
-NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
+std::optional<ResultSet> MySQL::ExecuteQuery()
 {
     affectedRows = -1;
 
@@ -103,7 +103,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
     {
         LOG_WARNING("Failed to bind params");
         m_lastError.assign(mysql_error(&m_mysql));
-        return NWNXLib::Maybe<ResultSet>(); // Failed query.
+        return std::optional<ResultSet>(); // Failed query.
     }
 
     success = !mysql_stmt_execute(m_stmt);
@@ -154,11 +154,11 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
             }
             mysql_free_result(mysqlResult);
             mysql_stmt_free_result(m_stmt);
-            return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
+            return std::make_optional<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
         }
         // Statement returned no rows (INSERT, UPDATE, DELETE, etc.)
         affectedRows = static_cast<int>(mysql_affected_rows(&m_mysql));
-        return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
+        return std::make_optional<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
 
     if (!success)
@@ -176,7 +176,7 @@ NWNXLib::Maybe<ResultSet> MySQL::ExecuteQuery()
 
     }
 
-    return NWNXLib::Maybe<ResultSet>(); // Failed query.
+    return std::optional<ResultSet>(); // Failed query.
 }
 
 void MySQL::PrepareInt(int32_t position, int32_t value)

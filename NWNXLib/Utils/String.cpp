@@ -1,5 +1,4 @@
 #include "String.hpp"
-#include "../Maybe.hpp"
 #include <sstream>
 #include <stdlib.h> 
 #include <string.h>
@@ -7,7 +6,7 @@
 namespace NWNXLib {
 namespace Utils {
 
-template<> Maybe<bool> from_string(const std::string& str)
+template<> std::optional<bool> from_string(const std::string& str)
 {
     static const char* truesies[] = { "t", "true", "y", "yes", "1" };
     static const char* falsies[] = { "f", "false", "n", "no", "0" };
@@ -16,7 +15,7 @@ template<> Maybe<bool> from_string(const std::string& str)
     {
         if (strcasecmp(t, str.c_str()) == 0)
         {
-            return Maybe<bool>(true);
+            return std::make_optional<bool>(true);
         }
     }
 
@@ -24,11 +23,11 @@ template<> Maybe<bool> from_string(const std::string& str)
     {
         if (strcasecmp(f, str.c_str()) == 0)
         {
-            return Maybe<bool>(false);
+            return std::make_optional<bool>(false);
         }
     }
 
-    return Maybe<bool>();
+    return std::optional<bool>();
 }
 
 inline int base(const std::string& str)
@@ -42,58 +41,58 @@ inline const char* first_non_space(const std::string& str) {
     return start;
 }
 
-template <> Maybe<int32_t> from_string(const std::string& str)
+template <> std::optional<int32_t> from_string(const std::string& str)
 {
     const char* start = first_non_space(str);
-    if (!*start) return Maybe<int32_t>();
+    if (!*start) return std::optional<int32_t>();
     char* end;
     int32_t res = strtol(start, &end, base(str));
-    return (!*end || std::isspace(*end)) ? Maybe<int32_t>(res) : Maybe<int32_t>();
+    return (!*end || std::isspace(*end)) ? std::optional<int32_t>(res) : std::optional<int32_t>();
 }
 
-template<> Maybe<uint32_t> from_string(const std::string& str)
+template<> std::optional<uint32_t> from_string(const std::string& str)
 {
     const char* start = first_non_space(str);
-    if (!*start) return Maybe<uint32_t>();
+    if (!*start) return std::optional<uint32_t>();
     char* end;
     uint32_t res = strtoul(start, &end, base(str));
-    return (!*end || std::isspace(*end)) ? Maybe<uint32_t>(res) : Maybe<uint32_t>();
+    return (!*end || std::isspace(*end)) ? std::optional<uint32_t>(res) : std::optional<uint32_t>();
 }
 
-template<> Maybe<int64_t> from_string(const std::string& str)
+template<> std::optional<int64_t> from_string(const std::string& str)
 {
     const char* start = first_non_space(str);
-    if (!*start) return Maybe<int64_t>();
+    if (!*start) return std::optional<int64_t>();
     char* end;
     int64_t res = strtoll(start, &end, base(str));
-    return (!*end || std::isspace(*end)) ? Maybe<int64_t>(res) : Maybe<int64_t>();
+    return (!*end || std::isspace(*end)) ? std::optional<int64_t>(res) : std::optional<int64_t>();
 }
 
-template<> Maybe<uint64_t> from_string(const std::string& str)
+template<> std::optional<uint64_t> from_string(const std::string& str)
 {
     const char* start = first_non_space(str);
-    if (!*start) return Maybe<uint64_t>();
+    if (!*start) return std::optional<uint64_t>();
     char* end;
     uint64_t res = strtoull(start, &end, base(str));
-    return (!*end || std::isspace(*end)) ? Maybe<uint64_t>(res) : Maybe<uint64_t>();
+    return (!*end || std::isspace(*end)) ? std::optional<uint64_t>(res) : std::optional<uint64_t>();
 }
 
-template<> Maybe<float> from_string(const std::string& str)
+template<> std::optional<float> from_string(const std::string& str)
 {
     const char* start = first_non_space(str);
-    if (!*start) return Maybe<float>();
+    if (!*start) return std::optional<float>();
     char* end;
     float res = strtof(start, &end);
-    return (!*end || std::isspace(*end)) ? Maybe<float>(res) : Maybe<float>();
+    return (!*end || std::isspace(*end)) ? std::optional<float>(res) : std::optional<float>();
 }
 
-template<> Maybe<double> from_string(const std::string& str)
+template<> std::optional<double> from_string(const std::string& str)
 {
     const char* start = first_non_space(str);
-    if (!*start) return Maybe<double>();
+    if (!*start) return std::optional<double>();
     char* end;
     double res = strtod(start, &end);
-    return (!*end || std::isspace(*end)) ? Maybe<double>(res) : Maybe<double>();
+    return (!*end || std::isspace(*end)) ? std::optional<double>(res) : std::optional<double>();
 }
 
 std::string& ltrim(std::string& str) 

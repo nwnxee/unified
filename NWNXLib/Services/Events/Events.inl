@@ -15,7 +15,7 @@ void Events::Push(const std::string& pluginName, const std::string& eventName, T
 }
 
 template <typename T>
-Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName)
+std::optional<T> Events::Pop(const std::string& pluginName, const std::string& eventName)
 {
     if (auto* event = GetEventData(pluginName, eventName))
     {
@@ -23,10 +23,10 @@ Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName
         {
             LOG_ERROR("Plugin '%s', event '%s': Tried to get a return value when one did not exist.",
                 pluginName, eventName);
-            return Maybe<T>();
+            return std::optional<T>();
         }
 
-        Maybe<T>& data = event->m_returns.top().Get<T>();
+        std::optional<T>& data = event->m_returns.top().Get<T>();
         if (!data)
         {
             LOG_ERROR("Plugin '%s', event '%s': Type mismatch in return values",
@@ -40,23 +40,23 @@ Maybe<T> Events::Pop(const std::string& pluginName, const std::string& eventName
             // I'm probably using all these moves wrong..
             T real = std::move(*data);
             event->m_returns.pop();
-            return Maybe<T>(std::move(real));
+            return std::make_optional<T>(std::move(real));
         }
     }
     else
     {
         LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName, eventName);
     }
-    return Maybe<T>();
+    return std::optional<T>();
 }
 
 
 
-template<> Maybe<int32_t>&              Events::Argument::Get<int32_t>();
-template<> Maybe<float>&                Events::Argument::Get<float>();
-template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>();
-template<> Maybe<std::string>&          Events::Argument::Get<std::string>();
-template<> Maybe<CGameEffect*>&    Events::Argument::Get<CGameEffect*>();
+template<> std::optional<int32_t>&              Events::Argument::Get<int32_t>();
+template<> std::optional<float>&                Events::Argument::Get<float>();
+template<> std::optional<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>();
+template<> std::optional<std::string>&          Events::Argument::Get<std::string>();
+template<> std::optional<CGameEffect*>&    Events::Argument::Get<CGameEffect*>();
 
 template <typename T>
 void Events::InsertArgument(ArgumentStack& stack, T arg)
@@ -72,14 +72,14 @@ T Events::ExtractArgument(ArgumentStack& arguments)
         throw std::runtime_error("Tried to extract an argument from an empty argument stack.");
     }
 
-    Maybe<T>& data = arguments.top().Get<T>();
+    std::optional<T>& data = arguments.top().Get<T>();
 
     if (!data)
     {
         throw std::runtime_error("Failed to match pushed argument to the provided type.");
     }
 
-    T real = std::move(data.Extract());
+    T real = std::move(data.value());
     arguments.pop();
 
     return real;

@@ -84,7 +84,7 @@ bool SQLite::PrepareQuery(const Query& query)
     return success;
 }
 
-NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
+std::optional<ResultSet> SQLite::ExecuteQuery()
 {
     int stepState;
     m_affectedRows = -1;
@@ -104,7 +104,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
 
             LOG_WARNING("Failed to bind params: %s", m_lastError);
 
-            return NWNXLib::Maybe<ResultSet>(); // Failed query, bind error.
+            return std::optional<ResultSet>(); // Failed query, bind error.
         }
     }
 
@@ -117,7 +117,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         if (stepState == SQLITE_DONE)
         {
             m_affectedRows = sqlite3_changes(m_dbConn);
-            return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
+            return std::make_optional<ResultSet>(ResultSet()); // Succeeded query, no results.
         }
     }
     else
@@ -146,14 +146,14 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         if (stepState == SQLITE_DONE)
         {
             LOG_DEBUG("Returning Result Set");
-            return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
+            return std::make_optional<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
         }
     }
 
     m_lastError.assign(sqlite3_errmsg(m_dbConn));
     LOG_WARNING("Query failed due to error '%s'", m_lastError);
 
-    return NWNXLib::Maybe<ResultSet>(); // Failed query.
+    return std::optional<ResultSet>(); // Failed query.
 }
 
 void SQLite::PrepareInt(int32_t position, int32_t value)

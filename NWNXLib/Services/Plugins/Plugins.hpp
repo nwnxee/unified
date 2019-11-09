@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Maybe.hpp"
 #include "Platform/DynamicLibraries.hpp"
 #include "Plugin.hpp"
 #include "Services/Services.hpp"
@@ -10,6 +9,7 @@
 #include <map>
 #include <utility>
 #include <vector>
+#include <optional>
 
 namespace NWNXLib {
 
@@ -61,9 +61,9 @@ public:
     RegistrationToken LoadPlugin(const std::string& path, Plugin::CreateParams&& params);
     void UnloadPlugin(RegistrationToken&& token, const Plugin::UnloadReason reason);
 
-    Maybe<PluginData> FindPluginById(const PluginID id) const;
-    Maybe<PluginData> FindPluginByName(const std::string& name) const;
-    Maybe<PluginData> FindPluginByPath(const std::string& path) const;
+    std::optional<PluginData> FindPluginById(const PluginID id) const;
+    std::optional<PluginData> FindPluginByName(const std::string& name) const;
+    std::optional<PluginData> FindPluginByPath(const std::string& path) const;
     std::vector<PluginData> GetPlugins() const;
     std::string GetCanonicalPluginName(const std::string& name) const;
 
@@ -79,9 +79,9 @@ public:
     PluginsProxy(Plugins& plugins);
     ~PluginsProxy();
 
-    Maybe<Plugins::PluginData> FindPluginById(const Plugins::PluginID id) const;
-    Maybe<Plugins::PluginData> FindPluginByName(const std::string& name) const;
-    Maybe<Plugins::PluginData> FindPluginByPath(const std::string& path) const;
+    std::optional<Plugins::PluginData> FindPluginById(const Plugins::PluginID id) const;
+    std::optional<Plugins::PluginData> FindPluginByName(const std::string& name) const;
+    std::optional<Plugins::PluginData> FindPluginByPath(const std::string& path) const;
     std::vector<Plugins::PluginData> GetPlugins() const;
     std::string GetCanonicalPluginName(const std::string& name) const;
 };

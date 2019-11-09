@@ -215,7 +215,7 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
 
     const int32_t queryId = ++m_nextQueryId;
 
-    Maybe<ResultSet> query;
+    std::optional<ResultSet> query;
 
     if (m_queryMetrics)
     {
