@@ -1256,7 +1256,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
         pUnsummonMyselfHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature14UnsummonMyselfEv);
 
         GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15PossessFamiliarEv>(
-                +[](CNWSCreature *pPossessor, Types::ObjectID possessedOidPOS) -> void
+                +[](CNWSCreature *pPossessor) -> void
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
                     auto possessorOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessorOid");
@@ -1266,7 +1266,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                     }
                     else
                     {
-                        pPossessFamiliarHook->CallOriginal<void>(pPossessor, possessedOidPOS);
+                        pPossessFamiliarHook->CallOriginal<void>(pPossessor);
                     }
                 });
         pPossessFamiliarHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature15PossessFamiliarEv);
