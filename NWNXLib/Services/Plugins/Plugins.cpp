@@ -1,8 +1,8 @@
 #include "Services/Plugins/Plugins.hpp"
 
-namespace NWNXLib {
+#include <dlfcn.h>
 
-namespace Services {
+namespace NWNXLib::Services {
 
 Plugins::Plugins()
 {
@@ -25,20 +25,19 @@ Plugins::RegistrationToken Plugins::LoadPlugin(const std::string& path, Plugin::
         throw std::runtime_error("Plugin is already loaded.");
     }
 
-    using namespace Platform::DynamicLibraries;
-    HandleType handle = OpenDll(path);
+    void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_NODELETE);
 
-    if (!IsHandleValid(handle))
+    if (!handle)
     {
-        throw std::runtime_error("Plugin failed to load: " + GetErrorFromHandle(handle));
+        throw std::runtime_error(std::string{"Plugin failed to load: "} + dlerror());
     }
 
-    const uintptr_t pluginInfoFuncAddr = GetFuncAddrInDll("PluginInfo", handle);
-    const uintptr_t pluginLoadFuncAddr = GetFuncAddrInDll("PluginLoad", handle);
-    const uintptr_t pluginUnloadFuncAddr = GetFuncAddrInDll("PluginUnload", handle);
+    const uintptr_t pluginInfoFuncAddr = (uintptr_t)dlsym(handle, "PluginInfo");
+    const uintptr_t pluginLoadFuncAddr = (uintptr_t)dlsym(handle, "PluginLoad");
+    const uintptr_t pluginUnloadFuncAddr = (uintptr_t)dlsym(handle, "PluginUnload");
 
     // Don't check pluginUnloadFuncAddr -- it's optional.
-    const bool mandatoryPluginsPresent = IsFuncAddrFromDllValid(pluginInfoFuncAddr) && IsFuncAddrFromDllValid(pluginLoadFuncAddr);
+    const bool mandatoryPluginsPresent = (pluginInfoFuncAddr != 0) && (pluginLoadFuncAddr != 0);
 
     if (!mandatoryPluginsPresent)
     {
@@ -187,7 +186,7 @@ void Plugins::UnloadPluginInternal(PluginMap::iterator plugin, const Plugin::Unl
         }
     }
 
-    Platform::DynamicLibraries::CloseDll(plugin->second.m_handle);
+    dlclose(plugin->second.m_handle);
     m_plugins.erase(plugin);
 }
 
@@ -231,8 +230,6 @@ Maybe<Plugins::PluginData> PluginsProxy::FindPluginByPath(const std::string& pat
 std::vector<Plugins::PluginData> PluginsProxy::GetPlugins() const
 {
     return m_proxyBase.GetPlugins();
-}
-
 }
 
 }

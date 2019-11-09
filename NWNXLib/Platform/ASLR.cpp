@@ -2,9 +2,10 @@
 #include "API/Globals.hpp"
 #include "API/Version.hpp"
 #include "API/CExoString.hpp"
-#include "Platform/DynamicLibraries.hpp"
 #include "Platform/Memory.hpp"
+#include "Assert.hpp"
 
+#include <dlfcn.h>
 
 namespace NWNXLib::API::Globals {
     NWNXExportedGlobals ExportedGlobals;
@@ -20,9 +21,11 @@ uintptr_t ASLR::s_baseAddress;
 
 void ASLR::CalculateBaseAddress()
 {
+    void *handle = dlopen(nullptr, RTLD_LAZY);
+    ASSERT(handle);
     // TODO: Export free-standing functions so we don't have to update manually.
     const uintptr_t whatWeThinkItIs = 0x00000000000d9870; NWNX_EXPECT_VERSION(8192);
-    const uintptr_t whatItActuallyIs = DynamicLibraries::GetLoadedFuncAddr("NWNXEntryPoint");
+    const uintptr_t whatItActuallyIs = (uintptr_t)dlsym(handle, "NWNXEntryPoint");
     s_baseAddress = whatItActuallyIs - whatWeThinkItIs;
 
     using NWNXLib::API::Globals::NWNXExportedGlobals;
@@ -48,6 +51,7 @@ void ASLR::CalculateBaseAddress()
     }
     std::printf("  Corrected %d ASLR addresses\n", count);
     std::printf("=========================================\n");
+    dlclose(handle);
 }
 
 uintptr_t ASLR::GetRelocatedAddress(const uintptr_t address)
