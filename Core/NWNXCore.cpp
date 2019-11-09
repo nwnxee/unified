@@ -495,7 +495,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
         Encoding::SetDefaultLocale(*locale);
     }
 
-    Maybe<bool> crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
+    auto crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
     if (crashOnAssertFailure)
     {
         Assert::SetCrashOnFailure(*crashOnAssertFailure);

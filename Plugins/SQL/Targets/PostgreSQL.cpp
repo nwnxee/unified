@@ -27,7 +27,7 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
     // Database technically is optional.  If not given, it will connect to the default
     // database of the given USERNAME.
-    const NWNXLib::Maybe<std::string> DB = config->Get<std::string>("DATABASE");
+    const auto DB = config->Get<std::string>("DATABASE");
     if (DB)
     {
         LOG_DEBUG("DB set to %s", (*DB));
@@ -123,7 +123,7 @@ bool PostgreSQL::PrepareQuery(const Query& query)
     return true;
 }
 
-NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
+std::optional<ResultSet> PostgreSQL::ExecuteQuery()
 {
 
     m_affectedRows = -1;
@@ -183,7 +183,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
         }
 
         PQclear(res);
-        return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
+        return std::make_optional<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
     }
 
     // DML that doesn't return rows (inserts, updates, etc.)
@@ -197,7 +197,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
             m_affectedRows = atoi(cnt);
         }
         PQclear(res);
-        return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
+        return std::make_optional<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
 
     // Else.. something unexpected happened.
@@ -215,7 +215,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     m_lastError.assign(error);
 
     PQclear(res);
-    return NWNXLib::Maybe<ResultSet>();
+    return std::optional<ResultSet>();
 }
 
 // Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.

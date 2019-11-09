@@ -1010,7 +1010,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                 {
                     if (auto *pPlaceable = Utils::GetGameObject(oidObjectToUpdate)->AsNWSPlaceable())
                     {
-                        static Maybe<std::string> name;
+                        static std::optional<std::string> name;
                         static CExoString swapName;
 
                         if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)

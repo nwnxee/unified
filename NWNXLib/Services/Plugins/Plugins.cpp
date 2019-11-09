@@ -18,7 +18,7 @@ Plugins::~Plugins()
 
 Plugins::RegistrationToken Plugins::LoadPlugin(const std::string& path, Plugin::CreateParams&& params)
 {
-    Maybe<PluginData> existingPlugin = FindPluginByPath(path);
+    auto existingPlugin = FindPluginByPath(path);
 
     if (existingPlugin)
     {
@@ -111,20 +111,20 @@ void Plugins::UnloadPlugin(RegistrationToken&& token, const Plugin::UnloadReason
     UnloadPluginInternal(plugin, reason);
 }
 
-Maybe<Plugins::PluginData> Plugins::FindPluginById(const Plugins::PluginID id) const
+std::optional<Plugins::PluginData> Plugins::FindPluginById(const Plugins::PluginID id) const
 {
     auto plugin = m_plugins.find(id);
 
     if (plugin != m_plugins.end())
     {
         const PluginDataInternal& data = plugin->second;
-        return Maybe<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
+        return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
     }
 
-    return Maybe<Plugins::PluginData>();
+    return std::optional<Plugins::PluginData>();
 }
 
-Maybe<Plugins::PluginData> Plugins::FindPluginByName(const std::string& name) const
+std::optional<Plugins::PluginData> Plugins::FindPluginByName(const std::string& name) const
 {
     for (auto& plugin : m_plugins)
     {
@@ -133,14 +133,14 @@ Maybe<Plugins::PluginData> Plugins::FindPluginByName(const std::string& name) co
         if (pluginName == name)
         {
             const PluginDataInternal& data = plugin.second;
-            return Maybe<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
+            return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
         }
     }
 
-    return Maybe<Plugins::PluginData>();
+    return std::optional<Plugins::PluginData>();
 }
 
-Maybe<Plugins::PluginData> Plugins::FindPluginByPath(const std::string& path) const
+std::optional<Plugins::PluginData> Plugins::FindPluginByPath(const std::string& path) const
 {
     for (auto& plugin : m_plugins)
     {
@@ -148,11 +148,11 @@ Maybe<Plugins::PluginData> Plugins::FindPluginByPath(const std::string& path) co
 
         if (data.m_path == path)
         {
-            return Maybe<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
+            return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
         }
     }
 
-    return Maybe<Plugins::PluginData>();
+    return std::optional<Plugins::PluginData>();
 }
 
 std::vector<Plugins::PluginData> Plugins::GetPlugins() const
@@ -222,17 +222,17 @@ PluginsProxy::~PluginsProxy()
 {
 }
 
-Maybe<Plugins::PluginData> PluginsProxy::FindPluginById(const Plugins::PluginID id) const
+std::optional<Plugins::PluginData> PluginsProxy::FindPluginById(const Plugins::PluginID id) const
 {
     return m_proxyBase.FindPluginById(id);
 }
 
-Maybe<Plugins::PluginData> PluginsProxy::FindPluginByName(const std::string& name) const
+std::optional<Plugins::PluginData> PluginsProxy::FindPluginByName(const std::string& name) const
 {
     return m_proxyBase.FindPluginByName(name);
 }
 
-Maybe<Plugins::PluginData> PluginsProxy::FindPluginByPath(const std::string& path) const
+std::optional<Plugins::PluginData> PluginsProxy::FindPluginByPath(const std::string& path) const
 {
     return m_proxyBase.FindPluginByPath(path);
 }

@@ -17,7 +17,7 @@ public:
     virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) override;
     virtual bool IsConnected() override;
     virtual bool PrepareQuery(const Query& query) override;
-    virtual NWNXLib::Maybe<ResultSet> ExecuteQuery() override;
+    virtual std::optional<ResultSet> ExecuteQuery() override;
     virtual void PrepareInt(int32_t position, int32_t value) override;
     virtual void PrepareFloat(int32_t position, float value) override;
     virtual void PrepareString(int32_t position, const std::string& value) override;

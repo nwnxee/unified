@@ -70,7 +70,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
         if (forcedOverhead)
         {
-            FastTimer::PrepareForCalibration(std::chrono::nanoseconds(forcedOverhead.Extract()));
+            FastTimer::PrepareForCalibration(std::chrono::nanoseconds(forcedOverhead.value()));
         }
         else
         {

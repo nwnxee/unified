@@ -49,7 +49,7 @@ Ruby::Ruby(const Plugin::CreateParams& params)
     SafeRequire("enc/trans/transdb");
     SafeRequire("rubygems");
 
-    Maybe<std::string> preloadScript = GetServices()->m_config->Get<std::string>("PRELOAD_SCRIPT");
+    auto preloadScript = GetServices()->m_config->Get<std::string>("PRELOAD_SCRIPT");
     if (preloadScript)
     {
         SafeRequire(*preloadScript);
