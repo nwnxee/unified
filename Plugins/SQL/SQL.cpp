@@ -236,10 +236,10 @@ Events::ArgumentStack SQL::OnExecutePreparedQuery(Events::ArgumentStack&&)
         query = m_target->ExecuteQuery();
     }
 
-    const bool querySucceeded = query;
+    const bool querySucceeded = query.has_value();
 
     Events::InsertArgument(stack, querySucceeded ? queryId : 0);
-    m_activeResults = query.Extract(ResultSet());
+    m_activeResults = query.value_or(ResultSet());
 
     if (querySucceeded)
     {
