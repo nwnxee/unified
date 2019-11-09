@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('md_Plugins_SQL_Migration_Guide.html','
 <div class="textblock"><h1><a class="anchor" id="sql_migrate"></a>
 Migration Guide</h1>
 <p>Included below are some examples and guidance in migrating legacy NWNX ODBC style SQL code to the new NWNX:EE SQL Plugin.</p>
-<h3><a class="anchor" id="autotoc_md155"></a>
+<h3><a class="anchor" id="autotoc_md150"></a>
 General Information</h3>
 <p>The previous plugin only had one execution style: the SQL_ExecDirect() function that took a SQL string that had been constructed to execute.</p>
 <p>The new SQL Plugin has two methods of operation:</p>
@@ -121,7 +121,7 @@ General Information</h3>
 <li>The ability to serialize/un-serialize ObjectIDs and Objects to and from the database.</li>
 <li>Probably some others, too!</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md156"></a>
+<h3><a class="anchor" id="autotoc_md151"></a>
 Examples</h3>
 <p>A legacy (albeit contrived) example might look like this:</p>
 <div class="fragment"><div class="line"><span class="comment">//This is a silly, non-sensical function.</span></div>
@@ -232,10 +232,10 @@ Examples</h3>
 <div class="line"> </div>
 <div class="line">    AssignCommand(oBoard, ActionSpeakString(sFeedback));</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md157"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md152"></a>
 Multi-Platform Support</h3>
 <p>There is a function to retrieve the specific database type to enable multi-platform support through conditional logic.</p>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="nwnx__jvm__token_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a>()</div>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code" href="on__pubsub_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a>()</div>
 <div class="line">{</div>
 <div class="line">    WriteTimestampedLogEntry(<span class="stringliteral">&quot;Multi-Platform example..&quot;</span>);</div>
 <div class="line"> </div>
@@ -285,7 +285,7 @@ Multi-Platform Support</h3>
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__sql_html_gab7ec4280f37f01bafe8ce01f30cc7f13"><div class="ttname"><a href="group__sql.html#gab7ec4280f37f01bafe8ce01f30cc7f13">NWNX_SQL_ExecutePreparedQuery</a></div><div class="ttdeci">int NWNX_SQL_ExecutePreparedQuery()</div><div class="ttdoc">Executes a query which has been prepared.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00110">nwnx_sql.nss:110</a></div></div>
-<div class="ttc" id="anwnx__jvm__token_8nss_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="nwnx__jvm__token_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__jvm__token_8nss_source.html#l00011">nwnx_jvm_token.nss:11</a></div></div>
+<div class="ttc" id="aon__pubsub_8nss_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="on__pubsub_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition:</b> <a href="on__pubsub_8nss_source.html#l00007">on_pubsub.nss:7</a></div></div>
 <div class="ttc" id="agroup__sql_html_gaefc1bce86231177b8f972a8c0dc91a0b"><div class="ttname"><a href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a></div><div class="ttdeci">void NWNX_SQL_ReadNextRow()</div><div class="ttdoc">Reads the next row of returned data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00139">nwnx_sql.nss:139</a></div></div>
 <div class="ttc" id="agroup__sql_html_gae2e0e27014d82accfe4a0e510720515f"><div class="ttname"><a href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a></div><div class="ttdeci">int NWNX_SQL_PrepareQuery(string query)</div><div class="ttdoc">Prepares the provided query for execution.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00101">nwnx_sql.nss:101</a></div></div>
 <div class="ttc" id="agroup__sql_html_gad50edb1ed094961a96ef95f8099993ef"><div class="ttname"><a href="group__sql.html#gad50edb1ed094961a96ef95f8099993ef">NWNX_SQL_ExecuteQuery</a></div><div class="ttdeci">int NWNX_SQL_ExecuteQuery(string query)</div><div class="ttdoc">Directly execute an SQL query.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00118">nwnx_sql.nss:118</a></div></div>
@@ -297,7 +297,7 @@ Multi-Platform Support</h3>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Nov 9 2019 12:16:53 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Nov 9 2019 12:17:15 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
