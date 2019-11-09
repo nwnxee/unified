@@ -29,8 +29,19 @@ endfunction()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/Binaries)
 
-set(WARNING_FLAGS_CXX "-Wall -Wextra")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set(WARNING_FLAGS_CXX "-Weverything -Wno-missing-braces -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-padded \
+                           -Wno-packed -Wno-old-style-cast -Wno-reserved-id-macro -Wno-format-nonliteral -Wno-format-security \
+                           -Wno-gnu-zero-variadic-macro-arguments -Wno-global-constructors -Wno-exit-time-destructors \
+                           -Wno-missing-prototypes -Wno-unused-function -Wno-weak-vtables -Wno-missing-noreturn \
+                           -Wno-non-virtual-dtor -Wno-double-promotion -Wno-covered-switch-default -Wno-unused-macros \
+                           -Wno-register")
+else()
+    set(WARNING_FLAGS_CXX "-Wall -Wextra")
+endif()
+
 set(NWNX_STANDARD_FLAGS "-m64 -march=x86-64 -fdiagnostics-show-option -fno-omit-frame-pointer -fPIC -fno-strict-aliasing")
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")
 
