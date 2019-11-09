@@ -4,7 +4,6 @@
 #include "Services/Events/Events.hpp"
 #include "API/Types.hpp"
 #include <iostream>
-#include "Platform/DynamicLibraries.hpp"
 
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
