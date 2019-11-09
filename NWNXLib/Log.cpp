@@ -33,9 +33,6 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
         std::fflush(logFile);
     }
 
-    Platform::Debug::OutputDebugString(message);
-    Platform::Debug::OutputDebugString("\n");
-
     if (channel == Channel::SEV_FATAL)
     {
         ASSERT_FAIL();
