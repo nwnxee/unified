@@ -16,7 +16,6 @@
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
 #include "ViewPtr.hpp"
-#include "Platform/FileSystem.hpp"
 #include "Services/Tasks/Tasks.hpp"
 
 #include <unistd.h>
@@ -77,6 +76,8 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER(GetPlayOption);
     REGISTER(SetPlayOption);
     REGISTER(DeleteTURD);
+    REGISTER(GetDebugValue);
+    REGISTER(SetDebugValue);
 
 #undef REGISTER
 }
@@ -167,7 +168,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
 
     LOG_NOTICE("Deleting %s %s", filename, bPreserveBackup ? "(backed up)" : "(no backup)");
 
-    if (!Platform::FileSystem::FileExists(filename))
+    if( access( filename.c_str(), F_OK ) == -1 )
     {
         LOG_ERROR("File %s not found.", filename);
         return Events::ArgumentStack();
@@ -183,13 +184,13 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
             {
                 std::string backup = filename + ".deleted";
                 int i = 0;
-                while (Platform::FileSystem::FileExists(backup + std::to_string(i)))
+                while ( access( backup.append(std::to_string(i)).c_str(), F_OK ) != -1 )
                     i++;
-                Platform::FileSystem::RenameFile(filename, backup + std::to_string(i));
+                rename(filename.c_str(), backup.append(std::to_string(i)).c_str());
             }
             else
             {
-                Platform::FileSystem::RemoveFile(filename);
+                unlink(filename.c_str());
             }
         });
 
@@ -572,6 +573,80 @@ Events::ArgumentStack Administration::DeleteTURD(Events::ArgumentStack&& args)
     }
 
     Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+Events::ArgumentStack Administration::GetDebugValue(Events::ArgumentStack&& args)
+{
+    Events::ArgumentStack stack;
+    int32_t retVal = -1;
+
+    const auto debugType = Events::ExtractArgument<int32_t>(args);
+      ASSERT_OR_THROW(debugType >= 0);
+      ASSERT_OR_THROW(debugType <= 3);
+
+    switch (debugType)
+    {
+        case 0: // NWNX_ADMINISTRATION_DEBUG_COMBAT
+            retVal = *Globals::EnableCombatDebugging();
+            break;
+
+        case 1: // NWNX_ADMINISTRATION_DEBUG_SAVING_THROW
+            retVal = *Globals::EnableSavingThrowDebugging();
+            break;
+
+        case 2: // NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED
+            retVal = *Globals::EnableMovementSpeedDebugging();
+            break;
+
+        case 3: // NWNX_ADMINISTRATION_DEBUG_HIT_DIE
+            retVal = *Globals::EnableHitDieDebugging();
+            break;
+
+        default:
+            LOG_NOTICE("Calling NWNX_Administration_GetDebugTypeValue with invalid debug type: %d", debugType);
+            break;
+    }
+
+    Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+Events::ArgumentStack Administration::SetDebugValue(Events::ArgumentStack&& args)
+{
+    Events::ArgumentStack stack;
+
+    const auto debugType = Events::ExtractArgument<int32_t>(args);
+     ASSERT_OR_THROW(debugType >= 0);
+     ASSERT_OR_THROW(debugType <= 3);
+
+    const auto value = Events::ExtractArgument<int32_t>(args);
+      ASSERT_OR_THROW(value >= 0);
+
+    switch (debugType)
+    {
+        case 0: // NWNX_ADMINISTRATION_DEBUG_COMBAT
+            *Globals::EnableCombatDebugging() = !!value;
+            break;
+
+        case 1: // NWNX_ADMINISTRATION_DEBUG_SAVING_THROW
+            *Globals::EnableSavingThrowDebugging() = !!value;
+            break;
+
+        case 2: // NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED
+            *Globals::EnableMovementSpeedDebugging() = !!value;
+            break;
+
+        case 3: // NWNX_ADMINISTRATION_DEBUG_HIT_DIE
+            *Globals::EnableHitDieDebugging() = !!value;
+            break;
+
+        default:
+            LOG_NOTICE("Calling NWNX_Administration_SetDebugValue with invalid debug type: %d", debugType);
+            break;
+    }
 
     return stack;
 }

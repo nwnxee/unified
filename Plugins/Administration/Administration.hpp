@@ -32,7 +32,8 @@ public:
     ArgumentStack GetPlayOption             (ArgumentStack&& args);
     ArgumentStack SetPlayOption             (ArgumentStack&& args);
     ArgumentStack DeleteTURD                (ArgumentStack&& args);
-
+    ArgumentStack GetDebugValue             (ArgumentStack&& args);
+    ArgumentStack SetDebugValue             (ArgumentStack&& args);
 };
 
 }

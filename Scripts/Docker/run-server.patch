@@ -1,7 +1,11 @@
-58a59,71
+58a59,75
 > copycrashlog() {
 >   inotifywait -mq -e moved_to -e create "$1" --format "%f" | while read f
 >   do
+>     # copy the cryptographic_secret just to make sure
+>     if [[ $f = cryptographic_secret ]]; then
+>       backup_cryptographic_secret
+>     fi
 >     # check if the file is a crash log file
 >     if [[ $f = nwserver-crash*.log ]]; then
 >       echo "The server crashed, trying to save crash data ($f) into your mounted server home."
@@ -12,13 +16,13 @@
 > 
 > copycrashlog $HOMEPATH $ROHOMEPATH &
 > 
-60c73,75
+60c77,79
 < LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
 ---
 > export LD_PRELOAD=$NWN_LD_PRELOAD
 > export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
 > exec ./nwserver-linux \
-85,96d99
+85,96d103
 < RET=$?
 < set -e
 < 
