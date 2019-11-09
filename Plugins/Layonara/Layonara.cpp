@@ -18,8 +18,7 @@
 #include "API/CNWSPlaceable.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSJournal.hpp"
-#include "API/CExoArrayListTemplatedSJournalEntry.hpp"
-#include "API/CExoArrayListTemplatedunsignedlong.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -29,7 +28,7 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace NWNXLib::API::Constants;
+using namespace Constants;
 
 static ViewPtr<Layonara::Layonara> g_plugin;
 
@@ -76,14 +75,15 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     REGISTER(SetQuiverArrows);
     REGISTER(CreateVFXAtTransitionCentroid);
     REGISTER(ClearSurfaceMaterial);
+    REGISTER(ScaleOverTime);
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSInventory__GetItemInSlot>(
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN13CNWSInventory13GetItemInSlotEj>(
             &Layonara::GetItemInSlotHook);
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSObject__SetPosition, void,
-            API::CNWSObject*, API::Vector, int32_t>(&SetPositionHook);
-    m_GetItemInSlotHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSInventory__GetItemInSlot);
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObject11SetPositionE6Vectori, void,
+            CNWSObject*, Vector, int32_t>(&SetPositionHook);
+    m_GetItemInSlotHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN13CNWSInventory13GetItemInSlotEj);
     m_GemBonuses[Gems::GRE] = {SavingThrowType::Poison, SavingThrow::All, Skill::Listen, DamageType::Positive,
                                Ability::Strength, Ability::Charisma, -1, -1, -1, -1};
     m_GemBonuses[Gems::MAL] = {SavingThrowType::Disease, SavingThrow::All, Skill::Lore, DamageType::Divine,
@@ -152,7 +152,7 @@ CNWSItem *Layonara::GetItemInSlotHook(CNWSInventory *pThis, uint32_t nSlot)
     return g_plugin->m_GetItemInSlotHook->CallOriginal<CNWSItem*>(pThis, nSlot);
 }
 
-void Layonara::SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff)
+void Layonara::SetArrowsEffect(CNWSCreature *pCreature, bool bOff)
 {
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
@@ -200,7 +200,7 @@ void Layonara::SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff)
     else if (pItem->GetPropertyByTypeExists(Constants::ItemProperty::DamageBonusVSRacialGroup, 0))
         iPropOffset = 6;
 
-    auto *eff = new API::CGameEffect(true);
+    auto *eff = new CGameEffect(true);
     eff->m_oidCreator         = 0;
     eff->m_nType              = EffectTrueType::VisualEffect;
     eff->m_nSubType           = EffectSubType::Supernatural;
@@ -258,7 +258,7 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
 
     if (nBonus != -1)
     {
-        auto *eff = new API::CGameEffect(true);
+        auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
         eff->m_nType              = EffectTrueType::ACIncrease;
         eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -301,7 +301,7 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
 
     if (nBonus != -1)
     {
-        auto *eff = new API::CGameEffect(true);
+        auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
         eff->m_nType              = EffectTrueType::SavingThrowIncrease;
         eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -342,7 +342,7 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
 
     if (nBonus != -1)
     {
-        auto *eff = new API::CGameEffect(true);
+        auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
         eff->m_nType              = EffectTrueType::SkillIncrease;
         eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -382,7 +382,7 @@ ArgumentStack Layonara::SetSpellswordIgnoreSpellFailure(ArgumentStack&& args)
 
     if (nBonus != -1)
     {
-        auto *eff = new API::CGameEffect(true);
+        auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
         eff->m_nType              = EffectTrueType::ArcaneSpellFailure;
         eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -409,7 +409,7 @@ ArgumentStack Layonara::SetUndeadSlayerImmunity(ArgumentStack&& args)
 
     auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
 
-    auto *eff = new API::CGameEffect(true);
+    auto *eff = new CGameEffect(true);
     eff->m_oidCreator         = 0;
     eff->m_nType              = EffectTrueType::Immunity;
     eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -446,7 +446,7 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
 
     if (nActive)
     {
-        auto *eff = new API::CGameEffect(true);
+        auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
         eff->m_nType              = EffectTrueType::AttackDecrease;
         eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -457,7 +457,7 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
         eff->m_sCustomTag         = "NWNX_Layonara_SubraceDayEffects";
         pCreature->ApplyEffect(eff, true, true);
 
-        auto *eff2 = new API::CGameEffect(true);
+        auto *eff2 = new CGameEffect(true);
         eff2->m_oidCreator         = 0;
         eff2->m_nType              = EffectTrueType::SavingThrowDecrease;
         eff2->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -487,7 +487,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(itemId);
-    auto *pItem = Utils::AsNWSItem(pGameObject);
+    auto *pItem = pGameObject->AsNWSItem();
     if (!pItem)
     {
         LOG_NOTICE("NWNX_Layonara function called on non item object");
@@ -527,7 +527,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
     std::list<CGameEffect *> effects;
 
     // Visual FX of Concentric Circles (1067 is the id in our 2da before the first rune vfx)
-    auto *vfxEff = new API::CGameEffect(true);
+    auto *vfxEff = new CGameEffect(true);
     vfxEff->m_nType = EffectTrueType::VisualEffect;
     vfxEff->m_nParamInteger[0] = 1067 + rune;
     effects.push_back(vfxEff);
@@ -535,7 +535,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
     // Shadow for Saves
     if ((rune & Runes::SHADOW) == Runes::SHADOW)
     {
-        auto *eff = new API::CGameEffect(true);
+        auto *eff = new CGameEffect(true);
         eff->m_nType = EffectTrueType::SavingThrowIncrease;
         eff->m_nParamInteger[0] = 2 * power;
         eff->m_nParamInteger[1] = m_GemBonuses[gem][1];
@@ -547,7 +547,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
     // Tidal for Skills
     if ((rune & Runes::TIDAL) == Runes::TIDAL)
     {
-        auto *eff = new API::CGameEffect(true);
+        auto *eff = new CGameEffect(true);
         eff->m_nType = EffectTrueType::SkillIncrease;
         eff->m_nParamInteger[0] = m_GemBonuses[gem][2];
         eff->m_nParamInteger[1] = 2 * power;
@@ -564,7 +564,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
         {
             for (int i = 0; i <= 11; i++)
             {
-                auto *eff = new API::CGameEffect(true);
+                auto *eff = new CGameEffect(true);
                 eff->m_nType = EffectTrueType::DamageImmunityIncrease;
                 eff->m_nParamInteger[0] = pow(2, i);
                 eff->m_nParamInteger[1] = power * 5;
@@ -575,7 +575,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
         {
             for (auto &dmg : g_plugin->m_ElementalDamageTypes)
             {
-                auto *eff = new API::CGameEffect(true);
+                auto *eff = new CGameEffect(true);
                 eff->m_nType = EffectTrueType::DamageImmunityIncrease;
                 eff->m_nParamInteger[0] = dmg;
                 eff->m_nParamInteger[1] = power * 5;
@@ -586,7 +586,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
         {
             for (auto &dmg : g_plugin->m_PhysicalDamageTypes)
             {
-                auto *eff = new API::CGameEffect(true);
+                auto *eff = new CGameEffect(true);
                 eff->m_nType = EffectTrueType::DamageImmunityIncrease;
                 eff->m_nParamInteger[0] = dmg;
                 eff->m_nParamInteger[1] = power * 5;
@@ -595,7 +595,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
         }
         else
         {
-            auto *eff = new API::CGameEffect(true);
+            auto *eff = new CGameEffect(true);
             eff->m_nType = EffectTrueType::DamageImmunityIncrease;
             eff->m_nParamInteger[0] = m_GemBonuses[gem][3];
             eff->m_nParamInteger[1] = power * 5;
@@ -612,7 +612,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
             if (m_GemBonuses[gem][i] == -1)
                 break;
 
-            auto *eff = new API::CGameEffect(true);
+            auto *eff = new CGameEffect(true);
             eff->m_nType = EffectTrueType::AbilityIncrease;
             eff->m_nParamInteger[0] = m_GemBonuses[gem][i];
             eff->m_nParamInteger[1] = power;
@@ -633,7 +633,7 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
                 first = false;
                 continue;
             }
-            auto *link = new API::CGameEffect(true);
+            auto *link = new CGameEffect(true);
             link->m_oidCreator = pCreature->m_idSelf;
             link->m_nType = EffectTrueType::Link;
             link->m_nSubType = EffectSubType::Extraordinary | EffectDurationType::Temporary;
@@ -661,7 +661,7 @@ ArgumentStack Layonara::CombineRunes(ArgumentStack&& args)
     const auto runeId = Services::Events::ExtractArgument<Types::ObjectID>(args);
 
     auto *pTgtGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(targetRuneId);
-    auto *pTgtItem = Utils::AsNWSItem(pTgtGameObject);
+    auto *pTgtItem = pTgtGameObject->AsNWSItem();
     if (!pTgtItem)
     {
         LOG_NOTICE("NWNX_Layonara function called on non item object");
@@ -669,7 +669,7 @@ ArgumentStack Layonara::CombineRunes(ArgumentStack&& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(runeId);
-    auto *pItem = Utils::AsNWSItem(pGameObject);
+    auto *pItem = pGameObject->AsNWSItem();
     if (!pItem)
     {
         LOG_NOTICE("NWNX_Layonara function called on non item object");
@@ -722,7 +722,7 @@ ArgumentStack Layonara::GetRuneDescription(ArgumentStack&& args)
     const auto runeId = Services::Events::ExtractArgument<Types::ObjectID>(args);
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(runeId);
-    auto *pItem = Utils::AsNWSItem(pGameObject);
+    auto *pItem = pGameObject->AsNWSItem();
     if (!pItem)
     {
         LOG_NOTICE("NWNX_Layonara function called on non item object");
@@ -859,7 +859,7 @@ ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
     else if (racialType == 5)
         raceOffset = 4;
 
-    auto *eff = new API::CGameEffect(true);
+    auto *eff = new CGameEffect(true);
     eff->m_oidCreator         = 0;
     eff->m_nType              = EffectTrueType::VisualEffect;
     eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
@@ -935,14 +935,14 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
     for (int i = 0; i < areaList.num; i++)
     {
         std::vector<std::pair<Vector, CExoString>> transitions;
-        auto pArea = Utils::AsNWSArea(Utils::GetGameObject(areaList.element[i]));
+        auto pArea = Utils::GetGameObject(areaList.element[i])->AsNWSArea();
         uint32_t oid;
         // Find all our transitions and build our pairs
         if (pArea->GetFirstObjectInArea(oid))
         {
             while (oid != Constants::OBJECT_INVALID)
             {
-                auto pTrigger = Utils::AsNWSTrigger(Utils::GetGameObject(oid));
+                auto pTrigger = Utils::GetGameObject(oid)->AsNWSTrigger();
                 if (pTrigger != nullptr && pTrigger->m_pTransition.LookupTarget() != nullptr)
                 {
                     Vector centroid = compute2DPolygonCentroid(pTrigger->m_pvVertices, pTrigger->m_nVertices);
@@ -961,14 +961,13 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
             placeable->LoadFromTemplate(CResRef("at_vfx"), &sTag);
             placeable->SetPosition(vPos, 0);
             placeable->AddToArea(pArea, vPos.x, vPos.y, pArea->ComputeHeight(vPos), false);
-            auto *pList = reinterpret_cast<API::CExoArrayListTemplatedunsignedlong*>(&pArea->m_aGameObjects);
-            pList->Add(placeable->m_idSelf);
+            pArea->m_aGameObjects.Add(placeable->m_idSelf);
         }
     }
     return stack;
 }
 
-void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* thisPtr, API::Vector vPos, int32_t)
+void Layonara::SetPositionHook(Services::Hooks::CallType type, CNWSObject* thisPtr, Vector vPos, int32_t)
 {
     if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
         return;
@@ -1010,7 +1009,7 @@ void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* 
             auto bSlowImmune = pCreature->m_pStats->GetEffectImmunity(Constants::ImmunityType::Slow, nullptr, true);
             if (effectChange > 0 || (effectChange < 0 && !bHasStride && !bSlowImmune))
             {
-                auto *eff = new API::CGameEffect(true);
+                auto *eff = new CGameEffect(true);
                 eff->m_oidCreator = 0;
                 eff->m_nType = EffectTrueType::MovementSpeedIncrease;
                 eff->m_nSubType = EffectSubType::Supernatural | EffectDurationType::Permanent;
@@ -1018,7 +1017,7 @@ void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* 
                 eff->m_bShowIcon = 0;
                 eff->m_bExpose = true;
 
-                auto *iconEff = new API::CGameEffect(true);
+                auto *iconEff = new CGameEffect(true);
                 iconEff->m_oidCreator = 0;
                 iconEff->m_nType = EffectTrueType::Icon;
                 iconEff->m_nSubType = EffectSubType::Supernatural | EffectDurationType::Permanent;
@@ -1026,7 +1025,7 @@ void Layonara::SetPositionHook(Services::Hooks::CallType type, API::CNWSObject* 
                 iconEff->m_nParamInteger[0] = effectChange < 0 ? 38 : 37;
                 iconEff->m_bExpose = true;
 
-                auto *link = new API::CGameEffect(true);
+                auto *link = new CGameEffect(true);
                 link->m_oidCreator = 0;
                 link->m_nType = EffectTrueType::Link;
                 link->m_nSubType = EffectSubType::Supernatural | EffectDurationType::Permanent;

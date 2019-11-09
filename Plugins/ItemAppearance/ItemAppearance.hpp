@@ -40,8 +40,8 @@ private:
     ArgumentStack GetNextColor              (ArgumentStack&& args);
     ArgumentStack GetPreviousColor          (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSItem *item(ArgumentStack& args);
-    static int IsBlacklisted(NWNXLib::API::CNWSItem *oItem, int32_t nPart, int32_t newApp);
+    CNWSItem *item(ArgumentStack& args);
+    static int IsBlacklisted(CNWSItem *oItem, int32_t nPart, int32_t newApp);
     ArgumentStack GetNextPreviousAppearanceColor(ArgumentStack& args, uint8_t appType);
 };
 

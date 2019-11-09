@@ -20,9 +20,9 @@ public:
     virtual ~Layonara();
 
 private:
-    static void SetArrowsEffect(NWNXLib::API::CNWSCreature *pCreature, bool bOff=false);
-    static NWNXLib::API::CNWSItem *GetItemInSlotHook(NWNXLib::API::CNWSInventory*, uint32_t);
-    static void SetPositionHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSObject*, NWNXLib::API::Vector, int32_t);
+    static void SetArrowsEffect(CNWSCreature *pCreature, bool bOff=false);
+    static CNWSItem *GetItemInSlotHook(CNWSInventory*, uint32_t);
+    static void SetPositionHook(NWNXLib::Services::Hooks::CallType, CNWSObject*, Vector, int32_t);
     NWNXLib::Hooking::FunctionHook* m_GetItemInSlotHook;
 
     enum Gems
@@ -109,6 +109,7 @@ private:
     ArgumentStack SetQuiverArrows                 (ArgumentStack&& args);
     ArgumentStack CreateVFXAtTransitionCentroid   (ArgumentStack&& args);
     ArgumentStack ClearSurfaceMaterial            (ArgumentStack&& args);
+    ArgumentStack ScaleOverTime                   (ArgumentStack&& args);
 };
 
 }

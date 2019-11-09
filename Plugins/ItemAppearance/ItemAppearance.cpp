@@ -76,7 +76,7 @@ CNWSItem *ItemAppearance::item(ArgumentStack& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    auto *pItem = Utils::AsNWSItem(pGameObject);
+    auto *pItem = pGameObject->AsNWSItem();
     if (!pItem)
         LOG_NOTICE("NWNX_Item function called on non item object");
 
