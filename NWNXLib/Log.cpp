@@ -13,13 +13,42 @@ namespace NWNXLib {
 
 namespace Log {
 
-void SetMessageFormat(bool timestamp, bool plugin, bool source, bool color)
+static bool s_PrintTimestamp;
+static bool s_PrintPlugin;
+static bool s_PrintSource;
+static bool s_ColorOutput;
+void SetPrintTimestamp(bool value)
 {
-    s_PrintTimestamp = timestamp;
-    s_PrintPlugin = plugin;
-    s_PrintSource = source;
-    rang::setControlMode(color ? rang::control::Auto : rang::control::Off);
-    LOG_INFO("%s %s %s %s", timestamp, plugin, source, color);
+    s_PrintTimestamp = value;
+}
+bool GetPrintTimestamp()
+{
+    return s_PrintTimestamp;
+}
+void SetPrintPlugin(bool value)
+{
+    s_PrintPlugin = value;
+}
+bool GetPrintPlugin()
+{
+    return s_PrintPlugin;
+}
+void SetPrintSource(bool value)
+{
+    s_PrintSource = value;
+}
+bool GetPrintSource()
+{
+    return s_PrintSource;
+}
+void SetColorOutput(bool value)
+{
+    s_ColorOutput = value;
+    rang::setControlMode(s_ColorOutput ? rang::control::Auto : rang::control::Off);
+}
+bool GetColorOutput()
+{
+    return s_ColorOutput;
 }
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message)
@@ -34,7 +63,7 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     {
         case Channel::SEV_DEBUG:   std::cout << rang::fg::gray << rang::style::dim;  break;
         case Channel::SEV_INFO:    std::cout << rang::fg::gray;                      break;
-        case Channel::SEV_NOTICE:  std::cout;                                        break;
+        case Channel::SEV_NOTICE:  /*default*/                                       break;
         case Channel::SEV_WARNING: std::cout << rang::fg::yellow;                    break;
         case Channel::SEV_ERROR:   std::cout << rang::fg::red << rang::style::dim;   break;
         case Channel::SEV_FATAL:   std::cout << rang::fg::red << rang::style::bold;  break;

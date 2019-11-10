@@ -70,8 +70,14 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
 
 Channel::Enum GetLogLevel(const char* plugin);
 void SetLogLevel(const char* plugin, Channel::Enum logLevel);
-
-void SetMessageFormat(bool timestamp, bool plugin, bool source, bool color);
+void SetPrintTimestamp(bool value);
+bool GetPrintTimestamp();
+void SetPrintPlugin(bool value);
+bool GetPrintPlugin();
+void SetPrintSource(bool value);
+bool GetPrintSource();
+void SetColorOutput(bool value);
+bool GetColorOutput();
 
 #include "Log.inl"
 

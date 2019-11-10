@@ -1,9 +1,5 @@
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message);
 
-static inline bool s_PrintTimestamp;
-static inline bool s_PrintPlugin;
-static inline bool s_PrintSource;
-
 template <typename ... Args>
 void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* format, Args&& ... args)
 {
@@ -27,17 +23,17 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
 
     std::ostringstream stream;
     stream << SEVERITY_NAMES[static_cast<size_t>(channel)] << " ";
-    if (s_PrintTimestamp)
+    if (GetPrintTimestamp())
     {
         time_t now = std::time(nullptr);
         tm* timeinfo = std::localtime(&now);
         tfm::format(stream, "[%02d:%02d:%02d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     }
-    if (s_PrintPlugin)
+    if (GetPrintPlugin())
     {
         tfm::format(stream, "[%s] ", plugin);
     }
-    if (s_PrintSource)
+    if (GetPrintSource())
     {
         tfm::format(stream, "[%s:%d] ", filename, line);
     }

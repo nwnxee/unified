@@ -417,6 +417,10 @@ void NWNXCore::InitialSetupCommands()
                     LOG_INFO("Setting log level of plugin '%s' to '%u'", pluginName, *logLevel);
                     Log::SetLogLevel(("NWNX_" + pluginName).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
                 }
+                else if (level == plugin) // no level given.
+                {
+                    LOG_INFO("Log level for %s is %u", pluginName, Log::GetLogLevel(("NWNX_"+pluginName).c_str()));
+                }
                 else
                 {
                     LOG_INFO("'%s' is not a valid log level", level);
@@ -428,6 +432,22 @@ void NWNXCore::InitialSetupCommands()
             }
         }
     });
+
+    m_services->m_commands->RegisterCommand("logformat", [](std::string& args)
+    {
+        if (args.find("timestamp") != std::string::npos)
+            Log::SetPrintTimestamp(args.find("notimestamp") == std::string::npos);
+        if (args.find("plugin") != std::string::npos)
+            Log::SetPrintPlugin(args.find("noplugin") == std::string::npos);
+        if (args.find("source") != std::string::npos)
+            Log::SetPrintSource(args.find("nosource") == std::string::npos);
+        if (args.find("color") != std::string::npos)
+            Log::SetColorOutput(args.find("nocolor") == std::string::npos);
+        LOG_INFO("Log format updated: Timestamp:%s Plugin:%s Source:%s Color:%s.",
+                 Log::GetPrintTimestamp(), Log::GetPrintPlugin(),
+                 Log::GetPrintSource(), Log::GetColorOutput());
+    });
+
 }
 
 void NWNXCore::UnloadPlugins()
@@ -489,13 +509,10 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
 
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
-    Log::SetMessageFormat
-    (
-        g_core->m_coreServices->m_config->Get<bool>("LOG_TIMESTAMP", true),
-        g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true),
-        g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true),
-        g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true)
-    );
+    Log::SetPrintTimestamp(g_core->m_coreServices->m_config->Get<bool>("LOG_TIMESTAMP", true));
+    Log::SetPrintPlugin(g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true));
+    Log::SetPrintSource(g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true));
+    Log::SetColorOutput(g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true));
 
 
     if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
