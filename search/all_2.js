@@ -42,6 +42,5 @@ var searchData=
   ['config_5fset_67',['CONFIG_SET',['../nwnx__redis__short_8nss.html#a1af006c9794f2b37aedafc9143635fca',1,'nwnx_redis_short.nss']]],
   ['creature_68',['Creature',['../group__creature.html',1,'']]],
   ['changelog_69',['Changelog',['../md_CHANGELOG.html',1,'']]],
-  ['core_20reference_70',['Core Reference',['../md_Core_Documentation_README.html',1,'']]],
-  ['core_20functions_71',['Core Functions',['../group__nwnx.html',1,'']]]
+  ['core_20functionality_70',['Core Functionality',['../group__nwnx.html',1,'']]]
 ];

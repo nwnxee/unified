@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"group__creature.html#ga5349277c58e434dbb8be910d7c864ab6":[2,0,2,5,0,0,100],
 "group__creature.html#ga56cd9112ddd13c2758c5753c195595f1":[0,6,120],
 "group__creature.html#ga56cd9112ddd13c2758c5753c195595f1":[2,0,2,5,0,0,117],
 "group__creature.html#ga5aae58ed38b1cf6486826dd861a2345e":[2,0,2,5,0,0,4],
@@ -97,8 +96,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#gab8a565245d8f2de0d44bb09f6002254a":[2,0,2,5,0,0,91],
 "group__creature.html#gabd0ec1e71591f78be72f075bc8c0ee38":[2,0,2,5,0,0,73],
 "group__creature.html#gabd0ec1e71591f78be72f075bc8c0ee38":[0,6,77],
-"group__creature.html#gac098ee44bae961ce3e2cfb0189252533":[2,0,2,5,0,0,108],
 "group__creature.html#gac098ee44bae961ce3e2cfb0189252533":[0,6,111],
+"group__creature.html#gac098ee44bae961ce3e2cfb0189252533":[2,0,2,5,0,0,108],
 "group__creature.html#gac392f65253b64ad44b8f475a0e84231d":[2,0,2,5,0,0,42],
 "group__creature.html#gac392f65253b64ad44b8f475a0e84231d":[0,6,46],
 "group__creature.html#gac7b9092ad788130791274b2b73c25388":[0,6,123],
@@ -160,7 +159,7 @@ var NAVTREEINDEX2 =
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[2,0,2,5,0,0,36],
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[0,6,40],
 "group__damage.html":[0,7],
-"group__damage.html#autotoc_md37":[2],
+"group__damage.html#autotoc_md35":[5],
 "group__damage.html#damage":[0,7,0],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[2,0,2,6,0,0,2],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[0,7,7],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "group__data__array__pushback.html#gac105713959287a9f8ae318983e4f6676":[0,8,5,3],
 "group__data__array__pushback.html#gae5eb11ea922bc67853fb84212fd909f7":[2,0,2,7,0,0,19],
 "group__data__array__pushback.html#gae5eb11ea922bc67853fb84212fd909f7":[0,8,5,0],
-"group__data__array__pushback.html#gaedd36db551f6ccfcc10ee114292c2684":[2,0,2,7,0,0,21]
+"group__data__array__pushback.html#gaedd36db551f6ccfcc10ee114292c2684":[2,0,2,7,0,0,21],
+"group__data__array__pushback.html#gaedd36db551f6ccfcc10ee114292c2684":[0,8,5,2]
 };

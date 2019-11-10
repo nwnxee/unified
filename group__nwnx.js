@@ -1,6 +1,6 @@
 var group__nwnx =
 [
-    [ "Core Functions", "group__nwnx.html#nwnx", null ],
+    [ "Core Functionality", "group__nwnx.html#nwnx", null ],
     [ "NWNX Constants", "group__consts.html", "group__consts" ],
     [ "nwnx.nss", "nwnx_8nss.html", null ],
     [ "NWNX_CallFunction", "group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4", null ],

@@ -110,10 +110,77 @@ $(document).ready(function(){initNavTree('group__nwnx.html','');});
 <div class="contents">
 
 
-<h3><a id="nwnx"></a>Core Functions</h3><div class="textblock"><h2><a class="anchor" id="autotoc_md25"></a>
+<h3><a id="nwnx"></a>Core Functionality</h3><div class="textblock">The core of NWNX:EE that does all the things.<h2><a class="anchor" id="autotoc_md17"></a>
+Environment Variables</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Variable Name  </th><th class="markdownTableHeadCenter">Value  </th><th class="markdownTableHeadNone">Default  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_SKIP</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Set whether to load NWNX or not.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOAD_PATH</code>  </td><td class="markdownTableBodyCenter">string  </td><td class="markdownTableBodyNone">Unset  </td><td class="markdownTableBodyNone">The directory from where plugins are loaded. Defaults to where NWNX_Core is located.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_SKIP_ALL</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Changes the default plugin load state from 'load all' to 'skip all'. Use <code>NWNX_{PLUGIN}_SKIP=n</code> to enable specific plugins in this case.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_LEVEL</code>  </td><td class="markdownTableBodyCenter">0-7  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Sets the default log level. <code>6</code> is a good level for live servers. <code>7</code> includes debug messages which can be helpful if you're having issues.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOAD_EXPERIMENTAL_PLUGIN</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Allows loading of NWNX_Experimental, use at your own risk.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOCALE</code>  </td><td class="markdownTableBodyCenter">ru  </td><td class="markdownTableBodyNone">Unset  </td><td class="markdownTableBodyNone">Set the locale NWNX will use when encoding. Currently only supports Russian/Cyrillic (<code>ru</code>)   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_CRASH_ON_ASSERT_FAILURE</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Sets whether an ASSERT failure hard crashes the server.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_SHUTDOWN_SCRIPT</code>  </td><td class="markdownTableBodyCenter">string  </td><td class="markdownTableBodyNone">Unset  </td><td class="markdownTableBodyNone">Sets which NWScript to run when the module shuts down.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">When enabled, allows the ExecuteScriptChunk() function to call NWScript NWNX functions.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">When enabled, the UserDirectory/nwnx folder will be cleaned on startup, meaning all contents will be deleted.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code>  </td><td class="markdownTableBodyCenter">int  </td><td class="markdownTableBodyNone">70000000  </td><td class="markdownTableBodyNone">Sets the resman priority of the UserDirectory/nwnx folder.   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md18"></a>
+Console Commands</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Command  </th><th class="markdownTableHeadNone">Description   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>runscript &lt;script name&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript. Example: <code>runscript dm_killallplayers</code>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>eval &lt;script chunk&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript chunk. Example: <code>eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());</code>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>evalx &lt;script chunk&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: <code>evalx <a class="el" href="group__admin.html#ga637a42678c8d730015dba00efddef6aa" title="Signals the server to immediately shut down.">NWNX_Administration_ShutdownServer()</a>;</code>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>loglevel &lt;plugin&gt; &lt;loglevel&gt;</code>  </td><td class="markdownTableBodyNone">Sets the log level of the given plugin. Example: <code>loglevel Events 7</code>   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md19"></a>
+Plugin Management</h2>
+<h3><a class="anchor" id="autotoc_md20"></a>
+Environment Variable Configuration</h3>
+<p>Configuration of NWNX plugins are controlled by environment variables exported prior to starting the <code>nwserver</code> binary. Typical usage would be in the script used to start the server.</p>
+<p>Basic control of the plugin includes enabling/disabling the plugin and setting the logging level of the plugin. The following format is used for all plugins:</p>
+<ul>
+<li>NWNX_&lt;x&gt;_LOG_LEVEL</li>
+<li>NWNX_&lt;x&gt;_SKIP</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md21"></a>
+Plugin Loading</h3>
+<p>Inclusion or exclusion of the plugin at server startup time is contolled by the environment variable <code>NWNX_&lt;x&gt;_SKIP</code> where &lt;x&gt; is the plugin name (all caps).</p>
+<ul>
+<li>Setting this to <code>N</code> will load the plugin (i.e. it will not be skipped) at startup (<em>default</em>).</li>
+<li>Setting this to <code>Y</code> will cause the plugin to <em>BE SKIPPED</em> at startup.</li>
+</ul>
+<p><b>Example</b> </p><div class="fragment"><div class="line"># Load the sql plugin at startup</div>
+<div class="line">export NWNX_SQL_SKIP=N</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md22"></a>
+Plugin Log Level</h3>
+<p>The default plugin log level is the same as the overall Core logging level.</p>
+<p>It can be changed, however, by assinging a value to <code>NWNX_&lt;x&gt;_LOG_LEVEL</code> (where &lt;x&gt; is the plugin name in all caps) in the same manner as the Core logging level. See the Core documentation for a description of available logging levels.</p>
+<p><b>Example</b> </p><div class="fragment"><div class="line"># Set the sql plugin to warning and above (warning, error, and fatal only)</div>
+<div class="line">export NWNX_SQL_LOG_LEVEL=4</div>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md23"></a>
 Core Functions For Plugin Developers</h2>
 <p>The core functions in <a class="el" href="nwnx_8nss.html">nwnx.nss</a> should be called by NWNX plugin developers, who should expose their own, more friendly headers.</p>
-<h4><a class="anchor" id="autotoc_md26"></a>
+<h4><a class="anchor" id="autotoc_md24"></a>
 Sample</h4>
 <p>This following function would wrap a call which passes three parameters, receives three back, and constructs a vector from the result. </p><div class="fragment"><div class="line">vector GetVectorFromCoords(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z)</div>
 <div class="line">{</div>
@@ -755,7 +822,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 10 2019 16:48:34 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 10 2019 19:41:26 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
