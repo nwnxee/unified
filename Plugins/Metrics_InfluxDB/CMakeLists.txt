@@ -1,3 +1,3 @@
-add_plugin_linux(Metrics_InfluxDB
+add_plugin(Metrics_InfluxDB
     "Metrics_InfluxDB.cpp"
     "InfluxDBClient.cpp")
