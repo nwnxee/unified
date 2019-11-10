@@ -137,6 +137,14 @@ Environment Variables</h2>
 <td class="markdownTableBodyNone"><code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">When enabled, the UserDirectory/nwnx folder will be cleaned on startup, meaning all contents will be deleted.   </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code>  </td><td class="markdownTableBodyCenter">int  </td><td class="markdownTableBodyNone">70000000  </td><td class="markdownTableBodyNone">Sets the resman priority of the UserDirectory/nwnx folder.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_TIMESTAMP</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">1  </td><td class="markdownTableBodyNone">Set whether to show timestamp in logs printed by NWNX.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_PLUGIN</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">1  </td><td class="markdownTableBodyNone">Set whether to show plugin name in logs printed by NWNX.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_SOURCE</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">1  </td><td class="markdownTableBodyNone">Set whether to show source code location in logs printed by NWNX.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_COLOR</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">1  </td><td class="markdownTableBodyNone">Set whether to show logs printed by NWNX in color (only when printing to a TTY).   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md18"></a>
 Console Commands</h2>
@@ -150,8 +158,9 @@ Console Commands</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>evalx &lt;script chunk&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: <code>evalx <a class="el" href="group__admin.html#ga637a42678c8d730015dba00efddef6aa" title="Signals the server to immediately shut down.">NWNX_Administration_ShutdownServer()</a>;</code>   </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>loglevel &lt;plugin&gt; &lt;loglevel&gt;</code>  </td><td class="markdownTableBodyNone">Sets the log level of the given plugin. Example: <code>loglevel Events 7</code>   </td></tr>
+<td class="markdownTableBodyNone"><code>loglevel &lt;plugin&gt; [&lt;loglevel&gt;]</code>  </td><td class="markdownTableBodyNone">Sets the log level of the given plugin. Example: <code>loglevel Events 7</code>   </td></tr>
 </table>
+<p>| <code>logformat [timestamp|notimestamp] [plugin|noplugin] [source|nosource] [color|nocolor]</code> | Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code></p>
 <h2><a class="anchor" id="autotoc_md19"></a>
 Plugin Management</h2>
 <h3><a class="anchor" id="autotoc_md20"></a>
@@ -825,7 +834,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 10 2019 20:22:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 10 2019 21:09:59 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
