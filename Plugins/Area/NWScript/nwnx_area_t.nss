@@ -1,12 +1,5 @@
 #include "nwnx_area"
-
-void report(string func, int bSuccess)
-{
-    if (bSuccess)
-        WriteTimestampedLogEntry("NWNX_Area: " + func + "() success");
-    else
-        WriteTimestampedLogEntry("NWNX_Area: " + func + "() failed");
-}
+#include "nwnx_tests"
 
 void main()
 {
@@ -22,7 +15,7 @@ void main()
 
         if (GetIsObjectValid(oPC) && GetArea(oPC) == oArea)
         {
-            report("GetNumberOfPlayersInArea", NWNX_Area_GetNumberOfPlayersInArea(oArea) == 1);
+            NWNX_Tests_Report("NWNX_Area", "GetNumberOfPlayersInArea", NWNX_Area_GetNumberOfPlayersInArea(oArea) == 1);
         }
         else
         {
@@ -30,42 +23,42 @@ void main()
         }
 
         NWNX_Area_SetPVPSetting(oArea, NWNX_AREA_PVP_SETTING_PARTY_PVP);
-        report("{Set/Get}PVPSetting", NWNX_Area_GetPVPSetting(oArea) == NWNX_AREA_PVP_SETTING_PARTY_PVP);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}PVPSetting", NWNX_Area_GetPVPSetting(oArea) == NWNX_AREA_PVP_SETTING_PARTY_PVP);
 
         NWNX_Area_SetAreaSpotModifier(oArea, 25);
-        report("{Set/Get}AreaSpotModifier", NWNX_Area_GetAreaSpotModifier(oArea) == 25);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}AreaSpotModifier", NWNX_Area_GetAreaSpotModifier(oArea) == 25);
 
         NWNX_Area_SetAreaListenModifier(oArea, 25);
-        report("{Set/Get}AreaListenModifier", NWNX_Area_GetAreaListenModifier(oArea) == 25);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}AreaListenModifier", NWNX_Area_GetAreaListenModifier(oArea) == 25);
 
         NWNX_Area_SetNoRestingAllowed(oArea, TRUE);
-        report("{Set/Get}NoRestingAllowed", NWNX_Area_GetNoRestingAllowed(oArea));
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}NoRestingAllowed", NWNX_Area_GetNoRestingAllowed(oArea));
 
         NWNX_Area_SetWindPower(oArea, 2);
-        report("{Set/Get}WindPower", NWNX_Area_GetWindPower(oArea) == 2);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}WindPower", NWNX_Area_GetWindPower(oArea) == 2);
 
         NWNX_Area_SetWeatherChance(oArea, NWNX_AREA_WEATHER_CHANCE_LIGHTNING, 50);
-        report("{Set/Get}WeatherChance", NWNX_Area_GetWeatherChance(oArea, NWNX_AREA_WEATHER_CHANCE_LIGHTNING) == 50);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}WeatherChance", NWNX_Area_GetWeatherChance(oArea, NWNX_AREA_WEATHER_CHANCE_LIGHTNING) == 50);
 
         NWNX_Area_SetFogClipDistance(oArea, 12.5f);
-        report("{Set/Get}FogClipDistance", NWNX_Area_GetFogClipDistance(oArea) == 12.5f);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}FogClipDistance", NWNX_Area_GetFogClipDistance(oArea) == 12.5f);
 
         NWNX_Area_SetShadowOpacity(oArea, 75);
-        report("{Set/Get}ShadowOpacity", NWNX_Area_GetShadowOpacity(oArea) == 75);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}ShadowOpacity", NWNX_Area_GetShadowOpacity(oArea) == 75);
 
         NWNX_Area_SetDayNightCycle(oArea, NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK);
-        report("{Set/Get}DayNightCycle", NWNX_Area_GetDayNightCycle(oArea) == NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}DayNightCycle", NWNX_Area_GetDayNightCycle(oArea) == NWNX_AREA_DAYNIGHTCYCLE_ALWAYS_DARK);
 
         NWNX_Area_SetSunMoonColors(oArea, NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE, FOG_COLOR_GREEN);
-        report("{Set/Get}SunMoonColors", NWNX_Area_GetSunMoonColors(oArea, NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE) == FOG_COLOR_GREEN);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}SunMoonColors", NWNX_Area_GetSunMoonColors(oArea, NWNX_AREA_COLOR_TYPE_MOON_DIFFUSE) == FOG_COLOR_GREEN);
 
         vector vLoc = GetPositionFromLocation(GetStartingLocation());
         object oWP = CreateObject(OBJECT_TYPE_WAYPOINT, "nw_waypoint001", GetStartingLocation());
         object oAT = NWNX_Area_CreateTransition(oArea, oWP, vLoc.x, vLoc.y, vLoc.z);
-        report ("CreateTransition", oAT != OBJECT_INVALID);
+        NWNX_Tests_Report("NWNX_Area", "CreateTransition", oAT != OBJECT_INVALID);
 
         NWNX_Area_SetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1, FALSE);
-        report("{Set/Get}TileAnimationLoop", NWNX_Area_GetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1) == FALSE);
+        NWNX_Tests_Report("NWNX_Area", "{Set/Get}TileAnimationLoop", NWNX_Area_GetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1) == FALSE);
     }
     else
     {

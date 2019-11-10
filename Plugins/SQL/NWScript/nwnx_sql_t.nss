@@ -1,20 +1,12 @@
 #include "nwnx_sql"
-
 #include "nwnx_object"
-
-void report(string func, int bSuccess)
-{
-    if (bSuccess)
-        WriteTimestampedLogEntry("NWNX_SQL: " + func + "() success");
-    else
-        WriteTimestampedLogEntry("NWNX_SQL: " + func + "() failed");
-}
+#include "nwnx_tests"
 
 void cleanup()
 {
-    report("Cleanup sql_test",    NWNX_SQL_ExecuteQuery("DROP TABLE sql_test"));
-    report("Cleanup stress_test", NWNX_SQL_ExecuteQuery("DROP TABLE stress_test"));
-    report("Cleanup error_test",  NWNX_SQL_ExecuteQuery("DROP TABLE error_test"));
+    NWNX_Tests_Report("NWNX_SQL", "Cleanup sql_test",    NWNX_SQL_ExecuteQuery("DROP TABLE sql_test"));
+    NWNX_Tests_Report("NWNX_SQL", "Cleanup stress_test", NWNX_SQL_ExecuteQuery("DROP TABLE stress_test"));
+    NWNX_Tests_Report("NWNX_SQL", "Cleanup error_test",  NWNX_SQL_ExecuteQuery("DROP TABLE error_test"));
 }
 
 void main()
@@ -50,7 +42,7 @@ void main()
     }
 
     int b = NWNX_SQL_ExecuteQuery(sCreate);
-    report("Create Table", b);
+    NWNX_Tests_Report("NWNX_SQL", "Create Table", b);
 
     object o = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
     if (!GetIsObjectValid(o))
@@ -63,8 +55,8 @@ void main()
     vector v = Vector(5.0, 5.0, 0.0); // slightly different location.
 
     b = NWNX_SQL_PrepareQuery(sInsert);
-    report("Complex PrepareQuery", b);
-    report("GetPreparedQueryParamCount", NWNX_SQL_GetPreparedQueryParamCount() == 5);
+    NWNX_Tests_Report("NWNX_SQL", "Complex PrepareQuery", b);
+    NWNX_Tests_Report("NWNX_SQL", "GetPreparedQueryParamCount", NWNX_SQL_GetPreparedQueryParamCount() == 5);
 
     NWNX_SQL_PreparedInt(0, 42);
     NWNX_SQL_PreparedFloat(1, 0.42);
@@ -73,10 +65,10 @@ void main()
     NWNX_SQL_PreparedObjectFull(4, o);
 
     b = NWNX_SQL_ExecutePreparedQuery();
-    report("Complex ExecutePreparedQuery", b);
+    NWNX_Tests_Report("NWNX_SQL", "Complex ExecutePreparedQuery", b);
 
     b = NWNX_SQL_ExecuteQuery("SELECT * FROM sql_test;");
-    report("Select ExecuteQuery", b);
+    NWNX_Tests_Report("NWNX_SQL", "Select ExecuteQuery", b);
 
     if (b)
     {
@@ -84,18 +76,18 @@ void main()
         {
             NWNX_SQL_ReadNextRow();
             int n = StringToInt(NWNX_SQL_ReadDataInActiveRow(0));
-            report("ReadInt", n == 42);
+            NWNX_Tests_Report("NWNX_SQL", "ReadInt", n == 42);
             float f = StringToFloat(NWNX_SQL_ReadDataInActiveRow(1));
-            report("ReadFloat", fabs(f - 0.42) < 0.01);
+            NWNX_Tests_Report("NWNX_SQL", "ReadFloat", fabs(f - 0.42) < 0.01);
             string s = NWNX_SQL_ReadDataInActiveRow(2);
-            report("ReadString", s == "FourtyTwooo");
+            NWNX_Tests_Report("NWNX_SQL", "ReadString", s == "FourtyTwooo");
 
             string sObjId = NWNX_SQL_ReadDataInActiveRow(3); // In base 10
             object o2 = NWNX_Object_StringToObject(IntToHexString(StringToInt(sObjId)));
-            report("ReadObjectId", o == o2);
+            NWNX_Tests_Report("NWNX_SQL", "ReadObjectId", o == o2);
 
             object o3 = NWNX_SQL_ReadFullObjectInActiveRow(4, GetArea(o), v.x, v.y, v.z);
-            report("ReadFullObject", GetIsObjectValid(o3));
+            NWNX_Tests_Report("NWNX_SQL", "ReadFullObject", GetIsObjectValid(o3));
             // Alternatively:
             // object o3 = NWNX_Object_Deserialize(NWNX_SQL_ReadDataInActiveRow(4));
         }
@@ -132,25 +124,25 @@ void main()
 
         NWNX_SQL_PreparedObjectFull(0, oItem);
         b = NWNX_SQL_ExecutePreparedQuery();
-        report("Insert item full", b);
+        NWNX_Tests_Report("NWNX_SQL", "Insert item full", b);
 
         b = NWNX_SQL_ExecuteQuery("SELECT colObj FROM sql_test WHERE colInt=1337");
-        report("Select item", b);
+        NWNX_Tests_Report("NWNX_SQL", "Select item", b);
 
         if (NWNX_SQL_ReadyToReadNextRow())
         {
             NWNX_SQL_ReadNextRow();
 
             object oItem2 = NWNX_SQL_ReadFullObjectInActiveRow(0, oPlc);
-            report("ReadFullObject Item", GetIsObjectValid(oItem2));
-            report("Deserialized to placeable's inventory", oItem2 == GetFirstItemInInventory(oPlc));
-            report("Deserialized to placeable's inventory - possessor", GetItemPossessor(oItem2) == oPlc);
+            NWNX_Tests_Report("NWNX_SQL", "ReadFullObject Item", GetIsObjectValid(oItem2));
+            NWNX_Tests_Report("NWNX_SQL", "Deserialized to placeable's inventory", oItem2 == GetFirstItemInInventory(oPlc));
+            NWNX_Tests_Report("NWNX_SQL", "Deserialized to placeable's inventory - possessor", GetItemPossessor(oItem2) == oPlc);
 
             object oItem3 = NWNX_SQL_ReadFullObjectInActiveRow(0, GetArea(oPlc), v.x, v.y, v.z);
-            report("Deserialized to area", GetArea(oItem3) == GetArea(oPlc));
+            NWNX_Tests_Report("NWNX_SQL", "Deserialized to area", GetArea(oItem3) == GetArea(oPlc));
 
             object oItem4 = NWNX_SQL_ReadFullObjectInActiveRow(0, o);
-            report("Deserialized to creature's inventory - possessor", GetItemPossessor(oItem4) == o);
+            NWNX_Tests_Report("NWNX_SQL", "Deserialized to creature's inventory - possessor", GetItemPossessor(oItem4) == o);
         }
         else
         {
@@ -193,19 +185,19 @@ void main()
         NWNX_SQL_PreparedInt(1, i*2);
         NWNX_SQL_PreparedString(2, IntToString(i*100));
         b = NWNX_SQL_ExecutePreparedQuery();
-        report("Elegant Looping ExecutePreparedQuery", b);
+        NWNX_Tests_Report("NWNX_SQL", "Elegant Looping ExecutePreparedQuery", b);
     }
     NWNX_SQL_ExecuteQuery("delete from stress_test where i_key > 0");
     res = NWNX_SQL_GetAffectedRows();
     WriteTimestampedLogEntry("Deleted " + IntToString(res) + " rows.");
-    report ("Delete rows", res == STRESS_CNT);
+    NWNX_Tests_Report("Delete rows", res == STRESS_CNT);
 
     // Test some error output.
     b = NWNX_SQL_ExecuteQuery("create table error_test (col varchar(10))");
-    report ("Test Table Create", b);
+    NWNX_Tests_Report("Test Table Create", b);
 
     b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcdefghij')");
-    report ("good insert", b);
+    NWNX_Tests_Report("good insert", b);
 
     if (db_type != "SQLITE")
     {// SQLite doesn't care about size constraints of columns
@@ -228,27 +220,27 @@ void main()
     NWNX_SQL_PrepareQuery(test3);
     NWNX_SQL_PreparedString(100, "lala"); // out of bounds, must not crash.
 
-    report("Negative prepare query", NWNX_SQL_PrepareQuery("not a valid query!") == 0);
-    report("GetLastError", NWNX_SQL_GetLastError() != "");
+    NWNX_Tests_Report("NWNX_SQL", "Negative prepare query", NWNX_SQL_PrepareQuery("not a valid query!") == 0);
+    NWNX_Tests_Report("NWNX_SQL", "GetLastError", NWNX_SQL_GetLastError() != "");
 
     // Test with null values
     NWNX_SQL_ExecuteQuery("INSERT INTO sql_test(colInt, colFloat, colStr, colObjId, colObj) VALUES(5121, null, null, null, null)");
-    report("Select null", NWNX_SQL_ExecuteQuery("SELECT * FROM sql_test WHERE colInt=5121"));
+    NWNX_Tests_Report("NWNX_SQL", "Select null", NWNX_SQL_ExecuteQuery("SELECT * FROM sql_test WHERE colInt=5121"));
     if (NWNX_SQL_ReadyToReadNextRow())
     {
         NWNX_SQL_ReadNextRow();
         int n = StringToInt(NWNX_SQL_ReadDataInActiveRow(0));
-        report("ReadInt", n == 5121);
+        NWNX_Tests_Report("NWNX_SQL", "ReadInt", n == 5121);
         float f = StringToFloat(NWNX_SQL_ReadDataInActiveRow(1));
-        report("ReadFloat", f == 0.0);
+        NWNX_Tests_Report("NWNX_SQL", "ReadFloat", f == 0.0);
         string s = NWNX_SQL_ReadDataInActiveRow(2);
-        report("ReadString", s == "");
+        NWNX_Tests_Report("NWNX_SQL", "ReadString", s == "");
 
         string sObjId = NWNX_SQL_ReadDataInActiveRow(3); // In base 10
-        report("ReadObjectId", sObjId == "");
+        NWNX_Tests_Report("NWNX_SQL", "ReadObjectId", sObjId == "");
 
         object obj = NWNX_SQL_ReadFullObjectInActiveRow(4);
-        report("ReadFullObject", obj == OBJECT_INVALID);
+        NWNX_Tests_Report("NWNX_SQL", "ReadFullObject", obj == OBJECT_INVALID);
     }
 
     cleanup();
