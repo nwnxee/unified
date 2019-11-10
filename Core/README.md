@@ -18,6 +18,10 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK` | 0-1 | 0 | When enabled, allows the ExecuteScriptChunk() function to call NWScript NWNX functions.
 | `NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY` | 0-1 | 0 | When enabled, the UserDirectory/nwnx folder will be cleaned on startup, meaning all contents will be deleted.
 | `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY` | int | 70000000 | Sets the resman priority of the UserDirectory/nwnx folder.
+| `NWNX_CORE_LOG_TIMESTAMP` | 0-1 | 1 | Set whether to show timestamp in logs printed by NWNX.
+| `NWNX_CORE_LOG_PLUGIN` | 0-1 | 1 | Set whether to show plugin name in logs printed by NWNX.
+| `NWNX_CORE_LOG_SOURCE` | 0-1 | 1 | Set whether to show source code location in logs printed by NWNX.
+| `NWNX_CORE_LOG_COLOR` | 0-1 | 1 | Set whether to show logs printed by NWNX in color (only when printing to a TTY).
 
 ## Console Commands
 
@@ -26,7 +30,8 @@ The core of NWNX:EE that does all the things.
 | `runscript <script name>` | Executes the given nwscript. Example: `runscript dm_killallplayers`
 | `eval <script chunk>` | Executes the given nwscript chunk. Example: `eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());`
 | `evalx <script chunk>` | Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: `evalx NWNX_Administration_ShutdownServer();`
-| `loglevel <plugin> <loglevel>` | Sets the log level of the given plugin. Example: `loglevel Events 7`
+| `loglevel <plugin> [<loglevel>]` | Sets the log level of the given plugin. Example: `loglevel Events 7`
+| `logformat [timestamp|notimestamp] [plugin|noplugin] [source|nosource] [color|nocolor]` | Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
 
 ## Plugin Management
 
