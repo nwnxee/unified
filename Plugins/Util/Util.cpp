@@ -78,6 +78,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetServerTicksPerSecond);
     REGISTER(GetLastCreatedObject);
     REGISTER(AddScript);
+    REGISTER(GetNSSContents);
 
 #undef REGISTER
 
@@ -426,6 +427,33 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
         {
             LOG_DEBUG("Adding Script '%s' with data: %s", scriptName, scriptData);
             retVal = true;
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retVal;
+
+    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptName.empty());
+      ASSERT_OR_THROW(scriptName.size() <= 16);
+
+    if (Globals::ExoResMan()->Exists(scriptName.c_str(), Constants::ResRefType::NSS, nullptr))
+    {
+        CScriptSourceFile scriptSourceFile;
+        char *data;
+        uint32_t size = 0;
+
+        if (scriptSourceFile.LoadScript(scriptName, &data, &size) == 0)
+        {
+            retVal.assign(data, size);
+            scriptSourceFile.UnloadScript();
         }
     }
 

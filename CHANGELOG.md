@@ -30,6 +30,7 @@ N/A
 - Object: Export()
 - Player: PossessCreature()
 - Util: AddScript()
+- Util: GetNSSContents()
 
 ### Changed
 - Administration: DeleteTURD() now returns TRUE on success

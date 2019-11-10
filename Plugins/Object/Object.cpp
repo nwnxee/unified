@@ -700,13 +700,13 @@ ArgumentStack Object::Export(ArgumentStack&& args)
 
         switch (pGameObject->m_nObjectType)
         {
-            case Constants::ObjectType::Creature:   ExportObject(2027); break;
-            case Constants::ObjectType::Item:       ExportObject(2025); break;
-            case Constants::ObjectType::Placeable:  ExportObject(2044); break;
-            case Constants::ObjectType::Waypoint:   ExportObject(2058); break;
-            case Constants::ObjectType::Store:      ExportObject(2051); break;
-            case Constants::ObjectType::Door:       ExportObject(2042); break;
-            case Constants::ObjectType::Trigger:    ExportObject(2032); break;
+            case Constants::ObjectType::Creature:   ExportObject(Constants::ResRefType::UTC); break;
+            case Constants::ObjectType::Item:       ExportObject(Constants::ResRefType::UTI); break;
+            case Constants::ObjectType::Placeable:  ExportObject(Constants::ResRefType::UTP); break;
+            case Constants::ObjectType::Waypoint:   ExportObject(Constants::ResRefType::UTW); break;
+            case Constants::ObjectType::Store:      ExportObject(Constants::ResRefType::UTS); break;
+            case Constants::ObjectType::Door:       ExportObject(Constants::ResRefType::UTD); break;
+            case Constants::ObjectType::Trigger:    ExportObject(Constants::ResRefType::UTT); break;
             default:
                 LOG_ERROR("Invalid object type for ExportObject");
                 break;

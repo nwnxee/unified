@@ -129,6 +129,11 @@ object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
 /// @return TRUE on success.
 int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE);
 
+/// @brief Gets the contents of a .nss script file as a string.
+/// @param sScriptName The name of the script to get the contents of.
+/// @return The script file contents or "" on error.
+string NWNX_Util_GetNSSContents(string sScriptName);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -286,4 +291,14 @@ int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain 
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetNSSContents(string sScriptName)
+{
+    string sFunc = "GetNSSContents";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
