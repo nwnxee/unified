@@ -75,7 +75,6 @@ Layonara::Layonara(const Plugin::CreateParams& params)
     REGISTER(SetQuiverArrows);
     REGISTER(CreateVFXAtTransitionCentroid);
     REGISTER(ClearSurfaceMaterial);
-    REGISTER(ScaleOverTime);
 
 #undef REGISTER
 

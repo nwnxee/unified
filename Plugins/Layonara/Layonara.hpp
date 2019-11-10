@@ -109,7 +109,6 @@ private:
     ArgumentStack SetQuiverArrows                 (ArgumentStack&& args);
     ArgumentStack CreateVFXAtTransitionCentroid   (ArgumentStack&& args);
     ArgumentStack ClearSurfaceMaterial            (ArgumentStack&& args);
-    ArgumentStack ScaleOverTime                   (ArgumentStack&& args);
 };
 
 }
