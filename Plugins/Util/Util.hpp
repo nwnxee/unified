@@ -33,6 +33,7 @@ private:
     ArgumentStack GetServerTicksPerSecond(ArgumentStack&& args);
     ArgumentStack GetLastCreatedObject(ArgumentStack&& args);
     ArgumentStack AddScript(ArgumentStack&& args);
+    ArgumentStack GetNSSContents(ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
