@@ -59,9 +59,9 @@ template<> std::optional<std::string>&          Events::Argument::Get<std::strin
 template<> std::optional<CGameEffect*>&    Events::Argument::Get<CGameEffect*>();
 
 template <typename T>
-void Events::InsertArgument(ArgumentStack& stack, T arg)
+void Events::InsertArgument(ArgumentStack& stack, T&& arg)
 {
-    stack.push(Events::Argument(arg));
+    stack.emplace(std::forward<T>(arg));
 }
 
 template <typename T>

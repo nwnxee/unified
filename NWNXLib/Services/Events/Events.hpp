@@ -66,7 +66,7 @@ public:
     void ClearEvent(RegistrationToken&& token);
 
     template <typename T>
-    static void InsertArgument(ArgumentStack& stack, T arg);
+    static void InsertArgument(ArgumentStack& stack, T&& arg);
 
     template <typename T>
     static T ExtractArgument(ArgumentStack& arguments);
