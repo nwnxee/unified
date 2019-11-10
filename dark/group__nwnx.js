@@ -2,6 +2,7 @@ var group__nwnx =
 [
     [ "Core Functionality", "group__nwnx.html#nwnx", null ],
     [ "NWNX Constants", "group__consts.html", "group__consts" ],
+    [ "NWNX Tests", "group__tests.html", "group__tests" ],
     [ "nwnx.nss", "nwnx_8nss.html", null ],
     [ "NWNX_CallFunction", "group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4", null ],
     [ "NWNX_PushArgumentInt", "group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698", null ],
