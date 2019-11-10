@@ -1,12 +1,5 @@
 #include "nwnx_visibility"
-
-void report(string func, int bSuccess)
-{
-    if (bSuccess)
-        WriteTimestampedLogEntry("NWNX_Visibility: " + func + "() success");
-    else
-        WriteTimestampedLogEntry("NWNX_Visibility: " + func + "() failed");
-}
+#include "nwnx_tests"
 
 void main()
 {
@@ -20,14 +13,14 @@ void main()
     }
 
     NWNX_Visibility_SetVisibilityOverride(OBJECT_INVALID, oCreature, NWNX_VISIBILITY_DM_ONLY);
-    report("{Set/Get}VisibilityOverride (Global)", NWNX_Visibility_GetVisibilityOverride(OBJECT_INVALID, oCreature) == NWNX_VISIBILITY_DM_ONLY);
+    NWNX_Tests_Report("NWNX_Visibility", "{Set/Get}VisibilityOverride (Global)", NWNX_Visibility_GetVisibilityOverride(OBJECT_INVALID, oCreature) == NWNX_VISIBILITY_DM_ONLY);
 
     object oPC = GetFirstPC();
 
     if( GetIsObjectValid(oPC) )
     {
         NWNX_Visibility_SetVisibilityOverride(oPC, oCreature, NWNX_VISIBILITY_HIDDEN);
-        report("{Set/Get}VisibilityOverride (Personal)", NWNX_Visibility_GetVisibilityOverride(oPC, oCreature) == NWNX_VISIBILITY_HIDDEN);
+        NWNX_Tests_Report("NWNX_Visibility", "{Set/Get}VisibilityOverride (Personal)", NWNX_Visibility_GetVisibilityOverride(oPC, oCreature) == NWNX_VISIBILITY_HIDDEN);
     }
     else
     {

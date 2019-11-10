@@ -13,9 +13,6 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
 
     static constexpr const char * SEVERITY_NAMES[] = { "", "", "F", "E", "W", "N", "I", "D" };
 
-    time_t now = std::time(nullptr);
-    tm* timeinfo = std::localtime(&now);
-
     // Get filename without the full path.
     const char* filename = file;
     const char* filenameTemp = filename;
@@ -25,11 +22,21 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
     }
 
     std::ostringstream stream;
-    tfm::format(stream, "%s [%02d:%02d:%02d] [%s] [%s:%d] ",
-            SEVERITY_NAMES[static_cast<size_t>(channel)],
-            timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec,
-            plugin, filename, line);
-
+    stream << SEVERITY_NAMES[static_cast<size_t>(channel)] << " ";
+    if (GetPrintTimestamp())
+    {
+        time_t now = std::time(nullptr);
+        tm* timeinfo = std::localtime(&now);
+        tfm::format(stream, "[%02d:%02d:%02d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+    }
+    if (GetPrintPlugin())
+    {
+        tfm::format(stream, "[%s] ", plugin);
+    }
+    if (GetPrintSource())
+    {
+        tfm::format(stream, "[%s:%d] ", filename, line);
+    }
     tfm::format(stream, format, std::forward<Args>(args)...);
 
     InternalTrace(channel, allowedChannel, stream.str().c_str());
