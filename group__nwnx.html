@@ -145,6 +145,8 @@ Environment Variables</h2>
 <td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_SOURCE</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">1  </td><td class="markdownTableBodyNone">Set whether to show source code location in logs printed by NWNX.   </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_COLOR</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">1  </td><td class="markdownTableBodyNone">Set whether to show logs printed by NWNX in color (only when printing to a TTY).   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_FORCE_COLOR</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Sets whether to force color output.   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md18"></a>
 Console Commands</h2>
@@ -160,7 +162,7 @@ Console Commands</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>loglevel &lt;plugin&gt; [&lt;loglevel&gt;]</code>  </td><td class="markdownTableBodyNone">Sets the log level of the given plugin. Example: <code>loglevel Events 7</code>   </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor]</code>  </td><td class="markdownTableBodyNone">Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code>   </td></tr>
+<td class="markdownTableBodyNone"><code>logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]</code>  </td><td class="markdownTableBodyNone">Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code>   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md19"></a>
 Plugin Management</h2>
@@ -835,7 +837,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Nov 11 2019 12:28:10 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Nov 11 2019 15:11:57 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
