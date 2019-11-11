@@ -104,10 +104,10 @@ $(document).ready(function(){initNavTree('md_Plugins_Weapon_README.html','');});
 <div class="title">Weapon Plugin Reference </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md166"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md222"></a>
 Environment Variables</h1>
 <p>None.</p>
-<h1><a class="anchor" id="autotoc_md167"></a>
+<h1><a class="anchor" id="autotoc_md223"></a>
 Description</h1>
 <p>Functions exposing additional weapon properties.</p>
 <p>Allows modifying which feats count as which for the weapon feats. Can be used to add feats like WEAPON_FOCUS_* to custom weapons. All you have to do is:</p>
@@ -120,7 +120,7 @@ Description</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> FEAT_WEAPON_FOCUS_KATAR = 3000; </div>
 <div class="line"><span class="keywordtype">int</span> BASE_ITEM_KATAR = 310;</div>
 <div class="line"><a class="code" href="group__weapon.html#gaa74f691d599e48f697719ea8731f11be">NWNX_Weapon_SetWeaponFocusFeat</a>(BASE_ITEM_KATAR, FEAT_WEAPON_FOCUS_KATAR);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md168"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md224"></a>
 Available functions</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -161,7 +161,7 @@ Available functions</h1>
 <td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73" title="Bypass Devastating Critical.">NWNX_Weapon_BypassDevastatingCritical()</a>  </td><td class="markdownTableBodyNone">Must be called inside the devastating critical event script. If called, no devastating critical will occur.   </td></tr>
 </table>
 <p>The <a class="el" href="group__weapon.html#gab865cdef1423787f87307127c2d66c1b" title="Set plugin options.">NWNX_Weapon_SetOption()</a> function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively.</p>
-<h1><a class="anchor" id="autotoc_md169"></a>
+<h1><a class="anchor" id="autotoc_md225"></a>
 Example for Critical Event Script</h1>
 <p>This script just prints some info to the log and then bypasses the devastating critical 50% of the time. You have to set your script with <a class="el" href="group__weapon.html#ga4c1988ef71d5aecb896e18544ac71a08" title="Set Devastating Critical Event Script.">NWNX_Weapon_SetDevastatingCriticalEventScript()</a> (in the OnModuleLoad script for example)</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;nwnx_weapon&quot;</span></div>
@@ -199,7 +199,7 @@ Example for Critical Event Script</h1>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Nov 11 2019 15:11:59 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Nov 11 2019 17:40:52 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

@@ -169,7 +169,1120 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Scripts can subscribe to events. </p>
-<p>Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants). Others can be signalled via script code via <a class="el" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+<h1><a class="anchor" id="autotoc_md39"></a>
+Events</h1>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md40"></a>
+Associate Events</h2>
+<ul>
+<li>NWNX_ON_ADD_ASSOCIATE_BEFORE</li>
+<li>NWNX_ON_ADD_ASSOCIATE_AFTER</li>
+<li>NWNX_ON_REMOVE_ASSOCIATE_BEFORE</li>
+<li>NWNX_ON_REMOVE_ASSOCIATE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The owner of the associate.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ASSOCIATE_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md41"></a>
+Stealth Events</h2>
+<ul>
+<li>NWNX_ON_ENTER_STEALTH_BEFORE</li>
+<li>NWNX_ON_ENTER_STEALTH_AFTER</li>
+<li>NWNX_ON_EXIT_STEALTH_BEFORE</li>
+<li>NWNX_ON_EXIT_STEALTH_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature entering or exiting stealth.</p>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md42"></a>
+Examine Events</h2>
+<ul>
+<li>NWNX_ON_EXAMINE_OBJECT_BEFORE</li>
+<li>NWNX_ON_EXAMINE_OBJECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player examining the object</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">EXAMINEE_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TRAP_EXAMINE_SUCCESS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">For trap examine only, whether the examine succeeded   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md43"></a>
+Use Item Events</h2>
+<ul>
+<li>NWNX_ON_USE_ITEM_BEFORE</li>
+<li>NWNX_ON_USE_ITEM_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature using the item</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM_PROPERTY_INDEX  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ITEM_SUB_PROPERTY_INDEX  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_Z  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md44"></a>
+Item Container Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_INVENTORY_OPEN_BEFORE</li>
+<li>NWNX_ON_ITEM_INVENTORY_OPEN_AFTER</li>
+<li>NWNX_ON_ITEM_INVENTORY_CLOSE_BEFORE</li>
+<li>NWNX_ON_ITEM_INVENTORY_CLOSE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The container</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OWNER  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md45"></a>
+Ammunition Reload Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_AMMO_RELOAD_BEFORE</li>
+<li>NWNX_ON_ITEM_AMMO_RELOAD_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature whose inventory we're searching for the item type</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">BASE_ITEM_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The base item type being sought (arrow, bolt, bullet)   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">BASE_ITEM_NTH  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Find the Nth instance of this item   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ACTION_RESULT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The object that was determined in BEFORE (only in after)   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md46"></a>
+Scroll Learn Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_SCROLL_LEARN_BEFORE</li>
+<li>NWNX_ON_ITEM_SCROLL_LEARN_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature learning the scroll</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SCROLL  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md47"></a>
+Item Equip Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_EQUIP_BEFORE</li>
+<li>NWNX_ON_ITEM_EQUIP_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature equipping the item</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SLOT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md48"></a>
+Item Unequip Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_UNEQUIP_BEFORE</li>
+<li>NWNX_ON_ITEM_UNEQUIP_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature unequipping the item</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md49"></a>
+Item Destroy Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_DESTROY_OBJECT_BEFORE</li>
+<li>NWNX_ON_ITEM_DESTROY_OBJECT_AFTER</li>
+<li>NWNX_ON_ITEM_DECREMENT_STACKSIZE_BEFORE</li>
+<li>NWNX_ON_ITEM_DECREMENT_STACKSIZE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The item triggering the event</p>
+<dl class="section note"><dt>Note</dt><dd>Use of <code>NWNX_ON_ITEM_(DESTROY_OBJECT|DECREMENT_STACKSIZE)_*</code> conflicts with object event handler profiling</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md50"></a>
+Item Use Lore To Identify Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_USE_LORE_BEFORE</li>
+<li>NWNX_ON_ITEM_USE_LORE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player attempting to identify an item with their lore skill</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md51"></a>
+Item Pay To Identify Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_PAY_TO_IDENTIFY_BEFORE</li>
+<li>NWNX_ON_ITEM_PAY_TO_IDENTIFY_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player attempting to pay to identify an item</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">STORE  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md52"></a>
+Item Split Events</h2>
+<ul>
+<li>NWNX_ON_ITEM_SPLIT_BEFORE</li>
+<li>NWNX_ON_ITEM_SPLIT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player attempting to split an item</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">NUMBER_SPLIT_OFF  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md53"></a>
+Feat Use Events</h2>
+<ul>
+<li>NWNX_ON_USE_FEAT_BEFORE</li>
+<li>NWNX_ON_USE_FEAT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The object using the feat</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">FEAT_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SUBFEAT_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">AREA_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_Z  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md54"></a>
+DM Give Events</h2>
+<ul>
+<li>NWNX_ON_DM_GIVE_GOLD_BEFORE</li>
+<li>NWNX_ON_DM_GIVE_GOLD_AFTER</li>
+<li>NWNX_ON_DM_GIVE_XP_BEFORE</li>
+<li>NWNX_ON_DM_GIVE_XP_AFTER</li>
+<li>NWNX_ON_DM_GIVE_LEVEL_BEFORE</li>
+<li>NWNX_ON_DM_GIVE_LEVEL_AFTER</li>
+<li>NWNX_ON_DM_GIVE_ALIGNMENT_BEFORE</li>
+<li>NWNX_ON_DM_GIVE_ALIGNMENT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AMOUNT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">OBJECT  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ALIGNMENT_TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Only valid for <code>NWNX_ON_DM_GIVE_ALIGNMENT_*</code>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md55"></a>
+DM Spawn Object Events</h2>
+<ul>
+<li>NWNX_ON_DM_SPAWN_OBJECT_BEFORE</li>
+<li>NWNX_ON_DM_SPAWN_OBJECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AREA  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">OBJECT  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Only returns a valid object in *_AFTER   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OBJECT_TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Returns <code>NWNX_EVENTS_OBJECT_TYPE_*</code>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">POS_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">POS_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">POS_Z  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md56"></a>
+DM Give Item Events</h2>
+<ul>
+<li>NWNX_ON_DM_GIVE_ITEM_BEFORE</li>
+<li>NWNX_ON_DM_GIVE_ITEM_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Only returns a valid object in *_AFTER   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md57"></a>
+DM Multiple Object Action Events</h2>
+<ul>
+<li>NWNX_ON_DM_HEAL_BEFORE</li>
+<li>NWNX_ON_DM_HEAL_AFTER</li>
+<li>NWNX_ON_DM_KILL_BEFORE</li>
+<li>NWNX_ON_DM_KILL_AFTER</li>
+<li>NWNX_ON_DM_TOGGLE_INVULNERABLE_BEFORE</li>
+<li>NWNX_ON_DM_TOGGLE_INVULNERABLE_AFTER</li>
+<li>NWNX_ON_DM_FORCE_REST_BEFORE</li>
+<li>NWNX_ON_DM_FORCE_REST_AFTER</li>
+<li>NWNX_ON_DM_LIMBO_BEFORE</li>
+<li>NWNX_ON_DM_LIMBO_AFTER</li>
+<li>NWNX_ON_DM_TOGGLE_AI_BEFORE</li>
+<li>NWNX_ON_DM_TOGGLE_AI_AFTER</li>
+<li>NWNX_ON_DM_TOGGLE_IMMORTAL_BEFORE</li>
+<li>NWNX_ON_DM_TOGGLE_IMMORTAL_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">NUM_TARGETS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The number of targets affected   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_*  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">* = 1 &lt;= NUM_TARGETS   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md58"></a>
+DM Single Object Action Events</h2>
+<ul>
+<li>NWNX_ON_DM_GOTO_BEFORE</li>
+<li>NWNX_ON_DM_GOTO_AFTER</li>
+<li>NWNX_ON_DM_POSSESS_BEFORE</li>
+<li>NWNX_ON_DM_POSSESS_AFTER</li>
+<li>NWNX_ON_DM_POSSESS_FULL_POWER_BEFORE</li>
+<li>NWNX_ON_DM_POSSESS_FULL_POWER_AFTER</li>
+<li>NWNX_ON_DM_TOGGLE_LOCK_BEFORE</li>
+<li>NWNX_ON_DM_TOGGLE_LOCK_AFTER</li>
+<li>NWNX_ON_DM_DISABLE_TRAP_BEFORE</li>
+<li>NWNX_ON_DM_DISABLE_TRAP_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>If <code>TARGET</code> is <code>OBJECT_INVALID</code> for <code>NWNX_ON_DM_POSSESS_*</code>, the DM is unpossessing.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md59"></a>
+DM Jump Events</h2>
+<ul>
+<li>NWNX_ON_DM_JUMP_TO_POINT_BEFORE</li>
+<li>NWNX_ON_DM_JUMP_TO_POINT_AFTER</li>
+<li>NWNX_ON_DM_JUMP_TARGET_TO_POINT_BEFORE</li>
+<li>NWNX_ON_DM_JUMP_TARGET_TO_POINT_AFTER</li>
+<li>NWNX_ON_DM_JUMP_ALL_PLAYERS_TO_POINT_BEFORE</li>
+<li>NWNX_ON_DM_JUMP_ALL_PLAYERS_TO_POINT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_AREA  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">POS_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">POS_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">POS_Z  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">NUM_TARGETS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Only valid for NWNX_ON_DM_JUMP_TARGET_TO_POINT_*   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_*  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">* = 1 &lt;= NUM_TARGETS, Only valid for NWNX_ON_DM_JUMP_TARGET_TO_POINT_*   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md60"></a>
+DM Change Difficulty Events</h2>
+<ul>
+<li>NWNX_ON_DM_CHANGE_DIFFICULTY_BEFORE</li>
+<li>NWNX_ON_DM_CHANGE_DIFFICULTY_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">DIFFICULTY_SETTING  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md61"></a>
+DM View Inventory Events</h2>
+<ul>
+<li>NWNX_ON_DM_VIEW_INVENTORY_BEFORE</li>
+<li>NWNX_ON_DM_VIEW_INVENTORY_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OPEN_INVENTORY  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE if opening an inventory, FALSE if closing   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md62"></a>
+DM Spawn Trap Events</h2>
+<ul>
+<li>NWNX_ON_DM_SPAWN_TRAP_ON_OBJECT_BEFORE</li>
+<li>NWNX_ON_DM_SPAWN_TRAP_ON_OBJECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AREA  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md63"></a>
+DM Other Events</h2>
+<ul>
+<li>NWNX_ON_DM_APPEAR_BEFORE</li>
+<li>NWNX_ON_DM_APPEAR_AFTER</li>
+<li>NWNX_ON_DM_DISAPPEAR_BEFORE</li>
+<li>NWNX_ON_DM_DISAPPEAR_AFTER</li>
+<li>NWNX_ON_DM_SET_FACTION_BEFORE</li>
+<li>NWNX_ON_DM_SET_FACTION_AFTER</li>
+<li>NWNX_ON_DM_TAKE_ITEM_BEFORE</li>
+<li>NWNX_ON_DM_TAKE_ITEM_AFTER</li>
+<li>NWNX_ON_DM_SET_STAT_BEFORE</li>
+<li>NWNX_ON_DM_SET_STAT_AFTER</li>
+<li>NWNX_ON_DM_GET_VARIABLE_BEFORE</li>
+<li>NWNX_ON_DM_GET_VARIABLE_AFTER</li>
+<li>NWNX_ON_DM_SET_VARIABLE_BEFORE</li>
+<li>NWNX_ON_DM_SET_VARIABLE_AFTER</li>
+<li>NWNX_ON_DM_SET_TIME_BEFORE</li>
+<li>NWNX_ON_DM_SET_TIME_AFTER</li>
+<li>NWNX_ON_DM_SET_DATE_BEFORE</li>
+<li>NWNX_ON_DM_SET_DATE_AFTER</li>
+<li>NWNX_ON_DM_SET_FACTION_REPUTATION_BEFORE</li>
+<li>NWNX_ON_DM_SET_FACTION_REPUTATION_AFTER</li>
+<li>NWNX_ON_DM_GET_FACTION_REPUTATION_BEFORE</li>
+<li>NWNX_ON_DM_GET_FACTION_REPUTATION_AFTER</li>
+<li>NWNX_ON_DM_DUMP_LOCALS_BEFORE</li>
+<li>NWNX_ON_DM_DUMP_LOCALS_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The DM</p>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md64"></a>
+Client Disconnect Events</h2>
+<ul>
+<li>NWNX_ON_CLIENT_DISCONNECT_BEFORE</li>
+<li>NWNX_ON_CLIENT_DISCONNECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player disconnecting from the server</p>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md65"></a>
+Client Connect Events</h2>
+<ul>
+<li>NWNX_ON_CLIENT_CONNECT_BEFORE</li>
+<li>NWNX_ON_CLIENT_CONNECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The module</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PLAYER_NAME  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">Player name of the connecting client   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">CDKEY  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">Public cdkey of the connecting client   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">IS_DM  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Whether the client is connect as DM (1/0)   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">IP_ADDRESS  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">The IP address of the connecting client   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Skipping the _BEFORE event will cause the client's connection to be denied. You can optionally pass a reason for this in the event result.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md66"></a>
+Combat Round Start Events</h2>
+<ul>
+<li>NWNX_ON_START_COMBAT_ROUND_BEFORE</li>
+<li>NWNX_ON_START_COMBAT_ROUND_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature starting the combat round</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md67"></a>
+Cast Spell Events</h2>
+<ul>
+<li>NWNX_ON_CAST_SPELL_BEFORE</li>
+<li>NWNX_ON_CAST_SPELL_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature casting the spell</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_Z  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ITEM_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">MULTI_CLASS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_COUNTERED  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Returns TRUE if spell was countered else FALSE   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">COUNTERING_SPELL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Returns TRUE if cast as counter else FALSE   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PROJECTILE_PATH_TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">IS_INSTANT_SPELL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Returns TRUE if spell was instant else FALSE   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md68"></a>
+Set Memorized Spell Slot Events</h2>
+<ul>
+<li>NWNX_SET_MEMORIZED_SPELL_SLOT_BEFORE</li>
+<li>NWNX_SET_MEMORIZED_SPELL_SLOT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature who's memorizing the spell</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_MULTICLASS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Index of the spell casting class (0-2)   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_LEVEL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_SLOT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_DOMAIN  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_METAMAGIC  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_FROMCLIENT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ACTION_RESULT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md69"></a>
+Clear Memorized Spell Slot Events</h2>
+<ul>
+<li>NWNX_CLEAR_MEMORIZED_SPELL_SLOT_BEFORE</li>
+<li>NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature whose spellbook is being changed</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_MULTICLASS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Index of the spell casting class (0-2)   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_LEVEL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_SLOT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md70"></a>
+Healer Kit Use Events</h2>
+<ul>
+<li>NWNX_ON_HEALER_KIT_BEFORE</li>
+<li>NWNX_ON_HEALER_KIT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature using the Healer's Kit</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ITEM_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM_PROPERTY_INDEX  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">MOVE_TO_TARGET  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ACTION_RESULT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md71"></a>
+Party Action Events</h2>
+<ul>
+<li>NWNX_ON_PARTY_*_BEFORE</li>
+<li>NWNX_ON_PARTY_*_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player doing the action</p>
+<p>Replace * with an event listed below</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event  </th><th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">LEAVE  </td><td class="markdownTableBodyNone">LEAVING  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">KICK  </td><td class="markdownTableBodyNone">KICKED  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TRANSFER_LEADERSHIP  </td><td class="markdownTableBodyNone">NEW_LEADER  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">INVITE  </td><td class="markdownTableBodyNone">INVITED  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">IGNORE_INVITATION  </td><td class="markdownTableBodyNone">INVITED_BY  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ACCEPT_INVITATION  </td><td class="markdownTableBodyNone">INVITED_BY  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">REJECT_INVITATION  </td><td class="markdownTableBodyNone">INVITED_BY  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">KICK_HENCHMAN  </td><td class="markdownTableBodyNone">INVITED_BY  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md72"></a>
+Combat Mode Toggle Events</h2>
+<ul>
+<li>NWNX_ON_COMBAT_MODE_ON</li>
+<li>NWNX_ON_COMBAT_MODE_OFF</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The Player Character toggling the mode</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">COMBAT_MODE_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">See below   </td></tr>
+</table>
+<p>The <code>COMBAT_MODE_ID</code> returned does not match the <code>COMBAT_MODE_*</code> NWScript constants. Use the following: </p><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Combat Mode  </th><th class="markdownTableHeadNone">ID   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">NONE  </td><td class="markdownTableBodyNone">0   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PARRY  </td><td class="markdownTableBodyNone">1   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">POWER_ATTACK  </td><td class="markdownTableBodyNone">2   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">IMPROVED_POWER_ATTACK  </td><td class="markdownTableBodyNone">3   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">COUNTERSPELL  </td><td class="markdownTableBodyNone">4   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">FLURRY_OF_BLOWS  </td><td class="markdownTableBodyNone">5   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">RAPID_SHOT  </td><td class="markdownTableBodyNone">6   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">EXPERTISE  </td><td class="markdownTableBodyNone">7   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">IMPROVED_EXPERTISE  </td><td class="markdownTableBodyNone">8   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">DEFENSIVE_CASTING  </td><td class="markdownTableBodyNone">9   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">DIRTY_FIGHTING  </td><td class="markdownTableBodyNone">10   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">DEFENSIVE_STANCE  </td><td class="markdownTableBodyNone">11   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Requires <a class="el" href="group__combatmodes.html">NWNX_CombatModes</a> plugin to work.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md73"></a>
+Use Skill Events</h2>
+<ul>
+<li>NWNX_ON_USE_SKILL_BEFORE</li>
+<li>NWNX_ON_USE_SKILL_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature using the skill</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">USED_ITEM_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SKILL_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SUB_SKILL_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_POSITION_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_POSITION_Z  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Probably only really works with the following activated skills: <code>SKILL_ANIMAL_EMPATHY</code>, <code>SKILL_DISABLE_TRAP</code>, <code>SKILL_HEAL</code>, <code>SKILL_OPEN_LOCK</code>, <code>SKILL_PICK_POCKET</code>, <code>SKILL_TAUNT</code></dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md74"></a>
+Map Pin Events</h2>
+<ul>
+<li>NWNX_ON_MAP_PIN_ADD_PIN_BEFORE</li>
+<li>NWNX_ON_MAP_PIN_ADD_PIN_AFTER</li>
+<li>NWNX_ON_MAP_PIN_CHANGE_PIN_BEFORE</li>
+<li>NWNX_ON_MAP_PIN_CHANGE_PIN_AFTER</li>
+<li>NWNX_ON_MAP_PIN_DESTROY_PIN_BEFORE</li>
+<li>NWNX_ON_MAP_PIN_DESTROY_PIN_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player performing the map pin action</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PIN_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone">Not available in DESTROY event   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PIN_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone">Not available in DESTROY event   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PIN_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Not available in ADD events. Use <code>GetLocalInt(oPC, "NW_TOTAL_MAP_PINS")</code>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PIN_NOTE  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">Not available in DESTROY event   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md75"></a>
+Spot/Listen Detection Events</h2>
+<ul>
+<li>NWNX_ON_DO_LISTEN_DETECTION_BEFORE</li>
+<li>NWNX_ON_DO_LISTEN_DETECTION_AFTER</li>
+<li>NWNX_ON_DO_SPOT_DETECTION_BEFORE</li>
+<li>NWNX_ON_DO_SPOT_DETECTION_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature doing the detecting</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TARGET_INVISIBLE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE/FALSE   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">BEFORE_RESULT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md76"></a>
+Polymorph Events</h2>
+<ul>
+<li>NWNX_ON_POLYMORPH_BEFORE</li>
+<li>NWNX_ON_POLYMORPH_AFTER</li>
+<li>NWNX_ON_UNPOLYMORPH_BEFORE</li>
+<li>NWNX_ON_UNPOLYMORPH_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature doing the un/polymorphing</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">POLYMORPH_TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Appearance polymorphing into. Only for ON_POLYMORPH   </td></tr>
+</table>
+<dl class="section warning"><dt>Warning</dt><dd>If skipping the ON_POLYMORPH event, in some cases bioware scripts will enter an endless loop trying to merge item properties.<br  />
+ This can be seen in <code>x2_s2_gwildshp</code> with the minotaur form with the following line: <code>IPWildShapeCopyItemProperties(oWeaponOld,oWeaponNew, TRUE);</code> If you want to skip this, you need to make sure oWeaponOld != oWeaponNew</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md77"></a>
+Effect Applied/Removed Events</h2>
+<ul>
+<li>NWNX_ON_EFFECT_APPLIED_BEFORE</li>
+<li>NWNX_ON_EFFECT_APPLIED_AFTER</li>
+<li>NWNX_ON_EFFECT_REMOVED_BEFORE</li>
+<li>NWNX_ON_EFFECT_REMOVED_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The target of the effect</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">UNIQUE_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">CREATOR  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The effect type, does not match NWScript constants See: <a href="https://github.com/nwnxee/unified/blob/master/NWNXLib/API/Constants/Effect.hpp#L8">https://github.com/nwnxee/unified/blob/master/NWNXLib/API/Constants/Effect.hpp#L8</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SUB_TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">SUBTYPE_*   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">DURATION_TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">DURATION_TYPE_*   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">DURATION  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">SPELL_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">CASTER_LEVEL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">CUSTOM_TAG  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">INT_PARAM_*  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">* = 1-8   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">FLOAT_PARAM_*  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone">* = 1-4   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">STRING_PARAM_*  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">* = 1-6   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">OBJECT_PARAM_*  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">* = 1-4, Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Only fires for Temporary or Permanent effects, does not include VisualEffects or ItemProperty effects.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md78"></a>
+Quickchat Events</h2>
+<ul>
+<li>NWNX_ON_QUICKCHAT_BEFORE</li>
+<li>NWNX_ON_QUICKCHAT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player using the quick chat command</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">QUICKCHAT_COMMAND  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"><code>VOICE_CHAT_*</code> constants   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md79"></a>
+Inventory Open Events</h2>
+<ul>
+<li>NWNX_ON_INVENTORY_OPEN_BEFORE</li>
+<li>NWNX_ON_INVENTORY_OPEN_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player opening the inventory</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_INVENTORY  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Pretty sure this is always the player   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md80"></a>
+Inventory Select Panel Events</h2>
+<ul>
+<li>NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE</li>
+<li>NWNX_ON_INVENTORY_SELECT_PANEL_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player changing inventory panels</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">CURRENT_PANEL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The current panel, index starts at 0   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SELECTED_PANEL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The selected panel, index starts at 0   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md81"></a>
+Barter Start Events</h2>
+<ul>
+<li>NWNX_ON_BARTER_START_BEFORE</li>
+<li>NWNX_ON_BARTER_START_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player who initiated the barter</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">BARTER_TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">The other player involved in the barter   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md82"></a>
+Barter End Events</h2>
+<ul>
+<li>NWNX_ON_BARTER_END_BEFORE</li>
+<li>NWNX_ON_BARTER_END_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player who initiated the barter</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">BARTER_TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">The other player involved in the barter   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">BARTER_COMPLETE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE/FALSE - whether the barter completed successfully   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">BARTER_INITIATOR_ITEM_COUNT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">How many items the initiator traded away, only in <em>BEFORE events   </em></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><em> BARTER_TARGET_ITEM_COUNT  </em></td><td class="markdownTableBodyNone"><em> int  </em></td><td class="markdownTableBodyNone"><em> How many items the target traded away, only in _BEFORE events   </em></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><em> BARTER_INITIATOR_ITEM</em>*  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>, only in <em>BEFORE events   </em></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><em> BARTER_TARGET_ITEM</em>*  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>, only in _BEFORE events   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md83"></a>
+Trap Events</h2>
+<ul>
+<li>NWNX_ON_TRAP_DISARM_BEFORE</li>
+<li>NWNX_ON_TRAP_DISARM_AFTER</li>
+<li>NWNX_ON_TRAP_ENTER_BEFORE</li>
+<li>NWNX_ON_TRAP_ENTER_AFTER</li>
+<li>NWNX_ON_TRAP_EXAMINE_BEFORE</li>
+<li>NWNX_ON_TRAP_EXAMINE_AFTER</li>
+<li>NWNX_ON_TRAP_FLAG_BEFORE</li>
+<li>NWNX_ON_TRAP_FLAG_AFTER</li>
+<li>NWNX_ON_TRAP_RECOVER_BEFORE</li>
+<li>NWNX_ON_TRAP_RECOVER_AFTER</li>
+<li>NWNX_ON_TRAP_SET_BEFORE</li>
+<li>NWNX_ON_TRAP_SET_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature performing the trap action</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TRAP_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">TRAP_FORCE_SET  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE/FALSE, only in ENTER events   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ACTION_RESULT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE/FALSE, only in _AFTER events (not ENTER)   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md84"></a>
+Timing Bar Events</h2>
+<ul>
+<li>NWNX_ON_TIMING_BAR_START_BEFORE</li>
+<li>NWNX_ON_TIMING_BAR_START_AFTER</li>
+<li>NWNX_ON_TIMING_BAR_STOP_BEFORE</li>
+<li>NWNX_ON_TIMING_BAR_STOP_AFTER</li>
+<li>NWNX_ON_TIMING_BAR_CANCEL_BEFORE</li>
+<li>NWNX_ON_TIMING_BAR_CANCEL_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player the timing bar is for</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">EVENT_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The type of timing bar, see constants below, only in <em>START</em> events   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">DURATION  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Length of time (in milliseconds) the bar is set to last, only in <em>START</em> events   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md85"></a>
+Webhook Events</h2>
+<ul>
+<li>NWNX_ON_WEBHOOK_SUCCESS</li>
+<li>NWNX_ON_WEBHOOK_FAILURE</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The module object</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">STATUS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The return code after posting to the server   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">MESSAGE  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">The full constructed message sent   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">HOST  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PATH  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">RATELIMIT_LIMIT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Discord: The number of requests that can be made in a limited period   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">RATELIMIT_REMAINING  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Discord: The number of remaining requests that can be made before rate limited   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">RATELIMIT_RESET  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Discord: Timestamp when the rate limit resets   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">RETRY_AFTER  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone">Milliseconds until another webhook is allowed when rate limited   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">FAIL_INFO  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">The reason the hook failed aside from rate limits   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Requires <a class="el" href="group__webhook.html">NWNX_WebHook</a> plugin to work.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md86"></a>
+Servervault Events</h2>
+<ul>
+<li>NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_BEFORE</li>
+<li>NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The module</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PLAYER_NAME  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">Player name of the connecting client   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">CDKEY  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">Public cdkey of the connecting client   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">LEGACY_CDKEY  </td><td class="markdownTableBodyNone">string  </td><td class="markdownTableBodyNone">Public cdkey from earlier versions of NWN   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">IS_DM  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Whether the client is connecting as DM (1/0)   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>Skipping the _BEFORE event will cause no player names to be accepted unless you SetEventResult("1")</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md87"></a>
+Levelling Events</h2>
+<ul>
+<li>NWNX_ON_LEVEL_UP_BEFORE</li>
+<li>NWNX_ON_LEVEL_UP_AFTER</li>
+<li>NWNX_ON_LEVEL_UP_AUTOMATIC_BEFORE</li>
+<li>NWNX_ON_LEVEL_UP_AUTOMATIC_AFTER</li>
+<li>NWNX_ON_LEVEL_DOWN_BEFORE</li>
+<li>NWNX_ON_LEVEL_DOWN_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature levelling up or down, automatic is for henchmen levelling</p>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md88"></a>
+Container Change Events</h2>
+<ul>
+<li>NWNX_ON_INVENTORY_ADD_ITEM_BEFORE</li>
+<li>NWNX_ON_INVENTORY_ADD_ITEM_AFTER</li>
+<li>NWNX_ON_INVENTORY_REMOVE_ITEM_BEFORE</li>
+<li>NWNX_ON_INVENTORY_REMOVE_ITEM_AFTER</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>NWNX_ON_INVENTORY_REMOVE_ITEM_* is not skippable</dd></dl>
+<p><code>OBJECT_SELF</code> = The container</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md89"></a>
+Gold Events</h2>
+<ul>
+<li>NWNX_ON_INVENTORY_ADD_GOLD_BEFORE</li>
+<li>NWNX_ON_INVENTORY_ADD_GOLD_AFTER</li>
+<li>NWNX_ON_INVENTORY_REMOVE_GOLD_BEFORE</li>
+<li>NWNX_ON_INVENTORY_REMOVE_GOLD_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature gaining or losing gold</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">GOLD  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The amount of gold added or removed   </td></tr>
+</table>
+<dl class="section warning"><dt>Warning</dt><dd>While these events are skippable, you should be very careful about doing so. It's very easy to create situations where players can dupe their gold or worse.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md90"></a>
+PVP Attitude Change Events</h2>
+<ul>
+<li>NWNX_ON_PVP_ATTITUDE_CHANGE_BEFORE</li>
+<li>NWNX_ON_PVP_ATTITUDE_CHANGE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player performing the attitude change</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET_OBJECT_ID  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ATTITUDE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">0 = Dislike, 1 = Like   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md91"></a>
+Input Walk To Events</h2>
+<ul>
+<li>NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE</li>
+<li>NWNX_ON_INPUT_WALK_TO_WAYPOINT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player clicking somewhere to move</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AREA  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">POS_X  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">POS_Y  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">POS_Z  </td><td class="markdownTableBodyNone">float  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">RUN_TO_POINT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE if player is running, FALSE if player is walking (eg when shift clicking)   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md92"></a>
+Material Change Events</h2>
+<ul>
+<li>NWNX_ON_MATERIALCHANGE_BEFORE</li>
+<li>NWNX_ON_MATERIALCHANGE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature walking on a different surface material</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">MATERIAL_TYPE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">See surfacemat.2da for values   </td></tr>
+</table>
+<dl class="section note"><dt>Note</dt><dd>: After a PC transitions to a new area, a surface material change event won't fire until after the PC moves.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md93"></a>
+Input Attack Events</h2>
+<ul>
+<li>NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE</li>
+<li>NWNX_ON_INPUT_ATTACK_OBJECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature attacking</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PASSIVE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE / FALSE   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">CLEAR_ALL_ACTIONS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE / FALSE   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ADD_TO_FRONT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE / FALSE   </td></tr>
+</table>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md94"></a>
+Input Force Move To Events</h2>
+<ul>
+<li>NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE</li>
+<li>NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature forcibly moving</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<hr  />
+<p> Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants). Others can be signalled via script code via <a class="el" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">evt</td><td>The event name. </td></tr>
     <tr><td class="paramname">script</td><td>The script to call when the event fires. </td></tr>
@@ -177,7 +1290,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00939">939</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00961">961</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -208,7 +1321,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00948">948</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00970">970</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -239,7 +1352,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00957">957</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00979">979</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -260,7 +1373,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00967">967</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00989">989</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -305,7 +1418,7 @@ Functions</h2></td></tr>
 <li>{Enter|Exit}Stealth events </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00976">976</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00998">998</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -334,7 +1447,7 @@ Functions</h2></td></tr>
 <li>Sticky Player Name event -&gt; "1" or "0" </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00983">983</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01005">1005</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -355,7 +1468,7 @@ Functions</h2></td></tr>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00991">991</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01013">1013</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -392,7 +1505,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l00999">999</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01021">1021</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -430,7 +1543,7 @@ Functions</h2></td></tr>
 
 <p>Add oObject to the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01009">1009</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01031">1031</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -468,7 +1581,7 @@ Functions</h2></td></tr>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01019">1019</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01041">1041</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -478,7 +1591,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Nov 11 2019 15:11:59 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Nov 11 2019 17:40:52 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
