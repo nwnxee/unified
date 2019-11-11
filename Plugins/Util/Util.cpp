@@ -443,6 +443,7 @@ ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
       ASSERT_OR_THROW(scriptName.size() <= 16);
+    const auto maxLength = Services::Events::ExtractArgument<int32_t>(args);
 
     if (Globals::ExoResMan()->Exists(scriptName.c_str(), Constants::ResRefType::NSS, nullptr))
     {
@@ -452,7 +453,7 @@ ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
 
         if (scriptSourceFile.LoadScript(scriptName, &data, &size) == 0)
         {
-            retVal.assign(data, size);
+            retVal.assign(data, maxLength < 0 ? size : maxLength > size ? size : maxLength);
             scriptSourceFile.UnloadScript();
         }
     }
