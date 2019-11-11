@@ -22,6 +22,7 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_LOG_PLUGIN` | 0-1 | 1 | Set whether to show plugin name in logs printed by NWNX.
 | `NWNX_CORE_LOG_SOURCE` | 0-1 | 1 | Set whether to show source code location in logs printed by NWNX.
 | `NWNX_CORE_LOG_COLOR` | 0-1 | 1 | Set whether to show logs printed by NWNX in color (only when printing to a TTY).
+| `NWNX_CORE_LOG_FORCE_COLOR` | 0-1| 0 | Sets whether to force color output.
 
 ## Console Commands
 
@@ -31,7 +32,7 @@ The core of NWNX:EE that does all the things.
 | `eval <script chunk>` | Executes the given nwscript chunk. Example: `eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());`
 | `evalx <script chunk>` | Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: `evalx NWNX_Administration_ShutdownServer();`
 | `loglevel <plugin> [<loglevel>]` | Sets the log level of the given plugin. Example: `loglevel Events 7`
-| `logformat [timestamp|notimestamp] [plugin|noplugin] [source|nosource] [color|nocolor]` | Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
+| `logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]` | Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
 
 ## Plugin Management
 
