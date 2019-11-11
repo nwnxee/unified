@@ -78,6 +78,8 @@ void SetPrintSource(bool value);
 bool GetPrintSource();
 void SetColorOutput(bool value);
 bool GetColorOutput();
+void SetForceColor(bool value);
+bool GetForceColor();
 
 #include "Log.inl"
 
