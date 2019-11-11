@@ -453,7 +453,7 @@ ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
 
         if (scriptSourceFile.LoadScript(scriptName, &data, &size) == 0)
         {
-            retVal.assign(data, maxLength < 0 ? size : maxLength > size ? size : maxLength);
+            retVal.assign(data, maxLength < 0 ? size : (uint32_t)maxLength > size ? size : maxLength);
             scriptSourceFile.UnloadScript();
         }
     }

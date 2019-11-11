@@ -44,7 +44,7 @@ bool GetPrintSource()
 void SetColorOutput(bool value)
 {
     s_ColorOutput = value;
-    rang::setControlMode(s_ColorOutput ? rang::control::Auto : rang::control::Off);
+    rang::setControlMode(s_ColorOutput ? rang::control::Force : rang::control::Off);
 }
 bool GetColorOutput()
 {
@@ -61,7 +61,7 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
 
     switch (channel)
     {
-        case Channel::SEV_DEBUG:   std::cout << rang::fg::gray << rang::style::dim;  break;
+        case Channel::SEV_DEBUG:   std::cout << rang::fg::cyan << rang::style::dim;  break;
         case Channel::SEV_INFO:    std::cout << rang::fg::gray;                      break;
         case Channel::SEV_NOTICE:  /*default*/                                       break;
         case Channel::SEV_WARNING: std::cout << rang::fg::yellow;                    break;
