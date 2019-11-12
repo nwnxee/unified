@@ -341,4 +341,5 @@ img.footer {
 /**             NWNX:EE Custom              **/
 /*********************************************/
 .contents h3 {display:none}
+.contents .textblock h3 {display:block}
 .headertitle .title {font-size: 200%}
