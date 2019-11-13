@@ -117,13 +117,15 @@ Added</h2>
 <li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga091bdd0e7c99ed5254ca138db05d7156" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gab1af1db0c6538b394ffd81b2b349ee2c" title="Compiles and adds a script to the UserDirectory/nwnx folder.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>, setting this to true will delete all contents in the <code>/nwnx</code> folder on startup of the server. Default: false</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code> which lets you change the resman priority of the <code>/nwnx</code> folder. Default: 70000000</li>
-<li>Core: Added the following console commands: <code>runscript</code>, <code>eval</code>, <code>evalx</code>, <code>loglevel</code><ul>
+<li>Core: Added the following console commands: <code>runscript</code>, <code>eval</code>, <code>evalx</code>, <code>loglevel</code>, <code>logformat</code><ul>
 <li><code>runscript &lt;scriptname&gt;</code>: Executes the given nwscript. Example: <code>runscript dm_killallplayers</code></li>
 <li><code>eval &lt;script chunk&gt;</code>: Executes the given nwscript chunk. Example: <code>eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());</code></li>
 <li><code>evalx &lt;script chunk&gt;</code>: Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: <code>evalx <a class="el" href="group__admin.html#ga637a42678c8d730015dba00efddef6aa" title="Signals the server to immediately shut down.">NWNX_Administration_ShutdownServer()</a>;</code></li>
-<li><code>loglevel &lt;plugin&gt; &lt;loglevel&gt;</code>: Sets the log level of the given plugin. Example: <code>loglevel Events 7</code></li>
+<li><code>loglevel &lt;plugin&gt; [&lt;loglevel&gt;]</code>: Sets or gets the log level of the given plugin. Example: Set: <code>loglevel Events 7</code>, Get: <code>loglevel Events</code></li>
+<li><code>logformat [timestamp|notimestamp] [plugin|noplugin] [source|nosource] [color|nocolor] [force|noforce]</code>: Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code></li>
 </ul>
 </li>
+<li>Core: Added the following log related environment variables: <code>NWNX_CORE_LOG_TIMESTAMP</code>, <code>NWNX_CORE_LOG_PLUGIN</code>, <code>NWNX_CORE_LOG_SOURCE</code>, <code>NWNX_CORE_LOG_COLOR</code>, <code>NWNX_CORE_LOG_FORCE_COLOR</code></li>
 </ul>
 <h4><a class="anchor" id="autotoc_md3"></a>
 New Plugins</h4>
@@ -155,7 +157,7 @@ Deprecated</h2>
 <h2><a class="anchor" id="autotoc_md7"></a>
 Removed</h2>
 <ul>
-<li><strike>The following plugins were removed: JVM, Mono</strike></li>
+<li>The following plugins were removed: JVM, Mono</li>
 <li>Administration: BootPC()</li>
 <li>Experimental: RemoveACABModifiersFromExpertise</li>
 <li>Object: {Get|Set}EventHandler(), {Get|Set}Portrait()</li>
@@ -431,7 +433,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Nov 12 2019 23:46:39 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Wed Nov 13 2019 12:36:48 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
