@@ -58,6 +58,101 @@ void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner)
     API::Globals::VirtualMachine()->RunScript(&exoStr, oidOwner, 1);
 }
 
+
+CNWSArea* AsNWSArea(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Area)
+        return static_cast<CNWSArea*>(obj);
+    return nullptr;
+}
+CNWSAreaOfEffectObject* AsNWSAreaOfEffectObject(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::AreaOfEffect)
+        return static_cast<CNWSAreaOfEffectObject*>(obj);
+    return nullptr;
+}
+CNWSCreature* AsNWSCreature(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Creature)
+        return static_cast<CNWSCreature*>(obj);
+    return nullptr;
+}
+CNWSDoor* AsNWSDoor(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Door)
+        return static_cast<CNWSDoor*>(obj);
+    return nullptr;
+}
+CNWSEncounter* AsNWSEncounter(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Encounter)
+        return static_cast<CNWSEncounter*>(obj);
+    return nullptr;
+}
+CNWSItem* AsNWSItem(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Item)
+        return static_cast<CNWSItem*>(obj);
+    return nullptr;
+}
+CNWSModule* AsNWSModule(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Module)
+        return static_cast<CNWSModule*>(obj);
+    return nullptr;
+}
+CNWSObject* AsNWSObject(CGameObject* obj)
+{
+    if (!obj)
+        return nullptr;
+
+    switch (obj->m_nObjectType)
+    {
+        case ObjectType::AreaOfEffect:
+        case ObjectType::Creature:
+        case ObjectType::Door:
+        case ObjectType::Encounter:
+        case ObjectType::Item:
+        case ObjectType::Placeable:
+        case ObjectType::Sound:
+        case ObjectType::Store:
+        case ObjectType::Trigger:
+        case ObjectType::Waypoint:
+            return static_cast<CNWSObject*>(obj);
+    }
+    return nullptr;
+}
+CNWSPlaceable* AsNWSPlaceable(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Placeable)
+        return static_cast<CNWSPlaceable*>(obj);
+    return nullptr;
+}
+CNWSSoundObject* AsNWSSoundObject(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Sound)
+        return static_cast<CNWSSoundObject*>(obj);
+    return nullptr;
+}
+CNWSStore* AsNWSStore(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Store)
+        return static_cast<CNWSStore*>(obj);
+    return nullptr;
+}
+CNWSTrigger* AsNWSTrigger(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Trigger)
+        return static_cast<CNWSTrigger*>(obj);
+    return nullptr;
+}
+CNWSWaypoint* AsNWSWaypoint(CGameObject* obj)
+{
+    if (obj && obj->m_nObjectType == ObjectType::Waypoint)
+        return static_cast<CNWSWaypoint*>(obj);
+    return nullptr;
+}
+
 CGameObject* GetGameObject(API::Types::ObjectID objectId)
 {
     return API::Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
@@ -75,13 +170,13 @@ bool AcquireItem(CNWSItem *pItem, CGameObject *pOwner)
     switch (pOwner->m_nObjectType)
     {
         case ObjectType::Creature:
-            return pOwner->AsNWSCreature()->AcquireItem(&pItem, OBJECT_INVALID, OBJECT_INVALID, 0xFF, 0xFF, true, true);
+            return AsNWSCreature(pOwner)->AcquireItem(&pItem, OBJECT_INVALID, OBJECT_INVALID, 0xFF, 0xFF, true, true);
         case ObjectType::Placeable:
-            return pOwner->AsNWSPlaceable()->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
+            return AsNWSPlaceable(pOwner)->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
         case ObjectType::Store:
-            return pOwner->AsNWSStore()->AcquireItem(pItem, true, 0xFF, 0xFF);
+            return AsNWSStore(pOwner)->AcquireItem(pItem, true, 0xFF, 0xFF);
         case ObjectType::Item:
-            return pOwner->AsNWSItem()->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
+            return AsNWSItem(pOwner)->AcquireItem(&pItem, OBJECT_INVALID, 0xFF, 0xFF, true);
     }
     return false;
 }
@@ -94,14 +189,14 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
     switch (pObject->m_nObjectType)
     {
         case ObjectType::Creature:
-            pObject->AsNWSCreature()->AddToArea(pArea, x, y, z, true);
+            AsNWSCreature(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Placeable:
         {
-            auto *pPlaceable = pObject->AsNWSPlaceable();
+            auto *pPlaceable = AsNWSPlaceable(pObject);
             pPlaceable->AddToArea(pArea, x, y, z, true);
 
-            // If pPlaceable is trapped it needs to be added to the area's trap list for it to be detectable by players.
+            // If pDoor is trapped it needs to be added to the area's trap list for it to be detectable by players.
             if (pPlaceable->m_bTrapFlag)
             {
                 pArea->m_pTrapList.Add(pPlaceable->m_idSelf);
@@ -109,11 +204,11 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
             return true;
         }
         case ObjectType::Waypoint:
-            pObject->AsNWSWaypoint()->AddToArea(pArea, x, y, z, true);
+            AsNWSWaypoint(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Door:
         {
-            auto *pDoor = pObject->AsNWSDoor();
+            auto *pDoor = AsNWSDoor(pObject);
             pDoor->AddToArea(pArea, x, y, z, true);
 
             // If pDoor is trapped it needs to be added to the area's trap list for it to be detectable by players.
@@ -124,11 +219,11 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
             return true;
         }
         case ObjectType::Store:
-            pObject->AsNWSStore()->AddToArea(pArea, x, y, z, true);
+            AsNWSStore(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Trigger:
         {
-            auto *pTrigger = pObject->AsNWSTrigger();
+            auto *pTrigger = AsNWSTrigger(pObject);
             pTrigger->AddToArea(pArea, x, y, z, true);
 
             // If pTrigger is a trap it needs to be added to the area's trap list for it to be detectable by players.
@@ -139,16 +234,16 @@ bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z)
             return true;
         }
         case ObjectType::Encounter:
-            pObject->AsNWSEncounter()->AddToArea(pArea, x, y, z, true);
+            AsNWSEncounter(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Item:
-            pObject->AsNWSItem()->AddToArea(pArea, x, y, z, true);
+            AsNWSItem(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::AreaOfEffect:
-             pObject->AsNWSAreaOfEffectObject()->AddToArea(pArea, x, y, z, true);
+            AsNWSAreaOfEffectObject(pObject)->AddToArea(pArea, x, y, z, true);
             return true;
         case ObjectType::Sound:
-            pObject->AsNWSSoundObject()->AddToArea(pArea, true);
+            AsNWSSoundObject(pObject)->AddToArea(pArea, true);
             return true;
         default:
             return false;

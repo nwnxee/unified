@@ -30,10 +30,10 @@ int32_t DeadCreatureFiresOnAreaExit::CNWSArea__RemoveObjectFromArea_hook(CNWSAre
 {
     pArea->m_aGameObjects.Remove(objectId);
 
-    auto *pGameObject = Utils::GetGameObject(objectId);
+    auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
     if ( pGameObject )
     {
-        auto pCreature = pGameObject->AsNWSCreature();
+        auto pCreature = Utils::AsNWSCreature(pGameObject);
         if (pCreature)
         {
             if (Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(objectId))
