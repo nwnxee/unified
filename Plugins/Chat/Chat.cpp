@@ -127,7 +127,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
                     channel == Constants::ChatChannel::DmWhisper)
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto *pSpeaker = server->GetGameObject(sender)->AsNWSObject();
+                    auto pSpeaker = Utils::AsNWSObject(server->GetGameObject(sender));
                     auto distance = g_plugin->m_hearingDistances[channel];
                     auto speakerPos = Vector{0.0f, 0.0f, 0.0f};
                     CNWSArea *speakerArea = nullptr;
@@ -143,7 +143,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
                         auto *pClient = static_cast<CNWSClient*>(head->pObject);
                         auto *listenerClient =  server->GetClientObjectByPlayerId(pClient->m_nPlayerID, 0);
                         auto *listener = static_cast<CNWSPlayer*>(listenerClient);
-                        auto *listenerObj = listener->GetGameObject()->AsNWSObject();
+                        auto *listenerObj = Utils::AsNWSObject(listener->GetGameObject());
 
                         auto pDistance = *pPOS->Get<float>(listenerObj->m_idSelf, "HEARING_DISTANCE:" + std::to_string(channel));
                         if (pDistance >= 0)

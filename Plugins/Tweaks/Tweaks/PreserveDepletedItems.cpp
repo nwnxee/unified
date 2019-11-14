@@ -29,7 +29,7 @@ uint32_t PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(CNWSCre
 {
     // If at risk of destroying the item, set the item to plot, then set it back
     // afterwards to its original value.
-    auto *pItem = Utils::GetGameObject((Types::ObjectID)(uintptr_t)pNode->m_pParameter[0])->AsNWSItem();
+    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((Types::ObjectID)(uintptr_t)pNode->m_pParameter[0]));
     if (pItem && pItem->m_nNumCharges > 0 && pItem->m_nNumCharges <= 5)
     {
         int bPlot = pItem->m_bPlotObject;

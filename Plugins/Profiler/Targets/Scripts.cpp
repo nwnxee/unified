@@ -59,8 +59,8 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
                         if (objectType >= ObjectType::Area)
                         {
                             CNWSArea* area = objectType == ObjectType::Area
-                                ? obj->AsNWSArea()
-                                : server->GetAreaByGameObjectID(obj->AsNWSObject()->m_oidArea);
+                                ? static_cast<CNWSArea*>(obj)
+                                : server->GetAreaByGameObjectID(static_cast<CNWSObject*>(obj)->m_oidArea);
 
                             if (area)
                             {
