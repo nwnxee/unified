@@ -26,7 +26,7 @@ PlayerDyingHitPointLimit::PlayerDyingHitPointLimit(ViewPtr<Services::HooksProxy>
 
 int32_t PlayerDyingHitPointLimit::CNWSObject__GetIsPCDying_Hook(CNWSObject* thisPtr)
 {
-    if (auto *pCreature = thisPtr->AsNWSCreature())
+    if (auto *pCreature = Utils::AsNWSCreature(thisPtr))
     {
         if (pCreature->m_bPlayerCharacter || pCreature->GetIsPossessedFamiliar())
         {
@@ -40,7 +40,7 @@ int32_t PlayerDyingHitPointLimit::CNWSObject__GetIsPCDying_Hook(CNWSObject* this
 int32_t PlayerDyingHitPointLimit::CNWSObject__GetDead_Hook(CNWSObject* thisPtr)
 {
     int16_t hp = thisPtr->GetCurrentHitPoints(false);
-    if (auto *pCreature = thisPtr->AsNWSCreature())
+    if (auto *pCreature = Utils::AsNWSCreature(thisPtr))
     {
         if (pCreature->m_bPlayerCharacter || pCreature->GetIsPossessedFamiliar())
         {

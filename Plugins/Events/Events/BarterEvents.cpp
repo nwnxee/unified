@@ -99,12 +99,13 @@ void BarterEvents::EndedBarter(
     CNWSBarter* otherBarter;
     CNWSBarter* initiatorBarter;
     CNWSBarter* targetBarter;
+    CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
 
     const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
 
     if (bAccepted && before)
     {
-        otherBarter = Utils::GetGameObject(pBarter->m_oidBarrator)->AsNWSCreature()->GetBarterInfo(0);
+        otherBarter = Utils::AsNWSCreature(exoApp->GetGameObject(pBarter->m_oidBarrator))->GetBarterInfo(0);
 
         // We only handle a completed barter when the other player has already accepted
         if (!otherBarter->m_bListAccepted)
@@ -166,7 +167,7 @@ void BarterEvents::EndedBarter(
     }
     else // Cancelled Barter
     {
-        otherBarter = Utils::GetGameObject(pBarter->m_oidBarrator)->AsNWSCreature()->GetBarterInfo(0);
+        otherBarter = Utils::AsNWSCreature(exoApp->GetGameObject(pBarter->m_oidBarrator))->GetBarterInfo(0);
 
         initiatorBarter = pBarter->m_bInitiator ? pBarter : otherBarter;
         targetBarter = pBarter->m_bInitiator ? otherBarter : pBarter;

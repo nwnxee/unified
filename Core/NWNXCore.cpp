@@ -443,9 +443,11 @@ void NWNXCore::InitialSetupCommands()
             Log::SetPrintSource(args.find("nosource") == std::string::npos);
         if (args.find("color") != std::string::npos)
             Log::SetColorOutput(args.find("nocolor") == std::string::npos);
-        LOG_INFO("Log format updated: Timestamp:%s Plugin:%s Source:%s Color:%s.",
+        if (args.find("force") != std::string::npos)
+            Log::SetForceColor(args.find("noforce") == std::string::npos);
+        LOG_INFO("Log format updated: Timestamp:%s Plugin:%s Source:%s Color:%s Force:%s.",
                  Log::GetPrintTimestamp(), Log::GetPrintPlugin(),
-                 Log::GetPrintSource(), Log::GetColorOutput());
+                 Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
 
 }
@@ -513,7 +515,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     Log::SetPrintPlugin(g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true));
     Log::SetPrintSource(g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true));
-
+    Log::SetForceColor(g_core->m_coreServices->m_config->Get<bool>("LOG_FORCE_COLOR", false));
 
     if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
     {

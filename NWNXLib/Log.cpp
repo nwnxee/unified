@@ -17,6 +17,7 @@ static bool s_PrintTimestamp;
 static bool s_PrintPlugin;
 static bool s_PrintSource;
 static bool s_ColorOutput;
+static bool s_ForceColor;
 void SetPrintTimestamp(bool value)
 {
     s_PrintTimestamp = value;
@@ -44,11 +45,20 @@ bool GetPrintSource()
 void SetColorOutput(bool value)
 {
     s_ColorOutput = value;
-    rang::setControlMode(s_ColorOutput ? rang::control::Auto : rang::control::Off);
+    rang::setControlMode(s_ColorOutput ? s_ForceColor ? rang::control::Force : rang::control::Auto : rang::control::Off);
 }
 bool GetColorOutput()
 {
     return s_ColorOutput;
+}
+void SetForceColor(bool value)
+{
+    s_ForceColor = value;
+    rang::setControlMode(s_ColorOutput ? s_ForceColor ? rang::control::Force : rang::control::Auto : rang::control::Off);
+}
+bool GetForceColor()
+{
+    return s_ForceColor;
 }
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message)
@@ -61,7 +71,7 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
 
     switch (channel)
     {
-        case Channel::SEV_DEBUG:   std::cout << rang::fg::gray << rang::style::dim;  break;
+        case Channel::SEV_DEBUG:   std::cout << rang::fg::cyan << rang::style::dim;  break;
         case Channel::SEV_INFO:    std::cout << rang::fg::gray;                      break;
         case Channel::SEV_NOTICE:  /*default*/                                       break;
         case Channel::SEV_WARNING: std::cout << rang::fg::yellow;                    break;

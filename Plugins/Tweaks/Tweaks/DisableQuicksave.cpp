@@ -42,7 +42,7 @@ int32_t DisableQuicksave::CServerExoAppInternal__SaveGame_hook
     {
         if (pPlayer)
         {
-            auto *pCreature = Utils::GetGameObject(pPlayer->m_oidPCObject)->AsNWSCreature();
+            auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidPCObject));
             LOG_NOTICE("Quicksave attempt by %s blocked.", pCreature ? pCreature->m_pStats->GetFullName() : "(unknown)");
         }
         return 0;

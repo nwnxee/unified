@@ -131,8 +131,9 @@ int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain 
 
 /// @brief Gets the contents of a .nss script file as a string.
 /// @param sScriptName The name of the script to get the contents of.
+/// @param nMaxLength The max length of the return string, -1 to get everything
 /// @return The script file contents or "" on error.
-string NWNX_Util_GetNSSContents(string sScriptName);
+string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
 
 /// @}
 
@@ -293,10 +294,11 @@ int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain 
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
-string NWNX_Util_GetNSSContents(string sScriptName)
+string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
 {
     string sFunc = "GetNSSContents";
 
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nMaxLength);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 

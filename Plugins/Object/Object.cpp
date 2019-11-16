@@ -109,7 +109,7 @@ CNWSObject *Object::object(ArgumentStack& args)
     }
 
     auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-    return pGameObject->AsNWSObject();
+    return Utils::AsNWSObject(pGameObject);
 }
 
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
@@ -245,11 +245,11 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
     std::string retval = "";
     if (auto *pObject = object(args))
     {
-        if (auto *pCreature = pObject->AsNWSCreature())
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
             retval = pCreature->GetDialogResref().GetResRefStr();
-        else if (auto *pPlaceable = pObject->AsNWSPlaceable())
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
             retval = pPlaceable->GetDialogResref().GetResRefStr();
-        else if (auto *pDoor = pObject->AsNWSDoor())
+        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
             retval = pDoor->GetDialogResref().GetResRefStr();
         else
             retval = pObject->GetDialogResref().GetResRefStr();
@@ -266,11 +266,11 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
         const auto dialog = Services::Events::ExtractArgument<std::string>(args);
         CResRef resref = CResRef(dialog.c_str());
 
-        if (auto *pCreature = pObject->AsNWSCreature())
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
             pCreature->m_pStats->m_cDialog = resref;
-        else if (auto *pPlaceable = pObject->AsNWSPlaceable())
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
             pPlaceable->m_cDialog = resref;
-        else if (auto *pDoor = pObject->AsNWSDoor())
+        else if (auto *pDoor = Utils::AsNWSDoor(pObject))
             pDoor->m_cDialog = resref;
     }
 
@@ -281,7 +281,7 @@ ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retval = 0;
-    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         retval = pPlaceable->m_nAppearance;
     }
@@ -293,7 +293,7 @@ ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         const auto app = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(app <= 65535);
@@ -336,11 +336,11 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
     {
         CItemRepository *pRepo;
 
-        if (auto *pCreature = pObject->AsNWSCreature())
+        if (auto *pCreature = Utils::AsNWSCreature(pObject))
             pRepo = pCreature->m_pcItemRepository;
-        else if (auto *pPlaceable = pObject->AsNWSPlaceable())
+        else if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
             pRepo = pPlaceable->m_pcItemRepository;
-        else if (auto *pItem = pObject->AsNWSItem())
+        else if (auto *pItem = Utils::AsNWSItem(pObject))
             pRepo = pItem->m_pItemRepository;
         else
         {
@@ -416,7 +416,7 @@ ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retval = -1;
-    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         retval = pPlaceable->m_bStaticObject;
     }
@@ -428,7 +428,7 @@ ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
 ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pPlaceable = object(args)->AsNWSPlaceable())
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         const auto isStatic = Services::Events::ExtractArgument<int32_t>(args);
         ASSERT_OR_THROW(isStatic >= 0);
@@ -458,11 +458,11 @@ ArgumentStack Object::GetAutoRemoveKey(ArgumentStack&& args)
         switch (pObject->m_nObjectType)
         {
             case Constants::ObjectType::Door:
-                retVal = pObject->AsNWSDoor()->m_bAutoRemoveKey;
+                retVal = Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey;
                 break;
 
             case Constants::ObjectType::Placeable:
-                retVal = pObject->AsNWSPlaceable()->m_bAutoRemoveKey;
+                retVal = Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey;
                 break;
 
             default:
@@ -487,11 +487,11 @@ ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
         switch (pObject->m_nObjectType)
         {
             case Constants::ObjectType::Door:
-                pObject->AsNWSDoor()->m_bAutoRemoveKey = bRemoveKey;
+                Utils::AsNWSDoor(pObject)->m_bAutoRemoveKey = bRemoveKey;
                 break;
 
             case Constants::ObjectType::Placeable:
-                pObject->AsNWSPlaceable()->m_bAutoRemoveKey = bRemoveKey;
+                Utils::AsNWSPlaceable(pObject)->m_bAutoRemoveKey = bRemoveKey;
                 break;
 
             default:
@@ -510,7 +510,7 @@ ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
 
     if (auto *pObject = object(args))
     {
-        if (auto *pTrigger = pObject->AsNWSTrigger())
+        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
         {
             retVal.reserve(32 * pTrigger->m_nVertices);
 
@@ -540,7 +540,7 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
     {
         const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
 
-        if (auto *pTrigger = pObject->AsNWSTrigger())
+        if (auto *pTrigger = Utils::AsNWSTrigger(pObject))
         {
             auto str = sGeometry.c_str();
             std::vector<Vector> vecVerts;
