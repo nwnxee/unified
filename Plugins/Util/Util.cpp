@@ -417,6 +417,7 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
         m_scriptCompiler->SetCompileDebugLevel(0);
         m_scriptCompiler->SetCompileSymbolicOutput(0);
         m_scriptCompiler->SetOptimizeBinaryCodeLength(true);
+        m_scriptCompiler->SetCompileConditionalOrMain(true);
         m_scriptCompiler->SetIdentifierSpecification("nwscript");
         m_scriptCompiler->SetOutputAlias("NWNX");
     }
@@ -428,6 +429,10 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
             LOG_DEBUG("Adding Script '%s' with data: %s", scriptName, scriptData);
             retVal = true;
         }
+    }
+    else
+    {
+        LOG_DEBUG("Failed to compile script '%s' with error: %s", scriptName, m_scriptCompiler->m_sCapturedError);
     }
 
     Services::Events::InsertArgument(stack, retVal);
