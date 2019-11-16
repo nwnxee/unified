@@ -28,7 +28,7 @@ ParryAllAttacks::ParryAllAttacks(ViewPtr<Services::HooksProxy> hooker)
 void ParryAllAttacks::CNWSCreature__ResolveAttackRoll_hook(CNWSCreature *pThis, CNWSObject *pTarget)
 {
     int32_t bRoundPaused = false;
-    if (auto *pCreature = pTarget->AsNWSCreature())
+    if (auto *pCreature = Utils::AsNWSCreature(pTarget))
     {
         if (pCreature->m_nCombatMode == Constants::CombatMode::Parry &&
             pCreature->m_pcCombatRound->m_nParryActions > 0 &&
@@ -40,7 +40,7 @@ void ParryAllAttacks::CNWSCreature__ResolveAttackRoll_hook(CNWSCreature *pThis, 
     }
     pResolveAttackRoll_hook->CallOriginal<void>(pThis, pTarget);
     if (bRoundPaused)
-        pTarget->AsNWSCreature()->m_pcCombatRound->m_bRoundPaused = true;
+        Utils::AsNWSCreature(pTarget)->m_pcCombatRound->m_bRoundPaused = true;
 }
 
 

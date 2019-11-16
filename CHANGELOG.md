@@ -15,11 +15,13 @@ NOTE: There may be more breaking changes added here until the next official rele
 - Core: NWNX will now create a `/nwnx` folder in your UserDirectory, its resman priority is slightly below the `/development` folder. Currently it's used by NWNX_Object_Export() and NWNX_Util_AddScript() to place their objects/scripts in.
 - Core: Added the environment variable `NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY`, setting this to true will delete all contents in the `/nwnx` folder on startup of the server. Default: false
 - Core: Added the environment variable `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY` which lets you change the resman priority of the `/nwnx` folder. Default: 70000000
-- Core: Added the following console commands: `runscript`, `eval`, `evalx`, `loglevel`
+- Core: Added the following console commands: `runscript`, `eval`, `evalx`, `loglevel`, `logformat`
   - `runscript <scriptname>`: Executes the given nwscript. Example: `runscript dm_killallplayers`
   - `eval <script chunk>`: Executes the given nwscript chunk. Example: `eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());`
   - `evalx <script chunk>`: Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: `evalx NWNX_Administration_ShutdownServer();`
-  - `loglevel <plugin> <loglevel>`: Sets the log level of the given plugin. Example: `loglevel Events 7`
+  - `loglevel <plugin> [<loglevel>]`: Sets or gets the log level of the given plugin. Example: Set: `loglevel Events 7`, Get: `loglevel Events`
+  - `logformat [timestamp|notimestamp] [plugin|noplugin] [source|nosource] [color|nocolor] [force|noforce]`: Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
+- Core: Added the following log related environment variables: `NWNX_CORE_LOG_TIMESTAMP`, `NWNX_CORE_LOG_PLUGIN`, `NWNX_CORE_LOG_SOURCE`, `NWNX_CORE_LOG_COLOR`, `NWNX_CORE_LOG_FORCE_COLOR`
 
 ##### New Plugins
 N/A
@@ -45,7 +47,7 @@ N/A
 N/A
 
 ### Removed
-- ~~The following plugins were removed: JVM, Mono~~
+- The following plugins were removed: JVM, Mono
 - Administration: BootPC()
 - Experimental: RemoveACABModifiersFromExpertise
 - Object: {Get|Set}EventHandler(), {Get|Set}Portrait()

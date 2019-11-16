@@ -21,6 +21,22 @@ std::string ObjectIDToString(const API::Types::ObjectID id);
 std::string GetCurrentScript();
 void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner);
 
+// Since there's no RTTI, and NWN's dynamic casts don't work in NWNX.
+// These return nullptr if the object type isn't right.
+CNWSArea*               AsNWSArea(CGameObject* obj);
+CNWSAreaOfEffectObject* AsNWSAreaOfEffectObject(CGameObject* obj);
+CNWSCreature*           AsNWSCreature(CGameObject* obj);
+CNWSDoor*               AsNWSDoor(CGameObject* obj);
+CNWSEncounter*          AsNWSEncounter(CGameObject* obj);
+CNWSItem*               AsNWSItem(CGameObject* obj);
+CNWSModule*             AsNWSModule(CGameObject* obj);
+CNWSObject*             AsNWSObject(CGameObject* obj);
+CNWSPlaceable*          AsNWSPlaceable(CGameObject* obj);
+CNWSSoundObject*        AsNWSSoundObject(CGameObject* obj);
+CNWSStore*              AsNWSStore(CGameObject* obj);
+CNWSTrigger*            AsNWSTrigger(CGameObject* obj);
+CNWSWaypoint*           AsNWSWaypoint(CGameObject* obj);
+
 CGameObject* GetGameObject(API::Types::ObjectID objectId);
 CNWSModule* GetModule();
 

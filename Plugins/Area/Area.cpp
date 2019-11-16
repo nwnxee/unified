@@ -577,7 +577,7 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
     if (auto *pArea = area(args))
     {
         auto targetOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
-        auto *pTargetObject = Utils::GetGameObject(targetOid)->AsNWSObject();
+        auto *pTargetObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(targetOid));
         if (pTargetObject == nullptr ||
             (pTargetObject->m_nObjectType != Constants::ObjectType::Door &&
              pTargetObject->m_nObjectType != Constants::ObjectType::Waypoint))

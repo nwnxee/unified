@@ -82,7 +82,7 @@ CNWSPlayer *Appearance::Player(ArgumentStack& args)
 void Appearance::ComputeGameObjectUpdateForObjectHook(Services::Hooks::CallType type, CNWSMessage*,
         CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, Types::ObjectID oidObjectToUpdate)
 {
-    if (auto *pCreature = Utils::GetGameObject(oidObjectToUpdate)->AsNWSCreature())
+    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
     {
         static AppearanceOverrideData *pAOD;
 

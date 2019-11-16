@@ -163,7 +163,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         return m_FindItemWithBaseItemIdHook->CallOriginal<int32_t>(thisPtr, baseItem, nTh);
     }
 
-    auto *pItemHolder = Utils::GetGameObject(thisPtr->m_oidParent)->AsNWSCreature();
+    auto *pItemHolder = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(thisPtr->m_oidParent));
 
     if(!pItemHolder)
     {
@@ -181,7 +181,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
             return true;
 
-        auto *pItem = Utils::GetGameObject(objectId)->AsNWSItem();
+        auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId));
         if (!pItem)
         {
             LOG_WARNING("Item does not exist, falling back to original call.");
