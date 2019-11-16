@@ -26,6 +26,7 @@ N/A
 
 ##### New NWScript Functions
 - Administration: {Get|Set}DebugValue()
+- Creature: {Get|Set}Disarmable()
 - Data: Array_Set()
 - Object: Export()
 - Player: PossessCreature()
