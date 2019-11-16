@@ -400,4 +400,36 @@ void AddDestroyObjectEvent(API::Types::ObjectID oid)
     pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
 }
 
+int PushScriptContext(API::Types::ObjectID oid, bool valid)
+{
+    auto vm = API::Globals::VirtualMachine();
+    auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
+
+    if (vm->m_nRecursionLevel++ == -1)
+    {
+        vm->m_cRunTimeStack.InitializeStack();
+        vm->m_cRunTimeStack.m_pVMachine = vm;
+    }
+
+    vm->m_oidObjectRunScript[vm->m_nRecursionLevel]    = oid;
+    vm->m_bValidObjectRunScript[vm->m_nRecursionLevel] = valid;
+    cmd->m_oidObjectRunScript    = vm->m_oidObjectRunScript[vm->m_nRecursionLevel];
+    cmd->m_bValidObjectRunScript = vm->m_bValidObjectRunScript[vm->m_nRecursionLevel];
+
+    return vm->m_cRunTimeStack.GetStackPointer();
+}
+int PopScriptContext()
+{
+    auto vm = API::Globals::VirtualMachine();
+    auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
+
+    if (--vm->m_nRecursionLevel != -1)
+    {
+        cmd->m_oidObjectRunScript    = vm->m_oidObjectRunScript[vm->m_nRecursionLevel];
+        cmd->m_bValidObjectRunScript = vm->m_bValidObjectRunScript[vm->m_nRecursionLevel];
+    }
+
+    return vm->m_cRunTimeStack.GetStackPointer();
+}
+
 }

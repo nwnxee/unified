@@ -13,8 +13,7 @@
 #include <cstring>
 
 
-namespace NWNXLib {
-namespace Utils {
+namespace NWNXLib::Utils {
 
 std::string ObjectIDToString(const API::Types::ObjectID id);
 
@@ -71,6 +70,9 @@ void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidAr
 void AddOnAcquireItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy, API::Types::ObjectID oidFrom, int32_t stackSize);
 void AddOnLoseItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy);
 void AddDestroyObjectEvent(API::Types::ObjectID oid);
-}
+
+// Returns the SP
+int PushScriptContext(API::Types::ObjectID oid, bool valid = true);
+int PopScriptContext();
 
 }

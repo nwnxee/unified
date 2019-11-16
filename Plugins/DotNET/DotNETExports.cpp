@@ -373,8 +373,7 @@ void DotNET::BeginClosure(uint32_t value)
 
 int32_t DotNET::ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
-    CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
-    if (obj)
+    if (Globals::AppManager()->m_pServerExoApp->GetGameObject(oid))
     {
         CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->AddEventDeltaTime(0, 0, oid, oid, 1, CreateScriptForClosure(eventId));
@@ -386,8 +385,7 @@ int32_t DotNET::ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 
 int32_t DotNET::ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
 {
-    CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
-    if (obj)
+    if (Globals::AppManager()->m_pServerExoApp->GetGameObject(oid))
     {
         int32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
         int32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
@@ -402,11 +400,9 @@ int32_t DotNET::ClosureDelayCommand(uint32_t oid, float duration, uint64_t event
 
 int32_t DotNET::ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 {
-    // if (auto *obj = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oid)))
-    CGameObject* obj = Globals::AppManager()->m_pServerExoApp->GetGameObject(oid);
-    if (obj && obj->m_nObjectType > Constants::ObjectType::Area)
+    if (auto *obj = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oid)))
     {
-        ((CNWSObject*)obj)->AddDoCommandAction(CreateScriptForClosure(eventId));
+        obj->AddDoCommandAction(CreateScriptForClosure(eventId));
         return 1;
     }
 

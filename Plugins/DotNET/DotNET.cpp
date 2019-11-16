@@ -153,7 +153,7 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
         args.push_back((void*)&StackPushInteger);
         args.push_back((void*)&StackPushFloat);
         args.push_back((void*)&StackPushString);
-        args.push_back(nullptr); // reserved
+        args.push_back((void*)&StackPushString); // reserved utf8
         args.push_back((void*)&StackPushObject);
         args.push_back((void*)&StackPushVector);
         args.push_back((void*)&StackPushEffect);
@@ -164,7 +164,7 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
         args.push_back((void*)&StackPopInteger);
         args.push_back((void*)&StackPopFloat);
         args.push_back((void*)&StackPopString);
-        args.push_back(nullptr); // reserved
+        args.push_back((void*)&StackPopString); // reserved utf8
         args.push_back((void*)&StackPopObject);
         args.push_back((void*)&StackPopVector);
         args.push_back((void*)&StackPopEffect);
@@ -186,14 +186,14 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
         args.push_back((void*)&nwnxPushFloat);
         args.push_back((void*)&nwnxPushObject);
         args.push_back((void*)&nwnxPushString);
-        args.push_back(nullptr); // reserved
+        args.push_back((void*)&nwnxPushString); // reserved utf8
         args.push_back((void*)&nwnxPushEffect);
         args.push_back((void*)&nwnxPushItemProperty);
         args.push_back((void*)&nwnxPopInt);
         args.push_back((void*)&nwnxPopFloat);
         args.push_back((void*)&nwnxPopObject);
         args.push_back((void*)&nwnxPopString);
-        args.push_back(nullptr); // reserved
+        args.push_back((void*)&nwnxPopString); // reserved utf8
         args.push_back((void*)&nwnxPopEffect);
         args.push_back((void*)&nwnxPopItemProperty);
         args.push_back((void*)&nwnxCallFunction);
@@ -220,16 +220,6 @@ uintptr_t DotNET::GetFunctionPointer(const char *name)
         LOG_WARNING("Failed to get symbol name '%s': %s", name, dlerror());
     dlclose(core);
     return ret;
-}
-
-
-static inline CVirtualMachine* GetVm()
-{
-    return Globals::VirtualMachine();
-}
-static inline CNWVirtualMachineCommands* GetVmCommands()
-{
-    return static_cast<CNWVirtualMachineCommands*>(GetVm()->m_pCmdImplementer);
 }
 
 
@@ -272,42 +262,23 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
         {
-            auto vm = Globals::VirtualMachine();
-            auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);
-
-            if (vm->m_nRecursionLevel++ == -1)
-            {
-                vm->m_cRunTimeStack.InitializeStack();
-                vm->m_cRunTimeStack.m_pVMachine = vm;
-            }
-
-            vm->m_oidObjectRunScript[vm->m_nRecursionLevel]    = objId;
-            vm->m_bValidObjectRunScript[vm->m_nRecursionLevel] = !!valid;
-            cmd->m_oidObjectRunScript    = vm->m_oidObjectRunScript[vm->m_nRecursionLevel];
-            cmd->m_bValidObjectRunScript = vm->m_bValidObjectRunScript[vm->m_nRecursionLevel];
-
             LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
-            int spBefore = vm->m_cRunTimeStack.GetStackPointer();
+            int spBefore = Utils::PushScriptContext(objId, !!valid);
             int32_t retval = Handlers.RunScriptHandler(script->CStr(), objId);
-            int spAfter = vm->m_cRunTimeStack.GetStackPointer();
+            int spAfter = Utils::PopScriptContext();
             ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
 
-            if (--vm->m_nRecursionLevel != -1)
+            // ~0 is returned if runscript request is not handled and needs to be forwarded
+            if (retval != ~0)
             {
-                cmd->m_oidObjectRunScript = vm->m_oidObjectRunScript[vm->m_nRecursionLevel];
-                cmd->m_bValidObjectRunScript = vm->m_bValidObjectRunScript[vm->m_nRecursionLevel];
+                Globals::VirtualMachine()->m_nReturnValueParameterType = 0x03;
+                Globals::VirtualMachine()->m_pReturnValue = reinterpret_cast<void*>(retval);
+                return 1;
             }
-
-            bool handled = retval != ~0;
-            if (handled)
-            {
-                vm->m_nReturnValueParameterType = 0x03;
-                vm->m_pReturnValue = reinterpret_cast<void*>(retval);
-            }
-            return handled ? true : RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+            return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
-    RunScriptHook = g_plugin->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN21CServerExoAppInternal8MainLoopEv);
+    RunScriptHook = g_plugin->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
 
 }
 
