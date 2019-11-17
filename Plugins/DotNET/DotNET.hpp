@@ -21,11 +21,13 @@ private:
     // Bootstrap functions
     using MainLoopHandlerType  = void (*)(uint64_t);
     using RunScriptHandlerType = int (*)(const char *, uint32_t);
+    using ClosureHandlerType = void (*)(uint64_t, uint32_t);
 
     struct AllHandlers
     {
         MainLoopHandlerType  MainLoopHandler;
         RunScriptHandlerType RunScriptHandler;
+        ClosureHandlerType   ClosureHandler;
     };
     static inline AllHandlers Handlers;
 
@@ -60,7 +62,6 @@ private:
     static void FreeLocation(void* ptr);
     static void FreeTalent(void* ptr);
     static void FreeItemProperty(void* ptr);
-    static void BeginClosure(uint32_t value);
     static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId);
     static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId);
     static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId);

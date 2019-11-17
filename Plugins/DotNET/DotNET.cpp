@@ -116,7 +116,7 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
         return;
 
     auto assembly   = GetServices()->m_config->Require<std::string>("ASSEMBLY");
-    auto entrypoint = GetServices()->m_config->Get<std::string>("ENTRYPOINT", "NWN.EntryPoint, DotNetLib");
+    auto entrypoint = GetServices()->m_config->Get<std::string>("ENTRYPOINT", "NWN.EntryPoint");
 
     // Load .NET Core
     hostfxr_handle cxt = nullptr;
@@ -136,10 +136,11 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
 
     component_entry_point_fn bootstrap = nullptr;
     auto dll = assembly + ".dll";
-    rc = load_assembly_and_get_function_pointer(dll.c_str(), entrypoint.c_str(),
+    auto full_ep = entrypoint + ", " + assembly.substr(assembly.find_last_of("/\\") + 1);
+    rc = load_assembly_and_get_function_pointer(dll.c_str(), full_ep.c_str(),
                                                 "Bootstrap", nullptr, nullptr, (void**)&bootstrap);
     if (rc != 0 || bootstrap == nullptr)
-        LOG_FATAL("Unable to get %s.Bootstrap() function: dll='%s'; rc=0x%x", entrypoint, dll, rc);
+        LOG_FATAL("Unable to get %s.Bootstrap() function: dll='%s'; rc=0x%x", full_ep, dll, rc);
 
     //
     // Fill the function table to hand over to managed code
@@ -176,7 +177,6 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
         args.push_back((void*)&FreeLocation);
         args.push_back((void*)&FreeTalent);
         args.push_back((void*)&FreeItemProperty);
-        args.push_back((void*)&BeginClosure);
         args.push_back((void*)&ClosureAssignCommand);
         args.push_back((void*)&ClosureDelayCommand);
         args.push_back((void*)&ClosureActionDoCommand);
@@ -282,6 +282,26 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     );
     RunScriptHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
 
+    LOG_DEBUG("Registered closure handler: %p", Handlers.ClosureHandler);
+    static Hooking::FunctionHook* RunScriptSituationHook;
+    Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
+        +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID objId, int32_t valid)
+        {
+            uint64_t eventId;
+            if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
+            {
+                LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId, objId);
+                Utils::PushScriptContext(objId, !!valid);
+                Handlers.ClosureHandler(eventId, objId);
+                Utils::PopScriptContext();
+
+                delete script;
+                return 1;
+            }
+            return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
+        }
+    );
+    RunScriptSituationHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji);
 }
 
 }

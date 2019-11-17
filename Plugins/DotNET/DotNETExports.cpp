@@ -358,18 +358,6 @@ void DotNET::FreeItemProperty(void* ptr)
     }
 }
 
-
-
-void DotNET::BeginClosure(uint32_t value)
-{
-    auto vm = Globals::VirtualMachine();
-    auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-    vm->m_oidObjectRunScript[vm->m_nRecursionLevel] = value;
-    vm->m_bValidObjectRunScript[vm->m_nRecursionLevel] = 1;
-    cmd->m_oidObjectRunScript = vm->m_oidObjectRunScript[vm->m_nRecursionLevel];
-    cmd->m_bValidObjectRunScript = vm->m_bValidObjectRunScript[vm->m_nRecursionLevel];
-}
-
 int32_t DotNET::ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
     if (Utils::GetGameObject(oid))
