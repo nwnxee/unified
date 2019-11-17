@@ -3,9 +3,7 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CVirtualMachineScript.hpp"
 #include "API/Functions.hpp"
-#include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
 #include <algorithm>
@@ -116,7 +114,7 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
         return;
 
     auto assembly   = GetServices()->m_config->Require<std::string>("ASSEMBLY");
-    auto entrypoint = GetServices()->m_config->Get<std::string>("ENTRYPOINT", "NWN.EntryPoint");
+    auto entrypoint = GetServices()->m_config->Get<std::string>("ENTRYPOINT", "NWN.Internal");
 
     // Load .NET Core
     hostfxr_handle cxt = nullptr;
@@ -237,17 +235,17 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     LOG_INFO("Registering managed code handlers.");
     Handlers = *handlers;
 
-    LOG_DEBUG("Registered main loop handler: %p", Handlers.MainLoopHandler);
+    LOG_DEBUG("Registered main loop handler: %p", Handlers.MainLoop);
     Instance->GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
         +[](Services::Hooks::CallType type, CServerExoAppInternal*)
         {
             if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
             {
                 static uint64_t frame = 0;
-                if (Handlers.MainLoopHandler)
+                if (Handlers.MainLoop)
                 {
                     Globals::VirtualMachine()->m_nRecursionLevel++;
-                    Handlers.MainLoopHandler(frame);
+                    Handlers.MainLoop(frame);
                     Globals::VirtualMachine()->m_nRecursionLevel--;
                 }
                 ++frame;
@@ -256,7 +254,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     );
 
 
-    LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScriptHandler);
+    LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScript);
     static Hooking::FunctionHook* RunScriptHook;
     Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
@@ -266,7 +264,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
 
             LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
             int spBefore = Utils::PushScriptContext(objId, !!valid);
-            int32_t retval = Handlers.RunScriptHandler(script->CStr(), objId);
+            int32_t retval = Handlers.RunScript(script->CStr(), objId);
             int spAfter = Utils::PopScriptContext();
             ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
 
@@ -282,7 +280,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     );
     RunScriptHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
 
-    LOG_DEBUG("Registered closure handler: %p", Handlers.ClosureHandler);
+    LOG_DEBUG("Registered closure handler: %p", Handlers.Closure);
     static Hooking::FunctionHook* RunScriptSituationHook;
     Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
         +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID objId, int32_t valid)
@@ -292,7 +290,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             {
                 LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId, objId);
                 Utils::PushScriptContext(objId, !!valid);
-                Handlers.ClosureHandler(eventId, objId);
+                Handlers.Closure(eventId, objId);
                 Utils::PopScriptContext();
 
                 delete script;

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "API/Constants.hpp"
-#include "API/Types.hpp"
 #include "API/ALL_CLASSES.hpp"
 
 namespace DotNET {
@@ -25,9 +23,9 @@ private:
 
     struct AllHandlers
     {
-        MainLoopHandlerType  MainLoopHandler;
-        RunScriptHandlerType RunScriptHandler;
-        ClosureHandlerType   ClosureHandler;
+        MainLoopHandlerType  MainLoop;
+        RunScriptHandlerType RunScript;
+        ClosureHandlerType   Closure;
     };
     static inline AllHandlers Handlers;
 
