@@ -21,8 +21,6 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<DotNET::DotNET> g_plugin;
-
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
     return new Plugin::Info
@@ -54,7 +52,7 @@ bool DotNET::InitThunks()
     void *nethost = nullptr;
     void *hostfxr = nullptr;
 
-    if (auto nethost_path = g_plugin->GetServices()->m_config->Get<std::string>("NETHOST_PATH"))
+    if (auto nethost_path = Instance->GetServices()->m_config->Get<std::string>("NETHOST_PATH"))
     {
         nethost = dlopen(nethost_path->c_str(), RTLD_LAZY);
         ASSERT_MSG(nethost, "NETHOST_PATH specified ('%s') but failed to open libnethost.so at that path", *nethost_path);
@@ -110,7 +108,8 @@ bool DotNET::InitThunks()
 
 DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
 {
-    Instance = g_plugin = this;
+    ASSERT_OR_THROW(Instance == nullptr);
+    Instance = this;
 
     // If the initial lib loads failed, we probably don't have .NET installed.
     if (!InitThunks())
@@ -239,7 +238,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     Handlers = *handlers;
 
     LOG_DEBUG("Registered main loop handler: %p", Handlers.MainLoopHandler);
-    g_plugin->GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
+    Instance->GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
         +[](Services::Hooks::CallType type, CServerExoAppInternal*)
         {
             if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
@@ -259,9 +258,12 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
 
     LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScriptHandler);
     static Hooking::FunctionHook* RunScriptHook;
-    g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
+    Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
         {
+            if (!script || *script == "")
+                return 1;
+
             LOG_DEBUG("Calling managed RunScriptHandler for script '%s' on Object 0x%08x", script->CStr(), objId);
             int spBefore = Utils::PushScriptContext(objId, !!valid);
             int32_t retval = Handlers.RunScriptHandler(script->CStr(), objId);
@@ -278,7 +280,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
-    RunScriptHook = g_plugin->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
+    RunScriptHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
 
 }
 

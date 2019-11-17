@@ -248,8 +248,7 @@ const char* DotNET::StackPopString()
     LOG_DEBUG("Popped string '%s'.", value.m_sString);
 
     // TODO: Less copies
-    strncpy(ReturnBuffer, Encoding::ToUTF8(value.CStr()).c_str(), sizeof(ReturnBuffer)-1);
-    return &ReturnBuffer[0];
+    return strdup(Encoding::ToUTF8(value.CStr()).c_str());
 }
 
 uint32_t DotNET::StackPopObject()
@@ -373,7 +372,7 @@ void DotNET::BeginClosure(uint32_t value)
 
 int32_t DotNET::ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 {
-    if (Globals::AppManager()->m_pServerExoApp->GetGameObject(oid))
+    if (Utils::GetGameObject(oid))
     {
         CServerAIMaster* ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
         ai->AddEventDeltaTime(0, 0, oid, oid, 1, CreateScriptForClosure(eventId));
@@ -385,7 +384,7 @@ int32_t DotNET::ClosureAssignCommand(uint32_t oid, uint64_t eventId)
 
 int32_t DotNET::ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId)
 {
-    if (Globals::AppManager()->m_pServerExoApp->GetGameObject(oid))
+    if (Utils::GetGameObject(oid))
     {
         int32_t days = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetCalendarDayFromSeconds(duration);
         int32_t time = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetTimeOfDayFromSeconds(duration);
@@ -400,7 +399,7 @@ int32_t DotNET::ClosureDelayCommand(uint32_t oid, float duration, uint64_t event
 
 int32_t DotNET::ClosureActionDoCommand(uint32_t oid, uint64_t eventId)
 {
-    if (auto *obj = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oid)))
+    if (auto *obj = Utils::AsNWSObject(Utils::GetGameObject(oid)))
     {
         obj->AddDoCommandAction(CreateScriptForClosure(eventId));
         return 1;
@@ -432,7 +431,7 @@ void DotNET::nwnxPushObject(uint32_t o)
 void DotNET::nwnxPushString(const char *s)
 {
     auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, std::string(s));
+    events->Push(nwnxActivePlugin, nwnxActiveFunction, Encoding::FromUTF8(s));
 }
 void DotNET::nwnxPushEffect(CGameEffect *e)
 {
@@ -463,8 +462,7 @@ const char* DotNET::nwnxPopString()
 {
     auto events = Instance->GetServices()->m_events->GetProxyBase();
     auto str = events->Pop<std::string>(nwnxActivePlugin, nwnxActiveFunction).value_or(std::string{""});
-    strncpy(ReturnBuffer, Encoding::ToUTF8(str).c_str(), sizeof(ReturnBuffer)-1);
-    return ReturnBuffer;
+    return strdup(Encoding::ToUTF8(str).c_str());
 }
 CGameEffect* DotNET::nwnxPopEffect()
 {

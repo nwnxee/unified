@@ -18,8 +18,6 @@ private:
 
     static bool InitThunks();
 
-    static inline char ReturnBuffer[256*1024];
-
     // Bootstrap functions
     using MainLoopHandlerType  = void (*)(uint64_t);
     using RunScriptHandlerType = int (*)(const char *, uint32_t);
