@@ -34,7 +34,7 @@ var searchData=
   ['readme_2829',['Readme',['../group__reveal.html',1,'']]],
   ['readme_2830',['Readme',['../group__ruby.html',1,'']]],
   ['readme_2831',['Readme',['../serverlogredirector.html',1,'']]],
-  ['radme_2832',['Radme',['../group__skillranks.html',1,'']]],
+  ['readme_2832',['Readme',['../group__skillranks.html',1,'']]],
   ['readme_2833',['Readme',['../group__spellchecker.html',1,'']]],
   ['readme_2834',['Readme',['../group__sql.html',1,'']]],
   ['readme_2835',['Readme',['../threadwatchdog.html',1,'']]],

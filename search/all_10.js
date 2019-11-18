@@ -48,7 +48,7 @@ var searchData=
   ['rpushx_1268',['RPUSHX',['../nwnx__redis__short_8nss.html#a7550a241db2886f7e122a77a41f4739c',1,'nwnx_redis_short.nss']]],
   ['ruby_1269',['Ruby',['../group__ruby.html',1,'(Global Namespace)'],['../group__ruby.html',1,'(Global Namespace)']]],
   ['readme_1270',['Readme',['../serverlogredirector.html',1,'']]],
-  ['radme_1271',['Radme',['../group__skillranks.html',1,'']]],
+  ['readme_1271',['Readme',['../group__skillranks.html',1,'']]],
   ['readme_1272',['Readme',['../group__spellchecker.html',1,'']]],
   ['readme_1273',['Readme',['../group__sql.html',1,'']]],
   ['readme_1274',['Readme',['../threadwatchdog.html',1,'']]],

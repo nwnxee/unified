@@ -1,6 +1,6 @@
 var group__skillranks =
 [
-    [ "Radme", "group__skillranks.html#skillranks", null ],
+    [ "Readme", "group__skillranks.html#skillranks", null ],
     [ "nwnx_skillranks.nss", "nwnx__skillranks_8nss.html", null ],
     [ "NWNX_SkillRanks_SkillFeat", "structNWNX__SkillRanks__SkillFeat.html", [
       [ "iSkill", "structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7", null ],
