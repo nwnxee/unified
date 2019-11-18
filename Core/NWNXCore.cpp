@@ -505,6 +505,7 @@ void NWNXCore::Shutdown()
 void NWNXCore::CreateServerHandler(CAppManager* app)
 {
     g_core->InitialVersionCheck();
+    InitCrashHandlers();
 
     g_core->m_services = g_core->ConstructCoreServices();
     g_core->m_coreServices = g_core->ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
@@ -549,7 +550,6 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
         }
     }
 
-    InitCrashHandlers();
     g_core->m_createServerHook.reset();
     app->CreateServer();
 }
