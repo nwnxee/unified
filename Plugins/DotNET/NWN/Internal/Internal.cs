@@ -9,17 +9,37 @@ namespace NWN
 
         public static void OnMainLoop(ulong frame)
         {
-            NWN.Entrypoints.OnMainLoop(frame);
+            try
+            {
+                NWN.Entrypoints.OnMainLoop(frame);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
-        private static Stack<NWN.Object> ScriptContexts = new Stack<NWN.Object>();
+        private struct ScriptContext
+        {
+            public NWN.Object OwnerObject;
+            public string     ScriptName;
+        }
+        private static Stack<ScriptContext> ScriptContexts = new Stack<ScriptContext>();
         public static int OnRunScript(string script, uint oidSelf)
         {
+            int ret = 0;
             OBJECT_SELF = oidSelf;
-            ScriptContexts.Push(oidSelf);
-              int ret = NWN.Entrypoints.OnRunScript(script, oidSelf);
+            ScriptContexts.Push(new ScriptContext { OwnerObject = oidSelf, ScriptName = script });
+            try
+            {
+                ret = NWN.Entrypoints.OnRunScript(script, oidSelf);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
             ScriptContexts.Pop();
-            OBJECT_SELF = ScriptContexts.Count == 0 ? OBJECT_INVALID : ScriptContexts.Peek();
+            OBJECT_SELF = ScriptContexts.Count == 0 ? OBJECT_INVALID : ScriptContexts.Peek().OwnerObject;
             return ret;
         }
 
@@ -33,7 +53,14 @@ namespace NWN
 
         public static void OnClosure(ulong eid, uint oidSelf)
         {
-            Closures[eid].Run();
+            try
+            {
+                Closures[eid].Run();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
             Closures.Remove(eid);
         }
 

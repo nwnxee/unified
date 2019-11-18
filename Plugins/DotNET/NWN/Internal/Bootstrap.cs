@@ -208,7 +208,14 @@ namespace NWN
             handlers.Closure   = NWN.Internal.OnClosure;
             RegisterHandlers(handlers);
 
-            NWN.Entrypoints.OnStart();
+            try
+            {
+                NWN.Entrypoints.OnStart();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
 
             return 0;
         }
