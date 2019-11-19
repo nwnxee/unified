@@ -402,7 +402,7 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
 ArgumentStack Util::AddScript(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    int32_t retVal = false;
+    std::string retVal;
 
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
@@ -424,16 +424,12 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
 
     if (m_scriptCompiler->CompileScriptChunk(scriptData.c_str(), wrapIntoMain != 0) == 0)
     {
-        if (m_scriptCompiler->WriteFinalCodeToFile(scriptName.c_str()) == 0)
-        {
-            LOG_DEBUG("Adding Script '%s' with data: %s", scriptName, scriptData);
-            retVal = true;
-        }
+        auto writeFileResult = m_scriptCompiler->WriteFinalCodeToFile(scriptName.c_str());
+        if (writeFileResult != 0)
+            retVal = Globals::TlkTable()->GetSimpleString(abs(writeFileResult)).CStr();
     }
     else
-    {
-        LOG_DEBUG("Failed to compile script '%s' with error: %s", scriptName, m_scriptCompiler->m_sCapturedError);
-    }
+        retVal = m_scriptCompiler->m_sCapturedError.CStr();
 
     Services::Events::InsertArgument(stack, retVal);
 
