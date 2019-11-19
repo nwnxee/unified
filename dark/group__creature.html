@@ -376,6 +376,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf847727f4e3352be4083bba10c0841bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf847727f4e3352be4083bba10c0841bf">NWNX_Creature_SetFamiliarName</a> (object creature, string name)</td></tr>
 <tr class="memdesc:gaf847727f4e3352be4083bba10c0841bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set creature's familiar's name.  <a href="group__creature.html#gaf847727f4e3352be4083bba10c0841bf">More...</a><br /></td></tr>
 <tr class="separator:gaf847727f4e3352be4083bba10c0841bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4403278bbf4d75acf30ce5e3623c317"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf4403278bbf4d75acf30ce5e3623c317">NWNX_Creature_GetDisarmable</a> (object oItem)</td></tr>
+<tr class="memdesc:gaf4403278bbf4d75acf30ce5e3623c317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether the creature can be disarmed.  <a href="group__creature.html#gaf4403278bbf4d75acf30ce5e3623c317">More...</a><br /></td></tr>
+<tr class="separator:gaf4403278bbf4d75acf30ce5e3623c317"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae737b5e9c3eb8fb6523a1f0ad68d16b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gae737b5e9c3eb8fb6523a1f0ad68d16b1">NWNX_Creature_SetDisarmable</a> (object creature, int disarmable)</td></tr>
+<tr class="memdesc:gae737b5e9c3eb8fb6523a1f0ad68d16b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether a creature can be disarmed.  <a href="group__creature.html#gae737b5e9c3eb8fb6523a1f0ad68d16b1">More...</a><br /></td></tr>
+<tr class="separator:gae737b5e9c3eb8fb6523a1f0ad68d16b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gade3f03b0efb8d99a5797cf683dd3e9d0"></a>
@@ -414,7 +420,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Consider also using <a class="el" href="group__creature.html#ga436b7ffee6a792a307f2d0a3489e4dd1" title="Gives the creature a feat assigned at a level.">NWNX_Creature_AddFeatByLevel()</a> to properly allocate the feat to a level </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00616">616</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00626">626</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -461,7 +467,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Adds the feat to the stat list at the provided level. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00625">625</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00635">635</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -500,7 +506,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00636">636</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00646">646</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -541,7 +547,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the creature has the feat, regardless if they have any usages left or not. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00645">645</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00655">655</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -581,7 +587,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The count of feats. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00656">656</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00666">666</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -628,7 +634,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The feat id at the index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00667">667</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00677">677</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -657,7 +663,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The total feat count for the creature. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00679">679</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00689">689</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -697,7 +703,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The feat id at the index. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00689">689</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00699">699</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -737,7 +743,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if creature meets all requirements to take given feat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00700">700</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00710">710</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -766,7 +772,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The total special ability count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00729">729</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00739">739</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -806,7 +812,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structNWNX__Creature__SpecialAbility.html" title="A creature special ability.">NWNX_Creature_SpecialAbility</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00711">711</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00721">721</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -845,7 +851,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00739">739</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00749">749</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -884,7 +890,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00751">751</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00761">761</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -930,7 +936,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00761">761</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00771">771</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -970,7 +976,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The class id. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00774">774</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00784">784</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1009,7 +1015,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00785">785</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00795">795</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1038,7 +1044,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The base AC. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00795">795</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00805">805</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1085,7 +1091,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>Use <a class="el" href="group__creature.html#ga7e0289bb93f298bce44527f53611f1b4" title="Sets the ability score of the creature to the provided value.">NWNX_Creature_SetRawAbilityScore()</a>. This will be removed in future NWNX releases. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00805">805</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00815">815</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1132,7 +1138,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00811">811</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00821">821</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1173,7 +1179,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The ability score. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00822">822</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00832">832</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1220,7 +1226,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00833">833</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00843">843</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1261,7 +1267,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The raw ability score. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00844">844</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00854">854</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1308,7 +1314,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The memorised spell count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00874">874</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00884">884</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1362,7 +1368,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structNWNX__Creature__MemorisedSpell.html" title="A memorised spell structure.">NWNX_Creature_MemorisedSpell()</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00855">855</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00865">865</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1422,7 +1428,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00886">886</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00896">896</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1469,7 +1475,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The remaining spell slot count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00903">903</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00913">913</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1522,7 +1528,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00915">915</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00925">925</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1569,7 +1575,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The maximum spell slot count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00999">999</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01009">1009</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1616,7 +1622,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The known spell count. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00940">940</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00950">950</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1670,7 +1676,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The spell id. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00927">927</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00937">937</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1729,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00964">964</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00974">974</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1776,7 +1782,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00952">952</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00962">962</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1822,7 +1828,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00976">976</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00986">986</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1875,7 +1881,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00987">987</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l00997">997</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1904,7 +1910,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the wizard specializes. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01105">1105</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01115">1115</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1943,7 +1949,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01115">1115</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01125">1125</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -1983,7 +1989,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The maximum hit points a creature can have for the class at the provided level. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01012">1012</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01022">1022</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2029,7 +2035,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01023">1023</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01033">1033</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2068,7 +2074,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01034">1034</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01044">1044</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2098,7 +2104,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The current movement rate factor. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01044">1044</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01054">1054</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2138,7 +2144,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01053">1053</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01063">1063</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2167,7 +2173,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An NWNX_CREATURE_MOVEMENT_TYPE_* constant. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01273">1273</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01283">1283</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2207,7 +2213,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01282">1282</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01292">1292</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2246,7 +2252,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01063">1063</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01073">1073</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2285,7 +2291,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01073">1073</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01083">1083</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2324,7 +2330,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01083">1083</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01093">1093</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2370,7 +2376,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01094">1094</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01104">1104</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2399,7 +2405,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The soundset used by the creature. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01125">1125</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01135">1135</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2438,7 +2444,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01135">1135</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01145">1145</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2484,7 +2490,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01145">1145</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01155">1155</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2530,7 +2536,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01155">1155</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01165">1165</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2577,7 +2583,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01165">1165</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01175">1175</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2618,7 +2624,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>The base game has a function <a href="https://nwnlexicon.com/index.php?title=SetBaseAttackBonus" target="_blank">SetBaseAttackBonus</a>, which actually sets the bonus attacks per round for a creature, not the BAB. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01175">1175</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01185">1185</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2658,7 +2664,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The attacks per round. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01184">1184</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01194">1194</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2697,7 +2703,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01194">1194</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01204">1204</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2725,7 +2731,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01203">1203</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01213">1213</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2753,7 +2759,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01211">1211</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01221">1221</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2792,7 +2798,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01219">1219</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01229">1229</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2820,7 +2826,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01228">1228</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01238">1238</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2859,7 +2865,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01236">1236</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01246">1246</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2888,7 +2894,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The remaining unspent skill points. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01245">1245</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01255">1255</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2927,7 +2933,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01255">1255</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01265">1265</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -2966,7 +2972,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01264">1264</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01274">1274</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3005,7 +3011,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01291">1291</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01301">1301</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3044,7 +3050,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01300">1300</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01310">1310</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3085,7 +3091,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The base save value. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This will include any modifiers set in the toolset. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01310">1310</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01320">1320</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3131,7 +3137,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01320">1320</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01330">1330</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3178,7 +3184,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This will not work on player characters. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01330">1330</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01340">1340</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3218,7 +3224,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This will not work on player characters. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01340">1340</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01350">1350</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3257,7 +3263,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01349">1349</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01359">1359</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3324,7 +3330,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The highest attack bonus. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01358">1358</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01368">1368</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3365,7 +3371,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The highest level version of the feat. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01386">1386</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01396">1396</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3405,7 +3411,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The amount of remaining uses. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01397">1397</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01407">1407</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3445,7 +3451,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The total uses. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01408">1408</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01418">1418</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3491,7 +3497,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01419">1419</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01429">1429</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3588,7 +3594,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The bonus value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01430">1430</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01440">1440</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3635,7 +3641,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>For PCs this will persist to the .bic file if saved. Requires a relog to update. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01450">1450</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01460">1460</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3675,7 +3681,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The original first or last name of the creature. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01461">1461</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01471">1471</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3715,7 +3721,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>This setting will be overwritten by effects and once those effects fade the old setting (typically 0) will be set. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01472">1472</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01482">1482</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3754,7 +3760,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01482">1482</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01492">1492</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3793,7 +3799,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01492">1492</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01502">1502</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3832,7 +3838,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01502">1502</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01512">1512</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -3871,7 +3877,75 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01512">1512</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01522">1522</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaf4403278bbf4d75acf30ce5e3623c317"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf4403278bbf4d75acf30ce5e3623c317">&#9670;&nbsp;</a></span>NWNX_Creature_GetDisarmable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Creature_GetDisarmable </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get whether the creature can be disarmed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">creature</td><td>The creature object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the creature can be disarmed. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01532">1532</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
+
+</div>
+</div>
+<a id="gae737b5e9c3eb8fb6523a1f0ad68d16b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae737b5e9c3eb8fb6523a1f0ad68d16b1">&#9670;&nbsp;</a></span>NWNX_Creature_SetDisarmable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Creature_SetDisarmable </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>creature</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>disarmable</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set whether a creature can be disarmed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">creature</td><td>The creature object. </td></tr>
+    <tr><td class="paramname">disarmable</td><td>Set to TRUE if the creature can be disarmed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__creature_8nss_source.html#l01542">1542</a> of file <a class="el" href="nwnx__creature_8nss_source.html">nwnx_creature.nss</a>.</p>
 
 </div>
 </div>
@@ -4506,7 +4580,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Nov 19 2019 20:38:58 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Nov 19 2019 20:39:42 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"nwnx__redis__short_8nss.html#a2597f493ac8afcb6271089c923396da3":[2,0,2,24,0,3,171],
+"nwnx__redis__short_8nss.html#a27848afdc3b53b9259821787863ed964":[2,0,2,24,0,3,203],
+"nwnx__redis__short_8nss.html#a284b7d047987457c5acf3e5b39f4016a":[2,0,2,24,0,3,43],
+"nwnx__redis__short_8nss.html#a292fab9611f9aba62b64a5a6eda71092":[2,0,2,24,0,3,168],
 "nwnx__redis__short_8nss.html#a2a1a2460c4d77dfcd78e39ec101f9962":[2,0,2,24,0,3,157],
 "nwnx__redis__short_8nss.html#a2a23f06f0704d32ab56978fc1f299b30":[2,0,2,24,0,3,212],
 "nwnx__redis__short_8nss.html#a2b9c8096beeb08b5721e668555c7fea1":[2,0,2,24,0,3,10],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "structNWNX__Damage__AttackEventData.html#a82dc8d56f564fca63e68fcc2ea8a6943":[0,7,3,9],
 "structNWNX__Damage__AttackEventData.html#abd9b45439358d4428a37e2a695e0eedc":[0,7,3,14],
 "structNWNX__Damage__AttackEventData.html#ad76bfe56fadd9f06296452fe451345f7":[0,7,3,7],
-"structNWNX__Damage__AttackEventData.html#ada8bc3213c9e2e618ae1cd56ed650836":[0,7,3,11],
-"structNWNX__Damage__AttackEventData.html#ae50e334035835e815d0e7ab0891afe1e":[0,7,3,13],
-"structNWNX__Damage__AttackEventData.html#ae7b76b4e3cb09563e67132a58fec572d":[0,7,3,10],
-"structNWNX__Damage__AttackEventData.html#aebba350a6ae68da04b1fdd3d98556d30":[0,7,3,1],
-"structNWNX__Damage__AttackEventData.html#af83d60735d50ba0926015905279668b6":[0,7,3,8]
+"structNWNX__Damage__AttackEventData.html#ada8bc3213c9e2e618ae1cd56ed650836":[0,7,3,11]
 };
