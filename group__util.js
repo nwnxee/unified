@@ -19,7 +19,7 @@ var group__util =
     [ "NWNX_Util_GetNextResRef", "group__util.html#ga30d0f9f68ff0ab060db725dec16e609a", null ],
     [ "NWNX_Util_GetServerTicksPerSecond", "group__util.html#gac9df9a6c3e6b9a8b767719c04a485188", null ],
     [ "NWNX_Util_GetLastCreatedObject", "group__util.html#ga4dc71b0421a9bf57e18aa42b177d9b4b", null ],
-    [ "NWNX_Util_AddScript", "group__util.html#gab1af1db0c6538b394ffd81b2b349ee2c", null ],
+    [ "NWNX_Util_AddScript", "group__util.html#gacdadf3dcc484a8cd093e18920579c5a1", null ],
     [ "NWNX_Util_GetNSSContents", "group__util.html#ga5aafca352ae4d2058fee5502070b9e88", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NSS", "group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NCS", "group__util.html#gac7c3717541176f4e20e5824aa2668dd0", null ],
