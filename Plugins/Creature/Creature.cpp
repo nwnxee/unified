@@ -135,6 +135,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetFamiliarCreatureType);
     REGISTER(SetAnimalCompanionName);
     REGISTER(SetFamiliarName);
+    REGISTER(GetDisarmable);
+    REGISTER(SetDisarmable);
 
 #undef REGISTER
 }
@@ -1949,4 +1951,29 @@ ArgumentStack Creature::SetFamiliarName(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::GetDisarmable(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_bDisarmable;
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Creature::SetDisarmable(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto disarmable = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(disarmable <= 1);
+        ASSERT_OR_THROW(disarmable >= 0);
+
+        pCreature->m_bDisarmable = disarmable;
+    }
+    return stack;
+}
 }
