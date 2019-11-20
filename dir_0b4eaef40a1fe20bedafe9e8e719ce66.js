@@ -9,6 +9,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Damage", "dir_31d9e918c93dcca42dee91f234076bec.html", "dir_31d9e918c93dcca42dee91f234076bec" ],
     [ "Data", "dir_ae5d6ac362edcee64c7fbd49e8710ae7.html", "dir_ae5d6ac362edcee64c7fbd49e8710ae7" ],
     [ "Dialog", "dir_20f7fb784d609dfd229486badd900ddb.html", "dir_20f7fb784d609dfd229486badd900ddb" ],
+    [ "DotNET", "dir_ee8f441d91e7d21dc4f7060a96c12362.html", null ],
     [ "Effect", "dir_11aaeb639a522ceaac16b6aae5391291.html", "dir_11aaeb639a522ceaac16b6aae5391291" ],
     [ "ELC", "dir_256177e203c152aedfef65c10e62566f.html", "dir_256177e203c152aedfef65c10e62566f" ],
     [ "Encounter", "dir_bf7b181b7d07eec0e4a023ccab1d7777.html", "dir_bf7b181b7d07eec0e4a023ccab1d7777" ],

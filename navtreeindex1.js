@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"group__appearance.html#ga644b04a8c340d3e31b4dd79a95a5a8d6":[0,2,13],
 "group__appearance.html#ga65cf82443790a3e6abd3ff328fdfefbe":[2,0,2,1,0,0,3],
 "group__appearance.html#ga65cf82443790a3e6abd3ff328fdfefbe":[0,2,4],
 "group__appearance.html#ga6a208bee1fa4735c1bf31a4367760ef3":[2,0,2,1,0,0,6],
@@ -115,8 +116,8 @@ var NAVTREEINDEX1 =
 "group__chat.html#ga22ca905e6091ee72ba11489571af4c90":[2,0,2,3,0,0,14],
 "group__chat.html#ga293b444cb6fd729d453b1a4d3d6e5f06":[2,0,2,3,0,0,22],
 "group__chat.html#ga293b444cb6fd729d453b1a4d3d6e5f06":[0,4,23],
-"group__chat.html#ga4625e8e2a54540c0c66d25ea8d81aaa5":[2,0,2,3,0,0,3],
 "group__chat.html#ga4625e8e2a54540c0c66d25ea8d81aaa5":[0,4,5],
+"group__chat.html#ga4625e8e2a54540c0c66d25ea8d81aaa5":[2,0,2,3,0,0,3],
 "group__chat.html#ga46736cec1065353724348b35cc85aece":[0,4,3],
 "group__chat.html#ga46736cec1065353724348b35cc85aece":[2,0,2,3,0,0,1],
 "group__chat.html#ga4da1ed59c06b1b620006a00e2d849ef7":[2,0,2,3,0,0,20],
@@ -135,8 +136,8 @@ var NAVTREEINDEX1 =
 "group__chat.html#ga8a5cc439da4c24b8b5a3c8bcdff3b9ab":[2,0,2,3,0,0,7],
 "group__chat.html#ga9e1b1e6237ddac7f84fa183cf08126ee":[0,4,2],
 "group__chat.html#ga9e1b1e6237ddac7f84fa183cf08126ee":[2,0,2,3,0,0,0],
-"group__chat.html#gaa86f5284764e4bdbfa497def002d7779":[2,0,2,3,0,0,11],
 "group__chat.html#gaa86f5284764e4bdbfa497def002d7779":[0,4,12],
+"group__chat.html#gaa86f5284764e4bdbfa497def002d7779":[2,0,2,3,0,0,11],
 "group__chat.html#gab1ef141d5d50d45dead5dac918f1b7bd":[0,4,13],
 "group__chat.html#gab1ef141d5d50d45dead5dac918f1b7bd":[2,0,2,3,0,0,12],
 "group__chat.html#gab8ea39914a0ac0df6ece2c27dcffe11a":[0,4,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "group__creature.html#ga4fbd561eaf7af28bdacd9c58075b3a9a":[0,6,23],
 "group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499":[2,0,2,5,0,0,74],
 "group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499":[0,6,78],
-"group__creature.html#ga5349277c58e434dbb8be910d7c864ab6":[0,6,105],
-"group__creature.html#ga5349277c58e434dbb8be910d7c864ab6":[2,0,2,5,0,0,102]
+"group__creature.html#ga5349277c58e434dbb8be910d7c864ab6":[0,6,105]
 };
