@@ -103,18 +103,6 @@ namespace NWN
         }
 
         /// <summary>
-        ///  Assign aActionToAssign to oActionSubject.
-        ///  * No return value, but if an error occurs, the log file will contain
-        ///    "AssignCommand failed."
-        ///    (If the object doesn't exist, nothing happens.)
-        ///  Delay aActionToDelay by fSeconds.
-        ///  * No return value, but if an error occurs, the log file will contain
-        ///    "DelayCommand failed.".
-        ///  It is suggested that functions which create effects should not be used
-        ///  as parameters to delayed actions.  Instead, the effect should be created in the
-        ///  script and then passed into the action.  For example:
-        ///  effect eDamage = EffectDamage(nDamage, DAMAGE_TYPE_MAGICAL);
-        ///  DelayCommand(fDelay, ApplyEffectToObject(DURATION_TYPE_INSTANT, eDamage, oTarget);
         ///  Make oTarget run sScript and then return execution to the calling script.
         ///  If sScript does not specify a compiled script, nothing happens.
         /// </summary>
@@ -3764,7 +3752,6 @@ namespace NWN
         }
 
         /// <summary>
-        ///  Do aActionToDo.
         ///  Creates a conversation event.
         ///  Note: This only creates the event. The event wont actually trigger until SignalEvent()
         ///  is called using this created conversation event as an argument.

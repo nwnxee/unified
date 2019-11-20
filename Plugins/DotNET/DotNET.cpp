@@ -113,12 +113,19 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
     if (!InitThunks())
         return;
 
-    auto assembly   = GetServices()->m_config->Require<std::string>("ASSEMBLY");
+    auto assembly   = GetServices()->m_config->Get<std::string>("ASSEMBLY");
     auto entrypoint = GetServices()->m_config->Get<std::string>("ENTRYPOINT", "NWN.Internal");
+
+    if (!assembly.has_value())
+    {
+        LOG_ERROR("NWNX_DOTNET_ASSEMBLY not specified. DotNET plugin will not be loaded.");
+        LOG_ERROR("If you're not using the .NET plugin, you can disable this message with 'NWNX_DOTNET_SKIP=y'");
+        return;
+    }
 
     // Load .NET Core
     hostfxr_handle cxt = nullptr;
-    auto runtimeconfig = assembly + ".runtimeconfig.json";
+    auto runtimeconfig = *assembly + ".runtimeconfig.json";
     int rc = hostfxr_initialize_for_runtime_config(runtimeconfig.c_str(), nullptr, &cxt);
     if (rc != 0 || cxt == nullptr)
         LOG_FATAL("Unable to load runtime config '%s'; rc=0x%x", runtimeconfig, rc);
@@ -133,8 +140,8 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
 
 
     component_entry_point_fn bootstrap = nullptr;
-    auto dll = assembly + ".dll";
-    auto full_ep = entrypoint + ", " + assembly.substr(assembly.find_last_of("/\\") + 1);
+    auto dll = *assembly + ".dll";
+    auto full_ep = entrypoint + ", " + assembly->substr(assembly->find_last_of("/\\") + 1);
     rc = load_assembly_and_get_function_pointer(dll.c_str(), full_ep.c_str(),
                                                 "Bootstrap", nullptr, nullptr, (void**)&bootstrap);
     if (rc != 0 || bootstrap == nullptr)
@@ -244,9 +251,10 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
                 static uint64_t frame = 0;
                 if (Handlers.MainLoop)
                 {
-                    Globals::VirtualMachine()->m_nRecursionLevel++;
+                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
                     Handlers.MainLoop(frame);
-                    Globals::VirtualMachine()->m_nRecursionLevel--;
+                    int spAfter = Utils::PopScriptContext();
+                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
                 }
                 ++frame;
             }
@@ -289,10 +297,10 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
             {
                 LOG_DEBUG("Calling managed RunScriptSituationHandler for event '%lu' on Object 0x%08x", eventId, objId);
-                Utils::PushScriptContext(objId, !!valid);
+                int spBefore = Utils::PushScriptContext(objId, !!valid);
                 Handlers.Closure(eventId, objId);
-                Utils::PopScriptContext();
-
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
                 delete script;
                 return 1;
             }

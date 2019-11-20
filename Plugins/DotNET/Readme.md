@@ -71,6 +71,9 @@ your `NWNX_DOTNET_ASSEMBLY` should be `/some/path/my/project/NWN`
 
 If you get the following error:
 
+    Unable to get [something].Bootstrap() function [...]
+
+and you have changed the default entrypoint, verify that your `NWNX_DOTNET_ENTRYPOINT` variable contains the full `Namespace.Class.Subclass`, and that a static `Bootstrap()` function with the correct signature exists in that path.
 
 ## How it works (basic)
 
