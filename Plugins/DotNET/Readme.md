@@ -18,7 +18,7 @@ Implement your server scripts in C# (and other dotnet languages)
 
 ### Dependencies
 
-You will need `dotnet-sdk-3.0` installed on the server to use this plugin. The same package is used to build the managed code.
+You will need `dotnet-sdk-3.0` installed on the server to use this plugin. The same package is used to build the managed code.  Installation instructions are [here](https://dotnet.microsoft.com/download/linux-package-manager/sdk-current).
 
 There are no compiletime dependencies for the unmanaged code.
 
