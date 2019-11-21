@@ -5,6 +5,7 @@
 #include "API/CNWSCombatRound.hpp"
 #include "API/CNWVisibilityNode.hpp"
 #include "API/CNWCCMessageData.hpp"
+#include "API/CNWRules.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
@@ -35,7 +36,7 @@ SneakAttackCritImmunity::SneakAttackCritImmunity(ViewPtr<Services::HooksProxy> h
 
 void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
-    static const float SNEAK_ATTACK_DISTANCE = 100.0f;
+    static const float SNEAK_ATTACK_DISTANCE = 10.0f;
     if (!pTarget)
         return;
 
@@ -123,7 +124,8 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     auto *pVisNode = pTarget->GetVisibleListElement(pThis->m_idSelf);
     if (!pVisNode || !pVisNode->m_bSeen || pTarget->GetFlatFooted())
     {
-        isSneakAttack = (!pAttackData->m_bRangedAttack || fDistance < SNEAK_ATTACK_DISTANCE);
+        isSneakAttack = (!pAttackData->m_bRangedAttack ||
+                fDistance < Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", SNEAK_ATTACK_DISTANCE));
     }
     else if (pTarget->m_pStats->HasFeat(Constants::Feat::UncannyDodge2))
     {
@@ -175,7 +177,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
 // I refuse to take responsibility for the duplicated code, as NWN does it too!
 void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
-    static const float SNEAK_ATTACK_DISTANCE = 100.0f;
+    static const float SNEAK_ATTACK_DISTANCE = 10.0f;
     if (!pTarget)
         return;
 
@@ -238,7 +240,8 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
     auto *pVisNode = pTarget->GetVisibleListElement(pThis->m_idSelf);
     if (!pVisNode || !pVisNode->m_bSeen || pTarget->GetFlatFooted())
     {
-        isDeathAttack = (!pAttackData->m_bRangedAttack || fDistance < SNEAK_ATTACK_DISTANCE);
+        isDeathAttack = (!pAttackData->m_bRangedAttack ||
+                fDistance < Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", SNEAK_ATTACK_DISTANCE));
     }
     else if (pTarget->m_pStats->HasFeat(Constants::Feat::UncannyDodge2))
     {
