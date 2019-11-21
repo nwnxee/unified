@@ -17,7 +17,15 @@ RUN runDeps="hunspell \
     luajit libluajit-5.1 \
     libssl1.1 \
     inotify-tools \
-    patch" \
+    patch \
+    dotnet-sdk-3.0" \
+    installDeps="ca-certificates wget gpg apt-transport-https" \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends $installDeps \
+    && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg \
+    && wget -q https://packages.microsoft.com/config/debian/10/prod.list \
+    && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
+    && mv prod.list /etc/apt/sources.list.d/microsoft-prod.list \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
