@@ -10,10 +10,10 @@ COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 
 # Install plugin run dependencies
 RUN runDeps="hunspell \
-    libmariadbclient18 \
+    libmariadb3 \
     libpq-dev \
     libsqlite3-dev \
-    libruby2.3 \
+    libruby2.5 \
     luajit libluajit-5.1 \
     libssl1.1 \
     inotify-tools \
