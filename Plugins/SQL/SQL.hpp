@@ -6,6 +6,8 @@
 
 #include <memory>
 
+using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+
 namespace SQL {
 
 class SQL : public NWNXLib::Plugin
@@ -14,22 +16,22 @@ public:
     SQL(const Plugin::CreateParams& params);
     virtual ~SQL();
 
-    NWNXLib::Services::Events::ArgumentStack OnPrepareQuery(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnExecutePreparedQuery(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnReadyToReadNextRow(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnReadNextRow(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnReadDataInActiveRow(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnPreparedInt(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnPreparedString(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnPreparedFloat(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnPreparedObjectId(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnPreparedObjectFull(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnReadFullObjectInActiveRow(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetAffectedRows(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetDatabaseType(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnDestroyPreparedQuery(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetLastError(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetPreparedQueryParamCount(NWNXLib::Services::Events::ArgumentStack&& args);
+    ArgumentStack PrepareQuery                  (ArgumentStack&& args);
+    ArgumentStack ExecutePreparedQuery          (ArgumentStack&& args);
+    ArgumentStack ReadyToReadNextRow            (ArgumentStack&& args);
+    ArgumentStack ReadNextRow                   (ArgumentStack&& args);
+    ArgumentStack ReadDataInActiveRow           (ArgumentStack&& args);
+    ArgumentStack PreparedInt                   (ArgumentStack&& args);
+    ArgumentStack PreparedString                (ArgumentStack&& args);
+    ArgumentStack PreparedFloat                 (ArgumentStack&& args);
+    ArgumentStack PreparedObjectId              (ArgumentStack&& args);
+    ArgumentStack PreparedObjectFull            (ArgumentStack&& args);
+    ArgumentStack ReadFullObjectInActiveRow     (ArgumentStack&& args);
+    ArgumentStack GetAffectedRows               (ArgumentStack&& args);
+    ArgumentStack GetDatabaseType               (ArgumentStack&& args);
+    ArgumentStack DestroyPreparedQuery          (ArgumentStack&& args);
+    ArgumentStack GetLastError                  (ArgumentStack&& args);
+    ArgumentStack GetPreparedQueryParamCount    (ArgumentStack&& args);
 private:
     bool Reconnect(int32_t attempts = 1);
 
