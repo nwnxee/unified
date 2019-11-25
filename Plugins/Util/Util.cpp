@@ -230,7 +230,14 @@ ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
 ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    Services::Events::InsertArgument(stack, std::getenv(Services::Events::ExtractArgument<std::string>(args).c_str()));
+    std::string retVal;
+    const auto envVar = Services::Events::ExtractArgument<std::string>(args);
+
+    if (const char* value = std::getenv(envVar.c_str()))
+        retVal = std::string(value);
+
+    Services::Events::InsertArgument(stack, retVal);
+
     return stack;
 }
 
