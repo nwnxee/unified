@@ -39,6 +39,7 @@ private:
     ArgumentStack SetWeaponFocusFeat                   (ArgumentStack&& args);
     ArgumentStack SetEpicWeaponFocusFeat               (ArgumentStack&& args);
     ArgumentStack SetWeaponFinesseSize                 (ArgumentStack&& args);
+    ArgumentStack GetWeaponFinesseSize                 (ArgumentStack&& args);
     ArgumentStack SetWeaponUnarmed                     (ArgumentStack&& args);
     ArgumentStack SetWeaponImprovedCriticalFeat        (ArgumentStack&& args);
     ArgumentStack SetEpicWeaponOverwhelmingCriticalFeat(ArgumentStack&& args);
