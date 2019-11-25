@@ -34,6 +34,7 @@ N/A
 - Player: PossessCreature()
 - Util: AddScript()
 - Util: GetNSSContents()
+- Weapon: GetWeaponFinesseSize()
 
 ### Changed
 - Administration: DeleteTURD() now returns TRUE on success
