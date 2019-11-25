@@ -156,7 +156,7 @@ void NWNX_Weapon_SetWeaponFinesseSize(int nBaseItem, int nSize)
     NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
 
-void NWNX_Weapon_GetWeaponFinesseSize(int nBaseItem)
+int NWNX_Weapon_GetWeaponFinesseSize(int nBaseItem)
 {
     string sFunc = "GetWeaponFinesseSize";
 
