@@ -2,6 +2,7 @@ var nwnx__weapon_8nss =
 [
     [ "NWNX_Weapon_SetWeaponFocusFeat", "group__weapon.html#gaa74f691d599e48f697719ea8731f11be", null ],
     [ "NWNX_Weapon_SetWeaponFinesseSize", "group__weapon.html#gae8574965a3aae542e79e051bfad60217", null ],
+    [ "NWNX_Weapon_GetWeaponFinesseSize", "group__weapon.html#gac097d2ac46c1ccb933c7777e2f851453", null ],
     [ "NWNX_Weapon_SetWeaponUnarmed", "group__weapon.html#gad8f1eb5b7d131d39144ff34de3990d3a", null ],
     [ "NWNX_Weapon_SetWeaponImprovedCriticalFeat", "group__weapon.html#gad6bf3d2ce2abfeb00c289345ff92a92a", null ],
     [ "NWNX_Weapon_SetWeaponSpecializationFeat", "group__weapon.html#ga8deec30028f3ba99c22c775ed8edb973", null ],
