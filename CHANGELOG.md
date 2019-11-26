@@ -25,7 +25,8 @@ NOTE: There may be more breaking changes added here until the next official rele
 - Util: Added the environment variable `NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK` which lets you set a nwscript chunk that runs before the OnModuleLoad event
 
 ##### New Plugins
-N/A
+The following plugins were added:
+- **DotNET**: Implement your server scripts in C# (and other dotnet languages)
 
 ##### New NWScript Functions
 - Administration: {Get|Set}DebugValue()
