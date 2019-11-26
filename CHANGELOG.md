@@ -22,6 +22,7 @@ NOTE: There may be more breaking changes added here until the next official rele
   - `loglevel <plugin> [<loglevel>]`: Sets or gets the log level of the given plugin. Example: Set: `loglevel Events 7`, Get: `loglevel Events`
   - `logformat [timestamp|notimestamp] [plugin|noplugin] [source|nosource] [color|nocolor] [force|noforce]`: Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
 - Core: Added the following log related environment variables: `NWNX_CORE_LOG_TIMESTAMP`, `NWNX_CORE_LOG_PLUGIN`, `NWNX_CORE_LOG_SOURCE`, `NWNX_CORE_LOG_COLOR`, `NWNX_CORE_LOG_FORCE_COLOR`
+- Util: Added the environment variable `NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK` which lets you set a nwscript chunk that runs before the OnModuleLoad event
 
 ##### New Plugins
 N/A
