@@ -409,6 +409,8 @@ int PushScriptContext(API::Types::ObjectID oid, bool valid)
     {
         vm->m_cRunTimeStack.InitializeStack();
         vm->m_cRunTimeStack.m_pVMachine = vm;
+        vm->m_nInstructPtrLevel = 0;
+        vm->m_nInstructionsExecuted = 0;
     }
 
     vm->m_oidObjectRunScript[vm->m_nRecursionLevel]    = oid;
