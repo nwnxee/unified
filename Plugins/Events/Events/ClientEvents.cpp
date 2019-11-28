@@ -68,12 +68,17 @@ int32_t ClientEvents::SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPla
     auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
     auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID);
 
+    std::string playerName = pPlayerInfo->m_sPlayerName.CStr();
+    std::string cdKey = pPlayerInfo->m_lstKeys[0].sPublic.CStr();
+    std::string isDM = std::to_string(pPlayerInfo->m_bGameMasterPrivileges);
+    std::string ipAddress = pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr();
+
     std::string reason;
     auto PushAndSignal = [&](std::string ev) -> bool {
-        Events::PushEventData("PLAYER_NAME", pPlayerInfo->m_sPlayerName.CStr());
-        Events::PushEventData("CDKEY", pPlayerInfo->m_lstKeys[0].sPublic.CStr());
-        Events::PushEventData("IS_DM", std::to_string(pPlayerInfo->m_bGameMasterPrivileges));
-        Events::PushEventData("IP_ADDRESS", pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr());
+        Events::PushEventData("PLAYER_NAME", playerName);
+        Events::PushEventData("CDKEY", cdKey);
+        Events::PushEventData("IS_DM", isDM);
+        Events::PushEventData("IP_ADDRESS", ipAddress);
         return Events::SignalEvent(ev, Utils::GetModule()->m_idSelf, &reason);
     };
 
