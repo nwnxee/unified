@@ -171,12 +171,14 @@ namespace NWN
             public nwnxCallFunctionDelegate        nwnxCallFunction;
         }
         public static BootstrapArgs NativeFunctions;
+        private static AllHandlers _handlers;
 
         public static void RegisterHandlers(AllHandlers handlers)
         {
+            _handlers = handlers;
             var size = System.Runtime.InteropServices.Marshal.SizeOf(typeof(AllHandlers));
             IntPtr ptr = Marshal.AllocHGlobal(size);
-            Marshal.StructureToPtr(handlers, ptr, false);
+            Marshal.StructureToPtr(_handlers, ptr, false);
             NativeFunctions.RegisterHandlers(ptr, (uint)size);
             Marshal.FreeHGlobal(ptr);
         }
