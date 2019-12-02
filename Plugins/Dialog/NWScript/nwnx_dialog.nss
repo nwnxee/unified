@@ -70,6 +70,11 @@ string NWNX_Dialog_GetCurrentNodeText(int language=NWNX_DIALOG_LANGUAGE_ENGLISH,
 /// @param gender The gender for the text.
 void NWNX_Dialog_SetCurrentNodeText(string text, int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE);
 
+/// @brief End a conversation oObject is involved in, it will fire the OnAbort script of the conversation
+/// @warning Calling this from a conversation script will crash your server.
+/// @param oObject The object in a conversation
+void NWNX_Dialog_End(object oObject);
+
 /// @}
 
 
@@ -118,9 +123,17 @@ string NWNX_Dialog_GetCurrentNodeText(int language=NWNX_DIALOG_LANGUAGE_ENGLISH,
 void NWNX_Dialog_SetCurrentNodeText(string text, int language=NWNX_DIALOG_LANGUAGE_ENGLISH, int gender=GENDER_MALE)
 {
     string sFunc = "SetCurrentNodeText";
-    
+
     NWNX_PushArgumentInt(NWNX_Dialog, sFunc, gender);
     NWNX_PushArgumentInt(NWNX_Dialog, sFunc, language);
     NWNX_PushArgumentString(NWNX_Dialog, sFunc, text);
+    NWNX_CallFunction(NWNX_Dialog, sFunc);
+}
+
+void NWNX_Dialog_End(object oObject)
+{
+    string sFunc = "End";
+
+    NWNX_PushArgumentObject(NWNX_Dialog, sFunc, oObject);
     NWNX_CallFunction(NWNX_Dialog, sFunc);
 }
