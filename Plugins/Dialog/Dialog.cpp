@@ -182,6 +182,8 @@ Dialog::Dialog(const Plugin::CreateParams& params)
     REGISTER(GetCurrentNodeIndex);
     REGISTER(GetCurrentNodeText);
     REGISTER(SetCurrentNodeText);
+    REGISTER(End);
+
 #undef REGISTER
 
     GetServices()->m_hooks->RequestSharedHook
@@ -362,6 +364,19 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Dialog::End(ArgumentStack&& args)
+{
+    ArgumentStack stack;
 
+    auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObject)))
+    {
+        pObject->StopDialog();
+    }
+
+    return stack;
+}
 
 }

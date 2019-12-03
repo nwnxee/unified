@@ -53,6 +53,7 @@ private:
     ArgumentStack GetCurrentNodeIndex  (ArgumentStack&& args);
     ArgumentStack GetCurrentNodeText   (ArgumentStack&& args);
     ArgumentStack SetCurrentNodeText   (ArgumentStack&& args);
+    ArgumentStack End                  (ArgumentStack&& args);
 };
 
 }

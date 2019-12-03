@@ -32,6 +32,7 @@ The following plugins were added:
 - Administration: {Get|Set}DebugValue()
 - Creature: {Get|Set}Disarmable()
 - Data: Array_Set()
+- Dialog: End()
 - Object: Export()
 - Player: PossessCreature()
 - Util: AddScript()
