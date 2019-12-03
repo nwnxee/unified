@@ -2,9 +2,9 @@
 #include "nwn_api.hpp"
 
 #include "CResHelper.hpp"
-#include "CResRef.hpp"
 #include "CExoString.hpp"
 #include "CRes2DA.hpp"
+#include "CResRef.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

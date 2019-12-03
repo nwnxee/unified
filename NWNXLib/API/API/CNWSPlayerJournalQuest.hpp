@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWSPlayerJournalQuestUpdates.hpp"
 #include "CExoArrayList.hpp"
+#include "CNWSPlayerJournalQuestUpdates.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

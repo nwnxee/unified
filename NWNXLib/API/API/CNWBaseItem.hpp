@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResRef.hpp"
 #include "CExoString.hpp"
+#include "CResRef.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -11,8 +11,8 @@ NWN_API_PROLOGUE(CNWBaseItem)
 
 
 
-typedef uint32_t STRREF;
 typedef int BOOL;
+typedef uint32_t STRREF;
 
 
 struct CNWBaseItem

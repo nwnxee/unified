@@ -2,24 +2,24 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "CExoLinkedList.hpp"
 #include "RESID.hpp"
 #include "CKeyTableInfo.hpp"
+#include "CExoLinkedList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoKeyTable)
 #endif
 
-struct CKeyTableEntry;
-struct CResRef;
-struct CExoPackedFile;
 struct CExoStringList;
+struct CResRef;
 struct CRes;
+struct CExoPackedFile;
+struct CKeyTableEntry;
 
 
-typedef uint16_t RESTYPE;
 typedef int BOOL;
+typedef uint16_t RESTYPE;
 
 
 struct CExoKeyTable

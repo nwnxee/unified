@@ -1,15 +1,15 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CServerOptionLookup.hpp"
+#include "CExoString.hpp"
+#include "CAutoSave.hpp"
 #include "CJoiningRestrictions.hpp"
 #include "CPersistantWorldOptions.hpp"
+#include "CServerOptionLookup.hpp"
 #include "NWSyncAdvertisement.hpp"
-#include "CExoString.hpp"
-#include "CPlayOptions.hpp"
-#include "CAutoSave.hpp"
 #include "CServerNetOptions.hpp"
 #include "CResetOption.hpp"
+#include "CPlayOptions.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

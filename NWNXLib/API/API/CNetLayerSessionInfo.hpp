@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "NWSyncAdvertisement.hpp"
 #include "CExoString.hpp"
+#include "NWSyncAdvertisement.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

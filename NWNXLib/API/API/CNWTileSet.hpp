@@ -2,10 +2,10 @@
 #include "nwn_api.hpp"
 
 #include "CResHelper.hpp"
-#include "CResSET.hpp"
-#include "CResRef.hpp"
 #include "CExoString.hpp"
+#include "CResSET.hpp"
 #include "Vector.hpp"
+#include "CResRef.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

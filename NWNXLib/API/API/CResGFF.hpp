@@ -1,27 +1,27 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResRef.hpp"
 #include "CExoString.hpp"
-#include "CRes.hpp"
 #include "CExoLocString.hpp"
+#include "CResRef.hpp"
+#include "CRes.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CResGFF)
 #endif
 
-struct CExoFile;
-struct CResList;
-struct CResGFFFileHeader;
-struct CResGFFField;
 struct CResGFFStruct;
-struct CResGFFLabel;
 struct CResStruct;
+struct CResGFFField;
+struct CResGFFLabel;
+struct CResList;
+struct CExoFile;
+struct CResGFFFileHeader;
 
 
-typedef uint16_t RESTYPE;
 typedef int BOOL;
+typedef uint16_t RESTYPE;
 
 
 struct CResGFF : CRes

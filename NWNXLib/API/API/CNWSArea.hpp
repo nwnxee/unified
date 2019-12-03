@@ -2,39 +2,39 @@
 #include "nwn_api.hpp"
 
 #include "CResHelper.hpp"
+#include "CExoString.hpp"
+#include "CExoLocString.hpp"
 #include "CNWSScriptVarTable.hpp"
 #include "CExoArrayList.hpp"
-#include "CResRef.hpp"
-#include "CNWArea.hpp"
-#include "NWAREAEXPANSION.hpp"
-#include "CExoString.hpp"
-#include "CExoLinkedList.hpp"
 #include "Vector.hpp"
-#include "CGameObject.hpp"
-#include "CExoLocString.hpp"
-#include "CResARE.hpp"
 #include "CNWSUUID.hpp"
+#include "CNWArea.hpp"
+#include "CResRef.hpp"
+#include "CResARE.hpp"
+#include "CExoLinkedList.hpp"
+#include "NWAREAEXPANSION.hpp"
+#include "CGameObject.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSArea)
 #endif
 
-struct CNWSAreaGridSuccessors;
-struct CNWSPlayer;
-struct CNWSAreaInterTileSuccessors;
-struct CResGFF;
-struct CGameObject;
+struct CNWSAmbientSound;
 struct CPathfindInformation;
-struct CERFFile;
 struct CNWTileSet;
+struct CGameObject;
+struct CNWSTile;
+struct CNWSAreaInterTileSuccessors;
+struct CResStruct;
+struct CNWSPlayer;
+struct CNWSAreaGridSuccessors;
+struct CGameEffect;
 struct CNWSCreature;
 struct NWAREAHEADER;
-struct CNWSTile;
-struct CNWSAmbientSound;
-struct CGameEffect;
+struct CERFFile;
 struct CNWSAreaGridTransTableEntry;
-struct CResStruct;
+struct CResGFF;
 
 
 typedef int BOOL;

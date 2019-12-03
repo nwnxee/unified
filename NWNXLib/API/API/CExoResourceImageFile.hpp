@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "ENCAPSULATED_KEYLISTENTRY.hpp"
 #include "RESID.hpp"
+#include "ENCAPSULATED_KEYLISTENTRY.hpp"
 #include "CExoPackedFile.hpp"
 
 

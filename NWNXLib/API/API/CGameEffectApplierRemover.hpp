@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CGameEffectApplierRemover)
 #endif
 
-struct CNWSObject;
 struct CGameEffect;
+struct CNWSObject;
 
 
 typedef int BOOL;

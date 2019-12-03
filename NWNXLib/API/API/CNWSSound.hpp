@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWSSound)
 #endif
 
-struct CResGFF;
 struct CResStruct;
+struct CResGFF;
 
 
 typedef int BOOL;

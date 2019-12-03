@@ -8,14 +8,14 @@
 NWN_API_PROLOGUE(CTlkTable)
 #endif
 
-struct CTlkFile;
-struct CTlkTableTokenCustom;
 struct STR_RES;
+struct CTlkTableTokenCustom;
+struct CTlkFile;
 struct CTlkTableToken;
 
 
-typedef uint32_t STRREF;
 typedef int BOOL;
+typedef uint32_t STRREF;
 
 
 struct CTlkTable

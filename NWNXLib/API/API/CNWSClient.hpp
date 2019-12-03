@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CNWSClient)
 #endif
 
-struct CNWSPlayer;
 struct CNWSDungeonMaster;
+struct CNWSPlayer;
 
 
 
