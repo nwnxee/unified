@@ -13,7 +13,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-N/A
+- Area: GetMusicIsPlaying()
 
 ### Changed
 N/A
