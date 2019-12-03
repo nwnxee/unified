@@ -1,27 +1,27 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CFileInfo.hpp"
-#include "CExoArrayList.hpp"
 #include "CExoString.hpp"
+#include "CExoArrayList.hpp"
+#include "CFileInfo.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoBase)
 #endif
 
+struct CExoDebug;
+struct CExoIdentity;
+struct CExoRand;
+struct CExoConfig;
+struct CExoIni;
+struct CExoBaseInternal;
 struct CExoAliasList;
 struct CExoTimers;
-struct CExoIdentity;
-struct CExoConfig;
-struct CExoDebug;
-struct CExoRand;
-struct CExoBaseInternal;
-struct CExoIni;
 
 
-typedef uint16_t RESTYPE;
 typedef int BOOL;
+typedef uint16_t RESTYPE;
 
 
 struct CExoBase

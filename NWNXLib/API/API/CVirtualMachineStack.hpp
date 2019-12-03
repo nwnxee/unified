@@ -7,10 +7,10 @@
 NWN_API_PROLOGUE(CVirtualMachineStack)
 #endif
 
-struct StackElement;
-struct CVirtualMachine;
-struct CResGFF;
 struct CResStruct;
+struct CResGFF;
+struct CVirtualMachine;
+struct StackElement;
 
 
 typedef int BOOL;

@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoArrayList.hpp"
 #include "CExoString.hpp"
+#include "CExoArrayList.hpp"
 #include "Vector.hpp"
 
 
@@ -10,11 +10,11 @@
 NWN_API_PROLOGUE(CNWSCombatAttackData)
 #endif
 
-struct CResGFF;
-struct CNWCCMessageData;
-struct CGameEffect;
 struct CResStruct;
 struct CNWSSpellScriptData;
+struct CGameEffect;
+struct CResGFF;
+struct CNWCCMessageData;
 
 
 typedef int BOOL;

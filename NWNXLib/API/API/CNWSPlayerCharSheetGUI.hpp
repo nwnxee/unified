@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CNWSPlayerCharSheetGUI)
 #endif
 
-struct CNWSPlayer;
 struct CNWCreatureStatsUpdate;
+struct CNWSPlayer;
 
 
 typedef int BOOL;

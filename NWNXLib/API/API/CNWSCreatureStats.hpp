@@ -1,36 +1,36 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWSCreatureStats_ClassInfo.hpp"
-#include "CExoArrayList.hpp"
-#include "CResRef.hpp"
-#include "CNWSStats_SpellLikeAbility.hpp"
 #include "CExoString.hpp"
 #include "CExoLocString.hpp"
+#include "CExoArrayList.hpp"
+#include "CNWSStats_SpellLikeAbility.hpp"
+#include "CResRef.hpp"
+#include "CNWSCreatureStats_ClassInfo.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSCreatureStats)
 #endif
 
-struct CResGFF;
-struct CNWSCreature;
-struct CNWSCreatureAppearanceInfo;
-struct CNWLevelStats;
-struct CNWSObject;
-struct CNWClass;
-struct CNWSItem;
-struct CNWCreatureStatsUpdate;
 struct CNWSpell;
-struct CNWLevelStats;
+struct CNWCreatureStatsUpdate;
+struct CNWSCreature;
+struct CNWClass;
 struct CCombatInformation;
-struct CFeatUseListEntry;
 struct CResStruct;
+struct CFeatUseListEntry;
+struct CNWSItem;
+struct CNWLevelStats;
+struct CNWLevelStats;
+struct CResGFF;
+struct CNWSObject;
+struct CNWSCreatureAppearanceInfo;
 
 
-typedef uint32_t STRREF;
 typedef int BOOL;
 typedef uint32_t OBJECT_ID;
+typedef uint32_t STRREF;
 
 
 struct CNWSCreatureStats

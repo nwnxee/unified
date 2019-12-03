@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CGameEffect)
 #endif
 
-struct CResGFF;
 struct CResStruct;
+struct CResGFF;
 
 
 typedef int BOOL;

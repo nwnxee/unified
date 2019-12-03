@@ -1,36 +1,36 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoArrayList.hpp"
-#include "CNWSync.hpp"
 #include "CExoString.hpp"
-#include "CExoLinkedList.hpp"
-#include "CRes.hpp"
+#include "CNWSync.hpp"
 #include "CExoLocString.hpp"
 #include "RESID.hpp"
+#include "CExoArrayList.hpp"
+#include "CRes.hpp"
+#include "CExoLinkedList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoResMan)
 #endif
 
+struct CExoStringList;
+struct CResRef;
 struct CExoKeyTable;
 struct CKeyTableEntry;
-struct CResRef;
-struct CExoFile;
-struct CExoStringList;
 struct CExoKeyTable;
+struct CExoFile;
 
 
-typedef uint16_t RESTYPE;
 typedef int BOOL;
+typedef uint16_t RESTYPE;
 
 
 struct CExoResMan
 {
-    int32_t m_nTotalPhysicalMemory;
-    int32_t m_nTotalAvailableMemory;
-    int32_t m_nAvailableMemory;
+    int64_t m_nTotalPhysicalMemory;
+    int64_t m_nTotalAvailableMemory;
+    int64_t m_nAvailableMemory;
     CExoArrayList<CExoKeyTable *> m_pKeyTables;
     CExoLinkedList<CRes> m_lstToBeFreed;
     CExoLinkedList<CRes> m_lstAsyncResQueue;
@@ -59,7 +59,7 @@ struct CExoResMan
     CExoStringList * GetResOfType(RESTYPE nType, BOOL bERFOnly = false);
     CExoStringList * GetResOfType(RESTYPE nType, CRes * pRes);
     RESID GetResID(const CResRef & cResRef, RESTYPE nType);
-    uint32_t GetTotalPhysicalMemory();
+    int64_t GetTotalPhysicalMemory();
     int32_t ReleaseResObject(CRes * pRes, bool bDontCache = false);
     BOOL RemoveEncapsulatedResourceFile(const CExoString & sName, BOOL bEmitWarningOnFailure = true);
     BOOL RemoveResourceImageFile(const CExoString & sName);
@@ -68,7 +68,7 @@ struct CExoResMan
     BOOL RemoveManifest(const CExoString & sManifestHash);
     void ResumeServicing();
     void SetResObject(const CResRef & cResRef, RESTYPE nType, CRes * pNewRes);
-    BOOL SetTotalResourceMemory(int32_t totalAvailableMemory);
+    BOOL SetTotalResourceMemory(int64_t totalAvailableMemory);
     void SuspendServicing();
     void Update(uint32_t nTimeSlice);
     BOOL UpdateEncapsulatedResourceFile(const CExoString & sName);

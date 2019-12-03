@@ -2,9 +2,9 @@
 #include "nwn_api.hpp"
 
 #include "AurList.hpp"
+#include "CResStructHeader.hpp"
 #include "CStringFieldIDType.hpp"
 #include "CExoLinkedList.hpp"
-#include "CResStructHeader.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

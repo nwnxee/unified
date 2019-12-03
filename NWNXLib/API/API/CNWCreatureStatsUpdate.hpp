@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWCreatureStatsUpdate)
 #endif
 
-struct CEffectIconObject;
 struct CCombatInformation;
+struct CEffectIconObject;
 
 
 typedef int BOOL;

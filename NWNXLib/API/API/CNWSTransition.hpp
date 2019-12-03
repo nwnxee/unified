@@ -8,9 +8,9 @@
 NWN_API_PROLOGUE(CNWSTransition)
 #endif
 
-struct CNWSObject;
-struct CResGFF;
 struct CResStruct;
+struct CResGFF;
+struct CNWSObject;
 
 
 typedef int BOOL;

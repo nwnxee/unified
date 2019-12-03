@@ -2,9 +2,9 @@
 #include "nwn_api.hpp"
 
 #include "CResHelper.hpp"
+#include "Vector.hpp"
 #include "CResRef.hpp"
 #include "CResDWK.hpp"
-#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

@@ -9,8 +9,8 @@
 NWN_API_PROLOGUE(CExoResFile)
 #endif
 
-struct BIFFFILE_HEADER;
 struct BIFFFILE_VARRESENTRY_E1;
+struct BIFFFILE_HEADER;
 
 
 typedef int BOOL;

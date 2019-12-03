@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResRef.hpp"
 #include "CExoString.hpp"
 #include "CExoLinkedList.hpp"
+#include "CResRef.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

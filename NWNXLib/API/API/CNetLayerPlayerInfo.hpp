@@ -37,6 +37,8 @@ struct CNetLayerPlayerInfo
     BOOL m_bCDKeyAuthorized;
     BOOL m_bMstPasswordAuthorized;
     uint16_t m_nExpansionPacks;
+    CExoString m_sPSID;
+    uint8_t m_nPlatformId;
 
     CNetLayerPlayerInfo();
     void Initialize();

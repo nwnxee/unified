@@ -1,24 +1,25 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoString.hpp"
 #include "RelayModeChange.hpp"
-#include "CNetLayerPlayerInfo.hpp"
+#include "IntendedConnectionData.hpp"
 #include "CExoArrayList.hpp"
 #include "NWSyncAdvertisement.hpp"
-#include "CExoString.hpp"
-#include "IntendedConnectionData.hpp"
-#include "CExoLinkedList.hpp"
 #include "CNetLayerWindow.hpp"
+#include "CNetLayerPlayerInfo.hpp"
+#include "CExoLinkedList.hpp"
+#include "KXPacket.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNetLayerInternal)
 #endif
 
-struct CNetLayerSessionInfo;
 struct CBaseExoApp;
-struct CExoNet;
 struct CExoNetExtendableBuffer;
+struct CNetLayerSessionInfo;
+struct CExoNet;
 
 
 typedef int BOOL;
@@ -118,7 +119,7 @@ struct CNetLayerInternal
     BOOL SetServerAdminPassword(CExoString sServerAdminPassword);
     BOOL EndServerMode();
     BOOL GetServerConnected();
-    CExoString GetPlayerAddress(uint32_t nPlayerId);
+    CExoString GetPlayerAddress(uint32_t nPlayerId, BOOL bIncludePort = false);
     BOOL GetPlayerAddressRelayed(uint32_t nPlayerId);
     BOOL DisconnectPlayer(uint32_t nPlayerId, uint32_t nStrRef = 5838, BOOL bSendBNDP = true, BOOL bCDAuthFail = true, const CExoString & reason = "");
     void StartAddressTranslation(const CExoString & sInternetAddress);
@@ -157,7 +158,7 @@ struct CNetLayerInternal
     BOOL NonWindowMessages(uint32_t nConnectionId, uint8_t * pData, uint32_t nSize);
     void SendBNDMMessage(uint32_t nConnectionId = CExoNet : : CONNECTIONID_INVALIDID);
     void SendBNDPMessage(uint32_t nPlayerId, uint32_t nStrRef = 5838, const CExoString & reason = "");
-    BOOL SendBNKAnyMessage(uint32_t nConnectionId, uint8_t nStage, const uint8_t * pPacket);
+    BOOL SendBNKAnyMessage(uint32_t nConnectionId, KXPacket nPacket, const uint8_t * pPacket);
     BOOL HandleBNK1Message(uint32_t nConnectionId, uint8_t * pData, size_t nSize);
     BOOL HandleBNK2Message(uint32_t nConnectionId, uint8_t * pData, size_t nSize);
     BOOL HandleBNK3Message(uint32_t nConnectionId, uint8_t * pData, size_t nSize);

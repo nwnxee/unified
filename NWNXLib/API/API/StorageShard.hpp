@@ -2,19 +2,19 @@
 #include "nwn_api.hpp"
 
 #include "DestroyHelper.hpp"
-#include <memory>
 #include "Database.hpp"
-#include "Serial.hpp"
 #include "using.hpp"
 #include "Identifier.hpp"
+#include <memory>
+#include "Serial.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(StorageShard)
 #endif
 
-struct CExoString;
 struct Definition;
+struct CExoString;
 
 
 

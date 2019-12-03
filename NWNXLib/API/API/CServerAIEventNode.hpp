@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CServerAIEventNode)
 #endif
 
-struct CResGFF;
 struct CResStruct;
+struct CResGFF;
 
 
 typedef int BOOL;

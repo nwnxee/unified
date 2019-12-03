@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResRef.hpp"
 #include "RESID.hpp"
+#include "CResRef.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

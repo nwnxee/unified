@@ -1,23 +1,23 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoLocString.hpp"
 #include "CResRef.hpp"
 #include "CExoLinkedList.hpp"
 #include "CNWSDialogPlayer.hpp"
-#include "CExoLocString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSDialog)
 #endif
 
-struct CResGFF;
-struct CNWSDialogReply;
-struct CNWSObject;
-struct CNWSDialogLinkEntry;
-struct CNWSDialogSpeaker;
 struct CExoString;
+struct CNWSDialogLinkEntry;
+struct CNWSDialogReply;
+struct CNWSDialogSpeaker;
 struct CNWSDialogEntry;
+struct CResGFF;
+struct CNWSObject;
 
 
 typedef int BOOL;
