@@ -8,6 +8,7 @@ var group__dialog =
     [ "NWNX_Dialog_GetCurrentNodeIndex", "group__dialog.html#ga8c91234a6de5b3389fd6e9ee02eaf4e0", null ],
     [ "NWNX_Dialog_GetCurrentNodeText", "group__dialog.html#gada2778d904d1b04df9dce4847d090e9e", null ],
     [ "NWNX_Dialog_SetCurrentNodeText", "group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a", null ],
+    [ "NWNX_Dialog_End", "group__dialog.html#ga585de74ec3701f197d499d887248936c", null ],
     [ "NWNX_DIALOG_NODE_TYPE_INVALID", "group__dialog.html#gae8ad2a2e53334be13e9f7ee7801aa2a5", null ],
     [ "NWNX_DIALOG_NODE_TYPE_STARTING_NODE", "group__dialog.html#gacb964e127d344c642c7d75ba71b2b789", null ],
     [ "NWNX_DIALOG_NODE_TYPE_ENTRY_NODE", "group__dialog.html#gae28b55f82611017a8baf167bada8bb45", null ],

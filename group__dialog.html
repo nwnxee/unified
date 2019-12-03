@@ -135,6 +135,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga75123d6a2fd1bcac7e8534e1a88b4e5a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a">NWNX_Dialog_SetCurrentNodeText</a> (string text, int language=<a class="el" href="group__dialog.html#ga577d4d79535bad61994d4153fc3148d3">NWNX_DIALOG_LANGUAGE_ENGLISH</a>, int gender=GENDER_MALE)</td></tr>
 <tr class="memdesc:ga75123d6a2fd1bcac7e8534e1a88b4e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text of the current node for given language/gender.  <a href="group__dialog.html#ga75123d6a2fd1bcac7e8534e1a88b4e5a">More...</a><br /></td></tr>
 <tr class="separator:ga75123d6a2fd1bcac7e8534e1a88b4e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga585de74ec3701f197d499d887248936c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__dialog.html#ga585de74ec3701f197d499d887248936c">NWNX_Dialog_End</a> (object oObject)</td></tr>
+<tr class="memdesc:ga585de74ec3701f197d499d887248936c"><td class="mdescLeft">&#160;</td><td class="mdescRight">End a conversation oObject is involved in, it will fire the OnAbort script of the conversation.  <a href="group__dialog.html#ga585de74ec3701f197d499d887248936c">More...</a><br /></td></tr>
+<tr class="separator:ga585de74ec3701f197d499d887248936c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gac27125df80f467600b814596e30b329e"></a>
@@ -155,7 +158,7 @@ Functions</h2></td></tr>
 <p>Get the <a class="el" href="group__dialog.html#dialog_node_types">Node Type</a> of the current text node. </p>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="group__dialog.html#dialog_node_types">Node Type</a>. If called out of dialog, returns NWNX_DIALOG_NODE_TYPE_INVALID </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00076">76</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00081">81</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
 
 </div>
 </div>
@@ -177,7 +180,7 @@ Functions</h2></td></tr>
 <p>Get the <a class="el" href="group__dialog.html#dialog_script_types">Script Type</a> of the current text node. </p>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="group__dialog.html#dialog_script_types">Node Type</a>. If called out of dialog, returns NWNX_DIALOG_SCRIPT_TYPE_OTHER </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00084">84</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00089">89</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
 
 </div>
 </div>
@@ -200,7 +203,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>NWNX_DIALOG_NODE_TYPE_ENTRY_NODE and NWNX_DIALOG_NODE_TYPE_REPLY_NODE nodes have different namespaces, so they can share the same ID </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The absolute ID in the dialog. If called out of dialog, returns -1 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00092">92</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00097">97</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
 
 </div>
 </div>
@@ -223,7 +226,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>The index is zero based, and counts items not displayed due to a StartingConditional. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The index of the current node. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00100">100</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00105">105</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
 
 </div>
 </div>
@@ -262,7 +265,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00108">108</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00113">113</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
 
 </div>
 </div>
@@ -309,7 +312,36 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00118">118</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00123">123</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga585de74ec3701f197d499d887248936c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga585de74ec3701f197d499d887248936c">&#9670;&nbsp;</a></span>NWNX_Dialog_End()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Dialog_End </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>End a conversation oObject is involved in, it will fire the OnAbort script of the conversation. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Calling this from a conversation script will crash your server. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oObject</td><td>The object in a conversation </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__dialog_8nss_source.html#l00133">133</a> of file <a class="el" href="nwnx__dialog_8nss_source.html">nwnx_dialog.nss</a>.</p>
 
 </div>
 </div>
@@ -592,7 +624,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Nov 28 2019 18:00:25 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Dec 3 2019 09:15:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
