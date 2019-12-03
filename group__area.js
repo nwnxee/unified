@@ -29,6 +29,7 @@ var group__area =
     [ "NWNX_Area_GetTileAnimationLoop", "group__area.html#ga5bca6950ff8f896782ede7d59fc72d08", null ],
     [ "NWNX_Area_SetTileAnimationLoop", "group__area.html#ga28ba5d8f657c920be0ec69e2334fa74b", null ],
     [ "NWNX_Area_TestDirectLine", "group__area.html#gaadd7e8c0aa2f77536fa499d38aca568d", null ],
+    [ "NWNX_Area_GetMusicIsPlaying", "group__area.html#ga80b56688f11005ff2518228cf20d84bf", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
     [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
     [ "NWNX_AREA_PVP_SETTING_FULL_PVP", "group__area.html#ga8a6f21649b08da34ecc397f7fd621176", null ],
