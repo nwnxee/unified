@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+## [8193]
+
 NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.
 
 NOTE: There may be more breaking changes added here until the next official release happens.
@@ -307,5 +330,6 @@ The following plugins were added:
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
 
-[Unreleased]: https://github.com/nwnxee/unified/compare/build8186-lts...HEAD
+[Unreleased]: https://github.com/nwnxee/unified/compare/build8193...HEAD
+[8193]: https://github.com/nwnxee/unified/compare/build8186-lts...build8193
 [8186 LTS]: https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts
