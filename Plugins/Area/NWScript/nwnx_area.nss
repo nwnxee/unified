@@ -190,7 +190,6 @@ int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int
 /// @note Requires clients to re-enter the area for it to take effect
 void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
 
-
 /// @brief Test to see if there's a direct, walkable line between two points in the area.
 /// @param oArea The area object.
 /// @param fStartX, fStartY The starting points.
@@ -204,6 +203,12 @@ void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, in
 ///  * -2 if the line is blocked by a placeable.
 ///  * -3 if the line is blocked by a creature.
 int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float fEndX, float fEndY, float fPerSpace, float fHeight, int bIgnoreDoors=FALSE);
+
+/// @brief Get if the area music is playing.
+/// @param oArea The area object.
+/// @param bBattleMusic Set to TRUE to get if the battle music is playing.
+/// @return TRUE if music is playing
+int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE);
 
 /// @}
 
@@ -489,6 +494,17 @@ int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float f
     NWNX_PushArgumentFloat(NWNX_Area, sFunc, fStartX);
     NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
 
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE)
+{
+    string sFunc = "GetMusicIsPlaying";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, bBattleMusic);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Area, sFunc);

@@ -7,6 +7,7 @@
 #include "API/CNWSTransition.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSTile.hpp"
+#include "API/CNWSAmbientSound.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
@@ -74,6 +75,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(GetTileAnimationLoop);
     REGISTER(SetTileAnimationLoop);
     REGISTER(TestDirectLine);
+    REGISTER(GetMusicIsPlaying);
 
 #undef REGISTER
 }
@@ -747,6 +749,23 @@ ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
         int32_t bReturn = pArea->TestDirectLine(fStartX, fStartY, fEndX, fEndY, fPerSpace, fHeight, bIgnoreDoors);
         Services::Events::InsertArgument(stack, bReturn);
     }
+
+    return stack;
+}
+
+ArgumentStack Area::GetMusicIsPlaying(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = false;
+
+    if (auto *pArea = area(args))
+    {
+        const auto bBattleMusic = Services::Events::ExtractArgument<int32_t>(args) != 0;
+
+        retVal = bBattleMusic ? pArea->m_pAmbientSound->m_bBattlePlaying : pArea->m_pAmbientSound->m_bMusicPlaying;
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
 
     return stack;
 }
