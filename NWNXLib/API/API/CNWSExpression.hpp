@@ -9,9 +9,9 @@
 NWN_API_PROLOGUE(CNWSExpression)
 #endif
 
+struct CNWSExpressionList;
 struct CExoString;
 struct CNWSExpressionNode;
-struct CNWSExpressionList;
 
 
 typedef int BOOL;

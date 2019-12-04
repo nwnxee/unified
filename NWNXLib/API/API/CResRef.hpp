@@ -10,8 +10,8 @@ NWN_API_PROLOGUE(CResRef)
 struct CExoString;
 
 
-typedef uint8_t RESREF[16];
 typedef int BOOL;
+typedef uint8_t RESREF[16];
 
 
 struct CResRef

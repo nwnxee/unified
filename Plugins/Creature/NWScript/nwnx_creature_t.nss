@@ -189,5 +189,9 @@ void main()
     NWNX_Creature_SetFamiliarName(oCreature, "Fuzzles");
     NWNX_Tests_Report("NWNX_Creature", "SetFamiliarName", GetFamiliarName(oCreature) == "Fuzzles");
 
+    int bDisarmable = NWNX_Creature_GetDisarmable(oCreature);
+    NWNX_Creature_SetDisarmable(oCreature, !bDisarmable);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDisarmable", NWNX_Creature_GetDisarmable(oCreature) != bDisarmable);
+
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

@@ -10,8 +10,8 @@
 NWN_API_PROLOGUE(CExoEncapsulatedFile)
 #endif
 
-struct ENCAPSULATED_HEADER;
 struct ENCAPSULATED_RESLISTENTRY_E1;
+struct ENCAPSULATED_HEADER;
 
 
 typedef int BOOL;

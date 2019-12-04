@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoArrayList.hpp"
 #include "CExoString.hpp"
+#include "CExoArrayList.hpp"
 #include "CScriptCompilerIncludeFileStackEntry.hpp"
 
 
@@ -10,17 +10,17 @@
 NWN_API_PROLOGUE(CScriptCompiler)
 #endif
 
-struct CScriptCompilerVarStackEntry;
-struct CScriptCompilerStructureFieldEntry;
-struct CScriptCompilerIdListEntry;
-struct CScriptCompilerSymbolTableEntry;
-struct CScriptCompilerStackEntry;
-struct CScriptCompilerStructureEntry;
-struct CScriptCompilerKeyWordEntry;
 struct CScriptParseTreeNode;
 struct CExoStringList;
-struct CScriptParseTreeNodeBlock;
+struct CScriptCompilerSymbolTableEntry;
+struct CScriptCompilerStackEntry;
+struct CScriptCompilerStructureFieldEntry;
+struct CScriptCompilerStructureEntry;
 struct CScriptCompilerIdentifierHashTableEntry;
+struct CScriptCompilerVarStackEntry;
+struct CScriptCompilerIdListEntry;
+struct CScriptCompilerKeyWordEntry;
+struct CScriptParseTreeNodeBlock;
 
 
 typedef int BOOL;

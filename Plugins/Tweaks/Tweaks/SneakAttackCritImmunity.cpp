@@ -5,13 +5,13 @@
 #include "API/CNWSCombatRound.hpp"
 #include "API/CNWVisibilityNode.hpp"
 #include "API/CNWCCMessageData.hpp"
+#include "API/CNWRules.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
-#include "API/Version.hpp"
-
 #include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
+
+#include <cmath>
 
 
 namespace Tweaks {
@@ -19,23 +19,16 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveSneakAttack_hook;
-NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveDeathAttack_hook;
 SneakAttackCritImmunity::SneakAttackCritImmunity(ViewPtr<Services::HooksProxy> hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_>
-                                    (&CNWSCreature__ResolveSneakAttack_hook);
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_>
-                                    (&CNWSCreature__ResolveDeathAttack_hook);
-
-    pResolveSneakAttack_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_);
-    pResolveDeathAttack_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_);
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_>(&CNWSCreature__ResolveSneakAttack_hook);
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_>(&CNWSCreature__ResolveDeathAttack_hook);
 }
-
 
 void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
-    static const float SNEAK_ATTACK_DISTANCE = 100.0f;
+    static const float SNEAK_ATTACK_DISTANCE = std::pow(
+            Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", 10.0f), 2);
     if (!pTarget)
         return;
 
@@ -171,11 +164,11 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     }
 }
 
-
 // I refuse to take responsibility for the duplicated code, as NWN does it too!
 void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
-    static const float SNEAK_ATTACK_DISTANCE = 100.0f;
+    static const float SNEAK_ATTACK_DISTANCE = std::pow(
+            Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", 10.0f), 2);
     if (!pTarget)
         return;
 
@@ -285,6 +278,5 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
         }
     }
 }
-
 
 }

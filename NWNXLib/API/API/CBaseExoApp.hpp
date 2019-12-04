@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CExoArrayList.hpp"
-#include "CExoLocString.hpp"
 #include "CExoString.hpp"
+#include "CExoLocString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

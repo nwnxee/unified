@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CScriptLocation)
 #endif
 
-struct CResGFF;
 struct CResStruct;
+struct CResGFF;
 
 
 typedef int BOOL;

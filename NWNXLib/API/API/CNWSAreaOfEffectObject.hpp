@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWSObject.hpp"
 #include "CExoString.hpp"
 #include "Vector.hpp"
+#include "CNWSObject.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -11,8 +11,8 @@ NWN_API_PROLOGUE(CNWSAreaOfEffectObject)
 #endif
 
 struct CResGFF;
-struct CNWSArea;
 struct CResStruct;
+struct CNWSArea;
 
 
 typedef int BOOL;

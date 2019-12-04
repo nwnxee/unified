@@ -9,11 +9,11 @@
 NWN_API_PROLOGUE(CNetLayer)
 #endif
 
-struct CNetLayerPlayerInfo;
-struct CNetLayerSessionInfo;
 struct CBaseExoApp;
 struct NWSyncAdvertisement;
 struct CNetLayerInternal;
+struct CNetLayerPlayerInfo;
+struct CNetLayerSessionInfo;
 
 
 typedef int BOOL;
@@ -43,7 +43,7 @@ struct CNetLayer
     BOOL EndServerMode();
     BOOL GetServerConnected();
     CNetLayerPlayerInfo * GetPlayerInfo(uint32_t nPlayerId);
-    CExoString GetPlayerAddress(uint32_t nPlayerId);
+    CExoString GetPlayerAddress(uint32_t nPlayerId, BOOL bIncludePort = false);
     BOOL GetPlayerAddressRelayed(uint32_t nPlayerId);
     BOOL DisconnectPlayer(uint32_t nPlayerId, uint32_t nStrRef = 5838, BOOL bCDAuthFail = true, const CExoString & reason = "");
     uint32_t GetDisconnectStrref();

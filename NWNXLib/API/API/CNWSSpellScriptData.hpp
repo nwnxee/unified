@@ -9,8 +9,8 @@
 NWN_API_PROLOGUE(CNWSSpellScriptData)
 #endif
 
-struct CResGFF;
 struct CResStruct;
+struct CResGFF;
 
 
 typedef int BOOL;

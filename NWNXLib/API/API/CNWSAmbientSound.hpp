@@ -9,9 +9,9 @@
 NWN_API_PROLOGUE(CNWSAmbientSound)
 #endif
 
-struct CResGFF;
 struct CNWSMessage;
 struct CResStruct;
+struct CResGFF;
 
 
 typedef int BOOL;

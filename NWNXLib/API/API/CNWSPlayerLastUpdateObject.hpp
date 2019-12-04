@@ -11,11 +11,11 @@ NWN_API_PROLOGUE(CNWSPlayerLastUpdateObject)
 #endif
 
 struct CNWSStats_Spell;
-struct CEffectIconObject;
-struct CSpell_Add;
-struct CSpell_Delete;
-struct CNWVisibilityNode;
 struct CFeatUseListEntry;
+struct CSpell_Delete;
+struct CSpell_Add;
+struct CNWVisibilityNode;
+struct CEffectIconObject;
 
 
 typedef int BOOL;

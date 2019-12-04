@@ -115,6 +115,14 @@ Util::Util(const Plugin::CreateParams& params)
                         LOG_NOTICE("Running module start script: %s", *startScript);
                         Utils::ExecuteScript(*startScript, 0);
                     }
+
+                    if (auto startChunk= g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
+                    {
+                        LOG_NOTICE("Running module start script chunk: %s", *startChunk);
+
+                        bool bWrapIntoMain = startChunk->find("void main()") == std::string::npos;
+                        Globals::VirtualMachine()->RunScriptChunk(*startChunk, 0, true, bWrapIntoMain);
+                    }
                 }
             });
 }
@@ -230,7 +238,14 @@ ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
 ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    Services::Events::InsertArgument(stack, std::getenv(Services::Events::ExtractArgument<std::string>(args).c_str()));
+    std::string retVal;
+    const auto envVar = Services::Events::ExtractArgument<std::string>(args);
+
+    if (const char* value = std::getenv(envVar.c_str()))
+        retVal = std::string(value);
+
+    Services::Events::InsertArgument(stack, retVal);
+
     return stack;
 }
 
@@ -402,7 +417,7 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
 ArgumentStack Util::AddScript(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    int32_t retVal = false;
+    std::string retVal;
 
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
@@ -417,18 +432,19 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
         m_scriptCompiler->SetCompileDebugLevel(0);
         m_scriptCompiler->SetCompileSymbolicOutput(0);
         m_scriptCompiler->SetOptimizeBinaryCodeLength(true);
+        m_scriptCompiler->SetCompileConditionalOrMain(true);
         m_scriptCompiler->SetIdentifierSpecification("nwscript");
         m_scriptCompiler->SetOutputAlias("NWNX");
     }
 
     if (m_scriptCompiler->CompileScriptChunk(scriptData.c_str(), wrapIntoMain != 0) == 0)
     {
-        if (m_scriptCompiler->WriteFinalCodeToFile(scriptName.c_str()) == 0)
-        {
-            LOG_DEBUG("Adding Script '%s' with data: %s", scriptName, scriptData);
-            retVal = true;
-        }
+        auto writeFileResult = m_scriptCompiler->WriteFinalCodeToFile(scriptName.c_str());
+        if (writeFileResult != 0)
+            retVal = Globals::TlkTable()->GetSimpleString(abs(writeFileResult)).CStr();
     }
+    else
+        retVal = m_scriptCompiler->m_sCapturedError.CStr();
 
     Services::Events::InsertArgument(stack, retVal);
 

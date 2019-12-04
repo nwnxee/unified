@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+- Area: GetMusicIsPlaying()
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+## [8193]
+
 NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.
 
 NOTE: There may be more breaking changes added here until the next official release happens.
@@ -22,17 +45,22 @@ NOTE: There may be more breaking changes added here until the next official rele
   - `loglevel <plugin> [<loglevel>]`: Sets or gets the log level of the given plugin. Example: Set: `loglevel Events 7`, Get: `loglevel Events`
   - `logformat [timestamp|notimestamp] [plugin|noplugin] [source|nosource] [color|nocolor] [force|noforce]`: Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
 - Core: Added the following log related environment variables: `NWNX_CORE_LOG_TIMESTAMP`, `NWNX_CORE_LOG_PLUGIN`, `NWNX_CORE_LOG_SOURCE`, `NWNX_CORE_LOG_COLOR`, `NWNX_CORE_LOG_FORCE_COLOR`
+- Util: Added the environment variable `NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK` which lets you set a nwscript chunk that runs before the OnModuleLoad event
 
 ##### New Plugins
-N/A
+The following plugins were added:
+- **DotNET**: Implement your server scripts in C# (and other dotnet languages)
 
 ##### New NWScript Functions
 - Administration: {Get|Set}DebugValue()
+- Creature: {Get|Set}Disarmable()
 - Data: Array_Set()
+- Dialog: End()
 - Object: Export()
 - Player: PossessCreature()
 - Util: AddScript()
 - Util: GetNSSContents()
+- Weapon: GetWeaponFinesseSize()
 
 ### Changed
 - Administration: DeleteTURD() now returns TRUE on success
@@ -302,5 +330,6 @@ The following plugins were added:
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
 
-[Unreleased]: https://github.com/nwnxee/unified/compare/build8186-lts...HEAD
+[Unreleased]: https://github.com/nwnxee/unified/compare/build8193...HEAD
+[8193]: https://github.com/nwnxee/unified/compare/build8186-lts...build8193
 [8186 LTS]: https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts

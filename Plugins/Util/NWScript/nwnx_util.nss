@@ -126,8 +126,8 @@ object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
 /// @param sFileName The script filename without extension, 16 or less characters.
 /// @param sScriptData The script data to compile
 /// @param bWrapIntoMain Set to TRUE to wrap sScriptData into void main(){}.
-/// @return TRUE on success.
-int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE);
+/// @return "" on success, or the compilation error.
+string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE);
 
 /// @brief Gets the contents of a .nss script file as a string.
 /// @param sScriptName The name of the script to get the contents of.
@@ -282,7 +282,7 @@ object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1)
     return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
 }
 
-int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE)
+string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE)
 {
     string sFunc = "AddScript";
 
@@ -291,7 +291,7 @@ int NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain 
     NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
-    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
 
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)

@@ -8,9 +8,9 @@
 NWN_API_PROLOGUE(CNWClass)
 #endif
 
-struct CNWRules;
 struct CNWClass_Skill;
 struct CNWClass_Feat;
+struct CNWRules;
 
 
 typedef int BOOL;

@@ -1,40 +1,40 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoString.hpp"
+#include "AurList.hpp"
+#include "CExoLocString.hpp"
+#include "CBaseExoApp.hpp"
 #include "CExoArrayList.hpp"
 #include "CResRef.hpp"
-#include "AurList.hpp"
-#include "CBaseExoApp.hpp"
-#include "CExoString.hpp"
-#include "CExoLocString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CServerExoApp)
 #endif
 
-struct CNWSDoor;
-struct CNWSPlayer;
-struct CNWSArea;
-struct CNWSItem;
-struct CNWSClient;
-struct CNWSEncounter;
-struct CGameObject;
 struct CNWSStore;
+struct CNWSEncounter;
+struct CNWSPlaceable;
+struct CNWSWaypoint;
 struct CWorldTimer;
+struct CNWSSoundObject;
 struct CNetLayer;
-struct CNWSModule;
+struct CCampaignDB;
+struct CNWSTrigger;
 struct CServerExoAppInternal;
-struct CNWSCreature;
 struct CGameObjectArray;
 struct CNWSAreaOfEffectObject;
-struct CNWSWaypoint;
-struct CNWSPlaceable;
-struct CNWSTrigger;
+struct CNWSArea;
+struct CNWSItem;
 struct CConnectionLib;
-struct CCampaignDB;
+struct CNWSPlayer;
+struct CNWSModule;
+struct CNWSCreature;
+struct CNWSClient;
+struct CNWSDoor;
 struct CServerAIMaster;
-struct CNWSSoundObject;
+struct CGameObject;
 
 
 typedef int BOOL;

@@ -48,6 +48,7 @@ Weapon::Weapon(const Plugin::CreateParams& params)
     REGISTER(SetWeaponFocusFeat);
     REGISTER(SetEpicWeaponFocusFeat);
     REGISTER(SetWeaponFinesseSize);
+    REGISTER(GetWeaponFinesseSize);
     REGISTER(SetWeaponUnarmed);
     REGISTER(SetWeaponImprovedCriticalFeat);
     REGISTER(SetWeaponSpecializationFeat);
@@ -191,6 +192,24 @@ ArgumentStack Weapon::SetWeaponFinesseSize(ArgumentStack&& args)
     m_WeaponFinesseSizeMap.insert({w_bitem, size});
     auto baseItemName = Globals::Rules()->m_pBaseItemArray->GetBaseItem(w_bitem)->GetNameText();
     LOG_INFO("Weapon Finesse Size %d added for Base Item Type %d [%s]", size, w_bitem, baseItemName);
+
+    return stack;
+}
+
+ArgumentStack Weapon::GetWeaponFinesseSize(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+
+    const auto baseItem  = Services::Events::ExtractArgument<int32_t>(args);
+      ASSERT_OR_THROW(baseItem >= Constants::BaseItem::MIN);
+      ASSERT_OR_THROW(baseItem <= Constants::BaseItem::MAX);
+
+    auto search = m_WeaponFinesseSizeMap.find(baseItem);
+    if (search != m_WeaponFinesseSizeMap.end())
+        retVal = search->second;
+
+    Services::Events::InsertArgument(stack, retVal);
 
     return stack;
 }

@@ -8,10 +8,10 @@
 NWN_API_PROLOGUE(CNWSPortal)
 #endif
 
-struct CResGFF;
 struct CNWSMessage;
-struct CNWSArea;
 struct CResStruct;
+struct CResGFF;
+struct CNWSArea;
 
 
 typedef int BOOL;

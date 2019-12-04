@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CGameObjectArray)
 #endif
 
-struct CGameObject;
 struct CGameObjectArrayNode;
+struct CGameObject;
 
 
 typedef int BOOL;

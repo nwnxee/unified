@@ -11,8 +11,8 @@ NWN_API_PROLOGUE(CMessageSysAdmin)
 struct CMessageSysAdminInternal;
 
 
-typedef class CExoString CExoStringS;
 typedef int BOOL;
+typedef class CExoString CExoStringS;
 
 
 struct CMessageSysAdmin

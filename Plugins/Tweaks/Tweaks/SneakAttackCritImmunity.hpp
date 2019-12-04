@@ -15,8 +15,6 @@ public:
 private:
     static void CNWSCreature__ResolveSneakAttack_hook(CNWSCreature*, CNWSCreature*);
     static void CNWSCreature__ResolveDeathAttack_hook(CNWSCreature*, CNWSCreature*);
-    static NWNXLib::Hooking::FunctionHook* pResolveSneakAttack_hook;
-    static NWNXLib::Hooking::FunctionHook* pResolveDeathAttack_hook;
 };
 
 }

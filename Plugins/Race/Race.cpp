@@ -612,13 +612,13 @@ void Race::ResolveInitiativeHook(CNWSCreature *pCreature)
         auto diceRoll = Globals::Rules()->RollDice(1, 20);
         auto mod = pStats->GetDEXMod(0);
         if (pStats->HasFeat(Feat::EpicSuperiorInitiative))
-            mod += 8;
+            mod += Globals::Rules()->GetRulesetIntEntry("EPIC_SUPERIOR_INITIATIVE_BONUS", 8);
         else if (pStats->HasFeat(Feat::ImprovedInitiative))
-            mod += 4;
+            mod += Globals::Rules()->GetRulesetIntEntry("IMPROVED_INITIATIVE_BONUS", 4);
         if (pStats->HasFeat(Feat::Blooded))
-            mod += 2;
+            mod += Globals::Rules()->GetRulesetIntEntry("BLOODED_INITIATIVE_BONUS", 2);
         if (pStats->HasFeat(Feat::Thug))
-            mod += 2;
+            mod += Globals::Rules()->GetRulesetIntEntry("THUG_INITIATIVE_BONUS", 2);
 
         // Add racial bonus
         auto nRace = pCreature->m_pStats->m_nRace;
