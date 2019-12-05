@@ -28,7 +28,7 @@ void NWNX_WebHook_ResendWebHookHTTPS(string host, string path, string sMessage, 
 
 void NWNX_WebHook_SendWebHookHTTPS(string host, string path, string message, string username = "", int mrkdwn = 1)
 {
-    string sFunc = "SEND_WEBHOOK_HTTPS";
+    string sFunc = "SendWebHookHTTPS";
     NWNX_PushArgumentInt(NWNX_WebHook, sFunc, mrkdwn);
     NWNX_PushArgumentString(NWNX_WebHook, sFunc, username);
     NWNX_PushArgumentString(NWNX_WebHook, sFunc, message);

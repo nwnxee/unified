@@ -11,7 +11,7 @@ public:
     Ruby(const Plugin::CreateParams& params);
     virtual ~Ruby();
 
-    NWNXLib::Services::Events::ArgumentStack OnEvaluate(NWNXLib::Services::Events::ArgumentStack&& args);
+    NWNXLib::Services::Events::ArgumentStack Evaluate(NWNXLib::Services::Events::ArgumentStack&& args);
 
 private:
     bool m_evaluateMetrics;

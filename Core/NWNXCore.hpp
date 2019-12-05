@@ -29,6 +29,8 @@ public:
     static int32_t TagItemPropertyHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
     static int32_t PlaySoundHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
 
+    std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
+
 private: // Structures
     using PluginProxyServiceMap = std::map<
         NWNXLib::Services::Plugins::RegistrationToken,
@@ -39,7 +41,6 @@ private: // Structures
 
 private:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_createServerHook;
-    std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
     PluginProxyServiceMap m_pluginProxyServiceMap;
 

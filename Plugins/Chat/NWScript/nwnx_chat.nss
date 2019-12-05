@@ -80,7 +80,7 @@ float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int cha
 
 int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SELF, object target = OBJECT_INVALID)
 {
-    string sFunc = "SEND_MESSAGE";
+    string sFunc = "SendMessage";
 
     NWNX_PushArgumentObject(NWNX_Chat, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Chat, sFunc, sender);
@@ -92,7 +92,7 @@ int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SE
 
 void NWNX_Chat_RegisterChatScript(string script)
 {
-    string sFunc = "REGISTER_CHAT_SCRIPT";
+    string sFunc = "RegisterChatScript";
 
     NWNX_PushArgumentString(NWNX_Chat, sFunc, script);
     NWNX_CallFunction(NWNX_Chat, sFunc);
@@ -100,14 +100,14 @@ void NWNX_Chat_RegisterChatScript(string script)
 
 void NWNX_Chat_SkipMessage()
 {
-    string sFunc = "SKIP_MESSAGE";
+    string sFunc = "SkipMessage";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
 }
 
 int NWNX_Chat_GetChannel()
 {
-    string sFunc = "GET_CHANNEL";
+    string sFunc = "GetChannel";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Chat, sFunc);
@@ -115,7 +115,7 @@ int NWNX_Chat_GetChannel()
 
 string NWNX_Chat_GetMessage()
 {
-    string sFunc = "GET_MESSAGE";
+    string sFunc = "GetMessage";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
     return NWNX_GetReturnValueString(NWNX_Chat, sFunc);
@@ -123,7 +123,7 @@ string NWNX_Chat_GetMessage()
 
 object NWNX_Chat_GetSender()
 {
-    string sFunc = "GET_SENDER";
+    string sFunc = "GetSender";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
     return NWNX_GetReturnValueObject(NWNX_Chat, sFunc);
@@ -131,7 +131,7 @@ object NWNX_Chat_GetSender()
 
 object NWNX_Chat_GetTarget()
 {
-    string sFunc = "GET_TARGET";
+    string sFunc = "GetTarget";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
     return NWNX_GetReturnValueObject(NWNX_Chat, sFunc);
@@ -139,7 +139,7 @@ object NWNX_Chat_GetTarget()
 
 void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
 {
-    string sFunc = "SET_CHAT_HEARING_DISTANCE";
+    string sFunc = "SetChatHearingDistance";
 
     NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
     NWNX_PushArgumentObject(NWNX_Chat, sFunc, listener);
@@ -149,7 +149,7 @@ void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_I
 
 float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
 {
-    string sFunc = "GET_CHAT_HEARING_DISTANCE";
+    string sFunc = "GetChatHearingDistance";
 
     NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
     NWNX_PushArgumentObject(NWNX_Chat, sFunc, listener);
