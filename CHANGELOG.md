@@ -16,7 +16,7 @@ N/A
 - Area: GetMusicIsPlaying()
 
 ### Changed
-N/A
+- Core: NWNX will now provide you with better error messages when you try to call a NWScript NWNX function and you haven't updated your nwnx_*.nss files or the plugin is not loaded.
 
 ### Deprecated
 N/A

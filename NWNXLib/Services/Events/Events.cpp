@@ -2,15 +2,18 @@
 #include "API/CExoString.hpp"
 #include "API/CGameEffect.hpp"
 #include "Utils.hpp"
+#include "../../../Core/NWNXCore.hpp"
 
 #include <algorithm>
 #include <array>
 #include <cstring>
 #include <sstream>
 
-namespace NWNXLib {
+namespace Core {
+extern NWNXCore* g_core;
+}
 
-namespace Services {
+namespace NWNXLib::Services {
 
 Events::Events()
 {
@@ -49,7 +52,18 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     }
     else
     {
-        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName, eventName);
+        std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
+
+        if (!Core::g_core->m_services->m_plugins->FindPluginByName(pluginNameWithoutPrefix))
+        {
+            LOG_ERROR("Plugin '%s' is not loaded but NWScript '%s' tried to call function '%s'.",
+                    pluginName, Utils::GetCurrentScript(), eventName);
+        }
+        else
+        {
+            LOG_ERROR("Plugin '%s' does not have an event '%s' registered. (NWScript: '%s', are your nwnx_*.nss files up to date?)",
+                    pluginName, eventName, Utils::GetCurrentScript());
+        }
     }
 }
 
@@ -160,8 +174,6 @@ std::string Events::Argument::toString() const
     if (m_effect) return *m_effect ? std::string("EffectID:") + std::to_string((*m_effect)->m_nID) : std::string("nullptr effect");
 
     return std::string("");
-}
-
 }
 
 }
