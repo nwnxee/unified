@@ -3,11 +3,8 @@
 #include "Utils.hpp"
 #include <cstdio>
 
-namespace NWNXLib {
+namespace NWNXLib::Assert {
 
-namespace Assert {
-
-#if TAR_DEBUG
     #define ASSERT(condition) \
         do \
         { \
@@ -25,12 +22,6 @@ namespace Assert {
 
     #define ASSERT_FAIL_MSG(format, ...) \
         ::NWNXLib::Assert::Fail(nullptr, __FILE__, __LINE__, (format), ##__VA_ARGS__)
-#else
-    #define ASSERT(condition) (void)0
-    #define ASSERT_MSG(condition, format, ...) (void)0
-    #define ASSERT_FAIL() (void)0
-    #define ASSERT_FAIL_MSG(format, ...) (void)0
-#endif
 
     #define ASSERT_OR_THROW(condition) \
         do \
@@ -51,7 +42,5 @@ void Fail(const char* condition, const char* file, int line, const char* format,
 void SetCrashOnFailure(bool crash);
 
 #include "Assert.inl"
-
-}
 
 }
