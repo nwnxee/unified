@@ -25,7 +25,7 @@ void NWNX_Lua_RunEvent(string sEvent, object oObject, string sExtra="");
 
 void NWNX_Lua_EvalVoid(string sCode)
 {
-    string sFunc = "EVALVOID";
+    string sFunc = "EvalVoid";
 
     NWNX_PushArgumentString(NWNX_Lua, sFunc, sCode);
     NWNX_CallFunction(NWNX_Lua, sFunc);
@@ -33,7 +33,7 @@ void NWNX_Lua_EvalVoid(string sCode)
 
 string NWNX_Lua_Eval(string sCode)
 {
-    string sFunc = "EVAL";
+    string sFunc = "Eval";
 
     NWNX_PushArgumentString(NWNX_Lua, sFunc, sCode);
     NWNX_CallFunction(NWNX_Lua, sFunc);
@@ -42,7 +42,7 @@ string NWNX_Lua_Eval(string sCode)
 
 void NWNX_Lua_RunEvent(string sEvent, object oObject, string sExtra="")
 {
-    string sFunc = "EVENT";
+    string sFunc = "RunEvent";
 
     NWNX_PushArgumentString(NWNX_Lua, sFunc, sExtra);
     NWNX_PushArgumentObject(NWNX_Lua, sFunc, oObject);

@@ -38,7 +38,7 @@ namespace WebHook {
 WebHook::WebHook(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    GetServices()->m_events->RegisterEvent("SEND_WEBHOOK_HTTPS", &OnSendWebHookHTTPS);
+    GetServices()->m_events->RegisterEvent("SendWebHookHTTPS", &SendWebHookHTTPS);
 }
 
 WebHook::~WebHook()
@@ -57,7 +57,7 @@ std::string escape_json(const std::string &s) {
     return o.str();
 }
 
-ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
+ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
     auto host = Services::Events::ExtractArgument<std::string>(args);

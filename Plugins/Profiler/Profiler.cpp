@@ -179,7 +179,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
             });
     }
 
-    GetServices()->m_events->RegisterEvent("PUSH_PERF_SCOPE",
+    GetServices()->m_events->RegisterEvent("PushPerfScope",
         [this](Services::Events::ArgumentStack&& args)
         {
             std::string scopeName = Services::Events::ExtractArgument<std::string>(args);
@@ -199,7 +199,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
         });
 
 
-    GetServices()->m_events->RegisterEvent("POP_PERF_SCOPE",
+    GetServices()->m_events->RegisterEvent("PopPerfScope",
         [this](Services::Events::ArgumentStack&&)
         {
             PopPerfScope();

@@ -22,11 +22,11 @@ namespace Lua {
 	    Lua(const Plugin::CreateParams& params);
 	    virtual ~Lua();
 	    lua_State *m_luaInstance;
-	    Events::ArgumentStack OnEval(Events::ArgumentStack&& args);
-	    Events::ArgumentStack OnEvalVoid(Events::ArgumentStack&& args);
-	    Events::ArgumentStack OnEvent(Events::ArgumentStack&& args);
+	    Events::ArgumentStack Eval(Events::ArgumentStack&& args);
+	    Events::ArgumentStack EvalVoid(Events::ArgumentStack&& args);
+	    Events::ArgumentStack RunEvent(Events::ArgumentStack&& args);
 	    void OnToken(Types::ObjectID oid, char* token);
-	    bool OnScript(const char* scriptName, NWNXLib::API::Types::ObjectID objId, bool valid);	    
+	    bool OnScript(const char* scriptName, NWNXLib::API::Types::ObjectID objId, bool valid);
 	private:
 	    void SetObjectSelf(Types::ObjectID objSelf = Constants::OBJECT_INVALID);
 	    int m_tokenFunction;

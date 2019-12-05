@@ -13,7 +13,7 @@ class WebHook : public NWNXLib::Plugin
 public:
     WebHook(const Plugin::CreateParams& params);
     virtual ~WebHook();
-    static ArgumentStack OnSendWebHookHTTPS(NWNXLib::Services::Events::ArgumentStack&&);
+    static ArgumentStack SendWebHookHTTPS(NWNXLib::Services::Events::ArgumentStack&&);
 };
 
 }

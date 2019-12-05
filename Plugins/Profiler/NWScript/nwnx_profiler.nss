@@ -39,7 +39,7 @@ void NWNX_Profiler_PopPerfScope();
 
 void NWNX_Profiler_PushPerfScope(string name, string tag0_tag = "", string tag0_value = "")
 {
-    string sFunc = "PUSH_PERF_SCOPE";
+    string sFunc = "PushPerfScope";
 
     NWNX_PushArgumentString(NWNX_Profiler, sFunc, name);
 
@@ -54,7 +54,7 @@ void NWNX_Profiler_PushPerfScope(string name, string tag0_tag = "", string tag0_
 
 void NWNX_Profiler_PopPerfScope()
 {
-    string sFunc = "POP_PERF_SCOPE";
+    string sFunc = "PopPerfScope";
 
     NWNX_CallFunction(NWNX_Profiler, sFunc);
 }

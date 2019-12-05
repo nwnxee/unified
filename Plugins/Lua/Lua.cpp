@@ -143,9 +143,9 @@ namespace Lua {
         }
 
         // bind events
-        GetServices()->m_events->RegisterEvent("EVAL", std::bind(&Lua::OnEval, this, std::placeholders::_1));
-        GetServices()->m_events->RegisterEvent("EVALVOID", std::bind(&Lua::OnEvalVoid, this, std::placeholders::_1));
-        GetServices()->m_events->RegisterEvent("EVENT", std::bind(&Lua::OnEvent, this, std::placeholders::_1));
+        GetServices()->m_events->RegisterEvent("Eval", std::bind(&Lua::Eval, this, std::placeholders::_1));
+        GetServices()->m_events->RegisterEvent("EvalVoid", std::bind(&Lua::EvalVoid, this, std::placeholders::_1));
+        GetServices()->m_events->RegisterEvent("RunEvent", std::bind(&Lua::RunEvent, this, std::placeholders::_1));
 
         // RunScript hook
         if(!runScriptTable.empty())
@@ -203,7 +203,7 @@ namespace Lua {
     }
 
     // Eval Lua code and returns the result
-    Events::ArgumentStack Lua::OnEval(Events::ArgumentStack&& args)
+    Events::ArgumentStack Lua::Eval(Events::ArgumentStack&& args)
     {
         const auto code = Events::ExtractArgument<std::string>(args);
         Events::ArgumentStack stack;
@@ -232,7 +232,7 @@ namespace Lua {
     }
 
     // Eval Lua code without result
-    Events::ArgumentStack Lua::OnEvalVoid(Events::ArgumentStack&& args)
+    Events::ArgumentStack Lua::EvalVoid(Events::ArgumentStack&& args)
     {
         const auto code = Events::ExtractArgument<std::string>(args);
         Events::ArgumentStack stack;
@@ -277,7 +277,7 @@ namespace Lua {
     }
 
     // Call the event function
-    Events::ArgumentStack Lua::OnEvent(Events::ArgumentStack&& args)
+    Events::ArgumentStack Lua::RunEvent(Events::ArgumentStack&& args)
     {
         const auto eventStr = Events::ExtractArgument<std::string>(args);
         const auto objectId = Events::ExtractArgument<Types::ObjectID>(args);
