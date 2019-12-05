@@ -960,7 +960,7 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, obj
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
-    string sFunc = "OnSubscribeEvent";
+    string sFunc = "SubscribeEvent";
 
     NWNX_PushArgumentString(NWNX_Events, sFunc, script);
     NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
@@ -969,7 +969,7 @@ void NWNX_Events_SubscribeEvent(string evt, string script)
 
 void NWNX_Events_PushEventData(string tag, string data)
 {
-    string sFunc = "OnPushEventData";
+    string sFunc = "PushEventData";
 
     NWNX_PushArgumentString(NWNX_Events, sFunc, data);
     NWNX_PushArgumentString(NWNX_Events, sFunc, tag);
@@ -978,7 +978,7 @@ void NWNX_Events_PushEventData(string tag, string data)
 
 int NWNX_Events_SignalEvent(string evt, object target)
 {
-    string sFunc = "OnSignalEvent";
+    string sFunc = "SignalEvent";
 
     NWNX_PushArgumentObject(NWNX_Events, sFunc, target);
     NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
@@ -988,7 +988,7 @@ int NWNX_Events_SignalEvent(string evt, object target)
 
 string NWNX_Events_GetEventData(string tag)
 {
-    string sFunc = "OnGetEventData";
+    string sFunc = "GetEventData";
 
     NWNX_PushArgumentString(NWNX_Events, sFunc, tag);
     NWNX_CallFunction(NWNX_Events, sFunc);
@@ -997,14 +997,14 @@ string NWNX_Events_GetEventData(string tag)
 
 void NWNX_Events_SkipEvent()
 {
-    string sFunc = "OnSkipEvent";
+    string sFunc = "SkipEvent";
 
     NWNX_CallFunction(NWNX_Events, sFunc);
 }
 
 void NWNX_Events_SetEventResult(string data)
 {
-    string sFunc = "OnSetEventResult";
+    string sFunc = "SetEventResult";
 
     NWNX_PushArgumentString(NWNX_Events, sFunc, data);
     NWNX_CallFunction(NWNX_Events, sFunc);
@@ -1012,7 +1012,7 @@ void NWNX_Events_SetEventResult(string data)
 
 string NWNX_Events_GetCurrentEvent()
 {
-    string sFunc = "OnGetCurrentEvent";
+    string sFunc = "GetCurrentEvent";
 
     NWNX_CallFunction(NWNX_Events, sFunc);
     return NWNX_GetReturnValueString(NWNX_Events, sFunc);
@@ -1020,7 +1020,7 @@ string NWNX_Events_GetCurrentEvent()
 
 void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable)
 {
-    string sFunc = "OnToggleDispatchListMode";
+    string sFunc = "ToggleDispatchListMode";
 
     NWNX_PushArgumentInt(NWNX_Events, sFunc, bEnable);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
@@ -1030,7 +1030,7 @@ void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnab
 
 void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject)
 {
-    string sFunc = "OnAddObjectToDispatchList";
+    string sFunc = "AddObjectToDispatchList";
 
     NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
@@ -1040,7 +1040,7 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object o
 
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject)
 {
-    string sFunc = "OnRemoveObjectFromDispatchList";
+    string sFunc = "RemoveObjectFromDispatchList";
 
     NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);

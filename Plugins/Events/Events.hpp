@@ -75,16 +75,16 @@ private: // Structures
     using EventMapType = std::unordered_map<std::string, std::vector<std::string>>;
 
 private:
-    ArgumentStack OnSubscribeEvent(ArgumentStack&& args);
-    ArgumentStack OnPushEventData(ArgumentStack&& args);
-    ArgumentStack OnSignalEvent(ArgumentStack&& args);
-    ArgumentStack OnGetEventData(ArgumentStack&& args);
-    ArgumentStack OnSkipEvent(ArgumentStack&& args);
-    ArgumentStack OnSetEventResult(ArgumentStack&& args);
-    ArgumentStack OnGetCurrentEvent(ArgumentStack&& args);
-    ArgumentStack OnToggleDispatchListMode(ArgumentStack&& args);
-    ArgumentStack OnAddObjectToDispatchList(ArgumentStack&& args);
-    ArgumentStack OnRemoveObjectFromDispatchList(ArgumentStack&& args);
+    ArgumentStack SubscribeEvent(ArgumentStack&& args);
+    ArgumentStack PushEventData(ArgumentStack&& args);
+    ArgumentStack SignalEvent(ArgumentStack&& args);
+    ArgumentStack GetEventData(ArgumentStack&& args);
+    ArgumentStack SkipEvent(ArgumentStack&& args);
+    ArgumentStack SetEventResult(ArgumentStack&& args);
+    ArgumentStack GetCurrentEvent(ArgumentStack&& args);
+    ArgumentStack ToggleDispatchListMode(ArgumentStack&& args);
+    ArgumentStack AddObjectToDispatchList(ArgumentStack&& args);
+    ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args);
 
     // Pushes a brand new event data onto the event data stack, set up with the correct defaults.
     // Only does it if needed though, based on the current event depth!

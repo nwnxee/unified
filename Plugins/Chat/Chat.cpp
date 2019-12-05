@@ -52,22 +52,28 @@ namespace Chat {
 Chat::Chat(const Plugin::CreateParams& params)
     : Plugin(params), m_skipMessage(false), m_depth(0)
 {
+#define REGISTER(func) \
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
+
+    REGISTER(SendMessage);
+    REGISTER(RegisterChatScript);
+    REGISTER(SkipMessage);
+    REGISTER(GetChannel);
+    REGISTER(GetMessage);
+    REGISTER(GetSender);
+    REGISTER(GetTarget);
+    REGISTER(SetChatHearingDistance);
+    REGISTER(GetChatHearingDistance);
+
+#undef REGISTER
+
     m_chatScript = GetServices()->m_config->Get<std::string>("CHAT_SCRIPT", "");
     m_hearingDistances[Constants::ChatChannel::DmTalk]        = 20.0f;
     m_hearingDistances[Constants::ChatChannel::PlayerTalk]    = 20.0f;
     m_hearingDistances[Constants::ChatChannel::DmWhisper]     = 3.0f;
     m_hearingDistances[Constants::ChatChannel::PlayerWhisper] = 3.0f;
     m_customHearingDistances = false;
-
-    GetServices()->m_events->RegisterEvent("SEND_MESSAGE", std::bind(&Chat::OnSendMessage, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("REGISTER_CHAT_SCRIPT", std::bind(&Chat::OnRegisterChatScript, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("SKIP_MESSAGE", std::bind(&Chat::OnSkipMessage, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_CHANNEL", std::bind(&Chat::OnGetChannel, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_MESSAGE", std::bind(&Chat::OnGetMessage, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_SENDER", std::bind(&Chat::OnGetSender, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_TARGET", std::bind(&Chat::OnGetTarget, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("SET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnSetChatHearingDistance, this, std::placeholders::_1));
-    GetServices()->m_events->RegisterEvent("GET_CHAT_HEARING_DISTANCE", std::bind(&Chat::OnGetChatHearingDistance, this, std::placeholders::_1));
 
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
     m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_);
@@ -196,7 +202,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
     }
 }
 
-Events::ArgumentStack Chat::OnSendMessage(Events::ArgumentStack&& args)
+Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
 {
     const auto channel = static_cast<Constants::ChatChannel::TYPE>(Events::ExtractArgument<int32_t>(args));
     const auto message = Events::ExtractArgument<std::string>(args);
@@ -263,47 +269,47 @@ Events::ArgumentStack Chat::OnSendMessage(Events::ArgumentStack&& args)
     return stack;
 }
 
-Events::ArgumentStack Chat::OnRegisterChatScript(Events::ArgumentStack&& args)
+Events::ArgumentStack Chat::RegisterChatScript(Events::ArgumentStack&& args)
 {
     m_chatScript = Events::ExtractArgument<std::string>(args);
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Chat::OnSkipMessage(Events::ArgumentStack&&)
+Events::ArgumentStack Chat::SkipMessage(Events::ArgumentStack&&)
 {
     m_skipMessage = true;
     return Events::ArgumentStack();
 }
 
-Events::ArgumentStack Chat::OnGetChannel(Events::ArgumentStack&&)
+Events::ArgumentStack Chat::GetChannel(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, static_cast<int32_t>(m_activeChannel));
     return stack;
 }
 
-Events::ArgumentStack Chat::OnGetMessage(Events::ArgumentStack&&)
+Events::ArgumentStack Chat::GetMessage(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, m_activeMessage);
     return stack;
 }
 
-Events::ArgumentStack Chat::OnGetSender(Events::ArgumentStack&&)
+Events::ArgumentStack Chat::GetSender(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, m_activeSenderObjectId);
     return stack;
 }
 
-Events::ArgumentStack Chat::OnGetTarget(Events::ArgumentStack&&)
+Events::ArgumentStack Chat::GetTarget(Events::ArgumentStack&&)
 {
     Events::ArgumentStack stack;
     Events::InsertArgument(stack, m_activeTargetObjectId);
     return stack;
 }
 
-Events::ArgumentStack Chat::OnSetChatHearingDistance(Events::ArgumentStack&& args)
+Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
 
@@ -336,7 +342,7 @@ Events::ArgumentStack Chat::OnSetChatHearingDistance(Events::ArgumentStack&& arg
     return stack;
 }
 
-Events::ArgumentStack Chat::OnGetChatHearingDistance(Events::ArgumentStack&& args)
+Events::ArgumentStack Chat::GetChatHearingDistance(Events::ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
     const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);

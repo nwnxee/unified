@@ -72,16 +72,16 @@ Events::Events(const Plugin::CreateParams& params)
     GetServices()->m_events->RegisterEvent(#func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
-    REGISTER(OnSubscribeEvent);
-    REGISTER(OnPushEventData);
-    REGISTER(OnSignalEvent);
-    REGISTER(OnGetEventData);
-    REGISTER(OnSkipEvent);
-    REGISTER(OnSetEventResult);
-    REGISTER(OnGetCurrentEvent);
-    REGISTER(OnToggleDispatchListMode);
-    REGISTER(OnAddObjectToDispatchList);
-    REGISTER(OnRemoveObjectFromDispatchList);
+    REGISTER(SubscribeEvent);
+    REGISTER(PushEventData);
+    REGISTER(SignalEvent);
+    REGISTER(GetEventData);
+    REGISTER(SkipEvent);
+    REGISTER(SetEventResult);
+    REGISTER(GetCurrentEvent);
+    REGISTER(ToggleDispatchListMode);
+    REGISTER(AddObjectToDispatchList);
+    REGISTER(RemoveObjectFromDispatchList);
 
 #undef REGISTER
 
@@ -233,7 +233,7 @@ void Events::RunEventInit(const std::string& eventName)
     }
 }
 
-ArgumentStack Events::OnSubscribeEvent(ArgumentStack&& args)
+ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
 {
     const auto event = Services::Events::ExtractArgument<std::string>(args);
     auto script = Services::Events::ExtractArgument<std::string>(args);
@@ -252,7 +252,7 @@ ArgumentStack Events::OnSubscribeEvent(ArgumentStack&& args)
     return ArgumentStack();
 }
 
-ArgumentStack Events::OnPushEventData(ArgumentStack&& args)
+ArgumentStack Events::PushEventData(ArgumentStack&& args)
 {
     const auto tag = Services::Events::ExtractArgument<std::string>(args);
     const auto data = Services::Events::ExtractArgument<std::string>(args);
@@ -260,7 +260,7 @@ ArgumentStack Events::OnPushEventData(ArgumentStack&& args)
     return ArgumentStack();
 }
 
-ArgumentStack Events::OnSignalEvent(ArgumentStack&& args)
+ArgumentStack Events::SignalEvent(ArgumentStack&& args)
 {
     const auto event = Services::Events::ExtractArgument<std::string>(args);
     const auto object = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -270,7 +270,7 @@ ArgumentStack Events::OnSignalEvent(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Events::OnGetEventData(ArgumentStack&& args)
+ArgumentStack Events::GetEventData(ArgumentStack&& args)
 {
     std::string data = GetEventData(Services::Events::ExtractArgument<std::string>(args));
     ArgumentStack stack;
@@ -278,7 +278,7 @@ ArgumentStack Events::OnGetEventData(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Events::OnSkipEvent(ArgumentStack&&)
+ArgumentStack Events::SkipEvent(ArgumentStack&&)
 {
     if (m_eventDepth == 0 || m_eventData.empty())
     {
@@ -291,7 +291,7 @@ ArgumentStack Events::OnSkipEvent(ArgumentStack&&)
     return ArgumentStack();
 }
 
-ArgumentStack Events::OnSetEventResult(ArgumentStack&& args)
+ArgumentStack Events::SetEventResult(ArgumentStack&& args)
 {
     if (m_eventDepth == 0 || m_eventData.empty())
     {
@@ -306,7 +306,7 @@ ArgumentStack Events::OnSetEventResult(ArgumentStack&& args)
     return ArgumentStack();
 }
 
-ArgumentStack Events::OnGetCurrentEvent(ArgumentStack&&)
+ArgumentStack Events::GetCurrentEvent(ArgumentStack&&)
 {
     std::string retVal;
 
@@ -324,7 +324,7 @@ ArgumentStack Events::OnGetCurrentEvent(ArgumentStack&&)
     return stack;
 }
 
-ArgumentStack Events::OnToggleDispatchListMode(ArgumentStack&& args)
+ArgumentStack Events::ToggleDispatchListMode(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -342,7 +342,7 @@ ArgumentStack Events::OnToggleDispatchListMode(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Events::OnAddObjectToDispatchList(ArgumentStack&& args)
+ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -362,7 +362,7 @@ ArgumentStack Events::OnAddObjectToDispatchList(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Events::OnRemoveObjectFromDispatchList(ArgumentStack&& args)
+ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
 {
     ArgumentStack stack;
 

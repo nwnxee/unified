@@ -11,9 +11,9 @@ string NWNX_Ruby_Evaluate (string sCode);
 /// @brief Evaluates some ruby code.
 /// @param sCode The code to evaluate.
 /// @return The output of the call.
-string NWNX_Ruby_Evaluate (string sCode) 
+string NWNX_Ruby_Evaluate(string sCode)
 {
-    string sFunc = "EVALUATE";
+    string sFunc = "Evaluate";
 
     NWNX_PushArgumentString (NWNX_Ruby, sFunc, sCode);
     NWNX_CallFunction (NWNX_Ruby, sFunc);
