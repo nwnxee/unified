@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('nwnx__lua_8nss_source.html','');});
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="group__lua.html#ga1df329114c0aa0ee95ee8fb43c3de63b">   26</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__lua.html#ga1df329114c0aa0ee95ee8fb43c3de63b">NWNX_Lua_EvalVoid</a>(<span class="keywordtype">string</span> sCode)</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;EVALVOID&quot;</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;EvalVoid&quot;</span>;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Lua, sFunc, sCode);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Lua, sFunc);</div>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('nwnx__lua_8nss_source.html','');});
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="group__lua.html#ga18d5da03291e7b263d9e4c40f4093995">   34</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__lua.html#ga18d5da03291e7b263d9e4c40f4093995">NWNX_Lua_Eval</a>(<span class="keywordtype">string</span> sCode)</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;EVAL&quot;</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;Eval&quot;</span>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Lua, sFunc, sCode);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Lua, sFunc);</div>
@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('nwnx__lua_8nss_source.html','');});
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="group__lua.html#ga5a16247c28d75f20ccdefbd517cf557b">   43</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__lua.html#ga5a16247c28d75f20ccdefbd517cf557b">NWNX_Lua_RunEvent</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">object</span> oObject, <span class="keywordtype">string</span> sExtra=<span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;EVENT&quot;</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;RunEvent&quot;</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Lua, sFunc, sExtra);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Lua, sFunc, oObject);</div>
@@ -155,7 +155,7 @@ $(document).ready(function(){initNavTree('nwnx__lua_8nss_source.html','');});
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_406089e986db710290248677fca3459a.html">Lua</a></li><li class="navelem"><a class="el" href="dir_b2542bab2d93a686f8c4b43e29728f62.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__lua_8nss.html">nwnx_lua.nss</a></li>
 				<li class="footer">
-					Generated on Thu Dec 5 2019 15:35:04 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Dec 5 2019 15:41:38 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
