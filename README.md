@@ -1,4 +1,4 @@
-# NWNX:EE (build 8193 - v79)
+# NWNX:EE (build 8193.1 - v79)
 
 @mainpage
 @tableofcontents
