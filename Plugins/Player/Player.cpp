@@ -102,6 +102,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(SetPersistentLocation);
     REGISTER(UpdateItemName);
     REGISTER(PossessCreature);
+    REGISTER(GetPlatformId);
 
 #undef REGISTER
 
@@ -1327,6 +1328,20 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
         }
     }
     Services::Events::InsertArgument(stack, 1);
+    return stack;
+}
+
+ArgumentStack Player::GetPlatformId(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t id = 0;
+    if (auto *pPlayer = player(args))
+    {
+        auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+        if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
+            id = pPlayerInfo->m_nPlatformId;
+    }
+    Services::Events::InsertArgument(stack, id);
     return stack;
 }
 
