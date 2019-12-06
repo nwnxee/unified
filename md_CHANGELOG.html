@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html','');});
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 &lt;a href="https://github.com/nwnxee/unified/compare/build8193...HEAD"&gt;Unreleased&lt;/a&gt;</h1>
+<p>Note: Some nwscript files have changed. You will need to update them and recompile all scripts.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Added</h2>
 <p>N/A</p>
@@ -123,6 +124,7 @@ New NWScript Functions</h4>
 Changed</h2>
 <ul>
 <li>Core: NWNX will now provide you with better error messages when you try to call a NWScript NWNX function and you haven't updated your nwnx_*.nss files or the plugin is not loaded.</li>
+<li>We no longer have separate build types (except for symbols and compiler optimizations). All builds now include error messaging and handling.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Deprecated</h2>
@@ -132,7 +134,9 @@ Removed</h2>
 <p>N/A</p>
 <h2><a class="anchor" id="autotoc_md8"></a>
 Fixed</h2>
-<p>N/A</p>
+<ul>
+<li>Fixed an issue where the <code>cwd</code> value was garbled, causing plugin load to fail unless <code>NWNX_CORE_LOAD_PATH</code> was set.</li>
+</ul>
 <h1><a class="anchor" id="autotoc_md9"></a>
 &lt;a href="https://github.com/nwnxee/unified/compare/build8186-lts...build8193"&gt;8193&lt;/a&gt;</h1>
 <p>NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.</p>
@@ -466,7 +470,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Dec 5 2019 15:45:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Dec 6 2019 07:50:43 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
