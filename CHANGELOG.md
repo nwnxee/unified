@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+Note: Some nwscript files have changed. You will need to update them and recompile all scripts.
+
 ### Added
 N/A
 
@@ -17,6 +19,7 @@ N/A
 
 ### Changed
 - Core: NWNX will now provide you with better error messages when you try to call a NWScript NWNX function and you haven't updated your nwnx_*.nss files or the plugin is not loaded.
+- We no longer have separate build types (except for symbols and compiler optimizations). All builds now include error messaging and handling.
 
 ### Deprecated
 N/A
@@ -25,7 +28,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Fixed an issue where the `cwd` value was garbled, causing plugin load to fail unless `NWNX_CORE_LOAD_PATH` was set.
 
 ## [8193]
 
