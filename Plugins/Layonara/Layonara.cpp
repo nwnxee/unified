@@ -966,9 +966,9 @@ ArgumentStack Layonara::CreateVFXAtTransitionCentroid(ArgumentStack &&)
     return stack;
 }
 
-void Layonara::SetPositionHook(Services::Hooks::CallType type, CNWSObject* thisPtr, Vector vPos, int32_t)
+void Layonara::SetPositionHook(bool before, CNWSObject* thisPtr, Vector vPos, int32_t)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+    if (!before)
         return;
 
     if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)

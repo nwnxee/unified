@@ -22,7 +22,7 @@ public:
 private:
     static void SetArrowsEffect(CNWSCreature *pCreature, bool bOff=false);
     static CNWSItem *GetItemInSlotHook(CNWSInventory*, uint32_t);
-    static void SetPositionHook(NWNXLib::Services::Hooks::CallType, CNWSObject*, Vector, int32_t);
+    static void SetPositionHook(bool, CNWSObject*, Vector, int32_t);
     NWNXLib::Hooking::FunctionHook* m_GetItemInSlotHook;
 
     enum Gems
