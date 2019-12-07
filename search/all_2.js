@@ -40,7 +40,8 @@ var searchData=
   ['config_5fresetstat_65',['CONFIG_RESETSTAT',['../nwnx__redis__short_8nss.html#a9efd81c221ab6e0d8bb497987bcdef7c',1,'nwnx_redis_short.nss']]],
   ['config_5frewrite_66',['CONFIG_REWRITE',['../nwnx__redis__short_8nss.html#aeecb99ea593e92fd539d68343df04240',1,'nwnx_redis_short.nss']]],
   ['config_5fset_67',['CONFIG_SET',['../nwnx__redis__short_8nss.html#a1af006c9794f2b37aedafc9143635fca',1,'nwnx_redis_short.nss']]],
-  ['creature_68',['Creature',['../group__creature.html',1,'']]],
-  ['changelog_69',['Changelog',['../md_CHANGELOG.html',1,'']]],
-  ['core_20functionality_70',['Core Functionality',['../group__nwnx.html',1,'']]]
+  ['contributing_2emd_68',['CONTRIBUTING.md',['../CONTRIBUTING_8md.html',1,'']]],
+  ['creature_69',['Creature',['../group__creature.html',1,'']]],
+  ['changelog_70',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['core_20functionality_71',['Core Functionality',['../group__nwnx.html',1,'']]]
 ];
