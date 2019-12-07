@@ -2,7 +2,6 @@
 
 #include "Hooking/FunctionHook.hpp"
 #include "Platform/ASLR.hpp"
-#include "Platform/Hooking.hpp"
 #include "Services/Services.hpp"
 #include "ViewPtr.hpp"
 
@@ -51,21 +50,11 @@ public:
     Hooks();
     ~Hooks();
 
-    template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-    typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value,
-    RegistrationToken>::type RequestSharedHook(void(*funcPtr)(bool, Params ...));
-
-    template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-    typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value,
-    RegistrationToken>::type RequestExclusiveHook(Ret(*funcPtr)(Params ...));
+    template <uintptr_t Address, typename Ret, typename ... Params>
+    RegistrationToken RequestSharedHook(void(*funcPtr)(bool, Params ...));
 
     template <uintptr_t Address, typename Ret, typename ... Params>
-    typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value,
-    RegistrationToken>::type RequestSharedHook(void(*funcPtr)(bool, Params ...));
-
-    template <uintptr_t Address, typename Ret, typename ... Params>
-    typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value,
-    RegistrationToken>::type RequestExclusiveHook(Ret(*funcPtr)(Params ...));
+    RegistrationToken RequestExclusiveHook(Ret(*funcPtr)(Params ...));
 
     void ClearHook(RegistrationToken&& token);
 
@@ -82,21 +71,11 @@ public:
     HooksProxy(Hooks& hooks);
     ~HooksProxy();
 
-    template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-    typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value>::type
-    /*void*/ RequestSharedHook(void(*funcPtr)(bool, Params ...));
-
-    template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-    typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value>::type
-    /*void*/ RequestExclusiveHook(Ret(*funcPtr)(Params ...));
+    template <uintptr_t Address, typename Ret, typename ... Params>
+    void RequestSharedHook(void(*funcPtr)(bool, Params ...));
 
     template <uintptr_t Address, typename Ret, typename ... Params>
-    typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value>::type
-    /*void*/ RequestSharedHook(void(*funcPtr)(bool, Params ...));
-
-    template <uintptr_t Address, typename Ret, typename ... Params>
-    typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value>::type
-    /*void*/ RequestExclusiveHook(Ret(*funcPtr)(Params ...));
+    void RequestExclusiveHook(Ret(*funcPtr)(Params ...));
 
     void ClearHook(const uintptr_t address);
     ViewPtr<Hooking::FunctionHook> FindHookByAddress(const uintptr_t address);

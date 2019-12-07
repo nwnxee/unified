@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Hooking/CallingConvention.hpp"
 #include <array>
 #include <cstdint>
 
@@ -18,19 +17,18 @@ public:
 
     ~FunctionHook();
 
-    template <typename Convention, typename Ret, typename ... Params>
-    typename std::enable_if<std::is_base_of<CallingConvention::CallingConvention, Convention>::value,
-    Ret>::type CallOriginal(Params ... args);
-
     template <typename Ret, typename ... Params>
-    typename std::enable_if<!std::is_base_of<CallingConvention::CallingConvention, Ret>::value,
-    Ret>::type CallOriginal(Params ... args);
+    Ret CallOriginal(Params ... args)
+    {
+        using FuncPtrType = Ret(*)(Params ...);
+        FuncPtrType funcPtr = reinterpret_cast<FuncPtrType>(m_trampoline);
+        return static_cast<Ret>(funcPtr(args ...));
+    }
 
 private:
     funchook_t *m_funchook;
     void *    m_trampoline;
 };
 
-#include "FunctionHook.inl"
 
 }
