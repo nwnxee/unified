@@ -1,32 +1,40 @@
-58a59,75
+69a70,94
 > copycrashlog() {
->   inotifywait -mq -e moved_to -e create "$1" --format "%f" | while read f
+>   inotifywait -mq -e moved_to -e create "$HOMEPATH" --format "%f" | while read f
 >   do
->     # copy the cryptographic_secret just to make sure
->     if [[ $f = cryptographic_secret ]]; then
->       backup_cryptographic_secret
->     fi
 >     # check if the file is a crash log file
 >     if [[ $f = nwserver-crash*.log ]]; then
 >       echo "The server crashed, trying to save crash data ($f) into your mounted server home."
->       cp -a $1/$f $2/
+>       cp -a $HOMEPATH/$f $ROHOMEPATH/
 >     fi
 >   done
 > }
 > 
-> copycrashlog $HOMEPATH $ROHOMEPATH &
+> copycrashlog &
 > 
-60c77,79
+> copyruntimeconfiguration() {
+>   inotifywait -mq -e close_write "$HOMEPATH" --format "%f" | while read f
+>   do
+>     # backup the cryptographic_secret or settings.tml
+>     if [[ $f = cryptographic_secret ]] || [[ $f = settings.tml ]]; then
+>       backup_runtime_configuration
+>     fi
+>   done
+> }
+> 
+> copyruntimeconfiguration &
+> 
+71c96,98
 < LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
 ---
 > export LD_PRELOAD=$NWN_LD_PRELOAD
 > export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
 > exec ./nwserver-linux \
-85,96d103
+96,107d122
 < RET=$?
 < set -e
 < 
-< backup_cryptographic_secret
+< backup_runtime_configuration
 < 
 < # If this thing crashed, copy the log to the public home so the user
 < # can deliberate over it.
