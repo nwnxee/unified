@@ -87,7 +87,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
     {
         if (script != "")
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script);
+            g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script, true);
             LOG_INFO("Set object 0x%08x %s Event Script to %s", oidOwner, event, script);
         }
         else

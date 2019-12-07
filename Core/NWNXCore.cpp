@@ -178,6 +178,10 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSAreaD0Ev, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer8DropTURDEv, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObject15SaveObjectStateEP7CResGFFP10CResStruct, void>(&Services::PerObjectStorage::CNWSObject__SaveObjectState_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObject15LoadObjectStateEP7CResGFFP10CResStruct, void>(&Services::PerObjectStorage::CNWSObject__LoadObjectState_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN12CNWSCreature12SaveCreatureEP7CResGFFP10CResStructiiii, int32_t>(&Services::PerObjectStorage::CNWSCreature__SaveCreature_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN12CNWSCreature12LoadCreatureEP7CResGFFP10CResStructiiii, int32_t>(&Services::PerObjectStorage::CNWSCreature__LoadCreature_hook);
 
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii, uint32_t>(
             +[](Services::Hooks::CallType type, CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)

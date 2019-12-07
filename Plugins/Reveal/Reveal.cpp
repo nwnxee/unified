@@ -121,8 +121,8 @@ ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
 
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
 
-    pPOS->Set(stealtherID, revealKey + "PARTY", revealToPartyState); //store party reveal state
-    pPOS->Set(stealtherID, detectionKey + "PARTY", detectionVector); //store the means through which detection happens
+    pPOS->Set(stealtherID, revealKey + "PARTY", revealToPartyState, true); //store party reveal state
+    pPOS->Set(stealtherID, detectionKey + "PARTY", detectionVector, true); //store the means through which detection happens
     return stack;
 }
 

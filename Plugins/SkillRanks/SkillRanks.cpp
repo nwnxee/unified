@@ -945,7 +945,7 @@ ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
     ASSERT_OR_THROW(modifier < 127);
 
     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier);
+    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier, true);
 
     return stack;
 }

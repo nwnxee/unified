@@ -194,7 +194,7 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state);
+            g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state, true);
         }
     }
 

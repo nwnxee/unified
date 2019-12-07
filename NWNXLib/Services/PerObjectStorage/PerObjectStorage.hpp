@@ -19,9 +19,9 @@ class PerObjectStorage
 {
 public:
     using CleanupFunc = void (*)(void*);
-    void Set(CGameObject *pGameObject, const std::string& key, int value);
-    void Set(CGameObject *pGameObject, const std::string& key, float value);
-    void Set(CGameObject *pGameObject, const std::string& key, std::string value);
+    void Set(CGameObject *pGameObject, const std::string& key, int value, bool persist = false);
+    void Set(CGameObject *pGameObject, const std::string& key, float value, bool persist = false);
+    void Set(CGameObject *pGameObject, const std::string& key, std::string value, bool persist = false);
     void Set(CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
@@ -34,18 +34,24 @@ public:
     PerObjectStorage();
     ~PerObjectStorage();
 
+    static inline char GffFieldName[] = "NWNX_POS";
+
     static void CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, CNWSObject* thisPtr);
     static void CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, CNWSArea* thisPtr);
     static void CNWSPlayer__EatTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD);
     static void CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr);
+    static void CNWSObject__SaveObjectState_hook(Services::Hooks::CallType type, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
+    static void CNWSObject__LoadObjectState_hook(Services::Hooks::CallType type, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
+    static void CNWSCreature__LoadCreature_hook(Services::Hooks::CallType type, CNWSCreature* pThis, CResGFF * pRes, CResStruct * cCreatureStruct, BOOL bIsSaveGame, BOOL bIsAssociate, BOOL bPreserveItemIds, BOOL bCopyObject);
+    static void CNWSCreature__SaveCreature_hook(Services::Hooks::CallType type, CNWSCreature* pThis, CResGFF * pRes, CResStruct * pStruct, BOOL bStoreAssociateList, BOOL bUseDesiredAreaInfo, BOOL bExportingChar, BOOL bSaveOIDs);
 private:
     class ObjectStorage
     {
         // TODO maybe pack it up into a a single map?
     public:
-        using IntMap     = std::unordered_map<std::string, int>;
-        using FloatMap   = std::unordered_map<std::string, float>;
-        using StringMap  = std::unordered_map<std::string, std::string>;
+        using IntMap     = std::unordered_map<std::string, std::pair<int, bool>>;
+        using FloatMap   = std::unordered_map<std::string, std::pair<float, bool>>;
+        using StringMap  = std::unordered_map<std::string, std::pair<std::string, bool>>;
         using PointerMap = std::unordered_map<std::string, std::pair<void*, CleanupFunc>>;
 
         IntMap&     GetIntMap();
@@ -58,6 +64,8 @@ private:
 
         void CloneFrom(ObjectStorage *other);
         std::string DumpToString();
+        std::string Serialize(bool persistonly = true);
+        void Deserialize(const char *serialized, bool persist = true);
 
         API::Types::ObjectID        m_oidOwner;
         bool                        m_bCloned;
@@ -78,9 +86,9 @@ public:
     PerObjectStorageProxy(PerObjectStorage& perObjectStorage, std::string pluginName);
     ~PerObjectStorageProxy();
 
-    void Set(CGameObject *pGameObject, const std::string& key, int value);
-    void Set(CGameObject *pGameObject, const std::string& key, float value);
-    void Set(CGameObject *pGameObject, const std::string& key, std::string value);
+    void Set(CGameObject *pGameObject, const std::string& key, int value, bool persist = false);
+    void Set(CGameObject *pGameObject, const std::string& key, float value, bool persist = false);
+    void Set(CGameObject *pGameObject, const std::string& key, std::string value, bool persist = false);
     void Set(CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr);
 
     // Gets the value, but doesn't remove it
@@ -96,17 +104,17 @@ public:
     //
     // Interfaces using objectID instead of CGameObject pointer
     //
-    void Set(API::Types::ObjectID object, const std::string& key, int value)
+    void Set(API::Types::ObjectID object, const std::string& key, int value, bool persist = false)
     {
-        return Set(Utils::GetGameObject(object), key, value);
+        return Set(Utils::GetGameObject(object), key, value, persist);
     }
-    void Set(API::Types::ObjectID object, const std::string& key, float value)
+    void Set(API::Types::ObjectID object, const std::string& key, float value, bool persist = false)
     {
-        return Set(Utils::GetGameObject(object), key, value);
+        return Set(Utils::GetGameObject(object), key, value, persist);
     }
-    void Set(API::Types::ObjectID object, const std::string& key, std::string value)
+    void Set(API::Types::ObjectID object, const std::string& key, std::string value, bool persist = false)
     {
-        return Set(Utils::GetGameObject(object), key, value);
+        return Set(Utils::GetGameObject(object), key, value, persist);
     }
     void Set(API::Types::ObjectID object, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
     {
