@@ -33,34 +33,26 @@ Hooking::FunctionHook* HooksImpl::HookLandingHolderDataShared<Address>::s_hook;
 template <uintptr_t Address>
 std::vector<uintptr_t>* HooksImpl::HookLandingHolderDataShared<Address>::s_subs;
 
-template <>
-struct HooksImpl::HookLandingHolderShared<Hooking::CallingConvention::SystemV>
+template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
+Ret HooksImpl::HookLandingHolderShared::HookLanding(FirstParam arg1, Params ... args)
 {
-    template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
-    static Ret HookLanding(FirstParam arg1, Params ... args)
-    {
-        std::vector<uintptr_t>* subs = HooksImpl::template HookLandingHolderDataShared<Address>::s_subs;
-        Hooking::FunctionHook* hook = HooksImpl::template HookLandingHolderDataShared<Address>::s_hook;
-        ScopedCallbackDispatcher<FirstParam, Params ...> scbd(subs, arg1, args ...);
-        return hook->CallOriginal<Hooking::CallingConvention::SystemV, Ret>(arg1, args ...);
-    }
-};
+    std::vector<uintptr_t>* subs = HooksImpl::template HookLandingHolderDataShared<Address>::s_subs;
+    Hooking::FunctionHook* hook = HooksImpl::template HookLandingHolderDataShared<Address>::s_hook;
+    ScopedCallbackDispatcher<FirstParam, Params ...> scbd(subs, arg1, args ...);
+    return hook->CallOriginal<Ret>(arg1, args ...);
+}
 
 
 template <uintptr_t Address>
 uintptr_t HooksImpl::HookLandingHolderDataExclusive<Address>::s_addr;
 
-template <>
-struct HooksImpl::HookLandingHolderExclusive<Hooking::CallingConvention::SystemV>
+template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
+Ret HooksImpl::HookLandingHolderExclusive::HookLanding(FirstParam arg1, Params ... args)
 {
-    template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
-    static Ret HookLanding(FirstParam arg1, Params ... args)
-    {
-        using FuncPtrType = Ret(*)(FirstParam, Params ...);
-        FuncPtrType callback = reinterpret_cast<FuncPtrType>(HooksImpl::template HookLandingHolderDataExclusive<Address>::s_addr);
-        return callback(arg1, args ...);
-    }
-};
+    using FuncPtrType = Ret(*)(FirstParam, Params ...);
+    FuncPtrType callback = reinterpret_cast<FuncPtrType>(HooksImpl::template HookLandingHolderDataExclusive<Address>::s_addr);
+    return callback(arg1, args ...);
+}
 
 template <typename ... Params>
 void HooksImpl::DispatchCallbacks(bool before,

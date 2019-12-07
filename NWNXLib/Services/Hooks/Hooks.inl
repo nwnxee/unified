@@ -1,8 +1,7 @@
 #include "Services/Hooks/HooksImpl.hpp"
 
-template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value,
-Hooks::RegistrationToken>::type Hooks::RequestSharedHook(void(*funcPtr)(bool, Params ...))
+template <uintptr_t Address, typename Ret, typename ... Params>
+Hooks::RegistrationToken Hooks::RequestSharedHook(void(*funcPtr)(bool, Params ...))
 {
     const uintptr_t funcPtrAddr = reinterpret_cast<uintptr_t>(funcPtr);
     auto hookStorage = m_hooks.find(Address);
@@ -25,10 +24,9 @@ Hooks::RegistrationToken>::type Hooks::RequestSharedHook(void(*funcPtr)(bool, Pa
     }
     else
     {
-        using SharedHandlerFuncPtr = decltype(CallingConvention::template LandingValue<Ret, Params ...>());
+        using SharedHandlerFuncPtr = Ret(*)(Params ...);
 
-        SharedHandlerFuncPtr handler = &HooksImpl::
-            template HookLandingHolderShared<CallingConvention>::
+        SharedHandlerFuncPtr handler = &HooksImpl::HookLandingHolderShared::
             template HookLanding<Address, Ret, Params ...>;
 
         const uintptr_t sharedHandlerAddress = reinterpret_cast<uintptr_t>(handler);
@@ -48,9 +46,8 @@ Hooks::RegistrationToken>::type Hooks::RequestSharedHook(void(*funcPtr)(bool, Pa
     return { Address, funcPtrAddr };
 }
 
-template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value,
-Hooks::RegistrationToken>::type Hooks::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
+template <uintptr_t Address, typename Ret, typename ... Params>
+Hooks::RegistrationToken Hooks::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
 {
     const uintptr_t funcPtrAddr = reinterpret_cast<uintptr_t>(funcPtr);
     auto hookStorage = m_hooks.find(Address);
@@ -61,10 +58,9 @@ Hooks::RegistrationToken>::type Hooks::RequestExclusiveHook(Ret(*funcPtr)(Params
     }
     else
     {
-        using SharedHandlerFuncPtr = decltype(CallingConvention::template LandingValue<Ret, Params ...>());
+        using SharedHandlerFuncPtr = Ret(*)(Params ...);
 
-        SharedHandlerFuncPtr handler = &HooksImpl::
-            template HookLandingHolderExclusive<CallingConvention>::
+        SharedHandlerFuncPtr handler = &HooksImpl::HookLandingHolderExclusive::
             template HookLanding<Address, Ret, Params ...>;
 
         const uintptr_t sharedHandlerAddress = reinterpret_cast<uintptr_t>(handler);
@@ -83,16 +79,14 @@ Hooks::RegistrationToken>::type Hooks::RequestExclusiveHook(Ret(*funcPtr)(Params
     return { Address, funcPtrAddr };
 }
 
-template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value>::type
-/*void*/ HooksProxy::RequestSharedHook(void(*funcPtr)(bool, Params ...))
+template <uintptr_t Address, typename Ret, typename ... Params>
+void HooksProxy::RequestSharedHook(void(*funcPtr)(bool, Params ...))
 {
-    m_registrationTokens.push_back(m_proxyBase.RequestSharedHook<Address, CallingConvention, Ret>(funcPtr));
+    m_registrationTokens.push_back(m_proxyBase.RequestSharedHook<Address, Ret>(funcPtr));
 }
 
-template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
-typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value>::type
-/*void*/ HooksProxy::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
+template <uintptr_t Address, typename Ret, typename ... Params>
+void HooksProxy::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
 {
-    m_registrationTokens.push_back(m_proxyBase.RequestExclusiveHook<Address, CallingConvention, Ret>(funcPtr));
+    m_registrationTokens.push_back(m_proxyBase.RequestExclusiveHook<Address, Ret>(funcPtr));
 }

@@ -45,7 +45,6 @@ struct HooksImpl
         static std::vector<uintptr_t>* s_subs;
     };
 
-    template <typename>
     struct HookLandingHolderShared
     {
         template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
@@ -58,7 +57,6 @@ struct HooksImpl
         static uintptr_t s_addr;
     };
 
-    template <typename>
     struct HookLandingHolderExclusive
     {
         template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
