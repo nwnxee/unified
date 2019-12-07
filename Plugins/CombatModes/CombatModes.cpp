@@ -7,14 +7,13 @@
 #include "API/Types.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Messaging/Messaging.hpp"
-#include "ViewPtr.hpp"
 #include "Utils.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static ViewPtr<CombatModes::CombatModes> g_plugin;
+static CombatModes::CombatModes* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

@@ -10,7 +10,7 @@ using namespace NWNXLib;
 
 static Hooking::FunctionHook* m_UseSkillHook = nullptr;
 
-SkillEvents::SkillEvents(ViewPtr<Services::HooksProxy> hooker)
+SkillEvents::SkillEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_SKILL_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature8UseSkillEhhj6Vectorjji, int32_t, CNWSCreature*, uint8_t, uint8_t, NWNXLib::API::Types::ObjectID,

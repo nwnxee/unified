@@ -29,7 +29,6 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Platform/ASLR.hpp"
-#include "ViewPtr.hpp"
 
 #include <set>
 #include <map>
@@ -39,7 +38,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static ViewPtr<ELC::ELC> g_plugin;
+static ELC::ELC* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

@@ -6,7 +6,6 @@
 #include "API/CNWSCombatRound.hpp"
 #include "Events.hpp"
 #include "Utils.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
@@ -14,9 +13,9 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-NWNXLib::ViewPtr<NWNXLib::Hooking::FunctionHook> CombatEvents::m_hook;
+NWNXLib::Hooking::FunctionHook* CombatEvents::m_hook;
 
-CombatEvents::CombatEvents(ViewPtr<HooksProxy> hooker)
+CombatEvents::CombatEvents(HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_START_COMBAT_ROUND_.*", [hooker]() {
         hooker->RequestSharedHook<

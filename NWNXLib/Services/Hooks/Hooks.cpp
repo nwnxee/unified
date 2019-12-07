@@ -1,8 +1,6 @@
 #include "Services/Hooks/Hooks.hpp"
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 Hooks* HooksImpl::g_hooks;
 
@@ -17,7 +15,7 @@ Hooks::~Hooks()
 
 void Hooks::ClearHook(Hooks::RegistrationToken&& token)
 {
-    ViewPtr<HookStorage> storage = FindHookStorageByAddress(token.m_oldAddress);
+    HookStorage* storage = FindHookStorageByAddress(token.m_oldAddress);
 
     if (storage == nullptr)
     {
@@ -61,13 +59,13 @@ void Hooks::ClearHook(Hooks::RegistrationToken&& token)
     }
 }
 
-ViewPtr<Hooking::FunctionHook> Hooks::FindHookByAddress(const uintptr_t address)
+Hooking::FunctionHook* Hooks::FindHookByAddress(const uintptr_t address)
 {
     auto ptr = FindHookStorageByAddress(address);
     return ptr ? ptr->m_hook.get() : nullptr;
 }
 
-ViewPtr<Hooks::HookStorage> Hooks::FindHookStorageByAddress(const uintptr_t address)
+Hooks::HookStorage* Hooks::FindHookStorageByAddress(const uintptr_t address)
 {
     auto hookStorage = m_hooks.find(address);
     return hookStorage != m_hooks.end() ? hookStorage->second.get() : nullptr;
@@ -105,16 +103,14 @@ void HooksProxy::ClearHook(const uintptr_t address)
     m_proxyBase.ClearHook(std::move(concreteToken));
 }
 
-ViewPtr<Hooking::FunctionHook> HooksProxy::FindHookByAddress(const uintptr_t address)
+Hooking::FunctionHook* HooksProxy::FindHookByAddress(const uintptr_t address)
 {
     return m_proxyBase.FindHookByAddress(address);
 }
 
-ViewPtr<Hooks::HookStorage> HooksProxy::FindHookStorageByAddress(const uintptr_t address)
+Hooks::HookStorage* HooksProxy::FindHookStorageByAddress(const uintptr_t address)
 {
     return m_proxyBase.FindHookStorageByAddress(address);
-}
-
 }
 
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.hpp"
-#include "ViewPtr.hpp"
 
 #include <queue>
 #include <string>
@@ -18,7 +17,7 @@ using ResultSet = std::queue<ResultRow>; // Queue is row, vector is column
 struct ITarget
 {
     virtual ~ITarget() { }
-    virtual void Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config) = 0;
+    virtual void Connect(NWNXLib::Services::ConfigProxy* config) = 0;
     virtual bool IsConnected() = 0;
     virtual bool PrepareQuery(const Query& query) = 0;
     virtual std::optional<ResultSet> ExecuteQuery() = 0;

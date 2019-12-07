@@ -15,7 +15,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* DisablePause::pSetPauseState_hook;
-DisablePause::DisablePause(ViewPtr<Services::HooksProxy> hooker)
+DisablePause::DisablePause(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<Functions::_ZN13CServerExoApp13SetPauseStateEhi>
                                     (&CServerExoAppInternal__SetPauseState_hook);

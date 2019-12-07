@@ -9,10 +9,10 @@ namespace Profiler {
 using namespace NWNXLib;
 using namespace API;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
-NetMessages::NetMessages(ViewPtr<Services::HooksProxy> hooker,
-    ViewPtr<Services::MetricsProxy> metrics)
+NetMessages::NetMessages(Services::HooksProxy* hooker,
+    Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 

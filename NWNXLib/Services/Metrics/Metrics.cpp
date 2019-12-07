@@ -116,7 +116,7 @@ void Metrics::ClearResampler(const std::string& measurementName)
     m_resamplers.erase(existingResampler);
 }
 
-void Metrics::Update(ViewPtr<Tasks> tasks)
+void Metrics::Update(Tasks* tasks)
 {
     for (auto& resampler : m_resamplers)
     {

@@ -14,7 +14,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* CompareVarsForMerge::pCompareItem_hook;
-CompareVarsForMerge::CompareVarsForMerge(ViewPtr<Services::HooksProxy> hooker)
+CompareVarsForMerge::CompareVarsForMerge(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<Functions::_ZN8CNWSItem11CompareItemEPS_>
                                     (&CNWSItem__CompareItem_hook);

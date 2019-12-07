@@ -17,7 +17,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Damage::Damage> g_plugin;
+static Damage::Damage* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

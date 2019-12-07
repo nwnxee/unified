@@ -11,13 +11,12 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
-#include "ViewPtr.hpp"
 
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Area::Area> g_plugin;
+static Area::Area* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

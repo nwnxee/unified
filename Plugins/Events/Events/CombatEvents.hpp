@@ -4,18 +4,17 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class CombatEvents
 {
 public:
-    CombatEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    CombatEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void StartCombatRoundHook(bool, CNWSCombatRound*, uint32_t);
-    static NWNXLib::ViewPtr<NWNXLib::Hooking::FunctionHook> m_hook;
+    static NWNXLib::Hooking::FunctionHook* m_hook;
 };
 
 }

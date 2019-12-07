@@ -27,7 +27,7 @@ SQLite::~SQLite()
     sqlite3_close(m_dbConn);
 }
 
-void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
+void SQLite::Connect(NWNXLib::Services::ConfigProxy* config)
 {
     if (auto database = config->Get<std::string>("DATABASE"))
     {

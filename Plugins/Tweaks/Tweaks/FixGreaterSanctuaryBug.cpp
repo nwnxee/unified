@@ -12,7 +12,7 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-FixGreaterSanctuaryBug::FixGreaterSanctuaryBug(ViewPtr<Services::HooksProxy> hooker)
+FixGreaterSanctuaryBug::FixGreaterSanctuaryBug(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature31RemoveCombatInvisibilityEffectsEv>
                                     (&CNWSCreature__RemoveCombatInvisibilityEffects_hook);

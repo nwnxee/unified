@@ -30,7 +30,7 @@ bool AsyncWorkerThread::IsFinished()
     return m_finished;
 }
 
-void AsyncWorkerThread::ThreadFunc(ViewPtr<AsyncWorkerThread> owner)
+void AsyncWorkerThread::ThreadFunc(AsyncWorkerThread* owner)
 {
     while (!owner->m_stop)
     {

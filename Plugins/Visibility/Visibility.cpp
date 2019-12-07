@@ -10,13 +10,12 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "ViewPtr.hpp"
 
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Visibility::Visibility> g_plugin;
+static Visibility::Visibility* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

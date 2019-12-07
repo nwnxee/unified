@@ -19,7 +19,7 @@ PostgreSQL::~PostgreSQL()
     PQfinish(m_conn);
 }
 
-void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
+void PostgreSQL::Connect(NWNXLib::Services::ConfigProxy* config)
 {
     const std::string host = "host=" + config->Get<std::string>("HOST", "localhost");
     const std::string user = "user=" + config->Require<std::string>("USERNAME");

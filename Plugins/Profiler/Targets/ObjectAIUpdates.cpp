@@ -9,7 +9,7 @@ namespace Profiler {
 
 using namespace NWNXLib;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateArea, int32_t, CNWSArea*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateAreaOfEffect, void, CNWSAreaOfEffectObject*);
@@ -23,8 +23,8 @@ DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateStore, void, CNWSStore*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateTrigger, void, CNWSTrigger*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateWaypoint, void, CNWSWaypoint*);
 
-ObjectAIUpdates::ObjectAIUpdates(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+ObjectAIUpdates::ObjectAIUpdates(NWNXLib::Services::HooksProxy* hooker,
+    NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 

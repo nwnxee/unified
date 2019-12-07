@@ -18,7 +18,7 @@
 
 
 using namespace NWNXLib;
-static ViewPtr<Lua::Lua> g_plugin;
+static Lua::Lua* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

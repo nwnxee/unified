@@ -13,7 +13,7 @@ using namespace NWNXLib;
 
 static NWNXLib::Hooking::FunctionHook* m_AIActionHealHook=nullptr;
 
-HealerKitEvents::HealerKitEvents(ViewPtr<Services::HooksProxy> hooker)
+HealerKitEvents::HealerKitEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>(&AIActionHealHook);

@@ -5,7 +5,6 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Tasks/Tasks.hpp"
-#include "ViewPtr.hpp"
 
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
@@ -13,7 +12,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Redis::Redis> g_module;
+static Redis::Redis* g_module;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

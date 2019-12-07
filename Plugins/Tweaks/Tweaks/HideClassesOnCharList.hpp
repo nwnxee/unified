@@ -2,14 +2,13 @@
 
 #include "API/Types.hpp"
 #include "Common.hpp"
-#include "ViewPtr.hpp"
 
 namespace Tweaks {
 
 class HideClassesOnCharList
 {
 public:
-    HideClassesOnCharList(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    HideClassesOnCharList(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(

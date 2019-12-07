@@ -3,14 +3,13 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class TimingBarEvents
 {
 public:
-    TimingBarEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    TimingBarEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void HandlePlayerToServerInputCancelGuiTimingEventHook(bool, CNWSMessage*, CNWSPlayer*);

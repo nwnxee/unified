@@ -19,7 +19,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* DisableQuicksave::pSaveGame_hook;
-DisableQuicksave::DisableQuicksave(ViewPtr<Services::HooksProxy> hooker)
+DisableQuicksave::DisableQuicksave(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<Functions::_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_>
                                     (&CServerExoAppInternal__SaveGame_hook);

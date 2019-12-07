@@ -3,7 +3,6 @@
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Metrics/MetricData.hpp"
-#include "ViewPtr.hpp"
 
 #include <array>
 #include <chrono>
@@ -24,8 +23,8 @@ public: // Calibration
     static void PrepareForCalibration(const std::chrono::nanoseconds val = std::chrono::nanoseconds(std::numeric_limits<int64_t>::max()));
 
     static void Calibrate(const size_t runs,
-        NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooks,
-        NWNXLib::ViewPtr<NWNXLib::Services::MetricsProxy> metrics);
+        NWNXLib::Services::HooksProxy* hooks,
+        NWNXLib::Services::MetricsProxy* metrics);
 
 private:
     static uint8_t s_head;
@@ -38,7 +37,7 @@ private:
     std::chrono::high_resolution_clock::time_point GetCurrentTime();
 
 private: // Calibration
-    static NWNXLib::ViewPtr<NWNXLib::Services::MetricsProxy> g_metricsForCalibration;
+    static NWNXLib::Services::MetricsProxy* g_metricsForCalibration;
     static void ProfilerCalibrateHookFuncWithScope(bool, CExoBase*, uint32_t);
 };
 

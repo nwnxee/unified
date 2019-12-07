@@ -16,7 +16,7 @@ namespace Profiler {
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
 
-static ViewPtr<MetricsProxy> g_metrics;
+static MetricsProxy* g_metrics;
 
 DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, AIMasterUpdateState, void, CServerAIMaster*);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventPending, int32_t, CServerAIMaster*, uint32_t, uint32_t);
@@ -25,8 +25,8 @@ DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, GetPendingEvent, int32_t, CServer
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, UpdateDialog, int32_t, CNWSObject*);
 
 AIMasterUpdates::AIMasterUpdates(const bool overkill,
-    ViewPtr<HooksProxy> hooker,
-    ViewPtr<MetricsProxy> metrics)
+    HooksProxy* hooker,
+    MetricsProxy* metrics)
 {
     g_metrics = metrics;
 

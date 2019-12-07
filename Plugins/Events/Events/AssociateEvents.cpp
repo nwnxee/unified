@@ -8,7 +8,7 @@ namespace Events {
 
 using namespace NWNXLib;
 
-AssociateEvents::AssociateEvents(ViewPtr<Services::HooksProxy> hooker)
+AssociateEvents::AssociateEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_ADD_ASSOCIATE_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN12CNWSCreature12AddAssociateEjt, void,

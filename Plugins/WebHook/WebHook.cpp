@@ -10,7 +10,7 @@
 
 using namespace NWNXLib;
 
-static ViewPtr<WebHook::WebHook> g_plugin;
+static WebHook::WebHook* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

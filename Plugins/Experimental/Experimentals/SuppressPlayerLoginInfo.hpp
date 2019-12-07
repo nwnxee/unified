@@ -2,14 +2,13 @@
 
 #include "API/Types.hpp"
 #include "Common.hpp"
-#include "ViewPtr.hpp"
 
 namespace Experimental {
 
 class SuppressPlayerLoginInfo
 {
 public:
-    SuppressPlayerLoginInfo(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    SuppressPlayerLoginInfo(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static int32_t SendServerToPlayerPlayerList_AddHook(CNWSMessage*, uint32_t, CNWSPlayer*);

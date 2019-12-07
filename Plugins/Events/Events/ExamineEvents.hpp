@@ -3,14 +3,13 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class ExamineEvents
 {
 public:
-    ExamineEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    ExamineEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void HandleExamine(bool, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID);

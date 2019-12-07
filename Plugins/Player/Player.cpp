@@ -37,12 +37,11 @@
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Encoding.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Player::Player> g_plugin;
+static Player::Player* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

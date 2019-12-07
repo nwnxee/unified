@@ -3,14 +3,13 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class LevelEvents
 {
 public:
-    LevelEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    LevelEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void LevelUpHook(bool, CNWSCreatureStats*, CNWLevelStats*, uint8_t, uint8_t, uint8_t, int32_t);

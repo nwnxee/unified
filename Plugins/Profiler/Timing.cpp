@@ -24,7 +24,7 @@ uint8_t FastTimer::s_depth = 0;
 std::array<std::chrono::nanoseconds, FastTimer::MAX_DEPTH> FastTimer::s_debt = {};
 std::chrono::nanoseconds FastTimer::s_hookOverhead = std::chrono::nanoseconds(0);
 
-ViewPtr<MetricsProxy> FastTimer::g_metricsForCalibration;
+MetricsProxy* FastTimer::g_metricsForCalibration;
 
 void FastTimer::Start()
 {
@@ -48,7 +48,7 @@ void FastTimer::PrepareForCalibration(const std::chrono::nanoseconds val)
     s_hookOverhead = val;
 }
 
-void FastTimer::Calibrate(const size_t runs, ViewPtr<HooksProxy> hooks, ViewPtr<MetricsProxy> metrics)
+void FastTimer::Calibrate(const size_t runs, HooksProxy* hooks, MetricsProxy* metrics)
 {
     g_metricsForCalibration = metrics;
 

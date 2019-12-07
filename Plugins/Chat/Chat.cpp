@@ -19,11 +19,10 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 
-static ViewPtr<Chat::Chat> g_plugin;
+static Chat::Chat* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

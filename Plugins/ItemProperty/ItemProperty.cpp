@@ -5,14 +5,13 @@
 #include "API/CGameEffect.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
-#include "ViewPtr.hpp"
 
 #include <string>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<ItemProperty::ItemProperty> g_plugin;
+static ItemProperty::ItemProperty* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

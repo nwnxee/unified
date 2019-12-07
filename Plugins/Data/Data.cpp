@@ -1,11 +1,10 @@
 #include "Data.hpp"
 #include "API/Version.hpp"
 #include "Providers/Array.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 
-static ViewPtr<Data::Data> g_plugin;
+static Data::Data* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

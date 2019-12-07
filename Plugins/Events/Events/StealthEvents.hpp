@@ -2,14 +2,13 @@
 
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class StealthEvents
 {
 public:
-    StealthEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    StealthEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void SetStealthModeHook(CNWSCreature*, uint8_t);

@@ -16,7 +16,7 @@ namespace Profiler {
 
 using namespace NWNXLib;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
 DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
     (
@@ -49,8 +49,8 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
     ),
     int32_t, CNWSModule*, CPathfindInformation*, uint32_t);
 
-Pathing::Pathing(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+Pathing::Pathing(NWNXLib::Services::HooksProxy* hooker,
+    NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 

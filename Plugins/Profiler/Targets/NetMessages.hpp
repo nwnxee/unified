@@ -3,15 +3,14 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Profiler {
 
 class NetMessages
 {
 public:
-    NetMessages(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-        NWNXLib::ViewPtr<NWNXLib::Services::MetricsProxy> metrics);
+    NetMessages(NWNXLib::Services::HooksProxy* hooker,
+        NWNXLib::Services::MetricsProxy* metrics);
 
 private:
     static void ComputeGameObjectUpdateForCategory(bool, CNWSMessage*, uint32_t, uint32_t, CNWSPlayer*, CNWSObject*, CGameObjectArray*, CNWSPlayerLUOSortedObjectList*, int32_t);

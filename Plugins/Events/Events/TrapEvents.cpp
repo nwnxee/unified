@@ -19,7 +19,7 @@ static NWNXLib::Hooking::FunctionHook* m_AIActionRecoverTrapHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_AIActionSetTrapHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_OnEnterTrapHook = nullptr;
 
-TrapEvents::TrapEvents(ViewPtr<Services::HooksProxy> hooker)
+TrapEvents::TrapEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_TRAP_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature18AIActionDisarmTrapEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>(&AIActionDisarmTrapHook);

@@ -17,14 +17,13 @@
 #include "Targets/Pathing.hpp"
 #include "Targets/Scripts.hpp"
 #include "Timing.hpp"
-#include "ViewPtr.hpp"
 
 #include <queue>
 #include <stack>
 
 using namespace NWNXLib;
 
-static ViewPtr<Profiler::Profiler> g_plugin;
+static Profiler::Profiler* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -47,8 +46,8 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 namespace Profiler {
 
-static ViewPtr<Services::HooksProxy> g_hooks;
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::HooksProxy* g_hooks;
+static Services::MetricsProxy* g_metrics;
 
 static size_t g_calibrationRuns;
 static std::chrono::milliseconds g_recalibrationPeriod;
@@ -90,44 +89,44 @@ Profiler::Profiler(const Plugin::CreateParams& params)
     if (config->Get<bool>("ENABLE_AI_MASTER_UPDATES", true))
     {
         const bool overkillMode = config->Get<bool>("AI_MASTER_UPDATES_OVERKILL", false);
-        m_aiMasterUpdates = std::make_unique<AIMasterUpdates>(overkillMode, GetServices()->m_hooks, g_metrics);
+        m_aiMasterUpdates = std::make_unique<AIMasterUpdates>(overkillMode, g_hooks, g_metrics);
     }
 
     if (config->Get<bool>("ENABLE_MAIN_LOOP", true))
     {
-        m_mainLoop = std::make_unique<MainLoop>(GetServices()->m_hooks, g_metrics);
+        m_mainLoop = std::make_unique<MainLoop>(g_hooks, g_metrics);
     }
 
     if (config->Get<bool>("ENABLE_NET_LAYER", true))
     {
-        m_netLayer = std::make_unique<NetLayer>(GetServices()->m_hooks, g_metrics);
+        m_netLayer = std::make_unique<NetLayer>(g_hooks, g_metrics);
     }
 
     if (config->Get<bool>("ENABLE_NET_MESSAGES", true))
     {
-        m_netMessages = std::make_unique<NetMessages>(GetServices()->m_hooks, g_metrics);
+        m_netMessages = std::make_unique<NetMessages>(g_hooks, g_metrics);
     }
 
     if (config->Get<bool>("ENABLE_OBJECT_AI_UPDATES", false))
     {
-        m_objectAIUpdates = std::make_unique<ObjectAIUpdates>(GetServices()->m_hooks, g_metrics);
+        m_objectAIUpdates = std::make_unique<ObjectAIUpdates>(g_hooks, g_metrics);
     }
 
     if (config->Get<bool>("ENABLE_OBJECT_EVENT_HANDLERS", false))
     {
-        m_objectEventHandlers = std::make_unique<ObjectEventHandlers>(GetServices()->m_hooks, g_metrics);
+        m_objectEventHandlers = std::make_unique<ObjectEventHandlers>(g_hooks, g_metrics);
     }
 
     if (config->Get<bool>("ENABLE_PATHING", true))
     {
-        m_pathing = std::make_unique<Pathing>(GetServices()->m_hooks, g_metrics);
+        m_pathing = std::make_unique<Pathing>(g_hooks, g_metrics);
     }
 
     if (config->Get<bool>("ENABLE_SCRIPTS", true))
     {
         const bool areaTimings = config->Get<bool>("SCRIPTS_AREA_TIMINGS", true);
         const bool typeTimings = config->Get<bool>("SCRIPTS_TYPE_TIMINGS", true);
-        m_scripts = std::make_unique<Scripts>(areaTimings, typeTimings, GetServices()->m_hooks, g_metrics);
+        m_scripts = std::make_unique<Scripts>(areaTimings, typeTimings, g_hooks, g_metrics);
     }
 
     g_tickrate = config->Get<bool>("ENABLE_TICKRATE", true);
