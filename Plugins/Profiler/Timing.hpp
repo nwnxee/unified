@@ -39,8 +39,7 @@ private:
 
 private: // Calibration
     static NWNXLib::ViewPtr<NWNXLib::Services::MetricsProxy> g_metricsForCalibration;
-    static void ProfilerCalibrateHookFuncWithScope(NWNXLib::Services::Hooks::CallType,
-        CExoBase*, uint32_t);
+    static void ProfilerCalibrateHookFuncWithScope(bool, CExoBase*, uint32_t);
 };
 
 class FastTimerScope

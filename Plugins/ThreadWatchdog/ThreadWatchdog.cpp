@@ -58,7 +58,7 @@ ThreadWatchdog::~ThreadWatchdog()
     }
 }
 
-void ThreadWatchdog::MainLoopUpdate(Services::Hooks::CallType, CServerExoAppInternal*)
+void ThreadWatchdog::MainLoopUpdate(bool, CServerExoAppInternal*)
 {
     ++s_mainThreadCounter;
 

@@ -24,43 +24,41 @@ ExamineEvents::ExamineEvents(ViewPtr<Services::HooksProxy> hooker)
     });
 }
 
-void ExamineEvents::HandleExamine(Services::Hooks::CallType type, API::Types::ObjectID examiner,
+void ExamineEvents::HandleExamine(bool before, API::Types::ObjectID examiner,
     API::Types::ObjectID examinee)
 {
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));
     Events::SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner);
 }
 
-void ExamineEvents::ExamineCreatureHook(Services::Hooks::CallType type, CNWSMessage*,
+void ExamineEvents::ExamineCreatureHook(bool before, CNWSMessage*,
     CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
-    HandleExamine(type, examiner->m_oidNWSObject, examinee);
+    HandleExamine(before, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExamineDoorHook(Services::Hooks::CallType type, CNWSMessage*,
+void ExamineEvents::ExamineDoorHook(bool before, CNWSMessage*,
     CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
-    HandleExamine(type, examiner->m_oidNWSObject, examinee);
+    HandleExamine(before, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExamineItemHook(Services::Hooks::CallType type, CNWSMessage*,
+void ExamineEvents::ExamineItemHook(bool before, CNWSMessage*,
     CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
-    HandleExamine(type, examiner->m_oidNWSObject, examinee);
+    HandleExamine(before, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExaminePlaceableHook(Services::Hooks::CallType type, CNWSMessage*,
+void ExamineEvents::ExaminePlaceableHook(bool before, CNWSMessage*,
     CNWSPlayer* examiner, API::Types::ObjectID examinee)
 {
-    HandleExamine(type, examiner->m_oidNWSObject, examinee);
+    HandleExamine(before, examiner->m_oidNWSObject, examinee);
 }
 
-void ExamineEvents::ExamineTrapHook(Services::Hooks::CallType type, CNWSMessage*,
+void ExamineEvents::ExamineTrapHook(bool before, CNWSMessage*,
                                          CNWSPlayer* examiner, API::Types::ObjectID examinee,
                                          CNWSCreature*, int32_t success)
 {
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     Events::PushEventData("EXAMINEE_OBJECT_ID", Utils::ObjectIDToString(examinee));
     Events::PushEventData("TRAP_EXAMINE_SUCCESS", std::to_string(success));
     Events::SignalEvent(before ? "NWNX_ON_EXAMINE_OBJECT_BEFORE" : "NWNX_ON_EXAMINE_OBJECT_AFTER", examiner->m_oidNWSObject);

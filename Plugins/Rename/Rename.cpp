@@ -150,8 +150,7 @@ CNWSPlayer *Rename::player(Types::ObjectID playerId)
     return pPlayer;
 }
 
-void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
-                                    CNWSPlayer *targetPlayer, CNWSPlayer *observerPlayer, bool playerList)
+void Rename::SetOrRestorePlayerName(bool before, CNWSPlayer *targetPlayer, CNWSPlayer *observerPlayer, bool playerList)
 {
     if (targetPlayer == nullptr || observerPlayer == nullptr)
         return;
@@ -178,7 +177,7 @@ void Rename::SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType cType,
         return;
     }
 
-    if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
         SetPlayerNameAsObservedBy(targetCreature, observerOid, playerList);
     else
         RestorePlayerName(targetCreature, playerList);
@@ -240,7 +239,7 @@ void Rename::RestorePlayerName(CNWSCreature *targetCreature, bool playerList)
 }
 
 void Rename::WriteGameObjUpdate_UpdateObjectHook(
-        NWNXLib::Services::Hooks::CallType cType,
+        bool before,
         CNWSMessage*,
         CNWSPlayer *observerPlayer,
         CNWSObject *targetObject,
@@ -249,17 +248,17 @@ void Rename::WriteGameObjUpdate_UpdateObjectHook(
         uint32_t)
 {
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetObject->m_idSelf);
-    SetOrRestorePlayerName(cType, targetPlayer, observerPlayer);
+    SetOrRestorePlayerName(before, targetPlayer, observerPlayer);
 }
 
 void Rename::SendServerToPlayerExamineGui_CreatureDataHook(
-        NWNXLib::Services::Hooks::CallType cType,
+        bool before,
         CNWSMessage*,
         CNWSPlayer *observerPlayer,
         Types::ObjectID targetOid)
 {
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
-    SetOrRestorePlayerName(cType, targetPlayer, observerPlayer);
+    SetOrRestorePlayerName(before, targetPlayer, observerPlayer);
 }
 
 // This can't work on per target basis as the player logging in hasn't selected their PC yet but it
@@ -276,7 +275,7 @@ int32_t Rename::SendServerToPlayerPlayModuleCharacterListResponseHook(
     auto *observerPlayer = static_cast<CNWSPlayer *>(observerClient);
     if (g_plugin->m_RenameOnModuleCharList == 1 || g_plugin->m_RenameOnModuleCharList == 2)
     {
-        SetOrRestorePlayerName(Services::Hooks::CallType::BEFORE_ORIGINAL, targetPlayer, observerPlayer);
+        SetOrRestorePlayerName(true, targetPlayer, observerPlayer);
     }
 
     int32_t retVal = -1;
@@ -327,13 +326,13 @@ int32_t Rename::SendServerToPlayerPlayModuleCharacterListResponseHook(
 
     if (g_plugin->m_RenameOnModuleCharList == 1 || g_plugin->m_RenameOnModuleCharList == 2)
     {
-        SetOrRestorePlayerName(Services::Hooks::CallType::AFTER_ORIGINAL, targetPlayer, observerPlayer);
+        SetOrRestorePlayerName(false, targetPlayer, observerPlayer);
     }
     return retVal;
 }
 
 void Rename::SendServerToPlayerChatHook(
-        NWNXLib::Services::Hooks::CallType cType,
+        bool before,
         CNWSMessage*,
         Types::PlayerID observerPlayerId,
         Types::ObjectID targetOid,
@@ -342,27 +341,27 @@ void Rename::SendServerToPlayerChatHook(
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
     auto *observerClient = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(observerPlayerId, 0);
     auto *observerPlayer = static_cast<CNWSPlayer*>(observerClient);
-    SetOrRestorePlayerName(cType, targetPlayer, observerPlayer);
+    SetOrRestorePlayerName(before, targetPlayer, observerPlayer);
 }
 
 void Rename::SendServerToPlayerDungeonMasterUpdatePartyListHook(
-        Services::Hooks::CallType cType,
+        bool before,
         CNWSMessage*,
         Types::PlayerID observerPlayerId)
 {
-    g_plugin->GlobalNameChange(cType, observerPlayerId, Constants::PLAYERID_ALL_PLAYERS);
+    g_plugin->GlobalNameChange(before, observerPlayerId, Constants::PLAYERID_ALL_PLAYERS);
 }
 
 void Rename::SendServerToPlayerPlayerList_AllHook(
-        Services::Hooks::CallType cType,
+        bool before,
         CNWSMessage*,
         CNWSPlayer *observerPlayer)
 {
-    g_plugin->GlobalNameChange(cType, observerPlayer->m_nPlayerID, Constants::PLAYERID_ALL_PLAYERS);
+    g_plugin->GlobalNameChange(before, observerPlayer->m_nPlayerID, Constants::PLAYERID_ALL_PLAYERS);
 }
 
 void Rename::SendServerToPlayerPlayerList_AddHook(
-        Services::Hooks::CallType cType,
+        bool before,
         CNWSMessage*,
         Types::PlayerID observerPlayerId,
         CNWSPlayer *targetPlayer)
@@ -370,15 +369,15 @@ void Rename::SendServerToPlayerPlayerList_AddHook(
     if (!g_plugin->m_RenameAllowDM && observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
         return;
 
-    if (cType == Services::Hooks::CallType::AFTER_ORIGINAL)
+    if (!before)
     {
         g_plugin->m_RenameAddedToPlayerList.insert(targetPlayer->m_oidNWSObject);
     }
-    g_plugin->GlobalNameChange(cType, observerPlayerId, targetPlayer->m_nPlayerID);
+    g_plugin->GlobalNameChange(before, observerPlayerId, targetPlayer->m_nPlayerID);
 }
 
 void Rename::SendServerToPlayerPlayerList_DeleteHook(
-        Services::Hooks::CallType cType,
+        bool before,
         CNWSMessage*,
         Types::PlayerID observerPlayerId,
         CNWSPlayer *targetPlayer)
@@ -386,7 +385,7 @@ void Rename::SendServerToPlayerPlayerList_DeleteHook(
     if (!g_plugin->m_RenameAllowDM && observerPlayerId == Constants::PLAYERID_ALL_GAMEMASTERS)
         return;
 
-    if (cType == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         g_plugin->m_RenameAddedToPlayerList.erase(targetPlayer->m_oidNWSObject);
     }
@@ -420,7 +419,7 @@ int32_t Rename::SendServerToPlayerPopUpGUIPanelHook(
                                                                  bGUIOption2, nStringReference, p_sStringReference);
 }
 void Rename::GlobalNameChange(
-        NWNXLib::Services::Hooks::CallType cType,
+        bool before,
         Types::PlayerID observerPlayerId,
         Types::PlayerID targetPlayerId)
 {
@@ -483,7 +482,7 @@ void Rename::GlobalNameChange(
                 if (playerNameOverrideState)
                 {
                     auto playerInfo = pNetLayer->GetPlayerInfo(targetPid);
-                    if (cType == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    if (!before)
                     {
                         playerInfo->m_sPlayerName = std::get<0>(g_plugin->m_RenameOriginalNames[targetOid]);
                     }
@@ -507,7 +506,7 @@ void Rename::GlobalNameChange(
                 }
             }
             auto *observerPlayer = static_cast<CNWSPlayer*>(server->GetClientObjectByPlayerId(observerPid, 0));
-            SetOrRestorePlayerName(cType, targetPlayer, observerPlayer, true);
+            SetOrRestorePlayerName(before, targetPlayer, observerPlayer, true);
         }
     }
 }

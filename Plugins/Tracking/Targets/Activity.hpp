@@ -13,7 +13,7 @@ public:
         NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooks);
 
 private:
-    static void MainLoopUpdate(NWNXLib::Services::Hooks::CallType type, CServerExoAppInternal* thisPtr);
+    static void MainLoopUpdate(bool, CServerExoAppInternal* thisPtr);
 };
 
 }

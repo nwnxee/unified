@@ -62,20 +62,18 @@ inline std::string TrimMessage(CExoString* message)
     return Utils::trim(s);
 }
 
-void ServerLogRedirector::WriteToLogFileHook(Hooks::CallType type,
-    CExoDebugInternal*, CExoString* message)
+void ServerLogRedirector::WriteToLogFileHook(bool before, CExoDebugInternal*, CExoString* message)
 {
-    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         std::string str = TrimMessage(message);
         LOG_INFO("(Server) %s", str);
     }
 }
 
-void ServerLogRedirector::WriteToErrorFileHook(Hooks::CallType type,
-    CExoDebugInternal*, CExoString* message)
+void ServerLogRedirector::WriteToErrorFileHook(bool before, CExoDebugInternal*, CExoString* message)
 {
-    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         std::string str = TrimMessage(message);
         LOG_INFO("(Error) %s", str);

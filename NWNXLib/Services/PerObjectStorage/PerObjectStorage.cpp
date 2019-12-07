@@ -382,26 +382,26 @@ void PerObjectStorage::DestroyObjectStorage(CGameObject *pGameObject)
     }
 }
 
-void PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, CNWSObject* pThis)
+void PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook(bool before, CNWSObject* pThis)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+    if (!before)
         DestroyObjectStorage(static_cast<CGameObject*>(pThis));
 }
-void PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, CNWSArea* pThis)
+void PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook(bool before, CNWSArea* pThis)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+    if (!before)
         DestroyObjectStorage(static_cast<CGameObject*>(pThis));
 }
-void PerObjectStorage::CNWSPlayer__EatTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD)
+void PerObjectStorage::CNWSPlayer__EatTURD_hook(bool before, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD)
 {
-    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         GetObjectStorage(thisPtr->m_oidNWSObject)->CloneFrom(GetObjectStorage(pTURD));
     }
 }
-void PerObjectStorage::CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr)
+void PerObjectStorage::CNWSPlayer__DropTURD_hook(bool before, CNWSPlayer* thisPtr)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+    if (!before)
     {
         // Be very, very paranoid. Bad things happen when the TURD list doesn't exist
         // This can happen when you BootPC() the very first PC to connect to your sever
@@ -419,9 +419,9 @@ void PerObjectStorage::CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type,
     }
 }
 
-void PerObjectStorage::CNWSObject__SaveObjectState_hook(Services::Hooks::CallType type, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct)
+void PerObjectStorage::CNWSObject__SaveObjectState_hook(bool before, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+    if (!before)
     {
         if (Utils::AsNWSCreature(pThis))
             return;
@@ -429,9 +429,9 @@ void PerObjectStorage::CNWSObject__SaveObjectState_hook(Services::Hooks::CallTyp
         pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis)->Serialize(), GffFieldName);
     }
 }
-void PerObjectStorage::CNWSObject__LoadObjectState_hook(Services::Hooks::CallType type, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct)
+void PerObjectStorage::CNWSObject__LoadObjectState_hook(bool before, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct)
 {
-    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         if (Utils::AsNWSCreature(pThis))
             return;
@@ -442,18 +442,16 @@ void PerObjectStorage::CNWSObject__LoadObjectState_hook(Services::Hooks::CallTyp
             GetObjectStorage(pThis)->Deserialize(str.CStr());
     }
 }
-void PerObjectStorage::CNWSCreature__SaveCreature_hook(Services::Hooks::CallType type, CNWSCreature *pThis, CResGFF * pRes, CResStruct * pStruct, BOOL bStoreAssociateList, BOOL bUseDesiredAreaInfo, BOOL bExportingChar, BOOL bSaveOIDs)
+void PerObjectStorage::CNWSCreature__SaveCreature_hook(bool before, CNWSCreature *pThis, CResGFF * pRes, CResStruct * pStruct, BOOL, BOOL, BOOL, BOOL)
 {
-    (void)sizeof(bStoreAssociateList && bUseDesiredAreaInfo && bExportingChar && bSaveOIDs);
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+    if (!before)
     {
         pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis)->Serialize(), GffFieldName);
     }
 }
-void PerObjectStorage::CNWSCreature__LoadCreature_hook(Services::Hooks::CallType type, CNWSCreature *pThis, CResGFF * pRes, CResStruct * pStruct, BOOL bIsSaveGame, BOOL bIsAssociate, BOOL bPreserveItemIds, BOOL bCopyObject)
+void PerObjectStorage::CNWSCreature__LoadCreature_hook(bool before, CNWSCreature *pThis, CResGFF * pRes, CResStruct * pStruct, BOOL, BOOL, BOOL, BOOL)
 {
-    (void)sizeof(bIsSaveGame && bIsAssociate && bPreserveItemIds && bCopyObject);
-    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         int32_t success;
         auto str = pRes->ReadFieldCExoString(pStruct, GffFieldName, success);

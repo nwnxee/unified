@@ -14,12 +14,7 @@ public:
     CombatEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void StartCombatRoundHook
-    (
-        NWNXLib::Services::Hooks::CallType,
-        CNWSCombatRound*,
-        uint32_t
-    );
+    static void StartCombatRoundHook(bool, CNWSCombatRound*, uint32_t);
     static NWNXLib::ViewPtr<NWNXLib::Hooking::FunctionHook> m_hook;
 };
 

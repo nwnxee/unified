@@ -15,10 +15,8 @@ public:
     virtual ~ServerLogRedirector();
 
 private:
-    static void WriteToLogFileHook(NWNXLib::Services::Hooks::CallType,
-        CExoDebugInternal*, CExoString*);
-    static void WriteToErrorFileHook(NWNXLib::Services::Hooks::CallType,
-        CExoDebugInternal*, CExoString*);
+    static void WriteToLogFileHook(bool, CExoDebugInternal*, CExoString*);
+    static void WriteToErrorFileHook(bool, CExoDebugInternal*, CExoString*);
 };
 
 }

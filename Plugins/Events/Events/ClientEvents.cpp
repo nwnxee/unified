@@ -41,10 +41,8 @@ ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
     });
 }
 
-void ClientEvents::RemovePCFromWorldHook(Hooks::CallType type, CServerExoAppInternal*, CNWSPlayer* player)
+void ClientEvents::RemovePCFromWorldHook(bool before, CServerExoAppInternal*, CNWSPlayer* player)
 {
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-
     if (before)
     {
         Events::SignalEvent("NWNX_ON_CLIENT_DISCONNECT_BEFORE" , player->m_oidNWSObject);
