@@ -100,7 +100,7 @@ This event runs whenever a named script - i.e. event scripts set in the toolset,
 
 If you do not want to handle this script, and let the regular nwscript do it (e.g. for `nw_`,`x0_` and `x2_` scripts), you should just return `-1` or `SCRIPT_NOT_HANDLED`. Otherwise, it's up to you to dispatch however you want, and return `>=0`. The return value is used in case of `StartingConditional` scripts.
 
-`oidSelf` is the handle of the object running the script. You can also access this object with `NWN.Object.OBJECT_SELF`.
+`oidSelf` is the handle of the object running the script. You can also access this object with `Internal.OBJECT_SELF`.
 
 @note A large switch (or if/else/if) statement to account for all scripts will get real unwieldy real fast, so you should set up some way to dispatch to the correct function based on a script. Some options are:
 
@@ -127,7 +127,7 @@ For example:
 ```cs
 public static int OnRunScript(string script, uint oidSelf)
 {
-    var tag = NWScript.GetTag(NWN.Object.OBJECT_SELF);
+    var tag = NWScript.GetTag(Internal.OBJECT_SELF);
     Console.WriteLine($"Running script '{script}' on object tag '{tag}'");
     NWScript.SendMessageToPC(NWScript.GetFirstPC(), "Hello!");
 
@@ -144,7 +144,7 @@ All the managed code provided in this repo is meant just as a primer, You are en
 
 ### NWN types
 
-When talking to unmanaged code, we only deal with basic types. `NWN.Object` is a wrapper class around a `uint` object ID (oid) that is passed to the native code. Other engine structures, like `Effect`,`Location`, etc, all have `IntPtr Handle` which is passed instead.
+When talking to unmanaged code, we only deal with basic types. Objects are passed as `uint`s. Other engine structures, like `Effect`,`Location`, etc, all have `IntPtr Handle` which is passed instead.
 
 ### Bootstrapping
 
@@ -220,7 +220,7 @@ The sample call implements closures in [Internal.cs](NWN/Internal/Internal.cs), 
 public delegate void ActionDelegate();
 private struct Closure
 {
-    public NWN.Object OwnerObject;
+    public uint OwnerObject;
     public ActionDelegate Run;
 }
 // Unique ID given to each event
@@ -229,9 +229,9 @@ private static ulong NextEventId = 0;
 private static Dictionary<ulong, Closure> Closures = new Dictionary<ulong, Closure>();
 
 // Scheduling a closure:
-public static void ClosureDelayCommand(NWN.Object obj, float duration, ActionDelegate func)
+public static void ClosureDelayCommand(uint obj, float duration, ActionDelegate func)
 {
-    if (NativeFunctions.ClosureDelayCommand(obj.Self, duration, NextEventId) != 0)
+    if (NativeFunctions.ClosureDelayCommand(obj, duration, NextEventId) != 0)
     {
         Closures.Add(NextEventId++, new Closure { OwnerObject = obj, Run = func });
     }
