@@ -31,12 +31,6 @@ public: // Structures
         EXCLUSIVE
     };
 
-    enum class CallType
-    {
-        BEFORE_ORIGINAL,
-        AFTER_ORIGINAL
-    };
-
     struct HookStorage
     {
         std::unique_ptr<Hooking::FunctionHook> m_hook;
@@ -59,7 +53,7 @@ public:
 
     template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
     typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value,
-    RegistrationToken>::type RequestSharedHook(void(*funcPtr)(CallType, Params ...));
+    RegistrationToken>::type RequestSharedHook(void(*funcPtr)(bool, Params ...));
 
     template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
     typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value,
@@ -67,7 +61,7 @@ public:
 
     template <uintptr_t Address, typename Ret, typename ... Params>
     typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value,
-    RegistrationToken>::type RequestSharedHook(void(*funcPtr)(CallType, Params ...));
+    RegistrationToken>::type RequestSharedHook(void(*funcPtr)(bool, Params ...));
 
     template <uintptr_t Address, typename Ret, typename ... Params>
     typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value,
@@ -90,7 +84,7 @@ public:
 
     template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
     typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value>::type
-    /*void*/ RequestSharedHook(void(*funcPtr)(Hooks::CallType, Params ...));
+    /*void*/ RequestSharedHook(void(*funcPtr)(bool, Params ...));
 
     template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
     typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value>::type
@@ -98,7 +92,7 @@ public:
 
     template <uintptr_t Address, typename Ret, typename ... Params>
     typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value>::type
-    /*void*/ RequestSharedHook(void(*funcPtr)(Hooks::CallType, Params ...));
+    /*void*/ RequestSharedHook(void(*funcPtr)(bool, Params ...));
 
     template <uintptr_t Address, typename Ret, typename ... Params>
     typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value>::type

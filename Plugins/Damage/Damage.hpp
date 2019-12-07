@@ -42,7 +42,7 @@ private:
     NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
 
     static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, bool bLoadingGame);
-    static void OnSignalDamage(NWNXLib::Services::Hooks::CallType type, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks);
+    static void OnSignalDamage(bool, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks);
     static void OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::string script, uint8_t attackNumber);
 
     static std::string GetEventScript(CNWSObject *pObject, const std::string &event);

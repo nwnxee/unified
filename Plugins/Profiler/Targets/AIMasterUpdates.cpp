@@ -60,9 +60,9 @@ AIMasterUpdates::AIMasterUpdates(const bool overkill,
     }
 }
 
-void AIMasterUpdates::AIMasterUpdate(Hooks::CallType type, CServerAIMaster* thisPtr)
+void AIMasterUpdates::AIMasterUpdate(bool before, CServerAIMaster* thisPtr)
 {
-    if (type != Hooks::CallType::BEFORE_ORIGINAL)
+    if (!before)
     {
         return;
     }

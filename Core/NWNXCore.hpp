@@ -64,7 +64,7 @@ private:
 
     static void CreateServerHandler(CAppManager*);
     static void DestroyServerHandler(CAppManager*);
-    static void MainLoopInternalHandler(NWNXLib::Services::Hooks::CallType type, CServerExoAppInternal*);
+    static void MainLoopInternalHandler(bool, CServerExoAppInternal*);
 
     int m_ScriptChunkRecursion;
 };

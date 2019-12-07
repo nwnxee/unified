@@ -87,7 +87,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
     {
         if (script != "")
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script);
+            g_plugin->GetServices()->m_perObjectStorage->Set(oidOwner, event + "_EVENT_SCRIPT", script, true);
             LOG_INFO("Set object 0x%08x %s Event Script to %s", oidOwner, event, script);
         }
         else
@@ -186,10 +186,10 @@ ArgumentStack Damage::SetAttackEventData(ArgumentStack&& args)
     return stack;
 }
 
-void Damage::OnSignalDamage(Services::Hooks::CallType type, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks)
+void Damage::OnSignalDamage(bool before, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks)
 {
     // only call once, either before or after original
-    if ( type == Services::Hooks::CallType::BEFORE_ORIGINAL )
+    if (before)
     {
         std::string script = GetEventScript(pThis, "ATTACK");
         if ( !script.empty() )

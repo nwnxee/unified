@@ -85,10 +85,9 @@ SkillRanks::~SkillRanks()
 {
 }
 
-void SkillRanks::LoadSkillInfoHook(Services::Hooks::CallType type, CNWRules* pRules)
+void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
 {
     // We only want to do this in the AFTER
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     if (before || !pRules)
         return;
 
@@ -945,7 +944,7 @@ ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
     ASSERT_OR_THROW(modifier < 127);
 
     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier);
+    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier, true);
 
     return stack;
 }

@@ -45,7 +45,7 @@ NetMessages::NetMessages(ViewPtr<Services::HooksProxy> hooker,
     metrics->SetResampler("NetworkMessage", sumResampler, std::chrono::seconds(1));
 }
 
-void NetMessages::ComputeGameObjectUpdateForCategory(Services::Hooks::CallType type,
+void NetMessages::ComputeGameObjectUpdateForCategory(bool before,
     CNWSMessage*,
     uint32_t category,
     uint32_t,
@@ -55,7 +55,7 @@ void NetMessages::ComputeGameObjectUpdateForCategory(Services::Hooks::CallType t
     CNWSPlayerLUOSortedObjectList*,
     int32_t)
 {
-    if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (!before)
     {
         return;
     }
@@ -71,7 +71,7 @@ void NetMessages::ComputeGameObjectUpdateForCategory(Services::Hooks::CallType t
         });
 }
 
-void NetMessages::SendServerToPlayerMessageHook(Services::Hooks::CallType type,
+void NetMessages::SendServerToPlayerMessageHook(bool before,
     CNWSMessage*,
     Types::PlayerID pid,
     uint8_t major,
@@ -79,7 +79,7 @@ void NetMessages::SendServerToPlayerMessageHook(Services::Hooks::CallType type,
     uint8_t*,
     uint32_t bufferLen)
 {
-    if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (!before)
     {
         return;
     }
@@ -98,13 +98,13 @@ void NetMessages::SendServerToPlayerMessageHook(Services::Hooks::CallType type,
         });
 }
 
-void NetMessages::HandlePlayerToServerMessageHook(Services::Hooks::CallType type,
+void NetMessages::HandlePlayerToServerMessageHook(bool before,
     CNWSMessage*,
     Types::PlayerID pid,
     uint8_t* buffer,
     uint32_t bufferLen)
 {
-    if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (!before)
     {
         return;
     }

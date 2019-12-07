@@ -5,20 +5,20 @@ HooksImpl::ScopedCallbackDispatcher<Params ...>::ScopedCallbackDispatcher(
     : m_subscribers(subscribers),
       m_args(std::make_tuple(args ...))
 {
-    UnpackAndDispatch(Hooks::CallType::BEFORE_ORIGINAL, typename GeneralSequence<sizeof ... (Params)>::SeqType());
+    UnpackAndDispatch(true, typename GeneralSequence<sizeof ... (Params)>::SeqType());
 }
 
 template <typename ... Params>
 HooksImpl::ScopedCallbackDispatcher<Params ...>::~ScopedCallbackDispatcher()
 {
-    UnpackAndDispatch(Hooks::CallType::AFTER_ORIGINAL, typename GeneralSequence<sizeof ... (Params)>::SeqType());
+    UnpackAndDispatch(false, typename GeneralSequence<sizeof ... (Params)>::SeqType());
 }
 
 template <typename ... Params>
 template <int ... Seq>
-void HooksImpl::ScopedCallbackDispatcher<Params ...>::UnpackAndDispatch(Hooks::CallType type, Sequence<Seq ...>)
+void HooksImpl::ScopedCallbackDispatcher<Params ...>::UnpackAndDispatch(bool before, Sequence<Seq ...>)
 {
-    return DispatchCallbacks(type, m_subscribers, std::get<Seq>(m_args) ...);
+    return DispatchCallbacks(before, m_subscribers, std::get<Seq>(m_args) ...);
 }
 
 template <typename Ret, typename ... Params>
@@ -163,14 +163,14 @@ struct HooksImpl::HookLandingHolderExclusive<Hooking::CallingConvention::SystemV
 };
 
 template <typename ... Params>
-void HooksImpl::DispatchCallbacks(const Hooks::CallType type,
+void HooksImpl::DispatchCallbacks(bool before,
     const std::vector<uintptr_t>* subscribers,
     Params ... args)
 {
     for (auto& callback : *subscribers)
     {
-        using FuncPtrType = void(*)(Hooks::CallType, Params ...);
+        using FuncPtrType = void(*)(bool, Params ...);
         FuncPtrType callbackPtr = reinterpret_cast<FuncPtrType>(callback);
-        callbackPtr(type, args ...);
+        callbackPtr(before, args ...);
     }
 }

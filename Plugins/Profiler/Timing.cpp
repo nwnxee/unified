@@ -143,11 +143,11 @@ std::chrono::nanoseconds FastTimer::ConstructTimestampAndPop()
     return time;
 }
 
-void FastTimer::ProfilerCalibrateHookFuncWithScope(Hooks::CallType type, CExoBase*, uint32_t)
+void FastTimer::ProfilerCalibrateHookFuncWithScope(bool before, CExoBase*, uint32_t)
 {
     static FastTimer timer;
 
-    if (type == Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         timer.Start();
     }

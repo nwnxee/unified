@@ -334,7 +334,7 @@ Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
         {
             auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
             m_customHearingDistances = true;
-            pPOS->Set(playerOid, "HEARING_DISTANCE:" + std::to_string(channel), distance);
+            pPOS->Set(playerOid, "HEARING_DISTANCE:" + std::to_string(channel), distance, true);
         }
         return stack;
     }

@@ -175,10 +175,10 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
     if (!bHandlePlayerToServerInputCancelGuiTimingEventHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> void
+                +[](bool before, CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> void
                 {
                     // Before or after doesn't matter, just pick one so it happens only once
-                    if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                    if (before)
                     {
                         CNWSScriptVarTable *pScriptVarTable = Utils::GetScriptVarTable(Utils::GetGameObject(pPlayer->m_oidPCObject));
 
@@ -277,7 +277,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
         if (bSetCap)
         {
             pCreature->m_bForcedWalk = true;
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "ALWAYS_WALK", 1);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "ALWAYS_WALK", 1, true);
         }
         else // remove the override
         {
@@ -539,12 +539,12 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
     if (!bAIActionRestHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode, int32_t>(
-            +[](Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
+            +[](bool before, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
             {
                 static int32_t creatureLevel;
                 static int32_t originalValue;
 
-                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                if (before)
                 {
                     creatureLevel = pCreature->m_pStats->GetLevel(0);
 
@@ -575,7 +575,7 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_DURATION", duration < 10 ? 10 : duration);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_DURATION", duration < 10 ? 10 : duration, true);
         }
     }
 
@@ -737,9 +737,9 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
     if (!bAIActionRestHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
+                +[](bool before, CNWSCreature* pCreature, CNWSObjectActionNode*) -> void
                 {
-                    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    if (!before)
                     {
                         if (auto animation = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_ANIMATION"))
                         {
@@ -762,7 +762,7 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_ANIMATION", animation);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pPlayer->m_oidNWSObject, "REST_ANIMATION", animation, true);
         }
     }
 
@@ -777,7 +777,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
     if (!bSetObjectVisualTransformOverrideHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
@@ -789,7 +789,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                             pObject->m_nObjectType == Constants::ObjectType::Item ||
                             pObject->m_nObjectType == Constants::ObjectType::Door)
                         {
-                            if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                            if (before)
                             {
                                 if (auto objectVisualTransformData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
                                         "OVTO!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
@@ -907,14 +907,14 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
     if (!bApplyLoopingVisualEffectToObjectHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
                         static std::set<uint16_t> *pLoopingVisualEffectSet;
 
-                        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                        if (before)
                         {
                             if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
                                     "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
@@ -1007,7 +1007,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
     if (!bSetPlaceableNameOverrideHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
                     CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
@@ -1015,7 +1015,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                         static std::optional<std::string> name;
                         static CExoString swapName;
 
-                        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                        if (before)
                         {
                             name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,
                                     "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
@@ -1100,9 +1100,9 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
     if (!bSetPersistentLocationHook)
     {
         GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii, void>(
-                +[](Services::Hooks::CallType cType, CServerExoAppInternal*, CNWSPlayer *pPlayer, int32_t, int32_t) -> void
+                +[](bool before, CServerExoAppInternal*, CNWSPlayer *pPlayer, int32_t, int32_t) -> void
                 {
-                    if (cType == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    if (!before)
                     {
                         std::string sKey;
                         std::string sBicFileName = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
@@ -1273,9 +1273,9 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
         pPossessFamiliarHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature15PossessFamiliarEv);
 
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature17UnpossessFamiliarEv, int32_t>(
-                +[](Services::Hooks::CallType type, CNWSCreature *pPossessor) -> void
+                +[](bool before, CNWSCreature *pPossessor) -> void
                 {
-                    if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+                    if (!before)
                     {
                         auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
                         auto possessedOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");

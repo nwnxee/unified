@@ -21,16 +21,16 @@ private:
     NWNXLib::Hooking::FunctionHook* m_LevelDownHook;
     NWNXLib::Hooking::FunctionHook* m_SummonAssociateHook;
 
-    static void ReloadAllHook(NWNXLib::Services::Hooks::CallType type, CNWRules* rules);
-    static void LoadSpellGainTableHook(NWNXLib::Services::Hooks::CallType type, CNWClass* pClass, CExoString *pTable);
-    static void LoadSpellKnownTableHook(NWNXLib::Services::Hooks::CallType type, CNWClass* pClass, CExoString *pTable);
+    static void ReloadAllHook(bool, CNWRules* rules);
+    static void LoadSpellGainTableHook(bool, CNWClass* pClass, CExoString *pTable);
+    static void LoadSpellKnownTableHook(bool, CNWClass* pClass, CExoString *pTable);
     static uint8_t GetSpellGainHook(CNWClass*, uint8_t, uint8_t);
     static uint8_t GetSpellsKnownPerLevelHook(CNWClass *, uint8_t, uint8_t, uint8_t, uint16_t, uint8_t);
     static int32_t CanLevelUpHook(CNWSCreatureStats*);
     static void SummonAssociateHook(CNWSCreature *, CResRef, CExoString *, uint16_t);
     static void LevelDownHook(CNWSCreatureStats *, CNWLevelStats *);
     static uint32_t GetExpNeededForLevelUpHook(CNWSCreatureStats *);
-    static void GetServerInfoFromIniFileHook(NWNXLib::Services::Hooks::CallType type, CServerExoAppInternal *);
+    static void GetServerInfoFromIniFileHook(bool, CServerExoAppInternal *);
 };
 
 }

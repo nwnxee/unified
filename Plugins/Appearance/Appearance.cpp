@@ -79,14 +79,14 @@ CNWSPlayer *Appearance::Player(ArgumentStack& args)
     return pPlayer;
 }
 
-void Appearance::ComputeGameObjectUpdateForObjectHook(Services::Hooks::CallType type, CNWSMessage*,
+void Appearance::ComputeGameObjectUpdateForObjectHook(bool before, CNWSMessage*,
         CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, Types::ObjectID oidObjectToUpdate)
 {
     if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
     {
         static AppearanceOverrideData *pAOD;
 
-        if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+        if (before)
         {
             if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
                     Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))

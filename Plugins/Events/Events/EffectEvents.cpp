@@ -23,10 +23,8 @@ EffectEvents::EffectEvents(ViewPtr<Services::HooksProxy> hooker)
     });
 }
 
-void EffectEvents::HandleEffectHook(const std::string& event, Services::Hooks::CallType type, CNWSObject* pObject, CGameEffect* pEffect)
+void EffectEvents::HandleEffectHook(const std::string& event, bool before, CNWSObject* pObject, CGameEffect* pEffect)
 {
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-
     int32_t effectDurationType = pEffect->m_nSubType & EffectDurationType::MASK;
 
     if (effectDurationType != EffectDurationType::Temporary && effectDurationType != EffectDurationType::Permanent)
@@ -78,15 +76,14 @@ void EffectEvents::HandleEffectHook(const std::string& event, Services::Hooks::C
     Events::SignalEvent(before ? "NWNX_ON_EFFECT_" + event + "_BEFORE" : "NWNX_ON_EFFECT_" + event + "_AFTER" , pObject->m_idSelf);
 }
 
-void EffectEvents::OnEffectAppliedHook(Services::Hooks::CallType type, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect, int32_t bLoadingGame)
+void EffectEvents::OnEffectAppliedHook(bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect, int32_t)
 {
-    (void)bLoadingGame;
-    HandleEffectHook("APPLIED", type, pObject, pEffect);
+    HandleEffectHook("APPLIED", before, pObject, pEffect);
 }
 
-void EffectEvents::OnEffectRemovedHook(Services::Hooks::CallType type, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect)
+void EffectEvents::OnEffectRemovedHook(bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect)
 {
-    HandleEffectHook("REMOVED", type, pObject, pEffect);
+    HandleEffectHook("REMOVED", before, pObject, pEffect);
 }
 
 }

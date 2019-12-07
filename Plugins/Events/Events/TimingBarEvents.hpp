@@ -13,15 +13,8 @@ public:
     TimingBarEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
 
 private:
-    static void HandlePlayerToServerInputCancelGuiTimingEventHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            CNWSPlayer*);
-    static void SendServerToPlayerGuiTimingEventHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            CNWSPlayer*,
-            int32_t, uint8_t, uint32_t);
+    static void HandlePlayerToServerInputCancelGuiTimingEventHook(bool, CNWSMessage*, CNWSPlayer*);
+    static void SendServerToPlayerGuiTimingEventHook(bool, CNWSMessage*, CNWSPlayer*, int32_t, uint8_t, uint32_t);
 };
 
 }

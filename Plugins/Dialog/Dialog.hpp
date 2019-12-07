@@ -17,20 +17,13 @@ public:
 
 private:
     struct Hooks {
-        static void GetStartEntry(NWNXLib::Services::Hooks::CallType type, CNWSDialog *pThis,
-            CNWSObject* pNWSObjectOwner);
-        static void GetStartEntryOneLiner(NWNXLib::Services::Hooks::CallType type, CNWSDialog *pThis,
-            CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript);
-        static void SendDialogEntry(NWNXLib::Services::Hooks::CallType type, CNWSDialog *pThis,
-            CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, int32_t bPlayHelloSound);
-        static void SendDialogReplies(NWNXLib::Services::Hooks::CallType type, CNWSDialog *pThis,
-            CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly);
-        static void HandleReply(NWNXLib::Services::Hooks::CallType type, CNWSDialog *pThis,
-            uint32_t nPlayerID, CNWSObject* pNWSObjectOwner, uint32_t nReplyIndex, int32_t bEscapeDialog, uint32_t currentEntryIndex);
-        static void CheckScript(NWNXLib::Services::Hooks::CallType type, CNWSDialog *pThis,
-            CNWSObject*, const CResRef*);
-        static void RunScript(NWNXLib::Services::Hooks::CallType type, CNWSDialog *pThis,
-            CNWSObject*, const CResRef*);
+        static void GetStartEntry(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner);
+        static void GetStartEntryOneLiner(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript);
+        static void SendDialogEntry(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, int32_t bPlayHelloSound);
+        static void SendDialogReplies(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly);
+        static void HandleReply(bool, CNWSDialog *pThis, uint32_t nPlayerID, CNWSObject* pNWSObjectOwner, uint32_t nReplyIndex, int32_t bEscapeDialog, uint32_t currentEntryIndex);
+        static void CheckScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*);
+        static void RunScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*);
     };
     static enum State {
         DIALOG_STATE_INVALID,

@@ -245,9 +245,9 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
 
     LOG_DEBUG("Registered main loop handler: %p", Handlers.MainLoop);
     Instance->GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
-        +[](Services::Hooks::CallType type, CServerExoAppInternal*)
+        +[](bool before, CServerExoAppInternal*)
         {
-            if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+            if (before)
             {
                 static uint64_t frame = 0;
                 if (Handlers.MainLoop)
