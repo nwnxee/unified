@@ -31,7 +31,7 @@ using namespace NWNXLib::API;
 static Hooking::FunctionHook* m_SendServerToPlayerPopUpGUIPanelHook;
 static Hooking::FunctionHook* m_SendServerToPlayerPlayModuleCharacterListResponseHook;
 
-static ViewPtr<Rename::Rename> g_plugin;
+static Rename::Rename* g_plugin;
 
 //Constants for Player Name states.
 const int NWNX_RENAME_PLAYERNAME_DEFAULT = 0;

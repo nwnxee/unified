@@ -17,7 +17,7 @@ static Hooking::FunctionHook* m_SpellCastAndImpactHook = nullptr;
 static Hooking::FunctionHook* m_SetMemorizedSpellSlotHook = nullptr;
 static Hooking::FunctionHook* m_ClearMemorizedSpellSlotHook = nullptr;
 
-SpellEvents::SpellEvents(ViewPtr<Services::HooksProxy> hooker)
+SpellEvents::SpellEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_CAST_SPELL_.*", [hooker]() {
         hooker->RequestExclusiveHook<NWNXLib::API::Functions::_ZN10CNWSObject18SpellCastAndImpactEj6Vectorjhjiihi>(&CastSpellHook);

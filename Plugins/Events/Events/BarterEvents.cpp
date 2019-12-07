@@ -24,7 +24,7 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerBarter_StartBarterH
 static Types::ObjectID m_initiatorOid;
 static Types::ObjectID m_targetOid;
 
-BarterEvents::BarterEvents(ViewPtr<Services::HooksProxy> hooker)
+BarterEvents::BarterEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_BARTER_START_.*", [hooker]() {
         hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer, int32_t,

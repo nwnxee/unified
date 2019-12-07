@@ -13,7 +13,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static ViewPtr<SpellChecker::SpellChecker> g_plugin;
+static SpellChecker::SpellChecker* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -47,7 +47,7 @@ SpellChecker::SpellChecker(const Plugin::CreateParams& params)
 
     REGISTER(FindMisspell);
     REGISTER(GetSuggestSpell);
-    SpellChecker::Init(GetServices()->m_config);
+    SpellChecker::Init(GetServices()->m_config.get());
 #undef REGISTER
 
 }
@@ -68,7 +68,7 @@ uintptr_t SpellChecker::EstbSymFunction(const std::string& symbol)
     }
     return var;
 }
-void SpellChecker::Init(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
+void SpellChecker::Init(NWNXLib::Services::ConfigProxy* config)
 {
     SpellChecker::handle = dlopen("libhunspell.so", RTLD_NOW | RTLD_NODELETE);
 

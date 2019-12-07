@@ -20,7 +20,7 @@
 
 using namespace NWNXLib;
 
-static ViewPtr<Tweaks::Tweaks> g_plugin;
+static Tweaks::Tweaks* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

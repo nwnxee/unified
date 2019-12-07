@@ -17,7 +17,7 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerMapPinSetMapPinAtHo
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerMapPinChangePinHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerMapPinDestroyMapPinHook = nullptr;
 
-MapEvents::MapEvents(ViewPtr<Services::HooksProxy> hooker)
+MapEvents::MapEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_ADD_PIN_.*", [hooker]() {
         hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage37HandlePlayerToServerMapPinSetMapPinAtEP10CNWSPlayer, int32_t,

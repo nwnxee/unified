@@ -9,14 +9,14 @@ namespace Profiler {
 
 using namespace NWNXLib;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
 DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppMainLoop, int32_t, CServerExoAppInternal*);
 DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppConnectionLibMainLoop, void, CServerExoAppInternal*);
 DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, ExoAppUpdateClientGameObjects, void, CServerExoAppInternal*, int32_t);
 
-MainLoop::MainLoop(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+MainLoop::MainLoop(NWNXLib::Services::HooksProxy* hooker,
+    NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 

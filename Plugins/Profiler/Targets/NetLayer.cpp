@@ -9,13 +9,13 @@ namespace Profiler {
 
 using namespace NWNXLib;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
 DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerProcessReceivedFrames, void, CNetLayer*, int32_t);
 DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerUpdateStatusLoop, int32_t, CNetLayer*, uint32_t);
 
-NetLayer::NetLayer(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+NetLayer::NetLayer(NWNXLib::Services::HooksProxy* hooker,
+    NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 

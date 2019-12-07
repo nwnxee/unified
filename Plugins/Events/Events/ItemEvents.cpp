@@ -28,7 +28,7 @@ static Hooking::FunctionHook* m_UseLoreOnItemHook = nullptr;
 static Hooking::FunctionHook* m_PayToIdenfifyItemHook = nullptr;
 static Hooking::FunctionHook* m_SplitItemHook = nullptr;
 
-ItemEvents::ItemEvents(ViewPtr<Services::HooksProxy> hooker)
+ItemEvents::ItemEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorj>(&UseItemHook);

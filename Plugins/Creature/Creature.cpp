@@ -17,12 +17,11 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Creature::Creature> g_plugin;
+static Creature::Creature* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

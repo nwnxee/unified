@@ -21,14 +21,13 @@
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/Config/Config.hpp"
-#include "ViewPtr.hpp"
 #include <cmath>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static ViewPtr<Race::Race> g_plugin;
+static Race::Race* g_plugin;
 
 const auto MODULE_OID = 0;
 

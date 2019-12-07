@@ -29,7 +29,6 @@
 #include "Events/MaterialChangeEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
-#include "ViewPtr.hpp"
 
 #include <algorithm>
 #include <regex>
@@ -39,7 +38,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static ViewPtr<Events::Events> g_plugin;
+static Events::Events* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -99,30 +98,31 @@ Events::Events(const Plugin::CreateParams& params)
             PushEventData(message[0], message[1]);
         });
 
-    m_associateEvents   = std::make_unique<AssociateEvents>(GetServices()->m_hooks);
-    m_barterEvents      = std::make_unique<BarterEvents>(GetServices()->m_hooks);
-    m_clientEvents      = std::make_unique<ClientEvents>(GetServices()->m_hooks);
-    m_combatEvents      = std::make_unique<CombatEvents>(GetServices()->m_hooks);
-    m_dmActionEvents    = std::make_unique<DMActionEvents>(GetServices()->m_hooks);
-    m_examineEvents     = std::make_unique<ExamineEvents>(GetServices()->m_hooks);
-    m_itemEvents        = std::make_unique<ItemEvents>(GetServices()->m_hooks);
-    m_featEvents        = std::make_unique<FeatEvents>(GetServices()->m_hooks);
-    m_stealthEvents     = std::make_unique<StealthEvents>(GetServices()->m_hooks);
-    m_spellEvents       = std::make_unique<SpellEvents>(GetServices()->m_hooks);
-    m_partyEvents       = std::make_unique<PartyEvents>(GetServices()->m_hooks);
-    m_healerKitEvents   = std::make_unique<HealerKitEvents>(GetServices()->m_hooks);
-    m_skillEvents       = std::make_unique<SkillEvents>(GetServices()->m_hooks);
-    m_mapEvents         = std::make_unique<MapEvents>(GetServices()->m_hooks);
-    m_polymorphEvents   = std::make_unique<PolymorphEvents>(GetServices()->m_hooks);
-    m_effectEvents      = std::make_unique<EffectEvents>(GetServices()->m_hooks);
-    m_quickChatEvents   = std::make_unique<QuickChatEvents>(GetServices()->m_hooks);
-    m_inventoryEvents   = std::make_unique<InventoryEvents>(GetServices()->m_hooks);
-    m_trapEvents        = std::make_unique<TrapEvents>(GetServices()->m_hooks);
-    m_timingBarEvents   = std::make_unique<TimingBarEvents>(GetServices()->m_hooks);
-    m_levelEvents       = std::make_unique<LevelEvents>(GetServices()->m_hooks);
-    m_PVPEvents         = std::make_unique<PVPEvents>(GetServices()->m_hooks);
-    m_inputEvents       = std::make_unique<InputEvents>(GetServices()->m_hooks);
-    m_matChangeEvents   = std::make_unique<MaterialChangeEvents>(GetServices()->m_hooks);
+    auto hooker = GetServices()->m_hooks.get();
+    m_associateEvents   = std::make_unique<AssociateEvents>(hooker);
+    m_barterEvents      = std::make_unique<BarterEvents>(hooker);
+    m_clientEvents      = std::make_unique<ClientEvents>(hooker);
+    m_combatEvents      = std::make_unique<CombatEvents>(hooker);
+    m_dmActionEvents    = std::make_unique<DMActionEvents>(hooker);
+    m_examineEvents     = std::make_unique<ExamineEvents>(hooker);
+    m_itemEvents        = std::make_unique<ItemEvents>(hooker);
+    m_featEvents        = std::make_unique<FeatEvents>(hooker);
+    m_stealthEvents     = std::make_unique<StealthEvents>(hooker);
+    m_spellEvents       = std::make_unique<SpellEvents>(hooker);
+    m_partyEvents       = std::make_unique<PartyEvents>(hooker);
+    m_healerKitEvents   = std::make_unique<HealerKitEvents>(hooker);
+    m_skillEvents       = std::make_unique<SkillEvents>(hooker);
+    m_mapEvents         = std::make_unique<MapEvents>(hooker);
+    m_polymorphEvents   = std::make_unique<PolymorphEvents>(hooker);
+    m_effectEvents      = std::make_unique<EffectEvents>(hooker);
+    m_quickChatEvents   = std::make_unique<QuickChatEvents>(hooker);
+    m_inventoryEvents   = std::make_unique<InventoryEvents>(hooker);
+    m_trapEvents        = std::make_unique<TrapEvents>(hooker);
+    m_timingBarEvents   = std::make_unique<TimingBarEvents>(hooker);
+    m_levelEvents       = std::make_unique<LevelEvents>(hooker);
+    m_PVPEvents         = std::make_unique<PVPEvents>(hooker);
+    m_inputEvents       = std::make_unique<InputEvents>(hooker);
+    m_matChangeEvents   = std::make_unique<MaterialChangeEvents>(hooker);
 }
 
 Events::~Events()

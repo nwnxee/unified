@@ -4,14 +4,13 @@
 #include "API/CNWSFaction.hpp"
 #include "API/Functions.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "ViewPtr.hpp"
 
 
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Reveal::Reveal> g_plugin;
+static Reveal::Reveal* g_plugin;
 
 //key names for Per Object Storage
 const std::string revealKey = "REVEAL";

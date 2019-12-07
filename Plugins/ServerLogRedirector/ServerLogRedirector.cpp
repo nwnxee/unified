@@ -4,11 +4,10 @@
 #include "API/CExoString.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 
-static ViewPtr<ServerLogRedirector::ServerLogRedirector> g_plugin;
+static ServerLogRedirector::ServerLogRedirector* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

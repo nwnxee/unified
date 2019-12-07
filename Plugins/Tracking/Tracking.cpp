@@ -2,11 +2,10 @@
 #include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
 #include "Targets/Activity.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 
-static ViewPtr<Tracking::Tracking> g_plugin;
+static Tracking::Tracking* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -34,7 +33,7 @@ Tracking::Tracking(const Plugin::CreateParams& params)
 {
     if (GetServices()->m_config->Get<bool>("ENABLE_ACTIVITY_TARGET", true))
     {
-        m_activityTarget = std::make_unique<Activity>(GetServices()->m_metrics, GetServices()->m_hooks);
+        m_activityTarget = std::make_unique<Activity>(GetServices()->m_metrics.get(), GetServices()->m_hooks.get());
     }
 }
 

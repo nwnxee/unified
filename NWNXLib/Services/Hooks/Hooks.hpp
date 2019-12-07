@@ -3,7 +3,6 @@
 #include "Hooking/FunctionHook.hpp"
 #include "Platform/ASLR.hpp"
 #include "Services/Services.hpp"
-#include "ViewPtr.hpp"
 
 #include <algorithm>
 #include <memory>
@@ -58,8 +57,8 @@ public:
 
     void ClearHook(RegistrationToken&& token);
 
-    ViewPtr<Hooking::FunctionHook> FindHookByAddress(const uintptr_t address);
-    ViewPtr<HookStorage> FindHookStorageByAddress(const uintptr_t address);
+    Hooking::FunctionHook* FindHookByAddress(const uintptr_t address);
+    HookStorage* FindHookStorageByAddress(const uintptr_t address);
 
 private:
     GenericHookMap m_hooks;
@@ -78,8 +77,8 @@ public:
     void RequestExclusiveHook(Ret(*funcPtr)(Params ...));
 
     void ClearHook(const uintptr_t address);
-    ViewPtr<Hooking::FunctionHook> FindHookByAddress(const uintptr_t address);
-    ViewPtr<Hooks::HookStorage> FindHookStorageByAddress(const uintptr_t address);
+    Hooking::FunctionHook* FindHookByAddress(const uintptr_t address);
+    Hooks::HookStorage* FindHookStorageByAddress(const uintptr_t address);
 
 private:
     std::vector<Hooks::RegistrationToken> m_registrationTokens;

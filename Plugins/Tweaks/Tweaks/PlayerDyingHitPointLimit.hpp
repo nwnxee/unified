@@ -2,14 +2,13 @@
 
 #include "API/Types.hpp"
 #include "Common.hpp"
-#include "ViewPtr.hpp"
 
 namespace Tweaks {
 
 class PlayerDyingHitPointLimit
 {
 public:
-    PlayerDyingHitPointLimit(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker, int16_t hplimit);
+    PlayerDyingHitPointLimit(NWNXLib::Services::HooksProxy* hooker, int16_t hplimit);
 
 
 private:

@@ -13,7 +13,7 @@ static NWNXLib::Hooking::FunctionHook* m_SetStealthModeHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_DoSpotDetectionHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_DoListenDetectionHook = nullptr;
 
-StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
+StealthEvents::StealthEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_E.*_STEALTH_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature14SetStealthModeEh>(&SetStealthModeHook);

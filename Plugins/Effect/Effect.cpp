@@ -8,14 +8,13 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWSObject.hpp"
 #include "Utils.hpp"
-#include "ViewPtr.hpp"
 
 #include <string>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Effect::Effect> g_plugin;
+static Effect::Effect* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

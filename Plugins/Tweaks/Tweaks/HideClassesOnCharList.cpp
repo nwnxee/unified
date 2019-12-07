@@ -14,7 +14,7 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-HideClassesOnCharList::HideClassesOnCharList(ViewPtr<Services::HooksProxy> hooker)
+HideClassesOnCharList::HideClassesOnCharList(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji>
         (&SendServerToPlayerPlayModuleCharacterListResponseHook);

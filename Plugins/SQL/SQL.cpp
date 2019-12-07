@@ -4,7 +4,6 @@
 #include "Targets/SQLite.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
-#include "ViewPtr.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
 #include "Encoding.hpp"
@@ -20,7 +19,7 @@
 
 using namespace NWNXLib;
 
-static ViewPtr<SQL::SQL> g_plugin;
+static SQL::SQL* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -130,7 +129,7 @@ bool SQL::Reconnect(int32_t attempts)
     {
         try
         {
-            m_target->Connect(GetServices()->m_config);
+            m_target->Connect(GetServices()->m_config.get());
             LOG_NOTICE("Reconnect successful.");
             break;
         }

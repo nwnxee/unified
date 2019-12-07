@@ -25,7 +25,6 @@
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
 #include "Services/Events/Events.hpp"
-#include "ViewPtr.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
 
@@ -34,7 +33,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Object::Object> g_plugin;
+static Object::Object* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

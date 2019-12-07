@@ -4,7 +4,6 @@
 #include "API/Globals.hpp"
 #include "Events.hpp"
 #include "Utils.hpp"
-#include "ViewPtr.hpp"
 #include "API/Vector.hpp"
 
 namespace Events {
@@ -15,7 +14,7 @@ using namespace NWNXLib::Services;
 
 static Hooking::FunctionHook* m_UseFeatHook = nullptr;
 
-FeatEvents::FeatEvents(ViewPtr<Services::HooksProxy> hooker)
+FeatEvents::FeatEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", [hooker]() {
         hooker->RequestExclusiveHook<

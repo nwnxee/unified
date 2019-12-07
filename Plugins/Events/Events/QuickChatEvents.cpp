@@ -16,7 +16,7 @@ using namespace NWNXLib::API::Constants;
 
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerQuickChatMessageHook = nullptr;
 
-QuickChatEvents::QuickChatEvents(ViewPtr<Services::HooksProxy> hooker)
+QuickChatEvents::QuickChatEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh>(&HandlePlayerToServerQuickChatMessageHook);

@@ -3,14 +3,13 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class BarterEvents
 {
 public:
-    BarterEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    BarterEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static int32_t HandlePlayerToServerBarter_StartBarterHook(CNWSMessage*, CNWSPlayer*);

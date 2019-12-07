@@ -25,7 +25,7 @@ static NWNXLib::Hooking::FunctionHook* m_AddItemHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_AddGoldHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_RemoveGoldHook = nullptr;
 
-InventoryEvents::InventoryEvents(ViewPtr<Services::HooksProxy> hooker)
+InventoryEvents::InventoryEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", [hooker]()
     {

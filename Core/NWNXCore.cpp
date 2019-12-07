@@ -296,7 +296,7 @@ void NWNXCore::InitialSetupPlugins()
 
         std::unique_ptr<Services::ProxyServiceList> services = ConstructProxyServices(pluginNameWithoutExtension);
 
-        Plugin::CreateParams params = { services };
+        Plugin::CreateParams params = { services.get() };
 
         if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
         {
@@ -584,7 +584,7 @@ void NWNXCore::MainLoopInternalHandler(bool before, CServerExoAppInternal*)
         return;
     }
 
-    g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks);
+    g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks.get());
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
     g_core->m_services->m_commands->RunScheduledCommands();
 }

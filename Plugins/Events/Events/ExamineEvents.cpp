@@ -8,7 +8,7 @@ namespace Events {
 
 using namespace NWNXLib;
 
-ExamineEvents::ExamineEvents(ViewPtr<Services::HooksProxy> hooker)
+ExamineEvents::ExamineEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj, int32_t,

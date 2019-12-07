@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Services.hpp"
-#include "ViewPtr.hpp"
 
 #include <cstdint>
 #include <map>
@@ -21,8 +20,8 @@ public: // Structures
     {
         PluginID m_id;
         std::string m_path;
-        ViewPtr<Plugin::Info> m_info;
-        ViewPtr<Plugin> m_plugin;
+        Plugin::Info* m_info;
+        Plugin* m_plugin;
     };
 
     struct RegistrationToken

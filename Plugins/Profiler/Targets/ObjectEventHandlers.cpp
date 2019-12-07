@@ -9,7 +9,7 @@ namespace Profiler {
 
 using namespace NWNXLib;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerArea, void, CNWSArea*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerAreaOfEffect, void, CNWSAreaOfEffectObject*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
@@ -23,8 +23,8 @@ DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerStore, void, CNWSStor
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerTrigger, void, CNWSTrigger*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerWaypoint, void, CNWSWaypoint*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
 
-ObjectEventHandlers::ObjectEventHandlers(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+ObjectEventHandlers::ObjectEventHandlers(NWNXLib::Services::HooksProxy* hooker,
+    NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 

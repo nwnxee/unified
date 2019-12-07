@@ -3,14 +3,13 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class ClientEvents
 {
 public:
-    ClientEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    ClientEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void RemovePCFromWorldHook(bool, CServerExoAppInternal*, CNWSPlayer*);

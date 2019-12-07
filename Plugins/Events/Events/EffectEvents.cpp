@@ -13,7 +13,7 @@ using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
 
-EffectEvents::EffectEvents(ViewPtr<Services::HooksProxy> hooker)
+EffectEvents::EffectEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_EFFECT_APPLIED_.*", [hooker]() {
        hooker->RequestSharedHook<NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti, int32_t>(&OnEffectAppliedHook);

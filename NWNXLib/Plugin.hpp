@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Services/Services.hpp"
-#include "ViewPtr.hpp"
 
 #include <string>
 #include <unordered_map>
@@ -44,7 +43,7 @@ public: // Structures
     struct CreateParams
     {
     public:
-        ViewPtr<Services::ProxyServiceList> m_services;
+        Services::ProxyServiceList* m_services;
     };
 
     enum class UnloadReason
@@ -59,10 +58,10 @@ public:
     virtual ~Plugin();
 
 protected:
-    ViewPtr<Services::ProxyServiceList> GetServices();
+    Services::ProxyServiceList* GetServices();
 
 private:
-    ViewPtr<Services::ProxyServiceList> m_services;
+    Services::ProxyServiceList* m_services;
 };
 
 }

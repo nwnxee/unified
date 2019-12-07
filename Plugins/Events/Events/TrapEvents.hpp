@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class TrapEvents
 {
 public:
-    TrapEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    TrapEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static uint32_t HandleTrapHook(const std::string&, NWNXLib::Hooking::FunctionHook* originalTrapHook, CNWSCreature *pCreature, CNWSObjectActionNode *pNode);

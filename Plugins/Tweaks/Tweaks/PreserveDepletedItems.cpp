@@ -16,7 +16,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* PreserveDepletedItems::pAIActionItemCastSpell_hook;
-PreserveDepletedItems::PreserveDepletedItems(ViewPtr<Services::HooksProxy> hooker)
+PreserveDepletedItems::PreserveDepletedItems(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode>
                                     (&CNWSCreature__AIActionItemCastSpell_hook);
