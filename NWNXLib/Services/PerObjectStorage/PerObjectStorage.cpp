@@ -179,7 +179,6 @@ std::string PerObjectStorage::ObjectStorage::DumpToString()
 std::string PerObjectStorage::ObjectStorage::Serialize(bool persistonly)
 {
     std::stringstream ss;
-    persistonly = false;
     if (m_IntMap)
     {
         int count = 0;
@@ -303,17 +302,17 @@ PerObjectStorageProxy::~PerObjectStorageProxy()
     // TODO cleanup all storage from this plugin
 }
 
-void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key, int value)
+void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key, int value, bool persist)
 {
-    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value);
+    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value, persist);
 }
-void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key, float value)
+void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key, float value, bool persist)
 {
-    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value);
+    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, value, persist);
 }
-void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key, std::string value)
+void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key, std::string value, bool persist)
 {
-    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, std::move(value));
+    m_proxyBase.Set(pGameObject, m_pluginName + "!" + key, std::move(value), persist);
 }
 void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup)
 {
@@ -333,7 +332,7 @@ template <> std::optional<int> PerObjectStorage::Get<int>(CGameObject *pGameObje
         auto map = pOS->GetIntMap();
         auto it = map.find(key);
         if (it != map.end())
-            return std::make_optional<int>(it->second);
+            return std::make_optional<int>(it->second.first);
     }
     return std::optional<int>();
 }
@@ -345,7 +344,7 @@ template <> std::optional<float> PerObjectStorage::Get<float>(CGameObject *pGame
         auto map = pOS->GetFloatMap();
         auto it = map.find(key);
         if (it != map.end())
-            return std::make_optional<float>(it->second);
+            return std::make_optional<float>(it->second.first);
     }
     return std::optional<float>();
 }
@@ -357,7 +356,7 @@ template <> std::optional<std::string> PerObjectStorage::Get<std::string>(CGameO
         auto map = pOS->GetStringMap();
         auto it = map.find(key);
         if (it != map.end())
-            return std::make_optional<std::string>(it->second);
+            return std::make_optional<std::string>(it->second.first);
     }
     return std::optional<std::string>();
 }

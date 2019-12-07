@@ -1485,7 +1485,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "WALK_RATE_CAP", fWalkRateCap);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "WALK_RATE_CAP", fWalkRateCap, true);
         }
     }
 

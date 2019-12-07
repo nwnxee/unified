@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
+## [Unreleased]
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+- Per Object Storage can now be persisted to GFF. The following variables will now persist: `NWNX_Player!ALWAYS_WALK`, `NWNX_Player!REST_DURATION`, , `NWNX_Player!REST_ANIMATION`, `NWNX_Creature!WALK_RATE_CAP`, `NWNX_Chat!HEARING_DISTANCE*`, `NWNX_Damage!*_EVENT_SCRIPT`, `NWNX_Feedback!*`, `NWNX_Reveal!*`, `NWNX_SkillRanks!SKILLRANK_MOD_*`. This means you no longer need to re-apply these to your players and objects after every restart.
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+
 ## [8193.1]
 
 Note: Some nwscript files have changed. You will need to update them and recompile all scripts.
@@ -334,6 +359,7 @@ The following plugins were added:
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
 
+[Unreleased]: https://github.com/nwnxee/unified/compare/build8193.1...HEAD
 [8193.1]: https://github.com/nwnxee/unified/compare/build8193...build8193.1
 [8193]: https://github.com/nwnxee/unified/compare/build8186-lts...build8193
 [8186 LTS]: https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts
