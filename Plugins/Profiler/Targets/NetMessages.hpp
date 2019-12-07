@@ -14,29 +14,9 @@ public:
         NWNXLib::ViewPtr<NWNXLib::Services::MetricsProxy> metrics);
 
 private:
-    static void ComputeGameObjectUpdateForCategory(NWNXLib::Services::Hooks::CallType,
-        CNWSMessage*,
-        uint32_t,
-        uint32_t,
-        CNWSPlayer*,
-        CNWSObject*,
-        CGameObjectArray*,
-        CNWSPlayerLUOSortedObjectList*,
-        int32_t);
-
-    static void SendServerToPlayerMessageHook(NWNXLib::Services::Hooks::CallType,
-        CNWSMessage*,
-        NWNXLib::API::Types::PlayerID,
-        uint8_t,
-        uint8_t,
-        uint8_t*,
-        uint32_t);
-
-    static void HandlePlayerToServerMessageHook(NWNXLib::Services::Hooks::CallType,
-        CNWSMessage*,
-        NWNXLib::API::Types::PlayerID,
-        uint8_t*,
-        uint32_t);
+    static void ComputeGameObjectUpdateForCategory(bool, CNWSMessage*, uint32_t, uint32_t, CNWSPlayer*, CNWSObject*, CGameObjectArray*, CNWSPlayerLUOSortedObjectList*, int32_t);
+    static void SendServerToPlayerMessageHook(bool, CNWSMessage*, NWNXLib::API::Types::PlayerID, uint8_t, uint8_t, uint8_t*, uint32_t);
+    static void HandlePlayerToServerMessageHook(bool, CNWSMessage*, NWNXLib::API::Types::PlayerID, uint8_t*, uint32_t);
 };
 
 }

@@ -36,14 +36,14 @@ public:
 
     static inline char GffFieldName[] = "NWNX_POS";
 
-    static void CNWSObject__CNWSObjectDtor__0_hook(Services::Hooks::CallType type, CNWSObject* thisPtr);
-    static void CNWSArea__CNWSAreaDtor__0_hook(Services::Hooks::CallType type, CNWSArea* thisPtr);
-    static void CNWSPlayer__EatTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD);
-    static void CNWSPlayer__DropTURD_hook(Services::Hooks::CallType type, CNWSPlayer* thisPtr);
-    static void CNWSObject__SaveObjectState_hook(Services::Hooks::CallType type, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
-    static void CNWSObject__LoadObjectState_hook(Services::Hooks::CallType type, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
-    static void CNWSCreature__LoadCreature_hook(Services::Hooks::CallType type, CNWSCreature* pThis, CResGFF * pRes, CResStruct * cCreatureStruct, BOOL bIsSaveGame, BOOL bIsAssociate, BOOL bPreserveItemIds, BOOL bCopyObject);
-    static void CNWSCreature__SaveCreature_hook(Services::Hooks::CallType type, CNWSCreature* pThis, CResGFF * pRes, CResStruct * pStruct, BOOL bStoreAssociateList, BOOL bUseDesiredAreaInfo, BOOL bExportingChar, BOOL bSaveOIDs);
+    static void CNWSObject__CNWSObjectDtor__0_hook(bool, CNWSObject* thisPtr);
+    static void CNWSArea__CNWSAreaDtor__0_hook(bool, CNWSArea* thisPtr);
+    static void CNWSPlayer__EatTURD_hook(bool, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD);
+    static void CNWSPlayer__DropTURD_hook(bool, CNWSPlayer* thisPtr);
+    static void CNWSObject__SaveObjectState_hook(bool, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
+    static void CNWSObject__LoadObjectState_hook(bool, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
+    static void CNWSCreature__LoadCreature_hook(bool, CNWSCreature* pThis, CResGFF * pRes, CResStruct * cCreatureStruct, BOOL bIsSaveGame, BOOL bIsAssociate, BOOL bPreserveItemIds, BOOL bCopyObject);
+    static void CNWSCreature__SaveCreature_hook(bool, CNWSCreature* pThis, CResGFF * pRes, CResStruct * pStruct, BOOL bStoreAssociateList, BOOL bUseDesiredAreaInfo, BOOL bExportingChar, BOOL bSaveOIDs);
 private:
     class ObjectStorage
     {

@@ -197,9 +197,9 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
     if (!bOnEffectRemovedHook)
     {
         GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect, int32_t>(
-            +[](Services::Hooks::CallType type, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
+            +[](bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
             {
-                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                if (before)
                 {
                     CExoString &sScriptName = pEffect->m_sParamString[4];
                     if (!sScriptName.IsEmpty())

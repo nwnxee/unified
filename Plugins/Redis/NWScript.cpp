@@ -19,9 +19,9 @@ using namespace NWNXLib::API;
 // We cache all results until the end of the current script invocation.
 static std::vector<cpp_redis::reply> s_results;
 
-void Redis::CleanState(Services::Hooks::CallType type, CVirtualMachine* vm)
+void Redis::CleanState(bool before, CVirtualMachine* vm)
 {
-    if (type == Services::Hooks::CallType::AFTER_ORIGINAL && vm->m_nRecursionLevel == 0)
+    if (!before && vm->m_nRecursionLevel == 0)
     {
         LOG_DEBUG("Clearing all results after script exit.");
         s_results.clear();

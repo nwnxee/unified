@@ -22,9 +22,8 @@ MaterialChangeEvents::MaterialChangeEvents(ViewPtr<Services::HooksProxy> hooker)
     });
 }
 
-void MaterialChangeEvents::SetPositionHook(Services::Hooks::CallType type, CNWSObject* thisPtr, Vector vPos, int32_t)
+void MaterialChangeEvents::SetPositionHook(bool before, CNWSObject* thisPtr, Vector vPos, int32_t)
 {
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
     if (thisPtr->m_nObjectType == API::Constants::ObjectType::Creature)
     {
         auto pArea = API::Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_oidArea);

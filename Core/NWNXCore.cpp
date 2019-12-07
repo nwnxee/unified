@@ -184,9 +184,9 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN12CNWSCreature12LoadCreatureEP7CResGFFP10CResStructiiii, int32_t>(&Services::PerObjectStorage::CNWSCreature__LoadCreature_hook);
 
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii, uint32_t>(
-            +[](Services::Hooks::CallType type, CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
+            +[](bool before, CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
             {
-                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                if (before)
                 {
                     int index = nAreasLoaded;
                     auto *node = pModule->m_lstModuleArea.m_pcExoLinkedListInternal->pHead;
@@ -207,17 +207,17 @@ void NWNXCore::InitialSetupHooks()
     if (!m_coreServices->m_config->Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         m_services->m_hooks->RequestSharedHook<API::Functions::_ZN25CNWVirtualMachineCommands32ExecuteCommandExecuteScriptChunkEii, int32_t>(
-                +[](Services::Hooks::CallType type, CNWVirtualMachineCommands*, int32_t, int32_t)
+                +[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
                 {
-                    g_core->m_ScriptChunkRecursion += (type == Services::Hooks::CallType::BEFORE_ORIGINAL) ? +1 : -1;
+                    g_core->m_ScriptChunkRecursion += before ? +1 : -1;
                 });
     }
 
     // TODO-64Bit: Temp fix for POS
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN11CGameObjectC2Ehj, void>(
-            +[](Services::Hooks::CallType type, CGameObject* pThis, uint8_t, uint32_t)
+            +[](bool before, CGameObject* pThis, uint8_t, uint32_t)
             {
-                if (type == Services::Hooks::CallType::AFTER_ORIGINAL)
+                if (!before)
                     pThis->m_pNwnxData = nullptr;
             });
 }
@@ -577,9 +577,9 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
     RestoreCrashHandlers();
 }
 
-void NWNXCore::MainLoopInternalHandler(Services::Hooks::CallType type, CServerExoAppInternal*)
+void NWNXCore::MainLoopInternalHandler(bool before, CServerExoAppInternal*)
 {
-    if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (!before)
     {
         return;
     }

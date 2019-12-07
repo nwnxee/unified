@@ -29,9 +29,9 @@ Activity::Activity(ViewPtr<Services::MetricsProxy> metrics, ViewPtr<Services::Ho
     metrics->SetResampler("Activity", resampler, std::chrono::seconds(1));
 }
 
-void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInternal* thisPtr)
+void Activity::MainLoopUpdate(bool before, CServerExoAppInternal* thisPtr)
 {
-    if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (!before)
     {
         return;
     }

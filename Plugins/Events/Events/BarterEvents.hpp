@@ -14,20 +14,9 @@ public:
 
 private:
     static int32_t HandlePlayerToServerBarter_StartBarterHook(CNWSMessage*, CNWSPlayer*);
-    static void EndedBarter(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSBarter*,
-            int32_t);
-    static void SetListAcceptedHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSBarter*,
-            int32_t);
-    static void SendServerToPlayerBarterCloseBarterHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            NWNXLib::API::Types::ObjectID,
-            NWNXLib::API::Types::ObjectID,
-            int32_t);
+    static void EndedBarter(bool, CNWSBarter*, int32_t);
+    static void SetListAcceptedHook(bool, CNWSBarter*, int32_t);
+    static void SendServerToPlayerBarterCloseBarterHook(bool, CNWSMessage*, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t);
 };
 
 }

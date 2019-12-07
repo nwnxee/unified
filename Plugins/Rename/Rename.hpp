@@ -30,57 +30,19 @@ private:
     bool m_RenameAllowDM;
     std::string m_RenameAnonymousPlayerName;
 
-    static void WriteGameObjUpdate_UpdateObjectHook(
-            Services::Hooks::CallType,
-            CNWSMessage*,
-            CNWSPlayer*,
-            CNWSObject*,
-            CLastUpdateObject*,
-            uint32_t,
-            uint32_t);
-    static void SendServerToPlayerPlayerList_AllHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            CNWSPlayer*);
-    static void SendServerToPlayerPlayerList_AddHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            Types::PlayerID,
-            CNWSPlayer*);
-    static void SendServerToPlayerPlayerList_DeleteHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            Types::PlayerID,
-            CNWSPlayer*);
-    static void SendServerToPlayerDungeonMasterUpdatePartyListHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            Types::PlayerID);
-    static void SendServerToPlayerExamineGui_CreatureDataHook(
-            Services::Hooks::CallType,
-            CNWSMessage*,
-            CNWSPlayer*,
-            Types::ObjectID);
-    static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(
-            CNWSMessage*,
-            Types::PlayerID,
-            Types::ObjectID,
-            int32_t);
-    static void SendServerToPlayerChatHook(
-            NWNXLib::Services::Hooks::CallType,
-            CNWSMessage*,
-            Types::PlayerID,
-            Types::ObjectID,
-            CExoString*);
-    static int32_t SendServerToPlayerPopUpGUIPanelHook(
-            CNWSMessage*,
-            Types::ObjectID,
-            int32_t, int32_t, int32_t, int32_t, CExoString*);
-
-    static void SetOrRestorePlayerName(NWNXLib::Services::Hooks::CallType, CNWSPlayer*, CNWSPlayer*, bool playerList=false);
+    static void WriteGameObjUpdate_UpdateObjectHook(bool, CNWSMessage*, CNWSPlayer*, CNWSObject*, CLastUpdateObject*, uint32_t, uint32_t);
+    static void SendServerToPlayerPlayerList_AllHook(bool, CNWSMessage*, CNWSPlayer*);
+    static void SendServerToPlayerPlayerList_AddHook(bool, CNWSMessage*, Types::PlayerID, CNWSPlayer*);
+    static void SendServerToPlayerPlayerList_DeleteHook(bool, CNWSMessage*, Types::PlayerID, CNWSPlayer*);
+    static void SendServerToPlayerDungeonMasterUpdatePartyListHook(bool, CNWSMessage*, Types::PlayerID);
+    static void SendServerToPlayerExamineGui_CreatureDataHook(bool, CNWSMessage*, CNWSPlayer*, Types::ObjectID);
+    static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage*, Types::PlayerID, Types::ObjectID, int32_t);
+    static void SendServerToPlayerChatHook(bool, CNWSMessage*, Types::PlayerID, Types::ObjectID, CExoString*);
+    static int32_t SendServerToPlayerPopUpGUIPanelHook(CNWSMessage*, Types::ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*);
+    static void SetOrRestorePlayerName(bool, CNWSPlayer*, CNWSPlayer*, bool playerList=false);
     static void SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID, bool playerList=false);
     static void RestorePlayerName(CNWSCreature *targetCreature, bool playerList=false);
-    void GlobalNameChange(NWNXLib::Services::Hooks::CallType, Types::PlayerID, Types::PlayerID);
+    void GlobalNameChange(bool, Types::PlayerID, Types::PlayerID);
 
     CExoLocString ContainString(const std::string& str);
     std::string GenerateRandomPlayerName(size_t length);
