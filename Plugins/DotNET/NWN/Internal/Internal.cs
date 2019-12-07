@@ -53,6 +53,7 @@ namespace NWN
 
         public static void OnClosure(ulong eid, uint oidSelf)
         {
+            OBJECT_SELF = oidSelf;
             try
             {
                 Closures[eid].Run();
