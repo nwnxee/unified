@@ -104,13 +104,13 @@ DECLARE_PROFILE_TARGET_FAST(                                                    
 
 #define DEFINE_PROFILER_TARGET(hooker, name, address, ret, ...)                                \
 {                                                                                              \
-    hooker->RequestSharedHook<address, Hooking::CallingConvention::ThisCall, ret, __VA_ARGS__> \
+    hooker->RequestSharedHook<address, Hooking::CallingConvention::SystemV, ret, __VA_ARGS__> \
         (&ProfileLanding__##name<__VA_ARGS__>);                                                \
 }
 
 #define DEFINE_PROFILER_TARGET_FAST(hooker, name, address, ret, ...)                              \
 {                                                                                                 \
-    hooker->RequestExclusiveHook<address, Hooking::CallingConvention::ThisCall, ret, __VA_ARGS__> \
+    hooker->RequestExclusiveHook<address, Hooking::CallingConvention::SystemV, ret, __VA_ARGS__> \
         (&ProfileLanding__##name<__VA_ARGS__>);                                                   \
     g_##name##Hook = hooker->FindHookByAddress(address);                                          \
 }

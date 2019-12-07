@@ -6,10 +6,3 @@ Ret>::type FunctionHook::CallOriginal(Params ... args)
     FuncPtrType funcPtr = reinterpret_cast<FuncPtrType>(m_trampoline);
     return static_cast<Ret>(funcPtr(args ...));
 }
-
-template <typename Ret, typename ... Params>
-typename std::enable_if<!std::is_base_of<CallingConvention::CallingConvention, Ret>::value,
-Ret>::type FunctionHook::CallOriginal(Params ... args)
-{
-    return static_cast<Ret>(CallOriginal<CallingConvention::ThisCall, Ret>(args ...));
-}

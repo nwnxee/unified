@@ -83,20 +83,6 @@ Hooks::RegistrationToken>::type Hooks::RequestExclusiveHook(Ret(*funcPtr)(Params
     return { Address, funcPtrAddr };
 }
 
-template <uintptr_t Address, typename Ret, typename ... Params>
-typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value,
-Hooks::RegistrationToken>::type Hooks::RequestSharedHook(void(*funcPtr)(bool, Params ...))
-{
-    return RequestSharedHook<Address, Hooking::CallingConvention::ThisCall, Ret>(funcPtr);
-}
-
-template <uintptr_t Address, typename Ret, typename ... Params>
-typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value,
-Hooks::RegistrationToken>::type Hooks::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
-{
-    return RequestExclusiveHook<Address, Hooking::CallingConvention::ThisCall, Ret>(funcPtr);
-}
-
 template <uintptr_t Address, typename CallingConvention, typename Ret, typename ... Params>
 typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConvention, CallingConvention>::value>::type
 /*void*/ HooksProxy::RequestSharedHook(void(*funcPtr)(bool, Params ...))
@@ -109,18 +95,4 @@ typename std::enable_if<std::is_base_of<Hooking::CallingConvention::CallingConve
 /*void*/ HooksProxy::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
 {
     m_registrationTokens.push_back(m_proxyBase.RequestExclusiveHook<Address, CallingConvention, Ret>(funcPtr));
-}
-
-template <uintptr_t Address, typename Ret, typename ... Params>
-typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value>::type
-/*void*/ HooksProxy::RequestSharedHook(void(*funcPtr)(bool, Params ...))
-{
-    RequestSharedHook<Address, Hooking::CallingConvention::ThisCall, Ret>(funcPtr);
-}
-
-template <uintptr_t Address, typename Ret, typename ... Params>
-typename std::enable_if<!std::is_base_of<Hooking::CallingConvention::CallingConvention, Ret>::value>::type
-/*void*/ HooksProxy::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
-{
-    RequestExclusiveHook<Address, Hooking::CallingConvention::ThisCall, Ret>(funcPtr);
 }
