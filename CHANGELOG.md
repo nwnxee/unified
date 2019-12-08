@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## Unreleased
+https://github.com/nwnxee/unified/compare/build8193.1...HEAD
 
 ### Added
 N/A
@@ -27,7 +28,8 @@ N/A
 ### Fixed
 N/A
 
-## [8193.1]
+## 8193.1
+https://github.com/nwnxee/unified/compare/build8193...build8193.1
 
 Note: Some nwscript files have changed. You will need to update them and recompile all scripts.
 
@@ -54,7 +56,8 @@ N/A
 ### Fixed
 - Fixed an issue where the `cwd` value was garbled, causing plugin load to fail unless `NWNX_CORE_LOAD_PATH` was set.
 
-## [8193]
+## 8193
+https://github.com/nwnxee/unified/compare/build8186-lts...build8193
 
 NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.
 
@@ -112,7 +115,8 @@ N/A
 ### Fixed
 N/A
 
-## [8186 LTS]
+## 8186 LTS
+https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts
 
 NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recompile all your scripts.
 
@@ -356,8 +360,3 @@ The following plugins were added:
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
-
-[Unreleased]: https://github.com/nwnxee/unified/compare/build8193.1...HEAD
-[8193.1]: https://github.com/nwnxee/unified/compare/build8193...build8193.1
-[8193]: https://github.com/nwnxee/unified/compare/build8186-lts...build8193
-[8186 LTS]: https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts
