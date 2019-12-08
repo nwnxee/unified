@@ -15,14 +15,6 @@ extern NWNXCore* g_core;
 
 namespace NWNXLib::Services {
 
-Events::Events()
-{
-}
-
-Events::~Events()
-{
-}
-
 Events::EventDataInternal* Events::GetEventData(const std::string& pluginName, const std::string& eventName)
 {
     EventList& events = m_eventMap[pluginName];
