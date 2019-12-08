@@ -166,7 +166,7 @@ var NAVTREEINDEX2 =
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[2,0,2,5,0,0,36],
 "group__creature.html#gaff45e8b400ebbbfeeccba81785fc5c17":[0,6,40],
 "group__damage.html":[0,7],
-"group__damage.html#autotoc_md54":[5],
+"group__damage.html#autotoc_md55":[5],
 "group__damage.html#damage":[0,7,0],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[2,0,2,6,0,0,2],
 "group__damage.html#ga2be3550a90599b0cff53f9eaccb09f59":[0,7,7],

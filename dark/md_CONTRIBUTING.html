@@ -104,23 +104,51 @@ $(document).ready(function(){initNavTree('md_CONTRIBUTING.html','');});
 <div class="title">How to contribute to NWNX:EE </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Thank you for your interest in contributing to NWNX:EE, all contribution are welcome. Please follow the guidelines mentioned below!</p>
+<div class="textblock"><p>Thank you for your interest in contributing to NWNX:EE, all contribution are welcome. If adding a new plugin or extending an existing one, feel free to send a PR and we can hash out any details in review. For changes to core, please discuss it with us first, either through discord or on an RFC issue.</p>
 <h2><a class="anchor" id="autotoc_md34"></a>
+Plugins</h2>
+<p>All of NWNX useful functionality comes from plugins. Plugins typically expose additional NWN engine functionality to nwscript, but also sometimes provide an interface to external tools (SQL, Redis, etc) or languages (Lua, DotNET), or simply expose various events to the developer. Adding a new plugin is no big deal, but please check first if your new functionality would be better suited in one of the existing plugins.</p>
+<p>Many plugins are structured as extension methods on a given object: Object, Creature, Player, Area, Item, etc. By convention, these functions will always take the object they are operating on as the first parameter. Try to follow this convention in other plugins as well, if it makes sense.</p>
+<p>Your code should be structured such that, if unused, it should have (near) zero cost and not pull additional dependencies. Some examples:</p>
+<ul>
+<li>If you are adding support for a new language, as a separate plugin, anyone who does not want to use it will just skip the plugin. No additional action necessary on your part.</li>
+<li>If you are adding a new backend for an existing plugin (e.g. alternative SpellChecker library), be sure there's no compile- or load-time dependencies unless someone explicitly opts in to use it. This usually means using <code>dlsym()</code> to get function pointers from the library.</li>
+<li>If you are exposing additional events in an existing plugin, do not hook them until the user has indicated they want to use them (either via an env. variable or nwscript call). See the Events plugin for examples.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md35"></a>
 C++ Guidelines</h2>
+<ol type="1">
+<li>Avoid unnecessary abstractions.</li>
+<li>Avoid overly OOP design. Chances are what you want is just a function.</li>
+<li>Sometimes a macro is better than a template. Use common sense, do not shy away from C features.</li>
+<li>Never use non-const references as arguments. If a function will change the value of an object, pass it as a pointer.</li>
+<li>Do not write your own alternatives to C++ standard library features (e.g. std::optional, std::variant, etc).</li>
+<li>Avoid manual memory management. Use std::unique_ptr or stack allocations.</li>
+<li>Never do memory patching hacks. Plugin services provide a way to hook function calls, use those. If there is a problem you don't know how to solve other than patching a memory address, speak to us first.</li>
+<li>Use modern C++ features such as foreach loops and <code>auto</code>. It is advised that when dealing with pointers or references, you explicitly qualify <code>auto</code> as <code>auto&amp;</code> or <code>auto*</code>.</li>
+<li>Use <code>#pragma once</code> instead of include guards.</li>
+<li>Be wary of unnecessary copies. Use rvalues and <code>std::move</code> where appropriate.</li>
+<li>Exception use is acceptable. In case of error when processing a nwscript invoked function, throw an exception.</li>
+<li>Use core provided utilities (logging, asserts, etc) and services (config, messaging, etc) whenever possible. If you have a need these services don't meet, file an RFE.</li>
+</ol>
+<p>Additionally, please observe coding style rules:</p>
 <ol type="1">
 <li>Prefix members variables with m_.</li>
 <li>Use lowerCamelCase for variables.</li>
 <li>Use UpperCamelCase for functions.</li>
 <li>Use UpperCamelCase for classes.</li>
-<li>Use ALL_CAPS for constants and macros.</li>
+<li>Use ALL_CAPS for macros.</li>
+<li>Namespaced::UpperCamelCase for constants.</li>
 <li>Braces always start on a new line and always end on a new line.</li>
 <li>Spaces, not tabs.</li>
-<li>Avoid manual memory management. Use unique_ptr always. This helps transparent hotloading later!</li>
+<li>Newline at the end of file</li>
+<li>C++ header files have .hpp extension. Source files have .cpp extension.</li>
 </ol>
-<p>Most importantly, be sure never to manually write memory addresses or hooks yourself. These must ALWAYS go through the core systems to make sure that plugins can play nicely together.</p>
-<h2><a class="anchor" id="autotoc_md35"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 NWScript Guidelines</h2>
-<p>We use DoxyGen to automatically generate our documentation, please have a look at existing .nss files to familiarize yourself with the layout of the NWNX:EE NWScript files. </p>
+<p>We use DoxyGen to automatically generate our documentation, please have a look at existing .nss files to familiarize yourself with the layout of the NWNX:EE NWScript files.</p>
+<p>When exposing a function to nwscript, name it as <code>NWNX_&lt;PluginName&gt;_&lt;FunctionName&gt;()</code>. If possible, the function should be implemented in <code>&lt;PluginName&gt;.cpp</code>, with the same <code>&lt;FunctionName&gt;</code> as specified in nwscript, and the function name string passed to core should match that as well.</p>
+<p>If at all possible, write unit tests for your new feature in <code>nwnx_&lt;pluginname&gt;_t.nss</code>. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
@@ -128,7 +156,7 @@ NWScript Guidelines</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Dec 7 2019 23:49:43 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Dec 8 2019 11:37:54 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
