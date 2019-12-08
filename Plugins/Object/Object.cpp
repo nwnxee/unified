@@ -25,6 +25,7 @@
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
 #include "Services/Events/Events.hpp"
+#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
 
@@ -89,6 +90,15 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(RemoveIconEffect);
     REGISTER(AddIconEffect);
     REGISTER(Export);
+    REGISTER(GetPersistentInt);
+    REGISTER(SetPersistentInt);
+    REGISTER(DeletePersistentInt);
+    REGISTER(GetPersistentString);
+    REGISTER(SetPersistentString);
+    REGISTER(DeletePersistentString);
+    REGISTER(GetPersistentFloat);
+    REGISTER(SetPersistentFloat);
+    REGISTER(DeletePersistentFloat);
 
 #undef REGISTER
 }
@@ -711,6 +721,148 @@ ArgumentStack Object::Export(ArgumentStack&& args)
                 break;
         }
     }
+
+    return stack;
+}
+
+ArgumentStack Object::GetPersistentInt(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = 0;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+
+    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObject, "PERINT!" + varName))
+        retVal = *value;
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Object::SetPersistentInt(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+    const auto value = Services::Events::ExtractArgument<int32_t>(args);
+
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, true);
+
+    return stack;
+}
+
+ArgumentStack Object::DeletePersistentInt(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+
+    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERINT!" + varName);
+
+    return stack;
+}
+
+ArgumentStack Object::GetPersistentString(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    std::string retVal;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+
+    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObject, "PERSTR!" + varName))
+        retVal = *value;
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Object::SetPersistentString(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+    const auto value = Services::Events::ExtractArgument<std::string>(args);
+
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, true);
+
+    return stack;
+}
+
+ArgumentStack Object::DeletePersistentString(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+
+    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERSTR!" + varName);
+
+    return stack;
+}
+
+ArgumentStack Object::GetPersistentFloat(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    float retVal = 0.0f;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+
+    if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<float>(oidObject, "PERFLT!" + varName))
+        retVal = *value;
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Object::SetPersistentFloat(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+    const auto value = Services::Events::ExtractArgument<float>(args);
+
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, true);
+
+    return stack;
+}
+
+
+ArgumentStack Object::DeletePersistentFloat(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto varName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!varName.empty());
+
+    g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERFLT!" + varName);
 
     return stack;
 }
