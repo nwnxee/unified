@@ -28,6 +28,7 @@ Your code should be structured such that, if unused, it should have (near) zero 
 10. Be wary of unnecessary copies. Use rvalues and `std::move` where appropriate.
 11. Exception use is acceptable. In case of error when processing a nwscript invoked function, throw an exception.
 12. Use core provided utilities (logging, asserts, etc) and services (config, messaging, etc) whenever possible. If you have a need these services don't meet, file an RFE.
+13. Update the [changelog] whenever making a user-facing change (e.g. adding a new nwscript function)
 
 
 Additionally, please observe coding style rules:
@@ -52,3 +53,5 @@ We use DoxyGen to automatically generate our documentation, please have a look a
 When exposing a function to nwscript, name it as `NWNX_<PluginName>_<FunctionName>()`. If possible, the function should be implemented in `<PluginName>.cpp`, with the same `<FunctionName>` as specified in nwscript, and the function name string passed to core should match that as well.
 
 If at all possible, write unit tests for your new feature in `nwnx_<pluginname>_t.nss`.
+
+[changelog]: CHANGELOG.md
