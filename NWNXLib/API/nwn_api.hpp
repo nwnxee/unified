@@ -7,4 +7,4 @@
 
 struct CExoLinkedListNode;
 typedef uint16_t RESTYPE;
-namespace NWSync { struct CNWSync { void *m_pInternal; }; }
+namespace NWSync { struct CNWSync { void *m_pInternal; char *m_tmp1; uint32_t m_tmp2; }; }
