@@ -83,7 +83,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_SetFamiliarCreatureType", "group__creature.html#ga1b024608dddf8b9f800dfd93aa1a97cb", null ],
     [ "NWNX_Creature_SetAnimalCompanionName", "group__creature.html#ga60571fe897f0c8726d37d0b15c332934", null ],
     [ "NWNX_Creature_SetFamiliarName", "group__creature.html#gaf847727f4e3352be4083bba10c0841bf", null ],
-    [ "NWNX_Creature_GetDisarmable", "group__creature.html#gaf4403278bbf4d75acf30ce5e3623c317", null ],
+    [ "NWNX_Creature_GetDisarmable", "group__creature.html#gacd41f5111f1d4ef3e6d8d20c1b6b7252", null ],
     [ "NWNX_Creature_SetDisarmable", "group__creature.html#gae737b5e9c3eb8fb6523a1f0ad68d16b1", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],

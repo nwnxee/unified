@@ -24,6 +24,8 @@ var NAVTREE =
 [
   [ "NWNX:EE", "index.html", [
     [ "Plugins and Core Lib Functions", "modules.html", "modules" ],
+    [ "Contributing", "md_CONTRIBUTING.html", null ],
+    [ "Changelog", "md_CHANGELOG.html", null ],
     [ "Structs", "annotated.html", "annotated" ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
@@ -46,9 +48,9 @@ var NAVTREEINDEX =
 "group__maxlevel.html#autotoc_md148",
 "group__player.html#gabe2b46878c91200619eb7186a7b3c6f0",
 "group__skillranks.html#gac47488975fb36ec044386895c765f5ff",
-"nwnx__dialog_8nss_source.html",
-"nwnx__redis_8nss.html#afcccc0cb0c9c94931ee3dc291cd38f89",
-"nwnx__tests_8nss_source.html"
+"nwnx__data_8nss_source.html",
+"nwnx__redis_8nss.html#afbddebbcf6d3934ed197f72cf651f565",
+"nwnx__sql_8nss_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

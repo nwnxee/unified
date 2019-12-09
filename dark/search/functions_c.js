@@ -75,7 +75,7 @@ var searchData=
   ['nwnx_5fcreature_5fgetbasesavingthrow_1696',['NWNX_Creature_GetBaseSavingThrow',['../group__creature.html#gaec44d5608a8adeb007c901425cfd92f8',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetclassbylevel_1697',['NWNX_Creature_GetClassByLevel',['../group__creature.html#ga9f675908b28f41658f1c1e5acfe78068',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetclericdomain_1698',['NWNX_Creature_GetClericDomain',['../group__creature.html#ga39b4cfb649a4882cfcf3efbaa520f7a8',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5fgetdisarmable_1699',['NWNX_Creature_GetDisarmable',['../group__creature.html#gaf4403278bbf4d75acf30ce5e3623c317',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5fgetdisarmable_1699',['NWNX_Creature_GetDisarmable',['../group__creature.html#gacd41f5111f1d4ef3e6d8d20c1b6b7252',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetfeatbyindex_1700',['NWNX_Creature_GetFeatByIndex',['../group__creature.html#gae076b9381dace2ae42e7f1e93efefc08',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetfeatbylevel_1701',['NWNX_Creature_GetFeatByLevel',['../group__creature.html#ga4875b0673d87478c3edbb608fb77cee4',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fgetfeatcount_1702',['NWNX_Creature_GetFeatCount',['../group__creature.html#ga93c6684ed4cb787a6c515160fd0d11e5',1,'nwnx_creature.nss']]],
