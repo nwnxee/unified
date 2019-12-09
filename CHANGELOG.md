@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.1...HEAD
+https://github.com/nwnxee/unified/compare/build8193.2...HEAD
 
 ### Added
 N/A
@@ -26,7 +26,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- ELC: RDDs now pass NWNX_ELC
 
 ## 8193.2
 https://github.com/nwnxee/unified/compare/build8193.1...build8193.2
