@@ -688,6 +688,20 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
         }
 
+        for (int nMultiClass = 0; nMultiClass < NUM_MULTICLASS; nMultiClass++)
+        {
+            uint8_t nClassId = pCreatureStats->GetClass(nMultiClass);
+            CNWClass *pClass = nClassId < pRules->m_nNumClasses ? &pRules->m_lstClasses[nClassId] : nullptr;
+
+            if (pClass)
+            {
+                for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+                {
+                    nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForLevel(nAbilityIndex, nLevel);
+                }
+            }
+        }
+
 // *** Check Hit Die ********************************************************************************************************
         if (pLevelStats->m_nHitDie > pCreatureStats->GetHitDie(nMultiClassLeveledUpIn, nClassLeveledUpIn))
         {
