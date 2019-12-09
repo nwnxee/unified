@@ -614,7 +614,7 @@ void NWNX_Creature_SetFamiliarName(object creature, string name);
 /// @brief Get whether the creature can be disarmed.
 /// @param creature The creature object.
 /// @return TRUE if the creature can be disarmed.
-int NWNX_Creature_GetDisarmable(object oItem);
+int NWNX_Creature_GetDisarmable(object creature);
 
 /// @brief Set whether a creature can be disarmed.
 /// @param creature The creature object.
@@ -1529,11 +1529,11 @@ void NWNX_Creature_SetFamiliarName(object creature, string name)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetDisarmable(object oItem)
+int NWNX_Creature_GetDisarmable(object creature)
 {
     string sFunc = "GetDisarmable";
 
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oItem);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);

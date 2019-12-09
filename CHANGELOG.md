@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## Unreleased
+https://github.com/nwnxee/unified/compare/build8193.2...HEAD
 
 ### Added
 N/A
@@ -16,7 +17,7 @@ N/A
 - Object: {Get|Set|Delete}Persistent{Int|String|Float}()
 
 ### Changed
-- Per Object Storage can now be persisted to GFF. The following variables will now persist: `NWNX_Player!ALWAYS_WALK`, `NWNX_Player!REST_DURATION`, `NWNX_Player!REST_ANIMATION`, `NWNX_Creature!WALK_RATE_CAP`, `NWNX_Chat!HEARING_DISTANCE*`, `NWNX_Damage!*_EVENT_SCRIPT`, `NWNX_Feedback!*`, `NWNX_Reveal!*`, `NWNX_SkillRanks!SKILLRANK_MOD_*`. This means you no longer need to re-apply these to your players and objects after every restart.
+N/A
 
 ### Deprecated
 N/A
@@ -27,15 +28,18 @@ N/A
 ### Fixed
 N/A
 
-## [8193.1]
+## 8193.2
+https://github.com/nwnxee/unified/compare/build8193.1...build8193.2
+
+### Changed
+- Per Object Storage can now be persisted to GFF. The following variables will now persist: `NWNX_Player!ALWAYS_WALK`, `NWNX_Player!REST_DURATION`, , `NWNX_Player!REST_ANIMATION`, `NWNX_Creature!WALK_RATE_CAP`, `NWNX_Chat!HEARING_DISTANCE*`, `NWNX_Damage!*_EVENT_SCRIPT`, `NWNX_Feedback!*`, `NWNX_Reveal!*`, `NWNX_SkillRanks!SKILLRANK_MOD_*`. This means you no longer need to re-apply these to your players and objects after every restart.
+
+## 8193.1
+https://github.com/nwnxee/unified/compare/build8193...build8193.1
 
 Note: Some nwscript files have changed. You will need to update them and recompile all scripts.
 
 ### Added
-N/A
-
-##### New Plugins
-N/A
 
 ##### New NWScript Functions
 - Area: GetMusicIsPlaying()
@@ -45,16 +49,11 @@ N/A
 - Core: NWNX will now provide you with better error messages when you try to call a NWScript NWNX function and you haven't updated your nwnx_*.nss files or the plugin is not loaded.
 - We no longer have separate build types (except for symbols and compiler optimizations). All builds now include error messaging and handling.
 
-### Deprecated
-N/A
-
-### Removed
-N/A
-
 ### Fixed
 - Fixed an issue where the `cwd` value was garbled, causing plugin load to fail unless `NWNX_CORE_LOAD_PATH` was set.
 
-## [8193]
+## 8193
+https://github.com/nwnxee/unified/compare/build8186-lts...build8193
 
 NWNX has moved to 64bit. This is a major change, with many breaking changes listed below, so please examine them carefully.
 
@@ -98,9 +97,6 @@ The following plugins were added:
 - Itemproperty: Removed the EffectID parameter from the struct
 - SQL: The SQLite database extension has been changed to `.sqlite3nwnxee`
 
-### Deprecated
-N/A
-
 ### Removed
 - The following plugins were removed: JVM, Mono
 - Administration: BootPC()
@@ -109,10 +105,8 @@ N/A
 - Player: {Get|Set}VisibilityOverride()
 - Util: GenerateUUID()
 
-### Fixed
-N/A
-
-## [8186 LTS]
+## 8186 LTS
+https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts
 
 NOTICE: The ABI has changed, please make sure to update your nwnx.nss and recompile all your scripts.
 
@@ -356,8 +350,3 @@ The following plugins were added:
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
-
-[Unreleased]: https://github.com/nwnxee/unified/compare/build8193.1...HEAD
-[8193.1]: https://github.com/nwnxee/unified/compare/build8193...build8193.1
-[8193]: https://github.com/nwnxee/unified/compare/build8186-lts...build8193
-[8186 LTS]: https://github.com/nwnxee/unified/compare/build8186-2...build8186-lts

@@ -7,6 +7,8 @@
       <tab type="pages" visible="no" title="" intro=""/>
     </tab>
     <tab type="modules" visible="yes" title="Plugins and Core Lib Functions" intro="The plugins and core libraries are listed below:"/>
+    <tab type="user" url="md_CONTRIBUTING.html" title="Contributing"/>
+    <tab type="user" url="md_CHANGELOG.html" title="Changelog"/>
     <tab type="namespaces" visible="yes" title="">
       <tab type="namespacelist" visible="yes" title="" intro=""/>
       <tab type="namespacemembers" visible="yes" title="" intro=""/>
