@@ -2,6 +2,8 @@ namespace NWN
 {
     public partial class NWScript
     {
+        public static uint OBJECT_SELF => Internal.OBJECT_SELF;
+        
         /// <summary>
         /// Assign aActionToAssign to oActionSubject.
         /// * No return value, but if an error occurs, the log file will contain

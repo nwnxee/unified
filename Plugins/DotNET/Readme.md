@@ -100,7 +100,7 @@ This event runs whenever a named script - i.e. event scripts set in the toolset,
 
 If you do not want to handle this script, and let the regular nwscript do it (e.g. for `nw_`,`x0_` and `x2_` scripts), you should just return `-1` or `SCRIPT_NOT_HANDLED`. Otherwise, it's up to you to dispatch however you want, and return `>=0`. The return value is used in case of `StartingConditional` scripts.
 
-`oidSelf` is the handle of the object running the script. You can also access this object with `Internal.OBJECT_SELF`.
+`oidSelf` is the handle of the object running the script. You can also access this object with `NWScript.OBJECT_SELF`.
 
 @note A large switch (or if/else/if) statement to account for all scripts will get real unwieldy real fast, so you should set up some way to dispatch to the correct function based on a script. Some options are:
 
@@ -127,7 +127,7 @@ For example:
 ```cs
 public static int OnRunScript(string script, uint oidSelf)
 {
-    var tag = NWScript.GetTag(Internal.OBJECT_SELF);
+    var tag = NWScript.GetTag(NWScript.OBJECT_SELF);
     Console.WriteLine($"Running script '{script}' on object tag '{tag}'");
     NWScript.SendMessageToPC(NWScript.GetFirstPC(), "Hello!");
 
