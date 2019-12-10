@@ -45,7 +45,7 @@ var NAVTREEINDEX =
 "group__appearance.html#ga644b04a8c340d3e31b4dd79a95a5a8d6",
 "group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499",
 "group__data__array__pushback.html#ga2c39787fc0ac4baa54ea697314ff3e73",
-"group__maxlevel.html#autotoc_md147",
+"group__maxlevel.html#autotoc_md151",
 "group__player.html#gabd8a42c155d533c4f1d43d996a196404",
 "group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10",
 "nwnx__damage_8nss_source.html",

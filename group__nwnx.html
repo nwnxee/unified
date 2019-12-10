@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('group__nwnx.html','');});
 <div class="contents">
 
 
-<h3><a id="nwnx"></a>Core Functionality</h3><div class="textblock">The core of NWNX:EE that does all the things.<h2><a class="anchor" id="autotoc_md34"></a>
+<h3><a id="nwnx"></a>Core Functionality</h3><div class="textblock">The core of NWNX:EE that does all the things.<h2><a class="anchor" id="autotoc_md38"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -148,7 +148,7 @@ Environment Variables</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_CORE_LOG_FORCE_COLOR</code>  </td><td class="markdownTableBodyCenter">0-1  </td><td class="markdownTableBodyNone">0  </td><td class="markdownTableBodyNone">Sets whether to force color output.   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md35"></a>
+<h2><a class="anchor" id="autotoc_md39"></a>
 Console Commands</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -164,9 +164,9 @@ Console Commands</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]</code>  </td><td class="markdownTableBodyNone">Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code>   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md36"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Plugin Management</h2>
-<h3><a class="anchor" id="autotoc_md37"></a>
+<h3><a class="anchor" id="autotoc_md41"></a>
 Environment Variable Configuration</h3>
 <p>Configuration of NWNX plugins are controlled by environment variables exported prior to starting the <code>nwserver</code> binary. Typical usage would be in the script used to start the server.</p>
 <p>Basic control of the plugin includes enabling/disabling the plugin and setting the logging level of the plugin. The following format is used for all plugins:</p>
@@ -174,7 +174,7 @@ Environment Variable Configuration</h3>
 <li>NWNX_&lt;x&gt;_LOG_LEVEL</li>
 <li>NWNX_&lt;x&gt;_SKIP</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md38"></a>
+<h3><a class="anchor" id="autotoc_md42"></a>
 Plugin Loading</h3>
 <p>Inclusion or exclusion of the plugin at server startup time is contolled by the environment variable <code>NWNX_&lt;x&gt;_SKIP</code> where &lt;x&gt; is the plugin name (all caps).</p>
 <ul>
@@ -183,16 +183,16 @@ Plugin Loading</h3>
 </ul>
 <p><b>Example</b> </p><div class="fragment"><div class="line"># Load the sql plugin at startup</div>
 <div class="line">export NWNX_SQL_SKIP=N</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md39"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md43"></a>
 Plugin Log Level</h3>
 <p>The default plugin log level is the same as the overall Core logging level.</p>
 <p>It can be changed, however, by assinging a value to <code>NWNX_&lt;x&gt;_LOG_LEVEL</code> (where &lt;x&gt; is the plugin name in all caps) in the same manner as the Core logging level. See the Core documentation for a description of available logging levels.</p>
 <p><b>Example</b> </p><div class="fragment"><div class="line"># Set the sql plugin to warning and above (warning, error, and fatal only)</div>
 <div class="line">export NWNX_SQL_LOG_LEVEL=4</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md40"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md44"></a>
 Core Functions For Plugin Developers</h2>
 <p>The core functions in <a class="el" href="nwnx_8nss.html">nwnx.nss</a> should be called by NWNX plugin developers, who should expose their own, more friendly headers.</p>
-<h4><a class="anchor" id="autotoc_md41"></a>
+<h4><a class="anchor" id="autotoc_md45"></a>
 Sample</h4>
 <p>This following function would wrap a call which passes three parameters, receives three back, and constructs a vector from the result. </p><div class="fragment"><div class="line">vector GetVectorFromCoords(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z)</div>
 <div class="line">{</div>
@@ -837,7 +837,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Dec 10 2019 18:47:05 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Dec 10 2019 19:38:23 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
