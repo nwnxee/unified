@@ -5,7 +5,7 @@ namespace NWN
     partial class Internal
     {
         public const uint OBJECT_INVALID = 0x7F000000;
-        public static NWN.Object OBJECT_SELF { get; private set; } = OBJECT_INVALID;
+        public static uint OBJECT_SELF { get; private set; } = OBJECT_INVALID;
 
         public static void OnMainLoop(ulong frame)
         {
@@ -21,7 +21,7 @@ namespace NWN
 
         private struct ScriptContext
         {
-            public NWN.Object OwnerObject;
+            public uint OwnerObject;
             public string     ScriptName;
         }
         private static Stack<ScriptContext> ScriptContexts = new Stack<ScriptContext>();
@@ -45,7 +45,7 @@ namespace NWN
 
         private struct Closure
         {
-            public NWN.Object OwnerObject;
+            public uint OwnerObject;
             public ActionDelegate Run;
         }
         private static ulong NextEventId = 0;
@@ -53,6 +53,8 @@ namespace NWN
 
         public static void OnClosure(ulong eid, uint oidSelf)
         {
+            uint old = OBJECT_SELF;
+            OBJECT_SELF = oidSelf;
             try
             {
                 Closures[eid].Run();
@@ -62,27 +64,28 @@ namespace NWN
                 Console.WriteLine(e.ToString());
             }
             Closures.Remove(eid);
+            OBJECT_SELF = old;
         }
 
-        public static void ClosureAssignCommand(NWN.Object obj, ActionDelegate func)
+        public static void ClosureAssignCommand(uint obj, ActionDelegate func)
         {
-            if (NativeFunctions.ClosureAssignCommand(obj.Self, NextEventId) != 0)
+            if (NativeFunctions.ClosureAssignCommand(obj, NextEventId) != 0)
             {
                 Closures.Add(NextEventId++, new Closure { OwnerObject = obj, Run = func });
             }
         }
 
-        public static void ClosureDelayCommand(NWN.Object obj, float duration, ActionDelegate func)
+        public static void ClosureDelayCommand(uint obj, float duration, ActionDelegate func)
         {
-            if (NativeFunctions.ClosureDelayCommand(obj.Self, duration, NextEventId) != 0)
+            if (NativeFunctions.ClosureDelayCommand(obj, duration, NextEventId) != 0)
             {
                 Closures.Add(NextEventId++, new Closure { OwnerObject = obj, Run = func });
             }
         }
 
-        public static void ClosureActionDoCommand(NWN.Object obj, ActionDelegate func)
+        public static void ClosureActionDoCommand(uint obj, ActionDelegate func)
         {
-            if (NativeFunctions.ClosureActionDoCommand(obj.Self, NextEventId) != 0)
+            if (NativeFunctions.ClosureActionDoCommand(obj, NextEventId) != 0)
             {
                 Closures.Add(NextEventId++, new Closure { OwnerObject = obj, Run = func });
             }
