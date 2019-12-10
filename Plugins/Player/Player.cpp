@@ -102,6 +102,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(UpdateItemName);
     REGISTER(PossessCreature);
     REGISTER(GetPlatformId);
+    REGISTER(GetLanguage);
 
 #undef REGISTER
 
@@ -1339,6 +1340,20 @@ ArgumentStack Player::GetPlatformId(ArgumentStack&& args)
         auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
         if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
             id = pPlayerInfo->m_nPlatformId;
+    }
+    Services::Events::InsertArgument(stack, id);
+    return stack;
+}
+
+ArgumentStack Player::GetLanguage(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t id = 0;
+    if (auto *pPlayer = player(args))
+    {
+        auto *pNetLayer = Globals::AppManager()->m_pServerExoApp->GetNetLayer();
+        if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
+            id = pPlayerInfo->m_nPlayerLanguage;
     }
     Services::Events::InsertArgument(stack, id);
     return stack;
