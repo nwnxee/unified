@@ -166,7 +166,7 @@ How it works (basic)</h2>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">int</span> OnRunScript(<span class="keywordtype">string</span> script, uint oidSelf);</div>
 </div><!-- fragment --><p>This event runs whenever a named script - i.e. event scripts set in the toolset, or with <code>SetEventScript</code> - is to be executed. This runs <em>before</em> any nwscript scripts, and runs for all scripts, including stock bioware ones.</p>
 <p>If you do not want to handle this script, and let the regular nwscript do it (e.g. for <code>nw_</code>,<code>x0_</code> and <code>x2_</code> scripts), you should just return <code>-1</code> or <code>SCRIPT_NOT_HANDLED</code>. Otherwise, it's up to you to dispatch however you want, and return <code>&gt;=0</code>. The return value is used in case of <code>StartingConditional</code> scripts.</p>
-<p><code>oidSelf</code> is the handle of the object running the script. You can also access this object with <code>NWN.Object.OBJECT_SELF</code>.</p>
+<p><code>oidSelf</code> is the handle of the object running the script. You can also access this object with <code>NWScript.OBJECT_SELF</code>.</p>
 <dl class="section note"><dt>Note</dt><dd>A large switch (or if/else/if) statement to account for all scripts will get real unwieldy real fast, so you should set up some way to dispatch to the correct function based on a script. Some options are:</dd></dl>
 <ul>
 <li>Use a <code>Dictionary&lt;string, RunScriptHandlerDelegate&gt;</code> to register functions that handle scripts</li>
@@ -184,7 +184,7 @@ Using NWScript in C</h3>
 <p>For example:</p>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">int</span> OnRunScript(<span class="keywordtype">string</span> script, uint oidSelf)</div>
 <div class="line">{</div>
-<div class="line">    var tag = NWScript.GetTag(NWN.Object.OBJECT_SELF);</div>
+<div class="line">    var tag = NWScript.GetTag(NWScript.OBJECT_SELF);</div>
 <div class="line">    Console.WriteLine($<span class="stringliteral">&quot;Running script &#39;{script}&#39; on object tag &#39;{tag}&#39;&quot;</span>);</div>
 <div class="line">    NWScript.SendMessageToPC(NWScript.GetFirstPC(), <span class="stringliteral">&quot;Hello!&quot;</span>);</div>
 <div class="line"> </div>
@@ -198,7 +198,7 @@ Advanced stuff</h2>
 <p>All the managed code provided in this repo is meant just as a primer, You are encouraged to copy it and adapt to your own needs.</p>
 <h3><a class="anchor" id="autotoc_md68"></a>
 NWN types</h3>
-<p>When talking to unmanaged code, we only deal with basic types. <code>NWN.Object</code> is a wrapper class around a <code>uint</code> object ID (oid) that is passed to the native code. Other engine structures, like <code>Effect</code>,<code>Location</code>, etc, all have <code>IntPtr Handle</code> which is passed instead.</p>
+<p>When talking to unmanaged code, we only deal with basic types. Objects are passed as <code>uint</code>s. Other engine structures, like <code>Effect</code>,<code>Location</code>, etc, all have <code>IntPtr Handle</code> which is passed instead.</p>
 <h3><a class="anchor" id="autotoc_md69"></a>
 Bootstrapping</h3>
 <p>The basic interop between unmanaged NWNX and managed module code is entirely contained within <a href="NWN/Internal/Bootstrap.cs">Bootstrap.cs</a>. Your managed DLL needs to have this function:</p>
@@ -247,7 +247,7 @@ Closures</h3>
 <div class="fragment"><div class="line"><span class="keyword">public</span> delegate <span class="keywordtype">void</span> ActionDelegate();</div>
 <div class="line"><span class="keyword">private</span> <span class="keyword">struct </span>Closure</div>
 <div class="line">{</div>
-<div class="line">    <span class="keyword">public</span> NWN.Object OwnerObject;</div>
+<div class="line">    <span class="keyword">public</span> uint OwnerObject;</div>
 <div class="line">    <span class="keyword">public</span> ActionDelegate Run;</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">// Unique ID given to each event</span></div>
@@ -256,9 +256,9 @@ Closures</h3>
 <div class="line"><span class="keyword">private</span> <span class="keyword">static</span> Dictionary&lt;ulong, Closure&gt; Closures = <span class="keyword">new</span> Dictionary&lt;ulong, Closure&gt;();</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Scheduling a closure:</span></div>
-<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> ClosureDelayCommand(NWN.Object obj, <span class="keywordtype">float</span> duration, ActionDelegate func)</div>
+<div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> ClosureDelayCommand(uint obj, <span class="keywordtype">float</span> duration, ActionDelegate func)</div>
 <div class="line">{</div>
-<div class="line">    <span class="keywordflow">if</span> (NativeFunctions.ClosureDelayCommand(obj.Self, duration, NextEventId) != 0)</div>
+<div class="line">    <span class="keywordflow">if</span> (NativeFunctions.ClosureDelayCommand(obj, duration, NextEventId) != 0)</div>
 <div class="line">    {</div>
 <div class="line">        Closures.Add(NextEventId++, <span class="keyword">new</span> Closure { OwnerObject = obj, Run = func });</div>
 <div class="line">    }</div>
@@ -274,7 +274,7 @@ Exceptions</h3>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Dec 10 2019 18:22:06 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Dec 10 2019 18:47:07 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
