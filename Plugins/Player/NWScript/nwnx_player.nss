@@ -274,20 +274,9 @@ int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindI
 /// @brief returns the platform ID of the given player (NWNX_PLAYER_PLATFORM_*)
 int NWNX_Player_GetPlatformId(object oPlayer);
 
-/// @brief returns the UI language of the given player (NWNX_PLAYER_LANGUAGE_*)
-/// @details This function returns the ID of the UI language displayed by the player. If you want to know
-/// the name of the language used, add and include the nwnx_dialog.nss file to your scripts and the refer to
-/// the following constants:
-/// NWNX_DIALOG_LANGUAGE_ENGLISH
-/// NWNX_DIALOG_LANGUAGE_FRENCH
-/// NWNX_DIALOG_LANGUAGE_GERMAN
-/// NWNX_DIALOG_LANGUAGE_ITALIAN
-/// NWNX_DIALOG_LANGUAGE_SPANISH
-/// NWNX_DIALOG_LANGUAGE_POLISH
-/// NWNX_DIALOG_LANGUAGE_KOREAN
-/// NWNX_DIALOG_LANGUAGE_CHINESE_TRADITIONAL
-/// NWNX_DIALOG_LANGUAGE_CHINESE_SIMPLIFIED
-/// NWNX_DIALOG_LANGUAGE_JAPANESE
+/// @brief returns the game language of the given player (uses NWNX_DIALOG_LANGUAGE_*)
+/// @details This function returns the ID of the game language displayed to the player.
+/// Uses the same constants as nwnx_dialog.
 int NWNX_Player_GetLanguage(object oPlayer);
 
 /// @}
