@@ -15,7 +15,7 @@ using namespace NWNXLib::Platform;
 
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerPartyHook = nullptr;
 
-PartyEvents::PartyEvents(ViewPtr<Services::HooksProxy> hooker)
+PartyEvents::PartyEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_PARTY_.*", [hooker]() {
         hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh, int32_t,

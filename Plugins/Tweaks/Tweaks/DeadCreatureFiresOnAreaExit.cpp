@@ -17,7 +17,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* DeadCreatureFiresOnAreaExit::pRemoveObjectFromArea_hook;
-DeadCreatureFiresOnAreaExit::DeadCreatureFiresOnAreaExit(ViewPtr<Services::HooksProxy> hooker)
+DeadCreatureFiresOnAreaExit::DeadCreatureFiresOnAreaExit(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj>
                                     (&CNWSArea__RemoveObjectFromArea_hook);

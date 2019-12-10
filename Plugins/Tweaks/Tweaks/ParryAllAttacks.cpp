@@ -16,7 +16,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* ParryAllAttacks::pResolveAttackRoll_hook;
-ParryAllAttacks::ParryAllAttacks(ViewPtr<Services::HooksProxy> hooker)
+ParryAllAttacks::ParryAllAttacks(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>
                                     (&CNWSCreature__ResolveAttackRoll_hook);

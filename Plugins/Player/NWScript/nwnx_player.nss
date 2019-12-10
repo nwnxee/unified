@@ -274,6 +274,11 @@ int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindI
 /// @brief returns the platform ID of the given player (NWNX_PLAYER_PLATFORM_*)
 int NWNX_Player_GetPlatformId(object oPlayer);
 
+/// @brief returns the game language of the given player (uses NWNX_DIALOG_LANGUAGE_*)
+/// @details This function returns the ID of the game language displayed to the player.
+/// Uses the same constants as nwnx_dialog.
+int NWNX_Player_GetLanguage(object oPlayer);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -674,6 +679,16 @@ int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindI
 int NWNX_Player_GetPlatformId(object oPlayer)
 {
     string sFunc = "GetPlatformId";
+
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+}
+
+int NWNX_Player_GetLanguage(object oPlayer)
+{
+    string sFunc = "GetLanguage";
 
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 

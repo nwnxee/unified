@@ -16,7 +16,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 int16_t PlayerDyingHitPointLimit::m_hplimit;
-PlayerDyingHitPointLimit::PlayerDyingHitPointLimit(ViewPtr<Services::HooksProxy> hooker, int16_t hplimit)
+PlayerDyingHitPointLimit::PlayerDyingHitPointLimit(Services::HooksProxy* hooker, int16_t hplimit)
 {
     m_hplimit = hplimit;
 

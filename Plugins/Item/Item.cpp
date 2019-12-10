@@ -11,7 +11,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Item::Item> g_plugin;
+static Item::Item* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

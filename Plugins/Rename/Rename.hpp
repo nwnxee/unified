@@ -5,7 +5,6 @@
 #include "Services/Events/Events.hpp"
 #include "API/Types.hpp"
 #include "Common.hpp"
-#include "ViewPtr.hpp"
 #include <unordered_set>
 
 using namespace NWNXLib;

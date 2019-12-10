@@ -4,14 +4,13 @@
 #include "API/Vector.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class EffectEvents
 {
 public:
-    EffectEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    EffectEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void HandleEffectHook(const std::string&, bool, CNWSObject*, CGameEffect*);

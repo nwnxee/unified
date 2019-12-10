@@ -16,13 +16,12 @@
 #include "API/Functions.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 #include "Utils.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Dialog::Dialog> g_plugin;
+static Dialog::Dialog* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

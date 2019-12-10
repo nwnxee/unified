@@ -1,4 +1,14 @@
-69a70,94
+18c18
+< if [ -e $ROHOMEPATH/settings.tml ]; then
+---
+> if [ -e $ROHOMEPATH/settings.tml ] && [ ! -f $HOMEPATH/settings.tml ]; then
+35,39d34
+< if [ -f $ROHOMEPATH/nwnplayer.ini ]; then
+<   echo "[*] .. nwnplayer.ini"
+<   <$ROHOMEPATH/nwnplayer.ini awk -f /nwn/prep-nwnplayer-ini.awk >$HOMEPATH/nwnplayer.ini
+< fi
+< 
+69a65,89
 > copycrashlog() {
 >   inotifywait -mq -e moved_to -e create "$HOMEPATH" --format "%f" | while read f
 >   do
@@ -24,13 +34,13 @@
 > 
 > copyruntimeconfiguration &
 > 
-71c96,98
+71c91,93
 < LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
 ---
 > export LD_PRELOAD=$NWN_LD_PRELOAD
 > export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
 > exec ./nwserver-linux \
-96,107d122
+96,107d117
 < RET=$?
 < set -e
 < 

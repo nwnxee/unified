@@ -19,7 +19,6 @@
 #include "API/Constants.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Config/Config.hpp"
-#include "ViewPtr.hpp"
 #include <regex>
 
 using namespace NWNXLib;
@@ -29,7 +28,7 @@ using namespace NWNXLib::API::Constants;
 const int CORE_MAX_LEVEL = 40;
 const int MAX_LEVEL_MAX = 60;
 
-static ViewPtr<MaxLevel::MaxLevel> g_plugin;
+static MaxLevel::MaxLevel* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

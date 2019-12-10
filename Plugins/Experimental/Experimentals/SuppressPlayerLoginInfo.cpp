@@ -17,7 +17,7 @@ NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerPlayerList_AddHook;
 NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerPlayerList_AllHook;
 NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerPlayerList_DeleteHook;
 
-SuppressPlayerLoginInfo::SuppressPlayerLoginInfo(ViewPtr<Services::HooksProxy> hooker)
+SuppressPlayerLoginInfo::SuppressPlayerLoginInfo(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer, int32_t>(&SendServerToPlayerPlayerList_AddHook);
     m_SendServerToPlayerPlayerList_AddHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer);

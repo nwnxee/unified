@@ -4,14 +4,13 @@
 #include "API/Vector.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class InputEvents
 {
 public:
-    InputEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    InputEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static void HandlePlayerToServerInputWalkToWaypointHook(bool, CNWSMessage*, CNWSPlayer*);

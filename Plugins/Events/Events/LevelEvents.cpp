@@ -10,7 +10,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-LevelEvents::LevelEvents(ViewPtr<HooksProxy> hooker)
+LevelEvents::LevelEvents(HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN17CNWSCreatureStats7LevelUpEP13CNWLevelStatshhhi, int32_t,

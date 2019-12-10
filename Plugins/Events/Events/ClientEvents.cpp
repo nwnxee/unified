@@ -21,7 +21,7 @@ using namespace NWNXLib::Services;
 static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCharListHook;
 static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
 
-ClientEvents::ClientEvents(ViewPtr<HooksProxy> hooker)
+ClientEvents::ClientEvents(HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_DISCONNECT_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal17RemovePCFromWorldEP10CNWSPlayer, void,

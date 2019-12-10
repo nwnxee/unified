@@ -29,7 +29,6 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Platform/ASLR.hpp"
-#include "ViewPtr.hpp"
 
 #include <set>
 #include <map>
@@ -39,7 +38,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static ViewPtr<ELC::ELC> g_plugin;
+static ELC::ELC* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -687,6 +686,20 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
         for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
         {
             nAbilityAtLevel[nAbilityIndex] += nStatMods[nAbilityIndex];
+        }
+
+        for (int nMultiClass = 0; nMultiClass < NUM_MULTICLASS; nMultiClass++)
+        {
+            uint8_t nClassId = pCreatureStats->GetClass(nMultiClass);
+            CNWClass *pClass = nClassId < pRules->m_nNumClasses ? &pRules->m_lstClasses[nClassId] : nullptr;
+
+            if (pClass)
+            {
+                for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
+                {
+                    nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForLevel(nAbilityIndex, nLevel);
+                }
+            }
         }
 
 // *** Check Hit Die ********************************************************************************************************

@@ -30,7 +30,7 @@ Plugin::Info::Info(std::string name,
 {
 }
 
-ViewPtr<Services::ProxyServiceList> Plugin::GetServices()
+Services::ProxyServiceList* Plugin::GetServices()
 {
     return m_services;
 }

@@ -5,7 +5,6 @@
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "Common.hpp"
 #include "Plugin.hpp"
-#include "Platform/Hooking.hpp"
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Plugins/Plugins.hpp"

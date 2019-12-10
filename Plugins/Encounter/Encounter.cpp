@@ -7,13 +7,12 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "Services/Events/Events.hpp"
-#include "ViewPtr.hpp"
 
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Encounter::Encounter> g_plugin;
+static Encounter::Encounter* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

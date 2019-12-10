@@ -6,7 +6,7 @@
 
 using namespace NWNXLib;
 
-static ViewPtr<Experimental::Experimental> g_plugin;
+static Experimental::Experimental* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

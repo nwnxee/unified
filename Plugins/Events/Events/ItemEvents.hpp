@@ -4,14 +4,13 @@
 #include "API/Vector.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class ItemEvents
 {
 public:
-    ItemEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    ItemEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static int32_t UseItemHook(CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t,

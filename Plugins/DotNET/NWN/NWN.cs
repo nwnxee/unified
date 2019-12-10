@@ -19,43 +19,6 @@ namespace NWN
         }
     }
 
-    public partial class Object
-    {
-        public const uint OBJECT_INVALID = 0x7F000000;
-
-        public static Object OBJECT_SELF { get { return Internal.OBJECT_SELF; } }
-
-        public uint Self = OBJECT_INVALID;
-
-        public static implicit operator Object(uint objId)
-        {
-            return new Object { Self = objId };
-        }
-
-        public static bool operator ==(Object lhs, Object rhs)
-        {
-            bool lhsNull = object.ReferenceEquals(lhs, null);
-            bool rhsNull = object.ReferenceEquals(rhs, null);
-            return (lhsNull && rhsNull) || (!lhsNull && !rhsNull && lhs.Self == rhs.Self);
-        }
-
-        public static bool operator !=(Object lhs, Object rhs)
-        {
-            return !(lhs == rhs);
-        }
-
-        public override bool Equals(object o)
-        {
-            Object other = o as Object;
-            return other != null && other == this;
-        }
-
-        public override int GetHashCode()
-        {
-            return (int)Self;
-        }
-    }
-
     public partial class Effect
     {
         public IntPtr Handle;

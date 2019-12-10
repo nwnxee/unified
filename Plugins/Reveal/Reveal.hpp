@@ -5,7 +5,6 @@
 #include "Services/Events/Events.hpp"
 #include "API/Types.hpp"
 #include "Common.hpp"
-#include "ViewPtr.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 

@@ -5,14 +5,13 @@
 #include "API/CNWSCreature.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class FeatEvents
 {
 public:
-    FeatEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    FeatEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
         static int32_t UseFeatHook

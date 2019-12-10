@@ -855,6 +855,30 @@ _______________________________________
     TARGET                | object | Convert to object with NWNX_Object_StringToObject()
 
 _______________________________________
+    ## Object Lock Events
+    - NWNX_ON_OBJECT_LOCK_BEFORE
+    - NWNX_ON_OBJECT_LOCK_AFTER
+
+    `OBJECT_SELF` = The object doing the locking
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    DOOR                  | object | Convert to object with NWNX_Object_StringToObject()
+
+_______________________________________
+    ## Object Unlock Events
+    - NWNX_ON_OBJECT_UNLOCK_BEFORE
+    - NWNX_ON_OBJECT_UNLOCK_AFTER
+
+    `OBJECT_SELF` = The object doing the unlocking
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    DOOR                  | object | Convert to object with NWNX_Object_StringToObject()
+    THIEVES_TOOL          | object | Convert to object with NWNX_Object_StringToObject()
+    ACTIVE_PROPERTY_INDEX | int    |
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -927,6 +951,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Add/RemoveGold events
 /// - PVP Attitude Change events
 /// - {Enter|Exit}Stealth events
+/// - Object {Lock|Unlock} events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

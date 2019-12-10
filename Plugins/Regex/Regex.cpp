@@ -1,7 +1,6 @@
 #include "Regex.hpp"
 
 #include "Services/Config/Config.hpp"
-#include "ViewPtr.hpp"
 
 #include <string>
 #include <stdio.h>
@@ -10,7 +9,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
 
-static ViewPtr<Regex::Regex> g_plugin;
+static Regex::Regex* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

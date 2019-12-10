@@ -15,7 +15,6 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
-#include "ViewPtr.hpp"
 #include "Services/Tasks/Tasks.hpp"
 
 #include <unistd.h>
@@ -23,7 +22,7 @@
 
 using namespace NWNXLib;
 
-static ViewPtr<Administration::Administration> g_plugin;
+static Administration::Administration* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

@@ -118,7 +118,7 @@ std::optional<Plugins::PluginData> Plugins::FindPluginById(const Plugins::Plugin
     if (plugin != m_plugins.end())
     {
         const PluginDataInternal& data = plugin->second;
-        return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
+        return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info.get(), data.m_plugin.get() });
     }
 
     return std::optional<Plugins::PluginData>();
@@ -133,7 +133,7 @@ std::optional<Plugins::PluginData> Plugins::FindPluginByName(const std::string& 
         if (pluginName == name)
         {
             const PluginDataInternal& data = plugin.second;
-            return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
+            return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info.get(), data.m_plugin.get() });
         }
     }
 
@@ -148,7 +148,7 @@ std::optional<Plugins::PluginData> Plugins::FindPluginByPath(const std::string& 
 
         if (data.m_path == path)
         {
-            return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info, data.m_plugin });
+            return std::make_optional<Plugins::PluginData>({ data.m_id, data.m_path, data.m_info.get(), data.m_plugin.get() });
         }
     }
 
@@ -163,7 +163,7 @@ std::vector<Plugins::PluginData> Plugins::GetPlugins() const
     for (auto& plugin : m_plugins)
     {
         const PluginDataInternal& data = plugin.second;
-        plugins.push_back({ data.m_id, data.m_path, data.m_info, data.m_plugin });
+        plugins.push_back({ data.m_id, data.m_path, data.m_info.get(), data.m_plugin.get() });
     }
 
     return plugins;
@@ -173,8 +173,8 @@ std::string Plugins::GetCanonicalPluginName(const std::string& name) const
 {
     for (auto pluginData : GetPlugins())
     {
-        if (!strcasecmp(name.c_str(), pluginData.m_info.Get()->m_name.c_str()))
-            return pluginData.m_info.Get()->m_name;
+        if (!strcasecmp(name.c_str(), pluginData.m_info->m_name.c_str()))
+            return pluginData.m_info->m_name;
     }
     return "";
 }

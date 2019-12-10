@@ -15,7 +15,7 @@ using namespace NWNXLib::Services;
 
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerPVPListOperationsHook = nullptr;
 
-PVPEvents::PVPEvents(ViewPtr<HooksProxy> hooker)
+PVPEvents::PVPEvents(HooksProxy* hooker)
 {    Events::InitOnFirstSubscribe("NWNX_ON_PVP_ATTITUDE_CHANGE_.*", [hooker]() {
         hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage37HandlePlayerToServerPVPListOperationsEP10CNWSPlayerh>(&HandlePlayerToServerPVPListOperationsHook);
         m_HandlePlayerToServerPVPListOperationsHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage37HandlePlayerToServerPVPListOperationsEP10CNWSPlayerh);

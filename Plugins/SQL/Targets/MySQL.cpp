@@ -20,7 +20,7 @@ MySQL::~MySQL()
     mysql_close(&m_mysql);
 }
 
-void MySQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
+void MySQL::Connect(NWNXLib::Services::ConfigProxy* config)
 {
     const auto host     = config->Get<std::string>("HOST", "localhost");
     const auto username = config->Require<std::string>("USERNAME");

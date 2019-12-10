@@ -14,7 +14,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-InputEvents::InputEvents(ViewPtr<Services::HooksProxy> hooker)
+InputEvents::InputEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer, int32_t>(&HandlePlayerToServerInputWalkToWaypointHook);

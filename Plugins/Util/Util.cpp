@@ -18,7 +18,6 @@
 #include "API/CScriptCompiler.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
-#include "ViewPtr.hpp"
 #include "Services/Config/Config.hpp"
 
 #include <string>
@@ -29,7 +28,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Util::Util> g_plugin;
+static Util::Util* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

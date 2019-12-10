@@ -7,7 +7,7 @@
 
 using namespace NWNXLib;
 
-static ViewPtr<Ruby::Ruby> g_plugin;
+static Ruby::Ruby* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

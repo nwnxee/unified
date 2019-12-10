@@ -4,12 +4,11 @@ cmake_policy(SET CMP0054 NEW)
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
     set(DOXYGEN_PROJECT_NAME NWNX:EE)
-    set(DOXYGEN_PROJECT_NUMBER 8193)
+    set(DOXYGEN_PROJECT_NUMBER 8193.3)
     set(DOXYGEN_PROJECT_LOGO ${CMAKE_SOURCE_DIR}/docgen/logo-transparent.png)
     set(DOXYGEN_LAYOUT_FILE ${CMAKE_SOURCE_DIR}/docgen/DoxygenLayout.xml)
     set(DOXYGEN_FILE_PATTERNS *.nss;*.md)
     set(DOXYGEN_EXCLUDE_PATTERNS */*-nwnx/*; */Plugins/*/NWScript/*_t.nss; */Plugins/*/NWScript/*_t?.nss;
-                                 */Plugins/JVM/build/nwscript.nss; */Plugins/JVM/build/consts.nss;
                                  */Plugins/Redis/cpp_redis)
     set(DOXYGEN_EXTENSION_MAPPING nss=C++)
     set(DOXYGEN_DISABLE_INDEX YES)

@@ -13,7 +13,7 @@ using namespace NWNXLib::API;
 static Hooking::FunctionHook* m_OnApplyPolymorphHook = nullptr;
 static Hooking::FunctionHook* m_OnRemovePolymorphHook = nullptr;
 
-PolymorphEvents::PolymorphEvents(ViewPtr<Services::HooksProxy> hooker)
+PolymorphEvents::PolymorphEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_POLYMORPH_.*", [hooker]() {
         hooker->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti,

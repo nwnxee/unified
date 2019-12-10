@@ -15,7 +15,7 @@ for p in dialog.tlk dialogf.tlk; do
   if [ ! -L $HOMEPATH/$p ]; then ln -vs $ROHOMEPATH/$p $HOMEPATH/; fi
 done
 
-if [ -e $ROHOMEPATH/settings.tml ]; then
+if [ -e $ROHOMEPATH/settings.tml ] && [ ! -f $HOMEPATH/settings.tml ]; then
   echo "[*] Linking in settings.tml"
   ln -vs $ROHOMEPATH/settings.tml $HOMEPATH/;
 fi
@@ -25,11 +25,6 @@ echo "[*] Importing configuration"
 if [ -f $ROHOMEPATH/nwn.ini ]; then
   echo "[*] .. nwn.ini"
   <$ROHOMEPATH/nwn.ini awk -f /nwn/prep-nwn-ini.awk >$HOMEPATH/nwn.ini
-fi
-
-if [ -f $ROHOMEPATH/nwnplayer.ini ]; then
-  echo "[*] .. nwnplayer.ini"
-  <$ROHOMEPATH/nwnplayer.ini awk -f /nwn/prep-nwnplayer-ini.awk >$HOMEPATH/nwnplayer.ini
 fi
 
 if [ -f $ROHOMEPATH/nwnplayer.ini ]; then

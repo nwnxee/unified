@@ -9,7 +9,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-TimingBarEvents::TimingBarEvents(ViewPtr<HooksProxy> hooker)
+TimingBarEvents::TimingBarEvents(HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_TIMING_BAR_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerGuiTimingEventEP10CNWSPlayerihj, int32_t,

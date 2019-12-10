@@ -21,7 +21,7 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-HideDMsOnCharList::HideDMsOnCharList(ViewPtr<Services::HooksProxy> hooker)
+HideDMsOnCharList::HideDMsOnCharList(Services::HooksProxy* hooker)
 {
     hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer>
         (&HandlePlayerToServerPlayModuleCharacterList_StartHook);

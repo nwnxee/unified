@@ -3,7 +3,6 @@
 #include "Services/Services.hpp"
 #include "Services/Metrics/MetricData.hpp"
 #include "Services/Metrics/Resamplers.hpp"
-#include "ViewPtr.hpp"
 
 #include <chrono>
 #include <functional>
@@ -51,7 +50,7 @@ public:
         std::chrono::nanoseconds&& interval);
     void ClearResampler(const std::string& measurementName);
 
-    void Update(ViewPtr<Tasks> tasks);
+    void Update(Tasks* tasks);
 
 private:
     std::vector<MetricData> m_data;
