@@ -27,6 +27,7 @@
 #include "Events/PVPEvents.hpp"
 #include "Events/InputEvents.hpp"
 #include "Events/MaterialChangeEvents.hpp"
+#include "Events/ObjectEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -123,6 +124,7 @@ Events::Events(const Plugin::CreateParams& params)
     m_PVPEvents         = std::make_unique<PVPEvents>(hooker);
     m_inputEvents       = std::make_unique<InputEvents>(hooker);
     m_matChangeEvents   = std::make_unique<MaterialChangeEvents>(hooker);
+    m_objectEvents      = std::make_unique<ObjectEvents>(hooker);
 }
 
 Events::~Events()
