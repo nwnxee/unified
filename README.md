@@ -1,8 +1,8 @@
 # NWNX:EE (build 8193.2 - v79)
 
-- Latest release: [build8193.2](https://github.com/nwnxee/unified/releases/tag/build8193.2) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#8193.2) 
-- Docker tag: `nwnxee/unified:build8193.2`
-- nwserver-linux md5: `89b3ad1f479a80a184b730f83e01f4cc`
+- Latest release: [build8193.3](https://github.com/nwnxee/unified/releases/tag/build8193.3) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#81933) 
+- Docker tag: `nwnxee/unified:build8193.3`
+- nwserver-linux md5: `47942eb2f183f9650cc2a6a890aca2f3`
 
 @mainpage
 @tableofcontents
