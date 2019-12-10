@@ -5,10 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.2...HEAD
+https://github.com/nwnxee/unified/compare/build8193.3...HEAD
 
 ### Added
-- Events: Added skippable {Lock|Unlock} events to ObjectEvents
+N/A
 
 ##### New Plugins
 N/A
@@ -24,6 +24,19 @@ N/A
 
 ### Removed
 N/A
+
+### Fixed
+N/A
+
+## 8193.2
+https://github.com/nwnxee/unified/compare/build8193.2...build8193.3
+
+### Added
+- Events: Added skippable {Lock|Unlock} events to ObjectEvents
+- Player: GetLanguage() function
+
+### Changed
+- DotNET: C# API has moved from using `NWN.Object` to plain `uint` for NWScript `object` type
 
 ### Fixed
 - ELC: RDDs now pass NWNX_ELC
