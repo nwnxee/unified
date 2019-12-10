@@ -53,6 +53,7 @@ namespace NWN
 
         public static void OnClosure(ulong eid, uint oidSelf)
         {
+            uint old = OBJECT_SELF;
             OBJECT_SELF = oidSelf;
             try
             {
@@ -63,6 +64,7 @@ namespace NWN
                 Console.WriteLine(e.ToString());
             }
             Closures.Remove(eid);
+            OBJECT_SELF = old;
         }
 
         public static void ClosureAssignCommand(uint obj, ActionDelegate func)
