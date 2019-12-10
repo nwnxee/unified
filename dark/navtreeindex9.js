@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__spellcheck_8nss_source.html":[4,0,2,32,0,0],
+"nwnx__sql_8nss.html":[4,0,2,33,0,0],
 "nwnx__sql_8nss_source.html":[4,0,2,33,0,0],
 "nwnx__tests_8nss.html":[4,0,0,0,47],
 "nwnx__tests_8nss_source.html":[4,0,0,0,47],

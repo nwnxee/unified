@@ -51,6 +51,7 @@ var group__player =
     [ "NWNX_Player_UpdateItemName", "group__player.html#gacac5076de03030e5d2c8fd210d63248d", null ],
     [ "NWNX_Player_PossessCreature", "group__player.html#gacfe74084d5751ac57a20e450e2e81301", null ],
     [ "NWNX_Player_GetPlatformId", "group__player.html#ga80bfea76a93c1de52cb4c0e5bbc23978", null ],
+    [ "NWNX_Player_GetLanguage", "group__player.html#ga205d11b56a93e6516d18abeb38a61ba9", null ],
     [ "NWNX_Player_QBS_Empty", "group__player.html#ga12d642ac5b5fad0078ace6c222c7ab38", null ],
     [ "NWNX_Player_QBS_UseItem", "group__player.html#ga86c1edebbcfd652b79adf34e73b9c317", null ],
     [ "NWNX_Player_QBS_EquipItem", "group__player.html#gafcca025e7811f1b7babab77d6ef5d115", null ],

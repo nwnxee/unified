@@ -33,6 +33,7 @@ var nwnx__player_8nss =
     [ "NWNX_Player_UpdateItemName", "group__player.html#gacac5076de03030e5d2c8fd210d63248d", null ],
     [ "NWNX_Player_PossessCreature", "group__player.html#gacfe74084d5751ac57a20e450e2e81301", null ],
     [ "NWNX_Player_GetPlatformId", "group__player.html#ga80bfea76a93c1de52cb4c0e5bbc23978", null ],
+    [ "NWNX_Player_GetLanguage", "group__player.html#ga205d11b56a93e6516d18abeb38a61ba9", null ],
     [ "NWNX_Player_INTERNAL_StopGuiTimingBar", "nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4", null ],
     [ "NWNX_Player", "group__player.html#gacd1c1162e2432e9e61eea99322364c13", null ],
     [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],

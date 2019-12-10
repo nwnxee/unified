@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"nwnx__redis_8nss.html#afb12836448527843893cea9aa66a718b":[4,0,2,25,0,0,191],
+"nwnx__redis_8nss.html#afb9f4c4230ffd293a803cdcb93c24432":[4,0,2,25,0,0,124],
 "nwnx__redis_8nss.html#afbddebbcf6d3934ed197f72cf651f565":[4,0,2,25,0,0,37],
 "nwnx__redis_8nss.html#afc640f1f6e675ab5372174be68836957":[4,0,2,25,0,0,101],
 "nwnx__redis_8nss.html#afcccc0cb0c9c94931ee3dc291cd38f89":[4,0,2,25,0,0,152],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "nwnx__ruby_8nss_source.html":[4,0,2,29,0,0],
 "nwnx__skillranks_8nss.html":[4,0,2,31,0,0],
 "nwnx__skillranks_8nss_source.html":[4,0,2,31,0,0],
-"nwnx__spellcheck_8nss.html":[4,0,2,32,0,0],
-"nwnx__spellcheck_8nss_source.html":[4,0,2,32,0,0],
-"nwnx__sql_8nss.html":[4,0,2,33,0,0]
+"nwnx__spellcheck_8nss.html":[4,0,2,32,0,0]
 };
