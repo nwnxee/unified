@@ -40,10 +40,8 @@ public:
     static void CNWSArea__CNWSAreaDtor__0_hook(bool, CNWSArea* thisPtr);
     static void CNWSPlayer__EatTURD_hook(bool, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD);
     static void CNWSPlayer__DropTURD_hook(bool, CNWSPlayer* thisPtr);
-    static void CNWSObject__SaveObjectState_hook(bool, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
-    static void CNWSObject__LoadObjectState_hook(bool, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct);
-    static void CNWSCreature__LoadCreature_hook(bool, CNWSCreature* pThis, CResGFF * pRes, CResStruct * cCreatureStruct, BOOL bIsSaveGame, BOOL bIsAssociate, BOOL bPreserveItemIds, BOOL bCopyObject);
-    static void CNWSCreature__SaveCreature_hook(bool, CNWSCreature* pThis, CResGFF * pRes, CResStruct * pStruct, BOOL bStoreAssociateList, BOOL bUseDesiredAreaInfo, BOOL bExportingChar, BOOL bSaveOIDs);
+    static void CNWSUUID__SaveToGff_hook(bool, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct);
+    static void CNWSUUID__LoadFromGff_hook(bool, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct);
 private:
     class ObjectStorage
     {
