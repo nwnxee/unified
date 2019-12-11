@@ -14,7 +14,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-N/A
+- Object: {Get|Set|Delete}Persistent{Int|String|Float}()
 
 ### Changed
 N/A

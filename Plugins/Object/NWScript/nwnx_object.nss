@@ -169,6 +169,60 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 /// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
 void NWNX_Object_Export(string sFileName, object oObject);
 
+/// @brief Get oObject's persistent integer variable sVarName.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+/// @return The value or 0 on error.
+int NWNX_Object_GetPersistentInt(object oObject, string sVarName);
+
+/// @brief Set oObject's persistent integer variable sVarName to nValue.
+/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+/// @param nValue The integer value to to set
+void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue);
+
+/// @brief Delete oObject's persistent integer variable sVarName.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+void NWNX_Object_DeletePersistentInt(object oObject, string sVarName);
+
+/// @brief Get oObject's persistent string variable sVarName.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+/// @return The value or "" on error.
+string NWNX_Object_GetPersistentString(object oObject, string sVarName);
+
+/// @brief Set oObject's persistent string variable sVarName to sValue.
+/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+/// @param sValue The string value to to set
+void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue);
+
+/// @brief Delete oObject's persistent string variable sVarName.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+void NWNX_Object_DeletePersistentString(object oObject, string sVarName);
+
+/// @brief Get oObject's persistent float variable sVarName.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+/// @return The value or 0.0f on error.
+float NWNX_Object_GetPersistentFloat(object oObject, string sVarName);
+
+/// @brief Set oObject's persistent float variable sVarName to sValue.
+/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+/// @param fValue The float value to to set
+void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue);
+
+/// @brief Delete oObject's persistent float variable sVarName.
+/// @param oObject The object to set the variable on.
+/// @param sVarName The variable name.
+void NWNX_Object_DeletePersistentFloat(object oObject, string sVarName);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -428,5 +482,95 @@ void NWNX_Object_Export(string sFileName, object oObject)
 
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sFileName);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetPersistentInt(object oObject, string sVarName)
+{
+    string sFunc = "GetPersistentInt";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue)
+{
+    string sFunc = "SetPersistentInt";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nValue);
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_DeletePersistentInt(object oObject, string sVarName)
+{
+    string sFunc = "DeletePersistentInt";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+string NWNX_Object_GetPersistentString(object oObject, string sVarName)
+{
+    string sFunc = "GetPersistentString";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue)
+{
+    string sFunc = "SetPersistentString";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sValue);
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_DeletePersistentString(object oObject, string sVarName)
+{
+    string sFunc = "DeletePersistentString";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+float NWNX_Object_GetPersistentFloat(object oObject, string sVarName)
+{
+    string sFunc = "GetPersistentFloat";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue)
+{
+    string sFunc = "SetPersistentFloat";
+
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, fValue);
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_DeletePersistentFloat(object oObject, string sVarName)
+{
+    string sFunc = "DeletePersistentFloat";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
