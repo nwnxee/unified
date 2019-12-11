@@ -19,7 +19,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<ItemAppearance::ItemAppearance> g_plugin;
+static ItemAppearance::ItemAppearance* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

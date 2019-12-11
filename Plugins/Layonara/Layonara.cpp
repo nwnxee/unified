@@ -30,7 +30,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace Constants;
 
-static ViewPtr<Layonara::Layonara> g_plugin;
+static Layonara::Layonara* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
