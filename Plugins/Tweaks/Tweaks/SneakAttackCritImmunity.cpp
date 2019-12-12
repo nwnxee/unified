@@ -139,7 +139,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
                 defenderLevels += (defenderClass == uncannyClasses[j]) ? pTarget->m_pStats->GetClassLevel(i, false) : 0;
             }
         }
-        if (attackerLevels - defenderLevels >= 4)
+        if (attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry("FLANK_LEVEL_RANGE", 4))
         {
             if (pThis->GetFlanked(pTarget)) // Bad function name, but this does the correct check
             {
@@ -254,7 +254,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
                 defenderLevels += (defenderClass == uncannyClasses[j]) ? pTarget->m_pStats->GetClassLevel(i, false) : 0;
             }
         }
-        if (attackerLevels - defenderLevels >= 4)
+        if (attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry("FLANK_LEVEL_RANGE", 4))
         {
             if (pThis->GetFlanked(pTarget)) // Bad function name, but this does the correct check
             {
