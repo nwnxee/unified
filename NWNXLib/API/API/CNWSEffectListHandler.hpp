@@ -9,9 +9,9 @@ NWN_API_PROLOGUE(CNWSEffectListHandler)
 #endif
 
 struct CGameEffect;
+struct CNWSObject;
 typedef int32_t (*pfAECommands)(CNWSObject *, CGameEffect *, BOOL);
 typedef int32_t (*pfRECommands)(CNWSObject *, CGameEffect *);
-struct CNWSObject;
 
 
 typedef int BOOL;

@@ -1,10 +1,10 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWSCombatAttackData.hpp"
 #include "CExoArrayList.hpp"
-#include "CNWSCombatRoundAction.hpp"
 #include "CExoLinkedList.hpp"
+#include "CNWSCombatAttackData.hpp"
+#include "CNWSCombatRoundAction.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -12,9 +12,9 @@ NWN_API_PROLOGUE(CNWSCombatRound)
 #endif
 
 struct CNWSCreature;
-struct CResStruct;
 struct CNWSItem;
 struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

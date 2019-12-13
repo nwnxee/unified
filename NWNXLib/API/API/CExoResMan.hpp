@@ -1,25 +1,25 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoArrayList.hpp"
+#include "CExoLinkedList.hpp"
+#include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CNWSync.hpp"
-#include "CExoLocString.hpp"
-#include "RESID.hpp"
-#include "CExoArrayList.hpp"
 #include "CRes.hpp"
-#include "CExoLinkedList.hpp"
+#include "RESID.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CExoResMan)
 #endif
 
-struct CExoStringList;
-struct CResRef;
-struct CExoKeyTable;
-struct CKeyTableEntry;
-struct CExoKeyTable;
 struct CExoFile;
+struct CExoKeyTable;
+struct CExoKeyTable;
+struct CExoStringList;
+struct CKeyTableEntry;
+struct CResRef;
 
 
 typedef int BOOL;

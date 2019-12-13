@@ -1,20 +1,20 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "DestroyHelper.hpp"
 #include "Database.hpp"
-#include "using.hpp"
+#include "DestroyHelper.hpp"
 #include "Identifier.hpp"
-#include <memory>
 #include "Serial.hpp"
+#include <memory>
+#include "using.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(StorageShard)
 #endif
 
-struct Definition;
 struct CExoString;
+struct Definition;
 
 
 

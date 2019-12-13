@@ -1,23 +1,23 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResHelper.hpp"
 #include "CNWTileSurfaceMeshLocalInfo.hpp"
-#include "Vector.hpp"
+#include "CResHelper.hpp"
 #include "CResRef.hpp"
 #include "CResWOK.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWTileSurfaceMesh)
 #endif
 
-struct CNWTile;
-struct CPathfindInfoIntraTileSuccessors;
 struct CNWArea;
+struct CNWTile;
 struct CNWTileSurfaceMeshAABBNode;
-struct CPathfindInformation;
 struct CNWTileSurfaceMeshHashTableEntry;
+struct CPathfindInfoIntraTileSuccessors;
+struct CPathfindInformation;
 
 
 typedef int BOOL;

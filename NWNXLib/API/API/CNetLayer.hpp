@@ -10,10 +10,10 @@ NWN_API_PROLOGUE(CNetLayer)
 #endif
 
 struct CBaseExoApp;
-struct NWSyncAdvertisement;
 struct CNetLayerInternal;
 struct CNetLayerPlayerInfo;
 struct CNetLayerSessionInfo;
+struct NWSyncAdvertisement;
 
 
 typedef int BOOL;

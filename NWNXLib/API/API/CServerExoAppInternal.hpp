@@ -1,52 +1,52 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "AurList.hpp"
-#include "CNWSClient.hpp"
 #include "CExoArrayList.hpp"
-#include "CResRef.hpp"
 #include "CExoLinkedList.hpp"
+#include "CExoString.hpp"
+#include "CNWSClient.hpp"
+#include "CResRef.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CServerExoAppInternal)
 #endif
 
-struct CNWSStore;
-struct CNWSEncounter;
-struct CNWSWaypoint;
-struct CWorldTimer;
-struct CNWSSoundObject;
-struct CFactionManager;
-struct CCampaignDB;
-struct CNetLayer;
-struct CNWVirtualMachineCommands;
-struct CNWSTrigger;
-struct CNWSMessage;
-struct CGameObjectArray;
-struct CNWSAreaOfEffectObject;
-struct CNWSDoor;
-struct CNWSArea;
-struct CNWSItem;
-struct CConnectionLib;
-struct CNWSPlayer;
-struct SSubNetProfile;
-struct CNWSModule;
-struct CServerInfo;
-struct CNWSCreature;
-struct CNWPlaceMeshManager;
 struct C2DA;
-struct CNWSPlaceable;
-struct CServerAIMaster;
+struct CCampaignDB;
+struct CConnectionLib;
+struct CFactionManager;
 struct CGameObject;
+struct CGameObjectArray;
+struct CNWPlaceMeshManager;
+struct CNWSArea;
+struct CNWSAreaOfEffectObject;
+struct CNWSCreature;
+struct CNWSDoor;
+struct CNWSEncounter;
+struct CNWSItem;
+struct CNWSMessage;
+struct CNWSModule;
+struct CNWSPlaceable;
+struct CNWSPlayer;
+struct CNWSSoundObject;
+struct CNWSStore;
+struct CNWSTrigger;
+struct CNWSWaypoint;
+struct CNWVirtualMachineCommands;
+struct CNetLayer;
+struct CServerAIMaster;
+struct CServerInfo;
+struct CWorldTimer;
+struct SSubNetProfile;
 
 
+typedef int BOOL;
 typedef CExoLinkedListNode * CExoLinkedListPosition;
+typedef uint32_t OBJECT_ID;
 typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
-typedef int BOOL;
-typedef uint32_t OBJECT_ID;
 
 
 struct CServerExoAppInternal

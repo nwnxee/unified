@@ -1,22 +1,22 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CExoLocString.hpp"
 #include "CExoArrayList.hpp"
-#include "Vector.hpp"
-#include "CResRef.hpp"
+#include "CExoLocString.hpp"
+#include "CExoString.hpp"
 #include "CNWSObject.hpp"
+#include "CResRef.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSDoor)
 #endif
 
-struct CResStruct;
 struct CNWDoorSurfaceMesh;
 struct CNWSArea;
 struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CResHelper.hpp"
 #include "CExoString.hpp"
 #include "CRes2DA.hpp"
+#include "CResHelper.hpp"
 #include "CResRef.hpp"
 
 

@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoArrayList.hpp"
+#include "CExoString.hpp"
 #include "CScriptCompilerIncludeFileStackEntry.hpp"
 
 
@@ -10,16 +10,16 @@
 NWN_API_PROLOGUE(CScriptCompiler)
 #endif
 
-struct CScriptParseTreeNode;
 struct CExoStringList;
-struct CScriptCompilerSymbolTableEntry;
-struct CScriptCompilerStackEntry;
-struct CScriptCompilerStructureFieldEntry;
-struct CScriptCompilerStructureEntry;
-struct CScriptCompilerIdentifierHashTableEntry;
-struct CScriptCompilerVarStackEntry;
 struct CScriptCompilerIdListEntry;
+struct CScriptCompilerIdentifierHashTableEntry;
 struct CScriptCompilerKeyWordEntry;
+struct CScriptCompilerStackEntry;
+struct CScriptCompilerStructureEntry;
+struct CScriptCompilerStructureFieldEntry;
+struct CScriptCompilerSymbolTableEntry;
+struct CScriptCompilerVarStackEntry;
+struct CScriptParseTreeNode;
 struct CScriptParseTreeNodeBlock;
 
 

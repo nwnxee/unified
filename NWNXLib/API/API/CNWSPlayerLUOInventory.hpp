@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWSPlayerLUOInventoryItem.hpp"
 #include "CExoLinkedList.hpp"
+#include "CNWSPlayerLUOInventoryItem.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

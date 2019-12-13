@@ -1,23 +1,23 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CExoLocString.hpp"
-#include "CExoArrayList.hpp"
-#include "Vector.hpp"
 #include "CEncounterListEntry.hpp"
-#include "CResRef.hpp"
+#include "CExoArrayList.hpp"
+#include "CExoLocString.hpp"
+#include "CExoString.hpp"
 #include "CNWSObject.hpp"
+#include "CResRef.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSEncounter)
 #endif
 
-struct CResStruct;
-struct CNWSArea;
 struct CEncounterSpawnPoint;
+struct CNWSArea;
 struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

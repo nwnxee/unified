@@ -1,18 +1,18 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoLocString.hpp"
+#include "CExoString.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CAppManager)
 #endif
 
-struct CObjectTableManager;
 struct CClientExoApp;
-struct CNWTileSetManager;
 struct CNWReentrantServerStats;
+struct CNWTileSetManager;
+struct CObjectTableManager;
 struct CServerExoApp;
 
 
