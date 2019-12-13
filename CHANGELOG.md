@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.3...HEAD
+https://github.com/nwnxee/unified/compare/build8193.4...HEAD
 
 ### Added
 N/A
@@ -14,7 +14,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-- Object: {Get|Set|Delete}Persistent{Int|String|Float}()
+N/A
 
 ### Changed
 N/A
@@ -27,6 +27,17 @@ N/A
 
 ### Fixed
 N/A
+
+## 8193.4
+https://github.com/nwnxee/unified/compare/build8193.3...build8193.4
+
+### Added
+
+##### New NWScript Functions
+- Object: {Get|Set|Delete}Persistent{Int|String|Float}()
+
+### Changed
+- Tweaks: SneakAttackCritImmunity now takes `FLANK_LEVEL_RANGE` ruleset.2da setting into account
 
 ## 8193.3
 https://github.com/nwnxee/unified/compare/build8193.2...build8193.3
