@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNetLayerWindow)
 #endif
 
-struct z_stream;
 struct CNetLayerInternal;
+struct z_stream;
 
 
 typedef int BOOL;

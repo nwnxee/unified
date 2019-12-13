@@ -7,9 +7,9 @@
 NWN_API_PROLOGUE(CItemPropertyApplierRemover)
 #endif
 
-struct CNWSItem;
 struct CNWItemProperty;
 struct CNWSCreature;
+struct CNWSItem;
 
 
 typedef int BOOL;

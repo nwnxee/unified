@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CNWClass)
 #endif
 
-struct CNWClass_Skill;
 struct CNWClass_Feat;
+struct CNWClass_Skill;
 struct CNWRules;
 
 
@@ -87,6 +87,7 @@ struct CNWClass
     BOOL IsGrantedFeat(uint16_t nFeat, uint8_t & nLevelGranted);
     BOOL IsFeatUseable(uint16_t nFeat);
     uint8_t GetLevelGranted(uint16_t nFeat);
+    int8_t GetAbilityGainForSingleLevel(int ability, int level);
     int8_t GetAbilityGainForLevel(int ability, int level);
     int8_t GetNaturalACGainForLevel(int level);
 

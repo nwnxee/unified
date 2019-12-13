@@ -9,8 +9,8 @@
 NWN_API_PROLOGUE(CKeyTableInfo)
 #endif
 
-struct KEYFILE_RESFILENAME;
 struct CExoFile;
+struct KEYFILE_RESFILENAME;
 
 
 

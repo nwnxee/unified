@@ -1,9 +1,9 @@
 #pragma once
 #include "nwn_api.hpp"
 
+#include "CExoArrayList.hpp"
 #include "CExoString.hpp"
 #include "CNWSScriptVar.hpp"
-#include "CExoArrayList.hpp"
 #include "CScriptLocation.hpp"
 
 
@@ -12,8 +12,8 @@ NWN_API_PROLOGUE(CNWSScriptVarTable)
 #endif
 
 struct CNWSCreature;
-struct CResStruct;
 struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

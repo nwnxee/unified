@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoFile.hpp"
+#include "CExoString.hpp"
 #include "TLK_FILE_HEADER.hpp"
 
 

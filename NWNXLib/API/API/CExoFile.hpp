@@ -11,8 +11,8 @@ struct CExoFileInternal;
 struct CExoString;
 
 
-typedef uint16_t RESTYPE;
 typedef int BOOL;
+typedef uint16_t RESTYPE;
 
 
 struct CExoFile

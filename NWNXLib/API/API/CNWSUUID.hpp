@@ -8,9 +8,9 @@
 NWN_API_PROLOGUE(CNWSUUID)
 #endif
 
-struct CResStruct;
-struct CResGFF;
 struct CGameObject;
+struct CResGFF;
+struct CResStruct;
 
 
 

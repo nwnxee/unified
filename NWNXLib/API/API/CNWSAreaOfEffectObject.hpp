@@ -2,17 +2,17 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "Vector.hpp"
 #include "CNWSObject.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSAreaOfEffectObject)
 #endif
 
+struct CNWSArea;
 struct CResGFF;
 struct CResStruct;
-struct CNWSArea;
 
 
 typedef int BOOL;

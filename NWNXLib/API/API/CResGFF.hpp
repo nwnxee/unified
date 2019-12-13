@@ -1,23 +1,23 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoLocString.hpp"
-#include "CResRef.hpp"
+#include "CExoString.hpp"
 #include "CRes.hpp"
+#include "CResRef.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CResGFF)
 #endif
 
-struct CResGFFStruct;
-struct CResStruct;
-struct CResGFFField;
-struct CResGFFLabel;
-struct CResList;
 struct CExoFile;
+struct CResGFFField;
 struct CResGFFFileHeader;
+struct CResGFFLabel;
+struct CResGFFStruct;
+struct CResList;
+struct CResStruct;
 
 
 typedef int BOOL;

@@ -1,31 +1,31 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CExoLocString.hpp"
 #include "CExoArrayList.hpp"
+#include "CExoLocString.hpp"
+#include "CExoString.hpp"
+#include "CNWSCreatureStats_ClassInfo.hpp"
 #include "CNWSStats_SpellLikeAbility.hpp"
 #include "CResRef.hpp"
-#include "CNWSCreatureStats_ClassInfo.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSCreatureStats)
 #endif
 
-struct CNWSpell;
-struct CNWCreatureStatsUpdate;
-struct CNWSCreature;
-struct CNWClass;
 struct CCombatInformation;
-struct CResStruct;
 struct CFeatUseListEntry;
-struct CNWSItem;
+struct CNWClass;
+struct CNWCreatureStatsUpdate;
 struct CNWLevelStats;
 struct CNWLevelStats;
-struct CResGFF;
-struct CNWSObject;
+struct CNWSCreature;
 struct CNWSCreatureAppearanceInfo;
+struct CNWSItem;
+struct CNWSObject;
+struct CNWSpell;
+struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

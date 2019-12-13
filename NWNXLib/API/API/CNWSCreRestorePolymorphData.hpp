@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CNWSCreRestorePolymorphData)
 #endif
 
-struct CNWSItem;
 struct CGameEffect;
+struct CNWSItem;
 
 
 typedef int BOOL;

@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include <vector>
 #include "NWSyncAdvertisementManifest.hpp"
+#include <vector>
 
 
 #ifdef NWN_API_PROLOGUE

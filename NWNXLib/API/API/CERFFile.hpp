@@ -1,20 +1,20 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "NWERFHEADER.hpp"
 #include "CERFKey.hpp"
-#include "CExoLinkedList.hpp"
-#include "CERFString.hpp"
 #include "CERFRes.hpp"
+#include "CERFString.hpp"
+#include "CExoLinkedList.hpp"
+#include "NWERFHEADER.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CERFFile)
 #endif
 
+struct CExoFile;
 struct CExoString;
 struct CRes;
-struct CExoFile;
 
 
 typedef int BOOL;
