@@ -26,7 +26,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Tweaks: DisablePause works yet again, woo.
 
 ## 8193.4
 https://github.com/nwnxee/unified/compare/build8193.3...build8193.4
