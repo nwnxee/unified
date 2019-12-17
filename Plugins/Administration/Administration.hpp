@@ -34,6 +34,7 @@ public:
     ArgumentStack DeleteTURD                (ArgumentStack&& args);
     ArgumentStack GetDebugValue             (ArgumentStack&& args);
     ArgumentStack SetDebugValue             (ArgumentStack&& args);
+    ArgumentStack ReloadRules               (ArgumentStack&& args);
 };
 
 }
