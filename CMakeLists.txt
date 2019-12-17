@@ -12,6 +12,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMa
 find_package(Sanitizers)
 
 set(TARGET_NWN_BUILD 8193)
+set(TARGET_NWN_BUILD_REVISION 4)
 set(PLUGIN_PREFIX NWNX_)
 set(NWNX64 1)
 
@@ -57,6 +58,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTAR_RELEASE_FINAL=0 -DTAR_
 
 add_definitions(-DNWNX_PLUGIN_PREFIX="${PLUGIN_PREFIX}")
 add_definitions(-DNWNX_TARGET_NWN_BUILD=${TARGET_NWN_BUILD})
+add_definitions(-DNWNX_TARGET_NWN_BUILD_REVISION=${TARGET_NWN_BUILD_REVISION})
 
 # Provides the NWN API and other useful things as a static lib.
 add_subdirectory(NWNXLib)

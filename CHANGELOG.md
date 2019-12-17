@@ -17,7 +17,7 @@ N/A
 N/A
 
 ### Changed
-N/A
+- Core: NWNX now also checks the build revision of nwserver-linux when starting.
 
 ### Deprecated
 N/A
