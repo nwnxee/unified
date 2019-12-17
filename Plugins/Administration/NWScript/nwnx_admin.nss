@@ -148,6 +148,10 @@ int NWNX_Administration_GetDebugValue(int type);
 /// @param state The new state for the debug type, TRUE or FALSE
 void NWNX_Administration_SetDebugValue(int type, int state);
 
+/// @brief Reload all rules (2da stuff etc).
+/// @warning DANGER, DRAGONS. Bad things may or may not happen.
+void NWNX_Administration_ReloadRules();
+
 /// @}
 
 string NWNX_Administration_GetPlayerPassword()
@@ -317,5 +321,12 @@ void NWNX_Administration_SetDebugValue(int type, int state)
 
     NWNX_PushArgumentInt(NWNX_Administration, sFunc, state);
     NWNX_PushArgumentInt(NWNX_Administration, sFunc, type);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+}
+
+void NWNX_Administration_ReloadRules()
+{
+    string sFunc = "ReloadRules";
+
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }

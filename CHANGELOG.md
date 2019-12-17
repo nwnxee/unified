@@ -11,7 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.4...HEAD
 N/A
 
 ##### New Plugins
-N/A
+- Administration: ReloadRules() (DANGER, DRAGONS)
 
 ##### New NWScript Functions
 N/A

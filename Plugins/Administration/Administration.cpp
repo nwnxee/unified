@@ -9,6 +9,7 @@
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
 #include "API/CServerInfo.hpp"
+#include "API/CNWSRules.hpp"
 #include "API/Globals.hpp"
 #include "API/Types.hpp"
 #include "API/CExoLinkedListInternal.hpp"
@@ -77,6 +78,7 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER(DeleteTURD);
     REGISTER(GetDebugValue);
     REGISTER(SetDebugValue);
+    REGISTER(ReloadRules);
 
 #undef REGISTER
 }
@@ -648,6 +650,13 @@ Events::ArgumentStack Administration::SetDebugValue(Events::ArgumentStack&& args
     }
 
     return stack;
+}
+
+Events::ArgumentStack Administration::ReloadRules(Events::ArgumentStack&&)
+{
+    LOG_NOTICE("Reloading rules!");
+    Globals::Rules()->ReloadAll();
+    return Events::ArgumentStack();
 }
 
 }
