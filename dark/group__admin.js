@@ -23,6 +23,7 @@ var group__admin =
     [ "NWNX_Administration_DeleteTURD", "group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587", null ],
     [ "NWNX_Administration_GetDebugValue", "group__admin.html#ga16d786b08817407d55d982dc909ceb22", null ],
     [ "NWNX_Administration_SetDebugValue", "group__admin.html#gaf5da81550e4fce290abfe3e1e9e240d0", null ],
+    [ "NWNX_Administration_ReloadRules", "group__admin.html#ga630c8b53f98ea80533a26108784aa31e", null ],
     [ "NWNX_ADMINISTRATION_OPTION_ALL_KILLABLE", "group__admin.html#ga16e9040f025d25e8b2618da19ebf8224", null ],
     [ "NWNX_ADMINISTRATION_OPTION_NON_PARTY_KILLABLE", "group__admin.html#ga4cc68cb2745ea97afd38f8faaa101511", null ],
     [ "NWNX_ADMINISTRATION_OPTION_REQUIRE_RESURRECTION", "group__admin.html#gaa56ff043d20aae8044c88779cfa19403", null ],
