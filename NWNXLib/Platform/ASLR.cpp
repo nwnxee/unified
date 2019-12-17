@@ -35,7 +35,7 @@ void ASLR::CalculateBaseAddress()
     void *handle = dlopen(nullptr, RTLD_LAZY);
     ASSERT(handle);
     // TODO: Export free-standing functions so we don't have to update manually.
-    const uintptr_t whatWeThinkItIs = 0x00000000000d9930; NWNX_EXPECT_VERSION(8193);
+    const uintptr_t whatWeThinkItIs = 0x00000000000d9930; NWNX_EXPECT_VERSION(8193, 4);
     const uintptr_t whatItActuallyIs = (uintptr_t)dlsym(handle, "NWNXEntryPoint");
     s_baseAddress = whatItActuallyIs - whatWeThinkItIs;
 

@@ -4,7 +4,7 @@
 
 namespace NWNXLib::API::Functions {
 
-NWNX_EXPECT_VERSION(8193);
+NWNX_EXPECT_VERSION(8193, 4);
 
 constexpr uintptr_t _ZN10CERFString4ReadEv = 0x0000000000785f90;
 constexpr uintptr_t _ZN10CERFString5ResetEv = 0x0000000000785df0;
