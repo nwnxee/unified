@@ -223,14 +223,17 @@ void NWNXCore::InitialSetupHooks()
 void NWNXCore::InitialVersionCheck()
 {
     CExoString *pBuildNumber = Globals::BuildNumber();
+    CExoString *pBuildRevision = Globals::BuildRevision();
 
-    if (pBuildNumber)
+    if (pBuildNumber && pBuildRevision)
     {
         const uint32_t version = std::stoul(pBuildNumber->m_sString);
+        const uint32_t revision = std::stoul(pBuildRevision->m_sString);
 
-        if (version != NWNX_TARGET_NWN_BUILD)
+        if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION)
         {
-            std::fprintf(stderr, "NWNX: Expected build version %u, got build version %u", NWNX_TARGET_NWN_BUILD, version);
+            std::fprintf(stderr, "NWNX: Expected build version %u revision %u, got build version %u revision %u.",
+                                      NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
             std::fflush(stderr);
             std::abort();
         }
