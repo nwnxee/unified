@@ -1,10 +1,10 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "NWPlayerCharacterListClass_st.hpp"
 #include "CExoArrayList.hpp"
 #include "CExoLocString.hpp"
 #include "CResRef.hpp"
+#include "NWPlayerCharacterListClass_st.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

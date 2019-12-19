@@ -178,10 +178,8 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSAreaD0Ev, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer8DropTURDEv, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObject15SaveObjectStateEP7CResGFFP10CResStruct, void>(&Services::PerObjectStorage::CNWSObject__SaveObjectState_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObject15LoadObjectStateEP7CResGFFP10CResStruct, void>(&Services::PerObjectStorage::CNWSObject__LoadObjectState_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN12CNWSCreature12SaveCreatureEP7CResGFFP10CResStructiiii, int32_t>(&Services::PerObjectStorage::CNWSCreature__SaveCreature_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN12CNWSCreature12LoadCreatureEP7CResGFFP10CResStructiiii, int32_t>(&Services::PerObjectStorage::CNWSCreature__LoadCreature_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, void>(&Services::PerObjectStorage::CNWSUUID__SaveToGff_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, void>(&Services::PerObjectStorage::CNWSUUID__LoadFromGff_hook);
 
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii, uint32_t>(
             +[](bool before, CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad)
@@ -225,14 +223,17 @@ void NWNXCore::InitialSetupHooks()
 void NWNXCore::InitialVersionCheck()
 {
     CExoString *pBuildNumber = Globals::BuildNumber();
+    CExoString *pBuildRevision = Globals::BuildRevision();
 
-    if (pBuildNumber)
+    if (pBuildNumber && pBuildRevision)
     {
         const uint32_t version = std::stoul(pBuildNumber->m_sString);
+        const uint32_t revision = std::stoul(pBuildRevision->m_sString);
 
-        if (version != NWNX_TARGET_NWN_BUILD)
+        if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION)
         {
-            std::fprintf(stderr, "NWNX: Expected build version %u, got build version %u", NWNX_TARGET_NWN_BUILD, version);
+            std::fprintf(stderr, "NWNX: Expected build version %u revision %u, got build version %u revision %u.",
+                                      NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
             std::fflush(stderr);
             std::abort();
         }

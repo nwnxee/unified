@@ -1,8 +1,8 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
 #include "CExoArrayList.hpp"
+#include "CExoString.hpp"
 #include "CFileInfo.hpp"
 
 
@@ -10,13 +10,13 @@
 NWN_API_PROLOGUE(CExoBase)
 #endif
 
+struct CExoAliasList;
+struct CExoBaseInternal;
+struct CExoConfig;
 struct CExoDebug;
 struct CExoIdentity;
-struct CExoRand;
-struct CExoConfig;
 struct CExoIni;
-struct CExoBaseInternal;
-struct CExoAliasList;
+struct CExoRand;
 struct CExoTimers;
 
 

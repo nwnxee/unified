@@ -41,12 +41,35 @@ void main()
     NWNX_Object_SetDialogResref(o, dialog);
     NWNX_Tests_Report("NWNX_Object", "SetDialogResRef/GetDialogResRef", NWNX_Object_GetDialogResref(o) == dialog);
 
+    NWNX_Object_SetPersistentInt(o, "TestInt", 10);
+    NWNX_Object_SetPersistentString(o, "TestString_1", "This is a string.");
+    NWNX_Object_SetPersistentString(o, "TestString_2", "This is another string.");
+    NWNX_Object_SetPersistentFloat(o, "TestFloat", 1.5f);
+    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentInt", NWNX_Object_GetPersistentInt(o, "TestInt") == 10);
+    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentString #1", NWNX_Object_GetPersistentString(o, "TestString_1") == "This is a string.");
+    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentString #2", NWNX_Object_GetPersistentString(o, "TestString_2") == "This is another string.");
+    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentFloat", NWNX_Object_GetPersistentFloat(o, "TestFloat") == 1.5f);
+
     string sSerialized = NWNX_Object_Serialize(o);
     NWNX_Tests_Report("NWNX_Object", "Serialize", sSerialized != "");
     WriteTimestampedLogEntry("Serialized chicken: " + sSerialized);
 
     object oDeserialized = NWNX_Object_Deserialize(sSerialized);
     NWNX_Tests_Report("NWNX_Object", "Deserialize", GetIsObjectValid(oDeserialized));
+
+    NWNX_Object_DeletePersistentInt(o, "TestInt");
+    NWNX_Object_DeletePersistentString(o, "TestString_1");
+    NWNX_Object_DeletePersistentString(o, "TestString_2");
+    NWNX_Object_DeletePersistentFloat(o, "TestFloat");
+    NWNX_Tests_Report("NWNX_Object", "DeletePersistentInt", NWNX_Object_GetPersistentInt(o, "TestInt") == 0);
+    NWNX_Tests_Report("NWNX_Object", "DeletePersistentString #1", NWNX_Object_GetPersistentString(o, "TestString_1") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeletePersistentString #2", NWNX_Object_GetPersistentString(o, "TestString_2") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeletePersistentFloat", NWNX_Object_GetPersistentFloat(o, "TestFloat") == 0.0f);
+
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentInt", NWNX_Object_GetPersistentInt(oDeserialized, "TestInt") == 10);
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentString #1", NWNX_Object_GetPersistentString(oDeserialized, "TestString_1") == "This is a string.");
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentString #2", NWNX_Object_GetPersistentString(oDeserialized, "TestString_2") == "This is another string.");
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentFloat", NWNX_Object_GetPersistentFloat(oDeserialized, "TestFloat") == 1.5f);
 
     WriteTimestampedLogEntry("Deserialized " + GetName(oDeserialized) + " in " + GetName(GetArea(oDeserialized)));
 

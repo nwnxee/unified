@@ -365,6 +365,9 @@ _______________________________________
 
     `OBJECT_SELF` = The player disconnecting from the server
 
+    @note This event also runs when a player connects to the server but cancels out of character select.
+    OBJECT_SELF will be OBJECT_INVALID in this case.
+
 _______________________________________
     ## Client Connect Events
     - NWNX_ON_CLIENT_CONNECT_BEFORE

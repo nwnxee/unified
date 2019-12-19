@@ -2,19 +2,19 @@
 #include "nwn_api.hpp"
 
 #include "CExoArrayList.hpp"
-#include "Vector.hpp"
-#include "CResRef.hpp"
 #include "CNWSObject.hpp"
+#include "CResRef.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSSoundObject)
 #endif
 
-struct CNWSMessage;
-struct CResStruct;
-struct CResGFF;
 struct CNWSArea;
+struct CNWSMessage;
+struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

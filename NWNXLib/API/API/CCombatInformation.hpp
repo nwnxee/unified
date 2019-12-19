@@ -9,9 +9,9 @@
 NWN_API_PROLOGUE(CCombatInformation)
 #endif
 
-struct CResStruct;
-struct CResGFF;
 struct CCombatInformationNode;
+struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

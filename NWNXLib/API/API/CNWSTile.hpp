@@ -1,18 +1,18 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CNWTile.hpp"
-#include "Vector.hpp"
 #include "CExoArrayList.hpp"
+#include "CNWTile.hpp"
 #include "CResRef.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSTile)
 #endif
 
-struct CNWTileData;
 struct CNWArea;
+struct CNWTileData;
 struct CPathfindInformation;
 
 

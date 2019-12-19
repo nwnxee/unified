@@ -2,9 +2,9 @@
 #include "nwn_api.hpp"
 
 #include "AurList.hpp"
+#include "CExoLinkedList.hpp"
 #include "CResStructHeader.hpp"
 #include "CStringFieldIDType.hpp"
-#include "CExoLinkedList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -12,8 +12,8 @@ NWN_API_PROLOGUE(CResStructInternal)
 #endif
 
 struct CResStructLookUp;
-struct CStringFieldIDType;
 struct CResStructLookUp;
+struct CStringFieldIDType;
 
 
 typedef int BOOL;

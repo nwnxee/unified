@@ -8,8 +8,8 @@
 NWN_API_PROLOGUE(CServerAIBodyBagInfo)
 #endif
 
-struct CResStruct;
 struct CResGFF;
+struct CResStruct;
 
 
 typedef int BOOL;

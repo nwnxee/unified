@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CResHelper.hpp"
-#include "CTlkFile.hpp"
 #include "CResTLK.hpp"
+#include "CTlkFile.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

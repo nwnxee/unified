@@ -2,8 +2,8 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
-#include "CVirtualMachineDebugLoader.hpp"
 #include "CScriptSourceFile.hpp"
+#include "CVirtualMachineDebugLoader.hpp"
 
 
 #ifdef NWN_API_PROLOGUE

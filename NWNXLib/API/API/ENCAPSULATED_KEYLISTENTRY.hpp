@@ -9,8 +9,8 @@ NWN_API_PROLOGUE(ENCAPSULATED_KEYLISTENTRY)
 
 
 
-typedef uint16_t RESTYPE;
 typedef uint8_t RESREF[16];
+typedef uint16_t RESTYPE;
 
 
 struct ENCAPSULATED_KEYLISTENTRY

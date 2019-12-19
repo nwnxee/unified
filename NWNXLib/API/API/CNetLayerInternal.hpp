@@ -1,15 +1,15 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "RelayModeChange.hpp"
-#include "IntendedConnectionData.hpp"
 #include "CExoArrayList.hpp"
-#include "NWSyncAdvertisement.hpp"
-#include "CNetLayerWindow.hpp"
-#include "CNetLayerPlayerInfo.hpp"
 #include "CExoLinkedList.hpp"
+#include "CExoString.hpp"
+#include "CNetLayerPlayerInfo.hpp"
+#include "CNetLayerWindow.hpp"
+#include "IntendedConnectionData.hpp"
 #include "KXPacket.hpp"
+#include "NWSyncAdvertisement.hpp"
+#include "RelayModeChange.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -17,9 +17,9 @@ NWN_API_PROLOGUE(CNetLayerInternal)
 #endif
 
 struct CBaseExoApp;
+struct CExoNet;
 struct CExoNetExtendableBuffer;
 struct CNetLayerSessionInfo;
-struct CExoNet;
 
 
 typedef int BOOL;

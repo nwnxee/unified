@@ -16,34 +16,42 @@ public:
     virtual ~Object();
 
 private:
-    ArgumentStack GetLocalVariableCount (ArgumentStack&& args);
-    ArgumentStack GetLocalVariable      (ArgumentStack&& args);
-    ArgumentStack StringToObject        (ArgumentStack&& args);
-    ArgumentStack SetPosition           (ArgumentStack&& args);
-    ArgumentStack SetCurrentHitPoints   (ArgumentStack&& args);
-    ArgumentStack SetMaxHitPoints       (ArgumentStack&& args);
-    ArgumentStack Serialize             (ArgumentStack&& args);
-    ArgumentStack Deserialize           (ArgumentStack&& args);
-    ArgumentStack GetDialogResref       (ArgumentStack&& args);
-    ArgumentStack SetDialogResref       (ArgumentStack&& args);
-    ArgumentStack SetAppearance         (ArgumentStack&& args);
-    ArgumentStack GetAppearance         (ArgumentStack&& args);
-    ArgumentStack GetHasVisualEffect    (ArgumentStack&& args);
-    ArgumentStack CheckFit              (ArgumentStack&& args);
-    ArgumentStack GetDamageImmunity     (ArgumentStack&& args);
-    ArgumentStack AddToArea             (ArgumentStack&& args);
-    ArgumentStack GetPlaceableIsStatic  (ArgumentStack&& args);
-    ArgumentStack SetPlaceableIsStatic  (ArgumentStack&& args);
-    ArgumentStack GetAutoRemoveKey      (ArgumentStack&& args);
-    ArgumentStack SetAutoRemoveKey      (ArgumentStack&& args);
-    ArgumentStack GetTriggerGeometry    (ArgumentStack&& args);
-    ArgumentStack SetTriggerGeometry    (ArgumentStack&& args);
-    ArgumentStack RemoveIconEffect      (ArgumentStack&& args);
-    ArgumentStack AddIconEffect         (ArgumentStack&& args);
-    ArgumentStack Export                (ArgumentStack&& args);
+    ArgumentStack GetLocalVariableCount     (ArgumentStack&& args);
+    ArgumentStack GetLocalVariable          (ArgumentStack&& args);
+    ArgumentStack StringToObject            (ArgumentStack&& args);
+    ArgumentStack SetPosition               (ArgumentStack&& args);
+    ArgumentStack SetCurrentHitPoints       (ArgumentStack&& args);
+    ArgumentStack SetMaxHitPoints           (ArgumentStack&& args);
+    ArgumentStack Serialize                 (ArgumentStack&& args);
+    ArgumentStack Deserialize               (ArgumentStack&& args);
+    ArgumentStack GetDialogResref           (ArgumentStack&& args);
+    ArgumentStack SetDialogResref           (ArgumentStack&& args);
+    ArgumentStack SetAppearance             (ArgumentStack&& args);
+    ArgumentStack GetAppearance             (ArgumentStack&& args);
+    ArgumentStack GetHasVisualEffect        (ArgumentStack&& args);
+    ArgumentStack CheckFit                  (ArgumentStack&& args);
+    ArgumentStack GetDamageImmunity         (ArgumentStack&& args);
+    ArgumentStack AddToArea                 (ArgumentStack&& args);
+    ArgumentStack GetPlaceableIsStatic      (ArgumentStack&& args);
+    ArgumentStack SetPlaceableIsStatic      (ArgumentStack&& args);
+    ArgumentStack GetAutoRemoveKey          (ArgumentStack&& args);
+    ArgumentStack SetAutoRemoveKey          (ArgumentStack&& args);
+    ArgumentStack GetTriggerGeometry        (ArgumentStack&& args);
+    ArgumentStack SetTriggerGeometry        (ArgumentStack&& args);
+    ArgumentStack RemoveIconEffect          (ArgumentStack&& args);
+    ArgumentStack AddIconEffect             (ArgumentStack&& args);
+    ArgumentStack Export                    (ArgumentStack&& args);
+    ArgumentStack GetPersistentInt          (ArgumentStack&& args);
+    ArgumentStack SetPersistentInt          (ArgumentStack&& args);
+    ArgumentStack DeletePersistentInt       (ArgumentStack&& args);
+    ArgumentStack GetPersistentString       (ArgumentStack&& args);
+    ArgumentStack SetPersistentString       (ArgumentStack&& args);
+    ArgumentStack DeletePersistentString    (ArgumentStack&& args);
+    ArgumentStack GetPersistentFloat        (ArgumentStack&& args);
+    ArgumentStack SetPersistentFloat        (ArgumentStack&& args);
+    ArgumentStack DeletePersistentFloat     (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
-
 };
 
 }

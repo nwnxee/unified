@@ -7,8 +7,8 @@
 NWN_API_PROLOGUE(CVirtualMachineStack)
 #endif
 
-struct CResStruct;
 struct CResGFF;
+struct CResStruct;
 struct CVirtualMachine;
 struct StackElement;
 

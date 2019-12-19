@@ -5,19 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.3...HEAD
+https://github.com/nwnxee/unified/compare/build8193.4...HEAD
 
 ### Added
 N/A
 
 ##### New Plugins
-N/A
+- Administration: ReloadRules() (DANGER, DRAGONS)
 
 ##### New NWScript Functions
 N/A
 
 ### Changed
-N/A
+- Core: NWNX now also checks the build revision of nwserver-linux when starting.
 
 ### Deprecated
 N/A
@@ -26,7 +26,18 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Tweaks: DisablePause works yet again, woo.
+
+## 8193.4
+https://github.com/nwnxee/unified/compare/build8193.3...build8193.4
+
+### Added
+
+##### New NWScript Functions
+- Object: {Get|Set|Delete}Persistent{Int|String|Float}()
+
+### Changed
+- Tweaks: SneakAttackCritImmunity now takes `FLANK_LEVEL_RANGE` ruleset.2da setting into account
 
 ## 8193.3
 https://github.com/nwnxee/unified/compare/build8193.2...build8193.3

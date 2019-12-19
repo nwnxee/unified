@@ -5,7 +5,7 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSPlayerTURD.hpp"
 #include "API/CNWSModule.hpp"
-#include "API/CNWSCreature.hpp"
+#include "API/CNWSUUID.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/Constants.hpp"
@@ -419,46 +419,23 @@ void PerObjectStorage::CNWSPlayer__DropTURD_hook(bool before, CNWSPlayer* thisPt
     }
 }
 
-void PerObjectStorage::CNWSObject__SaveObjectState_hook(bool before, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct)
-{
-    if (!before)
-    {
-        if (Utils::AsNWSCreature(pThis))
-            return;
 
-        pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis)->Serialize(), GffFieldName);
-    }
-}
-void PerObjectStorage::CNWSObject__LoadObjectState_hook(bool before, CNWSObject* pThis, CResGFF* pRes, CResStruct* pStruct)
+void PerObjectStorage::CNWSUUID__SaveToGff_hook(bool before, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
 {
     if (before)
     {
-        if (Utils::AsNWSCreature(pThis))
-            return;
-
-        int32_t success;
-        auto str = pRes->ReadFieldCExoString(pStruct, GffFieldName, success);
-        if (success)
-            GetObjectStorage(pThis)->Deserialize(str.CStr());
+        pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis->m_parent)->Serialize(), GffFieldName);
     }
 }
-void PerObjectStorage::CNWSCreature__SaveCreature_hook(bool before, CNWSCreature *pThis, CResGFF * pRes, CResStruct * pStruct, BOOL, BOOL, BOOL, BOOL)
-{
-    if (!before)
-    {
-        pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis)->Serialize(), GffFieldName);
-    }
-}
-void PerObjectStorage::CNWSCreature__LoadCreature_hook(bool before, CNWSCreature *pThis, CResGFF * pRes, CResStruct * pStruct, BOOL, BOOL, BOOL, BOOL)
+void PerObjectStorage::CNWSUUID__LoadFromGff_hook(bool before, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
 {
     if (before)
     {
         int32_t success;
         auto str = pRes->ReadFieldCExoString(pStruct, GffFieldName, success);
         if (success)
-            GetObjectStorage(pThis)->Deserialize(str.CStr());
+            GetObjectStorage(pThis->m_parent)->Deserialize(str.CStr());
     }
 }
-
 
 }

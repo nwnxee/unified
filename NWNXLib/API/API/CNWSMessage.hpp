@@ -1,41 +1,41 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
-#include "CExoLocString.hpp"
-#include "CNWMessage.hpp"
 #include "CExoArrayList.hpp"
-#include "Vector.hpp"
+#include "CExoLocString.hpp"
+#include "CExoString.hpp"
+#include "CNWMessage.hpp"
 #include "CResRef.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CNWSMessage)
 #endif
 
-struct CNWSStore;
-struct CNWSPlayerInventoryGUI;
-struct CNWSTrigger;
-struct CLoopingVisualEffect;
-struct CLastUpdatePartyObject;
-struct CNWSPlayerLUOSortedObjectList;
-struct CItemRepository;
-struct CGameObjectArray;
-struct CNWSCombatAttackData;
-struct CNWSPlayerLUOInventory;
-struct CNWSAreaOfEffectObject;
-struct CNWSDoor;
-struct CNWSArea;
-struct CNWSItem;
-struct CNWSPlayer;
-struct CNWSObject;
-struct CNWCCMessageData;
-struct CNWSCreature;
-struct CNWSPlayerLastUpdateObject;
-struct CLastUpdateObject;
 struct CEffectIconObject;
-struct CNWSPlaceable;
 struct CGameObject;
+struct CGameObjectArray;
+struct CItemRepository;
+struct CLastUpdateObject;
+struct CLastUpdatePartyObject;
+struct CLoopingVisualEffect;
+struct CNWCCMessageData;
+struct CNWSArea;
+struct CNWSAreaOfEffectObject;
+struct CNWSCombatAttackData;
+struct CNWSCreature;
+struct CNWSDoor;
+struct CNWSItem;
+struct CNWSObject;
+struct CNWSPlaceable;
+struct CNWSPlayer;
+struct CNWSPlayerInventoryGUI;
+struct CNWSPlayerLUOInventory;
+struct CNWSPlayerLUOSortedObjectList;
+struct CNWSPlayerLastUpdateObject;
+struct CNWSStore;
+struct CNWSTrigger;
 
 
 typedef int BOOL;

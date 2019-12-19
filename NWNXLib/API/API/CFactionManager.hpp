@@ -9,10 +9,10 @@ NWN_API_PROLOGUE(CFactionManager)
 #endif
 
 struct CExoString;
-struct CResList;
+struct CNWSFaction;
 struct CNWSFaction;
 struct CResGFF;
-struct CNWSFaction;
+struct CResList;
 
 
 typedef int BOOL;
