@@ -7,6 +7,7 @@
 #include "CExoString.hpp"
 #include "CNWSync.hpp"
 #include "CRes.hpp"
+#include "CResRef.hpp"
 #include "RESID.hpp"
 
 
@@ -19,7 +20,6 @@ struct CExoKeyTable;
 struct CExoKeyTable;
 struct CExoStringList;
 struct CKeyTableEntry;
-struct CResRef;
 
 
 typedef int BOOL;
@@ -41,6 +41,10 @@ struct CExoResMan
     uint32_t m_nTotalCacheHits;
     uint32_t m_nTotalOldReleases;
     uint32_t m_nTotalNewReleases;
+    uint32_t m_nTotalLookupFailures;
+    bool m_bLogLookupFailures;
+    CResRef m_cLastFailedLookup;
+    RESTYPE m_nLastFailedLookupType;
     BOOL m_bOverrideAll;
     CNWSync m_pNWSync;
 
@@ -52,6 +56,7 @@ struct CExoResMan
     BOOL AddResourceDirectory(const CExoString & sName, uint32_t nPriority, BOOL bDetectChanges = false);
     BOOL AddManifest(const CExoString & manifestHash, uint32_t nPriority);
     void DumpAll();
+    void DumpAllOfType(RESTYPE nType);
     void FreeResourceData(CRes * pRes);
     BOOL Exists(const CResRef & cResRef, RESTYPE nType, uint32_t * pTableType = nullptr);
     CExoLocString GetEncapsulatedFileDescription(const CExoString & sFileName);
@@ -77,7 +82,7 @@ struct CExoResMan
     BOOL UpdateManifest(const CExoString & sManifestHash);
     RESTYPE GetResTypeFromFile(const CExoString & sName);
     void GetResRefFromFile(CResRef & cResRef, const CExoString & sName);
-    BOOL GetKeyEntry(const CResRef & cResRef, RESTYPE nType, CExoKeyTable * * pNewTable, CKeyTableEntry * * pNewKey);
+    BOOL GetKeyEntry(const CResRef & cResRef, RESTYPE nType, CExoKeyTable * * pNewTable, CKeyTableEntry * * pNewKey, bool bLogFailure = true);
     int32_t CancelRequest(CRes * pRes);
     void * Demand(CRes * pRes);
     void Dump(CRes * pRes, BOOL bRemove = false);
