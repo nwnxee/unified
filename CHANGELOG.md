@@ -5,25 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.4...HEAD
+https://github.com/nwnxee/unified/compare/build8193.5...HEAD
 
 ### Added
 N/A
 
 ##### New Plugins
-- Administration: ReloadRules() (DANGER, DRAGONS)
+N/A
 
 ##### New NWScript Functions
 N/A
 
 ### Changed
-- Core: NWNX now also checks the build revision of nwserver-linux when starting.
+N/A
 
 ### Deprecated
 N/A
 
 ### Removed
 N/A
+
+### Fixed
+N/A
+
+
+
+## 8193.5
+https://github.com/nwnxee/unified/compare/build8193.4...build8193.5
+
+### Added
+
+##### New NWScript Functions
+- Administration: ReloadRules() (DANGER, DRAGONS)
+
+### Changed
+- Core: NWNX now also checks the build revision of nwserver-linux when starting.
 
 ### Fixed
 - Tweaks: DisablePause works yet again, woo.
