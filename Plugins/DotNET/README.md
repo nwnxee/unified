@@ -1,10 +1,8 @@
+@addtogroup dotnet DotNET
 @page dotnet Readme
 @ingroup dotnet 
 
 Implement your server scripts in C# (and other dotnet languages)
-
-
-
 
 ## Environment Variables
 
@@ -28,7 +26,6 @@ Copy everything within [DotNET/NWN/...](NWN) into a folder that will be your mod
 
  - `NWN.dll` - your compiled code
  - `NWN.runtimeconfig.json` - config file that tells nwnx how to run your code
-
 
 ### Run NWNX with your DLL
 
