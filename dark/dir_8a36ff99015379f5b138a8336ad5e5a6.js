@@ -1,6 +1,5 @@
 var dir_8a36ff99015379f5b138a8336ad5e5a6 =
 [
-    [ "Sample", "group__nwnx.html#autotoc_md54", null ],
     [ "SetPersistentLocation()", "group__player.html#autotoc_md164", null ],
     [ "Example 1", "group__skillranks.html#autotoc_md248", null ],
     [ "Example 2", "group__skillranks.html#autotoc_md249", null ],

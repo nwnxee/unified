@@ -10,6 +10,31 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
     [ "Core Functions For Plugin Developers", "group__nwnx.html#autotoc_md53", null ],
     [ "Environment Variables", "group__chat.html#autotoc_md64", null ],
     [ "Example", "group__damage.html#autotoc_md65", null ],
+    [ "Environment Variables", "group__dotnet.html#autotoc_md66", null ],
+    [ "Basic Setup", "group__dotnet.html#autotoc_md67", [
+      [ "Dependencies", "group__dotnet.html#autotoc_md68", null ],
+      [ "Compile managed code", "group__dotnet.html#autotoc_md69", null ],
+      [ "Run NWNX with your DLL", "group__dotnet.html#autotoc_md70", null ],
+      [ "Troubleshooting", "group__dotnet.html#autotoc_md71", [
+        [ "Sample", "group__nwnx.html#autotoc_md54", null ],
+        [ "libnethost.so", "group__dotnet.html#autotoc_md72", null ],
+        [ "runtime config", "group__dotnet.html#autotoc_md73", null ],
+        [ "Bootstrap()", "group__dotnet.html#autotoc_md74", null ]
+      ] ]
+    ] ],
+    [ "How it works (basic)", "group__dotnet.html#autotoc_md75", [
+      [ "<tt>OnStart</tt>", "group__dotnet.html#autotoc_md76", null ],
+      [ "<tt>OnRunScript</tt>", "group__dotnet.html#autotoc_md77", null ],
+      [ "<tt>OnMainLoop</tt>", "group__dotnet.html#autotoc_md78", null ],
+      [ "Using NWScript in C", "group__dotnet.html#autotoc_md79", null ]
+    ] ],
+    [ "Advanced stuff", "group__dotnet.html#autotoc_md80", [
+      [ "NWN types", "group__dotnet.html#autotoc_md81", null ],
+      [ "Bootstrapping", "group__dotnet.html#autotoc_md82", null ],
+      [ "OBJECT_SELF", "group__dotnet.html#autotoc_md83", null ],
+      [ "Closures", "group__dotnet.html#autotoc_md84", null ],
+      [ "Exceptions", "group__dotnet.html#autotoc_md85", null ]
+    ] ],
     [ "Notes", "group__elc.html#autotoc_md86", null ],
     [ "Environment Variables", "group__elc.html#autotoc_md87", null ],
     [ "Example Script", "group__elc.html#autotoc_md88", null ],
@@ -86,6 +111,8 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
       [ "NWNX_SQL_USE_UTF8", "group__sql.html#autotoc_md267", null ],
       [ "NWNX_SQL_CHARACTER_SET", "group__sql.html#autotoc_md268", null ]
     ] ],
+    [ "Environment Variables", "group__threadwatchdog.html#autotoc_md269", null ],
+    [ "Environment Variables", "group__tracking.html#autotoc_md270", null ],
     [ "Environment Variables", "group__util.html#autotoc_md272", null ],
     [ "Limitations", "group__webhook.html#autotoc_md278", null ],
     [ "Example usage", "group__webhook.html#autotoc_md279", null ],

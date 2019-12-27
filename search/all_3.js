@@ -12,5 +12,6 @@ var searchData=
   ['dialog_81',['Dialog',['../group__dialog.html',1,'']]],
   ['discard_82',['DISCARD',['../nwnx__redis__short_8nss.html#a0711873ab5ab313bdf85f9a385eac80f',1,'nwnx_redis_short.nss']]],
   ['domain_83',['domain',['../structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b',1,'NWNX_Creature_MemorisedSpell']]],
-  ['dump_84',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]]
+  ['dotnet_84',['DotNET',['../group__dotnet.html',1,'']]],
+  ['dump_85',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]]
 ];
