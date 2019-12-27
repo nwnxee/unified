@@ -1,3 +1,4 @@
+@addtogroup serverlogredirector ServerLogRedirector
 @page serverlogredirector Readme
 @ingroup serverlogredirector 
 
