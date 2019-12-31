@@ -284,7 +284,7 @@ int NWNX_Creature_GetKnownSpellCount(object creature, int class, int level);
 /// @return The spell id.
 int NWNX_Creature_GetKnownSpell(object creature, int class, int level, int index);
 
-/// @brief Remove a spell from creature's spellbook for class.
+/// @brief Add a spell to a creature's spellbook for class.
 /// @param creature The creature object.
 /// @param class The class id from classes.2da. (Not class index 0-2)
 /// @param level The spell level.
