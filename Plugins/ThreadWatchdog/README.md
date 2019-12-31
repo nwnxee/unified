@@ -1,3 +1,4 @@
+@addtogroup threadwatchdog ThreadWatchdog
 @page threadwatchdog Readme
 @ingroup threadwatchdog 
 

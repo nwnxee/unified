@@ -1,3 +1,4 @@
+@addtogroup tracking Tracking
 @page tracking Readme
 @ingroup tracking 
 
