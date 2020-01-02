@@ -170,14 +170,21 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
 ArgumentStack Object::StringToObject(ArgumentStack&& args)
 {
     ArgumentStack stack;
+    Types::ObjectID retVal;
 
     const auto id = Services::Events::ExtractArgument<std::string>(args);
-    Types::ObjectID retval = static_cast<Types::ObjectID>(stoul(id, nullptr, 16));
 
-    if (!Globals::AppManager()->m_pServerExoApp->GetGameObject(retval))
-        retval = Constants::OBJECT_INVALID;
+    if (id.empty())
+        retVal = Constants::OBJECT_INVALID;
+    else
+    {
+        retVal = static_cast<Types::ObjectID>(stoul(id, nullptr, 16));
 
-    Services::Events::InsertArgument(stack, retval);
+        if (!Globals::AppManager()->m_pServerExoApp->GetGameObject(retVal))
+            retVal = Constants::OBJECT_INVALID;
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
     return stack;
 }
 
