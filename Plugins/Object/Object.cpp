@@ -90,15 +90,15 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(RemoveIconEffect);
     REGISTER(AddIconEffect);
     REGISTER(Export);
-    REGISTER(GetPersistentInt);
-    REGISTER(SetPersistentInt);
-    REGISTER(DeletePersistentInt);
-    REGISTER(GetPersistentString);
-    REGISTER(SetPersistentString);
-    REGISTER(DeletePersistentString);
-    REGISTER(GetPersistentFloat);
-    REGISTER(SetPersistentFloat);
-    REGISTER(DeletePersistentFloat);
+    REGISTER(GetInt);
+    REGISTER(SetInt);
+    REGISTER(DeleteInt);
+    REGISTER(GetString);
+    REGISTER(SetString);
+    REGISTER(DeleteString);
+    REGISTER(GetFloat);
+    REGISTER(SetFloat);
+    REGISTER(DeleteFloat);
 
 #undef REGISTER
 }
@@ -732,7 +732,7 @@ ArgumentStack Object::Export(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::GetPersistentInt(ArgumentStack&& args)
+ArgumentStack Object::GetInt(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = 0;
@@ -750,7 +750,7 @@ ArgumentStack Object::GetPersistentInt(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::SetPersistentInt(ArgumentStack&& args)
+ArgumentStack Object::SetInt(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -759,24 +759,14 @@ ArgumentStack Object::SetPersistentInt(ArgumentStack&& args)
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<int32_t>(args);
-
-    bool persist;
-
-    try
-    {
-        persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
-    }
-    catch (...)
-    {
-        persist = true;
-    }
+    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
 
     g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, persist);
 
     return stack;
 }
 
-ArgumentStack Object::DeletePersistentInt(ArgumentStack&& args)
+ArgumentStack Object::DeleteInt(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -790,7 +780,7 @@ ArgumentStack Object::DeletePersistentInt(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::GetPersistentString(ArgumentStack&& args)
+ArgumentStack Object::GetString(ArgumentStack&& args)
 {
     ArgumentStack stack;
     std::string retVal;
@@ -808,7 +798,7 @@ ArgumentStack Object::GetPersistentString(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::SetPersistentString(ArgumentStack&& args)
+ArgumentStack Object::SetString(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -817,24 +807,14 @@ ArgumentStack Object::SetPersistentString(ArgumentStack&& args)
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<std::string>(args);
-
-    bool persist;
-
-    try
-    {
-        persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
-    }
-    catch (...)
-    {
-        persist = true;
-    }
+    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
 
     g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, persist);
 
     return stack;
 }
 
-ArgumentStack Object::DeletePersistentString(ArgumentStack&& args)
+ArgumentStack Object::DeleteString(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -848,7 +828,7 @@ ArgumentStack Object::DeletePersistentString(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::GetPersistentFloat(ArgumentStack&& args)
+ArgumentStack Object::GetFloat(ArgumentStack&& args)
 {
     ArgumentStack stack;
     float retVal = 0.0f;
@@ -866,7 +846,7 @@ ArgumentStack Object::GetPersistentFloat(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Object::SetPersistentFloat(ArgumentStack&& args)
+ArgumentStack Object::SetFloat(ArgumentStack&& args)
 {
     ArgumentStack stack;
 
@@ -875,17 +855,7 @@ ArgumentStack Object::SetPersistentFloat(ArgumentStack&& args)
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<float>(args);
-
-    bool persist;
-
-    try
-    {
-        persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
-    }
-    catch (...)
-    {
-        persist = true;
-    }
+    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
 
     g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, persist);
 
@@ -893,7 +863,7 @@ ArgumentStack Object::SetPersistentFloat(ArgumentStack&& args)
 }
 
 
-ArgumentStack Object::DeletePersistentFloat(ArgumentStack&& args)
+ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
 {
     ArgumentStack stack;
 

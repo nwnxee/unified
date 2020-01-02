@@ -41,15 +41,15 @@ private:
     ArgumentStack RemoveIconEffect          (ArgumentStack&& args);
     ArgumentStack AddIconEffect             (ArgumentStack&& args);
     ArgumentStack Export                    (ArgumentStack&& args);
-    ArgumentStack GetPersistentInt          (ArgumentStack&& args);
-    ArgumentStack SetPersistentInt          (ArgumentStack&& args);
-    ArgumentStack DeletePersistentInt       (ArgumentStack&& args);
-    ArgumentStack GetPersistentString       (ArgumentStack&& args);
-    ArgumentStack SetPersistentString       (ArgumentStack&& args);
-    ArgumentStack DeletePersistentString    (ArgumentStack&& args);
-    ArgumentStack GetPersistentFloat        (ArgumentStack&& args);
-    ArgumentStack SetPersistentFloat        (ArgumentStack&& args);
-    ArgumentStack DeletePersistentFloat     (ArgumentStack&& args);
+    ArgumentStack GetInt                    (ArgumentStack&& args);
+    ArgumentStack SetInt                    (ArgumentStack&& args);
+    ArgumentStack DeleteInt                 (ArgumentStack&& args);
+    ArgumentStack GetString                 (ArgumentStack&& args);
+    ArgumentStack SetString                 (ArgumentStack&& args);
+    ArgumentStack DeleteString              (ArgumentStack&& args);
+    ArgumentStack GetFloat                  (ArgumentStack&& args);
+    ArgumentStack SetFloat                  (ArgumentStack&& args);
+    ArgumentStack DeleteFloat               (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };
