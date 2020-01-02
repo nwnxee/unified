@@ -753,7 +753,18 @@ ArgumentStack Object::SetPersistentInt(ArgumentStack&& args)
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<int32_t>(args);
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, true);
+    bool persist;
+
+    try
+    {
+        persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
+    }
+    catch (...)
+    {
+        persist = true;
+    }
+
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, persist);
 
     return stack;
 }
@@ -800,7 +811,18 @@ ArgumentStack Object::SetPersistentString(ArgumentStack&& args)
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<std::string>(args);
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, true);
+    bool persist;
+
+    try
+    {
+        persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
+    }
+    catch (...)
+    {
+        persist = true;
+    }
+
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, persist);
 
     return stack;
 }
@@ -847,7 +869,18 @@ ArgumentStack Object::SetPersistentFloat(ArgumentStack&& args)
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<float>(args);
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, true);
+    bool persist;
+
+    try
+    {
+        persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
+    }
+    catch (...)
+    {
+        persist = true;
+    }
+
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, persist);
 
     return stack;
 }

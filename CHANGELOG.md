@@ -17,7 +17,7 @@ N/A
 N/A
 
 ### Changed
-N/A
+- Object: SetPersistent{Int|String|Float}() now exposes the bPersist parameter
 
 ### Deprecated
 N/A

@@ -176,11 +176,11 @@ void NWNX_Object_Export(string sFileName, object oObject);
 int NWNX_Object_GetPersistentInt(object oObject, string sVarName);
 
 /// @brief Set oObject's persistent integer variable sVarName to nValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
 /// @param oObject The object to set the variable on.
 /// @param sVarName The variable name.
 /// @param nValue The integer value to to set
-void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue);
+/// @param bPersist When TRUE, the value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue, int bPersist = TRUE);
 
 /// @brief Delete oObject's persistent integer variable sVarName.
 /// @param oObject The object to set the variable on.
@@ -194,11 +194,11 @@ void NWNX_Object_DeletePersistentInt(object oObject, string sVarName);
 string NWNX_Object_GetPersistentString(object oObject, string sVarName);
 
 /// @brief Set oObject's persistent string variable sVarName to sValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
 /// @param oObject The object to set the variable on.
 /// @param sVarName The variable name.
 /// @param sValue The string value to to set
-void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue);
+/// @param bPersist When TRUE, the value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue, int bPersist = TRUE);
 
 /// @brief Delete oObject's persistent string variable sVarName.
 /// @param oObject The object to set the variable on.
@@ -211,12 +211,12 @@ void NWNX_Object_DeletePersistentString(object oObject, string sVarName);
 /// @return The value or 0.0f on error.
 float NWNX_Object_GetPersistentFloat(object oObject, string sVarName);
 
-/// @brief Set oObject's persistent float variable sVarName to sValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+/// @brief Set oObject's persistent float variable sVarName to fValue.
 /// @param oObject The object to set the variable on.
 /// @param sVarName The variable name.
 /// @param fValue The float value to to set
-void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue);
+/// @param bPersist When TRUE, the value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue, int bPersist = TRUE);
 
 /// @brief Delete oObject's persistent float variable sVarName.
 /// @param oObject The object to set the variable on.
@@ -496,10 +496,11 @@ int NWNX_Object_GetPersistentInt(object oObject, string sVarName)
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue)
+void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue, int bPersist = TRUE)
 {
     string sFunc = "SetPersistentInt";
 
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bPersist);
     NWNX_PushArgumentInt(NWNX_Object, sFunc, nValue);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
@@ -526,10 +527,11 @@ string NWNX_Object_GetPersistentString(object oObject, string sVarName)
     return NWNX_GetReturnValueString(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue)
+void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue, int bPersist = TRUE)
 {
     string sFunc = "SetPersistentString";
 
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bPersist);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sValue);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
@@ -556,10 +558,11 @@ float NWNX_Object_GetPersistentFloat(object oObject, string sVarName)
     return NWNX_GetReturnValueFloat(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue)
+void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue, int bPersist = TRUE)
 {
     string sFunc = "SetPersistentFloat";
 
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bPersist);
     NWNX_PushArgumentFloat(NWNX_Object, sFunc, fValue);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
