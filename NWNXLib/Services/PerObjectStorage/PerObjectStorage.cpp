@@ -50,7 +50,7 @@ void PerObjectStorage::Set(CGameObject *pGameObject, const std::string& key, std
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
-        pOS->GetStringMap().emplace(key, std::make_pair<>(std::move(value), persist));
+        pOS->GetStringMap()[key] = std::make_pair<>(std::move(value), persist);
     }
 }
 void PerObjectStorage::Set(CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup)

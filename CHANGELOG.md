@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.5...HEAD
 
 ### Added
-N/A
+- Object: {Get|Set|Delete}{Int|String|Float}()
 
 ##### New Plugins
 N/A
@@ -17,18 +17,16 @@ N/A
 N/A
 
 ### Changed
-N/A
+- Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 
 
 ### Deprecated
-N/A
+- Object: {Get|Set|Delete}Persistent{Int|String|Float}()
 
 ### Removed
 N/A
 
 ### Fixed
 N/A
-
-
 
 ## 8193.5
 https://github.com/nwnxee/unified/compare/build8193.4...build8193.5
