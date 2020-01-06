@@ -18,6 +18,7 @@ N/A
 
 ### Changed
 - Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 
+- Util: `NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK` will now provide an error message if it fails to run a script chunk
 
 ### Deprecated
 - Object: {Get|Set|Delete}Persistent{Int|String|Float}()

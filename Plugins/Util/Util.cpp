@@ -115,12 +115,16 @@ Util::Util(const Plugin::CreateParams& params)
                         Utils::ExecuteScript(*startScript, 0);
                     }
 
-                    if (auto startChunk= g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
+                    if (auto startChunk = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
                     {
                         LOG_NOTICE("Running module start script chunk: %s", *startChunk);
 
                         bool bWrapIntoMain = startChunk->find("void main()") == std::string::npos;
-                        Globals::VirtualMachine()->RunScriptChunk(*startChunk, 0, true, bWrapIntoMain);
+                        if (Globals::VirtualMachine()->RunScriptChunk(*startChunk, 0, true, bWrapIntoMain))
+                        {
+                            LOG_ERROR("Failed to run module start script chunk with error: %s",
+                                    Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+                        }
                     }
                 }
             });
