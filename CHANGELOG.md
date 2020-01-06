@@ -15,6 +15,7 @@ N/A
 
 ##### New NWScript Functions
 Util: AddNSSFile()
+Util: RemoveNWNXResourceFile()
 
 ### Changed
 - Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 

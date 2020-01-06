@@ -35,6 +35,7 @@ private:
     ArgumentStack AddScript(ArgumentStack&& args);
     ArgumentStack GetNSSContents(ArgumentStack&& args);
     ArgumentStack AddNSSFile(ArgumentStack&& args);
+    ArgumentStack RemoveNWNXResourceFile(ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
