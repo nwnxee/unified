@@ -16,6 +16,7 @@
 #include "API/CWorldTimer.hpp"
 #include "API/CGameObjectArray.hpp"
 #include "API/CScriptCompiler.hpp"
+#include "API/CExoFile.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
@@ -78,6 +79,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetLastCreatedObject);
     REGISTER(AddScript);
     REGISTER(GetNSSContents);
+    REGISTER(AddNSSFile);
 
 #undef REGISTER
 
@@ -474,6 +476,31 @@ ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
         {
             retVal.assign(data, maxLength < 0 ? size : (uint32_t)maxLength > size ? size : maxLength);
             scriptSourceFile.UnloadScript();
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Util::AddNSSFile(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = false;
+
+    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!fileName.empty());
+      ASSERT_OR_THROW(fileName.size() <= 16);
+    const auto contents = Services::Events::ExtractArgument<std::string>(args);
+
+    auto file = CExoFile(("NWNX:" + fileName).c_str(), Constants::ResRefType::NSS, "w");
+
+    if (file.FileOpened())
+    {
+        if (file.Write(contents))
+        {
+            retVal = file.Flush();
         }
     }
 
