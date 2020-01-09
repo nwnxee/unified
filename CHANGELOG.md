@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.5...HEAD
 
 ### Added
 - Object: {Get|Set|Delete}{Int|String|Float}()
+- Object: DeleteVarRegex()
 
 ##### New Plugins
 N/A

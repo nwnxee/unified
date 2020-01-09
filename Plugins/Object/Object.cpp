@@ -99,6 +99,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetFloat);
     REGISTER(SetFloat);
     REGISTER(DeleteFloat);
+    REGISTER(DeleteVarRegex);
 
 #undef REGISTER
 }
@@ -873,6 +874,20 @@ ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
       ASSERT_OR_THROW(!varName.empty());
 
     g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERFLT!" + varName);
+
+    return stack;
+}
+
+ArgumentStack Object::DeleteVarRegex(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto regex = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!regex.empty());
+
+    g_plugin->GetServices()->m_perObjectStorage->RemoveRegex(oidObject, "((?:PERINT!)|(?:PERSTR!)|(?:PERFLT!))" + regex);
 
     return stack;
 }
