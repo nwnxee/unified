@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"structNWNX__WebHook__Message.html#a21863d8d913f6716210d0ca835b7b794":[0,41,3,23],
+"structNWNX__WebHook__Message.html#a2752ebbb220b5a26142e8f63c2da5e60":[0,41,3,4],
+"structNWNX__WebHook__Message.html#a41108b212b8ff86848c53d48ae992619":[0,41,3,24],
+"structNWNX__WebHook__Message.html#a420ada6dfc7e696938ab685b8af39a91":[0,41,3,36],
 "structNWNX__WebHook__Message.html#a500f02110e23a6c04ba37c4f550a9dc4":[0,41,3,40],
 "structNWNX__WebHook__Message.html#a559adb85d80133938e6512d12a69e18f":[0,41,3,1],
 "structNWNX__WebHook__Message.html#a57a6314cfacf3f4244058402965b1f20":[0,41,3,15],

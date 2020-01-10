@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['type_2840',['type',['../structNWNX__Object__LocalVariable.html#a8d610962730ec74152b0fca0a45fce6d',1,'NWNX_Object_LocalVariable']]]
+  ['type_2844',['type',['../structNWNX__Object__LocalVariable.html#a8d610962730ec74152b0fca0a45fce6d',1,'NWNX_Object_LocalVariable']]]
 ];
