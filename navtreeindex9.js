@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509":[4,0,2,25,0,3,55],
+"nwnx__redis__short_8nss.html#ac496a7e38905f4ee6cdd697bfabca0fe":[4,0,2,25,0,3,150],
 "nwnx__redis__short_8nss.html#ac52cc49c02404817e46eb5079d95e8b4":[4,0,2,25,0,3,130],
 "nwnx__redis__short_8nss.html#ac66fde29ca680bb632874dbb8a4f81de":[4,0,2,25,0,3,199],
 "nwnx__redis__short_8nss.html#ac7179729f485933eab9f7e8f5924318b":[4,0,2,25,0,3,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a":[0,40,1,0],
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d":[0,40,1,2],
 "structNWNX__WebHook__Message.html":[0,41,3],
-"structNWNX__WebHook__Message.html#a014f92efa064359f6360a6230091820c":[0,41,3,25],
-"structNWNX__WebHook__Message.html#a02aa0be5aef4c5608dcbfdeed5184593":[0,41,3,44],
-"structNWNX__WebHook__Message.html#a1e438925f97be57ac69401f43d0e16bf":[0,41,3,3]
+"structNWNX__WebHook__Message.html#a014f92efa064359f6360a6230091820c":[0,41,3,25]
 };

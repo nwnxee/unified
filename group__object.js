@@ -49,6 +49,7 @@ var group__object =
     [ "NWNX_Object_GetFloat", "group__object.html#gae0008db4a993adf7f0091bb71c3c9610", null ],
     [ "NWNX_Object_SetFloat", "group__object.html#ga4a898fa34997eadf515e390daabc42e1", null ],
     [ "NWNX_Object_DeleteFloat", "group__object.html#gaea22938704d30b4ba13b39cb24521021", null ],
+    [ "NWNX_Object_DeleteVarRegex", "group__object.html#gafb1b02ff1539def9d20dda0be9092318", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_STRING", "group__object.html#gaa71beb1c2fc7685215d8f80ef9a1541f", null ],
