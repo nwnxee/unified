@@ -16,6 +16,7 @@
 #include "API/CWorldTimer.hpp"
 #include "API/CGameObjectArray.hpp"
 #include "API/CScriptCompiler.hpp"
+#include "API/CExoFile.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
@@ -78,6 +79,8 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetLastCreatedObject);
     REGISTER(AddScript);
     REGISTER(GetNSSContents);
+    REGISTER(AddNSSFile);
+    REGISTER(RemoveNWNXResourceFile);
 
 #undef REGISTER
 
@@ -476,6 +479,50 @@ ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
             scriptSourceFile.UnloadScript();
         }
     }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Util::AddNSSFile(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = false;
+
+    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!fileName.empty());
+      ASSERT_OR_THROW(fileName.size() <= 16);
+    const auto contents = Services::Events::ExtractArgument<std::string>(args);
+
+    auto file = CExoFile(("NWNX:" + fileName).c_str(), Constants::ResRefType::NSS, "w");
+
+    if (file.FileOpened())
+    {
+        if (file.Write(contents))
+        {
+            retVal = file.Flush();
+        }
+    }
+
+    Services::Events::InsertArgument(stack, retVal);
+
+    return stack;
+}
+
+ArgumentStack Util::RemoveNWNXResourceFile(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal;
+
+    const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!fileName.empty());
+      ASSERT_OR_THROW(fileName.size() <= 16);
+    const auto type = Services::Events::ExtractArgument<int32_t>(args);
+
+    CExoString exoFileName = ("NWNX:" + fileName).c_str();
+
+    retVal = Globals::ExoResMan()->RemoveFile(exoFileName, type);
 
     Services::Events::InsertArgument(stack, retVal);
 

@@ -135,6 +135,19 @@ string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMa
 /// @return The script file contents or "" on error.
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
 
+/// @brief Adds a nss file to the UserDirectory/nwnx folder.
+/// @note Will override existing nss files that are in the module
+/// @param sFileName The script filename without extension, 16 or less characters.
+/// @param sContents The contents of the nss file
+/// @return TRUE on success.
+int NWNX_Util_AddNSSFile(string sFileName, string sContents);
+
+/// @brief Remove sFileName of nType from the UserDirectory/nwnx folder.
+/// @param sFileName The filename without extension, 16 or less characters.
+/// @param nType The @ref resref_types "Resref Type".
+/// @return TRUE on success.
+int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -303,4 +316,26 @@ string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_AddNSSFile(string sFileName, string sContents)
+{
+    string sFunc = "AddNSSFile";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sContents);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType)
+{
+    string sFunc = "RemoveNWNXResourceFile";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nType);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
