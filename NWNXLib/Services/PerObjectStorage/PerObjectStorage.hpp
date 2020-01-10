@@ -30,6 +30,7 @@ public:
 
     // Removes without cleanup
     void Remove(CGameObject *pGameObject, const std::string& key);
+    void RemoveRegex(CGameObject *pGameObject, const std::string& regex);
 
     PerObjectStorage();
     ~PerObjectStorage();
@@ -98,6 +99,7 @@ public:
 
     // Removes without cleanup
     void Remove(CGameObject *pGameObject, const std::string& key);
+    void RemoveRegex(CGameObject *pGameObject, const std::string& regex);
 
     //
     // Interfaces using objectID instead of CGameObject pointer
@@ -127,6 +129,11 @@ public:
     void Remove(API::Types::ObjectID object, const std::string& key)
     {
         return Remove(Utils::GetGameObject(object), key);
+    }
+
+    void RemoveRegex(API::Types::ObjectID object, const std::string& regex)
+    {
+        return RemoveRegex(Utils::GetGameObject(object), regex);
     }
 
 

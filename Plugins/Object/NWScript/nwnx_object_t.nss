@@ -71,6 +71,13 @@ void main()
     NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetString #2", NWNX_Object_GetString(oDeserialized, "TestString_2") == "This is another string.");
     NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetFloat", NWNX_Object_GetFloat(oDeserialized, "TestFloat") == 1.5f);
 
+    NWNX_Object_DeleteVarRegex(oDeserialized, ".*TestString.*");
+
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetInt(oDeserialized, "TestInt") == 10);
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetString(oDeserialized, "TestString_1") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetString(oDeserialized, "TestString_2") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetFloat(oDeserialized, "TestFloat") == 1.5f);
+
     WriteTimestampedLogEntry("Deserialized " + GetName(oDeserialized) + " in " + GetName(GetArea(oDeserialized)));
 
     object bag = CreateObject(OBJECT_TYPE_ITEM, "nw_it_contain006", GetStartingLocation()); // Bag of holding

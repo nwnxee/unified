@@ -233,7 +233,7 @@ void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValu
 void NWNX_Object_DeletePersistentFloat(object oObject, string sVarName);
 
 /// @brief Get oObject's integer variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @param oObject The object to get the variable from.
 /// @param sVarName The variable name.
 /// @return The value or 0 on error.
 int NWNX_Object_GetInt(object oObject, string sVarName);
@@ -246,12 +246,12 @@ int NWNX_Object_GetInt(object oObject, string sVarName);
 void NWNX_Object_SetInt(object oObject, string sVarName, int nValue, int bPersist);
 
 /// @brief Delete oObject's integer variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @param oObject The object to delete the variable from.
 /// @param sVarName The variable name.
 void NWNX_Object_DeleteInt(object oObject, string sVarName);
 
 /// @brief Get oObject's string variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @param oObject The object to get the variable from.
 /// @param sVarName The variable name.
 /// @return The value or "" on error.
 string NWNX_Object_GetString(object oObject, string sVarName);
@@ -264,12 +264,12 @@ string NWNX_Object_GetString(object oObject, string sVarName);
 void NWNX_Object_SetString(object oObject, string sVarName, string sValue, int bPersist);
 
 /// @brief Delete oObject's string variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @param oObject The object to delete the variable from.
 /// @param sVarName The variable name.
 void NWNX_Object_DeleteString(object oObject, string sVarName);
 
 /// @brief Get oObject's float variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @param oObject The object to get the variable from.
 /// @param sVarName The variable name.
 /// @return The value or 0.0f on error.
 float NWNX_Object_GetFloat(object oObject, string sVarName);
@@ -282,9 +282,15 @@ float NWNX_Object_GetFloat(object oObject, string sVarName);
 void NWNX_Object_SetFloat(object oObject, string sVarName, float fValue, int bPersist);
 
 /// @brief Delete oObject's persistent float variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @param oObject The object to delete the variable from.
 /// @param sVarName The variable name.
 void NWNX_Object_DeleteFloat(object oObject, string sVarName);
+
+/// @brief Delete any variables that match sRegex
+/// @note It will only remove variables set by NWNX_Object_Set{Int|String|Float}()
+/// @param oObject The object to delete the variables from.
+/// @param sRegex The regular expression, for example .*Test.* removes every variable that has Test in it.
+void NWNX_Object_DeleteVarRegex(object oObject, string sRegex);
 
 /// @}
 
@@ -700,6 +706,15 @@ void NWNX_Object_DeleteFloat(object oObject, string sVarName)
     string sFunc = "DeleteFloat";
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_DeleteVarRegex(object oObject, string sRegex)
+{
+    string sFunc = "DeleteVarRegex";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sRegex);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
