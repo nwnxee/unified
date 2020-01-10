@@ -8,15 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.5...HEAD
 
 ### Added
-- Object: {Get|Set|Delete}{Int|String|Float}()
-- Object: DeleteVarRegex()
+N/A
 
 ##### New Plugins
 N/A
 
 ##### New NWScript Functions
-Util: AddNSSFile()
-Util: RemoveNWNXResourceFile()
+- Object: {Get|Set|Delete}{Int|String|Float}()
+- Object: DeleteVarRegex()
+- Util: AddNSSFile()
+- Util: RemoveNWNXResourceFile()
 
 ### Changed
 - Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 
