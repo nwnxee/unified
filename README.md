@@ -1,5 +1,7 @@
 # NWNX:EE (build 8193.6 - v79 - DEVELOPMENT build)
 
+This branch is targeting a development build. For the latest stable, use the [nwnx-stable](https://github.com/nwnxee/unified/tree/nwnx-stable) branch.
+
 - Latest release: [build8193.6](https://github.com/nwnxee/unified/releases/tag/build8193.6) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#81936) 
 - Docker tag: `nwnxee/unified:build8193.6`
 - nwserver-linux md5: `4a73c30c2742fde6a6ec5400bf7d2159`
