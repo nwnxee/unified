@@ -49,6 +49,7 @@ private:
     ArgumentStack PossessCreature                   (ArgumentStack&& args);
     ArgumentStack GetPlatformId                     (ArgumentStack&& args);
     ArgumentStack GetLanguage                       (ArgumentStack&& args);
+    ArgumentStack SetResManOverride                 (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 
