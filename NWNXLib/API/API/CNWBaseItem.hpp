@@ -68,6 +68,14 @@ struct CNWBaseItem
     char m_nAmmunitionType;
     uint8_t m_nQBBehaviourType;
     uint8_t m_nArcaneSpellFailure;
+    uint16_t m_nWeaponFocusFeat;
+    uint16_t m_nEpicWeaponFocusFeat;
+    uint16_t m_nWeaponSpecializationFeat;
+    uint16_t m_nEpicWeaponSpecializationFeat;
+    uint16_t m_nWeaponImprovedCriticalFeat;
+    uint16_t m_nEpicWeaponOverwhelmingCriticalFeat;
+    uint16_t m_nEpicWeaponDevastatingCriticalFeat;
+    uint16_t m_nWeaponOfChoiceFeat;
 
     CNWBaseItem();
     ~CNWBaseItem();

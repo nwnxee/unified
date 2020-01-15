@@ -81,6 +81,7 @@ struct CNWRules
     void LoadRaceInfo();
     void LoadSkillInfo();
     void LoadDomainInfo();
+    void InitLegacyClassDefaults(uint8_t nClass);
     void LoadDifficultyInfo();
     void LoadRulesetInfo();
 
