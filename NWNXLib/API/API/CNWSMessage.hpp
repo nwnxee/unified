@@ -41,6 +41,7 @@ struct CNWSTrigger;
 typedef int BOOL;
 typedef CExoLinkedListNode * CExoLinkedListPosition;
 typedef uint32_t OBJECT_ID;
+typedef uint16_t RESTYPE;
 typedef uint32_t STRREF;
 
 
@@ -282,6 +283,7 @@ struct CNWSMessage : CNWMessage
     BOOL SendServerToPlayerAmbientSoundLoopPlay(OBJECT_ID nPlayer, BOOL bPlay);
     BOOL SendServerToPlayerAmbientSoundLoopChange(OBJECT_ID nPlayer, BOOL bDay, int32_t nTrack);
     BOOL SendServerToPlayerAmbientSoundVolumeChange(OBJECT_ID nPlayer, BOOL bDay, int32_t nVolume);
+    BOOL SendServerToPlayerResmanOverride(uint32_t nPlayerId, RESTYPE restype, const CResRef & sOldName, const CResRef & sNewName);
     BOOL HandleServerAdminToServerMessage(uint32_t nPlayerId, uint8_t * pMessage, uint32_t nSize);
     BOOL SendServerToServerAdminMessage(uint32_t nPlayerId, CExoString sCommand);
     void SendServerToServerAdminModuleList(uint32_t nPlayerId);

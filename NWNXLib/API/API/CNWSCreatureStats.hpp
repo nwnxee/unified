@@ -237,6 +237,7 @@ struct CNWSCreatureStats
     void SetWISBase(uint8_t nValue);
     void SetCHABase(uint8_t nValue);
     char CalcStatModifier(uint8_t nValue);
+    void GetAbilityInfo(uint8_t nAbilityId, uint8_t * pStat, char * pMod = nullptr, uint8_t * pBase = nullptr, char * pTotalBonus = nullptr);
     char GetSkillRank(uint8_t nSkill, CNWSObject * pVersus, BOOL bBaseOnly = false);
     BOOL GetCanUseSkill(uint8_t nSkill);
     BOOL GetCanUseSkillAfterLevelUp(uint16_t nSkill, CNWLevelStats * pLevelUpStats);

@@ -601,6 +601,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandSetSubRace(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetSubType(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTag(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandSetTextureOverride(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTime(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTileLightColor(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetTransitionTarget(int32_t nCommandId, int32_t nParameters);

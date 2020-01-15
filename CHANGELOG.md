@@ -5,13 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.5...HEAD
+https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Added
 N/A
 
 ##### New Plugins
 N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+
+## 8193.6
+https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
 
 ##### New NWScript Functions
 - Object: {Get|Set|Delete}{Int|String|Float}()
@@ -25,12 +44,6 @@ N/A
 
 ### Deprecated
 - Object: {Get|Set|Delete}Persistent{Int|String|Float}()
-
-### Removed
-N/A
-
-### Fixed
-N/A
 
 ## 8193.5
 https://github.com/nwnxee/unified/compare/build8193.4...build8193.5
