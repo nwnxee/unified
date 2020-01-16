@@ -17,7 +17,7 @@ N/A
 N/A
 
 ### Changed
-N/A
+- ELC: Updated for custom spellcaster changes
 
 ### Deprecated
 N/A
