@@ -46,12 +46,12 @@ var NAVTREEINDEX =
 "group__creature.html#ga4fbd561eaf7af28bdacd9c58075b3a9a",
 "group__data__array__pushback.html",
 "group__itemproperty.html#ga343761a726e4bcf8a1dc3ab493ad7a91",
-"group__player.html#ga4f15d7dcafa0382a2584163ea856e049",
-"group__rename.html#ga66b5aa3317d00607131d11ef25e79f2e",
-"group__weapon.html#ga28e07d7cdb7e021a82b47752cb67840d",
-"nwnx__redis_8nss.html#aa474d2ac45393749daa014723818cf56",
-"nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509",
-"structNWNX__WebHook__Message.html#a02aa0be5aef4c5608dcbfdeed5184593"
+"group__player.html#ga4e7101b4c773d3e56722578ee474ec3f",
+"group__rename.html#ga575681e01d33e2f8307dd67372173d4e",
+"group__weapon.html#ga197c4fe02b6ad0b905bae126f262d8b7",
+"nwnx__redis_8nss.html#aa218f7637bdad0376c903ceb79f7e782",
+"nwnx__redis__short_8nss.html#ac159a58b9aa44fbf3917d2cd972c1451",
+"structNWNX__WebHook__Message.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
