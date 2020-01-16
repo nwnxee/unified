@@ -271,13 +271,23 @@ void NWNX_Player_UpdateItemName(object oPlayer, object oItem);
 /// @return TRUE if possession succeeded.
 int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindImmune = TRUE, int bCreateDefaultQB = FALSE);
 
-/// @brief returns the platform ID of the given player (NWNX_PLAYER_PLATFORM_*)
+/// @brief Returns the platform ID of the given player (NWNX_PLAYER_PLATFORM_*)
+/// @param oPlayer The player object.
 int NWNX_Player_GetPlatformId(object oPlayer);
 
-/// @brief returns the game language of the given player (uses NWNX_DIALOG_LANGUAGE_*)
+/// @brief Returns the game language of the given player (uses NWNX_DIALOG_LANGUAGE_*)
 /// @details This function returns the ID of the game language displayed to the player.
 /// Uses the same constants as nwnx_dialog.
+/// @param oPlayer The player object.
 int NWNX_Player_GetLanguage(object oPlayer);
+
+/// @brief Override sOldResName with sNewResName of nResType for oPlayer.
+/// @warning If sNewResName does not exist on oPlayer's client it will crash their game.
+/// @param oPlayer The player object.
+/// @param nResType The res type, see nwnx_util.nss for constants.
+/// @param sOldResName The old res name, 16 characters or less.
+/// @param sNewResName The new res name or "" to clear a previous override, 16 characters or less.
+void NWNX_Player_SetResManOverride(object oPlayer, int nResType, string sOldResName, string sNewResName);
 
 /// @}
 
@@ -694,4 +704,16 @@ int NWNX_Player_GetLanguage(object oPlayer)
 
     NWNX_CallFunction(NWNX_Player, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetResManOverride(object oPlayer, int nResType, string sOldResName, string sNewResName)
+{
+    string sFunc = "SetResManOverride";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sNewResName);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sOldResName);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nResType);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }

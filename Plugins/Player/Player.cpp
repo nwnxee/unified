@@ -7,11 +7,9 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSObject.hpp"
-#include "API/CGameObject.hpp"
 #include "API/CNWSScriptVar.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/CServerExoAppInternal.hpp"
-#include "API/CExoArrayList.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSQuickbarButton.hpp"
 #include "API/CGameEffect.hpp"
@@ -21,16 +19,15 @@
 #include "API/CNWRules.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSPlayerCharSheetGUI.hpp"
-#include "API/CNWSPlayerInventoryGUI.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSJournal.hpp"
 #include "API/CNWSWaypoint.hpp"
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
-#include "API/CExoArrayList.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
+#include "API/CExoResMan.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -103,6 +100,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(PossessCreature);
     REGISTER(GetPlatformId);
     REGISTER(GetLanguage);
+    REGISTER(SetResManOverride);
 
 #undef REGISTER
 
@@ -1356,6 +1354,33 @@ ArgumentStack Player::GetLanguage(ArgumentStack&& args)
             id = pPlayerInfo->m_nPlayerLanguage;
     }
     Services::Events::InsertArgument(stack, id);
+    return stack;
+}
+
+ArgumentStack Player::SetResManOverride(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+
+    if (auto *pPlayer = player(args))
+    {
+        const auto resType = Services::Events::ExtractArgument<int32_t>(args);
+        const auto oldResName = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(!oldResName.empty());
+          ASSERT_OR_THROW(oldResName.size() <= 16);
+        const auto newResName = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(newResName.size() <= 16);
+
+        auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerResmanOverride(pPlayer->m_nPlayerID, resType, oldResName.c_str(), newResName.c_str());
+        }
+        else
+        {
+            LOG_ERROR("Unable to get CNWSMessage");
+        }
+    }
+
     return stack;
 }
 
