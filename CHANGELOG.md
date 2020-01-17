@@ -17,7 +17,7 @@ N/A
 - Player: SetResManOverride()
 
 ### Changed
-N/A
+- ELC: Updated for custom spellcaster changes
 
 ### Deprecated
 N/A
