@@ -156,174 +156,172 @@ $(document).ready(function(){initNavTree('nwnx__elc_8nss_source.html','');});
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_INVALID_SPELL_GAIN_OTHER_CLASSES   = 35;</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_INVALID_SPELL                            = 36;</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_INVALID_SPELL_LEVEL                = 37;</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_MINIMUM_ABILITY_BARD_SORCERER      = 38;</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_MINIMUM_ABILITY_WIZARD             = 39;</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_MINIMUM_ABILITY_OTHER_CLASSES      = 40;</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_RESTRICTED_SPELL_SCHOOL            = 41;</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_ALREADY_KNOWN                      = 42;</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_WIZARD_EXCEEDS_NUMSPELLS_TO_ADD    = 43;</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_ILLEGAL_REMOVED_SPELL                    = 44;</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_REMOVED_NOT_KNOWN_SPELL                  = 45;</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_INVALID_NUM_SPELLS                       = 46;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_LIST_COMPARISON                    = 47;</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SKILL_LIST_COMPARISON                    = 48;</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_FEAT_LIST_COMPARISON                     = 49;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_MISC_SAVING_THROW                        = 50;</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_NUM_FEAT_COMPARISON                      = 51;</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gab972f430b5120e2f0484c50b14017928">NWNX_ELC_SetELCScript</a>(<span class="keywordtype">string</span> sScript);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">NWNX_ELC_EnableCustomELCCheck</a>(<span class="keywordtype">int</span> bEnabled);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">NWNX_ELC_SkipValidationFailure</a>();</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">NWNX_ELC_GetValidationFailureType</a>();</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">NWNX_ELC_GetValidationFailureSubType</a>();</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">NWNX_ELC_GetValidationFailureMessageStrRef</a>();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#ga941296472e032be124dea8d8118b15a4">NWNX_ELC_SetValidationFailureMessageStrRef</a>(<span class="keywordtype">int</span> nStrRef);</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keywordtype">object</span> <a class="code" href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">NWNX_ELC_GetValidationFailureItem</a>();</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">NWNX_ELC_GetValidationFailureLevel</a>();</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga4db1366221aed91969d8db403de948fc">NWNX_ELC_GetValidationFailureSkillID</a>();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">NWNX_ELC_GetValidationFailureFeatID</a>();</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">NWNX_ELC_GetValidationFailureSpellID</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_MINIMUM_ABILITY                    = 40;</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_RESTRICTED_SPELL_SCHOOL            = 41;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_ALREADY_KNOWN                      = 42;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_WIZARD_EXCEEDS_NUMSPELLS_TO_ADD    = 43;</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_ILLEGAL_REMOVED_SPELL                    = 44;</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_REMOVED_NOT_KNOWN_SPELL                  = 45;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_INVALID_NUM_SPELLS                       = 46;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SPELL_LIST_COMPARISON                    = 47;</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_SKILL_LIST_COMPARISON                    = 48;</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_FEAT_LIST_COMPARISON                     = 49;</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_MISC_SAVING_THROW                        = 50;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">const int NWNX_ELC_SUBTYPE_NUM_FEAT_COMPARISON                      = 51;</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gab972f430b5120e2f0484c50b14017928">NWNX_ELC_SetELCScript</a>(<span class="keywordtype">string</span> sScript);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">NWNX_ELC_EnableCustomELCCheck</a>(<span class="keywordtype">int</span> bEnabled);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">NWNX_ELC_SkipValidationFailure</a>();</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">NWNX_ELC_GetValidationFailureType</a>();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">NWNX_ELC_GetValidationFailureSubType</a>();</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">NWNX_ELC_GetValidationFailureMessageStrRef</a>();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#ga941296472e032be124dea8d8118b15a4">NWNX_ELC_SetValidationFailureMessageStrRef</a>(<span class="keywordtype">int</span> nStrRef);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keywordtype">object</span> <a class="code" href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">NWNX_ELC_GetValidationFailureItem</a>();</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">NWNX_ELC_GetValidationFailureLevel</a>();</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga4db1366221aed91969d8db403de948fc">NWNX_ELC_GetValidationFailureSkillID</a>();</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">NWNX_ELC_GetValidationFailureFeatID</a>();</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">NWNX_ELC_GetValidationFailureSpellID</a>();</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="group__elc.html#gab972f430b5120e2f0484c50b14017928">  153</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gab972f430b5120e2f0484c50b14017928">NWNX_ELC_SetELCScript</a>(<span class="keywordtype">string</span> sScript)</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;{</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetELCScript&quot;</span>;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_ELC, sFunc, sScript);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">  161</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">NWNX_ELC_EnableCustomELCCheck</a>(<span class="keywordtype">int</span> bEnabled)</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;{</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;EnableCustomELCCheck&quot;</span>;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_ELC, sFunc, bEnabled);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">  169</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">NWNX_ELC_SkipValidationFailure</a>()</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;{</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SkipValidationFailure&quot;</span>;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">  176</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">NWNX_ELC_GetValidationFailureType</a>()</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;{</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureType&quot;</span>;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;}</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno"><a class="line" href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">  184</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">NWNX_ELC_GetValidationFailureSubType</a>()</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;{</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureSubType&quot;</span>;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;}</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno"><a class="line" href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">  192</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">NWNX_ELC_GetValidationFailureMessageStrRef</a>()</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;{</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureMessageStrRef&quot;</span>;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;}</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno"><a class="line" href="group__elc.html#ga941296472e032be124dea8d8118b15a4">  200</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#ga941296472e032be124dea8d8118b15a4">NWNX_ELC_SetValidationFailureMessageStrRef</a>(<span class="keywordtype">int</span> nStrRef)</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;{</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetValidationFailureMessageStrRef&quot;</span>;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_ELC, sFunc, nStrRef);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;}</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">  208</a></span>&#160;<span class="keywordtype">object</span> <a class="code" href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">NWNX_ELC_GetValidationFailureItem</a>()</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;{</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureItem&quot;</span>;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga2314f3844fc63b5731fe41a678174790">NWNX_GetReturnValueObject</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno"><a class="line" href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">  216</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">NWNX_ELC_GetValidationFailureLevel</a>()</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;{</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureLevel&quot;</span>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno"><a class="line" href="group__elc.html#ga4db1366221aed91969d8db403de948fc">  224</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga4db1366221aed91969d8db403de948fc">NWNX_ELC_GetValidationFailureSkillID</a>()</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;{</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureSkillID&quot;</span>;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;}</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">  232</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">NWNX_ELC_GetValidationFailureFeatID</a>()</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;{</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureFeatID&quot;</span>;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;}</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno"><a class="line" href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">  240</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">NWNX_ELC_GetValidationFailureSpellID</a>()</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;{</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureSpellID&quot;</span>;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;}</div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="line" href="group__elc.html#gab972f430b5120e2f0484c50b14017928">  151</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gab972f430b5120e2f0484c50b14017928">NWNX_ELC_SetELCScript</a>(<span class="keywordtype">string</span> sScript)</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;{</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetELCScript&quot;</span>;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_ELC, sFunc, sScript);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;}</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">  159</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">NWNX_ELC_EnableCustomELCCheck</a>(<span class="keywordtype">int</span> bEnabled)</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;{</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;EnableCustomELCCheck&quot;</span>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_ELC, sFunc, bEnabled);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">  167</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">NWNX_ELC_SkipValidationFailure</a>()</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;{</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SkipValidationFailure&quot;</span>;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;}</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">  174</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">NWNX_ELC_GetValidationFailureType</a>()</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;{</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureType&quot;</span>;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno"><a class="line" href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">  182</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">NWNX_ELC_GetValidationFailureSubType</a>()</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;{</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureSubType&quot;</span>;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;}</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno"><a class="line" href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">  190</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">NWNX_ELC_GetValidationFailureMessageStrRef</a>()</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;{</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureMessageStrRef&quot;</span>;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
+<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="group__elc.html#ga941296472e032be124dea8d8118b15a4">  198</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__elc.html#ga941296472e032be124dea8d8118b15a4">NWNX_ELC_SetValidationFailureMessageStrRef</a>(<span class="keywordtype">int</span> nStrRef)</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;{</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetValidationFailureMessageStrRef&quot;</span>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_ELC, sFunc, nStrRef);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;}</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">  206</a></span>&#160;<span class="keywordtype">object</span> <a class="code" href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">NWNX_ELC_GetValidationFailureItem</a>()</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;{</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureItem&quot;</span>;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga2314f3844fc63b5731fe41a678174790">NWNX_GetReturnValueObject</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;}</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">  214</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">NWNX_ELC_GetValidationFailureLevel</a>()</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;{</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureLevel&quot;</span>;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;}</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
+<div class="line"><a name="l00222"></a><span class="lineno"><a class="line" href="group__elc.html#ga4db1366221aed91969d8db403de948fc">  222</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga4db1366221aed91969d8db403de948fc">NWNX_ELC_GetValidationFailureSkillID</a>()</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;{</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureSkillID&quot;</span>;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;}</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">  230</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">NWNX_ELC_GetValidationFailureFeatID</a>()</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;{</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureFeatID&quot;</span>;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;}</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">  238</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">NWNX_ELC_GetValidationFailureSpellID</a>()</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;{</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetValidationFailureSpellID&quot;</span>;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_ELC, sFunc);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__elc_html_ga96cad82fef77d44f2d5e8e31c4442d5f"><div class="ttname"><a href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">NWNX_ELC_GetValidationFailureMessageStrRef</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureMessageStrRef()</div><div class="ttdoc">Get the failure message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00192">nwnx_elc.nss:192</a></div></div>
+<div class="ttc" id="agroup__elc_html_ga96cad82fef77d44f2d5e8e31c4442d5f"><div class="ttname"><a href="group__elc.html#ga96cad82fef77d44f2d5e8e31c4442d5f">NWNX_ELC_GetValidationFailureMessageStrRef</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureMessageStrRef()</div><div class="ttdoc">Get the failure message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00190">nwnx_elc.nss:190</a></div></div>
 <div class="ttc" id="agroup__elc_html_gaa09bf88c00cbf1ee60038ecf4d44ae7b"><div class="ttname"><a href="group__elc.html#gaa09bf88c00cbf1ee60038ecf4d44ae7b">NWNX_ELC_VALIDATION_FAILURE_TYPE_NONE</a></div><div class="ttdeci">const int NWNX_ELC_VALIDATION_FAILURE_TYPE_NONE</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00013">nwnx_elc.nss:13</a></div></div>
 <div class="ttc" id="agroup__elc_html_gaacd02a1af0ad8e78ed791343b97da5e6"><div class="ttname"><a href="group__elc.html#gaacd02a1af0ad8e78ed791343b97da5e6">NWNX_ELC_VALIDATION_FAILURE_TYPE_CHARACTER</a></div><div class="ttdeci">const int NWNX_ELC_VALIDATION_FAILURE_TYPE_CHARACTER</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00014">nwnx_elc.nss:14</a></div></div>
-<div class="ttc" id="agroup__elc_html_ga9c156cbef588d042100fcb863d76fbb1"><div class="ttname"><a href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">NWNX_ELC_GetValidationFailureSubType</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureSubType()</div><div class="ttdoc">Get the validation failure subtype.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00184">nwnx_elc.nss:184</a></div></div>
+<div class="ttc" id="agroup__elc_html_ga9c156cbef588d042100fcb863d76fbb1"><div class="ttname"><a href="group__elc.html#ga9c156cbef588d042100fcb863d76fbb1">NWNX_ELC_GetValidationFailureSubType</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureSubType()</div><div class="ttdoc">Get the validation failure subtype.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00182">nwnx_elc.nss:182</a></div></div>
 <div class="ttc" id="agroup__elc_html_gaf204259b43b1f440fbbb05739cec0a03"><div class="ttname"><a href="group__elc.html#gaf204259b43b1f440fbbb05739cec0a03">NWNX_ELC_VALIDATION_FAILURE_TYPE_SPELL</a></div><div class="ttdeci">const int NWNX_ELC_VALIDATION_FAILURE_TYPE_SPELL</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00018">nwnx_elc.nss:18</a></div></div>
-<div class="ttc" id="agroup__elc_html_gafe933184f0deb75e7ceb976731860b62"><div class="ttname"><a href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">NWNX_ELC_GetValidationFailureItem</a></div><div class="ttdeci">object NWNX_ELC_GetValidationFailureItem()</div><div class="ttdoc">Get the item that failed ILR validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00208">nwnx_elc.nss:208</a></div></div>
+<div class="ttc" id="agroup__elc_html_gafe933184f0deb75e7ceb976731860b62"><div class="ttname"><a href="group__elc.html#gafe933184f0deb75e7ceb976731860b62">NWNX_ELC_GetValidationFailureItem</a></div><div class="ttdeci">object NWNX_ELC_GetValidationFailureItem()</div><div class="ttdoc">Get the item that failed ILR validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00206">nwnx_elc.nss:206</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga6e7ebe01f31c59279956f562609c964a"><div class="ttname"><a href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string pluginName, string functionName, string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00068">nwnx.nss:68</a></div></div>
 <div class="ttc" id="agroup__elc_html_ga07256d7e47ab36f29bfca8c0c1562aad"><div class="ttname"><a href="group__elc.html#ga07256d7e47ab36f29bfca8c0c1562aad">NWNX_ELC_SUBTYPE_NONE</a></div><div class="ttdeci">const int NWNX_ELC_SUBTYPE_NONE</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00027">nwnx_elc.nss:27</a></div></div>
-<div class="ttc" id="agroup__elc_html_gab972f430b5120e2f0484c50b14017928"><div class="ttname"><a href="group__elc.html#gab972f430b5120e2f0484c50b14017928">NWNX_ELC_SetELCScript</a></div><div class="ttdeci">void NWNX_ELC_SetELCScript(string sScript)</div><div class="ttdoc">Sets the script that runs whenever an ELC validation failure happens.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00153">nwnx_elc.nss:153</a></div></div>
+<div class="ttc" id="agroup__elc_html_gab972f430b5120e2f0484c50b14017928"><div class="ttname"><a href="group__elc.html#gab972f430b5120e2f0484c50b14017928">NWNX_ELC_SetELCScript</a></div><div class="ttdeci">void NWNX_ELC_SetELCScript(string sScript)</div><div class="ttdoc">Sets the script that runs whenever an ELC validation failure happens.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00151">nwnx_elc.nss:151</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_gabc581e541c864a29a2ec698945996f23"><div class="ttname"><a href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a></div><div class="ttdeci">int NWNX_GetReturnValueInt(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00083">nwnx.nss:83</a></div></div>
 <div class="ttc" id="agroup__elc_html_gad41ca16b81506fe13eac194c5d77e824"><div class="ttname"><a href="group__elc.html#gad41ca16b81506fe13eac194c5d77e824">NWNX_ELC_VALIDATION_FAILURE_TYPE_FEAT</a></div><div class="ttdeci">const int NWNX_ELC_VALIDATION_FAILURE_TYPE_FEAT</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00017">nwnx_elc.nss:17</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00048">nwnx.nss:48</a></div></div>
-<div class="ttc" id="agroup__elc_html_ga2b8d375be0d3f169f77f596b4365ef89"><div class="ttname"><a href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">NWNX_ELC_GetValidationFailureType</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureType()</div><div class="ttdoc">Get the validation failure type.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00176">nwnx_elc.nss:176</a></div></div>
+<div class="ttc" id="agroup__elc_html_ga2b8d375be0d3f169f77f596b4365ef89"><div class="ttname"><a href="group__elc.html#ga2b8d375be0d3f169f77f596b4365ef89">NWNX_ELC_GetValidationFailureType</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureType()</div><div class="ttdoc">Get the validation failure type.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00174">nwnx_elc.nss:174</a></div></div>
 <div class="ttc" id="agroup__elc_html_ga312be6e31150f0987c1301d5bfda1116"><div class="ttname"><a href="group__elc.html#ga312be6e31150f0987c1301d5bfda1116">NWNX_ELC_VALIDATION_FAILURE_TYPE_SKILL</a></div><div class="ttdeci">const int NWNX_ELC_VALIDATION_FAILURE_TYPE_SKILL</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00016">nwnx_elc.nss:16</a></div></div>
-<div class="ttc" id="agroup__elc_html_ga4db1366221aed91969d8db403de948fc"><div class="ttname"><a href="group__elc.html#ga4db1366221aed91969d8db403de948fc">NWNX_ELC_GetValidationFailureSkillID</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureSkillID()</div><div class="ttdoc">Get the ID of the skill that failed ELC validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00224">nwnx_elc.nss:224</a></div></div>
-<div class="ttc" id="agroup__elc_html_gad5c223e082822a98a478dcdfb0c58fa3"><div class="ttname"><a href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">NWNX_ELC_SkipValidationFailure</a></div><div class="ttdeci">void NWNX_ELC_SkipValidationFailure()</div><div class="ttdoc">Skip an ELC Validation Failure Event.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00169">nwnx_elc.nss:169</a></div></div>
+<div class="ttc" id="agroup__elc_html_ga4db1366221aed91969d8db403de948fc"><div class="ttname"><a href="group__elc.html#ga4db1366221aed91969d8db403de948fc">NWNX_ELC_GetValidationFailureSkillID</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureSkillID()</div><div class="ttdoc">Get the ID of the skill that failed ELC validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00222">nwnx_elc.nss:222</a></div></div>
+<div class="ttc" id="agroup__elc_html_gad5c223e082822a98a478dcdfb0c58fa3"><div class="ttname"><a href="group__elc.html#gad5c223e082822a98a478dcdfb0c58fa3">NWNX_ELC_SkipValidationFailure</a></div><div class="ttdeci">void NWNX_ELC_SkipValidationFailure()</div><div class="ttdoc">Skip an ELC Validation Failure Event.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00167">nwnx_elc.nss:167</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga2314f3844fc63b5731fe41a678174790"><div class="ttname"><a href="group__nwnx.html#ga2314f3844fc63b5731fe41a678174790">NWNX_GetReturnValueObject</a></div><div class="ttdeci">object NWNX_GetReturnValueObject(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00093">nwnx.nss:93</a></div></div>
-<div class="ttc" id="agroup__elc_html_ga941296472e032be124dea8d8118b15a4"><div class="ttname"><a href="group__elc.html#ga941296472e032be124dea8d8118b15a4">NWNX_ELC_SetValidationFailureMessageStrRef</a></div><div class="ttdeci">void NWNX_ELC_SetValidationFailureMessageStrRef(int nStrRef)</div><div class="ttdoc">Set the failure message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00200">nwnx_elc.nss:200</a></div></div>
-<div class="ttc" id="agroup__elc_html_gaf8f9ce7d4def55be7f42ffef8ac0218b"><div class="ttname"><a href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">NWNX_ELC_EnableCustomELCCheck</a></div><div class="ttdeci">void NWNX_ELC_EnableCustomELCCheck(int bEnabled)</div><div class="ttdoc">Enables a custom ELC Check that will call the ELC Script with the NWNX_ELC_VALIDATION_FAILURE_TYPE_CU...</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00161">nwnx_elc.nss:161</a></div></div>
+<div class="ttc" id="agroup__elc_html_ga941296472e032be124dea8d8118b15a4"><div class="ttname"><a href="group__elc.html#ga941296472e032be124dea8d8118b15a4">NWNX_ELC_SetValidationFailureMessageStrRef</a></div><div class="ttdeci">void NWNX_ELC_SetValidationFailureMessageStrRef(int nStrRef)</div><div class="ttdoc">Set the failure message.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00198">nwnx_elc.nss:198</a></div></div>
+<div class="ttc" id="agroup__elc_html_gaf8f9ce7d4def55be7f42ffef8ac0218b"><div class="ttname"><a href="group__elc.html#gaf8f9ce7d4def55be7f42ffef8ac0218b">NWNX_ELC_EnableCustomELCCheck</a></div><div class="ttdeci">void NWNX_ELC_EnableCustomELCCheck(int bEnabled)</div><div class="ttdoc">Enables a custom ELC Check that will call the ELC Script with the NWNX_ELC_VALIDATION_FAILURE_TYPE_CU...</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00159">nwnx_elc.nss:159</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_gadc430d6df00ece8e9cd208ba19701698"><div class="ttname"><a href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a></div><div class="ttdeci">void NWNX_PushArgumentInt(string pluginName, string functionName, int value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00053">nwnx.nss:53</a></div></div>
-<div class="ttc" id="agroup__elc_html_gaba8456ea776417c0a8656699861d49a5"><div class="ttname"><a href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">NWNX_ELC_GetValidationFailureFeatID</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureFeatID()</div><div class="ttdoc">Get the ID of the feat that failed ELC validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00232">nwnx_elc.nss:232</a></div></div>
+<div class="ttc" id="agroup__elc_html_gaba8456ea776417c0a8656699861d49a5"><div class="ttname"><a href="group__elc.html#gaba8456ea776417c0a8656699861d49a5">NWNX_ELC_GetValidationFailureFeatID</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureFeatID()</div><div class="ttdoc">Get the ID of the feat that failed ELC validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00230">nwnx_elc.nss:230</a></div></div>
 <div class="ttc" id="agroup__elc_html_gaea995d7304c6e960c41156cc52c492c4"><div class="ttname"><a href="group__elc.html#gaea995d7304c6e960c41156cc52c492c4">NWNX_ELC_VALIDATION_FAILURE_TYPE_CUSTOM</a></div><div class="ttdeci">const int NWNX_ELC_VALIDATION_FAILURE_TYPE_CUSTOM</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00019">nwnx_elc.nss:19</a></div></div>
 <div class="ttc" id="agroup__elc_html_ga38d517de881416a68a6c3356ded2edac"><div class="ttname"><a href="group__elc.html#ga38d517de881416a68a6c3356ded2edac">NWNX_ELC_VALIDATION_FAILURE_TYPE_ITEM</a></div><div class="ttdeci">const int NWNX_ELC_VALIDATION_FAILURE_TYPE_ITEM</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00015">nwnx_elc.nss:15</a></div></div>
-<div class="ttc" id="agroup__elc_html_ga084cf4874bb02adae65997cb9fe8bf4b"><div class="ttname"><a href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">NWNX_ELC_GetValidationFailureLevel</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureLevel()</div><div class="ttdoc">Get the character level at which the validation failure occurred.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00216">nwnx_elc.nss:216</a></div></div>
-<div class="ttc" id="agroup__elc_html_ga9b4d6f09791a5e7d07d2f61eff4c9761"><div class="ttname"><a href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">NWNX_ELC_GetValidationFailureSpellID</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureSpellID()</div><div class="ttdoc">Get the ID of the spell that failed ELC validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00240">nwnx_elc.nss:240</a></div></div>
+<div class="ttc" id="agroup__elc_html_ga084cf4874bb02adae65997cb9fe8bf4b"><div class="ttname"><a href="group__elc.html#ga084cf4874bb02adae65997cb9fe8bf4b">NWNX_ELC_GetValidationFailureLevel</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureLevel()</div><div class="ttdoc">Get the character level at which the validation failure occurred.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00214">nwnx_elc.nss:214</a></div></div>
+<div class="ttc" id="agroup__elc_html_ga9b4d6f09791a5e7d07d2f61eff4c9761"><div class="ttname"><a href="group__elc.html#ga9b4d6f09791a5e7d07d2f61eff4c9761">NWNX_ELC_GetValidationFailureSpellID</a></div><div class="ttdeci">int NWNX_ELC_GetValidationFailureSpellID()</div><div class="ttdoc">Get the ID of the spell that failed ELC validation.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__elc_8nss_source.html#l00238">nwnx_elc.nss:238</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_256177e203c152aedfef65c10e62566f.html">ELC</a></li><li class="navelem"><a class="el" href="dir_68a31c9f149299b8e1e76f3f575a05e9.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__elc_8nss.html">nwnx_elc.nss</a></li>
 				<li class="footer">
-					Generated on Fri Jan 17 2020 08:46:51 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Jan 17 2020 17:02:59 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
