@@ -17,7 +17,7 @@ N/A
 - Player: SetResManOverride()
 
 ### Changed
-N/A
+- Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
 
 ### Deprecated
 N/A
