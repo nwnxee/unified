@@ -113,6 +113,7 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
     ] ],
     [ "Environment Variables", "group__threadwatchdog.html#autotoc_md273", null ],
     [ "Environment Variables", "group__tracking.html#autotoc_md274", null ],
+    [ "Environment Variables", "group__tweaks.html#autotoc_md275", null ],
     [ "Environment Variables", "group__util.html#autotoc_md276", null ],
     [ "Limitations", "group__webhook.html#autotoc_md282", null ],
     [ "Example usage", "group__webhook.html#autotoc_md283", null ],

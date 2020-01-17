@@ -38,6 +38,7 @@ var modules =
     [ "ThreadWatchdog", "group__threadwatchdog.html", "group__threadwatchdog" ],
     [ "Time", "group__time.html", "group__time" ],
     [ "Tracking", "group__tracking.html", "group__tracking" ],
+    [ "Tweaks", "group__tweaks.html", "group__tweaks" ],
     [ "Util", "group__util.html", "group__util" ],
     [ "Visibility", "group__visibility.html", "group__visibility" ],
     [ "Weapon", "group__weapon.html", "group__weapon" ],

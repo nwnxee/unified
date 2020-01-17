@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#abee9555dbc653e3c43e8238865b822f4":[4,0,2,25,0,3,154],
+"nwnx__redis__short_8nss.html#ac0ef22868eecadf2745bf78e064d6369":[4,0,2,25,0,3,137],
+"nwnx__redis__short_8nss.html#ac1208d18d74e7eddf28b63f14215e9b1":[4,0,2,25,0,3,75],
 "nwnx__redis__short_8nss.html#ac159a58b9aa44fbf3917d2cd972c1451":[4,0,2,25,0,3,37],
 "nwnx__redis__short_8nss.html#ac4115b667d61362a45f5c676bc928405":[4,0,2,25,0,3,159],
 "nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509":[4,0,2,25,0,3,55],
@@ -79,8 +82,8 @@ var NAVTREEINDEX9 =
 "nwnx__spellcheck_8nss_source.html":[4,0,2,32,0,0],
 "nwnx__sql_8nss.html":[4,0,2,33,0,0],
 "nwnx__sql_8nss_source.html":[4,0,2,33,0,0],
-"nwnx__tests_8nss.html":[4,0,0,0,53],
-"nwnx__tests_8nss_source.html":[4,0,0,0,53],
+"nwnx__tests_8nss.html":[4,0,0,0,54],
+"nwnx__tests_8nss_source.html":[4,0,0,0,54],
 "nwnx__time_8nss.html":[4,0,2,35,0,0],
 "nwnx__time_8nss_source.html":[4,0,2,35,0,0],
 "nwnx__util_8nss.html":[4,0,2,38,0,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__Time__HighResTimestamp.html":[0,36,2],
 "structNWNX__Time__HighResTimestamp.html#a43aea683c1a6671d6699f11079f904fe":[0,36,2,1],
 "structNWNX__Time__HighResTimestamp.html#a9ead36e54ab4ced72197c5a6d8ffc70e":[0,36,2,0],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,40,1],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23":[0,40,1,1],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a":[0,40,1,0],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d":[0,40,1,2]
+"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,41,1]
 };
