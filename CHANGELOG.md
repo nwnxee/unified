@@ -18,6 +18,7 @@ N/A
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
+- Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
 
 ### Deprecated
 N/A

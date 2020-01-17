@@ -330,6 +330,20 @@ _______________________________________
     TARGET                | object | Convert to object with NWNX_Object_StringToObject()
 
 _______________________________________
+    ## DM Dump Locals Events
+    - NWNX_ON_DM_DUMP_LOCALS_BEFORE
+    - NWNX_ON_DM_DUMP_LOCALS_AFTER
+
+    `OBJECT_SELF` = The DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TYPE                  | int    | 0 = dm_dumplocals, 1 = dm_dumparealocals, 3 = dm_dumpmodulelocals
+    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+
+    Note: For TYPE 1/2, use GetArea(TARGET) or GetModule()
+
+_______________________________________
     ## DM Other Events
     - NWNX_ON_DM_APPEAR_BEFORE
     - NWNX_ON_DM_APPEAR_AFTER
@@ -353,8 +367,6 @@ _______________________________________
     - NWNX_ON_DM_SET_FACTION_REPUTATION_AFTER
     - NWNX_ON_DM_GET_FACTION_REPUTATION_BEFORE
     - NWNX_ON_DM_GET_FACTION_REPUTATION_AFTER
-    - NWNX_ON_DM_DUMP_LOCALS_BEFORE
-    - NWNX_ON_DM_DUMP_LOCALS_AFTER
 
     `OBJECT_SELF` = The DM
 
