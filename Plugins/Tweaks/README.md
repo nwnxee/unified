@@ -1,4 +1,5 @@
-@page tweaks readme
+@addtogroup tweaks Tweaks
+@page tweaks Readme
 @ingroup tweaks 
 
 Tweaks stuff. See below.
