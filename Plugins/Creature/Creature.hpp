@@ -56,10 +56,6 @@ private:
     ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
-    ArgumentStack GetClericDomain               (ArgumentStack&& args);
-    ArgumentStack SetClericDomain               (ArgumentStack&& args);
-    ArgumentStack GetWizardSpecialization       (ArgumentStack&& args);
-    ArgumentStack SetWizardSpecialization       (ArgumentStack&& args);
     ArgumentStack GetDomain                     (ArgumentStack&& args);
     ArgumentStack SetDomain                     (ArgumentStack&& args);
     ArgumentStack GetSpecialization             (ArgumentStack&& args);

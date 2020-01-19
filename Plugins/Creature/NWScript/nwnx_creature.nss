@@ -1120,44 +1120,22 @@ void NWNX_Creature_SetAlignmentLawChaos(object creature, int value)
 
 int NWNX_Creature_GetClericDomain(object creature, int index)
 {
-    string sFunc = "GetClericDomain";
-
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, index);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+    return NWNX_Creature_GetDomain(creature, CLASS_TYPE_CLERIC, index);
 }
 
 void NWNX_Creature_SetClericDomain(object creature, int index, int domain)
 {
-    string sFunc = "SetClericDomain";
-
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, domain);
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, index);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_Creature_SetDomain(creature, CLASS_TYPE_CLERIC, index, domain);
 }
 
 int NWNX_Creature_GetWizardSpecialization(object creature)
 {
-    string sFunc = "GetWizardSpecialization";
-
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+    return NWNX_Creature_GetSpecialization(creature, CLASS_TYPE_WIZARD);
 }
 
 void NWNX_Creature_SetWizardSpecialization(object creature, int school)
 {
-    string sFunc = "SetWizardSpecialization";
-
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, school);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_Creature_SetSpecialization(creature, CLASS_TYPE_WIZARD, school);
 }
 
 int NWNX_Creature_GetSoundset(object creature)
