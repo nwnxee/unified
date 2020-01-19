@@ -1577,7 +1577,7 @@ void NWNX_Creature_SetDisarmable(object creature, int disarmable)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetDomain(object creature, int index, int class)
+int NWNX_Creature_GetDomain(object creature, int class, int index)
 {
     string sFunc = "GetDomain";
 
@@ -1589,7 +1589,7 @@ int NWNX_Creature_GetDomain(object creature, int index, int class)
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetDomain(object creature, int index, int domain, int class)
+void NWNX_Creature_SetDomain(object creature, int class, int index, int domain)
 {
     string sFunc = "SetDomain";
 
@@ -1612,7 +1612,7 @@ int NWNX_Creature_GetSpecialization(object creature, int class)
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetSpecialization(object creature, int school, int class)
+void NWNX_Creature_SetSpecialization(object creature, int class, int school)
 {
     string sFunc = "SetSpecialization";
 
