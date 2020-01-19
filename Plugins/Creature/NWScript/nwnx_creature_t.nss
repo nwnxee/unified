@@ -193,6 +193,7 @@ void main()
     NWNX_Creature_SetDisarmable(oCreature, !bDisarmable);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDisarmable", NWNX_Creature_GetDisarmable(oCreature) != bDisarmable);
 
+    //Spawn a Wizard
     oCreature = CreateObject(OBJECT_TYPE_CREATURE, "NW_ELFMAGE001", GetStartingLocation());
     if (!GetIsObjectValid(oCreature))
     {
@@ -200,14 +201,17 @@ void main()
         return;
     }
 
+    //Test specialization functions on a class that has specialization
     int nSchool = NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD);
     NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_WIZARD, (nSchool+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD) == (nSchool+1)%5);
 
+    //Test old functions for compatibility (deprecated)
     nSchool = NWNX_Creature_GetWizardSpecialization(oCreature);
     NWNX_Creature_SetWizardSpecialization(oCreature, (nSchool+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etWizardSpecialization", NWNX_Creature_GetWizardSpecialization(oCreature) == (nSchool+1)%5);
 
+    //Test domain functions on a class that doesn't have domains
     int nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1);
     NWNX_Tests_Report("NWNX_Creature", "GetDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1) == 0);
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_WIZARD, 1, (nDomain+1)%5);
@@ -217,6 +221,7 @@ void main()
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_WIZARD, 2, (nDomain2+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2) == (nDomain2+1)%5);
 
+    //Spawn a cleric
     oCreature = CreateObject(OBJECT_TYPE_CREATURE, "NW_BANDIT004", GetStartingLocation());
     if (!GetIsObjectValid(oCreature))
     {
@@ -224,11 +229,13 @@ void main()
         return;
     }
 
+    //Test specialization functions on a class that doesn't have specialization
     nSchool = NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC);
     NWNX_Tests_Report("NWNX_Creature", "GetSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC) == 0);
     NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_CLERIC, (nSchool+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC) == (nSchool+1)%5);
 
+    //Test domain functions on a class that doesn't have domains
     nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1);
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 1, (nDomain+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1) == (nDomain+1)%5);
@@ -236,6 +243,7 @@ void main()
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 2, (nDomain2+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 2) == (nDomain2+1)%5);
 
+    //Test old functions for compatibility (deprecated)
     nDomain = NWNX_Creature_GetClericDomain(oCreature, 1);
     NWNX_Creature_SetClericDomain(oCreature, 1, (nDomain+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etClericDomain", NWNX_Creature_GetClericDomain(oCreature, 1) == (nDomain+1)%5);
