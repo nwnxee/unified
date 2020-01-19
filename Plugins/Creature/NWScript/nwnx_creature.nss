@@ -1127,7 +1127,7 @@ int NWNX_Creature_GetClericDomain(object creature, int index)
 void NWNX_Creature_SetClericDomain(object creature, int index, int domain)
 {
     WriteTimestampedLogEntry("NWNX_Creature: SetClericDomain() is deprecated. Please use NWNX_Creature_SetDomain() instead");
-    return NWNX_Creature_SetDomain(creature, CLASS_TYPE_CLERIC, index, domain);
+    NWNX_Creature_SetDomain(creature, CLASS_TYPE_CLERIC, index, domain);
 }
 
 int NWNX_Creature_GetWizardSpecialization(object creature)
@@ -1139,7 +1139,7 @@ int NWNX_Creature_GetWizardSpecialization(object creature)
 void NWNX_Creature_SetWizardSpecialization(object creature, int school)
 {
     WriteTimestampedLogEntry("NWNX_Creature: SetWizardSpecialization() is deprecated. Please use NWNX_Creature_SetSpecialization() instead");
-    return NWNX_Creature_SetSpecialization(creature, CLASS_TYPE_WIZARD, school);
+    NWNX_Creature_SetSpecialization(creature, CLASS_TYPE_WIZARD, school);
 }
 
 int NWNX_Creature_GetSoundset(object creature)
