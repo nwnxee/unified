@@ -1165,14 +1165,14 @@ ArgumentStack Creature::GetSpecialization(ArgumentStack&& args)
     ArgumentStack stack;
     int32_t retVal = -1;
 
-    const auto classId = Services::Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
-
-    CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-    ASSERT_OR_THROW(pClass != nullptr);
-
     if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
+
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
