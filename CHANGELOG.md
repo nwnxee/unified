@@ -38,6 +38,7 @@ https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
 - Object: DeleteVarRegex()
 - Util: AddNSSFile()
 - Util: RemoveNWNXResourceFile()
+- Creature: {Get|Set}{Domain|Specialization}()
 
 ### Changed
 - Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 
@@ -45,6 +46,7 @@ https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
 
 ### Deprecated
 - Object: {Get|Set|Delete}Persistent{Int|String|Float}()
+- Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
 
 ## 8193.5
 https://github.com/nwnxee/unified/compare/build8193.4...build8193.5
