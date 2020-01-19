@@ -60,6 +60,10 @@ private:
     ArgumentStack SetClericDomain               (ArgumentStack&& args);
     ArgumentStack GetWizardSpecialization       (ArgumentStack&& args);
     ArgumentStack SetWizardSpecialization       (ArgumentStack&& args);
+    ArgumentStack GetDomain                     (ArgumentStack&& args);
+    ArgumentStack SetDomain                     (ArgumentStack&& args);
+    ArgumentStack GetSpecialization             (ArgumentStack&& args);
+    ArgumentStack SetSpecialization             (ArgumentStack&& args);
     ArgumentStack GetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSkillRank                  (ArgumentStack&& args);
