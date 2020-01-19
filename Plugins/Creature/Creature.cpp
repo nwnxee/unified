@@ -1202,12 +1202,12 @@ ArgumentStack Creature::GetDomain(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto classId = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW((classId >= 0) && (classId < 255));
+        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
         ASSERT_OR_THROW((index == 1) || (index == 2));
 
         CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-        ASSERT_OR_THROW(pClass->m_bHasDomains);
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
@@ -1239,12 +1239,12 @@ ArgumentStack Creature::SetDomain(ArgumentStack&& args)
         ASSERT_OR_THROW(domain >= 0);
 
         CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-        //ASSERT_OR_THROW(pClass->m_bHasDomains);
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId && pClass->m_bHasDomains)
+            if (classInfo.m_nClass == classId)
             {
                 classInfo.m_nDomain[index - 1] = static_cast<uint8_t>(domain);
                 break;
@@ -1260,10 +1260,10 @@ ArgumentStack Creature::GetSpecialization(ArgumentStack&& args)
     int32_t retVal = -1;
 
     const auto classId = Services::Events::ExtractArgument<int32_t>(args);
-    ASSERT_OR_THROW((classId >= 0) && (classId < 255));
+    ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
 
     CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-    ASSERT_OR_THROW(pClass->m_bHasSpecialization);
+    ASSERT_OR_THROW(pClass != nullptr);
 
     if (auto* pCreature = creature(args))
     {
@@ -1294,12 +1294,12 @@ ArgumentStack Creature::SetSpecialization(ArgumentStack&& args)
         ASSERT_OR_THROW(school >= 0);
 
         CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-        //ASSERT_OR_THROW(pClass->m_bHasSpecialization);
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId && pClass->m_bHasSpecialization)
+            if (classInfo.m_nClass == classId)
             {
                 classInfo.m_nSchool = static_cast<uint8_t>(school);
                 break;
