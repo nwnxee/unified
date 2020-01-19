@@ -235,7 +235,7 @@ void main()
     NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_CLERIC, (nSchool+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC) == (nSchool+1)%5);
 
-    //Test domain functions on a class that doesn't have domains
+    //Test domain functions on a class that has domains
     nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1);
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 1, (nDomain+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1) == (nDomain+1)%5);
