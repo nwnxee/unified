@@ -1120,25 +1120,25 @@ void NWNX_Creature_SetAlignmentLawChaos(object creature, int value)
 
 int NWNX_Creature_GetClericDomain(object creature, int index)
 {
-    WriteTimestampedLogEntry("NWNX_Creature: GetClericDomain() is deprecated. Use native NWNX_Creature_GetDomain() instead");
+    WriteTimestampedLogEntry("NWNX_Creature: GetClericDomain() is deprecated. Please use NWNX_Creature_GetDomain() instead");
     return NWNX_Creature_GetDomain(creature, CLASS_TYPE_CLERIC, index);
 }
 
 void NWNX_Creature_SetClericDomain(object creature, int index, int domain)
 {
-    WriteTimestampedLogEntry("NWNX_Creature: SetClericDomain() is deprecated. Use native NWNX_Creature_SetDomain() instead");
+    WriteTimestampedLogEntry("NWNX_Creature: SetClericDomain() is deprecated. Please use NWNX_Creature_SetDomain() instead");
     return NWNX_Creature_SetDomain(creature, CLASS_TYPE_CLERIC, index, domain);
 }
 
 int NWNX_Creature_GetWizardSpecialization(object creature)
 {
-    WriteTimestampedLogEntry("NWNX_Creature: GetWizardSpecialization() is deprecated. Use native NWNX_Creature_GetSpecialization() instead");
+    WriteTimestampedLogEntry("NWNX_Creature: GetWizardSpecialization() is deprecated. Please use NWNX_Creature_GetSpecialization() instead");
     return NWNX_Creature_GetSpecialization(creature, CLASS_TYPE_WIZARD);
 }
 
 void NWNX_Creature_SetWizardSpecialization(object creature, int school)
 {
-    WriteTimestampedLogEntry("NWNX_Creature: SetWizardSpecialization() is deprecated. Use native NWNX_Creature_SetSpecialization() instead");
+    WriteTimestampedLogEntry("NWNX_Creature: SetWizardSpecialization() is deprecated. Please use NWNX_Creature_SetSpecialization() instead");
     return NWNX_Creature_SetSpecialization(creature, CLASS_TYPE_WIZARD, school);
 }
 
