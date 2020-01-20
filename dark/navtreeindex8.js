@@ -1,5 +1,13 @@
 var NAVTREEINDEX8 =
 {
+"nwnx__redis_8nss.html#a9634f7cd344cc63ab4b5cede9e000855":[4,0,2,25,0,0,144],
+"nwnx__redis_8nss.html#a98d51b7976c8ac338fc531de350cfaac":[4,0,2,25,0,0,128],
+"nwnx__redis_8nss.html#a9915e3cd1943893371ed868ef7f69417":[4,0,2,25,0,0,206],
+"nwnx__redis_8nss.html#a9a31fe90a4ecd343da6964700c13da3a":[4,0,2,25,0,0,25],
+"nwnx__redis_8nss.html#a9d27afec8df7594fcb5d453fa4458cd2":[4,0,2,25,0,0,80],
+"nwnx__redis_8nss.html#a9f321de1aeb1ae4ed6a2a29bdaac2a2a":[4,0,2,25,0,0,214],
+"nwnx__redis_8nss.html#a9f5b002e200295c9ee3c53c8af03340f":[4,0,2,25,0,0,198],
+"nwnx__redis_8nss.html#a9f8067e15e30b67de09dbf15265ee0a3":[4,0,2,25,0,0,52],
 "nwnx__redis_8nss.html#aa06c1f9939f50ad8be2061beec1037d9":[4,0,2,25,0,0,67],
 "nwnx__redis_8nss.html#aa115536a39d70bc9b7d95181d0e04675":[4,0,2,25,0,0,201],
 "nwnx__redis_8nss.html#aa1a8c962748c1fa7cbb71d9cd21fe8d5":[4,0,2,25,0,0,141],
@@ -241,13 +249,5 @@ var NAVTREEINDEX8 =
 "nwnx__redis__short_8nss.html#aa9c7cd64d33be569665a5ae2f572ca3a":[4,0,2,25,0,3,220],
 "nwnx__redis__short_8nss.html#aaa601d03e6111fa67670be0e14aa9bc6":[4,0,2,25,0,3,59],
 "nwnx__redis__short_8nss.html#aadfecc2fa5ec610fc4b48eb71b40c447":[4,0,2,25,0,3,133],
-"nwnx__redis__short_8nss.html#ab0e5ac6a7bd9b43d84d4968a2c73a8e9":[4,0,2,25,0,3,105],
-"nwnx__redis__short_8nss.html#ab3a28d39fa8cbe0ed44d2c802ff2797b":[4,0,2,25,0,3,125],
-"nwnx__redis__short_8nss.html#ab64b40849418004caad0d9800375dec6":[4,0,2,25,0,3,16],
-"nwnx__redis__short_8nss.html#ab6ea030822f8580660f6a2fbd0cd55a5":[4,0,2,25,0,3,204],
-"nwnx__redis__short_8nss.html#ab741fa254bef3c225249dc94a150a767":[4,0,2,25,0,3,198],
-"nwnx__redis__short_8nss.html#ab90bdda2db7f4dc1e959dfa64ac91996":[4,0,2,25,0,3,123],
-"nwnx__redis__short_8nss.html#ab94105ac205a71b2a783a2988467d810":[4,0,2,25,0,3,206],
-"nwnx__redis__short_8nss.html#aba7275366386eea5d106fdaeb53fffc1":[4,0,2,25,0,3,186],
-"nwnx__redis__short_8nss.html#abebbb105482c9e1ae315e9228ab0e7b7":[4,0,2,25,0,3,64]
+"nwnx__redis__short_8nss.html#ab0e5ac6a7bd9b43d84d4968a2c73a8e9":[4,0,2,25,0,3,105]
 };

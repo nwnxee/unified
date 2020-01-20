@@ -1,5 +1,13 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#ab3a28d39fa8cbe0ed44d2c802ff2797b":[4,0,2,25,0,3,125],
+"nwnx__redis__short_8nss.html#ab64b40849418004caad0d9800375dec6":[4,0,2,25,0,3,16],
+"nwnx__redis__short_8nss.html#ab6ea030822f8580660f6a2fbd0cd55a5":[4,0,2,25,0,3,204],
+"nwnx__redis__short_8nss.html#ab741fa254bef3c225249dc94a150a767":[4,0,2,25,0,3,198],
+"nwnx__redis__short_8nss.html#ab90bdda2db7f4dc1e959dfa64ac91996":[4,0,2,25,0,3,123],
+"nwnx__redis__short_8nss.html#ab94105ac205a71b2a783a2988467d810":[4,0,2,25,0,3,206],
+"nwnx__redis__short_8nss.html#aba7275366386eea5d106fdaeb53fffc1":[4,0,2,25,0,3,186],
+"nwnx__redis__short_8nss.html#abebbb105482c9e1ae315e9228ab0e7b7":[4,0,2,25,0,3,64],
 "nwnx__redis__short_8nss.html#abee9555dbc653e3c43e8238865b822f4":[4,0,2,25,0,3,154],
 "nwnx__redis__short_8nss.html#ac0ef22868eecadf2745bf78e064d6369":[4,0,2,25,0,3,137],
 "nwnx__redis__short_8nss.html#ac1208d18d74e7eddf28b63f14215e9b1":[4,0,2,25,0,3,75],
@@ -241,13 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2":[0,32,2,5],
 "structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369":[0,32,2,7],
 "structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7":[0,32,2,0],
-"structNWNX__SkillRanks__SkillFeat.html#a7dd800dcb05d188252a50c070ae71f2b":[0,32,2,9],
-"structNWNX__SkillRanks__SkillFeat.html#aae9925da408c3283b3fde29b1ebfec20":[0,32,2,4],
-"structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742":[0,32,2,2],
-"structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3":[0,32,2,8],
-"structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7":[0,32,2,6],
-"structNWNX__Time__HighResTimestamp.html":[0,36,2],
-"structNWNX__Time__HighResTimestamp.html#a43aea683c1a6671d6699f11079f904fe":[0,36,2,1],
-"structNWNX__Time__HighResTimestamp.html#a9ead36e54ab4ced72197c5a6d8ffc70e":[0,36,2,0],
-"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,41,1]
+"structNWNX__SkillRanks__SkillFeat.html#a7dd800dcb05d188252a50c070ae71f2b":[0,32,2,9]
 };

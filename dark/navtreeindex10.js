@@ -1,5 +1,13 @@
 var NAVTREEINDEX10 =
 {
+"structNWNX__SkillRanks__SkillFeat.html#aae9925da408c3283b3fde29b1ebfec20":[0,32,2,4],
+"structNWNX__SkillRanks__SkillFeat.html#ac10e1f8652735b57a5bd1f1533a80742":[0,32,2,2],
+"structNWNX__SkillRanks__SkillFeat.html#af739ed67510b85727943101c94b4b1f3":[0,32,2,8],
+"structNWNX__SkillRanks__SkillFeat.html#af74a42efd47b5f9bc738cd7b6759a4b7":[0,32,2,6],
+"structNWNX__Time__HighResTimestamp.html":[0,36,2],
+"structNWNX__Time__HighResTimestamp.html#a43aea683c1a6671d6699f11079f904fe":[0,36,2,1],
+"structNWNX__Time__HighResTimestamp.html#a9ead36e54ab4ced72197c5a6d8ffc70e":[0,36,2,0],
+"structNWNX__Weapon__DevastatingCriticalEvent__Data.html":[0,41,1],
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23":[0,41,1,1],
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a":[0,41,1,0],
 "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d":[0,41,1,2],
