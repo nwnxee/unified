@@ -92,10 +92,10 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetMovementRateFactor);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
-    REGISTER(GetClericDomain);
-    REGISTER(SetClericDomain);
-    REGISTER(GetWizardSpecialization);
-    REGISTER(SetWizardSpecialization);
+    REGISTER(GetDomain);
+    REGISTER(SetDomain);
+    REGISTER(GetSpecialization);
+    REGISTER(SetSpecialization);
     REGISTER(GetSoundset);
     REGISTER(SetSoundset);
     REGISTER(SetSkillRank);
@@ -1101,19 +1101,24 @@ ArgumentStack Creature::SetAlignmentLawChaos(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::GetClericDomain(ArgumentStack&& args)
+ArgumentStack Creature::GetDomain(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = -1;
-    if (auto *pCreature = creature(args))
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW((index == 1) || (index == 2));
+        ASSERT_OR_THROW((index == 1) || (index == 2));
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Cleric)
+            if (classInfo.m_nClass == classId)
             {
                 retVal = classInfo.m_nDomain[index - 1];
                 break;
@@ -1124,22 +1129,28 @@ ArgumentStack Creature::GetClericDomain(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::SetClericDomain(ArgumentStack&& args)
+ArgumentStack Creature::SetDomain(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pCreature = creature(args))
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(index >= 1);
-          ASSERT_OR_THROW(index <= 2);
+        ASSERT_OR_THROW(index >= 1);
+        ASSERT_OR_THROW(index <= 2);
         const auto domain = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(domain <= 255);
-          ASSERT_OR_THROW(domain >= 0);
+        ASSERT_OR_THROW(domain <= 255);
+        ASSERT_OR_THROW(domain >= 0);
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Cleric)
+            if (classInfo.m_nClass == classId)
             {
                 classInfo.m_nDomain[index - 1] = static_cast<uint8_t>(domain);
                 break;
@@ -1149,16 +1160,23 @@ ArgumentStack Creature::SetClericDomain(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::GetWizardSpecialization(ArgumentStack&& args)
+ArgumentStack Creature::GetSpecialization(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = -1;
-    if (auto *pCreature = creature(args))
+
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
+
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Wizard)
+            if (classInfo.m_nClass == classId)
             {
                 retVal = classInfo.m_nSchool;
                 break;
@@ -1169,19 +1187,25 @@ ArgumentStack Creature::GetWizardSpecialization(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::SetWizardSpecialization(ArgumentStack&& args)
+ArgumentStack Creature::SetSpecialization(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pCreature = creature(args))
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto school = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(school <= 255);
-          ASSERT_OR_THROW(school >= 0);
+        ASSERT_OR_THROW(school <= 255);
+        ASSERT_OR_THROW(school >= 0);
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Wizard)
+            if (classInfo.m_nClass == classId)
             {
                 classInfo.m_nSchool = static_cast<uint8_t>(school);
                 break;

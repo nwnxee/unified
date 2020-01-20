@@ -15,13 +15,14 @@ N/A
 
 ##### New NWScript Functions
 - Player: SetResManOverride()
+- Creature: {Get|Set}{Domain|Specialization}()
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
 - Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
 
 ### Deprecated
-N/A
+- Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
 
 ### Removed
 N/A
