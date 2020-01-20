@@ -1,13 +1,12 @@
 #include "Experimental.hpp"
 #include "Experimentals/SuppressPlayerLoginInfo.hpp"
-#include "Experimentals/RemoveACABModifiersFromExpertise.hpp"
 
 #include "Services/Config/Config.hpp"
 
 
 using namespace NWNXLib;
 
-static ViewPtr<Experimental::Experimental> g_plugin;
+static Experimental::Experimental* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -37,12 +36,6 @@ Experimental::Experimental(const Plugin::CreateParams& params)
     {
         LOG_INFO("EXPERIMENTAL: Suppressing playerlist and player login/logout messages for non DMs.");
         m_SuppressPlayerLoginInfo = std::make_unique<SuppressPlayerLoginInfo>(GetServices()->m_hooks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("REMOVE_ACAB_MODIFIERS_FROM_EXPERTISE", false))
-    {
-        LOG_INFO("EXPERIMENTAL: Removing AC/AB modifiers from Expertise");
-        m_RemoveACABModifiersFromExpertise = std::make_unique<RemoveACABModifiersFromExpertise>(GetServices()->m_hooks.get());
     }
 }
 

@@ -1,9 +1,10 @@
 #pragma once
 
 #include "API/Types.hpp"
+#include "API/CServerExoAppInternal.hpp"
+#include "API/CNWVirtualMachineCommands.hpp"
 #include "Common.hpp"
 #include "Plugin.hpp"
-#include "Platform/Hooking.hpp"
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Plugins/Plugins.hpp"
@@ -21,11 +22,13 @@ public:
     NWNXCore();
     ~NWNXCore();
 
-    static int32_t GetVarHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t SetVarHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t TagEffectHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t TagItemPropertyHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
-    static int32_t PlaySoundHandler(NWNXLib::API::CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t GetVarHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t SetVarHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t TagEffectHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t TagItemPropertyHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
+    static int32_t PlaySoundHandler(CNWVirtualMachineCommands*, int32_t, int32_t);
+
+    std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
 
 private: // Structures
     using PluginProxyServiceMap = std::map<
@@ -37,7 +40,6 @@ private: // Structures
 
 private:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_createServerHook;
-    std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
     PluginProxyServiceMap m_pluginProxyServiceMap;
 
@@ -49,6 +51,8 @@ private:
     void InitialSetupHooks();
     void InitialVersionCheck();
     void InitialSetupPlugins();
+    void InitialSetupResourceDirectory();
+    void InitialSetupCommands();
 
     void UnloadPlugins();
     void UnloadPlugin(std::pair<NWNXLib::Services::Plugins::RegistrationToken,
@@ -57,9 +61,11 @@ private:
     void UnloadServices();
     void Shutdown();
 
-    static void CreateServerHandler(NWNXLib::API::CAppManager*);
-    static void DestroyServerHandler(NWNXLib::API::CAppManager*);
-    static void MainLoopInternalHandler(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CServerExoAppInternal*);
+    static void CreateServerHandler(CAppManager*);
+    static void DestroyServerHandler(CAppManager*);
+    static void MainLoopInternalHandler(bool, CServerExoAppInternal*);
+
+    int m_ScriptChunkRecursion;
 };
 
 }

@@ -12,7 +12,7 @@ namespace NWNXLib {
 
 namespace Services {
 
-class Messaging : public ServiceBase
+class Messaging
 {
 public: // Structures
     using Tag = std::string;

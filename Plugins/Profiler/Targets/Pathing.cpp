@@ -16,11 +16,11 @@ namespace Profiler {
 
 using namespace NWNXLib;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
 DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
     (
-        [](API::CNWSModule*, API::CPathfindInformation* pfi, uint32_t) -> Services::MetricData::Tags
+        [](CNWSModule*, CPathfindInformation* pfi, uint32_t) -> Services::MetricData::Tags
         {
             using namespace NWNXLib::API;
             using namespace NWNXLib::API::Constants;
@@ -39,7 +39,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
 
                 if (area)
                 {
-                    std::string areaName = std::string(area->m_cResRef.m_resRef, 16);
+                    std::string areaName = std::string(area->m_cResRef.GetResRef(), 16);
                     tags.emplace_back("Area", areaName.empty() ? "(unknown)" : std::move(areaName));
                 }
             }
@@ -47,16 +47,16 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
             return tags;
         }
     ),
-    int32_t, API::CNWSModule*, API::CPathfindInformation*, uint32_t);
+    int32_t, CNWSModule*, CPathfindInformation*, uint32_t);
 
-Pathing::Pathing(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+Pathing::Pathing(NWNXLib::Services::HooksProxy* hooker,
+    NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET_FAST(hooker,
-        PlotPath, API::Functions::CNWSModule__PlotPath,
-        int32_t, API::CNWSModule*, API::CPathfindInformation*, uint32_t);
+        PlotPath, API::Functions::_ZN10CNWSModule8PlotPathEP20CPathfindInformationj,
+        int32_t, CNWSModule*, CPathfindInformation*, uint32_t);
 }
 
 }

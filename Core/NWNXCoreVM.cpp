@@ -17,6 +17,7 @@
 #include "Utils.hpp"
 
 #include <cstring>
+#include <optional>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -35,7 +36,7 @@ struct Command
 
 static const int  NWNX_ABI_VERSION = 2;
 
-Maybe<Command> ProcessNWNX(const CExoString& str)
+std::optional<Command> ProcessNWNX(const CExoString& str)
 {
     auto startsWith = [](const CExoString& str, const char *prefix) -> bool
     {
@@ -56,7 +57,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
 
         if (scanned < 4 || abi != NWNX_ABI_VERSION)
         {
-            LOG_WARNING("Bad NWNX ABI call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript().c_str());
+            LOG_WARNING("Bad NWNX ABI call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript());
             LOG_WARNING("NWNX ABI has changed. Please update your \"nwnx.nss\" file and recompile all scripts.");
         }
         else
@@ -65,12 +66,12 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
             cmd.plugin    = plugin;
             cmd.event     = event;
             cmd.operation = operation;
-            return Maybe<Command>(cmd);
+            return std::make_optional<>(cmd);
         }
     }
     else if (startsWith(str, "NWNX!"))
     {
-        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str.m_sString, Utils::GetCurrentScript().c_str());
+        LOG_NOTICE("Legacy NWNX call detected: \"%s\" from %s.nss - ignored", str, Utils::GetCurrentScript());
         const char *cmd = str.m_sString + 5;
         if (!std::strncmp(cmd, "PUSH_ARGUMENT",    std::strlen("PUSH_ARGUMENT")) ||
             !std::strncmp(cmd, "CALL_FUNCTION",    std::strlen("CALL_FUNCTION")) ||
@@ -84,7 +85,7 @@ Maybe<Command> ProcessNWNX(const CExoString& str)
         }
     }
 
-    return Maybe<Command>();
+    return std::optional<Command>();
 }
 
 }
@@ -408,7 +409,10 @@ int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
     if (auto nwnx = ProcessNWNX(sound))
     {
         ASSERT(nwnx->operation == "CALL"); // This one is used only for CALL ops
-        g_core->m_services->m_events->Call(nwnx->plugin, nwnx->event);
+        if (g_core->m_ScriptChunkRecursion == 0)
+            g_core->m_services->m_events->Call(nwnx->plugin, nwnx->event);
+        else
+            LOG_NOTICE("NWNX function '%s_%s' in ExecuteScriptChunk() was blocked due to configuration", nwnx->plugin, nwnx->event);
     }
     else
     {

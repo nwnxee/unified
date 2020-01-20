@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Platform/Time.hpp"
+#include "External/tinyformat/tinyformat.hpp"
 #include <cstdio>
+#include <cstring>
+#include <sstream>
+#include <ctime>
 
 namespace NWNXLib {
 
@@ -62,16 +65,30 @@ struct Channel
     };
 };
 
-void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* message);
-
 template <typename ... Args>
-void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* format, Args ... args);
+void Trace(Channel::Enum channel, const char* plugin, const char* file, int line, const char* format, Args&& ... args);
 
 Channel::Enum GetLogLevel(const char* plugin);
 void SetLogLevel(const char* plugin, Channel::Enum logLevel);
+void SetPrintTimestamp(bool value);
+bool GetPrintTimestamp();
+void SetPrintPlugin(bool value);
+bool GetPrintPlugin();
+void SetPrintSource(bool value);
+bool GetPrintSource();
+void SetColorOutput(bool value);
+bool GetColorOutput();
+void SetForceColor(bool value);
+bool GetForceColor();
 
 #include "Log.inl"
 
 }
 
 }
+
+class CExoString;
+class CResRef;
+
+std::ostream& operator<<(std::ostream& out, const CExoString& str);
+std::ostream& operator<<(std::ostream& out, const CResRef& str);

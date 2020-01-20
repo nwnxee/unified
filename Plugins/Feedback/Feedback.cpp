@@ -9,13 +9,12 @@
 #include "API/CNWSPlayer.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "ViewPtr.hpp"
 
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Feedback::Feedback> g_plugin;
+static Feedback::Feedback* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -51,7 +50,8 @@ Feedback::Feedback(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Feedback::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetMessageHidden);
     REGISTER(SetMessageHidden);
@@ -59,14 +59,14 @@ Feedback::Feedback(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSCreature__SendFeedbackMessage>(&SendFeedbackMessageHook);
-    m_SendFeedbackMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSCreature__SendFeedbackMessage);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer>(&SendFeedbackMessageHook);
+    m_SendFeedbackMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerCCMessage>(&SendServerToPlayerCCMessageHook);
-    m_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerCCMessage);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData>(&SendServerToPlayerCCMessageHook);
+    m_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::CNWSMessage__SendServerToPlayerJournalUpdated>(&SendServerToPlayerJournalUpdatedHook);
-    m_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::CNWSMessage__SendServerToPlayerJournalUpdated);
+    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString>(&SendServerToPlayerJournalUpdatedHook);
+    m_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString);
 }
 
 Feedback::~Feedback()
@@ -109,13 +109,13 @@ int32_t Feedback::SendServerToPlayerJournalUpdatedHook(
     CNWSPlayer *pPlayer,
     int32_t bQuest,
     int32_t bCompleted,
-    CExoLocString *p_locName)
+    CExoLocString locName)
 {
     auto personalState = GetPersonalState(pPlayer->m_oidNWSObject, JOURNALUPDATED_MESSAGE, 0);
     auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(JOURNALUPDATED_MESSAGE, 0) : personalState;
 
     return bSuppressFeedback ? false :
-                    m_SendServerToPlayerJournalUpdatedHook->CallOriginal<int32_t>(pMessage, pPlayer, bQuest, bCompleted, p_locName);
+                    m_SendServerToPlayerJournalUpdatedHook->CallOriginal<int32_t>(pMessage, pPlayer, bQuest, bCompleted, locName);
 }
 
 bool Feedback::GetGlobalState(int32_t messageType, int32_t messageId)
@@ -193,7 +193,7 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state);
+            g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state, true);
         }
     }
 

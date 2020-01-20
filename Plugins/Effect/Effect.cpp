@@ -8,15 +8,13 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWSObject.hpp"
 #include "Utils.hpp"
-#include "ViewPtr.hpp"
 
 #include <string>
-#include <functional>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Effect::Effect> g_plugin;
+static Effect::Effect* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -44,7 +42,8 @@ Effect::Effect(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Effect::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(PackEffect);
     REGISTER(UnpackEffect);
@@ -63,7 +62,7 @@ Effect::~Effect()
 ArgumentStack Effect::PackEffect(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    API::CGameEffect *eff = new API::CGameEffect(true);
+    CGameEffect *eff = new CGameEffect(true);
 
     eff->m_sCustomTag = Services::Events::ExtractArgument<std::string>(args).c_str();
 
@@ -97,11 +96,11 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
     eff->m_nNumIntegers = Services::Events::ExtractArgument<int32_t>(args);
 
     int32_t bRightLinkValid = Services::Events::ExtractArgument<int32_t>(args);
-    API::CGameEffect *pRightLink = Services::Events::ExtractArgument<API::CGameEffect*>(args);
+    CGameEffect *pRightLink = Services::Events::ExtractArgument<CGameEffect*>(args);
     eff->m_pLinkRight = (bRightLinkValid) ? pRightLink : nullptr;
 
     int32_t bLeftLinkValid = Services::Events::ExtractArgument<int32_t>(args);
-    API::CGameEffect *pLeftLink = Services::Events::ExtractArgument<API::CGameEffect*>(args);
+    CGameEffect *pLeftLink = Services::Events::ExtractArgument<CGameEffect*>(args);
     eff->m_pLinkLeft = (bLeftLinkValid) ? pLeftLink : nullptr;
 
     eff->m_nCasterLevel       = Services::Events::ExtractArgument<int32_t>(args);
@@ -115,9 +114,6 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
     eff->m_nSubType           = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_nType              = Services::Events::ExtractArgument<int32_t>(args);
 
-    // TODO-64bit: (effectId) Remove this, also on the nwscript side
-    auto effectID = Services::Events::ExtractArgument<int32_t>(args);
-
     if (bLeftLinkValid || bRightLinkValid)
         eff->UpdateLinked();
 
@@ -127,10 +123,7 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
 ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    auto eff = Services::Events::ExtractArgument<API::CGameEffect*>(args);
-
-    // TODO-64bit: (effectId) Remove this, also on the nwscript side
-    Services::Events::InsertArgument(stack, 0);
+    auto eff = Services::Events::ExtractArgument<CGameEffect*>(args);
 
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nType);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nSubType);
@@ -142,10 +135,26 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bExpose);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bShowIcon);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nCasterLevel);
-    Services::Events::InsertArgument(stack, (API::CGameEffect*)eff->m_pLinkLeft);
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_pLinkLeft != nullptr));
-    Services::Events::InsertArgument(stack, (API::CGameEffect*)eff->m_pLinkRight);
-    Services::Events::InsertArgument(stack, (int32_t)(eff->m_pLinkRight != nullptr));
+
+    // The DestroyGameEffect at the end of this function will delete any linked effects
+    // as well so we make a copy of the linked effects and send those for unpacking
+    CGameEffect *leftLinkEff = nullptr;
+    if (eff->m_pLinkLeft != nullptr)
+    {
+        leftLinkEff = new CGameEffect(true);
+        leftLinkEff->CopyEffect(eff->m_pLinkLeft, 0);
+    }
+    Services::Events::InsertArgument(stack, leftLinkEff);
+    Services::Events::InsertArgument(stack, eff->m_pLinkLeft != nullptr);
+
+    CGameEffect *rightLinkEff = nullptr;
+    if (eff->m_pLinkRight != nullptr)
+    {
+        rightLinkEff = new CGameEffect(true);
+        rightLinkEff->CopyEffect(eff->m_pLinkRight, 0);
+    }
+    Services::Events::InsertArgument(stack, rightLinkEff);
+    Services::Events::InsertArgument(stack, eff->m_pLinkRight != nullptr);
 
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nNumIntegers);
     Services::Events::InsertArgument(stack, (int32_t)(eff->m_nNumIntegers > 0 ? eff->m_nParamInteger[0] : -1));
@@ -186,10 +195,10 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
 
     if (!bOnEffectRemovedHook)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::CNWSEffectListHandler__OnEffectRemoved, int32_t>(
-            +[](Services::Hooks::CallType type, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
+        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect, int32_t>(
+            +[](bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
             {
-                if (type == Services::Hooks::CallType::BEFORE_ORIGINAL)
+                if (before)
                 {
                     CExoString &sScriptName = pEffect->m_sParamString[4];
                     if (!sScriptName.IsEmpty())
@@ -198,7 +207,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
                         g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
 
                         LOG_DEBUG("Running script '%s' on object '%x' with data '%s'",
-                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData.c_str());
+                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData);
 
                         ++g_plugin->m_effectExpiredDepth;
                         Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
@@ -212,7 +221,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
 
     ArgumentStack stack;
 
-    auto effect = Services::Events::ExtractArgument<API::CGameEffect*>(args);
+    auto effect = Services::Events::ExtractArgument<CGameEffect*>(args);
 
     // Script name
     effect->m_sParamString[4] = Services::Events::ExtractArgument<std::string>(args).c_str();

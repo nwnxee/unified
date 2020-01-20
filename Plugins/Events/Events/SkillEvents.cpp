@@ -10,22 +10,22 @@ using namespace NWNXLib;
 
 static Hooking::FunctionHook* m_UseSkillHook = nullptr;
 
-SkillEvents::SkillEvents(ViewPtr<Services::HooksProxy> hooker)
+SkillEvents::SkillEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_SKILL_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__UseSkill, int32_t, API::CNWSCreature*, uint8_t, uint8_t, NWNXLib::API::Types::ObjectID,
-            NWNXLib::API::Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t>(&UseSkillHook);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature8UseSkillEhhj6Vectorjji, int32_t, CNWSCreature*, uint8_t, uint8_t, NWNXLib::API::Types::ObjectID,
+            Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t>(&UseSkillHook);
 
-        m_UseSkillHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseSkill);
+        m_UseSkillHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature8UseSkillEhhj6Vectorjji);
     });
 }
 
 int32_t SkillEvents::UseSkillHook(
-    API::CNWSCreature* thisPtr,
+    CNWSCreature* thisPtr,
     uint8_t skill,
     uint8_t subSkill,
     API::Types::ObjectID target,
-    NWNXLib::API::Vector targetPosition,
+    Vector targetPosition,
     API::Types::ObjectID area,
     API::Types::ObjectID usedItem,
     int32_t activePropertyIndex)

@@ -28,6 +28,7 @@ public:
     static int32_t Size(const NWNXLib::API::Types::ObjectID oid, const std::string& tag);
     static void SortAscending(const NWNXLib::API::Types::ObjectID oid, const std::string& tag);
     static void SortDescending(const NWNXLib::API::Types::ObjectID oid, const std::string& tag);
+    static void Set(const NWNXLib::API::Types::ObjectID oid, const std::string& tag, int32_t index, T&& element);
 
 private:
     // Maps from object -> { array tag, vector }.
@@ -40,19 +41,20 @@ public:
     Array(NWNXLib::Services::EventsProxy& events);
 
 private:
-    static NWNXLib::Services::Events::ArgumentStack OnArrayAt(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayClear(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayContains(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayCopy(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayErase(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayFind(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayInsert(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayPushBack(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayResize(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArrayShuffle(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArraySize(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArraySortAscending(NWNXLib::Services::Events::ArgumentStack&& args);
-    static NWNXLib::Services::Events::ArgumentStack OnArraySortDescending(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayAt(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayClear(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayContains(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayCopy(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayErase(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayFind(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayInsert(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayPushBack(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayResize(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArrayShuffle(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArraySize(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArraySortAscending(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArraySortDescending(NWNXLib::Services::Events::ArgumentStack&& args);
+    static NWNXLib::Services::Events::ArgumentStack ArraySet(NWNXLib::Services::Events::ArgumentStack&& args);
 
     friend class ArrayImpl<float>;
     friend class ArrayImpl<int32_t>;

@@ -27,8 +27,9 @@ private:
     ArgumentStack GetAreaModifier             (ArgumentStack&& args);
     ArgumentStack SetAreaModifier             (ArgumentStack&& args);
 
-    static void LoadFeatInfoHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWRules*);
-    static int32_t GetSkillRankHook(NWNXLib::API::CNWSCreatureStats*, uint8_t, NWNXLib::API::CNWSObject*, int32_t);
+    static void LoadSkillInfoHook(bool, CNWRules*);
+    static int32_t GetSkillRankHook(CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t);
+
     uint8_t m_blindnessMod;
 
     struct SkillFeats {
@@ -43,7 +44,8 @@ private:
         uint16_t nKeyAbilityMask;
     };
 
-    std::vector<std::map<uint32_t, SkillFeats>> m_skillFeatMap;
+    std::unordered_map<uint8_t, std::unordered_map<uint16_t, SkillFeats>> m_skillFeatMap;
+    std::unordered_map<uint16_t, std::unordered_map<uint8_t, int32_t>> m_skillRaceMod;
 };
 
 }

@@ -19,7 +19,7 @@ PostgreSQL::~PostgreSQL()
     PQfinish(m_conn);
 }
 
-void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
+void PostgreSQL::Connect(NWNXLib::Services::ConfigProxy* config)
 {
     const std::string host = "host=" + config->Get<std::string>("HOST", "localhost");
     const std::string user = "user=" + config->Require<std::string>("USERNAME");
@@ -27,10 +27,10 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
 
     // Database technically is optional.  If not given, it will connect to the default
     // database of the given USERNAME.
-    const NWNXLib::Maybe<std::string> DB = config->Get<std::string>("DATABASE");
+    const auto DB = config->Get<std::string>("DATABASE");
     if (DB)
     {
-        LOG_DEBUG("DB set to %s", (*DB).c_str());
+        LOG_DEBUG("DB set to %s", (*DB));
     }
     const std::string db   = DB ? "dbname=" + (*DB) : nullptr;
 
@@ -40,9 +40,9 @@ void PostgreSQL::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config
     m_connectString = host + " " + port + " " + db + " " + user ;
 
     // hide the password in the log file
-    LOG_INFO("Connect String:  %s password=xxxxxxxx", m_connectString.c_str());
+    LOG_INFO("Connect String:  %s password=xxxxxxxx", m_connectString);
     // but add it if we're in debug logging.
-    LOG_DEBUG("              :  %s", pass.c_str());
+    LOG_DEBUG("              :  %s", pass);
 
     m_connectString += " " + pass;
 
@@ -77,7 +77,7 @@ bool PostgreSQL::IsConnected()
 
 bool PostgreSQL::PrepareQuery(const Query& query)
 {
-    LOG_DEBUG("Preparing query %s\n", query.c_str());
+    LOG_DEBUG("Preparing query %s\n", query);
 
     m_affectedRows = -1;
 
@@ -114,7 +114,7 @@ bool PostgreSQL::PrepareQuery(const Query& query)
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
         PQclear(res);
-        LOG_WARNING("Query '%s' failed due to error '%s'", query.c_str(), PQresultErrorMessage(res));
+        LOG_WARNING("Query '%s' failed due to error '%s'", query, PQresultErrorMessage(res));
 
         return false;
     }
@@ -123,7 +123,7 @@ bool PostgreSQL::PrepareQuery(const Query& query)
     return true;
 }
 
-NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
+std::optional<ResultSet> PostgreSQL::ExecuteQuery()
 {
 
     m_affectedRows = -1;
@@ -183,7 +183,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
         }
 
         PQclear(res);
-        return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
+        return std::make_optional<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
     }
 
     // DML that doesn't return rows (inserts, updates, etc.)
@@ -197,7 +197,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
             m_affectedRows = atoi(cnt);
         }
         PQclear(res);
-        return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
+        return std::make_optional<ResultSet>(ResultSet()); // Succeeded query, no results.
     }
 
     // Else.. something unexpected happened.
@@ -215,7 +215,7 @@ NWNXLib::Maybe<ResultSet> PostgreSQL::ExecuteQuery()
     m_lastError.assign(error);
 
     PQclear(res);
-    return NWNXLib::Maybe<ResultSet>();
+    return std::optional<ResultSet>();
 }
 
 // Parameters are just passed as strings.  PgSQL figures out what it's supposed to be and casts if necessary.
@@ -231,7 +231,7 @@ void PostgreSQL::PrepareFloat(int32_t position, float value)
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
-    LOG_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value);
     m_params[position] = value;
 }
 

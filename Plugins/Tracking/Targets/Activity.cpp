@@ -1,7 +1,7 @@
 #include "Targets/Activity.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CExoLinkedListInternal.hpp"
-#include "API/CExoLinkedListTemplatedCNWSClient.hpp"
+#include "API/CExoLinkedList.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CNWSPlayer.hpp"
@@ -19,19 +19,19 @@ using namespace NWNXLib::API;
 
 namespace Tracking {
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
-Activity::Activity(ViewPtr<Services::MetricsProxy> metrics, ViewPtr<Services::HooksProxy> hooks)
+Activity::Activity(Services::MetricsProxy* metrics, Services::HooksProxy* hooks)
 {
     g_metrics = metrics;
-    hooks->RequestSharedHook<Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopUpdate);
+    hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
     metrics->SetResampler("Activity", resampler, std::chrono::seconds(1));
 }
 
-void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInternal* thisPtr)
+void Activity::MainLoopUpdate(bool before, CServerExoAppInternal* thisPtr)
 {
-    if (type != Services::Hooks::CallType::BEFORE_ORIGINAL)
+    if (!before)
     {
         return;
     }
@@ -59,7 +59,7 @@ void Activity::MainLoopUpdate(Services::Hooks::CallType type, CServerExoAppInter
 
                 if (area)
                 {
-                    areaName = std::string(area->m_cResRef.m_resRef, area->m_cResRef.GetLength());
+                    areaName = std::string(area->m_cResRef.GetResRef(), area->m_cResRef.GetLength());
                 }
 
                 if (creature->m_pStats->m_bIsDM || creature->m_nAssociateType == 7 || creature->m_nAssociateType == 8)

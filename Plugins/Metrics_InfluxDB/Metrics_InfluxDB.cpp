@@ -3,11 +3,10 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 
-static ViewPtr<Metrics_InfluxDB::Metrics_InfluxDB> g_plugin;
+static Metrics_InfluxDB::Metrics_InfluxDB* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {

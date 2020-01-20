@@ -1,14 +1,6 @@
 #include "nwnx_player"
+#include "nwnx_tests"
 
-
-
-void report(string func, int bSuccess)
-{
-    if (bSuccess)
-        WriteTimestampedLogEntry("NWNX_Player: " + func + "() success");
-    else
-        WriteTimestampedLogEntry("NWNX_Player: " + func + "() failed");
-}
 void main()
 {
     WriteTimestampedLogEntry("NWNX_Player unit test begin..");

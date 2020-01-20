@@ -1,4 +1,15 @@
-# NWNX:EE (build 8186) ([Changelog](CHANGELOG.md))
+[![Discord](https://img.shields.io/discord/382306806866771978.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.gg/hxTt8Fr)
+
+# NWNX:EE (build 8193.6 - v79 - DEVELOPMENT build)
+
+This branch is targeting a development build. For the latest stable, use the [nwnx-stable](https://github.com/nwnxee/unified/tree/nwnx-stable) branch.
+
+- Latest release: [build8193.6](https://github.com/nwnxee/unified/releases/tag/build8193.6) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#81936) 
+- Docker tag: `nwnxee/unified:build8193.6`
+- nwserver-linux md5: `4a73c30c2742fde6a6ec5400bf7d2159`
+
+@mainpage
+@tableofcontents
 
 ## What is NWNX:EE?
 
@@ -14,11 +25,13 @@ NWNX:EE is not just for plugin developers. Module creators can use plugins creat
 
 ## What versions of the server are supported?
 
-The most recent build of NWN:EE that is supported can be discovered at the top of this file. Please note that we do NOT support any server binaries other than the one in the dedicated server package. We support neither the binary released through the Beamdog client nor the one released through the Steam client. We release an update for each new version of the dedicated server package, which can be found here: https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support/p1
+The most recent build of NWN:EE that is supported can be discovered at the top of this file. Please note that we do NOT support any server binaries other than the one in the dedicated server package. We support neither the binary released through the Beamdog client nor the one released through the Steam client. That said, the Steam and Beamdog binaries are almost always identical to the one in the dedicated server package, see the top of this readme for a md5sum of the binary we support.
+
+We release at least one update for each new version of the dedicated server package, which can be found here: [Server download packages and docker support](https://forums.beamdog.com/discussion/67157/server-download-packages-and-docker-support/p1)
 
 ## What platforms are supported?
 
-Only Linux is currently supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment. Refer to the sections below to find out how. Many discussions have taken place regarding work on a native Windows port of NWNX:EE. It has been tackled several times in the past, but none of those attempts have seem fruition - complications have arisen in the course of the work. We know how we would do it, and estimate the time required for the task to be between 2 and 4 weeks of full-time work, but nobody with the skillset necessary to take on the project has the time or interest at the moment to do so. Therefore, users should not expect a native Windows port from a member of the team in the near future. (contributions welcome!)
+Only Linux is natively supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment or WSL/WSL2 when using Windows 10. At this point in time there are no plans for native Windows support of NWNX:EE.
 
 ## How do I use it?
 
@@ -26,7 +39,7 @@ First of all, you need to get the NWNX binaries. If you want to compile the bina
 
 ## Integrating NWNX:EE into your module
 
-The built binaries (when built using the build script or downloaded as artifacts) will contain a folder in which all of the script files associated with NWNX:EE live. Simply import these into your module and call the functions as you would any other scripting function. Some may not compile with the default compiler - it is safe to delete these scripts if you do not need to use the associated plugins.
+Each NWNX:EE [Release](https://github.com/nwnxee/unified/releases) has a `NWScript.zip` file containing all of the scripts files, if you have built NWNX:EE yourself the `NWScript.zip` file will be in your `Binaries` folder. Simply import the scripts into your module and call the functions as you would any other scripting function. Be sure to update these scripts whenever updating NWNX, and then rebuild all your scripts in your module.
 
 ## Running the server (native)
 
@@ -39,29 +52,28 @@ Given the binaries, follow these steps:
         export LD_PRELOAD="./NWNX_Core.so"
         ./nwserver-linux
 
-3.  You can optionally configure plugins using environment variables. At the moment you will need to search the plugin documentation to find the correct environment variables: each plugin, located in the Plugins/ folder in the source tree, has a Documentation folder which contains some information about the plugin. Please note that not all environment variables will be documented so you may need to dig through the source code.
+3.  You can optionally configure plugins using environment variables. At the moment you will need to search the plugin documentation to find the correct environment variables: each plugin, located in the Plugins/ folder in the source tree, has a README.md which contains some information about the plugin.
 
 4.  You can skip a particular plugin by adding a line that looks like this before starting nwserver-linux:
 
-        export NWNX_JVM_SKIP=true
+        export NWNX_LUA_SKIP=true
 
 5.  You can set the log levels like this, which governs the verbosity of log output, with 1 being the least verbose and 7 being the most verbose.
 
         export NWNX_CORE_LOG_LEVEL=7 # Default log level for core and all plugins
-        export NWNX_JVM_LOG_LEVEL=7 # Log level for JVM, overrides default
+        export NWNX_LUA_LOG_LEVEL=7 # Log level for LUA, overrides default
 
 Optionally, you can use Docker to run the server with pre-built NWNX binaries. Refer to the section below
 
 ## Running the server (Docker)
 
-`nwnxee/unified` supports the following tags:
+`nwnxee/unified` supports the following [tags](https://hub.docker.com/r/nwnxee/unified/tags):
 
+* `[commit-hash]` (7 characters and 40)
 * `latest`
-* `latest-full`
-* `[versiontag]` (replace with a github tag, like `build8166`)
-* `[versiontag]-full`
+* `[tag]` (for example: `build8193`)
 
-Most users are fine running `nwnxee/unified:latest`. The `-full` versions include all the heavier run dependencies, and is only necessary if you use the mono or the jvm plugin.
+Due to Docker's local image cache we recommend using the `[commit-hash]` tag to explicitly state which nwnx build to run. In comparison, the `latest` tag will usually hit the image cache and return an outdated build, as you have to run `docker pull nwnxee/unified` to update the `latest` image in your cache. Using the `[commit-hash]` tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.
 
 Note, the image named `nwnxee/nwserver` exists for legacy reasons but is no longer actively maintained.
 
@@ -76,19 +88,23 @@ It is advised to configure the container with docker-compose. Please refer to th
 * https://docs.docker.com/compose/
 * Example compose file: [nwnxee-template](https://github.com/Urothis/nwnxee-template/blob/master/docker-compose.yml)
 
+## Running the server (Windows 10 WSL1)
+
+As of NWN:EE Release 8193 it is possible to run `nwserver-linux` and NWNX:EE on Windows 10's Subsystem for Linux. See this guide on how to do so: [NWNX:EE on WSL1, a brief guide](https://github.com/Daztek/NWNX-WSL)
+
 ## Compiling NWNX:EE (native)
 
-Please note that you need a modern C++ compiler to build NWNX:EE. The code is confirmed to build on GCC 6.4 + or Clang 4.0 +. It may be possible to build on an older compiler.
+Please note that you need a modern C++17 compatible compiler to build NWNX:EE. The code is confirmed to build on GCC 7.4+ or Clang 5.0+. It may be possible to build on an older compiler.
 
 Each plugin may have one or more dependencies that must be satisfied in order to build that plugin. Refer to each individual plugin's CMakeLists.txt to determine their dependencies.
 
 To build the typical way:
 
-1.  Execute ./Scripts/buildnwnx.sh
+- Execute: `./Scripts/buildnwnx.sh`
 
 Or, if you want to compile manually:
 
-1.  Execute CC=gcc -m32 CXX=g++ -m32 mkdir build && cd build && cmake .. && make
+- Execute: `mkdir build-nwnx && cd build-nwnx && cmake .. && make`
 
 ## Compiling NWNX:EE (docker)
 
@@ -109,18 +125,7 @@ To build on Windows:
 
 ## Contributing code
 
-All contribution are welcome. The only requirement is that the code you contribute adheres to the following restrictions:
-
-1.  Prefix members variables with m\_.
-2.  Use lowerCamelCase for variables.
-3.  Use UpperCamelCase for functions.
-4.  Use UpperCamelCase for classes.
-5.  Use ALL_CAPS for constants and macros.
-6.  Braces always start on a new line and always end on a new line.
-7.  Spaces, not tabs.
-8.  Avoid manual memory management. Use unique_ptr always. This helps transparent hotloading later!
-
-Most importantly, be sure never to manually write memory addresses or hooks yourself. These must ALWAYS go through the core systems to make sure that plugins can play nicely together.
+All contribution are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for requirements and style guidelines.
 
 ## Who makes NWNX:EE?
 
@@ -128,7 +133,7 @@ The project is an open source project created and maintained by community member
 
 ## You're awesome, let me pay you
 
-Thanks, but you should donate your dolla dolla bills to a good cause instead. If you really want to spend money to support NWN, consider donating to Neverwinter Vault to cover their sever hosting costs.
+Thanks, but you should donate your dolla dolla bills to a good cause instead. If you really want to spend money to support NWN, consider donating to [Neverwinter Vault](https://neverwintervault.org/) to cover their server hosting costs.
 
 ## Contact
 

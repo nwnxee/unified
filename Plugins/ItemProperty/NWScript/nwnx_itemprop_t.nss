@@ -1,9 +1,9 @@
 #include "nwnx_itemprop"
+#include "nwnx_tests"
 
 void printip(struct NWNX_IPUnpacked n)
 {
     string s = "Unpacked IP: \n";
-    s += "nItemPropertyId = " + IntToString(n.nItemPropertyId) + "\n";
     s += "nProperty = " + IntToString(n.nProperty) + "\n";
     s += "nSubType = " + IntToString(n.nSubType) + "\n";
     s += "nCostTable = " + IntToString(n.nCostTable) + "\n";
@@ -19,14 +19,6 @@ void printip(struct NWNX_IPUnpacked n)
     WriteTimestampedLogEntry(s);
 }
 
-void report(string func, int bSuccess)
-{
-    if (bSuccess)
-        WriteTimestampedLogEntry("NWNX_ItemProperty: " + func + "() success");
-    else
-        WriteTimestampedLogEntry("NWNX_ItemProperty: " + func + "() failed");
-}
-
 void main()
 {
     WriteTimestampedLogEntry("NWNX_ItemProperty unit test begin..");
@@ -36,15 +28,15 @@ void main()
 
     struct NWNX_IPUnpacked unpacked = NWNX_ItemProperty_UnpackIP(ip);
     printip(unpacked);
-    report("UnpackIP", unpacked.sTag == "NWNX_ItemProperty_TEST");
+    NWNX_Tests_Report("NWNX_ItemProperty", "UnpackIP", unpacked.sTag == "NWNX_ItemProperty_TEST");
 
     itemproperty ip2 = NWNX_ItemProperty_PackIP(unpacked);
-    report("PackIP", GetIsItemPropertyValid(ip2));
-    report("PackIP", GetItemPropertyTag(ip2) == "NWNX_ItemProperty_TEST");
-    report("PackIP", GetItemPropertyCostTable(ip2) == unpacked.nCostTable);
-    report("PackIP", GetItemPropertyCostTableValue(ip2) == unpacked.nCostTableValue);
-    report("PackIP", GetItemPropertyParam1(ip2) == unpacked.nParam1);
-    report("PackIP", GetItemPropertyParam1Value(ip2) == unpacked.nParam1Value);
+    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetIsItemPropertyValid(ip2));
+    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyTag(ip2) == "NWNX_ItemProperty_TEST");
+    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyCostTable(ip2) == unpacked.nCostTable);
+    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyCostTableValue(ip2) == unpacked.nCostTableValue);
+    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyParam1(ip2) == unpacked.nParam1);
+    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyParam1Value(ip2) == unpacked.nParam1Value);
 
     WriteTimestampedLogEntry("NWNX_ItemProperty unit test end.");
 }

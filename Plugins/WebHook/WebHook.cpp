@@ -10,7 +10,7 @@
 
 using namespace NWNXLib;
 
-static ViewPtr<WebHook::WebHook> g_plugin;
+static WebHook::WebHook* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -38,7 +38,7 @@ namespace WebHook {
 WebHook::WebHook(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    GetServices()->m_events->RegisterEvent("SEND_WEBHOOK_HTTPS", &OnSendWebHookHTTPS);
+    GetServices()->m_events->RegisterEvent("SendWebHookHTTPS", &SendWebHookHTTPS);
 }
 
 WebHook::~WebHook()
@@ -57,7 +57,7 @@ std::string escape_json(const std::string &s) {
     return o.str();
 }
 
-ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
+ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
 {
     Events::ArgumentStack stack;
     auto host = Services::Events::ExtractArgument<std::string>(args);
@@ -90,7 +90,7 @@ ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
 
         if (cli == std::end(s_ClientCache))
         {
-            LOG_DEBUG("Creating new SSL client for host %s.", host.c_str());
+            LOG_DEBUG("Creating new SSL client for host %s.", host);
             cli = s_ClientCache.insert(std::make_pair(host, std::make_unique<httplib::SSLClient>(host.c_str(), 443))).first;
         }
 
@@ -128,27 +128,27 @@ ArgumentStack WebHook::OnSendWebHookHTTPS(ArgumentStack&& args)
                     if (res->status != 429)
                     {
                         messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_SUCCESS", moduleOid});
-                        LOG_INFO("Sent webhook '%s' to '%s%s'.", message.c_str(), host.c_str(), path.c_str());
+                        LOG_INFO("Sent webhook '%s' to '%s%s'.", message, host, path);
 
                     }
                     else
                     {
                         messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
-                        LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s'. Rate Limited.", message.c_str(), host.c_str(), path.c_str());
+                        LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s'. Rate Limited.", message, host, path);
                     }
                 }
                 else
                 {
                     messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", res->body});
                     messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
-                    LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.", message.c_str(), host.c_str(), path.c_str(), res->status);
+                    LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.", message, host, path, res->status);
                 }
             }
             else
             {
                 messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", "Failed to post to server. Is the url correct?"});
                 messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
-                LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.", host.c_str(), path.c_str());
+                LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.", host, path);
             }
         });
     });

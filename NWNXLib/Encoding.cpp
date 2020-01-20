@@ -33,7 +33,7 @@ void SetDefaultLocale(const std::string& locale)
         SetDefaultLocale(Russian);
     else
     {
-        LOG_WARNING("Unknown locale %s", locale.c_str());
+        LOG_WARNING("Unknown locale %s", locale);
         SetDefaultLocale(Default);
     }
 }
@@ -83,7 +83,7 @@ std::string ToUTF8(const char *str, Locale locale)
             }
         }
     }
-    LOG_DEBUG("ToUTF: \"%s\" -> \"%s\"", tmp, utf8.c_str());
+    LOG_DEBUG("ToUTF: \"%s\" -> \"%s\"", tmp, utf8);
     return utf8;
 }
 
@@ -149,7 +149,7 @@ std::string FromUTF8(const char *str, Locale locale)
             }
         }
     }
-    LOG_DEBUG("FromUTF: \"%s\" -> \"%s\"", tmp, iso8859.c_str());
+    LOG_DEBUG("FromUTF: \"%s\" -> \"%s\"", tmp, iso8859);
     return iso8859;
 }
 

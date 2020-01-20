@@ -24,7 +24,7 @@ uint8_t FastTimer::s_depth = 0;
 std::array<std::chrono::nanoseconds, FastTimer::MAX_DEPTH> FastTimer::s_debt = {};
 std::chrono::nanoseconds FastTimer::s_hookOverhead = std::chrono::nanoseconds(0);
 
-ViewPtr<MetricsProxy> FastTimer::g_metricsForCalibration;
+MetricsProxy* FastTimer::g_metricsForCalibration;
 
 void FastTimer::Start()
 {
@@ -48,12 +48,12 @@ void FastTimer::PrepareForCalibration(const std::chrono::nanoseconds val)
     s_hookOverhead = val;
 }
 
-void FastTimer::Calibrate(const size_t runs, ViewPtr<HooksProxy> hooks, ViewPtr<MetricsProxy> metrics)
+void FastTimer::Calibrate(const size_t runs, HooksProxy* hooks, MetricsProxy* metrics)
 {
     g_metricsForCalibration = metrics;
 
     // Set up a discard resampler for this one.
-    auto resampler = &Resamplers::template Discard<int64_t>;
+    auto resampler = &Resamplers::Discard;
     metrics->SetResampler("FAST_TIMER_OVERHEAD_CALIBRATION", resampler, std::chrono::seconds(10));
 
     const auto runTest = [](const size_t targetRuns) -> std::chrono::nanoseconds
@@ -74,14 +74,14 @@ void FastTimer::Calibrate(const size_t runs, ViewPtr<HooksProxy> hooks, ViewPtr<
     std::vector<std::chrono::nanoseconds> hookedResults;
     std::vector<std::chrono::nanoseconds> unhookedResults;
 
-    hooks->RequestSharedHook<Functions::CExoBase__CheckForCD, bool>(&ProfilerCalibrateHookFuncWithScope);
+    hooks->RequestSharedHook<Functions::_ZN16CExoBaseInternal10CheckForCDEj, int32_t>(&ProfilerCalibrateHookFuncWithScope);
 
     for (size_t i = 0; i < runs; ++i)
     {
         hookedResults.emplace_back(runTest(10));
     }
 
-    hooks->ClearHook(Functions::CExoBase__CheckForCD);
+    hooks->ClearHook(Functions::_ZN16CExoBaseInternal10CheckForCDEj);
 
     for (size_t i = 0; i < runs; ++i)
     {
@@ -143,11 +143,11 @@ std::chrono::nanoseconds FastTimer::ConstructTimestampAndPop()
     return time;
 }
 
-void FastTimer::ProfilerCalibrateHookFuncWithScope(Hooks::CallType type, CExoBase*, uint32_t)
+void FastTimer::ProfilerCalibrateHookFuncWithScope(bool before, CExoBase*, uint32_t)
 {
     static FastTimer timer;
 
-    if (type == Hooks::CallType::BEFORE_ORIGINAL)
+    if (before)
     {
         timer.Start();
     }

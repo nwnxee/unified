@@ -1,18 +1,14 @@
 #pragma once
 
 #include "Services/Services.hpp"
-#include "ViewPtr.hpp"
 
 #include <string>
 #include <unordered_map>
 
 namespace NWNXLib {
 
-#ifdef _WIN32
-    #define NWNX_PLUGIN_ENTRY extern "C" __declspec(dllexport)
-#else
-    #define NWNX_PLUGIN_ENTRY extern "C"
-#endif
+
+#define NWNX_PLUGIN_ENTRY extern "C"
 
 // All plugins should extend this class if they want to use the API!
 // This class performs neccessary initialisation of shared API state.
@@ -25,10 +21,10 @@ public: // Structures
         using Version = uint32_t;
 
     public:
-        Info(std::string&& name,
-            std::string&& description,
-            std::string&& author,
-            std::string&& contact,
+        Info(std::string name,
+            std::string description,
+            std::string author,
+            std::string contact,
             const Version version,
             const bool hotswap,
             const uint32_t flags = 0,
@@ -47,7 +43,7 @@ public: // Structures
     struct CreateParams
     {
     public:
-        ViewPtr<Services::ProxyServiceList> m_services;
+        Services::ProxyServiceList* m_services;
     };
 
     enum class UnloadReason
@@ -62,10 +58,10 @@ public:
     virtual ~Plugin();
 
 protected:
-    ViewPtr<Services::ProxyServiceList> GetServices();
+    Services::ProxyServiceList* GetServices();
 
 private:
-    ViewPtr<Services::ProxyServiceList> m_services;
+    Services::ProxyServiceList* m_services;
 };
 
 }

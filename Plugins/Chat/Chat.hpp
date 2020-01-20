@@ -6,6 +6,8 @@
 #include "API/Constants/Misc.hpp"
 #include "Services/Events/Events.hpp"
 
+using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+
 namespace NWNXLib::Hooking { class FunctionHook; }
 
 namespace Chat {
@@ -26,18 +28,22 @@ private:
 
     std::string m_chatScript;
     bool m_skipMessage;
+    bool m_customHearingDistances;
+    std::unordered_map<NWNXLib::API::Constants::ChatChannel::TYPE, float> m_hearingDistances;
     uint32_t m_depth;
 
-    static void SendServerToPlayerChatMessage(NWNXLib::API::CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, NWNXLib::API::Types::ObjectID sender,
-        NWNXLib::API::CExoString message, NWNXLib::API::Types::ObjectID target, NWNXLib::API::CExoString* tellName);
+    static void SendServerToPlayerChatMessage(CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, NWNXLib::API::Types::ObjectID sender,
+        CExoString message, NWNXLib::API::Types::ObjectID target, CExoString* tellName);
 
-    NWNXLib::Services::Events::ArgumentStack OnSendMessage(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnRegisterChatScript(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnSkipMessage(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetChannel(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetMessage(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetSender(NWNXLib::Services::Events::ArgumentStack&& args);
-    NWNXLib::Services::Events::ArgumentStack OnGetTarget(NWNXLib::Services::Events::ArgumentStack&& args);
+    ArgumentStack SendMessage               (ArgumentStack&& args);
+    ArgumentStack RegisterChatScript        (ArgumentStack&& args);
+    ArgumentStack SkipMessage               (ArgumentStack&& args);
+    ArgumentStack GetChannel                (ArgumentStack&& args);
+    ArgumentStack GetMessage                (ArgumentStack&& args);
+    ArgumentStack GetSender                 (ArgumentStack&& args);
+    ArgumentStack GetTarget                 (ArgumentStack&& args);
+    ArgumentStack SetChatHearingDistance    (ArgumentStack&& args);
+    ArgumentStack GetChatHearingDistance    (ArgumentStack&& args);
 };
 
 }

@@ -15,12 +15,12 @@ using namespace NWNXLib::Platform;
 
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerPartyHook = nullptr;
 
-PartyEvents::PartyEvents(ViewPtr<Services::HooksProxy> hooker)
+PartyEvents::PartyEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_PARTY_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::CNWSMessage__HandlePlayerToServerParty, int32_t,
+        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh, int32_t,
             CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
-        m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::CNWSMessage__HandlePlayerToServerParty);
+        m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh);
     });
 }
 

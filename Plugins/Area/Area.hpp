@@ -41,9 +41,11 @@ private:
     ArgumentStack CreateTransition          (ArgumentStack&& args);
     ArgumentStack GetTileAnimationLoop      (ArgumentStack&& args);
     ArgumentStack SetTileAnimationLoop      (ArgumentStack&& args);
+    ArgumentStack TestDirectLine            (ArgumentStack&& args);
+    ArgumentStack GetMusicIsPlaying         (ArgumentStack&& args);
 
-    NWNXLib::API::CNWSArea *area(ArgumentStack& args);
-    static NWNXLib::API::CNWSTile *GetTile(NWNXLib::API::CNWSArea *pArea, float x, float y);
+    CNWSArea *area(ArgumentStack& args);
+    static CNWSTile *GetTile(CNWSArea *pArea, float x, float y);
 };
 
 }

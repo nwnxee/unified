@@ -9,41 +9,58 @@ namespace Events {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
+static NWNXLib::Hooking::FunctionHook* m_SetStealthModeHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_DoSpotDetectionHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_DoListenDetectionHook = nullptr;
 
-StealthEvents::StealthEvents(ViewPtr<Services::HooksProxy> hooker)
+StealthEvents::StealthEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_E.*_STEALTH_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::CNWSCreature__SetStealthMode, void, API::CNWSCreature*, uint8_t>(&SetStealthModeHook);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature14SetStealthModeEh>(&SetStealthModeHook);
+        m_SetStealthModeHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature14SetStealthModeEh);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoListenDetection, int32_t>(&DoListenDetectionHook);
-        m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoListenDetection);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i, int32_t>(&DoListenDetectionHook);
+        m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_SPOT_DETECTION.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::CNWSCreature__DoSpotDetection, int32_t>(&DoSpotDetectionHook);
-        m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__DoSpotDetection);
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i, int32_t>(&DoSpotDetectionHook);
+        m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i);
     });
 }
 
-void StealthEvents::SetStealthModeHook(Services::Hooks::CallType type, API::CNWSCreature* thisPtr, uint8_t mode)
+void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMode)
 {
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    const bool willBeStealthed = mode != 0;
-
-    static bool currentlyStealthed;
-    currentlyStealthed = before ? thisPtr->m_nStealthMode != 0 : currentlyStealthed;
+    const bool willBeStealthed = nStealthMode != 0;
+    const bool currentlyStealthed = thisPtr->m_nStealthMode != 0;
 
     if (!currentlyStealthed && willBeStealthed)
     {
-        Events::SignalEvent(before ? "NWNX_ON_ENTER_STEALTH_BEFORE" : "NWNX_ON_ENTER_STEALTH_AFTER", thisPtr->m_idSelf);
+        if (Events::SignalEvent("NWNX_ON_ENTER_STEALTH_BEFORE", thisPtr->m_idSelf))
+        {
+            m_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
+        }
+        else
+        {
+            thisPtr->ClearActivities(1);
+        }
+
+        Events::SignalEvent("NWNX_ON_ENTER_STEALTH_AFTER", thisPtr->m_idSelf);
     }
     else
     {
-        Events::SignalEvent(before ? "NWNX_ON_EXIT_STEALTH_BEFORE" : "NWNX_ON_EXIT_STEALTH_AFTER", thisPtr->m_idSelf);
+        if (Events::SignalEvent("NWNX_ON_EXIT_STEALTH_BEFORE", thisPtr->m_idSelf))
+        {
+            m_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
+        }
+        else
+        {
+            thisPtr->SetActivity(1, true);
+        }
+
+        Events::SignalEvent("NWNX_ON_EXIT_STEALTH_AFTER", thisPtr->m_idSelf);
     }
 }
 

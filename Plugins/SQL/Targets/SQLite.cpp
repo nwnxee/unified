@@ -4,16 +4,14 @@
 #include "Services/Config/Config.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
-#include "Platform/FileSystem.hpp"
+#include "Utils.hpp"
 
-#include <string.h>
 #include <sqlite3.h>
 
 namespace SQL {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace Platform::FileSystem;
 
 SQLite::SQLite()
 {
@@ -29,18 +27,18 @@ SQLite::~SQLite()
     sqlite3_close(m_dbConn);
 }
 
-void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
+void SQLite::Connect(NWNXLib::Services::ConfigProxy* config)
 {
     if (auto database = config->Get<std::string>("DATABASE"))
     {
         m_dbName = database->c_str();
 
-        LOG_INFO("SQLite Database name set to %s", m_dbName.c_str());
+        LOG_INFO("SQLite Database name set to %s", m_dbName);
     }
 
     // Save the database file to UserDirectory/database
-    static std::string dbPath = CombinePaths(
-        CombinePaths(std::string(Globals::ExoBase()->m_sUserDirectory.CStr()),  std::string("database")), m_dbName + ".sqlite3");
+    static std::string dbPath = Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/database/")
+            + m_dbName + std::string(".sqlite3nwnxee");
 
     if (sqlite3_open(dbPath.c_str(), &m_dbConn))
     {
@@ -51,7 +49,7 @@ void SQLite::Connect(NWNXLib::ViewPtr<NWNXLib::Services::ConfigProxy> config)
 
 bool SQLite::IsConnected()
 {
-    bool bConnected = sqlite3_exec(m_dbConn, "SELECT 1", NULL, NULL, NULL) == SQLITE_OK;
+    bool bConnected = sqlite3_exec(m_dbConn, "SELECT 1", nullptr, nullptr, nullptr) == SQLITE_OK;
 
     if (!bConnected)
     {
@@ -63,11 +61,11 @@ bool SQLite::IsConnected()
 
 bool SQLite::PrepareQuery(const Query& query)
 {
-    LOG_DEBUG("Preparing query: %s", query.c_str());
+    LOG_DEBUG("Preparing query: %s", query);
 
     sqlite3_finalize(m_stmt);
 
-    bool success = sqlite3_prepare_v2(m_dbConn, query.c_str(), -1, &m_stmt, NULL) == SQLITE_OK;
+    bool success = sqlite3_prepare_v2(m_dbConn, query.c_str(), -1, &m_stmt, nullptr) == SQLITE_OK;
 
     if (success)
     {
@@ -78,7 +76,7 @@ bool SQLite::PrepareQuery(const Query& query)
     else
     {
         m_lastError.assign(sqlite3_errmsg(m_dbConn));
-        LOG_WARNING("Failed to prepare statement: %s", m_lastError.c_str());
+        LOG_WARNING("Failed to prepare statement: %s", m_lastError);
         sqlite3_finalize(m_stmt);
         m_stmt = nullptr;
     }
@@ -86,7 +84,7 @@ bool SQLite::PrepareQuery(const Query& query)
     return success;
 }
 
-NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
+std::optional<ResultSet> SQLite::ExecuteQuery()
 {
     int stepState;
     m_affectedRows = -1;
@@ -96,17 +94,17 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
 
     for (unsigned int i = 0; i < m_paramCount; i++)
     {
-        LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i].c_str(), i);
+        LOG_DEBUG("Binding value '%s' to param '%u'", m_paramValues[i], i);
         // Params in SQLite are 1 based
-        int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i].c_str(), -1, NULL);
+        int bindStatus = sqlite3_bind_text(m_stmt, i + 1, m_paramValues[i].c_str(), -1, nullptr);
 
         if (bindStatus != SQLITE_OK)
         {
             m_lastError.assign(sqlite3_errmsg(m_dbConn));
 
-            LOG_WARNING("Failed to bind params: %s", m_lastError.c_str());
+            LOG_WARNING("Failed to bind params: %s", m_lastError);
 
-            return NWNXLib::Maybe<ResultSet>(); // Failed query, bind error.
+            return std::optional<ResultSet>(); // Failed query, bind error.
         }
     }
 
@@ -119,7 +117,7 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         if (stepState == SQLITE_DONE)
         {
             m_affectedRows = sqlite3_changes(m_dbConn);
-            return NWNXLib::Maybe<ResultSet>(ResultSet()); // Succeeded query, no results.
+            return std::make_optional<ResultSet>(ResultSet()); // Succeeded query, no results.
         }
     }
     else
@@ -148,14 +146,14 @@ NWNXLib::Maybe<ResultSet> SQLite::ExecuteQuery()
         if (stepState == SQLITE_DONE)
         {
             LOG_DEBUG("Returning Result Set");
-            return NWNXLib::Maybe<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
+            return std::make_optional<ResultSet>(std::move(results)); // Succeeded query, succeeded results.
         }
     }
 
     m_lastError.assign(sqlite3_errmsg(m_dbConn));
-    LOG_WARNING("Query failed due to error '%s'", m_lastError.c_str());
+    LOG_WARNING("Query failed due to error '%s'", m_lastError);
 
-    return NWNXLib::Maybe<ResultSet>(); // Failed query.
+    return std::optional<ResultSet>(); // Failed query.
 }
 
 void SQLite::PrepareInt(int32_t position, int32_t value)
@@ -178,7 +176,7 @@ void SQLite::PrepareFloat(int32_t position, float value)
 
 void SQLite::PrepareString(int32_t position, const std::string& value)
 {
-    LOG_DEBUG("Assigning position %d to value '%s'", position, value.c_str());
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value);
 
     ASSERT_OR_THROW(position >= 0);
 

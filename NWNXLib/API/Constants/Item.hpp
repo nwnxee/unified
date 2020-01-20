@@ -198,8 +198,8 @@ namespace BaseItem
         Grenade                                    = 81,
         Encampment                                 = 82,
         Lance                                      = 92,
-        Trumpet                                    = 92,
-        MoonOnAStick                               = 92,
+        Trumpet                                    = 93,
+        MoonOnAStick                               = 94,
         Trident                                    = 95,
         BlankPotion                                = 101,
         BlankScroll                                = 102,
@@ -241,133 +241,127 @@ namespace BaseItem
 
     constexpr const char* ToString(const unsigned value)
     {
-        constexpr const char* TYPE_STRINGS[] =
+        switch(value) 
         {
-            "Shortsword",
-            "Longsword",
-            "Battleaxe",
-            "Bastard Sword",
-            "Light Flail",
-            "Warhammer",
-            "Heavy Crossbow",
-            "Light Crossbow",
-            "Longbow",
-            "Light Mace",
-            "Halberd",
-            "Shortbow",
-            "Twobladed Sword",
-            "Greatsword",
-            "Small Shield",
-            "Torch",
-            "Armor",
-            "Helmet",
-            "Greataxe",
-            "Amulet",
-            "Arrow",
-            "Belt",
-            "Dagger",
-            "Miscellaneous Small",
-            "Bolt",
-            "Boots",
-            "Bullet",
-            "Club",
-            "Miscellaneous Medium",
-            "Dart",
-            "Dire Mace",
-            "Double Axe",
-            "Miscellaneous Large",
-            "Heavy Flail",
-            "Gloves",
-            "Light Hammer",
-            "Handaxe",
-            "Healers Kit",
-            "Kama",
-            "Katana",
-            "Kukri",
-            "Miscellaneous Tall",
-            "Magic Rod",
-            "Magic Staff",
-            "Magic Wand",
-            "Morning Star",
-            "Potions",
-            "Quarter Staff",
-            "Rapier",
-            "Ring",
-            "Scimitar",
-            "Scroll",
-            "Scythe",
-            "Large Shield",
-            "Tower Shield",
-            "Short Spear",
-            "Shuriken",
-            "Sickle",
-            "Sling",
-            "Thieves Tools",
-            "Throwing Axe",
-            "Trap Kit",
-            "Key",
-            "Large Box",
-            "Miscellaneous Wide",
-            "Creature Slashing Weapon",
-            "Creature Piercing Weapon",
-            "Creature Bludgeoning Weapon",
-            "Creature Slashing/Piercing Weapon",
-            "Creature Item",
-            "Book",
-            "Spell Scroll",
-            "Gold",
-            "Gem",
-            "Bracer",
-            "Miscellaneous Thin",
-            "Cloak",
-            "Grenade",
-            "Encampment",
-            "Lance",
-            "Trumpet",
-            "Moon-on-a-Stick",
-            "Trident",
-            "Blank Potion",
-            "Blank Scroll",
-            "Blank Wand",
-            "Enchanted Potion",
-            "Enchanted Scroll",
-            "Enchanted Wand",
-            "Dwarven Waraxe",
-            "Crafting Material Medium",
-            "Crafting Material Small",
-            "Whip",
-            "Crafting Base",
+            default: return "(unknown)";
+            case Shortsword: return "Shortsword";
+            case Longsword: return "Longsword";
+            case Battleaxe: return "Battleaxe";
+            case BastardSword: return "Bastard Sword";
+            case LightFlail: return "Light Flail";
+            case Warhammer: return "Warhammer";
+            case HeavyCrossbow: return "Heavy Crossbow";
+            case LightCrossbow: return "Light Crossbow";
+            case Longbow: return "Longbow";
+            case LightMace: return "Light Mace";
+            case Halberd: return "Halberd";
+            case Shortbow: return "Shortbow";
+            case TwobladedSword: return "Twobladed Sword";
+            case Greatsword: return "Greatsword";
+            case SmallShield: return "Small Shield";
+            case Torch: return "Torch";
+            case Armor: return "Armor";
+            case Helmet: return "Helmet";
+            case Greataxe: return "Greataxe";
+            case Amulet: return "Amulet";
+            case Arrow: return "Arrow";
+            case Belt: return "Belt";
+            case Dagger: return "Dagger";
+            case MiscSmall: return "Miscellaneous Small";
+            case Bolt: return "Bolt";
+            case Boots: return "Boots";
+            case Bullet: return "Bullet";
+            case Club: return "Club";
+            case MiscMedium: return "Miscellaneous Medium";
+            case Dart: return "Dart";
+            case DireMace: return "Dire Mace";
+            case DoubleAxe: return "Double Axe";
+            case MiscLarge: return "Miscellaneous Large";
+            case HeavyFlail: return "Heavy Flail";
+            case Gloves: return "Gloves";
+            case LightHammer: return "Light Hammer";
+            case Handaxe: return "Handaxe";
+            case HealersKit: return "Healers Kit";
+            case Kama: return "Kama";
+            case Katana: return "Katana";
+            case Kukri: return "Kukri";
+            case MiscTall: return "Miscellaneous Tall";
+            case MagicRod: return "Magic Rod";
+            case MagicStaff: return "Magic Staff";
+            case MagicWand: return "Magic Wand";
+            case MorningStar: return "Morning Star";
+            case Potions: return "Potions";
+            case QuarterStaff: return "Quarter Staff";
+            case Rapier: return "Rapier";
+            case Ring: return "Ring";
+            case Scimitar: return "Scimitar";
+            case Scroll: return "Scroll";
+            case Scythe: return "Scythe";
+            case LargeShield: return "Large Shield";
+            case TowerShield: return "Tower Shield";
+            case ShortSpear: return "Short Spear";
+            case Shuriken: return "Shuriken";
+            case Sickle: return "Sickle";
+            case Sling: return "Sling";
+            case ThievesTools: return "Thieves Tools";
+            case ThrowingAxe: return "Throwing Axe";
+            case TrapKit: return "Trap Kit";
+            case Key: return "Key";
+            case LargeBox: return "Large Box";
+            case MiscWide: return "Miscellaneous Wide";
+            case CreatureSlashWeapon: return "Creature Slashing Weapon";
+            case CreaturePierceWeapon: return "Creature Piercing Weapon";
+            case CreatureBludgeWeapon: return "Creature Bludgeoning Weapon";
+            case CreatureSlashPierceWeapon: return "Creature Slashing/Piercing Weapon";
+            case CreatureItem: return "Creature Item";
+            case Book: return "Book";
+            case SpellScroll: return "Spell Scroll";
+            case Gold: return "Gold";
+            case Gem: return "Gem";
+            case Bracer: return "Bracer";
+            case MiscThin: return "Miscellaneous Thin";
+            case Cloak: return "Cloak";
+            case Grenade: return "Grenade";
+            case Encampment: return "Encampment";
+            case Lance: return "Lance";
+            case Trumpet: return "Trumpet";
+            case MoonOnAStick: return "Moon-on-a-Stick";
+            case Trident: return "Trident";
+            case BlankPotion: return "Blank Potion";
+            case BlankScroll: return "Blank Scroll";
+            case BlankWand: return "Blank Wand";
+            case EnchantedPotion: return "Enchanted Potion";
+            case EnchantedScroll: return "Enchanted Scroll";
+            case EnchantedWand: return "Enchanted Wand";
+            case DwarvenWaraxe: return "Dwarven Waraxe";
+            case CraftMaterialMedium: return "Crafting Material Medium";
+            case CraftMaterialSmall: return "Crafting Material Small";
+            case Whip: return "Whip";
+            case CraftBase: return "Crafting Base";
+
+            case CEP_Trident: return "[CEP] Trident";
+            case CEP_HeavyPick: return "[CEP] Heavy Pick";
+            case CEP_LightPick: return "[CEP] Light Pick";
+            case CEP_Sai: return "[CEP] Sai";
+            case CEP_Nunchaku: return "[CEP] Nunchaku";
+            case CEP_Falchion: return "[CEP] Falchion";
+            case CEP_SmallBox: return "[CEP] Small Box";
+            case CEP_MiscMedium2: return "[CEP] Miscellaneous Medium2";
+            case CEP_Sap: return "[CEP] Sap";
+            case CEP_AssassinDagger: return "[CEP] Assassin Dagger";
+            case CEP_Katar: return "[CEP] Katar";
+            case CEP_MiscSmall2: return "[CEP] Miscellaneous Small2";
+            case CEP_HeavyMace: return "[CEP] HeavyMace";
+            case CEP_Maul: return "[CEP] Maul";
+            case CEP_MercurialLongSword: return "[CEP] Mercurial Longsword";
+            case CEP_MercurialGreatSword: return "[CEP] Mercurial Greatsword";
+            case CEP_DoubleScimitar: return "[CEP] Double Scimitar";
+            case CEP_Goad: return "[CEP] Goad";
+            case CEP_WindfireWheel: return "[CEP] Windfire Wheel";
+            case CEP_DoublePick: return "[CEP] Double Pick";
+            case CEP_Flowers: return "[CEP] Flowers";
+            case CEP_Cloak: return "[CEP] Cloak";
         };
-        constexpr const char* TYPE_STRINGS_CEP[] =
-        {
-            "[CEP] Trident",
-            "[CEP] Heavy Pick",
-            "[CEP] Light Pick",
-            "[CEP] Sai",
-            "[CEP] Nunchaku",
-            "[CEP] Falchion",
-            "[CEP] Small Box",
-            "[CEP] Miscellaneous Medium2",
-            "[CEP] Sap",
-            "[CEP] Assassin Dagger",
-            "[CEP] Katar",
-            "[CEP] Miscellaneous Small2",
-            "[CEP] HeavyMace",
-            "[CEP] Maul",
-            "[CEP] Mercurial Longsword",
-            "[CEP] Mercurial Greatsword",
-            "[CEP] Double Scimitar",
-            "[CEP] Goad",
-            "[CEP] Windfire Wheel",
-            "[CEP] Double Pick",
-            "[CEP] Flowers",
-            "[CEP] Cloak",
-        };
-        if (value <= CraftBase)
-            return TYPE_STRINGS[value];
-        if (value >= CEP_Trident && value <= CEP_Cloak)
-            return TYPE_STRINGS_CEP[value - CEP_Trident];
-        return "(invalid)";
     }
 }
 
@@ -476,5 +470,197 @@ namespace ItemAppearanceType
     }
 }
 
+namespace ItemProperty
+{
+    enum TYPE
+    {
+        AbilityBonus                        = 0,
+        ACBonus                             = 1,
+        ACBonusVSAlignmentGroup             = 2,
+        ACBonusVSDamageType                 = 3,
+        ACBonusVSRacialGroup                = 4,
+        ACBonusVSSpecificAlignment          = 5,
+        EnhancementBonus                    = 6,
+        EnhancementBonusVSAlignmentGroup    = 7,
+        EnhancementBonusVSRacialGroup       = 8,
+        EnhancementBonusVSSpecificAlignment = 9,
+        DecreasedEnhancementModifier        = 10,
+        BaseItemWeightReduction             = 11,
+        BonusFeat                           = 12,
+        BonusSpellSlot                      = 13,
+        CastSpell                           = 15,
+        DamageBonus                         = 16,
+        DamageBonusVSAlignmentGroup         = 17,
+        DamageBonusVSRacialGroup            = 18,
+        DamageBonusVSSpecificAlignment      = 19,
+        ImmunityDamageType                  = 20,
+        DecreasedDamage                     = 21,
+        DamageReduction                     = 22,
+        DamageResistance                    = 23,
+        DamageVulnerability                 = 24,
+        Invalid25                           = 25,
+        Darkvision                          = 26,
+        DecreasedAbilityScore               = 27,
+        DecreasedAC                         = 28,
+        DecreasedSkillModifier              = 29,
+        Invalid30                           = 30,
+        Invalid31                           = 31,
+        EnhancedContainerReducedWeight      = 32,
+        ExtraMeleeDamageType                = 33,
+        ExtraRangedDamageType               = 34,
+        Haste                               = 35,
+        HolyAvenger                         = 36,
+        ImmunityMiscellaneous               = 37,
+        ImprovedEvasion                     = 38,
+        SpellResistance                     = 39,
+        SavingThrowBonus                    = 40,
+        SavingThrowBonusSpecific            = 41,
+        Invalid42                           = 42,
+        Keen                                = 43,
+        Light                               = 44,
+        Mighty                              = 45,
+        MindBlank                           = 46,
+        NoDamage                            = 47,
+        OnHitProperties                     = 48,
+        DecreasedSavingThrows               = 49,
+        DecreasedSavingThrowsSpecific       = 50,
+        Regeneration                        = 51,
+        SkillBonus                          = 52,
+        ImmunitySpecificSpell               = 53,
+        ImmunitySpellSchool                 = 54,
+        ThievesTools                        = 55,
+        AttackBonus                         = 56,
+        AttackBonusVSAlignmentGroup         = 57,
+        AttackBonusVSRacialGroup            = 58,
+        AttackBonusVSSpecificAlignment      = 59,
+        DecreasedAttackModifier             = 60,
+        UnlimitedAmmunition                 = 61,
+        UseLimitationAlignmentGroup         = 62,
+        UseLimitationClass                  = 63,
+        UseLimitationRacialType             = 64,
+        UseLimitationSpecificAlignment      = 65,
+        UseLimitationTileset                = 66,
+        VampiricRegeneration                = 67,
+        Invalid68                           = 68,
+        Invalid69                           = 69,
+        Trap                                = 70,
+        TrueSeeing                          = 71,
+        OnMonsterHit                        = 72,
+        TurnResistance                      = 73,
+        MassiveCriticals                    = 74,
+        FreedomOfMovement                   = 75,
+        Poison                              = 76,
+        MonsterDamage                       = 77,
+        ImmunitySpellsByLevel               = 78,
+        SpecialWalk                         = 79,
+        HealersKit                          = 80,
+        WeightIncrease                      = 81,
+        OnHitCastSpell                      = 82,
+        VisualEffect                        = 83,
+        ArcaneSpellFailure                  = 84,
+        Material                            = 85,
+        Quality                             = 86,
+        Additional                          = 87,
+    };
+    constexpr int32_t MIN   = 0;
+    constexpr int32_t MAX   = 87;
+    static_assert(MAX == Additional);
+
+    constexpr const char* ToString(const int value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "Ability Bonus",
+            "AC Bonus",
+            "AC Bonus VS Alignment Group",
+            "AC Bonus VS Damage Type",
+            "AC Bonus VS Racial Group",
+            "AC Bonus VS Specific Alignment",
+            "Enhancement Bonus",
+            "Enhancement Bonus VS Alignment Group",
+            "Enhancement Bonus VS Racial Group",
+            "Enhancement Bonus VS Specific Alignment",
+            "Decreased Enhancement Modifier",
+            "Base Item Weight Reduction",
+            "Bonus Feat",
+            "Bonus Spell Slot",
+            "Cast Spell",
+            "Damage Bonus",
+            "Damage Bonus VS Alignment Group",
+            "Damage Bonus VS Racial Group",
+            "Damage Bonus VS Specific Alignment",
+            "Immunity Damage Type",
+            "Decreased Damage",
+            "Damage Reduction",
+            "Damage Resistance",
+            "Damage Vulnerability",
+            "Invalid25",
+            "Darkvision",
+            "Decreased Ability Score",
+            "Decreased AC",
+            "Decreased Skill Modifier",
+            "Invalid30",
+            "Invalid31",
+            "Enhanced Container Reduced Weight",
+            "Extra Melee Damage Type",
+            "Extra Ranged Damage Type",
+            "Haste",
+            "Holy Avenger",
+            "Immunity Miscellaneous",
+            "Improved Evasion",
+            "Spell Resistance",
+            "Saving Throw Bonus",
+            "Saving Throw Bonus Specific",
+            "Invalid42",
+            "Keen",
+            "Light",
+            "Mighty",
+            "Mind Blank",
+            "No Damage",
+            "On Hit Properties",
+            "Decreased Saving Throws",
+            "Decreased Saving Throws Specific",
+            "Regeneration",
+            "Skill Bonus",
+            "Immunity Specific Spell",
+            "Immunity Spell School",
+            "Thieves Tools",
+            "Attack Bonus",
+            "Attack Bonus VS Alignment Group",
+            "Attack Bonus VS Racial Group",
+            "Attack Bonus VS Specific Alignment",
+            "Decreased Attack Modifier",
+            "Unlimited Ammunition",
+            "Use Limitation Alignment Group",
+            "Use Limitation Class",
+            "Use Limitation Racial Type",
+            "Use Limitation Specific Alignment",
+            "Use Limitation Tileset",
+            "Vampiric Regeneration",
+            "Invalid68",
+            "Invalid69",
+            "Trap",
+            "True Seeing",
+            "On Monster Hit",
+            "Turn Resistance",
+            "Massive Criticals",
+            "Freedom Of Movement",
+            "Poison",
+            "Monster Damage",
+            "Immunity Spells By Level",
+            "Special Walk",
+            "Healers Kit",
+            "Weight Increase",
+            "On Hit Cast Spell",
+            "Visual Effect",
+            "Arcane Spell Failure",
+            "Material",
+            "Quality",
+            "Additional",
+        };
+
+        return (value > MAX || value < MIN) ? "(invalid)" : TYPE_STRINGS[value - MIN];
+    }
+}
 
 }

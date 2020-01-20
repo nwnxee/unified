@@ -17,8 +17,7 @@ struct ProfilingLandingScopeFlip
 
 #define DECLARE_PROFILE_TARGET_INTERNAL(profiler, name, fn, ret, ...)           \
 template <typename ... Params>                                                  \
-static void ProfileLanding__##name(NWNXLib::Services::Hooks::CallType callType, \
-    Params ... args)                                                            \
+static void ProfileLanding__##name(bool before, Params ... args)                \
 {                                                                               \
     static size_t s_head = 0;                                                   \
                                                                                 \
@@ -31,7 +30,7 @@ static void ProfileLanding__##name(NWNXLib::Services::Hooks::CallType callType, 
     using namespace NWNXLib::Services;                                          \
     static std::array<FastTimer, FastTimer::MAX_DEPTH> s_scope;                 \
                                                                                 \
-    if (callType == Hooks::CallType::BEFORE_ORIGINAL)                           \
+    if (before)                                                                 \
     {                                                                           \
         s_scope[s_head++].Start();                                              \
     }                                                                           \
@@ -105,13 +104,13 @@ DECLARE_PROFILE_TARGET_FAST(                                                    
 
 #define DEFINE_PROFILER_TARGET(hooker, name, address, ret, ...)                                \
 {                                                                                              \
-    hooker->RequestSharedHook<address, Hooking::CallingConvention::ThisCall, ret, __VA_ARGS__> \
+    hooker->RequestSharedHook<address, ret, __VA_ARGS__>                                       \
         (&ProfileLanding__##name<__VA_ARGS__>);                                                \
 }
 
 #define DEFINE_PROFILER_TARGET_FAST(hooker, name, address, ret, ...)                              \
 {                                                                                                 \
-    hooker->RequestExclusiveHook<address, Hooking::CallingConvention::ThisCall, ret, __VA_ARGS__> \
+    hooker->RequestExclusiveHook<address, ret, __VA_ARGS__>                                       \
         (&ProfileLanding__##name<__VA_ARGS__>);                                                   \
     g_##name##Hook = hooker->FindHookByAddress(address);                                          \
 }

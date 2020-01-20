@@ -9,23 +9,23 @@ namespace Profiler {
 
 using namespace NWNXLib;
 
-static ViewPtr<Services::MetricsProxy> g_metrics;
+static Services::MetricsProxy* g_metrics;
 
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerProcessReceivedFrames, void, API::CNetLayer*, int32_t);
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerUpdateStatusLoop, int32_t, API::CNetLayer*, uint32_t);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerProcessReceivedFrames, void, CNetLayer*, int32_t);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerUpdateStatusLoop, int32_t, CNetLayer*, uint32_t);
 
-NetLayer::NetLayer(ViewPtr<NWNXLib::Services::HooksProxy> hooker,
-    ViewPtr<NWNXLib::Services::MetricsProxy> metrics)
+NetLayer::NetLayer(NWNXLib::Services::HooksProxy* hooker,
+    NWNXLib::Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
 
     DEFINE_PROFILER_TARGET(hooker,
-        NetLayerProcessReceivedFrames, API::Functions::CNetLayer__ProcessReceivedFrames,
-        void, API::CNetLayer*, int32_t);
+        NetLayerProcessReceivedFrames, API::Functions::_ZN9CNetLayer21ProcessReceivedFramesEi,
+        void, CNetLayer*, int32_t);
 
     DEFINE_PROFILER_TARGET(hooker,
-        NetLayerUpdateStatusLoop, API::Functions::CNetLayer__UpdateStatusLoop,
-        int32_t, API::CNetLayer*, uint32_t);
+        NetLayerUpdateStatusLoop, API::Functions::_ZN17CNetLayerInternal16UpdateStatusLoopEj,
+        int32_t, CNetLayer*, uint32_t);
 }
 
 }

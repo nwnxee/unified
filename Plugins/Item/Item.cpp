@@ -4,13 +4,14 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSItem.hpp"
+#include "API/CNWSCreature.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Item::Item> g_plugin;
+static Item::Item* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -38,7 +39,8 @@ Item::Item(const Plugin::CreateParams& params)
   : Plugin(params)
 {
 #define REGISTER(func)              \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Item::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetWeight);
     REGISTER(SetBaseGoldPieceValue);
@@ -85,6 +87,12 @@ ArgumentStack Item::SetWeight(ArgumentStack&& args)
     {
         const auto w = Services::Events::ExtractArgument<int32_t>(args);
         pItem->m_nWeight = w;
+        auto oidPossessor = pItem->m_oidPossessor;
+        auto pCreature = Utils::AsNWSCreature(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidPossessor));
+        if (pCreature)
+        {
+            pCreature->UpdateEncumbranceState(true);
+        }
     }
     return stack;
 }

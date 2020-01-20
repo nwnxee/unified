@@ -4,7 +4,6 @@
 #include "API/Globals.hpp"
 #include "Events.hpp"
 #include "Utils.hpp"
-#include "ViewPtr.hpp"
 #include "API/Vector.hpp"
 
 namespace Events {
@@ -15,30 +14,30 @@ using namespace NWNXLib::Services;
 
 static Hooking::FunctionHook* m_UseFeatHook = nullptr;
 
-FeatEvents::FeatEvents(ViewPtr<Services::HooksProxy> hooker)
+FeatEvents::FeatEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", [hooker]() {
         hooker->RequestExclusiveHook<
-            NWNXLib::API::Functions::CNWSCreature__UseFeat,
+            NWNXLib::API::Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector,
             int32_t,
-            NWNXLib::API::CNWSCreature*,
+            CNWSCreature*,
             uint16_t,
             uint16_t,
             NWNXLib::API::Types::ObjectID,
             NWNXLib::API::Types::ObjectID,
-            NWNXLib::API::Vector*>(FeatEvents::UseFeatHook);
+            Vector*>(FeatEvents::UseFeatHook);
 
-        m_UseFeatHook = hooker->FindHookByAddress(API::Functions::CNWSCreature__UseFeat);
+        m_UseFeatHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector);
     });
 }
 
 int32_t FeatEvents::UseFeatHook(
-    NWNXLib::API::CNWSCreature* thisPtr,
+    CNWSCreature* thisPtr,
     uint16_t featID,
     uint16_t subFeatID,
     NWNXLib::API::Types::ObjectID oidTarget,
     NWNXLib::API::Types::ObjectID oidArea,
-    NWNXLib::API::Vector* pvTarget)
+    Vector* pvTarget)
 {
     int32_t retVal;
 

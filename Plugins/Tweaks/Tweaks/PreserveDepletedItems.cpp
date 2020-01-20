@@ -16,25 +16,26 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* PreserveDepletedItems::pAIActionItemCastSpell_hook;
-PreserveDepletedItems::PreserveDepletedItems(ViewPtr<Services::HooksProxy> hooker)
+PreserveDepletedItems::PreserveDepletedItems(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__AIActionItemCastSpell>
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode>
                                     (&CNWSCreature__AIActionItemCastSpell_hook);
 
-    pAIActionItemCastSpell_hook = hooker->FindHookByAddress(Functions::CNWSCreature__AIActionItemCastSpell);
+    pAIActionItemCastSpell_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode);
 }
 
 
 uint32_t PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(CNWSCreature *pThis, CNWSObjectActionNode *pNode)
 {
-    // If at risk of destroying the item, inflate charge count temporarily to bypass the destroy
-    // event, then set it back to mark the spells as unusable.
-    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((Types::ObjectID)pNode->m_pParameter[0]));
-    if (pItem && pItem->m_nNumCharges <= 5)
+    // If at risk of destroying the item, set the item to plot, then set it back
+    // afterwards to its original value.
+    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject((Types::ObjectID)(uintptr_t)pNode->m_pParameter[0]));
+    if (pItem && pItem->m_nNumCharges > 0 && pItem->m_nNumCharges <= 5)
     {
-        pItem->m_nNumCharges += 10;
+        int bPlot = pItem->m_bPlotObject;
+        pItem->m_bPlotObject = true;
         int32_t ret = pAIActionItemCastSpell_hook->CallOriginal<uint32_t>(pThis, pNode);
-        pItem->SetNumCharges(pItem->m_nNumCharges - 10, true /* update which properties are usable */);
+        pItem->m_bPlotObject = bPlot;
         return ret;
     }
     return pAIActionItemCastSpell_hook->CallOriginal<uint32_t>(pThis, pNode);

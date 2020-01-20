@@ -2,23 +2,18 @@
 #include "API/CExoString.hpp"
 #include "API/CGameEffect.hpp"
 #include "Utils.hpp"
+#include "../../../Core/NWNXCore.hpp"
 
 #include <algorithm>
 #include <array>
 #include <cstring>
 #include <sstream>
 
-namespace NWNXLib {
-
-namespace Services {
-
-Events::Events()
-{
+namespace Core {
+extern NWNXCore* g_core;
 }
 
-Events::~Events()
-{
-}
+namespace NWNXLib::Services {
 
 Events::EventDataInternal* Events::GetEventData(const std::string& pluginName, const std::string& eventName)
 {
@@ -37,19 +32,30 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     if (auto* event = GetEventData(pluginName, eventName))
     {
         LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.",
-            eventName.c_str(), pluginName.c_str());
+            eventName, pluginName);
         try
         {
             event->m_returns = event->m_callback(std::move(event->m_arguments));
         }
         catch (const std::exception& err)
         {
-            LOG_ERROR("Plugin '%s' failed event '%s'. Error: %s", pluginName.c_str(), eventName.c_str(), err.what());
+            LOG_ERROR("Plugin '%s' failed event '%s'. Error: %s", pluginName, eventName, err.what());
         }
     }
     else
     {
-        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName.c_str(), eventName.c_str());
+        std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
+
+        if (!Core::g_core->m_services->m_plugins->FindPluginByName(pluginNameWithoutPrefix))
+        {
+            LOG_ERROR("Plugin '%s' is not loaded but NWScript '%s' tried to call function '%s'.",
+                    pluginName, Utils::GetCurrentScript(), eventName);
+        }
+        else
+        {
+            LOG_ERROR("Plugin '%s' does not have an event '%s' registered. (NWScript: '%s', are your nwnx_*.nss files up to date?)",
+                    pluginName, eventName, Utils::GetCurrentScript());
+        }
     }
 }
 
@@ -73,7 +79,7 @@ Events::RegistrationToken Events::RegisterEvent(const std::string& pluginName, c
     EventData eventData = { pluginName, eventName };
     auto eventDataInternal = std::make_unique<EventDataInternal>();
     eventDataInternal->m_data = eventData;
-    eventDataInternal->m_callback = std::forward<FunctionCallback>(cb);
+    eventDataInternal->m_callback = std::move(cb);
     events.emplace_back(std::move(eventDataInternal));
 
     return { std::move(eventData) };
@@ -121,7 +127,7 @@ EventsProxy::~EventsProxy()
 
 void EventsProxy::RegisterEvent(const std::string& eventName, Events::FunctionCallback&& cb)
 {
-    m_registrationTokens.push_back(m_proxyBase.RegisterEvent(m_pluginName, eventName, std::forward<Events::FunctionCallback>(cb)));
+    m_registrationTokens.push_back(m_proxyBase.RegisterEvent(m_pluginName, eventName, std::move(cb)));
 }
 
 void EventsProxy::ClearEvent(const std::string& eventName)
@@ -145,13 +151,13 @@ void EventsProxy::ClearEvent(const std::string& eventName)
 
 
 
-template<> Maybe<int32_t>&              Events::Argument::Get<int32_t>()             { return m_int; }
-template<> Maybe<float>&                Events::Argument::Get<float>()               { return m_float; }
-template<> Maybe<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return m_object; }
-template<> Maybe<std::string>&          Events::Argument::Get<std::string>()         { return m_string; }
-template<> Maybe<API::CGameEffect*>&    Events::Argument::Get<API::CGameEffect*>()   { return m_effect; }
+template<> std::optional<int32_t>&              Events::Argument::Get<int32_t>()             { return m_int; }
+template<> std::optional<float>&                Events::Argument::Get<float>()               { return m_float; }
+template<> std::optional<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return m_object; }
+template<> std::optional<std::string>&          Events::Argument::Get<std::string>()         { return m_string; }
+template<> std::optional<CGameEffect*>&         Events::Argument::Get<CGameEffect*>()        { return m_effect; }
 
-std::string Events::Argument::toString()
+std::string Events::Argument::toString() const
 {
     if (m_int)    return std::to_string(*m_int);
     if (m_float)  return std::to_string(*m_float);
@@ -164,4 +170,8 @@ std::string Events::Argument::toString()
 
 }
 
+std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg)
+{
+    os << arg.toString();
+    return os;
 }

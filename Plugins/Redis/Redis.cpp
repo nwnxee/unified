@@ -5,7 +5,6 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Tasks/Tasks.hpp"
-#include "ViewPtr.hpp"
 
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
@@ -13,7 +12,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Redis::Redis> g_module;
+static Redis::Redis* g_module;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -41,7 +40,7 @@ using namespace NWNXLib::Hooking;
 Redis::Redis(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    GetServices()->m_hooks->RequestSharedHook<Functions::CVirtualMachineStack__ClearStack, void>(&CleanState);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN20CVirtualMachineStack10ClearStackEv, void>(&CleanState);
 
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 

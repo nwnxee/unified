@@ -2,40 +2,41 @@
 
 #include "API/Types.hpp"
 #include "API/CGameEffect.hpp"
-#include "Maybe.hpp"
 #include "Services/Services.hpp"
 
 #include <cstdint>
 #include <functional>
+#include <ostream>
 #include <tuple>
 #include <stack>
 #include <unordered_map>
 #include <vector>
+#include <optional>
 
 namespace NWNXLib {
 
 namespace Services {
 
-class Events : public ServiceBase
+class Events
 {
 public: // Structures
     struct Argument
     {
-        Maybe<int32_t>              m_int;
-        Maybe<float>                m_float;
-        Maybe<API::Types::ObjectID> m_object;
-        Maybe<std::string>          m_string;
-        Maybe<API::CGameEffect*>    m_effect;
+        std::optional<int32_t>              m_int;
+        std::optional<float>                m_float;
+        std::optional<API::Types::ObjectID> m_object;
+        std::optional<std::string>          m_string;
+        std::optional<CGameEffect*>         m_effect;
 
         // Constructors
-        Argument(const int32_t& v)                : m_int(v)    { }
-        Argument(const float& v)                  : m_float(v)  { }
-        Argument(const API::Types::ObjectID& v)   : m_object(v) { }
-        Argument(const std::string& v)            : m_string(std::move(v)) { }
-        Argument(API::CGameEffect* v)             : m_effect(v) { }
+        Argument(int32_t v)                : m_int(v)    { }
+        Argument(float v)                  : m_float(v)  { }
+        Argument(API::Types::ObjectID v)   : m_object(v) { }
+        Argument(std::string v)            : m_string(std::move(v)) { }
+        Argument(CGameEffect* v)           : m_effect(v) { }
 
-        template <typename T> Maybe<T>& Get();
-        std::string toString();
+        template <typename T> std::optional<T>& Get();
+        std::string toString() const;
     };
 
     using ArgumentStack = std::stack<Argument>;
@@ -53,14 +54,11 @@ public: // Structures
     };
 
 public:
-    Events();
-    ~Events();
+    template <typename T>
+    void Push(const std::string& pluginName, const std::string& eventName, T&& value);
 
     template <typename T>
-    void Push(const std::string& pluginName, const std::string& eventName, const T& value);
-
-    template <typename T>
-    Maybe<T> Pop(const std::string& pluginName, const std::string& eventName);
+    std::optional<T> Pop(const std::string& pluginName, const std::string& eventName);
 
     void Call(const std::string& pluginName, const std::string& eventName);
 
@@ -68,7 +66,10 @@ public:
     void ClearEvent(RegistrationToken&& token);
 
     template <typename T>
-    static void InsertArgument(ArgumentStack& stack, T arg);
+    static void InsertArgument(ArgumentStack& stack, T&& arg);
+
+    template <typename... T>
+    static void InsertArguments(ArgumentStack& stack, T&&... args);
 
     template <typename T>
     static T ExtractArgument(ArgumentStack& arguments);
@@ -108,3 +109,5 @@ private:
 }
 
 }
+
+std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg);

@@ -1,27 +1,51 @@
-39a40,52
+18c18
+< if [ -e $ROHOMEPATH/settings.tml ]; then
+---
+> if [ -e $ROHOMEPATH/settings.tml ] && [ ! -f $HOMEPATH/settings.tml ]; then
+35,39d34
+< if [ -f $ROHOMEPATH/nwnplayer.ini ]; then
+<   echo "[*] .. nwnplayer.ini"
+<   <$ROHOMEPATH/nwnplayer.ini awk -f /nwn/prep-nwnplayer-ini.awk >$HOMEPATH/nwnplayer.ini
+< fi
+< 
+69a65,89
 > copycrashlog() {
->   inotifywait -mq -e moved_to -e create "$1" --format "%f" | while read f
+>   inotifywait -mq -e moved_to -e create "$HOMEPATH" --format "%f" | while read f
 >   do
 >     # check if the file is a crash log file
 >     if [[ $f = nwserver-crash*.log ]]; then
 >       echo "The server crashed, trying to save crash data ($f) into your mounted server home."
->       cp -a $1/$f $2/
+>       cp -a $HOMEPATH/$f $ROHOMEPATH/
 >     fi
 >   done
 > }
 > 
-> copycrashlog $HOMEPATH $ROHOMEPATH &
+> copycrashlog &
 > 
-41c54,56
+> copyruntimeconfiguration() {
+>   inotifywait -mq -e close_write "$HOMEPATH" --format "%f" | while read f
+>   do
+>     # backup the cryptographic_secret or settings.tml
+>     if [[ $f = cryptographic_secret ]] || [[ $f = settings.tml ]]; then
+>       backup_runtime_configuration
+>     fi
+>   done
+> }
+> 
+> copyruntimeconfiguration &
+> 
+71c91,93
 < LD_PRELOAD=$NWN_LD_PRELOAD LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH ./nwserver-linux \
 ---
 > export LD_PRELOAD=$NWN_LD_PRELOAD
 > export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
 > exec ./nwserver-linux \
-66,67d80
+96,107d117
 < RET=$?
 < set -e
-69,75d81
+< 
+< backup_runtime_configuration
+< 
 < # If this thing crashed, copy the log to the public home so the user
 < # can deliberate over it.
 < if ls $HOMEPATH/nwserver-crash* 1> /dev/null 2>&1; then

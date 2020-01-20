@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Services/Services.hpp"
-#include "ViewPtr.hpp"
 
 #include <atomic>
 #include <condition_variable>
@@ -29,7 +28,7 @@ public:
     void Stop();
     bool IsFinished();
 
-    static void ThreadFunc(ViewPtr<AsyncWorkerThread> owner);
+    static void ThreadFunc(AsyncWorkerThread* owner);
 
 private:
     Tasks& m_manager;
@@ -38,7 +37,7 @@ private:
     bool m_finished;
 };
 
-class Tasks : public ServiceBase
+class Tasks
 {
 public: // Structures
     using ThreadWorkItem = std::function<void()>;

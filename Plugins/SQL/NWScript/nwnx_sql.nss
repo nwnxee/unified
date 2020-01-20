@@ -1,76 +1,118 @@
+/// @addtogroup sql SQL
+/// @brief Functions to interface with a database through SQL
+/// @{
+/// @file nwnx_sql.nss
 #include "nwnx"
 
-// Prepares the provided query for execution. Does not execute it! Clears any previous state.
-// Returns TRUE if the query was successfully prepared.
+const string NWNX_SQL = "NWNX_SQL"; ///< @private
+
+/// @brief Prepares the provided query for execution.
+/// @note This does not execute the query. Will also clear any previous state.
+/// @param query The query to prepare.
+/// @return TRUE if the query was successfully prepared.
 int NWNX_SQL_PrepareQuery(string query);
 
-// Executes a query which has been prepared.
-// Returns the ID of this query if successful, else FALSE.
+/// @brief Executes a query which has been prepared.
+/// @return The ID of this query if successful, else FALSE.
 int NWNX_SQL_ExecutePreparedQuery();
 
-// Directly execute an SQL query. Clears previously prepared query states.
-// Returns the ID of this query if successful, else FALSE.
+/// @brief Directly execute an SQL query.
+/// @note Clears previously prepared query states.
+/// @return The ID of this query if successful, else FALSE.
 int NWNX_SQL_ExecuteQuery(string query);
 
-// Returns TRUE if one or more rows are ready, FALSE otherwise.
+/// @anchor sql_rtrnr
+/// @return TRUE if one or more rows are ready, FALSE otherwise.
 int NWNX_SQL_ReadyToReadNextRow();
 
-// Reads the next row of returned data.
-// Should only be called after a successsful call to NWNX_SQL_ReadyToReadNextRow().
+/// @anchor sql_rnr
+/// @brief Reads the next row of returned data.
+/// @remark Should only be called after a successful call to @ref sql_rtrnr "NWNX_SQL_ReadyToReadNextRow()".
 void NWNX_SQL_ReadNextRow();
 
-// Returns data at the nth (0-based) column of the active row.
-// NWNX_SQL_ReadNextRow should be called before this.
+/// @param column The column to read in the active row.
+/// @return Data at the nth (0-based) column of the active row.
+/// @remark Should only be called after a successful call to @ref sql_rnr "NWNX_SQL_ReadNextRow()".
 string NWNX_SQL_ReadDataInActiveRow(int column = 0);
 
-// Set the int value of a prepared statement at given position
+/// @brief Set the int value of a prepared statement at given position.
+/// @param position The nth ? in a prepared statement.
+/// @param value The value to set.
 void NWNX_SQL_PreparedInt(int position, int value);
-// Set the string value of a prepared statement at given position
+
+/// @brief Set the string value of a prepared statement at given position.
+/// @param position The nth ? in a prepared statement.
+/// @param value The value to set.
 void NWNX_SQL_PreparedString(int position, string value);
-// Set the float value of a prepared statement at given position
+
+/// @brief Set the float value of a prepared statement at given position.
+/// @param position The nth ? in a prepared statement.
+/// @param value The value to set.
 void NWNX_SQL_PreparedFloat(int position, float value);
-// Set the objectID value of a prepared statement at given position
+
+/// @brief Set the ObjectId value of a prepared statement at given position.
+/// @param position The nth ? in a prepared statement.
+/// @param value The value to set.
 void NWNX_SQL_PreparedObjectId(int position, object value);
-// Set the full serialized object value of a prepared statement at given position
+
+/// @brief Set the full serialized object value of a prepared statement at given position.
+/// @param position The nth ? in a prepared statement.
+/// @param value The value to set.
 void NWNX_SQL_PreparedObjectFull(int position, object value);
 
-// Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
-// The object will be deserialized and created in the game. New object ID is returned.
-// The exact behavior depends on type of deserialized object and owner object:
-//    - If object is an item, and owner if placeable, creature or container, the item will be created in its inventory
-//    - If owner is an area, the object will be created on the ground at Vector(x,y,z)
-//    - Otherwise, the object will be created outside the world and needs to be ported manually.
+/// @brief Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
+///
+/// The object will be deserialized and created in the game. New object ID is returned.
+///
+/// The exact behavior depends on type of deserialized object and owner object:
+///   * If object is an item, and owner if placeable, creature or container, the item will be created in its inventory
+///   * If owner is an area, the object will be created on the ground at Vector(x,y,z)
+///   * Otherwise, the object will be created outside the world and needs to be ported manually.
+///
+/// @param column The column to read in the active row.
+/// @param owner The owner of the object.
+/// @param x, y, z The vector for objects to be placed in areas.
+/// @return The deserialized object.
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0);
 
-// Return number of rows affected by SQL statement (for non-row-based statements like INSERT, UPDATE, DELETE, etc.);
-// Returns -1 if the query was not non-row-based.
+/// @brief Gets the rows affected by a query.
+/// @remark This command is for non-row-based statements like INSERT, UPDATE, DELETE, etc.
+/// @return Number of rows affected by SQL statement or -1 if the query was not non-row-based.
 int NWNX_SQL_GetAffectedRows();
 
-// Return the database type we're interacting with (same value as the value of NWNX_SQL_TYPE environment var)
+/// Gets the database type.
+/// @return The database type we're interacting with.
+/// @remark This is the same value as the value of NWNX_SQL_TYPE environment variable.
 string NWNX_SQL_GetDatabaseType();
 
-// Free any resources attached to an existing prepared query.
-// Resources are automatically freed when a new query is prepared, so calling this isn't necessary.
+/// @brief Free any resources attached to an existing prepared query.
+/// @remark Resources are automatically freed when a new query is prepared, so calling this isn't necessary.
 void NWNX_SQL_DestroyPreparedQuery();
 
-// Returns the last error message generated by the database.
+/// @return The last error message generated by the database.
 string NWNX_SQL_GetLastError();
 
-// Returns the number of parameters expected by the prepared query.
-// Returns -1 if no query is prepared.
+/// @brief Gets the number of parameteres expected by a prepared query.
+/// @return Returns the number of parameters expected by the prepared query or -1 if no query is prepared.
 int NWNX_SQL_GetPreparedQueryParamCount();
+
+/// @}
 
 int NWNX_SQL_PrepareQuery(string query)
 {
-    NWNX_PushArgumentString("NWNX_SQL", "PREPARE_QUERY", query);
-    NWNX_CallFunction("NWNX_SQL", "PREPARE_QUERY");
-    return NWNX_GetReturnValueInt("NWNX_SQL", "PREPARE_QUERY");
+    string sFunc = "PrepareQuery";
+
+    NWNX_PushArgumentString(NWNX_SQL, sFunc, query);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_SQL, sFunc);
 }
 
 int NWNX_SQL_ExecutePreparedQuery()
 {
-    NWNX_CallFunction("NWNX_SQL", "EXECUTE_PREPARED_QUERY");
-    return NWNX_GetReturnValueInt("NWNX_SQL", "EXECUTE_PREPARED_QUERY");
+    string sFunc = "ExecutePreparedQuery";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_SQL, sFunc);
 }
 
 int NWNX_SQL_ExecuteQuery(string query)
@@ -88,93 +130,121 @@ int NWNX_SQL_ExecuteQuery(string query)
 
 int NWNX_SQL_ReadyToReadNextRow()
 {
-    NWNX_CallFunction("NWNX_SQL", "READY_TO_READ_NEXT_ROW");
-    return NWNX_GetReturnValueInt("NWNX_SQL", "READY_TO_READ_NEXT_ROW");
+    string sFunc = "ReadyToReadNextRow";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_SQL, sFunc);
 }
 
 void NWNX_SQL_ReadNextRow()
 {
-    NWNX_CallFunction("NWNX_SQL", "READ_NEXT_ROW");
+    string sFunc = "ReadNextRow";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 }
 
 string NWNX_SQL_ReadDataInActiveRow(int column = 0)
 {
-    NWNX_PushArgumentInt("NWNX_SQL", "READ_DATA_IN_ACTIVE_ROW", column);
-    NWNX_CallFunction("NWNX_SQL", "READ_DATA_IN_ACTIVE_ROW");
-    return NWNX_GetReturnValueString("NWNX_SQL", "READ_DATA_IN_ACTIVE_ROW");
+    string sFunc = "ReadDataInActiveRow";
+
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, column);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueString(NWNX_SQL, sFunc);
 }
 
 
 void NWNX_SQL_PreparedInt(int position, int value)
 {
-    NWNX_PushArgumentInt("NWNX_SQL", "PREPARED_INT", value);
-    NWNX_PushArgumentInt("NWNX_SQL", "PREPARED_INT", position);
-    NWNX_CallFunction("NWNX_SQL", "PREPARED_INT");
+    string sFunc = "PreparedInt";
+
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, position);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 }
 void NWNX_SQL_PreparedString(int position, string value)
 {
-    NWNX_PushArgumentString("NWNX_SQL", "PREPARED_STRING", value);
-    NWNX_PushArgumentInt("NWNX_SQL", "PREPARED_STRING", position);
-    NWNX_CallFunction("NWNX_SQL", "PREPARED_STRING");
+    string sFunc = "PreparedString";
+
+    NWNX_PushArgumentString(NWNX_SQL, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, position);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 
 }
 void NWNX_SQL_PreparedFloat(int position, float value)
 {
-    NWNX_PushArgumentFloat("NWNX_SQL", "PREPARED_FLOAT", value);
-    NWNX_PushArgumentInt("NWNX_SQL", "PREPARED_FLOAT", position);
-    NWNX_CallFunction("NWNX_SQL", "PREPARED_FLOAT");
+    string sFunc = "PreparedFloat";
+
+    NWNX_PushArgumentFloat(NWNX_SQL, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, position);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 
 }
 void NWNX_SQL_PreparedObjectId(int position, object value)
 {
-    NWNX_PushArgumentObject("NWNX_SQL", "PREPARED_OBJECT_ID", value);
-    NWNX_PushArgumentInt("NWNX_SQL", "PREPARED_OBJECT_ID", position);
-    NWNX_CallFunction("NWNX_SQL", "PREPARED_OBJECT_ID");
+    string sFunc = "PreparedObjectId";
+
+    NWNX_PushArgumentObject(NWNX_SQL, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, position);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 
 }
 void NWNX_SQL_PreparedObjectFull(int position, object value)
 {
-    NWNX_PushArgumentObject("NWNX_SQL", "PREPARED_OBJECT_FULL", value);
-    NWNX_PushArgumentInt("NWNX_SQL", "PREPARED_OBJECT_FULL", position);
-    NWNX_CallFunction("NWNX_SQL", "PREPARED_OBJECT_FULL");
+    string sFunc = "PreparedObjectFull";
+
+    NWNX_PushArgumentObject(NWNX_SQL, sFunc, value);
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, position);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 }
 
 object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0)
 {
-    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", z);
-    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", y);
-    NWNX_PushArgumentFloat("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", x);
-    NWNX_PushArgumentObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", owner);
-    NWNX_PushArgumentInt("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW", column);
-    NWNX_CallFunction("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
-    return NWNX_GetReturnValueObject("NWNX_SQL", "READ_FULL_OBJECT_IN_ACTIVE_ROW");
+    string sFunc = "ReadFullObjectInActiveRow";
+
+    NWNX_PushArgumentFloat(NWNX_SQL, sFunc, z);
+    NWNX_PushArgumentFloat(NWNX_SQL, sFunc, y);
+    NWNX_PushArgumentFloat(NWNX_SQL, sFunc, x);
+    NWNX_PushArgumentObject(NWNX_SQL, sFunc, owner);
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, column);
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueObject(NWNX_SQL, sFunc);
 }
 
 int NWNX_SQL_GetAffectedRows()
 {
-    NWNX_CallFunction("NWNX_SQL", "GET_AFFECTED_ROWS");
-    return NWNX_GetReturnValueInt("NWNX_SQL", "GET_AFFECTED_ROWS");
+    string sFunc = "GetAffectedRows";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_SQL, sFunc);
 }
 
 string NWNX_SQL_GetDatabaseType()
 {
-    NWNX_CallFunction("NWNX_SQL", "GET_DATABASE_TYPE");
-    return NWNX_GetReturnValueString("NWNX_SQL", "GET_DATABASE_TYPE");
+    string sFunc = "GetDatabaseType";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueString(NWNX_SQL, sFunc);
 }
 
 void NWNX_SQL_DestroyPreparedQuery()
 {
-    NWNX_CallFunction("NWNX_SQL", "DESTROY_PREPARED_QUERY");
+    string sFunc = "DestroyPreparedQuery";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
 }
 
 string NWNX_SQL_GetLastError()
 {
-    NWNX_CallFunction("NWNX_SQL", "GET_LAST_ERROR");
-    return NWNX_GetReturnValueString("NWNX_SQL", "GET_LAST_ERROR");
+    string sFunc = "GetLastError";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueString(NWNX_SQL, sFunc);
 }
 
 int NWNX_SQL_GetPreparedQueryParamCount()
 {
-    NWNX_CallFunction("NWNX_SQL", "GET_PREPARED_QUERY_PARAM_COUNT");
-    return NWNX_GetReturnValueInt("NWNX_SQL", "GET_PREPARED_QUERY_PARAM_COUNT");
+    string sFunc = "GetPreparedQueryParamCount";
+
+    NWNX_CallFunction(NWNX_SQL, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_SQL, sFunc);
 }

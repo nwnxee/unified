@@ -6,7 +6,6 @@ CLEAN=1
 JOBS=""
 BUILD_TYPE="RelWithDebInfo"
 SANITIZE=""
-TOOLCHAIN=""
 
 while getopts "hcj:dst" o; do
     case "${o}" in
@@ -22,9 +21,6 @@ while getopts "hcj:dst" o; do
         s) # Enable the address and undefined behaviour sanitisers
             SANITIZE="-DSANITIZE_ADDRESS=On -DSANITIZE_UNDEFINED=On"
             ;;
-        t) # Enable forcing  locating of 32-bit libraries on linux
-            TOOLCHAIN="-DCMAKE_TOOLCHAIN_FILE=../Toolchains/linux_i686.toolchain.cmake"
-            ;;
         h | *) # Display help
             usage
             exit 0
@@ -33,29 +29,28 @@ while getopts "hcj:dst" o; do
 done
 shift $((OPTIND-1))
 
-CC="gcc -m32" 
-CXX="g++ -m32" 
+CC="gcc -m64"
+CXX="g++ -m64"
 
 if [ ${CLEAN} == 0 ]; then
     if [ -d ./Binaries ]; then
-        echo "Removing Binaries" 
-        rm -rf ./Binaries; 
+        echo "Removing Binaries"
+        rm -rf ./Binaries;
     fi
 
-    if [ -d ./build-nwnx ]; then 
+    if [ -d ./build-nwnx ]; then
         echo "Removing build-nwnx"
-        rm -rf ./build-nwnx; 
+        rm -rf ./build-nwnx;
     fi
 fi
 
-mkdir ./build-nwnx
+mkdir -p ./build-nwnx
 pushd ./build-nwnx
 
-cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE $SANITIZE $TOOLCHAIN ..
+cmake -D CMAKE_BUILD_TYPE=$BUILD_TYPE $SANITIZE ..
 
 make ${JOBS} all
 
 popd
 
 ./Scripts/packageNWScript.sh
-./Scripts/packageJarFile.sh

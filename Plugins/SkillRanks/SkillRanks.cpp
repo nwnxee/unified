@@ -1,5 +1,4 @@
 #include "SkillRanks.hpp"
-#include "API/C2DA.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWSArea.hpp"
@@ -13,7 +12,7 @@
 #include "API/Functions.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Services/Events/Events.hpp"
-#include "ViewPtr.hpp"
+#include "Services/Messaging/Messaging.hpp"
 #include <cmath>
 #include <list>
 #include <numeric>
@@ -21,7 +20,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<SkillRanks::SkillRanks> g_plugin;
+static SkillRanks::SkillRanks* g_plugin;
 
 const auto strMask = (1u << 0u);
 const auto dexMask = (1u << 1u);
@@ -61,7 +60,8 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&SkillRanks::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetSkillFeat);
     REGISTER(SetSkillFeat);
@@ -75,44 +75,49 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::CNWRules__LoadFeatInfo, void, CNWRules*>(&LoadFeatInfoHook);
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__GetSkillRank,
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules13LoadSkillInfoEv, void, CNWRules*>(&LoadSkillInfoHook);
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti,
         int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
-
-    m_blindnessMod = 4;
 }
 
 SkillRanks::~SkillRanks()
 {
 }
 
-void SkillRanks::LoadFeatInfoHook(Services::Hooks::CallType type, API::CNWRules*)
+void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
 {
     // We only want to do this in the AFTER
-    const bool before = type == Services::Hooks::CallType::BEFORE_ORIGINAL;
-    if (before || !Globals::Rules())
+    if (before || !pRules)
         return;
 
-    C2DA featTwoda(CResRef("Feat"), 0);
-    featTwoda.Load2DArray();
+    g_plugin->m_blindnessMod = pRules->GetRulesetIntEntry("BLIND_PENALTY_TO_SKILL_CHECK", 4);
 
-    // Initialize our vector for each skill
-    g_plugin->m_skillFeatMap.assign(Globals::Rules()->m_nNumSkills, {});
+    g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
+                                                           [](const std::vector<std::string> message)
+                                                           {
+                                                               auto nSkill = std::stoi(message[0]);
+                                                               auto nRace = std::stoi(message[1]);
+                                                               auto nMod = std::stoi(message[2]);
+                                                               g_plugin->m_skillRaceMod[nSkill][nRace] = nMod;
+                                                           });
 
-    for (int featId = 0; featId <= featTwoda.m_nNumRows; featId++)
+    for (int featId = 0; featId < pRules->m_nNumFeats; featId++)
     {
         SkillFeats skillFeats { };
         switch (featId)
         {
             case Constants::Feat::Alertness:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("ALERTNESS_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Listen][featId] = skillFeats;
                 g_plugin->m_skillFeatMap[Constants::Skill::Spot][featId] = skillFeats;
                 break;
 
             case Constants::Feat::Artist:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("ARTIST_PERFORM_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Perform][featId] = skillFeats;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("ARTIST_PERSUADE_BONUS", 2);
+                g_plugin->m_skillFeatMap[Constants::Skill::Persuade][featId] = skillFeats;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("ARTIST_SPOT_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Spot][featId] = skillFeats;
                 break;
 
@@ -124,18 +129,18 @@ void SkillRanks::LoadFeatInfoHook(Services::Hooks::CallType type, API::CNWRules*
                 break;
 
             case Constants::Feat::Blooded:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("BLOODED_SPOT_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Spot][featId] = skillFeats;
                 break;
 
             case Constants::Feat::CourteousMagocracy:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("COURTEOUS_MAGOCRACY_LORE_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Lore][featId] = skillFeats;
                 g_plugin->m_skillFeatMap[Constants::Skill::Spellcraft][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicReputation:
-                skillFeats.nModifier = 4;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_REPUTATION_SKILL_BONUS", 4);
                 g_plugin->m_skillFeatMap[Constants::Skill::Bluff][featId] = skillFeats;
                 g_plugin->m_skillFeatMap[Constants::Skill::Intimidate][featId] = skillFeats;
                 g_plugin->m_skillFeatMap[Constants::Skill::Persuade][featId] = skillFeats;
@@ -143,406 +148,408 @@ void SkillRanks::LoadFeatInfoHook(Services::Hooks::CallType type, API::CNWRules*
                 break;
 
             case Constants::Feat::EpicSkillFocus_AnimalEmpathy:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::AnimalEmpathy][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Appraise:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Appraise][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Bluff:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Bluff][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Concentration:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Concentration][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_CraftArmor:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::CraftArmor][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_CraftTrap:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::CraftTrap][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_CraftWeapon:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::CraftWeapon][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Disabletrap:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::DisableTrap][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Discipline:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Discipline][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Heal:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Heal][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Hide:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Hide][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Intimidate:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Intimidate][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Listen:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Listen][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Lore:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Lore][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Movesilently:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::MoveSilently][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Openlock:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::OpenLock][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Parry:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Parry][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Perform:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Perform][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Persuade:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Persuade][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Pickpocket:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::PickPocket][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Search:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Search][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Settrap:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::SetTrap][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Spellcraft:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Spellcraft][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Spot:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Spot][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Taunt:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Taunt][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Tumble:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::Tumble][featId] = skillFeats;
                 break;
 
             case Constants::Feat::EpicSkillFocus_Usemagicdevice:
-                skillFeats.nModifier = 10;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("EPIC_SKILL_FOCUS_SKILL_BONUS", 10);
                 skillFeats.nFocusFeat = 2;
                 g_plugin->m_skillFeatMap[Constants::Skill::UseMagicDevice][featId] = skillFeats;
                 break;
 
             case Constants::Feat::ImprovedParry:
-                skillFeats.nModifier = 4;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("IMPROVED_PARRY_MODIFIER", 4);
                 g_plugin->m_skillFeatMap[Constants::Skill::Parry][featId] = skillFeats;
                 break;
 
             case Constants::Feat::PartialSkillAffinityListen:
-                skillFeats.nModifier = 1;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("PARTIAL_SKILL_FOCUS_SKILL_BONUS", 1);
                 g_plugin->m_skillFeatMap[Constants::Skill::Listen][featId] = skillFeats;
                 break;
 
             case Constants::Feat::PartialSkillAffinitySearch:
-                skillFeats.nModifier = 1;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("PARTIAL_SKILL_FOCUS_SKILL_BONUS", 1);
                 g_plugin->m_skillFeatMap[Constants::Skill::Search][featId] = skillFeats;
                 break;
 
             case Constants::Feat::PartialSkillAffinitySpot:
-                skillFeats.nModifier = 1;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("PARTIAL_SKILL_FOCUS_SKILL_BONUS", 1);
                 g_plugin->m_skillFeatMap[Constants::Skill::Spot][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SilverPalm:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SILVER_PALM_APPRAISE_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Appraise][featId] = skillFeats;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SILVER_PALM_PERSUADE_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Persuade][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillAffinityConcentration:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_AFFINITY_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Concentration][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillAffinityListen:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_AFFINITY_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Listen][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillAffinityLore:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_AFFINITY_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Lore][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillAffinityMoveSilently:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_AFFINITY_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::MoveSilently][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillAffinitySearch:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_AFFINITY_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Search][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillAffinitySpot:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_AFFINITY_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Spot][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_AnimalEmpathy:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::AnimalEmpathy][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Appraise:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Appraise][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Bluff:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Bluff][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Concentration:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Concentration][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_CraftArmor:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::CraftArmor][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_CraftTrap:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::CraftTrap][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_CraftWeapon:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::CraftWeapon][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_DisableTrap:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::DisableTrap][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Discipline:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Discipline][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Heal:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Heal][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Hide:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Hide][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Intimidate:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Intimidate][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Listen:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Listen][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Lore:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Lore][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_MoveSilently:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::MoveSilently][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_OpenLock:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::OpenLock][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Parry:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Parry][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Perform:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Perform][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Persuade:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Persuade][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_PickPocket:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::PickPocket][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Search:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Search][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_SetTrap:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::SetTrap][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Spellcraft:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Spellcraft][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Spot:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Spot][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Taunt:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Taunt][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_Tumble:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::Tumble][featId] = skillFeats;
                 break;
 
             case Constants::Feat::SkillFocus_UseMagicDevice:
-                skillFeats.nModifier = 3;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("SKILL_FOCUS_SKILL_BONUS", 3);
                 skillFeats.nFocusFeat = 1;
                 g_plugin->m_skillFeatMap[Constants::Skill::UseMagicDevice][featId] = skillFeats;
                 break;
 
             case Constants::Feat::Stealthy:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("STEALTHY_HIDE_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Hide][featId] = skillFeats;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("STEALTHY_MOVE_SILENTLY_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::MoveSilently][featId] = skillFeats;
                 break;
 
             case Constants::Feat::Stonecunning:
                 skillFeats.nAreaFlagsRequired = 0x2u;
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("STONECUNNING_SEARCH_SKILL_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Search][featId] = skillFeats;
                 break;
 
             case Constants::Feat::Thug:
-                skillFeats.nModifier = 2;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("THUG_PERSUADE_BONUS", 2);
                 g_plugin->m_skillFeatMap[Constants::Skill::Persuade][featId] = skillFeats;
                 break;
 
             case Constants::Feat::TracklessStep:
                 skillFeats.nAreaFlagsRequired = 0x4u;
                 skillFeats.nAreaFlagsForbidden = 0x1u | 0x2u;
-                skillFeats.nModifier = 4;
+                skillFeats.nModifier = pRules->GetRulesetIntEntry("TRACKLESS_STEP_SKILL_BONUS", 4);
                 g_plugin->m_skillFeatMap[Constants::Skill::Hide][featId] = skillFeats;
                 g_plugin->m_skillFeatMap[Constants::Skill::MoveSilently][featId] = skillFeats;
                 break;
@@ -564,6 +571,7 @@ int32_t SkillRanks::GetSkillRankHook(
         return 127;
 
     int32_t baseRank = thisPtr->m_lstSkillRanks[nSkill];
+
     if (bBaseOnly)
         return baseRank;
 
@@ -571,6 +579,9 @@ int32_t SkillRanks::GetSkillRankHook(
         return 0;
 
     int32_t retVal = baseRank + thisPtr->m_pBaseCreature->GetTotalEffectBonus(5, pVersus, 0, 0, 0, 0, nSkill, -1, 0);
+
+    // Add any racial modifiers broadcasted from the Race plugin
+    retVal += g_plugin->m_skillRaceMod[nSkill][thisPtr->m_nRace];
 
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(thisPtr->m_pBaseCreature->m_oidArea);
 
@@ -932,7 +943,7 @@ ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
     ASSERT_OR_THROW(modifier < 127);
 
     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier);
+    pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier, true);
 
     return stack;
 }

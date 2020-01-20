@@ -1,2 +1,2 @@
-add_plugin_linux(ServerLogRedirector
+add_plugin(ServerLogRedirector
     "ServerLogRedirector.cpp")

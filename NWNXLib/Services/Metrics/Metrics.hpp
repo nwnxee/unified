@@ -3,7 +3,6 @@
 #include "Services/Services.hpp"
 #include "Services/Metrics/MetricData.hpp"
 #include "Services/Metrics/Resamplers.hpp"
-#include "ViewPtr.hpp"
 
 #include <chrono>
 #include <functional>
@@ -16,7 +15,7 @@ namespace Services {
 
 class Tasks;
 
-class Metrics : public ServiceBase
+class Metrics
 {
 public: // Structures
     using MetricDataCallback = std::function<void(const std::vector<MetricData>&)>;
@@ -51,7 +50,7 @@ public:
         std::chrono::nanoseconds&& interval);
     void ClearResampler(const std::string& measurementName);
 
-    void Update(ViewPtr<Tasks> tasks);
+    void Update(Tasks* tasks);
 
 private:
     std::vector<MetricData> m_data;

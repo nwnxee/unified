@@ -2,13 +2,13 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CServerInfo.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWLevelStats.hpp"
 #include "API/CNWSStats_Spell.hpp"
 #include "API/CNWSStats_SpellLikeAbility.hpp"
-#include "API/CExoArrayListTemplatedCNWSStats_SpellLikeAbility.hpp"
-#include "API/CExoArrayListTemplatedshortunsignedint.hpp"
+#include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
 #include "API/Constants.hpp"
@@ -17,12 +17,11 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static ViewPtr<Creature::Creature> g_plugin;
+static Creature::Creature* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -50,7 +49,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     : Plugin(params)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Creature::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(AddFeat);
     REGISTER(AddFeatByLevel);
@@ -92,10 +92,10 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetMovementRateFactor);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
-    REGISTER(GetClericDomain);
-    REGISTER(SetClericDomain);
-    REGISTER(GetWizardSpecialization);
-    REGISTER(SetWizardSpecialization);
+    REGISTER(GetDomain);
+    REGISTER(SetDomain);
+    REGISTER(GetSpecialization);
+    REGISTER(SetSpecialization);
     REGISTER(GetSoundset);
     REGISTER(SetSoundset);
     REGISTER(SetSkillRank);
@@ -134,6 +134,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetFamiliarCreatureType);
     REGISTER(SetAnimalCompanionName);
     REGISTER(SetFamiliarName);
+    REGISTER(GetDisarmable);
+    REGISTER(SetDisarmable);
 
 #undef REGISTER
 }
@@ -180,7 +182,7 @@ ArgumentStack Creature::AddFeatByLevel(ArgumentStack&& args)
           ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
 
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
@@ -232,7 +234,7 @@ ArgumentStack Creature::GetFeatCountByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
 
         if (level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
@@ -253,7 +255,7 @@ ArgumentStack Creature::GetFeatByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
 
         if (level <= pCreature->m_pStats->m_lstLevelStats.num)
@@ -307,11 +309,9 @@ ArgumentStack Creature::GetMeetsFeatRequirements(ArgumentStack&& args)
         const auto feat = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
           ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
-        // TODO: Need to clean up these templated arraylist APIs
-        CExoArrayListTemplatedshortunsignedint unused = {};
+        CExoArrayList<uint16_t> unused = {};
 
-        retVal = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat),
-                    reinterpret_cast<CExoArrayListTemplatedunsignedshort*>(&unused));
+        retVal = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat), &unused);
         free(unused.element);
     }
     Services::Events::InsertArgument(stack, retVal);
@@ -450,7 +450,7 @@ ArgumentStack Creature::GetClassByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
 
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
@@ -1005,7 +1005,7 @@ ArgumentStack Creature::GetMaxHitPointsByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
         if (level > 0 && level <= pCreature->m_pStats->m_lstLevelStats.num)
         {
             auto *pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[level-1];
@@ -1025,7 +1025,7 @@ ArgumentStack Creature::SetMaxHitPointsByLevel(ArgumentStack&& args)
     {
         const auto level = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(level >= 1);
-          ASSERT_OR_THROW(level <= 40);
+          ASSERT_OR_THROW(level <= Globals::AppManager()->m_pServerExoApp->GetServerInfo()->m_JoiningRestrictions.nMaxLevel);
         const auto value = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(value >= 0);
           ASSERT_OR_THROW(value <= 255);
@@ -1101,19 +1101,24 @@ ArgumentStack Creature::SetAlignmentLawChaos(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::GetClericDomain(ArgumentStack&& args)
+ArgumentStack Creature::GetDomain(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = -1;
-    if (auto *pCreature = creature(args))
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW((index == 1) || (index == 2));
+        ASSERT_OR_THROW((index == 1) || (index == 2));
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Cleric)
+            if (classInfo.m_nClass == classId)
             {
                 retVal = classInfo.m_nDomain[index - 1];
                 break;
@@ -1124,22 +1129,28 @@ ArgumentStack Creature::GetClericDomain(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::SetClericDomain(ArgumentStack&& args)
+ArgumentStack Creature::SetDomain(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pCreature = creature(args))
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(index >= 1);
-          ASSERT_OR_THROW(index <= 2);
+        ASSERT_OR_THROW(index >= 1);
+        ASSERT_OR_THROW(index <= 2);
         const auto domain = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(domain <= 255);
-          ASSERT_OR_THROW(domain >= 0);
+        ASSERT_OR_THROW(domain <= 255);
+        ASSERT_OR_THROW(domain >= 0);
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Cleric)
+            if (classInfo.m_nClass == classId)
             {
                 classInfo.m_nDomain[index - 1] = static_cast<uint8_t>(domain);
                 break;
@@ -1149,16 +1160,23 @@ ArgumentStack Creature::SetClericDomain(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::GetWizardSpecialization(ArgumentStack&& args)
+ArgumentStack Creature::GetSpecialization(ArgumentStack&& args)
 {
     ArgumentStack stack;
     int32_t retVal = -1;
-    if (auto *pCreature = creature(args))
+
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
+
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Wizard)
+            if (classInfo.m_nClass == classId)
             {
                 retVal = classInfo.m_nSchool;
                 break;
@@ -1169,19 +1187,25 @@ ArgumentStack Creature::GetWizardSpecialization(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Creature::SetWizardSpecialization(ArgumentStack&& args)
+ArgumentStack Creature::SetSpecialization(ArgumentStack&& args)
 {
     ArgumentStack stack;
-    if (auto *pCreature = creature(args))
+    if (auto* pCreature = creature(args))
     {
+        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(classId >= Constants::ClassType::MIN);
+        ASSERT_OR_THROW(classId <= Constants::ClassType::MAX);
         const auto school = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(school <= 255);
-          ASSERT_OR_THROW(school >= 0);
+        ASSERT_OR_THROW(school <= 255);
+        ASSERT_OR_THROW(school >= 0);
+
+        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
+        ASSERT_OR_THROW(pClass != nullptr);
 
         for (int32_t i = 0; i < 3; i++)
         {
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == Constants::ClassType::Wizard)
+            if (classInfo.m_nClass == classId)
             {
                 classInfo.m_nSchool = static_cast<uint8_t>(school);
                 break;
@@ -1462,7 +1486,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
 
     if (!pGetWalkRate_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreature__GetWalkRate>(
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature11GetWalkRateEv>(
             +[](CNWSCreature *pThis) -> float
             {
                 float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
@@ -1471,7 +1495,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
                 return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
 
             });
-        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreature__GetWalkRate);
+        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature11GetWalkRateEv);
     }
 
     if (auto *pCreature = creature(args))
@@ -1484,7 +1508,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
         }
         else
         {
-            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "WALK_RATE_CAP", fWalkRateCap);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "WALK_RATE_CAP", fWalkRateCap, true);
         }
     }
 
@@ -1550,20 +1574,22 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto which = Services::Events::ExtractArgument<int32_t>(args);
-        const auto value = Services::Events::ExtractArgument<int32_t>(args); ASSERT_OR_THROW(value >= -128); ASSERT_OR_THROW(value <= 127);
+        const auto value = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(value >= -128);
+          ASSERT_OR_THROW(value <= 127);
         int8_t base;
         switch (which)
         {
             case Constants::SavingThrow::Reflex:
-                base = pCreature->m_pStats->m_nReflexSavingThrowMisc + pCreature->m_pStats->GetBaseReflexSavingThrow();
+                base = pCreature->m_pStats->GetBaseReflexSavingThrow();
                 pCreature->m_pStats->m_nReflexSavingThrowMisc = value - base;
                 break;
             case Constants::SavingThrow::Fortitude:
-                base = pCreature->m_pStats->m_nFortSavingThrowMisc + pCreature->m_pStats->GetBaseFortSavingThrow();
+                base = pCreature->m_pStats->GetBaseFortSavingThrow();
                 pCreature->m_pStats->m_nFortSavingThrowMisc = value - base;
                 break;
             case Constants::SavingThrow::Will:
-                base = pCreature->m_pStats->m_nWillSavingThrowMisc + pCreature->m_pStats->GetBaseWillSavingThrow();
+                base = pCreature->m_pStats->GetBaseWillSavingThrow();
                 pCreature->m_pStats->m_nWillSavingThrowMisc = value - base;
                 break;
             default:
@@ -1581,34 +1607,41 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
     static NWNXLib::Hooking::FunctionHook* pCanLevelUp_hook;
     static NWNXLib::Hooking::FunctionHook* pValidateLevelUp_hook;
     static bool bSkipLevelUpValidation = false;
-    if (!pCanLevelUp_hook)
+    if (!pValidateLevelUp_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__CanLevelUp>(
-            +[](CNWSCreatureStats *pThis) -> int32_t
-            {
-                if (bSkipLevelUpValidation)
-                {
-                    // NPCs can have at most 60 levels
-                    ASSERT(!pThis->m_bIsPC);
-                    return pThis->GetLevel(false) < 60;
-                }
-                return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
-            });
-        pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__CanLevelUp);
+        try
+        {
+            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(
+                    +[](CNWSCreatureStats *pThis) -> int32_t
+                    {
+                        if (bSkipLevelUpValidation)
+                        {
+                            // NPCs can have at most 60 levels
+                            ASSERT(!pThis->m_bIsPC);
+                            return pThis->GetLevel(false) < 60;
+                        }
+                        return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
+                    });
+            pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv);
+        }
+        catch (...)
+        {
+            LOG_NOTICE("NWNX_MaxLevel will manage CanLevelUp.");
+        }
 
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::CNWSCreatureStats__ValidateLevelUp>(
-            +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
-            {
-                if (bSkipLevelUpValidation)
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
+                +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
                 {
-                    ASSERT(!pThis->m_bIsPC);
-                    pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
-                    pThis->UpdateCombatInformation();
-                    return 0;
-                }
-                return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
-            });
-        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::CNWSCreatureStats__ValidateLevelUp);
+                    if (bSkipLevelUpValidation)
+                    {
+                        ASSERT(!pThis->m_bIsPC);
+                        pThis->LevelUp(pLevelStats, nDomain1, nDomain2, nSchool, true);
+                        pThis->UpdateCombatInformation();
+                        return 0;
+                    }
+                    return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
+                });
+        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh);
     }
 
     if (auto *pCreature = creature(args))
@@ -1806,12 +1839,12 @@ ArgumentStack Creature::GetTotalEffectBonus(ArgumentStack&& args)
 
     if (auto *pCreature = creature(args))
     {
-        API::CNWSObject *versus = NULL;
+        CNWSObject *versus = NULL;
         const auto bonusType = Services::Events::ExtractArgument<int32_t>(args);
         const auto versus_id = Services::Events::ExtractArgument<Types::ObjectID>(args);
         if (versus_id != Constants::OBJECT_INVALID)
         {
-            API::CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);
+            CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);
             versus = Utils::AsNWSObject(pObject);
         }
 
@@ -1941,4 +1974,29 @@ ArgumentStack Creature::SetFamiliarName(ArgumentStack&& args)
     return stack;
 }
 
+ArgumentStack Creature::GetDisarmable(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_bDisarmable;
+    }
+    Services::Events::InsertArgument(stack, retVal);
+    return stack;
+}
+
+ArgumentStack Creature::SetDisarmable(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto *pCreature = creature(args))
+    {
+        const auto disarmable = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(disarmable <= 1);
+        ASSERT_OR_THROW(disarmable >= 0);
+
+        pCreature->m_bDisarmable = disarmable;
+    }
+    return stack;
+}
 }

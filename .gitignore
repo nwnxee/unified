@@ -2,3 +2,9 @@
 .vscode/
 Binaries/
 build-nwnx/
+Documentation/
+
+# Visual Studio
+.vs/
+out/
+CMakeSettings.json

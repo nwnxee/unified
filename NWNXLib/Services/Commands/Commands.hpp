@@ -10,7 +10,7 @@
 namespace NWNXLib {
 namespace Services {
 
-class Commands : public ServiceBase
+class Commands
 {
 public:
     using CommandFunc = void (*)(std::string&);

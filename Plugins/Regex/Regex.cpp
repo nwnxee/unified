@@ -1,7 +1,6 @@
 #include "Regex.hpp"
 
 #include "Services/Config/Config.hpp"
-#include "ViewPtr.hpp"
 
 #include <string>
 #include <stdio.h>
@@ -10,7 +9,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
 
-static ViewPtr<Regex::Regex> g_plugin;
+static Regex::Regex* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -38,7 +37,8 @@ Regex::Regex(const Plugin::CreateParams& params)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, std::bind(&Regex::func, this, std::placeholders::_1))
+    GetServices()->m_events->RegisterEvent(#func, \
+        [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(Search);
     REGISTER(Replace);

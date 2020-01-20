@@ -11,10 +11,10 @@ using namespace NWNXLib::API;
 
 NWNXLib::Hooking::FunctionHook* DisableMonkAbilitiesWhenPolymorphed::pGetUseMonkAbilities_hook;
 
-DisableMonkAbilitiesWhenPolymorphed::DisableMonkAbilitiesWhenPolymorphed(ViewPtr<Services::HooksProxy> hooker)
+DisableMonkAbilitiesWhenPolymorphed::DisableMonkAbilitiesWhenPolymorphed(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__GetUseMonkAbilities>(&CNWSCreature__GetUseMonkAbilities_hook);
-    pGetUseMonkAbilities_hook = hooker->FindHookByAddress(Functions::CNWSCreature__GetUseMonkAbilities);
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv>(&CNWSCreature__GetUseMonkAbilities_hook);
+    pGetUseMonkAbilities_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv);
 }
 
 int32_t DisableMonkAbilitiesWhenPolymorphed::CNWSCreature__GetUseMonkAbilities_hook(CNWSCreature *pThis)

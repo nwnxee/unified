@@ -29,7 +29,7 @@ struct HooksImpl
 
     private:
         template <int ... Seq>
-        void UnpackAndDispatch(Hooks::CallType type, Sequence<Seq ...>);
+        void UnpackAndDispatch(bool before, Sequence<Seq ...>);
 
         const std::vector<uintptr_t>* m_subscribers;
         const std::tuple<Params ...> m_args;
@@ -45,7 +45,6 @@ struct HooksImpl
         static std::vector<uintptr_t>* s_subs;
     };
 
-    template <typename>
     struct HookLandingHolderShared
     {
         template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
@@ -58,7 +57,6 @@ struct HooksImpl
         static uintptr_t s_addr;
     };
 
-    template <typename>
     struct HookLandingHolderExclusive
     {
         template <uintptr_t Address, typename Ret, typename FirstParam, typename ... Params>
@@ -67,7 +65,7 @@ struct HooksImpl
 
 private:
     template <typename ... Params>
-    static void DispatchCallbacks(const Hooks::CallType type,
+    static void DispatchCallbacks(bool before,
         const std::vector<uintptr_t>* subscribers,
         Params ... args);
 };

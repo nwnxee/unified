@@ -1,12 +1,5 @@
 #include "nwnx_admin"
-
-void report(string func, int bSuccess)
-{
-    if (bSuccess)
-        WriteTimestampedLogEntry("NWNX_Administration: " + func + "() success");
-    else
-        WriteTimestampedLogEntry("NWNX_Administration: " + func + "() failed");
-}
+#include "nwnx_tests"
 
 void main()
 {
@@ -15,16 +8,19 @@ void main()
     string sString = "FuzzyKittens";
 
     NWNX_Administration_SetPlayerPassword(sString);
-    report("{Set/Get}PlayerPassword", NWNX_Administration_GetPlayerPassword() == sString);
+    NWNX_Tests_Report("NWNX_Administration", "{Set/Get}PlayerPassword", NWNX_Administration_GetPlayerPassword() == sString);
 
     NWNX_Administration_ClearPlayerPassword();
-    report("ClearPlayerPassword", NWNX_Administration_GetPlayerPassword() == "");
+    NWNX_Tests_Report("NWNX_Administration", "ClearPlayerPassword", NWNX_Administration_GetPlayerPassword() == "");
 
     NWNX_Administration_SetDMPassword(sString);
-    report("{Set/Get}DMPassword", NWNX_Administration_GetDMPassword() == sString);
+    NWNX_Tests_Report("NWNX_Administration", "{Set/Get}DMPassword", NWNX_Administration_GetDMPassword() == sString);
 
     NWNX_Administration_SetPlayOption(NWNX_ADMINISTRATION_OPTION_EXAMINE_EFFECTS, TRUE);
-    report("{Set/Get}PlayOption", NWNX_Administration_GetPlayOption(NWNX_ADMINISTRATION_OPTION_EXAMINE_EFFECTS));
+    NWNX_Tests_Report("NWNX_Administration", "{Set/Get}PlayOption", NWNX_Administration_GetPlayOption(NWNX_ADMINISTRATION_OPTION_EXAMINE_EFFECTS));
+
+    NWNX_Administration_SetDebugValue(NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED, TRUE);
+    NWNX_Tests_Report("NWNX_Administration", "{Set/Get}DebugValue", NWNX_Administration_GetDebugValue(NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED));
 
     WriteTimestampedLogEntry("NWNX_Administration unit test end.");
 }

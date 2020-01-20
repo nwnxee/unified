@@ -41,11 +41,11 @@ private:
 
     NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
 
-    static int32_t OnApplyDamage(NWNXLib::API::CNWSEffectListHandler *pThis, NWNXLib::API::CNWSObject *pObject, NWNXLib::API::CGameEffect *pEffect, bool bLoadingGame);
-    static void OnSignalDamage(NWNXLib::Services::Hooks::CallType type, NWNXLib::API::CNWSCreature *pThis, NWNXLib::API::CNWSObject *pTarget, uint32_t nAttacks);
-    static void OnCombatAttack(NWNXLib::API::CNWSCreature *pThis, NWNXLib::API::CNWSObject *pTarget, std::string script, uint8_t attackNumber);
+    static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, bool bLoadingGame);
+    static void OnSignalDamage(bool, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks);
+    static void OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::string script, uint8_t attackNumber);
 
-    static std::string GetEventScript(NWNXLib::API::CNWSObject *pObject, const std::string &event);
+    static std::string GetEventScript(CNWSObject *pObject, const std::string &event);
 
     std::unordered_map<std::string,std::string> m_EventScripts;
 

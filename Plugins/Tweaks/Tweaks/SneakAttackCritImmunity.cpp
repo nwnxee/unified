@@ -5,13 +5,13 @@
 #include "API/CNWSCombatRound.hpp"
 #include "API/CNWVisibilityNode.hpp"
 #include "API/CNWCCMessageData.hpp"
+#include "API/CNWRules.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
-#include "API/Version.hpp"
-
 #include "Services/Hooks/Hooks.hpp"
-#include "Utils.hpp"
+
+#include <cmath>
 
 
 namespace Tweaks {
@@ -19,23 +19,16 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveSneakAttack_hook;
-NWNXLib::Hooking::FunctionHook* SneakAttackCritImmunity::pResolveDeathAttack_hook;
-SneakAttackCritImmunity::SneakAttackCritImmunity(ViewPtr<Services::HooksProxy> hooker)
+SneakAttackCritImmunity::SneakAttackCritImmunity(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__ResolveSneakAttack>
-                                    (&CNWSCreature__ResolveSneakAttack_hook);
-    hooker->RequestExclusiveHook<Functions::CNWSCreature__ResolveDeathAttack>
-                                    (&CNWSCreature__ResolveDeathAttack_hook);
-
-    pResolveSneakAttack_hook = hooker->FindHookByAddress(Functions::CNWSCreature__ResolveSneakAttack);
-    pResolveDeathAttack_hook = hooker->FindHookByAddress(Functions::CNWSCreature__ResolveDeathAttack);
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_>(&CNWSCreature__ResolveSneakAttack_hook);
+    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_>(&CNWSCreature__ResolveDeathAttack_hook);
 }
-
 
 void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
-    static const float SNEAK_ATTACK_DISTANCE = 100.0f;
+    static const float SNEAK_ATTACK_DISTANCE = std::pow(
+            Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", 10.0f), 2);
     if (!pTarget)
         return;
 
@@ -112,7 +105,9 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     if (pAttackData->m_bRangedAttack)
     {
         Vector v = pThis->m_vPosition;
-        v -= pTarget->m_vPosition;
+        v.x -= pTarget->m_vPosition.x;
+        v.y -= pTarget->m_vPosition.y;
+        v.z -= pTarget->m_vPosition.z;
         fDistance = v.x*v.x + v.y*v.y + v.z*v.z;
     }
 
@@ -144,7 +139,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
                 defenderLevels += (defenderClass == uncannyClasses[j]) ? pTarget->m_pStats->GetClassLevel(i, false) : 0;
             }
         }
-        if (attackerLevels - defenderLevels >= 4)
+        if (attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry("FLANK_LEVEL_RANGE", 4))
         {
             if (pThis->GetFlanked(pTarget)) // Bad function name, but this does the correct check
             {
@@ -169,11 +164,11 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     }
 }
 
-
 // I refuse to take responsibility for the duplicated code, as NWN does it too!
 void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)
 {
-    static const float SNEAK_ATTACK_DISTANCE = 100.0f;
+    static const float SNEAK_ATTACK_DISTANCE = std::pow(
+            Globals::Rules()->GetRulesetFloatEntry("MAX_RANGED_SNEAK_ATTACK_DISTANCE", 10.0f), 2);
     if (!pTarget)
         return;
 
@@ -225,7 +220,9 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
     if (pAttackData->m_bRangedAttack)
     {
         Vector v = pThis->m_vPosition;
-        v -= pTarget->m_vPosition;
+        v.x -= pTarget->m_vPosition.x;
+        v.y -= pTarget->m_vPosition.y;
+        v.z -= pTarget->m_vPosition.z;
         fDistance = v.x*v.x + v.y*v.y + v.z*v.z;
     }
 
@@ -257,7 +254,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
                 defenderLevels += (defenderClass == uncannyClasses[j]) ? pTarget->m_pStats->GetClassLevel(i, false) : 0;
             }
         }
-        if (attackerLevels - defenderLevels >= 4)
+        if (attackerLevels - defenderLevels >= Globals::Rules()->GetRulesetIntEntry("FLANK_LEVEL_RANGE", 4))
         {
             if (pThis->GetFlanked(pTarget)) // Bad function name, but this does the correct check
             {
@@ -281,6 +278,5 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
         }
     }
 }
-
 
 }

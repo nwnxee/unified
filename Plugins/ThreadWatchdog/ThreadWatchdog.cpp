@@ -4,11 +4,10 @@
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Config/Config.hpp"
-#include "ViewPtr.hpp"
 
 using namespace NWNXLib;
 
-static ViewPtr<ThreadWatchdog::ThreadWatchdog> g_plugin;
+static ThreadWatchdog::ThreadWatchdog* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -40,7 +39,7 @@ static uint32_t s_watchdogKillThreshold;
 ThreadWatchdog::ThreadWatchdog(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::CServerExoAppInternal__MainLoop, int32_t>(&MainLoopUpdate);
+    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
 
     s_watchdogPeriod = GetServices()->m_config->Get<uint32_t>("PERIOD", 15);
     // Default to effectively infinite
@@ -58,7 +57,7 @@ ThreadWatchdog::~ThreadWatchdog()
     }
 }
 
-void ThreadWatchdog::MainLoopUpdate(Services::Hooks::CallType, API::CServerExoAppInternal*)
+void ThreadWatchdog::MainLoopUpdate(bool, CServerExoAppInternal*)
 {
     ++s_mainThreadCounter;
 

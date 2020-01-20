@@ -4,22 +4,18 @@
 #include "API/Vector.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "ViewPtr.hpp"
 
 namespace Events {
 
 class EffectEvents
 {
 public:
-    EffectEvents(NWNXLib::ViewPtr<NWNXLib::Services::HooksProxy> hooker);
+    EffectEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void HandleEffectHook(const std::string&, NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSObject*,
-                                NWNXLib::API::CGameEffect*);
-    static void OnEffectAppliedHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSEffectListHandler*,
-                                NWNXLib::API::CNWSObject*, NWNXLib::API::CGameEffect*, int32_t);
-    static void OnEffectRemovedHook(NWNXLib::Services::Hooks::CallType, NWNXLib::API::CNWSEffectListHandler*,
-                                NWNXLib::API::CNWSObject*, NWNXLib::API::CGameEffect*);
+    static void HandleEffectHook(const std::string&, bool, CNWSObject*, CGameEffect*);
+    static void OnEffectAppliedHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
+    static void OnEffectRemovedHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*);
 };
 
 }

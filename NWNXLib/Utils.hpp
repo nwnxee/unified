@@ -7,12 +7,13 @@
 #include "API/CGameEffect.hpp"
 #include "API/CExoLocString.hpp"
 #include "API/CNWSMessage.hpp"
+#include "Utils/String.hpp"
+
 #include <string>
 #include <cstring>
 
 
-namespace NWNXLib {
-namespace Utils {
+namespace NWNXLib::Utils {
 
 std::string ObjectIDToString(const API::Types::ObjectID id);
 
@@ -21,40 +22,40 @@ void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner);
 
 // Since there's no RTTI, and NWN's dynamic casts don't work in NWNX.
 // These return nullptr if the object type isn't right.
-API::CNWSArea*               AsNWSArea(API::CGameObject* obj);
-API::CNWSAreaOfEffectObject* AsNWSAreaOfEffectObject(API::CGameObject* obj);
-API::CNWSCreature*           AsNWSCreature(API::CGameObject* obj);
-API::CNWSDoor*               AsNWSDoor(API::CGameObject* obj);
-API::CNWSEncounter*          AsNWSEncounter(API::CGameObject* obj);
-API::CNWSItem*               AsNWSItem(API::CGameObject* obj);
-API::CNWSModule*             AsNWSModule(API::CGameObject* obj);
-API::CNWSObject*             AsNWSObject(API::CGameObject* obj);
-API::CNWSPlaceable*          AsNWSPlaceable(API::CGameObject* obj);
-API::CNWSSoundObject*        AsNWSSoundObject(API::CGameObject* obj);
-API::CNWSStore*              AsNWSStore(API::CGameObject* obj);
-API::CNWSTrigger*            AsNWSTrigger(API::CGameObject* obj);
-API::CNWSWaypoint*           AsNWSWaypoint(API::CGameObject* obj);
+CNWSArea*               AsNWSArea(CGameObject* obj);
+CNWSAreaOfEffectObject* AsNWSAreaOfEffectObject(CGameObject* obj);
+CNWSCreature*           AsNWSCreature(CGameObject* obj);
+CNWSDoor*               AsNWSDoor(CGameObject* obj);
+CNWSEncounter*          AsNWSEncounter(CGameObject* obj);
+CNWSItem*               AsNWSItem(CGameObject* obj);
+CNWSModule*             AsNWSModule(CGameObject* obj);
+CNWSObject*             AsNWSObject(CGameObject* obj);
+CNWSPlaceable*          AsNWSPlaceable(CGameObject* obj);
+CNWSSoundObject*        AsNWSSoundObject(CGameObject* obj);
+CNWSStore*              AsNWSStore(CGameObject* obj);
+CNWSTrigger*            AsNWSTrigger(CGameObject* obj);
+CNWSWaypoint*           AsNWSWaypoint(CGameObject* obj);
 
-API::CGameObject* GetGameObject(API::Types::ObjectID objectId);
-API::CNWSModule* GetModule();
+CGameObject* GetGameObject(API::Types::ObjectID objectId);
+CNWSModule* GetModule();
 
 // Wrappers around non-virtual methods repeated for all NWS types
-bool AcquireItem(API::CNWSItem *pItem, API::CGameObject *pOwner);
-bool AddToArea(API::CGameObject *pObject, API::CNWSArea *pArea, float x, float y, float z);
+bool AcquireItem(CNWSItem *pItem, CGameObject *pOwner);
+bool AddToArea(CGameObject *pObject, CNWSArea *pArea, float x, float y, float z);
 
-bool operator==(API::Vector& v1, API::Vector& v2);
-bool operator!=(API::Vector& v1, API::Vector& v2);
+bool operator==(Vector& v1, Vector& v2);
+bool operator!=(Vector& v1, Vector& v2);
 
 // Returns TRUE if the var tables have the same variables with same values
-bool CompareVariables(API::CNWSScriptVarTable *pVars1, API::CNWSScriptVarTable *pVars2);
-API::CNWSScriptVarTable *GetScriptVarTable(API::CGameObject *pObject);
+bool CompareVariables(CNWSScriptVarTable *pVars1, CNWSScriptVarTable *pVars2);
+CNWSScriptVarTable *GetScriptVarTable(CGameObject *pObject);
 
-void DestroyGameEffect(API::CGameEffect* pEffect);
+void DestroyGameEffect(CGameEffect* pEffect);
 
-std::string ExtractLocString(API::CExoLocString& locStr, int32_t nID = 0, uint8_t bGender = 0);
+std::string ExtractLocString(CExoLocString& locStr, int32_t nID = 0, uint8_t bGender = 0);
 
 template <typename T>
-T PeekMessage(API::CNWSMessage *pMessage, int32_t offset)
+T PeekMessage(CNWSMessage *pMessage, int32_t offset)
 {
     static_assert(std::is_pod<T>::value);
     T value;
@@ -63,6 +64,15 @@ T PeekMessage(API::CNWSMessage *pMessage, int32_t offset)
     return value;
 }
 
-}
+void AddStealthEvent(int32_t which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget);
+void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea);
+void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea);
+void AddOnAcquireItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy, API::Types::ObjectID oidFrom, int32_t stackSize);
+void AddOnLoseItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy);
+void AddDestroyObjectEvent(API::Types::ObjectID oid);
+
+// Returns the SP
+int PushScriptContext(API::Types::ObjectID oid, bool valid = true);
+int PopScriptContext();
 
 }
