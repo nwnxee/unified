@@ -75,6 +75,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(SetTileAnimationLoop);
     REGISTER(TestDirectLine);
     REGISTER(GetMusicIsPlaying);
+	REGISTER(GetSurfaceMaterial);
 
 #undef REGISTER
 }
@@ -767,6 +768,35 @@ ArgumentStack Area::GetMusicIsPlaying(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, retVal);
 
     return stack;
+}
+
+ArgumentStack Area::GetSurfaceMaterial(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    int32_t retVal = -1;
+    if (auto *pArea = area(args))
+    {
+		const auto tileX = Services::Events::ExtractArgument<float>(args);
+	          ASSERT_OR_THROW(tileX >= 0.0f);
+		const auto tileY = Services::Events::ExtractArgument<float>(args);
+	          ASSERT_OR_THROW(tileY >= 0.0f);
+	    CNWSTile *pTile = GetTile(pArea, tileX, tileY);
+		
+        if (pTile)
+        {
+			Vector vec = {};
+			vec.x = tileX;
+			vec.y = tileY;
+			//Get Z From Compute Height
+			vec.z = pArea->ComputeHeight(vec);
+			retVal = pTile->GetSurfaceMaterial(vec.x,vec.y,vec.z);
+		}else
+		{
+			LOG_ERROR("NWNX_Area_GetSurfaceMaterial: invalid tile specified");
+		}	
+	}
+	Services::Events::InsertArgument(stack, retVal);
+	return stack;
 }
 
 }

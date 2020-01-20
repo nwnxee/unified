@@ -210,6 +210,13 @@ int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float f
 /// @return TRUE if music is playing
 int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE);
 
+/// @brief returns the surface material of the provided x,y position within an area
+/// @param oArea The area object.
+/// @param fxPos The X position
+/// @param fyPos The Y position
+/// @return an int value corresponding to a SurfaceMaterial.2da row or -1 if it fails
+int NWNX_Area_GetSurfaceMaterial(object oArea, float fxPos, float fyPos)
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -504,6 +511,18 @@ int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE)
     string sFunc = "GetMusicIsPlaying";
 
     NWNX_PushArgumentInt(NWNX_Area, sFunc, bBattleMusic);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetSurfaceMaterial(object oArea, float fxPos, float fyPos)
+{
+    string sFunc = "GetSurfaceMaterial";
+
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fyPos);
+	NWNX_PushArgumentFloat(NWNX_Area, sFunc, fxPos);
     NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
     NWNX_CallFunction(NWNX_Area, sFunc);
 
