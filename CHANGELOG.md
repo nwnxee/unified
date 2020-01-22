@@ -28,7 +28,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY
 
 
 ## 8193.6
