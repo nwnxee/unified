@@ -278,7 +278,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
         }
         else
         {
-            pAttackData->m_bSneakAttack = 1;
+            pAttackData->m_bDeathAttack = 1;
         }
     }
 }
