@@ -20,6 +20,7 @@ N/A
 ### Changed
 - ELC: Updated for custom spellcaster changes
 - Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
+- Tweaks: added temporary fix for server freeze when learning a spell from a scroll (NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG)
 
 ### Deprecated
 - Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
