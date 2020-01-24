@@ -24,4 +24,5 @@ add_plugin(Events
     "Events/PVPEvents.cpp"
     "Events/InputEvents.cpp"
     "Events/MaterialChangeEvents.cpp"
-    "Events/ObjectEvents.cpp")
+    "Events/ObjectEvents.cpp"
+    "Events/UUIDEvents.cpp")

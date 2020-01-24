@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Added
-N/A
+- Events: Added OnUUIDCollision event to UUIDEvents
 
 ##### New Plugins
 N/A
