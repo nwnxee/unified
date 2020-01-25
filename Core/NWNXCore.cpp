@@ -522,7 +522,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     Log::SetPrintSource(g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true));
     Log::SetForceColor(g_core->m_coreServices->m_config->Get<bool>("LOG_FORCE_COLOR", false));
-    if (g_core->m_coreServices->m_config->Get<bool>("LOG_ASYNC", true))
+    if (g_core->m_coreServices->m_config->Get<bool>("LOG_ASYNC", false))
         Log::SetAsync(g_core->m_services->m_tasks.get());
 
     if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
