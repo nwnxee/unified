@@ -6,9 +6,9 @@
 #include <sstream>
 #include <ctime>
 
-namespace NWNXLib {
+namespace NWNXLib::Services { class Tasks; }
 
-namespace Log {
+namespace NWNXLib::Log {
 
 #define LOG_DEBUG(format, ...) \
     ::NWNXLib::Log::Trace(::NWNXLib::Log::Channel::SEV_DEBUG, PLUGIN_NAME, __FILE__, __LINE__, (format), ##__VA_ARGS__)
@@ -81,9 +81,9 @@ bool GetColorOutput();
 void SetForceColor(bool value);
 bool GetForceColor();
 
-#include "Log.inl"
+void SetAsync(NWNXLib::Services::Tasks* tasks);
 
-}
+#include "Log.inl"
 
 }
 
