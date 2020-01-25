@@ -19,6 +19,7 @@ class StringToIntBaseToAuto;
 class DeadCreatureFiresOnAreaExit;
 class PreserveActionsOnDMPossess;
 class FixGreaterSanctuaryBug;
+class AsyncLogFlush;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -41,6 +42,7 @@ private:
     std::unique_ptr<DeadCreatureFiresOnAreaExit> m_DeadCreatureFiresOnAreaExit;
     std::unique_ptr<PreserveActionsOnDMPossess> m_PreserveActionsOnDMPossess;
     std::unique_ptr<FixGreaterSanctuaryBug> m_FixGreaterSanctuaryBug;
+    std::unique_ptr<AsyncLogFlush> m_AsyncLogFlush;
 };
 
 }
