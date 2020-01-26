@@ -66,11 +66,11 @@ BOOL FixScrollLearningBug::CNWSCreature__LearnScroll_hook(CNWSCreature *pThis, O
     }
 
     if (!pItemRepository) //Not present in decompiled code
-        return 0;
+        return false;
     
     if (!pItemRepository->GetItemInRepository(pItem, 0)) {
         pThis->SendFeedbackMessage(0xdc, nullptr, nullptr);
-        return 0;
+        return false;
     }
 
     int nFeedback = 0;
