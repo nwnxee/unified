@@ -1,10 +1,6 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "API/CExoDebugInternal.hpp"
-#include "API/CExoString.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include <memory>
 
 namespace ServerLogRedirector {
 
