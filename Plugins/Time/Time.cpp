@@ -70,7 +70,7 @@ ArgumentStack Time::GetHighResTimeStamp(ArgumentStack&&)
 
     auto count = std::chrono::duration_cast<std::chrono::microseconds>(dur).count();
 
-    return Services::Events::Arguments((int32_t)(count % 1000000));
+    return Services::Events::Arguments((int32_t)(count / 1000000), (int32_t)(count % 1000000));
 }
 
 ArgumentStack Time::GetSystemDate(ArgumentStack&&)
