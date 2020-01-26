@@ -53,17 +53,15 @@ BOOL FixScrollLearningBug::CNWSCreature__LearnScroll_hook(CNWSCreature *pThis, O
     if (!pSpell)
         return false;
 
-    auto pPlayer = pServerExoApp->GetClientObjectByObjectId(pThis->m_idSelf);
-    if (pPlayer && !pPlayer->HasExpansionPack(Globals::Rules()->GetSpellExpansionLevel(nSpellIndex), 1))
-        return false;
-
     CItemRepository* pItemRepository = nullptr;
     auto pPossessor = pServerExoApp->GetGameObject(pItem->m_oidPossessor);
     if (pPossessor) {
-        if (pPossessor->m_nObjectType == Constants::ObjectType::Creature) {
-            pItemRepository = pPossessor->AsNWSCreature()->m_pcItemRepository;
-        } else if (pPossessor->m_nObjectType == Constants::ObjectType::Item) {
-            pItemRepository = pPossessor->AsNWSItem()->m_pItemRepository;
+        if (auto pCreature = Utils::AsNWSCreature(pPossessor)) {
+            pItemRepository = pCreature->m_pcItemRepository;
+        } else if (auto pItem = Utils::AsNWSItem(pPossessor)) {
+            pItemRepository = pItem->m_pItemRepository;
+            if (pItem->m_oidPossessor != pThis->m_idSelf)
+                return false;
         }
     }
 
@@ -75,15 +73,12 @@ BOOL FixScrollLearningBug::CNWSCreature__LearnScroll_hook(CNWSCreature *pThis, O
         return 0;
     }
 
-    /*if (pThis->m_pStats->m_nNumMultiClasses == 0) {
-        pThis->SendFeedbackMessage(0x4f, nullptr, nullptr);
-        return 0;
-    }*/
-
     int nFeedback = 0;
     bool bLearned = false;
     for (int nMultiClass = 0; nMultiClass < pThis->m_pStats->m_nNumMultiClasses; nMultiClass++) {
         auto nClass = pThis->m_pStats->GetClass(nMultiClass);
+        if (nClass >= Globals::Rules()->m_nNumClasses)
+            continue;
         if (Globals::Rules()->m_lstClasses[nClass].m_bCanLearnFromScrolls) {
             auto nSpellLevel = pSpell->GetSpellLevel(nClass);
             if (nSpellLevel == (uint8_t) -1) {
@@ -112,10 +107,11 @@ BOOL FixScrollLearningBug::CNWSCreature__LearnScroll_hook(CNWSCreature *pThis, O
 
             auto nKnownSpells = pThis->m_pStats->GetNumberKnownSpells(nMultiClass, nSpellLevel);
             bool bKnownSpell = false;
-            for (int i = 0; i < nKnownSpells && !bKnownSpell; i++) {
+            for (int i = 0; i < nKnownSpells; i++) {
                 if (pThis->m_pStats->GetKnownSpell(nMultiClass, nSpellLevel, i) == nSpellIndex) {
                     nFeedback = 0xdd;
                     bKnownSpell = true;
+                    break;
                 }
             }
 
@@ -129,7 +125,7 @@ BOOL FixScrollLearningBug::CNWSCreature__LearnScroll_hook(CNWSCreature *pThis, O
 
     if (!bLearned) {
         pThis->SendFeedbackMessage(nFeedback ? nFeedback : 0x4f, nullptr, nullptr);
-        return 0;
+        return false;
     }
 
     if (pItem->m_nStackSize < 2)
@@ -140,7 +136,7 @@ BOOL FixScrollLearningBug::CNWSCreature__LearnScroll_hook(CNWSCreature *pThis, O
     CNWCCMessageData* pMessageData = new CNWCCMessageData();
     pMessageData->SetInteger(0, nSpellIndex);
     pThis->SendFeedbackMessage(0xde, pMessageData, nullptr);
-    return 1;
+    return true;
 }
 
 }
