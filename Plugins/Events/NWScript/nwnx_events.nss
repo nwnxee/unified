@@ -904,7 +904,8 @@ _______________________________________
     ----------------------|--------|-------
     UUID                  | string | The UUID
 
-    Note: To get the existing object with `UUID` you can use GetObjectByUUID()
+    Note: To get the existing object with `UUID` you can use GetObjectByUUID(), be aware that this event runs before the
+          object is added to the world which means many functions (for example `GetArea(OBJECT_SELF)`) will not work.
 
 _______________________________________
 */
