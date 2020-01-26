@@ -55,7 +55,6 @@ ItemProperty::~ItemProperty()
 
 ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     CGameEffect *ip = new CGameEffect(true);
 
     auto propname     = Services::Events::ExtractArgument<int32_t>(args);
@@ -90,8 +89,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     ip->SetInteger(8, usable);
     ip->SetString(0, tag.c_str());
 
-    Services::Events::InsertArgument(stack, ip);
-    return stack;
+    return Services::Events::Arguments(ip);
 }
 ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
 {
