@@ -73,7 +73,6 @@ Damage::~Damage()
 
 ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     const std::string event = Services::Events::ExtractArgument<std::string>(args);
     const std::string script = Services::Events::ExtractArgument<std::string>(args);
     Types::ObjectID oidOwner = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -97,7 +96,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 std::string Damage::GetEventScript(CNWSObject *pObject, const std::string &event)
@@ -225,7 +224,6 @@ void Damage::OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::strin
 
 ArgumentStack Damage::DealDamage(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int vDamage[13];
     std::bitset<13> positive;
 
@@ -272,7 +270,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     // ... and apply it
     pTarget->ApplyEffect(pEffect, false, true);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }

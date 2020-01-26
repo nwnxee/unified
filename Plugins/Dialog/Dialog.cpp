@@ -212,10 +212,8 @@ Dialog::~Dialog()
 {
 }
 
-ArgumentStack Dialog::GetCurrentNodeType(ArgumentStack&& args)
+ArgumentStack Dialog::GetCurrentNodeType(ArgumentStack&&)
 {
-    (void)args;
-    ArgumentStack stack;
     int32_t retval;
     switch (statestack[ssp])
     {
@@ -226,22 +224,16 @@ ArgumentStack Dialog::GetCurrentNodeType(ArgumentStack&& args)
         default: retval = NODE_TYPE_INVALID;                              break;
     }
 
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
-ArgumentStack Dialog::GetCurrentScriptType(ArgumentStack&& args)
+ArgumentStack Dialog::GetCurrentScriptType(ArgumentStack&&)
 {
-    (void)args;
-    ArgumentStack stack;
-    Services::Events::InsertArgument(stack, scriptType);
-    return stack;
+    return Services::Events::Arguments(scriptType);
 }
 
-ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&& args)
+ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&&)
 {
-    (void)args;
-    ArgumentStack stack;
     int32_t retval;
 
     switch (statestack[ssp])
@@ -263,21 +255,16 @@ ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&& args)
             break;
     }
 
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
-ArgumentStack Dialog::GetCurrentNodeIndex(ArgumentStack&& args)
+ArgumentStack Dialog::GetCurrentNodeIndex(ArgumentStack&&)
 {
-    (void)args;
-    ArgumentStack stack;
-    Services::Events::InsertArgument(stack, loopCount);
-    return stack;
+    return Services::Events::Arguments(loopCount);
 }
 
 ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     CExoString str;
 
     auto language = Services::Events::ExtractArgument<int32_t>(args);
@@ -315,14 +302,11 @@ ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
         pLocString->GetString(language, &str, gender, true);
     }
 
-    Services::Events::InsertArgument(stack, std::string(str.CStr()));
-    return stack;
+    return Services::Events::Arguments(std::string(str.CStr()));
 }
 
 ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     auto str = Services::Events::ExtractArgument<std::string>(args);
     auto language = Services::Events::ExtractArgument<int32_t>(args);
     auto gender = Services::Events::ExtractArgument<int32_t>(args);
@@ -360,13 +344,11 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
         pLocString->AddString(language, cexostr, gender);
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Dialog::End(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
@@ -375,7 +357,7 @@ ArgumentStack Dialog::End(ArgumentStack&& args)
         pObject->StopDialog();
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }

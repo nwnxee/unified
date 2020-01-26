@@ -82,7 +82,6 @@ CNWSEncounter *Encounter::encounter(ArgumentStack& args)
 
 ArgumentStack Encounter::GetNumberOfCreaturesInEncounterList(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -90,14 +89,11 @@ ArgumentStack Encounter::GetNumberOfCreaturesInEncounterList(ArgumentStack&& arg
         retVal = pEncounter->m_nNumEncounterListEntries;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string resRef = "";
     float cr = 0.0;
     int32_t unique = 0;
@@ -114,17 +110,11 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, resRef);
-    Services::Events::InsertArgument(stack, cr);
-    Services::Events::InsertArgument(stack, unique);
-
-    return stack;
+    return Services::Events::Arguments(resRef, cr, unique);
 }
 
 ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
@@ -143,12 +133,11 @@ ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Encounter::GetFactionId(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -156,15 +145,11 @@ ArgumentStack Encounter::GetFactionId(ArgumentStack&& args)
         retVal = pEncounter->m_nFactionId;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetFactionId(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         auto factionId = Services::Events::ExtractArgument<int32_t>(args);
@@ -174,12 +159,11 @@ ArgumentStack Encounter::SetFactionId(ArgumentStack&& args)
         pEncounter->m_nFactionId = factionId;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Encounter::GetPlayerTriggeredOnly(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -187,15 +171,11 @@ ArgumentStack Encounter::GetPlayerTriggeredOnly(ArgumentStack&& args)
         retVal = pEncounter->m_bPlayerTriggeredOnly;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         auto playerTriggeredOnly = Services::Events::ExtractArgument<int32_t>(args);
@@ -205,12 +185,11 @@ ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
         pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -218,15 +197,11 @@ ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)
         retVal = pEncounter->m_nResetTime;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         auto resetTime = Services::Events::ExtractArgument<int32_t>(args);
@@ -235,7 +210,7 @@ ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
         pEncounter->m_nResetTime = resetTime;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }

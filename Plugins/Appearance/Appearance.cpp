@@ -141,8 +141,6 @@ void Appearance::SetIntValue(int32_t type, int32_t value, std::bitset<OverrideTy
 
 ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pPlayer = Player(args))
     {
         const auto oidCreature = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -238,12 +236,11 @@ ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Appearance::GetOverride(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = -1;
 
     if (auto *pPlayer = Player(args))
@@ -318,9 +315,7 @@ ArgumentStack Appearance::GetOverride(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 }
