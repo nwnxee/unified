@@ -12,8 +12,6 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 - Experimental: AsyncLogFlush to asynchronously flush the game log to disk
 - Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
 
-
-
 ##### New Plugins
 N/A
 
@@ -33,7 +31,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Webhook: fixed a crash that would happen when trying to send a message in the shutdown script
 
 
 ## 8193.6
