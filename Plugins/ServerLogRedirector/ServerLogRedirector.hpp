@@ -1,10 +1,6 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "API/CExoDebugInternal.hpp"
-#include "API/CExoString.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include <memory>
 
 namespace ServerLogRedirector {
 
@@ -17,6 +13,7 @@ public:
 private:
     static void WriteToLogFileHook(bool, CExoDebugInternal*, CExoString*);
     static void WriteToErrorFileHook(bool, CExoDebugInternal*, CExoString*);
+    static void ExecuteCommandPrintLogEntry(bool, CNWVirtualMachineCommands*, int32_t, int32_t);
 };
 
 }
