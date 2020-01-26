@@ -203,6 +203,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
 
 Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
 {
+    int32_t retVal = false;
     const auto channel = static_cast<Constants::ChatChannel::TYPE>(Events::ExtractArgument<int32_t>(args));
     const auto message = Events::ExtractArgument<std::string>(args);
     const auto speaker = Events::ExtractArgument<Types::ObjectID>(args);
@@ -213,8 +214,6 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     const Types::PlayerID playerId = hasManualPlayerId ?
         Globals::AppManager()->m_pServerExoApp->GetPlayerIDByGameObjectID(target) :
         Constants::PLAYERID_ALL_CLIENTS;
-
-    Events::ArgumentStack stack;
 
     if (playerId != Constants::PLAYERID_INVALIDID)
     {
@@ -258,60 +257,46 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
             messageDispatch->SendServerToPlayerChatMessage(static_cast<uint8_t>(channel), speaker, message.c_str(), playerId, nullptr);
         }
 
-        Events::InsertArgument(stack, 1);
-    }
-    else
-    {
-        Events::InsertArgument(stack, 0);
+        retVal = true;
     }
 
-    return stack;
+    return Events::Arguments(retVal);
 }
 
 Events::ArgumentStack Chat::RegisterChatScript(Events::ArgumentStack&& args)
 {
     m_chatScript = Events::ExtractArgument<std::string>(args);
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Chat::SkipMessage(Events::ArgumentStack&&)
 {
     m_skipMessage = true;
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Chat::GetChannel(Events::ArgumentStack&&)
 {
-    Events::ArgumentStack stack;
-    Events::InsertArgument(stack, static_cast<int32_t>(m_activeChannel));
-    return stack;
+    return Events::Arguments(static_cast<int32_t>(m_activeChannel));
 }
 
 Events::ArgumentStack Chat::GetMessage(Events::ArgumentStack&&)
 {
-    Events::ArgumentStack stack;
-    Events::InsertArgument(stack, m_activeMessage);
-    return stack;
+    return Events::Arguments(m_activeMessage);
 }
 
 Events::ArgumentStack Chat::GetSender(Events::ArgumentStack&&)
 {
-    Events::ArgumentStack stack;
-    Events::InsertArgument(stack, m_activeSenderObjectId);
-    return stack;
+    return Events::Arguments(m_activeSenderObjectId);
 }
 
 Events::ArgumentStack Chat::GetTarget(Events::ArgumentStack&&)
 {
-    Events::ArgumentStack stack;
-    Events::InsertArgument(stack, m_activeTargetObjectId);
-    return stack;
+    return Events::Arguments(m_activeTargetObjectId);
 }
 
 Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 {
-    Events::ArgumentStack stack;
-
     const auto distance = Services::Events::ExtractArgument<float>(args);
     const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
@@ -327,7 +312,6 @@ Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
         if (!pPlayer)
         {
             LOG_NOTICE("NWNX_Chat function called on non-player object %x", playerOid);
-            return stack;
         }
         else
         {
@@ -335,30 +319,24 @@ Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
             m_customHearingDistances = true;
             pPOS->Set(playerOid, "HEARING_DISTANCE:" + std::to_string(channel), distance, true);
         }
-        return stack;
     }
 
-    return stack;
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Chat::GetChatHearingDistance(Events::ArgumentStack&& args)
 {
-    Events::ArgumentStack stack;
     const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
-    float retVal;
-    if (playerOid == Constants::OBJECT_INVALID)
-    {
-        retVal = m_hearingDistances[channel];
-    }
-    else
+    float retVal = m_hearingDistances[channel];
+
+    if (playerOid != Constants::OBJECT_INVALID)
     {
         auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
         auto playerHearingDistance = *pPOS->Get<float>(playerOid, "HEARING_DISTANCE:" + std::to_string(channel));
         retVal = playerHearingDistance > 0 ? playerHearingDistance : m_hearingDistances[channel];
     }
-    Events::InsertArgument(stack, retVal);
-    return stack;
+    return Events::Arguments(retVal);
 }
 
 }

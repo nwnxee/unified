@@ -119,12 +119,9 @@ NWNXLib::Services::Events::ArgumentStack Ruby::Evaluate(NWNXLib::Services::Event
         retString = evaluate(code);
     }
 
-    Events::ArgumentStack stack;
-    Events::InsertArgument(stack, std::string(retString));
-
     LOG_INFO("Evaluated Ruby. Ruby ID: '%i', code: '%s', got return value '%s'.", evaluationId, code, retString);
 
-    return stack;
+    return Events::Arguments(std::string(retString));
 }
 
 void Ruby::SafeRequire(const std::string& script)

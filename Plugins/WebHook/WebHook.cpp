@@ -63,7 +63,6 @@ std::string escape_json(const std::string &s) {
 
 ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
 {
-    Events::ArgumentStack stack;
     auto host = Services::Events::ExtractArgument<std::string>(args);
     auto origPath = Services::Events::ExtractArgument<std::string>(args);
     auto message = Services::Events::ExtractArgument<std::string>(args);
@@ -149,7 +148,6 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
                         {
                             messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_SUCCESS", moduleOid});
                             LOG_INFO("Sent webhook '%s' to '%s%s'.", message, host, path);
-
                         }
                         else
                         {
@@ -173,7 +171,7 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
             });
         });
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }

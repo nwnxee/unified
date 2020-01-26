@@ -61,7 +61,6 @@ Effect::~Effect()
 
 ArgumentStack Effect::PackEffect(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     CGameEffect *eff = new CGameEffect(true);
 
     eff->m_sCustomTag = Services::Events::ExtractArgument<std::string>(args).c_str();
@@ -117,8 +116,7 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
     if (bLeftLinkValid || bRightLinkValid)
         eff->UpdateLinked();
 
-    Services::Events::InsertArgument(stack, eff);
-    return stack;
+    return Services::Events::Arguments(eff);
 }
 ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
 {
@@ -219,8 +217,6 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
         bOnEffectRemovedHook = true;
     }
 
-    ArgumentStack stack;
-
     auto effect = Services::Events::ExtractArgument<CGameEffect*>(args);
 
     // Script name
@@ -228,9 +224,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
     // Data
     effect->m_sParamString[5] = Services::Events::ExtractArgument<std::string>(args).c_str();
 
-    Services::Events::InsertArgument(stack, effect);
-
-    return stack;
+    return Services::Events::Arguments(effect);
 }
 
 ArgumentStack Effect::GetEffectExpiredData(ArgumentStack&&)
@@ -240,11 +234,7 @@ ArgumentStack Effect::GetEffectExpiredData(ArgumentStack&&)
         throw std::runtime_error("Attempted to get effect expired data in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_effectExpiredData);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_effectExpiredData);
 }
 
 ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
@@ -254,11 +244,7 @@ ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
         throw std::runtime_error("Attempted to get effect expired creator in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_effectExpiredCreator);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_effectExpiredCreator);
 }
 
 }
