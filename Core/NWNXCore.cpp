@@ -85,6 +85,7 @@ namespace Core {
 
 static NWNXCore s_core;
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
+bool g_CoreShuttingDown = false;
 
 NWNXCore::NWNXCore()
     : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; }),
@@ -563,6 +564,8 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
 
 void NWNXCore::DestroyServerHandler(CAppManager* app)
 {
+    g_CoreShuttingDown = true;
+
     if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
