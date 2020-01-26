@@ -68,8 +68,11 @@ public:
     template <typename T>
     static void InsertArgument(ArgumentStack& stack, T&& arg);
 
-    template <typename... T>
-    static void InsertArguments(ArgumentStack& stack, T&&... args);
+    template <typename... Args>
+    static void InsertArguments(ArgumentStack& stack, Args&&... args);
+
+    template <typename... Args>
+    static ArgumentStack Arguments(Args&&... args);
 
     template <typename T>
     static T ExtractArgument(ArgumentStack& arguments);

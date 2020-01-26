@@ -1831,24 +1831,20 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
 ArgumentStack ELC::SetELCScript(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     auto elcScript = Services::Events::ExtractArgument<std::string>(args);
 
     g_plugin->m_elcScript = elcScript;
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack ELC::EnableCustomELCCheck(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     auto enabled = Services::Events::ExtractArgument<int32_t>(args);
 
     g_plugin->m_enableCustomELCCheck = enabled != 0;
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack ELC::SkipValidationFailure(ArgumentStack&&)
@@ -1858,11 +1854,9 @@ ArgumentStack ELC::SkipValidationFailure(ArgumentStack&&)
         throw std::runtime_error("Called SkipValidationFailure() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
     g_plugin->m_skipValidationFailure = true;
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack ELC::GetValidationFailureType(ArgumentStack&&)
@@ -1872,11 +1866,7 @@ ArgumentStack ELC::GetValidationFailureType(ArgumentStack&&)
         throw std::runtime_error("Called GetValidationFailureType() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_validationFailureType);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_validationFailureType);
 }
 
 ArgumentStack ELC::GetValidationFailureSubType(ArgumentStack&&)
@@ -1886,11 +1876,7 @@ ArgumentStack ELC::GetValidationFailureSubType(ArgumentStack&&)
         throw std::runtime_error("Called GetValidationFailureSubType() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_validationFailureSubType);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_validationFailureSubType);
 }
 
 
@@ -1901,11 +1887,7 @@ ArgumentStack ELC::GetValidationFailureMessageStrRef(ArgumentStack&&)
         throw std::runtime_error("Called GetValidationFailureMessageStrRef() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_validationFailureMessageStrRef);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_validationFailureMessageStrRef);
 }
 
 ArgumentStack ELC::SetValidationFailureMessageStrRef(ArgumentStack&& args)
@@ -1915,14 +1897,12 @@ ArgumentStack ELC::SetValidationFailureMessageStrRef(ArgumentStack&& args)
         throw std::runtime_error("Called SetValidationFailureMessageStrRef() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
     auto messageStrRef = Services::Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(messageStrRef > 0);
 
     g_plugin->m_validationFailureMessageStrRef = messageStrRef;
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack ELC::GetValidationFailureItem(ArgumentStack&&)
@@ -1932,11 +1912,7 @@ ArgumentStack ELC::GetValidationFailureItem(ArgumentStack&&)
         throw std::runtime_error("Called GetILRValidationFailureItem() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_ILRItemOID);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_ILRItemOID);
 }
 
 ArgumentStack ELC::GetValidationFailureLevel(ArgumentStack&&)
@@ -1946,11 +1922,7 @@ ArgumentStack ELC::GetValidationFailureLevel(ArgumentStack&&)
         throw std::runtime_error("Called GetValidationFailureLevel() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_ELCLevel);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_ELCLevel);
 }
 
 ArgumentStack ELC::GetValidationFailureSkillID(ArgumentStack&&)
@@ -1960,11 +1932,7 @@ ArgumentStack ELC::GetValidationFailureSkillID(ArgumentStack&&)
         throw std::runtime_error("Called GetValidationFailureSkillID() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_ELCSkillID);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_ELCSkillID);
 }
 
 ArgumentStack ELC::GetValidationFailureFeatID(ArgumentStack&&)
@@ -1974,11 +1942,7 @@ ArgumentStack ELC::GetValidationFailureFeatID(ArgumentStack&&)
         throw std::runtime_error("Called GetValidationFailureFeatID() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_ELCFeatID);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_ELCFeatID);
 }
 
 ArgumentStack ELC::GetValidationFailureSpellID(ArgumentStack&&)
@@ -1988,11 +1952,7 @@ ArgumentStack ELC::GetValidationFailureSpellID(ArgumentStack&&)
         throw std::runtime_error("Called GetValidationFailureSpellID() in an invalid context.");
     }
 
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack, g_plugin->m_ELCSpellID);
-
-    return stack;
+    return Services::Events::Arguments(g_plugin->m_ELCSpellID);
 }
 
 }

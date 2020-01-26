@@ -50,10 +50,8 @@ void Redis::RegisterWithNWScript()
 
                 s_results.emplace_back(ret);
 
-                Events::ArgumentStack st;
                 // We return the assigned opaque value. Ignore that this is an array index.
-                Events::InsertArgument(st, static_cast<int32_t>(s_results.size() - 1));
-                return st;
+                return Events::Arguments(static_cast<int32_t>(s_results.size() - 1));
             });
 
     // NWScript: Returns the last query result type as a int.
@@ -72,9 +70,7 @@ void Redis::RegisterWithNWScript()
                     LOG_ERROR("Result %d was not found. This is a error on your side.", resultId);
                 }
 
-                Events::ArgumentStack st;
-                Events::InsertArgument(st, type);
-                return st;
+                return Events::Arguments(type);
             });
 
     // NWScript: Get list length of result. Returns 0 if not a list.
@@ -95,9 +91,7 @@ void Redis::RegisterWithNWScript()
                               "This is a error on your side.", resultId);
                 }
 
-                Events::ArgumentStack st;
-                Events::InsertArgument(st, len);
-                return st;
+                return Events::Arguments(len);
             });
 
     // NWScript: Get array element as a new result.
@@ -123,9 +117,7 @@ void Redis::RegisterWithNWScript()
                               "This is a error on your side.", resultId, arrayIndex);
                 }
 
-                Events::ArgumentStack st;
-                Events::InsertArgument(st, newResultId);
-                return st;
+                return Events::Arguments(newResultId);
             });
 
     // NWScript: Get a result force-cast to string.
@@ -147,9 +139,7 @@ void Redis::RegisterWithNWScript()
                               "This is a error on your side.", resultId);
                 }
 
-                Events::ArgumentStack st;
-                Events::InsertArgument(st, ret);
-                return st;
+                return Events::Arguments(ret);
             });
 
     // NWScript: Get the last pubsub message.
@@ -157,10 +147,7 @@ void Redis::RegisterWithNWScript()
     GetServices()->m_events->RegisterEvent("GetPubSubData",
             [&](Events::ArgumentStack &&)
             {
-                Events::ArgumentStack st;
-                Events::InsertArgument(st, m_internal->m_last_pubsub_channel);
-                Events::InsertArgument(st, m_internal->m_last_pubsub_message);
-                return st;
+                return Events::Arguments(m_internal->m_last_pubsub_channel, m_internal->m_last_pubsub_message);
             });
 }
 

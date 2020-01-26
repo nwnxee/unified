@@ -1051,8 +1051,6 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
 
 ArgumentStack Race::SetRacialModifier(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     auto raceId = Services::Events::ExtractArgument<int>(args);
     auto raceMod = static_cast<RaceModifier>(Services::Events::ExtractArgument<int>(args));
     auto param1 = Services::Events::ExtractArgument<int>(args);
@@ -1061,17 +1059,14 @@ ArgumentStack Race::SetRacialModifier(ArgumentStack&& args)
 
     SetRaceModifier(raceId, raceMod, param1, param2, param3);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Race::GetParentRace(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     auto raceId = Services::Events::ExtractArgument<int>(args);
     auto parentRace = g_plugin->m_RaceParent[raceId] == RacialType::Invalid ? raceId : g_plugin->m_RaceParent[raceId];
-    Services::Events::InsertArgument(stack, parentRace);
-    return stack;
+    return Services::Events::Arguments(parentRace);
 }
 
 }

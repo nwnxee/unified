@@ -99,7 +99,6 @@ int32_t Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreatu
 
 ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     auto stealtherID = Services::Events::ExtractArgument<Types::ObjectID>(args);
     auto observerID = Services::Events::ExtractArgument<Types::ObjectID>(args);
     auto detectionVector = Services::Events::ExtractArgument<int>(args);
@@ -108,12 +107,11 @@ ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
 
     pPOS->Set(stealtherID, revealKey + Utils::ObjectIDToString(observerID), true); //store stealth to observer reveal map
     pPOS->Set(stealtherID, detectionKey + Utils::ObjectIDToString(observerID), detectionVector); //store the means through which detection happens
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     auto stealtherID = Services::Events::ExtractArgument<Types::ObjectID>(args);
     auto revealToPartyState = Services::Events::ExtractArgument<int>(args);
     auto detectionVector = Services::Events::ExtractArgument<int>(args);
@@ -122,7 +120,7 @@ ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
 
     pPOS->Set(stealtherID, revealKey + "PARTY", revealToPartyState, true); //store party reveal state
     pPOS->Set(stealtherID, detectionKey + "PARTY", detectionVector, true); //store the means through which detection happens
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }
