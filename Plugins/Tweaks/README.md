@@ -21,4 +21,3 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_DEAD_CREATURES_TRIGGER_ON_AREA_EXIT`: true or false
 * `NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS`: true or false
 * `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG`: true or false
-* `NWNX_TWEAKS_ASYNC_LOG_FLUSH`: true or false

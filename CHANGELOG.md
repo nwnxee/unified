@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Added
- - Tweaks: AsyncLogFlush to asynchronously flush the game log to disk
+ - Experimental: AsyncLogFlush to asynchronously flush the game log to disk
  - Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
 
 ##### New Plugins

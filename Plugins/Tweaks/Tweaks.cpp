@@ -13,7 +13,6 @@
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
 #include "Tweaks/PreserveActionsOnDMPossess.hpp"
 #include "Tweaks/FixGreaterSanctuaryBug.hpp"
-#include "Tweaks/AsyncLogFlush.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -130,12 +129,6 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Greater sanctuary bug fixed.");
         m_FixGreaterSanctuaryBug = std::make_unique<FixGreaterSanctuaryBug>(GetServices()->m_hooks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("ASYNC_LOG_FLUSH", false))
-    {
-        LOG_INFO("Game logs will be flushed asynchronously");
-        m_AsyncLogFlush = std::make_unique<AsyncLogFlush>(GetServices()->m_hooks.get(), GetServices()->m_tasks.get());
     }
 }
 

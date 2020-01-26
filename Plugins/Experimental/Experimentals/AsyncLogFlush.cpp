@@ -1,4 +1,4 @@
-#include "Tweaks/AsyncLogFlush.hpp"
+#include "Experimentals/AsyncLogFlush.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Tasks/Tasks.hpp"
@@ -6,7 +6,7 @@
 #include "API/CExoDebugInternal.hpp"
 #include "API/CExoFile.hpp"
 
-namespace Tweaks {
+namespace Experimental {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
