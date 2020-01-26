@@ -78,11 +78,6 @@ Events::ArgumentStack Events::Arguments(Args&&... args)
     return std::move(stack);
 }
 
-Events::ArgumentStack Events::NoArguments()
-{
-    return ArgumentStack();
-}
-
 template <typename T>
 T Events::ExtractArgument(ArgumentStack& arguments)
 {

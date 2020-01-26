@@ -77,8 +77,6 @@ public:
     template <typename T>
     static T ExtractArgument(ArgumentStack& arguments);
 
-    static ArgumentStack NoArguments();
-
 private: // Structures
     struct EventDataInternal
     {
