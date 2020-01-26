@@ -13,7 +13,6 @@ public:
 private:
     static void WriteToLogFileHook(bool, CExoDebugInternal*, CExoString*);
     static void WriteToErrorFileHook(bool, CExoDebugInternal*, CExoString*);
-    static void ExecuteCommandPrintLogEntry(bool, CNWVirtualMachineCommands*, int32_t, int32_t);
 };
 
 }

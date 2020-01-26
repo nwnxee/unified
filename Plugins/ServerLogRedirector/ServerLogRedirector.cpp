@@ -32,7 +32,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static bool m_WriteTimestampedLogEntry;
+static bool writeTimestampedLogEntry;
 
 ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
     : Plugin(params)
@@ -45,7 +45,7 @@ ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
         void, CExoDebugInternal*, CExoString*>(&WriteToErrorFileHook);
 
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands27ExecuteCommandPrintLogEntryEii,
-        int32_t>(&ExecuteCommandPrintLogEntry);
+        int32_t>(+[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t){ writeTimestampedLogEntry = before; });
 }
 
 ServerLogRedirector::~ServerLogRedirector()
@@ -56,7 +56,7 @@ inline std::string TrimMessage(CExoString* message)
 {
     std::string s = std::string(message->CStr());
 
-    if (m_WriteTimestampedLogEntry)
+    if (writeTimestampedLogEntry)
     {
         // Eat the auto-added timestamp.
         auto idxOfBracket = s.find_first_of(']');
@@ -83,11 +83,6 @@ void ServerLogRedirector::WriteToErrorFileHook(bool before, CExoDebugInternal*, 
         std::string str = TrimMessage(message);
         LOG_INFO("(Error) %s", str);
     }
-}
-
-void ServerLogRedirector::ExecuteCommandPrintLogEntry(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
-{
-    m_WriteTimestampedLogEntry = before;
 }
 
 }
