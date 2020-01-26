@@ -8,8 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Added
- - Experimental: AsyncLogFlush to asynchronously flush the game log to disk
- - Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
+- Events: Added OnUUIDCollision event to UUIDEvents
+- Experimental: AsyncLogFlush to asynchronously flush the game log to disk
+- Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
+
+
 
 ##### New Plugins
 N/A
@@ -21,6 +24,7 @@ N/A
 ### Changed
 - ELC: Updated for custom spellcaster changes
 - Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
+- Tweaks: added temporary fix for server freeze when learning a spell from a scroll (NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG)
 
 ### Deprecated
 - Creature: {Get|Set}{ClericDomain|WizardSpecialization}()

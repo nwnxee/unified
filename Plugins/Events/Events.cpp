@@ -28,6 +28,7 @@
 #include "Events/InputEvents.hpp"
 #include "Events/MaterialChangeEvents.hpp"
 #include "Events/ObjectEvents.hpp"
+#include "Events/UUIDEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -125,6 +126,7 @@ Events::Events(const Plugin::CreateParams& params)
     m_inputEvents       = std::make_unique<InputEvents>(hooker);
     m_matChangeEvents   = std::make_unique<MaterialChangeEvents>(hooker);
     m_objectEvents      = std::make_unique<ObjectEvents>(hooker);
+    m_uuidEvents        = std::make_unique<UUIDEvents>(hooker);
 }
 
 Events::~Events()

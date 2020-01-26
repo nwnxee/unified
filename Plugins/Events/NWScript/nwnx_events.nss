@@ -894,6 +894,20 @@ _______________________________________
     ACTIVE_PROPERTY_INDEX | int    |
 
 _______________________________________
+    ## UUID Collision Events
+    - NWNX_ON_UUID_COLLISION_BEFORE
+    - NWNX_ON_UUID_COLLISION_AFTER
+
+    `OBJECT_SELF` = The object that caused the UUID collision
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    UUID                  | string | The UUID
+
+    Note: To get the existing object with `UUID` you can use GetObjectByUUID(), be aware that this event runs before the
+          object is added to the world which means many functions (for example `GetArea(OBJECT_SELF)`) will not work.
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
