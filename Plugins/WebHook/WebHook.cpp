@@ -4,7 +4,6 @@
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Encoding.hpp"
-#include "../../Core/NWNXCore.hpp"
 #include <cmath>
 #include <sstream>
 #include <iomanip>
