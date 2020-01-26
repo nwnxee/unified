@@ -9,6 +9,10 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Added
 - Events: Added OnUUIDCollision event to UUIDEvents
+- Experimental: AsyncLogFlush to asynchronously flush the game log to disk
+- Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
+
+
 
 ##### New Plugins
 N/A
