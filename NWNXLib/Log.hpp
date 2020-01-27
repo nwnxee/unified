@@ -72,6 +72,8 @@ Channel::Enum GetLogLevel(const char* plugin);
 void SetLogLevel(const char* plugin, Channel::Enum logLevel);
 void SetPrintTimestamp(bool value);
 bool GetPrintTimestamp();
+void SetPrintDate(bool value);
+bool GetPrintDate();
 void SetPrintPlugin(bool value);
 bool GetPrintPlugin();
 void SetPrintSource(bool value);

@@ -27,7 +27,12 @@ void Trace(Channel::Enum channel, const char* plugin, const char* file, int line
     {
         time_t now = std::time(nullptr);
         tm* timeinfo = std::localtime(&now);
-        tfm::format(stream, "[%02d:%02d:%02d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+
+        if (GetPrintDate())
+            tfm::format(stream, "[%04d-%02d-%02d %02d:%02d:%02d] ", 1900 + timeinfo->tm_year,  1 + timeinfo->tm_mon,
+                    timeinfo->tm_mday, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+        else
+            tfm::format(stream, "[%02d:%02d:%02d] ", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     }
     if (GetPrintPlugin())
     {

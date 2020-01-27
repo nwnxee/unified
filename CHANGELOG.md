@@ -11,6 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 - Events: Added OnUUIDCollision event to UUIDEvents
 - Experimental: AsyncLogFlush to asynchronously flush the game log to disk
 - Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
+- Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled.
 
 ##### New Plugins
 N/A

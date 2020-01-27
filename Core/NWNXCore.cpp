@@ -443,6 +443,8 @@ void NWNXCore::InitialSetupCommands()
     {
         if (args.find("timestamp") != std::string::npos)
             Log::SetPrintTimestamp(args.find("notimestamp") == std::string::npos);
+        if (args.find("date") != std::string::npos)
+            Log::SetPrintDate(args.find("nodate") == std::string::npos);
         if (args.find("plugin") != std::string::npos)
             Log::SetPrintPlugin(args.find("noplugin") == std::string::npos);
         if (args.find("source") != std::string::npos)
@@ -451,8 +453,8 @@ void NWNXCore::InitialSetupCommands()
             Log::SetColorOutput(args.find("nocolor") == std::string::npos);
         if (args.find("force") != std::string::npos)
             Log::SetForceColor(args.find("noforce") == std::string::npos);
-        LOG_INFO("Log format updated: Timestamp:%s Plugin:%s Source:%s Color:%s Force:%s.",
-                 Log::GetPrintTimestamp(), Log::GetPrintPlugin(),
+        LOG_INFO("Log format updated: Timestamp:%s Date:%s Plugin:%s Source:%s Color:%s Force:%s.",
+                 Log::GetPrintTimestamp(), Log::GetPrintDate(), Log::GetPrintPlugin(),
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
 
@@ -519,6 +521,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
     Log::SetPrintTimestamp(g_core->m_coreServices->m_config->Get<bool>("LOG_TIMESTAMP", true));
+    Log::SetPrintDate(g_core->m_coreServices->m_config->Get<bool>("LOG_DATE", true));
     Log::SetPrintPlugin(g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true));
     Log::SetPrintSource(g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true));
