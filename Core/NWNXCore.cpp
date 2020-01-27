@@ -521,7 +521,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
     Log::SetPrintTimestamp(g_core->m_coreServices->m_config->Get<bool>("LOG_TIMESTAMP", true));
-    Log::SetPrintDate(g_core->m_coreServices->m_config->Get<bool>("LOG_DATE", true));
+    Log::SetPrintDate(g_core->m_coreServices->m_config->Get<bool>("LOG_DATE", false));
     Log::SetPrintPlugin(g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true));
     Log::SetPrintSource(g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true));
