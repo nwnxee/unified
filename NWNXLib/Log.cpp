@@ -13,6 +13,7 @@
 namespace NWNXLib::Log {
 
 static bool s_PrintTimestamp;
+static bool s_PrintDate;
 static bool s_PrintPlugin;
 static bool s_PrintSource;
 static bool s_ColorOutput;
@@ -25,6 +26,14 @@ void SetPrintTimestamp(bool value)
 bool GetPrintTimestamp()
 {
     return s_PrintTimestamp;
+}
+void SetPrintDate(bool value)
+{
+    s_PrintDate = value;
+}
+bool GetPrintDate()
+{
+    return s_PrintDate;
 }
 void SetPrintPlugin(bool value)
 {

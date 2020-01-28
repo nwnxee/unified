@@ -19,6 +19,7 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY` | 0-1 | 0 | When enabled, the UserDirectory/nwnx folder will be cleaned on startup, meaning all contents will be deleted.
 | `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY` | int | 70000000 | Sets the resman priority of the UserDirectory/nwnx folder.
 | `NWNX_CORE_LOG_TIMESTAMP` | 0-1 | 1 | Set whether to show timestamp in logs printed by NWNX.
+| `NWNX_CORE_LOG_DATE` | 0-1 | 0 | Set whether to show date(Y-M-D) in logs printed by NWNX. Timestamps must be enabled.
 | `NWNX_CORE_LOG_PLUGIN` | 0-1 | 1 | Set whether to show plugin name in logs printed by NWNX.
 | `NWNX_CORE_LOG_SOURCE` | 0-1 | 1 | Set whether to show source code location in logs printed by NWNX.
 | `NWNX_CORE_LOG_COLOR` | 0-1 | 1 | Set whether to show logs printed by NWNX in color (only when printing to a TTY).
