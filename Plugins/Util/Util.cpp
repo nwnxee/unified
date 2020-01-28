@@ -81,6 +81,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetNSSContents);
     REGISTER(AddNSSFile);
     REGISTER(RemoveNWNXResourceFile);
+    REGISTER(SetInstructionLimit);
 
 #undef REGISTER
 
@@ -476,6 +477,19 @@ ArgumentStack Util::RemoveNWNXResourceFile(ArgumentStack&& args)
     retVal = Globals::ExoResMan()->RemoveFile(exoFileName, type);
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
+{
+    const static uint32_t defaultInstructionLimit = Globals::VirtualMachine()->m_nInstructionLimit;
+    const auto limit = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (limit < 0)
+        Globals::VirtualMachine()->m_nInstructionLimit = defaultInstructionLimit;
+    else
+        Globals::VirtualMachine()->m_nInstructionLimit = limit;
+
+    return Services::Events::Arguments();
 }
 
 }
