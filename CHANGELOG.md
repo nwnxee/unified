@@ -19,6 +19,7 @@ N/A
 ##### New NWScript Functions
 - Player: SetResManOverride()
 - Creature: {Get|Set}{Domain|Specialization}()
+- Util: SetInstructionLimit()
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
