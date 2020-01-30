@@ -17,7 +17,7 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-ItemChargesCost::ItemChargesCost(Services::HooksProxy* hooker, int mode)
+ItemChargesCost::ItemChargesCost(Services::HooksProxy* hooker, int mode, bool exclusive)
 {
     /*
     TODO:
@@ -37,9 +37,17 @@ ItemChargesCost::ItemChargesCost(Services::HooksProxy* hooker, int mode)
         LOG_INFO("Unknown value for NWNX_TWEAKS_ITEM_CHARGES_COST.");
         return;
     }
-
-    hooker->RequestExclusiveHook<Functions::_ZN8CNWSItem18CalculateBaseCostsEv>
-        (&CNWSItem__CalculateBaseCosts_hook);
+    
+    if (exclusive)
+    {
+        hooker->RequestExclusiveHook<Functions::_ZN8CNWSItem18CalculateBaseCostsEv>
+            (&CNWSItem__CalculateBaseCosts_hook);
+    }
+    else
+    {
+        hooker->RequestSharedHook<Functions::_ZN8CNWSItem18CalculateBaseCostsEv, void>
+            (&CNWSItem__CalculateBaseCosts_sharedhook);
+    }
 }
 
 void ItemChargesCost::CNWSItem__CalculateBaseCosts_hook(CNWSItem* pThis)
@@ -139,11 +147,36 @@ void ItemChargesCost::CNWSItem__CalculateBaseCosts_hook(CNWSItem* pThis)
     pThis->m_nUnidentifiedCost = fBaseCost * fCostMultiplier;
     fPositiveCost = (fPositiveCost * fPositiveCost * 1000.0);
     fNegativeCost = (fNegativeCost * fNegativeCost * 1000.0); //Squaring makes it positive
-    pThis->m_nBaseUnitCost = fBaseCost + fPositiveCost - fNegativeCost + fActivePropertiesCost;
-    if (pThis->m_nBaseUnitCost < 0)
+    float fItemCost = fBaseCost + fPositiveCost - fNegativeCost + fActivePropertiesCost;
+    if (fItemCost < 0)
         pThis->m_nBaseUnitCost = 0;
     else
-        pThis->m_nBaseUnitCost *= fCostMultiplier;
+        pThis->m_nBaseUnitCost = fItemCost * fCostMultiplier;
+}
+
+void ItemChargesCost::CNWSItem__CalculateBaseCosts_sharedhook(bool before, CNWSItem* pThis)
+{
+    if (before)
+    {
+        s_savedCharges = pThis->m_nNumCharges;
+        switch (s_chargesCostBehavior)
+        {
+        case 1:
+            pThis->m_nNumCharges = std::min(pThis->m_nNumCharges * 5, 250);
+            break;
+        case 2:
+            pThis->m_nNumCharges = std::min(pThis->m_nNumCharges, 50) * 5 + std::max(pThis->m_nNumCharges - 50, 0) * 1.25;
+            break;
+        case 3:
+            pThis->m_nNumCharges *= 5;
+            break;
+        }
+    }
+    else
+    {
+        pThis->m_nNumCharges = s_savedCharges;
+    }
+
 }
 
 }
