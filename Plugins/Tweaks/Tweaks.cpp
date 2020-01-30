@@ -139,11 +139,11 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         m_FixScrollLearningBug = std::make_unique<FixScrollLearningBug>(GetServices()->m_hooks.get());
     }
 
-    if (GetServices()->m_config->Get<bool>("ITEM_CHARGES_COST", false))
+    if (auto mode = GetServices()->m_config->Get<int>("ITEM_CHARGES_COST_MODE", 0))
     {
         LOG_INFO("Changing cost for items with charges.");
         m_ItemChargesCost = std::make_unique<ItemChargesCost>(GetServices()->m_hooks.get(),
-            GetServices()->m_config->Get<int>("ITEM_CHARGES_COST_MODE", 0),
+            mode,
             GetServices()->m_config->Get<bool>("ITEM_CHARGES_COST_EXCLUSIVE", false));
     }
 }

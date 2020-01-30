@@ -27,14 +27,9 @@ ItemChargesCost::ItemChargesCost(Services::HooksProxy* hooker, int mode, bool ex
     */
 
     s_chargesCostBehavior = mode;
-    if (mode < 1)
+    if (mode < 1 || mode > 3)
     {
-        LOG_INFO("NWNX_TWEAKS_ITEM_CHARGES_COST not set.");
-        return;
-    }
-    else if (mode > 3)
-    {
-        LOG_INFO("Unknown value for NWNX_TWEAKS_ITEM_CHARGES_COST.");
+        LOG_INFO("Unknown value for NWNX_TWEAKS_ITEM_CHARGES_COST_MODE.");
         return;
     }
     
