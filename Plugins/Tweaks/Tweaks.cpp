@@ -14,6 +14,7 @@
 #include "Tweaks/PreserveActionsOnDMPossess.hpp"
 #include "Tweaks/FixGreaterSanctuaryBug.hpp"
 #include "Tweaks/FixScrollLearningBug.hpp"
+#include "Tweaks/ItemChargesCost.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -136,6 +137,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Scroll learning freeze bug fixed.");
         m_FixScrollLearningBug = std::make_unique<FixScrollLearningBug>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("ITEM_CHARGES_COST"))
+    {
+        LOG_INFO("Changing cost for items with charges.");
+        m_ItemChargesCost = std::make_unique<ItemChargesCost>(GetServices()->m_hooks.get(), GetServices()->m_config->Get<int>("ITEM_CHARGES_COST_MODE", 0));
     }
 }
 
