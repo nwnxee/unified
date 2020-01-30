@@ -1,4 +1,4 @@
-#include "Experimentals/OptimizeGOA.hpp"
+#include "Optimizations/GameObjectLookup.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Tasks/Tasks.hpp"
@@ -7,12 +7,12 @@
 #include "API/CGameObject.hpp"
 #include "API/CGameObjectArray.hpp"
 
-namespace Experimental {
+namespace Optimizations {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-OptimizeGOA::OptimizeGOA(Services::HooksProxy* hooker)
+GameObjectLookup::GameObjectLookup(Services::HooksProxy* hooker)
 {
     hooker->RequestSharedHook<API::Functions::_ZN16CGameObjectArrayC1Ei, void>(
     +[](bool before, CGameObjectArray* pThis)
@@ -25,42 +25,42 @@ OptimizeGOA::OptimizeGOA(Services::HooksProxy* hooker)
             pThis->m_pArray = nullptr;
             pThis->m_nArraySize = 0;
             pThis->m_nGameObjectCache = 0;
-            OptimizeGOA::Initialize(pThis->m_nLogGameObjectCache);
+            GameObjectLookup::Initialize(pThis->m_nLogGameObjectCache);
         }
     });
     hooker->RequestSharedHook<API::Functions::_ZN16CGameObjectArrayD1Ev, void>(
     +[](bool before, CGameObjectArray*)
     {
         if (!before)
-            OptimizeGOA::Finalize();
+            GameObjectLookup::Finalize();
     });
     hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray14AddObjectAtPosEjP11CGameObject>
-        (OptimizeGOA::AddObjectAtPos);
+        (GameObjectLookup::AddObjectAtPos);
     hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray17AddExternalObjectERjP11CGameObjecti>
-        (OptimizeGOA::AddExternalObject);
+        (GameObjectLookup::AddExternalObject);
     hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray17AddInternalObjectERjP11CGameObjecti>
-        (OptimizeGOA::AddInternalObject);
+        (GameObjectLookup::AddInternalObject);
     hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray6DeleteEjPP11CGameObject>
-        (OptimizeGOA::Delete);
+        (GameObjectLookup::Delete);
     hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray6DeleteEj>
-        (+[](void* p, uint32_t id) -> uint8_t { return OptimizeGOA::Delete(p, id, nullptr); });
+        (+[](void* p, uint32_t id) -> uint8_t { return GameObjectLookup::Delete(p, id, nullptr); });
     hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray13GetGameObjectEjPP11CGameObject>
-        (OptimizeGOA::GetGameObject);
+        (GameObjectLookup::GetGameObject);
 }
 
 // DO NOT REARRANGE
-CGameObject*              OptimizeGOA::m_pCacheObjects[L0CacheSize];
-uint32_t                  OptimizeGOA::m_nCacheIds[L0CacheSize];
-uint32_t                  OptimizeGOA::m_nArraySize;
-uint32_t                  OptimizeGOA::m_nNextObjectArrayID[2];
-uint32_t                  OptimizeGOA::m_nNextCharArrayID[2];
-OptimizeGOA::ObjectNode*  OptimizeGOA::m_pArray;
-uint8_t*                  OptimizeGOA::m_pArrayUnaligned;
+CGameObject*              GameObjectLookup::m_pCacheObjects[L0CacheSize];
+uint32_t                  GameObjectLookup::m_nCacheIds[L0CacheSize];
+uint32_t                  GameObjectLookup::m_nArraySize;
+uint32_t                  GameObjectLookup::m_nNextObjectArrayID[2];
+uint32_t                  GameObjectLookup::m_nNextCharArrayID[2];
+GameObjectLookup::ObjectNode*  GameObjectLookup::m_pArray;
+uint8_t*                  GameObjectLookup::m_pArrayUnaligned;
 
 enum { InternalObject = 0, ExternalObject = 1};
 enum { Success = 0, BadId = 1, NullGameObject = 4 };
 
-void OptimizeGOA::Initialize(uint32_t nLogGameObjectCache)
+void GameObjectLookup::Initialize(uint32_t nLogGameObjectCache)
 {
     m_nArraySize = (1 << nLogGameObjectCache);
 
@@ -86,7 +86,7 @@ void OptimizeGOA::Initialize(uint32_t nLogGameObjectCache)
 }
 
 
-void OptimizeGOA::Finalize()
+void GameObjectLookup::Finalize()
 {
     for (uint32_t index = 0; index < m_nArraySize; index++)
     {
@@ -96,23 +96,23 @@ void OptimizeGOA::Finalize()
     delete[] m_pArrayUnaligned;
 }
 
-uint32_t OptimizeGOA::GetNextID(void*, BOOL bInternal, BOOL bCharacter)
+uint32_t GameObjectLookup::GetNextID(void*, BOOL bInternal, BOOL bCharacter)
 {
     int type = bInternal ? InternalObject : ExternalObject;
     return bCharacter ? m_nNextCharArrayID[type]-- : m_nNextObjectArrayID[type]++;
 }
-void OptimizeGOA::SetNextObjectArrayID(void*, int32_t nList, uint32_t nVal)
+void GameObjectLookup::SetNextObjectArrayID(void*, int32_t nList, uint32_t nVal)
 {
     if (nList == ExternalObject) nVal |= 0x80000000;
     m_nNextObjectArrayID[nList] = nVal;
 }
-void OptimizeGOA::SetNextCharArrayID(void*, int32_t nList, uint32_t nVal)
+void GameObjectLookup::SetNextCharArrayID(void*, int32_t nList, uint32_t nVal)
 {
     if (nList == ExternalObject) nVal |= 0x80000000;
     m_nNextCharArrayID[nList] = nVal;
 }
 
-uint8_t OptimizeGOA::AddObjectAtPos(void*, uint32_t id, CGameObject *ptr)
+uint8_t GameObjectLookup::AddObjectAtPos(void*, uint32_t id, CGameObject *ptr)
 {
     if (!ptr)
         return NullGameObject;
@@ -145,7 +145,7 @@ uint8_t OptimizeGOA::AddObjectAtPos(void*, uint32_t id, CGameObject *ptr)
 }
 
 
-uint8_t OptimizeGOA::AddExternalObject(void*, uint32_t &id, CGameObject *ptr)
+uint8_t GameObjectLookup::AddExternalObject(void*, uint32_t &id, CGameObject *ptr)
 {
     id |= 0x80000000;
 
@@ -165,13 +165,13 @@ uint8_t OptimizeGOA::AddExternalObject(void*, uint32_t &id, CGameObject *ptr)
 }
 
 
-uint8_t OptimizeGOA::AddInternalObject(void*, uint32_t &id, CGameObject *ptr, bool bCharacter)
+uint8_t GameObjectLookup::AddInternalObject(void*, uint32_t &id, CGameObject *ptr, bool bCharacter)
 {
     return AddObjectAtPos(nullptr, (id = GetNextID(nullptr, true, bCharacter)), ptr);
 }
 
 
-uint8_t OptimizeGOA::Delete(void*, uint32_t id, CGameObject** ptr)
+uint8_t GameObjectLookup::Delete(void*, uint32_t id, CGameObject** ptr)
 {
     if (id == Constants::OBJECT_INVALID)
         return BadId;
@@ -243,7 +243,7 @@ uint8_t OptimizeGOA::Delete(void*, uint32_t id, CGameObject** ptr)
 
 #pragma GCC optimize ("unroll-loops")
 #define PREFETCH(a) __builtin_prefetch(a, 0, 0)
-uint8_t OptimizeGOA::GetGameObject(void*, uint32_t id, CGameObject** ptr)
+uint8_t GameObjectLookup::GetGameObject(void*, uint32_t id, CGameObject** ptr)
 {
     // This function needs to be AS FAST AS POSSIBLE, so be very careful what you add to it.
     // The optimization should target the average case where the object does exist.

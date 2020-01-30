@@ -15,5 +15,3 @@ The following environmental variable is required to load the plugin:
 | Variable Name | Value | Notes |
 | -------------   | :----: | ------------------------------------ |
 | `NWNX_EXPERIMENTAL_SUPPRESS_PLAYER_LOGIN_INFO` | true/false | Suppresses the playerlist and player login/logout messages for all players except DMs. This functionality is not compatible with NWNX_Rename. |
-| `NWNX_EXPERIMENTAL_ASYNC_LOG_FLUSH` | true/false | Flushes the game log on an async thread, potentially improving performance |
-| `NWNX_EXPERIMENTAL_OPTIMIZE_GAMEOBJECTARRAY` | true/false | Optimizes object lookup code, improving performance |

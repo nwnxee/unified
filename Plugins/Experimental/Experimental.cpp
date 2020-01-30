@@ -1,7 +1,5 @@
 #include "Experimental.hpp"
 #include "Experimentals/SuppressPlayerLoginInfo.hpp"
-#include "Experimentals/AsyncLogFlush.hpp"
-#include "Experimentals/OptimizeGOA.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -38,18 +36,6 @@ Experimental::Experimental(const Plugin::CreateParams& params)
     {
         LOG_INFO("EXPERIMENTAL: Suppressing playerlist and player login/logout messages for non DMs.");
         m_SuppressPlayerLoginInfo = std::make_unique<SuppressPlayerLoginInfo>(GetServices()->m_hooks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("ASYNC_LOG_FLUSH", false))
-    {
-        LOG_INFO("Game logs will be flushed asynchronously");
-        m_AsyncLogFlush = std::make_unique<AsyncLogFlush>(GetServices()->m_hooks.get(), GetServices()->m_tasks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("OPTIMIZE_GAMEOBJECTARRAY", false))
-    {
-        LOG_INFO("Using optimial CGameObjectArray implementation");
-        m_OptimizeGOA = std::make_unique<OptimizeGOA>(GetServices()->m_hooks.get());
     }
 }
 

@@ -3,12 +3,12 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 
-namespace Experimental {
+namespace Optimizations {
 
-class OptimizeGOA
+class GameObjectLookup
 {
 public:
-    OptimizeGOA(NWNXLib::Services::HooksProxy* hooker);
+    GameObjectLookup(NWNXLib::Services::HooksProxy* hooker);
 
     static constexpr uint32_t ObjectsInNode = 4;
     static constexpr uint32_t L0CacheSize = 5;

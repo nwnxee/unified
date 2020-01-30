@@ -3,7 +3,7 @@
 #include "API/Types.hpp"
 #include "Common.hpp"
 
-namespace Experimental {
+namespace Optimizations {
 
 class AsyncLogFlush
 {
