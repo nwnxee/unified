@@ -1,6 +1,7 @@
 #include "Experimental.hpp"
 #include "Experimentals/SuppressPlayerLoginInfo.hpp"
 #include "Experimentals/AsyncLogFlush.hpp"
+#include "Experimentals/OptimizeGOA.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -24,8 +25,8 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 {
-g_plugin = new Experimental::Experimental(params);
-return g_plugin;
+    g_plugin = new Experimental::Experimental(params);
+    return g_plugin;
 }
 
 namespace Experimental {
@@ -43,6 +44,12 @@ Experimental::Experimental(const Plugin::CreateParams& params)
     {
         LOG_INFO("Game logs will be flushed asynchronously");
         m_AsyncLogFlush = std::make_unique<AsyncLogFlush>(GetServices()->m_hooks.get(), GetServices()->m_tasks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("OPTIMIZE_GAMEOBJECTARRAY", false))
+    {
+        LOG_INFO("Using optimial CGameObjectArray implementation");
+        m_OptimizeGOA = std::make_unique<OptimizeGOA>(GetServices()->m_hooks.get());
     }
 }
 
