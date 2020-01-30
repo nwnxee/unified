@@ -15,7 +15,8 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 ##### New Plugins
 - Optimizations: Tweaks that (potentially) improve performance
     - AsyncLogFlush to asynchronously flush the game log to disk
-    - OptimizeGOA to speed up ObjectID to pointer lookups
+    - GameObjectLookup to speed up ObjectID to pointer lookups
+    - ObjectTagLookup to speed GetObjectByTag() and similar functions
 
 ##### New NWScript Functions
 - Player: SetResManOverride()
