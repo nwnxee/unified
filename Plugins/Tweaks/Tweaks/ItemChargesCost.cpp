@@ -22,13 +22,6 @@ int ItemChargesCost::s_chargesCostBehavior = 0;
 
 ItemChargesCost::ItemChargesCost(Services::HooksProxy* hooker, int mode)
 {
-    /*
-    TODO:
-    -Changelog
-    -Documentation
-    -Call nwscript from env var
-    */
-
     s_chargesCostBehavior = mode;
     if (mode < 1 || mode > 3)
     {
