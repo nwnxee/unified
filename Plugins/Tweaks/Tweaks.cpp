@@ -143,8 +143,7 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Changing cost for items with charges.");
         m_ItemChargesCost = std::make_unique<ItemChargesCost>(GetServices()->m_hooks.get(),
-            mode,
-            GetServices()->m_config->Get<bool>("ITEM_CHARGES_COST_EXCLUSIVE", false));
+            mode);
     }
 }
 

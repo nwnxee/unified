@@ -9,7 +9,7 @@ namespace Tweaks {
 class ItemChargesCost
 {
 public:
-    ItemChargesCost(NWNXLib::Services::HooksProxy* hooker, int mode, bool exclusive);
+    ItemChargesCost(NWNXLib::Services::HooksProxy* hooker, int mode);
 
 private:
     static int s_chargesCostBehavior;
