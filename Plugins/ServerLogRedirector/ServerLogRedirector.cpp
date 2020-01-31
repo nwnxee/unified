@@ -1,6 +1,4 @@
 #include "ServerLogRedirector.hpp"
-#include "API/Version.hpp"
-#include "API/Functions.hpp"
 #include "API/CExoString.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
@@ -34,6 +32,8 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
+static bool printString;
+
 ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
     : Plugin(params)
 {
@@ -43,6 +43,9 @@ ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
 
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CExoDebugInternal16WriteToErrorFileERK10CExoString,
         void, CExoDebugInternal*, CExoString*>(&WriteToErrorFileHook);
+
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
+        int32_t>(+[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t){ printString = before; });
 }
 
 ServerLogRedirector::~ServerLogRedirector()
@@ -53,10 +56,13 @@ inline std::string TrimMessage(CExoString* message)
 {
     std::string s = std::string(message->CStr());
 
-    // Eat the auto-added timestamp.
-    auto idxOfBracket = s.find_first_of(']');
-    if (idxOfBracket != std::string::npos)
-        s.erase(0, idxOfBracket + 1);
+    if (!printString)
+    {
+        // Eat the auto-added timestamp.
+        auto idxOfBracket = s.find_first_of(']');
+        if (idxOfBracket != std::string::npos)
+            s.erase(0, idxOfBracket + 1);
+    }
 
     return Utils::trim(s);
 }

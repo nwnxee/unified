@@ -130,7 +130,6 @@ CNWSPlayer *Player::player(ArgumentStack& args)
 
 ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto placeableId = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -146,12 +145,11 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -163,7 +161,7 @@ ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
@@ -197,7 +195,6 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
         bHandlePlayerToServerInputCancelGuiTimingEventHook = true;
     }
 
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto seconds = Services::Events::ExtractArgument<float>(args);
@@ -217,12 +214,11 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
@@ -234,10 +230,9 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
         {
             LOG_ERROR("Unable to get CNWSMessage");
         }
-
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
@@ -259,8 +254,6 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
         pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect);
     }
 
-    ArgumentStack stack;
-
     if (auto *pPlayer = player(args))
     {
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
@@ -268,7 +261,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
         {
             LOG_ERROR("No creature object found for Player ID %x, oidNWSObject %x",
                 pPlayer->m_oidPCObject, pPlayer->m_oidNWSObject);
-            return stack;
+            return Services::Events::Arguments();
         }
 
         const auto bSetCap = Services::Events::ExtractArgument<int32_t>(args);
@@ -297,13 +290,11 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 
         }
     }
-
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     CNWSQuickbarButton qbs;
     if (auto *pPlayer = player(args))
     {
@@ -317,25 +308,26 @@ ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
         qbs = pCreature->m_pQuickbarButton[slot];
     }
 
-    Services::Events::InsertArgument(stack, (Types::ObjectID)qbs.m_oidItem);
-    Services::Events::InsertArgument(stack, (Types::ObjectID)qbs.m_oidSecondaryItem);
-    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nObjectType);
-    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nMultiClass);
-    Services::Events::InsertArgument(stack, std::string(qbs.m_cResRef.GetResRefStr()));
-    Services::Events::InsertArgument(stack, std::string(qbs.m_sCommandLabel.CStr()));
-    Services::Events::InsertArgument(stack, std::string(qbs.m_sCommandLine.CStr()));
-    Services::Events::InsertArgument(stack, std::string(qbs.m_sToolTip.CStr()));
-    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nINTParam1);
-    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nMetaType);
-    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nDomainLevel);
-    Services::Events::InsertArgument(stack, (int32_t)qbs.m_nAssociateType);
-    Services::Events::InsertArgument(stack, (Types::ObjectID)qbs.m_oidAssociate);
-    return stack;
+    return Services::Events::Arguments
+    (
+        (Types::ObjectID)qbs.m_oidItem,
+        (Types::ObjectID)qbs.m_oidSecondaryItem,
+        (int32_t)qbs.m_nObjectType,
+        (int32_t)qbs.m_nMultiClass,
+        std::string(qbs.m_cResRef.GetResRefStr()),
+        std::string(qbs.m_sCommandLabel.CStr()),
+        std::string(qbs.m_sCommandLine.CStr()),
+        std::string(qbs.m_sToolTip.CStr()),
+        (int32_t)qbs.m_nINTParam1,
+        (int32_t)qbs.m_nMetaType,
+        (int32_t)qbs.m_nDomainLevel,
+        (int32_t)qbs.m_nAssociateType,
+        (Types::ObjectID)qbs.m_oidAssociate
+    );
 }
 
 ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         auto slot = Services::Events::ExtractArgument<int32_t>(args);
@@ -363,22 +355,21 @@ ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         pMessage->SendServerToPlayerGuiQuickbar_SetButton(pPlayer, slot, 0);
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::GetBicFileName(ArgumentStack&& args)
 {
-    ArgumentStack stack;
+    std::string retVal;
     if (auto *pPlayer = player(args))
     {
-        Services::Events::InsertArgument(stack, std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength()));
+        retVal = std::string(pPlayer->m_resFileName.GetResRef(), pPlayer->m_resFileName.GetLength());
     }
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         Vector pos;
@@ -395,12 +386,11 @@ ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
             pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::ChangeBackgroundMusic(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
@@ -416,12 +406,11 @@ ArgumentStack Player::ChangeBackgroundMusic(ArgumentStack&& args)
             pMessage->SendServerToPlayerAmbientMusicChangeTrack(oidPlayer, day, track);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::PlayBackgroundMusic(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
@@ -434,12 +423,11 @@ ArgumentStack Player::PlayBackgroundMusic(ArgumentStack&& args)
             pMessage->SendServerToPlayerAmbientMusicPlay(oidPlayer, play);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::ChangeBattleMusic(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
@@ -454,12 +442,11 @@ ArgumentStack Player::ChangeBattleMusic(ArgumentStack&& args)
             pMessage->SendServerToPlayerAmbientBattleMusicChange(oidPlayer, track);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::PlayBattleMusic(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto oidPlayer = pPlayer->m_nPlayerID;
@@ -472,12 +459,11 @@ ArgumentStack Player::PlayBattleMusic(ArgumentStack&& args)
             pMessage->SendServerToPlayerAmbientBattleMusicPlay(oidPlayer, play);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::PlaySound(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto playerID = pPlayer->m_nPlayerID;
@@ -497,12 +483,11 @@ ArgumentStack Player::PlaySound(ArgumentStack&& args)
             pMessage->SendServerToPlayerAIActionPlaySound(playerID, oidTarget, sound.c_str());
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto oidPlaceable = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -527,7 +512,7 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
             }
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
@@ -561,8 +546,6 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
         bAIActionRestHook = true;
     }
 
-    ArgumentStack stack;
-
     if (auto *pPlayer = player(args))
     {
         auto duration = Services::Events::ExtractArgument<int32_t>(args);
@@ -577,12 +560,11 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::ApplyInstantVisualEffectToObject(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -609,12 +591,11 @@ ArgumentStack Player::ApplyInstantVisualEffectToObject(ArgumentStack&& args)
                     0.0f);                        // fDuration
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::UpdateCharacterSheet(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         const auto charSheet = pPlayer->m_pCharSheetGUI;
@@ -626,13 +607,11 @@ ArgumentStack Player::UpdateCharacterSheet(ArgumentStack&& args)
                 pMessage->WriteGameObjUpdate_CharacterSheet(pPlayer, msg);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::OpenInventory(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pPlayer = player(args))
     {
         auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -655,12 +634,11 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::GetAreaExplorationState(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string encString = "";
 
     if (auto *pPlayer = player(args))
@@ -689,14 +667,11 @@ ArgumentStack Player::GetAreaExplorationState(ArgumentStack&& args)
             }
         }
     }
-    Services::Events::InsertArgument(stack, encString);
-    return stack;
+    return Services::Events::Arguments(encString);
 }
 
 ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pPlayer = player(args))
     {
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
@@ -725,7 +700,7 @@ ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
             }
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
@@ -748,8 +723,6 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
         bAIActionRestHook = true;
     }
 
-    ArgumentStack stack;
-
     if (auto *pPlayer = player(args))
     {
         auto animation = Services::Events::ExtractArgument<int32_t>(args);
@@ -764,8 +737,8 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
         }
     }
 
-    return stack;
-    }
+    return Services::Events::Arguments();
+}
 
 
 ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
@@ -811,8 +784,6 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
         bSetObjectVisualTransformOverrideHook = true;
     }
-
-    ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
     {
@@ -895,7 +866,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
@@ -947,7 +918,6 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 
         bApplyLoopingVisualEffectToObjectHook = true;
     }
-    ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
     {
@@ -995,7 +965,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
             }
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
@@ -1038,7 +1008,6 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
 
         bSetPlaceableNameOverrideHook = true;
     }
-    ArgumentStack stack;
 
     if (auto *pPlayer = player(args))
     {
@@ -1057,12 +1026,11 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                                                    "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retval = -1;
 
     if (auto *pPlayer = player(args))
@@ -1088,8 +1056,7 @@ ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
@@ -1153,7 +1120,6 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
         bSetPersistentLocationHook = true;
     }
 
-    ArgumentStack stack;
     const auto sCDKeyOrCommunityName = Services::Events::ExtractArgument<std::string>(args);
     const auto sBicFileName = Services::Events::ExtractArgument<std::string>(args);
     const auto wpOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -1162,12 +1128,11 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
     std::string sKey = sCDKeyOrCommunityName + "!" + sBicFileName;
     g_plugin->m_PersistentLocationWP[sKey] = std::make_pair(wpOid, bFirstConnectOnly);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::UpdateItemName(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlayer = player(args))
     {
         auto oidItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -1181,12 +1146,11 @@ ArgumentStack Player::UpdateItemName(ArgumentStack&& args)
             pMessage->SendServerToPlayerUpdateItemName(pPlayer, pItem);
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Player::PossessCreature(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     const auto possessorId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto possessedId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto bMindImmune = Services::Events::ExtractArgument<int>(args);
@@ -1197,35 +1161,30 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
     if (!pPossessor || !pPossessor->m_bPlayerCharacter)
     {
         LOG_ERROR("Attempt to possess a creature with an invalid possessor.");
-        Services::Events::InsertArgument(stack, 0);
-        return stack;
+        return Services::Events::Arguments(0);
     }
     auto *pPossessed = pServer->GetCreatureByGameObjectID(possessedId);
     if (!pPossessed || pPossessed->m_bPlayerCharacter)
     {
         LOG_ERROR("Attempt to possess an invalid creature.");
-        Services::Events::InsertArgument(stack, 0);
-        return stack;
+        return Services::Events::Arguments(0);
     }
     if (pPossessor->m_oidArea != pPossessed->m_oidArea)
     {
         LOG_ERROR("Attempt to possess a creature not in the current area.");
-        Services::Events::InsertArgument(stack, 0);
-        return stack;
+        return Services::Events::Arguments(0);
     }
     if (pServer->GetIsControlledByPlayer(possessedId))
     {
         LOG_ERROR("Attempt to possess a creature already possessed.");
-        Services::Events::InsertArgument(stack, 0);
-        return stack;
+        return Services::Events::Arguments(0);
     }
     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
     auto possessedOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
     if (possessedOidPOS)
     {
         LOG_ERROR("Attempt to possess a creature while already possessing.");
-        Services::Events::InsertArgument(stack, 0);
-        return stack;
+        return Services::Events::Arguments(0);
     }
     static NWNXLib::Hooking::FunctionHook* pUnsummonMyselfHook;
     static NWNXLib::Hooking::FunctionHook* pPossessFamiliarHook;
@@ -1325,13 +1284,11 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
             }
         }
     }
-    Services::Events::InsertArgument(stack, 1);
-    return stack;
+    return Services::Events::Arguments(1);
 }
 
 ArgumentStack Player::GetPlatformId(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t id = 0;
     if (auto *pPlayer = player(args))
     {
@@ -1339,13 +1296,11 @@ ArgumentStack Player::GetPlatformId(ArgumentStack&& args)
         if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
             id = pPlayerInfo->m_nPlatformId;
     }
-    Services::Events::InsertArgument(stack, id);
-    return stack;
+    return Services::Events::Arguments(id);
 }
 
 ArgumentStack Player::GetLanguage(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t id = 0;
     if (auto *pPlayer = player(args))
     {
@@ -1353,14 +1308,11 @@ ArgumentStack Player::GetLanguage(ArgumentStack&& args)
         if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
             id = pPlayerInfo->m_nPlayerLanguage;
     }
-    Services::Events::InsertArgument(stack, id);
-    return stack;
+    return Services::Events::Arguments(id);
 }
 
 ArgumentStack Player::SetResManOverride(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pPlayer = player(args))
     {
         const auto resType = Services::Events::ExtractArgument<int32_t>(args);
@@ -1381,7 +1333,7 @@ ArgumentStack Player::SetResManOverride(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }

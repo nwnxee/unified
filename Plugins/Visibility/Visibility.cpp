@@ -111,23 +111,17 @@ int32_t Visibility::GetPersonalOverride(Types::ObjectID playerId, Types::ObjectI
 
 ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalOverride(targetId) :
                                                                GetPersonalOverride(playerId, targetId);
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto override = Services::Events::ExtractArgument<int32_t>(args);
@@ -148,7 +142,7 @@ ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
         g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, override);
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }

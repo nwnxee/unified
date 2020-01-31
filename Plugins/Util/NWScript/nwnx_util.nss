@@ -148,6 +148,10 @@ int NWNX_Util_AddNSSFile(string sFileName, string sContents);
 /// @return TRUE on success.
 int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType);
 
+/// @brief Set the NWScript instruction limit
+/// @param nInstructionLimit The new limit or -1 to reset to default.
+void NWNX_Util_SetInstructionLimit(int nInstructionLimit);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -338,4 +342,12 @@ int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetInstructionLimit(int nInstructionLimit)
+{
+    string sFunc = "SetInstructionLimit";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructionLimit);
+    NWNX_CallFunction(NWNX_Util, sFunc);
 }

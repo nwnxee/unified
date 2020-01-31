@@ -141,8 +141,6 @@ int32_t Feedback::GetPersonalState(Types::ObjectID playerId, int32_t messageType
 
 ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
@@ -150,15 +148,11 @@ ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalState(messageType, messageId) :
                                                                GetPersonalState(playerId, messageType, messageId);
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
@@ -196,14 +190,11 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
             g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state, true);
         }
     }
-
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Feedback::SetFeedbackMode(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
     const auto state = Services::Events::ExtractArgument<int32_t>(args);
 
@@ -216,7 +207,7 @@ ArgumentStack Feedback::SetFeedbackMode(ArgumentStack&& args)
         g_plugin->m_CombatMessageWhitelist = !!state;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 }

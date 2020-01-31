@@ -8,7 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Added
-N/A
+- Events: Added OnUUIDCollision event to UUIDEvents
+- Experimental: AsyncLogFlush to asynchronously flush the game log to disk
+- Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
+- Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
 
 ##### New Plugins
 N/A
@@ -16,10 +19,12 @@ N/A
 ##### New NWScript Functions
 - Player: SetResManOverride()
 - Creature: {Get|Set}{Domain|Specialization}()
+- Util: SetInstructionLimit()
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
 - Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
+- Tweaks: added temporary fix for server freeze when learning a spell from a scroll (NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG)
 
 ### Deprecated
 - Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
@@ -28,7 +33,11 @@ N/A
 N/A
 
 ### Fixed
+<<<<<<< HEAD
 - Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY
+=======
+- Webhook: fixed a crash that would happen when trying to send a message in the shutdown script
+>>>>>>> master
 
 
 ## 8193.6

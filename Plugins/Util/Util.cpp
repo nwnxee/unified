@@ -81,6 +81,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(GetNSSContents);
     REGISTER(AddNSSFile);
     REGISTER(RemoveNWNXResourceFile);
+    REGISTER(SetInstructionLimit);
 
 #undef REGISTER
 
@@ -140,7 +141,6 @@ Util::~Util()
 
 ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retval = "";
 
     const auto depth = Services::Events::ExtractArgument<int32_t>(args);
@@ -153,14 +153,11 @@ ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
             retval = script.m_sScriptName.CStr();
     }
 
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
-ArgumentStack Util::GetAsciiTableString(ArgumentStack&& args)
+ArgumentStack Util::GetAsciiTableString(ArgumentStack&&)
 {
-    (void)args;
-    ArgumentStack stack;
     static char table[256];
 
     if (table[0] == 0)
@@ -170,22 +167,17 @@ ArgumentStack Util::GetAsciiTableString(ArgumentStack&& args)
             table[i] = i;
     }
 
-    Services::Events::InsertArgument(stack, std::string(table));
-    return stack;
+    return Services::Events::Arguments(std::string(table));
 }
 
 ArgumentStack Util::Hash(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     const auto str = Services::Events::ExtractArgument<std::string>(args);
-
-    Services::Events::InsertArgument(stack, (int32_t)std::hash<std::string>{}(str));
-    return stack;
+    return Services::Events::Arguments((int32_t)std::hash<std::string>{}(str));
 }
 
 ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retVal;
 
     const auto tokenNumber = Services::Events::ExtractArgument<int32_t>(args);
@@ -206,77 +198,61 @@ ArgumentStack Util::GetCustomToken(ArgumentStack&& args)
         retVal = foundToken->m_sValue.CStr();
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::EffectTypeCast(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-    Services::Events::InsertArgument(stack, Services::Events::ExtractArgument<CGameEffect*>(args));
-    return stack;
+    return Services::Events::Arguments(Services::Events::ExtractArgument<CGameEffect*>(args));
 }
 
 ArgumentStack Util::StripColors(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     const auto s = Services::Events::ExtractArgument<std::string>(args);
 
     std::regex color_codes("<c.+?(?=>)>|<\\/c>");
     std::string retVal = std::regex_replace(s, color_codes, "");
-    Services::Events::InsertArgument(stack, retVal);
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::IsValidResRef(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
     const auto resRef = Services::Events::ExtractArgument<std::string>(args);
     const auto resType = Services::Events::ExtractArgument<int32_t>(args);
 
     retVal = Globals::ExoResMan()->Exists(CResRef(resRef.c_str()), resType, nullptr);
-    Services::Events::InsertArgument(stack, retVal);
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetEnvironmentVariable(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retVal;
     const auto envVar = Services::Events::ExtractArgument<std::string>(args);
 
     if (const char* value = std::getenv(envVar.c_str()))
         retVal = std::string(value);
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetMinutesPerHour(ArgumentStack&&)
 {
-    ArgumentStack stack;
-
-    Services::Events::InsertArgument(stack,Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->m_nMinutesPerHour);
-    return stack;
+    return Services::Events::Arguments(Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->m_nMinutesPerHour);
 }
 
 ArgumentStack Util::SetMinutesPerHour(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     const auto minPerHour = Services::Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(minPerHour > 0);
       ASSERT_OR_THROW(minPerHour <= 255);
 
     Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->SetMinutesPerHour(minPerHour);
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     const auto s = Services::Events::ExtractArgument<std::string>(args);
     std::string result;
 
@@ -307,23 +283,18 @@ ArgumentStack Util::EncodeStringForURL(ArgumentStack&& args)
         }
     }
     // **
-
-    Services::Events::InsertArgument(stack, result);
-    return stack;
+    return Services::Events::Arguments(result);
 }
 
 ArgumentStack Util::Get2DARowCount(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     const auto twodaRef = Services::Events::ExtractArgument<std::string>(args);
     auto twoda = Globals::Rules()->m_p2DArrays->GetCached2DA(twodaRef.c_str(), true);
-    Services::Events::InsertArgument(stack, twoda ? twoda->m_nNumRows : 0);
-    return stack;
+    return Services::Events::Arguments(twoda ? twoda->m_nNumRows : 0);
 }
 
 ArgumentStack Util::GetFirstResRef(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retVal;
 
     const auto resRefType = Services::Events::ExtractArgument<int32_t>(args);
@@ -355,14 +326,11 @@ ArgumentStack Util::GetFirstResRef(ArgumentStack&& args)
         m_resRefIndex++;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetNextResRef(ArgumentStack&&)
 {
-    ArgumentStack stack;
     std::string retVal;
 
     if (m_resRefIndex < m_listResRefs.size())
@@ -371,21 +339,16 @@ ArgumentStack Util::GetNextResRef(ArgumentStack&&)
         m_resRefIndex++;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetServerTicksPerSecond(ArgumentStack&&)
 {
-    ArgumentStack stack;
-    Services::Events::InsertArgument(stack, m_tickCount);
-    return stack;
+    return Services::Events::Arguments(m_tickCount);
 }
 
 ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     Types::ObjectID retVal = Constants::OBJECT_INVALID;
 
     const auto objectType = Services::Events::ExtractArgument<int32_t>(args);
@@ -416,13 +379,11 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::AddScript(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retVal;
 
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
@@ -452,14 +413,11 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
     else
         retVal = m_scriptCompiler->m_sCapturedError.CStr();
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retVal;
 
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
@@ -480,14 +438,11 @@ ArgumentStack Util::GetNSSContents(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::AddNSSFile(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = false;
 
     const auto fileName = Services::Events::ExtractArgument<std::string>(args);
@@ -505,14 +460,11 @@ ArgumentStack Util::AddNSSFile(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::RemoveNWNXResourceFile(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal;
 
     const auto fileName = Services::Events::ExtractArgument<std::string>(args);
@@ -524,9 +476,20 @@ ArgumentStack Util::RemoveNWNXResourceFile(ArgumentStack&& args)
 
     retVal = Globals::ExoResMan()->RemoveFile(exoFileName, type);
 
-    Services::Events::InsertArgument(stack, retVal);
+    return Services::Events::Arguments(retVal);
+}
 
-    return stack;
+ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
+{
+    const static uint32_t defaultInstructionLimit = Globals::VirtualMachine()->m_nInstructionLimit;
+    const auto limit = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (limit < 0)
+        Globals::VirtualMachine()->m_nInstructionLimit = defaultInstructionLimit;
+    else
+        Globals::VirtualMachine()->m_nInstructionLimit = limit;
+
+    return Services::Events::Arguments();
 }
 
 }

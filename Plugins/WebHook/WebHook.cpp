@@ -31,6 +31,10 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
     return g_plugin;
 }
 
+namespace Core {
+extern bool g_CoreShuttingDown;
+}
+
 using namespace NWNXLib::Services;
 
 namespace WebHook {
@@ -59,7 +63,6 @@ std::string escape_json(const std::string &s) {
 
 ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
 {
-    Events::ArgumentStack stack;
     auto host = Services::Events::ExtractArgument<std::string>(args);
     auto origPath = Services::Events::ExtractArgument<std::string>(args);
     auto message = Services::Events::ExtractArgument<std::string>(args);
@@ -83,77 +86,92 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
     message = Encoding::ToUTF8(message);
     escape_json(message);
 
-    g_plugin->GetServices()->m_tasks->QueueOnAsyncThread([message, host, path, origPath]()
+    static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;
+    auto cli = s_ClientCache.find(host);
+
+    if (cli == std::end(s_ClientCache))
     {
-        static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> s_ClientCache;
-        auto cli = s_ClientCache.find(host);
+        LOG_DEBUG("Creating new SSL client for host %s.", host);
+        cli = s_ClientCache.insert(std::make_pair(host, std::make_unique<httplib::SSLClient>(host.c_str(), 443))).first;
+    }
 
-        if (cli == std::end(s_ClientCache))
-        {
-            LOG_DEBUG("Creating new SSL client for host %s.", host);
-            cli = s_ClientCache.insert(std::make_pair(host, std::make_unique<httplib::SSLClient>(host.c_str(), 443))).first;
-        }
-
+    if (Core::g_CoreShuttingDown)
+    {
         auto res = cli->second->post(path.c_str(), message, "application/json");
-        g_plugin->GetServices()->m_tasks->QueueOnMainThread([message, host, path, origPath, res]()
+
+        if (res->status == 200)
         {
-            auto messaging = g_plugin->GetServices()->m_messaging.get();
-            auto moduleOid = NWNXLib::Utils::ObjectIDToString(Utils::GetModule()->m_idSelf);
-
-            if (res)
+            LOG_INFO("Sent webhook '%s' to '%s%s'.", message, host, path);
+        }
+        else
+        {
+            LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.",
+                        message.c_str(), host.c_str(), path.c_str(), res->status);
+        }
+    }
+    else
+    {
+        g_plugin->GetServices()->m_tasks->QueueOnAsyncThread([cli, message, host, path, origPath]()
+        {
+            auto res = cli->second->post(path.c_str(), message, "application/json");
+            g_plugin->GetServices()->m_tasks->QueueOnMainThread([message, host, path, origPath, res]()
             {
-                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"STATUS", std::to_string(res->status)});
-                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"MESSAGE", message});
-                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"HOST", host});
-                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"PATH", origPath});
-                if (res->status == 200 || res->status == 201 || res->status == 204 || res->status == 429)
-                {
-                    // Discord sends your rate limit information even on success so you can stagger calls if you want
-                    // This header also lets us know it's Discord not Slack, important because Discord sends RETRY_AFTER
-                    // in milliseconds and Slack sends it as seconds.
-                    if (!res->get_header_value("X-RateLimit-Limit").empty())
-                    {
-                        messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_LIMIT", res->get_header_value("X-RateLimit-Limit")});
-                        messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_REMAINING", res->get_header_value("X-RateLimit-Remaining")});
-                        messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_RESET", res->get_header_value("X-RateLimit-Reset")});
-                        if (!res->get_header_value("Retry-After").empty())
-                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", res->get_header_value("Retry-After")});
-                    }
-                        // Slack rate limited
-                    else if (!res->get_header_value("Retry-After").empty())
-                    {
-                        float fSlackRetry = stof(res->get_header_value("Retry-After")) * 1000.0f;
-                        messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", std::to_string(fSlackRetry)});
-                    }
-                    if (res->status != 429)
-                    {
-                        messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_SUCCESS", moduleOid});
-                        LOG_INFO("Sent webhook '%s' to '%s%s'.", message, host, path);
+                auto messaging = g_plugin->GetServices()->m_messaging.get();
+                auto moduleOid = NWNXLib::Utils::ObjectIDToString(Utils::GetModule()->m_idSelf);
 
+                if (res)
+                {
+                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"STATUS", std::to_string(res->status)});
+                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"MESSAGE", message});
+                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"HOST", host});
+                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"PATH", origPath});
+                    if (res->status == 200 || res->status == 201 || res->status == 204 || res->status == 429)
+                    {
+                        // Discord sends your rate limit information even on success so you can stagger calls if you want
+                        // This header also lets us know it's Discord not Slack, important because Discord sends RETRY_AFTER
+                        // in milliseconds and Slack sends it as seconds.
+                        if (!res->get_header_value("X-RateLimit-Limit").empty())
+                        {
+                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_LIMIT", res->get_header_value("X-RateLimit-Limit")});
+                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_REMAINING", res->get_header_value("X-RateLimit-Remaining")});
+                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_RESET", res->get_header_value("X-RateLimit-Reset")});
+                            if (!res->get_header_value("Retry-After").empty())
+                                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", res->get_header_value("Retry-After")});
+                        }
+                            // Slack rate limited
+                        else if (!res->get_header_value("Retry-After").empty())
+                        {
+                            float fSlackRetry = stof(res->get_header_value("Retry-After")) * 1000.0f;
+                            messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", std::to_string(fSlackRetry)});
+                        }
+                        if (res->status != 429)
+                        {
+                            messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_SUCCESS", moduleOid});
+                            LOG_INFO("Sent webhook '%s' to '%s%s'.", message, host, path);
+                        }
+                        else
+                        {
+                            messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
+                            LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s'. Rate Limited.", message, host, path);
+                        }
                     }
                     else
                     {
+                        messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", res->body});
                         messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
-                        LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s'. Rate Limited.", message, host, path);
+                        LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.", message, host, path, res->status);
                     }
                 }
                 else
                 {
-                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", res->body});
+                    messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", "Failed to post to server. Is the url correct?"});
                     messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
-                    LOG_WARNING("Failed to send WebHook (HTTPS) message '%s' to '%s%s', status code '%d'.", message, host, path, res->status);
+                    LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.", host, path);
                 }
-            }
-            else
-            {
-                messaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"FAIL_INFO", "Failed to post to server. Is the url correct?"});
-                messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_WEBHOOK_FAILED", moduleOid});
-                LOG_WARNING("Failed to send WebHook (HTTPS) to '%s%s'.", host, path);
-            }
+            });
         });
-    });
-
-    return stack;
+    }
+    return Services::Events::Arguments();
 }
 
 }

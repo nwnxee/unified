@@ -85,6 +85,7 @@ namespace Core {
 
 static NWNXCore s_core;
 NWNXCore* g_core = nullptr; // Used to access the core class in hook or event handlers.
+bool g_CoreShuttingDown = false;
 
 NWNXCore::NWNXCore()
     : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; }),
@@ -442,6 +443,8 @@ void NWNXCore::InitialSetupCommands()
     {
         if (args.find("timestamp") != std::string::npos)
             Log::SetPrintTimestamp(args.find("notimestamp") == std::string::npos);
+        if (args.find("date") != std::string::npos)
+            Log::SetPrintDate(args.find("nodate") == std::string::npos);
         if (args.find("plugin") != std::string::npos)
             Log::SetPrintPlugin(args.find("noplugin") == std::string::npos);
         if (args.find("source") != std::string::npos)
@@ -450,8 +453,8 @@ void NWNXCore::InitialSetupCommands()
             Log::SetColorOutput(args.find("nocolor") == std::string::npos);
         if (args.find("force") != std::string::npos)
             Log::SetForceColor(args.find("noforce") == std::string::npos);
-        LOG_INFO("Log format updated: Timestamp:%s Plugin:%s Source:%s Color:%s Force:%s.",
-                 Log::GetPrintTimestamp(), Log::GetPrintPlugin(),
+        LOG_INFO("Log format updated: Timestamp:%s Date:%s Plugin:%s Source:%s Color:%s Force:%s.",
+                 Log::GetPrintTimestamp(), Log::GetPrintDate(), Log::GetPrintPlugin(),
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
 
@@ -518,10 +521,13 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
     Log::SetPrintTimestamp(g_core->m_coreServices->m_config->Get<bool>("LOG_TIMESTAMP", true));
+    Log::SetPrintDate(g_core->m_coreServices->m_config->Get<bool>("LOG_DATE", false));
     Log::SetPrintPlugin(g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true));
     Log::SetPrintSource(g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true));
     Log::SetForceColor(g_core->m_coreServices->m_config->Get<bool>("LOG_FORCE_COLOR", false));
+    if (g_core->m_coreServices->m_config->Get<bool>("LOG_ASYNC", false))
+        Log::SetAsync(g_core->m_services->m_tasks.get());
 
     if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
     {
@@ -561,6 +567,8 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
 
 void NWNXCore::DestroyServerHandler(CAppManager* app)
 {
+    g_CoreShuttingDown = true;
+
     if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)

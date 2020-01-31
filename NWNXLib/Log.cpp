@@ -8,16 +8,17 @@
 #include <unordered_map>
 
 #include "External/rang/rang.hpp"
+#include "Services/Tasks/Tasks.hpp"
 
-namespace NWNXLib {
-
-namespace Log {
+namespace NWNXLib::Log {
 
 static bool s_PrintTimestamp;
+static bool s_PrintDate;
 static bool s_PrintPlugin;
 static bool s_PrintSource;
 static bool s_ColorOutput;
 static bool s_ForceColor;
+static NWNXLib::Services::Tasks* s_Tasks;
 void SetPrintTimestamp(bool value)
 {
     s_PrintTimestamp = value;
@@ -25,6 +26,14 @@ void SetPrintTimestamp(bool value)
 bool GetPrintTimestamp()
 {
     return s_PrintTimestamp;
+}
+void SetPrintDate(bool value)
+{
+    s_PrintDate = value;
+}
+bool GetPrintDate()
+{
+    return s_PrintDate;
 }
 void SetPrintPlugin(bool value)
 {
@@ -60,6 +69,10 @@ bool GetForceColor()
 {
     return s_ForceColor;
 }
+void SetAsync(NWNXLib::Services::Tasks* tasks)
+{
+    s_Tasks = tasks;
+}
 
 void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const char* message)
 {
@@ -89,7 +102,14 @@ void InternalTrace(Channel::Enum channel, Channel::Enum allowedChannel, const ch
     if (logFile)
     {
         std::fprintf(logFile, "%s\n", message);
-        std::fflush(logFile);
+        if (s_Tasks)
+        {
+            s_Tasks->QueueOnAsyncThread([&]() { std::fflush(logFile); });
+        }
+        else
+        {
+            std::fflush(logFile);
+        }
     }
 
     if (channel == Channel::SEV_FATAL)
@@ -114,8 +134,6 @@ Channel::Enum GetLogLevel(const char* plugin)
 void SetLogLevel(const char* plugin, Channel::Enum logLevel)
 {
     s_LogLevelMap[plugin] = logLevel;
-}
-
 }
 
 }

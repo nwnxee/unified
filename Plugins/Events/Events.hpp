@@ -38,6 +38,7 @@ class PVPEvents;
 class InputEvents;
 class MaterialChangeEvents;
 class ObjectEvents;
+class UUIDEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -125,6 +126,7 @@ private:
     std::unique_ptr<InputEvents> m_inputEvents;
     std::unique_ptr<MaterialChangeEvents> m_matChangeEvents;
     std::unique_ptr<ObjectEvents> m_objectEvents;
+    std::unique_ptr<UUIDEvents> m_uuidEvents;
 };
 
 }

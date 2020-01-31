@@ -194,7 +194,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
             }
 
             PushPerfScope(std::move(scopeName), std::move(tags));
-            return Services::Events::ArgumentStack();
+            return Services::Events::Arguments();
         });
 
 
@@ -202,7 +202,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
         [this](Services::Events::ArgumentStack&&)
         {
             PopPerfScope();
-            return Services::Events::ArgumentStack();
+            return Services::Events::Arguments();
         });
 }
 

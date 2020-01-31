@@ -115,7 +115,6 @@ CNWSTile *Area::GetTile(CNWSArea *pArea, float x, float y)
 
 ArgumentStack Area::GetNumberOfPlayersInArea(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -123,14 +122,11 @@ ArgumentStack Area::GetNumberOfPlayersInArea(ArgumentStack&& args)
         retVal = pArea->m_nPlayersInArea;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::GetLastEntered(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     Types::ObjectID retVal = Constants::OBJECT_INVALID;
 
     if (auto *pArea = area(args))
@@ -138,14 +134,11 @@ ArgumentStack Area::GetLastEntered(ArgumentStack&& args)
         retVal = static_cast<Types::ObjectID>(pArea->m_oidLastEntered);
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::GetLastLeft(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     Types::ObjectID retVal = Constants::OBJECT_INVALID;
 
     if (auto *pArea = area(args))
@@ -153,14 +146,11 @@ ArgumentStack Area::GetLastLeft(ArgumentStack&& args)
         retVal = static_cast<Types::ObjectID>(pArea->m_oidLastLeft);
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::GetPVPSetting(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -168,15 +158,11 @@ ArgumentStack Area::GetPVPSetting(ArgumentStack&& args)
         retVal = pArea->m_nPVPSetting;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetPVPSetting(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         auto pvpSetting = Services::Events::ExtractArgument<int32_t>(args);
@@ -186,12 +172,11 @@ ArgumentStack Area::SetPVPSetting(ArgumentStack&& args)
         pArea->m_nPVPSetting = pvpSetting;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetAreaSpotModifier(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -199,15 +184,11 @@ ArgumentStack Area::GetAreaSpotModifier(ArgumentStack&& args)
         retVal = pArea->m_nAreaSpotModifier;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetAreaSpotModifier(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         const auto spotModifier = Services::Events::ExtractArgument<int32_t>(args);
@@ -215,12 +196,11 @@ ArgumentStack Area::SetAreaSpotModifier(ArgumentStack&& args)
         pArea->m_nAreaSpotModifier = spotModifier;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetAreaListenModifier(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -228,15 +208,11 @@ ArgumentStack Area::GetAreaListenModifier(ArgumentStack&& args)
         retVal = pArea->m_nAreaListenModifier;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetAreaListenModifier(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         const auto listenModifier = Services::Events::ExtractArgument<int32_t>(args);
@@ -244,12 +220,11 @@ ArgumentStack Area::SetAreaListenModifier(ArgumentStack&& args)
         pArea->m_nAreaListenModifier = listenModifier;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetNoRestingAllowed(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -257,15 +232,11 @@ ArgumentStack Area::GetNoRestingAllowed(ArgumentStack&& args)
         retVal = pArea->m_bNoRestingAllowed;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetNoRestingAllowed(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         const auto noRestingAllowed = Services::Events::ExtractArgument<int32_t>(args);
@@ -273,12 +244,11 @@ ArgumentStack Area::SetNoRestingAllowed(ArgumentStack&& args)
         pArea->m_bNoRestingAllowed = !!noRestingAllowed;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetWindPower(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -286,15 +256,11 @@ ArgumentStack Area::GetWindPower(ArgumentStack&& args)
         retVal = pArea->m_nWindAmount;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetWindPower(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         auto windPower = Services::Events::ExtractArgument<int32_t>(args);
@@ -304,12 +270,11 @@ ArgumentStack Area::SetWindPower(ArgumentStack&& args)
         pArea->m_nWindAmount = windPower;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -336,15 +301,11 @@ ArgumentStack Area::GetWeatherChance(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
@@ -372,12 +333,11 @@ ArgumentStack Area::SetWeatherChance(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetFogClipDistance(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     float retVal = 0.0;
 
     if (auto *pArea = area(args))
@@ -385,15 +345,11 @@ ArgumentStack Area::GetFogClipDistance(ArgumentStack&& args)
         retVal = pArea->m_fFogClipDistance;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         auto distance = Services::Events::ExtractArgument<float>(args);
@@ -402,12 +358,11 @@ ArgumentStack Area::SetFogClipDistance(ArgumentStack&& args)
         pArea->m_fFogClipDistance = distance;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetShadowOpacity(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -415,15 +370,11 @@ ArgumentStack Area::GetShadowOpacity(ArgumentStack&& args)
         retVal = pArea->m_nShadowOpacity;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetShadowOpacity(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         auto shadowOpacity = Services::Events::ExtractArgument<int32_t>(args);
@@ -433,12 +384,11 @@ ArgumentStack Area::SetShadowOpacity(ArgumentStack&& args)
         pArea->m_nShadowOpacity = shadowOpacity;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetDayNightCycle(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pArea = area(args))
@@ -453,15 +403,11 @@ ArgumentStack Area::GetDayNightCycle(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
@@ -488,12 +434,11 @@ ArgumentStack Area::SetDayNightCycle(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::GetSunMoonColors(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = -1;
 
     if (auto *pArea = area(args))
@@ -525,15 +470,11 @@ ArgumentStack Area::GetSunMoonColors(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         auto type = Services::Events::ExtractArgument<int32_t>(args);
@@ -568,13 +509,12 @@ ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::CreateTransition(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
+    Types::ObjectID retVal = Constants::OBJECT_INVALID;
     if (auto *pArea = area(args))
     {
         auto targetOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
@@ -584,8 +524,7 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
              pTargetObject->m_nObjectType != Constants::ObjectType::Waypoint))
         {
             LOG_ERROR("Transition destination object is not valid. Valid targets are doors or waypoints.");
-            Services::Events::InsertArgument(stack, Constants::OBJECT_INVALID);
-            return stack;
+            return Services::Events::Arguments(retVal);
         }
 
         Vector vTransitionPosition;
@@ -623,17 +562,14 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
 
         // And add to area
         trigger->AddToArea(pArea, vTransitionPosition.x, vTransitionPosition.y, vTransitionPosition.z, false);
-        Services::Events::InsertArgument(stack, trigger->m_idSelf);
+        retVal = trigger->m_idSelf;
     }
-    else
-        Services::Events::InsertArgument(stack, Constants::OBJECT_INVALID);
 
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = -1;
 
     if (auto *pArea = area(args))
@@ -674,15 +610,11 @@ ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pArea = area(args))
     {
         const auto tileX = Services::Events::ExtractArgument<float>(args);
@@ -722,13 +654,12 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
+    int32_t retVal = false;
     if (auto *pArea = area(args))
     {
         const auto fStartX = Services::Events::ExtractArgument<float>(args);
@@ -745,16 +676,14 @@ ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
             ASSERT_OR_THROW(fHeight >= 0.0f);
         const auto bIgnoreDoors = Services::Events::ExtractArgument<int32_t>(args);
 
-        int32_t bReturn = pArea->TestDirectLine(fStartX, fStartY, fEndX, fEndY, fPerSpace, fHeight, bIgnoreDoors);
-        Services::Events::InsertArgument(stack, bReturn);
+        retVal = pArea->TestDirectLine(fStartX, fStartY, fEndX, fEndY, fPerSpace, fHeight, bIgnoreDoors);
     }
 
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Area::GetMusicIsPlaying(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = false;
 
     if (auto *pArea = area(args))
@@ -764,9 +693,7 @@ ArgumentStack Area::GetMusicIsPlaying(ArgumentStack&& args)
         retVal = bBattleMusic ? pArea->m_pAmbientSound->m_bBattlePlaying : pArea->m_pAmbientSound->m_bMusicPlaying;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 }
