@@ -15,7 +15,6 @@ private:
     static int s_chargesCostBehavior;
     static int s_savedCharges;
 
-    static void CNWSItem__CalculateBaseCosts_hook(CNWSItem*);
     static void CNWSItem__CalculateBaseCosts_sharedhook(bool, CNWSItem*);
 };
 
