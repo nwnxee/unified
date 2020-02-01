@@ -34,8 +34,8 @@ N/A
 N/A
 
 ### Fixed
+- Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY
 - Webhook: fixed a crash that would happen when trying to send a message in the shutdown script
-
 
 ## 8193.6
 https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
