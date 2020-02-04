@@ -124,15 +124,31 @@ Environment Variables</h2>
 <li><code>NWNX_TWEAKS_DEAD_CREATURES_TRIGGER_ON_AREA_EXIT</code>: true or false</li>
 <li><code>NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS</code>: true or false</li>
 <li><code>NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG</code>: true or false</li>
-<li><code>NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG</code>: true or false </li>
+<li><code>NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG</code>: true or false</li>
+<li><code>NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</code>: Between 1 and 3</li>
 </ul>
+<h2><a class="anchor" id="autotoc_md278"></a>
+Environment variable values</h2>
+<h3><a class="anchor" id="autotoc_md279"></a>
+NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</h3>
+<p>Values between 1 and 3 are valid. Any of those values will adjust the item cost to the old values used in 1.69 for items with 50 charges or less.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadRight">Value  </th><th class="markdownTableHeadNone">Description   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">1  </td><td class="markdownTableBodyNone">Cost will be capped at 50 charges. Any charges over 50 won't affect the item cost.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyRight">2  </td><td class="markdownTableBodyNone">Up to 50 charges the cost will be the same as it was in 1.69. Any charges over 50 will add less value, capping at twice the cost at 250 charges.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyRight">3  </td><td class="markdownTableBodyNone">Cost will be calculated linearly based on the number of charges the same it was in 1.69, making items with 250 charges 5 times as expensive as 50 charges ones.   </td></tr>
+</table>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Feb 1 2020 08:43:14 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Feb 4 2020 04:31:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

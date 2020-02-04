@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#aa9c7cd64d33be569665a5ae2f572ca3a":[4,0,2,25,0,3,220],
+"nwnx__redis__short_8nss.html#aaa601d03e6111fa67670be0e14aa9bc6":[4,0,2,25,0,3,59],
 "nwnx__redis__short_8nss.html#aadfecc2fa5ec610fc4b48eb71b40c447":[4,0,2,25,0,3,133],
 "nwnx__redis__short_8nss.html#ab0e5ac6a7bd9b43d84d4968a2c73a8e9":[4,0,2,25,0,3,105],
 "nwnx__redis__short_8nss.html#ab3a28d39fa8cbe0ed44d2c802ff2797b":[4,0,2,25,0,3,125],
@@ -92,8 +94,8 @@ var NAVTREEINDEX9 =
 "nwnx__spellcheck_8nss_source.html":[4,0,2,32,0,0],
 "nwnx__sql_8nss.html":[4,0,2,33,0,0],
 "nwnx__sql_8nss_source.html":[4,0,2,33,0,0],
-"nwnx__tests_8nss.html":[4,0,0,0,54],
-"nwnx__tests_8nss_source.html":[4,0,0,0,54],
+"nwnx__tests_8nss.html":[4,0,0,0,55],
+"nwnx__tests_8nss_source.html":[4,0,0,0,55],
 "nwnx__time_8nss.html":[4,0,2,35,0,0],
 "nwnx__time_8nss_source.html":[4,0,2,35,0,0],
 "nwnx__util_8nss.html":[4,0,2,38,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__SkillRanks__SkillFeat.html":[0,32,2],
 "structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a":[0,32,2,1],
 "structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d":[0,32,2,10],
-"structNWNX__SkillRanks__SkillFeat.html#a22471ab7b2b7e7d3ea8b9b3a2c14fd07":[0,32,2,3],
-"structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2":[0,32,2,5],
-"structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369":[0,32,2,7]
+"structNWNX__SkillRanks__SkillFeat.html#a22471ab7b2b7e7d3ea8b9b3a2c14fd07":[0,32,2,3]
 };
