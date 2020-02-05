@@ -326,14 +326,15 @@ void NWNXCore::InitialSetupPlugins()
 
 void NWNXCore::InitialSetupResourceDirectory()
 {
+    auto path = m_coreServices->m_config->Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
     auto cleanDirectory = m_coreServices->m_config->Get<bool>("CLEAN_UP_NWNX_RESOURCE_DIRECTORY", false);
     auto priority = m_coreServices->m_config->Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
 
     m_services->m_tasks->QueueOnMainThread(
-        [cleanDirectory, priority]
+        [path, cleanDirectory, priority]
         {
             CExoString sAlias = CExoString("NWNX:");
-            CExoString sPath = CExoString(Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
+            CExoString sPath = CExoString(path);
 
             LOG_INFO("Setting up '%s' resource directory with path: %s", sAlias, sPath);
 

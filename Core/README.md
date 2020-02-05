@@ -16,6 +16,7 @@ The core of NWNX:EE that does all the things.
 | `NWNX_CORE_CRASH_ON_ASSERT_FAILURE` | 0-1 | 0 | Sets whether an ASSERT failure hard crashes the server.
 | `NWNX_CORE_SHUTDOWN_SCRIPT` | string | Unset | Sets which NWScript to run when the module shuts down.
 | `NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK` | 0-1 | 0 | When enabled, allows the ExecuteScriptChunk() function to call NWScript NWNX functions.
+| `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` | string | UserDirectory/nwnx | The path of the /nwnx resource directory
 | `NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY` | 0-1 | 0 | When enabled, the UserDirectory/nwnx folder will be cleaned on startup, meaning all contents will be deleted.
 | `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY` | int | 70000000 | Sets the resman priority of the UserDirectory/nwnx folder.
 | `NWNX_CORE_LOG_TIMESTAMP` | 0-1 | 1 | Set whether to show timestamp in logs printed by NWNX.
