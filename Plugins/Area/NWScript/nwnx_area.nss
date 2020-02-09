@@ -210,6 +210,14 @@ int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float f
 /// @return TRUE if music is playing
 int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE);
 
+/// @brief Create and return a generic trigger (square shaped of specified size) at a location.
+/// @param oArea The area object.
+/// @param fX, fY, fZ The position to create the trigger.
+/// @param sTag If specified, the returned trigger will have this tag.
+/// @param fSize The size of the square.
+/// @sa NWNX_Object_SetTriggerGeometry() if you wish to draw the trigger as something other than a square.
+object NWNX_Area_CreateGenericTrigger(object oArea, float fX, float fY, float fZ, string sTag = "", float fSize = 1.0f);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -508,4 +516,19 @@ int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE)
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+object NWNX_Area_CreateGenericTrigger(object oArea, float fX, float fY, float fZ, string sTag = "", float fSize = 1.0f)
+{
+    string sFunc = "CreateGenericTrigger";
+
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fSize);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sTag);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fZ);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Area, sFunc);
 }
