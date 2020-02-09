@@ -28,6 +28,7 @@ var nwnx__area_8nss =
     [ "NWNX_Area_SetTileAnimationLoop", "group__area.html#ga28ba5d8f657c920be0ec69e2334fa74b", null ],
     [ "NWNX_Area_TestDirectLine", "group__area.html#gaadd7e8c0aa2f77536fa499d38aca568d", null ],
     [ "NWNX_Area_GetMusicIsPlaying", "group__area.html#ga80b56688f11005ff2518228cf20d84bf", null ],
+    [ "NWNX_Area_CreateGenericTrigger", "group__area.html#ga70470c5fd872dd9204c486c04ed8f037", null ],
     [ "NWNX_Area", "group__area.html#ga0b1c1bee8f3cf52b50393d35321987f7", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
     [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
