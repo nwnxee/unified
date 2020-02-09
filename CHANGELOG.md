@@ -22,6 +22,7 @@ N/A
 - Player: SetResManOverride()
 - Creature: {Get|Set}{Domain|Specialization}()
 - Util: SetInstructionLimit()
+- Area: CreateGenericTrigger()
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
