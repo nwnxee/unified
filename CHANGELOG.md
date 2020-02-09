@@ -23,6 +23,7 @@ N/A
 - Creature: {Get|Set}{Domain|Specialization}()
 - Util: SetInstructionLimit()
 - Area: CreateGenericTrigger()
+- Object: GetPositionIsInTrigger()
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
