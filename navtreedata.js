@@ -46,12 +46,12 @@ var NAVTREEINDEX =
 "group__creature.html#ga4aeb53c89ee532c17bd3574484a4593c",
 "group__data__array__find.html#gafd9ceb2fef6d90c7e2c979c444a827a3",
 "group__item.html#gaa91c32cff1f6607086a13865345c73e5",
-"group__player.html#ga437385c6c111c59c8aaecd230c34c0c3",
-"group__regex.html#regex",
-"group__visibility.html#ga40cc33dfa69d9df16d927347917f5218",
-"nwnx__redis_8nss.html#a9003f03e5976a10aab561ee44dbcfd0d",
-"nwnx__redis__short_8nss.html#aa9621cb7a972254bd1b263fa5c0a2032",
-"structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d"
+"group__player.html#ga4296c4e6ee94f4aa6b2a64157fa1f917",
+"group__regex.html#gaf07c406fb73c689a11506a3b4dacdb4b",
+"group__visibility.html",
+"nwnx__redis_8nss.html#a8f19748cfb2bd5d26086f6a513e75967",
+"nwnx__redis__short_8nss.html#aa69d78d2ff08d08f19e24b4dc68d4326",
+"structNWNX__SkillRanks__SkillFeat.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

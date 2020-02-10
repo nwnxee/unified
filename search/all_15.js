@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['weapon_20plugin_20reference_1441',['Weapon Plugin Reference',['../md_Plugins_Weapon_README.html',1,'']]],
-  ['wait_1442',['WAIT',['../nwnx__redis__short_8nss.html#a3d2504c4499e2661f9fef80f41df198e',1,'nwnx_redis_short.nss']]],
-  ['watch_1443',['WATCH',['../nwnx__redis__short_8nss.html#a814bb7f9a1d72b334cf6c1efb19c8f33',1,'nwnx_redis_short.nss']]],
-  ['weapon_1444',['Weapon',['../group__weapon.html',1,'']]],
-  ['webhook_1445',['Webhook',['../group__webhook.html',1,'']]]
+  ['weapon_20plugin_20reference_1442',['Weapon Plugin Reference',['../md_Plugins_Weapon_README.html',1,'']]],
+  ['wait_1443',['WAIT',['../nwnx__redis__short_8nss.html#a3d2504c4499e2661f9fef80f41df198e',1,'nwnx_redis_short.nss']]],
+  ['watch_1444',['WATCH',['../nwnx__redis__short_8nss.html#a814bb7f9a1d72b334cf6c1efb19c8f33',1,'nwnx_redis_short.nss']]],
+  ['weapon_1445',['Weapon',['../group__weapon.html',1,'']]],
+  ['webhook_1446',['Webhook',['../group__webhook.html',1,'']]]
 ];

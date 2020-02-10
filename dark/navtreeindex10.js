@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structNWNX__SkillRanks__SkillFeat.html":[0,32,2],
+"structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a":[0,32,2,1],
 "structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d":[0,32,2,10],
 "structNWNX__SkillRanks__SkillFeat.html#a22471ab7b2b7e7d3ea8b9b3a2c14fd07":[0,32,2,3],
 "structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2":[0,32,2,5],

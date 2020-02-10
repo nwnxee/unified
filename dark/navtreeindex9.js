@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#aa69d78d2ff08d08f19e24b4dc68d4326":[4,0,2,25,0,3,119],
+"nwnx__redis__short_8nss.html#aa80a57c7935dedc5f912f264b9e2ea80":[4,0,2,25,0,3,19],
 "nwnx__redis__short_8nss.html#aa9621cb7a972254bd1b263fa5c0a2032":[4,0,2,25,0,3,106],
 "nwnx__redis__short_8nss.html#aa97b7f8a8219f95b0a5d1170c099399d":[4,0,2,25,0,3,77],
 "nwnx__redis__short_8nss.html#aa9c7cd64d33be569665a5ae2f572ca3a":[4,0,2,25,0,3,220],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__Player__QuickBarSlot.html#afcf6328e5234a277b0ba49172cdc8bb9":[0,23,3,0],
 "structNWNX__Redis__PubSubMessageData.html":[3,10],
 "structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79":[3,10,1],
-"structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,10,0],
-"structNWNX__SkillRanks__SkillFeat.html":[0,32,2],
-"structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a":[0,32,2,1]
+"structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,10,0]
 };
