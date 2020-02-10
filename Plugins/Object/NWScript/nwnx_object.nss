@@ -292,6 +292,13 @@ void NWNX_Object_DeleteFloat(object oObject, string sVarName);
 /// @param sRegex The regular expression, for example .*Test.* removes every variable that has Test in it.
 void NWNX_Object_DeleteVarRegex(object oObject, string sRegex);
 
+/// @brief Get if vPosition is inside oTrigger's geometry.
+/// @note The Z value of vPosition is ignored.
+/// @param oTrigger The trigger.
+/// @param vPosition The position.
+/// @return TRUE if vPosition is inside oTrigger's geometry.
+int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -717,4 +724,17 @@ void NWNX_Object_DeleteVarRegex(object oObject, string sRegex)
     NWNX_PushArgumentString(NWNX_Object, sFunc, sRegex);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition)
+{
+    string sFunc = "GetPositionIsInTrigger";
+
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.z);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.x);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oTrigger);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
