@@ -23,6 +23,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG`: true or false
 * `NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG`: true or false
 * `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE`: Between 1 and 3
+* `NWNX_TWEAKS_ADJUST_CASTER_LEVEL_2DA`: true or false
 
 ## Environment variable values
 

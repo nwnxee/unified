@@ -15,6 +15,7 @@
 #include "Tweaks/FixGreaterSanctuaryBug.hpp"
 #include "Tweaks/FixScrollLearningBug.hpp"
 #include "Tweaks/ItemChargesCost.hpp"
+#include "Tweaks/AdjustCasterLevel.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -144,6 +145,14 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         LOG_INFO("Changing cost for items with charges.");
         m_ItemChargesCost = std::make_unique<ItemChargesCost>(GetServices()->m_hooks.get(),
             mode);
+    }
+
+    bool bAdjustCasterLevelBy2DA = GetServices()->m_config->Get<bool>("ADJUST_CASTER_LEVEL_2DA", false);
+    std::string sAdjustCasterLevelByNwscript = GetServices()->m_config->Get<std::string>("ADJUST_CASTER_LEVEL_NWSCRIPT", "");
+    if (bAdjustCasterLevelBy2DA || !sAdjustCasterLevelByNwscript.empty())
+    {
+        LOG_INFO("Adjusting caster levels when using nwscript functions (Dispel/ResistMagic/GetCasterLevel).");
+        m_AdjustCasterLevel = std::make_unique<AdjustCasterLevel>(GetServices()->m_hooks.get(), bAdjustCasterLevelBy2DA, sAdjustCasterLevelByNwscript);
     }
 }
 

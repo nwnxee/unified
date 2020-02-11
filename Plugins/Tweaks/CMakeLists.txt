@@ -16,4 +16,5 @@ add_plugin(Tweaks
     "Tweaks/FixGreaterSanctuaryBug.cpp"
     "Tweaks/FixScrollLearningBug.cpp"
     "Tweaks/ItemChargesCost.cpp"
+    "Tweaks/AdjustCasterLevel.cpp"
 )
