@@ -14,6 +14,7 @@ namespace Bridge
     public:
         Bridge(const Plugin::CreateParams& params);
         BridgeClient* GetInstance() { return instance.get(); }
+        bool IsConnected();
         virtual ~Bridge();
 
     private:

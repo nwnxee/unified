@@ -31,16 +31,10 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 namespace Bridge
 {
 
-enum BridgeModules
-{
-    PLAYER_LIST,
-    CHAT_BRIDGE
-} BridgeModules;
-
 Bridge::Bridge(const Plugin::CreateParams& params)
     : Plugin(params)
 {
-    m_isClient = GetServices()->m_config->Get<bool>("CLIENT", 1);
+    m_isClient = GetServices()->m_config->Get<bool>("CLIENT", true);
     std::string port = GetServices()->m_config->Get<std::string>("PORT", "8888");
     std::string password = GetServices()->m_config->Get<std::string>("PASSWORD", "");
     std::string userDir = NWNXLib::API::Globals::ExoBase()->m_sUserDirectory.CStr();
@@ -49,18 +43,21 @@ Bridge::Bridge(const Plugin::CreateParams& params)
     {
         std::string keypath = GetServices()->m_config->Get<std::string>("KEY_PATH", userDir + "/key.pem");
         std::string certpath = GetServices()->m_config->Get<std::string>("CERT_PATH", userDir + "/cert.pem");
-        instance = std::make_unique<BridgeServer>(port, password, keypath, certpath);
+        bool generateCerts = GetServices()->m_config->Get<bool>("SELFSIGN_CERT", false);
+        instance = std::make_unique<BridgeServer>(port, password, keypath, certpath, generateCerts);
     }
     else
     {
         std::string host = GetServices()->m_config->Get<std::string>("HOST", "localhost");
         instance = std::make_unique<BridgeClient>(host, port, password);
     }
-    //instance->Start();
 
     Hooks::InitHooks(this, GetServices()->m_hooks.get());
+}
 
-    instance->Run();
+bool Bridge::IsConnected()
+{
+    return instance && instance->IsConnected();
 }
 
 Bridge::~Bridge()
