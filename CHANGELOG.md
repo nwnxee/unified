@@ -12,6 +12,8 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 - Experimental: AsyncLogFlush to asynchronously flush the game log to disk
 - Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
 - Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
+- Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
+- Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
 
 ##### New Plugins
 N/A
@@ -20,6 +22,8 @@ N/A
 - Player: SetResManOverride()
 - Creature: {Get|Set}{Domain|Specialization}()
 - Util: SetInstructionLimit()
+- Area: CreateGenericTrigger()
+- Object: GetPositionIsInTrigger()
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
