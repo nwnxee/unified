@@ -7,6 +7,8 @@
 #include "API/Functions.hpp"
 #include "API/CNWSFaction.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CServerExoAppInternal.hpp"
+#include "API/CFactionManager.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
