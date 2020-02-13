@@ -79,8 +79,8 @@ ArgumentStack Factions::SetFaction(ArgumentStack&& args)
         
 		  
 		  const auto nFacId = Services::Events::ExtractArgument<int32_t>(args);
-		  
-		  auto* pFaction = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(nFacId);
+		  auto* pFactionManager= lobals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager;
+		  auto* pFaction = pFactionManager->GetFaction(nFacId);
 		  if (pFaction){
 		      pFaction->AddMember(pObject);
 			  retVal = 1;
