@@ -94,7 +94,7 @@ protected:
     std::unique_ptr<Message> GetOutgoingEvent();
     int ReadFromSocket(SSLWrapper& s);
     int WriteToSocket(SSLWrapper& s, std::stringstream& ss);
-    int HandleReceivedMessage(std::unique_ptr<Message> msg);
+    int HandleIncomingMessage(std::unique_ptr<Message> msg);
     int HandleOutgoingEvent(std::unique_ptr<Message>& msg);
     int HandleIncomingEvent(std::unique_ptr<Message> msg);
     int SendMessage(SSLWrapper& s, Message& msg);
@@ -119,7 +119,7 @@ public:
     void Start();
     bool CheckExistingKey();
     void GenerateKey();
-    int HandleIncomingMessage(std::unique_ptr<Message> msg);
+    int RelayMessage(std::unique_ptr<Message> msg);
     int BroadcastMessage(std::unique_ptr<Message> msg);
 
     BridgeServer(std::string portname, std::string password, std::string keypath, std::string certpath, bool generateCerts = false);

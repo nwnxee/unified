@@ -2,8 +2,11 @@
 #include <string>
 #include <mutex>
 #include <cereal/archives/portable_binary.hpp>
+#include <cereal/archives/json.hpp>
 #include <cereal/types/polymorphic.hpp>
 #include <cereal/types/base_class.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/vector.hpp>
 
 namespace Bridge
 {
@@ -23,6 +26,13 @@ struct PlayerInfo
 
     template<class Archive>
     void serialize(Archive& ar) { ar(playername, firstName, lastName, id, oid, isDM); }
+
+    void serialize(cereal::JSONOutputArchive& ar)
+    {
+        ar(cereal::make_nvp("playerId", id), cereal::make_nvp("playerName", playername),
+            cereal::make_nvp("firstName", firstName), cereal::make_nvp("lastName", lastName),
+            cereal::make_nvp("DM", isDM));
+    }
 };
 
 struct ServerInfo
@@ -37,6 +47,11 @@ struct ServerInfo
 
     template<class Archive>
     void serialize(Archive& ar) { ar(id, name, players); }
+
+    void serialize(cereal::JSONOutputArchive& ar)
+    {
+        ar(cereal::make_nvp("serverId", id), cereal::make_nvp("serverName", name), cereal::make_nvp("players", players));
+    }
 };
 
 struct ServerList

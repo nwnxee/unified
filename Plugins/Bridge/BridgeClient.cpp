@@ -211,7 +211,7 @@ void BridgeServer::Start()
             event->origin = m_ownServerId;
             if (HandleOutgoingEvent(event))
             {
-                HandleIncomingMessage(std::move(event));
+                RelayMessage(std::move(event));
             }
         }
 
@@ -324,7 +324,7 @@ void BridgeServer::Start()
                         if (msg)
                         {
                             msg->origin = c.clientSocket;
-                            HandleIncomingMessage(std::move(msg));
+                            RelayMessage(std::move(msg));
                         }
                         else
                         {
@@ -355,7 +355,7 @@ int BridgeServer::BroadcastMessage(std::unique_ptr<Message> msg)
     for (auto& c : clientSockets)
     {
         if (msg->destination == -1 || msg->destination == c.clientSocket)
-            if (msg->origin != c.clientSocket)
+            if (c.state >= CONNECTED && msg->origin != c.clientSocket)
             {
                 LOG_DEBUG("Sending message (%d) to client %d", msg->type, c.clientSocket);
                 sent |= SendMessage(c, *msg.get()) > 0;
@@ -368,7 +368,7 @@ int BridgeServer::BroadcastMessage(std::unique_ptr<Message> msg)
         if (msg->origin != m_ownServerId)
         {
             sent |= true;
-            HandleReceivedMessage(std::move(msg));
+            HandleIncomingMessage(std::move(msg));
         }
     }
 
@@ -567,7 +567,7 @@ void BridgeClient::Start()
         if (auto msg = m_ssl->GetMessage())
         {
             LOG_DEBUG("Message received: %d", msg->type);
-            HandleReceivedMessage(std::move(msg));
+            HandleIncomingMessage(std::move(msg));
         }
         else
         {
@@ -579,7 +579,7 @@ void BridgeClient::Start()
 
 //Called from server thread
 //Process messages before they are relayed to other servers
-int BridgeServer::HandleIncomingMessage(std::unique_ptr<Message> m)
+int BridgeServer::RelayMessage(std::unique_ptr<Message> m)
 {
     if (!m)
         return 0;
@@ -588,6 +588,12 @@ int BridgeServer::HandleIncomingMessage(std::unique_ptr<Message> m)
 
     switch (m->type)
     {
+        case SERVER_INFO:
+            if (auto l = dynamic_cast<ServerInfoMessage*>(m.get()))
+            {
+                LOG_DEBUG("Checking serverinfo before relaying: %d | %s", l->origin, l->name);
+            }
+            break;
         default:
             return BroadcastMessage(std::move(m));
     }
@@ -947,7 +953,7 @@ std::unique_ptr<Message> BridgeClient::GetOutgoingEvent()
 //Called from client thread
 //Messages meant to be handled by auxiliary thread are processed here
 //Messages meant to be handled by nwserver are forwarded (queued)
-int BridgeClient::HandleReceivedMessage(std::unique_ptr<Message> msg)
+int BridgeClient::HandleIncomingMessage(std::unique_ptr<Message> msg)
 {
     if (!msg)
         return -1;
@@ -1154,6 +1160,7 @@ void BridgeClient::AddServerToServerList(const ServerInfoMessage& msg)
         ServerInfo newServer;
         serverInfo = m_serverList.AddServerInfo(newServer);
     }
+    LOG_DEBUG("Updating server %d info: %s", msg.origin, msg.name);
     serverInfo->players = msg.players;
     serverInfo->name = msg.name;
     serverInfo->id = msg.origin;

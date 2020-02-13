@@ -44,12 +44,20 @@ Bridge::Bridge(const Plugin::CreateParams& params)
         std::string keypath = GetServices()->m_config->Get<std::string>("KEY_PATH", userDir + "/key.pem");
         std::string certpath = GetServices()->m_config->Get<std::string>("CERT_PATH", userDir + "/cert.pem");
         bool generateCerts = GetServices()->m_config->Get<bool>("SELFSIGN_CERT", false);
-        instance = std::make_unique<BridgeServer>(port, password, keypath, certpath, generateCerts);
+        m_bridgeInstance = std::make_unique<BridgeServer>(port, password, keypath, certpath, generateCerts);
+
+        int webport = GetServices()->m_config->Get<int>("WEBSERVER_PORT", 0);
+        if (webport > 0)
+        {
+            std::string webkey = GetServices()->m_config->Get<std::string>("WEBSERVER_KEY_PATH", "");
+            std::string webcert = GetServices()->m_config->Get<std::string>("WEBSERVER_CERT_PATH", "");
+            m_webserverInstance = std::make_unique<Webserver>(this, webport, password, webkey.empty() ? keypath : webkey, webcert.empty() ? certpath : webcert);
+        }
     }
     else
     {
         std::string host = GetServices()->m_config->Get<std::string>("HOST", "localhost");
-        instance = std::make_unique<BridgeClient>(host, port, password);
+        m_bridgeInstance = std::make_unique<BridgeClient>(host, port, password);
     }
 
     Hooks::InitHooks(this, GetServices()->m_hooks.get());
@@ -57,7 +65,7 @@ Bridge::Bridge(const Plugin::CreateParams& params)
 
 bool Bridge::IsConnected()
 {
-    return instance && instance->IsConnected();
+    return m_bridgeInstance && m_bridgeInstance->IsConnected();
 }
 
 Bridge::~Bridge()

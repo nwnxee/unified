@@ -5,7 +5,8 @@ if (${OPENSSL_FOUND})
     "Bridge.cpp"
     "BridgeClient.cpp"
     "BridgeMessage.cpp"
-    "BridgeHooks.cpp")
+    "BridgeHooks.cpp"
+    "BridgeWebserver.cpp")
     target_link_libraries(Bridge ${OPENSSL_LIBRARIES})
     target_include_directories(Bridge PUBLIC ${OPENSSL_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/External)
 endif()

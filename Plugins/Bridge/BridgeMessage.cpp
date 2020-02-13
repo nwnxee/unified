@@ -1,8 +1,4 @@
 #include "BridgeMessage.hpp"
-#include <cereal/types/memory.hpp>
-#include <cereal/archives/portable_binary.hpp>
-#include <cereal/types/string.hpp>
-#include <cereal/types/vector.hpp>
 
 namespace Bridge
 {

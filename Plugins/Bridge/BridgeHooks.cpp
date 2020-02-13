@@ -62,9 +62,9 @@ void Bridge::Hooks::CServerExoApp__MainLoop(bool before, CServerExoApp*)
     else
     {
         ticks = 0;
-        if (auto event = s_bridge->GetInstance()->GetIncomingEvent())
+        if (auto event = s_bridge->GetBridgeInstance()->GetIncomingEvent())
         {
-            s_bridge->GetInstance()->HandleIncomingEvent(std::move(event));
+            s_bridge->GetBridgeInstance()->HandleIncomingEvent(std::move(event));
         }
     }
 }
@@ -189,26 +189,26 @@ int32_t Bridge::Hooks::CNWSMessage__HandlePlayerToServerChatMessage(CNWSMessage*
                     }
                 }
 
-                uint32_t crossServerPlayerId = GetCrossServerPlayerId(pPlayer->m_nPlayerID, s_bridge->GetInstance()->GetId());
+                uint32_t crossServerPlayerId = GetCrossServerPlayerId(pPlayer->m_nPlayerID, s_bridge->GetBridgeInstance()->GetId());
                 if (nChatType == Constants::ChatChannel::PlayerTell)
                 {
                     if (nTargetPlayerId > 0xFF)
                     {
                         LOG_DEBUG("Cross server tell message from %d to %d", crossServerPlayerId, nTargetPlayerId);
                         auto msg = std::make_unique<ChatMessage>(crossServerPlayerId, nTargetPlayerId, sMessage.CStr(), Constants::ChatChannel::PlayerTell);
-                        s_bridge->GetInstance()->QueueOutgoingEvent(std::move(msg));
+                        s_bridge->GetBridgeInstance()->QueueOutgoingEvent(std::move(msg));
                         thisPtr->SendServerToPlayerChat_Tell(oidSpeaker, oidSpeaker, sMessage);
                     }
                 }
                 else if (nChatType == Constants::ChatChannel::PlayerShout)
                 {
                     auto msg = std::make_unique<ChatMessage>(crossServerPlayerId, sMessage.CStr(), Constants::ChatChannel::PlayerShout);
-                    s_bridge->GetInstance()->QueueOutgoingEvent(std::move(msg));
+                    s_bridge->GetBridgeInstance()->QueueOutgoingEvent(std::move(msg));
                 }
                 else if (nChatType == Constants::ChatChannel::PlayerDm)
                 {
                     auto msg = std::make_unique<ChatMessage>(crossServerPlayerId, sMessage.CStr(), Constants::ChatChannel::PlayerDm);
-                    s_bridge->GetInstance()->QueueOutgoingEvent(std::move(msg));
+                    s_bridge->GetBridgeInstance()->QueueOutgoingEvent(std::move(msg));
                 }
 
                 nChatType = bIsDM ? nChatType | 0x10u : nChatType;
@@ -266,9 +266,9 @@ void Bridge::Hooks::CNWSMessage__SendServerToPlayerPlayerList_Add(bool before, C
     playerInfo.lastName = sLastName.CStr();
     playerInfo.playername = sPlayerName.CStr();
     playerInfo.id = pPlayer->m_nPlayerID;
-    playerInfo.oid = Constants::OBJECT_INVALID | GetCrossServerPlayerId(pPlayer->m_nPlayerID, s_bridge->GetInstance()->GetId());
+    playerInfo.oid = Constants::OBJECT_INVALID | GetCrossServerPlayerId(pPlayer->m_nPlayerID, s_bridge->GetBridgeInstance()->GetId());
     playerInfo.isDM = bIsDM;
-    s_bridge->GetInstance()->QueueOutgoingEvent(std::move(msg));
+    s_bridge->GetBridgeInstance()->QueueOutgoingEvent(std::move(msg));
 }
 
 int32_t Bridge::Hooks::CNWSMessage__SendServerToPlayerPlayerList_All(CNWSMessage* thisPtr, CNWSPlayer* pTargetPlayer)
@@ -277,7 +277,7 @@ int32_t Bridge::Hooks::CNWSMessage__SendServerToPlayerPlayerList_All(CNWSMessage
     {
         return pSendPlayerListAllHook->CallOriginal<int32_t>(thisPtr, pTargetPlayer);
     }
-    int ownServerId = s_bridge->GetInstance()->GetId();
+    int ownServerId = s_bridge->GetBridgeInstance()->GetId();
 
     thisPtr->CreateWriteMessage(0x200, pTargetPlayer->m_nPlayerID, 1);
     auto playerList = Globals::AppManager()
@@ -300,7 +300,7 @@ int32_t Bridge::Hooks::CNWSMessage__SendServerToPlayerPlayerList_All(CNWSMessage
         playerNode = playerNode->pNext;
     }
 
-    auto& serverList = s_bridge->GetInstance()->m_serverList;
+    auto& serverList = s_bridge->GetBridgeInstance()->m_serverList;
     std::scoped_lock<std::mutex> lock(serverList.mutex);
     
     uint32_t nFakePlayerCount = 0;
@@ -581,8 +581,8 @@ void Bridge::Hooks::CNWSMessage__SendServerToPlayerPlayerList_Delete(bool before
     if (before || nPlayerId != Constants::PLAYERID_ALL_PLAYERS ||
         !s_bridge || !s_bridge->IsConnected())
         return;
-    std::unique_ptr<Message> msg = std::make_unique<PlayerDisconnectMessage>(pPlayer->m_nPlayerID, s_bridge->GetInstance()->GetId());
-    s_bridge->GetInstance()->QueueOutgoingEvent(std::move(msg));
+    std::unique_ptr<Message> msg = std::make_unique<PlayerDisconnectMessage>(pPlayer->m_nPlayerID, s_bridge->GetBridgeInstance()->GetId());
+    s_bridge->GetBridgeInstance()->QueueOutgoingEvent(std::move(msg));
 }
 
 void Bridge::Hooks::CServerExoAppInternal__Initialize(bool before, CServerExoAppInternal*)
@@ -590,12 +590,12 @@ void Bridge::Hooks::CServerExoAppInternal__Initialize(bool before, CServerExoApp
     if (before)
         return;
     if (s_bridge)
-        s_bridge->GetInstance()->Run();
+        s_bridge->GetBridgeInstance()->Run();
 }
 
 void Bridge::Hooks::SendPlayerList()
 {
-    if (!s_bridge || !s_bridge->GetInstance())
+    if (!s_bridge || !s_bridge->GetBridgeInstance())
         return;
 
     LOG_DEBUG("Preparing player list");
@@ -654,11 +654,11 @@ void Bridge::Hooks::SendPlayerList()
             playerInfo.lastName = sLastName.CStr();
             playerInfo.playername = sPlayerName.CStr();
             playerInfo.id = pPlayer->m_nPlayerID;
-            playerInfo.oid = Constants::OBJECT_INVALID | (pPlayer->m_nPlayerID & 0xFFu) | ((s_bridge->GetInstance()->GetId() & 0xFFFFu) << 8);
+            playerInfo.oid = Constants::OBJECT_INVALID | (pPlayer->m_nPlayerID & 0xFFu) | ((s_bridge->GetBridgeInstance()->GetId() & 0xFFFFu) << 8);
             playerInfo.isDM = bIsDM;
         }
         playerNode = playerNode->pNext;
     }
     LOG_DEBUG("Sending %d players as: %s", msg->players.size(), msg->name);
-    s_bridge->GetInstance()->QueueOutgoingEvent(std::move(m));
+    s_bridge->GetBridgeInstance()->QueueOutgoingEvent(std::move(m));
 }
