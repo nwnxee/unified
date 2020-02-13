@@ -83,7 +83,7 @@ ArgumentStack Factions::SetFaction(ArgumentStack&& args)
 	    }else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
         {
   		  const auto nFacId = Services::Events::ExtractArgument<int32_t>(args);
-  		  auto* pFactionManager= Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(nFacId);
+  		  auto* pFaction= Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(nFacId);
   		  if (pFaction){
   		      pFaction->AddMember(objectId);
   			  retVal = 1;
