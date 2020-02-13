@@ -14,7 +14,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Appearance::Appearance* g_plugin;
+static Factions::Factions* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
