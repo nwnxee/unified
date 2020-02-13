@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 - Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
 - Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
 - Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
+- Tweaks: `NWNX_TWEAKS_NOSTACK_*` variables to prevent ability, skill, attack and/or saving throw bonuses from stacking
 
 ##### New Plugins
 N/A

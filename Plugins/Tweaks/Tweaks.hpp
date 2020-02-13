@@ -21,6 +21,7 @@ class PreserveActionsOnDMPossess;
 class FixGreaterSanctuaryBug;
 class FixScrollLearningBug;
 class ItemChargesCost;
+class BonusStacking;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -45,6 +46,7 @@ private:
     std::unique_ptr<FixGreaterSanctuaryBug> m_FixGreaterSanctuaryBug;
     std::unique_ptr<FixScrollLearningBug> m_FixScrollLearningBug;
     std::unique_ptr<ItemChargesCost> m_ItemChargesCost;
+    std::unique_ptr<BonusStacking> m_BonusStacking;
 };
 
 }

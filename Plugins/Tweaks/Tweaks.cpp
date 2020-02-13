@@ -15,6 +15,7 @@
 #include "Tweaks/FixGreaterSanctuaryBug.hpp"
 #include "Tweaks/FixScrollLearningBug.hpp"
 #include "Tweaks/ItemChargesCost.hpp"
+#include "Tweaks/BonusStacking.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -144,6 +145,17 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         LOG_INFO("Changing cost for items with charges.");
         m_ItemChargesCost = std::make_unique<ItemChargesCost>(GetServices()->m_hooks.get(),
             mode);
+    }
+
+    int nMode[] = { std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_ABILITY", 0), 3)),
+                    std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_SKILL", 0), 3)),
+                    std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_SAVINGTHROW", 0), 3)),
+                    std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_ATTACKBONUS", 0), 3)) };
+    if (nMode[0] || nMode[1] || nMode[2] || nMode[3])
+    {
+        LOG_INFO("Property effect stacking modes -- Ability scores: %d | Skill bonuses: %d | Saving throw bonuses: %d"
+            " | Attack bonuses: %d", nMode[0], nMode[1], nMode[2], nMode[3]);
+        m_BonusStacking = std::make_unique<BonusStacking>(GetServices()->m_hooks.get(), nMode[0], nMode[1], nMode[2], nMode[3]);
     }
 }
 
