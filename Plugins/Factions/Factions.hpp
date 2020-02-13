@@ -17,7 +17,7 @@ public:
 
 private:
     static CNWSCreature *Creature(ArgumentStack& args);
-	static CNWSObject *Object(ArgumentStack& args);
+	static OBJECT_ID *Object(ArgumentStack& args);
     ArgumentStack GetFactionId (ArgumentStack&& args);
     ArgumentStack SetFaction (ArgumentStack&& args);
 };
