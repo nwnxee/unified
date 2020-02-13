@@ -49,7 +49,7 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
 
         Events::SignalEvent("NWNX_ON_ENTER_STEALTH_AFTER", thisPtr->m_idSelf);
     }
-    else
+    else if(currentlyStealthed && !willBeStealthed)
     {
         if (Events::SignalEvent("NWNX_ON_EXIT_STEALTH_BEFORE", thisPtr->m_idSelf))
         {
