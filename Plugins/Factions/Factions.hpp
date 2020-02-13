@@ -16,7 +16,8 @@ public:
     virtual ~Factions();
 
 private:
-    
+    static CNWSCreature *Creature(ArgumentStack& args);
+	static CNWSObject *Object(ArgumentStack& args);
     ArgumentStack GetFactionId (ArgumentStack&& args);
     ArgumentStack SetFaction (ArgumentStack&& args);
 };

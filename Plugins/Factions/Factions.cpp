@@ -62,7 +62,7 @@ Factions::~Factions()
 ArgumentStack Factions::GetFactionId(ArgumentStack&& args)
 {
 	int32_t retVal = -1;
-	    if (auto *pCreature = creature(args))
+	    if (auto *pCreature = Creature(args))
 	    {
 	        auto *faction = pCreature->GetFaction();
 			retVal = faction->m_nFactionId;
@@ -74,7 +74,7 @@ ArgumentStack Factions::SetFaction(ArgumentStack&& args)
 {
     int32_t retVal = -1;
 
-    if (auto *pObject = object(args))
+    if (auto *pObject = Object(args))
     {
         
 		  
