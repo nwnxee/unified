@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Services/Events/Events.hpp"
 #include "Plugin.hpp"
 #include <map>
 #include <bitset>
@@ -16,11 +17,6 @@ public:
 
 private:
     
-
-    
-
-    
-
     ArgumentStack GetFactionId (ArgumentStack&& args);
     ArgumentStack SetFaction (ArgumentStack&& args);
 };
