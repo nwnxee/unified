@@ -31,6 +31,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 - ELC: Updated for custom spellcaster changes
 - Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
 - Tweaks: added temporary fix for server freeze when learning a spell from a scroll (NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG)
+- Events: OnStealthExit will no longer fire if OnStealthEnter was skipped
 
 ### Deprecated
 - Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
@@ -41,6 +42,10 @@ N/A
 ### Fixed
 - Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY
 - Webhook: fixed a crash that would happen when trying to send a message in the shutdown script
+- Core: POS is now saved for characters who were online when the server was shut down
+- Core: Fixed issue where POS would occasionally get corrupted and print errors to the log
+- ServerLogRedirector: Fixed dropped prefixes when using PrintString()
+
 
 ## 8193.6
 https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
