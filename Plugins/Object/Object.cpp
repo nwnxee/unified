@@ -100,6 +100,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetFloat);
     REGISTER(DeleteFloat);
     REGISTER(DeleteVarRegex);
+    REGISTER(GetPositionIsInTrigger);
 
 #undef REGISTER
 }
@@ -784,7 +785,6 @@ ArgumentStack Object::GetFloat(ArgumentStack&& args)
 
 ArgumentStack Object::SetFloat(ArgumentStack&& args)
 {
-
     const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
@@ -800,7 +800,6 @@ ArgumentStack Object::SetFloat(ArgumentStack&& args)
 
 ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
 {
-
     const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
@@ -813,7 +812,6 @@ ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
 
 ArgumentStack Object::DeleteVarRegex(ArgumentStack&& args)
 {
-
     const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto regex = Services::Events::ExtractArgument<std::string>(args);
@@ -822,6 +820,23 @@ ArgumentStack Object::DeleteVarRegex(ArgumentStack&& args)
     g_plugin->GetServices()->m_perObjectStorage->RemoveRegex(oidObject, "((?:PERINT!)|(?:PERSTR!)|(?:PERFLT!))" + regex);
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Object::GetPositionIsInTrigger(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pTrigger = Utils::AsNWSTrigger(object(args)))
+    {
+        const auto fX = Services::Events::ExtractArgument<float>(args);
+        const auto fY = Services::Events::ExtractArgument<float>(args);
+        const auto fZ = Services::Events::ExtractArgument<float>(args);
+
+        Vector vPosition = {fX, fY, fZ};
+        retVal = pTrigger->InTrigger(vPosition);
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

@@ -75,6 +75,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(SetTileAnimationLoop);
     REGISTER(TestDirectLine);
     REGISTER(GetMusicIsPlaying);
+    REGISTER(CreateGenericTrigger);
 
 #undef REGISTER
 }
@@ -694,6 +695,43 @@ ArgumentStack Area::GetMusicIsPlaying(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Area::CreateGenericTrigger(ArgumentStack&& args)
+{
+    Types::ObjectID oidTrigger = Constants::OBJECT_INVALID;
+
+    if (auto *pArea = area(args))
+    {
+        const auto fX = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(fX >= 0.0f);
+        const auto fY = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(fY >= 0.0f);
+        const auto fZ = Services::Events::ExtractArgument<float>(args);
+        const auto tag = Services::Events::ExtractArgument<std::string>(args);
+        const auto fSize = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(fSize >= 0.0f);
+
+        Vector vPosition = {fX, fY, fZ};
+
+        auto *pTrigger = new CNWSTrigger();
+        pTrigger->LoadFromTemplate(CResRef("newgeneric"));
+        pTrigger->m_oidCreator = Constants::OBJECT_INVALID;
+        pTrigger->SetPosition(vPosition, 0);
+        pTrigger->CreateNewGeometry(fSize, vPosition, pArea);
+
+        if (!tag.empty())
+        {
+            pTrigger->m_sTag = CExoString(tag.c_str());
+            Utils::GetModule()->AddObjectToLookupTable(pTrigger->m_sTag, pTrigger->m_idSelf);
+        }
+
+        pTrigger->AddToArea(pArea, vPosition.x, vPosition.y, vPosition.z);
+
+        oidTrigger = pTrigger->m_idSelf;
+    }
+
+    return Services::Events::Arguments(oidTrigger);
 }
 
 }

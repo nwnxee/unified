@@ -20,6 +20,7 @@ class DeadCreatureFiresOnAreaExit;
 class PreserveActionsOnDMPossess;
 class FixGreaterSanctuaryBug;
 class FixScrollLearningBug;
+class ItemChargesCost;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -43,6 +44,7 @@ private:
     std::unique_ptr<PreserveActionsOnDMPossess> m_PreserveActionsOnDMPossess;
     std::unique_ptr<FixGreaterSanctuaryBug> m_FixGreaterSanctuaryBug;
     std::unique_ptr<FixScrollLearningBug> m_FixScrollLearningBug;
+    std::unique_ptr<ItemChargesCost> m_ItemChargesCost;
 };
 
 }

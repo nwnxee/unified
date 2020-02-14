@@ -232,7 +232,7 @@ std::string PerObjectStorage::ObjectStorage::Serialize(bool persistonly)
 
         if (count > 0)
         {
-            ss << "[FLTMAP:" << m_FloatMap->size() << "]";
+            ss << "[FLTMAP:" << count << "]";
             for (auto it: *m_FloatMap)
                 if (!persistonly || it.second.second)
                     ss << "<" << it.first.length() << ">" << it.first << " = " << it.second.first << ";";
@@ -246,7 +246,7 @@ std::string PerObjectStorage::ObjectStorage::Serialize(bool persistonly)
 
         if (count > 0)
         {
-            ss << "[STRMAP:" << m_StringMap->size() << "]";
+            ss << "[STRMAP:" << count << "]";
             for (auto it: *m_StringMap)
                 if (!persistonly || it.second.second)
                     ss << "<" << it.first.length() << ">" << it.first << " = " << "<" << it.second.first.length() << ">" << it.second.first << ";";
