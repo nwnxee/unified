@@ -5,6 +5,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 namespace Optimizations {
 
@@ -15,7 +16,7 @@ public:
 
 private:
 
-    static std::unordered_map<const char *, std::vector<uint32_t>> m_TagLookupMap;
+    static std::unordered_map<std::string, std::vector<uint32_t>> m_TagLookupMap;
 
     static int32_t  AddObjectToLookupTable(void*, CExoString, uint32_t);
     static int32_t  RemoveObjectFromLookupTable(void*, CExoString, uint32_t);

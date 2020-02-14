@@ -13,7 +13,7 @@ namespace Optimizations {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-std::unordered_map<const char *, std::vector<uint32_t>> ObjectTagLookup::m_TagLookupMap;
+std::unordered_map<std::string, std::vector<uint32_t>> ObjectTagLookup::m_TagLookupMap;
 
 ObjectTagLookup::ObjectTagLookup(Services::HooksProxy* hooker)
 {
