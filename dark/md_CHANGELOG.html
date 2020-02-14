@@ -113,7 +113,6 @@ Unreleased</h1>
 Added</h2>
 <ul>
 <li>Events: Added OnUUIDCollision event to UUIDEvents</li>
-<li>Experimental: AsyncLogFlush to asynchronously flush the game log to disk</li>
 <li>Core: <code>NWNX_CORE_LOG_ASYNC</code> variable to asynchronously flush the nwnx log to disk</li>
 <li>Core: <code>NWNX_CORE_LOG_DATE</code> variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off</li>
 <li>Tweaks: <code>NWNX_TWEAKS_ITEM_CHARGES_COST_MODE</code> to revert the cost of items with charges to 1.69 values</li>
@@ -121,7 +120,14 @@ Added</h2>
 </ul>
 <h4><a class="anchor" id="autotoc_md3"></a>
 New Plugins</h4>
-<p>N/A</p>
+<ul>
+<li>Optimizations: Tweaks that (potentially) improve performance<ul>
+<li>AsyncLogFlush to asynchronously flush the game log to disk</li>
+<li>GameObjectLookup to speed up ObjectID to pointer lookups</li>
+<li>ObjectTagLookup to speed GetObjectByTag() and similar functions</li>
+</ul>
+</li>
+</ul>
 <h4><a class="anchor" id="autotoc_md4"></a>
 New NWScript Functions</h4>
 <ul>
@@ -588,7 +594,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Feb 14 2020 10:03:48 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Feb 14 2020 10:12:28 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

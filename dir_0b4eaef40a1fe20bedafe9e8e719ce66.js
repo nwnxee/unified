@@ -22,6 +22,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "MaxLevel", "dir_b10c1c60be7e35fee5df313cec8c8dbb.html", null ],
     [ "Metrics_InfluxDB", "dir_dc689260d4f2167281a349267a85b2fa.html", null ],
     [ "Object", "dir_2584d5990ceee72a96d4fc6f0e6569ed.html", "dir_2584d5990ceee72a96d4fc6f0e6569ed" ],
+    [ "Optimizations", "dir_80cec748521ec7cce5c116300192b004.html", null ],
     [ "Player", "dir_d90d35e7a4c53163d70fc449fc96c95f.html", "dir_d90d35e7a4c53163d70fc449fc96c95f" ],
     [ "Profiler", "dir_a46c4fd3222911991c647c19f5e48dd1.html", "dir_a46c4fd3222911991c647c19f5e48dd1" ],
     [ "Race", "dir_a4c3b91c2fe04e8b009c39d67ec0a93a.html", "dir_a4c3b91c2fe04e8b009c39d67ec0a93a" ],

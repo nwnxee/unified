@@ -23,6 +23,7 @@ var modules =
     [ "MaxLevel", "group__maxlevel.html", "group__maxlevel" ],
     [ "Metrics InfluxDB", "group__metrics__influxdb.html", "group__metrics__influxdb" ],
     [ "Object", "group__object.html", "group__object" ],
+    [ "Optimizations", "group__optimizations.html", "group__optimizations" ],
     [ "Player", "group__player.html", "group__player" ],
     [ "Profiler", "group__profiler.html", "group__profiler" ],
     [ "Race", "group__race.html", "group__race" ],

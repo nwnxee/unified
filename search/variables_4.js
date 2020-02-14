@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['fclasslevelmod_2471',['fClassLevelMod',['../structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2',1,'NWNX_SkillRanks_SkillFeat']]],
-  ['fduration_2472',['fDuration',['../structNWNX__EffectUnpacked.html#ad75877f6bc06555539531b274ac5ad38',1,'NWNX_EffectUnpacked']]],
-  ['fparam0_2473',['fParam0',['../structNWNX__EffectUnpacked.html#a35f34194735bf87011027e76349b7074',1,'NWNX_EffectUnpacked']]],
-  ['fparam1_2474',['fParam1',['../structNWNX__EffectUnpacked.html#aa78592d4b82d8395fe3552333271a315',1,'NWNX_EffectUnpacked']]],
-  ['fparam2_2475',['fParam2',['../structNWNX__EffectUnpacked.html#a7f21f59f525f1dc6ea93333c3358f858',1,'NWNX_EffectUnpacked']]],
-  ['fparam3_2476',['fParam3',['../structNWNX__EffectUnpacked.html#ab38506290be8f1df06a216ee0c4756d0',1,'NWNX_EffectUnpacked']]]
+  ['fclasslevelmod_2474',['fClassLevelMod',['../structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2',1,'NWNX_SkillRanks_SkillFeat']]],
+  ['fduration_2475',['fDuration',['../structNWNX__EffectUnpacked.html#ad75877f6bc06555539531b274ac5ad38',1,'NWNX_EffectUnpacked']]],
+  ['fparam0_2476',['fParam0',['../structNWNX__EffectUnpacked.html#a35f34194735bf87011027e76349b7074',1,'NWNX_EffectUnpacked']]],
+  ['fparam1_2477',['fParam1',['../structNWNX__EffectUnpacked.html#aa78592d4b82d8395fe3552333271a315',1,'NWNX_EffectUnpacked']]],
+  ['fparam2_2478',['fParam2',['../structNWNX__EffectUnpacked.html#a7f21f59f525f1dc6ea93333c3358f858',1,'NWNX_EffectUnpacked']]],
+  ['fparam3_2479',['fParam3',['../structNWNX__EffectUnpacked.html#ab38506290be8f1df06a216ee0c4756d0',1,'NWNX_EffectUnpacked']]]
 ];
