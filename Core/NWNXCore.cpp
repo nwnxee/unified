@@ -579,11 +579,12 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
         }
     }
 
+    auto hook = g_core->m_services->m_hooks->FindHookByAddress(Functions::_ZN11CAppManager13DestroyServerEv);
+    hook->CallOriginal<void>(app);
+
     LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();
 
-    // At this point, the hook has been reset. We should call the original again to let NWN carry on.
-    app->DestroyServer();
     RestoreCrashHandlers();
 }
 
