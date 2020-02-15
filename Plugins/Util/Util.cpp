@@ -398,6 +398,7 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
         m_scriptCompiler = std::make_unique<CScriptCompiler>();
         m_scriptCompiler->SetCompileDebugLevel(0);
         m_scriptCompiler->SetCompileSymbolicOutput(0);
+        m_scriptCompiler->SetGenerateDebuggerOutput(0);
         m_scriptCompiler->SetOptimizeBinaryCodeLength(true);
         m_scriptCompiler->SetCompileConditionalOrMain(true);
         m_scriptCompiler->SetIdentifierSpecification("nwscript");
