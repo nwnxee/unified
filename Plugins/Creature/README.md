@@ -31,7 +31,12 @@ Each of the variables can take one of the following values.
 | 4 | Stacking will be determined by effect type that can be set using NWscript functions. |
 
 ### NWNX_CREATURE_NOSTACK_DEFAULT_TYPE
-This variable takes one of the following values, assigning all effects this modifier type by default. This is only used when mode is set to 4. Per-spell overrides can be defined using the `NWNX_Creature_SetSpellBonusType(int spellId, int type)` function. Effects of different types stack with each other but only circumstance bonuses stack with effects of the same type.
+This variable takes one of the following values, assigning all effects this modifier type by default.
+This is used only when mode is set to 4. Per-spell overrides can be defined using the
+`NWNX_Creature_SetSpellBonusType(int spellId, int type)` function. Effects of different types
+stack with each other but only circumstance bonuses stack with effects of the same type.
+
+Feats and other spell-like effects use spellIds from spells.2da. Item effects will always use the default type.
 
 | Value | Type |
 |---:|----|
