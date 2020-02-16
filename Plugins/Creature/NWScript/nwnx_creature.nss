@@ -73,6 +73,24 @@ const int NWNX_CREATURE_BONUS_TYPE_SKILL         = 5;
 const int NWNX_CREATURE_BONUS_TYPE_TOUCH_ATTACK  = 6;
 /// @}
 
+/// @name Spell Effect Bonus Types
+/// @anchor spell_bonus_types
+///
+/// Used with NWNX_Creature_GetTotalEffectBonus() these are the types of temporary bonuses from effects.
+/// @{
+const int NWNX_CREATURE_EFFECT_TYPE_ENHANCEMENT  = 0;
+const int NWNX_CREATURE_EFFECT_TYPE_CIRCUMSTANCE = 1;
+const int NWNX_CREATURE_EFFECT_TYPE_COMPETENCE   = 2;
+const int NWNX_CREATURE_EFFECT_TYPE_INSIGHT      = 3;
+const int NWNX_CREATURE_EFFECT_TYPE_LUCK         = 4;
+const int NWNX_CREATURE_EFFECT_TYPE_MORALE       = 5;
+const int NWNX_CREATURE_EFFECT_TYPE_PROFANE      = 6;
+const int NWNX_CREATURE_EFFECT_TYPE_RESISTANCE   = 7;
+const int NWNX_CREATURE_EFFECT_TYPE_SACRED       = 8;
+const int NWNX_CREATURE_EFFECT_TYPE_CUSTOM       = 9;
+const int NWNX_CREATURE_EFFECT_TYPE_CUSTOM2      = 10;
+/// @}
+
 /// @struct NWNX_Creature_SpecialAbility
 /// @brief A creature special ability.
 struct NWNX_Creature_SpecialAbility

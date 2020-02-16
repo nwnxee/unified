@@ -74,7 +74,11 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
     BOOL bForceMax, uint8_t nSaveType, uint8_t nSpecificType, uint8_t nSkill, uint8_t nAbilityScore, BOOL bOffHand)
 {
 
-    if (nEffectBonusType == 2)
+    if (nEffectBonusType == 2
+        || ((nEffectBonusType == 1 || nEffectBonusType == 6) && !s_nAttackBonusStackingMode)
+        || (nEffectBonusType == 3 && !s_nSavingThrowStackingMode)
+        || (nEffectBonusType == 4 && !s_nAbilityStackingMode)
+        || (nEffectBonusType == 5 && !s_nSkillStackingMode) )
         return pGetTotalEffectBonusHook->CallOriginal<int32_t>(thisPtr, nEffectBonusType, pObject,
             bElementalDamage, bForceMax, nSaveType, nSpecificType, nSkill, nAbilityScore, bOffHand);
 
@@ -128,13 +132,14 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
             {
                 auto pEffect = thisPtr->m_appliedEffects.element[i];
                 auto nEffectWeaponType = pEffect->GetInteger(1);
-                bool bWeapon = nEffectWeaponType == 0 || nEffectWeaponType == nAttackType;
+                bool bValidWeapon = nEffectWeaponType == 0 || nEffectWeaponType == nAttackType;
                 if (nAttackType == 6)
-                    bWeapon |= nEffectWeaponType == 1 || nEffectWeaponType == 3;
+                    bValidWeapon |= nEffectWeaponType == 1 || nEffectWeaponType == 3;
                 else
-                    bWeapon |= (nAttackType == 8 && nEffectWeaponType == 7);
+                    bValidWeapon |= (nAttackType == 8 && nEffectWeaponType == 7);
 
-                if (CheckRaceAlignment(nRace, pEffect->GetInteger(2),
+                if (bValidWeapon
+                    && CheckRaceAlignment(nRace, pEffect->GetInteger(2),
                     nAlignLaw, pEffect->GetInteger(3),
                     nAlignGood, pEffect->GetInteger(4)))
                 {
@@ -144,23 +149,33 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
                     {
                         if (nEffectWeaponType == 0)
                             AddPositiveEffect(pEffect->m_nSpellId, nEffectStrength);
-                        else if (nEffectBonusType != 6)
-                            nEffectBonus = std::max(nEffectBonus, nEffectStrength);
+                        else if (nEffectBonusType != 6) //Not touch attack?
+                        {
+                            if (auto pCreator = Globals::AppManager()->m_pServerExoApp->GetItemByGameObjectID(pEffect->m_oidCreator))
+                                AddPositiveEffectOID(pCreator->m_idSelf, nEffectStrength);
+                            else
+                                AddPositiveEffect(pEffect->m_nSpellId, nEffectStrength);
+                        }
                     }
                     else if (pEffect->m_nType == Constants::EffectTrueType::AttackDecrease)
                     {
                         if (nEffectWeaponType == 0)
                             AddNegativeEffect(pEffect->m_nSpellId, nEffectStrength);
                         else
-                            nEffectPenalty = std::max(nEffectPenalty, nEffectStrength);
+                        {
+                            if (auto pCreator = Globals::AppManager()->m_pServerExoApp->GetItemByGameObjectID(pEffect->m_oidCreator))
+                                AddNegativeEffectOID(pCreator->m_idSelf, nEffectStrength);
+                            else
+                                AddNegativeEffect(pEffect->m_nSpellId, nEffectStrength);
+                        }
                     }
                 }
             }
 
-            nEffectBonus = !s_nAttackBonusStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nAttackBonusStackingMode);
-            nEffectPenalty = s_bAlwaysStackPenalties || !s_nAttackBonusStackingMode ? GetStackedBonus(true) : GetUnstackedBonus(true, s_nAttackBonusStackingMode);
-
             {
+                nEffectBonus = !s_nAttackBonusStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nAttackBonusStackingMode);
+                nEffectPenalty = s_bAlwaysStackPenalties || !s_nAttackBonusStackingMode ? GetStackedBonus(true) : GetUnstackedBonus(true, s_nAttackBonusStackingMode);
+
                 uint32_t nAttackBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAttackBonusLimit();
                 nEffectBonus = std::min(nEffectBonus, nAttackBonusLimit);
                 nEffectPenalty = std::min(nEffectPenalty, nAttackBonusLimit);
