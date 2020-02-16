@@ -1,2 +1,3 @@
 add_plugin(Creature
-    "Creature.cpp")
+    "Creature.cpp"
+    "Extras/BonusStacking.cpp")

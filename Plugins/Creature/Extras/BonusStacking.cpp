@@ -1,4 +1,4 @@
-#include "Tweaks/BonusStacking.hpp"
+#include "Extras/BonusStacking.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Utils.hpp"
 #include "API/CAppManager.hpp"
@@ -8,38 +8,38 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
 #include "API/CNWSObject.hpp"
+#include "API/CNWSpellArray.hpp"
+#include "API/CNWSRules.hpp"
 #include "API/CExoArrayList.hpp"
 #include "API/CServerExoApp.hpp"
 
-namespace Tweaks {
+namespace Creature {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-
-namespace NostackMode
-{
-typedef enum
-{
-	DISABLED,
-	NO_STACKING,
-	ALLOW_ONE_SPELL,
-	ALLOW_ALL_SPELLS
-} TYPE;
-}
+using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
 int BonusStacking::s_nAbilityStackingMode = NostackMode::DISABLED;
 int BonusStacking::s_nSkillStackingMode = NostackMode::DISABLED;
 int BonusStacking::s_nSavingThrowStackingMode = NostackMode::DISABLED;
 int BonusStacking::s_nAttackBonusStackingMode = NostackMode::DISABLED;
+bool BonusStacking::s_bAlwaysStackPenalties = false;
+std::vector<int> g_nSpellBonusTypes;
+NostackType::TYPE g_nDefaultType = NostackType::ENHANCEMENT;
 
 NWNXLib::Hooking::FunctionHook* pGetTotalEffectBonusHook;
 
-BonusStacking::BonusStacking(Services::HooksProxy* hooker, int nAbilityStacking, int nSkillStacking, int nSavingThrowStacking, int nAttackBonusStacking)
+void BonusStacking::Init(Services::HooksProxy* hooker, int nAbilityStacking, int nSkillStacking, int nSavingThrowStacking, int nAttackBonusStacking, int nDefaultType, bool bAlwaysStackPenalties)
 {
 	s_nAbilityStackingMode = nAbilityStacking;
 	s_nSkillStackingMode = nSkillStacking;
 	s_nSavingThrowStackingMode = nSavingThrowStacking;
 	s_nAttackBonusStackingMode = nAttackBonusStacking;
+	s_bAlwaysStackPenalties = bAlwaysStackPenalties;
+	g_nDefaultType = static_cast<NostackType::TYPE>(nDefaultType);
+
+	LOG_INFO("Property effect stacking modes -- Ability scores: %d | Skill bonuses: %d | Saving throw bonuses: %d"
+		" | Attack bonuses: %d", nAbilityStacking, nSkillStacking, nSavingThrowStacking, nAttackBonusStacking);
 
     hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi>
                                     (&GetTotalEffectBonus);
@@ -86,7 +86,7 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
 
     uint16_t nRace = -1;
     uint8_t nAlignLaw = -1, nAlignGood = -1;
-	uint32_t nPositiveBonus = 0, nNegativeBonus = 0;
+	uint32_t nEffectBonus = 0, nEffectPenalty = 0;
 
 	if (pObject)
 	{
@@ -144,27 +144,27 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
 						if (nEffectWeaponType == 0)
 							AddPositiveEffect(pEffect->m_nSpellId, nEffectStrength);
 						else if (nEffectBonusType != 6)
-							nPositiveBonus = std::max(nPositiveBonus, nEffectStrength);
+							nEffectBonus = std::max(nEffectBonus, nEffectStrength);
 					}
 					else if (pEffect->m_nType == Constants::EffectTrueType::AttackDecrease)
 					{
 						if (nEffectWeaponType == 0)
 							AddNegativeEffect(pEffect->m_nSpellId, nEffectStrength);
 						else
-							nNegativeBonus = std::max(nNegativeBonus, nEffectStrength);
+							nEffectPenalty = std::max(nEffectPenalty, nEffectStrength);
 					}
 				}
 			}
 
-			nPositiveBonus = !s_nAttackBonusStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nAttackBonusStackingMode);
-			nNegativeBonus = GetStackedBonus(true); //Prevent penalty stacking?
+			nEffectBonus = !s_nAttackBonusStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nAttackBonusStackingMode);
+			nEffectPenalty = s_bAlwaysStackPenalties || !s_nAttackBonusStackingMode ? GetStackedBonus(true) : GetUnstackedBonus(true, s_nAttackBonusStackingMode);
 
 			{
 				uint32_t nAttackBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAttackBonusLimit();
-				nPositiveBonus = std::min(nPositiveBonus, nAttackBonusLimit);
-				nNegativeBonus = std::min(nNegativeBonus, nAttackBonusLimit);
+				nEffectBonus = std::min(nEffectBonus, nAttackBonusLimit);
+				nEffectPenalty = std::min(nEffectPenalty, nAttackBonusLimit);
 			}
-			return nPositiveBonus - nNegativeBonus;
+			return nEffectBonus - nEffectPenalty;
 
 		case 2:
 			//TODO: Damage bonuses can be added if needed by someone
@@ -206,23 +206,23 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
 				}
 			}
 
-			nPositiveBonus = !s_nSavingThrowStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nSavingThrowStackingMode);
-			nNegativeBonus = GetStackedBonus(true); //Prevent penalty stacking?
+			nEffectBonus = !s_nSavingThrowStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nSavingThrowStackingMode);
+			nEffectPenalty = s_bAlwaysStackPenalties || !s_nSavingThrowStackingMode ? GetStackedBonus(true) : GetUnstackedBonus(true, s_nSavingThrowStackingMode);
 
 			{
 				uint32_t nSavingThrowBonusLimit = Globals::AppManager()->m_pServerExoApp->GetSavingThrowBonusLimit();
-				nPositiveBonus = std::min(nPositiveBonus, nSavingThrowBonusLimit);
-				nNegativeBonus = std::min(nNegativeBonus, nSavingThrowBonusLimit);
+				nEffectBonus = std::min(nEffectBonus, nSavingThrowBonusLimit);
+				nEffectPenalty = std::min(nEffectPenalty, nSavingThrowBonusLimit);
 			}
 
 			if (thisPtr->m_pStats->HasFeat(Constants::Feat::SacredDefense1))
 			{
 				int nChampionLevel = thisPtr->m_pStats->GetNumLevelsOfClass(Constants::ClassType::DivineChampion);
 				if (nChampionLevel > 1)
-					nPositiveBonus += nChampionLevel >> 1; //Level / 2
+					nEffectBonus += nChampionLevel >> 1; //Level / 2
 			}
 
-			return nPositiveBonus - nNegativeBonus;
+			return nEffectBonus - nEffectPenalty;
 
 		case 4:
 			for (int i = thisPtr ? thisPtr->m_pStats->m_nAbilityPtr : 0;
@@ -255,16 +255,16 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
 				}
 			}
 
-			nPositiveBonus = !s_nAbilityStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nAbilityStackingMode);
-			nNegativeBonus = GetStackedBonus(true); //Prevent penalty stacking?
+			nEffectBonus = !s_nAbilityStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nAbilityStackingMode);
+			nEffectPenalty = s_bAlwaysStackPenalties || !s_nAbilityStackingMode ? GetStackedBonus(true) : GetUnstackedBonus(true, s_nAbilityStackingMode);
 
 			{
 				uint32_t nAbilityBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAbilityBonusLimit();
 				uint32_t nAbilityPenaltyLimit = Globals::AppManager()->m_pServerExoApp->GetAbilityPenaltyLimit();
-				nPositiveBonus = std::min(nPositiveBonus, nAbilityBonusLimit);
-				nNegativeBonus = std::min(nNegativeBonus, nAbilityPenaltyLimit);
+				nEffectBonus = std::min(nEffectBonus, nAbilityBonusLimit);
+				nEffectPenalty = std::min(nEffectPenalty, nAbilityPenaltyLimit);
 			}
-			return nPositiveBonus - nNegativeBonus;
+			return nEffectBonus - nEffectPenalty;
 
 		case 5:
 			for (int i = thisPtr ? thisPtr->m_pStats->m_nSkillBonusPtr : 0;
@@ -298,21 +298,19 @@ int32_t BonusStacking::GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffec
 						else
 							AddNegativeEffect(pEffect->m_nSpellId, nEffectStrength);
 					}
-
-
 				}
 			}
 
-			nPositiveBonus = !s_nSkillStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nSkillStackingMode);
-			nNegativeBonus = GetStackedBonus(true); //Prevent penalty stacking?
+			nEffectBonus = !s_nSkillStackingMode ? GetStackedBonus(false) : GetUnstackedBonus(false, s_nSkillStackingMode);
+			nEffectPenalty = s_bAlwaysStackPenalties || !s_nSkillStackingMode ? GetStackedBonus(true) : GetUnstackedBonus(true, s_nSkillStackingMode);
 
 			{
 				uint32_t nSkillBonusLimit = Globals::AppManager()->m_pServerExoApp->GetSkillBonusLimit();
-				nPositiveBonus = std::min(nPositiveBonus, nSkillBonusLimit);
-				nNegativeBonus = std::min(nNegativeBonus, nSkillBonusLimit);
+				nEffectBonus = std::min(nEffectBonus, nSkillBonusLimit);
+				nEffectPenalty = std::min(nEffectPenalty, nSkillBonusLimit);
 			}
 
-			return nPositiveBonus - nNegativeBonus;
+			return nEffectBonus - nEffectPenalty;
     }
 
 	return 0;
@@ -506,7 +504,50 @@ inline uint32_t GetUnstackedBonus(bool negative, int mode)
 			}
 			return nMaxItemEffect + nSumSpellEffect;
 		}
+		case NostackMode::CUSTOM_TYPES: //Use per-spell defined types
+		{
+			uint32_t nMaxValues[NostackType::NUM_VALUES];
+			std::fill_n(nMaxValues, NostackType::NUM_VALUES, 0);
+
+			for (int i = 0; i < MAX_STACKED_EFFECTS; i++)
+			{
+				uint32_t nEffectValue = negative ? g_EffectsStrength2[i] : g_EffectsStrength[i];
+				if (nEffectValue == -1u)
+					break;
+				uint32_t nSpellId = negative ? g_EffectsSpellID2[i] : g_EffectsSpellID[i];
+				int nBonusType = g_nDefaultType;
+				if (nSpellId != -1u)
+					nBonusType = nSpellId >= g_nSpellBonusTypes.size() ? g_nDefaultType : g_nSpellBonusTypes[nSpellId];
+				if (nBonusType == 1)
+					nMaxValues[nBonusType] += nEffectValue;
+				else
+					nMaxValues[nBonusType] = std::max(nMaxValues[nBonusType], nEffectValue);
+			}
+			
+			uint32_t nSum = 0;
+			for (int i = 0; i < NostackType::NUM_VALUES; i++)
+				nSum += nMaxValues[i];
+			return nSum;
+		}
 	}
+
+	return 0;
+}
+
+ArgumentStack BonusStacking::SetSpellBonusType(ArgumentStack&& args)
+{
+	if (!g_nSpellBonusTypes.size())
+		g_nSpellBonusTypes.resize(Globals::Rules()->m_pSpellArray->m_nNumSpells, g_nDefaultType);
+
+	const auto nSpellId = Services::Events::ExtractArgument<int32_t>(args);
+	ASSERT_OR_THROW(nSpellId >= 0);
+	ASSERT_OR_THROW(nSpellId < Globals::Rules()->m_pSpellArray->m_nNumSpells);
+	const auto nBonusType = Services::Events::ExtractArgument<int32_t>(args);
+	ASSERT_OR_THROW(nBonusType >= 0);
+	ASSERT_OR_THROW(nBonusType < NostackType::NUM_VALUES);
+
+	g_nSpellBonusTypes[nSpellId] = nBonusType;
+	return Services::Events::Arguments();
 }
 
 }

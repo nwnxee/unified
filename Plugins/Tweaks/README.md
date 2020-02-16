@@ -23,7 +23,6 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG`: true or false
 * `NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG`: true or false
 * `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE`: Between 1 and 3
-* `NWNX_TWEAKS_NOSTACK_*`: See below
 
 ## Environment variable values
 
@@ -35,23 +34,4 @@ Values between 1 and 3 are valid. Any of those values will adjust the item cost 
 | 1 | Cost will be capped at 50 charges. Any charges over 50 won't affect the item cost. |
 | 2 | Up to 50 charges the cost will be the same as it was in 1.69. Any charges over 50 will add less value, capping at twice the cost at 250 charges. |
 | 3 | Cost will be calculated linearly based on the number of charges the same it was in 1.69, making items with 250 charges 5 times as expensive as 50 charges ones. |
-
-### NWNX_TWEAKS_NOSTACK_*
-The following environment variables are available.
-
-| ENV VAR | Description |
-|---|----|
-| NWNX_TWEAKS_NOSTACK_ABILITY | Controls whether ability scores should stack or not |
-| NWNX_TWEAKS_NOSTACK_SKILL | Controls whether skill bonuses should stack or not |
-| NWNX_TWEAKS_NOSTACK_SAVINGTHROW | Controls whether saving throw bonuses should stack or not |
-| NWNX_TWEAKS_NOSTACK_ATTACKBONUS | Controls whether attack bonuses should stack or not |
-
-Each of the variables can take one of the following values.
-
-| Value | Description |
-|---:|----|
-| 0 | Default value, vanilla behavior. |
-| 1 | It will prevent any kind of stacking of properties. Only the highest effect will be used. |
-| 2 | It will allow both the highest item effect and the highest spell effect. |
-| 3 | It will only prevent stacking of effects from items. Spell effects will stack as usual. |
 

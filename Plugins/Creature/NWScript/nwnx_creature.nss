@@ -649,6 +649,11 @@ int NWNX_Creature_GetSpecialization(object creature, int class);
 /// @param school The school constant.
 void NWNX_Creature_SetSpecialization(object creature, int class, int school);
 
+/// @brief Sets a spell bonus type to be used by the NoStack feature.
+/// @param spell The spell ID from spells.2da.
+/// @param type The new type.
+void NWNX_Creature_SetSpellBonusType(int spell, int type);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -1601,6 +1606,16 @@ void NWNX_Creature_SetSpecialization(object creature, int class, int school)
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, school);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, class);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetSpellBonusType(int spell, int type)
+{
+    string sFunc = "SetSpellBonusType";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, type);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, spell);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
