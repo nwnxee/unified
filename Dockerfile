@@ -18,7 +18,7 @@ RUN runDeps="hunspell \
     libssl1.1 \
     inotify-tools \
     patch \
-    dotnet-sdk-3.0" \
+    dotnet-sdk-3.1" \
     installDeps="ca-certificates wget gpg apt-transport-https" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $installDeps \
