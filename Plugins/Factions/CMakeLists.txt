@@ -1,2 +1,2 @@
-add_plugin(Item
+add_plugin(Factions
     "Factions.cpp")
