@@ -1886,19 +1886,17 @@ ArgumentStack Creature::SetDisarmable(ArgumentStack&& args)
 ArgumentStack Creature::SetFaction(ArgumentStack&& args)
 {
     int32_t retVal = -1;
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    if (objectId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Faction SetFaction called on OBJECT_INVALID");
-    }else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
-    {
+    if (auto *pCreature = creature(args)){
         const auto nFacId = Services::Events::ExtractArgument<int32_t>(args);
         auto* pFaction= Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(nFacId);
         if (pFaction){
-            pFaction->AddMember(objectId);
+            pFaction->AddMember(pCreature->m_idSelf);
             retVal = 1;
+        }else{
+            LOG_NOTICE("NWNX_Faction function called with invalid faction id");
         }
-    
+    }else{
+        LOG_NOTICE("NWNX_Faction function called on invalid creature");
     }
     return Services::Events::Arguments(retVal);
 }
@@ -1907,21 +1905,13 @@ ArgumentStack Creature::SetFaction(ArgumentStack&& args)
 ArgumentStack Creature::GetFaction(ArgumentStack&& args)
 {
     int32_t retVal = -1;
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    if (objectId == Constants::OBJECT_INVALID)
-        {
-            LOG_NOTICE("NWNX_Faction function called on OBJECT_INVALID");
-        }else{
-                auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
-                auto *pCreature = Utils::AsNWSCreature(pGameObject);
-                if (!pCreature){
-                    LOG_NOTICE("NWNX_Faction function called on non creature object");
-                }else{
-                    auto *faction = pCreature->GetFaction();
-                    retVal = faction->m_nFactionId;
-                }	
-        }
-	
+    
+    if(auto *pCreature = creature(args)){
+        auto *faction = pCreature->GetFaction();
+        retVal = faction->m_nFactionId;
+    }else{
+        LOG_NOTICE("NWNX_Faction function called on invalid creature");
+    }
     return Services::Events::Arguments(retVal);
 }
 
