@@ -4,7 +4,7 @@
 #include "Services/Events/Events.hpp"
 #include "API/Types.hpp"
 #include "API/CNWSItem.hpp"
-
+#include "API/CNWSCreature.hpp"
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
 namespace Factions {
