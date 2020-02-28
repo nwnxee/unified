@@ -13,15 +13,13 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 - Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
 - Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
 - Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
-- Factions: GetFaction / SetFaction - allows the getting and setting of faction ids on creatures
-
+- Creature: GetFaction / SetFaction - allows the getting and setting of faction ids on creatures
+ 
 ##### New Plugins
 - Optimizations: Tweaks that (potentially) improve performance
     - AsyncLogFlush to asynchronously flush the game log to disk
     - GameObjectLookup to speed up ObjectID to pointer lookups
     - ObjectTagLookup to speed GetObjectByTag() and similar functions
-- Factions: Plugin that allows you to get access to the raw id of the creatures faction and manipulate it
-	- Get / Set of faction id on a creature
 
 ##### New NWScript Functions
 - Player: SetResManOverride()
