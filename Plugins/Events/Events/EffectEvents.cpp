@@ -27,7 +27,7 @@ void EffectEvents::HandleEffectHook(const std::string& event, bool before, CNWSO
 {
     int32_t effectDurationType = pEffect->m_nSubType & EffectDurationType::MASK;
 
-    if (effectDurationType != EffectDurationType::Temporary && effectDurationType != EffectDurationType::Permanent)
+    if (effectDurationType != EffectDurationType::Temporary && effectDurationType != EffectDurationType::Permanent && effectDurationType != EffectDurationType::Instant)
         return;
 
     switch (pEffect->m_nType)
