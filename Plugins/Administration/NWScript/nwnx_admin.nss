@@ -282,7 +282,7 @@ void NWNX_Administration_GetServerName()
 {
     string sFunc = "GetServerName";
     NWNX_CallFunction(NWNX_Administration, sFunc);
-	return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
 }
 
 int NWNX_Administration_GetPlayOption(int option)

@@ -73,7 +73,7 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER(GetBannedList);
     REGISTER(SetModuleName);
     REGISTER(SetServerName);
-	REGISTER(GetServerName);
+    REGISTER(GetServerName);
     REGISTER(GetPlayOption);
     REGISTER(SetPlayOption);
     REGISTER(DeleteTURD);
