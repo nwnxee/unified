@@ -18,6 +18,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "API/CServerExoAppInternal.hpp"
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
