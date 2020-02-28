@@ -15,7 +15,7 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Item::Item* g_plugin;
+static Factions::Factions* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 {
@@ -53,7 +53,7 @@ Factions::Factions(const Plugin::CreateParams& params)
 #undef REGISTER
 }
 
-Item::~Factions()
+Factions::~Factions()
 {
 }
 
