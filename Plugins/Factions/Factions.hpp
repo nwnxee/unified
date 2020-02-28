@@ -18,10 +18,6 @@ public:
 private:
     ArgumentStack SetFaction               (ArgumentStack&& args);
     ArgumentStack GetFaction               (ArgumentStack&& args);
-    static CNWSCreature *Creature          (ArgumentStack& args);
-    static OBJECT_ID *Object               (ArgumentStack& args);
-
-    
 };
 
 }

@@ -85,11 +85,21 @@ ArgumentStack Factions::SetFaction(ArgumentStack&& args)
 ArgumentStack Factions::GetFaction(ArgumentStack&& args)
 {
     int32_t retVal = -1;
-	if (auto *pCreature = Creature(args))
-		    {
-		        auto *faction = pCreature->GetFaction();
+	const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+	if (objectId == Constants::OBJECT_INVALID)
+	    {
+	        LOG_NOTICE("NWNX_Faction function called on OBJECT_INVALID");
+	    }else{
+            auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+            auto *pCreature = Utils::AsNWSCreature(pGameObject);
+			if (!pCreature){
+				LOG_NOTICE("NWNX_Faction function called on non creature object");
+			}else{
+				auto *faction = pCreature->GetFaction();
 				retVal = faction->m_nFactionId;
-		    }
+			}	
+	    }
+	
     return Services::Events::Arguments(retVal);
 }
 
