@@ -88,7 +88,11 @@ ArgumentStack Factions::GetFaction(ArgumentStack&& args)
 	if (auto *pCreature = Creature(args))
 		    {
 		        auto *faction = pCreature->GetFaction();
+<<<<<<< Updated upstream
 				retVal = faction->m_nFactionId;
+=======
+				retval = faction->m_nFactionId;
+>>>>>>> Stashed changes
 		    }
     return Services::Events::Arguments(retval);
 }
