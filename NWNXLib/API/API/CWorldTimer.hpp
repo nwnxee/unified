@@ -40,6 +40,7 @@ struct CWorldTimer
     void SetWorldTime(uint32_t nYear, uint32_t nMonth, uint32_t nDay, uint32_t nHour, uint32_t nMinute, uint32_t nSecond, uint32_t nMillisecond, BOOL bTakeSnapshot = false);
     void SetWorldTime(uint32_t nCalendarDay, uint32_t nTimeOfDay, BOOL bTakeSnapshot = false);
     uint32_t GetTimeDifferenceFromWorldTime(uint32_t nCalendarDay, uint32_t nTimeOfDay);
+    uint64_t GetTimeDifference(uint32_t nCalendarDay1, uint32_t nTimeOfDay1, uint32_t nCalendarDay2, uint32_t nTimeOfDay2);
     void GetWorldTime(uint32_t * nCalendarDay, uint32_t * nTimeOfDay);
     uint32_t AddWorldTimes(uint32_t nCalendarDay1, uint32_t nTimeOfDay1, uint32_t nCalendarDay2, uint32_t nTimeOfDay2, uint32_t * nCalendarDayRes, uint32_t * nTimeOfDayRes);
     uint32_t SubtractWorldTimes(uint32_t nCalendarDay1, uint32_t nTimeOfDay1, uint32_t nCalendarDay2, uint32_t nTimeOfDay2, uint32_t * nCalendarDayRes, uint32_t * nTimeOfDayRes);
