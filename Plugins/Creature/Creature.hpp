@@ -100,7 +100,9 @@ private:
     ArgumentStack SetFamiliarName               (ArgumentStack&& args);
     ArgumentStack GetDisarmable                 (ArgumentStack&& args);
     ArgumentStack SetDisarmable                 (ArgumentStack&& args);
-
+    ArgumentStack SetFaction                    (ArgumentStack&& args);
+    ArgumentStack GetFaction                    (ArgumentStack&& args);
+    
     CNWSCreature *creature(ArgumentStack& args);
 
 };
