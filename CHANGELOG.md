@@ -23,7 +23,7 @@ N/A
 N/A
 
 ### Removed
-N/A
+- Tweaks: Removed scroll learning freeze bugfix.
 
 ### Fixed
 N/A
