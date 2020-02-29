@@ -267,7 +267,7 @@ Events::ArgumentStack Administration::SetServerName(Events::ArgumentStack&& args
 
 Events::ArgumentStack Administration::GetServerName(Events::ArgumentStack&& args)
 {
-    const CExoString serverName = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetSessionName();
+    CExoString serverName = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetSessionName();
     return Events::Arguments(serverName.CStr());
 }
 
