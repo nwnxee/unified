@@ -53,6 +53,9 @@ int32_t  ObjectTagLookup::RemoveObjectFromLookupTable(void*, CExoString sTag, ui
 
 uint32_t ObjectTagLookup::FindObjectByTagOrdinal(void*, CExoString & sTag, uint32_t nNth)
 {
+    if (sTag.IsEmpty())
+        return Constants::OBJECT_INVALID;
+
     try {
         return m_TagLookupMap.at(sTag.Left(64).CStr()).at(nNth);
     } catch (const std::out_of_range& oor) {}
