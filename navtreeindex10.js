@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structNWNX__Player__QuickBarSlot.html#ac9251f3b6703b0113937c30477ea0d56":[0,24,3,11],
+"structNWNX__Player__QuickBarSlot.html#ad973e77c76a8bff61f210e4c88c3847a":[0,24,3,10],
 "structNWNX__Player__QuickBarSlot.html#afcf6328e5234a277b0ba49172cdc8bb9":[0,24,3,0],
 "structNWNX__Redis__PubSubMessageData.html":[3,10],
 "structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79":[3,10,1],

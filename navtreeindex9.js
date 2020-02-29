@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#a9ea41b8fe122b23a88edf61df6a8e284":[4,0,2,26,0,3,184],
+"nwnx__redis__short_8nss.html#a9efd81c221ab6e0d8bb497987bcdef7c":[4,0,2,26,0,3,47],
 "nwnx__redis__short_8nss.html#a9f66318e878dab1a27896c1a18a3f242":[4,0,2,26,0,3,99],
 "nwnx__redis__short_8nss.html#aa1010aae13313986e467fd73fd7752e8":[4,0,2,26,0,3,163],
 "nwnx__redis__short_8nss.html#aa1fa7cbf23cda9c2431f3c44a2eb3175":[4,0,2,26,0,3,180],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__Player__QuickBarSlot.html#a5585423c0ef44fe9baa1d6e256b16250":[0,24,3,5],
 "structNWNX__Player__QuickBarSlot.html#a56dcb644edf9084c265a2d701e59362a":[0,24,3,4],
 "structNWNX__Player__QuickBarSlot.html#a6a017ab874ff47027808370fbc0b571e":[0,24,3,12],
-"structNWNX__Player__QuickBarSlot.html#ac2d3d25a10df51071e634dbe68aa3cfe":[0,24,3,3],
-"structNWNX__Player__QuickBarSlot.html#ac9251f3b6703b0113937c30477ea0d56":[0,24,3,11],
-"structNWNX__Player__QuickBarSlot.html#ad973e77c76a8bff61f210e4c88c3847a":[0,24,3,10]
+"structNWNX__Player__QuickBarSlot.html#ac2d3d25a10df51071e634dbe68aa3cfe":[0,24,3,3]
 };

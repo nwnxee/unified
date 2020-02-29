@@ -18,6 +18,7 @@ var group__admin =
     [ "NWNX_Administration_GetBannedList", "group__admin.html#gaaa6a636ac14964feacd44111766b7802", null ],
     [ "NWNX_Administration_SetModuleName", "group__admin.html#ga30afeceaca4db8237fd034475d36c0e4", null ],
     [ "NWNX_Administration_SetServerName", "group__admin.html#gacc48b5662c7918ffd418f58126575ec3", null ],
+    [ "NWNX_Administration_GetServerName", "group__admin.html#ga0117074b10860a7e6def697917585213", null ],
     [ "NWNX_Administration_GetPlayOption", "group__admin.html#ga3a1b04f6d6e0dfbb82905351f52f7cab", null ],
     [ "NWNX_Administration_SetPlayOption", "group__admin.html#ga01ff71c99811d58888fe1cf6108e7a5d", null ],
     [ "NWNX_Administration_DeleteTURD", "group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587", null ],
