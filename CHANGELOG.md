@@ -14,7 +14,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-N/A
+- Administration: GetServerName()
 
 ### Changed
 N/A
@@ -50,6 +50,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 - Util: SetInstructionLimit()
 - Area: CreateGenericTrigger()
 - Object: GetPositionIsInTrigger()
+
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
