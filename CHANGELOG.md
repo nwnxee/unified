@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.6...HEAD
+https://github.com/nwnxee/unified/compare/build8193.7...HEAD
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+- Tweaks: Removed scroll learning freeze bugfix.
+
+### Fixed
+N/A
+
+## 8193.7
+https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 
 ### Added
 - Events: Added OnUUIDCollision event to UUIDEvents
@@ -35,9 +59,6 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Deprecated
 - Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
-
-### Removed
-N/A
 
 ### Fixed
 - Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY

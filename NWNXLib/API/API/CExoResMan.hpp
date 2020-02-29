@@ -51,6 +51,7 @@ struct CExoResMan
 
     CExoResMan();
     ~CExoResMan();
+    void SetupDefaultSearchPath();
     BOOL AddEncapsulatedResourceFile(const CExoString & sName, uint32_t nPriority);
     BOOL AddResourceImageFile(const CExoString & sName, uint8_t * pCipher = nullptr, uint32_t nPriority = (60*1000000));
     BOOL AddFixedKeyTableFile(const CExoString & sName, uint32_t nPriority = (1*1000000));
