@@ -1619,7 +1619,7 @@ void NWNX_Creature_SetSpecialization(object creature, int class, int school)
 int NWNX_Creature_GetFaction(object oCreature)
 {
     string sFunc = "GetFaction";
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oItem);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
@@ -1628,7 +1628,7 @@ int NWNX_Creature_SetFaction(object oCreature, int nFactionId)
 {
     string sFunc = "SetFaction";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nFactionId);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oItem);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
