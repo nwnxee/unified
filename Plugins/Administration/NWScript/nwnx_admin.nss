@@ -278,7 +278,7 @@ void NWNX_Administration_SetServerName(string name)
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
-void NWNX_Administration_GetServerName()
+string NWNX_Administration_GetServerName()
 {
     string sFunc = "GetServerName";
     NWNX_CallFunction(NWNX_Administration, sFunc);
