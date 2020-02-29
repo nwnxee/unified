@@ -14,7 +14,8 @@ N/A
 N/A
 
 ##### New NWScript Functions
-- Creature: GetFaction / SetFaction - allows the getting and setting of faction ids on creatures
+- Administration: GetServerName()
+- Creature: Get|SetFaction()
 
 ### Changed
 N/A
@@ -50,6 +51,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 - Util: SetInstructionLimit()
 - Area: CreateGenericTrigger()
 - Object: GetPositionIsInTrigger()
+
 
 ### Changed
 - ELC: Updated for custom spellcaster changes
