@@ -117,7 +117,7 @@ void NWNX_Administration_SetModuleName(string name);
 void NWNX_Administration_SetServerName(string name);
 
 /// @brief Returns the server's name as shown to the serverlist.
-void NWNX_Administration_GetServerName();
+string NWNX_Administration_GetServerName();
 
 /// @brief Get an @ref admin_opts "Administration Option" value.
 /// @param option An @ref admin_opts "Administration Option".
