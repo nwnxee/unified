@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.6...HEAD
+https://github.com/nwnxee/unified/compare/build8193.7...HEAD
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+- Creature: GetFaction / SetFaction - allows the getting and setting of faction ids on creatures
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+- Tweaks: Removed scroll learning freeze bugfix.
+
+### Fixed
+N/A
+
+## 8193.7
+https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 
 ### Added
 - Events: Added OnUUIDCollision event to UUIDEvents
@@ -13,7 +37,6 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 - Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
 - Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
 - Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
-- Creature: GetFaction / SetFaction - allows the getting and setting of faction ids on creatures
  
 ##### New Plugins
 - Optimizations: Tweaks that (potentially) improve performance
@@ -36,9 +59,6 @@ https://github.com/nwnxee/unified/compare/build8193.6...HEAD
 
 ### Deprecated
 - Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
-
-### Removed
-N/A
 
 ### Fixed
 - Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY
