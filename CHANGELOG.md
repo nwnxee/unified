@@ -46,7 +46,6 @@ N/A
 - Core: POS is now saved for characters who were online when the server was shut down
 - Core: Fixed issue where POS would occasionally get corrupted and print errors to the log
 - ServerLogRedirector: Fixed dropped prefixes when using PrintString()
-- Events: Adjusted Stealth hook to not result in infinite loops if you skip on enter / exit.
 
 
 ## 8193.6
