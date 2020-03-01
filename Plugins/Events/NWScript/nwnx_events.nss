@@ -939,6 +939,11 @@ const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
 /// @param script The script to call when the event fires.
 void NWNX_Events_SubscribeEvent(string evt, string script);
 
+/// @brief Unsubscribe a script from an event
+/// @param evt The event name.
+/// @param script The script.
+void NWNX_Events_UnsubscribeEvent(string evt, string script);
+
 /// Pushes event data at the provided tag, which subscribers can access with GetEventData.
 /// This should be called BEFORE SignalEvent.
 void NWNX_Events_PushEventData(string tag, string data);
@@ -1015,6 +1020,15 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, obj
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
     string sFunc = "SubscribeEvent";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, script);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_UnsubscribeEvent(string evt, string script)
+{
+    string sFunc = "UnsubscribeEvent";
 
     NWNX_PushArgumentString(NWNX_Events, sFunc, script);
     NWNX_PushArgumentString(NWNX_Events, sFunc, evt);

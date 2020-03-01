@@ -78,6 +78,7 @@ private: // Structures
 
 private:
     ArgumentStack SubscribeEvent(ArgumentStack&& args);
+    ArgumentStack UnsubscribeEvent(ArgumentStack&& args);
     ArgumentStack PushEventData(ArgumentStack&& args);
     ArgumentStack SignalEvent(ArgumentStack&& args);
     ArgumentStack GetEventData(ArgumentStack&& args);
