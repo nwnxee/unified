@@ -1911,7 +1911,7 @@ ArgumentStack Creature::GetFaction(ArgumentStack&& args)
     {
         if (auto *pFaction = pCreature->GetFaction())
         {
-            retVal = faction->m_nFactionId;
+            retVal = pFaction->m_nFactionId;
         }
     }
     else
