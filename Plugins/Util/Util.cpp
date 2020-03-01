@@ -356,7 +356,7 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
     const auto nthLast = Services::Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(nthLast > 0);
 
-    auto pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
+    auto* pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
     int count = 1;
     CGameObject *pObject;
 

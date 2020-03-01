@@ -28,7 +28,7 @@ N/A
 - Tweaks: Removed scroll learning freeze bugfix.
 
 ### Fixed
-N/A
+- Optimizations: GameObjectLookup no longer breaks `NWNX_Util_GetLastCreatedObject()` and `NWNX_ON_DM_SPAWN_OBJECT` functionality.
 
 ## 8193.7
 https://github.com/nwnxee/unified/compare/build8193.6...build8193.7

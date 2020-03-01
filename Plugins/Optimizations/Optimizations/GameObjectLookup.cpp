@@ -313,7 +313,7 @@ uint8_t GameObjectLookup::GetGameObject(void*, uint32_t id, CGameObject** ptr)
 
 void GameObjectLookup::SyncWithGameGOA()
 {
-    if (auto pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray())
+    if (auto* pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray())
     {
         pGameObjectArray->m_nNextObjectArrayID[0] = m_nNextObjectArrayID[0];
         pGameObjectArray->m_nNextObjectArrayID[1] = m_nNextObjectArrayID[1];
