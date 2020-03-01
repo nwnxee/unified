@@ -248,11 +248,13 @@ ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
 
     if (std::find(std::begin(eventVector), std::end(eventVector), script) != std::end(eventVector))
     {
-        throw std::runtime_error("Attempted to subscribe to an event with a script that already subscribed!");
+        LOG_NOTICE("Script '%s' attempted to subscribe to event '%s' but is already subscribed!", script, event);
     }
-
-    LOG_INFO("Script '%s' subscribed to event '%s'.", script, event);
-    eventVector.emplace_back(std::move(script));
+    else
+    {
+        LOG_INFO("Script '%s' subscribed to event '%s'.", script, event);
+        eventVector.emplace_back(std::move(script));
+    }
 
     return Services::Events::Arguments();
 }
@@ -269,11 +271,13 @@ ArgumentStack Events::UnsubscribeEvent(ArgumentStack&& args)
 
     if (it == std::end(eventVector))
     {
-        throw std::runtime_error("Attempted to unsubscribe from an event with a script that is not subscribed!");
+        LOG_NOTICE("Script '%s' attempted to unsubscribe from event '%s' but is not subscribed!", script, event);
     }
-
-    LOG_INFO("Script '%s' unsubscribed from event '%s'.", script, event);
-    eventVector.erase(it);
+    else
+    {
+        LOG_INFO("Script '%s' unsubscribed from event '%s'.", script, event);
+        eventVector.erase(it);
+    }
 
     return Services::Events::Arguments();
 }
