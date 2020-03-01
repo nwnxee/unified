@@ -1,6 +1,7 @@
 var nwnx__events_8nss =
 [
     [ "NWNX_Events_SubscribeEvent", "group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294", null ],
+    [ "NWNX_Events_UnsubscribeEvent", "group__events.html#gaf3739a883b618d64af4d0d19b85e5815", null ],
     [ "NWNX_Events_PushEventData", "group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4", null ],
     [ "NWNX_Events_SignalEvent", "group__events.html#gab4a9847f9f4b134c0618429671f78a53", null ],
     [ "NWNX_Events_GetEventData", "group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6", null ],
