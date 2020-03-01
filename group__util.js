@@ -24,6 +24,8 @@ var group__util =
     [ "NWNX_Util_AddNSSFile", "group__util.html#ga2339c3f00fba97c432419742fdee8f5b", null ],
     [ "NWNX_Util_RemoveNWNXResourceFile", "group__util.html#ga1ca0fd19656e2098e4829d20062e3332", null ],
     [ "NWNX_Util_SetInstructionLimit", "group__util.html#gad0e851326e9fea411b8e3125fd37b462", null ],
+    [ "NWNX_Util_RegisterServerConsoleCommand", "group__util.html#ga2bf1f3fc290ca7dcf27f8266336b2a65", null ],
+    [ "NWNX_Util_UnregisterServerConsoleCommand", "group__util.html#gaf0dcdc5e920d5b156079476b66fef71f", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NSS", "group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NCS", "group__util.html#gac7c3717541176f4e20e5824aa2668dd0", null ],
     [ "NWNX_UTIL_RESREF_TYPE_AREA_ARE", "group__util.html#ga610bf05a8489288df5ce9ad2326bd54c", null ],
