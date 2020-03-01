@@ -649,16 +649,18 @@ int NWNX_Creature_GetSpecialization(object creature, int class);
 /// @param school The school constant.
 void NWNX_Creature_SetSpecialization(object creature, int class, int school);
 
-/// @brief Gets the faction id from oCreature
-/// @param oCreature the creature we wish to query against
-/// @return faction id as an integer, -1 when used against invalid creature or invalid object.
-int NWNX_Creature_GetFaction(object oCreature);
-
 /// @brief Sets oCreatures faction to be the faction with id nFactionId.
 /// @param oCreature The creature.
 /// @param nFactionId The faction id we want the creature to join.
 /// @return 1 on success, -1 on any error - Eg: No Creature, Invalid Creature, Invalid Faction etc.
 int NWNX_Creature_SetFaction(object oCreature, int nFactionId);
+
+/// @brief Gets the faction id from oCreature
+/// @param oCreature the creature we wish to query against
+/// @return faction id as an integer, -1 when used against invalid creature or invalid object.
+int NWNX_Creature_GetFaction(object oCreature);
+
+
 
 /// @}
 
@@ -1616,18 +1618,18 @@ void NWNX_Creature_SetSpecialization(object creature, int class, int school)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetFaction(object oCreature)
+int NWNX_Creature_SetFaction(object oCreature, int nFactionId)
 {
-    string sFunc = "GetFaction";
+    string sFunc = "SetFaction";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nFactionId);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_SetFaction(object oCreature, int nFactionId)
+int NWNX_Creature_GetFaction(object oCreature)
 {
-    string sFunc = "SetFaction";
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nFactionId);
+    string sFunc = "GetFaction";
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);

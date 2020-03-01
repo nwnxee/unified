@@ -1897,12 +1897,8 @@ ArgumentStack Creature::SetFaction(ArgumentStack&& args)
         }
         else
         {
-            LOG_NOTICE("NWNX_Creature function called with invalid faction id");
+            LOG_NOTICE("NWNX_Creature_SetFaction called with invalid faction id");
         }
-    }
-    else
-    {
-        LOG_NOTICE("NWNX_Creature function called on invalid creature");
     }
     return Services::Events::Arguments(retVal);
 }
@@ -1913,12 +1909,14 @@ ArgumentStack Creature::GetFaction(ArgumentStack&& args)
     int32_t retVal = -1;
     if(auto *pCreature = creature(args))
     {
-        auto *faction = pCreature->GetFaction();
-        retVal = faction->m_nFactionId;
+        if (auto *pFaction = pCreature->GetFaction())
+        {
+            retVal = faction->m_nFactionId;
+        }
     }
     else
     {
-        LOG_NOTICE("NWNX_Creature function called on invalid creature");
+        LOG_NOTICE("NWNX_Creature_GetFaction called with invalid creature");
     }
     return Services::Events::Arguments(retVal);
 }
