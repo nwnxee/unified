@@ -20,6 +20,7 @@
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
+#include "Services/Commands/Commands.hpp"
 
 #include <string>
 #include <cstdio>
@@ -82,6 +83,8 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(AddNSSFile);
     REGISTER(RemoveNWNXResourceFile);
     REGISTER(SetInstructionLimit);
+    REGISTER(RegisterServerConsoleCommand);
+    REGISTER(UnregisterServerConsoleCommand);
 
 #undef REGISTER
 
@@ -489,6 +492,58 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
         Globals::VirtualMachine()->m_nInstructionLimit = defaultInstructionLimit;
     else
         Globals::VirtualMachine()->m_nInstructionLimit = limit;
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Util::RegisterServerConsoleCommand(ArgumentStack&& args)
+{
+    const auto command = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!command.empty());
+    const auto scriptChunk = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptChunk.empty());
+
+    bool registered = g_plugin->GetServices()->m_commands->RegisterCommand(command, [](std::string &command, std::string &args)
+    {
+        if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
+            return;
+
+        LOG_INFO("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
+
+        std::string scriptChunk = g_plugin->m_serverConsoleCommandMap[command];
+        bool wrapIntoMain = scriptChunk.find("void main()") == std::string::npos;
+        std::string search = "$args";
+
+        auto searchPos = scriptChunk.find(search);
+        while (searchPos != std::string::npos)
+        {
+            scriptChunk.replace(searchPos, search.size(), args);
+            searchPos = scriptChunk.find(search, searchPos + args.size());
+        }
+
+        if (Globals::VirtualMachine()->RunScriptChunk(scriptChunk, 0, true, wrapIntoMain))
+        {
+            LOG_ERROR("Failed to run NWScript Server Console Command '%s' with error: %s", command,
+                      Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+        }
+    });
+
+    if (registered)
+        g_plugin->m_serverConsoleCommandMap[command] = scriptChunk;
+
+    return Services::Events::Arguments(registered);
+}
+
+ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
+{
+    const auto command = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!command.empty());
+
+    if (g_plugin->m_serverConsoleCommandMap.find(command) != g_plugin->m_serverConsoleCommandMap.end())
+    {
+        g_plugin->GetServices()->m_commands->UnregisterCommand(command);
+        g_plugin->m_serverConsoleCommandMap.erase(command);
+    }
 
     return Services::Events::Arguments();
 }
