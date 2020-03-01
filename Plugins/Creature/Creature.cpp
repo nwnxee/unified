@@ -1885,38 +1885,32 @@ ArgumentStack Creature::SetDisarmable(ArgumentStack&& args)
 
 ArgumentStack Creature::SetFaction(ArgumentStack&& args)
 {
-    int32_t retVal = -1;
     if (auto *pCreature = creature(args))
     {
         const auto factionid = Services::Events::ExtractArgument<int32_t>(args);
-        auto* pFaction= Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(factionid);
+        auto* pFaction = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(factionid);
         if (pFaction)
         {
             pFaction->AddMember(pCreature->m_idSelf);
-            retVal = 1;
         }
         else
         {
             LOG_NOTICE("NWNX_Creature_SetFaction called with invalid faction id");
         }
     }
-    return Services::Events::Arguments(retVal);
+    return Services::Events::Arguments();
 }
 
 
 ArgumentStack Creature::GetFaction(ArgumentStack&& args)
 {
     int32_t retVal = -1;
-    if(auto *pCreature = creature(args))
+    if (auto *pCreature = creature(args))
     {
         if (auto *pFaction = pCreature->GetFaction())
         {
             retVal = pFaction->m_nFactionId;
         }
-    }
-    else
-    {
-        LOG_NOTICE("NWNX_Creature_GetFaction called with invalid creature");
     }
     return Services::Events::Arguments(retVal);
 }
