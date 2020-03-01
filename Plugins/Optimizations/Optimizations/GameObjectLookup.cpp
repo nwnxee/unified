@@ -4,6 +4,8 @@
 #include "Services/Tasks/Tasks.hpp"
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
 #include "API/CGameObject.hpp"
 #include "API/CGameObjectArray.hpp"
 
@@ -99,17 +101,21 @@ void GameObjectLookup::Finalize()
 uint32_t GameObjectLookup::GetNextID(void*, BOOL bInternal, BOOL bCharacter)
 {
     int type = bInternal ? InternalObject : ExternalObject;
-    return bCharacter ? m_nNextCharArrayID[type]-- : m_nNextObjectArrayID[type]++;
+    uint32_t ret = bCharacter ? m_nNextCharArrayID[type]-- : m_nNextObjectArrayID[type]++;
+    SyncWithGameGOA();
+    return ret;
 }
 void GameObjectLookup::SetNextObjectArrayID(void*, int32_t nList, uint32_t nVal)
 {
     if (nList == ExternalObject) nVal |= 0x80000000;
     m_nNextObjectArrayID[nList] = nVal;
+    SyncWithGameGOA();
 }
 void GameObjectLookup::SetNextCharArrayID(void*, int32_t nList, uint32_t nVal)
 {
     if (nList == ExternalObject) nVal |= 0x80000000;
     m_nNextCharArrayID[nList] = nVal;
+    SyncWithGameGOA();
 }
 
 uint8_t GameObjectLookup::AddObjectAtPos(void*, uint32_t id, CGameObject *ptr)
@@ -161,6 +167,7 @@ uint8_t GameObjectLookup::AddExternalObject(void*, uint32_t &id, CGameObject *pt
             return BadId;
         m_nNextObjectArrayID[ExternalObject] = std::max(m_nNextObjectArrayID[ExternalObject], id+1);
     }
+    SyncWithGameGOA();
     return AddObjectAtPos(nullptr, id, ptr);
 }
 
@@ -302,6 +309,17 @@ uint8_t GameObjectLookup::GetGameObject(void*, uint32_t id, CGameObject** ptr)
 
     *ptr = NULL;
     return BadId;
+}
+
+void GameObjectLookup::SyncWithGameGOA()
+{
+    if (auto* pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray())
+    {
+        pGameObjectArray->m_nNextObjectArrayID[0] = m_nNextObjectArrayID[0];
+        pGameObjectArray->m_nNextObjectArrayID[1] = m_nNextObjectArrayID[1];
+        pGameObjectArray->m_nNextCharArrayID[0] = m_nNextCharArrayID[0];
+        pGameObjectArray->m_nNextCharArrayID[1] = m_nNextCharArrayID[1];
+    }
 }
 
 }
