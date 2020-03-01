@@ -1891,7 +1891,7 @@ ArgumentStack Creature::SetFaction(ArgumentStack&& args)
         const auto factionid = Services::Events::ExtractArgument<int32_t>(args);
         auto* pFaction= Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(factionid);
         if (pFaction)
-		{
+        {
             pFaction->AddMember(pCreature->m_idSelf);
             retVal = 1;
         }
