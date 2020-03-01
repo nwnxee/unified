@@ -74,6 +74,7 @@ Events::Events(const Plugin::CreateParams& params)
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SubscribeEvent);
+    REGISTER(UnsubscribeEvent);
     REGISTER(PushEventData);
     REGISTER(SignalEvent);
     REGISTER(GetEventData);
@@ -256,6 +257,27 @@ ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
+ArgumentStack Events::UnsubscribeEvent(ArgumentStack&& args)
+{
+    const auto event = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!event.empty());
+    const auto script = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!script.empty());
+
+    auto& eventVector = m_eventMap[event];
+    auto it = std::find(std::begin(eventVector), std::end(eventVector), script);
+
+    if (it == std::end(eventVector))
+    {
+        throw std::runtime_error("Attempted to unsubscribe from an event with a script that is not subscribed!");
+    }
+
+    LOG_INFO("Script '%s' unsubscribed from event '%s'.", script, event);
+    eventVector.erase(it);
+
+    return Services::Events::Arguments();
+}
+
 ArgumentStack Events::PushEventData(ArgumentStack&& args)
 {
     const auto tag = Services::Events::ExtractArgument<std::string>(args);
@@ -269,14 +291,14 @@ ArgumentStack Events::SignalEvent(ArgumentStack&& args)
     const auto event = Services::Events::ExtractArgument<std::string>(args);
     const auto object = Services::Events::ExtractArgument<Types::ObjectID>(args);
     bool signalled = SignalEvent(event, object);
-    
+
     return Services::Events::Arguments(signalled ? 1 : 0);
 }
 
 ArgumentStack Events::GetEventData(ArgumentStack&& args)
 {
     std::string data = GetEventData(Services::Events::ExtractArgument<std::string>(args));
-    
+
     return Services::Events::Arguments(data);
 }
 

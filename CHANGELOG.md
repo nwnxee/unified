@@ -15,7 +15,8 @@ N/A
 
 ##### New NWScript Functions
 - Administration: GetServerName()
-- Creature: Get|SetFaction()
+- Events: UnsubscribeEvent()
+- Creature: Get|SetFaction(
 
 ### Changed
 N/A
