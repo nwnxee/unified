@@ -42,6 +42,7 @@ private:
     static uint8_t Delete(void*, uint32_t id, CGameObject** ptr);
     static uint8_t GetGameObject(void*, uint32_t id, CGameObject** ptr);
 
+    static void SyncWithGameGOA();
 };
 
 }
