@@ -89,7 +89,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_SetDomain", "group__creature.html#ga962c102eec8e590fd97426911e2ecad2", null ],
     [ "NWNX_Creature_GetSpecialization", "group__creature.html#ga0bdc0eedeefea972e246036481446485", null ],
     [ "NWNX_Creature_SetSpecialization", "group__creature.html#gab7511205cd5bb49971a55381624eb98b", null ],
-    [ "NWNX_Creature_SetFaction", "group__creature.html#ga18ebd816971e548ca7295ede83748363", null ],
+    [ "NWNX_Creature_SetFaction", "group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b", null ],
     [ "NWNX_Creature_GetFaction", "group__creature.html#ga6a2c379a352686d151ecea19fe768844", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],

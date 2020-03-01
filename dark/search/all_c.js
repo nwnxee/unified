@@ -280,7 +280,7 @@ var searchData=
   ['nwnx_5fcreature_5fsetcorpsedecaytime_493',['NWNX_Creature_SetCorpseDecayTime',['../group__creature.html#ga9416ebcf6ecac41884242e6f40096100',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetdisarmable_494',['NWNX_Creature_SetDisarmable',['../group__creature.html#gae737b5e9c3eb8fb6523a1f0ad68d16b1',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetdomain_495',['NWNX_Creature_SetDomain',['../group__creature.html#ga962c102eec8e590fd97426911e2ecad2',1,'nwnx_creature.nss']]],
-  ['nwnx_5fcreature_5fsetfaction_496',['NWNX_Creature_SetFaction',['../group__creature.html#ga18ebd816971e548ca7295ede83748363',1,'nwnx_creature.nss']]],
+  ['nwnx_5fcreature_5fsetfaction_496',['NWNX_Creature_SetFaction',['../group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetfamiliarcreaturetype_497',['NWNX_Creature_SetFamiliarCreatureType',['../group__creature.html#ga1b024608dddf8b9f800dfd93aa1a97cb',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetfamiliarname_498',['NWNX_Creature_SetFamiliarName',['../group__creature.html#gaf847727f4e3352be4083bba10c0841bf',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetfeatremaininguses_499',['NWNX_Creature_SetFeatRemainingUses',['../group__creature.html#ga5144ab295c043bd4b1bea5d6244d8499',1,'nwnx_creature.nss']]],
