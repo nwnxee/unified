@@ -1886,7 +1886,8 @@ ArgumentStack Creature::SetDisarmable(ArgumentStack&& args)
 ArgumentStack Creature::SetFaction(ArgumentStack&& args)
 {
     int32_t retVal = -1;
-    if (auto *pCreature = creature(args)){
+    if (auto *pCreature = creature(args))
+    {
         const auto factionid = Services::Events::ExtractArgument<int32_t>(args);
         auto* pFaction= Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(factionid);
         if (pFaction)
