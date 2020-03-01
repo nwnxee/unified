@@ -15,6 +15,7 @@ N/A
 
 ##### New NWScript Functions
 - Administration: GetServerName()
+- Events: UnsubscribeEvent()
 
 ### Changed
 N/A
