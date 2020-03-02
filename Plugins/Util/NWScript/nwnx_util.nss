@@ -152,6 +152,17 @@ int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType);
 /// @param nInstructionLimit The new limit or -1 to reset to default.
 void NWNX_Util_SetInstructionLimit(int nInstructionLimit);
 
+/// @brief Register a server console command that will execute a script chunk.
+/// @note Example usage: NWNX_Util_RegisterServerConsoleCommand("test", "PrintString(\"Test Command -> Args: $args\");");
+/// @param sCommand The name of the command.
+/// @param sScriptChunk The script chunk to run. You can use $args to get the console command arguments.
+/// @return TRUE on success.
+int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk);
+
+/// @brief Unregister a server console command that was registered with NWNX_Util_RegisterServerConsoleCommand().
+/// @param sCommand The name of the command.
+void NWNX_Util_UnregisterServerConsoleCommand(string sCommand);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -349,5 +360,24 @@ void NWNX_Util_SetInstructionLimit(int nInstructionLimit)
     string sFunc = "SetInstructionLimit";
 
     NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructionLimit);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk)
+{
+    string sFunc = "RegisterServerConsoleCommand";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptChunk);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_UnregisterServerConsoleCommand(string sCommand)
+{
+    string sFunc = "UnregisterServerConsoleCommand";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
     NWNX_CallFunction(NWNX_Util, sFunc);
 }

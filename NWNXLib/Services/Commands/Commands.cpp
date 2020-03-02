@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <dlfcn.h>
 
-namespace NWNXLib {
-namespace Services {
+namespace NWNXLib::Services {
 
 static Commands *g_commands;
 
 Commands::Commands()
 {
     g_commands = this;
-    RegisterCommand("nwnx_commands_test", [](std::string& s){ LOG_NOTICE("Selftest command. Args: '%s'", s); });
+    RegisterCommand("nwnx_commands_test",
+            [](std::string& command, std::string& args){ LOG_NOTICE("SelfTest -> Command: '%s', Args: '%s'", command, args); });
 }
 
 Commands::~Commands()
@@ -80,7 +80,7 @@ void Commands::RunScheduledCommands()
         if (it != m_commandMap.end())
         {
             auto func = it->second;
-            func(item.second);
+            func(item.first, item.second);
         }
     }
     m_commandQueue.clear();
@@ -118,7 +118,6 @@ void CommandsProxy::UnregisterCommand(const std::string& cmd)
     }
 }
 
-}
 }
 
 

@@ -6,6 +6,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWLevelStats.hpp"
+#include "API/CNWSFaction.hpp"
 #include "API/CNWSStats_Spell.hpp"
 #include "API/CNWSStats_SpellLikeAbility.hpp"
 #include "API/CExoArrayList.hpp"
@@ -17,6 +18,9 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "API/CServerExoAppInternal.hpp"
+#include "API/CFactionManager.hpp"
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -136,7 +140,9 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetFamiliarName);
     REGISTER(GetDisarmable);
     REGISTER(SetDisarmable);
-
+    REGISTER(SetFaction);
+    REGISTER(GetFaction);
+	
 #undef REGISTER
 }
 
@@ -1876,4 +1882,38 @@ ArgumentStack Creature::SetDisarmable(ArgumentStack&& args)
     }
     return Services::Events::Arguments();
 }
+
+ArgumentStack Creature::SetFaction(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto factionid = Services::Events::ExtractArgument<int32_t>(args);
+        auto* pFaction = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(factionid);
+        if (pFaction)
+        {
+            pFaction->AddMember(pCreature->m_idSelf);
+        }
+        else
+        {
+            LOG_NOTICE("NWNX_Creature_SetFaction called with invalid faction id");
+        }
+    }
+    return Services::Events::Arguments();
+}
+
+
+ArgumentStack Creature::GetFaction(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        if (auto *pFaction = pCreature->GetFaction())
+        {
+            retVal = pFaction->m_nFactionId;
+        }
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+
 }

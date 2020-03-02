@@ -7,13 +7,12 @@
 #include <set>
 #include <mutex>
 
-namespace NWNXLib {
-namespace Services {
+namespace NWNXLib::Services {
 
 class Commands
 {
 public:
-    using CommandFunc = void (*)(std::string&);
+    using CommandFunc = void (*)(std::string& command, std::string& args);
 
     Commands();
     ~Commands();
@@ -43,5 +42,4 @@ private:
     std::set<std::string> m_RegisteredCommands;
 };
 
-}
 }

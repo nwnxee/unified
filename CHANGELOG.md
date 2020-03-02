@@ -16,9 +16,11 @@ N/A
 ##### New NWScript Functions
 - Administration: GetServerName()
 - Events: UnsubscribeEvent()
+- Creature: Get|SetFaction()
+- Util: (Un)RegisterServerConsoleCommand()
 
 ### Changed
-N/A
+- Core: the console commands `eval` and `evalx` will now provide an error message if the script chunk fails to execute.
 
 ### Deprecated
 N/A
@@ -27,7 +29,7 @@ N/A
 - Tweaks: Removed scroll learning freeze bugfix.
 
 ### Fixed
-N/A
+- Optimizations: GameObjectLookup no longer breaks `NWNX_Util_GetLastCreatedObject()` and `NWNX_ON_DM_SPAWN_OBJECT` functionality.
 
 ## 8193.7
 https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
@@ -38,7 +40,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 - Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
 - Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
 - Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
-
+ 
 ##### New Plugins
 - Optimizations: Tweaks that (potentially) improve performance
     - AsyncLogFlush to asynchronously flush the game log to disk
