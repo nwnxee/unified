@@ -1355,11 +1355,9 @@ CExoLocString CreateCExoLocString(const std::string& str)
 ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
 {
     int32_t retval = -1;
-    
     if (auto *pPlayer = player(args))
     {
         auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-        
         
         if (pCreature && pCreature->m_pJournal)
         {
@@ -1396,7 +1394,6 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->ConvertToTimeOfDay(hour, minute, second, ms);
             }
             
-            
             SJournalEntry newJournal;
             newJournal.szName       = CreateCExoLocString(questName);
             newJournal.szText       = CreateCExoLocString(questText);
@@ -1410,7 +1407,6 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             newJournal.bQuestDisplayed= diplayed; 
             newJournal.bUpdated     = updated; 
                    
-
             auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());       
             if (pMessage)
                 {
@@ -1454,7 +1450,6 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                     {
                         pMessage->SendServerToPlayerJournalUpdated(pPlayer,1,newJournal.bQuestCompleted,newJournal.szName);
                     }
-                    
                 }
                 else
                 {
