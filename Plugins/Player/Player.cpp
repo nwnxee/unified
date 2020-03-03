@@ -22,6 +22,8 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CNWSJournal.hpp"
+#include "API/CNWSPlayerJournalQuest.hpp"
+#include "API/CNWSPlayerJournalQuestUpdates.hpp"
 #include "API/CNWSWaypoint.hpp"
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
@@ -34,6 +36,10 @@
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Encoding.hpp"
+#include "API/CExoLocString.hpp"
+#include "Utils.hpp"
+#include "API/CWorldTimer.hpp"
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -101,6 +107,8 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(GetPlatformId);
     REGISTER(GetLanguage);
     REGISTER(SetResManOverride);
+    REGISTER(AddCustomJournalEntry);
+    REGISTER(GetJournalEntry);
 
 #undef REGISTER
 
@@ -1335,5 +1343,177 @@ ArgumentStack Player::SetResManOverride(ArgumentStack&& args)
 
     return Services::Events::Arguments();
 }
+
+
+CExoLocString CreateCExoLocString(const std::string& str)
+{
+    CExoLocString locStr;
+    locStr.AddString(0,CExoString(str.c_str()),0);
+    return locStr;
+}
+
+ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
+{
+    int32_t retval = -1;
+    
+    if (auto *pPlayer = player(args))
+    {
+        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        
+        
+        if (pCreature && pCreature->m_pJournal)
+        {
+            auto entries = pCreature->m_pJournal->m_lstEntries;
+            
+            const auto questName = Services::Events::ExtractArgument<std::string>(args);
+            const auto questText = Services::Events::ExtractArgument<std::string>(args);
+            const auto tag = Services::Events::ExtractArgument<std::string>(args);
+            const auto state = Services::Events::ExtractArgument<int32_t>(args);
+            const auto priority = Services::Events::ExtractArgument<int32_t>(args);
+            const auto completed = Services::Events::ExtractArgument<int32_t>(args);
+            const auto diplayed = Services::Events::ExtractArgument<int32_t>(args);
+            const auto updated = Services::Events::ExtractArgument<int32_t>(args);
+            
+            auto calDay = Services::Events::ExtractArgument<int32_t>(args);
+            auto timeDay = Services::Events::ExtractArgument<int32_t>(args);
+            auto silentUpdate = Services::Events::ExtractArgument<int32_t>(args);
+            
+            //If server owner leaves this 0 - the entry will be added with todays date
+            if (calDay == 0)
+            {
+                uint32_t year = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeYear();
+                uint32_t month = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeMonth();
+                uint32_t day = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeDay();
+                calDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->ConvertToCalendarDay(year, month, day);
+            }
+            //If server owner leaves this 0 - the entry will be added with now() time
+            if(timeDay == 0)
+            {
+                uint32_t hour = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeHour();
+                uint32_t minute = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeMinute();
+                uint32_t second = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeSecond();
+                uint32_t ms = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeMillisecond();
+                timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->ConvertToTimeOfDay(hour, minute, second, ms);
+            }
+            
+            
+            SJournalEntry newJournal;
+            newJournal.szName       = CreateCExoLocString(questName);
+            newJournal.szText       = CreateCExoLocString(questText);
+            newJournal.nCalendarDay = calDay;
+            newJournal.nTimeOfDay   = timeDay;
+            newJournal.szPlot_Id    = CExoString(tag.c_str());
+            newJournal.nState       = state;
+            newJournal.nPriority    = priority;
+            newJournal.nPictureIndex= 0; // Not implemented by bioware/beamdog  
+            newJournal.bQuestCompleted= completed; 
+            newJournal.bQuestDisplayed= diplayed; 
+            newJournal.bUpdated     = updated; 
+                   
+
+            auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());       
+            if (pMessage)
+                {
+                 
+                    int overwrite = -1;
+                    if (entries.num > 0)
+                    {
+                        auto pEntry = entries.element;
+                        for (int i = 0; i < entries.num; i++, pEntry++)
+                        {
+                            if (pEntry->szPlot_Id.CStr() == tag)
+                            {
+                                overwrite = i; 
+                                //Overwrite existing entry
+                                pCreature->m_pJournal->m_lstEntries[i] = newJournal;
+                                break;
+                            }
+                        }
+                    }
+                    //If we have overwritten an existing entry - we don't need to perform an add -
+                    //Instead we perform an update only
+                    if(overwrite == -1)
+                    {
+                        //New entry added
+                        pCreature->m_pJournal->m_lstEntries.Add(newJournal);
+                    }
+                    pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
+                                                                    newJournal.szPlot_Id,
+                                                                    newJournal.nState,
+                                                                    newJournal.nPriority,
+                                                                    newJournal.nPictureIndex,
+                                                                    newJournal.bQuestCompleted,
+                                                                    newJournal.nCalendarDay,
+                                                                    newJournal.nTimeOfDay,
+                                                                    newJournal.szName,
+                                                                    newJournal.szText);
+                    retval =pCreature->m_pJournal->m_lstEntries.num; // Success
+                    
+                    //If no update message is desired, we can keep it silent.
+                    if(!silentUpdate)
+                    {
+                        pMessage->SendServerToPlayerJournalUpdated(pPlayer,1,newJournal.bQuestCompleted,newJournal.szName);
+                    }
+                    
+                }
+                else
+                {
+                    LOG_ERROR("Unable to get CNWSMessage");
+                }
+                
+        }
+    }
+
+    return Services::Events::Arguments(retval);
+}
+
+ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
+{
+    SJournalEntry lastJournalEntry;
+    int found = -1;
+    if (auto *pPlayer = player(args))
+    {
+        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        if (pCreature && pCreature->m_pJournal)
+        {
+            auto entries = pCreature->m_pJournal->m_lstEntries;
+            const auto tag = Services::Events::ExtractArgument<std::string>(args);
+            if (entries.num > 0)
+            {
+                auto pEntry = entries.element;
+                for (int i = 0; i < entries.num; i++, pEntry++)
+                {
+                    if (pEntry->szPlot_Id.CStr() == tag)
+                        {
+                            lastJournalEntry = entries[i];
+                            found = i;
+                        }
+                }
+            }        
+        }
+    }
+    if(found == -1)
+    {
+            // Not found - 
+            //Lets not risk an exception 
+            return Services::Events::Arguments(found);
+    }
+    return Services::Events::Arguments
+    (
+        std::string(Utils::ExtractLocString(lastJournalEntry.szText)),  
+        std::string(Utils::ExtractLocString(lastJournalEntry.szName)),
+        (int32_t)lastJournalEntry.nCalendarDay,
+        (int32_t)lastJournalEntry.nTimeOfDay,
+        std::string(lastJournalEntry.szPlot_Id.CStr()),            
+        (int32_t)lastJournalEntry.nState,
+        (int32_t)lastJournalEntry.nPriority,                    
+        (int32_t)lastJournalEntry.bQuestCompleted,
+        (int32_t)lastJournalEntry.bQuestDisplayed,
+        (int32_t)lastJournalEntry.bUpdated 
+    );      
+}
+
+
+
 
 }

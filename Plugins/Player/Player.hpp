@@ -4,6 +4,8 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "API/ObjectVisualTransformData.hpp"
+#include "API/CExoLocString.hpp"
+#include "Utils.hpp"
 #include <map>
 #include <set>
 
@@ -50,6 +52,8 @@ private:
     ArgumentStack GetPlatformId                     (ArgumentStack&& args);
     ArgumentStack GetLanguage                       (ArgumentStack&& args);
     ArgumentStack SetResManOverride                 (ArgumentStack&& args);
+    ArgumentStack AddCustomJournalEntry             (ArgumentStack&& args);
+    ArgumentStack GetJournalEntry                   (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

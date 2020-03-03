@@ -26,6 +26,7 @@
 #include "API/CScriptLocation.hpp"
 #include "API/CExoString.hpp"
 #include "API/CExoArrayList.hpp"
+#include "API/CExoLocString.hpp"
 
 #include <sstream>
 
@@ -334,6 +335,7 @@ std::string ExtractLocString(CExoLocString& locStr, int32_t nID, uint8_t bGender
 
     return std::string(str.CStr());
 }
+
 
 void AddStealthEvent(int which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget)
 {
