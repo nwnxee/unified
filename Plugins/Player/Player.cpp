@@ -1344,14 +1344,6 @@ ArgumentStack Player::SetResManOverride(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
-
-CExoLocString CreateCExoLocString(const std::string& str)
-{
-    CExoLocString locStr;
-    locStr.AddString(0,CExoString(str.c_str()),0);
-    return locStr;
-}
-
 ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
 {
     int32_t retval = -1;
@@ -1366,6 +1358,9 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             const auto questName = Services::Events::ExtractArgument<std::string>(args);
             const auto questText = Services::Events::ExtractArgument<std::string>(args);
             const auto tag = Services::Events::ExtractArgument<std::string>(args);
+            
+            ASSERT_OR_THROW(tag.size() > 0);
+            
             const auto state = Services::Events::ExtractArgument<int32_t>(args);
             const auto priority = Services::Events::ExtractArgument<int32_t>(args);
             const auto completed = Services::Events::ExtractArgument<int32_t>(args);
@@ -1379,24 +1374,17 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             //If server owner leaves this 0 - the entry will be added with todays date
             if (calDay == 0)
             {
-                uint32_t year = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeYear();
-                uint32_t month = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeMonth();
-                uint32_t day = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeDay();
-                calDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->ConvertToCalendarDay(year, month, day);
+                calDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeCalendarDay();
             }
             //If server owner leaves this 0 - the entry will be added with now() time
             if(timeDay == 0)
             {
-                uint32_t hour = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeHour();
-                uint32_t minute = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeMinute();
-                uint32_t second = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeSecond();
-                uint32_t ms = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeMillisecond();
-                timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->ConvertToTimeOfDay(hour, minute, second, ms);
+                timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeTimeOfDay();
             }
             
             SJournalEntry newJournal;
-            newJournal.szName       = CreateCExoLocString(questName);
-            newJournal.szText       = CreateCExoLocString(questText);
+            newJournal.szName       = Utils::CreateCExoLocString(questName,0,0);
+            newJournal.szText       = Utils::CreateCExoLocString(questText,0,0);
             newJournal.nCalendarDay = calDay;
             newJournal.nTimeOfDay   = timeDay;
             newJournal.szPlot_Id    = CExoString(tag.c_str());
@@ -1473,6 +1461,7 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
         {
             auto entries = pCreature->m_pJournal->m_lstEntries;
             const auto tag = Services::Events::ExtractArgument<std::string>(args);
+            ASSERT_OR_THROW(tag.size() > 0);
             if (entries.num > 0)
             {
                 auto pEntry = entries.element;

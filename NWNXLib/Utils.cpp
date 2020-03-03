@@ -335,6 +335,14 @@ std::string ExtractLocString(CExoLocString& locStr, int32_t nID, uint8_t bGender
     return std::string(str.CStr());
 }
 
+CExoLocString CreateLocString(const std::string& str, int32_t nID, uint8_t bGender)
+{
+    CExoLocString locStr;
+    locStr.AddString(nID, CExoString(str.c_str()), bGender);
+    
+    return locStr;
+}
+
 void AddStealthEvent(int which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
