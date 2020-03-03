@@ -1371,13 +1371,16 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             auto timeDay = Services::Events::ExtractArgument<int32_t>(args);
             auto silentUpdate = Services::Events::ExtractArgument<int32_t>(args);
             
+            ASSERT_OR_THROW(state >= 0 && priority >= 0 && completed >= 0 && diplayed >= 0 && updated >= 0 && silentUpdate >= 0);
+            
+            
             //If server owner leaves this 0 - the entry will be added with todays date
-            if (calDay == 0)
+            if (calDay <= 0)
             {
                 calDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeCalendarDay();
             }
             //If server owner leaves this 0 - the entry will be added with now() time
-            if(timeDay == 0)
+            if(timeDay <= 0)
             {
                 timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeTimeOfDay();
             }
