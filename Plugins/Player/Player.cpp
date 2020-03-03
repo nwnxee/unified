@@ -1383,8 +1383,8 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             }
             
             SJournalEntry newJournal;
-            newJournal.szName       = Utils::CreateCExoLocString(questName,0,0);
-            newJournal.szText       = Utils::CreateCExoLocString(questText,0,0);
+            newJournal.szName       = Utils::CreateLocString(questName,0,0);
+            newJournal.szText       = Utils::CreateLocString(questText,0,0);
             newJournal.nCalendarDay = calDay;
             newJournal.nTimeOfDay   = timeDay;
             newJournal.szPlot_Id    = CExoString(tag.c_str());
