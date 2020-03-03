@@ -18,6 +18,7 @@ N/A
 - Events: UnsubscribeEvent()
 - Creature: Get|SetFaction()
 - Util: (Un)RegisterServerConsoleCommand()
+- Player: AddCustomJournalEntry(), GetJournalEntry()
 
 ### Changed
 - Core: the console commands `eval` and `evalx` will now provide an error message if the script chunk fails to execute.
