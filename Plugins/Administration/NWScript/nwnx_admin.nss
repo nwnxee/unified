@@ -116,6 +116,9 @@ void NWNX_Administration_SetModuleName(string name);
 /// @param name The name to give the server.
 void NWNX_Administration_SetServerName(string name);
 
+/// @brief Returns the server's name as shown to the serverlist.
+string NWNX_Administration_GetServerName();
+
 /// @brief Get an @ref admin_opts "Administration Option" value.
 /// @param option An @ref admin_opts "Administration Option".
 /// @return The current setting for the supplied option from @ref admin_opts "Administration Options".
@@ -273,6 +276,13 @@ void NWNX_Administration_SetServerName(string name)
 
     NWNX_PushArgumentString(NWNX_Administration, sFunc, name);
     NWNX_CallFunction(NWNX_Administration, sFunc);
+}
+
+string NWNX_Administration_GetServerName()
+{
+    string sFunc = "GetServerName";
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Administration, sFunc);
 }
 
 int NWNX_Administration_GetPlayOption(int option)

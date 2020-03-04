@@ -13,6 +13,7 @@
 #include "API/CExoAliasList.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CExoStringList.hpp"
+#include "API/CScriptCompiler.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Debug.hpp"
 #include "Services/Config/Config.hpp"
@@ -355,7 +356,7 @@ void NWNXCore::InitialSetupResourceDirectory()
 
 void NWNXCore::InitialSetupCommands()
 {
-    m_services->m_commands->RegisterCommand("runscript", [](std::string& args)
+    m_services->m_commands->RegisterCommand("runscript", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -367,7 +368,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    m_services->m_commands->RegisterCommand("eval", [](std::string& args)
+    m_services->m_commands->RegisterCommand("eval", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -376,11 +377,14 @@ void NWNXCore::InitialSetupCommands()
         {
             LOG_INFO("Executing console command: 'eval' with args: %s", args);
             bool bWrapIntoMain = args.find("void main()") == std::string::npos;
-            Globals::VirtualMachine()->RunScriptChunk(args, 0, true, bWrapIntoMain);
+            if (Globals::VirtualMachine()->RunScriptChunk(args, 0, true, bWrapIntoMain))
+            {
+                LOG_ERROR("Failed to run console command 'eval' with error: %s", Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+            }
         }
     });
 
-    m_services->m_commands->RegisterCommand("evalx", [](std::string& args)
+    m_services->m_commands->RegisterCommand("evalx", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -403,11 +407,14 @@ void NWNXCore::InitialSetupCommands()
         {
             LOG_INFO("Executing console command: 'evalx' with args: %s", args);
             std::string script = nwnxHeaders + (args.find("void main()") == std::string::npos ? "void main() { " + args + " }" : args);
-            Globals::VirtualMachine()->RunScriptChunk(script, 0, true, false);
+            if (Globals::VirtualMachine()->RunScriptChunk(script, 0, true, false))
+            {
+                LOG_ERROR("Failed to run console command 'evalx' with error: %s", Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+            }
         }
     });
 
-    m_services->m_commands->RegisterCommand("loglevel", [](std::string& args)
+    m_services->m_commands->RegisterCommand("loglevel", [](std::string&, std::string& args)
     {
         if (!args.empty())
         {
@@ -440,7 +447,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    m_services->m_commands->RegisterCommand("logformat", [](std::string& args)
+    m_services->m_commands->RegisterCommand("logformat", [](std::string&, std::string& args)
     {
         if (args.find("timestamp") != std::string::npos)
             Log::SetPrintTimestamp(args.find("notimestamp") == std::string::npos);
@@ -458,7 +465,6 @@ void NWNXCore::InitialSetupCommands()
                  Log::GetPrintTimestamp(), Log::GetPrintDate(), Log::GetPrintPlugin(),
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
-
 }
 
 void NWNXCore::UnloadPlugins()
@@ -579,11 +585,12 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
         }
     }
 
+    auto hook = g_core->m_services->m_hooks->FindHookByAddress(Functions::_ZN11CAppManager13DestroyServerEv);
+    hook->CallOriginal<void>(app);
+
     LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();
 
-    // At this point, the hook has been reset. We should call the original again to let NWN carry on.
-    app->DestroyServer();
     RestoreCrashHandlers();
 }
 

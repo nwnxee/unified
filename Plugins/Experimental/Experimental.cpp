@@ -1,6 +1,5 @@
 #include "Experimental.hpp"
 #include "Experimentals/SuppressPlayerLoginInfo.hpp"
-#include "Experimentals/AsyncLogFlush.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -24,8 +23,8 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 {
-g_plugin = new Experimental::Experimental(params);
-return g_plugin;
+    g_plugin = new Experimental::Experimental(params);
+    return g_plugin;
 }
 
 namespace Experimental {
@@ -37,12 +36,6 @@ Experimental::Experimental(const Plugin::CreateParams& params)
     {
         LOG_INFO("EXPERIMENTAL: Suppressing playerlist and player login/logout messages for non DMs.");
         m_SuppressPlayerLoginInfo = std::make_unique<SuppressPlayerLoginInfo>(GetServices()->m_hooks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("ASYNC_LOG_FLUSH", false))
-    {
-        LOG_INFO("Game logs will be flushed asynchronously");
-        m_AsyncLogFlush = std::make_unique<AsyncLogFlush>(GetServices()->m_hooks.get(), GetServices()->m_tasks.get());
     }
 }
 

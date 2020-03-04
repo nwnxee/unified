@@ -1,4 +1,4 @@
-#include "Experimentals/AsyncLogFlush.hpp"
+#include "Optimizations/AsyncLogFlush.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Tasks/Tasks.hpp"
@@ -6,7 +6,7 @@
 #include "API/CExoDebugInternal.hpp"
 #include "API/CExoFile.hpp"
 
-namespace Experimental {
+namespace Optimizations {
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;

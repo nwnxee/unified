@@ -5,19 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.6...HEAD
+https://github.com/nwnxee/unified/compare/build8193.7...HEAD
 
 ### Added
-- Events: Added OnUUIDCollision event to UUIDEvents
-- Experimental: AsyncLogFlush to asynchronously flush the game log to disk
-- Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
-- Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
-- Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
-- Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
 - Creature: `NWNX_CREATURE_NOSTACK_*` variables to control ability, skill, attack and/or saving throw bonuses stacking
 
 ##### New Plugins
 N/A
+
+##### New NWScript Functions
+- Administration: GetServerName()
+- Events: UnsubscribeEvent()
+- Creature: Get|SetFaction()
+- Util: (Un)RegisterServerConsoleCommand()
+
+### Changed
+- Core: the console commands `eval` and `evalx` will now provide an error message if the script chunk fails to execute.
+
+### Deprecated
+N/A
+
+### Removed
+- Tweaks: Removed scroll learning freeze bugfix.
+
+### Fixed
+- Optimizations: GameObjectLookup no longer breaks `NWNX_Util_GetLastCreatedObject()` and `NWNX_ON_DM_SPAWN_OBJECT` functionality.
+
+## 8193.7
+https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
+
+### Added
+- Events: Added OnUUIDCollision event to UUIDEvents
+- Core: `NWNX_CORE_LOG_ASYNC` variable to asynchronously flush the nwnx log to disk
+- Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
+- Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
+- Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
+
+##### New Plugins
+- Optimizations: Tweaks that (potentially) improve performance
+    - AsyncLogFlush to asynchronously flush the game log to disk
+    - GameObjectLookup to speed up ObjectID to pointer lookups
+    - ObjectTagLookup to speed GetObjectByTag() and similar functions
 
 ##### New NWScript Functions
 - Player: SetResManOverride()
@@ -26,20 +54,23 @@ N/A
 - Area: CreateGenericTrigger()
 - Object: GetPositionIsInTrigger()
 
+
 ### Changed
 - ELC: Updated for custom spellcaster changes
 - Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
 - Tweaks: added temporary fix for server freeze when learning a spell from a scroll (NWNX_TWEAKS_FIX_SCROLL_LEARNING_BUG)
+- Events: OnStealthExit will no longer fire if OnStealthEnter was skipped
 
 ### Deprecated
 - Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
 
-### Removed
-N/A
-
 ### Fixed
 - Tweaks: Fixed bug that prevented sneak attacks on flanked creatures when using NWNX_TWEAKS_SNEAK_ATTACK_IGNORE_CRIT_IMMUNITY
 - Webhook: fixed a crash that would happen when trying to send a message in the shutdown script
+- Core: POS is now saved for characters who were online when the server was shut down
+- Core: Fixed issue where POS would occasionally get corrupted and print errors to the log
+- ServerLogRedirector: Fixed dropped prefixes when using PrintString()
+
 
 ## 8193.6
 https://github.com/nwnxee/unified/compare/build8193.5...build8193.6

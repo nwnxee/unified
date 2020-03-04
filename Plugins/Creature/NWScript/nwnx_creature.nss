@@ -87,8 +87,6 @@ const int NWNX_CREATURE_EFFECT_TYPE_MORALE       = 5;
 const int NWNX_CREATURE_EFFECT_TYPE_PROFANE      = 6;
 const int NWNX_CREATURE_EFFECT_TYPE_RESISTANCE   = 7;
 const int NWNX_CREATURE_EFFECT_TYPE_SACRED       = 8;
-const int NWNX_CREATURE_EFFECT_TYPE_CUSTOM       = 9;
-const int NWNX_CREATURE_EFFECT_TYPE_CUSTOM2      = 10;
 /// @}
 
 /// @struct NWNX_Creature_SpecialAbility
@@ -667,10 +665,21 @@ int NWNX_Creature_GetSpecialization(object creature, int class);
 /// @param school The school constant.
 void NWNX_Creature_SetSpecialization(object creature, int class, int school);
 
+/// @brief Sets oCreatures faction to be the faction with id nFactionId.
+/// @param oCreature The creature.
+/// @param nFactionId The faction id we want the creature to join.
+void NWNX_Creature_SetFaction(object oCreature, int nFactionId);
+
+/// @brief Gets the faction id from oCreature
+/// @param oCreature the creature we wish to query against
+/// @return faction id as an integer, -1 when used against invalid creature or invalid object.
+int NWNX_Creature_GetFaction(object oCreature);
+
 /// @brief Sets a spell bonus type to be used by the NoStack feature.
 /// @param spell The spell ID from spells.2da.
 /// @param type The new type.
 void NWNX_Creature_SetSpellBonusType(int spell, int type);
+
 
 /// @}
 
@@ -1626,6 +1635,22 @@ void NWNX_Creature_SetSpecialization(object creature, int class, int school)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetFaction(object oCreature, int nFactionId)
+{
+    string sFunc = "SetFaction";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nFactionId);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetFaction(object oCreature)
+{
+    string sFunc = "GetFaction";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
 void NWNX_Creature_SetSpellBonusType(int spell, int type)

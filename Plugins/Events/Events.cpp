@@ -74,6 +74,7 @@ Events::Events(const Plugin::CreateParams& params)
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SubscribeEvent);
+    REGISTER(UnsubscribeEvent);
     REGISTER(PushEventData);
     REGISTER(SignalEvent);
     REGISTER(GetEventData);
@@ -247,11 +248,36 @@ ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
 
     if (std::find(std::begin(eventVector), std::end(eventVector), script) != std::end(eventVector))
     {
-        throw std::runtime_error("Attempted to subscribe to an event with a script that already subscribed!");
+        LOG_NOTICE("Script '%s' attempted to subscribe to event '%s' but is already subscribed!", script, event);
+    }
+    else
+    {
+        LOG_INFO("Script '%s' subscribed to event '%s'.", script, event);
+        eventVector.emplace_back(std::move(script));
     }
 
-    LOG_INFO("Script '%s' subscribed to event '%s'.", script, event);
-    eventVector.emplace_back(std::move(script));
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Events::UnsubscribeEvent(ArgumentStack&& args)
+{
+    const auto event = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!event.empty());
+    const auto script = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!script.empty());
+
+    auto& eventVector = m_eventMap[event];
+    auto it = std::find(std::begin(eventVector), std::end(eventVector), script);
+
+    if (it == std::end(eventVector))
+    {
+        LOG_NOTICE("Script '%s' attempted to unsubscribe from event '%s' but is not subscribed!", script, event);
+    }
+    else
+    {
+        LOG_INFO("Script '%s' unsubscribed from event '%s'.", script, event);
+        eventVector.erase(it);
+    }
 
     return Services::Events::Arguments();
 }
@@ -269,14 +295,14 @@ ArgumentStack Events::SignalEvent(ArgumentStack&& args)
     const auto event = Services::Events::ExtractArgument<std::string>(args);
     const auto object = Services::Events::ExtractArgument<Types::ObjectID>(args);
     bool signalled = SignalEvent(event, object);
-    
+
     return Services::Events::Arguments(signalled ? 1 : 0);
 }
 
 ArgumentStack Events::GetEventData(ArgumentStack&& args)
 {
     std::string data = GetEventData(Services::Events::ExtractArgument<std::string>(args));
-    
+
     return Services::Events::Arguments(data);
 }
 
