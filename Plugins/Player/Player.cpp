@@ -1371,7 +1371,11 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             auto timeDay = Services::Events::ExtractArgument<int32_t>(args);
             auto silentUpdate = Services::Events::ExtractArgument<int32_t>(args);
             
-            ASSERT_OR_THROW(state >= 0 && priority >= 0 && completed >= 0 && diplayed >= 0 && updated >= 0 && silentUpdate >= 0);
+            ASSERT_OR_THROW(state >= 0);
+            ASSERT_OR_THROW(priority >= 0);
+            ASSERT_OR_THROW(completed >= 0);
+            ASSERT_OR_THROW(updated >= 0);
+            ASSERT_OR_THROW(silentUpdate >= 0);
             
             
             //If server owner leaves this 0 - the entry will be added with todays date
