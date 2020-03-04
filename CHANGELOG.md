@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.7...HEAD
 
 ### Added
-N/A
+- Events: Added OnResource{Added|Removed|Modified} events to ResourceEvents, these events fire when a file gets added/removed/modified in the UserDirectory/nwnx folder
 
 ##### New Plugins
 N/A
@@ -54,7 +54,6 @@ https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 - Area: CreateGenericTrigger()
 - Object: GetPositionIsInTrigger()
 
-
 ### Changed
 - ELC: Updated for custom spellcaster changes
 - Events: exposed TARGET and TYPE event data for DMActionEvent DumpLocals
@@ -70,7 +69,6 @@ https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 - Core: POS is now saved for characters who were online when the server was shut down
 - Core: Fixed issue where POS would occasionally get corrupted and print errors to the log
 - ServerLogRedirector: Fixed dropped prefixes when using PrintString()
-
 
 ## 8193.6
 https://github.com/nwnxee/unified/compare/build8193.5...build8193.6

@@ -908,6 +908,21 @@ _______________________________________
           object is added to the world which means many functions (for example `GetArea(OBJECT_SELF)`) will not work.
 
 _______________________________________
+    ## Resource Events
+    - NWNX_ON_RESOURCE_ADDED
+    - NWNX_ON_RESOURCE_REMOVED
+    - NWNX_ON_RESOURCE_MODIFIED
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    RESREF                | string | The ResRef of the file
+    TYPE                  | int    | The type of the file, see NWNX_UTIL_RESREF_TYPE_*
+
+    Note: These events fire when a file gets added/removed/modified in the UserDirectory/nwnx folder
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
