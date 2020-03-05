@@ -663,4 +663,40 @@ namespace ItemProperty
     }
 }
 
+namespace WeaponAttackType
+{
+    enum TYPE
+    {
+        MainhandWeapon = 1,
+        OffhandWeapon = 2,
+        CreatureLeftWeapon = 3,
+        CreatureRightWeapon = 4,
+        CreatureBiteWeapon = 5,
+        AdditionalWeapon = 6,
+        Unarmed = 7,
+        AdditionalUnarmed = 8,
+    };
+    constexpr int32_t MIN = 1;
+    constexpr int32_t MAX = 8;
+    static_assert(MAX == AdditionalUnarmed);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "(invalid)",
+            "MainhandWeapon",
+            "OffhandWeapon",
+            "CreatureLeftWeapon",
+            "CreatureRightWeapon",
+            "CreatureBiteWeapon",
+            "AdditionalWeapon",
+            "Unarmed",
+            "AdditionalUnarmed",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
 }

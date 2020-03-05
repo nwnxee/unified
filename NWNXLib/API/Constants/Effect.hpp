@@ -267,4 +267,36 @@ namespace EffectSubType
     }
 }
 
+namespace EffectBonusType
+{
+    enum TYPE
+    {
+        Attack = 1,
+        Damage = 2,
+        SavingThrow = 3,
+        Ability = 4,
+        Skill = 5,
+        TouchAttack = 6,
+    };
+    constexpr int32_t MIN = 1;
+    constexpr int32_t MAX = 6;
+    static_assert(MAX == TouchAttack);
+
+    constexpr const char* ToString(const unsigned value)
+    {
+        constexpr const char* TYPE_STRINGS[] =
+        {
+            "(invalid)",
+            "Attack",
+            "Damage",
+            "SavingThrow",
+            "Ability",
+            "Skill",
+            "TouchAttack",
+        };
+
+        return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
+    }
+}
+
 }

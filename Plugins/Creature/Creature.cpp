@@ -1,5 +1,4 @@
 #include "Creature.hpp"
-#include "Extras/BonusStacking.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
@@ -147,19 +146,7 @@ Creature::Creature(const Plugin::CreateParams& params)
 	
 #undef REGISTER
 
-    int nMode[] = { std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_ABILITY", 0), static_cast<int>(NostackMode::CUSTOM_TYPES))),
-                    std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_SKILL", 0), static_cast<int>(NostackMode::CUSTOM_TYPES))),
-                    std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_SAVINGTHROW", 0), static_cast<int>(NostackMode::CUSTOM_TYPES))),
-                    std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_ATTACKBONUS", 0), static_cast<int>(NostackMode::CUSTOM_TYPES))) };
-    if (nMode[0] || nMode[1] || nMode[2] || nMode[3])
-    {
-        int nDefaultType = std::max(0, std::min(GetServices()->m_config->Get<int>("NOSTACK_DEFAULT_TYPE", 0), static_cast<int>(NostackType::NUM_VALUES-1)));
-        bool bAlwaysStackPenalties = GetServices()->m_config->Get<bool>("NOSTACK_ALWAYS_STACK_PENALTIES", false);
-        BonusStacking::Init(GetServices()->m_hooks.get(), nMode[0], nMode[1], nMode[2], nMode[3], nDefaultType, bAlwaysStackPenalties);
-
-        GetServices()->m_events->RegisterEvent("SetSpellBonusType", [](ArgumentStack&& args) { return BonusStacking::SetSpellBonusType(std::move(args)); });
-    }
-
+    BonusStacking::Init(GetServices());
 }
 
 Creature::~Creature()

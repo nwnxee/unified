@@ -138,7 +138,6 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         m_ItemChargesCost = std::make_unique<ItemChargesCost>(GetServices()->m_hooks.get(),
             mode);
     }
-
 }
 
 Tweaks::~Tweaks()
