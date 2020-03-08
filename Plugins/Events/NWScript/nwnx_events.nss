@@ -917,10 +917,11 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
+    ALIAS                 | string | NWNX for /nwnx, DEVELOPMENT for /development
     RESREF                | string | The ResRef of the file
     TYPE                  | int    | The type of the file, see NWNX_UTIL_RESREF_TYPE_*
 
-    Note: These events fire when a file gets added/removed/modified in the UserDirectory/nwnx folder
+    Note: These events fire when a file gets added/removed/modified in the /nwnx or /development folder
 
 _______________________________________
 */

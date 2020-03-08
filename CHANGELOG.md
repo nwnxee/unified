@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.7...HEAD
 
 ### Added
-- Events: Added OnResource{Added|Removed|Modified} events to ResourceEvents, these events fire when a file gets added/removed/modified in the UserDirectory/nwnx folder
+- Events: Added OnResource{Added|Removed|Modified} events to ResourceEvents, these events fire when a file gets added/removed/modified in the /nwnx or /development folders
 
 ##### New Plugins
 N/A

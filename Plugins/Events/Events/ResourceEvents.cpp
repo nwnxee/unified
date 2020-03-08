@@ -24,11 +24,12 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-#define EVENT_SIZE          ( sizeof (struct inotify_event) )
-#define EVENT_BUF_LEN       ( 128 * ( EVENT_SIZE + NAME_MAX + 1) )
+constexpr int EVENT_SIZE    = sizeof(struct inotify_event);
+constexpr int EVENT_BUF_LEN = (128 * (EVENT_SIZE + NAME_MAX + 1));
 
-static bool processEvents;
+static volatile bool processEvents;
 static int selfPipeFds[2];
+
 std::unique_ptr<std::thread> ResourceEvents::m_pollThread;
 
 ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
@@ -36,6 +37,7 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
     Events::InitOnFirstSubscribe("NWNX_ON_RESOURCE_.*", [tasks]()
     {
         int ret = pipe2(selfPipeFds, O_NONBLOCK);
+        int pipeReadFd = selfPipeFds[0];
 
         if (ret == -1)
         {
@@ -43,55 +45,62 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
             return;
         }
 
-        int pipeReadFd = selfPipeFds[0];
-        CExoString exoPath = Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("NWNX");
-        std::string path = exoPath.CStr();
-
-        m_pollThread = std::make_unique<std::thread>([tasks, path, pipeReadFd]()
+        const char* aliasesToWatch[] = {"NWNX", "DEVELOPMENT"};
+        std::unordered_map<std::string, std::string> paths;
+        for (auto &alias : aliasesToWatch)
         {
+            CExoString path = Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(alias);
+
+            if (!path.IsEmpty())
+            {
+                LOG_DEBUG("Adding path '%s' for alias '%s'", path, alias);
+                paths.emplace(alias, path.CStr());
+            }
+        }
+
+        m_pollThread = std::make_unique<std::thread>([tasks, pipeReadFd, paths]()
+        {
+            auto QueueLogMessage = [tasks](const std::string &message, bool warn = true)
+            {
+                tasks->QueueOnMainThread([message, warn]()
+                {
+                    if (warn)
+                        LOG_WARNING("%s", message);
+                    else
+                        LOG_ERROR("%s", message);
+                });
+            };
+
             struct pollfd fds[2];
             char buffer[EVENT_BUF_LEN];
+            std::unordered_map<int, std::string> aliases;
+            int inotifyFd = inotify_init1(IN_NONBLOCK);
 
-            fds[0].fd = pipeReadFd;
-            fds[0].events = POLLIN;
-
-            int fd = inotify_init1(IN_NONBLOCK), wd = 0;
-
-            if (fd != -1)
+            if (inotifyFd != -1)
             {
-                fds[1].fd = fd;
+                fds[0].fd = pipeReadFd;
+                fds[0].events = POLLIN;
+
+                fds[1].fd = inotifyFd;
                 fds[1].events = POLLIN;
 
-                wd = inotify_add_watch(fd, path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
+                for (const auto& path : paths)
+                {
+                    int wd = inotify_add_watch(inotifyFd, path.second.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
 
-                if (wd != -1)
+                    if (wd != -1)
+                        aliases[wd] = path.first;
+                    else
+                        QueueLogMessage("Failed to add inotify watch for alias '" + path.first + ":" + path.second + "' with error: " + std::string(std::strerror(errno)));
+                }
+
+                if (!aliases.empty())
                 {
                     processEvents = true;
                 }
             }
-
-            auto ProcessEvent = [tasks](const std::string &eventType, const std::string &file) -> void
-            {
-                tasks->QueueOnMainThread([eventType, file]()
-                {
-                    if (Core::g_CoreShuttingDown)
-                        return;
-
-                    LOG_DEBUG("EventType: %s, File: %s", eventType, file);
-
-                    uint16_t resType = Globals::ExoResMan()->GetResTypeFromFile(file);
-
-                    if (resType != 65535)
-                    {
-                        CResRef resRef;
-                        Globals::ExoResMan()->GetResRefFromFile(resRef, file);
-
-                        Events::PushEventData("RESREF", resRef.GetResRefStr());
-                        Events::PushEventData("TYPE", std::to_string(resType));
-                        Events::SignalEvent("NWNX_ON_RESOURCE_" + eventType, Utils::GetModule()->m_idSelf);
-                    }
-                });
-            };
+            else
+                QueueLogMessage("Failed to intialize inotify with error: " + std::string(std::strerror(errno)), false);
 
             while (processEvents)
             {
@@ -101,43 +110,72 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
                 {
                     if (fds[1].revents & POLLIN)
                     {
-                        size_t length = read(fd, buffer, EVENT_BUF_LEN);
+                        std::vector<std::tuple<std::string, std::string, std::string>> events;
+                        size_t length = read(inotifyFd, buffer, EVENT_BUF_LEN);
 
-                        if (length > 0)
+                        size_t i = 0;
+                        while (i < length)
                         {
-                            for (size_t i = 0; i < length;)
+                            auto *event = reinterpret_cast<inotify_event *>(&buffer[i]);
+
+                            if (event->len)
                             {
-                                auto *event = reinterpret_cast<inotify_event *>(&buffer[i]);
-
-                                if (event->len)
+                                if (event->mask & IN_MODIFY)
                                 {
-                                    if (event->mask & IN_MODIFY)
-                                    {
-                                        ProcessEvent("MODIFIED", event->name);
-                                    }
-                                    else
-                                    if (event->mask & IN_CREATE)
-                                    {
-                                        ProcessEvent("ADDED", event->name);
-                                    }
-                                    else
-                                    if (event->mask & IN_DELETE)
-                                    {
-                                        ProcessEvent("REMOVED", event->name);
-                                    }
+                                    events.emplace_back(event->name, aliases[event->wd], "MODIFIED");
                                 }
-
-                                i += (EVENT_SIZE + event->len);
+                                else if (event->mask & IN_CREATE)
+                                {
+                                    events.emplace_back(event->name, aliases[event->wd], "ADDED");
+                                }
+                                else if (event->mask & IN_DELETE)
+                                {
+                                    events.emplace_back(event->name, aliases[event->wd], "REMOVED");
+                                }
                             }
+
+                            i += (EVENT_SIZE + event->len);
                         }
+
+                        std::this_thread::sleep_for(std::chrono::seconds(1));
+
+                        tasks->QueueOnMainThread([events]()
+                        {
+                            if (Core::g_CoreShuttingDown)
+                                return;
+
+                            for (const auto&[file, alias, event] : events)
+                            {
+                                LOG_DEBUG("File '%s' was '%s' in alias '%s'", file, event, alias);
+
+                                uint16_t resType = Globals::ExoResMan()->GetResTypeFromFile(file);
+
+                                if (resType != 65535)
+                                {
+                                    CResRef resRef;
+                                    Globals::ExoResMan()->GetResRefFromFile(resRef, file);
+
+                                    Events::PushEventData("ALIAS", alias);
+                                    Events::PushEventData("RESREF", resRef.GetResRefStr());
+                                    Events::PushEventData("TYPE", std::to_string(resType));
+
+                                    Events::SignalEvent("NWNX_ON_RESOURCE_" + event, Utils::GetModule()->m_idSelf);
+                                }
+                            }
+                        });
                     }
                 }
             }
 
-            if (wd != -1)
-                inotify_rm_watch(fd, wd);
-            if (fd != -1)
-                close(fd);
+            if (inotifyFd != -1)
+            {
+                for (const auto& alias : aliases)
+                {
+                    inotify_rm_watch(inotifyFd, alias.first);
+                }
+
+                close(inotifyFd);
+            }
         });
     });
 }
@@ -148,8 +186,7 @@ ResourceEvents::~ResourceEvents()
 
     if (m_pollThread)
     {
-        int ret = write(selfPipeFds[1], "a", 1);
-        (void)ret;
+        (void)write(selfPipeFds[1], "a", 1);
 
         m_pollThread->join();
 
