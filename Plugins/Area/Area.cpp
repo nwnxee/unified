@@ -673,7 +673,7 @@ ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
 
         if (pTile)
         {
-            retVal = pTile->m_pTileData->GetModelResRef();
+            retVal = pTile->GetTileData()->GetModelResRef();
         }
         else
         {
