@@ -23,6 +23,7 @@ MySQL::~MySQL()
 void MySQL::Connect(NWNXLib::Services::ConfigProxy* config)
 {
     const auto host     = config->Get<std::string>("HOST", "localhost");
+    const auto port     = config->Get<int32_t>("PORT", 0);
     const auto username = config->Require<std::string>("USERNAME");
     const auto password = config->Require<std::string>("PASSWORD");
     const auto database = config->Get<std::string>("DATABASE");
@@ -31,10 +32,11 @@ void MySQL::Connect(NWNXLib::Services::ConfigProxy* config)
         LOG_DEBUG("DB set to %s", (*database));
     }
 
-    LOG_INFO("Connection info:  host=%s username=%s", host, username);
+    LOG_INFO("Connection info:  host=%s port=%i username=%s", host, port == 0 ? 3306 : port, username);
     LOG_DEBUG("               :  password=%s", password);
 
-    if (!mysql_real_connect(&m_mysql, host.c_str(), username.c_str(), password.c_str(), database ? (*database).c_str() : nullptr, 0, nullptr, 0))
+    if (!mysql_real_connect(&m_mysql, host.c_str(), username.c_str(), password.c_str(),
+            database ? (*database).c_str() : nullptr, port >= 0 ? port : 0, nullptr, 0))
     {
         throw std::runtime_error(std::string(mysql_error(&m_mysql)));
     }

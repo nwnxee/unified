@@ -53,7 +53,7 @@ bool DotNET::InitThunks()
     if (auto nethost_path = Instance->GetServices()->m_config->Get<std::string>("NETHOST_PATH"))
     {
         nethost = dlopen(nethost_path->c_str(), RTLD_LAZY);
-        ASSERT_MSG(nethost, "NETHOST_PATH specified ('%s') but failed to open libnethost.so at that path", *nethost_path);
+        ASSERT_MSG(nethost, "NETHOST_PATH specified ('%s') but failed to open libnethost.so at that path", nethost_path->c_str());
     }
 
     if (!nethost)
@@ -62,6 +62,7 @@ bool DotNET::InitThunks()
             "libnethost.so",
             "./libnethost.so",
             "lib/libnethost.so",
+            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.2/runtimes/linux-x64/native/libnethost.so",
             "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.1/runtimes/linux-x64/native/libnethost.so",
             "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.0/runtimes/linux-x64/native/libnethost.so",
             "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.0.2/runtimes/linux-x64/native/libnethost.so",
