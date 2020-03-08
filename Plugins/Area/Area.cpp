@@ -7,6 +7,7 @@
 #include "API/CNWSTransition.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSTile.hpp"
+#include "API/CNWTileData.hpp"
 #include "API/CNWSAmbientSound.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -673,7 +674,7 @@ ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
 
         if (pTile)
         {
-            retVal = pTile->GetTileData()->GetModelResRef();
+            retVal = pTile->m_pTileData->GetModelResRef();
         }
         else
         {
