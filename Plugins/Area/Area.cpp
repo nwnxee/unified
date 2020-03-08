@@ -73,6 +73,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(CreateTransition);
     REGISTER(GetTileAnimationLoop);
     REGISTER(SetTileAnimationLoop);
+    REGISTER(GetTileModelResRef);
     REGISTER(TestDirectLine);
     REGISTER(GetMusicIsPlaying);
     REGISTER(CreateGenericTrigger);
@@ -657,6 +658,32 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
 
     return Services::Events::Arguments();
 }
+
+ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
+{
+    CExoString retVal = "";
+    if (auto* pArea = area(args))
+    {
+        const auto tileX = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(tileX >= 0.0f);
+        const auto tileY = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(tileY >= 0.0f);
+
+        CNWSTile* pTile = GetTile(pArea, tileX, tileY);
+
+        if (pTile)
+        {
+            retVal = pTile->m_pTileData->GetModelResRef();
+        }
+        else
+        {
+            LOG_ERROR("NWNX_Area_GetTileName: invalid tile specified");
+        }
+    }
+
+    return Services::Events::Arguments(retVal.CStr());
+}
+
 
 ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
 {

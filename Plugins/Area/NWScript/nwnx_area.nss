@@ -175,20 +175,25 @@ void NWNX_Area_SetSunMoonColors(object area, int type, int color);
 /// @sa NWNX_Object_SetTriggerGeometry() if you wish to draw the transition as something other than a square.
 object NWNX_Area_CreateTransition(object area, object target, float x, float y, float z, float size = 2.0f, string tag="");
 
-/// @brief Get the state of a tile animation loop
+/// @brief Get the state of a tile animation loop.
 /// @param oArea The area object.
 /// @param fTileX, fTileY The coordinates of the tile.
 /// @param nAnimLoop The loop to check. (1-3)
 /// @return TRUE if the loop is enabled.
 int NWNX_Area_GetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop);
 
-/// @brief Set the state of a tile animation loop
+/// @brief Set the state of a tile animation loop.
 /// @param oArea The area object.
 /// @param fTileX, fTileY The coordinates of the tile.
 /// @param nAnimLoop The loop to set (1-3).
 /// @param bEnabled TRUE or FALSE.
 /// @note Requires clients to re-enter the area for it to take effect
 void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, int nAnimLoop, int bEnabled);
+
+/// @brief Get the name of the tile model from any location.
+/// @param oArea The area name.
+/// @param fTileX, fTileY The coordinates of the tile.
+string NWNX_Area_GetTileModelName(object oArea, float fTileX, float fTileY);
 
 /// @brief Test to see if there's a direct, walkable line between two points in the area.
 /// @param oArea The area object.
@@ -488,6 +493,17 @@ void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, in
     NWNX_CallFunction(NWNX_Area, sFunc);
 }
 
+string NWNX_Area_GetTileModelResRef(object oArea, float fTileX, float fTileY)
+{
+    string sFunc = "GetTileModelResRef";
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Area, sFunc);
+}
 
 int NWNX_Area_TestDirectLine(object oArea, float fStartX, float fStartY, float fEndX, float fEndY, float fPerSpace, float fHeight, int bIgnoreDoors=FALSE)
 {
