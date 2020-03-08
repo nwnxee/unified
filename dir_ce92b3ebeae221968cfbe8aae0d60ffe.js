@@ -105,22 +105,23 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
     [ "Environment Variables", "group__sql.html#autotoc_md274", [
       [ "NWNX_SQL_TYPE", "group__sql.html#autotoc_md275", null ],
       [ "NWNX_SQL_HOST", "group__sql.html#autotoc_md276", null ],
-      [ "NWNX_SQL_USERNAME", "group__sql.html#autotoc_md277", null ],
-      [ "NWNX_SQL_PASSWORD", "group__sql.html#autotoc_md278", null ],
-      [ "NWNX_SQL_DATABASE", "group__sql.html#autotoc_md279", null ],
-      [ "NWNX_SQL_QUERY_METRICS", "group__sql.html#autotoc_md280", null ],
-      [ "NWNX_SQL_USE_UTF8", "group__sql.html#autotoc_md281", null ],
-      [ "NWNX_SQL_CHARACTER_SET", "group__sql.html#autotoc_md282", null ]
+      [ "NWNX_SQL_PORT", "group__sql.html#autotoc_md277", null ],
+      [ "NWNX_SQL_USERNAME", "group__sql.html#autotoc_md278", null ],
+      [ "NWNX_SQL_PASSWORD", "group__sql.html#autotoc_md279", null ],
+      [ "NWNX_SQL_DATABASE", "group__sql.html#autotoc_md280", null ],
+      [ "NWNX_SQL_QUERY_METRICS", "group__sql.html#autotoc_md281", null ],
+      [ "NWNX_SQL_USE_UTF8", "group__sql.html#autotoc_md282", null ],
+      [ "NWNX_SQL_CHARACTER_SET", "group__sql.html#autotoc_md283", null ]
     ] ],
-    [ "Environment Variables", "group__threadwatchdog.html#autotoc_md283", null ],
-    [ "Environment Variables", "group__tracking.html#autotoc_md284", null ],
-    [ "Environment Variables", "group__tweaks.html#autotoc_md285", null ],
-    [ "Environment variable values", "group__tweaks.html#autotoc_md286", [
-      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md287", null ]
+    [ "Environment Variables", "group__threadwatchdog.html#autotoc_md284", null ],
+    [ "Environment Variables", "group__tracking.html#autotoc_md285", null ],
+    [ "Environment Variables", "group__tweaks.html#autotoc_md286", null ],
+    [ "Environment variable values", "group__tweaks.html#autotoc_md287", [
+      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md288", null ]
     ] ],
-    [ "Environment Variables", "group__util.html#autotoc_md288", null ],
-    [ "Limitations", "group__webhook.html#autotoc_md294", null ],
-    [ "Example usage", "group__webhook.html#autotoc_md295", null ],
+    [ "Environment Variables", "group__util.html#autotoc_md289", null ],
+    [ "Limitations", "group__webhook.html#autotoc_md295", null ],
+    [ "Example usage", "group__webhook.html#autotoc_md296", null ],
     [ "nwnx.nss", "nwnx_8nss.html", "nwnx_8nss" ],
     [ "nwnx_consts.nss", "nwnx__consts_8nss.html", "nwnx__consts_8nss" ],
     [ "nwnx_tests.nss", "nwnx__tests_8nss.html", "nwnx__tests_8nss" ]
