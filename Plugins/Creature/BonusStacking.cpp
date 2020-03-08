@@ -46,8 +46,8 @@ void BonusStacking::Init(Services::ProxyServiceList* services)
         LOG_INFO("Property effect stacking modes -- Ability scores: %d | Skill bonuses: %d | Saving throw bonuses: %d"
             " | Attack bonuses: %d", s_nAbilityStackingMode, s_nSkillStackingMode, s_nSavingThrowStackingMode, s_nAttackBonusStackingMode);
 
-        g_nSpellDefaultType = std::min(services->m_config->Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0);
-        g_nItemDefaultType = std::min(services->m_config->Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0);
+        g_nSpellDefaultType = std::clamp(services->m_config->Get<int>("NOSTACK_SPELL_DEFAULT_TYPE", NostackType::Circumstance), 0, static_cast<int>(NostackType::Max));
+        g_nItemDefaultType = std::clamp(services->m_config->Get<int>("NOSTACK_ITEM_DEFAULT_TYPE", NostackType::Enhancement), 0, static_cast<int>(NostackType::Max));
         s_bAlwaysStackPenalties = services->m_config->Get<bool>("NOSTACK_ALWAYS_STACK_PENALTIES", false);
 
         services->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi>
