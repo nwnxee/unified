@@ -193,7 +193,7 @@ void NWNX_Area_SetTileAnimationLoop(object oArea, float fTileX, float fTileY, in
 /// @brief Get the name of the tile model from any location.
 /// @param oArea The area name.
 /// @param fTileX, fTileY The coordinates of the tile.
-string NWNX_Area_GetTileModelName(object oArea, float fTileX, float fTileY);
+string NWNX_Area_GetTileModelResRef(object oArea, float fTileX, float fTileY);
 
 /// @brief Test to see if there's a direct, walkable line between two points in the area.
 /// @param oArea The area object.
