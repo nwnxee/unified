@@ -662,7 +662,7 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
 
 ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
 {
-    CExoString retVal = "";
+    std::string retVal = "";
     if (auto* pArea = area(args))
     {
         const auto tileX = Services::Events::ExtractArgument<float>(args);
