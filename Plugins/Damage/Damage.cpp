@@ -238,6 +238,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
         positive[k] = vDamage[k] > 0;
     }
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
+    int range = Services::Events::ExtractArgument<int>(args);
 
     CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
     CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
@@ -268,6 +269,10 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
         pEffect->SetInteger(k, positive[k] ? vDamage[k] : -1);
     pEffect->SetInteger(17, true); // combat damage
     // ... and apply it
+    
+    //Check if ranged (this sets bRangedAttack internally)
+    pEffect->SetInteger(18, !!range);
+
     pTarget->ApplyEffect(pEffect, false, true);
 
     return Services::Events::Arguments();
