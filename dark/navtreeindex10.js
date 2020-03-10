@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structNWNX__Object__LocalVariable.html#a71602dfd910b91f55beda204d293e7c4":[0,22,2,1],
+"structNWNX__Object__LocalVariable.html#a8d610962730ec74152b0fca0a45fce6d":[0,22,2,0],
 "structNWNX__Player__QuickBarSlot.html":[0,24,3],
 "structNWNX__Player__QuickBarSlot.html#a0600666ebc53dcf8978fdc705307a4b1":[0,24,3,2],
 "structNWNX__Player__QuickBarSlot.html#a16178af44fbc703b996ee7d42d73980b":[0,24,3,9],

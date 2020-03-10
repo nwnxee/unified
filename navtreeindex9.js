@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#a8f16bec7bd796e3490a8abbd9feb0f0f":[4,0,2,26,0,3,53],
+"nwnx__redis__short_8nss.html#a9395e8513b2154971bd49097ffd169b2":[4,0,2,26,0,3,112],
 "nwnx__redis__short_8nss.html#a940992c62e3c3f882372cf18a6c1c2ec":[4,0,2,26,0,3,217],
 "nwnx__redis__short_8nss.html#a941c378174461fc7c838922c172b6650":[4,0,2,26,0,3,102],
 "nwnx__redis__short_8nss.html#a98da7d5716f13127cb481d86d06fb42c":[4,0,2,26,0,3,48],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__IPUnpacked.html#ad95e63782ed593741a81e19741a978dc":[0,18,2,3],
 "structNWNX__IPUnpacked.html#adec6dfc16333f7643f4b2b3a948a461d":[0,18,2,7],
 "structNWNX__IPUnpacked.html#ae35c18ac2c0b8af028ee28e2f424b486":[0,18,2,6],
-"structNWNX__Object__LocalVariable.html":[0,22,2],
-"structNWNX__Object__LocalVariable.html#a71602dfd910b91f55beda204d293e7c4":[0,22,2,1],
-"structNWNX__Object__LocalVariable.html#a8d610962730ec74152b0fca0a45fce6d":[0,22,2,0]
+"structNWNX__Object__LocalVariable.html":[0,22,2]
 };

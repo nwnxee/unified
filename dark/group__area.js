@@ -28,6 +28,7 @@ var group__area =
     [ "NWNX_Area_CreateTransition", "group__area.html#ga375a5f37746e7d248292788987a7ccb9", null ],
     [ "NWNX_Area_GetTileAnimationLoop", "group__area.html#ga5bca6950ff8f896782ede7d59fc72d08", null ],
     [ "NWNX_Area_SetTileAnimationLoop", "group__area.html#ga28ba5d8f657c920be0ec69e2334fa74b", null ],
+    [ "NWNX_Area_GetTileModelResRef", "group__area.html#ga2db1fbde0d327c68f70f09081078c338", null ],
     [ "NWNX_Area_TestDirectLine", "group__area.html#gaadd7e8c0aa2f77536fa499d38aca568d", null ],
     [ "NWNX_Area_GetMusicIsPlaying", "group__area.html#ga80b56688f11005ff2518228cf20d84bf", null ],
     [ "NWNX_Area_CreateGenericTrigger", "group__area.html#ga70470c5fd872dd9204c486c04ed8f037", null ],
