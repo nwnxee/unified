@@ -238,7 +238,16 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
         positive[k] = vDamage[k] > 0;
     }
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
-    int range = Services::Events::ExtractArgument<int>(args);
+
+    int range = 0;
+    try 
+    {
+        range = Services::Events::ExtractArgument<int>(args);
+    }
+    catch(std::exception e) 
+    {
+        LOG_WARNING("NWNX_Damage_DealDamage() called from NWScript without final parameter. Please download the latest versions of NWNX scripts.");
+    }
 
     CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
     CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
