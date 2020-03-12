@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.7...HEAD
 
 ### Added
-N/A
+- SQL: `NWNX_SQL_PORT` to set the port used for MySQL database connections.
 
 ##### New Plugins
 N/A
@@ -18,6 +18,7 @@ N/A
 - Events: UnsubscribeEvent()
 - Creature: Get|SetFaction()
 - Util: (Un)RegisterServerConsoleCommand()
+- Area: GetTileModuleResRef()
 
 ### Changed
 - Core: the console commands `eval` and `evalx` will now provide an error message if the script chunk fails to execute.
