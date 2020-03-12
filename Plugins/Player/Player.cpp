@@ -1409,25 +1409,21 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                     int overwrite = -1;
                     if (entries.num > 0)
                     {
+                        int i = 0;
                         auto pEntry = entries.element;
-                        for (int i = 0; i < entries.num; i++, pEntry++)
+                        for (i = 0; i < entries.num; i++)
                         {
+                            pEntry = entries.element[i];
                             if (pEntry->szPlot_Id.CStr() == tag)
                             {
-                                overwrite = i; 
-                                //Overwrite existing entry
                                 pCreature->m_pJournal->m_lstEntries[i] = newJournal;
                                 break;
                             }
                         }
                     }
-                    //If we have overwritten an existing entry - we don't need to perform an add -
-                    //Instead we perform an update only
-                    if(overwrite == -1)
-                    {
-                        //New entry added
+                    if(i == entries.num)
                         pCreature->m_pJournal->m_lstEntries.Add(newJournal);
-                    }
+                    
                     pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
                                                                     newJournal.szPlot_Id,
                                                                     newJournal.nState,
@@ -1441,6 +1437,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                     retval =pCreature->m_pJournal->m_lstEntries.num; // Success
                     
                     //If no update message is desired, we can keep it silent.
+                    //Useful for restoring entries on playerlogin
                     if(!silentUpdate)
                     {
                         pMessage->SendServerToPlayerJournalUpdated(pPlayer,1,newJournal.bQuestCompleted,newJournal.szName);
