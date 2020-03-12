@@ -1470,7 +1470,7 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
                 auto pEntry = entries.element;
                 for (int i = 0; i < entries.num; i++, pEntry++)
                 {
-                    if (pEntry->szPlot_Id.CStr() == tag)
+                    if (pEntry.szPlot_Id.CStr() == tag)
                         {
                             lastJournalEntry = entries[i];
                             found = i;
