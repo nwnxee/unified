@@ -1407,13 +1407,12 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 {
                  
                     int i = 0;
+                    
                     if (entries.num > 0)
                     {
-                        
-                        SJournalEntry pEntry = entries.element;
-                        for (i = 0; i < entries.num; i++)
+                        auto pEntry = entries.element;
+                        for (i = 0; i < entries.num; i++, pEntry++)
                         {
-                            pEntry = entries.element[i];
                             if (pEntry->szPlot_Id.CStr() == tag)
                             {
                                 pCreature->m_pJournal->m_lstEntries[i] = newJournal;
