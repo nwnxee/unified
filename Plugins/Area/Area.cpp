@@ -7,6 +7,7 @@
 #include "API/CNWSTransition.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSTile.hpp"
+#include "API/CNWTileData.hpp"
 #include "API/CNWSAmbientSound.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -73,6 +74,7 @@ Area::Area(const Plugin::CreateParams& params)
     REGISTER(CreateTransition);
     REGISTER(GetTileAnimationLoop);
     REGISTER(SetTileAnimationLoop);
+    REGISTER(GetTileModelResRef);
     REGISTER(TestDirectLine);
     REGISTER(GetMusicIsPlaying);
     REGISTER(CreateGenericTrigger);
@@ -657,6 +659,32 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
 
     return Services::Events::Arguments();
 }
+
+ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
+{
+    std::string retVal = "";
+    if (auto* pArea = area(args))
+    {
+        const auto tileX = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(tileX >= 0.0f);
+        const auto tileY = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(tileY >= 0.0f);
+
+        CNWSTile* pTile = GetTile(pArea, tileX, tileY);
+
+        if (pTile)
+        {
+            retVal = pTile->m_pTileData->GetModelResRef().GetResRefStr();
+        }
+        else
+        {
+            LOG_ERROR("NWNX_Area_GetTileName: invalid tile specified");
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
 
 ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
 {

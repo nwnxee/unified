@@ -1406,11 +1406,11 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             if (pMessage)
                 {
                  
-                    int overwrite = -1;
+                    int i = 0;
                     if (entries.num > 0)
                     {
-                        int i = 0;
-                        auto pEntry = entries.element;
+                        
+                        auto *pEntry = entries.element;
                         for (i = 0; i < entries.num; i++)
                         {
                             pEntry = entries.element[i];

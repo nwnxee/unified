@@ -57,6 +57,9 @@ void main()
         object oAT = NWNX_Area_CreateTransition(oArea, oWP, vLoc.x, vLoc.y, vLoc.z);
         NWNX_Tests_Report("NWNX_Area", "CreateTransition", oAT != OBJECT_INVALID);
 
+        string sResult = NWNX_Area_GetTileModelResRef(oArea, vLoc.x, vLoc.y);
+        NWNX_Tests_Report("NWNX_Area", "GetTileModelResRef", sResult != "");
+
         NWNX_Area_SetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1, FALSE);
         NWNX_Tests_Report("NWNX_Area", "{Set/Get}TileAnimationLoop", NWNX_Area_GetTileAnimationLoop(oArea, vLoc.x, vLoc.y, 1) == FALSE);
     }
