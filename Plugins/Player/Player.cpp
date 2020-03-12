@@ -1410,7 +1410,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                     if (entries.num > 0)
                     {
                         
-                        auto* pEntry = entries.element;
+                        SJournalEntry pEntry = entries.element;
                         for (i = 0; i < entries.num; i++)
                         {
                             pEntry = entries.element[i];
