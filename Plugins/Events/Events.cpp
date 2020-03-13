@@ -29,6 +29,7 @@
 #include "Events/MaterialChangeEvents.hpp"
 #include "Events/ObjectEvents.hpp"
 #include "Events/UUIDEvents.hpp"
+#include "Events/ResourceEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -128,6 +129,7 @@ Events::Events(const Plugin::CreateParams& params)
     m_matChangeEvents   = std::make_unique<MaterialChangeEvents>(hooker);
     m_objectEvents      = std::make_unique<ObjectEvents>(hooker);
     m_uuidEvents        = std::make_unique<UUIDEvents>(hooker);
+    m_resourceEvents    = std::make_unique<ResourceEvents>(GetServices()->m_tasks.get());
 }
 
 Events::~Events()
