@@ -158,7 +158,7 @@ var searchData=
   ['nwnx_5fcreature_5fsetspellresistance_1830',['NWNX_Creature_SetSpellResistance',['../group__creature.html#ga38dd236e58cb6e6e33a22e04ee38bc20',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetwalkratecap_1831',['NWNX_Creature_SetWalkRateCap',['../group__creature.html#gac392f65253b64ad44b8f475a0e84231d',1,'nwnx_creature.nss']]],
   ['nwnx_5fcreature_5fsetwizardspecialization_1832',['NWNX_Creature_SetWizardSpecialization',['../group__creature.html#ga25b5b06744b1d145a7e64866360603ee',1,'nwnx_creature.nss']]],
-  ['nwnx_5fdamage_5fdealdamage_1833',['NWNX_Damage_DealDamage',['../group__damage.html#gaa5e0bf54800819528b77bf0e3ec78463',1,'nwnx_damage.nss']]],
+  ['nwnx_5fdamage_5fdealdamage_1833',['NWNX_Damage_DealDamage',['../group__damage.html#gac2fbf4ab0070f31b5fde15a4afc29a99',1,'nwnx_damage.nss']]],
   ['nwnx_5fdamage_5fgetattackeventdata_1834',['NWNX_Damage_GetAttackEventData',['../group__damage.html#ga6cdb61971c650ff07be52f2f0c2d02b8',1,'nwnx_damage.nss']]],
   ['nwnx_5fdamage_5fgetdamageeventdata_1835',['NWNX_Damage_GetDamageEventData',['../group__damage.html#ga70a0495afe874baf67ed2e880f779ed5',1,'nwnx_damage.nss']]],
   ['nwnx_5fdamage_5fsetattackeventdata_1836',['NWNX_Damage_SetAttackEventData',['../group__damage.html#gac9d174eaf11af9aa77da1e8b94db2224',1,'nwnx_damage.nss']]],

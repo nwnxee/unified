@@ -310,7 +310,7 @@ var searchData=
   ['nwnx_5fdamage_5fattackeventdata_523',['NWNX_Damage_AttackEventData',['../structNWNX__Damage__AttackEventData.html',1,'']]],
   ['nwnx_5fdamage_5fdamagedata_524',['NWNX_Damage_DamageData',['../structNWNX__Damage__DamageData.html',1,'']]],
   ['nwnx_5fdamage_5fdamageeventdata_525',['NWNX_Damage_DamageEventData',['../structNWNX__Damage__DamageEventData.html',1,'']]],
-  ['nwnx_5fdamage_5fdealdamage_526',['NWNX_Damage_DealDamage',['../group__damage.html#gaa5e0bf54800819528b77bf0e3ec78463',1,'nwnx_damage.nss']]],
+  ['nwnx_5fdamage_5fdealdamage_526',['NWNX_Damage_DealDamage',['../group__damage.html#gac2fbf4ab0070f31b5fde15a4afc29a99',1,'nwnx_damage.nss']]],
   ['nwnx_5fdamage_5fgetattackeventdata_527',['NWNX_Damage_GetAttackEventData',['../group__damage.html#ga6cdb61971c650ff07be52f2f0c2d02b8',1,'nwnx_damage.nss']]],
   ['nwnx_5fdamage_5fgetdamageeventdata_528',['NWNX_Damage_GetDamageEventData',['../group__damage.html#ga70a0495afe874baf67ed2e880f779ed5',1,'nwnx_damage.nss']]],
   ['nwnx_5fdamage_5fsetattackeventdata_529',['NWNX_Damage_SetAttackEventData',['../group__damage.html#gac9d174eaf11af9aa77da1e8b94db2224',1,'nwnx_damage.nss']]],
