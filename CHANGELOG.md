@@ -22,6 +22,7 @@ N/A
 
 ### Changed
 - Core: the console commands `eval` and `evalx` will now provide an error message if the script chunk fails to execute.
+- Damage: Added a Ranged flag to NWNX_Damage_DealDamage()
 
 ### Deprecated
 N/A

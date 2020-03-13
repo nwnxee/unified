@@ -239,6 +239,16 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     }
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
 
+    int range = 0;
+    try 
+    {
+        range = Services::Events::ExtractArgument<int>(args);
+    }
+    catch(std::exception e) 
+    {
+        LOG_WARNING("NWNX_Damage_DealDamage() called from NWScript without final parameter. Please download the latest versions of NWNX scripts.");
+    }
+
     CNWSCreature *pSource = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSource);
     CNWSObject *pTarget = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(oidTarget));
     ASSERT_OR_THROW(pTarget != nullptr);
@@ -268,6 +278,10 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
         pEffect->SetInteger(k, positive[k] ? vDamage[k] : -1);
     pEffect->SetInteger(17, true); // combat damage
     // ... and apply it
+    
+    //Check if ranged (this sets bRangedAttack internally)
+    pEffect->SetInteger(18, !!range);
+
     pTarget->ApplyEffect(pEffect, false, true);
 
     return Services::Events::Arguments();
