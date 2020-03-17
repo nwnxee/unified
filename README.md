@@ -2,7 +2,7 @@
 
 # NWNX:EE (build 8193.9 - v80 - STABLE build)
 
-- Latest release: [build8193.9](https://github.com/nwnxee/unified/releases/tag/build8193.7) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#81936) 
+- Latest release: [build8193.9](https://github.com/nwnxee/unified/releases/tag/build8193.9) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#81937) 
 - Docker tag: `nwnxee/unified:build8193.9`
 - nwserver-linux md5: `1d0a2b7317fa5c522c945a054a932378`
 
