@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.7...HEAD
+https://github.com/nwnxee/unified/compare/build8193.9...HEAD
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+## 8193.7
+https://github.com/nwnxee/unified/compare/build8193.7...build8193.9
 
 ### Added
 - SQL: `NWNX_SQL_PORT` to set the port used for MySQL database connections.

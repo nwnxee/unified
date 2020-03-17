@@ -239,6 +239,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetDistanceBetween(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetDistanceBetweenLocations(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetDistanceToObject(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetDomain(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetDroppableFlag(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetEffect(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetEffectCasterLevel(int32_t nCommandId, int32_t nParameters);
@@ -422,6 +423,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetSittingCreature(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetSkillRank(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetSkyBox(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetSpecialization(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetSpellCast(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetSpellCasterItem(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetSpellId(int32_t nCommandId, int32_t nParameters);
@@ -505,6 +507,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandPlaySoundByStrRef(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPlayVisualAreaEffect(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPopUpGUIPanel(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandPostString(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPrintFloat(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPrintInteger(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandPrintLogEntry(int32_t nCommandId, int32_t nParameters);
