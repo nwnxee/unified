@@ -303,6 +303,7 @@ struct CServerAIEventNode;
 struct CServerAIBodyBagInfo;
 struct CServerAIMaster;
 struct CServerExoAppInternal;
+struct CNWSDungeonMaster;
 struct Vector;
 struct CAurObjectVisualTransformData;
 struct CStringFieldIDType;
