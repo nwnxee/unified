@@ -56,9 +56,7 @@ private:
     ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
-    ArgumentStack GetDomain                     (ArgumentStack&& args);
     ArgumentStack SetDomain                     (ArgumentStack&& args);
-    ArgumentStack GetSpecialization             (ArgumentStack&& args);
     ArgumentStack SetSpecialization             (ArgumentStack&& args);
     ArgumentStack GetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSoundset                   (ArgumentStack&& args);
@@ -102,7 +100,7 @@ private:
     ArgumentStack SetDisarmable                 (ArgumentStack&& args);
     ArgumentStack SetFaction                    (ArgumentStack&& args);
     ArgumentStack GetFaction                    (ArgumentStack&& args);
-    
+
     CNWSCreature *creature(ArgumentStack& args);
 
 };
