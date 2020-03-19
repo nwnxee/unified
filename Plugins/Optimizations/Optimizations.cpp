@@ -41,7 +41,7 @@ Optimizations::Optimizations(const Plugin::CreateParams& params)
 
     if (GetServices()->m_config->Get<bool>("GAME_OBJECT_LOOKUP", false))
     {
-        LOG_INFO("Using optimial CGameObjectArray implementation");
+        LOG_INFO("Using optimal CGameObjectArray implementation");
         m_GameObjectLookup = std::make_unique<GameObjectLookup>(GetServices()->m_hooks.get());
     }
 
