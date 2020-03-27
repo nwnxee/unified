@@ -96,9 +96,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetMovementRateFactor);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
-    REGISTER(GetDomain);
     REGISTER(SetDomain);
-    REGISTER(GetSpecialization);
     REGISTER(SetSpecialization);
     REGISTER(GetSoundset);
     REGISTER(SetSoundset);
@@ -142,7 +140,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetDisarmable);
     REGISTER(SetFaction);
     REGISTER(GetFaction);
-	
+
 #undef REGISTER
 }
 
@@ -1042,32 +1040,6 @@ ArgumentStack Creature::SetAlignmentLawChaos(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
-ArgumentStack Creature::GetDomain(ArgumentStack&& args)
-{
-    int32_t retVal = -1;
-    if (auto* pCreature = creature(args))
-    {
-        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
-        const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW((index == 1) || (index == 2));
-
-        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-        ASSERT_OR_THROW(pClass != nullptr);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                retVal = classInfo.m_nDomain[index - 1];
-                break;
-            }
-        }
-    }
-    return Services::Events::Arguments(retVal);
-}
-
 ArgumentStack Creature::SetDomain(ArgumentStack&& args)
 {
     if (auto* pCreature = creature(args))
@@ -1096,31 +1068,6 @@ ArgumentStack Creature::SetDomain(ArgumentStack&& args)
         }
     }
     return Services::Events::Arguments();
-}
-
-ArgumentStack Creature::GetSpecialization(ArgumentStack&& args)
-{
-    int32_t retVal = -1;
-
-    if (auto* pCreature = creature(args))
-    {
-        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
-
-        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-        ASSERT_OR_THROW(pClass != nullptr);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                retVal = classInfo.m_nSchool;
-                break;
-            }
-        }
-    }
-    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Creature::SetSpecialization(ArgumentStack&& args)

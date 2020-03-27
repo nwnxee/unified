@@ -20,7 +20,7 @@ N/A
 N/A
 
 ### Deprecated
-N/A
+- Creature: Get{Domain|Specialization}
 
 ### Removed
 N/A
