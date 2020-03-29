@@ -122,7 +122,7 @@ Environment Variables</h2>
 Basic Setup</h2>
 <h3><a class="anchor" id="autotoc_md87"></a>
 Dependencies</h3>
-<p>You will need <code>dotnet-sdk-3.0</code> installed on the server to use this plugin. The same package is used to build the managed code. Installation instructions are <a href="https://dotnet.microsoft.com/download/linux-package-manager/sdk-current">here</a>.</p>
+<p>You will need <code>dotnet-sdk-3.1</code> installed on the server to use this plugin. The same package is used to build the managed code. Installation instructions are <a href="https://dotnet.microsoft.com/download/linux-package-manager/sdk-current">here</a>.</p>
 <p>There are no compiletime dependencies for the unmanaged code.</p>
 <h3><a class="anchor" id="autotoc_md88"></a>
 Compile managed code</h3>
@@ -140,7 +140,7 @@ Troubleshooting</h3>
 <h4><a class="anchor" id="autotoc_md91"></a>
 libnethost.so</h4>
 <p>If you get the following error: </p><pre class="fragment">Unable to load libnethost.so. .NET plugin will be unavailable.
-</pre><p>make sure you have <code>dotnet-sdk-3.0</code> (or later?) installed on your system. If it is present, run <code>locate libnethost.so</code> to find the location of the library. Then add it to: </p><pre class="fragment">export NWNX_DOTNET_NETHOST_PATH=/full/path/to/libnethost.so
+</pre><p>make sure you have <code>dotnet-sdk-3.1</code> (or later?) installed on your system. If it is present, run <code>locate libnethost.so</code> to find the location of the library. Then add it to: </p><pre class="fragment">export NWNX_DOTNET_NETHOST_PATH=/full/path/to/libnethost.so
 </pre><p>Please also open an issue showing the output of your <code>locate</code> command so that we can add the path to the auto-search code.</p>
 <h4><a class="anchor" id="autotoc_md92"></a>
 runtime config</h4>
@@ -274,7 +274,7 @@ Exceptions</h3>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Mar 27 2020 17:21:44 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Mar 29 2020 15:30:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
