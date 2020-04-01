@@ -2,6 +2,7 @@
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/CExoBase.hpp"
 #include "API/C2DA.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CTwoDimArrays.hpp"
@@ -20,6 +21,7 @@
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
+#include "Services/Plugins/Plugins.hpp"
 #include "Services/Commands/Commands.hpp"
 
 #include <string>
@@ -85,6 +87,8 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(SetInstructionLimit);
     REGISTER(RegisterServerConsoleCommand);
     REGISTER(UnregisterServerConsoleCommand);
+    REGISTER(PluginExists);
+    REGISTER(GetUserDirectory);
 
 #undef REGISTER
 
@@ -546,6 +550,19 @@ ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Util::PluginExists(ArgumentStack&& args)
+{
+    std::string pluginName = Services::Events::ExtractArgument<std::string>(args);
+    std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
+
+    return GetServices()->m_plugins->FindPluginByName(pluginNameWithoutPrefix) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
+}
+
+ArgumentStack Util::GetUserDirectory(ArgumentStack&&)
+{
+    return Services::Events::Arguments(Globals::ExoBase()->m_sUserDirectory.CStr());
 }
 
 }

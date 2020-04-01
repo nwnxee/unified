@@ -39,6 +39,8 @@ private:
     ArgumentStack SetInstructionLimit           (ArgumentStack&& args);
     ArgumentStack RegisterServerConsoleCommand  (ArgumentStack&& args);
     ArgumentStack UnregisterServerConsoleCommand(ArgumentStack&& args);
+    ArgumentStack PluginExists                  (ArgumentStack&& args);
+    ArgumentStack GetUserDirectory              (ArgumentStack&&);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;

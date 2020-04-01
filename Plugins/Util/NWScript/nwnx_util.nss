@@ -163,6 +163,16 @@ int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk)
 /// @param sCommand The name of the command.
 void NWNX_Util_UnregisterServerConsoleCommand(string sCommand);
 
+/// @brief Determines if the given plugin exists and is enabled.
+/// @param sPlugin The name of the plugin to check. This is the case sensitive plugin name as used by NWNX_CallFunction, NWNX_PushArgumentX
+/// @note Example usage: NWNX_Util_PluginExists("NWNX_Creature");
+/// @return TRUE if the plugin exists and is enabled, otherwise FALSE.
+int NWNX_Util_PluginExists(string sPlugin);
+
+/// @brief Gets the server's current working user folder.
+/// @return The absolute path of the server's home directory (-userDirectory)
+string NWNX_Util_GetUserDirectory();
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -380,4 +390,19 @@ void NWNX_Util_UnregisterServerConsoleCommand(string sCommand)
 
     NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_PluginExists(string sPlugin)
+{
+    string sFunc = "PluginExists";
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sPlugin);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetUserDirectory()
+{
+    string sFunc = "GetUserDirectory";
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
