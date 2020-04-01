@@ -130,6 +130,12 @@ int NWNX_Creature_GetFeatCountByLevel(object creature, int level);
 /// @return The feat id at the index.
 int NWNX_Creature_GetFeatByLevel(object creature, int level, int index);
 
+/// @brief Returns the creature level where the specified feat was learned.
+/// @param creature The creature object.
+/// @param feat The feat id.
+/// @return The character level that the specified feat was granted, otherwise 0 if the creature does not have this feat.
+int NWNX_Creature_GetFeatGrantLevel(object creature, int feat);
+
 /// @brief Get the total number of feats known by creature.
 /// @param creature The creature object.
 /// @return The total feat count for the creature.
@@ -733,6 +739,15 @@ int NWNX_Creature_GetFeatCount(object creature)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetFeatGrantLevel(object creature, int feat)
+{
+    string sFunc = "GetFeatGrantLevel";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, feat);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 

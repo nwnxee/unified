@@ -44,6 +44,7 @@ void main()
     NWNX_Tests_Report("NWNX_Creature", "GetFeatByIndex", NWNX_Creature_GetFeatByIndex(oCreature, nFeatCountTotal) == FEAT_PLAYER_TOOL_01);
 
     NWNX_Tests_Report("NWNX_Creature", "GetFeatByLevel", NWNX_Creature_GetFeatByLevel(oCreature, 1, nFeatCountLvl1) == FEAT_PLAYER_TOOL_01);
+    NWNX_Tests_Report("NWNX_Creature", "GetFeatGrantLevel", NWNX_Creature_GetFeatGrantLevel(oCreature, FEAT_PLAYER_TOOL_01) == 1);
 
     NWNX_Creature_AddFeat(oCreature, FEAT_BARBARIAN_RAGE);
     NWNX_Tests_Report("NWNX_Creature", "GetHighestLevelOfFeat", NWNX_Creature_GetHighestLevelOfFeat(oCreature, FEAT_BARBARIAN_RAGE) == FEAT_BARBARIAN_RAGE);

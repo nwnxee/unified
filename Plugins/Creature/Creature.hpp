@@ -22,6 +22,7 @@ private:
     ArgumentStack GetKnowsFeat                  (ArgumentStack&& args);
     ArgumentStack GetFeatCountByLevel           (ArgumentStack&& args);
     ArgumentStack GetFeatByLevel                (ArgumentStack&& args);
+    ArgumentStack GetFeatGrantLevel             (ArgumentStack&& args);
     ArgumentStack GetFeatCount                  (ArgumentStack&& args);
     ArgumentStack GetFeatByIndex                (ArgumentStack&& args);
     ArgumentStack GetMeetsFeatRequirements      (ArgumentStack&& args);
