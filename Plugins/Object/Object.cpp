@@ -101,6 +101,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(DeleteFloat);
     REGISTER(DeleteVarRegex);
     REGISTER(GetPositionIsInTrigger);
+    REGISTER(GetInternalObjectType);
 
 #undef REGISTER
 }
@@ -837,6 +838,18 @@ ArgumentStack Object::GetPositionIsInTrigger(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetInternalObjectType(ArgumentStack&& args)
+{
+    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (auto* go = Utils::GetGameObject(objectId))
+    {
+        return Services::Events::Arguments(go->m_nObjectType);
+    }
+
+    return Services::Events::Arguments(-1);
 }
 
 }

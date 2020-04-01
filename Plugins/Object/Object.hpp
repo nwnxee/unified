@@ -52,6 +52,7 @@ private:
     ArgumentStack DeleteFloat               (ArgumentStack&& args);
     ArgumentStack DeleteVarRegex            (ArgumentStack&& args);
     ArgumentStack GetPositionIsInTrigger    (ArgumentStack&& args);
+    ArgumentStack GetInternalObjectType     (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };
