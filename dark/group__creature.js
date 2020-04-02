@@ -19,6 +19,7 @@ var group__creature =
     [ "NWNX_Creature_GetKnowsFeat", "group__creature.html#gace9cb72350769f27e4373301e70d89b1", null ],
     [ "NWNX_Creature_GetFeatCountByLevel", "group__creature.html#ga5aae58ed38b1cf6486826dd861a2345e", null ],
     [ "NWNX_Creature_GetFeatByLevel", "group__creature.html#ga4875b0673d87478c3edbb608fb77cee4", null ],
+    [ "NWNX_Creature_GetFeatGrantLevel", "group__creature.html#gaef3946aa6d3561be04d8b37f554b35b5", null ],
     [ "NWNX_Creature_GetFeatCount", "group__creature.html#ga93c6684ed4cb787a6c515160fd0d11e5", null ],
     [ "NWNX_Creature_GetFeatByIndex", "group__creature.html#gae076b9381dace2ae42e7f1e93efefc08", null ],
     [ "NWNX_Creature_GetMeetsFeatRequirements", "group__creature.html#ga99206355829f6f9ed5cf90ae7b4c6928", null ],

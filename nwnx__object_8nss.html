@@ -254,6 +254,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga16d6d0bacd964e083fe6522d32061373"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga16d6d0bacd964e083fe6522d32061373">NWNX_Object_GetPositionIsInTrigger</a> (object oTrigger, vector vPosition)</td></tr>
 <tr class="memdesc:ga16d6d0bacd964e083fe6522d32061373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get if vPosition is inside oTrigger's geometry.  <a href="group__object.html#ga16d6d0bacd964e083fe6522d32061373">More...</a><br /></td></tr>
 <tr class="separator:ga16d6d0bacd964e083fe6522d32061373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab3df9d22e8d2ecb09084ea585a77cda5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gab3df9d22e8d2ecb09084ea585a77cda5">NWNX_Object_GetInternalObjectType</a> (object oObject)</td></tr>
+<tr class="memdesc:gab3df9d22e8d2ecb09084ea585a77cda5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the given object's internal type (NWNX_OBJECT_TYPE_INTERNAL_*)  <a href="group__object.html#gab3df9d22e8d2ecb09084ea585a77cda5">More...</a><br /></td></tr>
+<tr class="separator:gab3df9d22e8d2ecb09084ea585a77cda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -270,6 +273,43 @@ Variables</h2></td></tr>
 <tr class="separator:ga1fd70b82158630ba51168aaaa9964064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8a8f56702f7212d7f2de699e50ed2232"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga8a8f56702f7212d7f2de699e50ed2232">NWNX_OBJECT_LOCALVAR_TYPE_LOCATION</a> = 5</td></tr>
 <tr class="separator:ga8a8f56702f7212d7f2de699e50ed2232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Internal Object Types</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="object_internal_types"></a></p>
+</div></td></tr>
+<tr class="memitem:gaa063bd43940aa65e2e0a483a7d1e4916"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gaa063bd43940aa65e2e0a483a7d1e4916">NWNX_OBJECT_TYPE_INTERNAL_INVALID</a> = -1</td></tr>
+<tr class="separator:gaa063bd43940aa65e2e0a483a7d1e4916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9731842356e6a23f76a572456dff5551"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga9731842356e6a23f76a572456dff5551">NWNX_OBJECT_TYPE_INTERNAL_GUI</a> = 1</td></tr>
+<tr class="separator:ga9731842356e6a23f76a572456dff5551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf56cf9bf74db05bdd92f88247e13a8bd"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gaf56cf9bf74db05bdd92f88247e13a8bd">NWNX_OBJECT_TYPE_INTERNAL_TILE</a> = 2</td></tr>
+<tr class="separator:gaf56cf9bf74db05bdd92f88247e13a8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga77357b9f1dbf4d4cac334aa70746a9d1"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga77357b9f1dbf4d4cac334aa70746a9d1">NWNX_OBJECT_TYPE_INTERNAL_MODULE</a> = 3</td></tr>
+<tr class="separator:ga77357b9f1dbf4d4cac334aa70746a9d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga80b9958a0dae58906a1e519db66bbe73"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga80b9958a0dae58906a1e519db66bbe73">NWNX_OBJECT_TYPE_INTERNAL_AREA</a> = 4</td></tr>
+<tr class="separator:ga80b9958a0dae58906a1e519db66bbe73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa0ab247a3a39693f8601a7622262ae05"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gaa0ab247a3a39693f8601a7622262ae05">NWNX_OBJECT_TYPE_INTERNAL_CREATURE</a> = 5</td></tr>
+<tr class="separator:gaa0ab247a3a39693f8601a7622262ae05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2742977440b6576e99f1fb14eb5cfb2e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga2742977440b6576e99f1fb14eb5cfb2e">NWNX_OBJECT_TYPE_INTERNAL_ITEM</a> = 6</td></tr>
+<tr class="separator:ga2742977440b6576e99f1fb14eb5cfb2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga26ca9b347a72e4f64e4f0215853d714b"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga26ca9b347a72e4f64e4f0215853d714b">NWNX_OBJECT_TYPE_INTERNAL_TRIGGER</a> = 7</td></tr>
+<tr class="separator:ga26ca9b347a72e4f64e4f0215853d714b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga128dadd35f8d0b144c239153594a1178"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga128dadd35f8d0b144c239153594a1178">NWNX_OBJECT_TYPE_INTERNAL_PROJECTILE</a> = 8</td></tr>
+<tr class="separator:ga128dadd35f8d0b144c239153594a1178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7daff80f425761fb53cef9bd2df9615"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gaa7daff80f425761fb53cef9bd2df9615">NWNX_OBJECT_TYPE_INTERNAL_PLACEABLE</a> = 9</td></tr>
+<tr class="separator:gaa7daff80f425761fb53cef9bd2df9615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1ba56888bc77c2651dfa4ead712efc3c"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga1ba56888bc77c2651dfa4ead712efc3c">NWNX_OBJECT_TYPE_INTERNAL_DOOR</a> = 10</td></tr>
+<tr class="separator:ga1ba56888bc77c2651dfa4ead712efc3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae3c47961f9fffccf0c22dbb9c5710cfa"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gae3c47961f9fffccf0c22dbb9c5710cfa">NWNX_OBJECT_TYPE_INTERNAL_AREAOFEFFECT</a> = 11</td></tr>
+<tr class="separator:gae3c47961f9fffccf0c22dbb9c5710cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8cfbe44a7dd29ab5b685978c9d3ca0dc"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga8cfbe44a7dd29ab5b685978c9d3ca0dc">NWNX_OBJECT_TYPE_INTERNAL_WAYPOINT</a> = 12</td></tr>
+<tr class="separator:ga8cfbe44a7dd29ab5b685978c9d3ca0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga252000c1215ad2da9da97f9a0763429c"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga252000c1215ad2da9da97f9a0763429c">NWNX_OBJECT_TYPE_INTERNAL_ENCOUNTER</a> = 13</td></tr>
+<tr class="separator:ga252000c1215ad2da9da97f9a0763429c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1108d7179b7090f0221cbb35de8c57ee"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#ga1108d7179b7090f0221cbb35de8c57ee">NWNX_OBJECT_TYPE_INTERNAL_STORE</a> = 14</td></tr>
+<tr class="separator:ga1108d7179b7090f0221cbb35de8c57ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa41fc9594c49da9708602813a55f5dde"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gaa41fc9594c49da9708602813a55f5dde">NWNX_OBJECT_TYPE_INTERNAL_PORTAL</a> = 15</td></tr>
+<tr class="separator:gaa41fc9594c49da9708602813a55f5dde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6a5101e20e74f4bd6fadc13b058d732"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__object.html#gaa6a5101e20e74f4bd6fadc13b058d732">NWNX_OBJECT_TYPE_INTERNAL_SOUND</a> = 16</td></tr>
+<tr class="separator:gaa6a5101e20e74f4bd6fadc13b058d732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -278,7 +318,7 @@ Variables</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_2584d5990ceee72a96d4fc6f0e6569ed.html">Object</a></li><li class="navelem"><a class="el" href="dir_08af5f1cba7ec2492768fbd3a681eb73.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__object_8nss.html">nwnx_object.nss</a></li>
 				<li class="footer">
-					Generated on Sun Mar 29 2020 15:30:35 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 07:04:39 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

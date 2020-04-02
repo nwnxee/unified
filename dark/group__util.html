@@ -199,6 +199,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf0dcdc5e920d5b156079476b66fef71f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gaf0dcdc5e920d5b156079476b66fef71f">NWNX_Util_UnregisterServerConsoleCommand</a> (string sCommand)</td></tr>
 <tr class="memdesc:gaf0dcdc5e920d5b156079476b66fef71f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregister a server console command that was registered with <a class="el" href="group__util.html#ga2bf1f3fc290ca7dcf27f8266336b2a65" title="Register a server console command that will execute a script chunk.">NWNX_Util_RegisterServerConsoleCommand()</a>.  <a href="group__util.html#gaf0dcdc5e920d5b156079476b66fef71f">More...</a><br /></td></tr>
 <tr class="separator:gaf0dcdc5e920d5b156079476b66fef71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa7ead2a0ea727ef1c5f8cd007681f14a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gaa7ead2a0ea727ef1c5f8cd007681f14a">NWNX_Util_PluginExists</a> (string sPlugin)</td></tr>
+<tr class="memdesc:gaa7ead2a0ea727ef1c5f8cd007681f14a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the given plugin exists and is enabled.  <a href="group__util.html#gaa7ead2a0ea727ef1c5f8cd007681f14a">More...</a><br /></td></tr>
+<tr class="separator:gaa7ead2a0ea727ef1c5f8cd007681f14a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab9b71c82c64c7ae1a72187e47a828bed"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__util.html#gab9b71c82c64c7ae1a72187e47a828bed">NWNX_Util_GetUserDirectory</a> ()</td></tr>
+<tr class="memdesc:gab9b71c82c64c7ae1a72187e47a828bed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the server's current working user folder.  <a href="group__util.html#gab9b71c82c64c7ae1a72187e47a828bed">More...</a><br /></td></tr>
+<tr class="separator:gab9b71c82c64c7ae1a72187e47a828bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga972eafd2cce6e28be85212774a0a4cf4"></a>
@@ -227,7 +233,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The name of the currently executing script. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00168">168</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00178">178</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -250,7 +256,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>The character at index 0 is a space. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A string that contains all characters at their position (e.g. 'A' at 65). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00176">176</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00186">186</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -279,7 +285,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The hashed string as an integer. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00183">183</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00193">193</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -308,7 +314,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The string representation of the token value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00191">191</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00201">201</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -337,7 +343,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The converted itemproperty. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00199">199</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00209">209</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -366,7 +372,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The converted effect. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00207">207</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00217">217</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -395,7 +401,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new string without any color codes. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00215">215</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00225">225</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -435,7 +441,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE/FALSE </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00223">223</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00233">233</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -464,7 +470,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value of the environment variable. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00232">232</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00242">242</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -486,7 +492,7 @@ Functions</h2></td></tr>
 <p>Gets the module real life minutes per in game hour. </p>
 <dl class="section return"><dt>Returns</dt><dd>The minutes per hour. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00240">240</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00250">250</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -514,7 +520,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00247">247</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00257">257</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -543,7 +549,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The url encoded string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00254">254</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00264">264</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -572,7 +578,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The amount of rows in the 2da. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00264">264</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00274">274</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -619,7 +625,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The first resref found or "" if none is found. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00272">272</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00282">282</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -641,7 +647,7 @@ Functions</h2></td></tr>
 <p>Get the next resref. </p>
 <dl class="section return"><dt>Returns</dt><dd>The next resref found or "" if none is found. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00284">284</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00294">294</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -664,7 +670,7 @@ Functions</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Useful to dynamically detect lag and adjust behavior accordingly. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The ticks per second. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00293">293</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00303">303</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -704,7 +710,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The last created object. On error, this returns OBJECT_INVALID. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00302">302</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00312">312</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -752,7 +758,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>"" on success, or the compilation error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00313">313</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00323">323</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -792,7 +798,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The script file contents or "" on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00325">325</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00335">335</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -833,7 +839,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE on success. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00336">336</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00346">346</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -873,7 +879,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE on success. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00347">347</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00357">357</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -901,7 +907,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00358">358</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00368">368</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -942,7 +948,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE on success. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00366">366</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00376">376</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -970,7 +976,59 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00377">377</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00387">387</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaa7ead2a0ea727ef1c5f8cd007681f14a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa7ead2a0ea727ef1c5f8cd007681f14a">&#9670;&nbsp;</a></span>NWNX_Util_PluginExists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Util_PluginExists </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>sPlugin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines if the given plugin exists and is enabled. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sPlugin</td><td>The name of the plugin to check. This is the case sensitive plugin name as used by NWNX_CallFunction, NWNX_PushArgumentX </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Example usage: NWNX_Util_PluginExists("NWNX_Creature"); </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the plugin exists and is enabled, otherwise FALSE. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00395">395</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab9b71c82c64c7ae1a72187e47a828bed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab9b71c82c64c7ae1a72187e47a828bed">&#9670;&nbsp;</a></span>NWNX_Util_GetUserDirectory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string NWNX_Util_GetUserDirectory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the server's current working user folder. </p>
+<dl class="section return"><dt>Returns</dt><dd>The absolute path of the server's home directory (-userDirectory) </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__util_8nss_source.html#l00403">403</a> of file <a class="el" href="nwnx__util_8nss_source.html">nwnx_util.nss</a>.</p>
 
 </div>
 </div>
@@ -1221,7 +1279,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Mar 29 2020 15:30:36 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Apr 2 2020 07:04:41 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
