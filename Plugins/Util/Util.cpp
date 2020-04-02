@@ -89,6 +89,7 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(UnregisterServerConsoleCommand);
     REGISTER(PluginExists);
     REGISTER(GetUserDirectory);
+    REGISTER(GetScriptReturnValue);
 
 #undef REGISTER
 
@@ -498,6 +499,19 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
         Globals::VirtualMachine()->m_nInstructionLimit = limit;
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetScriptReturnValue(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    int32_t nParameterType;
+    void* pParameter;
+    if (Globals::VirtualMachine()->GetRunScriptReturnValue(&nParameterType, &pParameter) && nParameterType == 3) {
+        retVal = (intptr_t)pParameter;
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::RegisterServerConsoleCommand(ArgumentStack&& args)

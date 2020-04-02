@@ -173,6 +173,10 @@ int NWNX_Util_PluginExists(string sPlugin);
 /// @return The absolute path of the server's home directory (-userDirectory)
 string NWNX_Util_GetUserDirectory();
 
+/// @brief Get the return value of the last run script with a StartingConditional
+/// @return Return value of the last run script.
+int NWNX_Util_GetScriptReturnValue();
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -405,4 +409,13 @@ string NWNX_Util_GetUserDirectory()
     string sFunc = "GetUserDirectory";
     NWNX_CallFunction(NWNX_Util, sFunc);
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetScriptReturnValue()
+{
+    string sFunc = "GetScriptReturnValue";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }

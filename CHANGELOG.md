@@ -18,6 +18,7 @@ N/A
 - Object: GetInternalObjectType()
 - Util: GetUserDirectory()
 - Util: PluginExists()
+- Util: GetScriptReturnValue()
 
 ### Changed
 N/A
