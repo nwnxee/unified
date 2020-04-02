@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.9...HEAD
 
 ### Added
-N/A
+- SQL: Added optional support for object storage in binary fields via an optional parameter `base64` in `NWNX_SQL_PreparedObjectFull` and `NWNX_SQL_ReadFullObjectInActiveRow`
 
 ##### New Plugins
 N/A

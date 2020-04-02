@@ -347,6 +347,12 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
 {
     auto position = Events::ExtractArgument<int32_t>(args);
     auto value = Events::ExtractArgument<API::Types::ObjectID>(args);
+    int32_t base64 = true;
+    try
+    {
+        base64 = Events::ExtractArgument<int32_t>(args);
+    }
+    catch (std::runtime_error& e){}
 
     if (position >= m_target->GetPreparedQueryParamCount())
     {
@@ -355,7 +361,13 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
     else
     {
         CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(value);
-        m_target->PrepareString(position, SerializeGameObjectB64(pObject));
+        if (base64) {
+            std::string serializedObject = SerializeGameObjectB64(pObject);
+            m_target->PrepareString(position, serializedObject);
+        } else {
+            std::vector<uint8_t> serializedObjectVec = SerializeGameObject(pObject);
+            m_target->PrepareBinary(position, serializedObjectVec);
+        }
     }
     return Events::Arguments();
 }
@@ -367,6 +379,12 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
     const auto x = Events::ExtractArgument<float>(args);
     const auto y = Events::ExtractArgument<float>(args);
     const auto z = Events::ExtractArgument<float>(args);
+    int32_t base64 = true;
+    try
+    {
+        base64 = Events::ExtractArgument<int32_t>(args);
+    }
+    catch (std::runtime_error& e){}
 
     if (column >= m_activeRow.size())
     {
@@ -375,7 +393,8 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
 
     std::string serialized = m_activeRow[column];
     API::Types::ObjectID retval = API::Constants::OBJECT_INVALID;
-    if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
+    CGameObject *pObject = base64 ? DeserializeGameObjectB64(serialized) : DeserializeGameObject(std::vector<uint8_t>(serialized.begin(), serialized.end()));
+    if (pObject)
     {
         retval = static_cast<API::Types::ObjectID>(pObject->m_idSelf);
         ASSERT(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
