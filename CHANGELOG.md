@@ -14,7 +14,10 @@ N/A
 N/A
 
 ##### New NWScript Functions
-N/A
+- Creature: GetFeatGrantLevel()
+- Object: GetInternalObjectType()
+- Util: GetUserDirectory()
+- Util: PluginExists()
 
 ### Changed
 N/A

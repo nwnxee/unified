@@ -62,6 +62,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetKnowsFeat);
     REGISTER(GetFeatCountByLevel);
     REGISTER(GetFeatByLevel);
+    REGISTER(GetFeatGrantLevel);
     REGISTER(GetFeatCount);
     REGISTER(GetFeatByIndex);
     REGISTER(GetMeetsFeatRequirements);
@@ -264,6 +265,34 @@ ArgumentStack Creature::GetFeatByLevel(ArgumentStack&& args)
         }
     }
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::GetFeatGrantLevel(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto* pCreature = creature(args))
+    {
+        const auto feat = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
+        ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
+        const auto uFeat = static_cast<uint16_t>(feat);
+
+        for (int32_t i = 0; i < pCreature->m_pStats->GetLevel(); i++)
+        {
+            auto* pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[i];
+            ASSERT_OR_THROW(pLevelStats);
+
+            for (int32_t j = 0; j < pLevelStats->m_lstFeats.num; j++)
+            {
+                if (pLevelStats->m_lstFeats.element[j] == uFeat)
+                {
+                    return Services::Events::Arguments(i + 1);
+                }
+            }
+        }
+    }
+
+    return Services::Events::Arguments(0);
 }
 
 ArgumentStack Creature::GetFeatCount(ArgumentStack&& args)

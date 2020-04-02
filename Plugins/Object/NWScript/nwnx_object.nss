@@ -16,6 +16,28 @@ const int NWNX_OBJECT_LOCALVAR_TYPE_OBJECT   = 4;
 const int NWNX_OBJECT_LOCALVAR_TYPE_LOCATION = 5;
 /// @}
 
+/// @anchor object_internal_types
+/// @name Internal Object Types
+/// @{
+const int NWNX_OBJECT_TYPE_INTERNAL_INVALID = -1;
+const int NWNX_OBJECT_TYPE_INTERNAL_GUI = 1;
+const int NWNX_OBJECT_TYPE_INTERNAL_TILE = 2;
+const int NWNX_OBJECT_TYPE_INTERNAL_MODULE = 3;
+const int NWNX_OBJECT_TYPE_INTERNAL_AREA = 4;
+const int NWNX_OBJECT_TYPE_INTERNAL_CREATURE = 5;
+const int NWNX_OBJECT_TYPE_INTERNAL_ITEM = 6;
+const int NWNX_OBJECT_TYPE_INTERNAL_TRIGGER = 7;
+const int NWNX_OBJECT_TYPE_INTERNAL_PROJECTILE = 8;
+const int NWNX_OBJECT_TYPE_INTERNAL_PLACEABLE = 9;
+const int NWNX_OBJECT_TYPE_INTERNAL_DOOR = 10;
+const int NWNX_OBJECT_TYPE_INTERNAL_AREAOFEFFECT = 11;
+const int NWNX_OBJECT_TYPE_INTERNAL_WAYPOINT = 12;
+const int NWNX_OBJECT_TYPE_INTERNAL_ENCOUNTER = 13;
+const int NWNX_OBJECT_TYPE_INTERNAL_STORE = 14;
+const int NWNX_OBJECT_TYPE_INTERNAL_PORTAL = 15;
+const int NWNX_OBJECT_TYPE_INTERNAL_SOUND = 16;
+/// @}
+
 /// A local variable structure.
 struct NWNX_Object_LocalVariable
 {
@@ -298,6 +320,11 @@ void NWNX_Object_DeleteVarRegex(object oObject, string sRegex);
 /// @param vPosition The position.
 /// @return TRUE if vPosition is inside oTrigger's geometry.
 int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition);
+
+/// @brief Gets the given object's internal type (NWNX_OBJECT_TYPE_INTERNAL_*)
+/// @param oObject The object.
+/// @return The object's type (NWNX_OBJECT_TYPE_INTERNAL_*)
+int NWNX_Object_GetInternalObjectType(object oObject);
 
 /// @}
 
@@ -734,6 +761,16 @@ int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition)
     NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.y);
     NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.x);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oTrigger);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetInternalObjectType(object oObject)
+{
+    string sFunc = "GetInternalObjectType";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
