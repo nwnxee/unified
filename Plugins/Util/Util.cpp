@@ -501,7 +501,7 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
-ArgumentStack Util::GetScriptReturnValue(ArgumentStack&& args)
+ArgumentStack Util::GetScriptReturnValue(ArgumentStack&&)
 {
     int32_t retVal = 0;
 
