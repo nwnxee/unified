@@ -210,12 +210,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga99d7c8b847ee2a8fb1103163a33f0f45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#ga99d7c8b847ee2a8fb1103163a33f0f45">NWNX_SQL_PreparedObjectId</a> (int position, object value)</td></tr>
 <tr class="memdesc:ga99d7c8b847ee2a8fb1103163a33f0f45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the ObjectId value of a prepared statement at given position.  <a href="group__sql.html#ga99d7c8b847ee2a8fb1103163a33f0f45">More...</a><br /></td></tr>
 <tr class="separator:ga99d7c8b847ee2a8fb1103163a33f0f45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2e14ee8c124bb36c70e65314d5c1f298"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#ga2e14ee8c124bb36c70e65314d5c1f298">NWNX_SQL_PreparedObjectFull</a> (int position, object value)</td></tr>
-<tr class="memdesc:ga2e14ee8c124bb36c70e65314d5c1f298"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the full serialized object value of a prepared statement at given position.  <a href="group__sql.html#ga2e14ee8c124bb36c70e65314d5c1f298">More...</a><br /></td></tr>
-<tr class="separator:ga2e14ee8c124bb36c70e65314d5c1f298"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf4eea3861e1332019eb602926a9ed497"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#gaf4eea3861e1332019eb602926a9ed497">NWNX_SQL_ReadFullObjectInActiveRow</a> (int column=0, object owner=OBJECT_INVALID, float x=0.0, float y=0.0, float z=0.0)</td></tr>
-<tr class="memdesc:gaf4eea3861e1332019eb602926a9ed497"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.  <a href="group__sql.html#gaf4eea3861e1332019eb602926a9ed497">More...</a><br /></td></tr>
-<tr class="separator:gaf4eea3861e1332019eb602926a9ed497"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga446cb2e1e33f998604a511c1d8db3d1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#ga446cb2e1e33f998604a511c1d8db3d1c">NWNX_SQL_PreparedObjectFull</a> (int position, object value, int base64=TRUE)</td></tr>
+<tr class="memdesc:ga446cb2e1e33f998604a511c1d8db3d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the full serialized object value of a prepared statement at given position.  <a href="group__sql.html#ga446cb2e1e33f998604a511c1d8db3d1c">More...</a><br /></td></tr>
+<tr class="separator:ga446cb2e1e33f998604a511c1d8db3d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabdbc6892dd0ea7484e01eeb01fcabfdd"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#gabdbc6892dd0ea7484e01eeb01fcabfdd">NWNX_SQL_ReadFullObjectInActiveRow</a> (int column=0, object owner=OBJECT_INVALID, float x=0.0, float y=0.0, float z=0.0, int base64=TRUE)</td></tr>
+<tr class="memdesc:gabdbc6892dd0ea7484e01eeb01fcabfdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.  <a href="group__sql.html#gabdbc6892dd0ea7484e01eeb01fcabfdd">More...</a><br /></td></tr>
+<tr class="separator:gabdbc6892dd0ea7484e01eeb01fcabfdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8ef34d627cbf32714b82bbc11b201665"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sql.html#ga8ef34d627cbf32714b82bbc11b201665">NWNX_SQL_GetAffectedRows</a> ()</td></tr>
 <tr class="memdesc:ga8ef34d627cbf32714b82bbc11b201665"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the rows affected by a query.  <a href="group__sql.html#ga8ef34d627cbf32714b82bbc11b201665">More...</a><br /></td></tr>
 <tr class="separator:ga8ef34d627cbf32714b82bbc11b201665"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,7 +257,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the query was successfully prepared. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00101">101</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00103">103</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -279,7 +279,7 @@ Functions</h2></td></tr>
 <p>Executes a query which has been prepared. </p>
 <dl class="section return"><dt>Returns</dt><dd>The ID of this query if successful, else FALSE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00110">110</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00112">112</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -303,7 +303,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Clears previously prepared query states. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The ID of this query if successful, else FALSE. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00118">118</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00120">120</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -323,7 +323,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <p><a class="anchor" id="sql_rtrnr"></a></p><dl class="section return"><dt>Returns</dt><dd>TRUE if one or more rows are ready, FALSE otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00131">131</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00133">133</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -345,7 +345,7 @@ Functions</h2></td></tr>
 <p>Reads the next row of returned data. </p>
 <p><a class="anchor" id="sql_rnr"></a></p><dl class="section remark"><dt>Remarks</dt><dd>Should only be called after a successful call to <a class="el" href="group__sql.html#sql_rtrnr">NWNX_SQL_ReadyToReadNextRow()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00139">139</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00141">141</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -373,7 +373,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Data at the nth (0-based) column of the active row. </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Should only be called after a successful call to <a class="el" href="group__sql.html#sql_rnr">NWNX_SQL_ReadNextRow()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00146">146</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00148">148</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -412,7 +412,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00156">156</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00158">158</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -451,7 +451,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00164">164</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00166">166</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -490,7 +490,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00173">173</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00175">175</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -529,12 +529,12 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00182">182</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00184">184</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
-<a id="ga2e14ee8c124bb36c70e65314d5c1f298"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2e14ee8c124bb36c70e65314d5c1f298">&#9670;&nbsp;</a></span>NWNX_SQL_PreparedObjectFull()</h2>
+<a id="ga446cb2e1e33f998604a511c1d8db3d1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga446cb2e1e33f998604a511c1d8db3d1c">&#9670;&nbsp;</a></span>NWNX_SQL_PreparedObjectFull()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -549,7 +549,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>base64</em> = <code>TRUE</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -564,16 +570,17 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">position</td><td>The nth ? in a prepared statement. </td></tr>
     <tr><td class="paramname">value</td><td>The value to set. </td></tr>
+    <tr><td class="paramname">base64</td><td>Use base64-encoded string format if TRUE (default), otherwise use binary format. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00191">191</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00193">193</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
-<a id="gaf4eea3861e1332019eb602926a9ed497"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf4eea3861e1332019eb602926a9ed497">&#9670;&nbsp;</a></span>NWNX_SQL_ReadFullObjectInActiveRow()</h2>
+<a id="gabdbc6892dd0ea7484e01eeb01fcabfdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabdbc6892dd0ea7484e01eeb01fcabfdd">&#9670;&nbsp;</a></span>NWNX_SQL_ReadFullObjectInActiveRow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -606,7 +613,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>z</em> = <code>0.0</code>&#160;</td>
+          <td class="paramname"><em>z</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>base64</em> = <code>TRUE</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -628,12 +641,13 @@ Functions</h2></td></tr>
     <tr><td class="paramname">column</td><td>The column to read in the active row. </td></tr>
     <tr><td class="paramname">owner</td><td>The owner of the object. </td></tr>
     <tr><td class="paramname">x,y,z</td><td>The vector for objects to be placed in areas. </td></tr>
+    <tr><td class="paramname">base64</td><td>Use base64-encoded string format if TRUE (default), otherwise use binary format. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The deserialized object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00200">200</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00203">203</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -656,7 +670,7 @@ Functions</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>This command is for non-row-based statements like INSERT, UPDATE, DELETE, etc. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Number of rows affected by SQL statement or -1 if the query was not non-row-based. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00213">213</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00217">217</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -677,7 +691,7 @@ Functions</h2></td></tr>
 <p>Gets the database type. </p><dl class="section return"><dt>Returns</dt><dd>The database type we're interacting with. </dd></dl>
 <dl class="section remark"><dt>Remarks</dt><dd>This is the same value as the value of NWNX_SQL_TYPE environment variable. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00221">221</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00225">225</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -699,7 +713,7 @@ Functions</h2></td></tr>
 <p>Free any resources attached to an existing prepared query. </p>
 <dl class="section remark"><dt>Remarks</dt><dd>Resources are automatically freed when a new query is prepared, so calling this isn't necessary. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00229">229</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00233">233</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -719,7 +733,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>The last error message generated by the database. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00236">236</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00240">240</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -741,7 +755,7 @@ Functions</h2></td></tr>
 <p>Gets the number of parameteres expected by a prepared query. </p>
 <dl class="section return"><dt>Returns</dt><dd>Returns the number of parameters expected by the prepared query or -1 if no query is prepared. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00244">244</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__sql_8nss_source.html#l00248">248</a> of file <a class="el" href="nwnx__sql_8nss_source.html">nwnx_sql.nss</a>.</p>
 
 </div>
 </div>
@@ -751,7 +765,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Apr 3 2020 04:52:54 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Apr 3 2020 07:46:40 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
