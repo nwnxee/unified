@@ -58,7 +58,8 @@ void NWNX_SQL_PreparedObjectId(int position, object value);
 /// @brief Set the full serialized object value of a prepared statement at given position.
 /// @param position The nth ? in a prepared statement.
 /// @param value The value to set.
-void NWNX_SQL_PreparedObjectFull(int position, object value);
+/// @param base64 Use base64-encoded string format if TRUE (default), otherwise use binary format.
+void NWNX_SQL_PreparedObjectFull(int position, object value, int base64 = TRUE);
 
 /// @brief Like NWNX_SQL_ReadDataInActiveRow, but for full serialized objects.
 ///
@@ -72,8 +73,9 @@ void NWNX_SQL_PreparedObjectFull(int position, object value);
 /// @param column The column to read in the active row.
 /// @param owner The owner of the object.
 /// @param x, y, z The vector for objects to be placed in areas.
+/// @param base64 Use base64-encoded string format if TRUE (default), otherwise use binary format.
 /// @return The deserialized object.
-object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0);
+object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0, int base64 = TRUE);
 
 /// @brief Gets the rows affected by a query.
 /// @remark This command is for non-row-based statements like INSERT, UPDATE, DELETE, etc.
@@ -188,19 +190,21 @@ void NWNX_SQL_PreparedObjectId(int position, object value)
     NWNX_CallFunction(NWNX_SQL, sFunc);
 
 }
-void NWNX_SQL_PreparedObjectFull(int position, object value)
+void NWNX_SQL_PreparedObjectFull(int position, object value, int base64 = TRUE)
 {
     string sFunc = "PreparedObjectFull";
 
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, base64);
     NWNX_PushArgumentObject(NWNX_SQL, sFunc, value);
     NWNX_PushArgumentInt(NWNX_SQL, sFunc, position);
     NWNX_CallFunction(NWNX_SQL, sFunc);
 }
 
-object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0)
+object NWNX_SQL_ReadFullObjectInActiveRow(int column = 0, object owner = OBJECT_INVALID, float x = 0.0, float y = 0.0, float z = 0.0, int base64 = TRUE)
 {
     string sFunc = "ReadFullObjectInActiveRow";
 
+    NWNX_PushArgumentInt(NWNX_SQL, sFunc, base64);
     NWNX_PushArgumentFloat(NWNX_SQL, sFunc, z);
     NWNX_PushArgumentFloat(NWNX_SQL, sFunc, y);
     NWNX_PushArgumentFloat(NWNX_SQL, sFunc, x);

@@ -228,6 +228,23 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
     pBind->buffer_length = m_paramValues[pos].s.size();
 }
 
+void MySQL::PrepareBinary(int32_t position, const std::vector<uint8_t>& value)
+{
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value.data());
+
+    ASSERT_OR_THROW(position >= 0);
+    size_t pos = static_cast<size_t>(position);
+
+    MYSQL_BIND *pBind = &m_params[pos];
+    memset(pBind, 0, sizeof(*pBind));
+
+    m_paramValues[pos].b = value;
+
+    pBind->buffer_type = MYSQL_TYPE_BLOB;
+    pBind->buffer = (void*)m_paramValues[pos].b.data();
+    pBind->buffer_length = m_paramValues[pos].b.size();
+}
+
 int MySQL::GetAffectedRows()
 {
     return affectedRows;
