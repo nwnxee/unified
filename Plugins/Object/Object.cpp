@@ -102,6 +102,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(DeleteVarRegex);
     REGISTER(GetPositionIsInTrigger);
     REGISTER(GetInternalObjectType);
+    REGISTER(AcquireItem);
 
 #undef REGISTER
 }
@@ -850,6 +851,24 @@ ArgumentStack Object::GetInternalObjectType(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(-1);
+}
+
+ArgumentStack Object::AcquireItem(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pObject = object(args))
+    {
+        const auto oidItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
+
+        if (auto *pItem = API::Globals::AppManager()->m_pServerExoApp->GetItemByGameObjectID(oidItem))
+        {
+            retVal = Utils::AcquireItem(pItem, pObject);
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

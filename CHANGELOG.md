@@ -19,6 +19,7 @@ N/A
 - Util: GetUserDirectory()
 - Util: PluginExists()
 - Util: GetScriptReturnValue()
+- Object: AcquireItem()
 
 ### Changed
 N/A
