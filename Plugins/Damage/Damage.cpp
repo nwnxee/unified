@@ -240,11 +240,11 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     int damagePower = Services::Events::ExtractArgument<int32_t>(args);
 
     int range = 0;
-    try 
+    try
     {
         range = Services::Events::ExtractArgument<int>(args);
     }
-    catch(std::exception e) 
+    catch(const std::runtime_error& e)
     {
         LOG_WARNING("NWNX_Damage_DealDamage() called from NWScript without final parameter. Please download the latest versions of NWNX scripts.");
     }
@@ -278,7 +278,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
         pEffect->SetInteger(k, positive[k] ? vDamage[k] : -1);
     pEffect->SetInteger(17, true); // combat damage
     // ... and apply it
-    
+
     //Check if ranged (this sets bRangedAttack internally)
     pEffect->SetInteger(18, !!range);
 

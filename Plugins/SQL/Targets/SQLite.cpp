@@ -185,6 +185,7 @@ void SQLite::PrepareString(int32_t position, const std::string& value)
 
 void SQLite::PrepareBinary(int32_t position, const std::vector<uint8_t> &value)
 {
+    (void)position; (void)value;
     ASSERT_FAIL_MSG("Binary format not implemented for SQLite");
 }
 
