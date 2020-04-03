@@ -53,6 +53,7 @@ private:
     ArgumentStack DeleteVarRegex            (ArgumentStack&& args);
     ArgumentStack GetPositionIsInTrigger    (ArgumentStack&& args);
     ArgumentStack GetInternalObjectType     (ArgumentStack&& args);
+    ArgumentStack AcquireItem               (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };

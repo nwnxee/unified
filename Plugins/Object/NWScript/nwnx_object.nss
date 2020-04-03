@@ -326,6 +326,14 @@ int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition);
 /// @return The object's type (NWNX_OBJECT_TYPE_INTERNAL_*)
 int NWNX_Object_GetInternalObjectType(object oObject);
 
+
+/// @brief Have oObject acquire oItem.
+/// @note Useful to give deserialized items to an object, may not work if oItem is already possessed by an object.
+/// @param oObject The object receiving oItem, must be a Creature, Placeable, Store or Item
+/// @param oItem The item.
+/// @return TRUE on success.
+int NWNX_Object_AcquireItem(object oObject, object oItem);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -770,6 +778,17 @@ int NWNX_Object_GetInternalObjectType(object oObject)
 {
     string sFunc = "GetInternalObjectType";
 
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_AcquireItem(object oObject, object oItem)
+{
+    string sFunc = "AcquireItem";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oItem);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 
