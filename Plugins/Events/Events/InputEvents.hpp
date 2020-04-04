@@ -18,6 +18,8 @@ private:
     static void AddMoveToPointActionToFrontHook(bool, CNWSCreature*, uint16_t,
             Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t, float, float,
             int32_t, int32_t, int32_t, int32_t, int32_t, int32_t);
+    static void AddCastSpellActionsHook(bool, CNWSCreature*, uint32_t, int32_t, int32_t, int32_t, int32_t,
+            Vector, NWNXLib::API::Types::ObjectID, int32_t, int32_t, int32_t, uint8_t, int32_t, int32_t, int32_t, uint8_t);
 };
 
 }

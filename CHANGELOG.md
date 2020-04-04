@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.9...HEAD
 
 ### Added
 - SQL: Added optional support for object storage in binary fields via an optional parameter `base64` in `NWNX_SQL_PreparedObjectFull` and `NWNX_SQL_ReadFullObjectInActiveRow`
+- Events: Added CastSpell events to InputEvents
 
 ##### New Plugins
 N/A
