@@ -36,6 +36,18 @@ __Example__
 export NWNX_SQL_HOST=localhost
 ```
 
+### NWNX_SQL_PORT
+
+The port for the database connection. If left unset it will use the default port.
+
+Only used by MySQL.
+
+__Example__
+
+```
+export NWNX_SQL_PORT=3307
+```
+
 ### NWNX_SQL_USERNAME
 
 Database username used for the connection.
