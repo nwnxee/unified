@@ -23,7 +23,7 @@ GameObjectLookup::GameObjectLookup(Services::HooksProxy* hooker)
         {
             // Reading the config is currently.. complicated in NWNX, so just
             // let the CGOA constructor read it, and then undo the allocation.
-            delete pThis->m_pArray;
+            delete[] pThis->m_pArray;
             pThis->m_pArray = nullptr;
             pThis->m_nArraySize = 0;
             pThis->m_nGameObjectCache = 0;
