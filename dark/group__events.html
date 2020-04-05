@@ -1169,6 +1169,15 @@ Servervault Events</h2>
 <dl class="section note"><dt>Note</dt><dd>Skipping the _BEFORE event will cause no player names to be accepted unless you SetEventResult("1")</dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md157"></a>
+Server Character Save Events</h2>
+<ul>
+<li>NWNX_ON_SERVER_CHARACTER_SAVE_BEFORE</li>
+<li>NWNX_ON_SERVER_CHARACTER_SAVE_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player character being saved.</p>
+<dl class="section note"><dt>Note</dt><dd>This is called once for every character when the server is exiting and when the server is saved, or when ExportSingleCharacter() &amp; ExportAllCharacters() is called.</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md158"></a>
 Levelling Events</h2>
 <ul>
 <li>NWNX_ON_LEVEL_UP_BEFORE</li>
@@ -1180,7 +1189,7 @@ Levelling Events</h2>
 </ul>
 <p><code>OBJECT_SELF</code> = The creature levelling up or down, automatic is for henchmen levelling</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md158"></a>
+ <h2><a class="anchor" id="autotoc_md159"></a>
 Container Change Events</h2>
 <ul>
 <li>NWNX_ON_INVENTORY_ADD_ITEM_BEFORE</li>
@@ -1197,7 +1206,7 @@ Container Change Events</h2>
 <td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md159"></a>
+ <h2><a class="anchor" id="autotoc_md160"></a>
 Gold Events</h2>
 <ul>
 <li>NWNX_ON_INVENTORY_ADD_GOLD_BEFORE</li>
@@ -1214,7 +1223,7 @@ Gold Events</h2>
 </table>
 <dl class="section warning"><dt>Warning</dt><dd>While these events are skippable, you should be very careful about doing so. It's very easy to create situations where players can dupe their gold or worse.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md160"></a>
+ <h2><a class="anchor" id="autotoc_md161"></a>
 PVP Attitude Change Events</h2>
 <ul>
 <li>NWNX_ON_PVP_ATTITUDE_CHANGE_BEFORE</li>
@@ -1230,7 +1239,7 @@ PVP Attitude Change Events</h2>
 <td class="markdownTableBodyNone">ATTITUDE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">0 = Dislike, 1 = Like   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md161"></a>
+ <h2><a class="anchor" id="autotoc_md162"></a>
 Input Walk To Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE</li>
@@ -1252,7 +1261,7 @@ Input Walk To Events</h2>
 <td class="markdownTableBodyNone">RUN_TO_POINT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE if player is running, FALSE if player is walking (eg when shift clicking)   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md162"></a>
+ <h2><a class="anchor" id="autotoc_md163"></a>
 Material Change Events</h2>
 <ul>
 <li>NWNX_ON_MATERIALCHANGE_BEFORE</li>
@@ -1267,7 +1276,7 @@ Material Change Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>: After a PC transitions to a new area, a surface material change event won't fire until after the PC moves.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md163"></a>
+ <h2><a class="anchor" id="autotoc_md164"></a>
 Input Attack Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE</li>
@@ -1287,7 +1296,7 @@ Input Attack Events</h2>
 <td class="markdownTableBodyNone">ADD_TO_FRONT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE / FALSE   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md164"></a>
+ <h2><a class="anchor" id="autotoc_md165"></a>
 Input Force Move To Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE</li>
@@ -1301,7 +1310,7 @@ Input Force Move To Events</h2>
 <td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md165"></a>
+ <h2><a class="anchor" id="autotoc_md166"></a>
 Object Lock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_LOCK_BEFORE</li>
@@ -1315,7 +1324,7 @@ Object Lock Events</h2>
 <td class="markdownTableBodyNone">DOOR  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md166"></a>
+ <h2><a class="anchor" id="autotoc_md167"></a>
 Object Unlock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_UNLOCK_BEFORE</li>
@@ -1332,7 +1341,7 @@ Object Unlock Events</h2>
 </table>
 <p>ACTIVE_PROPERTY_INDEX | int |</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md167"></a>
+ <h2><a class="anchor" id="autotoc_md168"></a>
 UUID Collision Events</h2>
 <ul>
 <li>NWNX_ON_UUID_COLLISION_BEFORE</li>
@@ -1347,7 +1356,7 @@ UUID Collision Events</h2>
 </table>
 <p>Note: To get the existing object with <code>UUID</code> you can use GetObjectByUUID(), be aware that this event runs before the object is added to the world which means many functions (for example <code>GetArea(OBJECT_SELF)</code>) will not work.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md168"></a>
+ <h2><a class="anchor" id="autotoc_md169"></a>
 Resource Events</h2>
 <ul>
 <li>NWNX_ON_RESOURCE_ADDED</li>
@@ -1375,7 +1384,7 @@ Resource Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01036">1036</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01046">1046</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1414,7 +1423,7 @@ Resource Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01045">1045</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01055">1055</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1445,7 +1454,7 @@ Resource Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01054">1054</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01064">1064</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1476,7 +1485,7 @@ Resource Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01063">1063</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01073">1073</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1497,7 +1506,7 @@ Resource Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01073">1073</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01083">1083</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1537,13 +1546,14 @@ Resource Events</h2>
 <li>Barter event (START only)</li>
 <li>Trap events</li>
 <li>Sticky Player Name event</li>
+<li>Server Character Save Events</li>
 <li>Add/RemoveGold events</li>
 <li>PVP Attitude Change events</li>
 <li>{Enter|Exit}Stealth events</li>
 <li>Object {Lock|Unlock} events </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01082">1082</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01092">1092</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1572,7 +1582,7 @@ Resource Events</h2>
 <li>Sticky Player Name event -&gt; "1" or "0" </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01089">1089</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01099">1099</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1593,7 +1603,7 @@ Resource Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01097">1097</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01107">1107</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1630,7 +1640,7 @@ Resource Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01105">1105</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01115">1115</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1678,7 @@ Resource Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01115">1115</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01125">1125</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1706,7 +1716,7 @@ Resource Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01125">1125</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01135">1135</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1716,7 +1726,7 @@ Resource Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Apr 3 2020 10:18:45 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Apr 5 2020 13:17:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
