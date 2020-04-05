@@ -1385,83 +1385,77 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 calDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeCalendarDay();
             }
             //If server owner leaves this 0 - the entry will be added with now() time
-            if(timeDay <= 0)
+            if (timeDay <= 0)
             {
                 timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeTimeOfDay();
             }
-            
-            SJournalEntry newJournal;
-            newJournal.szName       = Utils::CreateLocString(questName,0,0);
-            newJournal.szText       = Utils::CreateLocString(questText,0,0);
-            newJournal.nCalendarDay = calDay;
-            newJournal.nTimeOfDay   = timeDay;
-            newJournal.szPlot_Id    = CExoString(tag.c_str());
-            newJournal.nState       = state;
-            newJournal.nPriority    = priority;
-            newJournal.nPictureIndex= 0; // Not implemented by bioware/beamdog  
-            newJournal.bQuestCompleted= completed; 
-            newJournal.bQuestDisplayed= diplayed; 
-            newJournal.bUpdated     = updated; 
-                   
+       
             auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());       
             if (pMessage)
+            {
+                SJournalEntry newJournal; //Only instantiate the struct if the message was created
+                newJournal.szName       = Utils::CreateLocString(questName,0,0);
+                newJournal.szText       = Utils::CreateLocString(questText,0,0);
+                newJournal.nCalendarDay = calDay;
+                newJournal.nTimeOfDay   = timeDay;
+                newJournal.szPlot_Id    = CExoString(tag.c_str());
+                newJournal.nState       = state;
+                newJournal.nPriority    = priority;
+                newJournal.nPictureIndex= 0; // Not implemented by bioware/beamdog  
+                newJournal.bQuestCompleted= completed; 
+                newJournal.bQuestDisplayed= diplayed; 
+                newJournal.bUpdated     = updated; 
+                int overwrite = -1;
+                if (entries.num > 0)
                 {
-                 
-                    int overwrite = -1;
-                    if (entries.num > 0)
+                    auto pEntry = entries.element;
+                    for (int i = entries.num-1; i >=0; i--, pEntry--)
                     {
-                        auto pEntry = entries.element;
-                        for (int i = 0; i < entries.num; i++, pEntry++)
+                        if (pEntry->szPlot_Id.CStr() == tag)
                         {
-                            if (pEntry->szPlot_Id.CStr() == tag)
-                            {
-                                overwrite = i; 
-                                //Overwrite existing entry
-                                pCreature->m_pJournal->m_lstEntries[i] = newJournal;
-                                break;
-                            }
+                            overwrite = i; 
+                            //Overwrite existing entry
+                            pCreature->m_pJournal->m_lstEntries[i] = newJournal;
+                            break;
                         }
                     }
-                    //If we have overwritten an existing entry - we don't need to perform an add -
-                    //Instead we perform an update only
-                    if(overwrite == -1)
-                    {
-                        //New entry added
-                        pCreature->m_pJournal->m_lstEntries.Add(newJournal);
-                    }
-                    pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
-                                                                    newJournal.szPlot_Id,
-                                                                    newJournal.nState,
-                                                                    newJournal.nPriority,
-                                                                    newJournal.nPictureIndex,
-                                                                    newJournal.bQuestCompleted,
-                                                                    newJournal.nCalendarDay,
-                                                                    newJournal.nTimeOfDay,
-                                                                    newJournal.szName,
-                                                                    newJournal.szText);
-                    retval =pCreature->m_pJournal->m_lstEntries.num; // Success
-                    
-                    //If no update message is desired, we can keep it silent.
-                    if(!silentUpdate)
-                    {
-                        pMessage->SendServerToPlayerJournalUpdated(pPlayer,1,newJournal.bQuestCompleted,newJournal.szName);
-                    }
                 }
-                else
+                //If we have overwritten an existing entry - we don't need to perform an add -
+                //Instead we perform an update only
+                if(overwrite == -1)
                 {
-                    LOG_ERROR("Unable to get CNWSMessage");
+                    //New entry added
+                    pCreature->m_pJournal->m_lstEntries.Add(newJournal);
                 }
-                
+                pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
+                                                            newJournal.szPlot_Id,
+                                                            newJournal.nState,
+                                                            newJournal.nPriority,
+                                                            newJournal.nPictureIndex,
+                                                            newJournal.bQuestCompleted,
+                                                            newJournal.nCalendarDay,
+                                                            newJournal.nTimeOfDay,
+                                                            newJournal.szName,
+                                                            newJournal.szText);
+                retval =pCreature->m_pJournal->m_lstEntries.num; // Success
+                    
+                //If no update message is desired, we can keep it silent.
+                if(!silentUpdate)
+                {
+                    pMessage->SendServerToPlayerJournalUpdated(pPlayer,1,newJournal.bQuestCompleted,newJournal.szName);
+                }
+            }
+            else
+            {
+                LOG_ERROR("Unable to get CNWSMessage");
+            }
         }
     }
-
     return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
 {
-    SJournalEntry lastJournalEntry;
-    int found = -1;
     if (auto *pPlayer = player(args))
     {
         auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
@@ -1473,39 +1467,30 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
             if (entries.num > 0)
             {
                 auto pEntry = entries.element;
-                for (int i = 0; i < entries.num; i++, pEntry++)
+                for (int i = entries.num-1; i >= 0; i--, pEntry--)
                 {
                     if (pEntry->szPlot_Id.CStr() == tag)
-                        {
-                            lastJournalEntry = entries[i];
-                            found = i;
-                        }
+                    {
+                        SJournalEntry lastJournalEntry = entries[i];
+                        return Services::Events::Arguments
+                        (
+                            std::string(Utils::ExtractLocString(lastJournalEntry.szText)),  
+                            std::string(Utils::ExtractLocString(lastJournalEntry.szName)),
+                            (int32_t)lastJournalEntry.nCalendarDay,
+                            (int32_t)lastJournalEntry.nTimeOfDay,
+                            std::string(lastJournalEntry.szPlot_Id.CStr()),            
+                            (int32_t)lastJournalEntry.nState,
+                            (int32_t)lastJournalEntry.nPriority,                    
+                            (int32_t)lastJournalEntry.bQuestCompleted,
+                            (int32_t)lastJournalEntry.bQuestDisplayed,
+                            (int32_t)lastJournalEntry.bUpdated 
+                        );   
+                    }
                 }
             }        
         }
     }
-    if(found == -1)
-    {
-            // Not found - 
-            //Lets not risk an exception 
-            return Services::Events::Arguments(found);
-    }
-    return Services::Events::Arguments
-    (
-        std::string(Utils::ExtractLocString(lastJournalEntry.szText)),  
-        std::string(Utils::ExtractLocString(lastJournalEntry.szName)),
-        (int32_t)lastJournalEntry.nCalendarDay,
-        (int32_t)lastJournalEntry.nTimeOfDay,
-        std::string(lastJournalEntry.szPlot_Id.CStr()),            
-        (int32_t)lastJournalEntry.nState,
-        (int32_t)lastJournalEntry.nPriority,                    
-        (int32_t)lastJournalEntry.bQuestCompleted,
-        (int32_t)lastJournalEntry.bQuestDisplayed,
-        (int32_t)lastJournalEntry.bUpdated 
-    );      
+    return Services::Events::Arguments(-1);   
 }
-
-
-
 
 }
