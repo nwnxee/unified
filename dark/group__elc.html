@@ -128,6 +128,12 @@ Environment Variables</h2>
 <td class="markdownTableBodyNone"><code>NWNX_ELC_ENFORCE_EMPTY_DIALOG_RESREF</code>  </td><td class="markdownTableBodyCenter">true/false  </td><td class="markdownTableBodyCenter">false  </td><td class="markdownTableBodyNone">If enabled, resets a character's dialog resref to empty. Requires ELC to be enabled.   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md107"></a>
+Events</h2>
+<p>This plugin adds the following events which can be subscribed to with NWNX_Events.</p>
+<p><code>NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE</code></p>
+<p><code>NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER</code></p>
+<p><code>OBJECT_SELF</code> is the player object, the <code>_AFTER</code> event only runs if the character successfully validates.</p>
+<h2><a class="anchor" id="autotoc_md108"></a>
 Example Script</h2>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;nwnx_elc&quot;</span></div>
 <div class="line"> </div>
@@ -723,7 +729,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Apr 5 2020 21:22:13 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Apr 6 2020 19:16:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

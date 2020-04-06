@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#a598092b0e6f3cebb07d749e4615e3da1":[4,0,2,26,0,3,126],
 "nwnx__redis__short_8nss.html#a5b7b5f1a4e6640f085bb558c1a25fc30":[4,0,2,26,0,3,18],
 "nwnx__redis__short_8nss.html#a5d5afb65f60efc1b15654cb99253c6e2":[4,0,2,26,0,3,152],
 "nwnx__redis__short_8nss.html#a5d8c39bc18a9734bb9386e72a9fdabb2":[4,0,2,26,0,3,158],
@@ -163,8 +164,8 @@ var NAVTREEINDEX9 =
 "nwnx__spellcheck_8nss_source.html":[4,0,2,33,0,0],
 "nwnx__sql_8nss.html":[4,0,2,34,0,0],
 "nwnx__sql_8nss_source.html":[4,0,2,34,0,0],
-"nwnx__tests_8nss.html":[4,0,0,0,56],
-"nwnx__tests_8nss_source.html":[4,0,0,0,56],
+"nwnx__tests_8nss.html":[4,0,0,0,57],
+"nwnx__tests_8nss_source.html":[4,0,0,0,57],
 "nwnx__time_8nss.html":[4,0,2,36,0,0],
 "nwnx__time_8nss_source.html":[4,0,2,36,0,0],
 "nwnx__util_8nss.html":[4,0,2,39,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__EffectUnpacked.html#a45dba0a5ad4b53d2f57c9b9231094829":[0,11,2,27],
 "structNWNX__EffectUnpacked.html#a50ac28a82740b466e44088470b411582":[0,11,2,0],
 "structNWNX__EffectUnpacked.html#a55622130bb142447946053ce2d26743c":[0,11,2,22],
-"structNWNX__EffectUnpacked.html#a56c93a414f686f430db204b2cc5d74c5":[0,11,2,15],
-"structNWNX__EffectUnpacked.html#a5ed11b2fb51d8013abbf02a62fa3abef":[0,11,2,18]
+"structNWNX__EffectUnpacked.html#a56c93a414f686f430db204b2cc5d74c5":[0,11,2,15]
 };
