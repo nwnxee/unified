@@ -933,6 +933,16 @@ _______________________________________
     Note: These events fire when a file gets added/removed/modified in the /nwnx or /development folder
 
 _______________________________________
+    ## ELC Events
+    - NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE
+    - NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Note: NWNX_ELC must be loaded for these events to work. The `_AFTER` event only fires if the character successfully
+          completes validation.
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
