@@ -150,6 +150,7 @@ private:
     static bool s_bAlwaysStackPenalties;
     static int32_t GetTotalEffectBonus(CNWSCreature* thisPtr, uint8_t nEffectBonusType, CNWSObject* pObject, BOOL bElementalDamage,
         BOOL bForceMax, uint8_t nSaveType, uint8_t nSpecificType, uint8_t nSkill, uint8_t nAbilityScore, BOOL bOffHand);
+    static void CNWSCreatureStats__UpdateCombatInformation(bool before, CNWSCreatureStats* thisPtr);
 };
 
 }
