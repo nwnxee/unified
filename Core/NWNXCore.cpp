@@ -234,15 +234,16 @@ void NWNXCore::InitialVersionCheck()
 
         if (version != NWNX_TARGET_NWN_BUILD || revision != NWNX_TARGET_NWN_BUILD_REVISION)
         {
-            std::fprintf(stderr, "NWNX: Expected build version %u revision %u, got build version %u revision %u.",
+            std::fprintf(stderr, "NWNX: Expected build version %u revision %u, got build version %u revision %u.\n",
                                       NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, version, revision);
+            std::fprintf(stderr, "NWNX: Will terminate. Please use the correct NWNX build for your game version.\n");
             std::fflush(stderr);
-            std::abort();
+            std::exit(1);
         }
     }
     else
     {
-        std::fprintf(stderr, "NWNX: Could not determine build version.");
+        std::fprintf(stderr, "NWNX: Could not determine build version.\n");
         std::fflush(stderr);
         std::abort();
     }
@@ -519,8 +520,8 @@ void NWNXCore::Shutdown()
 
 void NWNXCore::CreateServerHandler(CAppManager* app)
 {
-    g_core->InitialVersionCheck();
     InitCrashHandlers();
+    g_core->InitialVersionCheck();
 
     g_core->m_services = g_core->ConstructCoreServices();
     g_core->m_coreServices = g_core->ConstructProxyServices(NWNX_CORE_PLUGIN_NAME);
