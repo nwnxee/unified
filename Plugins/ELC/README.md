@@ -16,6 +16,15 @@ This is a pretty advanced plugin and may at times require you to dive into the s
 | `NWNX_ELC_ENFORCE_DEFAULT_EVENT_SCRIPTS` | true/false | false | If enabled, resets a character's event scripts to `default`. Requires ELC to be enabled.
 | `NWNX_ELC_ENFORCE_EMPTY_DIALOG_RESREF` | true/false | false | If enabled, resets a character's dialog resref to empty. Requires ELC to be enabled.
 
+## Events
+This plugin adds the following events which can be subscribed to with NWNX_Events.
+
+`NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE`
+
+`NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER`
+
+`OBJECT_SELF` is the player object, the `_AFTER` event only runs if the character successfully validates.
+
 ## Example Script
 ```c
 #include "nwnx_elc"
