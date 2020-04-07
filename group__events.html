@@ -1311,6 +1311,22 @@ Input Force Move To Events</h2>
 </table>
 <hr  />
  <h2><a class="anchor" id="autotoc_md167"></a>
+Input Cast Spell Evens</h2>
+<ul>
+<li>NWNX_ON_INPUT_CAST_SPELL_BEFORE</li>
+<li>NWNX_ON_INPUT_CAST_SPELL_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature casting a spell</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
+</table>
+<p>SPELL_ID | int | MULTICLASS | int | DOMAIN_LEVEL | int | META_TYPE | int | INSTANT | int | TRUE / FALSE PROJECTILE_PATH | int | SPONTANEOUS | int | TRUE / FALSE FAKE | int | TRUE / FALSE FEAT | int | -1 when not cast from a feat CASTER_LEVEL | int | IS_AREA_TARGET | int | TRUE / FALSE POS_X | float | POS_Y | float | POS_Z | float |</p>
+<dl class="section note"><dt>Note</dt><dd>This event runs the moment a creature starts casting</dd></dl>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md168"></a>
 Object Lock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_LOCK_BEFORE</li>
@@ -1324,7 +1340,7 @@ Object Lock Events</h2>
 <td class="markdownTableBodyNone">DOOR  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md168"></a>
+ <h2><a class="anchor" id="autotoc_md169"></a>
 Object Unlock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_UNLOCK_BEFORE</li>
@@ -1341,7 +1357,7 @@ Object Unlock Events</h2>
 </table>
 <p>ACTIVE_PROPERTY_INDEX | int |</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md169"></a>
+ <h2><a class="anchor" id="autotoc_md170"></a>
 UUID Collision Events</h2>
 <ul>
 <li>NWNX_ON_UUID_COLLISION_BEFORE</li>
@@ -1356,7 +1372,7 @@ UUID Collision Events</h2>
 </table>
 <p>Note: To get the existing object with <code>UUID</code> you can use GetObjectByUUID(), be aware that this event runs before the object is added to the world which means many functions (for example <code>GetArea(OBJECT_SELF)</code>) will not work.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md170"></a>
+ <h2><a class="anchor" id="autotoc_md171"></a>
 Resource Events</h2>
 <ul>
 <li>NWNX_ON_RESOURCE_ADDED</li>
@@ -1376,7 +1392,7 @@ Resource Events</h2>
 </table>
 <p>Note: These events fire when a file gets added/removed/modified in the /nwnx or /development folder</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md171"></a>
+ <h2><a class="anchor" id="autotoc_md172"></a>
 ELC Events</h2>
 <ul>
 <li>NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE</li>
@@ -1393,7 +1409,7 @@ ELC Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01056">1056</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01083">1083</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1432,7 +1448,7 @@ ELC Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01065">1065</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01092">1092</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1463,7 +1479,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01074">1074</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01101">1101</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1494,7 +1510,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01083">1083</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01110">1110</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1515,7 +1531,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01093">1093</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01120">1120</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1562,7 +1578,7 @@ ELC Events</h2>
 <li>Object {Lock|Unlock} events </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01102">1102</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01129">1129</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1591,7 +1607,7 @@ ELC Events</h2>
 <li>Sticky Player Name event -&gt; "1" or "0" </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01109">1109</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01136">1136</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1612,7 +1628,7 @@ ELC Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01117">1117</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01144">1144</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1649,7 +1665,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01125">1125</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01152">1152</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1687,7 +1703,7 @@ ELC Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01135">1135</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01162">1162</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1725,7 +1741,7 @@ ELC Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01145">1145</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01172">1172</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1735,7 +1751,7 @@ ELC Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Apr 6 2020 19:16:17 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Apr 7 2020 11:20:15 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
