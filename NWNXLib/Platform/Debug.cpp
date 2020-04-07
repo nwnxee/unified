@@ -48,4 +48,38 @@ std::string GetStackTrace(uint8_t levels)
     return std::string(buffer);
 }
 
+static struct {
+    uintptr_t address;
+    std::string name;
+} s_FunctionMap[] =
+{
+#define NWNXLIB_FUNCTION_NO_VERSION_CHECK
+#define NWNXLIB_FUNCTION(name, address) { address, #name},
+#include "API/FunctionsLinux.hpp"
+};
+
+using namespace NWNXLib::Platform::Debug;
+std::string ResolveAddress(uintptr_t address)
+{
+    uint32_t best = 0;
+    for (uint32_t i = 1; i < sizeof(s_FunctionMap) / sizeof(s_FunctionMap[0]); i++)
+    {
+        if (address < s_FunctionMap[i].address && s_FunctionMap[best].address > s_FunctionMap[i].address)
+            best  = i;
+    }
+
+    return s_FunctionMap[best].name;
+}
+
+uintptr_t GetFunctionAddress(const std::string& mangledname)
+{
+    for (uint32_t i = 0; i < sizeof(s_FunctionMap) / sizeof(s_FunctionMap[0]); i++)
+    {
+        if (s_FunctionMap[i].name == mangledname)
+            return s_FunctionMap[i].address;
+    }
+    return 0;
+}
+
+
 }
