@@ -878,6 +878,33 @@ _______________________________________
     ----------------------|--------|-------
     TARGET                | object | Convert to object with NWNX_Object_StringToObject()
 
+ _______________________________________
+    ## Input Cast Spell Evens
+    - NWNX_ON_INPUT_CAST_SPELL_BEFORE
+    - NWNX_ON_INPUT_CAST_SPELL_AFTER
+
+    `OBJECT_SELF` = The creature casting a spell
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    SPELL_ID              | int    |
+    MULTICLASS            | int    |
+    DOMAIN_LEVEL          | int    |
+    META_TYPE             | int    |
+    INSTANT               | int    | TRUE / FALSE
+    PROJECTILE_PATH       | int    |
+    SPONTANEOUS           | int    | TRUE / FALSE
+    FAKE                  | int    | TRUE / FALSE
+    FEAT                  | int    | -1 when not cast from a feat
+    CASTER_LEVEL          | int    |
+    IS_AREA_TARGET        | int    | TRUE / FALSE
+    POS_X                 | float  |
+    POS_Y                 | float  |
+    POS_Z                 | float  |
+
+    @note This event runs the moment a creature starts casting
+
 _______________________________________
     ## Object Lock Events
     - NWNX_ON_OBJECT_LOCK_BEFORE
