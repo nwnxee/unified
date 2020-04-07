@@ -881,6 +881,14 @@ _______________________________________
     TARGET                | object | Convert to object with NWNX_Object_StringToObject()
     SPELL_ID              | int    |
     MULTICLASS            | int    |
+    DOMAIN_LEVEL          | int    |
+    META_TYPE             | int    |
+    INSTANT               | int    | TRUE / FALSE
+    PROJECTILE_PATH       | int    |
+    SPONTANEOUS           | int    | TRUE / FALSE
+    FAKE                  | int    | TRUE / FALSE
+    FEAT                  | int    | -1 when not cast from a feat
+    CASTER_LEVEL          | int    |
     IS_AREA_TARGET        | int    | TRUE / FALSE
     POS_X                 | float  |
     POS_Y                 | float  |
