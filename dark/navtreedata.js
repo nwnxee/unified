@@ -46,12 +46,12 @@ var NAVTREEINDEX =
 "group__creature.html#ga48ec122c6baba05eb9563c7daefa61fb",
 "group__data__array__contains.html#ga707eb8dbff65df558463ba685477c528",
 "group__item.html#ga511381fc65b8cdf4c8df4fe5ac6bfda0",
-"group__player.html#ga106ec84932f74b2614bc7a5586e94727",
-"group__race.html#gabaf553f259396e06a67b0e580d2ecaae",
-"group__util.html#ga3e6a9ec855349ea41fda8ae3dce391ad",
-"nwnx__redis_8nss.html#a3d0196f7648b849eab1ec876ba195815",
-"nwnx__redis__short_8nss.html#a598092b0e6f3cebb07d749e4615e3da1",
-"structNWNX__EffectUnpacked.html#a5ed11b2fb51d8013abbf02a62fa3abef"
+"group__player.html#ga0ad18bf7a69a9a8dd818b530f1842f1d",
+"group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e",
+"group__util.html#ga3de345eb5b81cd71a5250ba5d1b6ceb5",
+"nwnx__redis_8nss.html#a3b3d12818a57af67193b793449c141e1",
+"nwnx__redis__short_8nss.html#a56c3a3d57a972a920332e426fc7134cd",
+"structNWNX__EffectUnpacked.html#a55622130bb142447946053ce2d26743c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
