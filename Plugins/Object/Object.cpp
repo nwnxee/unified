@@ -30,6 +30,7 @@
 #include "Utils.hpp"
 
 #include <cstring>
+#include <math.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -103,6 +104,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetPositionIsInTrigger);
     REGISTER(GetInternalObjectType);
     REGISTER(AcquireItem);
+    REGISTER(SetFacing);
 
 #undef REGISTER
 }
@@ -869,6 +871,24 @@ ArgumentStack Object::AcquireItem(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::SetFacing(ArgumentStack&& args)
+{
+    if (auto *pObject = object(args))
+    {
+        const auto degrees = Services::Events::ExtractArgument<float>(args);
+
+        float radians = degrees * (M_PI / 180);
+        auto vOrientation = Vector{cos(radians), sin(radians), 0.0f};
+
+        if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pPlaceable->SetOrientation(vOrientation);
+        else
+            pObject->SetOrientation(vOrientation);
+    }
+
+    return Services::Events::Arguments();
 }
 
 }

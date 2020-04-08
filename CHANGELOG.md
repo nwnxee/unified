@@ -23,6 +23,7 @@ N/A
 - Util: PluginExists()
 - Util: GetScriptReturnValue()
 - Object: AcquireItem()
+- Object: SetFacing()
 
 ### Changed
 N/A
