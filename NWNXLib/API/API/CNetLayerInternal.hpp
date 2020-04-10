@@ -135,7 +135,7 @@ struct CNetLayerInternal
     uint32_t EnumerateSessionsList(uint8_t nEnumerateType);
     BOOL EndEnumerateSessions();
     void CleanUpEnumerateSpecific();
-    BOOL StartConnectToSession(uint32_t nSessionId, const CExoString & sPlayerName, int32_t nPlayerLanguage, int32_t nVersionNumber, const CExoString & sPassword, uint32_t nTimeout, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey, const CExoString & expectCryptoPublicKeyBase64);
+    BOOL StartConnectToSession(uint32_t nSessionId, const CExoString & sPlayerName, int32_t nPlayerLanguage, const CExoString & sPassword, uint32_t nTimeout, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey, const CExoString & expectCryptoPublicKeyBase64);
     BOOL RequestExtendedServerInfo(uint32_t nSessionId, BOOL bGetInfo = true, BOOL bGetPing = true);
     BOOL StartPing(uint32_t nSessionId);
     BOOL EndPing(uint32_t nSessionId);
@@ -164,7 +164,7 @@ struct CNetLayerInternal
     BOOL HandleBNK3Message(uint32_t nConnectionId, uint8_t * pData, size_t nSize);
     BOOL HandleBNK4Message(uint32_t nConnectionId, uint8_t * pData, size_t nSize);
     BOOL HandleBNK0Message(uint32_t nConnectionId, uint8_t * pData, size_t nSize);
-    BOOL SendBNCSMessage(uint32_t nConnectionId, uint8_t nConnectionType, int32_t nVersionNumber, int32_t nPlayerLanguage, const CExoString & sPlayerName, const CExoString & sCDKey, const CExoString & sLegacyCDKey);
+    BOOL SendBNCSMessage(uint32_t nConnectionId, uint8_t nConnectionType, int32_t nPlayerLanguage, const CExoString & sPlayerName, const CExoString & sCDKey, const CExoString & sLegacyCDKey);
     BOOL HandleBNCSMessage(uint32_t nConnectionId, uint8_t * pData, uint32_t nSize);
     BOOL SendBNCRMessage(uint32_t nConnectionId, uint8_t nRejection, uint32_t nPlayerWindow = 0);
     BOOL HandleBNCRMessage(uint32_t nConnectionId, uint8_t * pData, uint32_t nSize);

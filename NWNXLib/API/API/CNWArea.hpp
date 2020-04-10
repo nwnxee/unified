@@ -35,6 +35,7 @@ struct CNWArea
     int32_t m_nStaticObjectVertexArraySize;
     int32_t m_nStaticObjectVertices;
     Vector * m_pvStaticObjectVertices;
+    Vector * m_pvStaticObjectBoundingBoxes;
     int32_t m_nStaticBoundingBoxes;
     int32_t m_nStaticBoundingBoxesFilled;
     Vector * m_pvStaticBoundingBoxes;
