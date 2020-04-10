@@ -2,6 +2,7 @@
 
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
+#include "API/CExoBase.hpp"
 #include "API/C2DA.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CTwoDimArrays.hpp"
@@ -20,6 +21,8 @@
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
+#include "Services/Plugins/Plugins.hpp"
+#include "Services/Commands/Commands.hpp"
 
 #include <string>
 #include <cstdio>
@@ -82,6 +85,11 @@ Util::Util(const Plugin::CreateParams& params)
     REGISTER(AddNSSFile);
     REGISTER(RemoveNWNXResourceFile);
     REGISTER(SetInstructionLimit);
+    REGISTER(RegisterServerConsoleCommand);
+    REGISTER(UnregisterServerConsoleCommand);
+    REGISTER(PluginExists);
+    REGISTER(GetUserDirectory);
+    REGISTER(GetScriptReturnValue);
 
 #undef REGISTER
 
@@ -356,7 +364,7 @@ ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
     const auto nthLast = Services::Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(nthLast > 0);
 
-    auto pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
+    auto* pGameObjectArray = Globals::AppManager()->m_pServerExoApp->GetObjectArray();
     int count = 1;
     CGameObject *pObject;
 
@@ -398,6 +406,7 @@ ArgumentStack Util::AddScript(ArgumentStack&& args)
         m_scriptCompiler = std::make_unique<CScriptCompiler>();
         m_scriptCompiler->SetCompileDebugLevel(0);
         m_scriptCompiler->SetCompileSymbolicOutput(0);
+        m_scriptCompiler->SetGenerateDebuggerOutput(0);
         m_scriptCompiler->SetOptimizeBinaryCodeLength(true);
         m_scriptCompiler->SetCompileConditionalOrMain(true);
         m_scriptCompiler->SetIdentifierSpecification("nwscript");
@@ -490,6 +499,84 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
         Globals::VirtualMachine()->m_nInstructionLimit = limit;
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetScriptReturnValue(ArgumentStack&&)
+{
+    int32_t retVal = 0;
+
+    int32_t nParameterType;
+    void* pParameter;
+    if (Globals::VirtualMachine()->GetRunScriptReturnValue(&nParameterType, &pParameter) && nParameterType == 3) {
+        retVal = (intptr_t)pParameter;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Util::RegisterServerConsoleCommand(ArgumentStack&& args)
+{
+    const auto command = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!command.empty());
+    const auto scriptChunk = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!scriptChunk.empty());
+
+    bool registered = g_plugin->GetServices()->m_commands->RegisterCommand(command, [](std::string &command, std::string &args)
+    {
+        if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
+            return;
+
+        LOG_INFO("Executing NWScript Server Console Command: '%s' with args: %s", command, args);
+
+        std::string scriptChunk = g_plugin->m_serverConsoleCommandMap[command];
+        bool wrapIntoMain = scriptChunk.find("void main()") == std::string::npos;
+        std::string search = "$args";
+
+        auto searchPos = scriptChunk.find(search);
+        while (searchPos != std::string::npos)
+        {
+            scriptChunk.replace(searchPos, search.size(), args);
+            searchPos = scriptChunk.find(search, searchPos + args.size());
+        }
+
+        if (Globals::VirtualMachine()->RunScriptChunk(scriptChunk, 0, true, wrapIntoMain))
+        {
+            LOG_ERROR("Failed to run NWScript Server Console Command '%s' with error: %s", command,
+                      Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
+        }
+    });
+
+    if (registered)
+        g_plugin->m_serverConsoleCommandMap[command] = scriptChunk;
+
+    return Services::Events::Arguments(registered);
+}
+
+ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
+{
+    const auto command = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!command.empty());
+
+    if (g_plugin->m_serverConsoleCommandMap.find(command) != g_plugin->m_serverConsoleCommandMap.end())
+    {
+        g_plugin->GetServices()->m_commands->UnregisterCommand(command);
+        g_plugin->m_serverConsoleCommandMap.erase(command);
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Util::PluginExists(ArgumentStack&& args)
+{
+    std::string pluginName = Services::Events::ExtractArgument<std::string>(args);
+    std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
+
+    return GetServices()->m_plugins->FindPluginByName(pluginNameWithoutPrefix) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
+}
+
+ArgumentStack Util::GetUserDirectory(ArgumentStack&&)
+{
+    return Services::Events::Arguments(Globals::ExoBase()->m_sUserDirectory.CStr());
 }
 
 }

@@ -205,6 +205,9 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
             {"VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
 
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
+            { "NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
+
     // *** Server Restrictions **********************************************************************************************
     CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
 
@@ -1825,6 +1828,9 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
             {"VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
+
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
+            {"NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
 
     return 0;
 }

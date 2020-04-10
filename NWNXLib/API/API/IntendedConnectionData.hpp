@@ -15,7 +15,6 @@ NWN_API_PROLOGUE(IntendedConnectionData)
 struct IntendedConnectionData
 {
     uint8_t m_nConnectionType;
-    int32_t m_nVersionNumber;
     int32_t m_nPlayerLanguage;
     CExoString m_sPlayerName;
     CExoString m_sCDKey;

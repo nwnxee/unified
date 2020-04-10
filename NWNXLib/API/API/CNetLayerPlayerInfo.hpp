@@ -39,6 +39,8 @@ struct CNetLayerPlayerInfo
     uint16_t m_nExpansionPacks;
     CExoString m_sPSID;
     uint8_t m_nPlatformId;
+    int32_t m_nBuildVersion;
+    int32_t m_nPatchRevision;
 
     CNetLayerPlayerInfo();
     void Initialize();

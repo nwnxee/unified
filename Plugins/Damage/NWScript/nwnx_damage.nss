@@ -104,7 +104,8 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data);
 /// @param data A NWNX_Damage_DamageData struct.
 /// @param oTarget The target object on whom the damage is dealt.
 /// @param oSource The source of the damage.
-void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource=OBJECT_SELF);
+/// @param iRanged Whether the attack should be treated as ranged by the engine (for example when considering damage inflicted by Acid Sheath and other such effects)
+void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource=OBJECT_SELF, int iRanged = FALSE);
 
 /// @}
 
@@ -227,10 +228,11 @@ void NWNX_Damage_SetAttackEventData(struct NWNX_Damage_AttackEventData data)
     NWNX_CallFunction(NWNX_Damage, sFunc);
 }
 
-void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource)
+void NWNX_Damage_DealDamage(struct NWNX_Damage_DamageData data, object oTarget, object oSource, int iRanged = FALSE)
 {
     string sFunc = "DealDamage";
 
+    NWNX_PushArgumentInt(NWNX_Damage, sFunc, iRanged);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPower);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iSonic);
     NWNX_PushArgumentInt(NWNX_Damage, sFunc, data.iPositive);

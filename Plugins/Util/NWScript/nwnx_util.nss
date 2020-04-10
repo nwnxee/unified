@@ -152,6 +152,31 @@ int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType);
 /// @param nInstructionLimit The new limit or -1 to reset to default.
 void NWNX_Util_SetInstructionLimit(int nInstructionLimit);
 
+/// @brief Register a server console command that will execute a script chunk.
+/// @note Example usage: NWNX_Util_RegisterServerConsoleCommand("test", "PrintString(\"Test Command -> Args: $args\");");
+/// @param sCommand The name of the command.
+/// @param sScriptChunk The script chunk to run. You can use $args to get the console command arguments.
+/// @return TRUE on success.
+int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk);
+
+/// @brief Unregister a server console command that was registered with NWNX_Util_RegisterServerConsoleCommand().
+/// @param sCommand The name of the command.
+void NWNX_Util_UnregisterServerConsoleCommand(string sCommand);
+
+/// @brief Determines if the given plugin exists and is enabled.
+/// @param sPlugin The name of the plugin to check. This is the case sensitive plugin name as used by NWNX_CallFunction, NWNX_PushArgumentX
+/// @note Example usage: NWNX_Util_PluginExists("NWNX_Creature");
+/// @return TRUE if the plugin exists and is enabled, otherwise FALSE.
+int NWNX_Util_PluginExists(string sPlugin);
+
+/// @brief Gets the server's current working user folder.
+/// @return The absolute path of the server's home directory (-userDirectory)
+string NWNX_Util_GetUserDirectory();
+
+/// @brief Get the return value of the last run script with a StartingConditional
+/// @return Return value of the last run script.
+int NWNX_Util_GetScriptReturnValue();
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -350,4 +375,47 @@ void NWNX_Util_SetInstructionLimit(int nInstructionLimit)
 
     NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructionLimit);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk)
+{
+    string sFunc = "RegisterServerConsoleCommand";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptChunk);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_UnregisterServerConsoleCommand(string sCommand)
+{
+    string sFunc = "UnregisterServerConsoleCommand";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_PluginExists(string sPlugin)
+{
+    string sFunc = "PluginExists";
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sPlugin);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetUserDirectory()
+{
+    string sFunc = "GetUserDirectory";
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetScriptReturnValue()
+{
+    string sFunc = "GetScriptReturnValue";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }

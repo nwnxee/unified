@@ -30,6 +30,7 @@
 #include "Utils.hpp"
 
 #include <cstring>
+#include <math.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -101,6 +102,9 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(DeleteFloat);
     REGISTER(DeleteVarRegex);
     REGISTER(GetPositionIsInTrigger);
+    REGISTER(GetInternalObjectType);
+    REGISTER(AcquireItem);
+    REGISTER(SetFacing);
 
 #undef REGISTER
 }
@@ -837,6 +841,54 @@ ArgumentStack Object::GetPositionIsInTrigger(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetInternalObjectType(ArgumentStack&& args)
+{
+    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+
+    if (auto* go = Utils::GetGameObject(objectId))
+    {
+        return Services::Events::Arguments(go->m_nObjectType);
+    }
+
+    return Services::Events::Arguments(-1);
+}
+
+ArgumentStack Object::AcquireItem(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pObject = object(args))
+    {
+        const auto oidItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
+
+        if (auto *pItem = API::Globals::AppManager()->m_pServerExoApp->GetItemByGameObjectID(oidItem))
+        {
+            retVal = Utils::AcquireItem(pItem, pObject);
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::SetFacing(ArgumentStack&& args)
+{
+    if (auto *pObject = object(args))
+    {
+        const auto degrees = Services::Events::ExtractArgument<float>(args);
+
+        float radians = degrees * (M_PI / 180);
+        auto vOrientation = Vector{cos(radians), sin(radians), 0.0f};
+
+        if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+            pPlaceable->SetOrientation(vOrientation);
+        else
+            pObject->SetOrientation(vOrientation);
+    }
+
+    return Services::Events::Arguments();
 }
 
 }

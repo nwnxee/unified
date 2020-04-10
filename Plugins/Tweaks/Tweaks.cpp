@@ -13,7 +13,6 @@
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
 #include "Tweaks/PreserveActionsOnDMPossess.hpp"
 #include "Tweaks/FixGreaterSanctuaryBug.hpp"
-#include "Tweaks/FixScrollLearningBug.hpp"
 #include "Tweaks/ItemChargesCost.hpp"
 #include "Tweaks/AdjustCasterLevel.hpp"
 
@@ -132,12 +131,6 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Greater sanctuary bug fixed.");
         m_FixGreaterSanctuaryBug = std::make_unique<FixGreaterSanctuaryBug>(GetServices()->m_hooks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("FIX_SCROLL_LEARNING_BUG", false))
-    {
-        LOG_INFO("Scroll learning freeze bug fixed.");
-        m_FixScrollLearningBug = std::make_unique<FixScrollLearningBug>(GetServices()->m_hooks.get());
     }
 
     if (auto mode = GetServices()->m_config->Get<int>("ITEM_CHARGES_COST_MODE", 0))

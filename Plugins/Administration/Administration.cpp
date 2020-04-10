@@ -73,6 +73,7 @@ Administration::Administration(const Plugin::CreateParams& params)
     REGISTER(GetBannedList);
     REGISTER(SetModuleName);
     REGISTER(SetServerName);
+    REGISTER(GetServerName);
     REGISTER(GetPlayOption);
     REGISTER(SetPlayOption);
     REGISTER(DeleteTURD);
@@ -262,6 +263,12 @@ Events::ArgumentStack Administration::SetServerName(Events::ArgumentStack&& args
     LOG_NOTICE("Set server name to '%s'.", newName);
     Globals::AppManager()->m_pServerExoApp->GetNetLayer()->SetSessionName(CExoString(newName.c_str()));
     return Events::Arguments();
+}
+
+Events::ArgumentStack Administration::GetServerName(Events::ArgumentStack&&)
+{
+    CExoString serverName = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetSessionName();
+    return Events::Arguments(serverName.CStr());
 }
 
 Events::ArgumentStack Administration::GetPlayOption(Events::ArgumentStack&& args)

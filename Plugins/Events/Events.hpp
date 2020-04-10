@@ -39,6 +39,7 @@ class InputEvents;
 class MaterialChangeEvents;
 class ObjectEvents;
 class UUIDEvents;
+class ResourceEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -78,6 +79,7 @@ private: // Structures
 
 private:
     ArgumentStack SubscribeEvent(ArgumentStack&& args);
+    ArgumentStack UnsubscribeEvent(ArgumentStack&& args);
     ArgumentStack PushEventData(ArgumentStack&& args);
     ArgumentStack SignalEvent(ArgumentStack&& args);
     ArgumentStack GetEventData(ArgumentStack&& args);
@@ -127,6 +129,7 @@ private:
     std::unique_ptr<MaterialChangeEvents> m_matChangeEvents;
     std::unique_ptr<ObjectEvents> m_objectEvents;
     std::unique_ptr<UUIDEvents> m_uuidEvents;
+    std::unique_ptr<ResourceEvents> m_resourceEvents;
 };
 
 }

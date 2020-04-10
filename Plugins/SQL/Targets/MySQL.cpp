@@ -23,6 +23,7 @@ MySQL::~MySQL()
 void MySQL::Connect(NWNXLib::Services::ConfigProxy* config)
 {
     const auto host     = config->Get<std::string>("HOST", "localhost");
+    const auto port     = config->Get<int32_t>("PORT", 0);
     const auto username = config->Require<std::string>("USERNAME");
     const auto password = config->Require<std::string>("PASSWORD");
     const auto database = config->Get<std::string>("DATABASE");
@@ -31,10 +32,11 @@ void MySQL::Connect(NWNXLib::Services::ConfigProxy* config)
         LOG_DEBUG("DB set to %s", (*database));
     }
 
-    LOG_INFO("Connection info:  host=%s username=%s", host, username);
+    LOG_INFO("Connection info:  host=%s port=%i username=%s", host, port == 0 ? 3306 : port, username);
     LOG_DEBUG("               :  password=%s", password);
 
-    if (!mysql_real_connect(&m_mysql, host.c_str(), username.c_str(), password.c_str(), database ? (*database).c_str() : nullptr, 0, nullptr, 0))
+    if (!mysql_real_connect(&m_mysql, host.c_str(), username.c_str(), password.c_str(),
+            database ? (*database).c_str() : nullptr, port >= 0 ? port : 0, nullptr, 0))
     {
         throw std::runtime_error(std::string(mysql_error(&m_mysql)));
     }
@@ -224,6 +226,23 @@ void MySQL::PrepareString(int32_t position, const std::string& value)
     pBind->buffer_type = MYSQL_TYPE_STRING;
     pBind->buffer = (void*)m_paramValues[pos].s.c_str();
     pBind->buffer_length = m_paramValues[pos].s.size();
+}
+
+void MySQL::PrepareBinary(int32_t position, const std::vector<uint8_t>& value)
+{
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value.data());
+
+    ASSERT_OR_THROW(position >= 0);
+    size_t pos = static_cast<size_t>(position);
+
+    MYSQL_BIND *pBind = &m_params[pos];
+    memset(pBind, 0, sizeof(*pBind));
+
+    m_paramValues[pos].b = value;
+
+    pBind->buffer_type = MYSQL_TYPE_BLOB;
+    pBind->buffer = (void*)m_paramValues[pos].b.data();
+    pBind->buffer_length = m_paramValues[pos].b.size();
 }
 
 int MySQL::GetAffectedRows()

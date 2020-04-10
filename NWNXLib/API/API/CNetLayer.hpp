@@ -61,7 +61,7 @@ struct CNetLayer
     BOOL EndEnumerateSessions();
     void CleanUpEnumerateSpecific();
     uint32_t GetSessionSectionStart(uint32_t sectionSectionId);
-    BOOL StartConnectToSession(uint32_t nSessionId, const CExoString & sPlayerName, int32_t nPlayerLanguage, int32_t nVersionNumber, const CExoString & sPassword, uint32_t nTimeOut, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey, const CExoString & expectCryptoPublicKeyBase64 = "");
+    BOOL StartConnectToSession(uint32_t nSessionId, const CExoString & sPlayerName, int32_t nPlayerLanguage, const CExoString & sPassword, uint32_t nTimeOut, uint32_t nConnectionType, const CExoString & sCDKey, const CExoString & sLegacyCDKey, const CExoString & expectCryptoPublicKeyBase64 = "");
     BOOL RequestExtendedServerInfo(uint32_t nSessionId, BOOL bGetInfo = true, BOOL bGetPing = true);
     BOOL RequestServerDetails(uint32_t nConnectionId);
     BOOL StartPing(uint32_t nSessionId);

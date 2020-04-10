@@ -29,6 +29,7 @@ public:
     ArgumentStack GetBannedList             (ArgumentStack&& args);
     ArgumentStack SetModuleName             (ArgumentStack&& args);
     ArgumentStack SetServerName             (ArgumentStack&& args);
+    ArgumentStack GetServerName             (ArgumentStack&& args);
     ArgumentStack GetPlayOption             (ArgumentStack&& args);
     ArgumentStack SetPlayOption             (ArgumentStack&& args);
     ArgumentStack DeleteTURD                (ArgumentStack&& args);

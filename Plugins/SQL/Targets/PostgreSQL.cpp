@@ -149,8 +149,8 @@ std::optional<ResultSet> PostgreSQL::ExecuteQuery()
         "",                                     // statement name (same as in the prepare above)
         m_paramCount,                           // m_paramCount from previous
         paramValues,                            // param data (can be null)
-        NULL,                                   // param lengths - only for binary data
-        NULL,                                   // param formats - server will infer text
+        m_lengths.data(),                                   // param lengths - only for binary data
+        m_formats.data(),                                   // param formats - server will infer text
         0);                                     // result format, 0=text, 1=binary
 
     // done with parameters.
@@ -223,16 +223,27 @@ void PostgreSQL::PrepareInt(int32_t position, int32_t value)
 {
     LOG_DEBUG("Assigning position %d to value '%d'", position, value);
     m_params[position] = std::to_string(value);
+    m_formats[position] = 0;
 }
 void PostgreSQL::PrepareFloat(int32_t position, float value)
 {
     LOG_DEBUG("Assigning position %d to value '%f'", position, value);
     m_params[position] = std::to_string(value);
+    m_formats[position] = 0;
 }
 void PostgreSQL::PrepareString(int32_t position, const std::string& value)
 {
     LOG_DEBUG("Assigning position %d to value '%s'", position, value);
     m_params[position] = value;
+    m_formats[position] = 0;
+}
+
+void PostgreSQL::PrepareBinary(int32_t position, const std::vector<uint8_t> &value)
+{
+    LOG_DEBUG("Assigning position %d to value '%s'", position, value.data());
+    m_params[position] = std::string(value.begin(), value.end());
+    m_lengths[position] = value.size();
+    m_formats[position] = 1;
 }
 
 int PostgreSQL::GetAffectedRows()

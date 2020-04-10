@@ -6,6 +6,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWLevelStats.hpp"
+#include "API/CNWSFaction.hpp"
 #include "API/CNWSStats_Spell.hpp"
 #include "API/CNWSStats_SpellLikeAbility.hpp"
 #include "API/CExoArrayList.hpp"
@@ -17,6 +18,9 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "API/CServerExoAppInternal.hpp"
+#include "API/CFactionManager.hpp"
+
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -58,6 +62,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetKnowsFeat);
     REGISTER(GetFeatCountByLevel);
     REGISTER(GetFeatByLevel);
+    REGISTER(GetFeatGrantLevel);
     REGISTER(GetFeatCount);
     REGISTER(GetFeatByIndex);
     REGISTER(GetMeetsFeatRequirements);
@@ -92,9 +97,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetMovementRateFactor);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
-    REGISTER(GetDomain);
     REGISTER(SetDomain);
-    REGISTER(GetSpecialization);
     REGISTER(SetSpecialization);
     REGISTER(GetSoundset);
     REGISTER(SetSoundset);
@@ -136,6 +139,8 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetFamiliarName);
     REGISTER(GetDisarmable);
     REGISTER(SetDisarmable);
+    REGISTER(SetFaction);
+    REGISTER(GetFaction);
 
 #undef REGISTER
 }
@@ -260,6 +265,34 @@ ArgumentStack Creature::GetFeatByLevel(ArgumentStack&& args)
         }
     }
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::GetFeatGrantLevel(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    if (auto* pCreature = creature(args))
+    {
+        const auto feat = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(feat >= Constants::Feat::MIN);
+        ASSERT_OR_THROW(feat <= Constants::Feat::MAX);
+        const auto uFeat = static_cast<uint16_t>(feat);
+
+        for (int32_t i = 0; i < pCreature->m_pStats->GetLevel(); i++)
+        {
+            auto* pLevelStats = pCreature->m_pStats->m_lstLevelStats.element[i];
+            ASSERT_OR_THROW(pLevelStats);
+
+            for (int32_t j = 0; j < pLevelStats->m_lstFeats.num; j++)
+            {
+                if (pLevelStats->m_lstFeats.element[j] == uFeat)
+                {
+                    return Services::Events::Arguments(i + 1);
+                }
+            }
+        }
+    }
+
+    return Services::Events::Arguments(0);
 }
 
 ArgumentStack Creature::GetFeatCount(ArgumentStack&& args)
@@ -1036,32 +1069,6 @@ ArgumentStack Creature::SetAlignmentLawChaos(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
-ArgumentStack Creature::GetDomain(ArgumentStack&& args)
-{
-    int32_t retVal = -1;
-    if (auto* pCreature = creature(args))
-    {
-        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
-        const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW((index == 1) || (index == 2));
-
-        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-        ASSERT_OR_THROW(pClass != nullptr);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                retVal = classInfo.m_nDomain[index - 1];
-                break;
-            }
-        }
-    }
-    return Services::Events::Arguments(retVal);
-}
-
 ArgumentStack Creature::SetDomain(ArgumentStack&& args)
 {
     if (auto* pCreature = creature(args))
@@ -1090,31 +1097,6 @@ ArgumentStack Creature::SetDomain(ArgumentStack&& args)
         }
     }
     return Services::Events::Arguments();
-}
-
-ArgumentStack Creature::GetSpecialization(ArgumentStack&& args)
-{
-    int32_t retVal = -1;
-
-    if (auto* pCreature = creature(args))
-    {
-        const auto classId = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW((classId >= Constants::ClassType::MIN) && (classId <= Constants::ClassType::MAX));
-
-        CNWClass* pClass = classId < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[classId] : nullptr;
-        ASSERT_OR_THROW(pClass != nullptr);
-
-        for (int32_t i = 0; i < 3; i++)
-        {
-            auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
-            if (classInfo.m_nClass == classId)
-            {
-                retVal = classInfo.m_nSchool;
-                break;
-            }
-        }
-    }
-    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Creature::SetSpecialization(ArgumentStack&& args)
@@ -1876,4 +1858,38 @@ ArgumentStack Creature::SetDisarmable(ArgumentStack&& args)
     }
     return Services::Events::Arguments();
 }
+
+ArgumentStack Creature::SetFaction(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto factionid = Services::Events::ExtractArgument<int32_t>(args);
+        auto* pFaction = Globals::AppManager()->m_pServerExoApp->m_pcExoAppInternal->m_pFactionManager->GetFaction(factionid);
+        if (pFaction)
+        {
+            pFaction->AddMember(pCreature->m_idSelf);
+        }
+        else
+        {
+            LOG_NOTICE("NWNX_Creature_SetFaction called with invalid faction id");
+        }
+    }
+    return Services::Events::Arguments();
+}
+
+
+ArgumentStack Creature::GetFaction(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        if (auto *pFaction = pCreature->GetFaction())
+        {
+            retVal = pFaction->m_nFactionId;
+        }
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+
 }

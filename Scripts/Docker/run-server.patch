@@ -1,7 +1,3 @@
-18c18
-< if [ -e $ROHOMEPATH/settings.tml ]; then
----
-> if [ -e $ROHOMEPATH/settings.tml ] && [ ! -f $HOMEPATH/settings.tml ]; then
 35,39d34
 < if [ -f $ROHOMEPATH/nwnplayer.ini ]; then
 <   echo "[*] .. nwnplayer.ini"

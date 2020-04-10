@@ -762,6 +762,15 @@ _______________________________________
     @note Skipping the _BEFORE event will cause no player names to be accepted unless you SetEventResult("1")
 
 _______________________________________
+    ## Server Character Save Events
+    - NWNX_ON_SERVER_CHARACTER_SAVE_BEFORE
+    - NWNX_ON_SERVER_CHARACTER_SAVE_AFTER
+
+    `OBJECT_SELF` = The player character being saved.
+
+    @note This is called once for every character when the server is exiting and when the server is saved, or when ExportSingleCharacter() & ExportAllCharacters() is called.
+
+_______________________________________
     ## Levelling Events
     - NWNX_ON_LEVEL_UP_BEFORE
     - NWNX_ON_LEVEL_UP_AFTER
@@ -869,6 +878,33 @@ _______________________________________
     ----------------------|--------|-------
     TARGET                | object | Convert to object with NWNX_Object_StringToObject()
 
+ _______________________________________
+    ## Input Cast Spell Evens
+    - NWNX_ON_INPUT_CAST_SPELL_BEFORE
+    - NWNX_ON_INPUT_CAST_SPELL_AFTER
+
+    `OBJECT_SELF` = The creature casting a spell
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    TARGET                | object | Convert to object with NWNX_Object_StringToObject()
+    SPELL_ID              | int    |
+    MULTICLASS            | int    |
+    DOMAIN_LEVEL          | int    |
+    META_TYPE             | int    |
+    INSTANT               | int    | TRUE / FALSE
+    PROJECTILE_PATH       | int    |
+    SPONTANEOUS           | int    | TRUE / FALSE
+    FAKE                  | int    | TRUE / FALSE
+    FEAT                  | int    | -1 when not cast from a feat
+    CASTER_LEVEL          | int    |
+    IS_AREA_TARGET        | int    | TRUE / FALSE
+    POS_X                 | float  |
+    POS_Y                 | float  |
+    POS_Z                 | float  |
+
+    @note This event runs the moment a creature starts casting
+
 _______________________________________
     ## Object Lock Events
     - NWNX_ON_OBJECT_LOCK_BEFORE
@@ -908,6 +944,32 @@ _______________________________________
           object is added to the world which means many functions (for example `GetArea(OBJECT_SELF)`) will not work.
 
 _______________________________________
+    ## Resource Events
+    - NWNX_ON_RESOURCE_ADDED
+    - NWNX_ON_RESOURCE_REMOVED
+    - NWNX_ON_RESOURCE_MODIFIED
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    ALIAS                 | string | NWNX for /nwnx, DEVELOPMENT for /development
+    RESREF                | string | The ResRef of the file
+    TYPE                  | int    | The type of the file, see NWNX_UTIL_RESREF_TYPE_*
+
+    Note: These events fire when a file gets added/removed/modified in the /nwnx or /development folder
+
+_______________________________________
+    ## ELC Events
+    - NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE
+    - NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Note: NWNX_ELC must be loaded for these events to work. The `_AFTER` event only fires if the character successfully
+          completes validation.
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -938,6 +1000,11 @@ const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;
 /// @param evt The event name.
 /// @param script The script to call when the event fires.
 void NWNX_Events_SubscribeEvent(string evt, string script);
+
+/// @brief Unsubscribe a script from an event
+/// @param evt The event name.
+/// @param script The script.
+void NWNX_Events_UnsubscribeEvent(string evt, string script);
 
 /// Pushes event data at the provided tag, which subscribers can access with GetEventData.
 /// This should be called BEFORE SignalEvent.
@@ -977,6 +1044,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Barter event (START only)
 /// - Trap events
 /// - Sticky Player Name event
+/// - Server Character Save Events
 /// - Add/RemoveGold events
 /// - PVP Attitude Change events
 /// - {Enter|Exit}Stealth events
@@ -1015,6 +1083,15 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, obj
 void NWNX_Events_SubscribeEvent(string evt, string script)
 {
     string sFunc = "SubscribeEvent";
+
+    NWNX_PushArgumentString(NWNX_Events, sFunc, script);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, evt);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_UnsubscribeEvent(string evt, string script)
+{
+    string sFunc = "UnsubscribeEvent";
 
     NWNX_PushArgumentString(NWNX_Events, sFunc, script);
     NWNX_PushArgumentString(NWNX_Events, sFunc, evt);

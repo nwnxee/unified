@@ -18,6 +18,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
+static NWNXLib::Hooking::FunctionHook* m_ServerCharacterSaveHook;
 static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCharListHook;
 static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
 
@@ -26,6 +27,12 @@ ClientEvents::ClientEvents(HooksProxy* hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_DISCONNECT_.*", [hooker]() {
         hooker->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal17RemovePCFromWorldEP10CNWSPlayer, void,
             CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_SERVER_CHARACTER_SAVE_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSPlayer19SaveServerCharacterEi, int32_t,
+            CNWSPlayer*, int32_t>(&OnServerCharacterSave);
+        m_ServerCharacterSaveHook = hooker->FindHookByAddress(API::Functions::_ZN10CNWSPlayer19SaveServerCharacterEi);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_CONNECT_.*", [hooker]() {
@@ -39,6 +46,27 @@ ClientEvents::ClientEvents(HooksProxy* hooker)
                 CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>(&CheckStickyPlayerNameReservedHook);
         m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i);
     });
+}
+
+int32_t ClientEvents::OnServerCharacterSave(CNWSPlayer* savingChar, int32_t bBackupPlayer)
+{
+    int32_t retVal;
+
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        return Events::SignalEvent(ev, savingChar->GetGameObject()->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_SERVER_CHARACTER_SAVE_BEFORE"))
+    {
+        retVal = m_ServerCharacterSaveHook->CallOriginal<int32_t>(savingChar, bBackupPlayer);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignal("NWNX_ON_SERVER_CHARACTER_SAVE_AFTER");
+    return retVal;
 }
 
 void ClientEvents::RemovePCFromWorldHook(bool before, CServerExoAppInternal*, CNWSPlayer* player)

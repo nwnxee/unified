@@ -22,6 +22,7 @@ private:
     ArgumentStack GetKnowsFeat                  (ArgumentStack&& args);
     ArgumentStack GetFeatCountByLevel           (ArgumentStack&& args);
     ArgumentStack GetFeatByLevel                (ArgumentStack&& args);
+    ArgumentStack GetFeatGrantLevel             (ArgumentStack&& args);
     ArgumentStack GetFeatCount                  (ArgumentStack&& args);
     ArgumentStack GetFeatByIndex                (ArgumentStack&& args);
     ArgumentStack GetMeetsFeatRequirements      (ArgumentStack&& args);
@@ -56,9 +57,7 @@ private:
     ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
-    ArgumentStack GetDomain                     (ArgumentStack&& args);
     ArgumentStack SetDomain                     (ArgumentStack&& args);
-    ArgumentStack GetSpecialization             (ArgumentStack&& args);
     ArgumentStack SetSpecialization             (ArgumentStack&& args);
     ArgumentStack GetSoundset                   (ArgumentStack&& args);
     ArgumentStack SetSoundset                   (ArgumentStack&& args);
@@ -100,6 +99,8 @@ private:
     ArgumentStack SetFamiliarName               (ArgumentStack&& args);
     ArgumentStack GetDisarmable                 (ArgumentStack&& args);
     ArgumentStack SetDisarmable                 (ArgumentStack&& args);
+    ArgumentStack SetFaction                    (ArgumentStack&& args);
+    ArgumentStack GetFaction                    (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
