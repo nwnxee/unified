@@ -403,6 +403,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandGetPCChatVolume(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetPCIPAddress(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetPlayerConnectionRelayed(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandGetPlayerBuildInfo(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetPCLevellingUp(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetPCPlayerName(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandGetPCPublicCDKey(int32_t nCommandId, int32_t nParameters);

@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.9...HEAD
+https://github.com/nwnxee/unified/compare/build8193.10...HEAD
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+## 8193.9
+https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
 
 ### Added
 - SQL: Added optional support for object storage in binary fields via an optional parameter `base64` in `NWNX_SQL_PreparedObjectFull` and `NWNX_SQL_ReadFullObjectInActiveRow`
