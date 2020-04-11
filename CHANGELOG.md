@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.10...HEAD
 
 ### Added
-- Tweaks: `NWNX_TWEAKS_ADJUST_CASTER_LEVEL_2DA` variable to enable automatically adding caster levels based on the (Arc|Div)SpellLvlMod field (classes.2da) when calling GetCasterLevel(), ResistSpell() and OnApplyDispel(All|Best)Magic() functions
+- Creature: `NWNX_CREATURE_ADJUST_CASTER_LEVEL` and `NWNX_CREATURE_ADJUST_CASTER_LEVEL_2DA` variables to enable caster level tweaking when calling GetCasterLevel(), ResistSpell() and OnApplyDispel{All|Best}Magic() functions
 
 ##### New Plugins
 N/A
