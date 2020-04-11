@@ -15,5 +15,4 @@ add_plugin(Tweaks
     "Tweaks/PreserveActionsOnDMPossess.cpp"
     "Tweaks/FixGreaterSanctuaryBug.cpp"
     "Tweaks/ItemChargesCost.cpp"
-    "Tweaks/AdjustCasterLevel.cpp"
 )

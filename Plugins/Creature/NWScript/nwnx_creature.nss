@@ -1652,7 +1652,7 @@ int NWNX_Creature_GetFaction(object oCreature)
 
 void NWNX_Creature_SetCasterLevelModifier(object oCreature, int nClass, int nModifier, int bPersist = FALSE)
 {
-    string sFunc = "SetCasterLeveLModifier";
+    string sFunc = "SetCasterLevelModifier";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersistent);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nModifier);
@@ -1664,7 +1664,7 @@ void NWNX_Creature_SetCasterLevelModifier(object oCreature, int nClass, int nMod
 
 void NWNX_Creature_SetCasterLevelOverride(object oCreature, int nClass, int nCasterLevel, int bPersist = FALSE)
 {
-    string sFunc = "SetCasterLeveLOverride";
+    string sFunc = "SetCasterLevelOverride";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersistent);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nCasterLevel);
