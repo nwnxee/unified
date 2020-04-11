@@ -1924,6 +1924,7 @@ ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
         ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
         const auto bPersist = Services::Events::ExtractArgument<bool>(args);
@@ -1943,6 +1944,7 @@ ArgumentStack Creature::GetCasterLevelModifier(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
         ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         auto nModifier = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
         if (nModifier)
@@ -1957,6 +1959,7 @@ ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
         ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         const auto nLevel = Services::Events::ExtractArgument<int32_t>(args);
         const auto bPersist = Services::Events::ExtractArgument<bool>(args);
@@ -1976,6 +1979,7 @@ ArgumentStack Creature::GetCasterLevelOverride(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
         ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         auto nCasterLevel = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
         if (nCasterLevel)
