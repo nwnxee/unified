@@ -1961,14 +1961,13 @@ void Creature::LoadCasterLevelModifiers()
 
         int spellCaster, arcane;
         if (p2DA->GetINTEntry(i, "SpellCaster", &spellCaster) && spellCaster && p2DA->GetINTEntry(i, "Arcane", &arcane))
-        {
             s_classCasterType[i] = arcane ? CasterType::Arcane : CasterType::Divine;
-            int value;
-            if (p2DA->GetINTEntry(i, "ArcSpellLvlMod", &value) && value > 0)
-                s_arcModClasses[i] = value;
-            if (p2DA->GetINTEntry(i, "DivSpellLvlMod", &value) && value > 0)
-                s_divModClasses[i] = value;
-        }
+
+        int value;
+        if (p2DA->GetINTEntry(i, "ArcSpellLvlMod", &value) && value > 0)
+            s_arcModClasses[i] = value;
+        if (p2DA->GetINTEntry(i, "DivSpellLvlMod", &value) && value > 0)
+            s_divModClasses[i] = value;
     }
     s_bCasterClassesLoaded = true;
 }
