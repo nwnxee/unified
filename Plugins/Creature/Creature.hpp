@@ -112,15 +112,17 @@ private:
     ArgumentStack SetFaction                    (ArgumentStack&& args);
     ArgumentStack GetFaction                    (ArgumentStack&& args);
     ArgumentStack SetCasterLevelModifier        (ArgumentStack&& args);
+    ArgumentStack GetCasterLevelModifier        (ArgumentStack&& args);
     ArgumentStack SetCasterLevelOverride        (ArgumentStack&& args);
+    ArgumentStack GetCasterLevelOverride        (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
 private:
 
-    static uint8_t s_classCasterType[NWNXLib::API::Constants::ClassType::MAX];
-    static uint8_t s_divModClasses[NWNXLib::API::Constants::ClassType::MAX];
-    static uint8_t s_arcModClasses[NWNXLib::API::Constants::ClassType::MAX];
+    static uint8_t s_classCasterType[NWNXLib::API::Constants::ClassType::MAX + 1];
+    static uint8_t s_divModClasses[NWNXLib::API::Constants::ClassType::MAX + 1];
+    static uint8_t s_arcModClasses[NWNXLib::API::Constants::ClassType::MAX + 1];
     static bool s_bUseCasterLevel2da;
     static bool s_bCasterClassesLoaded;
     static bool s_bAdjustCasterLevel;

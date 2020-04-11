@@ -52,9 +52,9 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 namespace Creature {
 
-uint8_t Creature::s_classCasterType[Constants::ClassType::MAX];
-uint8_t Creature::s_divModClasses[Constants::ClassType::MAX];
-uint8_t Creature::s_arcModClasses[Constants::ClassType::MAX];
+uint8_t Creature::s_classCasterType[Constants::ClassType::MAX + 1];
+uint8_t Creature::s_divModClasses[Constants::ClassType::MAX + 1];
+uint8_t Creature::s_arcModClasses[Constants::ClassType::MAX + 1];
 bool Creature::s_bCasterClassesLoaded = false;
 bool Creature::s_bUseCasterLevel2da = false;
 bool Creature::s_bAdjustCasterLevel = false;
@@ -153,7 +153,9 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetFaction);
     REGISTER(GetFaction);
     REGISTER(SetCasterLevelModifier);
+    REGISTER(GetCasterLevelModifier);
     REGISTER(SetCasterLevelOverride);
+    REGISTER(GetCasterLevelOverride);
 
 #undef REGISTER
 
@@ -1933,6 +1935,21 @@ ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
+ArgumentStack Creature::GetCasterLevelModifier(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        auto nModifier = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+        if (nModifier)
+            retVal = nModifier.value();
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
 ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
 {
     if (auto* pCreature = creature(args))
@@ -1947,6 +1964,21 @@ ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
             GetServices()->m_perObjectStorage->Remove(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
     }
     return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCasterLevelOverride(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        auto nCasterLevel = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+        if (nCasterLevel)
+            retVal = nCasterLevel.value();
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 void Creature::LoadCasterLevelModifiers()
@@ -1979,7 +2011,7 @@ uint8_t Creature::CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* thisPtr, u
         return nLevel;
 
     auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
-    if (nClass >= Constants::ClassType::MAX)
+    if (nClass > Constants::ClassType::MAX)
         return nLevel;
 
     auto nLevelOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));

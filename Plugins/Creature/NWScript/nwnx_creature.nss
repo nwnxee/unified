@@ -672,12 +672,24 @@ int NWNX_Creature_GetFaction(object oCreature);
 /// @param bModifier whether the modifier should be persisted to the .bic file if applicable
 void NWNX_Creature_SetCasterLevelModifier(object oCreature, int nClass, int nModifier, int bPersist = FALSE);
 
+/// @brief Sets the current caster level modifier for oCreature
+/// @param oCreature the target creature
+/// @param nClass the creature caster class
+/// @return the current caster level modifier for the creature
+int NWNX_Creature_GetCasterLevelModifier(object oCreature, int nClass);
+
 /// @brief Sets a caster level override for oCreature
 /// @param oCreature the target creature
 /// @param nClass the class that this modifier will apply to
 /// @param nCasterLevel the caster level override to apply
 /// @param bModifier whether the override should be persisted to the .bic file if applicable
-void NWNX_Creature_SetCasterLevelOverride(object oCreature, int nClass, int nCasterLevel, int bPersist = FALSE)
+void NWNX_Creature_SetCasterLevelOverride(object oCreature, int nClass, int nCasterLevel, int bPersist = FALSE);
+
+/// @brief Gets the current caster level override for oCreature
+/// @param oCreature the target creature
+/// @param nClass the creature caster class
+/// @return the current caster level override for the creature or -1 if not set
+int NWNX_Creature_GetCasterLevelOverride(object oCreature, int nClass);
 
 /// @}
 
@@ -1654,7 +1666,7 @@ void NWNX_Creature_SetCasterLevelModifier(object oCreature, int nClass, int nMod
 {
     string sFunc = "SetCasterLevelModifier";
 
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersistent);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersist);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nModifier);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
@@ -1662,14 +1674,36 @@ void NWNX_Creature_SetCasterLevelModifier(object oCreature, int nClass, int nMod
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
+int NWNX_Creature_GetCasterLevelModifier(object oCreature, int nClass)
+{
+    string sFunc = "GetCasterLevelModifier";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
 void NWNX_Creature_SetCasterLevelOverride(object oCreature, int nClass, int nCasterLevel, int bPersist = FALSE)
 {
     string sFunc = "SetCasterLevelOverride";
 
-    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersistent);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersist);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nCasterLevel);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetCasterLevelOverride(object oCreature, int nClass)
+{
+    string sFunc = "GetCasterLevelOverride";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
