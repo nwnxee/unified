@@ -1951,7 +1951,7 @@ ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
 
 void Creature::LoadCasterLevelModifiers()
 {
-    auto p2DA = Globals::Rules()->m_p2DArrays->GetCached2DA("classes", 1);
+    auto p2DA = Globals::Rules()->m_p2DArrays->GetCached2DA("classes", true);
     p2DA->Load2DArray();
     for (int i = 0; i < p2DA->m_nNumRows; i++)
     {
