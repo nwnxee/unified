@@ -9,6 +9,16 @@ using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
 namespace Creature {
 
+namespace CasterType
+{
+enum TYPE
+{
+    None = 0,
+    Arcane = 1,
+    Divine = 2,
+};
+}
+
 class Creature : public NWNXLib::Plugin
 {
 public:
@@ -101,8 +111,27 @@ private:
     ArgumentStack SetDisarmable                 (ArgumentStack&& args);
     ArgumentStack SetFaction                    (ArgumentStack&& args);
     ArgumentStack GetFaction                    (ArgumentStack&& args);
+    ArgumentStack SetCasterLevelModifier        (ArgumentStack&& args);
+    ArgumentStack SetCasterLevelOverride        (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
+
+private:
+
+    static uint8_t s_classCasterType[NWNXLib::API::Constants::ClassType::MAX];
+    static uint8_t s_divModClasses[NWNXLib::API::Constants::ClassType::MAX];
+    static uint8_t s_arcModClasses[NWNXLib::API::Constants::ClassType::MAX];
+    static bool s_bUseCasterLevel2da;
+    static bool s_bCasterClassesLoaded;
+    static bool s_bAdjustCasterLevel;
+
+    static void LoadCasterLevelModifiers();
+    static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
+    static void CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
+    static void CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
+    static void CNWSEffectListHandler__OnApplyDispelAllMagic(bool before, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL);
+    static void CNWSEffectListHandler__OnApplyDispelBestMagic(bool before, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL);
+    static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
 
 };
 

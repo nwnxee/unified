@@ -12,9 +12,12 @@
 #include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
+#include "API/CTwoDimArrays.hpp"
+#include "API/C2DA.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
+#include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
@@ -48,6 +51,14 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 
 namespace Creature {
+
+uint8_t Creature::s_classCasterType[Constants::ClassType::MAX];
+uint8_t Creature::s_divModClasses[Constants::ClassType::MAX];
+uint8_t Creature::s_arcModClasses[Constants::ClassType::MAX];
+bool Creature::s_bCasterClassesLoaded = false;
+bool Creature::s_bUseCasterLevel2da = false;
+bool Creature::s_bAdjustCasterLevel = false;
+Hooking::FunctionHook* g_pGetClassLevelHook = nullptr;
 
 Creature::Creature(const Plugin::CreateParams& params)
     : Plugin(params)
@@ -141,8 +152,23 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetDisarmable);
     REGISTER(SetFaction);
     REGISTER(GetFaction);
+    REGISTER(SetCasterLevelModifier);
+    REGISTER(SetCasterLevelOverride);
 
 #undef REGISTER
+
+    if (GetServices()->m_config->Get<bool>("ADJUST_CASTER_LEVEL", false))
+    {
+        auto hooker = GetServices()->m_hooks.get();
+        s_bUseCasterLevel2da = GetServices()->m_config->Get<bool>("ADJUST_CASTER_LEVEL_2DA", false);
+        hooker->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi>(&CNWSCreatureStats__GetClassLevel);
+        g_pGetClassLevelHook = hooker->FindHookByAddress(API::Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi);
+        hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, void>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
+        hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, void>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
+        hooker->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler21OnApplyDispelAllMagicEP10CNWSObjectP11CGameEffecti, void>(&CNWSEffectListHandler__OnApplyDispelAllMagic);
+        hooker->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler22OnApplyDispelBestMagicEP10CNWSObjectP11CGameEffecti, void>(&CNWSEffectListHandler__OnApplyDispelBestMagic);
+        hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
+    }
 }
 
 Creature::~Creature()
@@ -1891,5 +1917,143 @@ ArgumentStack Creature::GetFaction(ArgumentStack&& args)
     return Services::Events::Arguments(retVal);
 }
 
+ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
+{
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
+        const auto bPersist = Services::Events::ExtractArgument<bool>(args);
+
+        if (nModifier)
+            GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass), nModifier, bPersist);
+        else
+            GetServices()->m_perObjectStorage->Remove(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
+{
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        const auto nLevel = Services::Events::ExtractArgument<int32_t>(args);
+        const auto bPersist = Services::Events::ExtractArgument<bool>(args);
+
+        if (nLevel > 0)
+            GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass), nLevel, bPersist);
+        else
+            GetServices()->m_perObjectStorage->Remove(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+    }
+    return Services::Events::Arguments();
+}
+
+void Creature::LoadCasterLevelModifiers()
+{
+    auto p2DA = Globals::Rules()->m_p2DArrays->GetCached2DA("classes", 1);
+    p2DA->Load2DArray();
+    for (int i = 0; i < p2DA->m_nNumRows; i++)
+    {
+        int spellCaster, arcane;
+        if (p2DA->GetINTEntry(i, "SpellCaster", &spellCaster) && spellCaster && p2DA->GetINTEntry(i, "Arcane", &arcane))
+        {
+            s_classCasterType[i] = arcane ? CasterType::Arcane : CasterType::Divine;
+            int value;
+            if (p2DA->GetINTEntry(i, "ArcSpellLvlMod", &value) && value > 0)
+                s_arcModClasses[i] = value;
+            if (p2DA->GetINTEntry(i, "DivSpellLvlMod", &value) && value > 0)
+                s_divModClasses[i] = value;
+        }
+        else
+        {
+            s_classCasterType[i] = CasterType::None;
+            s_arcModClasses[i] = 0;
+            s_divModClasses[i] = 0;
+        }
+    }
+    s_bCasterClassesLoaded = true;
+}
+
+uint8_t Creature::CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel)
+{
+    uint8_t nLevel = g_pGetClassLevelHook->CallOriginal<uint8_t>(thisPtr, nMultiClass, bUseNegativeLevel);
+    if (!s_bAdjustCasterLevel || nMultiClass >= thisPtr->m_nNumMultiClasses)
+        return nLevel;
+
+    auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
+    if (nClass >= Constants::ClassType::MAX)
+        return nLevel;
+
+    auto nLevelOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+    if (nLevelOverride)
+        return nLevelOverride.value();
+
+    auto nLevelModifier = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+    if (nLevelModifier)
+        nLevel += nLevelModifier.value();
+
+    if (s_bUseCasterLevel2da)
+    {
+        if (!s_bCasterClassesLoaded)
+            LoadCasterLevelModifiers();
+
+        if (auto nCasterType = s_classCasterType[nClass])
+        {
+            for (int i = 0; i < thisPtr->m_nNumMultiClasses; i++)
+            {
+                if (i == nMultiClass) continue;
+                auto nMultiClassType = thisPtr->m_ClassInfo[i].m_nClass;
+                if (nCasterType == CasterType::Divine)
+                {
+                    auto nDivMod = s_divModClasses[nMultiClassType];
+                    if (nDivMod > 0)
+                    {
+                        auto nClassLevel = g_pGetClassLevelHook->CallOriginal<uint8_t>(thisPtr, i, bUseNegativeLevel);
+                        if (nClassLevel > 0)
+                            nLevel += (nClassLevel - 1) / nDivMod + 1;
+                    }
+                }
+                else if (nCasterType == CasterType::Arcane)
+                {
+                    auto nArcMod = s_arcModClasses[nMultiClassType];
+                    if (nArcMod > 0)
+                    {
+                        auto nClassLevel = g_pGetClassLevelHook->CallOriginal<uint8_t>(thisPtr, i, bUseNegativeLevel);
+                        if (nClassLevel > 0)
+                            nLevel += (nClassLevel - 1) / nArcMod + 1;
+                    }
+                }
+            }
+        }
+    }
+
+    return nLevel;
+}
+
+void Creature::CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CNWSEffectListHandler__OnApplyDispelAllMagic(bool before, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CNWSEffectListHandler__OnApplyDispelBestMagic(bool before, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID)
+{
+    s_bAdjustCasterLevel = before;
+}
 
 }
