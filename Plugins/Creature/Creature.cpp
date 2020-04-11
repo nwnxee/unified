@@ -1955,6 +1955,10 @@ void Creature::LoadCasterLevelModifiers()
     p2DA->Load2DArray();
     for (int i = 0; i < p2DA->m_nNumRows; i++)
     {
+        s_classCasterType[i] = CasterType::None;
+        s_arcModClasses[i] = 0;
+        s_divModClasses[i] = 0;
+
         int spellCaster, arcane;
         if (p2DA->GetINTEntry(i, "SpellCaster", &spellCaster) && spellCaster && p2DA->GetINTEntry(i, "Arcane", &arcane))
         {
@@ -1964,12 +1968,6 @@ void Creature::LoadCasterLevelModifiers()
                 s_arcModClasses[i] = value;
             if (p2DA->GetINTEntry(i, "DivSpellLvlMod", &value) && value > 0)
                 s_divModClasses[i] = value;
-        }
-        else
-        {
-            s_classCasterType[i] = CasterType::None;
-            s_arcModClasses[i] = 0;
-            s_divModClasses[i] = 0;
         }
     }
     s_bCasterClassesLoaded = true;
