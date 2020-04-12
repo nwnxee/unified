@@ -19,7 +19,7 @@ struct CNWBaseItemArray
 
     CNWBaseItemArray();
     ~CNWBaseItemArray();
-    CNWBaseItem * GetBaseItem(int32_t nBaseItemID);
+    CNWBaseItem * GetBaseItem(int32_t nBaseItemID) const;
     void Load();
     uint16_t GetDefaultWeaponFocusFeat(uint32_t baseItemId);
     uint16_t GetDefaultEpicWeaponFocusFeat(uint32_t baseItemId);

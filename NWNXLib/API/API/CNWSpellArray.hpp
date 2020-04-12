@@ -19,9 +19,9 @@ struct CNWSpellArray
 
     CNWSpellArray();
     ~CNWSpellArray();
-    CNWSpell * GetSpell(int32_t nSpellID);
+    CNWSpell * GetSpell(int32_t nSpellID) const;
     void Load();
-    CNWSpell operator[](int32_t position);
+    CNWSpell operator[](int32_t position) const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWSpellArray
