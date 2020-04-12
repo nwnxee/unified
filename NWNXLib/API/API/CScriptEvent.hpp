@@ -35,8 +35,8 @@ struct CScriptEvent
     void SetObjectID(int32_t nStorageLocation, OBJECT_ID oidValue);
     CExoString GetString(int32_t nStorageLocation);
     void SetString(int32_t nStorageLocation, CExoString sString);
-    BOOL operator==(const CScriptEvent & scriptEvent);
-    BOOL operator!=(const CScriptEvent & scriptEvent);
+    BOOL operator==(const CScriptEvent & scriptEvent) const;
+    BOOL operator!=(const CScriptEvent & scriptEvent) const;
     void CopyScriptEvent(CScriptEvent * pScriptEvent);
     BOOL SaveEvent(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadEvent(CResGFF * pRes, CResStruct * pStruct);
