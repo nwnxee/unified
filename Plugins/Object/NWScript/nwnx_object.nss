@@ -326,13 +326,20 @@ int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition);
 /// @return The object's type (NWNX_OBJECT_TYPE_INTERNAL_*)
 int NWNX_Object_GetInternalObjectType(object oObject);
 
-
 /// @brief Have oObject acquire oItem.
 /// @note Useful to give deserialized items to an object, may not work if oItem is already possessed by an object.
 /// @param oObject The object receiving oItem, must be a Creature, Placeable, Store or Item
 /// @param oItem The item.
 /// @return TRUE on success.
 int NWNX_Object_AcquireItem(object oObject, object oItem);
+
+/// @brief Cause oObject to face fDirection.
+/// @note This function is almost identical to SetFacing(), the only difference being that it allows you to specify
+/// the target object without the use of AssignCommand(). This is useful when you want to change the facing of an object
+/// in an ExecuteScriptChunk() call where AssignCommand() does not work.
+/// @param oObject The object to change its facing of
+/// @param fDirection The direction the object should face
+void NWNX_Object_SetFacing(object oObject, float fDirection);
 
 /// @}
 
@@ -793,4 +800,13 @@ int NWNX_Object_AcquireItem(object oObject, object oItem)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetFacing(object oObject, float fDirection)
+{
+    string sFunc = "SetFacing";
+
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, fDirection);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }

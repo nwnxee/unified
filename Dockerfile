@@ -4,7 +4,7 @@ COPY ./ .
 # Compile nwnx
 RUN Scripts/buildnwnx.sh -j $(nproc)
 
-FROM beamdog/nwserver:8193.9
+FROM beamdog/nwserver:8193.10
 RUN mkdir /nwn/nwnx
 COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 

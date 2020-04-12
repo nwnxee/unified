@@ -54,6 +54,7 @@ private:
     ArgumentStack GetPositionIsInTrigger    (ArgumentStack&& args);
     ArgumentStack GetInternalObjectType     (ArgumentStack&& args);
     ArgumentStack AcquireItem               (ArgumentStack&& args);
+    ArgumentStack SetFacing                 (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };

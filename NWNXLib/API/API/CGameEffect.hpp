@@ -56,12 +56,12 @@ struct CGameEffect
     void SetObjectID(int32_t nStorageLocation, OBJECT_ID oidValue);
     CExoString GetString(int32_t nStorageLocation);
     void SetString(int32_t nStorageLocation, CExoString sString);
-    BOOL operator==(const CGameEffect & effect);
-    BOOL operator!=(const CGameEffect & effect);
+    BOOL operator==(const CGameEffect & effect) const;
+    BOOL operator!=(const CGameEffect & effect) const;
     void CopyEffect(CGameEffect * pEffect, BOOL bIgnoreArrayLists = false);
     void SetExpiryTime(uint32_t nCalendarDayExpiry, uint32_t nTimeOfDayExpiry);
     void GetExpiryTime(uint32_t * nCurrentCalendarDay, uint32_t * nCurrentTimeOfDay);
-    CExoString GetCustomTag();
+    CExoString GetCustomTag() const;
     void SetCustomTag(const CExoString & sTag);
     void SetLinked(CGameEffect * pLeft, CGameEffect * pRight);
     void UpdateLinked();
