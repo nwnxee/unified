@@ -1,6 +1,6 @@
 #pragma once
 
-#include "API/Version.hpp"
+#include "API/nwn_api.hpp"
 #include <cstdint>
 
 namespace NWNXLib::API::Functions {

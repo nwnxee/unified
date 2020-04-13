@@ -1,6 +1,5 @@
 #include "Platform/ASLR.hpp"
 #include "API/Globals.hpp"
-#include "API/Version.hpp"
 #include "API/CExoString.hpp"
 #include "Assert.hpp"
 

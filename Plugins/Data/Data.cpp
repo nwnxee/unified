@@ -1,5 +1,4 @@
 #include "Data.hpp"
-#include "API/Version.hpp"
 #include "Providers/Array.hpp"
 
 using namespace NWNXLib;

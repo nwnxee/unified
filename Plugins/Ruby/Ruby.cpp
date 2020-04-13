@@ -1,5 +1,4 @@
 #include "Ruby.hpp"
-#include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
 

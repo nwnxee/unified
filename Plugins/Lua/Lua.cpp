@@ -1,6 +1,5 @@
 #include "Lua.hpp"
 
-#include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"

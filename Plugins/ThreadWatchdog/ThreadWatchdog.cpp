@@ -1,6 +1,5 @@
 #include "ThreadWatchdog.hpp"
 #include "API/Functions.hpp"
-#include "API/Version.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Config/Config.hpp"

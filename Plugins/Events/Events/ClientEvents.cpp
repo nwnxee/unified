@@ -9,7 +9,6 @@
 #include "API/CNWSModule.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "API/Version.hpp"
 #include "Events.hpp"
 
 namespace Events {

@@ -17,7 +17,6 @@
 
 #include "Services/Config/Config.hpp"
 
-#include "API/Version.hpp"
 
 using namespace NWNXLib;
 

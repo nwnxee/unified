@@ -2,7 +2,6 @@
 #include "API/CNWSItem.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "API/Version.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
 #include "Utils.hpp"

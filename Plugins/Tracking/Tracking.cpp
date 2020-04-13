@@ -1,5 +1,4 @@
 #include "Tracking.hpp"
-#include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
 #include "Targets/Activity.hpp"
 

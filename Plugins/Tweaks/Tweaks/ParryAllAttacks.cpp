@@ -3,7 +3,6 @@
 #include "API/CNWSCombatRound.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "API/Version.hpp"
 #include "API/Constants.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
