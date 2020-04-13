@@ -422,8 +422,7 @@ int32_t NWNXCore::PlaySoundHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
             {
                 if (obj->m_bAbleToModifyActionQueue)
                 {
-                    obj->AddAction(23, -1, 4, (CExoString*)&sound,
-                              0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+                    obj->AddAction(23, -1, 4, (CExoString*)&sound);
                 }
 
             }
