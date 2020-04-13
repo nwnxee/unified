@@ -82,7 +82,7 @@ Chat::~Chat()
 }
 
 void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatChannel::TYPE channel, ObjectID sender,
-    CExoString message, Types::PlayerID target, CExoString* tellName)
+    CExoString message, PlayerID target, CExoString* tellName)
 {
     Chat& plugin = *g_plugin;
 
@@ -210,7 +210,7 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
 
     const bool hasManualPlayerId = target != Constants::OBJECT_INVALID;
 
-    const Types::PlayerID playerId = hasManualPlayerId ?
+    const PlayerID playerId = hasManualPlayerId ?
         Globals::AppManager()->m_pServerExoApp->GetPlayerIDByGameObjectID(target) :
         Constants::PLAYERID_ALL_CLIENTS;
 

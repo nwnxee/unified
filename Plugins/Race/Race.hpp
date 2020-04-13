@@ -93,7 +93,7 @@ private:
     static void HandleValidateCharacter(ObjectID, bool);
     static void ValidateCharacterHook(bool, CNWSPlayer*, int32_t*);
 
-    static void SendServerToPlayerLevelUp_ConfirmationHook(bool, CNWSMessage*, Types::PlayerID, int32_t);
+    static void SendServerToPlayerLevelUp_ConfirmationHook(bool, CNWSMessage*, PlayerID, int32_t);
     static void LevelUpAutomaticHook(bool, CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
     static void GetFavoredEnemyBonusHook(bool, CNWSCreatureStats*, CNWSCreature*);
     static void GetMeetsPrestigeClassRequirementsHook(bool, CNWSCreatureStats*, CNWClass*);

@@ -147,7 +147,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
         LOG_ERROR("Attempted to delete invalid player");
         return Events::Arguments();
     }
-    API::Types::PlayerID playerId = player->m_nPlayerID;
+    PlayerID playerId = player->m_nPlayerID;
 
     std::string bicname     = player->m_resFileName.GetResRefStr();
     std::string servervault = CExoString(Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT", 0)).CStr();

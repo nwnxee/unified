@@ -98,7 +98,7 @@ Race::Race(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveInitiativeEv, void, CNWSCreature*>(&ResolveInitiativeHook);
 
     // If a level up has been confirmed we rerun the racial applications in case of new feats, level based adjustments etc.
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji, int32_t, CNWSMessage*, Types::PlayerID, int32_t>(&SendServerToPlayerLevelUp_ConfirmationHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji, int32_t, CNWSMessage*, PlayerID, int32_t>(&SendServerToPlayerLevelUp_ConfirmationHook);
 
     // Swap race with parent race due to hardcoded checks here
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, int32_t, CNWSCreatureStats*, CNWSCreature*>(&GetFavoredEnemyBonusHook);
@@ -687,7 +687,7 @@ void Race::ValidateCharacterHook(
 void Race::SendServerToPlayerLevelUp_ConfirmationHook(
         bool before,
         CNWSMessage *,
-        Types::PlayerID playerId,
+        PlayerID playerId,
         int32_t bValidated)
 {
     // Reapply the racial effects in case there are level specific ones
