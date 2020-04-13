@@ -19,8 +19,8 @@ private:
     static int32_t TestObjectVisibleHook(CNWSMessage *pThis, CNWSObject *pAreaObject, CNWSObject *pPlayerGameObject);
     NWNXLib::Hooking::FunctionHook* m_TestObjectVisibilityHook;
 
-    static int32_t GetGlobalOverride(NWNXLib::API::Types::ObjectID targetId);
-    static int32_t GetPersonalOverride(NWNXLib::API::Types::ObjectID playerId, NWNXLib::API::Types::ObjectID targetId);
+    static int32_t GetGlobalOverride(ObjectID targetId);
+    static int32_t GetPersonalOverride(ObjectID playerId, ObjectID targetId);
 
     ArgumentStack GetVisibilityOverride (ArgumentStack&& args);
     ArgumentStack SetVisibilityOverride (ArgumentStack&& args);

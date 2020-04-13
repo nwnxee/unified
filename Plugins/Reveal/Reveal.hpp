@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "Common.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;

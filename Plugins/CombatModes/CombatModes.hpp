@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "API/CNWSCreature.hpp"
-#include "API/Types.hpp"
 
 namespace CombatModes {
 

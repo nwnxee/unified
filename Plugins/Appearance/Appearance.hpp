@@ -19,7 +19,7 @@ public:
 private:
     static CNWSPlayer *Player(ArgumentStack& args);
     static void ComputeGameObjectUpdateForObjectHook(bool, CNWSMessage*,
-        CNWSPlayer*, CNWSObject*, CGameObjectArray*, NWNXLib::API::Types::ObjectID);
+        CNWSPlayer*, CNWSObject*, CGameObjectArray*, ObjectID);
 
     enum OverrideType {
         AppearanceType  = 0,

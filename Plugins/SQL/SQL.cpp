@@ -330,7 +330,7 @@ Events::ArgumentStack SQL::PreparedFloat(Events::ArgumentStack&& args)
 Events::ArgumentStack SQL::PreparedObjectId(Events::ArgumentStack&& args)
 {
     auto position = Events::ExtractArgument<int32_t>(args);
-    auto value = Events::ExtractArgument<API::Types::ObjectID>(args);
+    auto value = Events::ExtractArgument<ObjectID>(args);
     int32_t valInt;
     std::memcpy(&valInt, &value, sizeof(valInt)); static_assert(sizeof(valInt) == sizeof(value));
     if (position >= m_target->GetPreparedQueryParamCount())
@@ -346,7 +346,7 @@ Events::ArgumentStack SQL::PreparedObjectId(Events::ArgumentStack&& args)
 Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
 {
     auto position = Events::ExtractArgument<int32_t>(args);
-    auto value = Events::ExtractArgument<API::Types::ObjectID>(args);
+    auto value = Events::ExtractArgument<ObjectID>(args);
     int32_t base64 = true;
     try
     {
@@ -375,7 +375,7 @@ Events::ArgumentStack SQL::PreparedObjectFull(Events::ArgumentStack&& args)
 Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& args)
 {
     const auto column = static_cast<size_t>(Events::ExtractArgument<int32_t>(args));
-    const auto owner = Events::ExtractArgument<API::Types::ObjectID>(args);
+    const auto owner = Events::ExtractArgument<ObjectID>(args);
     const auto x = Events::ExtractArgument<float>(args);
     const auto y = Events::ExtractArgument<float>(args);
     const auto z = Events::ExtractArgument<float>(args);
@@ -392,11 +392,11 @@ Events::ArgumentStack SQL::ReadFullObjectInActiveRow(Events::ArgumentStack&& arg
     }
 
     std::string serialized = m_activeRow[column];
-    API::Types::ObjectID retval = API::Constants::OBJECT_INVALID;
+    ObjectID retval = API::Constants::OBJECT_INVALID;
     CGameObject *pObject = base64 ? DeserializeGameObjectB64(serialized) : DeserializeGameObject(std::vector<uint8_t>(serialized.begin(), serialized.end()));
     if (pObject)
     {
-        retval = static_cast<API::Types::ObjectID>(pObject->m_idSelf);
+        retval = static_cast<ObjectID>(pObject->m_idSelf);
         ASSERT(API::Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
 
         CGameObject *pOwner = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(owner);

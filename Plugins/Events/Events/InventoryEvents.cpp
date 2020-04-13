@@ -68,7 +68,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
     {
         case MessageGuiInventoryMinor::Status:
         {
-            auto target = Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF;
+            auto target = Utils::PeekMessage<ObjectID>(thisPtr, 0) & 0x7FFFFFFF;
             auto open = (bool)(Utils::PeekMessage<uint8_t>(thisPtr, 4) & 0x10);
 
             if (open)

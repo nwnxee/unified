@@ -88,7 +88,7 @@ Area::~Area()
 
 CNWSArea *Area::area(ArgumentStack& args)
 {
-    const auto areaId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto areaId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (areaId == Constants::OBJECT_INVALID)
     {
@@ -130,11 +130,11 @@ ArgumentStack Area::GetNumberOfPlayersInArea(ArgumentStack&& args)
 
 ArgumentStack Area::GetLastEntered(ArgumentStack&& args)
 {
-    Types::ObjectID retVal = Constants::OBJECT_INVALID;
+    ObjectID retVal = Constants::OBJECT_INVALID;
 
     if (auto *pArea = area(args))
     {
-        retVal = static_cast<Types::ObjectID>(pArea->m_oidLastEntered);
+        retVal = static_cast<ObjectID>(pArea->m_oidLastEntered);
     }
 
     return Services::Events::Arguments(retVal);
@@ -142,11 +142,11 @@ ArgumentStack Area::GetLastEntered(ArgumentStack&& args)
 
 ArgumentStack Area::GetLastLeft(ArgumentStack&& args)
 {
-    Types::ObjectID retVal = Constants::OBJECT_INVALID;
+    ObjectID retVal = Constants::OBJECT_INVALID;
 
     if (auto *pArea = area(args))
     {
-        retVal = static_cast<Types::ObjectID>(pArea->m_oidLastLeft);
+        retVal = static_cast<ObjectID>(pArea->m_oidLastLeft);
     }
 
     return Services::Events::Arguments(retVal);
@@ -517,10 +517,10 @@ ArgumentStack Area::SetSunMoonColors(ArgumentStack&& args)
 
 ArgumentStack Area::CreateTransition(ArgumentStack&& args)
 {
-    Types::ObjectID retVal = Constants::OBJECT_INVALID;
+    ObjectID retVal = Constants::OBJECT_INVALID;
     if (auto *pArea = area(args))
     {
-        auto targetOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto targetOid = Services::Events::ExtractArgument<ObjectID>(args);
         auto *pTargetObject = Utils::AsNWSObject(Globals::AppManager()->m_pServerExoApp->GetGameObject(targetOid));
         if (pTargetObject == nullptr ||
             (pTargetObject->m_nObjectType != Constants::ObjectType::Door &&
@@ -727,7 +727,7 @@ ArgumentStack Area::GetMusicIsPlaying(ArgumentStack&& args)
 
 ArgumentStack Area::CreateGenericTrigger(ArgumentStack&& args)
 {
-    Types::ObjectID oidTrigger = Constants::OBJECT_INVALID;
+    ObjectID oidTrigger = Constants::OBJECT_INVALID;
 
     if (auto *pArea = area(args))
     {

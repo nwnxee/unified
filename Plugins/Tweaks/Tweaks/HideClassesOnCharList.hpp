@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Common.hpp"
 
 namespace Tweaks {
@@ -13,7 +12,7 @@ public:
 private:
     static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(
         CNWSMessage*, NWNXLib::API::Types::PlayerID,
-        NWNXLib::API::Types::ObjectID, int32_t);
+        ObjectID, int32_t);
 };
 
 }

@@ -166,7 +166,7 @@ std::string Events::GetEventData(const std::string tag)
     return retVal;
 }
 
-bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID target, std::string *result)
+bool Events::SignalEvent(const std::string& eventName, const ObjectID target, std::string *result)
 {
     bool skipped = false;
 
@@ -295,7 +295,7 @@ ArgumentStack Events::PushEventData(ArgumentStack&& args)
 ArgumentStack Events::SignalEvent(ArgumentStack&& args)
 {
     const auto event = Services::Events::ExtractArgument<std::string>(args);
-    const auto object = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto object = Services::Events::ExtractArgument<ObjectID>(args);
     bool signalled = SignalEvent(event, object);
 
     return Services::Events::Arguments(signalled ? 1 : 0);
@@ -374,7 +374,7 @@ ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
       ASSERT_OR_THROW(!eventName.empty());
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
@@ -392,7 +392,7 @@ ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
       ASSERT_OR_THROW(!eventName.empty());
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);

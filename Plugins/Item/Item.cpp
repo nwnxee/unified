@@ -63,7 +63,7 @@ Item::~Item()
 
 CNWSItem *Item::item(ArgumentStack& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {

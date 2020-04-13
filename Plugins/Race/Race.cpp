@@ -126,7 +126,7 @@ Race::Race(const Plugin::CreateParams& params)
              {
                  if (message[0] == "VALIDATE_CHARACTER_BEFORE" || message[0] == "VALIDATE_CHARACTER_AFTER")
                  {
-                     Types::ObjectID objectID = std::strtoul(message[1].c_str(), nullptr, 16);
+                     ObjectID objectID = std::strtoul(message[1].c_str(), nullptr, 16);
 
                      HandleValidateCharacter(objectID, message[0] == "VALIDATE_CHARACTER_BEFORE");
                  }
@@ -628,7 +628,7 @@ void Race::ResolveInitiativeHook(CNWSCreature *pCreature)
     }
 }
 
-void Race::HandleValidateCharacter(Types::ObjectID oidCreature, bool bBefore)
+void Race::HandleValidateCharacter(ObjectID oidCreature, bool bBefore)
 {
     auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidCreature);
 

@@ -357,7 +357,7 @@ ArgumentStack Util::GetServerTicksPerSecond(ArgumentStack&&)
 
 ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
 {
-    Types::ObjectID retVal = Constants::OBJECT_INVALID;
+    ObjectID retVal = Constants::OBJECT_INVALID;
 
     const auto objectType = Services::Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(objectType >= 0);

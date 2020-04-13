@@ -897,7 +897,7 @@ ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
 
 ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {
@@ -916,7 +916,7 @@ ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 
 ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {

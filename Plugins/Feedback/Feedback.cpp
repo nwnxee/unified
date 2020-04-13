@@ -128,7 +128,7 @@ bool Feedback::GetGlobalState(int32_t messageType, int32_t messageId)
     return g_plugin->m_GlobalHiddenMessageSet.find(realMessageId) != g_plugin->m_GlobalHiddenMessageSet.end();
 }
 
-int32_t Feedback::GetPersonalState(Types::ObjectID playerId, int32_t messageType, int32_t messageId)
+int32_t Feedback::GetPersonalState(ObjectID playerId, int32_t messageType, int32_t messageId)
 {
     int32_t value = -1;
 
@@ -144,7 +144,7 @@ int32_t Feedback::GetPersonalState(Types::ObjectID playerId, int32_t messageType
 
 ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
 
@@ -156,7 +156,7 @@ ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 
 ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
     const auto state = Services::Events::ExtractArgument<int32_t>(args);

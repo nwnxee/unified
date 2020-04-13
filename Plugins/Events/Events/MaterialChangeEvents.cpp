@@ -12,7 +12,7 @@ namespace Events {
 
 using namespace NWNXLib;
 
-static std::unordered_map<API::Types::ObjectID, int32_t> m_objectCurrentMaterial;
+static std::unordered_map<ObjectID, int32_t> m_objectCurrentMaterial;
 
 MaterialChangeEvents::MaterialChangeEvents(Services::HooksProxy* hooker)
 {

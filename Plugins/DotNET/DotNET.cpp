@@ -271,7 +271,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScript);
     static Hooking::FunctionHook* RunScriptHook;
     RunScriptHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
-        +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
+        +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid)
         {
             if (!script || *script == "")
                 return 1;
@@ -296,7 +296,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     LOG_DEBUG("Registered closure handler: %p", Handlers.Closure);
     static Hooking::FunctionHook* RunScriptSituationHook;
     RunScriptSituationHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
-        +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID objId, int32_t valid)
+        +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid)
         {
             uint64_t eventId;
             if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)

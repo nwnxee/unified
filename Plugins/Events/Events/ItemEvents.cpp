@@ -99,12 +99,12 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
 
 int32_t ItemEvents::UseItemHook(
     CNWSCreature* thisPtr,
-    API::Types::ObjectID item,
+    ObjectID item,
     uint8_t propIndex,
     uint8_t subPropIndex,
-    API::Types::ObjectID target,
+    ObjectID target,
     Vector targetPosition,
-    API::Types::ObjectID area)
+    ObjectID area)
 {
     int32_t retVal;
 
@@ -133,7 +133,7 @@ int32_t ItemEvents::UseItemHook(
     return retVal;
 }
 
-void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidOpener)
+void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, ObjectID oidOpener)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("OWNER", Utils::ObjectIDToString(oidOpener));
@@ -148,7 +148,7 @@ void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidOpener)
     PushAndSignal("NWNX_ON_ITEM_INVENTORY_OPEN_AFTER");
 }
 
-void ItemEvents::CloseInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidCloser, int32_t bUpdatePlayer)
+void ItemEvents::CloseInventoryHook(CNWSItem* thisPtr, ObjectID oidCloser, int32_t bUpdatePlayer)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("OWNER", Utils::ObjectIDToString(oidCloser));
@@ -189,7 +189,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
         return OBJECT_INVALID;
 
     auto ItemSanityCheck = [&](uint32_t objectId) -> bool {
-        if (static_cast<Types::ObjectID>(objectId) == Constants::OBJECT_INVALID)
+        if (static_cast<ObjectID>(objectId) == Constants::OBJECT_INVALID)
             return true;
 
         auto *pItem = Utils::AsNWSItem(Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId));
@@ -251,7 +251,7 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
     return retVal;
 }
 
-int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, Types::ObjectID oidScrollToLearn)
+int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, ObjectID oidScrollToLearn)
 {
     int32_t retVal;
 
@@ -276,7 +276,7 @@ int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, Types::ObjectID oidSc
 
 int32_t ItemEvents::RunEquipHook(
         CNWSCreature* thisPtr,
-        API::Types::ObjectID item,
+        ObjectID item,
         uint32_t nInventorySlot,
         uint32_t oidFeedbackPlayer)
 {
@@ -303,8 +303,8 @@ int32_t ItemEvents::RunEquipHook(
 
 int32_t ItemEvents::RunUnequipHook(
         CNWSCreature* thisPtr,
-        API::Types::ObjectID item,
-        API::Types::ObjectID itemRepo,
+        ObjectID item,
+        ObjectID itemRepo,
         uint8_t x,
         uint8_t y,
         int32_t mergeIntoRepo,
@@ -333,7 +333,7 @@ int32_t ItemEvents::RunUnequipHook(
 void ItemEvents::ItemEventHandlerHook(
         CNWSItem* thisPtr,
         uint32_t nEventId,
-        NWNXLib::API::Types::ObjectID nCallerObjectId,
+        ObjectID nCallerObjectId,
         void *pScript,
         uint32_t nCalendarDay,
         uint32_t nTimeOfDay)
@@ -369,7 +369,7 @@ void ItemEvents::ItemEventHandlerHook(
     }
 }
 
-int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, Types::ObjectID item)
+int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, ObjectID item)
 {
     int32_t retVal;
 
@@ -390,7 +390,7 @@ int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, Types::ObjectID ite
     return retVal;
 }
 
-void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID item, Types::ObjectID store)
+void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, ObjectID item, ObjectID store)
 {
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(item));

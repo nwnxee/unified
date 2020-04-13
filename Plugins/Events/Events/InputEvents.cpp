@@ -48,8 +48,8 @@ int32_t InputEvents::HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pM
     int32_t retVal;
 
     int offset = 0;
-    std::string oidArea = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(pMessage, offset) & 0x7FFFFFFF);
-        offset += sizeof(Types::ObjectID);
+    std::string oidArea = Utils::ObjectIDToString(Utils::PeekMessage<ObjectID>(pMessage, offset) & 0x7FFFFFFF);
+        offset += sizeof(ObjectID);
     std::string posX = std::to_string(Utils::PeekMessage<float>(pMessage, offset));
         offset += sizeof(float);
     std::string posY = std::to_string(Utils::PeekMessage<float>(pMessage, offset));
@@ -89,7 +89,7 @@ int32_t InputEvents::HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pM
     return retVal;
 }
 
-int32_t InputEvents::AddAttackActionsHook(CNWSCreature *pCreature, Types::ObjectID oidTarget,
+int32_t InputEvents::AddAttackActionsHook(CNWSCreature *pCreature, ObjectID oidTarget,
         int32_t bPassive, int32_t bClearAllActions, int32_t bAddToFront)
 {
     int32_t retVal;
@@ -117,7 +117,7 @@ int32_t InputEvents::AddAttackActionsHook(CNWSCreature *pCreature, Types::Object
 }
 
 void InputEvents::AddMoveToPointActionToFrontHook(bool before, CNWSCreature *pCreature, uint16_t, Vector,
-        Types::ObjectID, Types::ObjectID oidObjectMovingTo, int32_t, float, float, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t)
+        ObjectID, ObjectID oidObjectMovingTo, int32_t, float, float, int32_t, int32_t, int32_t, int32_t, int32_t, int32_t)
 {
     if (oidObjectMovingTo != Constants::OBJECT_INVALID)
     {
@@ -128,7 +128,7 @@ void InputEvents::AddMoveToPointActionToFrontHook(bool before, CNWSCreature *pCr
 }
 
 int32_t InputEvents::AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t nSpellId, int32_t nMultiClass, int32_t nDomainLevel,
-        int32_t nMetaType, int32_t bSpontaneousCast, Vector vTargetLocation, Types::ObjectID oidTarget, int32_t bAreaTarget, int32_t bAddToFront,
+        int32_t nMetaType, int32_t bSpontaneousCast, Vector vTargetLocation, ObjectID oidTarget, int32_t bAreaTarget, int32_t bAddToFront,
         int32_t bFake, uint8_t nProjectilePathType, int32_t bInstant, int32_t bAllowPolymorphedCast, int32_t nFeat, uint8_t nCasterLevel)
 {
     int32_t retVal;

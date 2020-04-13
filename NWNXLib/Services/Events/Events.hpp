@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/CGameEffect.hpp"
 #include "Services/Services.hpp"
 
@@ -13,9 +12,7 @@
 #include <vector>
 #include <optional>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Events
 {
@@ -24,14 +21,14 @@ public: // Structures
     {
         std::optional<int32_t>              m_int;
         std::optional<float>                m_float;
-        std::optional<API::Types::ObjectID> m_object;
+        std::optional<ObjectID>             m_object;
         std::optional<std::string>          m_string;
         std::optional<CGameEffect*>         m_effect;
 
         // Constructors
         Argument(int32_t v)                : m_int(v)    { }
         Argument(float v)                  : m_float(v)  { }
-        Argument(API::Types::ObjectID v)   : m_object(v) { }
+        Argument(ObjectID v)               : m_object(v) { }
         Argument(std::string v)            : m_string(std::move(v)) { }
         Argument(CGameEffect* v)           : m_effect(v) { }
 
@@ -108,8 +105,6 @@ private:
 };
 
 #include "Services/Events/Events.inl"
-
-}
 
 }
 

@@ -98,8 +98,8 @@ int32_t Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreatu
 
 ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
 {
-    auto stealtherID = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    auto observerID = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto stealtherID = Services::Events::ExtractArgument<ObjectID>(args);
+    auto observerID = Services::Events::ExtractArgument<ObjectID>(args);
     auto detectionVector = Services::Events::ExtractArgument<int>(args);
 
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
@@ -111,7 +111,7 @@ ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
 
 ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
 {
-    auto stealtherID = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto stealtherID = Services::Events::ExtractArgument<ObjectID>(args);
     auto revealToPartyState = Services::Events::ExtractArgument<int>(args);
     auto detectionVector = Services::Events::ExtractArgument<int>(args);
 

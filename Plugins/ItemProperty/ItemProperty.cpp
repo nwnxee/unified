@@ -68,7 +68,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     auto usable       = Services::Events::ExtractArgument<int32_t>(args);
     auto spellId      = Services::Events::ExtractArgument<int32_t>(args);
 
-    auto creator      = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
+    auto creator      = Services::Events::ExtractArgument<ObjectID>(args);
     auto tag          = Services::Events::ExtractArgument<std::string>(args);
 
     ip->SetNumIntegersInitializeToNegativeOne(9);
@@ -97,7 +97,7 @@ ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
     auto ip = Services::Events::ExtractArgument<CGameEffect*>(args);
 
     Services::Events::InsertArgument(stack, ip->GetString(0).CStr());
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)ip->m_oidCreator);
+    Services::Events::InsertArgument(stack, (ObjectID)ip->m_oidCreator);
     Services::Events::InsertArgument(stack, (int32_t)ip->m_nSpellId);
     Services::Events::InsertArgument(stack, ip->GetInteger(8));
     Services::Events::InsertArgument(stack, ip->GetInteger(7));

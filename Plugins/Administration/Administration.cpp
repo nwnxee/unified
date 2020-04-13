@@ -11,7 +11,6 @@
 #include "API/CServerInfo.hpp"
 #include "API/CNWSRules.hpp"
 #include "API/Globals.hpp"
-#include "API/Types.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSModule.hpp"
@@ -137,7 +136,7 @@ Events::ArgumentStack Administration::ShutdownServer(Events::ArgumentStack&&)
 
 Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStack&& args)
 {
-    const auto objectId = Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Events::ExtractArgument<ObjectID>(args);
     const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
 
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;

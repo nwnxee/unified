@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
-#include "API/Types.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Utils.hpp"

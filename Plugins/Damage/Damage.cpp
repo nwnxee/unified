@@ -73,7 +73,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
 {
     const std::string event = Services::Events::ExtractArgument<std::string>(args);
     const std::string script = Services::Events::ExtractArgument<std::string>(args);
-    Types::ObjectID oidOwner = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    ObjectID oidOwner = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (oidOwner == Constants::OBJECT_INVALID)
     {
@@ -226,8 +226,8 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     std::bitset<13> positive;
 
     // read input
-    uint32_t oidSource = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    uint32_t oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    uint32_t oidSource = Services::Events::ExtractArgument<ObjectID>(args);
+    uint32_t oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
 
     for (int k = 0; k < 12; k++)
     {

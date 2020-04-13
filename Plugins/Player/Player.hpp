@@ -53,7 +53,7 @@ private:
 
     CNWSPlayer *player(ArgumentStack& args);
 
-    std::unordered_map<std::string, std::pair<NWNXLib::API::Types::ObjectID, bool>> m_PersistentLocationWP;
+    std::unordered_map<std::string, std::pair<ObjectID, bool>> m_PersistentLocationWP;
 };
 
 }

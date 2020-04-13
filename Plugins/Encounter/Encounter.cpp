@@ -62,7 +62,7 @@ Encounter::~Encounter()
 
 CNWSEncounter *Encounter::encounter(ArgumentStack& args)
 {
-    const auto encounterId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto encounterId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (encounterId == Constants::OBJECT_INVALID)
     {

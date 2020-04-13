@@ -151,7 +151,7 @@ Creature::~Creature()
 
 CNWSCreature *Creature::creature(ArgumentStack& args)
 {
-    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -1709,7 +1709,7 @@ ArgumentStack Creature::GetTotalEffectBonus(ArgumentStack&& args)
     {
         CNWSObject *versus = NULL;
         const auto bonusType = Services::Events::ExtractArgument<int32_t>(args);
-        const auto versus_id = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto versus_id = Services::Events::ExtractArgument<ObjectID>(args);
         if (versus_id != Constants::OBJECT_INVALID)
         {
             CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);

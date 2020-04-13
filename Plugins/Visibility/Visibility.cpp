@@ -85,7 +85,7 @@ int32_t Visibility::TestObjectVisibleHook(
     return bInvisible ? false : g_plugin->m_TestObjectVisibilityHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
 }
 
-int32_t Visibility::GetGlobalOverride(Types::ObjectID targetId)
+int32_t Visibility::GetGlobalOverride(ObjectID targetId)
 {
     int32_t retVal = -1;
 
@@ -97,7 +97,7 @@ int32_t Visibility::GetGlobalOverride(Types::ObjectID targetId)
     return retVal;
 }
 
-int32_t Visibility::GetPersonalOverride(Types::ObjectID playerId, Types::ObjectID targetId)
+int32_t Visibility::GetPersonalOverride(ObjectID playerId, ObjectID targetId)
 {
     int32_t retVal = -1;
 
@@ -111,8 +111,8 @@ int32_t Visibility::GetPersonalOverride(Types::ObjectID playerId, Types::ObjectI
 
 ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalOverride(targetId) :
                                                                GetPersonalOverride(playerId, targetId);
@@ -122,8 +122,8 @@ ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
 
 ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
 {
-    auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
     const auto override = Services::Events::ExtractArgument<int32_t>(args);
     std::string varName = Utils::ObjectIDToString(targetId);
 

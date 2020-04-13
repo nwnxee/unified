@@ -90,7 +90,7 @@ private:
     static void LoadCharacterFinishHook(bool, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t);
     static void ResetFeatRemainingUsesHook(bool, CNWSCreatureStats*);
     static void CreateDefaultQuickButtonsHook(bool, CNWSCreature*);
-    static void HandleValidateCharacter(Types::ObjectID, bool);
+    static void HandleValidateCharacter(ObjectID, bool);
     static void ValidateCharacterHook(bool, CNWSPlayer*, int32_t*);
 
     static void SendServerToPlayerLevelUp_ConfirmationHook(bool, CNWSMessage*, Types::PlayerID, int32_t);

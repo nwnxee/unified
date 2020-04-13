@@ -99,7 +99,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
     ASSERT(thisPtr); ASSERT(nParameters == 2);
     auto *vm = Globals::VirtualMachine();
 
-    Types::ObjectID oid;
+    ObjectID oid;
     if (!vm->StackPopObject(&oid))
         return VMError::StackUnderflow;
 
@@ -162,11 +162,11 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         }
         case VMCommand::GetLocalObject:
         {
-            Types::ObjectID oid = Constants::OBJECT_INVALID;
+            ObjectID oid = Constants::OBJECT_INVALID;
 
             if (nwnx)
             {
-                if (auto res = g_core->m_services->m_events->Pop<Types::ObjectID>(nwnx->plugin, nwnx->event))
+                if (auto res = g_core->m_services->m_events->Pop<ObjectID>(nwnx->plugin, nwnx->event))
                     oid = *res;
             }
             else if (vartable)
@@ -197,7 +197,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
     ASSERT(thisPtr); ASSERT(nParameters == 3);
     auto *vm = Globals::VirtualMachine();
 
-    Types::ObjectID oid;
+    ObjectID oid;
     if (!vm->StackPopObject(&oid))
         return VMError::StackUnderflow;
 
@@ -262,7 +262,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         }
         case VMCommand::SetLocalObject:
         {
-            Types::ObjectID value;
+            ObjectID value;
             if (!vm->StackPopObject(&value))
                 return VMError::StackUnderflow;
 

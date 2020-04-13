@@ -81,7 +81,7 @@ Chat::~Chat()
 {
 }
 
-void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatChannel::TYPE channel, Types::ObjectID sender,
+void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatChannel::TYPE channel, ObjectID sender,
     CExoString message, Types::PlayerID target, CExoString* tellName)
 {
     Chat& plugin = *g_plugin;
@@ -205,8 +205,8 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     int32_t retVal = false;
     const auto channel = static_cast<Constants::ChatChannel::TYPE>(Events::ExtractArgument<int32_t>(args));
     const auto message = Events::ExtractArgument<std::string>(args);
-    const auto speaker = Events::ExtractArgument<Types::ObjectID>(args);
-    const auto target = Events::ExtractArgument<Types::ObjectID>(args);
+    const auto speaker = Events::ExtractArgument<ObjectID>(args);
+    const auto target = Events::ExtractArgument<ObjectID>(args);
 
     const bool hasManualPlayerId = target != Constants::OBJECT_INVALID;
 
@@ -297,7 +297,7 @@ Events::ArgumentStack Chat::GetTarget(Events::ArgumentStack&&)
 Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 {
     const auto distance = Services::Events::ExtractArgument<float>(args);
-    const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerOid = Services::Events::ExtractArgument<ObjectID>(args);
     const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
 
     if (playerOid == Constants::OBJECT_INVALID)
@@ -325,7 +325,7 @@ Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 
 Events::ArgumentStack Chat::GetChatHearingDistance(Events::ArgumentStack&& args)
 {
-    const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerOid = Services::Events::ExtractArgument<ObjectID>(args);
     const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
     float retVal = m_hearingDistances[channel];
 

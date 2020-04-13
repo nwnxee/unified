@@ -30,7 +30,7 @@ ObjectEvents::ObjectEvents(Services::HooksProxy* hooker)
 
 }
 
-int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, Types::ObjectID oidDoor)
+int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, ObjectID oidDoor)
 {
     int32_t retVal;
 
@@ -54,7 +54,7 @@ int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, Types::Object
     return retVal;
 }
 
-int32_t ObjectEvents::AddUnlockObjectActionHook(CNWSObject *thisPtr, Types::ObjectID oidDoor, Types::ObjectID oidThievesTool, int32_t nActivePropertyIndex)
+int32_t ObjectEvents::AddUnlockObjectActionHook(CNWSObject *thisPtr, ObjectID oidDoor, ObjectID oidThievesTool, int32_t nActivePropertyIndex)
 {
     int32_t retVal;
 

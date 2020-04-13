@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSObject.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;

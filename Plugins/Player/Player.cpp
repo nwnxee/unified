@@ -112,7 +112,7 @@ Player::~Player()
 
 CNWSPlayer *Player::player(ArgumentStack& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (playerId == Constants::OBJECT_INVALID)
     {
@@ -132,7 +132,7 @@ ArgumentStack Player::ForcePlaceableExamineWindow(ArgumentStack&& args)
 {
     if (auto *pPlayer = player(args))
     {
-        const auto placeableId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto placeableId = Services::Events::ExtractArgument<ObjectID>(args);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
@@ -152,7 +152,7 @@ ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
 {
     if (auto *pPlayer = player(args))
     {
-        const auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
         const auto oidPlayer = pPlayer->m_oidNWSObject;
 
         if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
@@ -310,8 +310,8 @@ ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
 
     return Services::Events::Arguments
     (
-        (Types::ObjectID)qbs.m_oidItem,
-        (Types::ObjectID)qbs.m_oidSecondaryItem,
+        (ObjectID)qbs.m_oidItem,
+        (ObjectID)qbs.m_oidSecondaryItem,
         (int32_t)qbs.m_nObjectType,
         (int32_t)qbs.m_nMultiClass,
         std::string(qbs.m_cResRef.GetResRefStr()),
@@ -322,7 +322,7 @@ ArgumentStack Player::GetQuickBarSlot(ArgumentStack&& args)
         (int32_t)qbs.m_nMetaType,
         (int32_t)qbs.m_nDomainLevel,
         (int32_t)qbs.m_nAssociateType,
-        (Types::ObjectID)qbs.m_oidAssociate
+        (ObjectID)qbs.m_oidAssociate
     );
 }
 
@@ -338,7 +338,7 @@ ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
         if (!pCreature->m_pQuickbarButton)
             pCreature->InitializeQuickbar();
 
-        pCreature->m_pQuickbarButton[slot].m_oidAssociate     = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        pCreature->m_pQuickbarButton[slot].m_oidAssociate     = Services::Events::ExtractArgument<ObjectID>(args);
         pCreature->m_pQuickbarButton[slot].m_nAssociateType   = Services::Events::ExtractArgument<int32_t>(args);
         pCreature->m_pQuickbarButton[slot].m_nDomainLevel     = Services::Events::ExtractArgument<int32_t>(args);
         pCreature->m_pQuickbarButton[slot].m_nMetaType        = Services::Events::ExtractArgument<int32_t>(args);
@@ -349,8 +349,8 @@ ArgumentStack Player::SetQuickBarSlot(ArgumentStack&& args)
         pCreature->m_pQuickbarButton[slot].m_cResRef          = Services::Events::ExtractArgument<std::string>(args).c_str();
         pCreature->m_pQuickbarButton[slot].m_nMultiClass      = Services::Events::ExtractArgument<int32_t>(args);
         pCreature->m_pQuickbarButton[slot].m_nObjectType      = Services::Events::ExtractArgument<int32_t>(args);
-        pCreature->m_pQuickbarButton[slot].m_oidSecondaryItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
-        pCreature->m_pQuickbarButton[slot].m_oidItem          = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        pCreature->m_pQuickbarButton[slot].m_oidSecondaryItem = Services::Events::ExtractArgument<ObjectID>(args);
+        pCreature->m_pQuickbarButton[slot].m_oidItem          = Services::Events::ExtractArgument<ObjectID>(args);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         pMessage->SendServerToPlayerGuiQuickbar_SetButton(pPlayer, slot, 0);
@@ -470,7 +470,7 @@ ArgumentStack Player::PlaySound(ArgumentStack&& args)
 
         auto sound = Services::Events::ExtractArgument<std::string>(args);
 
-        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
 
         if (oidTarget == Constants::OBJECT_INVALID)
         {
@@ -490,7 +490,7 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
 {
     if (auto *pPlayer = player(args))
     {
-        const auto oidPlaceable = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidPlaceable = Services::Events::ExtractArgument<ObjectID>(args);
         const auto bUsable = Services::Events::ExtractArgument<int32_t>(args);
 
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
@@ -567,7 +567,7 @@ ArgumentStack Player::ApplyInstantVisualEffectToObject(ArgumentStack&& args)
 {
     if (auto *pPlayer = player(args))
     {
-        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect >= 0); ASSERT_OR_THROW(visualEffect <= 65535);
@@ -614,7 +614,7 @@ ArgumentStack Player::OpenInventory(ArgumentStack&& args)
 {
     if (auto *pPlayer = player(args))
     {
-        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto open = !!Services::Events::ExtractArgument<int32_t>(args);
 
@@ -644,7 +644,7 @@ ArgumentStack Player::GetAreaExplorationState(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-        const auto areaId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto areaId = Services::Events::ExtractArgument<ObjectID>(args);
         if (pCreature && areaId != Constants::OBJECT_INVALID)
         {
             const auto pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
@@ -675,7 +675,7 @@ ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-        const auto areaId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto areaId = Services::Events::ExtractArgument<ObjectID>(args);
         if (pCreature && areaId != Constants::OBJECT_INVALID)
         {
             const auto pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaId);
@@ -749,7 +749,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
                 +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
+                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
@@ -787,7 +787,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
     if (auto *pPlayer = player(args))
     {
-        const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
         const auto transform = Services::Events::ExtractArgument<int32_t>(args);
         const auto value = Services::Events::ExtractArgument<float>(args);
@@ -877,7 +877,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
                 +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
+                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
@@ -921,7 +921,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 
     if (auto *pPlayer = player(args))
     {
-        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect <= 65535);
@@ -976,7 +976,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
                 +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
+                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
                     {
@@ -1011,7 +1011,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
 
     if (auto *pPlayer = player(args))
     {
-        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto name = Services::Events::ExtractArgument<std::string>(args);
 
@@ -1122,7 +1122,7 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
 
     const auto sCDKeyOrCommunityName = Services::Events::ExtractArgument<std::string>(args);
     const auto sBicFileName = Services::Events::ExtractArgument<std::string>(args);
-    const auto wpOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto wpOid = Services::Events::ExtractArgument<ObjectID>(args);
     const auto bFirstConnectOnly = Services::Events::ExtractArgument<int32_t>(args);
 
     std::string sKey = sCDKeyOrCommunityName + "!" + sBicFileName;
@@ -1135,7 +1135,7 @@ ArgumentStack Player::UpdateItemName(ArgumentStack&& args)
 {
     if (auto *pPlayer = player(args))
     {
-        auto oidItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto oidItem = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
 
         auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItem));
@@ -1151,8 +1151,8 @@ ArgumentStack Player::UpdateItemName(ArgumentStack&& args)
 
 ArgumentStack Player::PossessCreature(ArgumentStack&& args)
 {
-    const auto possessorId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto possessedId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto possessorId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto possessedId = Services::Events::ExtractArgument<ObjectID>(args);
     const auto bMindImmune = Services::Events::ExtractArgument<int>(args);
     const auto bCreateQB = Services::Events::ExtractArgument<int>(args);
 

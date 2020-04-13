@@ -33,7 +33,7 @@ namespace NWNXLib::Utils {
 
 using namespace API::Constants;
 
-std::string ObjectIDToString(const API::Types::ObjectID id)
+std::string ObjectIDToString(const ObjectID id)
 {
     std::stringstream ss;
     ss << std::hex << id;
@@ -52,7 +52,7 @@ std::string GetCurrentScript()
 
     return std::string(script.m_sScriptName.CStr());
 }
-void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner)
+void ExecuteScript(const std::string& script, ObjectID oidOwner)
 {
     CExoString exoStr = script.c_str();
     API::Globals::VirtualMachine()->RunScript(&exoStr, oidOwner, 1);
@@ -153,7 +153,7 @@ CNWSWaypoint* AsNWSWaypoint(CGameObject* obj)
     return nullptr;
 }
 
-CGameObject* GetGameObject(API::Types::ObjectID objectId)
+CGameObject* GetGameObject(ObjectID objectId)
 {
     return API::Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
 }
@@ -335,7 +335,7 @@ std::string ExtractLocString(CExoLocString& locStr, int32_t nID, uint8_t bGender
     return std::string(str.CStr());
 }
 
-void AddStealthEvent(int which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget)
+void AddStealthEvent(int which, ObjectID oidSelf, ObjectID oidTarget)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
@@ -346,7 +346,7 @@ void AddStealthEvent(int which, API::Types::ObjectID oidSelf, API::Types::Object
     pAIMaster->AddEventDeltaTime(0, 0, oidTarget, oidSelf, Event::SignalEvent, pScriptEvent);
 }
 
-void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea)
+void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
@@ -355,7 +355,7 @@ void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidA
     pAIMaster->AddEventDeltaTime(0, 0, oid, oidArea, Event::SignalEvent, pScriptEvent);
 }
 
-void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea)
+void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
@@ -365,9 +365,9 @@ void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidAr
 }
 
 void AddOnAcquireItemEvent(
-        API::Types::ObjectID oidItemAcquired,
-        API::Types::ObjectID oidItemAcquiredBy,
-        API::Types::ObjectID oidItemAcquiredFrom,
+        ObjectID oidItemAcquired,
+        ObjectID oidItemAcquiredBy,
+        ObjectID oidItemAcquiredFrom,
         int32_t stackSize)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
@@ -382,8 +382,8 @@ void AddOnAcquireItemEvent(
 }
 
 void AddOnLoseItemEvent(
-        API::Types::ObjectID oidItemLost,
-        API::Types::ObjectID oidItemLostBy)
+        ObjectID oidItemLost,
+        ObjectID oidItemLostBy)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
@@ -393,14 +393,14 @@ void AddOnLoseItemEvent(
     pAIMaster->AddEventDeltaTime(0, 0, oidItemLostBy, Utils::GetModule()->m_idSelf, Event::SignalEvent, pScriptEvent);
 }
 
-void AddDestroyObjectEvent(API::Types::ObjectID oid)
+void AddDestroyObjectEvent(ObjectID oid)
 {
     auto *pAIMaster = API::Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
 
     pAIMaster->AddEventDeltaTime(0, 0, oid, oid, Utils::Event::DestroyObject, nullptr);
 }
 
-int PushScriptContext(API::Types::ObjectID oid, bool valid)
+int PushScriptContext(ObjectID oid, bool valid)
 {
     auto vm = API::Globals::VirtualMachine();
     auto cmd = static_cast<CNWVirtualMachineCommands*>(vm->m_pCmdImplementer);

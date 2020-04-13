@@ -41,7 +41,7 @@ private:
         CExoLocString locName);
 
     static bool GetGlobalState(int32_t messageType, int32_t messageId);
-    static int32_t GetPersonalState(NWNXLib::API::Types::ObjectID playerId, int32_t messageType, int32_t messageId);
+    static int32_t GetPersonalState(ObjectID playerId, int32_t messageType, int32_t messageId);
 
     std::set<int32_t> m_GlobalHiddenMessageSet;
     bool m_FeedbackMessageWhitelist = false;

@@ -21,8 +21,8 @@ using namespace NWNXLib::Services;
 
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerBarter_StartBarterHook;
 
-static Types::ObjectID m_initiatorOid;
-static Types::ObjectID m_targetOid;
+static ObjectID m_initiatorOid;
+static ObjectID m_targetOid;
 
 BarterEvents::BarterEvents(Services::HooksProxy* hooker)
 {
@@ -45,8 +45,8 @@ int32_t BarterEvents::HandlePlayerToServerBarter_StartBarterHook(
 {
     int32_t retVal;
 
-    Types::ObjectID oidPlayer = pPlayer->m_oidNWSObject;
-    Types::ObjectID targetId = Utils::PeekMessage<Types::ObjectID>(pMessage, 0) & 0x7FFFFFFF;
+    ObjectID oidPlayer = pPlayer->m_oidNWSObject;
+    ObjectID targetId = Utils::PeekMessage<ObjectID>(pMessage, 0) & 0x7FFFFFFF;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("BARTER_TARGET", Utils::ObjectIDToString(targetId));
@@ -71,7 +71,7 @@ void BarterEvents::SetListAcceptedHook(bool before, CNWSBarter *pBarter, int32_t
         EndedBarter(before, pBarter, bAccepted);
 }
 
-void BarterEvents::SendServerToPlayerBarterCloseBarterHook(bool before, CNWSMessage*, Types::ObjectID nInitiatorId, Types::ObjectID, int32_t bAccepted)
+void BarterEvents::SendServerToPlayerBarterCloseBarterHook(bool before, CNWSMessage*, ObjectID nInitiatorId, ObjectID, int32_t bAccepted)
 {
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
     uint32_t oidPlayer = static_cast<CNWSPlayer*>(exoApp->GetClientObjectByPlayerId(nInitiatorId, 0))->m_oidPCObject;
@@ -111,7 +111,7 @@ void BarterEvents::EndedBarter(bool before, CNWSBarter *pBarter, int32_t bAccept
             int i = 0;
             for (auto *node = itemList->pHead; node; node = node->pNext)
             {
-                auto item = *(static_cast<Types::ObjectID *>(node->pObject));
+                auto item = *(static_cast<ObjectID *>(node->pObject));
                 Events::PushEventData("BARTER_INITIATOR_ITEM_" + std::to_string(i), Utils::ObjectIDToString(item));
                 i++;
             }
@@ -128,7 +128,7 @@ void BarterEvents::EndedBarter(bool before, CNWSBarter *pBarter, int32_t bAccept
             int i = 0;
             for (auto *node = itemList->pHead; node; node = node->pNext)
             {
-                auto item = *(static_cast<Types::ObjectID *>(node->pObject));
+                auto item = *(static_cast<ObjectID *>(node->pObject));
                 Events::PushEventData("BARTER_TARGET_ITEM_" + std::to_string(i), Utils::ObjectIDToString(item));
                 i++;
             }

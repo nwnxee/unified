@@ -15,7 +15,7 @@ SkillEvents::SkillEvents(Services::HooksProxy* hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_USE_SKILL_.*", [hooker]() {
         s_UseSkillHook = hooker->RequestExclusiveHook
             <API::Functions::_ZN12CNWSCreature8UseSkillEhhj6Vectorjji, int32_t, CNWSCreature*, uint8_t, uint8_t,
-            NWNXLib::API::Types::ObjectID, Vector, NWNXLib::API::Types::ObjectID, NWNXLib::API::Types::ObjectID, int32_t>
+            ObjectID, Vector, ObjectID, ObjectID, int32_t>
             (&UseSkillHook);
     });
 }
@@ -24,10 +24,10 @@ int32_t SkillEvents::UseSkillHook(
     CNWSCreature* thisPtr,
     uint8_t skill,
     uint8_t subSkill,
-    API::Types::ObjectID target,
+    ObjectID target,
     Vector targetPosition,
-    API::Types::ObjectID area,
-    API::Types::ObjectID usedItem,
+    ObjectID area,
+    ObjectID usedItem,
     int32_t activePropertyIndex)
 {
     int32_t retVal;

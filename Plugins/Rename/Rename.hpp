@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "Common.hpp"
 #include <unordered_set>
 
@@ -21,8 +20,8 @@ public:
     virtual ~Rename();
 
 private:
-    std::unordered_map<Types::ObjectID, std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoString, int32_t>>> m_RenamePlayerNames;
-    std::unordered_map<Types::ObjectID, std::tuple<CExoString, CExoLocString, CExoLocString>> m_RenameOriginalNames;
+    std::unordered_map<ObjectID, std::unordered_map<ObjectID, std::tuple<CExoString, CExoString, int32_t>>> m_RenamePlayerNames;
+    std::unordered_map<ObjectID, std::tuple<CExoString, CExoLocString, CExoLocString>> m_RenameOriginalNames;
     int32_t m_RenameOnModuleCharList;
     std::unordered_set<Types::PlayerID> m_RenameAddedToPlayerList;
     bool m_RenameOnPlayerList;
@@ -34,12 +33,12 @@ private:
     static void SendServerToPlayerPlayerList_AddHook(bool, CNWSMessage*, Types::PlayerID, CNWSPlayer*);
     static void SendServerToPlayerPlayerList_DeleteHook(bool, CNWSMessage*, Types::PlayerID, CNWSPlayer*);
     static void SendServerToPlayerDungeonMasterUpdatePartyListHook(bool, CNWSMessage*, Types::PlayerID);
-    static void SendServerToPlayerExamineGui_CreatureDataHook(bool, CNWSMessage*, CNWSPlayer*, Types::ObjectID);
-    static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage*, Types::PlayerID, Types::ObjectID, int32_t);
-    static void SendServerToPlayerChatHook(bool, CNWSMessage*, Types::PlayerID, Types::ObjectID, CExoString*);
-    static int32_t SendServerToPlayerPopUpGUIPanelHook(CNWSMessage*, Types::ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*);
+    static void SendServerToPlayerExamineGui_CreatureDataHook(bool, CNWSMessage*, CNWSPlayer*, ObjectID);
+    static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage*, Types::PlayerID, ObjectID, int32_t);
+    static void SendServerToPlayerChatHook(bool, CNWSMessage*, Types::PlayerID, ObjectID, CExoString*);
+    static int32_t SendServerToPlayerPopUpGUIPanelHook(CNWSMessage*, ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*);
     static void SetOrRestorePlayerName(bool, CNWSPlayer*, CNWSPlayer*, bool playerList=false);
-    static void SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID, bool playerList=false);
+    static void SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, ObjectID, bool playerList=false);
     static void RestorePlayerName(CNWSCreature *targetCreature, bool playerList=false);
     void GlobalNameChange(bool, Types::PlayerID, Types::PlayerID);
 
@@ -52,7 +51,7 @@ private:
     ArgumentStack GetPCNameOverride(ArgumentStack&& args);
     ArgumentStack ClearPCNameOverride(ArgumentStack&& args);
 
-    CNWSPlayer *player(Types::ObjectID playerId);
+    CNWSPlayer *player(ObjectID playerId);
 };
 
 }

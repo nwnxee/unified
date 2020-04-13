@@ -4,7 +4,6 @@
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
-#include "API/Types.hpp"
 #include "API/Functions.hpp"
 #include "API/CVirtualMachine.hpp"
 #include "API/CExoString.hpp"

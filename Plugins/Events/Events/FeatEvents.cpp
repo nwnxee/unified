@@ -23,8 +23,8 @@ FeatEvents::FeatEvents(Services::HooksProxy* hooker)
             CNWSCreature*,
             uint16_t,
             uint16_t,
-            NWNXLib::API::Types::ObjectID,
-            NWNXLib::API::Types::ObjectID,
+            ObjectID,
+            ObjectID,
             Vector*>(FeatEvents::UseFeatHook);
     });
 }
@@ -33,8 +33,8 @@ int32_t FeatEvents::UseFeatHook(
     CNWSCreature* thisPtr,
     uint16_t featID,
     uint16_t subFeatID,
-    NWNXLib::API::Types::ObjectID oidTarget,
-    NWNXLib::API::Types::ObjectID oidArea,
+    ObjectID oidTarget,
+    ObjectID oidArea,
     Vector* pvTarget)
 {
     int32_t retVal;

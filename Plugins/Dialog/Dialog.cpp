@@ -349,7 +349,7 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
 
 ArgumentStack Dialog::End(ArgumentStack&& args)
 {
-    auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObject)))

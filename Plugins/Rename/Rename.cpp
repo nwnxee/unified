@@ -81,13 +81,13 @@ Rename::Rename(const Plugin::CreateParams& params)
             int32_t, CNWSMessage *, CNWSPlayer *, CNWSObject *, CLastUpdateObject *, uint32_t, uint32_t>(
             &WriteGameObjUpdate_UpdateObjectHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj,
-            int32_t, CNWSMessage *, CNWSPlayer *, Types::ObjectID>(&SendServerToPlayerExamineGui_CreatureDataHook);
+            int32_t, CNWSMessage *, CNWSPlayer *, ObjectID>(&SendServerToPlayerExamineGui_CreatureDataHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage28SendServerToPlayerChat_PartyEjj10CExoString,
-            int32_t, CNWSMessage*, Types::PlayerID, Types::ObjectID, CExoString*>(&SendServerToPlayerChatHook);
+            int32_t, CNWSMessage*, Types::PlayerID, ObjectID, CExoString*>(&SendServerToPlayerChatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage28SendServerToPlayerChat_ShoutEjj10CExoString,
-            int32_t, CNWSMessage*, Types::PlayerID, Types::ObjectID, CExoString*>(&SendServerToPlayerChatHook);
+            int32_t, CNWSMessage*, Types::PlayerID, ObjectID, CExoString*>(&SendServerToPlayerChatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage27SendServerToPlayerChat_TellEjj10CExoString,
-            int32_t, CNWSMessage*, Types::PlayerID, Types::ObjectID, CExoString*>(&SendServerToPlayerChatHook);
+            int32_t, CNWSMessage*, Types::PlayerID, ObjectID, CExoString*>(&SendServerToPlayerChatHook);
 
     // TODO: When shared hooks are executed by exclusive hooks we can use a shared hook for this instead and simplify
     // For now we perform the functionality of the HideClassesOnCharList Tweak for convenience
@@ -100,7 +100,7 @@ Rename::Rename(const Plugin::CreateParams& params)
         else if (m_RenameOnModuleCharList == 3)
             LOG_INFO("Hiding classes in the module character listing via the Rename plugin.");
         m_SendServerToPlayerPlayModuleCharacterListResponseHook = GetServices()->m_hooks->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji, int32_t, CNWSMessage *, Types::PlayerID, Types::ObjectID, int32_t>
+            <Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji, int32_t, CNWSMessage *, Types::PlayerID, ObjectID, int32_t>
             (&SendServerToPlayerPlayModuleCharacterListResponseHook);
     }
 
@@ -125,7 +125,7 @@ Rename::Rename(const Plugin::CreateParams& params)
 
     // TODO: When shared hooks are executed by exclusive hooks change this to HandlePlayerToServerParty
     m_SendServerToPlayerPopUpGUIPanelHook = GetServices()->m_hooks->RequestExclusiveHook
-        <Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString, int32_t, CNWSMessage*, Types::ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*>
+        <Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString, int32_t, CNWSMessage*, ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*>
         (&SendServerToPlayerPopUpGUIPanelHook);
 
 }
@@ -134,7 +134,7 @@ Rename::~Rename()
 {
 }
 
-CNWSPlayer *Rename::player(Types::ObjectID playerId)
+CNWSPlayer *Rename::player(ObjectID playerId)
 {
     if (playerId == Constants::OBJECT_INVALID)
     {
@@ -158,7 +158,7 @@ void Rename::SetOrRestorePlayerName(bool before, CNWSPlayer *targetPlayer, CNWSP
     auto *targetCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(targetPlayer->m_oidNWSObject);
     auto *observerCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(observerPlayer->m_oidNWSObject);
 
-    Types::ObjectID observerOid;
+    ObjectID observerOid;
     if (observerCreature == nullptr)
         observerOid = Constants::OBJECT_INVALID;
     else
@@ -184,7 +184,7 @@ void Rename::SetOrRestorePlayerName(bool before, CNWSPlayer *targetPlayer, CNWSP
 
 }
 
-void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, Types::ObjectID observerOid, bool playerList)
+void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, ObjectID observerOid, bool playerList)
 {
     auto targetOid = targetCreature->m_idSelf;
     if (!g_plugin->m_RenamePlayerNames.count(targetOid))
@@ -255,7 +255,7 @@ void Rename::SendServerToPlayerExamineGui_CreatureDataHook(
         bool before,
         CNWSMessage*,
         CNWSPlayer *observerPlayer,
-        Types::ObjectID targetOid)
+        ObjectID targetOid)
 {
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
     SetOrRestorePlayerName(before, targetPlayer, observerPlayer);
@@ -267,7 +267,7 @@ void Rename::SendServerToPlayerExamineGui_CreatureDataHook(
 int32_t Rename::SendServerToPlayerPlayModuleCharacterListResponseHook(
         CNWSMessage *thisPtr,
         Types::PlayerID observerPlayerId,
-        Types::ObjectID targetOid,
+        ObjectID targetOid,
         int32_t add)
 {
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
@@ -335,7 +335,7 @@ void Rename::SendServerToPlayerChatHook(
         bool before,
         CNWSMessage*,
         Types::PlayerID observerPlayerId,
-        Types::ObjectID targetOid,
+        ObjectID targetOid,
         CExoString*)
 {
     auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(targetOid);
@@ -393,7 +393,7 @@ void Rename::SendServerToPlayerPlayerList_DeleteHook(
 
 int32_t Rename::SendServerToPlayerPopUpGUIPanelHook(
             CNWSMessage *pMessage,
-            Types::ObjectID observerOid,
+            ObjectID observerOid,
             int32_t nGuiPanel,
             int32_t bGUIOption1,
             int32_t bGUIOption2,
@@ -595,7 +595,7 @@ void Rename::SendNameUpdate(CNWSCreature *targetCreature, Types::PlayerID observ
 
 ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
 {
-    auto targetOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto targetOid = Services::Events::ExtractArgument<ObjectID>(args);
     if (auto *targetPlayer = player(targetOid))
     {
         auto *server = Globals::AppManager()->m_pServerExoApp;
@@ -609,7 +609,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
         const auto sPrefix = Services::Events::ExtractArgument<std::string>(args);
         const auto sSuffix = Services::Events::ExtractArgument<std::string>(args);
         auto bPlayerNameState = Services::Events::ExtractArgument<int>(args);
-        const auto observerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto observerOid = Services::Events::ExtractArgument<ObjectID>(args);
 
         if (bPlayerNameState != NWNX_RENAME_PLAYERNAME_DEFAULT && observerOid != Constants::OBJECT_INVALID)
         {
@@ -664,7 +664,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
 
 ArgumentStack Rename::GetPCNameOverride(ArgumentStack &&args)
 {
-    auto targetOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto targetOid = Services::Events::ExtractArgument<ObjectID>(args);
     std::string retVal;
     if (auto *targetPlayer = player(targetOid))
     {
@@ -674,7 +674,7 @@ ArgumentStack Rename::GetPCNameOverride(ArgumentStack &&args)
             LOG_ERROR("No creature object found for Player %x, oidNWSObject %x", targetPlayer->m_nPlayerID, targetOid);
             return Services::Events::Arguments();
         }
-        auto observerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto observerOid = Services::Events::ExtractArgument<ObjectID>(args);
         if(m_RenamePlayerNames[targetOid].find(observerOid) != m_RenamePlayerNames[targetOid].end())
             retVal = std::get<0>(m_RenamePlayerNames[targetOid][observerOid]).CStr();
         else if(m_RenamePlayerNames[targetOid].find(Constants::OBJECT_INVALID) != m_RenamePlayerNames[targetOid].end())
@@ -685,8 +685,8 @@ ArgumentStack Rename::GetPCNameOverride(ArgumentStack &&args)
 
 ArgumentStack Rename::ClearPCNameOverride(ArgumentStack &&args)
 {
-    auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    auto observerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto playerOid = Services::Events::ExtractArgument<ObjectID>(args);
+    auto observerOid = Services::Events::ExtractArgument<ObjectID>(args);
     bool bClearAll = Services::Events::ExtractArgument<int32_t>(args);
     auto *server = Globals::AppManager()->m_pServerExoApp;
 

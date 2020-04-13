@@ -61,7 +61,7 @@ Appearance::~Appearance()
 
 CNWSPlayer *Appearance::Player(ArgumentStack& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (playerId == Constants::OBJECT_INVALID)
     {
@@ -79,7 +79,7 @@ CNWSPlayer *Appearance::Player(ArgumentStack& args)
 }
 
 void Appearance::ComputeGameObjectUpdateForObjectHook(bool before, CNWSMessage*,
-        CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, Types::ObjectID oidObjectToUpdate)
+        CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, ObjectID oidObjectToUpdate)
 {
     if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
     {
@@ -143,7 +143,7 @@ ArgumentStack Appearance::SetOverride(ArgumentStack&& args)
 {
     if (auto *pPlayer = Player(args))
     {
-        const auto oidCreature = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidCreature = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(type < OverrideType_MAX);
@@ -245,7 +245,7 @@ ArgumentStack Appearance::GetOverride(ArgumentStack&& args)
 
     if (auto *pPlayer = Player(args))
     {
-        const auto oidCreature = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidCreature = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
         const auto type = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(type >= 0);
