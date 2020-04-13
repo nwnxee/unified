@@ -19,8 +19,9 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerQuickChatMessageHoo
 QuickChatEvents::QuickChatEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh>(&HandlePlayerToServerQuickChatMessageHook);
-        m_HandlePlayerToServerQuickChatMessageHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh);
+        m_HandlePlayerToServerQuickChatMessageHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh>
+            (&HandlePlayerToServerQuickChatMessageHook);
     });
 }
 

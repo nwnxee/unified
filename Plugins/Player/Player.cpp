@@ -241,7 +241,8 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 
     if (!pOnRemoveLimitMovementSpeed_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect>(
+        pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->RequestExclusiveHook
+            <Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect>(
             +[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
             {
                 // Don't remove the forced walk flag when various slowdown effects expire
@@ -251,7 +252,6 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 
                 return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
             });
-        pOnRemoveLimitMovementSpeed_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect);
     }
 
     if (auto *pPlayer = player(args))
@@ -1192,7 +1192,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
     if (!pUnsummonMyselfHook)
     {
         // When a PC is logging off we don't want this creature to unsummon themselves
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature14UnsummonMyselfEv>(
+        pUnsummonMyselfHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature14UnsummonMyselfEv>(
                 +[](CNWSCreature *pPossessed) -> void
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
@@ -1211,9 +1211,8 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                         pUnsummonMyselfHook->CallOriginal<void>(pPossessed);
                     }
                 });
-        pUnsummonMyselfHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature14UnsummonMyselfEv);
 
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15PossessFamiliarEv>(
+        pPossessFamiliarHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15PossessFamiliarEv>(
                 +[](CNWSCreature *pPossessor) -> void
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
@@ -1227,7 +1226,6 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                         pPossessFamiliarHook->CallOriginal<void>(pPossessor);
                     }
                 });
-        pPossessFamiliarHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature15PossessFamiliarEv);
 
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature17UnpossessFamiliarEv, int32_t>(
                 +[](bool before, CNWSCreature *pPossessor) -> void

@@ -36,13 +36,12 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 namespace CombatModes {
 
-static Hooking::FunctionHook* g_SetCombatModeHook = nullptr;
+static Hooking::FunctionHook* s_SetCombatModeHook;
 
 CombatModes::CombatModes(const Plugin::CreateParams& params)
     : Plugin(params), m_Skipped(false), m_FlurryOfBlows(false)
 {
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
-    g_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN12CNWSCreature13SetCombatModeEhi);
+    s_SetCombatModeHook = GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
         [this](const std::vector<std::string> message)
@@ -119,7 +118,7 @@ void CombatModes::SetCombatModeHook(CNWSCreature* thisPtr, uint8_t nNewMode, int
                 return;
             }
         }
-        return g_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
+        return s_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
     }
 }
 

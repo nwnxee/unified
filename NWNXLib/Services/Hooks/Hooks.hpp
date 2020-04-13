@@ -74,7 +74,7 @@ public:
     void RequestSharedHook(void(*funcPtr)(bool, Params ...));
 
     template <uintptr_t Address, typename Ret, typename ... Params>
-    void RequestExclusiveHook(Ret(*funcPtr)(Params ...));
+    Hooking::FunctionHook* RequestExclusiveHook(Ret(*funcPtr)(Params ...));
 
     void ClearHook(const uintptr_t address);
     Hooking::FunctionHook* FindHookByAddress(const uintptr_t address);

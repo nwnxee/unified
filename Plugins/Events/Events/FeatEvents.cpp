@@ -12,12 +12,12 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Hooking::FunctionHook* m_UseFeatHook = nullptr;
+static Hooking::FunctionHook* s_UseFeatHook;
 
 FeatEvents::FeatEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<
+        s_UseFeatHook = hooker->RequestExclusiveHook<
             NWNXLib::API::Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector,
             int32_t,
             CNWSCreature*,
@@ -26,8 +26,6 @@ FeatEvents::FeatEvents(Services::HooksProxy* hooker)
             NWNXLib::API::Types::ObjectID,
             NWNXLib::API::Types::ObjectID,
             Vector*>(FeatEvents::UseFeatHook);
-
-        m_UseFeatHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector);
     });
 }
 
@@ -54,7 +52,7 @@ int32_t FeatEvents::UseFeatHook(
 
     if (PushAndSignal("NWNX_ON_USE_FEAT_BEFORE"))
     {
-        retVal = m_UseFeatHook->CallOriginal<int32_t>(thisPtr, featID, subFeatID, oidTarget, oidArea, pvTarget);
+        retVal = s_UseFeatHook->CallOriginal<int32_t>(thisPtr, featID, subFeatID, oidTarget, oidArea, pvTarget);
     }
     else
     {

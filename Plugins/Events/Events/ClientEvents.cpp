@@ -30,21 +30,21 @@ ClientEvents::ClientEvents(HooksProxy* hooker)
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_SERVER_CHARACTER_SAVE_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSPlayer19SaveServerCharacterEi, int32_t,
-            CNWSPlayer*, int32_t>(&OnServerCharacterSave);
-        m_ServerCharacterSaveHook = hooker->FindHookByAddress(API::Functions::_ZN10CNWSPlayer19SaveServerCharacterEi);
+        m_ServerCharacterSaveHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN10CNWSPlayer19SaveServerCharacterEi, int32_t, CNWSPlayer*, int32_t>
+            (&OnServerCharacterSave);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_CONNECT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer, int32_t,
-            CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerCharListHook);
-        m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer);
+        m_SendServerToPlayerCharListHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
+            (&SendServerToPlayerCharListHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i, int32_t,
-                CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>(&CheckStickyPlayerNameReservedHook);
-        m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i);
+        m_CheckStickyPlayerNameReservedHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i, int32_t, CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>
+            (&CheckStickyPlayerNameReservedHook);
     });
 }
 

@@ -54,8 +54,7 @@ Reveal::Reveal(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature18DoStealthDetectionEPS_iPiS1_i, int32_t,CNWSCreature*,CNWSCreature*, int32_t, int32_t*, int32_t*, int32_t>(&HookStealthDetection);
-    m_DoStealthDetection = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature18DoStealthDetectionEPS_iPiS1_i);
+    m_DoStealthDetection = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature18DoStealthDetectionEPS_iPiS1_i, int32_t,CNWSCreature*,CNWSCreature*, int32_t, int32_t*, int32_t*, int32_t>(&HookStealthDetection);
 }
 
 Reveal::~Reveal()

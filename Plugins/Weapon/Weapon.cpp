@@ -66,50 +66,22 @@ Weapon::Weapon(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem>(&Weapon::GetWeaponFocus);
-    m_GetWeaponFocusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem>(&Weapon::GetEpicWeaponFocus);
-    m_GetEpicWeaponFocusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem);
-
+    m_GetWeaponFocusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem>(&Weapon::GetWeaponFocus);
+    m_GetEpicWeaponFocusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem>(&Weapon::GetEpicWeaponFocus);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats16GetWeaponFinesseEP8CNWSItem>(&Weapon::GetWeaponFinesse);
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem>(&Weapon::GetWeaponImprovedCritical);
-    m_GetWeaponImprovedCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem>(&Weapon::GetWeaponSpecialization);
-    m_GetWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem>(&Weapon::GetEpicWeaponSpecialization);
-    m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem>(&Weapon::GetEpicWeaponOverwhelmingCritical);
-    m_GetEpicWeaponOverwhelmingCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem>(&Weapon::GetEpicWeaponDevastatingCritical);
-    m_GetEpicWeaponDevastatingCriticalHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj>(&Weapon::GetIsWeaponOfChoice);
-    m_GetIsWeaponOfChoiceHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih>(&Weapon::GetMeleeDamageBonus);
-    m_GetMeleeDamageBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei>(&Weapon::GetDamageBonus);
-    m_GetDamageBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv>(&Weapon::GetRangedDamageBonus);
-    m_GetRangedDamageBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature>(&Weapon::GetAttackModifierVersus);
-    m_GetAttackModifierVersusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii>(&Weapon::GetMeleeAttackBonus);
-    m_GetMeleeAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii);
-
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii>(&Weapon::GetRangedAttackBonus);
-    m_GetRangedAttackBonusHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii);
-
+    m_GetWeaponImprovedCriticalHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem>(&Weapon::GetWeaponImprovedCritical);
+    m_GetWeaponSpecializationHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem>(&Weapon::GetWeaponSpecialization);
+    m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem>(&Weapon::GetEpicWeaponSpecialization);
+    m_GetEpicWeaponOverwhelmingCriticalHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem>(&Weapon::GetEpicWeaponOverwhelmingCritical);
+    m_GetEpicWeaponDevastatingCriticalHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem>(&Weapon::GetEpicWeaponDevastatingCritical);
+    m_GetIsWeaponOfChoiceHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj>(&Weapon::GetIsWeaponOfChoice);
+    m_GetMeleeDamageBonusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih>(&Weapon::GetMeleeDamageBonus);
+    m_GetDamageBonusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei>(&Weapon::GetDamageBonus);
+    m_GetRangedDamageBonusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv>(&Weapon::GetRangedDamageBonus);
+    m_GetAttackModifierVersusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature>(&Weapon::GetAttackModifierVersus);
+    m_GetMeleeAttackBonusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii>(&Weapon::GetMeleeAttackBonus);
+    m_GetRangedAttackBonusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii>(&Weapon::GetRangedAttackBonus);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats22GetUseMonkAttackTablesEi>(&Weapon::GetUseMonkAttackTables);
 
     m_WeaponFinesseSizeMap.insert({Constants::BaseItem::Rapier, (uint8_t) Constants::CreatureSize::Medium});
@@ -256,8 +228,7 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
     {
         bFirstTime = false;
         // Hooks for flurry of blows
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature10ToggleModeEh>(&ToggleMode);
-        m_ToggleModeHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature10ToggleModeEh);
+        m_ToggleModeHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature10ToggleModeEh>(&ToggleMode);
         g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});
         LOG_NOTICE("Flurry of blows requires activation of CombatModes plugin");
     }

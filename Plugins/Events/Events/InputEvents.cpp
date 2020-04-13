@@ -14,20 +14,22 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerInputWalkToWaypointHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AddAttackActionsHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AddCastSpellActionsHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerInputWalkToWaypointHook;
+static NWNXLib::Hooking::FunctionHook* s_AddAttackActionsHook;
+static NWNXLib::Hooking::FunctionHook* s_AddCastSpellActionsHook;
 
 InputEvents::InputEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer>(&HandlePlayerToServerInputWalkToWaypointHook);
-        m_HandlePlayerToServerInputWalkToWaypointHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer);
+        s_HandlePlayerToServerInputWalkToWaypointHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer>
+            (&HandlePlayerToServerInputWalkToWaypointHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii>(&AddAttackActionsHook);
-        m_AddAttackActionsHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii);
+        s_AddAttackActionsHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii>
+            (&AddAttackActionsHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", [hooker]() {
@@ -35,8 +37,9 @@ InputEvents::InputEvents(Services::HooksProxy* hooker)
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih>(&AddCastSpellActionsHook);
-        m_AddCastSpellActionsHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih);
+        s_AddCastSpellActionsHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih>
+            (&AddCastSpellActionsHook);
     });
 }
 
@@ -69,7 +72,7 @@ int32_t InputEvents::HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage *pM
 
     if (PushAndSignal("NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE"))
     {
-        retVal = m_HandlePlayerToServerInputWalkToWaypointHook->CallOriginal<int32_t>(pMessage, pPlayer);
+        retVal = s_HandlePlayerToServerInputWalkToWaypointHook->CallOriginal<int32_t>(pMessage, pPlayer);
     }
     else
     {
@@ -101,7 +104,7 @@ int32_t InputEvents::AddAttackActionsHook(CNWSCreature *pCreature, Types::Object
 
     if (PushAndSignal("NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE"))
     {
-        retVal = m_AddAttackActionsHook->CallOriginal<int32_t>(pCreature, oidTarget, bPassive, bClearAllActions, bAddToFront);
+        retVal = s_AddAttackActionsHook->CallOriginal<int32_t>(pCreature, oidTarget, bPassive, bClearAllActions, bAddToFront);
     }
     else
     {
@@ -152,7 +155,7 @@ int32_t InputEvents::AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t n
 
     if (PushAndSignal("NWNX_ON_INPUT_CAST_SPELL_BEFORE"))
     {
-        retVal = m_AddCastSpellActionsHook->CallOriginal<int32_t>(pCreature, nSpellId, nMultiClass, nDomainLevel,
+        retVal = s_AddCastSpellActionsHook->CallOriginal<int32_t>(pCreature, nSpellId, nMultiClass, nDomainLevel,
                 nMetaType, bSpontaneousCast, vTargetLocation, oidTarget, bAreaTarget, bAddToFront, bFake, nProjectilePathType,
                 bInstant, bAllowPolymorphedCast, nFeat, nCasterLevel);
     }

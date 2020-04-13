@@ -13,28 +13,28 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Platform;
 
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerMapPinSetMapPinAtHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerMapPinChangePinHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerMapPinDestroyMapPinHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerMapPinSetMapPinAtHook;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerMapPinChangePinHook;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerMapPinDestroyMapPinHook;
 
 MapEvents::MapEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_ADD_PIN_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage37HandlePlayerToServerMapPinSetMapPinAtEP10CNWSPlayer, int32_t,
-            CNWSMessage*, CNWSPlayer*>(&HandleMapPinSetMapPinAtMessageHook);
-        m_HandlePlayerToServerMapPinSetMapPinAtHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage37HandlePlayerToServerMapPinSetMapPinAtEP10CNWSPlayer);
+        s_HandlePlayerToServerMapPinSetMapPinAtHook = hooker->RequestExclusiveHook
+            <Functions::_ZN11CNWSMessage37HandlePlayerToServerMapPinSetMapPinAtEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
+            (&HandleMapPinSetMapPinAtMessageHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_CHANGE_PIN_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage35HandlePlayerToServerMapPinChangePinEP10CNWSPlayer, int32_t,
-            CNWSMessage*, CNWSPlayer*>(&HandleMapPinChangePinMessageHook);
-        m_HandlePlayerToServerMapPinChangePinHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage35HandlePlayerToServerMapPinChangePinEP10CNWSPlayer);
+        s_HandlePlayerToServerMapPinChangePinHook = hooker->RequestExclusiveHook
+            <Functions::_ZN11CNWSMessage35HandlePlayerToServerMapPinChangePinEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
+            (&HandleMapPinChangePinMessageHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_MAP_PIN_DESTROY_PIN_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage39HandlePlayerToServerMapPinDestroyMapPinEP10CNWSPlayer, int32_t,
-            CNWSMessage*, CNWSPlayer*>(&HandleMapPinDestroyMapPinMessageHook);
-        m_HandlePlayerToServerMapPinDestroyMapPinHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage39HandlePlayerToServerMapPinDestroyMapPinEP10CNWSPlayer);
+        s_HandlePlayerToServerMapPinDestroyMapPinHook = hooker->RequestExclusiveHook
+            <Functions::_ZN11CNWSMessage39HandlePlayerToServerMapPinDestroyMapPinEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
+            (&HandleMapPinDestroyMapPinMessageHook);
     });
 
 }
@@ -66,7 +66,7 @@ int32_t MapEvents::HandleMapPinSetMapPinAtMessageHook(CNWSMessage *thisPtr, CNWS
 
     if (Events::SignalEvent("NWNX_ON_MAP_PIN_ADD_PIN_BEFORE", oidPlayer))
     {
-        retVal = m_HandlePlayerToServerMapPinSetMapPinAtHook->CallOriginal<int32_t>(thisPtr, pPlayer);
+        retVal = s_HandlePlayerToServerMapPinSetMapPinAtHook->CallOriginal<int32_t>(thisPtr, pPlayer);
     }
     else
     {
@@ -115,7 +115,7 @@ int32_t MapEvents::HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPl
 
     if (Events::SignalEvent("NWNX_ON_MAP_PIN_CHANGE_PIN_BEFORE", oidPlayer))
     {
-        retVal = m_HandlePlayerToServerMapPinChangePinHook->CallOriginal<int32_t>(thisPtr, pPlayer);
+        retVal = s_HandlePlayerToServerMapPinChangePinHook->CallOriginal<int32_t>(thisPtr, pPlayer);
     }
     else
     {
@@ -145,7 +145,7 @@ int32_t MapEvents::HandleMapPinDestroyMapPinMessageHook(CNWSMessage *thisPtr, CN
 
     if (Events::SignalEvent("NWNX_ON_MAP_PIN_DESTROY_PIN_BEFORE", oidPlayer))
     {
-        retVal = m_HandlePlayerToServerMapPinDestroyMapPinHook->CallOriginal<int32_t>(thisPtr, pPlayer);
+        retVal = s_HandlePlayerToServerMapPinDestroyMapPinHook->CallOriginal<int32_t>(thisPtr, pPlayer);
     }
     else
     {

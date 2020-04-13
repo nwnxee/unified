@@ -70,10 +70,8 @@ MaxLevel::MaxLevel(const Plugin::CreateParams& params)
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules9ReloadAllEv, void, CNWRules *>(&ReloadAllHook);
         GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(&CanLevelUpHook);
         GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats22GetExpNeededForLevelUpEv>(&GetExpNeededForLevelUpHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats>(&LevelDownHook);
-        m_LevelDownHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt>(&SummonAssociateHook);
-        m_SummonAssociateHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt);
+        m_LevelDownHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats>(&LevelDownHook);
+        m_SummonAssociateHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt>(&SummonAssociateHook);
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWClass18LoadSpellGainTableE10CExoString, void, CNWClass *, CExoString *>(&LoadSpellGainTableHook);
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWClass19LoadSpellKnownTableE10CExoString, void, CNWClass *, CExoString *>(&LoadSpellKnownTableHook);
         GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN8CNWClass12GetSpellGainEhh>(&GetSpellGainHook);

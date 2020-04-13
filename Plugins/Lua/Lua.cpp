@@ -154,18 +154,17 @@ namespace Lua {
             lua_getglobal(m_luaInstance, runScriptTable.c_str());
             m_runScriptTable = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
 
-            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
+            s_RunScriptHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
                 +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
                 {
                     bool skip = script->m_sString && g_plugin->OnScript(script->m_sString, objId, !!valid);
                     return skip ? 1 : s_RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
                 }
             );
-            s_RunScriptHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
         }
 
         // RunScriptSituation hook
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
+        s_RunScriptSituationHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
             +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID oid, int32_t oidValid)
             {
                 if (strstr(script->m_sScriptName.m_sString, "NWNX_LUA_INTERNAL"))
@@ -182,7 +181,6 @@ namespace Lua {
                 return s_RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, oid, oidValid);
             }
         );
-        s_RunScriptSituationHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji);
     }
 
     Lua::~Lua()

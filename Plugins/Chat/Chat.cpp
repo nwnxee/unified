@@ -74,8 +74,7 @@ Chat::Chat(const Plugin::CreateParams& params)
     m_hearingDistances[Constants::ChatChannel::PlayerWhisper] = 3.0f;
     m_customHearingDistances = false;
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
-    m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_);
+    m_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
 }
 
 Chat::~Chat()

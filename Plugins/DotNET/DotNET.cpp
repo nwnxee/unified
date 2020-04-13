@@ -270,7 +270,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
 
     LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScript);
     static Hooking::FunctionHook* RunScriptHook;
-    Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
+    RunScriptHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
         +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
         {
             if (!script || *script == "")
@@ -292,11 +292,10 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
-    RunScriptHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
 
     LOG_DEBUG("Registered closure handler: %p", Handlers.Closure);
     static Hooking::FunctionHook* RunScriptSituationHook;
-    Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
+    RunScriptSituationHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
         +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID objId, int32_t valid)
         {
             uint64_t eventId;
@@ -313,7 +312,6 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
-    RunScriptSituationHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji);
 }
 
 }

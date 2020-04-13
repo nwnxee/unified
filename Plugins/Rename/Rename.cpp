@@ -99,9 +99,9 @@ Rename::Rename(const Plugin::CreateParams& params)
             LOG_INFO("Renaming PCs and hiding classes in the module character listing.");
         else if (m_RenameOnModuleCharList == 3)
             LOG_INFO("Hiding classes in the module character listing via the Rename plugin.");
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji,
-                int32_t, CNWSMessage *, Types::PlayerID, Types::ObjectID, int32_t>(&SendServerToPlayerPlayModuleCharacterListResponseHook);
-        m_SendServerToPlayerPlayModuleCharacterListResponseHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji);
+        m_SendServerToPlayerPlayModuleCharacterListResponseHook = GetServices()->m_hooks->RequestExclusiveHook
+            <Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji, int32_t, CNWSMessage *, Types::PlayerID, Types::ObjectID, int32_t>
+            (&SendServerToPlayerPlayModuleCharacterListResponseHook);
     }
 
     if (m_RenameOnPlayerList)
@@ -124,9 +124,9 @@ Rename::Rename(const Plugin::CreateParams& params)
     }
 
     // TODO: When shared hooks are executed by exclusive hooks change this to HandlePlayerToServerParty
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString,
-            int32_t, CNWSMessage*, Types::ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*>(&SendServerToPlayerPopUpGUIPanelHook);
-    m_SendServerToPlayerPopUpGUIPanelHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString);
+    m_SendServerToPlayerPopUpGUIPanelHook = GetServices()->m_hooks->RequestExclusiveHook
+        <Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString, int32_t, CNWSMessage*, Types::ObjectID, int32_t, int32_t, int32_t, int32_t, CExoString*>
+        (&SendServerToPlayerPopUpGUIPanelHook);
 
 }
 

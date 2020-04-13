@@ -107,8 +107,7 @@ Race::Race(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats33GetMeetsPrestigeClassRequirementsEP8CNWClass, int32_t, CNWSCreatureStats*, CNWClass*>(&GetMeetsPrestigeClassRequirementsHook);
 
     //Don't swap, check as both parent and child race
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem>(&CheckItemRaceRestrictionsHook);
-    m_CheckRacialResHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem);
+    m_CheckRacialResHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem>(&CheckItemRaceRestrictionsHook);
 
     // Need to set up default parent race to invalid before the on module load sets up the parents
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules12LoadRaceInfoEv, void, CNWRules *>(&LoadRaceInfoHook);

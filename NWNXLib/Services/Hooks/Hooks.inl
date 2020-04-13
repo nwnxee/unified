@@ -86,7 +86,8 @@ void HooksProxy::RequestSharedHook(void(*funcPtr)(bool, Params ...))
 }
 
 template <uintptr_t Address, typename Ret, typename ... Params>
-void HooksProxy::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
+Hooking::FunctionHook* HooksProxy::RequestExclusiveHook(Ret(*funcPtr)(Params ...))
 {
     m_registrationTokens.push_back(m_proxyBase.RequestExclusiveHook<Address, Ret>(funcPtr));
+    return FindHookByAddress(Address);
 }

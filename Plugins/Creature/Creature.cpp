@@ -1376,7 +1376,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
 
     if (!pGetWalkRate_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature11GetWalkRateEv>(
+        pGetWalkRate_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature11GetWalkRateEv>(
             +[](CNWSCreature *pThis) -> float
             {
                 float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
@@ -1385,7 +1385,6 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
                 return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
 
             });
-        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature11GetWalkRateEv);
     }
 
     if (auto *pCreature = creature(args))
@@ -1494,7 +1493,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
     {
         try
         {
-            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(
+            pCanLevelUp_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(
                     +[](CNWSCreatureStats *pThis) -> int32_t
                     {
                         if (bSkipLevelUpValidation)
@@ -1505,14 +1504,13 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                         }
                         return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
                     });
-            pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv);
         }
         catch (...)
         {
             LOG_NOTICE("NWNX_MaxLevel will manage CanLevelUp.");
         }
 
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
+        pValidateLevelUp_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
                 +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
                 {
                     if (bSkipLevelUpValidation)
@@ -1524,7 +1522,6 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                     }
                     return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
                 });
-        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh);
     }
 
     if (auto *pCreature = creature(args))

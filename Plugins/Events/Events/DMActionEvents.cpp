@@ -20,13 +20,14 @@ using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 using namespace NWNXLib::Platform;
 
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerDungeonMasterMessageHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerDungeonMasterMessageHook;
 
 DMActionEvents::DMActionEvents(NWNXLib::Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_DM_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi>(&HandleDMMessageHook);
-        m_HandlePlayerToServerDungeonMasterMessageHook = hooker->FindHookByAddress(Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi);
+        s_HandlePlayerToServerDungeonMasterMessageHook = hooker->RequestExclusiveHook
+            <Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi>
+            (&HandleDMMessageHook);
     });
 }
 
@@ -50,7 +51,7 @@ int32_t DMActionEvents::HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlay
 
     if (PushAndSignalGiveEvent(event + "_BEFORE"))
     {
-        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+        retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
     }
     else
     {
@@ -96,7 +97,7 @@ int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPla
 
     if (PushAndSignalGroupEvent(event + "_BEFORE"))
     {
-        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+        retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
     }
     else
     {
@@ -122,7 +123,7 @@ int32_t DMActionEvents::HandleSingleTargetEvent(CNWSMessage *pMessage, CNWSPlaye
 
     if (PushAndSignalSingleTargetEvent(event + "_BEFORE"))
     {
-        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+        retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
     }
     else
     {
@@ -183,7 +184,7 @@ int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *p
 
     if (PushAndSignalTeleportEvent(event + "_BEFORE"))
     {
-        retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
+        retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor, bGroup);
     }
     else
     {
@@ -204,7 +205,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
     auto DefaultSignalEvent = [&]() -> void {
         if (Events::SignalEvent(event + "_BEFORE", oidDM))
         {
-            retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
         }
         else
         {
@@ -273,7 +274,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
             if (PushAndSignal(event + "_BEFORE"))
             {
-                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+                retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
             }
             else
             {
@@ -296,7 +297,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
             if (PushAndSignal(event + "_BEFORE"))
             {
-                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+                retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
             }
             else
             {
@@ -321,7 +322,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
             if (PushAndSignal(event + "_BEFORE"))
             {
-                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+                retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
             }
             else
             {
@@ -346,7 +347,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
             if (PushAndSignal(event + "_BEFORE"))
             {
-                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+                retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
             }
             else
             {
@@ -486,7 +487,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
             if (PushAndSignal(event + "_BEFORE"))
             {
-                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+                retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
             }
             else
             {
@@ -570,7 +571,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
             if (PushAndSignalDumpLocalsEvent(event + "_BEFORE"))
             {
-                retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+                retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
             }
             else
             {
@@ -611,7 +612,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
             break;
         }
         default:
-            retVal = m_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
             break;
     }
 

@@ -27,9 +27,9 @@ static Types::ObjectID m_targetOid;
 BarterEvents::BarterEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_BARTER_START_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer, int32_t,
-                CNWSMessage*, CNWSPlayer*>(&HandlePlayerToServerBarter_StartBarterHook);
-        m_HandlePlayerToServerBarter_StartBarterHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer);
+        m_HandlePlayerToServerBarter_StartBarterHook = hooker->RequestExclusiveHook
+            <Functions::_ZN11CNWSMessage38HandlePlayerToServerBarter_StartBarterEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
+            (&HandlePlayerToServerBarter_StartBarterHook);
     });
     Events::InitOnFirstSubscribe("NWNX_ON_BARTER_END_.*", [hooker]() {
         hooker->RequestSharedHook<Functions::_ZN10CNWSBarter15SetListAcceptedEi, int32_t,
