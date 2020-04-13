@@ -906,6 +906,26 @@ _______________________________________
     @note This event runs the moment a creature starts casting
 
 _______________________________________
+    ## Input Keyboard Events
+    - NWNX_ON_INPUT_KEYBOARD_BEFORE
+    - NWNX_ON_INPUT_KEYBOARD_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    KEY                   | string | The key pressed by the player, one of the following: W A S D Q E
+
+    @note To stop the player from moving you can do something like below, since normal immobilizing effects stop the client
+          from sending input.
+
+          location locPlayer = GetLocation(oPlayer);
+          object oBoulder = CreateObject(OBJECT_TYPE_PLACEABLE, "plc_boulder", locPlayer, FALSE, "TESTPLC");
+          NWNX_Object_SetPosition(oPlayer, GetPositionFromLocation(locPlayer));
+          ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectVisualEffect(VFX_DUR_CUTSCENE_INVISIBILITY), oBoulder);
+
+ _______________________________________
+
     ## Object Lock Events
     - NWNX_ON_OBJECT_LOCK_BEFORE
     - NWNX_ON_OBJECT_LOCK_AFTER
