@@ -21,7 +21,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace NWNXLib::API::Types;
 using namespace NWNXLib::API::Constants;
 
 namespace {
