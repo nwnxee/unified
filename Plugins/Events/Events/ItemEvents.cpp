@@ -108,7 +108,7 @@ int32_t ItemEvents::UseItemHook(
 {
     int32_t retVal;
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
         Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
         Events::PushEventData("ITEM_PROPERTY_INDEX", std::to_string(propIndex));
@@ -135,7 +135,7 @@ int32_t ItemEvents::UseItemHook(
 
 void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidOpener)
 {
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("OWNER", Utils::ObjectIDToString(oidOpener));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
@@ -150,7 +150,7 @@ void ItemEvents::OpenInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidOpener)
 
 void ItemEvents::CloseInventoryHook(CNWSItem* thisPtr, Types::ObjectID oidCloser, int32_t bUpdatePlayer)
 {
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("OWNER", Utils::ObjectIDToString(oidCloser));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
@@ -255,7 +255,7 @@ int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, Types::ObjectID oidSc
 {
     int32_t retVal;
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("SCROLL", Utils::ObjectIDToString(oidScrollToLearn));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
@@ -284,7 +284,7 @@ int32_t ItemEvents::RunEquipHook(
     uint8_t slotId = 0;
     uint32_t slot = nInventorySlot;
     while (slot >>= 1) { slotId++; }
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
         Events::PushEventData("SLOT", std::to_string(slotId));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
@@ -312,7 +312,7 @@ int32_t ItemEvents::RunUnequipHook(
 {
     int32_t retVal;
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
@@ -342,12 +342,12 @@ void ItemEvents::ItemEventHandlerHook(
         s_ItemEventHandlerHook->CallOriginal<void>(thisPtr, nEventId, nCallerObjectId, pScript, nCalendarDay, nTimeOfDay);
     };
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         //Events::PushEventData("EVENT_ID", std::to_string(nEventId));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
 
-    auto HandleHookableEvent = [&](std::string eventName) -> void {
+    auto HandleHookableEvent = [&](const std::string& eventName) -> void {
         if (PushAndSignal("NWNX_ON_ITEM_" + eventName + "_BEFORE"))
         {
             CallOriginal();
@@ -373,7 +373,7 @@ int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, Types::ObjectID ite
 {
     int32_t retVal;
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
@@ -392,7 +392,7 @@ int32_t ItemEvents::UseLoreOnItemHook(CNWSCreature *thisPtr, Types::ObjectID ite
 
 void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID item, Types::ObjectID store)
 {
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(item));
         Events::PushEventData("STORE", Utils::ObjectIDToString(store));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
@@ -408,7 +408,7 @@ void ItemEvents::PayToIdentifyItemHook(CNWSCreature *thisPtr, Types::ObjectID it
 
 void ItemEvents::SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItem, int32_t nNumberToSplitOff)
 {
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(pItem->m_idSelf));
         Events::PushEventData("NUMBER_SPLIT_OFF", std::to_string(nNumberToSplitOff));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);

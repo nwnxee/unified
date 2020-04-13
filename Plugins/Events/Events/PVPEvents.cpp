@@ -35,7 +35,7 @@ int32_t PVPEvents::HandlePlayerToServerPVPListOperationsHook(CNWSMessage *thisPt
         auto target = Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF;
         auto attitude = (bool)(Utils::PeekMessage<uint8_t>(thisPtr, 4) & 0x10);
 
-        auto PushAndSignal = [&](std::string ev) -> bool {
+        auto PushAndSignal = [&](const std::string& ev) -> bool {
             Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(target));
             Events::PushEventData("ATTITUDE", std::to_string(attitude));
 

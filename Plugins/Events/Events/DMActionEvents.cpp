@@ -39,7 +39,7 @@ int32_t DMActionEvents::HandleGiveEvent(CNWSMessage *pMessage, CNWSPlayer *pPlay
     std::string amount = std::to_string(Utils::PeekMessage<int32_t>(pMessage, 0));
     std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(pMessage, 4) & 0x7FFFFFFF);
 
-    auto PushAndSignalGiveEvent = [&](std::string ev) -> bool {
+    auto PushAndSignalGiveEvent = [&](const std::string& ev) -> bool {
         Events::PushEventData("AMOUNT", amount);
         Events::PushEventData("OBJECT", target);
         if (alignmentType > 0)
@@ -86,7 +86,7 @@ int32_t DMActionEvents::HandleGroupEvent(CNWSMessage *pMessage, CNWSPlayer *pPla
         offset += sizeof(Types::ObjectID);
     }
 
-    auto PushAndSignalGroupEvent = [&](std::string ev) -> bool {
+    auto PushAndSignalGroupEvent = [&](const std::string& ev) -> bool {
         Events::PushEventData("NUM_TARGETS", std::to_string(groupSize));
         for(int32_t target = 0; target < groupSize; target++)
         {
@@ -116,7 +116,7 @@ int32_t DMActionEvents::HandleSingleTargetEvent(CNWSMessage *pMessage, CNWSPlaye
     Types::ObjectID oidDM = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
     std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(pMessage, 0) & 0x7FFFFFFF);
 
-    auto PushAndSignalSingleTargetEvent = [&](std::string ev) -> bool {
+    auto PushAndSignalSingleTargetEvent = [&](const std::string& ev) -> bool {
         Events::PushEventData("TARGET", target);
         return Events::SignalEvent(ev, oidDM);
     };
@@ -166,7 +166,7 @@ int32_t DMActionEvents::HandleTeleportEvent(CNWSMessage *pMessage, CNWSPlayer *p
         }
     }
 
-    auto PushAndSignalTeleportEvent = [&](std::string ev) -> bool {
+    auto PushAndSignalTeleportEvent = [&](const std::string& ev) -> bool {
         Events::PushEventData("TARGET_AREA", targetArea);
         Events::PushEventData("POS_X", x);
         Events::PushEventData("POS_Y", y);
@@ -262,7 +262,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
                     break;
             }
 
-            auto PushAndSignal = [&](std::string ev) -> bool {
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
                 Events::PushEventData("AREA", area);
                 Events::PushEventData("OBJECT", object);
                 Events::PushEventData("OBJECT_TYPE", std::to_string(objectType));
@@ -290,7 +290,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
             std::string difficulty = std::to_string(Utils::PeekMessage<int32_t>(thisPtr, 0));
 
-            auto PushAndSignal = [&](std::string ev) -> bool {
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
                 Events::PushEventData("DIFFICULTY_SETTING", difficulty);
                 return Events::SignalEvent(ev, oidDM);
             };
@@ -314,7 +314,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
             std::string openInventory = std::to_string(Utils::PeekMessage<int32_t>(thisPtr, 0));
             std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
 
-            auto PushAndSignal = [&](std::string ev) -> bool {
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
                 Events::PushEventData("OPEN_INVENTORY", openInventory);
                 Events::PushEventData("TARGET", target);
                 return Events::SignalEvent(ev, oidDM);
@@ -339,7 +339,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
             std::string area = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
             std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 4) & 0x7FFFFFFF);
 
-            auto PushAndSignal = [&](std::string ev) -> bool {
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
                 Events::PushEventData("AREA", area);
                 Events::PushEventData("TARGET", target);
                 return Events::SignalEvent(ev, oidDM);
@@ -479,7 +479,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
             std::string target = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
             std::string item = Utils::ObjectIDToString(Globals::AppManager()->m_pServerExoApp->GetObjectArray()->m_nNextObjectArrayID[0]);
 
-            auto PushAndSignal = [&](std::string ev) -> bool {
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
                 Events::PushEventData("TARGET", target);
                 Events::PushEventData("ITEM", item);
                 return Events::SignalEvent(ev, oidDM);

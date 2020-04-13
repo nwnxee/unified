@@ -48,7 +48,7 @@ int32_t BarterEvents::HandlePlayerToServerBarter_StartBarterHook(
     Types::ObjectID oidPlayer = pPlayer->m_oidNWSObject;
     Types::ObjectID targetId = Utils::PeekMessage<Types::ObjectID>(pMessage, 0) & 0x7FFFFFFF;
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("BARTER_TARGET", Utils::ObjectIDToString(targetId));
         return Events::SignalEvent(ev, oidPlayer);
     };

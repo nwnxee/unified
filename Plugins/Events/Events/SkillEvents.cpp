@@ -32,7 +32,7 @@ int32_t SkillEvents::UseSkillHook(
 {
     int32_t retVal;
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("SKILL_ID", std::to_string(skill));
         Events::PushEventData("SUB_SKILL_ID", std::to_string(subSkill));
         Events::PushEventData("USED_ITEM_OBJECT_ID", Utils::ObjectIDToString(usedItem));

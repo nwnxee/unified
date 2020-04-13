@@ -39,7 +39,7 @@ int32_t FeatEvents::UseFeatHook(
 {
     int32_t retVal;
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("FEAT_ID", std::to_string(featID));
         Events::PushEventData("SUBFEAT_ID", std::to_string(subFeatID));
         Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));

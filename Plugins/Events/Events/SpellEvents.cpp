@@ -52,7 +52,7 @@ void SpellEvents::CastSpellHook
     bool isInstantSpell
 )
 {
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("SPELL_ID", std::to_string(spellID));
 
         Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
@@ -131,7 +131,7 @@ void SpellEvents::ClearMemorizedSpellSlotHook
     uint8_t slot
 )
 {
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("SPELL_CLASS", std::to_string(multiClass));
         Events::PushEventData("SPELL_LEVEL", std::to_string(level));
         Events::PushEventData("SPELL_SLOT", std::to_string(slot));

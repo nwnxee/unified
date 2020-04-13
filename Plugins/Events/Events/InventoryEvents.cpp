@@ -73,7 +73,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
 
             if (open)
             {
-                auto PushAndSignal = [&](std::string ev) -> bool
+                auto PushAndSignal = [&](const std::string& ev) -> bool
                 {
                     Events::PushEventData("TARGET_INVENTORY", Utils::ObjectIDToString(target));
                     return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
@@ -116,7 +116,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
             {
                 uint8_t currentPanel = pPlayer->m_pInventoryGUI->m_nSelectedInventoryPanel;
 
-                auto PushAndSignal = [&](std::string ev) -> bool
+                auto PushAndSignal = [&](const std::string& ev) -> bool
                 {
                     Events::PushEventData("CURRENT_PANEL", std::to_string(currentPanel));
                     Events::PushEventData("SELECTED_PANEL", std::to_string(selectedPanel));
@@ -170,7 +170,7 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
         return s_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
     }
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(ppItem && *ppItem ? (**ppItem).m_idSelf : OBJECT_INVALID));
         return Events::SignalEvent(ev, thisPtr->m_oidParent);
     };

@@ -31,7 +31,7 @@ int32_t QuickChatEvents::HandlePlayerToServerQuickChatMessageHook(CNWSMessage *t
     Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
     std::string quickChatCommand = std::to_string(Utils::PeekMessage<int16_t>(thisPtr, 0));
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("QUICKCHAT_COMMAND", quickChatCommand);
 
         return Events::SignalEvent(ev, oidPlayer);
