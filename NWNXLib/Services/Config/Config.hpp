@@ -5,9 +5,7 @@
 #include <string>
 #include <optional>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Config
 {
@@ -50,7 +48,5 @@ private:
 };
 
 #include "Services/Config/Config.inl"
-
-}
 
 }

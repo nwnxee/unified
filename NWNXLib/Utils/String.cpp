@@ -3,8 +3,7 @@
 #include <stdlib.h> 
 #include <string.h>
 
-namespace NWNXLib {
-namespace Utils {
+namespace NWNXLib::Utils {
 
 template<> std::optional<bool> from_string(const std::string& str)
 {
@@ -145,5 +144,4 @@ std::vector<std::string> split(const std::string& sp, char delim, bool skipEmpty
     return out;
 }
 
-}
 }

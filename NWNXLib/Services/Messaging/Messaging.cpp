@@ -2,9 +2,7 @@
 
 #include <algorithm>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 Messaging::Messaging()
 {
@@ -93,8 +91,6 @@ void MessagingProxy::UnsubscribeMessage(const Messaging::HandlerId id)
 void MessagingProxy::BroadcastMessage(const Messaging::Tag& tag, const Messaging::Message& message)
 {
     m_proxyBase.BroadcastMessage(tag, message);
-}
-
 }
 
 }

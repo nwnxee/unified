@@ -9,9 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 // Hooks provides a type-safe interface to register shared or exclusive function
 // hooks and dispatch them to a provided function pointer.
@@ -85,7 +83,5 @@ private:
 };
 
 #include "Services/Hooks/Hooks.inl"
-
-}
 
 }

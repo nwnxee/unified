@@ -2,9 +2,7 @@
 #include <cstdlib>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 Config::Config()
 {
@@ -161,8 +159,6 @@ std::optional<double> ConfigProxy::Get<double>(const std::string& key) const
 
     auto v = opt.value();
     return std::make_optional<double>(std::strtod(v.c_str(), nullptr));
-}
-
 }
 
 }
