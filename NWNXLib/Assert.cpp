@@ -8,16 +8,9 @@
 #include <execinfo.h>
 #include <signal.h>
 
-namespace NWNXLib {
+namespace NWNXLib::Assert {
 
-namespace Assert {
-
-#if TAR_DEBUG && !TAR_RELEASE
-static bool crashOnFailure = true;
-#else
 static bool crashOnFailure = false;
-#endif
-
 void SetCrashOnFailure(bool crash)
 {
     crashOnFailure = crash;
@@ -58,8 +51,6 @@ void Fail(const char* condition, const char* file, int line, const char* message
     {
         std::abort();
     }
-}
-
 }
 
 }
