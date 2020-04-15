@@ -26,7 +26,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorceror
 
 ## 8193.9
 https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
