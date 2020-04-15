@@ -17,6 +17,7 @@ using namespace NWNXLib::API::Constants;
 static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerInputWalkToWaypointHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_AddAttackActionsHook = nullptr;
 static NWNXLib::Hooking::FunctionHook* m_AddCastSpellActionsHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerInputMessageHook = nullptr;
 
 InputEvents::InputEvents(Services::HooksProxy* hooker)
 {
@@ -37,6 +38,11 @@ InputEvents::InputEvents(Services::HooksProxy* hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih>(&AddCastSpellActionsHook);
         m_AddCastSpellActionsHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_KEYBOARD_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh>(&HandlePlayerToServerInputMessageHook);
+        m_HandlePlayerToServerInputMessageHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh);
     });
 }
 
@@ -164,6 +170,86 @@ int32_t InputEvents::AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t n
     PushAndSignal("NWNX_ON_INPUT_CAST_SPELL_AFTER");
 
     return retVal;
+}
+
+int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
+{
+    static std::unordered_map<NWNXLib::API::Types::ObjectID, bool> skipDriveActionEvent;
+
+    switch (nMinor)
+    {
+        case Constants::MessageInputMinor::TurnOnSpot:
+        {
+            auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+
+            if (!pCreature)
+                return m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+            int32_t retVal;
+            auto floatX = Utils::PeekMessage<float>(pMessage, 0);
+            auto floatY = Utils::PeekMessage<float>(pMessage, 4);
+
+            Vector oldOrientation = pCreature->m_vOrientation;
+            Vector newOrientation = {floatX, floatY, 0.0f};
+            bool bClockwise = oldOrientation.y * newOrientation.x > oldOrientation.x * newOrientation.y;
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                Events::PushEventData("KEY", bClockwise ? "D" : "A");
+
+                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_BEFORE");
+            retVal = m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_AFTER");
+
+            return retVal;
+        }
+
+        case Constants::MessageInputMinor::DriveControl:
+        {
+            if (skipDriveActionEvent[pPlayer->m_oidNWSObject])
+                return m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+            int32_t retVal;
+            std::string key;
+            auto driveFlags = Utils::PeekMessage<uint8_t>(pMessage, 14);
+
+            switch (driveFlags)
+            {
+                case 2: key = "S"; break;
+                case 3: key = "W"; break;
+                case 4: key = "Q"; break;
+                case 8: key = "E"; break;
+
+                default:
+                    return m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            }
+
+            skipDriveActionEvent[pPlayer->m_oidNWSObject] = true;
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                Events::PushEventData("KEY", key);
+
+                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_BEFORE");
+            retVal = m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_AFTER");
+
+            return retVal;
+        }
+
+        case Constants::MessageInputMinor::AbortDriveControl:
+        {
+            skipDriveActionEvent[pPlayer->m_oidNWSObject] = false;
+            return m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+        }
+
+        default:
+            return m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+    }
 }
 
 }
