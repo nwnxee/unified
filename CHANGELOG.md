@@ -587,3 +587,4 @@ The following plugins were added:
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
+- MaxLevel: Fixed a crash when a multiclassed PC had exactly 41 levels in bard/sorceror
