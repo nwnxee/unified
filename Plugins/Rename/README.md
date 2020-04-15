@@ -13,6 +13,7 @@ This plugin facilitates renaming, overriding and customization of player names.
 | `NWNX_RENAME_ON_PLAYER_LIST` | true or false | true | Renames the player name on the player list as well.
 | `NWNX_RENAME_ALLOW_DM` | true or false | false | DM observers will see global or personal overrides as well as being able to have their own name overridden for other observers.
 | `NWNX_RENAME_ANONYMOUS_NAME` | string | Someone | When using `NWNX_Rename_SetPCNameOverride` with `NWNX_RENAME_PLAYERNAME_ANONYMOUS` this is the string used for the \<PlayerName\>
+| `NWNX_RENAME_OVERWRITE_DISPLAY_NAME` | true or false | false | When set to `true`, global overrides change the display name globally - scripts and DMs included. When set to `false`, then name is only changed for players. Scripts and DMs see the original names (unless `NWNX_RENAME_ALLOW_DM` is set).
 
 ## Sample Include
 
