@@ -96,6 +96,7 @@ int32_t ItemEvents::UseItemHook(
     API::Types::ObjectID area)
 {
     int32_t retVal;
+    std::string result;
 
     auto PushAndSignal = [&](std::string ev) -> bool {
         Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
@@ -105,7 +106,7 @@ int32_t ItemEvents::UseItemHook(
         Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
         Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
         Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));
-    return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    return Events::SignalEvent(ev, thisPtr->m_idSelf, &result);
     };
 
     if (PushAndSignal("NWNX_ON_USE_ITEM_BEFORE"))
@@ -114,7 +115,7 @@ int32_t ItemEvents::UseItemHook(
     }
     else
     {
-        retVal = false;
+        retVal = atoi(result.c_str()) == 1;
     }
 
     PushAndSignal("NWNX_ON_USE_ITEM_AFTER");

@@ -59,6 +59,9 @@ _______________________________________
     TARGET_POSITION_Y       | float  | |
     TARGET_POSITION_Z       | float  | |
 
+    @note You can set the event result to "0" (send feedback to the client that the item cannot be used, default)
+    or "1" to suppress that feedback.
+
 _______________________________________
     ## Item Container Events
     - NWNX_ON_ITEM_INVENTORY_OPEN_BEFORE
@@ -1055,6 +1058,7 @@ void NWNX_Events_SkipEvent();
 ///
 /// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 /// ONLY WORKS WITH THE FOLLOWING EVENTS:
+/// - Use Item event - "1" or "0" to send feedback whether item use is allowed
 /// - Healer's Kit event
 /// - Listen/Spot Detection events -> "1" or "0"
 /// - OnClientConnectBefore -> Reason for disconnect if skipped

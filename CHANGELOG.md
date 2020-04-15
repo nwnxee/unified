@@ -17,7 +17,7 @@ N/A
 N/A
 
 ### Changed
-N/A
+- Events: "You cannot use that item" feedback can now be suppressed for skipped Use Item events by setting the event result to 1
 
 ### Deprecated
 N/A
