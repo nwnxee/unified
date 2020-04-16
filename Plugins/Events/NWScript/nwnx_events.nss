@@ -43,6 +43,21 @@ _______________________________________
     TRAP_EXAMINE_SUCCESS  | int    | For trap examine only, whether the examine succeeded
 
 _______________________________________
+    ## Validate Use Item Events
+    - NWNX_ON_VALIDATE_USE_ITEM_BEFORE
+    - NWNX_ON_VALIDATE_USE_ITEM_AFTER
+
+    `OBJECT_SELF` = The creature using the item
+
+    Event Data Tag          | Type   | Notes |
+    ------------------------|--------|-------|
+    ITEM_OBJECT_ID          | object | Convert to object with NWNX_Object_StringToObject()|
+    BEFORE_RESULT           | int    | TRUE/FALSE, only in _AFTER events
+
+    @note Setting the result to "0" will cause the item to appear unusable (red) in the inventory.
+    @note If the BEFORE event is not skipped, BEFORE_RESULT is the value of running the function normally. Otherwise, this is the set result value.
+
+_______________________________________
     ## Use Item Events
     - NWNX_ON_USE_ITEM_BEFORE
     - NWNX_ON_USE_ITEM_AFTER
@@ -1079,6 +1094,7 @@ void NWNX_Events_SkipEvent();
 /// THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER.
 /// ONLY WORKS WITH THE FOLLOWING EVENTS:
 /// - Use Item event - "1" or "0" to send feedback whether item use is allowed
+/// - Validate Use Item Event - "1" or "0" to show the item is unusable (red) in the player inventory.
 /// - Healer's Kit event
 /// - Listen/Spot Detection events -> "1" or "0"
 /// - OnClientConnectBefore -> Reason for disconnect if skipped

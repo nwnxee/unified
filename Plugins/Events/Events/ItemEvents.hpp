@@ -13,6 +13,7 @@ public:
     ItemEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
+    static int32_t CanUseItemHook(CNWSCreature*, CNWSItem*, int32_t);
     static int32_t UseItemHook(CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t,
         uint8_t, NWNXLib::API::Types::ObjectID, Vector, NWNXLib::API::Types::ObjectID);
     static void OpenInventoryHook(CNWSItem*, NWNXLib::API::Types::ObjectID);

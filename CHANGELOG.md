@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.10...HEAD
 
 ### Added
 - Events: Added Keyboard Input event to InputEvents
+- Events: Added Use Item validation event to allow control of the red highlighting behaviour for items that cannot be used.
 
 ##### New Plugins
 N/A

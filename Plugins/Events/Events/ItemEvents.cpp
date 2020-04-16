@@ -27,9 +27,15 @@ static Hooking::FunctionHook* m_ItemEventHandlerHook = nullptr;
 static Hooking::FunctionHook* m_UseLoreOnItemHook = nullptr;
 static Hooking::FunctionHook* m_PayToIdenfifyItemHook = nullptr;
 static Hooking::FunctionHook* m_SplitItemHook = nullptr;
+static Hooking::FunctionHook* m_CanUseItemHook = nullptr;
 
 ItemEvents::ItemEvents(Services::HooksProxy* hooker)
 {
+    Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_USE_ITEM_.*", [hooker]() {
+            hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi>(&CanUseItemHook);
+        m_CanUseItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi);
+        });
+
     Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorj>(&UseItemHook);
         m_UseItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorj);
@@ -84,6 +90,27 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi>(&SplitItemHook);
         m_SplitItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi);
     });
+}
+
+int32_t ItemEvents::CanUseItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, int32_t bIgnoreIdentifiedFlag)
+{
+    int32_t retVal;
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
+
+    std::string itemId = Utils::ObjectIDToString(pItem->m_idSelf);
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    retVal = Events::SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
+        ? m_CanUseItemHook->CallOriginal<int32_t>(thisPtr, pItem, bIgnoreIdentifiedFlag) : sBeforeEventResult == "1";
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
+    Events::SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
+
+    retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
+
+    return retVal;
 }
 
 int32_t ItemEvents::UseItemHook(
