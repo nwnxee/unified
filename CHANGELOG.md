@@ -19,6 +19,7 @@ N/A
 
 ### Changed
 - Events: "You cannot use that item" feedback can now be suppressed for skipped Use Item events by setting the event result to 1
+- Rename: Added the environment variable `NWNX_RENAME_OVERWRITE_DISPLAY_NAME` to control whether display names should be overwritten globally (for scripts and DMs) when global override is set. Then new default is now `false`, meaning that global overrides are only applied to players, and DMs and scripts see the original name by default.
 
 ### Deprecated
 N/A
