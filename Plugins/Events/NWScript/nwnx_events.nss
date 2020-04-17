@@ -52,9 +52,10 @@ _______________________________________
     Event Data Tag          | Type   | Notes |
     ------------------------|--------|-------|
     ITEM_OBJECT_ID          | object | Convert to object with NWNX_Object_StringToObject()|
-    BEFORE_RESULT           | int    | TRUE/FALSE, only in _AFTER events
+    BEFORE_RESULT           | int    | TRUE/FALSE, only in _AFTER events|
 
     @note Setting the result to "0" will cause the item to appear unusable (red) in the inventory.
+    @note Setting the result of this event will NOT prevent the item from being equipped, only used (e.g. scrolls/wands). See the "NWNX_ON_VALIDATE_ITEM_EQUIP_*" events to control equip behaviour.
     @note If the BEFORE event is not skipped, BEFORE_RESULT is the value of running the function normally. Otherwise, this is the set result value.
 
 _______________________________________
@@ -113,6 +114,23 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     SCROLL                | object | Convert to object with NWNX_Object_StringToObject()
+
+_______________________________________
+    ## Validate Item Equip Events
+    - NWNX_ON_VALIDATE_ITEM_EQUIP_BEFORE
+    - NWNX_ON_VALIDATE_ITEM_EQUIP_AFTER
+
+    `OBJECT_SELF` = The creature trying to equip the item
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    ITEM                  | object | Convert to object with NWNX_Object_StringToObject()|
+    SLOT                  | int    | INVENTORY_SLOT_* Constant|
+    BEFORE_RESULT         | int    | TRUE/FALSE, only in _AFTER events|
+
+    @note Manually setting the result of this event will skip all game checks for item slot validity. The client will block incompatible types (weapons into armor slots) in the GUI, but this will work using ActionEquipItem().
+    @note To show this item as unusable to the PC (red in the inventory), use in combination with the "NWNX_ON_VALIDATE_USE_ITEM_*" events.
+    @note If the BEFORE event is not skipped, BEFORE_RESULT is the value of running the function normally. Otherwise, this is the set result value.
 
 _______________________________________
     ## Item Equip Events

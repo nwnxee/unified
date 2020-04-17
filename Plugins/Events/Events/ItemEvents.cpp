@@ -9,6 +9,7 @@
 #include "API/Globals.hpp"
 #include "Events.hpp"
 #include "Utils.hpp"
+#include <cmath>
 
 namespace Events {
 
@@ -21,6 +22,7 @@ static Hooking::FunctionHook* m_OpenInventoryHook = nullptr;
 static Hooking::FunctionHook* m_CloseInventoryHook = nullptr;
 static Hooking::FunctionHook* m_FindItemWithBaseItemIdHook = nullptr;
 static Hooking::FunctionHook* m_LearnScrollHook = nullptr;
+static Hooking::FunctionHook* m_CanEquipItemHook = nullptr;
 static Hooking::FunctionHook* m_RunEquipHook = nullptr;
 static Hooking::FunctionHook* m_RunUnequipHook = nullptr;
 static Hooking::FunctionHook* m_ItemEventHandlerHook = nullptr;
@@ -60,6 +62,11 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature11LearnScrollEj>(&LearnScrollHook);
         m_LearnScrollHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature11LearnScrollEj);
     });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_ITEM_EQUIP_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer>(&CanEquipItemHook);
+        m_CanEquipItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer);
+        });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_EQUIP_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature8RunEquipEjjj>(&RunEquipHook);
@@ -287,6 +294,31 @@ int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, Types::ObjectID oidSc
     }
 
     PushAndSignal("NWNX_ON_ITEM_SCROLL_LEARN_AFTER");
+
+    return retVal;
+}
+
+int32_t ItemEvents::CanEquipItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, uint32_t* pEquipToSlot, int32_t bEquipping, int32_t bLoading, int32_t bDisplayFeedback, CNWSPlayer* pFeedbackPlayer)
+{
+    int32_t retVal;
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
+
+    std::string itemId = Utils::ObjectIDToString(pItem->m_idSelf);
+    std::string invSlot = std::to_string((uint32_t) std::round(log2(*pEquipToSlot)));
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    Events::PushEventData("SLOT", invSlot);
+
+    retVal = Events::SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
+        ? m_CanEquipItemHook->CallOriginal<int32_t>(thisPtr, pItem, pEquipToSlot, bEquipping, bLoading, bDisplayFeedback, pFeedbackPlayer) : sBeforeEventResult == "1";
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    Events::PushEventData("SLOT", invSlot);
+    Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
+    Events::SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
+
+    retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
 
     return retVal;
 }
