@@ -1223,6 +1223,15 @@ Server Character Save Events</h2>
 <dl class="section note"><dt>Note</dt><dd>This is called once for every character when the server is exiting and when the server is saved, or when ExportSingleCharacter() &amp; ExportAllCharacters() is called.</dd></dl>
 <hr  />
  <h2><a class="anchor" id="autotoc_md169"></a>
+Export Character Events</h2>
+<ul>
+<li>NWNX_ON_CLIENT_EXPORT_CHARACTER_BEFORE</li>
+<li>NWNX_ON_CLIENT_EXPORT_CHARACTER_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player</p>
+<p>Note: This event runs when the player clicks the "Save Character" button in the options menu to export their character to their localvault.</p>
+<hr  />
+ <h2><a class="anchor" id="autotoc_md170"></a>
 Levelling Events</h2>
 <ul>
 <li>NWNX_ON_LEVEL_UP_BEFORE</li>
@@ -1234,7 +1243,7 @@ Levelling Events</h2>
 </ul>
 <p><code>OBJECT_SELF</code> = The creature levelling up or down, automatic is for henchmen levelling</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md170"></a>
+ <h2><a class="anchor" id="autotoc_md171"></a>
 Container Change Events</h2>
 <ul>
 <li>NWNX_ON_INVENTORY_ADD_ITEM_BEFORE</li>
@@ -1251,7 +1260,7 @@ Container Change Events</h2>
 <td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md171"></a>
+ <h2><a class="anchor" id="autotoc_md172"></a>
 Gold Events</h2>
 <ul>
 <li>NWNX_ON_INVENTORY_ADD_GOLD_BEFORE</li>
@@ -1268,7 +1277,7 @@ Gold Events</h2>
 </table>
 <dl class="section warning"><dt>Warning</dt><dd>While these events are skippable, you should be very careful about doing so. It's very easy to create situations where players can dupe their gold or worse.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md172"></a>
+ <h2><a class="anchor" id="autotoc_md173"></a>
 PVP Attitude Change Events</h2>
 <ul>
 <li>NWNX_ON_PVP_ATTITUDE_CHANGE_BEFORE</li>
@@ -1284,7 +1293,7 @@ PVP Attitude Change Events</h2>
 <td class="markdownTableBodyNone">ATTITUDE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">0 = Dislike, 1 = Like   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md173"></a>
+ <h2><a class="anchor" id="autotoc_md174"></a>
 Input Walk To Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_WALK_TO_WAYPOINT_BEFORE</li>
@@ -1306,7 +1315,7 @@ Input Walk To Events</h2>
 <td class="markdownTableBodyNone">RUN_TO_POINT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE if player is running, FALSE if player is walking (eg when shift clicking)   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md174"></a>
+ <h2><a class="anchor" id="autotoc_md175"></a>
 Material Change Events</h2>
 <ul>
 <li>NWNX_ON_MATERIALCHANGE_BEFORE</li>
@@ -1321,7 +1330,7 @@ Material Change Events</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>: After a PC transitions to a new area, a surface material change event won't fire until after the PC moves.</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md175"></a>
+ <h2><a class="anchor" id="autotoc_md176"></a>
 Input Attack Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_ATTACK_OBJECT_BEFORE</li>
@@ -1341,7 +1350,7 @@ Input Attack Events</h2>
 <td class="markdownTableBodyNone">ADD_TO_FRONT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE / FALSE   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md176"></a>
+ <h2><a class="anchor" id="autotoc_md177"></a>
 Input Force Move To Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_BEFORE</li>
@@ -1355,7 +1364,7 @@ Input Force Move To Events</h2>
 <td class="markdownTableBodyNone">TARGET  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md177"></a>
+ <h2><a class="anchor" id="autotoc_md178"></a>
 Input Cast Spell Evens</h2>
 <ul>
 <li>NWNX_ON_INPUT_CAST_SPELL_BEFORE</li>
@@ -1371,7 +1380,7 @@ Input Cast Spell Evens</h2>
 <p>SPELL_ID | int | MULTICLASS | int | DOMAIN_LEVEL | int | META_TYPE | int | INSTANT | int | TRUE / FALSE PROJECTILE_PATH | int | SPONTANEOUS | int | TRUE / FALSE FAKE | int | TRUE / FALSE FEAT | int | -1 when not cast from a feat CASTER_LEVEL | int | IS_AREA_TARGET | int | TRUE / FALSE POS_X | float | POS_Y | float | POS_Z | float |</p>
 <dl class="section note"><dt>Note</dt><dd>This event runs the moment a creature starts casting</dd></dl>
 <hr  />
- <h2><a class="anchor" id="autotoc_md178"></a>
+ <h2><a class="anchor" id="autotoc_md179"></a>
 Input Keyboard Events</h2>
 <ul>
 <li>NWNX_ON_INPUT_KEYBOARD_BEFORE</li>
@@ -1387,7 +1396,7 @@ Input Keyboard Events</h2>
 <dl class="section note"><dt>Note</dt><dd>To stop the player from moving you can do something like below, since normal immobilizing effects stop the client from sending input.</dd></dl>
 <p>location locPlayer = GetLocation(oPlayer); object oBoulder = CreateObject(OBJECT_TYPE_PLACEABLE, "plc_boulder", locPlayer, FALSE, "TESTPLC"); NWNX_Object_SetPosition(oPlayer, GetPositionFromLocation(locPlayer)); ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectVisualEffect(VFX_DUR_CUTSCENE_INVISIBILITY), oBoulder);</p>
 <hr  />
-<h2><a class="anchor" id="autotoc_md179"></a>
+<h2><a class="anchor" id="autotoc_md180"></a>
 Object Lock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_LOCK_BEFORE</li>
@@ -1401,7 +1410,7 @@ Object Lock Events</h2>
 <td class="markdownTableBodyNone">DOOR  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">Convert to object with <a class="el" href="group__object.html#ga785dbe351d67f4fb128ba801021f23a6" title="Convert an object id to the actual object.">NWNX_Object_StringToObject()</a>   </td></tr>
 </table>
 <hr  />
- <h2><a class="anchor" id="autotoc_md180"></a>
+ <h2><a class="anchor" id="autotoc_md181"></a>
 Object Unlock Events</h2>
 <ul>
 <li>NWNX_ON_OBJECT_UNLOCK_BEFORE</li>
@@ -1418,7 +1427,7 @@ Object Unlock Events</h2>
 </table>
 <p>ACTIVE_PROPERTY_INDEX | int |</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md181"></a>
+ <h2><a class="anchor" id="autotoc_md182"></a>
 UUID Collision Events</h2>
 <ul>
 <li>NWNX_ON_UUID_COLLISION_BEFORE</li>
@@ -1433,7 +1442,7 @@ UUID Collision Events</h2>
 </table>
 <p>Note: To get the existing object with <code>UUID</code> you can use GetObjectByUUID(), be aware that this event runs before the object is added to the world which means many functions (for example <code>GetArea(OBJECT_SELF)</code>) will not work.</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md182"></a>
+ <h2><a class="anchor" id="autotoc_md183"></a>
 Resource Events</h2>
 <ul>
 <li>NWNX_ON_RESOURCE_ADDED</li>
@@ -1453,7 +1462,7 @@ Resource Events</h2>
 </table>
 <p>Note: These events fire when a file gets added/removed/modified in the /nwnx or /development folder</p>
 <hr  />
- <h2><a class="anchor" id="autotoc_md183"></a>
+ <h2><a class="anchor" id="autotoc_md184"></a>
 ELC Events</h2>
 <ul>
 <li>NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE</li>
@@ -1470,7 +1479,7 @@ ELC Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01141">1141</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01151">1151</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1509,7 +1518,7 @@ ELC Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01150">1150</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01160">1160</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1540,7 +1549,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01159">1159</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01169">1169</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1571,7 +1580,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01168">1168</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01178">1178</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1592,7 +1601,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01178">1178</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01188">1188</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1627,6 +1636,7 @@ ELC Events</h2>
 <li>Polymorph events</li>
 <li>DMAction events</li>
 <li>Client connect event</li>
+<li>Client Export Character event</li>
 <li>Spell events</li>
 <li>QuickChat events</li>
 <li>Barter event (START only)</li>
@@ -1639,7 +1649,7 @@ ELC Events</h2>
 <li>Object {Lock|Unlock} events </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01187">1187</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01197">1197</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1670,7 +1680,7 @@ ELC Events</h2>
 <li>Sticky Player Name event -&gt; "1" or "0" </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01194">1194</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01204">1204</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1691,7 +1701,7 @@ ELC Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01202">1202</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01212">1212</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1728,7 +1738,7 @@ ELC Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01210">1210</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01220">1220</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1766,7 +1776,7 @@ ELC Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01220">1220</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01230">1230</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1804,7 +1814,7 @@ ELC Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01230">1230</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01240">1240</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1814,7 +1824,7 @@ ELC Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Apr 18 2020 09:06:07 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Apr 18 2020 21:00:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
