@@ -11,6 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.10...HEAD
 - Events: Added Keyboard Input event to InputEvents
 - Events: Added Use Item validation event to allow control of item use restrictions, and unusable red inventory highlight.
 - Events: Added Equip Item validation event to allow control of item equip restrictions.
+- Events: Added OnExportCharacter event to ClientEvents
 
 ##### New Plugins
 N/A
