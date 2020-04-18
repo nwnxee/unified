@@ -807,6 +807,15 @@ _______________________________________
     @note This is called once for every character when the server is exiting and when the server is saved, or when ExportSingleCharacter() & ExportAllCharacters() is called.
 
 _______________________________________
+     ## Export Character Events
+    - NWNX_ON_CLIENT_EXPORT_CHARACTER_BEFORE
+    - NWNX_ON_CLIENT_EXPORT_CHARACTER_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Note: This event runs when the player clicks the "Save Character" button in the options menu to export their character to their localvault.
+
+_______________________________________
     ## Levelling Events
     - NWNX_ON_LEVEL_UP_BEFORE
     - NWNX_ON_LEVEL_UP_AFTER
@@ -1095,6 +1104,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Polymorph events
 /// - DMAction events
 /// - Client connect event
+/// - Client Export Character event
 /// - Spell events
 /// - QuickChat events
 /// - Barter event (START only)
