@@ -30,7 +30,8 @@ N/A
 N/A
 
 ### Fixed
-- MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorceror
+- MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorcerer.
+- Player: NWNX_Player_SetPlaceableNameOverride() once again updates in realtime.
 
 ## 8193.9
 https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
