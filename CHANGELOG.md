@@ -17,7 +17,7 @@ N/A
 N/A
 
 ### Changed
-N/A
+- ELC: Updated with recent changes.
 
 ### Deprecated
 N/A
@@ -46,7 +46,7 @@ https://github.com/nwnxee/unified/compare/build8193.10...build8193.11
 - MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorcerer.
 - Player: NWNX_Player_SetPlaceableNameOverride() once again updates in realtime.
 
-## 8193.9
+## 8193.10
 https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
 
 ### Added
@@ -79,7 +79,7 @@ N/A
 ### Fixed
 N/A
 
-## 8193.7
+## 8193.9
 https://github.com/nwnxee/unified/compare/build8193.7...build8193.9
 
 ### Added
