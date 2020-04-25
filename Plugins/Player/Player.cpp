@@ -27,6 +27,7 @@
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
+#include "API/CLastUpdateObject.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -1015,15 +1016,21 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto name = Services::Events::ExtractArgument<std::string>(args);
 
-        if (name.empty())
+        if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
         {
-            GetServices()->m_perObjectStorage->Remove(oidTarget,
-                                                      "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
-        }
-        else
-        {
-            GetServices()->m_perObjectStorage->Set(oidTarget,
-                                                   "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
+            if (name.empty())
+            {
+                GetServices()->m_perObjectStorage->Remove(pPlaceable->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+            }
+            else
+            {
+                GetServices()->m_perObjectStorage->Set(pPlaceable->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
+            }
+
+            if (auto *pLastUpdateObject = pPlayer->GetLastUpdateObject(pPlaceable->m_idSelf))
+            {
+                pLastUpdateObject->m_nUpdateDisplayNameSeq--;
+            }
         }
     }
     return Services::Events::Arguments();

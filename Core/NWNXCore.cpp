@@ -466,6 +466,14 @@ void NWNXCore::InitialSetupCommands()
                  Log::GetPrintTimestamp(), Log::GetPrintDate(), Log::GetPrintPlugin(),
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
+
+    m_services->m_commands->RegisterCommand("resolve", [](std::string&, std::string& args)
+    {
+        auto addr = Utils::from_string<uint64_t>(args);
+        if (addr)
+            LOG_NOTICE("%s", NWNXLib::Platform::Debug::ResolveAddress(*addr));
+    });
+
 }
 
 void NWNXCore::UnloadPlugins()

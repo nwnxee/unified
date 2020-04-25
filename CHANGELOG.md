@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.10...HEAD
+https://github.com/nwnxee/unified/compare/build8193.11...HEAD
 
 ### Added
 - Creature: `NWNX_CREATURE_ADJUST_CASTER_LEVEL` and `NWNX_CREATURE_ADJUST_CASTER_LEVEL_2DA` variables to enable caster level tweaking when calling GetCasterLevel(), ResistSpell() and OnApplyDispel{All|Best}Magic() functions
@@ -27,6 +27,24 @@ N/A
 
 ### Fixed
 N/A
+
+## 8193.11 
+https://github.com/nwnxee/unified/compare/build8193.10...build8193.11
+
+### Added
+- Events: Added Keyboard Input event to InputEvents
+- Events: Added Use Item validation event to allow control of item use restrictions, and unusable red inventory highlight.
+- Events: Added Equip Item validation event to allow control of item equip restrictions.
+- Events: Added OnExportCharacter event to ClientEvents
+
+### Changed
+- Events: "You cannot use that item" feedback can now be suppressed for skipped Use Item events by setting the event result to 1
+- Rename: Added the environment variable `NWNX_RENAME_OVERWRITE_DISPLAY_NAME` to control whether display names should be overwritten globally (for scripts and DMs) when global override is set. Then new default is now `false`, meaning that global overrides are only applied to players, and DMs and scripts see the original name by default.
+- Core: Stack traces will now resolve base game functions
+
+### Fixed
+- MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorcerer.
+- Player: NWNX_Player_SetPlaceableNameOverride() once again updates in realtime.
 
 ## 8193.9
 https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
