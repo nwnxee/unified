@@ -215,7 +215,9 @@ struct CNWSCreatureStats
     char GetBaseWillSavingThrow();
     char GetReflexSavingThrow(BOOL bExcludeEffectBonus = false);
     char GetBaseReflexSavingThrow();
+    char GetAbilityMod(uint8_t nAbility);
     char GetPrimaryMod(uint8_t nMultiClass);
+    char GetSpellcastingMod(uint8_t nMultiClass);
     uint8_t GetSTRStat();
     char GetTotalSTRBonus();
     uint8_t GetDEXStat();
