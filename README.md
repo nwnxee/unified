@@ -4,7 +4,7 @@
 
 This branch is targeting a development build. For the latest stable, use the [nwnx-stable](https://github.com/nwnxee/unified/tree/nwnx-stable) branch.
 
-- Latest release: [build8193.11](https://github.com/nwnxee/unified/releases/tag/build8193.10) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#81939) 
+- Latest release: [build8193.11](https://github.com/nwnxee/unified/releases/tag/build8193.11) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819311) 
 - Docker tag: `nwnxee/unified:build8193.11`
 - nwserver-linux md5: `5c7df339094b60a7748e0000b5bfe48b`
 
