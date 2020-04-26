@@ -14,7 +14,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-N/A
+- Object: ClearSpellEffectsOnOthers()
 
 ### Changed
 - ELC: Updated with recent changes.

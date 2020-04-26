@@ -341,6 +341,10 @@ int NWNX_Object_AcquireItem(object oObject, object oItem);
 /// @param fDirection The direction the object should face
 void NWNX_Object_SetFacing(object oObject, float fDirection);
 
+/// @brief Clear all spell effects oObject has applied to others.
+/// @param oObject The object that applied the spell effects.
+void NWNX_Object_ClearSpellEffectsOnOthers(object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -807,6 +811,14 @@ void NWNX_Object_SetFacing(object oObject, float fDirection)
     string sFunc = "SetFacing";
 
     NWNX_PushArgumentFloat(NWNX_Object, sFunc, fDirection);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_ClearSpellEffectsOnOthers(object oObject)
+{
+    string sFunc = "ClearSpellEffectsOnOthers";
+
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }

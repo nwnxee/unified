@@ -105,6 +105,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetInternalObjectType);
     REGISTER(AcquireItem);
     REGISTER(SetFacing);
+    REGISTER(ClearSpellEffectsOnOthers);
 
 #undef REGISTER
 }
@@ -886,6 +887,16 @@ ArgumentStack Object::SetFacing(ArgumentStack&& args)
             pPlaceable->SetOrientation(vOrientation);
         else
             pObject->SetOrientation(vOrientation);
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::ClearSpellEffectsOnOthers(ArgumentStack&& args)
+{
+    if (auto *pObject = object(args))
+    {
+        pObject->ClearSpellEffectsOnOthers();
     }
 
     return Services::Events::Arguments();
