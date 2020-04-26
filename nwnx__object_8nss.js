@@ -48,6 +48,7 @@ var nwnx__object_8nss =
     [ "NWNX_Object_GetInternalObjectType", "group__object.html#gab3df9d22e8d2ecb09084ea585a77cda5", null ],
     [ "NWNX_Object_AcquireItem", "group__object.html#gabac51683829dcd5e2898b1e072d2b760", null ],
     [ "NWNX_Object_SetFacing", "group__object.html#gafc737bc3878fa25f216d2758653d1e93", null ],
+    [ "NWNX_Object_ClearSpellEffectsOnOthers", "group__object.html#gada257f70e5980685198fcc8a957b53cb", null ],
     [ "NWNX_Object", "group__object.html#ga5870cbabf1a8a4fdd11ce0b2cd4bd569", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],
