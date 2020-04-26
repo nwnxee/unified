@@ -14,7 +14,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-N/A
+- Creature: JumpToLimbo()
 
 ### Changed
 N/A
