@@ -970,7 +970,6 @@ _______________________________________
           ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectVisualEffect(VFX_DUR_CUTSCENE_INVISIBILITY), oBoulder);
 
  _______________________________________
-
     ## Object Lock Events
     - NWNX_ON_OBJECT_LOCK_BEFORE
     - NWNX_ON_OBJECT_LOCK_AFTER
@@ -1033,6 +1032,21 @@ _______________________________________
 
     Note: NWNX_ELC must be loaded for these events to work. The `_AFTER` event only fires if the character successfully
           completes validation.
+
+_______________________________________
+     ## Quickbar Events
+    - NWNX_ON_QUICKBAR_SET_BUTTON_BEFORE
+    - NWNX_ON_QUICKBAR_SET_BUTTON_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    BUTTON                | int    | The quickbar button slot, 0-35
+    TYPE                  | int    | The type of quickbar button set, see NWNX_PLAYER_QBS_TYPE_* in nwnx_player_qbs.nss
+
+    Note: Skipping the event does not prevent the client from changing the button clientside, the change won't however
+          be saved to the bic file.
 
 _______________________________________
 */
@@ -1115,6 +1129,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - PVP Attitude Change events
 /// - {Enter|Exit}Stealth events
 /// - Object {Lock|Unlock} events
+/// - Quickbar Events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
