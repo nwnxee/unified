@@ -23,6 +23,7 @@
 #include "Services/Config/Config.hpp"
 #include "Services/Plugins/Plugins.hpp"
 #include "Services/Commands/Commands.hpp"
+#include "Services/Tasks/Tasks.hpp"
 
 #include <string>
 #include <cstdio>
@@ -494,7 +495,11 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
     const auto limit = Services::Events::ExtractArgument<int32_t>(args);
 
     if (limit < 0)
-        Globals::VirtualMachine()->m_nInstructionLimit = defaultInstructionLimit;
+    {
+        // We queue it on the main thread so it'll reset after the current script is done executing
+        g_plugin->GetServices()->m_tasks->QueueOnMainThread(
+            [](){ Globals::VirtualMachine()->m_nInstructionLimit = defaultInstructionLimit; });
+    }
     else
         Globals::VirtualMachine()->m_nInstructionLimit = limit;
 
