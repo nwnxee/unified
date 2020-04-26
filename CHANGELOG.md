@@ -15,6 +15,7 @@ N/A
 
 ##### New NWScript Functions
 - Object: ClearSpellEffectsOnOthers()
+- Creature: GetFlatFooted()
 
 ### Changed
 - ELC: Updated with recent changes.

@@ -141,6 +141,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetDisarmable);
     REGISTER(SetFaction);
     REGISTER(GetFaction);
+    REGISTER(GetFlatFooted);
 
 #undef REGISTER
 }
@@ -1887,6 +1888,16 @@ ArgumentStack Creature::GetFaction(ArgumentStack&& args)
         {
             retVal = pFaction->m_nFactionId;
         }
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::GetFlatFooted(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->GetFlatFooted();
     }
     return Services::Events::Arguments(retVal);
 }

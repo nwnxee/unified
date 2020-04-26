@@ -665,6 +665,11 @@ void NWNX_Creature_SetFaction(object oCreature, int nFactionId);
 /// @return faction id as an integer, -1 when used against invalid creature or invalid object.
 int NWNX_Creature_GetFaction(object oCreature);
 
+/// @brief Get whether a creature is flat-footed.
+/// @param The creature object.
+/// @return TRUE if the creature is flat-footed.
+int NWNX_Creature_GetFlatFooted(object oCreature);
+
 
 
 /// @}
@@ -1633,6 +1638,14 @@ void NWNX_Creature_SetFaction(object oCreature, int nFactionId)
 int NWNX_Creature_GetFaction(object oCreature)
 {
     string sFunc = "GetFaction";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetFlatFooted(object oCreature)
+{
+    string sFunc = "GetFlatFooted";
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
