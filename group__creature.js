@@ -105,6 +105,7 @@ var group__creature =
     [ "NWNX_Creature_SetSpecialization", "group__creature.html#gab7511205cd5bb49971a55381624eb98b", null ],
     [ "NWNX_Creature_SetFaction", "group__creature.html#gaadaf23cf6ae1c20254f13d01e61a0a0b", null ],
     [ "NWNX_Creature_GetFaction", "group__creature.html#ga6a2c379a352686d151ecea19fe768844", null ],
+    [ "NWNX_Creature_GetFlatFooted", "group__creature.html#ga43289d7f208dbe759b856d1f4757dc2e", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],

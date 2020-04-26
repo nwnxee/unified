@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#a52a022c06f0b4fad43e92e43a88638f8":[4,0,2,26,0,3,187],
+"nwnx__redis__short_8nss.html#a53c88f8de0e1221fff79597d0010895a":[4,0,2,26,0,3,169],
 "nwnx__redis__short_8nss.html#a55ad4e3489e2ea38fe3e75063aebeb3f":[4,0,2,26,0,3,205],
 "nwnx__redis__short_8nss.html#a560df938c0e65c160d5e54f22bbdedd1":[4,0,2,26,0,3,200],
 "nwnx__redis__short_8nss.html#a56c3a3d57a972a920332e426fc7134cd":[4,0,2,26,0,3,153],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__EffectUnpacked.html":[0,11,2],
 "structNWNX__EffectUnpacked.html#a035886117265673ac6582080975be4e0":[0,11,2,16],
 "structNWNX__EffectUnpacked.html#a099a70008ff66f2a79cd34902104d688":[0,11,2,36],
-"structNWNX__EffectUnpacked.html#a14f3744ff2467b6314841a0cd2e87350":[0,11,2,13],
-"structNWNX__EffectUnpacked.html#a332fd2e3db2012dc15d2fff35b88332e":[0,11,2,8],
-"structNWNX__EffectUnpacked.html#a35f34194735bf87011027e76349b7074":[0,11,2,23]
+"structNWNX__EffectUnpacked.html#a14f3744ff2467b6314841a0cd2e87350":[0,11,2,13]
 };
