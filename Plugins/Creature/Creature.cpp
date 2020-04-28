@@ -1925,6 +1925,7 @@ ArgumentStack Creature::SerializeQuickbar(ArgumentStack&& args)
             resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
 
             retVal = Encoding::ToBase64(std::vector<uint8_t>(pData, pData+dataLength));
+            delete[] pData;
         }
     }
 
