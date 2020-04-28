@@ -1049,6 +1049,22 @@ _______________________________________
           be saved to the bic file.
 
 _______________________________________
+     ## Calendar Events
+    - NWNX_ON_CALENDAR_HOUR
+    - NWNX_ON_CALENDAR_DAY
+    - NWNX_ON_CALENDAR_MONTH
+    - NWNX_ON_CALENDAR_YEAR
+    - NWNX_ON_CALENDAR_DAWN
+    - NWNX_ON_CALENDAR_DUSK
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    OLD                   | int    | The (Hour/Day/Month/Year) before the change. Not available in DAWN/DUSK.
+    NEW                   | int    | The (Hour/Day/Month/Year) after the change. Not available in DAWN/DUSK.
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;

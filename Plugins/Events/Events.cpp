@@ -5,6 +5,7 @@
 #include "API/Constants.hpp"
 #include "Events/AssociateEvents.hpp"
 #include "Events/BarterEvents.hpp"
+#include "Events/CalendarEvents.hpp"
 #include "Events/ClientEvents.hpp"
 #include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
@@ -106,6 +107,7 @@ Events::Events(const Plugin::CreateParams& params)
     auto hooker = GetServices()->m_hooks.get();
     m_associateEvents   = std::make_unique<AssociateEvents>(hooker);
     m_barterEvents      = std::make_unique<BarterEvents>(hooker);
+    m_calendarEvents    = std::make_unique<CalendarEvents>(hooker);
     m_clientEvents      = std::make_unique<ClientEvents>(hooker);
     m_combatEvents      = std::make_unique<CombatEvents>(hooker);
     m_dmActionEvents    = std::make_unique<DMActionEvents>(hooker);
