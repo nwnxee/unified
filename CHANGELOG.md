@@ -1,4 +1,4 @@
-# Changelog 
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.11...HEAD
 
 ### Added
 - Events: added QuickbarSetButton event to QuickbarEvents
+- Events: added Calendar events for change in Hour, Day, Month, Year, and Dawn/Dusk.
 
 ##### New Plugins
 N/A
@@ -30,7 +31,7 @@ N/A
 ### Fixed
 N/A
 
-## 8193.11 
+## 8193.11
 https://github.com/nwnxee/unified/compare/build8193.10...build8193.11
 
 ### Added
@@ -55,7 +56,7 @@ https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
 - SQL: Added optional support for object storage in binary fields via an optional parameter `base64` in `NWNX_SQL_PreparedObjectFull` and `NWNX_SQL_ReadFullObjectInActiveRow`
 - Events: Added OnServerCharacterSave events to ClientEvents. Called when a server vault character will be saved either manually, or when the server saves/exits.
 - ELC: Added `NWNX_ON_ELC_VALIDATE_CHARACTER_{BEFORE|AFTER}` events, can be subscribed to with NWNX_Events.
-- Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now 
+- Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now
 
 ##### New Plugins
 N/A
@@ -120,7 +121,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 - Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
 - Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
 - Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
- 
+
 ##### New Plugins
 - Optimizations: Tweaks that (potentially) improve performance
     - AsyncLogFlush to asynchronously flush the game log to disk
@@ -160,7 +161,7 @@ https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
 - Util: RemoveNWNXResourceFile()
 
 ### Changed
-- Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 
+- Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis
 - Util: `NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK` will now provide an error message if it fails to run a script chunk
 
 ### Deprecated
