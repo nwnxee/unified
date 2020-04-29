@@ -670,7 +670,16 @@ int NWNX_Creature_GetFaction(object oCreature);
 /// @return TRUE if the creature is flat-footed.
 int NWNX_Creature_GetFlatFooted(object oCreature);
 
+/// @brief Serialize oCreature's quickbar to a base64 string
+/// @param oCreature The creature.
+/// @return A base64 string representation of oCreature's quickbar.
+string NWNX_Creature_SerializeQuickbar(object oCreature);
 
+/// @brief Deserialize sSerializedQuickbar for oCreature
+/// @param oCreature The creature.
+/// @param sSerializedQuickbar A base64 string of a quickbar
+/// @return TRUE on success
+int NWNX_Creature_DeserializeQuickbar(object oCreature, string sSerializedQuickbar);
 
 /// @}
 
@@ -1647,6 +1656,27 @@ int NWNX_Creature_GetFlatFooted(object oCreature)
 {
     string sFunc = "GetFlatFooted";
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+string NWNX_Creature_SerializeQuickbar(object oCreature)
+{
+    string sFunc = "SerializeQuickbar";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_DeserializeQuickbar(object oCreature, string sSerializedQuickbar)
+{
+    string sFunc = "DeserializeQuickbar";
+
+    NWNX_PushArgumentString(NWNX_Creature, sFunc, sSerializedQuickbar);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }

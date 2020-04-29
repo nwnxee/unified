@@ -102,6 +102,8 @@ private:
     ArgumentStack SetFaction                    (ArgumentStack&& args);
     ArgumentStack GetFaction                    (ArgumentStack&& args);
     ArgumentStack GetFlatFooted                 (ArgumentStack&& args);
+    ArgumentStack SerializeQuickbar             (ArgumentStack&& args);
+    ArgumentStack DeserializeQuickbar           (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
