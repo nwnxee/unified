@@ -170,6 +170,10 @@ Creature::Creature(const Plugin::CreateParams& params)
         hooker->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler21OnApplyDispelAllMagicEP10CNWSObjectP11CGameEffecti, void>(&CNWSEffectListHandler__OnApplyDispelAllMagic);
         hooker->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler22OnApplyDispelBestMagicEP10CNWSObjectP11CGameEffecti, void>(&CNWSEffectListHandler__OnApplyDispelBestMagic);
         hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
+
+        LOG_NOTICE("NWNX_Creature: Caster level modifier/override functionality enabled.");
+        if (s_bUseCasterLevel2da)
+            LOG_NOTICE("NWNX_Creature: Automatic caster level adjustment for prestige classes enabled.");
     }
 }
 
@@ -1927,7 +1931,7 @@ ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
         ASSERT_OR_THROW(nClass >= 0);
         ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
-        const auto bPersist = Services::Events::ExtractArgument<bool>(args);
+        const bool bPersist = !!Services::Events::ExtractArgument<int32_t>(args);
 
         if (nModifier)
             GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass), nModifier, bPersist);
@@ -1962,7 +1966,7 @@ ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
         ASSERT_OR_THROW(nClass >= 0);
         ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
         const auto nLevel = Services::Events::ExtractArgument<int32_t>(args);
-        const auto bPersist = Services::Events::ExtractArgument<bool>(args);
+        const bool bPersist = !!Services::Events::ExtractArgument<int32_t>(args);
 
         if (nLevel > 0)
             GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass), nLevel, bPersist);

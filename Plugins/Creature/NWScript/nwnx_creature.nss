@@ -1669,7 +1669,7 @@ void NWNX_Creature_SetCasterLevelModifier(object oCreature, int nClass, int nMod
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersist);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nModifier);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
@@ -1679,7 +1679,7 @@ int NWNX_Creature_GetCasterLevelModifier(object oCreature, int nClass)
     string sFunc = "GetCasterLevelModifier";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
@@ -1692,7 +1692,7 @@ void NWNX_Creature_SetCasterLevelOverride(object oCreature, int nClass, int nCas
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bPersist);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nCasterLevel);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
@@ -1702,7 +1702,7 @@ int NWNX_Creature_GetCasterLevelOverride(object oCreature, int nClass)
     string sFunc = "GetCasterLevelOverride";
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nClass);
-    NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
