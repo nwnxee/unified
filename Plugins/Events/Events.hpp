@@ -15,6 +15,7 @@ namespace Events {
 
 class AssociateEvents;
 class BarterEvents;
+class CalendarEvents;
 class ClientEvents;
 class CombatEvents;
 class DMActionEvents;
@@ -40,6 +41,7 @@ class MaterialChangeEvents;
 class ObjectEvents;
 class UUIDEvents;
 class ResourceEvents;
+class QuickbarEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -105,6 +107,7 @@ private:
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
     std::unique_ptr<BarterEvents> m_barterEvents;
+    std::unique_ptr<CalendarEvents> m_calendarEvents;
     std::unique_ptr<ClientEvents> m_clientEvents;
     std::unique_ptr<CombatEvents> m_combatEvents;
     std::unique_ptr<DMActionEvents> m_dmActionEvents;
@@ -130,6 +133,7 @@ private:
     std::unique_ptr<ObjectEvents> m_objectEvents;
     std::unique_ptr<UUIDEvents> m_uuidEvents;
     std::unique_ptr<ResourceEvents> m_resourceEvents;
+    std::unique_ptr<QuickbarEvents> m_quickbarEvents;
 };
 
 }

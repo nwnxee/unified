@@ -12,6 +12,10 @@
 #include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
+#include "API/CServerExoAppInternal.hpp"
+#include "API/CFactionManager.hpp"
+#include "API/CResStruct.hpp"
+#include "API/CResGFF.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/C2DA.hpp"
 #include "API/Constants.hpp"
@@ -21,8 +25,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "API/CServerExoAppInternal.hpp"
-#include "API/CFactionManager.hpp"
+#include "Encoding.hpp"
 
 
 using namespace NWNXLib;
@@ -152,6 +155,9 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetDisarmable);
     REGISTER(SetFaction);
     REGISTER(GetFaction);
+    REGISTER(GetFlatFooted);
+    REGISTER(SerializeQuickbar);
+    REGISTER(DeserializeQuickbar);
     REGISTER(SetCasterLevelModifier);
     REGISTER(GetCasterLevelModifier);
     REGISTER(SetCasterLevelOverride);
@@ -1920,6 +1926,92 @@ ArgumentStack Creature::GetFaction(ArgumentStack&& args)
             retVal = pFaction->m_nFactionId;
         }
     }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::GetFlatFooted(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->GetFlatFooted();
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SerializeQuickbar(ArgumentStack&& args)
+{
+    std::string retVal;
+
+    if (auto *pCreature = creature(args))
+    {
+        uint8_t *pData = nullptr;
+        int32_t dataLength = 0;
+
+        CResGFF    resGff;
+        CResStruct resStruct{};
+
+        if (resGff.CreateGFFFile(&resStruct, "GFF ", "V2.0"))
+        {
+            pCreature->SaveQuickButtons(&resGff, &resStruct);
+            resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
+
+            retVal = Encoding::ToBase64(std::vector<uint8_t>(pData, pData+dataLength));
+            delete[] pData;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::DeserializeQuickbar(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto serializedB64 = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(!serializedB64.empty());
+
+        std::vector<uint8_t> serialized = Encoding::FromBase64(serializedB64);
+
+        if (serialized.empty() || serialized.size() < 14*4)
+            return Services::Events::Arguments(retVal);
+
+        CResGFF resGff;
+        CResStruct resStruct{};
+
+        // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
+        // so need a copy for them to play with since the vector can't relinquish its own.
+        auto *data = new uint8_t[serialized.size()];
+        memcpy(data, serialized.data(), serialized.size());
+        if (resGff.GetDataFromPointer((void *) data, (int32_t) serialized.size()))
+        {
+            resGff.InitializeForWriting();
+
+            if (resGff.GetTopLevelStruct(&resStruct))
+            {
+                CExoString sFileType, sFileVersion;
+                resGff.GetGFFFileInfo(&sFileType, &sFileVersion);
+
+                if (sFileType == "GFF ")
+                {
+                    pCreature->LoadQuickButtons(&resGff, &resStruct);
+
+                    if (auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pCreature->m_idSelf))
+                    {
+                        if (auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+                        {
+                            pMessage->SendServerToPlayerGuiQuickbar_SetButton(pPlayer, 0, true);
+                        }
+                    }
+
+                    retVal = true;
+                }
+            }
+        }
+    }
+
     return Services::Events::Arguments(retVal);
 }
 

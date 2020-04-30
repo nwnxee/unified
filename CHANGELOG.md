@@ -1,4 +1,4 @@
-# Changelog 
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -8,16 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.11...HEAD
 
 ### Added
+- Events: added QuickbarSetButton event to QuickbarEvents
+- Events: added Calendar events for change in Hour, Day, Month, Year, and Dawn/Dusk.
 - Creature: `NWNX_CREATURE_ADJUST_CASTER_LEVEL` and `NWNX_CREATURE_ADJUST_CASTER_LEVEL_2DA` variables to enable caster level tweaking when calling GetCasterLevel(), ResistSpell() and OnApplyDispel{All|Best}Magic() functions
 
 ##### New Plugins
 N/A
 
 ##### New NWScript Functions
-N/A
+- Object: ClearSpellEffectsOnOthers()
+- Creature: GetFlatFooted()
+- Creature: {Serialize|Deserialize}Quickbar()
 
 ### Changed
-N/A
+- ELC: Updated with recent changes.
 
 ### Deprecated
 N/A
@@ -28,7 +32,7 @@ N/A
 ### Fixed
 N/A
 
-## 8193.11 
+## 8193.11
 https://github.com/nwnxee/unified/compare/build8193.10...build8193.11
 
 ### Added
@@ -46,14 +50,14 @@ https://github.com/nwnxee/unified/compare/build8193.10...build8193.11
 - MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorcerer.
 - Player: NWNX_Player_SetPlaceableNameOverride() once again updates in realtime.
 
-## 8193.9
+## 8193.10
 https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
 
 ### Added
 - SQL: Added optional support for object storage in binary fields via an optional parameter `base64` in `NWNX_SQL_PreparedObjectFull` and `NWNX_SQL_ReadFullObjectInActiveRow`
 - Events: Added OnServerCharacterSave events to ClientEvents. Called when a server vault character will be saved either manually, or when the server saves/exits.
 - ELC: Added `NWNX_ON_ELC_VALIDATE_CHARACTER_{BEFORE|AFTER}` events, can be subscribed to with NWNX_Events.
-- Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now 
+- Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now
 
 ##### New Plugins
 N/A
@@ -79,7 +83,7 @@ N/A
 ### Fixed
 N/A
 
-## 8193.7
+## 8193.9
 https://github.com/nwnxee/unified/compare/build8193.7...build8193.9
 
 ### Added
@@ -158,7 +162,7 @@ https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
 - Util: RemoveNWNXResourceFile()
 
 ### Changed
-- Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 
+- Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis
 - Util: `NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK` will now provide an error message if it fails to run a script chunk
 
 ### Deprecated

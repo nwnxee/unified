@@ -111,6 +111,9 @@ private:
     ArgumentStack SetDisarmable                 (ArgumentStack&& args);
     ArgumentStack SetFaction                    (ArgumentStack&& args);
     ArgumentStack GetFaction                    (ArgumentStack&& args);
+    ArgumentStack GetFlatFooted                 (ArgumentStack&& args);
+    ArgumentStack SerializeQuickbar             (ArgumentStack&& args);
+    ArgumentStack DeserializeQuickbar           (ArgumentStack&& args);
     ArgumentStack SetCasterLevelModifier        (ArgumentStack&& args);
     ArgumentStack GetCasterLevelModifier        (ArgumentStack&& args);
     ArgumentStack SetCasterLevelOverride        (ArgumentStack&& args);
