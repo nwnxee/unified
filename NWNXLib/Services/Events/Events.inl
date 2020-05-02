@@ -98,3 +98,9 @@ T Events::ExtractArgument(ArgumentStack& arguments)
 
     return real;
 }
+
+template <typename... Ts>
+std::tuple<Ts...> Events::ExtractArguments(ArgumentStack& arguments) 
+{
+    return {ExtractArgument<Ts>(arguments)...};
+}

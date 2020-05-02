@@ -77,6 +77,9 @@ public:
     template <typename T>
     static T ExtractArgument(ArgumentStack& arguments);
 
+    template <typename... Ts>
+    static std::tuple<Ts...> ExtractArguments(ArgumentStack& arguments);
+
 private: // Structures
     struct EventDataInternal
     {
