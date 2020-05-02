@@ -662,8 +662,8 @@ ArgumentStack Creature::GetMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(static_cast<unsigned char>(level),
-                                                                            static_cast<unsigned char>(index)))
+                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(static_cast<uint8_t>(level),
+                                                                            static_cast<uint8_t>(index)))
                 {
                     id     = static_cast<int32_t>(pSpell->m_nSpellId);
                     ready  = pSpell->m_bReadied;
@@ -694,7 +694,7 @@ ArgumentStack Creature::GetMemorisedSpellCountByLevel(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retVal = classInfo.GetNumberMemorizedSpellSlots(static_cast<unsigned char>(level));
+                retVal = classInfo.GetNumberMemorizedSpellSlots(static_cast<uint8_t>(level));
                 break;
             }
         }
@@ -727,14 +727,14 @@ ArgumentStack Creature::SetMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.SetMemorizedSpellSlot(static_cast<unsigned char>(level),
-                                                static_cast<unsigned char>(index),
+                classInfo.SetMemorizedSpellSlot(static_cast<uint8_t>(level),
+                                                static_cast<uint8_t>(index),
                                                 static_cast<uint32_t>(id),
                                                 domain,
-                                                static_cast<unsigned char>(meta));
+                                                static_cast<uint8_t>(meta));
 
-                classInfo.SetMemorizedSpellInSlotReady(static_cast<unsigned char>(level),
-                                                       static_cast<unsigned char>(index),
+                classInfo.SetMemorizedSpellInSlotReady(static_cast<uint8_t>(level),
+                                                       static_cast<uint8_t>(index),
                                                        ready);
 
                 break;
@@ -761,7 +761,7 @@ ArgumentStack Creature::GetRemainingSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retVal = classInfo.GetSpellsPerDayLeft(static_cast<unsigned char>(level));
+                retVal = classInfo.GetSpellsPerDayLeft(static_cast<uint8_t>(level));
                 break;
             }
         }
@@ -788,7 +788,7 @@ ArgumentStack Creature::SetRemainingSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.SetSpellsPerDayLeft(static_cast<unsigned char>(level), static_cast<unsigned char>(slots));
+                classInfo.SetSpellsPerDayLeft(static_cast<uint8_t>(level), static_cast<uint8_t>(slots));
                 break;
             }
         }
@@ -842,8 +842,8 @@ ArgumentStack Creature::GetKnownSpell(ArgumentStack&& args)
             if (classInfo.m_nClass == classId)
             {
                 retVal = static_cast<int32_t>(classInfo.GetKnownSpell(
-                        static_cast<unsigned char>(level),
-                        static_cast<unsigned char>(index)));
+                        static_cast<uint8_t>(level),
+                        static_cast<uint8_t>(index)));
                 break;
             }
         }
@@ -868,7 +868,7 @@ ArgumentStack Creature::GetKnownSpellCount(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retVal = classInfo.GetNumberKnownSpells(static_cast<unsigned char>(level));
+                retVal = classInfo.GetNumberKnownSpells(static_cast<uint8_t>(level));
                 break;
             }
         }
@@ -894,7 +894,7 @@ ArgumentStack Creature::RemoveKnownSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.RemoveKnownSpell(static_cast<unsigned char>(level), static_cast<uint32_t>(spellId));
+                classInfo.RemoveKnownSpell(static_cast<uint8_t>(level), static_cast<uint32_t>(spellId));
                 break;
             }
         }
@@ -920,7 +920,7 @@ ArgumentStack Creature::AddKnownSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.AddKnownSpell(static_cast<unsigned char>(level), static_cast<uint32_t>(spellId));
+                classInfo.AddKnownSpell(static_cast<uint8_t>(level), static_cast<uint32_t>(spellId));
                 break;
             }
         }
@@ -970,8 +970,8 @@ ArgumentStack Creature::ClearMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.ClearMemorizedSpellSlot(static_cast<unsigned char>(level),
-                                                  static_cast<unsigned char>(index));
+                classInfo.ClearMemorizedSpellSlot(static_cast<uint8_t>(level),
+                                                  static_cast<uint8_t>(index));
 
                 break;
             }
