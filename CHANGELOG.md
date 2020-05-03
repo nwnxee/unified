@@ -10,7 +10,8 @@ https://github.com/nwnxee/unified/compare/build8193.11...HEAD
 ### Added
 - Events: added QuickbarSetButton event to QuickbarEvents
 - Events: added Calendar events for change in Hour, Day, Month, Year, and Dawn/Dusk.
-- Creature: `NWNX_CREATURE_ADJUST_CASTER_LEVEL` and `NWNX_CREATURE_ADJUST_CASTER_LEVEL_2DA` variables to enable caster level tweaking when calling GetCasterLevel(), ResistSpell() and OnApplyDispel{All|Best}Magic() functions
+- Tweaks: `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS` to enable a fix for effects losing the caster level vs. dispel checks when the effect creator is deleted.
+- Tweaks: `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS` to automatically add caster levels from prestige classes based on the {Arc|Div}SpellLvlMod columns in classes.2da
 
 ##### New Plugins
 N/A
@@ -19,6 +20,7 @@ N/A
 - Object: ClearSpellEffectsOnOthers()
 - Creature: GetFlatFooted()
 - Creature: {Serialize|Deserialize}Quickbar()
+- Creature: {Get|Set}CasterLevelModifier() and {Get|Set}CasterLevelOverride()
 
 ### Changed
 - ELC: Updated with recent changes.

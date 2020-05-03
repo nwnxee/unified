@@ -55,13 +55,8 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 namespace Creature {
 
-uint8_t Creature::s_classCasterType[Constants::ClassType::MAX + 1];
-uint8_t Creature::s_divModClasses[Constants::ClassType::MAX + 1];
-uint8_t Creature::s_arcModClasses[Constants::ClassType::MAX + 1];
-bool Creature::s_bCasterClassesLoaded = false;
-bool Creature::s_bUseCasterLevel2da = false;
 bool Creature::s_bAdjustCasterLevel = false;
-Hooking::FunctionHook* g_pGetClassLevelHook = nullptr;
+bool Creature::s_bCasterLevelHooksInitialized = false;
 
 Creature::Creature(const Plugin::CreateParams& params)
     : Plugin(params)
@@ -164,23 +159,6 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetCasterLevelOverride);
 
 #undef REGISTER
-
-    if (GetServices()->m_config->Get<bool>("ADJUST_CASTER_LEVEL", false))
-    {
-        auto hooker = GetServices()->m_hooks.get();
-        s_bUseCasterLevel2da = GetServices()->m_config->Get<bool>("ADJUST_CASTER_LEVEL_2DA", false);
-        hooker->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi>(&CNWSCreatureStats__GetClassLevel);
-        g_pGetClassLevelHook = hooker->FindHookByAddress(API::Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi);
-        hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, void>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
-        hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, void>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
-        hooker->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler21OnApplyDispelAllMagicEP10CNWSObjectP11CGameEffecti, void>(&CNWSEffectListHandler__OnApplyDispelAllMagic);
-        hooker->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler22OnApplyDispelBestMagicEP10CNWSObjectP11CGameEffecti, void>(&CNWSEffectListHandler__OnApplyDispelBestMagic);
-        hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
-
-        LOG_NOTICE("NWNX_Creature: Caster level modifier/override functionality enabled.");
-        if (s_bUseCasterLevel2da)
-            LOG_NOTICE("NWNX_Creature: Automatic caster level adjustment for prestige classes enabled.");
-    }
 }
 
 Creature::~Creature()
@@ -2015,8 +1993,20 @@ ArgumentStack Creature::DeserializeQuickbar(ArgumentStack&& args)
     return Services::Events::Arguments(retVal);
 }
 
+void Creature::InitCasterLevelHooks()
+{
+    auto hooker = g_plugin->GetServices()->m_hooks.get();
+    hooker->RequestSharedHook<Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, uint8_t>(&CNWSCreatureStats__GetClassLevel);
+    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
+    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
+    hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
+}
+
 ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
 {
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
     if (auto* pCreature = creature(args))
     {
         const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
@@ -2035,6 +2025,9 @@ ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
 
 ArgumentStack Creature::GetCasterLevelModifier(ArgumentStack&& args)
 {
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
     int32_t retVal = 0;
 
     if (auto* pCreature = creature(args))
@@ -2052,6 +2045,9 @@ ArgumentStack Creature::GetCasterLevelModifier(ArgumentStack&& args)
 
 ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
 {
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
     if (auto* pCreature = creature(args))
     {
         const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
@@ -2070,6 +2066,9 @@ ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
 
 ArgumentStack Creature::GetCasterLevelOverride(ArgumentStack&& args)
 {
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
     int32_t retVal = -1;
 
     if (auto* pCreature = creature(args))
@@ -2085,83 +2084,44 @@ ArgumentStack Creature::GetCasterLevelOverride(ArgumentStack&& args)
     return Services::Events::Arguments(retVal);
 }
 
-void Creature::LoadCasterLevelModifiers()
+void Creature::CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL)
 {
-    auto p2DA = Globals::Rules()->m_p2DArrays->GetCached2DA("classes", true);
-    p2DA->Load2DArray();
-    for (int i = 0; i < p2DA->m_nNumRows; i++)
-    {
-        s_classCasterType[i] = CasterType::None;
-        s_arcModClasses[i] = 0;
-        s_divModClasses[i] = 0;
+    static int32_t nModifier;
 
-        int spellCaster, arcane;
-        if (p2DA->GetINTEntry(i, "SpellCaster", &spellCaster) && spellCaster && p2DA->GetINTEntry(i, "Arcane", &arcane))
-            s_classCasterType[i] = arcane ? CasterType::Arcane : CasterType::Divine;
-
-        int value;
-        if (p2DA->GetINTEntry(i, "ArcSpellLvlMod", &value) && value > 0)
-            s_arcModClasses[i] = value;
-        if (p2DA->GetINTEntry(i, "DivSpellLvlMod", &value) && value > 0)
-            s_divModClasses[i] = value;
-    }
-    s_bCasterClassesLoaded = true;
-}
-
-uint8_t Creature::CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel)
-{
-    uint8_t nLevel = g_pGetClassLevelHook->CallOriginal<uint8_t>(thisPtr, nMultiClass, bUseNegativeLevel);
     if (!s_bAdjustCasterLevel || nMultiClass >= thisPtr->m_nNumMultiClasses)
-        return nLevel;
+        return;
 
     auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
     if (nClass > Constants::ClassType::MAX)
-        return nLevel;
+        return;
 
+    if (!before)
+    {
+        thisPtr->m_ClassInfo[nMultiClass].m_nLevel -= nModifier;
+        return;
+    }
+
+    nModifier = 0;
+    
     auto nLevelOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
     if (nLevelOverride)
-        return nLevelOverride.value();
+    {
+        auto nLevel = std::max(nLevelOverride.value(), 255);
+        nModifier = nLevel - thisPtr->m_ClassInfo[nMultiClass].m_nLevel;
+        thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
+        return;
+    }
 
     auto nLevelModifier = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
     if (nLevelModifier)
-        nLevel += nLevelModifier.value();
+        nModifier = nLevelModifier.value();
 
-    if (s_bUseCasterLevel2da)
-    {
-        if (!s_bCasterClassesLoaded)
-            LoadCasterLevelModifiers();
+    //Make sure m_nLevel doesn't over/underflow
+    nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
+    if (nModifier < 0)
+        nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
 
-        if (auto nCasterType = s_classCasterType[nClass])
-        {
-            for (int i = 0; i < thisPtr->m_nNumMultiClasses; i++)
-            {
-                if (i == nMultiClass) continue;
-                auto nMultiClassType = thisPtr->m_ClassInfo[i].m_nClass;
-                if (nCasterType == CasterType::Divine)
-                {
-                    auto nDivMod = s_divModClasses[nMultiClassType];
-                    if (nDivMod > 0)
-                    {
-                        auto nClassLevel = g_pGetClassLevelHook->CallOriginal<uint8_t>(thisPtr, i, bUseNegativeLevel);
-                        if (nClassLevel > 0)
-                            nLevel += (nClassLevel - 1) / nDivMod + 1;
-                    }
-                }
-                else if (nCasterType == CasterType::Arcane)
-                {
-                    auto nArcMod = s_arcModClasses[nMultiClassType];
-                    if (nArcMod > 0)
-                    {
-                        auto nClassLevel = g_pGetClassLevelHook->CallOriginal<uint8_t>(thisPtr, i, bUseNegativeLevel);
-                        if (nClassLevel > 0)
-                            nLevel += (nClassLevel - 1) / nArcMod + 1;
-                    }
-                }
-            }
-        }
-    }
-
-    return nLevel;
+    thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
 }
 
 void Creature::CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
@@ -2170,16 +2130,6 @@ void Creature::CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool befo
 }
 
 void Creature::CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
-{
-    s_bAdjustCasterLevel = before;
-}
-
-void Creature::CNWSEffectListHandler__OnApplyDispelAllMagic(bool before, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL)
-{
-    s_bAdjustCasterLevel = before;
-}
-
-void Creature::CNWSEffectListHandler__OnApplyDispelBestMagic(bool before, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL)
 {
     s_bAdjustCasterLevel = before;
 }
