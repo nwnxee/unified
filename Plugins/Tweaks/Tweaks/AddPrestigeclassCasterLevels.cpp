@@ -32,7 +32,7 @@ AddPrestigeclassCasterLevels::AddPrestigeclassCasterLevels(Services::HooksProxy*
     hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
     hooker->RequestSharedHook<Functions::_ZN8CNWRules13LoadClassInfoEv, void>(&CNWRules__LoadClassInfo);
 
-    for (int i = 0; i <= NWNXLib::API::Constants::ClassType::MAX; i++)
+    for (int i = 0; i < sizeof(s_classCasterType) / sizeof(s_classCasterType[0]); i++)
     {
         s_classCasterType[i] = CasterType::None;
         s_arcModClasses[i] = 0;
