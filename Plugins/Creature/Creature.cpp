@@ -2000,6 +2000,8 @@ void Creature::InitCasterLevelHooks()
     hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
     hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
     hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
+
+    s_bCasterLevelHooksInitialized = true;
 }
 
 ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
