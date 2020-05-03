@@ -45,8 +45,8 @@ int32_t FixDispelEffectLevels::CNWSEffectListHandler__OnApplyDispelAllMagic(CNWS
     }
 
     std::vector<uint64_t> nIgnoreEffectIDs;
-    CNWCCMessageData pMessageData;
-    pMessageData.SetObjectID(0, pObject->m_idSelf);
+    CNWCCMessageData messageData;
+    messageData.SetObjectID(0, pObject->m_idSelf);
 
     for (auto* effect : pObject->m_appliedEffects)
     {
@@ -75,23 +75,23 @@ int32_t FixDispelEffectLevels::CNWSEffectListHandler__OnApplyDispelAllMagic(CNWS
             auto* pAIMaster = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
             pAIMaster->AddEventDeltaTime(0, 0, pEffect->m_oidCreator, pObject->m_idSelf, Constants::Event::RemoveEffect, effect);
             if (effect->m_nSpellId != ~0u)
-                pMessageData.SetInteger(++nDispelledEffects, effect->m_nSpellId);
+                messageData.SetInteger(++nDispelledEffects, effect->m_nSpellId);
         }
 
         nIgnoreEffectIDs.push_back(effect->m_nID);
     }
 
-    pMessageData.SetInteger(0, nDispelledEffects);
+    messageData.SetInteger(0, nDispelledEffects);
     if (nDispelledEffects > 0)
     {
         if (auto* pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pObject->m_idSelf))
             if (auto* pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
-                pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::DispelMagic, &pMessageData, nullptr);
+                pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::DispelMagic, &messageData, nullptr);
 
         if (pCreatorObject && pCreatorObject->m_idSelf != pObject->m_idSelf)
             if (auto* pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pCreatorObject->m_idSelf))
                 if (auto* pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
-                    pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::DispelMagic, &pMessageData, nullptr);
+                    pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::DispelMagic, &messageData, nullptr);
     }
 
     return 1;
@@ -141,13 +141,13 @@ int32_t FixDispelEffectLevels::CNWSEffectListHandler__OnApplyDispelBestMagic(CNW
         {
             if (effect->m_nSpellId != ~0u)
             {
-                CNWCCMessageData pMessageData;
-                pMessageData.SetObjectID(0, pObject->m_idSelf);
-                pMessageData.SetInteger(0, 1);
-                pMessageData.SetInteger(1, effect->m_nSpellId);
+                CNWCCMessageData messageData;
+                messageData.SetObjectID(0, pObject->m_idSelf);
+                messageData.SetInteger(0, 1);
+                messageData.SetInteger(1, effect->m_nSpellId);
                 if (auto* pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pObject->m_idSelf))
                     if (auto* pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
-                        pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::DispelMagic, &pMessageData, nullptr);
+                        pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::DispelMagic, &messageData, nullptr);
             }
 
             auto* pAIMaster = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
