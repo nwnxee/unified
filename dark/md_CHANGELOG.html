@@ -114,6 +114,8 @@ Added</h2>
 <ul>
 <li>Events: added QuickbarSetButton event to QuickbarEvents</li>
 <li>Events: added Calendar events for change in Hour, Day, Month, Year, and Dawn/Dusk.</li>
+<li>Tweaks: <code>NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS</code> to enable a fix for effects losing the caster level vs. dispel checks when the effect creator is deleted.</li>
+<li>Tweaks: <code>NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS</code> to automatically add caster levels from prestige classes based on the {Arc|Div}SpellLvlMod columns in classes.2da</li>
 </ul>
 <h4><a class="anchor" id="autotoc_md3"></a>
 New Plugins</h4>
@@ -124,6 +126,7 @@ New NWScript Functions</h4>
 <li>Object: ClearSpellEffectsOnOthers()</li>
 <li>Creature: GetFlatFooted()</li>
 <li>Creature: {Serialize|Deserialize}Quickbar()</li>
+<li>Creature: {Get|Set}CasterLevelModifier() and {Get|Set}CasterLevelOverride()</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Changed</h2>
@@ -731,7 +734,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun May 3 2020 08:38:58 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun May 3 2020 09:24:45 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

@@ -1,5 +1,13 @@
 var NAVTREEINDEX8 =
 {
+"nwnx__redis_8nss.html#a27de4095c0cd0ea4e5464c0429f3e5db":[4,0,2,26,0,0,91],
+"nwnx__redis_8nss.html#a2905a15f00d556e674acb3c5a909be5a":[4,0,2,26,0,0,161],
+"nwnx__redis_8nss.html#a2b18212f3955833115eff799191c3585":[4,0,2,26,0,0,41],
+"nwnx__redis_8nss.html#a2b1f8d59ee5c0b984f7c34e5628c1ce9":[4,0,2,26,0,0,122],
+"nwnx__redis_8nss.html#a2d1480685d6dce2c8ad3ce1d5afaf145":[4,0,2,26,0,0,217],
+"nwnx__redis_8nss.html#a2d154aa5a4ef2e80a9f5880133e15abc":[4,0,2,26,0,0,32],
+"nwnx__redis_8nss.html#a2f7c3fef4086ec34bba7dc16702db964":[4,0,2,26,0,0,131],
+"nwnx__redis_8nss.html#a30e9d1569f454a8b44c47a1dbff72a1b":[4,0,2,26,0,0,76],
 "nwnx__redis_8nss.html#a32a68ee2e37bc80eda50a322636def1c":[4,0,2,26,0,0,21],
 "nwnx__redis_8nss.html#a34ceae0a1a31abfd68c7963f9b7fce28":[4,0,2,26,0,0,105],
 "nwnx__redis_8nss.html#a351d8e8f587b884447e11acdf49a1070":[4,0,2,26,0,0,219],
@@ -241,13 +249,5 @@ var NAVTREEINDEX8 =
 "nwnx__redis__short_8nss.html#a45aadab55c525e4684658c94b3ae0f0f":[4,0,2,26,0,3,66],
 "nwnx__redis__short_8nss.html#a45ba42e3353f637c0d5a6408a61de807":[4,0,2,26,0,3,216],
 "nwnx__redis__short_8nss.html#a472743b192cb2cd54ce146e860c56c6d":[4,0,2,26,0,3,14],
-"nwnx__redis__short_8nss.html#a47c101d9768b1c7cda47660f6cbb3b4b":[4,0,2,26,0,3,104],
-"nwnx__redis__short_8nss.html#a48bc3dd0cf53183a19c95819ea66c711":[4,0,2,26,0,3,135],
-"nwnx__redis__short_8nss.html#a4aa6686aa5ab6772223340818e79a99b":[4,0,2,26,0,3,145],
-"nwnx__redis__short_8nss.html#a4ad8148dd2cd11295a7729daec27513b":[4,0,2,26,0,3,91],
-"nwnx__redis__short_8nss.html#a4c3b0074ba5759bfc4d0b099aa7ae7e5":[4,0,2,26,0,3,32],
-"nwnx__redis__short_8nss.html#a4cc399f43d81b5490e44e521e6186a36":[4,0,2,26,0,3,96],
-"nwnx__redis__short_8nss.html#a4d1850c0780722e2aa6e2b373f1f1e62":[4,0,2,26,0,3,129],
-"nwnx__redis__short_8nss.html#a4f3c43c2de281fd31b4d86e1674d8270":[4,0,2,26,0,3,20],
-"nwnx__redis__short_8nss.html#a4febd86266d8b2be7e73f660334ac808":[4,0,2,26,0,3,211]
+"nwnx__redis__short_8nss.html#a47c101d9768b1c7cda47660f6cbb3b4b":[4,0,2,26,0,3,104]
 };

@@ -1,5 +1,13 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#a48bc3dd0cf53183a19c95819ea66c711":[4,0,2,26,0,3,135],
+"nwnx__redis__short_8nss.html#a4aa6686aa5ab6772223340818e79a99b":[4,0,2,26,0,3,145],
+"nwnx__redis__short_8nss.html#a4ad8148dd2cd11295a7729daec27513b":[4,0,2,26,0,3,91],
+"nwnx__redis__short_8nss.html#a4c3b0074ba5759bfc4d0b099aa7ae7e5":[4,0,2,26,0,3,32],
+"nwnx__redis__short_8nss.html#a4cc399f43d81b5490e44e521e6186a36":[4,0,2,26,0,3,96],
+"nwnx__redis__short_8nss.html#a4d1850c0780722e2aa6e2b373f1f1e62":[4,0,2,26,0,3,129],
+"nwnx__redis__short_8nss.html#a4f3c43c2de281fd31b4d86e1674d8270":[4,0,2,26,0,3,20],
+"nwnx__redis__short_8nss.html#a4febd86266d8b2be7e73f660334ac808":[4,0,2,26,0,3,211],
 "nwnx__redis__short_8nss.html#a507cb6780d0bdf803b1aae686cf29a97":[4,0,2,26,0,3,2],
 "nwnx__redis__short_8nss.html#a50beb1c808380ecdcf432e634bad18c3":[4,0,2,26,0,3,149],
 "nwnx__redis__short_8nss.html#a527b2b730b9fb9ff537261dfdd95af92":[4,0,2,26,0,3,176],
@@ -241,13 +249,5 @@ var NAVTREEINDEX9 =
 "structNWNX__Damage__DamageEventData.html#a393c3d523e8c4cbac372dd3b7b9f62ab":[0,7,2,1],
 "structNWNX__Damage__DamageEventData.html#a3c2787db985cc740e70bd3b3b5af8c5a":[0,7,2,4],
 "structNWNX__Damage__DamageEventData.html#a4abb22e26f7ab484c221d33550f3aefd":[0,7,2,6],
-"structNWNX__Damage__DamageEventData.html#a4c91e86c8a6ca9a054169846c67e6ce3":[0,7,2,2],
-"structNWNX__Damage__DamageEventData.html#a601b7c06196f6ada8869d941706df008":[0,7,2,10],
-"structNWNX__Damage__DamageEventData.html#a660030db73bd468d6534e369c902025b":[0,7,2,5],
-"structNWNX__Damage__DamageEventData.html#a77eaede57af8ca3102bce42bd1659406":[0,7,2,8],
-"structNWNX__Damage__DamageEventData.html#ab621265dce87ad6d8f00805455aef99f":[0,7,2,12],
-"structNWNX__Damage__DamageEventData.html#adcd2db4021271fd0cba8dfd90e096892":[0,7,2,0],
-"structNWNX__Damage__DamageEventData.html#aedd89f02fec3bb8c5c3924e1f2c9d1c3":[0,7,2,3],
-"structNWNX__Damage__DamageEventData.html#af4d87d814017f06147ebadbca2e22ff4":[0,7,2,9],
-"structNWNX__Damage__DamageEventData.html#af535efda76f147df7aef7bed25a25a10":[0,7,2,11]
+"structNWNX__Damage__DamageEventData.html#a4c91e86c8a6ca9a054169846c67e6ce3":[0,7,2,2]
 };
