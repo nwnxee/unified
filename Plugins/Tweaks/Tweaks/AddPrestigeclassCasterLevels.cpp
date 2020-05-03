@@ -31,13 +31,6 @@ AddPrestigeclassCasterLevels::AddPrestigeclassCasterLevels(Services::HooksProxy*
     hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
     hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
     hooker->RequestSharedHook<Functions::_ZN8CNWRules13LoadClassInfoEv, void>(&CNWRules__LoadClassInfo);
-
-    for (int i = 0; i < sizeof(s_classCasterType) / sizeof(s_classCasterType[0]); i++)
-    {
-        s_classCasterType[i] = CasterType::None;
-        s_arcModClasses[i] = 0;
-        s_divModClasses[i] = 0;
-    }
 }
 
 void AddPrestigeclassCasterLevels::LoadCasterLevelModifiers(CNWRules* pRules)
