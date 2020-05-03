@@ -16,9 +16,12 @@
 #include "API/CFactionManager.hpp"
 #include "API/CResStruct.hpp"
 #include "API/CResGFF.hpp"
+#include "API/CTwoDimArrays.hpp"
+#include "API/C2DA.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
+#include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
@@ -51,6 +54,9 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 
 namespace Creature {
+
+bool Creature::s_bAdjustCasterLevel = false;
+bool Creature::s_bCasterLevelHooksInitialized = false;
 
 Creature::Creature(const Plugin::CreateParams& params)
     : Plugin(params)
@@ -147,6 +153,10 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetFlatFooted);
     REGISTER(SerializeQuickbar);
     REGISTER(DeserializeQuickbar);
+    REGISTER(SetCasterLevelModifier);
+    REGISTER(GetCasterLevelModifier);
+    REGISTER(SetCasterLevelOverride);
+    REGISTER(GetCasterLevelOverride);
 
 #undef REGISTER
 }
@@ -1981,6 +1991,154 @@ ArgumentStack Creature::DeserializeQuickbar(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+void Creature::InitCasterLevelHooks()
+{
+    auto hooker = g_plugin->GetServices()->m_hooks.get();
+    hooker->RequestSharedHook<Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, uint8_t>(&CNWSCreatureStats__GetClassLevel);
+    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
+    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
+    hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
+
+    s_bCasterLevelHooksInitialized = true;
+}
+
+ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
+        const bool bPersist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nModifier)
+            GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass), nModifier, bPersist);
+        else
+            GetServices()->m_perObjectStorage->Remove(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCasterLevelModifier(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    int32_t retVal = 0;
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        auto nModifier = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+        if (nModifier)
+            retVal = nModifier.value();
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        const auto nLevel = Services::Events::ExtractArgument<int32_t>(args);
+        const bool bPersist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nLevel > 0)
+            GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass), nLevel, bPersist);
+        else
+            GetServices()->m_perObjectStorage->Remove(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCasterLevelOverride(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    int32_t retVal = -1;
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        auto nCasterLevel = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+        if (nCasterLevel)
+            retVal = nCasterLevel.value();
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+void Creature::CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL)
+{
+    static int32_t nModifier;
+
+    if (!s_bAdjustCasterLevel || nMultiClass >= thisPtr->m_nNumMultiClasses)
+        return;
+
+    auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
+    if (nClass > Constants::ClassType::MAX)
+        return;
+
+    if (!before)
+    {
+        thisPtr->m_ClassInfo[nMultiClass].m_nLevel -= nModifier;
+        return;
+    }
+
+    nModifier = 0;
+    
+    auto nLevelOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+    if (nLevelOverride)
+    {
+        auto nLevel = std::max(nLevelOverride.value(), 255);
+        nModifier = nLevel - thisPtr->m_ClassInfo[nMultiClass].m_nLevel;
+        thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
+        return;
+    }
+
+    auto nLevelModifier = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+    if (nLevelModifier)
+        nModifier = nLevelModifier.value();
+
+    //Make sure m_nLevel doesn't over/underflow
+    nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
+    if (nModifier < 0)
+        nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
+
+    thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
+}
+
+void Creature::CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID)
+{
+    s_bAdjustCasterLevel = before;
 }
 
 }

@@ -104,8 +104,22 @@ private:
     ArgumentStack GetFlatFooted                 (ArgumentStack&& args);
     ArgumentStack SerializeQuickbar             (ArgumentStack&& args);
     ArgumentStack DeserializeQuickbar           (ArgumentStack&& args);
+    ArgumentStack SetCasterLevelModifier        (ArgumentStack&& args);
+    ArgumentStack GetCasterLevelModifier        (ArgumentStack&& args);
+    ArgumentStack SetCasterLevelOverride        (ArgumentStack&& args);
+    ArgumentStack GetCasterLevelOverride        (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
+
+private:
+    static bool s_bAdjustCasterLevel;
+    static bool s_bCasterLevelHooksInitialized;
+
+    static void InitCasterLevelHooks();
+    static void CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
+    static void CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
+    static void CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
+    static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
 
 };
 
