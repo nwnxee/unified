@@ -56,6 +56,7 @@ private:
     ArgumentStack AcquireItem               (ArgumentStack&& args);
     ArgumentStack SetFacing                 (ArgumentStack&& args);
     ArgumentStack ClearSpellEffectsOnOthers (ArgumentStack&& args);
+    ArgumentStack PeekUUID                  (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };
