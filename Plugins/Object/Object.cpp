@@ -21,6 +21,7 @@
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CItemRepository.hpp"
 #include "API/CExoFile.hpp"
+#include "API/CNWSUUID.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
@@ -106,6 +107,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(AcquireItem);
     REGISTER(SetFacing);
     REGISTER(ClearSpellEffectsOnOthers);
+    REGISTER(PeekUUID);
 
 #undef REGISTER
 }
@@ -900,6 +902,29 @@ ArgumentStack Object::ClearSpellEffectsOnOthers(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Object::PeekUUID(ArgumentStack&& args)
+{
+    std::string retVal;
+    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+      ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
+
+    if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
+    {
+        static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
+                Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
+
+        if (CanCarryUUID(pGameObject->m_nObjectType))
+        {
+            if (auto *pArea = Utils::AsNWSArea(pGameObject))
+                retVal = pArea->m_pUUID.m_uuid.CStr();
+            else if (auto *pObject = Utils::AsNWSObject(pGameObject))
+                retVal = pObject->m_pUUID.m_uuid.CStr();
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

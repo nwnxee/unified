@@ -17,10 +17,11 @@ https://github.com/nwnxee/unified/compare/build8193.11...HEAD
 N/A
 
 ##### New NWScript Functions
-- Object: ClearSpellEffectsOnOthers()
 - Creature: GetFlatFooted()
 - Creature: {Serialize|Deserialize}Quickbar()
 - Creature: {Get|Set}CasterLevelModifier() and {Get|Set}CasterLevelOverride()
+- Object: ClearSpellEffectsOnOthers()
+- Object: PeekUUID()
 
 ### Changed
 - ELC: Updated with recent changes.
