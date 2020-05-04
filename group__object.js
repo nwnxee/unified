@@ -55,6 +55,7 @@ var group__object =
     [ "NWNX_Object_AcquireItem", "group__object.html#gabac51683829dcd5e2898b1e072d2b760", null ],
     [ "NWNX_Object_SetFacing", "group__object.html#gafc737bc3878fa25f216d2758653d1e93", null ],
     [ "NWNX_Object_ClearSpellEffectsOnOthers", "group__object.html#gada257f70e5980685198fcc8a957b53cb", null ],
+    [ "NWNX_Object_PeekUUID", "group__object.html#gadaee4243a13c21ff4b802f40998fd385", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_STRING", "group__object.html#gaa71beb1c2fc7685215d8f80ef9a1541f", null ],

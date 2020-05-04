@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"group__object.html#gafed465042375a88ec4194f1da7819813":[4,0,2,21,0,0,34],
+"group__object.html#object":[0,22,0],
 "group__optimizations.html":[0,23],
 "group__optimizations.html#autotoc_md207":[28],
 "group__optimizations.html#optimizations":[0,23,0],
@@ -124,8 +126,8 @@ var NAVTREEINDEX5 =
 "group__player.html#ga86c1edebbcfd652b79adf34e73b9c317":[4,0,2,23,0,1,1],
 "group__player.html#ga897b94ccc8e11a224e3daf65e7d8acc7":[0,24,9],
 "group__player.html#ga897b94ccc8e11a224e3daf65e7d8acc7":[4,0,2,23,0,0,5],
-"group__player.html#ga8cbc1210d8c9da7aaafce86852ccb53b":[0,24,73],
 "group__player.html#ga8cbc1210d8c9da7aaafce86852ccb53b":[4,0,2,23,0,0,55],
+"group__player.html#ga8cbc1210d8c9da7aaafce86852ccb53b":[0,24,73],
 "group__player.html#ga93b73395786bcc1c62df9dbb7d0aaeff":[0,24,53],
 "group__player.html#ga93b73395786bcc1c62df9dbb7d0aaeff":[4,0,2,23,0,1,14],
 "group__player.html#ga94fef51c2bc9006b20e0323c67a08dbe":[0,24,85],
@@ -167,8 +169,8 @@ var NAVTREEINDEX5 =
 "group__player.html#gacd1c1162e2432e9e61eea99322364c13":[4,0,2,23,0,0,36],
 "group__player.html#gacf6c81cfaffdfcc9380e54332738148f":[0,24,69],
 "group__player.html#gacf6c81cfaffdfcc9380e54332738148f":[4,0,2,23,0,0,51],
-"group__player.html#gacfe74084d5751ac57a20e450e2e81301":[0,24,35],
 "group__player.html#gacfe74084d5751ac57a20e450e2e81301":[4,0,2,23,0,0,31],
+"group__player.html#gacfe74084d5751ac57a20e450e2e81301":[0,24,35],
 "group__player.html#gad4b53329b786cc1bd0a8ba82e67f6779":[0,24,26],
 "group__player.html#gad4b53329b786cc1bd0a8ba82e67f6779":[4,0,2,23,0,0,22],
 "group__player.html#gad6af04a6f0f5796d727c7aeaa04f0c02":[0,24,20],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "group__race.html#ga2764ca25d58580933fe71c0643636eb4":[4,0,2,25,0,0,6],
 "group__race.html#ga46636fc9b03e0379a27ba89dc691b4ad":[0,26,28],
 "group__race.html#ga46636fc9b03e0379a27ba89dc691b4ad":[4,0,2,25,0,0,24],
-"group__race.html#ga4a698ce24f3f663775a8d418131edaeb":[0,26,7],
-"group__race.html#ga4a698ce24f3f663775a8d418131edaeb":[4,0,2,25,0,0,3],
-"group__race.html#ga4afefee1c243d6ee74587ff54bef3b07":[0,26,27]
+"group__race.html#ga4a698ce24f3f663775a8d418131edaeb":[0,26,7]
 };
