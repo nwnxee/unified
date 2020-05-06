@@ -5,16 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.11...HEAD
+https://github.com/nwnxee/unified/compare/build8193.12...HEAD
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+## 8193.12
+https://github.com/nwnxee/unified/compare/build8193.11...build8193.12
 
 ### Added
 - Events: added QuickbarSetButton event to QuickbarEvents
 - Events: added Calendar events for change in Hour, Day, Month, Year, and Dawn/Dusk.
 - Tweaks: `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS` to enable a fix for effects losing the caster level vs. dispel checks when the effect creator is deleted.
 - Tweaks: `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS` to automatically add caster levels from prestige classes based on the {Arc|Div}SpellLvlMod columns in classes.2da
-
-##### New Plugins
-N/A
 
 ##### New NWScript Functions
 - Creature: GetFlatFooted()
@@ -25,15 +46,6 @@ N/A
 
 ### Changed
 - ELC: Updated with recent changes.
-
-### Deprecated
-N/A
-
-### Removed
-N/A
-
-### Fixed
-N/A
 
 ## 8193.11
 https://github.com/nwnxee/unified/compare/build8193.10...build8193.11
