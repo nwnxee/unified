@@ -65,7 +65,11 @@ Given the binaries, follow these steps:
         export NWNX_CORE_LOG_LEVEL=7 # Default log level for core and all plugins
         export NWNX_LUA_LOG_LEVEL=7 # Log level for LUA, overrides default
 
-Optionally, you can use Docker to run the server with pre-built NWNX binaries. Refer to the section below
+Liareth described the log levels as follows in Discord: '3 and 4 is for "I don't care about anything at all because I'm crazy", 5 is for "I care about important things that explicitly need my action", 6 is for "I care about important things", 7 is for "I want to know about everything in the whole universe and lag my server"
+I'd recommend a setting of 6 for production.
+Plus redirecting your stdout to a log file.'
+
+Optionally, you can use Docker to run the server with pre-built NWNX binaries. Refer to the section below.
 
 ## Running the server (Docker)
 
