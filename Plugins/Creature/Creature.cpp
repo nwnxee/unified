@@ -12,6 +12,7 @@
 #include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
+#include "API/CNWSModule.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CFactionManager.hpp"
 #include "API/CResStruct.hpp"
@@ -157,6 +158,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetCasterLevelModifier);
     REGISTER(SetCasterLevelOverride);
     REGISTER(GetCasterLevelOverride);
+    REGISTER(JumpToLimbo);
 
 #undef REGISTER
 }
@@ -2139,6 +2141,18 @@ void Creature::CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before,
 void Creature::CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID)
 {
     s_bAdjustCasterLevel = before;
+}
+
+ArgumentStack Creature::JumpToLimbo(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        if (!pCreature->m_bPlayerCharacter && !pCreature->m_pStats->m_bIsPC && !pCreature->m_pStats->m_bIsDM) {
+            pCreature->RemoveFromArea();
+            Utils::GetModule()->AddObjectToLimbo(pCreature->m_idSelf);
+        }
+    }
+    return Services::Events::Arguments();
 }
 
 }

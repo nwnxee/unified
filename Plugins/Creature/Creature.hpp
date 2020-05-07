@@ -108,6 +108,7 @@ private:
     ArgumentStack GetCasterLevelModifier        (ArgumentStack&& args);
     ArgumentStack SetCasterLevelOverride        (ArgumentStack&& args);
     ArgumentStack GetCasterLevelOverride        (ArgumentStack&& args);
+    ArgumentStack JumpToLimbo                   (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 

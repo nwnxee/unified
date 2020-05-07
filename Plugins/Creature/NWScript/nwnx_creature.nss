@@ -707,6 +707,10 @@ void NWNX_Creature_SetCasterLevelOverride(object oCreature, int nClass, int nCas
 /// @return the current caster level override for the creature or -1 if not set
 int NWNX_Creature_GetCasterLevelOverride(object oCreature, int nClass);
 
+/// @brief Move a creature to limbo.
+/// @param The creature object.
+void NWNX_Creature_JumpToLimbo(object oCreature);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -1751,4 +1755,11 @@ int NWNX_Creature_GetCasterLevelOverride(object oCreature, int nClass)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_JumpToLimbo(object oCreature)
+{
+    string sFunc = "JumpToLimbo";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }
