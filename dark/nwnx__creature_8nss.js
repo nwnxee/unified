@@ -99,6 +99,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_GetCasterLevelModifier", "group__creature.html#gab29a65c34e82a3f565551a6d706179db", null ],
     [ "NWNX_Creature_SetCasterLevelOverride", "group__creature.html#gab4b96e16f98d1b88fe6a3484716537e1", null ],
     [ "NWNX_Creature_GetCasterLevelOverride", "group__creature.html#ga9afdcbf720d4299a3ecb85c15675c170", null ],
+    [ "NWNX_Creature_JumpToLimbo", "group__creature.html#ga1050f97a636758c1a4c74c058c688aa5", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
