@@ -3,6 +3,8 @@ project(NWNX-Unified)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/Build/CMakeModules)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
 # Includes the sanitizer package to facilitate debugging.
 # If you want to build with this support (I suggest you do), you should pass in one or all of the following:
 # -DSANITIZE_UNDEFINED=On
