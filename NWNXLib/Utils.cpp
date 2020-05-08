@@ -43,7 +43,7 @@ std::string ObjectIDToString(const API::Types::ObjectID id)
 std::string GetCurrentScript()
 {
     auto *pVM = API::Globals::VirtualMachine();
-    if (!pVM || !pVM->m_pVirtualMachineScript || pVM->m_nRecursionLevel < 0)
+    if (!pVM || pVM->m_nRecursionLevel < 0)
         return std::string("");
 
     auto& script = pVM->m_pVirtualMachineScript[pVM->m_nRecursionLevel];
