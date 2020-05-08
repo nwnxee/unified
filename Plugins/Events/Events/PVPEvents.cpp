@@ -27,7 +27,7 @@ int32_t PVPEvents::HandlePlayerToServerPVPListOperationsHook(CNWSMessage *thisPt
     int32_t retVal;
     if (nMinor != Constants::MessagePVPMinor::AttitudeChange)
     {
-        retVal = m_HandlePlayerToServerPVPListOperationsHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);;
+        retVal = m_HandlePlayerToServerPVPListOperationsHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
     }
     else
     {
