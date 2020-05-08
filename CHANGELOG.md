@@ -26,7 +26,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- SkillRanks: Now respects ruleset.2da values.
 
 ## 8193.12
 https://github.com/nwnxee/unified/compare/build8193.11...build8193.12
