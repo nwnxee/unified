@@ -30,11 +30,11 @@ std::vector<uint8_t> FromBase64(const std::string &in);
 //
 static inline std::string ToUTF8(const std::string& str, Locale locale = Default)
 {
-    return std::move(ToUTF8(str.c_str(), locale));
+    return ToUTF8(str.c_str(), locale);
 }
 static inline std::string FromUTF8(const std::string& str, Locale locale = Default)
 {
-    return std::move(FromUTF8(str.c_str(), locale));
+    return FromUTF8(str.c_str(), locale);
 }
 
 

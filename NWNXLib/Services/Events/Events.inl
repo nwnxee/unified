@@ -75,7 +75,7 @@ Events::ArgumentStack Events::Arguments(Args&&... args)
 {
     ArgumentStack stack;
     (InsertArgument(stack, std::forward<Args>(args)), ...);
-    return std::move(stack);
+    return stack;
 }
 
 template <typename T>
