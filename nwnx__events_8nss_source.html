@@ -108,174 +108,174 @@ $(document).ready(function(){initNavTree('nwnx__events_8nss_source.html','');});
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">const</span> <span class="keywordtype">string</span> NWNX_Events = <span class="stringliteral">&quot;NWNX_Events&quot;</span>; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;</span></div>
-<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_ITEM              = 6;</span></div>
-<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_TRIGGER           = 7;</span></div>
-<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_PLACEABLE         = 9;</span></div>
-<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_WAYPOINT          = 12;</span></div>
-<div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_ENCOUNTER         = 13;</span></div>
-<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_PORTAL            = 15;</span></div>
-<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160; </div>
-<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_FLAG     = 1;</span></div>
-<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_RECOVER  = 2;</span></div>
-<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_DISARM   = 3;</span></div>
-<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_EXAMINE  = 4;</span></div>
-<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_SET      = 5;</span></div>
-<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_REST          = 6;</span></div>
-<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_UNLOCK        = 7;</span></div>
-<div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;</span></div>
-<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;</span></div>
-<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160; </div>
-<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script);</div>
-<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160; </div>
-<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script);</div>
-<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160; </div>
-<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4">NWNX_Events_PushEventData</a>(<span class="keywordtype">string</span> tag, <span class="keywordtype">string</span> data);</div>
-<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160; </div>
-<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">object</span> target);</div>
-<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160; </div>
-<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a>(<span class="keywordtype">string</span> tag);</div>
-<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160; </div>
-<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be">NWNX_Events_SkipEvent</a>();</div>
-<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160; </div>
-<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult</a>(<span class="keywordtype">string</span> data);</div>
-<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160; </div>
-<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a>();</div>
-<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160; </div>
-<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">int</span> bEnable);</div>
-<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160; </div>
-<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject);</div>
-<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160; </div>
-<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject);</div>
-<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160; </div>
-<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160; </div>
-<div class="line"><a name="l01184"></a><span class="lineno"><a class="line" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294"> 1184</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script)</div>
-<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;{</div>
-<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SubscribeEvent&quot;</span>;</div>
-<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160; </div>
-<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, script);</div>
-<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, evt);</div>
-<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;}</div>
-<div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160; </div>
-<div class="line"><a name="l01193"></a><span class="lineno"><a class="line" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815"> 1193</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script)</div>
-<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;{</div>
-<div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;UnsubscribeEvent&quot;</span>;</div>
-<div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160; </div>
-<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, script);</div>
-<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, evt);</div>
-<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160;}</div>
-<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160; </div>
-<div class="line"><a name="l01202"></a><span class="lineno"><a class="line" href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4"> 1202</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4">NWNX_Events_PushEventData</a>(<span class="keywordtype">string</span> tag, <span class="keywordtype">string</span> data)</div>
-<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;{</div>
-<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;PushEventData&quot;</span>;</div>
-<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160; </div>
-<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, data);</div>
-<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, tag);</div>
-<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;}</div>
-<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160; </div>
-<div class="line"><a name="l01211"></a><span class="lineno"><a class="line" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53"> 1211</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">object</span> target)</div>
-<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;{</div>
-<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SignalEvent&quot;</span>;</div>
-<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160; </div>
-<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Events, sFunc, target);</div>
-<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, evt);</div>
-<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;}</div>
-<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160; </div>
-<div class="line"><a name="l01221"></a><span class="lineno"><a class="line" href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6"> 1221</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a>(<span class="keywordtype">string</span> tag)</div>
-<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;{</div>
-<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetEventData&quot;</span>;</div>
-<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160; </div>
-<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, tag);</div>
-<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;}</div>
-<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160; </div>
-<div class="line"><a name="l01230"></a><span class="lineno"><a class="line" href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be"> 1230</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be">NWNX_Events_SkipEvent</a>()</div>
-<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;{</div>
-<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SkipEvent&quot;</span>;</div>
-<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160; </div>
-<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;}</div>
-<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160; </div>
-<div class="line"><a name="l01237"></a><span class="lineno"><a class="line" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14"> 1237</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult</a>(<span class="keywordtype">string</span> data)</div>
-<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;{</div>
-<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetEventResult&quot;</span>;</div>
-<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160; </div>
-<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, data);</div>
-<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;}</div>
-<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160; </div>
-<div class="line"><a name="l01245"></a><span class="lineno"><a class="line" href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b"> 1245</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a>()</div>
-<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;{</div>
-<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetCurrentEvent&quot;</span>;</div>
-<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160; </div>
-<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;}</div>
-<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160; </div>
-<div class="line"><a name="l01253"></a><span class="lineno"><a class="line" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02"> 1253</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">int</span> bEnable)</div>
-<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;{</div>
-<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;ToggleDispatchListMode&quot;</span>;</div>
-<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160; </div>
-<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Events, sFunc, bEnable);</div>
-<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sScript);</div>
-<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sEvent);</div>
-<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;}</div>
-<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160; </div>
-<div class="line"><a name="l01263"></a><span class="lineno"><a class="line" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6"> 1263</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject)</div>
-<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;{</div>
-<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;AddObjectToDispatchList&quot;</span>;</div>
-<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160; </div>
-<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Events, sFunc, oObject);</div>
-<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sScript);</div>
-<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sEvent);</div>
-<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;}</div>
-<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160; </div>
-<div class="line"><a name="l01273"></a><span class="lineno"><a class="line" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce"> 1273</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject)</div>
-<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;{</div>
-<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;RemoveObjectFromDispatchList&quot;</span>;</div>
-<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160; </div>
-<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Events, sFunc, oObject);</div>
-<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sScript);</div>
-<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sEvent);</div>
-<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
-<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;}</div>
+<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;</span></div>
+<div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_ITEM              = 6;</span></div>
+<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_TRIGGER           = 7;</span></div>
+<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_PLACEABLE         = 9;</span></div>
+<div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_WAYPOINT          = 12;</span></div>
+<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_ENCOUNTER         = 13;</span></div>
+<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;<span class="comment">const int NWNX_EVENTS_OBJECT_TYPE_PORTAL            = 15;</span></div>
+<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160; </div>
+<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_FLAG     = 1;</span></div>
+<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_RECOVER  = 2;</span></div>
+<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_DISARM   = 3;</span></div>
+<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_EXAMINE  = 4;</span></div>
+<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_TRAP_SET      = 5;</span></div>
+<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_REST          = 6;</span></div>
+<div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_UNLOCK        = 7;</span></div>
+<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_LOCK          = 8;</span></div>
+<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;<span class="comment">const int NWNX_EVENTS_TIMING_BAR_CUSTOM        = 10;</span></div>
+<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160; </div>
+<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script);</div>
+<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160; </div>
+<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script);</div>
+<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160; </div>
+<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4">NWNX_Events_PushEventData</a>(<span class="keywordtype">string</span> tag, <span class="keywordtype">string</span> data);</div>
+<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160; </div>
+<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">object</span> target);</div>
+<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160; </div>
+<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a>(<span class="keywordtype">string</span> tag);</div>
+<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160; </div>
+<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be">NWNX_Events_SkipEvent</a>();</div>
+<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160; </div>
+<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult</a>(<span class="keywordtype">string</span> data);</div>
+<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160; </div>
+<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a>();</div>
+<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160; </div>
+<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">int</span> bEnable);</div>
+<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160; </div>
+<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject);</div>
+<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160; </div>
+<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject);</div>
+<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160; </div>
+<div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160; </div>
+<div class="line"><a name="l01185"></a><span class="lineno"><a class="line" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294"> 1185</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script)</div>
+<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;{</div>
+<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SubscribeEvent&quot;</span>;</div>
+<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160; </div>
+<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, script);</div>
+<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, evt);</div>
+<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;}</div>
+<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160; </div>
+<div class="line"><a name="l01194"></a><span class="lineno"><a class="line" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815"> 1194</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">string</span> script)</div>
+<div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160;{</div>
+<div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;UnsubscribeEvent&quot;</span>;</div>
+<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160; </div>
+<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, script);</div>
+<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, evt);</div>
+<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;}</div>
+<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160; </div>
+<div class="line"><a name="l01203"></a><span class="lineno"><a class="line" href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4"> 1203</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4">NWNX_Events_PushEventData</a>(<span class="keywordtype">string</span> tag, <span class="keywordtype">string</span> data)</div>
+<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;{</div>
+<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;PushEventData&quot;</span>;</div>
+<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160; </div>
+<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, data);</div>
+<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, tag);</div>
+<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;}</div>
+<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160; </div>
+<div class="line"><a name="l01212"></a><span class="lineno"><a class="line" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53"> 1212</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent</a>(<span class="keywordtype">string</span> evt, <span class="keywordtype">object</span> target)</div>
+<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;{</div>
+<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SignalEvent&quot;</span>;</div>
+<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160; </div>
+<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Events, sFunc, target);</div>
+<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, evt);</div>
+<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;}</div>
+<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160; </div>
+<div class="line"><a name="l01222"></a><span class="lineno"><a class="line" href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6"> 1222</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a>(<span class="keywordtype">string</span> tag)</div>
+<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;{</div>
+<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetEventData&quot;</span>;</div>
+<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160; </div>
+<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, tag);</div>
+<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;}</div>
+<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160; </div>
+<div class="line"><a name="l01231"></a><span class="lineno"><a class="line" href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be"> 1231</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be">NWNX_Events_SkipEvent</a>()</div>
+<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;{</div>
+<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SkipEvent&quot;</span>;</div>
+<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160; </div>
+<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;}</div>
+<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160; </div>
+<div class="line"><a name="l01238"></a><span class="lineno"><a class="line" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14"> 1238</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult</a>(<span class="keywordtype">string</span> data)</div>
+<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;{</div>
+<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;SetEventResult&quot;</span>;</div>
+<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160; </div>
+<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, data);</div>
+<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;}</div>
+<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160; </div>
+<div class="line"><a name="l01246"></a><span class="lineno"><a class="line" href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b"> 1246</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a>()</div>
+<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;{</div>
+<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;GetCurrentEvent&quot;</span>;</div>
+<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160; </div>
+<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;}</div>
+<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160; </div>
+<div class="line"><a name="l01254"></a><span class="lineno"><a class="line" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02"> 1254</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">int</span> bEnable)</div>
+<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;{</div>
+<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;ToggleDispatchListMode&quot;</span>;</div>
+<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160; </div>
+<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    <a class="code" href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a>(NWNX_Events, sFunc, bEnable);</div>
+<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sScript);</div>
+<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sEvent);</div>
+<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;}</div>
+<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160; </div>
+<div class="line"><a name="l01264"></a><span class="lineno"><a class="line" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6"> 1264</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject)</div>
+<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;{</div>
+<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;AddObjectToDispatchList&quot;</span>;</div>
+<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160; </div>
+<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Events, sFunc, oObject);</div>
+<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sScript);</div>
+<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sEvent);</div>
+<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;}</div>
+<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160; </div>
+<div class="line"><a name="l01274"></a><span class="lineno"><a class="line" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce"> 1274</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a>(<span class="keywordtype">string</span> sEvent, <span class="keywordtype">string</span> sScript, <span class="keywordtype">object</span> oObject)</div>
+<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;{</div>
+<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;    <span class="keywordtype">string</span> sFunc = <span class="stringliteral">&quot;RemoveObjectFromDispatchList&quot;</span>;</div>
+<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160; </div>
+<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;    <a class="code" href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a>(NWNX_Events, sFunc, oObject);</div>
+<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sScript);</div>
+<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;    <a class="code" href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a>(NWNX_Events, sFunc, sEvent);</div>
+<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;    <a class="code" href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a>(NWNX_Events, sFunc);</div>
+<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="agroup__events_html_gab4a9847f9f4b134c0618429671f78a53"><div class="ttname"><a href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent</a></div><div class="ttdeci">int NWNX_Events_SignalEvent(string evt, object target)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01211">nwnx_events.nss:1211</a></div></div>
+<div class="ttc" id="agroup__events_html_gab4a9847f9f4b134c0618429671f78a53"><div class="ttname"><a href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent</a></div><div class="ttdeci">int NWNX_Events_SignalEvent(string evt, object target)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01212">nwnx_events.nss:1212</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga5020d69354c6bead3824922b66282b6e"><div class="ttname"><a href="group__nwnx.html#ga5020d69354c6bead3824922b66282b6e">NWNX_GetReturnValueString</a></div><div class="ttdeci">string NWNX_GetReturnValueString(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00098">nwnx.nss:98</a></div></div>
-<div class="ttc" id="agroup__events_html_ga3dd3ccd8df389359c21d5ca3f681718b"><div class="ttname"><a href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a></div><div class="ttdeci">string NWNX_Events_GetCurrentEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01245">nwnx_events.nss:1245</a></div></div>
-<div class="ttc" id="agroup__events_html_ga4134c20a643dc5d808fc0f758c71cd02"><div class="ttname"><a href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a></div><div class="ttdeci">void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01253">nwnx_events.nss:1253</a></div></div>
-<div class="ttc" id="agroup__events_html_gad74d90c308e190da8d49b1db0aa2f1b6"><div class="ttname"><a href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a></div><div class="ttdeci">string NWNX_Events_GetEventData(string tag)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01221">nwnx_events.nss:1221</a></div></div>
+<div class="ttc" id="agroup__events_html_ga3dd3ccd8df389359c21d5ca3f681718b"><div class="ttname"><a href="group__events.html#ga3dd3ccd8df389359c21d5ca3f681718b">NWNX_Events_GetCurrentEvent</a></div><div class="ttdeci">string NWNX_Events_GetCurrentEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01246">nwnx_events.nss:1246</a></div></div>
+<div class="ttc" id="agroup__events_html_ga4134c20a643dc5d808fc0f758c71cd02"><div class="ttname"><a href="group__events.html#ga4134c20a643dc5d808fc0f758c71cd02">NWNX_Events_ToggleDispatchListMode</a></div><div class="ttdeci">void NWNX_Events_ToggleDispatchListMode(string sEvent, string sScript, int bEnable)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01254">nwnx_events.nss:1254</a></div></div>
+<div class="ttc" id="agroup__events_html_gad74d90c308e190da8d49b1db0aa2f1b6"><div class="ttname"><a href="group__events.html#gad74d90c308e190da8d49b1db0aa2f1b6">NWNX_Events_GetEventData</a></div><div class="ttdeci">string NWNX_Events_GetEventData(string tag)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01222">nwnx_events.nss:1222</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga6e7ebe01f31c59279956f562609c964a"><div class="ttname"><a href="group__nwnx.html#ga6e7ebe01f31c59279956f562609c964a">NWNX_PushArgumentString</a></div><div class="ttdeci">void NWNX_PushArgumentString(string pluginName, string functionName, string value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00068">nwnx.nss:68</a></div></div>
-<div class="ttc" id="agroup__events_html_ga1f7aeeb1c0a8f4166b8d1dbefa521294"><div class="ttname"><a href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a></div><div class="ttdeci">void NWNX_Events_SubscribeEvent(string evt, string script)</div><div class="ttdoc">Scripts can subscribe to events.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01184">nwnx_events.nss:1184</a></div></div>
-<div class="ttc" id="agroup__events_html_gaf3739a883b618d64af4d0d19b85e5815"><div class="ttname"><a href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a></div><div class="ttdeci">void NWNX_Events_UnsubscribeEvent(string evt, string script)</div><div class="ttdoc">Unsubscribe a script from an event.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01193">nwnx_events.nss:1193</a></div></div>
+<div class="ttc" id="agroup__events_html_ga1f7aeeb1c0a8f4166b8d1dbefa521294"><div class="ttname"><a href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a></div><div class="ttdeci">void NWNX_Events_SubscribeEvent(string evt, string script)</div><div class="ttdoc">Scripts can subscribe to events.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01185">nwnx_events.nss:1185</a></div></div>
+<div class="ttc" id="agroup__events_html_gaf3739a883b618d64af4d0d19b85e5815"><div class="ttname"><a href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a></div><div class="ttdeci">void NWNX_Events_UnsubscribeEvent(string evt, string script)</div><div class="ttdoc">Unsubscribe a script from an event.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01194">nwnx_events.nss:1194</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_gabc581e541c864a29a2ec698945996f23"><div class="ttname"><a href="group__nwnx.html#gabc581e541c864a29a2ec698945996f23">NWNX_GetReturnValueInt</a></div><div class="ttdeci">int NWNX_GetReturnValueInt(string pluginName, string functionName)</div><div class="ttdoc">Returns the specified type from the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00083">nwnx.nss:83</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_gac59ae51d3e8c4f775ab7d1a18eab3fc4"><div class="ttname"><a href="group__nwnx.html#gac59ae51d3e8c4f775ab7d1a18eab3fc4">NWNX_CallFunction</a></div><div class="ttdeci">void NWNX_CallFunction(string pluginName, string functionName)</div><div class="ttdoc">Scripting interface to NWNX.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00048">nwnx.nss:48</a></div></div>
-<div class="ttc" id="agroup__events_html_ga5040b47f5949dbd59be0540e0ddd00ce"><div class="ttname"><a href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a></div><div class="ttdeci">void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject)</div><div class="ttdoc">Remove oObject from the dispatch list for sEvent+sScript.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01273">nwnx_events.nss:1273</a></div></div>
-<div class="ttc" id="agroup__events_html_ga4adf46d9794ba89a03e0a61c1cc65fb4"><div class="ttname"><a href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4">NWNX_Events_PushEventData</a></div><div class="ttdeci">void NWNX_Events_PushEventData(string tag, string data)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01202">nwnx_events.nss:1202</a></div></div>
-<div class="ttc" id="agroup__events_html_gae5b967429f0381813d7f6667dd8dcbe6"><div class="ttname"><a href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a></div><div class="ttdeci">void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject)</div><div class="ttdoc">Add oObject to the dispatch list for sEvent+sScript.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01263">nwnx_events.nss:1263</a></div></div>
+<div class="ttc" id="agroup__events_html_ga5040b47f5949dbd59be0540e0ddd00ce"><div class="ttname"><a href="group__events.html#ga5040b47f5949dbd59be0540e0ddd00ce">NWNX_Events_RemoveObjectFromDispatchList</a></div><div class="ttdeci">void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject)</div><div class="ttdoc">Remove oObject from the dispatch list for sEvent+sScript.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01274">nwnx_events.nss:1274</a></div></div>
+<div class="ttc" id="agroup__events_html_ga4adf46d9794ba89a03e0a61c1cc65fb4"><div class="ttname"><a href="group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4">NWNX_Events_PushEventData</a></div><div class="ttdeci">void NWNX_Events_PushEventData(string tag, string data)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01203">nwnx_events.nss:1203</a></div></div>
+<div class="ttc" id="agroup__events_html_gae5b967429f0381813d7f6667dd8dcbe6"><div class="ttname"><a href="group__events.html#gae5b967429f0381813d7f6667dd8dcbe6">NWNX_Events_AddObjectToDispatchList</a></div><div class="ttdeci">void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object oObject)</div><div class="ttdoc">Add oObject to the dispatch list for sEvent+sScript.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01264">nwnx_events.nss:1264</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_ga9e802e758646d32b71f30f1578151938"><div class="ttname"><a href="group__nwnx.html#ga9e802e758646d32b71f30f1578151938">NWNX_PushArgumentObject</a></div><div class="ttdeci">void NWNX_PushArgumentObject(string pluginName, string functionName, object value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00063">nwnx.nss:63</a></div></div>
-<div class="ttc" id="agroup__events_html_gae28a9b2f668f2efae2335efc748dca14"><div class="ttname"><a href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult</a></div><div class="ttdeci">void NWNX_Events_SetEventResult(string data)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01237">nwnx_events.nss:1237</a></div></div>
-<div class="ttc" id="agroup__events_html_gafe379f5be8fb94c52cfeb5bda6ce51be"><div class="ttname"><a href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be">NWNX_Events_SkipEvent</a></div><div class="ttdeci">void NWNX_Events_SkipEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01230">nwnx_events.nss:1230</a></div></div>
+<div class="ttc" id="agroup__events_html_gae28a9b2f668f2efae2335efc748dca14"><div class="ttname"><a href="group__events.html#gae28a9b2f668f2efae2335efc748dca14">NWNX_Events_SetEventResult</a></div><div class="ttdeci">void NWNX_Events_SetEventResult(string data)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01238">nwnx_events.nss:1238</a></div></div>
+<div class="ttc" id="agroup__events_html_gafe379f5be8fb94c52cfeb5bda6ce51be"><div class="ttname"><a href="group__events.html#gafe379f5be8fb94c52cfeb5bda6ce51be">NWNX_Events_SkipEvent</a></div><div class="ttdeci">void NWNX_Events_SkipEvent()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__events_8nss_source.html#l01231">nwnx_events.nss:1231</a></div></div>
 <div class="ttc" id="agroup__nwnx_html_gadc430d6df00ece8e9cd208ba19701698"><div class="ttname"><a href="group__nwnx.html#gadc430d6df00ece8e9cd208ba19701698">NWNX_PushArgumentInt</a></div><div class="ttdeci">void NWNX_PushArgumentInt(string pluginName, string functionName, int value)</div><div class="ttdoc">Pushes the specified type to the c++ side.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx_8nss_source.html#l00053">nwnx.nss:53</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_423adc3517f1d20a5f719b24142510ea.html">Events</a></li><li class="navelem"><a class="el" href="dir_d438fff93ba50245bdf84b5bdfe210e0.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__events_8nss.html">nwnx_events.nss</a></li>
 				<li class="footer">
-					Generated on Sat May 9 2020 10:53:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat May 9 2020 14:59:31 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
