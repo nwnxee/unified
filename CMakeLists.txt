@@ -48,8 +48,6 @@ set(NWNX_STANDARD_FLAGS "-m64 -march=x86-64 -fdiagnostics-show-option -fno-omit-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")
 
-add_definitions(-D_FILE_OFFSET_BITS=64)
-
 # Define targets.
 # TAR_RELEASE_FINAL: Shipping version.
 # TAR_RELEASE: Fast testing version.
