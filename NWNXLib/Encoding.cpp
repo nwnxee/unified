@@ -180,7 +180,7 @@ std::string ToBase64(const std::vector<uint8_t>& in)
     {
         out.push_back('=');
     }
-    return std::move(out);
+    return out;
 }
 
 std::vector<uint8_t> FromBase64(const std::string &in)
@@ -209,7 +209,7 @@ std::vector<uint8_t> FromBase64(const std::string &in)
             valb -= 8;
         }
     }
-    return std::move(out);
+    return out;
 }
 
 }

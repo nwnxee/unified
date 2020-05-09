@@ -361,7 +361,7 @@ namespace BaseItem
             case CEP_DoublePick: return "[CEP] Double Pick";
             case CEP_Flowers: return "[CEP] Flowers";
             case CEP_Cloak: return "[CEP] Cloak";
-        };
+        }
     }
 }
 

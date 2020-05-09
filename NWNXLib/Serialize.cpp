@@ -88,7 +88,7 @@ std::vector<uint8_t> SerializeGameObject(CGameObject *pObject, bool bStripPCFlag
     std::vector<uint8_t> serialized(pData, pData+dataLength);
     delete[] pData;
 
-    return std::move(serialized);
+    return serialized;
 }
 
 CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)
