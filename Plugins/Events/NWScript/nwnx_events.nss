@@ -155,6 +155,7 @@ _______________________________________
     ----------------------|--------|-------
     ITEM                  | object | Convert to object with NWNX_Object_StringToObject()
 
+    @note These events do not trigger when equipment is replaced by equipping another item.
 _______________________________________
     ## Item Destroy Events
     - NWNX_ON_ITEM_DESTROY_OBJECT_BEFORE
