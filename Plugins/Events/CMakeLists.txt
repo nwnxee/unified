@@ -2,6 +2,7 @@ add_plugin(Events
     "Events.cpp"
     "Events/AssociateEvents.cpp"
     "Events/BarterEvents.cpp"
+    "Events/CalendarEvents.cpp"
     "Events/ClientEvents.cpp"
     "Events/CombatEvents.cpp"
     "Events/DMActionEvents.cpp"
@@ -26,4 +27,5 @@ add_plugin(Events
     "Events/MaterialChangeEvents.cpp"
     "Events/ObjectEvents.cpp"
     "Events/UUIDEvents.cpp"
-    "Events/ResourceEvents.cpp")
+    "Events/ResourceEvents.cpp"
+    "Events/QuickbarEvents.cpp")

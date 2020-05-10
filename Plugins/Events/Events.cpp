@@ -5,6 +5,7 @@
 #include "API/Constants.hpp"
 #include "Events/AssociateEvents.hpp"
 #include "Events/BarterEvents.hpp"
+#include "Events/CalendarEvents.hpp"
 #include "Events/ClientEvents.hpp"
 #include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
@@ -30,6 +31,7 @@
 #include "Events/ObjectEvents.hpp"
 #include "Events/UUIDEvents.hpp"
 #include "Events/ResourceEvents.hpp"
+#include "Events/QuickbarEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -105,6 +107,7 @@ Events::Events(const Plugin::CreateParams& params)
     auto hooker = GetServices()->m_hooks.get();
     m_associateEvents   = std::make_unique<AssociateEvents>(hooker);
     m_barterEvents      = std::make_unique<BarterEvents>(hooker);
+    m_calendarEvents    = std::make_unique<CalendarEvents>(hooker);
     m_clientEvents      = std::make_unique<ClientEvents>(hooker);
     m_combatEvents      = std::make_unique<CombatEvents>(hooker);
     m_dmActionEvents    = std::make_unique<DMActionEvents>(hooker);
@@ -130,6 +133,7 @@ Events::Events(const Plugin::CreateParams& params)
     m_objectEvents      = std::make_unique<ObjectEvents>(hooker);
     m_uuidEvents        = std::make_unique<UUIDEvents>(hooker);
     m_resourceEvents    = std::make_unique<ResourceEvents>(GetServices()->m_tasks.get());
+    m_quickbarEvents    = std::make_unique<QuickbarEvents>(hooker);
 }
 
 Events::~Events()

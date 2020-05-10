@@ -20,6 +20,8 @@ class DeadCreatureFiresOnAreaExit;
 class PreserveActionsOnDMPossess;
 class FixGreaterSanctuaryBug;
 class ItemChargesCost;
+class FixDispelEffectLevels;
+class AddPrestigeclassCasterLevels;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -43,6 +45,8 @@ private:
     std::unique_ptr<PreserveActionsOnDMPossess> m_PreserveActionsOnDMPossess;
     std::unique_ptr<FixGreaterSanctuaryBug> m_FixGreaterSanctuaryBug;
     std::unique_ptr<ItemChargesCost> m_ItemChargesCost;
+    std::unique_ptr<FixDispelEffectLevels> m_FixDispelEffectLevels;
+    std::unique_ptr<AddPrestigeclassCasterLevels> m_AddPrestigeclassCasterLevels;
 };
 
 }
