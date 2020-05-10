@@ -735,7 +735,7 @@ int32_t Weapon::GetDamageBonus(CNWSCreatureStats* pStats, CNWSCreature *pCreatur
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterWeaponSpecializationDamageBonus;
+        nBonus += plugin.m_GreaterWeaponSpecializationDamageBonus;
     }
 
     return nBonus;
@@ -767,7 +767,7 @@ int32_t Weapon::GetRangedDamageBonus(CNWSCreatureStats* pStats)
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterWeaponSpecializationDamageBonus;
+        nBonus += plugin.m_GreaterWeaponSpecializationDamageBonus;
     }
 
     return nBonus;
@@ -804,7 +804,7 @@ int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature*
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nMod+=plugin.m_GreaterFocusAttackBonus;
+        nMod += plugin.m_GreaterFocusAttackBonus;
     }
 
     return nMod;
