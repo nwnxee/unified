@@ -155,7 +155,7 @@ ArgumentStack Util::GetCurrentScriptName(ArgumentStack&& args)
     const auto depth = Services::Events::ExtractArgument<int32_t>(args);
 
     auto *pVM = API::Globals::VirtualMachine();
-    if (pVM && pVM->m_pVirtualMachineScript && pVM->m_nRecursionLevel >= 0 && pVM->m_nRecursionLevel >= depth)
+    if (pVM && pVM->m_nRecursionLevel >= 0 && pVM->m_nRecursionLevel >= depth)
     {
         auto& script = pVM->m_pVirtualMachineScript[pVM->m_nRecursionLevel - depth];
         if (!script.m_sScriptName.IsEmpty())
