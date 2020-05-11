@@ -31,6 +31,10 @@ int NWNX_Combat_GetCurrentFeat();
 /// @return script type
 int NWNX_Combat_GetScriptType();
 
+/// @brief Gets the target of the current special attack.
+/// @return feat target
+object NWNX_Combat_GetFeatTarget();
+
 /// @}
 
 void NWNX_Combat_SetSpecialAttackInfo(int nFeat, int nAttackRangeType, int nDamageModifier = 0, int nAttackModifier = 0, string sTestRequirementsScript = "", string sAttackModScript = "", string sDamageModScript = "", string sPostDamageScript = "")
@@ -74,4 +78,13 @@ int NWNX_Combat_GetScriptType()
     NWNX_CallFunction(NWNX_Combat, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Combat, sFunc);
+}
+
+object NWNX_Combat_GetFeatTarget()
+{
+    string sFunc = "GetFeatTarget";
+
+    NWNX_CallFunction(NWNX_Combat, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Combat, sFunc);
 }

@@ -31,9 +31,11 @@ Note: This plugin is not compatible with `NWNX_ON_USE_FEAT_.*` events.
 void main()
 {
     int nScriptType = NWNX_Combat_GetScriptType();
+    int nFeat = NWNX_Combat_GetCurrentFeat();
+    object oTarget = NWNX_Combat_GetFeatTarget();
     switch(nScriptType) {
     case NWNX_COMBAT_SCRIPT_TYPE_REQUIREMENTS:
-        SendMessageToPC(OBJECT_SELF, "Requirements script");
+        SendMessageToPC(OBJECT_SELF, "Requirements script. Feat: " + IntToString(nFeat) + ". Target: " + GetName(oTarget));
         return;
     case NWNX_COMBAT_SCRIPT_TYPE_ATTACK_MODIFIER:
         SendMessageToPC(OBJECT_SELF, "Attack modifier script. Adding 15 AB");

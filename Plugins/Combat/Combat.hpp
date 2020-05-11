@@ -59,6 +59,7 @@ private:
     ArgumentStack SetReturnValue(ArgumentStack&& args);
     ArgumentStack GetScriptType(ArgumentStack&&);
     ArgumentStack GetCurrentFeat(ArgumentStack&&);
+    ArgumentStack GetFeatTarget(ArgumentStack&&);
 };
 
 }
