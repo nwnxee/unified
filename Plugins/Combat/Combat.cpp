@@ -44,6 +44,8 @@ NWNXLib::Hooking::FunctionHook* s_useFeatHook = nullptr;
 NWNXLib::Hooking::FunctionHook* s_resolveSpecialAttackDamageBonus = nullptr;
 NWNXLib::Hooking::FunctionHook* s_resolveSpecialAttackAttackBonus = nullptr;
 int32_t g_nLastReturnValue;
+int32_t g_nFeat;
+int32_t g_nScriptType;
 std::unordered_map<uint16_t, SpecialAttackInfo> s_specialAttackMap;
 
 Combat::Combat(const Plugin::CreateParams& params)
@@ -56,6 +58,8 @@ Combat::Combat(const Plugin::CreateParams& params)
 
     REGISTER(SetSpecialAttackInfo);
     REGISTER(SetReturnValue);
+    REGISTER(GetScriptType);
+    REGISTER(GetCurrentFeat);
 
 #undef REGISTER
 
@@ -119,6 +123,7 @@ BOOL Combat::CNWSCreature__UseFeat(CNWSCreature* thisPtr, uint16_t nFeat, uint16
     if (!attackInfo.sTestRequirementsScript.empty())
     {
         //TODO: Add params
+        g_nScriptType = ScriptType::RequirementsScript;
         g_nLastReturnValue = bAllowed;
         Utils::ExecuteScript(attackInfo.sTestRequirementsScript, thisPtr->m_idSelf);
         bAllowed = !!g_nLastReturnValue;
@@ -160,6 +165,7 @@ void Combat::CNWSCreature__ResolveMeleeSpecialAttack(bool before, CNWSCreature* 
     if (nDamage > 0)
     {
         //TODO: Add params
+        g_nScriptType = ScriptType::PostDamageScript;
         Utils::ExecuteScript(attackInfo.sPostDamageScript, thisPtr->m_idSelf);
     }
 }
@@ -194,6 +200,7 @@ void Combat::CNWSCreature__ResolveRangedSpecialAttack(bool before, CNWSCreature*
     if (nDamage > 0)
     {
         //TODO: Add params
+        g_nScriptType = ScriptType::PostDamageScript;
         Utils::ExecuteScript(attackInfo.sPostDamageScript, thisPtr->m_idSelf);
     }
 }
@@ -215,6 +222,7 @@ int32_t Combat::CNWSCreatureStats__ResolveSpecialAttackDamageBonus(CNWSCreatureS
     {
         //TODO: Add params
         g_nLastReturnValue = nScriptModifier;
+        g_nScriptType = ScriptType::DamageModifierScript;
         Utils::ExecuteScript(attackInfo.sDamageModScript, thisPtr->m_pBaseCreature->m_idSelf);
         nScriptModifier = g_nLastReturnValue;
     }
@@ -239,6 +247,7 @@ int32_t Combat::CNWSCreatureStats__ResolveSpecialAttackAttackBonus(CNWSCreatureS
     {
         //TODO: Add params
         g_nLastReturnValue = nScriptModifier;
+        g_nScriptType = ScriptType::AttackModifierScript;
         Utils::ExecuteScript(attackInfo.sAttackModScript, thisPtr->m_pBaseCreature->m_idSelf);
         nScriptModifier = g_nLastReturnValue;
     }
@@ -283,6 +292,20 @@ ArgumentStack Combat::SetReturnValue(ArgumentStack&& args)
     ArgumentStack stack;
     auto nRet = Services::Events::ExtractArgument<int32_t>(args);
     g_nLastReturnValue = nRet;
+    return stack;
+}
+
+ArgumentStack Combat::GetScriptType(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    Services::Events::InsertArgument(stack, g_nScriptType);
+    return stack;
+}
+
+ArgumentStack Combat::GetCurrentFeat(ArgumentStack&& args)
+{
+    ArgumentStack stack;
+    Services::Events::InsertArgument(stack, g_nFeat);
     return stack;
 }
 

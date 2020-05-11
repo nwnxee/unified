@@ -18,6 +18,17 @@ enum TYPE
 };
 }
 
+namespace ScriptType
+{
+enum TYPE
+{
+    RequirementsScript,
+    AttackModifierScript,
+    DamageModifierScript,
+    PostDamageScript
+};
+};
+
 struct SpecialAttackInfo
 {
     uint16_t nFeatId;
@@ -46,6 +57,8 @@ private:
 
     ArgumentStack SetSpecialAttackInfo(ArgumentStack&&);
     ArgumentStack SetReturnValue(ArgumentStack&& args);
+    ArgumentStack GetScriptType(ArgumentStack&&);
+    ArgumentStack GetCurrentFeat(ArgumentStack&&);
 };
 
 }

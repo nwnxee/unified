@@ -16,4 +16,36 @@ Note: This plugin is not compatible with `NWNX_ON_USE_FEAT_.*` events.
 - ResolveSpecialAttackAttackBonus -> nAttackModifier + result set in AttackModScript
 - ResolveSpecialAttackDamageBonus -> nDamageModifier + result set in DamageModScript
 - Resolve{Melee|Ranged}SpecialAttack -> Calls PostDamageScript if damage > 0
-- 
+
+#### Examples
+##### on_load script
+```
+    NWNX_Combat_SetSpecialAttackInfo(FEAT_KNOCKDOWN, 0, 0, 0, "test_kd", "test_kd", "test_kd", "test_kd");
+    NWNX_Combat_SetSpecialAttackInfo(FEAT_IMPROVED_KNOCKDOWN, 0, 0, 0, "test_kd", "test_kd", "test_kd", "test_kd");
+```
+
+##### test_kd
+```
+#include "nwnx_combat"
+
+void main()
+{
+    int nScriptType = NWNX_Combat_GetScriptType();
+    switch(nScriptType) {
+    case NWNX_COMBAT_SCRIPT_TYPE_REQUIREMENTS:
+        SendMessageToPC(OBJECT_SELF, "Requirements script");
+        return;
+    case NWNX_COMBAT_SCRIPT_TYPE_ATTACK_MODIFIER:
+        SendMessageToPC(OBJECT_SELF, "Attack modifier script. Adding 15 AB");
+        NWNX_Combat_SetReturnValue(15);
+        return;
+    case NWNX_COMBAT_SCRIPT_TYPE_DAMAGE_MODIFIER:
+        SendMessageToPC(OBJECT_SELF, "Damage modifier script. Adding 50 damage");
+        NWNX_Combat_SetReturnValue(50);
+        return;
+    case NWNX_COMBAT_SCRIPT_TYPE_POST_DAMAGE:
+        SendMessageToPC(OBJECT_SELF, "PostDamage script");
+        return;
+    }
+}
+```
