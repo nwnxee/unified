@@ -109,18 +109,30 @@ private:
     ArgumentStack SetCasterLevelOverride        (ArgumentStack&& args);
     ArgumentStack GetCasterLevelOverride        (ArgumentStack&& args);
     ArgumentStack JumpToLimbo                   (ArgumentStack&& args);
+    ArgumentStack SetCriticalMultiplierModifier (ArgumentStack&& args);
+    ArgumentStack GetCriticalMultiplierModifier (ArgumentStack&& args);
+    ArgumentStack SetCriticalMultiplierOverride (ArgumentStack&& args);
+    ArgumentStack GetCriticalMultiplierOverride (ArgumentStack&& args);
+    ArgumentStack SetCriticalRangeModifier      (ArgumentStack&& args);
+    ArgumentStack GetCriticalRangeModifier      (ArgumentStack&& args);
+    ArgumentStack SetCriticalRangeOverride      (ArgumentStack&& args);
+    ArgumentStack GetCriticalRangeOverride      (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
 private:
     static bool s_bAdjustCasterLevel;
     static bool s_bCasterLevelHooksInitialized;
+    static bool s_bCriticalMultiplierHooksInitialized;
+    static bool s_bCriticalRangeHooksInitialized;
 
     static void InitCasterLevelHooks();
     static void CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
     static void CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
     static void CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
     static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
+    static void InitCriticalMultiplierHook();
+    static void InitCriticalRangeHook();
 
 };
 
