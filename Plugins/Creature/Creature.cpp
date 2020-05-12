@@ -2177,20 +2177,20 @@ void Creature::InitCriticalMultiplierHook()
                 int32_t retVal;
                 if (!bOffHand) //mainhand
                 {
-                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!MAIN"))
+                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!1"))
                     {
                         retVal = critMultOvr.value();
                     }
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!BOTH"))
+                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
                     {
                         retVal = critMultOvr.value();
                     }
-                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!MAIN"))
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!1"))
                     {
                         auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critMultOrig + critMultMod.value();
                     }
-                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!BOTH"))
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
                     {
                         auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critMultOrig + critMultMod.value();
@@ -2202,20 +2202,20 @@ void Creature::InitCriticalMultiplierHook()
                 }
                 else //Offhand
                 {
-                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!OFFH"))
+                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!2"))
                     {
                         retVal = critMultOvr.value();
                     }
-                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!BOTH"))
+                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
                     {
                         retVal = critMultOvr.value();
                     }
-                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!OFFH"))
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!2"))
                     {
                         auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critMultOrig + critMultMod.value();
                     }
-                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!BOTH"))
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
                     {
                         auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critMultOrig + critMultMod.value();
@@ -2241,21 +2241,16 @@ ArgumentStack Creature::SetCriticalMultiplierModifier(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
-        const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
         const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
 
         if (nModifier)
-            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + sHand, nModifier, persist);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand), nModifier, persist);
         else
-        g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + sHand);
+        g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand));
     }
     return Services::Events::Arguments();
 }
@@ -2266,16 +2261,12 @@ ArgumentStack Creature::GetCriticalMultiplierModifier(ArgumentStack&& args)
 
     if (auto* pCreature = creature(args))
     {
-        const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
 
-        auto nModifier = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + sHand);
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nModifier = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand));
         if (nModifier)
             retVal = nModifier.value();
     }
@@ -2290,21 +2281,16 @@ ArgumentStack Creature::SetCriticalMultiplierOverride(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nOverride = Services::Events::ExtractArgument<int32_t>(args);
-    const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
         const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
 
         if (nOverride >= 0)
-            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + sHand, nOverride, persist);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + std::to_string(nHand), nOverride, persist);
         else
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + sHand);
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + std::to_string(nHand));
     }
     return Services::Events::Arguments();
 }
@@ -2315,18 +2301,14 @@ ArgumentStack Creature::GetCriticalMultiplierOverride(ArgumentStack&& args)
 
     if (auto* pCreature = creature(args))
     {
-        const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
 
-        auto nOverride = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + sHand);
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nOverride = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + std::to_string(nHand));
         if (nOverride)
-        retVal = nOverride.value();
+            retVal = nOverride.value();
     }
     return Services::Events::Arguments(retVal);
 }
@@ -2342,20 +2324,20 @@ void Creature::InitCriticalRangeHook()
                 int32_t retVal;
                 if (!bOffHand) //mainhand
                 {
-                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!MAIN"))
+                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!1"))
                     {
                         retVal = critRngOvr.value();
                     }
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!BOTH"))
+                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
                     {
                         retVal = critRngOvr.value();
                     }
-                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!MAIN"))
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!1"))
                     {
                         auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critRngOrig + critRngMod.value();
                     }
-                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!BOTH"))
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
                     {
                         auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critRngOrig + critRngMod.value();
@@ -2367,20 +2349,20 @@ void Creature::InitCriticalRangeHook()
                 }
                 else //Offhand
                 {
-                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!OFFH"))
+                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!2"))
                     {
                         retVal = critRngOvr.value();
                     }
-                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!BOTH"))
+                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
                     {
                         retVal = critRngOvr.value();
                     }
-                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!OFFH"))
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!2"))
                     {
                         auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critRngOrig + critRngMod.value();
                     }
-                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!BOTH"))
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
                     {
                         auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
                         retVal = critRngOrig + critRngMod.value();
@@ -2405,21 +2387,16 @@ ArgumentStack Creature::SetCriticalRangeModifier(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
-        const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
         const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
 
         if (nModifier)
-            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_RANGE_MODIFIER!" + sHand, nModifier, persist);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_RANGE_MODIFIER!" + std::to_string(nHand), nModifier, persist);
         else
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_RANGE_MODIFIER!" + sHand);
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_RANGE_MODIFIER!" + std::to_string(nHand));
     }
     return Services::Events::Arguments();
 }
@@ -2430,16 +2407,12 @@ ArgumentStack Creature::GetCriticalRangeModifier(ArgumentStack&& args)
 
     if (auto* pCreature = creature(args))
     {
-        const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
 
-        auto nModifier = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_RANGE_MODIFIER!" + sHand);
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nModifier = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_RANGE_MODIFIER!" + std::to_string(nHand));
         if (nModifier)
             retVal = nModifier.value();
     }
@@ -2454,21 +2427,16 @@ ArgumentStack Creature::SetCriticalRangeOverride(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         const auto nOverride = Services::Events::ExtractArgument<int32_t>(args);
-        const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
         const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
 
         if (nOverride >= 0)
-            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_RANGE_OVERRIDE!" + sHand, nOverride, persist);
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_RANGE_OVERRIDE!" + std::to_string(nHand), nOverride, persist);
         else
-            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_RANGE_OVERRIDE!" + sHand);
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_RANGE_OVERRIDE!" + std::to_string(nHand));
     }
     return Services::Events::Arguments();
 }
@@ -2479,16 +2447,12 @@ ArgumentStack Creature::GetCriticalRangeOverride(ArgumentStack&& args)
 
     if (auto* pCreature = creature(args))
     {
-        const auto nHand = Services::Events::ExtractArgument<int32_t>(args);
-        std::string sHand;
-        switch (nHand)
-        {
-            case 1: sHand = "MAIN"; break;
-            case 2: sHand = "OFFH"; break;
-            default: sHand = "BOTH"; break;
-        }
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
 
-        auto nOverride = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_RANGE_OVERRIDE!" + sHand);
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nOverride = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_RANGE_OVERRIDE!" + std::to_string(nHand));
         if (nOverride)
             retVal = nOverride.value();
     }
