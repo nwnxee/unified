@@ -2250,7 +2250,7 @@ ArgumentStack Creature::SetCriticalMultiplierModifier(ArgumentStack&& args)
         if (nModifier)
             g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand), nModifier, persist);
         else
-        g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand));
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand));
     }
     return Services::Events::Arguments();
 }
