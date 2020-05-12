@@ -78,6 +78,12 @@ Combat::Combat(const Plugin::CreateParams& params)
 Combat::~Combat()
 {}
 
+bool CheckAttackResultHit(uint8_t nAttackResult)
+{
+    return nAttackResult == 1 || nAttackResult == 3 || nAttackResult == 5 ||
+        nAttackResult == 6 || nAttackResult == 7 || nAttackResult == 10;
+}
+
 BOOL Combat::CNWSCreature__UseFeat(CNWSCreature* thisPtr, uint16_t nFeat, uint16_t nSubFeat, OBJECT_ID oidTarget, OBJECT_ID oidArea, Vector* pvTarget)
 {
     if (!thisPtr)
@@ -150,11 +156,7 @@ void Combat::CNWSCreature__ResolveMeleeSpecialAttack(bool before, CNWSCreature* 
 
     auto nFeat = pAttack->m_nAttackType;
 
-    auto nAttackResult = pAttack->m_nAttackResult;
-    if (!nFeat ||
-           (nAttackResult != 1 && nAttackResult != 3 && nAttackResult != 5 &&
-            nAttackResult != 6 && nAttackResult != 7 && nAttackResult != 10)
-        )
+    if (!nFeat || !CheckAttackResultHit(pAttack->m_nAttackResult))
         return;
 
     auto attackInfoEntry = s_specialAttackMap.find(nFeat);
@@ -187,11 +189,7 @@ void Combat::CNWSCreature__ResolveRangedSpecialAttack(bool before, CNWSCreature*
 
     auto nFeat = pAttack->m_nAttackType;
 
-    auto nAttackResult = pAttack->m_nAttackResult;
-    if (!nFeat ||
-        (nAttackResult != 1 && nAttackResult != 3 && nAttackResult != 5 &&
-            nAttackResult != 6 && nAttackResult != 7 && nAttackResult != 10)
-        )
+    if (!nFeat || !CheckAttackResultHit(pAttack->m_nAttackResult))
         return;
 
     auto attackInfoEntry = s_specialAttackMap.find(nFeat);
