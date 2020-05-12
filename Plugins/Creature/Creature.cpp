@@ -2172,7 +2172,7 @@ void Creature::InitCriticalMultiplierHook()
     if (!pGetCriticalHitMultiplier_hook)
     {
         g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi>(
-            +[](CNWSCreatureStats *pThis, bool bOffHand = false) -> int32_t
+            +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
             {
                 int32_t retVal;
                 if (!bOffHand) //mainhand
@@ -2337,7 +2337,7 @@ void Creature::InitCriticalRangeHook()
     if (!pGetCriticalHitRoll_hook)
     {
         g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi>(
-            +[](CNWSCreatureStats *pThis, bool bOffHand = false) -> int32_t
+            +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
             {
                 int32_t retVal;
                 if (!bOffHand) //mainhand
