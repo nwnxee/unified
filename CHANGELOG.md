@@ -15,6 +15,7 @@ N/A
 
 ##### New NWScript Functions
 - Creature: JumpToLimbo()
+- Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()
 
 ### Changed
 N/A
