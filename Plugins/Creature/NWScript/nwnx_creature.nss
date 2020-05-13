@@ -715,8 +715,8 @@ void NWNX_Creature_JumpToLimbo(object oCreature);
 /// @param oCreature The target creature
 /// @param nModifier The modifier to apply
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
-/// @param bPersist Whether the modifier should persist to .bic.
-/// @note Persistence is activated per-server-reset by either 'SetCriticalMultiplier*' function. Recommended to trigger on a dummy target OnModuelLoad to enable persistence.
+/// @param bPersist Whether the modifier should persist to .bic file if applicable
+/// @note Persistence is activated each server reset by first use of either 'SetCriticalMultiplier*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetCriticalMultiplierModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE);
 
 /// @brief Gets the critical hit multiplier modifier for the Creature
@@ -730,7 +730,7 @@ int NWNX_Creature_GetCriticalMultiplierModifier(object oCreature, int nHand = 0)
 /// @param nOverride The override value to apply. -1 to clear override.
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
 /// @param bPersist whether the modifier should be persisted to the .bic file if applicable
-/// @note Persistence is activated per-server-reset by either 'SetCriticalMultiplier*' function. Recommended to trigger on a dummy target OnModuelLoad to enable persistence.
+/// @note Persistence is activated each server reset by first use of either 'SetCriticalMultiplier*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetCriticalMultiplierOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE);
 
 /// @brief Gets the critical hit multiplier override for the Creature
@@ -744,7 +744,7 @@ int NWNX_Creature_GetCriticalMultiplierOverride(object oCreature, int nHand = 0)
 /// @param nModifier The modifier to apply. Positive modifiers reduce critical chance. (I.e. From 18-20, a +1 results in crit range of 19-20)
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
 /// @param bPersist whether the modifier should be persisted to the .bic file if applicable
-/// @note Persistence is activated per-server-reset by either 'SetCriticalRange*' function. Recommended to trigger on a dummy target OnModuelLoad to enable persistence.
+/// @note Persistence is activated each server reset by first use of either 'SetCriticalRange*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetCriticalRangeModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE);
 
 /// @brief Gets the critical hit range modifier for the creature.
@@ -758,7 +758,7 @@ int NWNX_Creature_GetCriticalRangeModifier(object oCreature, int nHand = 0);
 /// @param nOverride The new minimum roll to crit. i.e nOverride of 15 results in crit range of 15-20. -1 to clear override.
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
 /// @param bPersist whether the modifier should be persisted to the .bic file if applicable
-/// @note Persistence is activated per-server-reset by either 'SetCriticalRange*' function. Recommended to trigger on a dummy target OnModuelLoad to enable persistence.
+/// @note Persistence is activated each server reset by first use of either 'SetCriticalRange*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
 void NWNX_Creature_SetCriticalRangeOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE);
 
 /// @brief Sets the critical hit range Override for the creature.
