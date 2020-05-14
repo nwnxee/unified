@@ -335,6 +335,9 @@ void NWNXCore::InitialSetupResourceDirectory()
     m_services->m_tasks->QueueOnMainThread(
         [path, cleanDirectory, priority]
         {
+            if (g_CoreShuttingDown)
+                return;
+
             CExoString sAlias = CExoString("NWNX:");
             CExoString sPath = CExoString(path);
 
