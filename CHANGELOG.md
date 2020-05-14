@@ -26,7 +26,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Core: fixed NWNX ResourceDirectory init crashing on failed module load
 
 
 ## 8193.13
