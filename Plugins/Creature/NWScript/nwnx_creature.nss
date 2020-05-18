@@ -792,6 +792,7 @@ int NWNX_Creature_GetFeatGrantLevel(object creature, int feat)
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, feat);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
