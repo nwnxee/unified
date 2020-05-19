@@ -128,9 +128,9 @@ Events::ArgumentStack Administration::SetDMPassword(Events::ArgumentStack&& args
 Events::ArgumentStack Administration::ShutdownServer(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Shutting down the server!");
-    if (kill(getpid(), SIGTERM) != 0)
+    if (kill(getpid(), SIGINT) != 0)
     {
-      LOG_ERROR("Shutdown failed: SIGTERM signal not sent successfully");
+      LOG_ERROR("Shutdown failed: SIGINT signal not sent successfully");
     }
     return Events::Arguments();
 }
