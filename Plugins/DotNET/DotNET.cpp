@@ -62,6 +62,7 @@ bool DotNET::InitThunks()
             "libnethost.so",
             "./libnethost.so",
             "lib/libnethost.so",
+            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.4/runtimes/linux-x64/native/libnethost.so",
             "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.3/runtimes/linux-x64/native/libnethost.so",
             "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.2/runtimes/linux-x64/native/libnethost.so",
             "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.1/runtimes/linux-x64/native/libnethost.so",
