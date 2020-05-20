@@ -77,7 +77,7 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules15LoadRulesetInfoEv, void, CNWRules*>(&LoadRulesetInfoHook);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti,
-        int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
+        char, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
 }
 
 SkillRanks::~SkillRanks()
@@ -559,7 +559,7 @@ void SkillRanks::LoadRulesetInfoHook(bool before, CNWRules* pRules)
     }
 }
 
-int32_t SkillRanks::GetSkillRankHook(
+char SkillRanks::GetSkillRankHook(
         CNWSCreatureStats* thisPtr,
         uint8_t nSkill,
         CNWSObject* pVersus,
@@ -694,7 +694,11 @@ int32_t SkillRanks::GetSkillRankHook(
     if (pArea)
     {
         auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-        retVal += *pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill));
+        if(auto areaMod = pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill))) 
+        {
+            retVal += *areaMod;
+        }
+
     }
 
     if (!bHasOverrideKeyAbilityFeat)

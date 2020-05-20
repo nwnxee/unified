@@ -28,7 +28,7 @@ private:
     ArgumentStack SetAreaModifier             (ArgumentStack&& args);
 
     static void LoadRulesetInfoHook(bool, CNWRules*);
-    static int32_t GetSkillRankHook(CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t);
+    static char GetSkillRankHook(CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t);
 
     uint8_t m_blindnessMod;
 
