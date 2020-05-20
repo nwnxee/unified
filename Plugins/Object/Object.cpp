@@ -108,6 +108,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(SetFacing);
     REGISTER(ClearSpellEffectsOnOthers);
     REGISTER(PeekUUID);
+    REGISTER(GetDoorHasVisibleModel);
 
 #undef REGISTER
 }
@@ -922,6 +923,17 @@ ArgumentStack Object::PeekUUID(ArgumentStack&& args)
             else if (auto *pObject = Utils::AsNWSObject(pGameObject))
                 retVal = pObject->m_pUUID.m_uuid.CStr();
         }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetDoorHasVisibleModel(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+    if (auto *pDoor = Utils::AsNWSDoor(object(args)))
+    {
+        retVal = pDoor->m_bVisibleModel;
     }
 
     return Services::Events::Arguments(retVal);

@@ -350,6 +350,11 @@ void NWNX_Object_ClearSpellEffectsOnOthers(object oObject);
 /// @return The UUID or "" when the object does not have or cannot have an UUID
 string NWNX_Object_PeekUUID(object oObject);
 
+/// @brief Get if oDoor has a visible model.
+/// @param oDoor The door
+/// @return TRUE if oDoor has a visible model
+int NWNX_Object_GetDoorHasVisibleModel(object oDoor);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -836,4 +841,14 @@ string NWNX_Object_PeekUUID(object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetDoorHasVisibleModel(object oDoor)
+{
+    string sFunc = "GetDoorHasVisibleModel";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oDoor);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
