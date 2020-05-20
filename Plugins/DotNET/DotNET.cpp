@@ -85,25 +85,35 @@ bool DotNET::InitThunks()
         if (dir != nullptr)
         {
             dirent* directoryEntry = readdir(dir);
+            std::vector<std::string> paths;
 
             while (directoryEntry != nullptr)
             {
                 if (directoryEntry->d_type == DT_DIR)
                 {
                     const auto path = (std::string(hostBaseDir) + directoryEntry->d_name + hostLibSuffix);
-
-                    nethost = dlopen(path.c_str(), RTLD_LAZY);
-                    if (nethost)
-                    {
-                        LOG_INFO("Loaded libnethost.so from: %s (autodetected)", path);
-                        break;
-                    }
+                    paths.push_back(path);
                 }
 
                 directoryEntry = readdir(dir);
             }
 
             closedir(dir);
+
+            if (!paths.empty())
+            {
+                std::sort(paths.begin(), paths.end(), std::greater<std::string>());
+                for (std::string path : paths)
+                {
+                    nethost = dlopen(path.c_str(), RTLD_LAZY);
+
+                    if (nethost)
+                    {
+                        LOG_INFO("Loaded libnethost.so from: %s (autodetected)", path);
+                        break;
+                    }
+                }
+            }
         }
     }
 
