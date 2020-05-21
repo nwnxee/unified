@@ -74,7 +74,7 @@ void NWNX_Object_SetPosition(object obj, vector pos);
 void NWNX_Object_SetCurrentHitPoints(object obj, int hp);
 
 /// @brief Adjust an object's maximum hit points
-/// @note Will not work on PCs.
+/// @note This function does not work on creatures or PCs.  See `NWNX_Creature_SetMaxHitPointsByLevel`.
 /// @param obj The object.
 /// @param hp The maximum hit points.
 void NWNX_Object_SetMaxHitPoints(object obj, int hp);
