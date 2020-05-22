@@ -13,9 +13,7 @@
 #include <vector>
 #include <optional>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Events
 {
@@ -111,6 +109,5 @@ private:
 
 }
 
-}
 
 std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg);
