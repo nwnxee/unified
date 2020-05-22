@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.12...HEAD
+https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 
 ### Added
 N/A
@@ -14,7 +14,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-- Creature: JumpToLimbo()
+- Object: GetDoorHasVisibleModel()
 - Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()
 
 ### Changed
@@ -25,6 +25,18 @@ N/A
 
 ### Removed
 N/A
+
+### Fixed
+- Core: fixed NWNX ResourceDirectory init crashing on failed module load
+
+
+## 8193.13
+https://github.com/nwnxee/unified/compare/build8193.12...build8193.13
+
+### Added
+
+##### New NWScript Functions
+- Creature: JumpToLimbo()
 
 ### Fixed
 - SkillRanks: Now respects ruleset.2da values.
@@ -75,9 +87,6 @@ https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
 - ELC: Added `NWNX_ON_ELC_VALIDATE_CHARACTER_{BEFORE|AFTER}` events, can be subscribed to with NWNX_Events.
 - Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now
 
-##### New Plugins
-N/A
-
 ##### New NWScript Functions
 - Creature: GetFeatGrantLevel()
 - Object: GetInternalObjectType()
@@ -87,17 +96,8 @@ N/A
 - Object: AcquireItem()
 - Object: SetFacing()
 
-### Changed
-N/A
-
 ### Deprecated
 - Creature: Get{Domain|Specialization}
-
-### Removed
-N/A
-
-### Fixed
-N/A
 
 ## 8193.9
 https://github.com/nwnxee/unified/compare/build8193.7...build8193.9
@@ -105,9 +105,6 @@ https://github.com/nwnxee/unified/compare/build8193.7...build8193.9
 ### Added
 - SQL: `NWNX_SQL_PORT` to set the port used for MySQL database connections.
 - Events: Added OnResource{Added|Removed|Modified} events to ResourceEvents, these events fire when a file gets added/removed/modified in the /nwnx or /development folders
-
-##### New Plugins
-N/A
 
 ##### New NWScript Functions
 - Administration: GetServerName()
@@ -119,9 +116,6 @@ N/A
 ### Changed
 - Core: the console commands `eval` and `evalx` will now provide an error message if the script chunk fails to execute.
 - Damage: Added a Ranged flag to NWNX_Damage_DealDamage()
-
-### Deprecated
-N/A
 
 ### Removed
 - Tweaks: Removed scroll learning freeze bugfix.

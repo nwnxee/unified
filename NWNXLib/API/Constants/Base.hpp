@@ -178,6 +178,7 @@ namespace ResRefType
         SQL    = 2075,
         TML    = 2076,
         SQ3    = 2077,
+        LOD    = 2078,
         IDS    = 9996,
         ERF    = 9997,
         BIF    = 9998,
@@ -272,6 +273,7 @@ namespace ResRefType
             case SQL:    return "SQL";
             case TML:    return "TML";
             case SQ3:    return "SQ3";
+            case LOD:    return "LOD";
             case IDS:    return "IDS";
             case ERF:    return "ERF";
             case BIF:    return "BIF";

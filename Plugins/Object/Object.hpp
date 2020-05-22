@@ -57,6 +57,7 @@ private:
     ArgumentStack SetFacing                 (ArgumentStack&& args);
     ArgumentStack ClearSpellEffectsOnOthers (ArgumentStack&& args);
     ArgumentStack PeekUUID                  (ArgumentStack&& args);
+    ArgumentStack GetDoorHasVisibleModel    (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };
