@@ -120,6 +120,11 @@
 // User defined types: Uses operator<< for user defined types by default.
 // Overload formatValue() for more control.
 
+#ifdef __clang__
+#    pragma clang system_header
+#elif defined __GNUC__
+#    pragma GCC system_header
+#endif
 
 #ifndef TINYFORMAT_H_INCLUDED
 #define TINYFORMAT_H_INCLUDED
