@@ -1151,7 +1151,7 @@ ArgumentStack Creature::GetSoundset(ArgumentStack&& args)
     {
         retVal = pCreature->m_nSoundSet;
     }
-    return Services::Events::Arguments(retVal);
+    return { retVal };
 }
 
 ArgumentStack Creature::SetSoundset(ArgumentStack&& args)
@@ -1202,8 +1202,7 @@ ArgumentStack Creature::SetLevelByPosition(ArgumentStack&& args)
 {
     if (auto *pCreature = creature(args))
     {
-        const auto position = Services::Events::ExtractArgument<int32_t>(args);
-        const auto level = Services::Events::ExtractArgument<int32_t>(args);
+        const auto [position, level] = args.extract_n<int32_t, int32_t>();
           ASSERT_OR_THROW(position >= 0);
           ASSERT_OR_THROW(position <= 2);
           ASSERT_OR_THROW(level >= 0);
@@ -1218,7 +1217,7 @@ ArgumentStack Creature::SetBaseAttackBonus(ArgumentStack&& args)
 {
     if (auto *pCreature = creature(args))
     {
-        const auto bab = Services::Events::ExtractArgument<int32_t>(args);
+        const auto bab = args.extract<int32_t>();
           ASSERT_OR_THROW(bab >= 0);
           ASSERT_OR_THROW(bab <= 254);
 
