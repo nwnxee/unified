@@ -169,7 +169,7 @@ std::string Events::Argument::toString() const
         [](auto arg) { return std::to_string(arg); },
         [](API::Types::ObjectID arg) { return Utils::ObjectIDToString(arg); },
         [](const std::string& arg) { return arg; },
-        [](NullArgument) { return std::string("(null"); },
+        [](NullArgument) { return std::string("(null)"); },
         [](CGameEffect* arg) { return arg ? std::string("EffectID:") + std::to_string(arg->m_nID) : std::string("nullptr effect");}
     }, m_data);
 }
