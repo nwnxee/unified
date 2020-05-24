@@ -93,7 +93,7 @@ void SkillRanks::LoadRulesetInfoHook(bool before, CNWRules* pRules)
     g_plugin->m_blindnessMod = pRules->GetRulesetIntEntry("BLIND_PENALTY_TO_SKILL_CHECK", 4);
 
     g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
-                                                           [](const std::vector<std::string> message)
+                                                           [](const std::vector<std::string>& message)
                                                            {
                                                                auto nSkill = std::stoi(message[0]);
                                                                auto nRace = std::stoi(message[1]);
