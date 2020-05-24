@@ -91,14 +91,14 @@ Events::Events(const Plugin::CreateParams& params)
 #undef REGISTER
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
-        [](const std::vector<std::string> message)
+        [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
             SignalEvent(message[0], std::strtoul(message[1].c_str(), nullptr, 16));
         });
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_PUSH_EVENT_DATA",
-        [](const std::vector<std::string> message)
+        [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
             PushEventData(message[0], message[1]);
