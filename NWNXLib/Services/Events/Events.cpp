@@ -157,21 +157,19 @@ void EventsProxy::ClearEvent(const std::string& eventName)
     m_proxyBase.ClearEvent(std::move(concreteToken));
 }
 
-namespace detail
-{
-template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
-template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
-} // namespace detail
-
 std::string Events::Argument::toString() const
 {
-    return std::visit(detail::overloaded {
-        [](auto arg) { return std::to_string(arg); },
-        [](API::Types::ObjectID arg) { return Utils::ObjectIDToString(arg); },
-        [](const std::string& arg) { return arg; },
-        [](NullArgument) { return std::string("(null)"); },
-        [](CGameEffect* arg) { return arg ? std::string("EffectID:") + std::to_string(arg->m_nID) : std::string("nullptr effect");}
-    }, m_data);
+    if (Holds<int32_t>()) { return std::to_string(Get<int32_t>()); }
+    else if (Holds<float>()) { return std::to_string(Get<float>()); }
+    else if (Holds<API::Types::ObjectID>()) { return Utils::ObjectIDToString(Get<API::Types::ObjectID>()); }
+    else if (Holds<std::string>()) { return Get<std::string>(); }
+    else if (Holds<NullArgument>()) { return "(null)"; }
+    else if (Holds<CGameEffect*>()) 
+    {
+        auto e = Get<CGameEffect*>();
+        return e ? std::string("EffectID:") + std::to_string(e->m_nID) : std::string("nullptr effect");
+    }
+    return "(unknown argument type)";
 }
 
 }
