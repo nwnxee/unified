@@ -99,30 +99,31 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
     [ "Environment Variables", "group__rename.html#autotoc_md291", null ],
     [ "Sample Include", "group__rename.html#autotoc_md292", null ],
     [ "Environment Variables", "group__ruby.html#autotoc_md293", null ],
-    [ "Plugin Sample Usage", "group__skillranks.html#autotoc_md294", null ],
-    [ "How to install?", "group__spellchecker.html#autotoc_md301", null ],
-    [ "Environment Variables", "group__spellchecker.html#autotoc_md302", null ],
-    [ "Migration", "group__sql.html#autotoc_md306", null ],
-    [ "Environment Variables", "group__sql.html#autotoc_md307", [
-      [ "NWNX_SQL_TYPE", "group__sql.html#autotoc_md308", null ],
-      [ "NWNX_SQL_HOST", "group__sql.html#autotoc_md309", null ],
-      [ "NWNX_SQL_PORT", "group__sql.html#autotoc_md310", null ],
-      [ "NWNX_SQL_USERNAME", "group__sql.html#autotoc_md311", null ],
-      [ "NWNX_SQL_PASSWORD", "group__sql.html#autotoc_md312", null ],
-      [ "NWNX_SQL_DATABASE", "group__sql.html#autotoc_md313", null ],
-      [ "NWNX_SQL_QUERY_METRICS", "group__sql.html#autotoc_md314", null ],
-      [ "NWNX_SQL_USE_UTF8", "group__sql.html#autotoc_md315", null ],
-      [ "NWNX_SQL_CHARACTER_SET", "group__sql.html#autotoc_md316", null ]
+    [ "Environment Variables", "group__serverlogredirector.html#autotoc_md294", null ],
+    [ "Plugin Sample Usage", "group__skillranks.html#autotoc_md295", null ],
+    [ "How to install?", "group__spellchecker.html#autotoc_md302", null ],
+    [ "Environment Variables", "group__spellchecker.html#autotoc_md303", null ],
+    [ "Migration", "group__sql.html#autotoc_md307", null ],
+    [ "Environment Variables", "group__sql.html#autotoc_md308", [
+      [ "NWNX_SQL_TYPE", "group__sql.html#autotoc_md309", null ],
+      [ "NWNX_SQL_HOST", "group__sql.html#autotoc_md310", null ],
+      [ "NWNX_SQL_PORT", "group__sql.html#autotoc_md311", null ],
+      [ "NWNX_SQL_USERNAME", "group__sql.html#autotoc_md312", null ],
+      [ "NWNX_SQL_PASSWORD", "group__sql.html#autotoc_md313", null ],
+      [ "NWNX_SQL_DATABASE", "group__sql.html#autotoc_md314", null ],
+      [ "NWNX_SQL_QUERY_METRICS", "group__sql.html#autotoc_md315", null ],
+      [ "NWNX_SQL_USE_UTF8", "group__sql.html#autotoc_md316", null ],
+      [ "NWNX_SQL_CHARACTER_SET", "group__sql.html#autotoc_md317", null ]
     ] ],
-    [ "Environment Variables", "group__threadwatchdog.html#autotoc_md317", null ],
-    [ "Environment Variables", "group__tracking.html#autotoc_md318", null ],
-    [ "Environment Variables", "group__tweaks.html#autotoc_md319", null ],
-    [ "Environment variable values", "group__tweaks.html#autotoc_md320", [
-      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md321", null ]
+    [ "Environment Variables", "group__threadwatchdog.html#autotoc_md318", null ],
+    [ "Environment Variables", "group__tracking.html#autotoc_md319", null ],
+    [ "Environment Variables", "group__tweaks.html#autotoc_md320", null ],
+    [ "Environment variable values", "group__tweaks.html#autotoc_md321", [
+      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md322", null ]
     ] ],
-    [ "Environment Variables", "group__util.html#autotoc_md322", null ],
-    [ "Limitations", "group__webhook.html#autotoc_md328", null ],
-    [ "Example usage", "group__webhook.html#autotoc_md329", null ],
+    [ "Environment Variables", "group__util.html#autotoc_md323", null ],
+    [ "Limitations", "group__webhook.html#autotoc_md329", null ],
+    [ "Example usage", "group__webhook.html#autotoc_md330", null ],
     [ "nwnx.nss", "nwnx_8nss.html", "nwnx_8nss" ],
     [ "nwnx_consts.nss", "nwnx__consts_8nss.html", "nwnx__consts_8nss" ],
     [ "nwnx_tests.nss", "nwnx__tests_8nss.html", "nwnx__tests_8nss" ]
