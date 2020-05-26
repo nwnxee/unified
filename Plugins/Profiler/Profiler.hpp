@@ -38,7 +38,7 @@ private:
 
     static void MainLoopUpdate(bool, CServerExoAppInternal* thisPtr);
 
-    void SetPerfScopeResampler(std::string&& name);
+    void SetPerfScopeResampler(const std::string& name);
     void PushPerfScope(std::string&& name, NWNXLib::Services::MetricData::Tags&& tags);
     void PopPerfScope();
 };
