@@ -17,6 +17,12 @@ namespace NWNXLib::Services {
 
 Events::EventDataInternal* Events::GetEventData(const std::string& pluginName, const std::string& eventName)
 {
+    static Events::EventDataInternal* s_cached = nullptr;
+    if(s_cached && s_cached->m_data.m_pluginName == pluginName && s_cached->m_data.m_eventName == eventName)
+    {
+        return s_cached;
+    }
+
     EventList& events = m_eventMap[pluginName];
     auto it = std::find_if(std::begin(events), std::end(events),
         [&eventName](const std::unique_ptr<EventDataInternal>& data) -> bool
@@ -24,7 +30,8 @@ Events::EventDataInternal* Events::GetEventData(const std::string& pluginName, c
             return data->m_data.m_eventName == eventName;
         }
     );
-    return (it == std::end(events)) ? nullptr : it->get();
+
+    return s_cached = (it == std::end(events) ? nullptr : it->get());
 }
 
 void Events::Call(const std::string& pluginName, const std::string& eventName)
