@@ -50,14 +50,6 @@ std::optional<T> Events::Pop(const std::string& pluginName, const std::string& e
     return std::optional<T>();
 }
 
-
-
-template<> std::optional<int32_t>&              Events::Argument::Get<int32_t>();
-template<> std::optional<float>&                Events::Argument::Get<float>();
-template<> std::optional<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>();
-template<> std::optional<std::string>&          Events::Argument::Get<std::string>();
-template<> std::optional<CGameEffect*>&    Events::Argument::Get<CGameEffect*>();
-
 template <typename T>
 void Events::InsertArgument(ArgumentStack& stack, T&& arg)
 {
