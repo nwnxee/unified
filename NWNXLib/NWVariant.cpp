@@ -4,21 +4,19 @@
 namespace NWNXLib
 {
 
-template<> std::optional<int32_t>&              NWVariant::Get<int32_t>()             { return m_int; }
-template<> std::optional<float>&                NWVariant::Get<float>()               { return m_float; }
-template<> std::optional<API::Types::ObjectID>& NWVariant::Get<API::Types::ObjectID>(){ return m_object; }
-template<> std::optional<std::string>&          NWVariant::Get<std::string>()         { return m_string; }
-template<> std::optional<CGameEffect*>&         NWVariant::Get<CGameEffect*>()        { return m_effect; }
-
 std::string NWVariant::toString() const
 {
-    if (m_int)    return std::to_string(*m_int);
-    if (m_float)  return std::to_string(*m_float);
-    if (m_object) return Utils::ObjectIDToString(*m_object);
-    if (m_string) return *m_string;
-    if (m_effect) return *m_effect ? std::string("EffectID:") + std::to_string((*m_effect)->m_nID) : std::string("nullptr effect");
-
-    return std::string("");
+    if (Holds<int32_t>()) { return std::to_string(Get<int32_t>()); }
+    else if (Holds<float>()) { return std::to_string(Get<float>()); }
+    else if (Holds<API::Types::ObjectID>()) { return Utils::ObjectIDToString(Get<API::Types::ObjectID>()); }
+    else if (Holds<std::string>()) { return Get<std::string>(); }
+    else if (Holds<NullArgument>()) { return "(null)"; }
+    else if (Holds<CGameEffect*>())
+    {
+        auto e = Get<CGameEffect*>();
+        return e ? std::string("EffectID:") + std::to_string(e->m_nID) : std::string("nullptr effect");
+    }
+    return "(unknown argument type)";
 }
 
 } // namespace NWNXLib

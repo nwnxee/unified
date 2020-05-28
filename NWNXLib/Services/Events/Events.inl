@@ -26,8 +26,7 @@ std::optional<T> Events::Pop(const std::string& pluginName, const std::string& e
             return std::optional<T>();
         }
 
-        std::optional<T>& data = event->m_returns.top().Get<T>();
-        if (!data)
+        if (!event->m_returns.top().Holds<T>())
         {
             LOG_ERROR("Plugin '%s', event '%s': Type mismatch in return values",
                 pluginName, eventName);
@@ -38,7 +37,7 @@ std::optional<T> Events::Pop(const std::string& pluginName, const std::string& e
                 event->m_returns.top(), eventName, pluginName);
 
             // I'm probably using all these moves wrong..
-            T real = std::move(*data);
+            T real{event->m_returns.top().Get<T>()};
             event->m_returns.pop();
             return std::make_optional<T>(std::move(real));
         }
@@ -78,15 +77,12 @@ T Events::ExtractArgument(ArgumentStack& arguments)
         throw std::runtime_error("Tried to extract an argument from an empty argument stack.");
     }
 
-    std::optional<T>& data = arguments.top().Get<T>();
-
-    if (!data)
+    if (!arguments.top().Holds<T>())
     {
         throw std::runtime_error("Failed to match pushed argument to the provided type.");
     }
 
-    T real = std::move(data.value());
+    T real{arguments.top().Get<T>()};
     arguments.pop();
-
     return real;
 }
