@@ -2,8 +2,6 @@ namespace NWN
 {
     public partial class NWScript
     {
-        public static uint OBJECT_SELF => Internal.OBJECT_SELF;
-        
         /// <summary>
         /// Assign aActionToAssign to oActionSubject.
         /// * No return value, but if an error occurs, the log file will contain
@@ -12,7 +10,7 @@ namespace NWN
         /// </summary>
         public static void AssignCommand(uint oActionSubject, ActionDelegate aActionToAssign)
         {
-            Internal.ClosureAssignCommand(oActionSubject, aActionToAssign);
+            Internal.ManagedFunctions.ClosureAssignCommand(oActionSubject, aActionToAssign);
         }
 
         /// <summary>
@@ -27,7 +25,7 @@ namespace NWN
         /// </summary>
         public static void DelayCommand(float fSeconds, ActionDelegate aActionToDelay)
         {
-            Internal.ClosureDelayCommand(Internal.OBJECT_SELF, fSeconds, aActionToDelay);
+            Internal.ManagedFunctions.ClosureDelayCommand(Internal.ObjectSelf(), fSeconds, aActionToDelay);
         }
 
         /// <summary>
@@ -35,7 +33,7 @@ namespace NWN
         /// </summary>
         public static void ActionDoCommand(ActionDelegate aActionToDo)
         {
-            Internal.ClosureActionDoCommand(Internal.OBJECT_SELF, aActionToDo);
+            Internal.ManagedFunctions.ClosureActionDoCommand(Internal.ObjectSelf(), aActionToDo);
         }
 
         /// <summary>
@@ -423,15 +421,15 @@ namespace NWN
         ///  - nInventorySlot: INVENTORY_SLOT_*
         ///  * No return value, but if an error occurs the log file will contain
         ///    "ActionEquipItem failed."
-        /// 
-        ///  Note: 
-        ///        If the creature already has an item equipped in the slot specified, it will be 
+        ///
+        ///  Note:
+        ///        If the creature already has an item equipped in the slot specified, it will be
         ///        unequipped automatically by the call to ActionEquipItem.
-        ///      
+        ///
         ///        In order for ActionEquipItem to succeed the creature must be able to equip the
         ///        item oItem normally. This means that:
         ///        1) The item is in the creature's inventory.
-        ///        2) The item must already be identified (if magical). 
+        ///        2) The item must already be identified (if magical).
         ///        3) The creature has the level required to equip the item (if magical and ILR is on).
         ///        4) The creature possesses the required feats to equip the item (such as weapon proficiencies).
         /// </summary>
@@ -876,7 +874,7 @@ namespace NWN
 
         /// <summary>
         ///  Find the position of sSubstring inside sString
-        ///  - nStart: The character position to start searching at (from the left end of the string). 
+        ///  - nStart: The character position to start searching at (from the left end of the string).
         ///  * Return value on error: -1
         /// </summary>
         public static int FindSubString(string sString, string sSubString, int nStart = 0)
@@ -1503,7 +1501,7 @@ namespace NWN
         ///           SAVING_THROW_ALL
         ///           SAVING_THROW_FORT
         ///           SAVING_THROW_REFLEX
-        ///           SAVING_THROW_WILL 
+        ///           SAVING_THROW_WILL
         ///  - nValue: size of the Saving Throw increase
         ///  - nSaveType: SAVING_THROW_TYPE_* (e.g. SAVING_THROW_TYPE_ACID )
         /// </summary>
@@ -1736,10 +1734,10 @@ namespace NWN
         ///     EventActivateItem() - This creates an OnActivateItem module event. The script for handling
         ///                           this event can be set in Module Properties on the Event Tab.
         ///     EventConversation() - This creates on OnConversation creature event. The script for handling
-        ///                           this event can be set by viewing the Creature Properties on a 
+        ///                           this event can be set by viewing the Creature Properties on a
         ///                           creature and then clicking on the Scripts Tab.
         ///     EventSpellCastAt()  - This creates an OnSpellCastAt event. The script for handling this
-        ///                           event can be set in the Scripts Tab of the Properties menu 
+        ///                           event can be set in the Scripts Tab of the Properties menu
         ///                           for the object.
         ///     EventUserDefined()  - This creates on OnUserDefined event. The script for handling this event
         ///                           can be set in the Scripts Tab of the Properties menu for the object/area/module.
@@ -1759,7 +1757,7 @@ namespace NWN
         ///      SignalEvent(oObject, EventUserDefined(9999));
         ///  Once the event has been signaled. The script associated with the OnUserDefined event will
         ///  run on the object oObject.
-        /// 
+        ///
         ///  To specify the OnUserDefined script that should run, view the object's Properties
         ///  and click on the Scripts Tab. Then specify a script for the OnUserDefined event.
         ///  From inside the OnUserDefined script call:
@@ -2493,7 +2491,7 @@ namespace NWN
         ///  Note: Not all creatures will be able to sit and not all
         ///        objects can be sat on.
         ///        The object oChair must also be marked as usable in the toolset.
-        /// 
+        ///
         ///  For Example: To get a player to sit in oChair when they click on it,
         ///  place the following script in the OnUsed event for the object oChair.
         ///  void main()
@@ -2542,12 +2540,12 @@ namespace NWN
 
         /// <summary>
         ///  Get the destination object for the given object.
-        /// 
+        ///
         ///  All objects can hold a transition target, but only Doors and Triggers
         ///  will be made clickable by the game engine (This may change in the
         ///  future). You can set and query transition targets on other objects for
         ///  your own scripted purposes.
-        /// 
+        ///
         ///  * Returns OBJECT_INVALID if oTransition does not hold a target.
         /// </summary>
         public static uint GetTransitionTarget(uint oTransition)
@@ -2611,7 +2609,7 @@ namespace NWN
         ///           then if nShift is 15, the law/chaos value will become 50 and the
         ///           good/evil value will become 55
         ///  - nShift: this is the desired shift in alignment
-        ///  - bAllPartyMembers: when TRUE the alignment shift of oSubject also has a 
+        ///  - bAllPartyMembers: when TRUE the alignment shift of oSubject also has a
         ///                      diminished affect all members of oSubject's party (if oSubject is a Player).
         ///                      When FALSE the shift only affects oSubject.
         ///  * No return value
@@ -2733,7 +2731,7 @@ namespace NWN
         ///        as oSourceFactionMember in the following call will fail:
         ///        AdjustReputation(oNPC,oPC,-100);
         ///        Instead you should pass in the PC object as the first
-        ///        parameter as in the following call which should succeed: 
+        ///        parameter as in the following call which should succeed:
         ///        AdjustReputation(oPC,oNPC,-100);
         ///  Note: Will fail if oSourceFactionMember is a plot object.
         /// </summary>
@@ -3186,8 +3184,8 @@ namespace NWN
         ///  This function doesn't cast the spell specified, it only creates an event so that
         ///  when the event is signaled on an object, the object will use its OnSpellCastAt script
         ///  to react to the spell being cast.
-        /// 
-        ///  To specify the OnSpellCastAt script that should run, view the Object's Properties 
+        ///
+        ///  To specify the OnSpellCastAt script that should run, view the Object's Properties
         ///  and click on the Scripts Tab. Then specify a script for the OnSpellCastAt event.
         ///  From inside the OnSpellCastAt script call:
         ///      GetLastSpellCaster() to get the object that cast the spell (oCaster).
@@ -3287,7 +3285,7 @@ namespace NWN
 
         /// <summary>
         ///  Set the name of oObject.
-        /// 
+        ///
         ///  - oObject: the object for which you are changing the name (area, creature, placeable, item, or door).
         ///  - sNewName: the new name that the object will use.
         ///  Note: SetName() does not work on player objects.
@@ -3761,7 +3759,7 @@ namespace NWN
         ///      SignalEvent(oCreature, EventConversation());
         ///  Once the event has been signaled. The script associated with the OnConversation event will
         ///  run on the creature oCreature.
-        /// 
+        ///
         ///  To specify the OnConversation script that should run, view the Creature Properties on
         ///  the creature and click on the Scripts Tab. Then specify a script for the OnConversation event.
         /// </summary>
@@ -4638,8 +4636,8 @@ namespace NWN
 
         /// <summary>
         ///  Get the public part of the CD Key that oPlayer used when logging in.
-        ///  - nSinglePlayerCDKey: If set to TRUE, the player's public CD Key will 
-        ///    be returned when the player is playing in single player mode 
+        ///  - nSinglePlayerCDKey: If set to TRUE, the player's public CD Key will
+        ///    be returned when the player is playing in single player mode
         ///    (otherwise returns an empty string in single player mode).
         /// </summary>
         public static string GetPCPublicCDKey(uint oPlayer, int nSinglePlayerCDKey = FALSE)
@@ -5602,7 +5600,7 @@ namespace NWN
         ///           SAVING_THROW_ALL
         ///           SAVING_THROW_FORT
         ///           SAVING_THROW_REFLEX
-        ///           SAVING_THROW_WILL 
+        ///           SAVING_THROW_WILL
         ///  - nValue: size of the Saving Throw decrease
         ///  - nSaveType: SAVING_THROW_TYPE_* (e.g. SAVING_THROW_TYPE_ACID )
         /// </summary>
@@ -7150,12 +7148,12 @@ namespace NWN
 
         /// <summary>
         ///  SpawnScriptDebugger() will cause the script debugger to be executed
-        ///  after this command is executed!  
+        ///  after this command is executed!
         ///  In order to compile the script for debugging go to Tools->Options->Script Editor
         ///  and check the box labeled "Generate Debug Information When Compiling Scripts"
         ///  After you have checked the above box, recompile the script that you want to debug.
         ///  If the script file isn't compiled for debugging, this command will do nothing.
-        ///  Remove any SpawnScriptDebugger() calls once you have finished 
+        ///  Remove any SpawnScriptDebugger() calls once you have finished
         ///  debugging the script.
         /// </summary>
         public static void SpawnScriptDebugger()
@@ -7842,7 +7840,7 @@ namespace NWN
         ///        not work.
         ///  NOTE: Even if spells have multiple versions of different levels they are only
         ///        listed below once.
-        /// 
+        ///
         ///  WANDS:
         ///           Acid_Splash
         ///           Activate_Item
@@ -8034,7 +8032,7 @@ namespace NWN
         ///           Wall_of_Fire
         ///           Web
         ///           Wounding_Whispers
-        /// 
+        ///
         ///  POTIONS:
         ///           Activate_Item
         ///           Aid
@@ -8207,14 +8205,14 @@ namespace NWN
         ///           Unique_Power
         ///           Unique_Power_Self_Only
         ///           Virtue
-        /// 
+        ///
         ///  GENERAL USE (ie. everything else):
         ///           Just about every spell is useable by all the general use items so instead we
         ///           will only list the ones that are not allowed:
         ///           Special_Alcohol_Beer
         ///           Special_Alcohol_Spirits
         ///           Special_Alcohol_Wine
-        /// 
+        ///
         /// </summary>
         public static NWN.ItemProperty ItemPropertyCastSpell(int nSpell, int nNumUses)
         {
@@ -9488,16 +9486,16 @@ namespace NWN
         ///  ITEM_APPR_TYPE_WEAPON_MODEL      ITEM_APPR_WEAPON_MODEL_*            Model #
         ///  ITEM_APPR_TYPE_ARMOR_MODEL       ITEM_APPR_ARMOR_MODEL_*             Model #
         ///  ITEM_APPR_TYPE_ARMOR_COLOR       ITEM_APPR_ARMOR_COLOR_* [0]         0-175 [1]
-        /// 
+        ///
         ///  [0] Alternatively, where ITEM_APPR_TYPE_ARMOR_COLOR is specified, if per-part coloring is
         ///  desired, the following equation can be used for nIndex to achieve that:
-        /// 
+        ///
         ///    ITEM_APPR_ARMOR_NUM_COLORS + (ITEM_APPR_ARMOR_MODEL_ * ITEM_APPR_ARMOR_NUM_COLORS) + ITEM_APPR_ARMOR_COLOR_
-        /// 
+        ///
         ///  For example, to change the CLOTH1 channel of the torso, nIndex would be:
-        /// 
+        ///
         ///    6 + (7 * 6) + 2 = 50
-        /// 
+        ///
         ///  [1] When specifying per-part coloring, the value 255 is allowed and corresponds with the logical
         ///  function 'clear colour override', which clears the per-part override for that part.
         /// </summary>
@@ -9734,7 +9732,7 @@ namespace NWN
         /// <summary>
         ///  Returns whether or not there is a direct line of sight
         ///  between the two objects. (Not blocked by any geometry).
-        /// 
+        ///
         ///  PLEASE NOTE: This is an expensive function and may
         ///               degrade performance if used frequently.
         /// </summary>
@@ -9749,10 +9747,10 @@ namespace NWN
         /// <summary>
         ///  Returns whether or not there is a direct line of sight
         ///  between the two vectors. (Not blocked by any geometry).
-        /// 
+        ///
         ///  This function must be run on a valid object in the area
         ///  it will not work on the module or area.
-        /// 
+        ///
         ///  PLEASE NOTE: This is an expensive function and may
         ///               degrade performance if used frequently.
         /// </summary>
@@ -10103,7 +10101,7 @@ namespace NWN
 
         /// <summary>
         ///  Gets the fog color in the area specified.
-        ///  nFogType specifies wether the Sun, or Moon fog type is returned. 
+        ///  nFogType specifies wether the Sun, or Moon fog type is returned.
         ///     Valid values for nFogType are FOG_TYPE_SUN or FOG_TYPE_MOON.
         ///  If no valid area (or object) is specified, it uses the area of caller.
         ///  If an object other than an area is specified, will use the area that the object is currently in.
@@ -10133,7 +10131,7 @@ namespace NWN
 
         /// <summary>
         ///  Gets the fog amount in the area specified.
-        ///  nFogType = nFogType specifies wether the Sun, or Moon fog type is returned. 
+        ///  nFogType = nFogType specifies wether the Sun, or Moon fog type is returned.
         ///     Valid values for nFogType are FOG_TYPE_SUN or FOG_TYPE_MOON.
         ///  If no valid area (or object) is specified, it uses the area of caller.
         ///  If an object other than an area is specified, will use the area that the object is currently in.
@@ -10244,8 +10242,8 @@ namespace NWN
         ///       CREATURE_WING_TYPE_BUTTERFLY
         ///       CREATURE_WING_TYPE_BIRD
         ///  - oCreature: the creature to change the wing type for.
-        ///  Note: Only two creature model types will support wings. 
-        ///  The MODELTYPE for the part based (playable races) 'P' 
+        ///  Note: Only two creature model types will support wings.
+        ///  The MODELTYPE for the part based (playable races) 'P'
         ///  and MODELTYPE 'W'in the appearance.2da
         /// </summary>
         public static void SetCreatureWingType(int nWingType, uint oCreature = OBJECT_INVALID)
@@ -10261,12 +10259,12 @@ namespace NWN
         ///  armor (i.e. whether or not the creature is wearing armor does not affect
         ///  the return value).
         ///  Note: Only works on part based creatures, which is typically restricted to
-        ///  the playable races (unless some new part based custom content has been 
+        ///  the playable races (unless some new part based custom content has been
         ///  added to the module).
-        /// 
+        ///
         ///  returns CREATURE_PART_INVALID if used on a non-creature object,
         ///  or if the creature does not use a part based model.
-        /// 
+        ///
         ///  - nPart (CREATURE_PART_*)
         ///       CREATURE_PART_RIGHT_FOOT
         ///       CREATURE_PART_LEFT_FOOT
@@ -10300,7 +10298,7 @@ namespace NWN
         ///  Sets the body part model to be used on the creature specified.
         ///  The model names for parts need to be in the following format:
         ///    p<m/f><race letter><phenotype>_<body part><model number>.mdl
-        /// 
+        ///
         ///  - nPart (CREATURE_PART_*)
         ///       CREATURE_PART_RIGHT_FOOT
         ///       CREATURE_PART_LEFT_FOOT
@@ -10327,7 +10325,7 @@ namespace NWN
         ///       CREATURE_MODEL_TYPE_TATTOO (for body parts that support tattoos, i.e. not heads/feet/hands).
         ///       CREATURE_MODEL_TYPE_UNDEAD (undead model only exists for the right arm parts).
         ///  - oCreature: the creature to change the body part for.
-        ///  Note: Only part based creature appearance types are supported. 
+        ///  Note: Only part based creature appearance types are supported.
         ///  i.e. The model types for the playable races ('P') in the appearance.2da
         /// </summary>
         public static void SetCreatureBodyPart(int nPart, int nModelNumber, uint oCreature = OBJECT_INVALID)
@@ -10363,8 +10361,8 @@ namespace NWN
         ///       CREATURE_TAIL_TYPE_BONE
         ///       CREATURE_TAIL_TYPE_DEVIL
         ///  - oCreature: the creature to change the Tail type for.
-        ///  Note: Only two creature model types will support Tails. 
-        ///  The MODELTYPE for the part based (playable) races 'P' 
+        ///  Note: Only two creature model types will support Tails.
+        ///  The MODELTYPE for the part based (playable) races 'P'
         ///  and MODELTYPE 'T'in the appearance.2da
         /// </summary>
         public static void SetCreatureTailType(int nTailType, uint oCreature = OBJECT_INVALID)
@@ -10760,7 +10758,7 @@ namespace NWN
         /// <summary>
         ///  Locks the player's camera pitch to its current pitch setting,
         ///  or unlocks the player's camera pitch.
-        ///  Stops the player from tilting their camera angle. 
+        ///  Stops the player from tilting their camera angle.
         ///  - oPlayer: A player object.
         ///  - bLocked: TRUE/FALSE.
         /// </summary>
@@ -10895,7 +10893,7 @@ namespace NWN
         /// <summary>
         ///  Change the portrait of oTarget to use the Portrait Id specified.
         ///  - oTarget: the object for which you are changing the portrait.
-        ///  - nPortraitId: The Id of the new portrait to use. 
+        ///  - nPortraitId: The Id of the new portrait to use.
         ///                 nPortraitId refers to a row in the Portraits.2da
         ///  Note: Not all portrait Ids are suitable for use with all object types.
         ///        Setting the portrait Id will also cause the portrait ResRef
@@ -10924,7 +10922,7 @@ namespace NWN
         /// <summary>
         ///  Change the portrait of oTarget to use the Portrait ResRef specified.
         ///  - oTarget: the object for which you are changing the portrait.
-        ///  - sPortraitResRef: The ResRef of the new portrait to use. 
+        ///  - sPortraitResRef: The ResRef of the new portrait to use.
         ///                     The ResRef should not include any trailing size letter ( e.g. po_el_f_09_ ).
         ///  Note: Not all portrait ResRefs are suitable for use with all object types.
         ///        Setting the portrait ResRef will also cause the portrait Id
@@ -10950,7 +10948,7 @@ namespace NWN
 
         /// <summary>
         ///  Get the description of oObject.
-        ///  - oObject: the object from which you are obtaining the description. 
+        ///  - oObject: the object from which you are obtaining the description.
         ///             Can be a creature, item, placeable, door, trigger or module object.
         ///  - bOriginalDescription:  if set to true any new description specified via a SetDescription scripting command
         ///                    is ignored and the original object's description is returned instead.
@@ -10969,7 +10967,7 @@ namespace NWN
 
         /// <summary>
         ///  Set the description of oObject.
-        ///  - oObject: the object for which you are changing the description 
+        ///  - oObject: the object for which you are changing the description
         ///             Can be a creature, placeable, item, door, or trigger.
         ///  - sNewDescription: the new description that the object will use.
         ///  - bIdentified: If oObject is an item, setting this to TRUE will set the identified description,
@@ -11034,7 +11032,7 @@ namespace NWN
         ///  Set the last player chat(text) message before it gets sent to other players.
         ///  - sNewChatMessage: The new chat text to be sent onto other players.
         ///                     Setting the player chat message to an empty string "",
-        ///                     will cause the chat message to be discarded 
+        ///                     will cause the chat message to be discarded
         ///                     (i.e. it will not be sent to other players).
         ///  Note: The new chat message gets sent after the OnPlayerChat script exits.
         /// </summary>
@@ -11063,7 +11061,7 @@ namespace NWN
 
         /// <summary>
         ///  Get the Color of oObject from the color channel specified.
-        ///  - oObject: the object from which you are obtaining the color. 
+        ///  - oObject: the object from which you are obtaining the color.
         ///             Can be a creature that has color information (i.e. the playable races).
         ///  - nColorChannel: The color channel that you want to get the color value of.
         ///                    COLOR_CHANNEL_SKIN
@@ -11140,7 +11138,7 @@ namespace NWN
         /// <summary>
         ///  Sets a new tag for oObject.
         ///  Will do nothing for invalid objects or the module object.
-        /// 
+        ///
         ///  Note: Care needs to be taken with this function.
         ///        Changing the tag for creature with waypoints will make them stop walking them.
         ///        Changing waypoint, door or trigger tags will break their area transitions.
@@ -11259,9 +11257,9 @@ namespace NWN
         ///  Will optionally set a new area tag and displayed name. The new area is accessible
         ///  immediately, but initialisation scripts for the area and all contained creatures will only
         ///  run after the current script finishes (so you can clean up objects before returning).
-        /// 
+        ///
         ///  Returns the new area, or OBJECT_INVALID on failure.
-        /// 
+        ///
         ///  Note: When spawning a second instance of a existing area, you will have to manually
         ///        adjust all transitions (doors, triggers) with the relevant script commands,
         ///        or players might end up in the wrong area.
@@ -11277,7 +11275,7 @@ namespace NWN
 
         /// <summary>
         ///  Destroys the given area object and everything in it.
-        /// 
+        ///
         ///  Return values:
         ///     0: Object not an area or invalid.
         ///    -1: Area contains spawn location and removal would leave module without entrypoint.
@@ -11293,9 +11291,9 @@ namespace NWN
 
         /// <summary>
         ///  Creates a copy of a existing area, including everything inside of it (except players).
-        /// 
+        ///
         ///  Returns the new area, or OBJECT_INVALID on error.
-        /// 
+        ///
         ///  Note: You will have to manually adjust all transitions (doors, triggers) with the
         ///        relevant script commands, or players might end up in the wrong area.
         /// </summary>
@@ -11327,7 +11325,7 @@ namespace NWN
 
         /// <summary>
         ///  Sets the transition target for oTransition.
-        /// 
+        ///
         ///  Notes:
         ///  - oTransition can be any valid game object, except areas.
         ///  - oTarget can be any valid game object with a location, or OBJECT_INVALID (to unlink).
@@ -11374,10 +11372,10 @@ namespace NWN
         /// <summary>
         ///  Sets if the given creature has explored tile at x, y of the given area.
         ///  Note that creature needs to be a player- or player-possessed creature.
-        /// 
+        ///
         ///  Keep in mind that tile exploration also controls object visibility in areas
         ///  and the fog of war for interior and underground areas.
-        /// 
+        ///
         ///  Return values:
         ///   -1: Area or creature invalid.
         ///    0: Tile was not explored before setting newState.
@@ -11398,10 +11396,10 @@ namespace NWN
         ///  Returns whether the given tile at x, y, for the given creature in the stated
         ///  area is visible on the map.
         ///  Note that creature needs to be a player- or player-possessed creature.
-        /// 
+        ///
         ///  Keep in mind that tile exploration also controls object visibility in areas
         ///  and the fog of war for interior and underground areas.
-        /// 
+        ///
         ///  Return values:
         ///   -1: Area or creature invalid.
         ///    0: Tile is not explored yet.
@@ -11419,13 +11417,13 @@ namespace NWN
 
         /// <summary>
         ///  Sets the creature to auto-explore the map as it walks around.
-        /// 
+        ///
         ///  Keep in mind that tile exploration also controls object visibility in areas
         ///  and the fog of war for interior and underground areas.
-        /// 
+        ///
         ///  This means that if you turn off auto exploration, it falls to you to manage this
         ///  through SetTileExplored(); otherwise, the player will not be able to see anything.
-        /// 
+        ///
         ///  Valid arguments: TRUE and FALSE.
         ///  Does nothing for non-creatures.
         ///  Returns the previous state (or -1 if non-creature).

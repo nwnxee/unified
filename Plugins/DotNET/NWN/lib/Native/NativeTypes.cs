@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using System.Security;
-using System.Diagnostics;
+
 namespace NWN
 {
     [StructLayout(LayoutKind.Sequential)]
@@ -19,35 +18,35 @@ namespace NWN
         }
     }
 
-    public partial class Effect
+    public class Effect
     {
         public IntPtr Handle;
         public Effect(IntPtr handle) { Handle = handle; }
         ~Effect() { Internal.NativeFunctions.FreeEffect(Handle); }
     }
 
-    public partial class Event
+    public class Event
     {
         public IntPtr Handle;
         public Event(IntPtr handle) { Handle = handle; }
         ~Event() { Internal.NativeFunctions.FreeEvent(Handle); }
     }
 
-    public partial class Location
+    public class Location
     {
         public IntPtr Handle;
         public Location(IntPtr handle) { Handle = handle; }
         ~Location() { Internal.NativeFunctions.FreeLocation(Handle); }
     }
 
-    public partial class Talent
+    public class Talent
     {
         public IntPtr Handle;
         public Talent(IntPtr handle) { Handle = handle; }
         ~Talent() { Internal.NativeFunctions.FreeTalent(Handle); }
     }
 
-    public partial class ItemProperty
+    public class ItemProperty
     {
         public IntPtr Handle;
         public ItemProperty(IntPtr handle) { Handle = handle; }
@@ -55,6 +54,4 @@ namespace NWN
     }
 
     public delegate void ActionDelegate();
-
-
 }

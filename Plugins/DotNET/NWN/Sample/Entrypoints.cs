@@ -1,4 +1,5 @@
 using System;
+
 namespace NWN
 {
     public class Entrypoints
@@ -26,7 +27,6 @@ namespace NWN
         public static int OnRunScript(string script, uint oidSelf)
         {
             Console.WriteLine($"Runscript '{script}' on oid {oidSelf}");
-
             return SCRIPT_NOT_HANDLED; // passthrough
         }
 
