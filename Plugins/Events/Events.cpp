@@ -140,14 +140,14 @@ Events::~Events()
 {
 }
 
-void Events::PushEventData(const std::string tag, const std::string data)
+void Events::PushEventData(const std::string& tag, const std::string& data)
 {
     LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag, data);
     g_plugin->CreateNewEventDataIfNeeded();
-    g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
+    g_plugin->m_eventData.top().m_EventDataMap[tag] = data;
 }
 
-std::string Events::GetEventData(const std::string tag)
+std::string Events::GetEventData(const std::string& tag)
 {
     std::string retVal;
     if (g_plugin->m_eventDepth == 0 || g_plugin->m_eventData.empty())
