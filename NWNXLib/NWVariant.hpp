@@ -4,6 +4,7 @@
 #include "API/API/CGameEffect.hpp"
 
 #include <stack>
+#include <stdexcept>
 #include <variant>
 
 namespace NWNXLib
@@ -67,7 +68,55 @@ struct NWVariant
     std::string toString() const;
 };
 
-using NWVariantStack = std::stack<NWVariant>;
+struct NWVariantStack
+{
+    using Stack = std::deque<NWVariant>;
+    Stack m_stack;
+
+    NWVariantStack() = default;
+
+    template <typename... Ts>
+    NWVariantStack(Ts&&... args)
+    {
+        push(std::forward<Ts>(args)...);
+    }
+
+    NWVariantStack(const NWVariantStack&) = default;
+    NWVariantStack(NWVariantStack&&) = default;
+    NWVariantStack& operator=(const NWVariantStack&) = default;
+    NWVariantStack& operator=(NWVariantStack&&) = default;
+
+    bool empty() { return m_stack.empty(); }
+
+    template <typename T>
+    T extract()
+    {
+        if (empty())
+            throw std::runtime_error("Tried to extract an argument from an empty argument stack.");
+        if (!top().Holds<T>())
+            throw std::runtime_error("Failed to match pushed argument to the provided type.");
+
+        T real = std::move(top().Get<T>());
+        pop();
+        return real;
+    }
+
+    template <typename... Ts>
+    std::tuple<Ts...> extract_n() { return {extract<Ts>()...}; }
+
+    template <typename... Ts>
+    void push(Ts&&... arg)
+    {
+        static_assert(sizeof...(Ts) > 0, "You must insert at least one argument.");
+        (..., m_stack.emplace_back(std::forward<Ts>(arg)));
+    }
+
+    void pop() { m_stack.pop_back(); }
+
+    Stack::size_type size() { return m_stack.size(); };
+
+    NWVariant& top() { return m_stack.back(); }
+};
 
 } // namespace NWNXLib
 
