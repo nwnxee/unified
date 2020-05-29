@@ -39,8 +39,7 @@ NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
                     "orth",
                     "plenarius@gmail.com",
                     1,
-                    true,
-                    0
+                    true
             };
 }
 

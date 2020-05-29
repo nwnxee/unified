@@ -56,7 +56,7 @@ Plugins::RegistrationToken Plugins::LoadPlugin(const std::string& path, Plugin::
     // We capture a unique_ptr right away to avoid leak if the exception occurs.
     auto info = std::unique_ptr<Plugin::Info>(pluginInfoFuncPtr());
 
-    if (info->m_targetVersion != NWNX_TARGET_NWN_BUILD)
+    if (info->s_targetBuild != NWNX_TARGET_NWN_BUILD || info->s_targetBuildRevision != NWNX_TARGET_NWN_BUILD_REVISION)
     {
         throw std::runtime_error("Plugin version mismatch -- has the server updated?");
     }
