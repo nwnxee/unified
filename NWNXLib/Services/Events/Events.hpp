@@ -2,7 +2,7 @@
 
 #include "API/Types.hpp"
 #include "API/CGameEffect.hpp"
-#include "NWVariant.hpp"
+#include "ScriptVariant.hpp"
 #include "Services/Services.hpp"
 
 #include <cstdint>
@@ -21,9 +21,9 @@ namespace Services {
 class Events
 {
 public: // Structures
-    // Defined in NWVariant.hpp
-    using Argument = NWVariant;
-    using ArgumentStack = NWVariantStack;
+    // Defined in ScriptVariant.hpp
+    using Argument = ScriptVariant;
+    using ArgumentStack = ScriptVariantStack;
 
     using FunctionCallback = std::function<ArgumentStack(ArgumentStack&& in)>;
 

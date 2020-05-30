@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Utils.hpp"
 #include "API/Types.hpp"
 #include "API/API/CGameEffect.hpp"
 
-#include <stack>
+#include <deque>
 #include <stdexcept>
 #include <variant>
 
@@ -30,21 +31,21 @@ constexpr bool is_argument_type()
 
 } // namespace detail
 
-struct NWVariant
+struct ScriptVariant
 {
     using Variant = std::variant<NullArgument, int32_t, float, API::Types::ObjectID, std::string, CGameEffect*, UserDefined>;
     Variant m_data;
 
     // Constructors
-    NWVariant() : m_data(NullArgument()) {}
+    ScriptVariant() : m_data(NullArgument()) {}
 
     template <typename T>
-    NWVariant(T v) : m_data{std::move(v)} {}
+    ScriptVariant(T v) : m_data{std::move(v)} {}
 
-    NWVariant(NWVariant&&) = default;
-    NWVariant(const NWVariant&) = default;
-    NWVariant& operator=(const NWVariant&) = default;
-    NWVariant& operator=(NWVariant&&) = default;
+    ScriptVariant(ScriptVariant&&) = default;
+    ScriptVariant(const ScriptVariant&) = default;
+    ScriptVariant& operator=(const ScriptVariant&) = default;
+    ScriptVariant& operator=(ScriptVariant&&) = default;
 
     template <typename T>
     bool Holds() const
@@ -56,7 +57,7 @@ struct NWVariant
     operator bool() const { return !Holds<NullArgument>(); }
 
     template <typename T>
-    T& Get() { return const_cast<T&>(const_cast<const NWVariant*>(this)->Get<T>()); };
+    T& Get() { return const_cast<T&>(const_cast<const ScriptVariant*>(this)->Get<T>()); };
 
     template <typename T>
     const T& Get() const
@@ -65,26 +66,40 @@ struct NWVariant
         return std::get<T>(m_data);
     }
 
-    std::string toString() const;
+    std::string toString() const
+    {
+        if (Holds<int32_t>()) { return std::to_string(Get<int32_t>()); }
+        else if (Holds<float>()) { return std::to_string(Get<float>()); }
+        else if (Holds<API::Types::ObjectID>()) { return Utils::ObjectIDToString(Get<API::Types::ObjectID>()); }
+        else if (Holds<std::string>()) { return Get<std::string>(); }
+        else if (Holds<NullArgument>()) { return "(null)"; }
+        else if (Holds<CGameEffect*>())
+        {
+            auto e = Get<CGameEffect*>();
+            return e ? std::string("EffectID:") + std::to_string(e->m_nID) : std::string("nullptr effect");
+        }
+        return "(unknown argument type)";
+    }
+
 };
 
-struct NWVariantStack
+struct ScriptVariantStack
 {
-    using Stack = std::deque<NWVariant>;
+    using Stack = std::deque<ScriptVariant>;
     Stack m_stack;
 
-    NWVariantStack() = default;
+    ScriptVariantStack() = default;
 
     template <typename... Ts>
-    NWVariantStack(Ts&&... args)
+    ScriptVariantStack(Ts&&... args)
     {
         push(std::forward<Ts>(args)...);
     }
 
-    NWVariantStack(const NWVariantStack&) = default;
-    NWVariantStack(NWVariantStack&&) = default;
-    NWVariantStack& operator=(const NWVariantStack&) = default;
-    NWVariantStack& operator=(NWVariantStack&&) = default;
+    ScriptVariantStack(const ScriptVariantStack&) = default;
+    ScriptVariantStack(ScriptVariantStack&&) = default;
+    ScriptVariantStack& operator=(const ScriptVariantStack&) = default;
+    ScriptVariantStack& operator=(ScriptVariantStack&&) = default;
 
     bool empty() { return m_stack.empty(); }
 
@@ -115,9 +130,13 @@ struct NWVariantStack
 
     Stack::size_type size() { return m_stack.size(); };
 
-    NWVariant& top() { return m_stack.back(); }
+    ScriptVariant& top() { return m_stack.back(); }
 };
 
 } // namespace NWNXLib
 
-std::ostream& operator<<(std::ostream& os, const NWNXLib::NWVariant& arg);
+inline std::ostream& operator<<(std::ostream& os, const NWNXLib::ScriptVariant& arg)
+{
+    os << arg.toString();
+    return os;
+}
