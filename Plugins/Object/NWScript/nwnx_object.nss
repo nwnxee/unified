@@ -101,16 +101,16 @@ string NWNX_Object_GetDialogResref(object obj);
 /// @param dialog The name of the dialog resref.
 void NWNX_Object_SetDialogResref(object obj, string dialog);
 
-/// @brief Set an object's appearance.
+/// @brief Set oPlaceable's appearance.
 /// @note Will not update for PCs until they re-enter the area.
-/// @param obj The object.
-/// @param app The appearance id.
-void NWNX_Object_SetAppearance(object obj, int app);
+/// @param oPlaceable The placeable.
+/// @param nAppearance The appearance id.
+void NWNX_Object_SetAppearance(object oPlaceable, int nAppearance);
 
-/// @brief Get an object's appearance.
-/// @param obj The object.
+/// @brief Get oPlaceable's appearance.
+/// @param oPlaceable The placeable.
 /// @return The appearance id.
-int NWNX_Object_GetAppearance(object obj);
+int NWNX_Object_GetAppearance(object oPlaceable);
 
 /// @brief Determine if an object has a visual effect.
 /// @param obj The object.
@@ -355,6 +355,11 @@ string NWNX_Object_PeekUUID(object oObject);
 /// @return TRUE if oDoor has a visible model
 int NWNX_Object_GetDoorHasVisibleModel(object oDoor);
 
+/// @brief Get if oObject is destroyable.
+/// @param oObject The object
+/// @return TRUE if oObject is destroyable.
+int NWNX_Object_GetIsDestroyable(object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -462,23 +467,23 @@ void NWNX_Object_SetDialogResref(object obj, string dialog)
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetAppearance(object obj, int app)
+void NWNX_Object_SetAppearance(object oPlaceable, int nAppearance)
 {
     string sFunc = "SetAppearance";
 
-    NWNX_PushArgumentInt(NWNX_Object, sFunc, app);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nAppearance);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oPlaceable);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-int NWNX_Object_GetAppearance(object obj)
+int NWNX_Object_GetAppearance(object oPlaceable)
 {
     string sFunc = "GetAppearance";
 
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
-
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oPlaceable);
     NWNX_CallFunction(NWNX_Object, sFunc);
+
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
@@ -848,6 +853,16 @@ int NWNX_Object_GetDoorHasVisibleModel(object oDoor)
     string sFunc = "GetDoorHasVisibleModel";
 
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oDoor);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetIsDestroyable(object oObject)
+{
+    string sFunc = "GetIsDestroyable";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);

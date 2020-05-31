@@ -15,6 +15,7 @@ N/A
 
 ##### New NWScript Functions
 - Object: GetDoorHasVisibleModel()
+- Object: GetIsDestroyable()
 
 ### Changed
 N/A

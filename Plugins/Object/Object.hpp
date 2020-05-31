@@ -58,6 +58,7 @@ private:
     ArgumentStack ClearSpellEffectsOnOthers (ArgumentStack&& args);
     ArgumentStack PeekUUID                  (ArgumentStack&& args);
     ArgumentStack GetDoorHasVisibleModel    (ArgumentStack&& args);
+    ArgumentStack GetIsDestroyable          (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };
