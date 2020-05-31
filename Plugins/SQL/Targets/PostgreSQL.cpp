@@ -98,6 +98,8 @@ bool PostgreSQL::PrepareQuery(const Query& query)
     LOG_DEBUG("Detected %d parameters.", m_paramCount);
 
     m_params.resize(m_paramCount);
+    m_formats.resize(m_paramCount);
+    m_lengths.resize(m_paramCount);
 
     PGresult *res = PQprepare(m_conn,      // connection
                         "",                // statement name, blank in this case.
