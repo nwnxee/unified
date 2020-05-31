@@ -156,29 +156,4 @@ void EventsProxy::ClearEvent(const std::string& eventName)
     m_proxyBase.ClearEvent(std::move(concreteToken));
 }
 
-
-
-template<> std::optional<int32_t>&              Events::Argument::Get<int32_t>()             { return m_int; }
-template<> std::optional<float>&                Events::Argument::Get<float>()               { return m_float; }
-template<> std::optional<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return m_object; }
-template<> std::optional<std::string>&          Events::Argument::Get<std::string>()         { return m_string; }
-template<> std::optional<CGameEffect*>&         Events::Argument::Get<CGameEffect*>()        { return m_effect; }
-
-std::string Events::Argument::toString() const
-{
-    if (m_int)    return std::to_string(*m_int);
-    if (m_float)  return std::to_string(*m_float);
-    if (m_object) return Utils::ObjectIDToString(*m_object);
-    if (m_string) return *m_string;
-    if (m_effect) return *m_effect ? std::string("EffectID:") + std::to_string((*m_effect)->m_nID) : std::string("nullptr effect");
-
-    return std::string("");
-}
-
-}
-
-std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg)
-{
-    os << arg.toString();
-    return os;
 }
