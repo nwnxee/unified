@@ -11,7 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 - ServerLogRedirector: added environment variable `NWNX_SERVERLOGREDIRECTOR_HIDE_VALIDATEGFFRESOURCE_MESSAGES` to hide `*** ValidateGFFResource sent by user.` messages from the NWNX log.
 
 ##### New Plugins
-N/A
+- Test: A test runner for NWNX:EE test scriptss.
 
 ##### New NWScript Functions
 - Object: GetDoorHasVisibleModel()

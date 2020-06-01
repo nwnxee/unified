@@ -1,16 +1,13 @@
 #include "nwnx_player"
-#include "nwnx_tests"
+#include "nwnx_test"
 
 void main()
 {
-    WriteTimestampedLogEntry("NWNX_Player unit test begin..");
-
-    object oPC = GetFirstPC();
-    if (!GetIsObjectValid(oPC))
+    while(TEST("Player"))
     {
-        WriteTimestampedLogEntry("NWNX_Player test: No PC found");
-        return;
-    }
+        ASSERT(IS_TRUE(NWNX_Test_PluginExists("NWNX_Player")));
 
-    WriteTimestampedLogEntry("NWNX_Player unit test end.");
+        object oPC = GetFirstPC();
+        ASSERT(IS_VALID(oPC), "GetFirstPC()");
+    }
 }

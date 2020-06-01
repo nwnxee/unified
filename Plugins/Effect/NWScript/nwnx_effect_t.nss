@@ -1,7 +1,7 @@
 #include "nwnx_effect"
-#include "nwnx_tests"
+#include "nwnx_test"
 
-void printeff(struct NWNX_EffectUnpacked n)
+string EffectToString(struct NWNX_EffectUnpacked n)
 {
     string s = "Unpacked effect: \n";
     s += "nType = " + IntToString(n.nType) + "\n";
@@ -50,31 +50,31 @@ void printeff(struct NWNX_EffectUnpacked n)
 
     s += "sTag = " + "'" + n.sTag + "'" + "\n";
 
-    WriteTimestampedLogEntry(s);
+    return s;
 }
 
 void main()
 {
-    WriteTimestampedLogEntry("NWNX_Effect unit test begin..");
+    while(TEST("Effect"))
+    {
+        ASSERT(IS_TRUE(NWNX_Test_PluginExists("NWNX_Effect")));
+        effect eCurse = EffectCurse(1, 2, 3, 4, 5, 6);
+        effect eVis = EffectVisualEffect(VFX_DUR_PROT_STONESKIN);
+        effect e = EffectLinkEffects(eCurse, eVis);
+        e = TagEffect(e, "NWNX_EFFECT_TEST");
 
-    effect eCurse = EffectCurse(1, 2, 3, 4, 5, 6);
-    effect eVis = EffectVisualEffect(VFX_DUR_PROT_STONESKIN);
-    effect e = EffectLinkEffects(eCurse, eVis);
-    e = TagEffect(e, "NWNX_EFFECT_TEST");
+        struct NWNX_EffectUnpacked unpacked = NWNX_Effect_UnpackEffect(e);
+        NWNX_Test_Context(EffectToString(unpacked));
+        EXPECT(IS_EQUAL_STRING(unpacked.sTag, "NWNX_EFFECT_TEST"), "UnpackEffect")`;
 
-    struct NWNX_EffectUnpacked unpacked = NWNX_Effect_UnpackEffect(e);
-    printeff(unpacked);
-    NWNX_Tests_Report("NWNX_Effect", "UnpackEffect", unpacked.sTag == "NWNX_EFFECT_TEST");
+        effect packed = NWNX_Effect_PackEffect(unpacked);
+        EXPECT(IS_EQUAL_STRING(GetEffectTag(packed), "NWNX_EFFECT_TEST"), "PackEffect")`;
 
-    effect packed = NWNX_Effect_PackEffect(unpacked);
-    NWNX_Tests_Report("NWNX_Effect", "PackEffect", GetEffectTag(packed) == "NWNX_EFFECT_TEST");
+        object oCreature = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
+        ApplyEffectToObject(DURATION_TYPE_PERMANENT, packed, oCreature);
 
-    object oCreature = CreateObject(OBJECT_TYPE_CREATURE, "nw_chicken", GetStartingLocation());
-    ApplyEffectToObject(DURATION_TYPE_PERMANENT, packed, oCreature);
-
-    e = NWNX_Effect_SetEffectExpiredScript(EffectDarkness(), "effect_test");
-    unpacked = NWNX_Effect_UnpackEffect(e);
-    NWNX_Tests_Report("NWNX_Effect", "SetEffectExpiredScript", unpacked.sParam4 == "effect_test");
-
-    WriteTimestampedLogEntry("NWNX_Effect unit test end.");
+        e = NWNX_Effect_SetEffectExpiredScript(EffectDarkness(), "effect_test");
+        unpacked = NWNX_Effect_UnpackEffect(e);
+        EXPECT(IS_EQUAL_STRING(unpacked.sParam4, "effect_test"), "SetEffectExpiredScript")`;
+    }
 }

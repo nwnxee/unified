@@ -1,9 +1,9 @@
 #include "nwnx_itemprop"
-#include "nwnx_tests"
+#include "nwnx_test"
 
-void printip(struct NWNX_IPUnpacked n)
+string IPToString(struct NWNX_IPUnpacked n)
 {
-    string s = "Unpacked IP: \n";
+    string s = "Unpacked IP: ";
     s += "nProperty = " + IntToString(n.nProperty) + "\n";
     s += "nSubType = " + IntToString(n.nSubType) + "\n";
     s += "nCostTable = " + IntToString(n.nCostTable) + "\n";
@@ -15,28 +15,30 @@ void printip(struct NWNX_IPUnpacked n)
     s += "bUsable = " + IntToString(n.bUsable) + "\n";
     s += "nSpellId = " + IntToString(n.nSpellId) + "\n";
     s += "sTag = " + "'" + n.sTag + "'" + "\n";
-
-    WriteTimestampedLogEntry(s);
+    return s;
 }
 
 void main()
 {
-    WriteTimestampedLogEntry("NWNX_ItemProperty unit test begin..");
+    while(TEST("ItemProperty"))
+    {
+        ASSERT(IS_TRUE(NWNX_Test_PluginExists("NWNX_ItemProperty")));
 
-    itemproperty ip = ItemPropertyDamageBonusVsRace(1,2,3);
-    ip = TagItemProperty(ip, "NWNX_ItemProperty_TEST");
+        itemproperty ip = ItemPropertyDamageBonusVsRace(1,2,3);
+        ip = TagItemProperty(ip, "NWNX_ItemProperty_TEST");
+        struct NWNX_IPUnpacked unpacked = NWNX_ItemProperty_UnpackIP(ip);
 
-    struct NWNX_IPUnpacked unpacked = NWNX_ItemProperty_UnpackIP(ip);
-    printip(unpacked);
-    NWNX_Tests_Report("NWNX_ItemProperty", "UnpackIP", unpacked.sTag == "NWNX_ItemProperty_TEST");
+        if(!EXPECT(IS_EQUAL_STRING(unpacked.sTag, "NWNX_ItemProperty_TEST"), "UnpackIP"))
+        {
+            NWNX_Test_Context(IPToString(unpacked));
+        }
 
-    itemproperty ip2 = NWNX_ItemProperty_PackIP(unpacked);
-    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetIsItemPropertyValid(ip2));
-    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyTag(ip2) == "NWNX_ItemProperty_TEST");
-    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyCostTable(ip2) == unpacked.nCostTable);
-    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyCostTableValue(ip2) == unpacked.nCostTableValue);
-    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyParam1(ip2) == unpacked.nParam1);
-    NWNX_Tests_Report("NWNX_ItemProperty", "PackIP", GetItemPropertyParam1Value(ip2) == unpacked.nParam1Value);
-
-    WriteTimestampedLogEntry("NWNX_ItemProperty unit test end.");
+        itemproperty ip2 = NWNX_ItemProperty_PackIP(unpacked);
+        EXPECT(IS_TRUE(GetIsItemPropertyValid(ip2)), "PackIP");
+        EXPECT(IS_EQUAL_STRING(GetItemPropertyTag(ip2), "NWNX_ItemProperty_TEST"), "PackIP");
+        EXPECT(IS_EQUAL_INT(GetItemPropertyCostTable(ip2), unpacked.nCostTable), "PackIP");
+        EXPECT(IS_EQUAL_INT(GetItemPropertyCostTableValue(ip2), unpacked.nCostTableValue), "PackIP");
+        EXPECT(IS_EQUAL_INT(GetItemPropertyParam1(ip2), unpacked.nParam1), "PackIP");
+        EXPECT(IS_EQUAL_INT(GetItemPropertyParam1Value(ip2), unpacked.nParam1Value), "PackIP");
+    }
 }

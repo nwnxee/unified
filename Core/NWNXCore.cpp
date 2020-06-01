@@ -297,6 +297,10 @@ void NWNXCore::InitialSetupPlugins()
         {
             continue;
         }
+        else if (pluginNameWithoutExtension == "NWNX_Test" && !m_coreServices->m_config->Get<bool>("LOAD_TEST_PLUGIN", false))
+        {
+            continue;
+        }
 
         std::unique_ptr<Services::ProxyServiceList> services = ConstructProxyServices(pluginNameWithoutExtension);
 
