@@ -12,7 +12,6 @@ namespace NWNXLib
 {
 
 struct NullArgument {};
-using UserDefined = void*;
 
 namespace detail
 {
@@ -25,15 +24,14 @@ constexpr bool is_argument_type()
         || std::is_same_v<T, API::Types::ObjectID>
         || std::is_same_v<T, std::string>
         || std::is_same_v<T, CGameEffect*>
-        || std::is_same_v<T, NullArgument>
-        || std::is_same_v<T, UserDefined>);
+        || std::is_same_v<T, NullArgument>);
 }
 
 } // namespace detail
 
 struct ScriptVariant
 {
-    using Variant = std::variant<NullArgument, int32_t, float, API::Types::ObjectID, std::string, CGameEffect*, UserDefined>;
+    using Variant = std::variant<NullArgument, int32_t, float, API::Types::ObjectID, std::string, CGameEffect*>;
     Variant m_data;
 
     // Constructors
