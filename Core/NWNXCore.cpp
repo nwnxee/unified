@@ -271,7 +271,7 @@ void NWNXCore::InitialSetupPlugins()
 
         while (directoryEntry != nullptr)
         {
-            if (directoryEntry->d_type == DT_UNKNOWN || directoryEntry->d_type == DT_REG)
+            if (directoryEntry->d_type == DT_UNKNOWN || directoryEntry->d_type == DT_REG || directoryEntry->d_type == DT_LNK)
             {
                 files.emplace_back(directoryEntry->d_name);
             }
