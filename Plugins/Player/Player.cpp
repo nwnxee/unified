@@ -102,6 +102,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(GetPlatformId);
     REGISTER(GetLanguage);
     REGISTER(SetResManOverride);
+    REGISTER(SetCustomToken);
 
 #undef REGISTER
 
@@ -1333,6 +1334,27 @@ ArgumentStack Player::SetResManOverride(ArgumentStack&& args)
         if (pMessage)
         {
             pMessage->SendServerToPlayerResmanOverride(pPlayer->m_nPlayerID, resType, oldResName.c_str(), newResName.c_str());
+        }
+        else
+        {
+            LOG_ERROR("Unable to get CNWSMessage");
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::SetCustomToken(ArgumentStack&& args)
+{
+    if (auto *pPlayer = player(args))
+    {
+        const auto tokenNumber = Services::Events::ExtractArgument<int32_t>(args);
+        const auto tokenText = Services::Events::ExtractArgument<std::string>(args);
+
+        auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        if (pMessage)
+        {
+            pMessage->SendServerToPlayerSetCustomToken(pPlayer->m_nPlayerID, tokenNumber, tokenText.c_str());
         }
         else
         {

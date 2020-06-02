@@ -16,6 +16,7 @@ N/A
 ##### New NWScript Functions
 - Object: GetDoorHasVisibleModel()
 - Object: GetIsDestroyable()
+- Player: SetCustomToken()
 
 ### Changed
 N/A
