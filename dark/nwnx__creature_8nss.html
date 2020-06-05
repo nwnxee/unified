@@ -411,7 +411,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga007d581a39d037dce04fdfa034427efd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a caster level modifier for oCreature.  <a href="group__creature.html#ga007d581a39d037dce04fdfa034427efd">More...</a><br /></td></tr>
 <tr class="separator:ga007d581a39d037dce04fdfa034427efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab29a65c34e82a3f565551a6d706179db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gab29a65c34e82a3f565551a6d706179db">NWNX_Creature_GetCasterLevelModifier</a> (object oCreature, int nClass)</td></tr>
-<tr class="memdesc:gab29a65c34e82a3f565551a6d706179db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the current caster level modifier for oCreature.  <a href="group__creature.html#gab29a65c34e82a3f565551a6d706179db">More...</a><br /></td></tr>
+<tr class="memdesc:gab29a65c34e82a3f565551a6d706179db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current caster level modifier for oCreature.  <a href="group__creature.html#gab29a65c34e82a3f565551a6d706179db">More...</a><br /></td></tr>
 <tr class="separator:gab29a65c34e82a3f565551a6d706179db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab4b96e16f98d1b88fe6a3484716537e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gab4b96e16f98d1b88fe6a3484716537e1">NWNX_Creature_SetCasterLevelOverride</a> (object oCreature, int nClass, int nCasterLevel, int bPersist=FALSE)</td></tr>
 <tr class="memdesc:gab4b96e16f98d1b88fe6a3484716537e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a caster level override for oCreature.  <a href="group__creature.html#gab4b96e16f98d1b88fe6a3484716537e1">More...</a><br /></td></tr>
@@ -422,6 +422,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1050f97a636758c1a4c74c058c688aa5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga1050f97a636758c1a4c74c058c688aa5">NWNX_Creature_JumpToLimbo</a> (object oCreature)</td></tr>
 <tr class="memdesc:ga1050f97a636758c1a4c74c058c688aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move a creature to limbo.  <a href="group__creature.html#ga1050f97a636758c1a4c74c058c688aa5">More...</a><br /></td></tr>
 <tr class="separator:ga1050f97a636758c1a4c74c058c688aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3ddf72fb0099eeac9e33141ea911deb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga3ddf72fb0099eeac9e33141ea911deb0">NWNX_Creature_SetCriticalMultiplierModifier</a> (object oCreature, int nModifier, int nHand=0, int bPersist=FALSE)</td></tr>
+<tr class="memdesc:ga3ddf72fb0099eeac9e33141ea911deb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the critical hit multiplier modifier for the creature.  <a href="group__creature.html#ga3ddf72fb0099eeac9e33141ea911deb0">More...</a><br /></td></tr>
+<tr class="separator:ga3ddf72fb0099eeac9e33141ea911deb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga75516a1c64d50a6192f21031400f87c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga75516a1c64d50a6192f21031400f87c0">NWNX_Creature_GetCriticalMultiplierModifier</a> (object oCreature, int nHand=0)</td></tr>
+<tr class="memdesc:ga75516a1c64d50a6192f21031400f87c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the critical hit multiplier modifier for the Creature.  <a href="group__creature.html#ga75516a1c64d50a6192f21031400f87c0">More...</a><br /></td></tr>
+<tr class="separator:ga75516a1c64d50a6192f21031400f87c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadf59e261ec68cdb725951456e5ea8936"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gadf59e261ec68cdb725951456e5ea8936">NWNX_Creature_SetCriticalMultiplierOverride</a> (object oCreature, int nOverride, int nHand=0, int bPersist=FALSE)</td></tr>
+<tr class="memdesc:gadf59e261ec68cdb725951456e5ea8936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the critical hit multiplier override for the creature.  <a href="group__creature.html#gadf59e261ec68cdb725951456e5ea8936">More...</a><br /></td></tr>
+<tr class="separator:gadf59e261ec68cdb725951456e5ea8936"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0885ae77421d7f3290578f4a32a5f9f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#ga0885ae77421d7f3290578f4a32a5f9f1">NWNX_Creature_GetCriticalMultiplierOverride</a> (object oCreature, int nHand=0)</td></tr>
+<tr class="memdesc:ga0885ae77421d7f3290578f4a32a5f9f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the critical hit multiplier override for the Creature.  <a href="group__creature.html#ga0885ae77421d7f3290578f4a32a5f9f1">More...</a><br /></td></tr>
+<tr class="separator:ga0885ae77421d7f3290578f4a32a5f9f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae29537af98f07a44b68aaefe70023494"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gae29537af98f07a44b68aaefe70023494">NWNX_Creature_SetCriticalRangeModifier</a> (object oCreature, int nModifier, int nHand=0, int bPersist=FALSE)</td></tr>
+<tr class="memdesc:gae29537af98f07a44b68aaefe70023494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the critical hit range modifier for the creature.  <a href="group__creature.html#gae29537af98f07a44b68aaefe70023494">More...</a><br /></td></tr>
+<tr class="separator:gae29537af98f07a44b68aaefe70023494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae3e5766823787c9e848bf6925e9cf313"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gae3e5766823787c9e848bf6925e9cf313">NWNX_Creature_GetCriticalRangeModifier</a> (object oCreature, int nHand=0)</td></tr>
+<tr class="memdesc:gae3e5766823787c9e848bf6925e9cf313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the critical hit range modifier for the creature.  <a href="group__creature.html#gae3e5766823787c9e848bf6925e9cf313">More...</a><br /></td></tr>
+<tr class="separator:gae3e5766823787c9e848bf6925e9cf313"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad408cb931491c5cf15de7f584d3b5d70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gad408cb931491c5cf15de7f584d3b5d70">NWNX_Creature_SetCriticalRangeOverride</a> (object oCreature, int nOverride, int nHand=0, int bPersist=FALSE)</td></tr>
+<tr class="memdesc:gad408cb931491c5cf15de7f584d3b5d70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the critical hit range Override for the creature.  <a href="group__creature.html#gad408cb931491c5cf15de7f584d3b5d70">More...</a><br /></td></tr>
+<tr class="separator:gad408cb931491c5cf15de7f584d3b5d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf3a3048abd469980487c640d2c9d1877"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__creature.html#gaf3a3048abd469980487c640d2c9d1877">NWNX_Creature_GetCriticalRangeOverride</a> (object oCreature, int nHand=0)</td></tr>
+<tr class="memdesc:gaf3a3048abd469980487c640d2c9d1877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the critical hit range Override for the creature.  <a href="group__creature.html#gaf3a3048abd469980487c640d2c9d1877">More...</a><br /></td></tr>
+<tr class="separator:gaf3a3048abd469980487c640d2c9d1877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -523,7 +547,7 @@ Variables</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_efcc7e8cb6d48fa5ae53e4b1e4942f85.html">Creature</a></li><li class="navelem"><a class="el" href="dir_df2c9402d4c835b594b2af66d6709907.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__creature_8nss.html">nwnx_creature.nss</a></li>
 				<li class="footer">
-					Generated on Tue Jun 2 2020 20:59:27 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Jun 5 2020 18:20:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
