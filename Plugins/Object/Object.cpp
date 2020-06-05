@@ -109,6 +109,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(ClearSpellEffectsOnOthers);
     REGISTER(PeekUUID);
     REGISTER(GetDoorHasVisibleModel);
+    REGISTER(GetIsDestroyable);
 
 #undef REGISTER
 }
@@ -934,6 +935,17 @@ ArgumentStack Object::GetDoorHasVisibleModel(ArgumentStack&& args)
     if (auto *pDoor = Utils::AsNWSDoor(object(args)))
     {
         retVal = pDoor->m_bVisibleModel;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetIsDestroyable(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+    if (auto *pObject = object(args))
+    {
+        retVal = pObject->m_bDestroyable;
     }
 
     return Services::Events::Arguments(retVal);

@@ -66,10 +66,10 @@ public:
     virtual ~Events();
 
     // Pushes event data to the stack - won't do anything until SignalEvent is called.
-    static void PushEventData(const std::string tag, const std::string data);
+    static void PushEventData(const std::string& tag, const std::string& data);
 
     // Get event data
-    static std::string GetEventData(const std::string tag);
+    static std::string GetEventData(const std::string& tag);
 
     // Returns true if the event can proceed, or false if the event has been skipped.
     static bool SignalEvent(const std::string& eventName, const NWNXLib::API::Types::ObjectID target, std::string *result=nullptr);
