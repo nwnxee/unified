@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 N/A
 
 ##### New NWScript Functions
+- Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()
 - Object: GetDoorHasVisibleModel()
 - Object: GetIsDestroyable()
 - Player: SetCustomToken()
