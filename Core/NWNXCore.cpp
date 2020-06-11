@@ -324,6 +324,7 @@ void NWNXCore::InitialSetupPlugins()
             throw;
         }
     }
+    m_services->m_messaging->BroadcastMessage("NWNX_ON_PLUGINS_LOADED", {});
 }
 
 void NWNXCore::InitialSetupResourceDirectory()
