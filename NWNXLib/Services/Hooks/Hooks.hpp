@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Hooking/FunctionHook.hpp"
+#include "FunctionHook.hpp"
 #include "Platform/ASLR.hpp"
 #include "Services/Services.hpp"
 

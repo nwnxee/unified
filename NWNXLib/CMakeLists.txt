@@ -20,7 +20,6 @@ nwnxlib_add("Assert.cpp" "Log.cpp" "Plugin.cpp" "Serialize.cpp" "Utils.cpp" "Enc
 
 add_subdirectory(API)
 add_subdirectory(External)
-add_subdirectory(Hooking)
 add_subdirectory(Platform)
 add_subdirectory(Services)
 add_subdirectory(Utils)

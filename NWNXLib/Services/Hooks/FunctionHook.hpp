@@ -10,11 +10,13 @@ extern "C"
 
 namespace NWNXLib::Hooking {
 
-class FunctionHook final
+struct FunctionHook final
 {
-public:
     FunctionHook(uintptr_t originalFunction, uintptr_t newFunction);
-
+    FunctionHook(const FunctionHook&) = delete;
+    FunctionHook(FunctionHook&&) = delete;
+    FunctionHook operator=(const FunctionHook&) = delete;
+    FunctionHook operator=(FunctionHook&&) = delete;
     ~FunctionHook();
 
     template <typename Ret, typename ... Params>
@@ -25,7 +27,6 @@ public:
         return static_cast<Ret>(funcPtr(args ...));
     }
 
-private:
     funchook_t *m_funchook;
     void *    m_trampoline;
 };

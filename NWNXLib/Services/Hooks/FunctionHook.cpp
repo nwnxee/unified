@@ -1,4 +1,4 @@
-#include "Hooking/FunctionHook.hpp"
+#include "FunctionHook.hpp"
 #include "Assert.hpp"
 
 namespace NWNXLib {

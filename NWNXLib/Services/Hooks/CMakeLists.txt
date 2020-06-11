@@ -1,1 +1,1 @@
-nwnxlib_add("Hooks.cpp")
+nwnxlib_add(FunctionHook.cpp Hooks.cpp)
