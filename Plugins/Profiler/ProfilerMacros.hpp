@@ -41,16 +41,16 @@ static void ProfileLanding__##name(bool before, Params ... args)                
 }
 
 #define DECLARE_PROFILE_TARGET_FAST_INTERNAL(profiler, name, fn, ret, ...)  \
-static NWNXLib::Hooking::FunctionHook* g_##name##Hook = nullptr;            \
+static NWNXLib::Services::HookBase* g_##name##Hook = nullptr;            \
 template <typename ... Params>                                              \
 static ret ProfileLanding__##name(Params ... args)                          \
 {                                                                           \
     FastTimerScope timerScope(profiler, #name, fn(args ...));               \
-    return g_##name##Hook->CallOriginal<ret>(args ...);                     \
+    return g_##name##Hook->CallNext<ret>(args ...);                         \
 }
 
 #define DECLARE_PROFILE_TARGET_FAST_NO_RECURSIVE_INTERNAL(profiler, name, fn, ret, ...)  \
-static NWNXLib::Hooking::FunctionHook* g_##name##Hook = nullptr;                         \
+static NWNXLib::Services::HookBase* g_##name##Hook = nullptr;                         \
 template <typename ... Params>                                                           \
 static ret ProfileLanding__##name(Params ... args)                                       \
 {                                                                                        \
@@ -58,12 +58,12 @@ static ret ProfileLanding__##name(Params ... args)                              
                                                                                          \
     if (s_running)                                                                       \
     {                                                                                    \
-        return g_##name##Hook->CallOriginal<ret>(args ...);                              \
+        return g_##name##Hook->CallNext<ret>(args ...);                                  \
     }                                                                                    \
                                                                                          \
     ProfilingLandingScopeFlip flip(s_running);                                           \
     FastTimerScope timerScope(profiler, #name, fn(args ...));                            \
-    return g_##name##Hook->CallOriginal<ret>(args ...);                                  \
+    return g_##name##Hook->CallNext<ret>(args ...);                                      \
 }
 
 // Consumes a shared hook.
@@ -110,7 +110,6 @@ DECLARE_PROFILE_TARGET_FAST(                                                    
 
 #define DEFINE_PROFILER_TARGET_FAST(hooker, name, address, ret, ...)                              \
 {                                                                                                 \
-    hooker->RequestExclusiveHook<address, ret, __VA_ARGS__>                                       \
+    g_##name##Hook = hooker->RequestChainedHook<address, ret, __VA_ARGS__>                        \
         (&ProfileLanding__##name<__VA_ARGS__>);                                                   \
-    g_##name##Hook = hooker->FindHookByAddress(address);                                          \
 }
