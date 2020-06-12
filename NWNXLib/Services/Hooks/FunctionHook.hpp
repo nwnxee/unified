@@ -31,5 +31,4 @@ struct FunctionHook final
     void *    m_trampoline;
 };
 
-
 }
