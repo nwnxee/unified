@@ -30,6 +30,7 @@ N/A
 
 ### Fixed
 - Core: fixed NWNX ResourceDirectory init crashing on failed module load
+- Player: fixed possessed associates from losing their associate type on unpossess
 
 
 ## 8193.13

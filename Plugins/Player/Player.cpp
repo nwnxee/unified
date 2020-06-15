@@ -1249,10 +1249,20 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                             pPossessor->RemoveAssociate(possessedOidPOS);
                             pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
                             pPOS->Remove(possessedOidPOS, "possessorOid");
+
+                            auto possessedAssociateType = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedAssociateType");
+                            if (possessedAssociateType)
+                            {
+                                pPossessor->AddAssociate(possessedOidPOS, possessedAssociateType);
+                                pPOS->Remove(pPossessor->m_idSelf, "possessedAssociateType");
+                            }
                         }
                     }
                 });
     }
+
+    // Save previous associate type so it can be set back after unpossess
+    pPOS->Set(possessorId, "possessedAssociateType", (int32_t)pPossessed->m_nAssociateType);
 
     // If they already have a familiar we temporarily remove it as an associate
     // then we add the possessed creature as a familiar. We then add the regular familiar back.
