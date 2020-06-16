@@ -30,7 +30,7 @@ N/A
 
 ### Fixed
 - Core: fixed NWNX ResourceDirectory init crashing on failed module load
-
+- Weapon: fixed a nullptr reference crash in GetEpicWeaponDevastatingCritical()
 
 ## 8193.13
 https://github.com/nwnxee/unified/compare/build8193.12...build8193.13
