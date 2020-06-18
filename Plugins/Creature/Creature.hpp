@@ -117,6 +117,7 @@ private:
     ArgumentStack GetCriticalRangeModifier      (ArgumentStack&& args);
     ArgumentStack SetCriticalRangeOverride      (ArgumentStack&& args);
     ArgumentStack GetCriticalRangeOverride      (ArgumentStack&& args);
+    ArgumentStack AddAssociate                  (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 

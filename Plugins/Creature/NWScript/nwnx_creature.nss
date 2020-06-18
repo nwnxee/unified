@@ -767,6 +767,13 @@ void NWNX_Creature_SetCriticalRangeOverride(object oCreature, int nOverride, int
 /// @return the current critical hit range override for the creature. No override == -1.
 int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0);
 
+/// @brief Add oAssociate as nAssociateType to oCreature
+/// @warning Only basic checks are done so care must be taken when using this function
+/// @param oCreature The creature to add oAssociate to
+/// @param oAssociate The associate, must be a NPC
+/// @param nAssociateType The associate type, one of ASSOCIATE_TYPE_*, except _NONE
+void NWNX_Creature_AddAssociate(object oCreature, object oAssociate, int nAssociateType);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -1911,4 +1918,15 @@ int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0)
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_AddAssociate(object oCreature, object oAssociate, int nAssociateType)
+{
+    string sFunc = "AddAssociate";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nAssociateType);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oAssociate);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }

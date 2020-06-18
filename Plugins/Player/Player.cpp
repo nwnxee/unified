@@ -1257,15 +1257,15 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
     // If they already have a familiar we temporarily remove it as an associate
     // then we add the possessed creature as a familiar. We then add the regular familiar back.
     // This is because PossessFamiliar looks for the first associate of type familiar.
-    auto pFamiliarId = pPossessor->GetAssociateId(3, 1);
+    auto pFamiliarId = pPossessor->GetAssociateId(Constants::AssociateType::Familiar, 1);
     if (pFamiliarId)
         pPossessor->RemoveAssociate(pFamiliarId);
 
-    pPossessor->AddAssociate(possessedId, 3);
+    pPossessor->AddAssociate(possessedId, Constants::AssociateType::Familiar);
     pPossessor->PossessFamiliar();
 
     if (pFamiliarId)
-        pPossessor->AddAssociate(pFamiliarId, 3);
+        pPossessor->AddAssociate(pFamiliarId, Constants::AssociateType::Familiar);
 
     if (bCreateQB)
         pPossessed->CreateDefaultQuickButtons();

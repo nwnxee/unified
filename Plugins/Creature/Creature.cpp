@@ -169,6 +169,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(GetCriticalRangeModifier);
     REGISTER(SetCriticalRangeOverride);
     REGISTER(GetCriticalRangeOverride);
+    REGISTER(AddAssociate);
 
 #undef REGISTER
 }
@@ -2457,6 +2458,28 @@ ArgumentStack Creature::GetCriticalRangeOverride(ArgumentStack&& args)
             retVal = nOverride.value();
     }
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::AddAssociate(ArgumentStack&& args)
+{
+    if (auto* pCreature = creature(args))
+    {
+        auto oidAssociate = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidAssociate != Constants::OBJECT_INVALID);
+        auto associateType = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(associateType > Constants::AssociateType::None);
+          ASSERT_OR_THROW(associateType <= Constants::AssociateType::Dominated);
+
+        if (auto *pAssociate = Utils::AsNWSCreature(Utils::GetGameObject(oidAssociate)))
+        {
+            if (!pAssociate->m_bPlayerCharacter)
+                pCreature->AddAssociate(oidAssociate, associateType);
+            else
+                LOG_WARNING("AddAssociate: Cannot add PCs as associate");
+        }
+    }
+
+    return Services::Events::Arguments();
 }
 
 }
