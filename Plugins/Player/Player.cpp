@@ -1250,10 +1250,10 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                             pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
                             pPOS->Remove(possessedOidPOS, "possessorOid");
 
-                            auto possessedAssociateType = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedAssociateType");
-                            if (possessedAssociateType)
+                            auto possessedAssociateType = pPOS->Get<int>(pPossessor->m_idSelf, "possessedAssociateType");
+                            if (possessedAssociateType && *possessedAssociateType != 0)
                             {
-                                pPossessor->AddAssociate(possessedOidPOS, possessedAssociateType);
+                                pPossessor->AddAssociate(possessedOidPOS, *possessedAssociateType);
                                 pPOS->Remove(pPossessor->m_idSelf, "possessedAssociateType");
                             }
                         }
