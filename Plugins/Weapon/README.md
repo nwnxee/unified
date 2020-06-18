@@ -49,6 +49,8 @@ The NWNX_Weapon_SetOption() function can be used to define the attack and damage
 
 This script just prints some info to the log and then bypasses the devastating critical 50% of the time. You have to set your script with NWNX_Weapon_SetDevastatingCriticalEventScript() (in the OnModuleLoad script for example)
 
+Note: `oWeapon` in `NWNX_Weapon_DevastatingCriticalEvent_Data` will be `OBJECT_INVALID` for Gloves/Unarmed Strike Devastating Critical Events. 
+
 ```cpp
 #include "nwnx_weapon"
 
@@ -70,4 +72,5 @@ void main()
       NWNX_Weapon_BypassDevastatingCritical();
       WriteTimestampedLogEntry("Devastating Critical Bypassed");
    }
-}```
+}
+```
