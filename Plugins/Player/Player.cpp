@@ -1188,7 +1188,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
         return Services::Events::Arguments(0);
     }
     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    auto possessedOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
+    auto possessedOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
     if (possessedOidPOS)
     {
         LOG_ERROR("Attempt to possess a creature while already possessing.");
@@ -1204,9 +1204,9 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                 +[](CNWSCreature *pPossessed) -> void
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto possessorOidPOS = *pPOS->Get<int>(pPossessed->m_idSelf, "possessorOid");
+                    auto possessorOidPOS = pPOS->Get<int>(pPossessed->m_idSelf, "possessorOid");
                     auto pServer = Globals::AppManager()->m_pServerExoApp;
-                    auto *pPossessor = pServer->GetCreatureByGameObjectID(possessorOidPOS);
+                    auto *pPossessor = possessorOidPOS ? pServer->GetCreatureByGameObjectID(*possessorOidPOS) : nullptr;
                     if (pPossessor)
                     {
                         pPossessor->UnpossessFamiliar();
@@ -1225,7 +1225,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                 +[](CNWSCreature *pPossessor) -> void
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                    auto possessorOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessorOid");
+                    auto possessorOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessorOid");
                     if (possessorOidPOS)
                     {
                         LOG_ERROR("Attempt to possess a familiar while already possessing.");
@@ -1243,17 +1243,17 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                     if (!before)
                     {
                         auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-                        auto possessedOidPOS = *pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
+                        auto possessedOidPOS = pPOS->Get<int>(pPossessor->m_idSelf, "possessedOid");
                         if (possessedOidPOS)
                         {
-                            pPossessor->RemoveAssociate(possessedOidPOS);
+                            pPossessor->RemoveAssociate(*possessedOidPOS);
                             pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
-                            pPOS->Remove(possessedOidPOS, "possessorOid");
+                            pPOS->Remove(*possessedOidPOS, "possessorOid");
 
                             auto possessedAssociateType = pPOS->Get<int>(pPossessor->m_idSelf, "possessedAssociateType");
-                            if (possessedAssociateType && *possessedAssociateType != 0)
+                            if (possessedAssociateType && *possessedAssociateType != Constants::AssociateType::None)
                             {
-                                pPossessor->AddAssociate(possessedOidPOS, *possessedAssociateType);
+                                pPossessor->AddAssociate(*possessedOidPOS, *possessedAssociateType);
                                 pPOS->Remove(pPossessor->m_idSelf, "possessedAssociateType");
                             }
                         }
@@ -1267,15 +1267,15 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
     // If they already have a familiar we temporarily remove it as an associate
     // then we add the possessed creature as a familiar. We then add the regular familiar back.
     // This is because PossessFamiliar looks for the first associate of type familiar.
-    auto pFamiliarId = pPossessor->GetAssociateId(3, 1);
+    auto pFamiliarId = pPossessor->GetAssociateId(Constants::AssociateType::Familiar, 1);
     if (pFamiliarId)
         pPossessor->RemoveAssociate(pFamiliarId);
 
-    pPossessor->AddAssociate(possessedId, 3);
+    pPossessor->AddAssociate(possessedId, Constants::AssociateType::Familiar);
     pPossessor->PossessFamiliar();
 
     if (pFamiliarId)
-        pPossessor->AddAssociate(pFamiliarId, 3);
+        pPossessor->AddAssociate(pFamiliarId, Constants::AssociateType::Familiar);
 
     if (bCreateQB)
         pPossessed->CreateDefaultQuickButtons();

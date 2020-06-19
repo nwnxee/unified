@@ -15,6 +15,7 @@ N/A
 
 ##### New NWScript Functions
 - Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()
+- Creature: AddAssociate()
 - Object: GetDoorHasVisibleModel()
 - Object: GetIsDestroyable()
 - Player: SetCustomToken()
