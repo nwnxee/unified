@@ -1,6 +1,7 @@
 #include "Events/SpellEvents.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSObjectActionNode.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWSpellArray.hpp"
 #include "API/Functions.hpp"
@@ -16,6 +17,7 @@ using namespace NWNXLib::API;
 static Hooking::FunctionHook* m_SpellCastAndImpactHook = nullptr;
 static Hooking::FunctionHook* m_SetMemorizedSpellSlotHook = nullptr;
 static Hooking::FunctionHook* m_ClearMemorizedSpellSlotHook = nullptr;
+static Hooking::FunctionHook* m_ActionCastSpellHook = nullptr;
 
 SpellEvents::SpellEvents(Services::HooksProxy* hooker)
 {
@@ -33,6 +35,12 @@ SpellEvents::SpellEvents(Services::HooksProxy* hooker)
         hooker->RequestExclusiveHook<NWNXLib::API::Functions::_ZN17CNWSCreatureStats23ClearMemorizedSpellSlotEhhh>(&ClearMemorizedSpellSlotHook);
         m_ClearMemorizedSpellSlotHook = hooker->FindHookByAddress(NWNXLib::API::Functions::_ZN17CNWSCreatureStats23ClearMemorizedSpellSlotEhhh);
     });
+/*
+    Events::InitOnFirstSubscribe("NWNX_ON_ACTION_CAST_SPELL_.*", [hooker]() {
+        hooker->RequestExclusiveHook<NWNXLib::API::Functions::_ZN12CNWSCreature17AIActionCastSpellEP20CNWSObjectActionNode>(&ActionCastSpellHook);
+        m_ActionCastSpellHook = hooker->FindHookByAddress(NWNXLib::API::Functions::_ZN12CNWSCreature17AIActionCastSpellEP20CNWSObjectActionNode);
+    });
+    */
 }
 
 void SpellEvents::CastSpellHook
@@ -141,5 +149,31 @@ void SpellEvents::ClearMemorizedSpellSlotHook
     }
 
     PushAndSignal("NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER");
+}
+
+uint32_t SpellEvents::ActionCastSpellHook
+(
+    CNWSCreature* thisPtr,
+    CNWSObjectActionNode* pNode
+)
+{
+    uint32_t retVal;
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
+
+    Events::PushEventData("SPELL_ID", std::to_string(pNode->m_pParameter[1]));
+
+    retVal = Events::SignalEvent("NWNX_ON_ACTION_CAST_SPELL_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
+             ? m_ActionCastSpellHook->CallOriginal<uint32_t>(thisPtr, pNode) :
+             sBeforeEventResult == "1";
+
+    Events::PushEventData("SPELL_ID", std::to_string(pNode->m_pParameter[1]));
+    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
+
+    Events::SignalEvent("NWNX_ON_ACTION_CAST_SPELL_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
+
+    retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
+
+    return retVal;
 }
 }
