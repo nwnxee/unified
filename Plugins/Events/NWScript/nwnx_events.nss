@@ -1,4 +1,4 @@
-/// @addtogroup events Events 
+/// @addtogroup events Events
 /// @brief Provides an interface for plugins to create event-based systems, and exposes some events through that interface.
 /// @{
 /// @file nwnx_events.nss
@@ -927,7 +927,7 @@ _______________________________________
     TARGET                | object | Convert to object with NWNX_Object_StringToObject()
 
  _______________________________________
-    ## Input Cast Spell Evens
+    ## Input Cast Spell Events
     - NWNX_ON_INPUT_CAST_SPELL_BEFORE
     - NWNX_ON_INPUT_CAST_SPELL_AFTER
 
@@ -1066,6 +1066,19 @@ _______________________________________
     ----------------------|--------|-------
     OLD                   | int    | The (Hour/Day/Month/Year) before the change. Not available in DAWN/DUSK.
     NEW                   | int    | The (Hour/Day/Month/Year) after the change. Not available in DAWN/DUSK.
+
+_______________________________________
+    ## Broadcast Spell Cast Events
+    - NWNX_ON_BROADCAST_CAST_SPELL_BEFORE
+    - NWNX_ON_BROADCAST_CAST_SPELL_AFTER
+
+    `OBJECT_SELF` = The creature casting the spell
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    SPELL_ID              | int    | |
+    MULTI_CLASS           | int    | |
+    FEAT                  | int    | 65535 if a feat wasn't used, otherwise the feat ID |
 
 _______________________________________
 */

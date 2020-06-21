@@ -37,7 +37,13 @@ private:
         int32_t
     );
     static void ClearMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint8_t);
-    static uint32_t ActionCastSpellHook(CNWSCreature*, CNWSObjectActionNode*);
+    static void BroadcastSpellCastHook
+    (
+        CNWSCreature*,
+        uint32_t,
+        uint8_t,
+        uint16_t
+    );
 };
 
 }
