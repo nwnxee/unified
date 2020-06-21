@@ -149,13 +149,7 @@ void SpellEvents::ClearMemorizedSpellSlotHook
     PushAndSignal("NWNX_CLEAR_MEMORIZED_SPELL_SLOT_AFTER");
 }
 
-void SpellEvents::BroadcastSpellCastHook
-(
-    CNWSCreature* thisPtr,
-    uint32_t nSpellID,
-    uint8_t nMultiClass,
-    uint16_t nFeat
-)
+void SpellEvents::BroadcastSpellCastHook(CNWSCreature* thisPtr, uint32_t nSpellID, uint8_t nMultiClass, uint16_t nFeat)
 {
     auto PushAndSignal = [&](std::string ev) -> bool {
         Events::PushEventData("SPELL_ID", std::to_string(nSpellID));
