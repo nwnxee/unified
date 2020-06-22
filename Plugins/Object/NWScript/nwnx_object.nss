@@ -63,10 +63,11 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 /// @remark This is the counterpart to ObjectToString.
 object NWNX_Object_StringToObject(string id);
 
-/// @brief Set an object's position.
-/// @param obj The object.
-/// @param pos A vector position.
-void NWNX_Object_SetPosition(object obj, vector pos);
+/// @brief Set oObject's position.
+/// @param oObject The object.
+/// @param vPosition A vector position.
+/// @param bUpdateSubareas If TRUE and oObject is a creature, any triggers/traps at vPosition will fire their events.
+void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE);
 
 /// @brief Set an object's hit points.
 /// @param obj The object.
@@ -395,16 +396,17 @@ object NWNX_Object_StringToObject(string id)
     return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPosition(object obj, vector pos)
+void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE)
 {
     string sFunc = "SetPosition";
 
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.x);
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.y);
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.z);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
-    NWNX_CallFunction(NWNX_Object, sFunc);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bUpdateSubareas);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.x);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.z);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
 
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
 void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
