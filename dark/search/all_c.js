@@ -541,7 +541,7 @@ var searchData=
   ['nwnx_5fobject_5fsetpersistentint_754',['NWNX_Object_SetPersistentInt',['../group__object.html#gaeb740fc1e8f6cb64616a5f14219fc802',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fsetpersistentstring_755',['NWNX_Object_SetPersistentString',['../group__object.html#ga293fbe3d25ee40dfc0f6b6a9fdfc135d',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fsetplaceableisstatic_756',['NWNX_Object_SetPlaceableIsStatic',['../group__object.html#ga85410e9584fd04df21b8facb74d79075',1,'nwnx_object.nss']]],
-  ['nwnx_5fobject_5fsetposition_757',['NWNX_Object_SetPosition',['../group__object.html#ga0ed4762c38e89497b6cdf03cfd7fca28',1,'nwnx_object.nss']]],
+  ['nwnx_5fobject_5fsetposition_757',['NWNX_Object_SetPosition',['../group__object.html#ga1578fb78ce8258f0e5f86f3dd9ebc9f5',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fsetstring_758',['NWNX_Object_SetString',['../group__object.html#gadc1a34e2cbe53faef7bd5a1fffaae8a1',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fsettriggergeometry_759',['NWNX_Object_SetTriggerGeometry',['../group__object.html#ga3ba2a01f7ba3088280c122708bb0ba84',1,'nwnx_object.nss']]],
   ['nwnx_5fobject_5fstringtoobject_760',['NWNX_Object_StringToObject',['../group__object.html#ga785dbe351d67f4fb128ba801021f23a6',1,'nwnx_object.nss']]],
