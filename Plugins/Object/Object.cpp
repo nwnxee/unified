@@ -196,12 +196,31 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
 {
     if (auto *pObject = object(args))
     {
-        Vector pos;
+        Vector pos{};
         pos.z = Services::Events::ExtractArgument<float>(args);
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
+        int32_t bUpdateSubareas;
+
+        // TODO: Remove this try/catch at some point
+        try
+        {
+            bUpdateSubareas = Services::Events::ExtractArgument<int32_t>(args);
+        }
+        catch (const std::runtime_error& e)
+        {
+            bUpdateSubareas = true;
+        }
 
         pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
+
+        if (bUpdateSubareas)
+        {
+            if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            {
+                pCreature->UpdateSubareasOnJumpPosition(pos, pCreature->m_oidArea);
+            }
+        }
     }
     return Services::Events::Arguments();
 }
