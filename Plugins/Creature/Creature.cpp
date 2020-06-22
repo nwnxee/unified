@@ -107,6 +107,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetMovementRate);
     REGISTER(GetMovementRateFactor);
     REGISTER(SetMovementRateFactor);
+    REGISTER(SetMovementRateFactorCap);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
     REGISTER(SetDomain);
@@ -1071,6 +1072,60 @@ ArgumentStack Creature::SetMovementRateFactor(ArgumentStack&& args)
         const float factor = Services::Events::ExtractArgument<float>(args);
         pCreature->SetMovementRateFactor(factor);
     }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
+{
+    static NWNXLib::Hooking::FunctionHook* pGetMovementRateFactor_hook;
+    static NWNXLib::Hooking::FunctionHook* pSetMovementRateFactor_hook;
+
+    if (!pGetMovementRateFactor_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21GetMovementRateFactorEv>(
+            +[](CNWSCreature *pThis) -> float
+            {
+                auto pRate = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR");
+                return pRate ? *pRate : pGetMovementRateFactor_hook->CallOriginal<float>(pThis);
+            });
+
+        pGetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv);
+    }
+
+    if (!pSetMovementRateFactor_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21SetMovementRateFactorEf>(
+            +[](CNWSCreature *pThis, float fRate) -> void
+            {
+                // Always set the default so it goes back to normal if cap is reset
+                pSetMovementRateFactor_hook->CallOriginal<void>(pThis, fRate);
+
+                auto pCap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR_CAP");
+                if (pCap)
+                {
+                    if (fRate > *pCap) { fRate = *pCap; }
+                    g_plugin->GetServices()->m_perObjectStorage->Set(pThis, "MOVEMENT_RATE_FACTOR", fRate);
+                }
+            });
+
+        pSetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv);
+    }
+
+    if (auto *pCreature = creature(args))
+    {
+        const float fCap = Services::Events::ExtractArgument<float>(args);
+
+        if (fCap < 0.0) // remove the override
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "MOVEMENT_RATE_FACTOR");
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "MOVEMENT_RATE_FACTOR_CAP");
+        }
+        else
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "MOVEMENT_RATE_FACTOR_CAP", fCap, true);
+        }
+    }
+
     return Services::Events::Arguments();
 }
 
