@@ -1108,7 +1108,7 @@ ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
                 }
             });
 
-        pSetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv);
+        pSetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf);
     }
 
     if (auto *pCreature = creature(args))
