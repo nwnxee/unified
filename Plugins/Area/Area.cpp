@@ -678,13 +678,12 @@ ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
         }
         else
         {
-            LOG_ERROR("NWNX_Area_GetTileName: invalid tile specified");
+            LOG_ERROR("NWNX_Area_GetTileModelResRef: invalid tile specified");
         }
     }
 
     return Services::Events::Arguments(retVal);
 }
-
 
 ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
 {
