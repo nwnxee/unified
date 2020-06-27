@@ -101,8 +101,6 @@ const int32_t STRREF_CUSTOM                                 = 164;
 const int32_t NUM_CREATURE_ITEM_SLOTS       = 4;
 const int32_t NUM_MULTICLASS                = 3;
 const int32_t CHARACTER_EPIC_LEVEL          = 21;
-const int32_t MIN_STARTING_ABILITY_VALUE    = 8;
-const int32_t MAX_STARTING_ABILITY_VALUE    = 18;
 const int32_t NUM_SPELL_LEVELS              = 10;
 
 
@@ -497,10 +495,13 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             nAbility[nAbilityGain]--;
     }
 
+    static int32_t charGenBaseAbilityMin = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MIN", 8);
+    static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MAX", 18);
+
     // Check if >18 in an ability
     for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
     {
-        if (nAbility[nAbilityIndex] > MAX_STARTING_ABILITY_VALUE)
+        if (nAbility[nAbilityIndex] > charGenBaseAbilityMax)
         {
             if (auto strrefFailure = HandleValidationFailure(
                     ValidationFailureType::Character,
@@ -523,7 +524,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     {
         nAbilityAtLevel[nAbilityIndex] = nAbility[nAbilityIndex];
 
-        while (nAbility[nAbilityIndex] > MIN_STARTING_ABILITY_VALUE)
+        while (nAbility[nAbilityIndex] > charGenBaseAbilityMin)
         {
             if (nAbility[nAbilityIndex] > abilityCostIncrement3)
             {
