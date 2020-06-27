@@ -32,6 +32,7 @@ N/A
 
 ### Fixed
 - Core: fixed NWNX ResourceDirectory init crashing on failed module load
+- ELC: fixed ELC not respecting `CHARGEN_BASE_ABILITY_*` ruleset.2da values
 - Weapon: fixed a nullptr reference crash in GetEpicWeaponDevastatingCritical()
 - Player: fixed possessed associates from losing their associate type on unpossess
 
