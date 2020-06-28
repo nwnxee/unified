@@ -20,6 +20,7 @@ private:
     ArgumentStack GetLocalVariable          (ArgumentStack&& args);
     ArgumentStack StringToObject            (ArgumentStack&& args);
     ArgumentStack SetPosition               (ArgumentStack&& args);
+    ArgumentStack GetCurrentHitPoints       (ArgumentStack&& args);
     ArgumentStack SetCurrentHitPoints       (ArgumentStack&& args);
     ArgumentStack SetMaxHitPoints           (ArgumentStack&& args);
     ArgumentStack Serialize                 (ArgumentStack&& args);
