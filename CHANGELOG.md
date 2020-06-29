@@ -10,6 +10,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 ### Added
 - ServerLogRedirector: added environment variable `NWNX_SERVERLOGREDIRECTOR_HIDE_VALIDATEGFFRESOURCE_MESSAGES` to hide `*** ValidateGFFResource sent by user.` messages from the NWNX log.
 - Events: added BroadcastSpellCast event to SpellEvents
+- Events: added TogglePause to InputEvents
 
 ##### New Plugins
 N/A

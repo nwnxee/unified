@@ -972,7 +972,20 @@ _______________________________________
           NWNX_Object_SetPosition(oPlayer, GetPositionFromLocation(locPlayer));
           ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectVisualEffect(VFX_DUR_CUTSCENE_INVISIBILITY), oBoulder);
 
- _______________________________________
+_______________________________________
+    ## Input Keyboard Events
+    - NWNX_ON_INPUT_TOGGLE_PAUSE_BEFORE
+    - NWNX_ON_INPUT_TOGGLE_PAUSE_AFTER
+
+    `OBJECT_SELF` = The player or DM
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    PAUSE_STATE           | int    | TRUE = Pausing, FALSE = Unpausing
+
+    @note This event also fires when a non-dm player presses the spacebar.
+
+_______________________________________
     ## Object Lock Events
     - NWNX_ON_OBJECT_LOCK_BEFORE
     - NWNX_ON_OBJECT_LOCK_AFTER
@@ -1162,6 +1175,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - {Enter|Exit}Stealth events
 /// - Object {Lock|Unlock} events
 /// - Quickbar Events
+/// - Input Pause Event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

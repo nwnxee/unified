@@ -2,6 +2,8 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
@@ -40,7 +42,7 @@ InputEvents::InputEvents(Services::HooksProxy* hooker)
         m_AddCastSpellActionsHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_KEYBOARD_.*", [hooker]() {
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE)_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh>(&HandlePlayerToServerInputMessageHook);
         m_HandlePlayerToServerInputMessageHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh);
     });
@@ -245,6 +247,30 @@ int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage,
         {
             skipDriveActionEvent[pPlayer->m_oidNWSObject] = false;
             return m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+        }
+
+        case Constants::MessageInputMinor::TogglePauseRequest:
+        {
+            int32_t retVal;
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                Events::PushEventData("PAUSE_STATE", std::to_string(!Globals::AppManager()->m_pServerExoApp->GetPauseState(2/*DM Pause*/)));
+
+                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            if (PushAndSignal("NWNX_ON_INPUT_TOGGLE_PAUSE_BEFORE"))
+            {
+                retVal = m_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal("NWNX_ON_INPUT_TOGGLE_PAUSE_AFTER");
+
+            return retVal;
         }
 
         default:
