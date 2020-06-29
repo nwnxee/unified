@@ -71,6 +71,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetLocalVariable);
     REGISTER(StringToObject);
     REGISTER(SetPosition);
+    REGISTER(GetCurrentHitPoints);
     REGISTER(SetCurrentHitPoints);
     REGISTER(SetMaxHitPoints);
     REGISTER(Serialize);
@@ -223,6 +224,16 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
         }
     }
     return Services::Events::Arguments();
+}
+
+ArgumentStack Object::GetCurrentHitPoints(ArgumentStack&& args)
+{
+    int32_t retval = 0;
+    if (auto *pObject = object(args))
+    {
+        retval = pObject->m_nCurrentHitPoints;
+    }
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::SetCurrentHitPoints(ArgumentStack&& args)

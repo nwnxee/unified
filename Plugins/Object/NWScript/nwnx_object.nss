@@ -69,6 +69,12 @@ object NWNX_Object_StringToObject(string id);
 /// @param bUpdateSubareas If TRUE and oObject is a creature, any triggers/traps at vPosition will fire their events.
 void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE);
 
+/// @brief Get an object's hit points.
+/// @note Unlike the native GetCurrentHitpoints function, this excludes temporary hitpoints.
+/// @param obj The object.
+/// @return The hit points.
+int NWNX_Object_GetCurrentHitPoints(object obj);
+
 /// @brief Set an object's hit points.
 /// @param obj The object.
 /// @param hp The hit points.
@@ -407,6 +413,16 @@ void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubare
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetCurrentHitPoints(object creature)
+{
+    string sFunc = "GetCurrentHitPoints";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, creature);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
 void NWNX_Object_SetCurrentHitPoints(object creature, int hp)

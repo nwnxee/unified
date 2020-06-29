@@ -19,6 +19,7 @@ N/A
 - Creature: AddAssociate()
 - Object: GetDoorHasVisibleModel()
 - Object: GetIsDestroyable()
+- Object: GetCurrentHitPoints()
 - Player: SetCustomToken()
 
 ### Changed
