@@ -4,6 +4,7 @@ var nwnx__object_8nss =
     [ "NWNX_Object_GetLocalVariable", "group__object.html#gaf2230d31bc03edaa2b5a1be654846a46", null ],
     [ "NWNX_Object_StringToObject", "group__object.html#ga785dbe351d67f4fb128ba801021f23a6", null ],
     [ "NWNX_Object_SetPosition", "group__object.html#ga1578fb78ce8258f0e5f86f3dd9ebc9f5", null ],
+    [ "NWNX_Object_GetCurrentHitPoints", "group__object.html#gac6c6af54fc3db854823ad9fabb86da2c", null ],
     [ "NWNX_Object_SetCurrentHitPoints", "group__object.html#gad42e6039777c646447c61fae4d216fdd", null ],
     [ "NWNX_Object_SetMaxHitPoints", "group__object.html#gaf2b9688d3adfe9569f8659eebe864822", null ],
     [ "NWNX_Object_Serialize", "group__object.html#ga037ae0502bb24d81f64b0f053ca00028", null ],
