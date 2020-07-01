@@ -65,7 +65,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     if (config->Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
     {
-        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSTION_FORCE");
+        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSATION_FORCE");
 
         if (forcedOverhead)
         {
