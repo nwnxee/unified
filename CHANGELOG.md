@@ -25,7 +25,7 @@ N/A
 
 ### Changed
 - Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.
-- Profiler: Corrected a typo preventing the retrieval of certain event data. Note: breaking change.
+- Profiler: Corrected a typo preventing the retrieval of certain event data (OVERHEAD_COMPENSTION_FORCE -> OVERHEAD_COMPENSATION_FORCE). Note: breaking change.
 
 ### Deprecated
 N/A
