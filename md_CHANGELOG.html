@@ -133,6 +133,7 @@ New NWScript Functions</h4>
 Changed</h2>
 <ul>
 <li>Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.</li>
+<li>Profiler: Corrected a typo preventing the retrieval of certain event data (OVERHEAD_COMPENSTION_FORCE -&gt; OVERHEAD_COMPENSATION_FORCE). Note: breaking change.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Deprecated</h2>
@@ -762,7 +763,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Jun 29 2020 11:49:54 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Jul 2 2020 00:02:22 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
