@@ -55,6 +55,7 @@ private:
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
     ArgumentStack GetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
+    ArgumentStack SetMovementRateFactorCap      (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
     ArgumentStack SetDomain                     (ArgumentStack&& args);
