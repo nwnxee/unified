@@ -42,6 +42,7 @@ private:
     ArgumentStack PluginExists                  (ArgumentStack&& args);
     ArgumentStack GetUserDirectory              (ArgumentStack&&);
     ArgumentStack GetScriptReturnValue          (ArgumentStack&& args);
+    ArgumentStack CreateDoor                    (ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;

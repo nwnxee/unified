@@ -28,6 +28,7 @@
 #include "API/CExoArrayList.hpp"
 
 #include <sstream>
+#include <math.h>
 
 namespace NWNXLib::Utils {
 
@@ -432,6 +433,20 @@ int PopScriptContext()
     }
 
     return vm->m_cRunTimeStack.GetStackPointer();
+}
+
+void SetOrientation(CNWSObject *pObject, float facing)
+{
+    if (!pObject)
+        return;
+
+    float radians = facing * (M_PI / 180);
+    auto vOrientation = Vector{cos(radians), sin(radians), 0.0f};
+
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        pPlaceable->SetOrientation(vOrientation);
+    else
+        pObject->SetOrientation(vOrientation);
 }
 
 }
