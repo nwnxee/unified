@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['flushall_1666',['FLUSHALL',['../nwnx__redis__short_8nss.html#aca3002c3a5361f14abbb146c877bd1ac',1,'nwnx_redis_short.nss']]],
-  ['flushdb_1667',['FLUSHDB',['../nwnx__redis__short_8nss.html#abebbb105482c9e1ae315e9228ab0e7b7',1,'nwnx_redis_short.nss']]]
+  ['flushall_1667',['FLUSHALL',['../nwnx__redis__short_8nss.html#aca3002c3a5361f14abbb146c877bd1ac',1,'nwnx_redis_short.nss']]],
+  ['flushdb_1668',['FLUSHDB',['../nwnx__redis__short_8nss.html#abebbb105482c9e1ae315e9228ab0e7b7',1,'nwnx_redis_short.nss']]]
 ];
