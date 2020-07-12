@@ -103,6 +103,7 @@ Player::Player(const Plugin::CreateParams& params)
     REGISTER(GetLanguage);
     REGISTER(SetResManOverride);
     REGISTER(SetCustomToken);
+    REGISTER(SetCreatureNameOverride);
 
 #undef REGISTER
 
@@ -1372,6 +1373,73 @@ ArgumentStack Player::SetCustomToken(ArgumentStack&& args)
         }
     }
 
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
+{
+    static bool bSetCreatureNameOverrideHook;
+
+    if (!bSetCreatureNameOverrideHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
+                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                    CGameObjectArray*, Types::ObjectID oidObjectToUpdate) -> void
+                {
+                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
+                    {
+                        static std::optional<std::string> name;
+                        static CExoString swapName;
+
+                        if (before)
+                        {
+                            name = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObjectToUpdate,
+                                    "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+                            if (name)
+                            {
+                                std::string newName = *name;
+                                swapName = newName.c_str();
+
+                                std::swap(swapName, pCreature->m_sDisplayName);
+                            }
+                        }
+                        else
+                        {
+                            if (name)
+                            {
+                                std::swap(swapName, pCreature->m_sDisplayName);
+                            }
+                        }
+                    }
+                });
+
+        bSetCreatureNameOverrideHook = true;
+    }
+
+    if (auto *pPlayer = player(args))
+    {
+        auto oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto name = Services::Events::ExtractArgument<std::string>(args);
+
+        if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidTarget)))
+        {
+            if (name.empty())
+            {
+                GetServices()->m_perObjectStorage->Remove(pCreature->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+            }
+            else
+            {
+                GetServices()->m_perObjectStorage->Set(pCreature->m_idSelf, "PLCNO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), name);
+            }
+
+            if (auto *pLastUpdateObject = pPlayer->GetLastUpdateObject(pCreature->m_idSelf))
+            {
+                pLastUpdateObject->m_nUpdateDisplayNameSeq--;
+            }
+        }
+    }
     return Services::Events::Arguments();
 }
 

@@ -22,6 +22,7 @@ N/A
 - Object: GetIsDestroyable()
 - Object: GetCurrentHitPoints()
 - Player: SetCustomToken()
+- Player: SetCreatureNameOverride()
 - Util: CreateDoor()
 
 ### Changed
