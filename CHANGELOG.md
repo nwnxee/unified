@@ -23,6 +23,7 @@ N/A
 - Object: GetCurrentHitPoints()
 - Player: SetCustomToken()
 - Player: SetCreatureNameOverride()
+- Util: CreateDoor()
 
 ### Changed
 - Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.

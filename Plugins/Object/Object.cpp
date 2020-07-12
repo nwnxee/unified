@@ -31,7 +31,6 @@
 #include "Utils.hpp"
 
 #include <cstring>
-#include <math.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -914,13 +913,7 @@ ArgumentStack Object::SetFacing(ArgumentStack&& args)
     {
         const auto degrees = Services::Events::ExtractArgument<float>(args);
 
-        float radians = degrees * (M_PI / 180);
-        auto vOrientation = Vector{cos(radians), sin(radians), 0.0f};
-
-        if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
-            pPlaceable->SetOrientation(vOrientation);
-        else
-            pObject->SetOrientation(vOrientation);
+        Utils::SetOrientation(pObject, degrees);
     }
 
     return Services::Events::Arguments();
