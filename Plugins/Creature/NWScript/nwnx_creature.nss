@@ -672,7 +672,7 @@ void NWNX_Creature_SetFaction(object oCreature, int nFactionId);
 int NWNX_Creature_GetFaction(object oCreature);
 
 /// @brief Get whether a creature is flat-footed.
-/// @param The creature object.
+/// @param oCreature The creature object.
 /// @return TRUE if the creature is flat-footed.
 int NWNX_Creature_GetFlatFooted(object oCreature);
 
@@ -714,7 +714,7 @@ void NWNX_Creature_SetCasterLevelOverride(object oCreature, int nClass, int nCas
 int NWNX_Creature_GetCasterLevelOverride(object oCreature, int nClass);
 
 /// @brief Move a creature to limbo.
-/// @param The creature object.
+/// @param oCreature The creature object.
 void NWNX_Creature_JumpToLimbo(object oCreature);
 
 /// @brief Sets the critical hit multiplier modifier for the creature

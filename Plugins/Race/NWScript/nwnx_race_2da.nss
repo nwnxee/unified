@@ -11,7 +11,7 @@
 int NWNX_Race_GetModifierConstant(string raceMod);
 
 /// @ingroup race
-/// @brief Loops through racialtypes.2da and checks for a the column for racial modifications and sets them.
+/// @brief Loops through racialtypes.2da and checks for the column for racial modifications and sets them.
 /// @note Requires NWNX_Util_Get2DARowCount()
 /// @param sColumnName The column name in the racialtypes.2da that defines the 2da for the racial mods.
 void NWNX_Race_LoadRacialModifiers(string sColumnName = "RacialModsTable");
