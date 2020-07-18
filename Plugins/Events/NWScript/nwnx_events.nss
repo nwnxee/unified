@@ -1136,6 +1136,7 @@ void NWNX_Events_PushEventData(string tag, string data);
 
 /// Signals an event. This will dispatch a notification to all subscribed handlers.
 /// Returns TRUE if anyone was subscribed to the event, FALSE otherwise.
+/// @remark target will be available as OBJECT_SELF in subscribed event scripts.
 int NWNX_Events_SignalEvent(string evt, object target);
 
 /// Retrieves the event data for the currently executing script.
