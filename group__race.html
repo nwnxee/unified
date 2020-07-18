@@ -124,7 +124,7 @@ Setup</h2>
 <p>The <b>NWNX Race plugin does not provide modifications to ability scores</b>, use the <code>racialtypes.2da</code> columns for changing those.</p>
 <h3><a class="anchor" id="autotoc_md218"></a>
 The 2da Method</h3>
-<p>To use the 2da method, the builder must create a new column at the end of the <code>racialtypes.2da</code> named <b>RacialModsTable</b>. This column should then be populated with a string value that references another 2da file in which we will define our racial modifiers. Once that is done the builder needs to <b>include nwnx_race_2da and make sure to run <code><a class="el" href="group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e" title="Loops through racialtypes.2da and checks for a the column for racial modifications and sets them.">NWNX_Race_LoadRacialModifiers()</a></code> in their OnModuleLoad script</b>.</p>
+<p>To use the 2da method, the builder must create a new column at the end of the <code>racialtypes.2da</code> named <b>RacialModsTable</b>. This column should then be populated with a string value that references another 2da file in which we will define our racial modifiers. Once that is done the builder needs to <b>include nwnx_race_2da and make sure to run <code><a class="el" href="group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e" title="Loops through racialtypes.2da and checks for the column for racial modifications and sets them.">NWNX_Race_LoadRacialModifiers()</a></code> in their OnModuleLoad script</b>.</p>
 <p>For example, we've inserted a new race called <b>Aasimar</b> into <code>racialtypes.2da</code> at line 150. In the <code>RacialModsTable</code> column we enter <b>RACEMOD_AASIMAR</b> (Remember maximum 16 characters, case insensitive)</p>
 <p>We will now create and define our <code>racemod_aasimar.2da</code> file and enter appropriate lines for each modifier they will receive. The end result will look something like this:</p>
 <div class="fragment"><div class="line">2DA V2.0</div>
@@ -532,7 +532,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:gae2d72337de73db7e5cd65ad47ae73c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translate a modifier type from a string to its constant.  <a href="group__race.html#gae2d72337de73db7e5cd65ad47ae73c48">More...</a><br /></td></tr>
 <tr class="separator:gae2d72337de73db7e5cd65ad47ae73c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab804f90ff990b3ea62d3f37ee4cbbf1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e">NWNX_Race_LoadRacialModifiers</a> (string sColumnName=&quot;RacialModsTable&quot;)</td></tr>
-<tr class="memdesc:gab804f90ff990b3ea62d3f37ee4cbbf1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops through racialtypes.2da and checks for a the column for racial modifications and sets them.  <a href="group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e">More...</a><br /></td></tr>
+<tr class="memdesc:gab804f90ff990b3ea62d3f37ee4cbbf1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loops through racialtypes.2da and checks for the column for racial modifications and sets them.  <a href="group__race.html#gab804f90ff990b3ea62d3f37ee4cbbf1e">More...</a><br /></td></tr>
 <tr class="separator:gab804f90ff990b3ea62d3f37ee4cbbf1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -668,7 +668,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Loops through racialtypes.2da and checks for a the column for racial modifications and sets them. </p>
+<p>Loops through racialtypes.2da and checks for the column for racial modifications and sets them. </p>
 <dl class="section note"><dt>Note</dt><dd>Requires <a class="el" href="group__util.html#gaed488173b6e22ef52c888d8fe542440f" title="Gets the row count for a 2da.">NWNX_Util_Get2DARowCount()</a> </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1079,7 +1079,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Jul 12 2020 18:05:45 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Jul 18 2020 11:22:11 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
