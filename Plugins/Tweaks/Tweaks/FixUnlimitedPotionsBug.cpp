@@ -3,22 +3,6 @@
 #include "Services/Hooks/Hooks.hpp"
 #include "Utils.hpp"
 
-#include "API/C2DA.hpp"
-#include "API/CAppManager.hpp"
-#include "API/CExoString.hpp"
-#include "API/CNWSCombatRound.hpp"
-#include "API/CNWSCreature.hpp"
-#include "API/CNWSCreatureAppearanceInfo.hpp"
-#include "API/CNWSCreatureStats.hpp"
-#include "API/CNWSItem.hpp"
-#include "API/CNWItemProperty.hpp"
-#include "API/CNWSObjectActionNode.hpp"
-#include "API/CNWSpellArray.hpp"
-#include "API/CNWSRules.hpp"
-#include "API/CServerExoApp.hpp"
-#include "API/CTwoDimArrays.hpp"
-#include "API/CWorldTimer.hpp"
-#include "API/Vector.hpp"
 #include "API/Functions.hpp"
 
 namespace Tweaks {
