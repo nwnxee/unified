@@ -11,7 +11,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static bool s_bUsableItemRemoval = false;
-NWNXLib::Hooking::FunctionHook* s_AddEventDeltaTimeHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_AddEventDeltaTimeHook = nullptr;
 
 FixUnlimitedPotionsBug::FixUnlimitedPotionsBug(Services::HooksProxy* hooker)
 {
