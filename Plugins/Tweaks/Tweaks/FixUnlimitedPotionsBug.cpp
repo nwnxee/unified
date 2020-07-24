@@ -10,7 +10,7 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-bool s_bUsableItemRemoval = false;
+static bool s_bUsableItemRemoval = false;
 NWNXLib::Hooking::FunctionHook* s_AddEventDeltaTimeHook = nullptr;
 
 FixUnlimitedPotionsBug::FixUnlimitedPotionsBug(Services::HooksProxy* hooker)
