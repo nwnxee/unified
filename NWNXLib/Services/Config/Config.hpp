@@ -47,6 +47,38 @@ private:
     std::string m_moduleName;
 };
 
-#include "Services/Config/Config.inl"
+template <typename T>
+std::optional<T> ConfigProxy::Get(const std::string& key) const
+{
+    if constexpr (std::is_same_v<T, std::string>) {
+        return m_proxyBase.Get(m_moduleName, key);
+    }
+    else
+    {
+        auto opt = m_proxyBase.Get(m_moduleName, key);
+        return opt ? Utils::from_string<T>(*opt) : std::optional<T>();
+    }
+}
+
+template<typename T>
+T ConfigProxy::Get(const std::string& key, T&& def) const
+{
+    return Get<T>(key).value_or(std::forward<T>(def));
+}
+
+template <typename T>
+T ConfigProxy::Require(const std::string& key) const
+{
+    std::optional<T> r = Get<T>(key);
+
+    if (!r)
+    {
+        std::string resolvedKey = m_moduleName + "_" + key;
+        std::transform(std::begin(resolvedKey), std::end(resolvedKey), std::begin(resolvedKey), ::toupper);
+        throw std::runtime_error("Required config key missing or invalid: " + resolvedKey);
+    }
+
+    return r.value();
+}
 
 }

@@ -1,23 +1,33 @@
-# Changelog 
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.10...HEAD
+https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 
 ### Added
-N/A
+- ServerLogRedirector: added environment variable `NWNX_SERVERLOGREDIRECTOR_HIDE_VALIDATEGFFRESOURCE_MESSAGES` to hide `*** ValidateGFFResource sent by user.` messages from the NWNX log.
+- Events: added BroadcastSpellCast event to SpellEvents
+- Events: added TogglePause to InputEvents
 
 ##### New Plugins
 N/A
 
 ##### New NWScript Functions
-N/A
+- Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()
+- Creature: AddAssociate()
+- Object: GetDoorHasVisibleModel()
+- Object: GetIsDestroyable()
+- Object: GetCurrentHitPoints()
+- Player: SetCustomToken()
+- Player: SetCreatureNameOverride()
+- Util: CreateDoor()
 
 ### Changed
-N/A
+- Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.
+- Profiler: Corrected a typo preventing the retrieval of certain event data (OVERHEAD_COMPENSTION_FORCE -> OVERHEAD_COMPENSATION_FORCE). Note: breaking change.
 
 ### Deprecated
 N/A
@@ -26,19 +36,67 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Core: fixed NWNX ResourceDirectory init crashing on failed module load
+- ELC: fixed ELC not respecting `CHARGEN_BASE_ABILITY_*` ruleset.2da values
+- Weapon: fixed a nullptr reference crash in GetEpicWeaponDevastatingCritical()
+- Player: fixed possessed associates from losing their associate type on unpossess
 
-## 8193.9
+## 8193.13
+https://github.com/nwnxee/unified/compare/build8193.12...build8193.13
+
+### Added
+
+##### New NWScript Functions
+- Creature: JumpToLimbo()
+
+### Fixed
+- SkillRanks: Now respects ruleset.2da values.
+
+## 8193.12
+https://github.com/nwnxee/unified/compare/build8193.11...build8193.12
+
+### Added
+- Events: added QuickbarSetButton event to QuickbarEvents
+- Events: added Calendar events for change in Hour, Day, Month, Year, and Dawn/Dusk.
+- Tweaks: `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS` to enable a fix for effects losing the caster level vs. dispel checks when the effect creator is deleted.
+- Tweaks: `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS` to automatically add caster levels from prestige classes based on the {Arc|Div}SpellLvlMod columns in classes.2da
+
+##### New NWScript Functions
+- Creature: GetFlatFooted()
+- Creature: {Serialize|Deserialize}Quickbar()
+- Creature: {Get|Set}CasterLevelModifier() and {Get|Set}CasterLevelOverride()
+- Object: ClearSpellEffectsOnOthers()
+- Object: PeekUUID()
+
+### Changed
+- ELC: Updated with recent changes.
+
+## 8193.11
+https://github.com/nwnxee/unified/compare/build8193.10...build8193.11
+
+### Added
+- Events: Added Keyboard Input event to InputEvents
+- Events: Added Use Item validation event to allow control of item use restrictions, and unusable red inventory highlight.
+- Events: Added Equip Item validation event to allow control of item equip restrictions.
+- Events: Added OnExportCharacter event to ClientEvents
+
+### Changed
+- Events: "You cannot use that item" feedback can now be suppressed for skipped Use Item events by setting the event result to 1
+- Rename: Added the environment variable `NWNX_RENAME_OVERWRITE_DISPLAY_NAME` to control whether display names should be overwritten globally (for scripts and DMs) when global override is set. Then new default is now `false`, meaning that global overrides are only applied to players, and DMs and scripts see the original name by default.
+- Core: Stack traces will now resolve base game functions
+
+### Fixed
+- MaxLevel: Fixed a crash when a PC had exactly 41 levels in bard/sorcerer.
+- Player: NWNX_Player_SetPlaceableNameOverride() once again updates in realtime.
+
+## 8193.10
 https://github.com/nwnxee/unified/compare/build8193.9...build8193.10
 
 ### Added
 - SQL: Added optional support for object storage in binary fields via an optional parameter `base64` in `NWNX_SQL_PreparedObjectFull` and `NWNX_SQL_ReadFullObjectInActiveRow`
 - Events: Added OnServerCharacterSave events to ClientEvents. Called when a server vault character will be saved either manually, or when the server saves/exits.
 - ELC: Added `NWNX_ON_ELC_VALIDATE_CHARACTER_{BEFORE|AFTER}` events, can be subscribed to with NWNX_Events.
-- Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now 
-
-##### New Plugins
-N/A
+- Events: Added skippable CastSpell event to InputEvents, the WalkToWayPoint and AttackObject events are also skippable now
 
 ##### New NWScript Functions
 - Creature: GetFeatGrantLevel()
@@ -49,27 +107,15 @@ N/A
 - Object: AcquireItem()
 - Object: SetFacing()
 
-### Changed
-N/A
-
 ### Deprecated
 - Creature: Get{Domain|Specialization}
 
-### Removed
-N/A
-
-### Fixed
-N/A
-
-## 8193.7
+## 8193.9
 https://github.com/nwnxee/unified/compare/build8193.7...build8193.9
 
 ### Added
 - SQL: `NWNX_SQL_PORT` to set the port used for MySQL database connections.
 - Events: Added OnResource{Added|Removed|Modified} events to ResourceEvents, these events fire when a file gets added/removed/modified in the /nwnx or /development folders
-
-##### New Plugins
-N/A
 
 ##### New NWScript Functions
 - Administration: GetServerName()
@@ -81,9 +127,6 @@ N/A
 ### Changed
 - Core: the console commands `eval` and `evalx` will now provide an error message if the script chunk fails to execute.
 - Damage: Added a Ranged flag to NWNX_Damage_DealDamage()
-
-### Deprecated
-N/A
 
 ### Removed
 - Tweaks: Removed scroll learning freeze bugfix.
@@ -100,7 +143,7 @@ https://github.com/nwnxee/unified/compare/build8193.6...build8193.7
 - Core: `NWNX_CORE_LOG_DATE` variable to add the date in Y-M-D format to the timestamp. Timestamps must be enabled. Default: Off
 - Tweaks: `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE` to revert the cost of items with charges to 1.69 values
 - Core: `NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH` variable to override the default path of the UserDirectory/nwnx folder
- 
+
 ##### New Plugins
 - Optimizations: Tweaks that (potentially) improve performance
     - AsyncLogFlush to asynchronously flush the game log to disk
@@ -140,7 +183,7 @@ https://github.com/nwnxee/unified/compare/build8193.5...build8193.6
 - Util: RemoveNWNXResourceFile()
 
 ### Changed
-- Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis 
+- Object: Renamed {Get|Set|Delete}Persistent{Int|String|Float}() to {Get|Set|Delete}{Int|String|Float}() and added a parameter to the latter to allow persisting of variables on a case-by-case basis
 - Util: `NWNX_UTIL_PRE_MODULE_START_SCRIPT_CHUNK` will now provide an error message if it fails to run a script chunk
 
 ### Deprecated

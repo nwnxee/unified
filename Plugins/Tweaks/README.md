@@ -22,6 +22,9 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_PRESERVE_ACTIONS_ON_DM_POSSESS`: true or false
 * `NWNX_TWEAKS_FIX_GREATER_SANCTUARY_BUG`: true or false
 * `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE`: Between 1 and 3
+* `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS`: true or false
+* `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS`: true or false
+* `NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG`: true or false
 
 ## Environment variable values
 

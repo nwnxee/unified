@@ -65,7 +65,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     if (config->Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
     {
-        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSTION_FORCE");
+        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSATION_FORCE");
 
         if (forcedOverhead)
         {
@@ -148,14 +148,14 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     {
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
-        [this, sum](std::vector<std::string> message)
+        [this, sum](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 1);
-            SetPerfScopeResampler(std::move(message[0]));
+            SetPerfScopeResampler(message[0]);
         });
 
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_PUSH_PERF_SCOPE",
-            [this](std::vector<std::string> message)
+            [this](const std::vector<std::string>& message)
             {
                 ASSERT(message.size() >= 1);
                 ASSERT(message.size() % 2 == 1);
@@ -172,7 +172,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
             });
 
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_POP_PERF_SCOPE",
-            [this](std::vector<std::string>)
+            [this](const std::vector<std::string>&)
             {
                 PopPerfScope();
             });
@@ -206,7 +206,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
         });
 }
 
-void Profiler::SetPerfScopeResampler(std::string&& name)
+void Profiler::SetPerfScopeResampler(const std::string& name)
 {
     Services::Resamplers::ResamplerFuncPtr sum = &Services::Resamplers::template Sum<int64_t>;
     GetServices()->m_metrics->SetResampler(name, sum, std::chrono::seconds(1));

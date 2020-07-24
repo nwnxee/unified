@@ -11,7 +11,7 @@ SET (LUAJIT_LIBRARY_NAME luajit-5.1)
 SET (LUAJIT_INCLUDE_DIRS /usr/include/luajit-2.0 /usr/include/luajit-2.1 /usr/local/include/luajit-2.0 /usr/local/include/luajit-2.1)
 
 
-FIND_PATH (LUAJIT_INCLUDE_DIR lua.h ${LUAJIT_INCLUDE_DIRS} )
+FIND_PATH (LUAJIT_INCLUDE_DIR luajit.h ${LUAJIT_INCLUDE_DIRS} )
 FIND_LIBRARY (LUAJIT_LIBRARY NAMES ${LUAJIT_LIBRARY_NAME} PATHS /usr/lib /usr/local/lib)
 
 IF (LUAJIT_INCLUDE_DIR AND LUAJIT_LIBRARY)

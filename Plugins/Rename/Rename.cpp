@@ -76,6 +76,7 @@ Rename::Rename(const Plugin::CreateParams& params)
     m_RenameOnPlayerList = GetServices()->m_config->Get<bool>("ON_PLAYER_LIST", true);
     m_RenameAllowDM = GetServices()->m_config->Get<bool>("ALLOW_DM", false);
     m_RenameAnonymousPlayerName = GetServices()->m_config->Get<std::string>("ANONYMOUS_NAME", "Someone");
+    m_RenameOverwriteDisplayName = GetServices()->m_config->Get<bool>("OVERWRITE_DISPLAY_NAME", false);
 
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage31WriteGameObjUpdate_UpdateObjectEP10CNWSPlayerP10CNWSObjectP17CLastUpdateObjectjj,
             int32_t, CNWSMessage *, CNWSPlayer *, CNWSObject *, CLastUpdateObject *, uint32_t, uint32_t>(
@@ -227,7 +228,8 @@ void Rename::RestorePlayerName(CNWSCreature *targetCreature, bool playerList)
             targetCreature->m_pStats->m_lsLastName = lsLastName;
         }
 
-        if (g_plugin->m_RenamePlayerNames[targetCreature->m_idSelf].count(Constants::OBJECT_INVALID))
+        if (g_plugin->m_RenameOverwriteDisplayName &&
+            g_plugin->m_RenamePlayerNames[targetCreature->m_idSelf].count(Constants::OBJECT_INVALID))
         {
             targetCreature->m_sDisplayName = std::get<0>(g_plugin->m_RenamePlayerNames[targetCreature->m_idSelf][Constants::OBJECT_INVALID]);
         }

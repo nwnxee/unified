@@ -28,6 +28,7 @@
 #include "API/CExoArrayList.hpp"
 
 #include <sstream>
+#include <math.h>
 
 namespace NWNXLib::Utils {
 
@@ -43,7 +44,7 @@ std::string ObjectIDToString(const ObjectID id)
 std::string GetCurrentScript()
 {
     auto *pVM = API::Globals::VirtualMachine();
-    if (!pVM || !pVM->m_pVirtualMachineScript || pVM->m_nRecursionLevel < 0)
+    if (!pVM || pVM->m_nRecursionLevel < 0)
         return std::string("");
 
     auto& script = pVM->m_pVirtualMachineScript[pVM->m_nRecursionLevel];
@@ -432,6 +433,20 @@ int PopScriptContext()
     }
 
     return vm->m_cRunTimeStack.GetStackPointer();
+}
+
+void SetOrientation(CNWSObject *pObject, float facing)
+{
+    if (!pObject)
+        return;
+
+    float radians = facing * (M_PI / 180);
+    auto vOrientation = Vector{cos(radians), sin(radians), 0.0f};
+
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
+        pPlaceable->SetOrientation(vOrientation);
+    else
+        pObject->SetOrientation(vOrientation);
 }
 
 }

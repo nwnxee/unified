@@ -9,6 +9,7 @@
 #include "API/Globals.hpp"
 #include "Events.hpp"
 #include "Utils.hpp"
+#include <cmath>
 
 namespace Events {
 
@@ -21,15 +22,22 @@ static Hooking::FunctionHook* s_OpenInventoryHook;
 static Hooking::FunctionHook* s_CloseInventoryHook;
 static Hooking::FunctionHook* s_FindItemWithBaseItemIdHook;
 static Hooking::FunctionHook* s_LearnScrollHook;
+static Hooking::FunctionHook* s_CanEquipItemHook;
 static Hooking::FunctionHook* s_RunEquipHook;
 static Hooking::FunctionHook* s_RunUnequipHook;
 static Hooking::FunctionHook* s_ItemEventHandlerHook;
 static Hooking::FunctionHook* s_UseLoreOnItemHook;
 static Hooking::FunctionHook* s_PayToIdenfifyItemHook;
 static Hooking::FunctionHook* s_SplitItemHook;
+static Hooking::FunctionHook* s_CanUseItemHook;
 
 ItemEvents::ItemEvents(Services::HooksProxy* hooker)
 {
+    Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_USE_ITEM_.*", [hooker]() {
+            hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi>(&CanUseItemHook);
+        s_CanUseItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi);
+        });
+
     Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", [hooker]() {
         s_UseItemHook = hooker->RequestExclusiveHook
             <API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorj>
@@ -59,6 +67,11 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
             <API::Functions::_ZN12CNWSCreature11LearnScrollEj>
             (&LearnScrollHook);
     });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_ITEM_EQUIP_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer>(&CanEquipItemHook);
+        s_CanEquipItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer);
+        });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_EQUIP_.*", [hooker]() {
         s_RunEquipHook = hooker->RequestExclusiveHook
@@ -97,6 +110,27 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
     });
 }
 
+int32_t ItemEvents::CanUseItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, int32_t bIgnoreIdentifiedFlag)
+{
+    int32_t retVal;
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
+
+    std::string itemId = Utils::ObjectIDToString(pItem->m_idSelf);
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    retVal = Events::SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
+        ? s_CanUseItemHook->CallOriginal<int32_t>(thisPtr, pItem, bIgnoreIdentifiedFlag) : sBeforeEventResult == "1";
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
+    Events::SignalEvent("NWNX_ON_VALIDATE_USE_ITEM_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
+
+    retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
+
+    return retVal;
+}
+
 int32_t ItemEvents::UseItemHook(
     CNWSCreature* thisPtr,
     ObjectID item,
@@ -107,6 +141,7 @@ int32_t ItemEvents::UseItemHook(
     ObjectID area)
 {
     int32_t retVal;
+    std::string result;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString(item));
@@ -116,7 +151,7 @@ int32_t ItemEvents::UseItemHook(
         Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
         Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
         Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));
-    return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    return Events::SignalEvent(ev, thisPtr->m_idSelf, &result);
     };
 
     if (PushAndSignal("NWNX_ON_USE_ITEM_BEFORE"))
@@ -125,7 +160,7 @@ int32_t ItemEvents::UseItemHook(
     }
     else
     {
-        retVal = false;
+        retVal = atoi(result.c_str()) == 1;
     }
 
     PushAndSignal("NWNX_ON_USE_ITEM_AFTER");
@@ -270,6 +305,31 @@ int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, ObjectID oidScrollToL
     }
 
     PushAndSignal("NWNX_ON_ITEM_SCROLL_LEARN_AFTER");
+
+    return retVal;
+}
+
+int32_t ItemEvents::CanEquipItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, uint32_t* pEquipToSlot, int32_t bEquipping, int32_t bLoading, int32_t bDisplayFeedback, CNWSPlayer* pFeedbackPlayer)
+{
+    int32_t retVal;
+    std::string sBeforeEventResult;
+    std::string sAfterEventResult;
+
+    std::string itemId = Utils::ObjectIDToString(pItem->m_idSelf);
+    std::string invSlot = std::to_string((uint32_t) std::round(log2(*pEquipToSlot)));
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    Events::PushEventData("SLOT", invSlot);
+
+    retVal = Events::SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_BEFORE", thisPtr->m_idSelf, &sBeforeEventResult)
+        ? s_CanEquipItemHook->CallOriginal<int32_t>(thisPtr, pItem, pEquipToSlot, bEquipping, bLoading, bDisplayFeedback, pFeedbackPlayer) : sBeforeEventResult == "1";
+
+    Events::PushEventData("ITEM_OBJECT_ID", itemId);
+    Events::PushEventData("SLOT", invSlot);
+    Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
+    Events::SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
+
+    retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
 
     return retVal;
 }

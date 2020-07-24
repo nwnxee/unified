@@ -63,10 +63,17 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 /// @remark This is the counterpart to ObjectToString.
 object NWNX_Object_StringToObject(string id);
 
-/// @brief Set an object's position.
+/// @brief Set oObject's position.
+/// @param oObject The object.
+/// @param vPosition A vector position.
+/// @param bUpdateSubareas If TRUE and oObject is a creature, any triggers/traps at vPosition will fire their events.
+void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE);
+
+/// @brief Get an object's hit points.
+/// @note Unlike the native GetCurrentHitpoints function, this excludes temporary hitpoints.
 /// @param obj The object.
-/// @param pos A vector position.
-void NWNX_Object_SetPosition(object obj, vector pos);
+/// @return The hit points.
+int NWNX_Object_GetCurrentHitPoints(object obj);
 
 /// @brief Set an object's hit points.
 /// @param obj The object.
@@ -101,16 +108,16 @@ string NWNX_Object_GetDialogResref(object obj);
 /// @param dialog The name of the dialog resref.
 void NWNX_Object_SetDialogResref(object obj, string dialog);
 
-/// @brief Set an object's appearance.
+/// @brief Set oPlaceable's appearance.
 /// @note Will not update for PCs until they re-enter the area.
-/// @param obj The object.
-/// @param app The appearance id.
-void NWNX_Object_SetAppearance(object obj, int app);
+/// @param oPlaceable The placeable.
+/// @param nAppearance The appearance id.
+void NWNX_Object_SetAppearance(object oPlaceable, int nAppearance);
 
-/// @brief Get an object's appearance.
-/// @param obj The object.
+/// @brief Get oPlaceable's appearance.
+/// @param oPlaceable The placeable.
 /// @return The appearance id.
-int NWNX_Object_GetAppearance(object obj);
+int NWNX_Object_GetAppearance(object oPlaceable);
 
 /// @brief Determine if an object has a visual effect.
 /// @param obj The object.
@@ -341,6 +348,25 @@ int NWNX_Object_AcquireItem(object oObject, object oItem);
 /// @param fDirection The direction the object should face
 void NWNX_Object_SetFacing(object oObject, float fDirection);
 
+/// @brief Clear all spell effects oObject has applied to others.
+/// @param oObject The object that applied the spell effects.
+void NWNX_Object_ClearSpellEffectsOnOthers(object oObject);
+
+/// @brief Peek at the UUID of oObject without assigning one if it does not have one
+/// @param oObject The object
+/// @return The UUID or "" when the object does not have or cannot have an UUID
+string NWNX_Object_PeekUUID(object oObject);
+
+/// @brief Get if oDoor has a visible model.
+/// @param oDoor The door
+/// @return TRUE if oDoor has a visible model
+int NWNX_Object_GetDoorHasVisibleModel(object oDoor);
+
+/// @brief Get if oObject is destroyable.
+/// @param oObject The object
+/// @return TRUE if oObject is destroyable.
+int NWNX_Object_GetIsDestroyable(object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -376,16 +402,27 @@ object NWNX_Object_StringToObject(string id)
     return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPosition(object obj, vector pos)
+void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE)
 {
     string sFunc = "SetPosition";
 
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.x);
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.y);
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.z);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bUpdateSubareas);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.x);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.z);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetCurrentHitPoints(object creature)
+{
+    string sFunc = "GetCurrentHitPoints";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, creature);
     NWNX_CallFunction(NWNX_Object, sFunc);
 
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
 void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
@@ -448,23 +485,23 @@ void NWNX_Object_SetDialogResref(object obj, string dialog)
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetAppearance(object obj, int app)
+void NWNX_Object_SetAppearance(object oPlaceable, int nAppearance)
 {
     string sFunc = "SetAppearance";
 
-    NWNX_PushArgumentInt(NWNX_Object, sFunc, app);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nAppearance);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oPlaceable);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-int NWNX_Object_GetAppearance(object obj)
+int NWNX_Object_GetAppearance(object oPlaceable)
 {
     string sFunc = "GetAppearance";
 
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
-
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oPlaceable);
     NWNX_CallFunction(NWNX_Object, sFunc);
+
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
@@ -809,4 +846,42 @@ void NWNX_Object_SetFacing(object oObject, float fDirection)
     NWNX_PushArgumentFloat(NWNX_Object, sFunc, fDirection);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_ClearSpellEffectsOnOthers(object oObject)
+{
+    string sFunc = "ClearSpellEffectsOnOthers";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+string NWNX_Object_PeekUUID(object oObject)
+{
+    string sFunc = "PeekUUID";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetDoorHasVisibleModel(object oDoor)
+{
+    string sFunc = "GetDoorHasVisibleModel";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oDoor);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetIsDestroyable(object oObject)
+{
+    string sFunc = "GetIsDestroyable";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }

@@ -32,7 +32,8 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static bool printString;
+static bool s_printString;
+static bool s_hideValidateGFFResourceMessage;
 
 ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
     : Plugin(params)
@@ -45,7 +46,9 @@ ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
         void, CExoDebugInternal*, CExoString*>(&WriteToErrorFileHook);
 
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
-        int32_t>(+[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t){ printString = before; });
+        int32_t>(+[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t){ s_printString = before; });
+
+    s_hideValidateGFFResourceMessage = GetServices()->m_config->Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
 }
 
 ServerLogRedirector::~ServerLogRedirector()
@@ -56,7 +59,7 @@ inline std::string TrimMessage(CExoString* message)
 {
     std::string s = std::string(message->CStr());
 
-    if (!printString)
+    if (!s_printString)
     {
         // Eat the auto-added timestamp.
         auto idxOfBracket = s.find_first_of(']');
@@ -72,7 +75,18 @@ void ServerLogRedirector::WriteToLogFileHook(bool before, CExoDebugInternal*, CE
     if (before)
     {
         std::string str = TrimMessage(message);
-        LOG_INFO("(Server) %s", str);
+
+        if (s_hideValidateGFFResourceMessage)
+        {
+            if(str.find("*** ValidateGFFResource sent by user.") == std::string::npos)
+            {
+                LOG_INFO("(Server) %s", str);
+            }
+        }
+        else
+        {
+            LOG_INFO("(Server) %s", str);
+        }
     }
 }
 

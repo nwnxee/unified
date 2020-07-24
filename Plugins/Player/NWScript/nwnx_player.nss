@@ -289,6 +289,19 @@ int NWNX_Player_GetLanguage(object oPlayer);
 /// @param sNewResName The new res name or "" to clear a previous override, 16 characters or less.
 void NWNX_Player_SetResManOverride(object oPlayer, int nResType, string sOldResName, string sNewResName);
 
+/// @brief Set nCustomTokenNumber to sTokenValue for oPlayer only.
+/// @note The basegame SetCustomToken() will override any personal tokens.
+/// @param oPlayer The player object.
+/// @param nCustomTokenNumber The token number.
+/// @param sTokenValue The token text.
+void NWNX_Player_SetCustomToken(object oPlayer, int nCustomTokenNumber, string sTokenValue);
+
+/// @brief Override the name of creature for player only
+/// @param oPlayer The player object.
+/// @param oCreature The creature object.
+/// @param sName The name for the creature for this player, "" to clear the override.
+void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, string sName);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -713,6 +726,28 @@ void NWNX_Player_SetResManOverride(object oPlayer, int nResType, string sOldResN
     NWNX_PushArgumentString(NWNX_Player, sFunc, sNewResName);
     NWNX_PushArgumentString(NWNX_Player, sFunc, sOldResName);
     NWNX_PushArgumentInt(NWNX_Player, sFunc, nResType);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetCustomToken(object oPlayer, int nCustomTokenNumber, string sTokenValue)
+{
+    string sFunc = "SetCustomToken";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sTokenValue);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nCustomTokenNumber);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, string sName)
+{
+    string sFunc = "SetCreatureNameOverride";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sName);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oCreature);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);

@@ -2,6 +2,8 @@
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
@@ -17,6 +19,7 @@ using namespace NWNXLib::API::Constants;
 static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerInputWalkToWaypointHook;
 static NWNXLib::Hooking::FunctionHook* s_AddAttackActionsHook;
 static NWNXLib::Hooking::FunctionHook* s_AddCastSpellActionsHook;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerInputMessageHook;
 
 InputEvents::InputEvents(Services::HooksProxy* hooker)
 {
@@ -40,6 +43,11 @@ InputEvents::InputEvents(Services::HooksProxy* hooker)
         s_AddCastSpellActionsHook = hooker->RequestExclusiveHook
             <API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih>
             (&AddCastSpellActionsHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE)_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh>(&HandlePlayerToServerInputMessageHook);
+        s_HandlePlayerToServerInputMessageHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh);
     });
 }
 
@@ -167,6 +175,110 @@ int32_t InputEvents::AddCastSpellActionsHook(CNWSCreature *pCreature, uint32_t n
     PushAndSignal("NWNX_ON_INPUT_CAST_SPELL_AFTER");
 
     return retVal;
+}
+
+int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)
+{
+    static std::unordered_map<ObjectID, bool> skipDriveActionEvent;
+
+    switch (nMinor)
+    {
+        case Constants::MessageInputMinor::TurnOnSpot:
+        {
+            auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject));
+
+            if (!pCreature)
+                return s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+            int32_t retVal;
+            auto floatX = Utils::PeekMessage<float>(pMessage, 0);
+            auto floatY = Utils::PeekMessage<float>(pMessage, 4);
+
+            Vector oldOrientation = pCreature->m_vOrientation;
+            Vector newOrientation = {floatX, floatY, 0.0f};
+            bool bClockwise = oldOrientation.y * newOrientation.x > oldOrientation.x * newOrientation.y;
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                Events::PushEventData("KEY", bClockwise ? "D" : "A");
+
+                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_BEFORE");
+            retVal = s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_AFTER");
+
+            return retVal;
+        }
+
+        case Constants::MessageInputMinor::DriveControl:
+        {
+            if (skipDriveActionEvent[pPlayer->m_oidNWSObject])
+                return s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+
+            int32_t retVal;
+            std::string key;
+            auto driveFlags = Utils::PeekMessage<uint8_t>(pMessage, 14);
+
+            switch (driveFlags)
+            {
+                case 2: key = "S"; break;
+                case 3: key = "W"; break;
+                case 4: key = "Q"; break;
+                case 8: key = "E"; break;
+
+                default:
+                    return s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            }
+
+            skipDriveActionEvent[pPlayer->m_oidNWSObject] = true;
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                Events::PushEventData("KEY", key);
+
+                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_BEFORE");
+            retVal = s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            PushAndSignal("NWNX_ON_INPUT_KEYBOARD_AFTER");
+
+            return retVal;
+        }
+
+        case Constants::MessageInputMinor::AbortDriveControl:
+        {
+            skipDriveActionEvent[pPlayer->m_oidNWSObject] = false;
+            return s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+        }
+
+        case Constants::MessageInputMinor::TogglePauseRequest:
+        {
+            int32_t retVal;
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                Events::PushEventData("PAUSE_STATE", std::to_string(!Globals::AppManager()->m_pServerExoApp->GetPauseState(2/*DM Pause*/)));
+
+                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            if (PushAndSignal("NWNX_ON_INPUT_TOGGLE_PAUSE_BEFORE"))
+            {
+                retVal = s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal("NWNX_ON_INPUT_TOGGLE_PAUSE_AFTER");
+
+            return retVal;
+        }
+
+        default:
+            return s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+    }
 }
 
 }

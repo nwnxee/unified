@@ -20,6 +20,7 @@ using namespace NWNXLib::Services;
 static NWNXLib::Hooking::FunctionHook* m_ServerCharacterSaveHook;
 static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCharListHook;
 static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
+static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerModule_ExportReplyHook;
 
 ClientEvents::ClientEvents(HooksProxy* hooker)
 {
@@ -44,6 +45,11 @@ ClientEvents::ClientEvents(HooksProxy* hooker)
         m_CheckStickyPlayerNameReservedHook = hooker->RequestExclusiveHook
             <API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i, int32_t, CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>
             (&CheckStickyPlayerNameReservedHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_EXPORT_CHARACTER_.*", [hooker]() {
+        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage36SendServerToPlayerModule_ExportReplyEP10CNWSPlayer>(&SendServerToPlayerModule_ExportReplyHook);
+        m_SendServerToPlayerModule_ExportReplyHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage36SendServerToPlayerModule_ExportReplyEP10CNWSPlayer);
     });
 }
 
@@ -149,6 +155,24 @@ int32_t ClientEvents::CheckStickyPlayerNameReservedHook(
     PushAndSignal("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER");
     return retVal;
 
+}
+
+int32_t ClientEvents::SendServerToPlayerModule_ExportReplyHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer)
+{
+    int32_t retVal;
+
+    if (Events::SignalEvent("NWNX_ON_CLIENT_EXPORT_CHARACTER_BEFORE", pPlayer->m_oidNWSObject))
+    {
+        retVal = m_SendServerToPlayerModule_ExportReplyHook->CallOriginal<int32_t>(pMessage, pPlayer);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    Events::SignalEvent("NWNX_ON_CLIENT_EXPORT_CHARACTER_AFTER", pPlayer->m_oidNWSObject);
+
+    return retVal;
 }
 
 }

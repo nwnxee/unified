@@ -604,7 +604,7 @@ int32_t Weapon::GetEpicWeaponDevastatingCritical(CNWSCreatureStats* pStats, CNWS
         CNWSCombatRound      *pCombatRound = pCreature->m_pcCombatRound;
         CNWSCombatAttackData *pAttackData  = pCombatRound->GetAttack(pCombatRound->m_nCurrentAttack);
 
-        plugin.m_DCData.oidWeapon = pWeapon->m_idSelf;
+        plugin.m_DCData.oidWeapon = pWeapon ? pWeapon->m_idSelf : Constants::OBJECT_INVALID;
         plugin.m_DCData.oidTarget = pCreature->m_oidAttackTarget;
         plugin.m_DCData.nDamage   = pAttackData->GetTotalDamage(1);
         plugin.m_DCData.bBypass   = false;
@@ -706,7 +706,7 @@ int32_t Weapon::GetDamageBonus(CNWSCreatureStats* pStats, CNWSCreature *pCreatur
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterWeaponSpecializationDamageBonus;
+        nBonus += plugin.m_GreaterWeaponSpecializationDamageBonus;
     }
 
     return nBonus;
@@ -738,7 +738,7 @@ int32_t Weapon::GetRangedDamageBonus(CNWSCreatureStats* pStats)
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nBonus+=plugin.m_GreaterWeaponSpecializationDamageBonus;
+        nBonus += plugin.m_GreaterWeaponSpecializationDamageBonus;
     }
 
     return nBonus;
@@ -775,7 +775,7 @@ int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature*
 
     if (feat > -1 && pStats->HasFeat(feat))
     {
-        return nMod+=plugin.m_GreaterFocusAttackBonus;
+        nMod += plugin.m_GreaterFocusAttackBonus;
     }
 
     return nMod;

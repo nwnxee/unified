@@ -50,6 +50,8 @@ private:
     ArgumentStack GetPlatformId                     (ArgumentStack&& args);
     ArgumentStack GetLanguage                       (ArgumentStack&& args);
     ArgumentStack SetResManOverride                 (ArgumentStack&& args);
+    ArgumentStack SetCustomToken                    (ArgumentStack&& args);
+    ArgumentStack SetCreatureNameOverride           (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

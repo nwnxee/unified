@@ -75,16 +75,16 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules13LoadSkillInfoEv, void, CNWRules*>(&LoadSkillInfoHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules15LoadRulesetInfoEv, void, CNWRules*>(&LoadRulesetInfoHook);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti,
-        int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
+        char, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
 }
 
 SkillRanks::~SkillRanks()
 {
 }
 
-void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
+void SkillRanks::LoadRulesetInfoHook(bool before, CNWRules* pRules)
 {
     // We only want to do this in the AFTER
     if (before || !pRules)
@@ -93,7 +93,7 @@ void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
     g_plugin->m_blindnessMod = pRules->GetRulesetIntEntry("BLIND_PENALTY_TO_SKILL_CHECK", 4);
 
     g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
-                                                           [](const std::vector<std::string> message)
+                                                           [](const std::vector<std::string>& message)
                                                            {
                                                                auto nSkill = std::stoi(message[0]);
                                                                auto nRace = std::stoi(message[1]);
@@ -559,7 +559,7 @@ void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
     }
 }
 
-int32_t SkillRanks::GetSkillRankHook(
+char SkillRanks::GetSkillRankHook(
         CNWSCreatureStats* thisPtr,
         uint8_t nSkill,
         CNWSObject* pVersus,
@@ -694,7 +694,11 @@ int32_t SkillRanks::GetSkillRankHook(
     if (pArea)
     {
         auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-        retVal += *pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill));
+        if(auto areaMod = pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill))) 
+        {
+            retVal += *areaMod;
+        }
+
     }
 
     if (!bHasOverrideKeyAbilityFeat)

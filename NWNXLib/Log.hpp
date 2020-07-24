@@ -89,8 +89,8 @@ void SetAsync(NWNXLib::Services::Tasks* tasks);
 
 }
 
-class CExoString;
-class CResRef;
+struct CExoString;
+struct CResRef;
 
 std::ostream& operator<<(std::ostream& out, const CExoString& str);
 std::ostream& operator<<(std::ostream& out, const CResRef& str);

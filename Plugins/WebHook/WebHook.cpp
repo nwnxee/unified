@@ -116,6 +116,9 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
             auto res = cli->second->post(path.c_str(), message, "application/json");
             g_plugin->GetServices()->m_tasks->QueueOnMainThread([message, host, path, origPath, res]()
             {
+                if (Core::g_CoreShuttingDown)
+                    return;
+
                 auto messaging = g_plugin->GetServices()->m_messaging.get();
                 auto moduleOid = NWNXLib::Utils::ObjectIDToString(Utils::GetModule()->m_idSelf);
 

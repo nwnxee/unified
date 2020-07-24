@@ -74,4 +74,6 @@ void AddDestroyObjectEvent(ObjectID oid);
 int PushScriptContext(ObjectID oid, bool valid = true);
 int PopScriptContext();
 
+void SetOrientation(CNWSObject *pObject, float facing);
+
 }

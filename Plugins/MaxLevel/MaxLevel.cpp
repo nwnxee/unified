@@ -319,7 +319,7 @@ uint8_t MaxLevel::GetSpellsKnownPerLevelHook(CNWClass *pClass, uint8_t nLevel, u
             spellLevelsPerLevel = g_plugin->m_nSpellLevelsPerLevelAdded[pClass->m_nName][nLevel - 1];
             spellsKnownPerSpellLevel = g_plugin->m_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel];
             if (nLevel == CORE_MAX_LEVEL + 1)
-                spellsKnownPreviousSpellLevel = pClass->m_lstSpellKnownTable[CORE_MAX_LEVEL][nSpellLevel - 1];
+                spellsKnownPreviousSpellLevel = pClass->m_lstSpellKnownTable[CORE_MAX_LEVEL - 1][nSpellLevel - 1];
             else
                 spellsKnownPreviousSpellLevel = g_plugin->m_nSpellKnownTableAdded[pClass->m_nName][nLevel - 1][nSpellLevel - 1];
         }

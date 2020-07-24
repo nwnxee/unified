@@ -536,7 +536,7 @@ ArgumentStack Area::CreateTransition(ArgumentStack&& args)
         ASSERT_OR_THROW(vTransitionPosition.x < pArea->m_nWidth * 10.0f);
         vTransitionPosition.y = Services::Events::ExtractArgument<float>(args);
         ASSERT_OR_THROW(vTransitionPosition.y >= 0.0f);
-        ASSERT_OR_THROW(vTransitionPosition.x < pArea->m_nHeight * 10.0f);
+        ASSERT_OR_THROW(vTransitionPosition.y < pArea->m_nHeight * 10.0f);
         vTransitionPosition.z = Services::Events::ExtractArgument<float>(args);
 
         const auto size = Services::Events::ExtractArgument<float>(args);
@@ -678,13 +678,12 @@ ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
         }
         else
         {
-            LOG_ERROR("NWNX_Area_GetTileName: invalid tile specified");
+            LOG_ERROR("NWNX_Area_GetTileModelResRef: invalid tile specified");
         }
     }
 
     return Services::Events::Arguments(retVal);
 }
-
 
 ArgumentStack Area::TestDirectLine(ArgumentStack&& args)
 {

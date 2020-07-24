@@ -101,8 +101,6 @@ const int32_t STRREF_CUSTOM                                 = 164;
 const int32_t NUM_CREATURE_ITEM_SLOTS       = 4;
 const int32_t NUM_MULTICLASS                = 3;
 const int32_t CHARACTER_EPIC_LEVEL          = 21;
-const int32_t MIN_STARTING_ABILITY_VALUE    = 8;
-const int32_t MAX_STARTING_ABILITY_VALUE    = 18;
 const int32_t NUM_SPELL_LEVELS              = 10;
 
 
@@ -497,10 +495,13 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             nAbility[nAbilityGain]--;
     }
 
+    static int32_t charGenBaseAbilityMin = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MIN", 8);
+    static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MAX", 18);
+
     // Check if >18 in an ability
     for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
     {
-        if (nAbility[nAbilityIndex] > MAX_STARTING_ABILITY_VALUE)
+        if (nAbility[nAbilityIndex] > charGenBaseAbilityMax)
         {
             if (auto strrefFailure = HandleValidationFailure(
                     ValidationFailureType::Character,
@@ -515,13 +516,17 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     // Point Buy System calculation
     uint8_t nAbilityAtLevel[6] = {0};
     uint8_t nPointBuy = pRace->m_nAbilitiesPointBuyNumber;
+
+    static int32_t abilityCostIncrement2 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT2", 14);
+    static int32_t abilityCostIncrement3 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT3", 16);
+
     for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
     {
         nAbilityAtLevel[nAbilityIndex] = nAbility[nAbilityIndex];
 
-        while (nAbility[nAbilityIndex] > MIN_STARTING_ABILITY_VALUE)
+        while (nAbility[nAbilityIndex] > charGenBaseAbilityMin)
         {
-            if (nAbility[nAbilityIndex] > 16)
+            if (nAbility[nAbilityIndex] > abilityCostIncrement3)
             {
                 if (nPointBuy < 3)
                 {
@@ -537,7 +542,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
                 nAbility[nAbilityIndex]--;
                 nPointBuy -= 3;
             }
-            else if (nAbility[nAbilityIndex] > 14)
+            else if (nAbility[nAbilityIndex] > abilityCostIncrement2)
             {
                 if (nPointBuy < 2)
                 {
@@ -700,7 +705,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             {
                 for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
                 {
-                    nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForLevel(nAbilityIndex, nLevel);
+                    nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForSingleLevel(nAbilityIndex, nMultiClassLevel[nMultiClassLeveledUpIn]);
                 }
             }
         }
@@ -832,9 +837,10 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
                 listSkillRanks[nSkill] += nRankChange;
 
                 // Can't have more than Level + 3 in a class skill, or (Level + 3) / 2 for a non class skill
+                static int32_t skillMaxLevel1Bonus = Globals::Rules()->GetRulesetIntEntry("CHARGEN_SKILL_MAX_LEVEL_1_BONUS", 3);
                 if (bClassSkill)
                 {
-                    if (listSkillRanks[nSkill] > nLevel + 3)
+                    if (listSkillRanks[nSkill] > nLevel + skillMaxLevel1Bonus)
                     {
                         if (auto strrefFailure = HandleValidationFailure(
                                 ValidationFailureType::Skill,
@@ -847,7 +853,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
                 }
                 else
                 {
-                    if (listSkillRanks[nSkill] > (nLevel + 3) / 2)
+                    if (listSkillRanks[nSkill] > (nLevel + skillMaxLevel1Bonus) / 2)
                     {
                         if (auto strrefFailure = HandleValidationFailure(
                                 ValidationFailureType::Skill,
@@ -883,7 +889,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
         uint8_t nNumberBonusFeats = 0;
 
         // First and every nth level gets a normal feat
-        if ((nLevel == 1) || (nLevel % pRace->m_nNormalFeatEveryNthLevel == 0))
+        if ((nLevel == 1) || ((pRace->m_nNormalFeatEveryNthLevel != 0) && (nLevel % pRace->m_nNormalFeatEveryNthLevel == 0)))
         {
             nNumberNormalFeats = pRace->m_nNumberNormalFeatsEveryNthLevel;
         }

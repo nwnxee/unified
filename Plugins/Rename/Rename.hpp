@@ -27,6 +27,7 @@ private:
     bool m_RenameOnPlayerList;
     bool m_RenameAllowDM;
     std::string m_RenameAnonymousPlayerName;
+    bool m_RenameOverwriteDisplayName;
 
     static void WriteGameObjUpdate_UpdateObjectHook(bool, CNWSMessage*, CNWSPlayer*, CNWSObject*, CLastUpdateObject*, uint32_t, uint32_t);
     static void SendServerToPlayerPlayerList_AllHook(bool, CNWSMessage*, CNWSPlayer*);

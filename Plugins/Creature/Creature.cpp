@@ -12,14 +12,21 @@
 #include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
+#include "API/CNWSModule.hpp"
+#include "API/CServerExoAppInternal.hpp"
+#include "API/CFactionManager.hpp"
+#include "API/CResStruct.hpp"
+#include "API/CResGFF.hpp"
+#include "API/CTwoDimArrays.hpp"
+#include "API/C2DA.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
+#include "Services/Config/Config.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "API/CServerExoAppInternal.hpp"
-#include "API/CFactionManager.hpp"
+#include "Encoding.hpp"
 
 
 using namespace NWNXLib;
@@ -48,6 +55,11 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
 
 
 namespace Creature {
+
+bool Creature::s_bAdjustCasterLevel = false;
+bool Creature::s_bCasterLevelHooksInitialized = false;
+bool Creature::s_bCriticalMultiplierHooksInitialized = false;
+bool Creature::s_bCriticalRangeHooksInitialized = false;
 
 Creature::Creature(const Plugin::CreateParams& params)
     : Plugin(params)
@@ -95,6 +107,7 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetMovementRate);
     REGISTER(GetMovementRateFactor);
     REGISTER(SetMovementRateFactor);
+    REGISTER(SetMovementRateFactorCap);
     REGISTER(SetAlignmentGoodEvil);
     REGISTER(SetAlignmentLawChaos);
     REGISTER(SetDomain);
@@ -141,6 +154,23 @@ Creature::Creature(const Plugin::CreateParams& params)
     REGISTER(SetDisarmable);
     REGISTER(SetFaction);
     REGISTER(GetFaction);
+    REGISTER(GetFlatFooted);
+    REGISTER(SerializeQuickbar);
+    REGISTER(DeserializeQuickbar);
+    REGISTER(SetCasterLevelModifier);
+    REGISTER(GetCasterLevelModifier);
+    REGISTER(SetCasterLevelOverride);
+    REGISTER(GetCasterLevelOverride);
+    REGISTER(JumpToLimbo);
+    REGISTER(SetCriticalMultiplierModifier);
+    REGISTER(GetCriticalMultiplierModifier);
+    REGISTER(SetCriticalMultiplierOverride);
+    REGISTER(GetCriticalMultiplierOverride);
+    REGISTER(SetCriticalRangeModifier);
+    REGISTER(GetCriticalRangeModifier);
+    REGISTER(SetCriticalRangeOverride);
+    REGISTER(GetCriticalRangeOverride);
+    REGISTER(AddAssociate);
 
 #undef REGISTER
 }
@@ -656,8 +686,8 @@ ArgumentStack Creature::GetMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(static_cast<unsigned char>(level),
-                                                                            static_cast<unsigned char>(index)))
+                if (auto *pSpell = classInfo.GetMemorizedSpellInSlotDetails(static_cast<uint8_t>(level),
+                                                                            static_cast<uint8_t>(index)))
                 {
                     id     = static_cast<int32_t>(pSpell->m_nSpellId);
                     ready  = pSpell->m_bReadied;
@@ -688,7 +718,7 @@ ArgumentStack Creature::GetMemorisedSpellCountByLevel(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retVal = classInfo.GetNumberMemorizedSpellSlots(static_cast<unsigned char>(level));
+                retVal = classInfo.GetNumberMemorizedSpellSlots(static_cast<uint8_t>(level));
                 break;
             }
         }
@@ -721,14 +751,14 @@ ArgumentStack Creature::SetMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.SetMemorizedSpellSlot(static_cast<unsigned char>(level),
-                                                static_cast<unsigned char>(index),
+                classInfo.SetMemorizedSpellSlot(static_cast<uint8_t>(level),
+                                                static_cast<uint8_t>(index),
                                                 static_cast<uint32_t>(id),
                                                 domain,
-                                                static_cast<unsigned char>(meta));
+                                                static_cast<uint8_t>(meta));
 
-                classInfo.SetMemorizedSpellInSlotReady(static_cast<unsigned char>(level),
-                                                       static_cast<unsigned char>(index),
+                classInfo.SetMemorizedSpellInSlotReady(static_cast<uint8_t>(level),
+                                                       static_cast<uint8_t>(index),
                                                        ready);
 
                 break;
@@ -755,7 +785,7 @@ ArgumentStack Creature::GetRemainingSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retVal = classInfo.GetSpellsPerDayLeft(static_cast<unsigned char>(level));
+                retVal = classInfo.GetSpellsPerDayLeft(static_cast<uint8_t>(level));
                 break;
             }
         }
@@ -782,7 +812,7 @@ ArgumentStack Creature::SetRemainingSpellSlots(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.SetSpellsPerDayLeft(static_cast<unsigned char>(level), static_cast<unsigned char>(slots));
+                classInfo.SetSpellsPerDayLeft(static_cast<uint8_t>(level), static_cast<uint8_t>(slots));
                 break;
             }
         }
@@ -836,8 +866,8 @@ ArgumentStack Creature::GetKnownSpell(ArgumentStack&& args)
             if (classInfo.m_nClass == classId)
             {
                 retVal = static_cast<int32_t>(classInfo.GetKnownSpell(
-                        static_cast<unsigned char>(level),
-                        static_cast<unsigned char>(index)));
+                        static_cast<uint8_t>(level),
+                        static_cast<uint8_t>(index)));
                 break;
             }
         }
@@ -862,7 +892,7 @@ ArgumentStack Creature::GetKnownSpellCount(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                retVal = classInfo.GetNumberKnownSpells(static_cast<unsigned char>(level));
+                retVal = classInfo.GetNumberKnownSpells(static_cast<uint8_t>(level));
                 break;
             }
         }
@@ -888,7 +918,7 @@ ArgumentStack Creature::RemoveKnownSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.RemoveKnownSpell(static_cast<unsigned char>(level), static_cast<uint32_t>(spellId));
+                classInfo.RemoveKnownSpell(static_cast<uint8_t>(level), static_cast<uint32_t>(spellId));
                 break;
             }
         }
@@ -914,7 +944,7 @@ ArgumentStack Creature::AddKnownSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.AddKnownSpell(static_cast<unsigned char>(level), static_cast<uint32_t>(spellId));
+                classInfo.AddKnownSpell(static_cast<uint8_t>(level), static_cast<uint32_t>(spellId));
                 break;
             }
         }
@@ -964,8 +994,8 @@ ArgumentStack Creature::ClearMemorisedSpell(ArgumentStack&& args)
             auto& classInfo = pCreature->m_pStats->m_ClassInfo[i];
             if (classInfo.m_nClass == classId)
             {
-                classInfo.ClearMemorizedSpellSlot(static_cast<unsigned char>(level),
-                                                  static_cast<unsigned char>(index));
+                classInfo.ClearMemorizedSpellSlot(static_cast<uint8_t>(level),
+                                                  static_cast<uint8_t>(index));
 
                 break;
             }
@@ -1042,6 +1072,60 @@ ArgumentStack Creature::SetMovementRateFactor(ArgumentStack&& args)
         const float factor = Services::Events::ExtractArgument<float>(args);
         pCreature->SetMovementRateFactor(factor);
     }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
+{
+    static NWNXLib::Hooking::FunctionHook* pGetMovementRateFactor_hook;
+    static NWNXLib::Hooking::FunctionHook* pSetMovementRateFactor_hook;
+
+    if (!pGetMovementRateFactor_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21GetMovementRateFactorEv>(
+            +[](CNWSCreature *pThis) -> float
+            {
+                auto pRate = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR");
+                return pRate ? *pRate : pGetMovementRateFactor_hook->CallOriginal<float>(pThis);
+            });
+
+        pGetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv);
+    }
+
+    if (!pSetMovementRateFactor_hook)
+    {
+        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21SetMovementRateFactorEf>(
+            +[](CNWSCreature *pThis, float fRate) -> void
+            {
+                // Always set the default so it goes back to normal if cap is reset
+                pSetMovementRateFactor_hook->CallOriginal<void>(pThis, fRate);
+
+                auto pCap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR_CAP");
+                if (pCap)
+                {
+                    if (fRate > *pCap) { fRate = *pCap; }
+                    g_plugin->GetServices()->m_perObjectStorage->Set(pThis, "MOVEMENT_RATE_FACTOR", fRate);
+                }
+            });
+
+        pSetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf);
+    }
+
+    if (auto *pCreature = creature(args))
+    {
+        const float fCap = Services::Events::ExtractArgument<float>(args);
+
+        if (fCap < 0.0) // remove the override
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "MOVEMENT_RATE_FACTOR");
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "MOVEMENT_RATE_FACTOR_CAP");
+        }
+        else
+        {
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "MOVEMENT_RATE_FACTOR_CAP", fCap, true);
+        }
+    }
+
     return Services::Events::Arguments();
 }
 
@@ -1888,5 +1972,566 @@ ArgumentStack Creature::GetFaction(ArgumentStack&& args)
     return Services::Events::Arguments(retVal);
 }
 
+ArgumentStack Creature::GetFlatFooted(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->GetFlatFooted();
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SerializeQuickbar(ArgumentStack&& args)
+{
+    std::string retVal;
+
+    if (auto *pCreature = creature(args))
+    {
+        uint8_t *pData = nullptr;
+        int32_t dataLength = 0;
+
+        CResGFF    resGff;
+        CResStruct resStruct{};
+
+        if (resGff.CreateGFFFile(&resStruct, "GFF ", "V2.0"))
+        {
+            pCreature->SaveQuickButtons(&resGff, &resStruct);
+            resGff.WriteGFFToPointer((void**)&pData, /*ref*/dataLength);
+
+            retVal = Encoding::ToBase64(std::vector<uint8_t>(pData, pData+dataLength));
+            delete[] pData;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::DeserializeQuickbar(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pCreature = creature(args))
+    {
+        const auto serializedB64 = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(!serializedB64.empty());
+
+        std::vector<uint8_t> serialized = Encoding::FromBase64(serializedB64);
+
+        if (serialized.empty() || serialized.size() < 14*4)
+            return Services::Events::Arguments(retVal);
+
+        CResGFF resGff;
+        CResStruct resStruct{};
+
+        // resGff/resman will claim ownership of this pointer and free it in resGff destructor,
+        // so need a copy for them to play with since the vector can't relinquish its own.
+        auto *data = new uint8_t[serialized.size()];
+        memcpy(data, serialized.data(), serialized.size());
+        if (resGff.GetDataFromPointer((void *) data, (int32_t) serialized.size()))
+        {
+            resGff.InitializeForWriting();
+
+            if (resGff.GetTopLevelStruct(&resStruct))
+            {
+                CExoString sFileType, sFileVersion;
+                resGff.GetGFFFileInfo(&sFileType, &sFileVersion);
+
+                if (sFileType == "GFF ")
+                {
+                    pCreature->LoadQuickButtons(&resGff, &resStruct);
+
+                    if (auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pCreature->m_idSelf))
+                    {
+                        if (auto *pMessage = static_cast<CNWSMessage *>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+                        {
+                            pMessage->SendServerToPlayerGuiQuickbar_SetButton(pPlayer, 0, true);
+                        }
+                    }
+
+                    retVal = true;
+                }
+            }
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+void Creature::InitCasterLevelHooks()
+{
+    auto hooker = g_plugin->GetServices()->m_hooks.get();
+    hooker->RequestSharedHook<Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, uint8_t>(&CNWSCreatureStats__GetClassLevel);
+    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
+    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
+    hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
+
+    s_bCasterLevelHooksInitialized = true;
+}
+
+ArgumentStack Creature::SetCasterLevelModifier(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
+        const bool bPersist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nModifier)
+            GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass), nModifier, bPersist);
+        else
+            GetServices()->m_perObjectStorage->Remove(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCasterLevelModifier(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    int32_t retVal = 0;
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        auto nModifier = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+        if (nModifier)
+            retVal = nModifier.value();
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetCasterLevelOverride(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        const auto nLevel = Services::Events::ExtractArgument<int32_t>(args);
+        const bool bPersist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nLevel > 0)
+            GetServices()->m_perObjectStorage->Set(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass), nLevel, bPersist);
+        else
+            GetServices()->m_perObjectStorage->Remove(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCasterLevelOverride(ArgumentStack&& args)
+{
+    if (!s_bCasterLevelHooksInitialized)
+        InitCasterLevelHooks();
+
+    int32_t retVal = -1;
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nClass = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nClass >= 0);
+        ASSERT_OR_THROW(nClass <= Constants::ClassType::MAX);
+        auto nCasterLevel = GetServices()->m_perObjectStorage->Get<int>(pCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+        if (nCasterLevel)
+            retVal = nCasterLevel.value();
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+void Creature::CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL)
+{
+    static int32_t nModifier;
+
+    if (!s_bAdjustCasterLevel || nMultiClass >= thisPtr->m_nNumMultiClasses)
+        return;
+
+    auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
+    if (nClass > Constants::ClassType::MAX)
+        return;
+
+    if (!before)
+    {
+        thisPtr->m_ClassInfo[nMultiClass].m_nLevel -= nModifier;
+        return;
+    }
+
+    nModifier = 0;
+
+    auto nLevelOverride = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_OVERRIDE" + std::to_string(nClass));
+    if (nLevelOverride)
+    {
+        auto nLevel = std::max(nLevelOverride.value(), 255);
+        nModifier = nLevel - thisPtr->m_ClassInfo[nMultiClass].m_nLevel;
+        thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
+        return;
+    }
+
+    auto nLevelModifier = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_pBaseCreature, "CASTERLEVEL_MODIFIER" + std::to_string(nClass));
+    if (nLevelModifier)
+        nModifier = nLevelModifier.value();
+
+    //Make sure m_nLevel doesn't over/underflow
+    nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
+    if (nModifier < 0)
+        nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
+
+    thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
+}
+
+void Creature::CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+void Creature::CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID)
+{
+    s_bAdjustCasterLevel = before;
+}
+
+ArgumentStack Creature::JumpToLimbo(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        if (!pCreature->m_bPlayerCharacter && !pCreature->m_pStats->m_bIsPC && !pCreature->m_pStats->m_bIsDM)
+        {
+            pCreature->RemoveFromArea();
+            Utils::GetModule()->AddObjectToLimbo(pCreature->m_idSelf);
+        }
+    }
+    return Services::Events::Arguments();
+}
+
+void Creature::InitCriticalMultiplierHook()
+{
+    static NWNXLib::Hooking::FunctionHook* pGetCriticalHitMultiplier_hook;
+    if (!pGetCriticalHitMultiplier_hook)
+    {
+        g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi>(
+            +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+            {
+                int32_t retVal;
+                if (!bOffHand) //mainhand
+                {
+                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!1"))
+                    {
+                        retVal = critMultOvr.value();
+                    }
+                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
+                    {
+                        retVal = critMultOvr.value();
+                    }
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!1"))
+                    {
+                        auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critMultOrig + critMultMod.value();
+                    }
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
+                    {
+                        auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critMultOrig + critMultMod.value();
+                    }
+                    else
+                    {
+                        retVal = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                    }
+                }
+                else //Offhand
+                {
+                    if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!2"))
+                    {
+                        retVal = critMultOvr.value();
+                    }
+                    else if (auto critMultOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_OVERRIDE!0"))
+                    {
+                        retVal = critMultOvr.value();
+                    }
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!2"))
+                    {
+                        auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critMultOrig + critMultMod.value();
+                    }
+                    else if (auto critMultMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_MULTIPLIER_MODIFIER!0"))
+                    {
+                        auto critMultOrig = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critMultOrig + critMultMod.value();
+                    }
+                      else
+                    {
+                        retVal = pGetCriticalHitMultiplier_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                    }
+                }
+
+                  return retVal > 0 ? retVal : 0;
+            });
+        pGetCriticalHitMultiplier_hook = g_plugin->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi);
+    }
+    s_bCriticalMultiplierHooksInitialized = true;
+}
+
+ArgumentStack Creature::SetCriticalMultiplierModifier(ArgumentStack&& args)
+{
+    if (!s_bCriticalMultiplierHooksInitialized)
+        InitCriticalMultiplierHook();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        if (nModifier)
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand), nModifier, persist);
+        else
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCriticalMultiplierModifier(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto* pCreature = creature(args))
+    {
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nModifier = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_MULTIPLIER_MODIFIER!" + std::to_string(nHand));
+        if (nModifier)
+            retVal = nModifier.value();
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetCriticalMultiplierOverride(ArgumentStack&& args)
+{
+    if (!s_bCriticalMultiplierHooksInitialized)
+        InitCriticalMultiplierHook();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nOverride = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        if (nOverride >= 0)
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + std::to_string(nHand), nOverride, persist);
+        else
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + std::to_string(nHand));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCriticalMultiplierOverride(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+
+    if (auto* pCreature = creature(args))
+    {
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nOverride = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_MULTIPLIER_OVERRIDE!" + std::to_string(nHand));
+        if (nOverride)
+            retVal = nOverride.value();
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+void Creature::InitCriticalRangeHook()
+{
+    static NWNXLib::Hooking::FunctionHook* pGetCriticalHitRoll_hook;
+    if (!pGetCriticalHitRoll_hook)
+    {
+        g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi>(
+            +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
+            {
+                int32_t retVal;
+                if (!bOffHand) //mainhand
+                {
+                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!1"))
+                    {
+                        retVal = critRngOvr.value();
+                    }
+                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
+                    {
+                        retVal = critRngOvr.value();
+                    }
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!1"))
+                    {
+                        auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critRngOrig + critRngMod.value();
+                    }
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
+                    {
+                        auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critRngOrig + critRngMod.value();
+                    }
+                    else
+                    {
+                        retVal = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                    }
+                }
+                else //Offhand
+                {
+                    if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!2"))
+                    {
+                        retVal = critRngOvr.value();
+                    }
+                    else if (auto critRngOvr = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_OVERRIDE!0"))
+                    {
+                        retVal = critRngOvr.value();
+                    }
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!2"))
+                    {
+                        auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critRngOrig + critRngMod.value();
+                    }
+                    else if (auto critRngMod = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(pThis->m_pBaseCreature->m_idSelf, "CRITICAL_RANGE_MODIFIER!0"))
+                    {
+                        auto critRngOrig = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                        retVal = critRngOrig + critRngMod.value();
+                    }
+                    else
+                    {
+                        retVal = pGetCriticalHitRoll_hook->CallOriginal<int32_t>(pThis, bOffHand);
+                    }
+                }
+                return std::clamp(retVal, 0, 20);
+            });
+        pGetCriticalHitRoll_hook = g_plugin->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi);
+    }
+    s_bCriticalRangeHooksInitialized = true;
+}
+
+ArgumentStack Creature::SetCriticalRangeModifier(ArgumentStack&& args)
+{
+    if (!s_bCriticalRangeHooksInitialized)
+        InitCriticalRangeHook();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        if (nModifier)
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_RANGE_MODIFIER!" + std::to_string(nHand), nModifier, persist);
+        else
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_RANGE_MODIFIER!" + std::to_string(nHand));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCriticalRangeModifier(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto* pCreature = creature(args))
+    {
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nModifier = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_RANGE_MODIFIER!" + std::to_string(nHand));
+        if (nModifier)
+            retVal = nModifier.value();
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetCriticalRangeOverride(ArgumentStack&& args)
+{
+    if (!s_bCriticalRangeHooksInitialized)
+        InitCriticalRangeHook();
+
+    if (auto* pCreature = creature(args))
+    {
+        const auto nOverride = Services::Events::ExtractArgument<int32_t>(args);
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+        const bool persist = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        if (nOverride >= 0)
+            g_plugin->GetServices()->m_perObjectStorage->Set(pCreature, "CRITICAL_RANGE_OVERRIDE!" + std::to_string(nHand), nOverride, persist);
+        else
+            g_plugin->GetServices()->m_perObjectStorage->Remove(pCreature, "CRITICAL_RANGE_OVERRIDE!" + std::to_string(nHand));
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCriticalRangeOverride(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+
+    if (auto* pCreature = creature(args))
+    {
+        auto nHand = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (nHand < 0 || 2 < nHand)
+            nHand = 0;
+
+        auto nOverride = GetServices()->m_perObjectStorage->Get<int32_t>(pCreature, "CRITICAL_RANGE_OVERRIDE!" + std::to_string(nHand));
+        if (nOverride)
+            retVal = nOverride.value();
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::AddAssociate(ArgumentStack&& args)
+{
+    if (auto* pCreature = creature(args))
+    {
+        auto oidAssociate = Services::Events::ExtractArgument<ObjectID>(args);
+          ASSERT_OR_THROW(oidAssociate != Constants::OBJECT_INVALID);
+        auto associateType = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(associateType > Constants::AssociateType::None);
+          ASSERT_OR_THROW(associateType <= Constants::AssociateType::Dominated);
+
+        if (auto *pAssociate = Utils::AsNWSCreature(Utils::GetGameObject(oidAssociate)))
+        {
+            if (!pAssociate->m_bPlayerCharacter)
+                pCreature->AddAssociate(oidAssociate, associateType);
+            else
+                LOG_WARNING("AddAssociate: Cannot add PCs as associate");
+        }
+    }
+
+    return Services::Events::Arguments();
+}
 
 }

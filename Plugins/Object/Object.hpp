@@ -19,6 +19,7 @@ private:
     ArgumentStack GetLocalVariable          (ArgumentStack&& args);
     ArgumentStack StringToObject            (ArgumentStack&& args);
     ArgumentStack SetPosition               (ArgumentStack&& args);
+    ArgumentStack GetCurrentHitPoints       (ArgumentStack&& args);
     ArgumentStack SetCurrentHitPoints       (ArgumentStack&& args);
     ArgumentStack SetMaxHitPoints           (ArgumentStack&& args);
     ArgumentStack Serialize                 (ArgumentStack&& args);
@@ -54,6 +55,10 @@ private:
     ArgumentStack GetInternalObjectType     (ArgumentStack&& args);
     ArgumentStack AcquireItem               (ArgumentStack&& args);
     ArgumentStack SetFacing                 (ArgumentStack&& args);
+    ArgumentStack ClearSpellEffectsOnOthers (ArgumentStack&& args);
+    ArgumentStack PeekUUID                  (ArgumentStack&& args);
+    ArgumentStack GetDoorHasVisibleModel    (ArgumentStack&& args);
+    ArgumentStack GetIsDestroyable          (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };

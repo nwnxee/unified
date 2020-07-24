@@ -21,6 +21,7 @@
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CItemRepository.hpp"
 #include "API/CExoFile.hpp"
+#include "API/CNWSUUID.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
@@ -30,7 +31,6 @@
 #include "Utils.hpp"
 
 #include <cstring>
-#include <math.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -70,6 +70,7 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetLocalVariable);
     REGISTER(StringToObject);
     REGISTER(SetPosition);
+    REGISTER(GetCurrentHitPoints);
     REGISTER(SetCurrentHitPoints);
     REGISTER(SetMaxHitPoints);
     REGISTER(Serialize);
@@ -105,6 +106,10 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(GetInternalObjectType);
     REGISTER(AcquireItem);
     REGISTER(SetFacing);
+    REGISTER(ClearSpellEffectsOnOthers);
+    REGISTER(PeekUUID);
+    REGISTER(GetDoorHasVisibleModel);
+    REGISTER(GetIsDestroyable);
 
 #undef REGISTER
 }
@@ -191,14 +196,43 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
 {
     if (auto *pObject = object(args))
     {
-        Vector pos;
+        Vector pos{};
         pos.z = Services::Events::ExtractArgument<float>(args);
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
+        int32_t bUpdateSubareas;
+
+        // TODO: Remove this try/catch at some point
+        try
+        {
+            bUpdateSubareas = Services::Events::ExtractArgument<int32_t>(args);
+        }
+        catch (const std::runtime_error& e)
+        {
+            bUpdateSubareas = true;
+        }
 
         pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
+
+        if (bUpdateSubareas)
+        {
+            if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            {
+                pCreature->UpdateSubareasOnJumpPosition(pos, pCreature->m_oidArea);
+            }
+        }
     }
     return Services::Events::Arguments();
+}
+
+ArgumentStack Object::GetCurrentHitPoints(ArgumentStack&& args)
+{
+    int32_t retval = 0;
+    if (auto *pObject = object(args))
+    {
+        retval = pObject->m_nCurrentHitPoints;
+    }
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::SetCurrentHitPoints(ArgumentStack&& args)
@@ -879,16 +913,65 @@ ArgumentStack Object::SetFacing(ArgumentStack&& args)
     {
         const auto degrees = Services::Events::ExtractArgument<float>(args);
 
-        float radians = degrees * (M_PI / 180);
-        auto vOrientation = Vector{cos(radians), sin(radians), 0.0f};
-
-        if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
-            pPlaceable->SetOrientation(vOrientation);
-        else
-            pObject->SetOrientation(vOrientation);
+        Utils::SetOrientation(pObject, degrees);
     }
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Object::ClearSpellEffectsOnOthers(ArgumentStack&& args)
+{
+    if (auto *pObject = object(args))
+    {
+        pObject->ClearSpellEffectsOnOthers();
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::PeekUUID(ArgumentStack&& args)
+{
+    std::string retVal;
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+      ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
+
+    if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
+    {
+        static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
+                Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
+
+        if (CanCarryUUID(pGameObject->m_nObjectType))
+        {
+            if (auto *pArea = Utils::AsNWSArea(pGameObject))
+                retVal = pArea->m_pUUID.m_uuid.CStr();
+            else if (auto *pObject = Utils::AsNWSObject(pGameObject))
+                retVal = pObject->m_pUUID.m_uuid.CStr();
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetDoorHasVisibleModel(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+    if (auto *pDoor = Utils::AsNWSDoor(object(args)))
+    {
+        retVal = pDoor->m_bVisibleModel;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetIsDestroyable(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+    if (auto *pObject = object(args))
+    {
+        retVal = pObject->m_bDestroyable;
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

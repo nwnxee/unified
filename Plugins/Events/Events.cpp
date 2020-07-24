@@ -5,6 +5,7 @@
 #include "API/Constants.hpp"
 #include "Events/AssociateEvents.hpp"
 #include "Events/BarterEvents.hpp"
+#include "Events/CalendarEvents.hpp"
 #include "Events/ClientEvents.hpp"
 #include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
@@ -30,6 +31,7 @@
 #include "Events/ObjectEvents.hpp"
 #include "Events/UUIDEvents.hpp"
 #include "Events/ResourceEvents.hpp"
+#include "Events/QuickbarEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -89,14 +91,14 @@ Events::Events(const Plugin::CreateParams& params)
 #undef REGISTER
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
-        [](const std::vector<std::string> message)
+        [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
             SignalEvent(message[0], std::strtoul(message[1].c_str(), nullptr, 16));
         });
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_PUSH_EVENT_DATA",
-        [](const std::vector<std::string> message)
+        [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
             PushEventData(message[0], message[1]);
@@ -105,6 +107,7 @@ Events::Events(const Plugin::CreateParams& params)
     auto hooker = GetServices()->m_hooks.get();
     m_associateEvents   = std::make_unique<AssociateEvents>(hooker);
     m_barterEvents      = std::make_unique<BarterEvents>(hooker);
+    m_calendarEvents    = std::make_unique<CalendarEvents>(hooker);
     m_clientEvents      = std::make_unique<ClientEvents>(hooker);
     m_combatEvents      = std::make_unique<CombatEvents>(hooker);
     m_dmActionEvents    = std::make_unique<DMActionEvents>(hooker);
@@ -130,20 +133,21 @@ Events::Events(const Plugin::CreateParams& params)
     m_objectEvents      = std::make_unique<ObjectEvents>(hooker);
     m_uuidEvents        = std::make_unique<UUIDEvents>(hooker);
     m_resourceEvents    = std::make_unique<ResourceEvents>(GetServices()->m_tasks.get());
+    m_quickbarEvents    = std::make_unique<QuickbarEvents>(hooker);
 }
 
 Events::~Events()
 {
 }
 
-void Events::PushEventData(const std::string tag, const std::string data)
+void Events::PushEventData(const std::string& tag, const std::string& data)
 {
     LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag, data);
     g_plugin->CreateNewEventDataIfNeeded();
-    g_plugin->m_eventData.top().m_EventDataMap[tag] = std::move(data);
+    g_plugin->m_eventData.top().m_EventDataMap[tag] = data;
 }
 
-std::string Events::GetEventData(const std::string tag)
+std::string Events::GetEventData(const std::string& tag)
 {
     std::string retVal;
     if (g_plugin->m_eventDepth == 0 || g_plugin->m_eventData.empty())

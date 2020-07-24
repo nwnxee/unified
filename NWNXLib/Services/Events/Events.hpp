@@ -1,6 +1,7 @@
 #pragma once
 
 #include "API/CGameEffect.hpp"
+#include "ScriptVariant.hpp"
 #include "Services/Services.hpp"
 
 #include <cstdint>
@@ -17,26 +18,10 @@ namespace NWNXLib::Services {
 class Events
 {
 public: // Structures
-    struct Argument
-    {
-        std::optional<int32_t>              m_int;
-        std::optional<float>                m_float;
-        std::optional<ObjectID>             m_object;
-        std::optional<std::string>          m_string;
-        std::optional<CGameEffect*>         m_effect;
+    // Defined in ScriptVariant.hpp
+    using Argument = ScriptVariant;
+    using ArgumentStack = ScriptVariantStack;
 
-        // Constructors
-        Argument(int32_t v)                : m_int(v)    { }
-        Argument(float v)                  : m_float(v)  { }
-        Argument(ObjectID v)               : m_object(v) { }
-        Argument(std::string v)            : m_string(std::move(v)) { }
-        Argument(CGameEffect* v)           : m_effect(v) { }
-
-        template <typename T> std::optional<T>& Get();
-        std::string toString() const;
-    };
-
-    using ArgumentStack = std::stack<Argument>;
     using FunctionCallback = std::function<ArgumentStack(ArgumentStack&& in)>;
 
     struct EventData
@@ -107,5 +92,3 @@ private:
 #include "Services/Events/Events.inl"
 
 }
-
-std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg);
