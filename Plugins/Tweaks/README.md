@@ -24,6 +24,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_ITEM_CHARGES_COST_MODE`: Between 1 and 3
 * `NWNX_TWEAKS_FIX_DISPEL_EFFECT_LEVELS`: true or false
 * `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS`: true or false
+* `NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG`: true or false
 
 ## Environment variable values
 

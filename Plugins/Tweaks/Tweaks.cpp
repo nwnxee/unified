@@ -16,6 +16,7 @@
 #include "Tweaks/ItemChargesCost.hpp"
 #include "Tweaks/FixDispelEffectLevels.hpp"
 #include "Tweaks/AddPrestigeclassCasterLevels.hpp"
+#include "Tweaks/FixUnlimitedPotionsBug.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -151,6 +152,12 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Automatically adding prestige class caster levels using (Div|Arc)SpellLvlMod colums in classes.2da");
         m_AddPrestigeclassCasterLevels = std::make_unique<AddPrestigeclassCasterLevels>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("FIX_UNLIMITED_POTIONS_BUG", false))
+    {
+        LOG_INFO("Fixing unlimited potion/scroll uses bug");
+        m_FixUnlimitedPotionsBug = std::make_unique<FixUnlimitedPotionsBug>(GetServices()->m_hooks.get());
     }
 }
 
