@@ -63,7 +63,10 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 
 *Other noteworthy links*
 
-- [Neverwinter Vault](neverwintervault.org/) - A **massive** collection of everything-NWN
+- [Neverwinter Vault](https://neverwintervault.org/) - A **massive** collection of everything-NWN
+- [NWN Lexicon](https://nwnlexicon.com/) - Community-based NWScript Language Reference and Resource Guide
+- [NWN Wiki](https://nwn.wiki/) - Neverwinter Nights (1 and 2) modding wiki
+- [NWN Fandom Wiki](https://nwn.fandom.com/wiki/) - Player oriented NWN wiki
 
 ## Legacy stuff
 
