@@ -16,30 +16,17 @@ using namespace NWNXLib::API;
 
 static Effect::Effect* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Effect",
-        "Miscellaneous Effectity functions",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Effect::Effect(params);
+    g_plugin = new Effect::Effect(services);
     return g_plugin;
 }
 
 
 namespace Effect {
 
-Effect::Effect(const Plugin::CreateParams& params)
-    : Plugin(params)
+Effect::Effect(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

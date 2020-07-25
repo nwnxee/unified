@@ -21,29 +21,16 @@ const std::string detectionKey = "DETECTION VECTOR";
 const int NWNX_REVEAL_SEEN = 1;
 const int NWNX_REVEAL_HEARD = 0;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Reveal",
-        "Functions to allow the selective revealing of a stealthed character to another character or their party.",
-        "Silvard",
-        "jusenkyo at gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Reveal::Reveal(params);
+    g_plugin = new Reveal::Reveal(services);
     return g_plugin;
 }
 
 namespace Reveal {
 
-Reveal::Reveal(const Plugin::CreateParams& params)
-  : Plugin(params)
+Reveal::Reveal(Services::ProxyServiceList* services)
+  : Plugin(services)
 {
 #define REGISTER(func)              \
     GetServices()->m_events->RegisterEvent(#func, \

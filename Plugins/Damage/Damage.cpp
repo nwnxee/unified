@@ -19,29 +19,16 @@ using namespace NWNXLib::API;
 
 static Damage::Damage* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Damage",
-        "Damage related functions",
-        "Bhaal (original nwnx2 plugin from Baaleos)",
-        "marca.argentea at gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Damage::Damage(params);
+    g_plugin = new Damage::Damage(services);
     return g_plugin;
 }
 
 namespace Damage {
 
-Damage::Damage(const Plugin::CreateParams& params)
-  : Plugin(params)
+Damage::Damage(Services::ProxyServiceList* services)
+  : Plugin(services)
 {
 
 #define REGISTER(func) \

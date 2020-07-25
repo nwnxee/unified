@@ -37,30 +37,17 @@ using namespace NWNXLib::API;
 
 static Object::Object* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Object",
-        "Functions exposing additional object properties",
-        "various / sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Object::Object(params);
+    g_plugin = new Object::Object(services);
     return g_plugin;
 }
 
 
 namespace Object {
 
-Object::Object(const Plugin::CreateParams& params)
-    : Plugin(params)
+Object::Object(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

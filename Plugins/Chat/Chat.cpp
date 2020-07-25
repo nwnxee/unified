@@ -24,22 +24,9 @@ using namespace NWNXLib;
 
 static Chat::Chat* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Chat",
-        "Allows chat events to be captured, skipped, and manual chat messages to be dispatched.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Chat::Chat(params);
+    g_plugin = new Chat::Chat(services);
     return g_plugin;
 }
 
@@ -48,8 +35,8 @@ using namespace NWNXLib::Services;
 
 namespace Chat {
 
-Chat::Chat(const Plugin::CreateParams& params)
-    : Plugin(params), m_skipMessage(false), m_depth(0)
+Chat::Chat(Services::ProxyServiceList* services)
+    : Plugin(services), m_skipMessage(false), m_depth(0)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

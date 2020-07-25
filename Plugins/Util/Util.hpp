@@ -11,7 +11,7 @@ namespace Util {
 class Util : public NWNXLib::Plugin
 {
 public:
-    Util(const Plugin::CreateParams& params);
+    Util(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Util();
 
 private:

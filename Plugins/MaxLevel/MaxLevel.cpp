@@ -30,23 +30,9 @@ const int MAX_LEVEL_MAX = 60;
 
 static MaxLevel::MaxLevel* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-            {
-                    "MaxLevel",
-                    "Support for Levels 41 - 60",
-                    "orth",
-                    "plenarius@gmail.com",
-                    1,
-                    true,
-                    0
-            };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new MaxLevel::MaxLevel(params);
+    g_plugin = new MaxLevel::MaxLevel(services);
     return g_plugin;
 }
 
@@ -57,8 +43,8 @@ using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
 
-MaxLevel::MaxLevel(const Plugin::CreateParams& params)
-        : Plugin(params)
+MaxLevel::MaxLevel(Services::ProxyServiceList* services)
+        : Plugin(services)
 {
     m_maxLevel = GetServices()->m_config->Get<int>("MAX", (uint8_t)CORE_MAX_LEVEL);
     if (m_maxLevel > MAX_LEVEL_MAX)

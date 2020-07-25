@@ -12,7 +12,7 @@ namespace Reveal {
 class Reveal : public NWNXLib::Plugin
 {
 public:
-    Reveal(const Plugin::CreateParams& params);
+    Reveal(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Reveal();
 
 private:

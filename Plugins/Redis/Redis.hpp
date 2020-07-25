@@ -44,7 +44,7 @@ public:
         std::vector<std::string> m_pubsub_channels;
     };
 
-    Redis(const Plugin::CreateParams& params);
+    Redis(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Redis();
 
     // Retrieve a free connection to do stuff with. This could be a single

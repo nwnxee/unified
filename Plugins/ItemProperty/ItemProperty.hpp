@@ -11,7 +11,7 @@ namespace ItemProperty {
 class ItemProperty : public NWNXLib::Plugin
 {
 public:
-    ItemProperty(const Plugin::CreateParams& params);
+    ItemProperty(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ItemProperty();
 
 private:

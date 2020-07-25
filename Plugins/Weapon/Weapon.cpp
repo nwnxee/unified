@@ -17,29 +17,16 @@ using namespace NWNXLib::API;
 
 static Weapon::Weapon* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Weapon",
-        "Weapons related functions",
-        "Bhaal",
-        "marca.argentea at gmail.com",
-        2,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-   g_plugin = new Weapon::Weapon(params);
+   g_plugin = new Weapon::Weapon(services);
    return g_plugin;
 }
 
 namespace Weapon {
 
-Weapon::Weapon(const Plugin::CreateParams& params)
-  : Plugin(params)
+Weapon::Weapon(Services::ProxyServiceList* services)
+  : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

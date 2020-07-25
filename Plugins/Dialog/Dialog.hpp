@@ -11,7 +11,7 @@ namespace Dialog {
 class Dialog : public NWNXLib::Plugin
 {
 public:
-    Dialog(const Plugin::CreateParams& params);
+    Dialog(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Dialog();
 
 private:

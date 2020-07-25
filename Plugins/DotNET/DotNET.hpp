@@ -8,7 +8,7 @@ namespace DotNET {
 class DotNET : public NWNXLib::Plugin
 {
 public:
-    DotNET(const Plugin::CreateParams& params);
+    DotNET(NWNXLib::Services::ProxyServiceList* services);
     virtual ~DotNET();
 
 private:

@@ -14,7 +14,7 @@ namespace Chat {
 class Chat : public NWNXLib::Plugin
 {
 public:
-    Chat(const Plugin::CreateParams& params);
+    Chat(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Chat();
 
 private:

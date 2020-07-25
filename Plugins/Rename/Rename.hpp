@@ -16,7 +16,7 @@ namespace Rename {
 class Rename : public NWNXLib::Plugin
 {
 public:
-    Rename(const Plugin::CreateParams& params);
+    Rename(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Rename();
 
 private:

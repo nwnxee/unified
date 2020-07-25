@@ -19,30 +19,17 @@ using namespace NWNXLib::API;
 
 static Area::Area* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Area",
-        "Functions exposing additional area properties",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Area::Area(params);
+    g_plugin = new Area::Area(services);
     return g_plugin;
 }
 
 
 namespace Area {
 
-Area::Area(const Plugin::CreateParams& params)
-    : Plugin(params)
+Area::Area(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

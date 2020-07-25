@@ -84,7 +84,7 @@ namespace ValidationFailureSubType
 class ELC : public NWNXLib::Plugin
 {
 public:
-    ELC(const Plugin::CreateParams& params);
+    ELC(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ELC();
 
 private:

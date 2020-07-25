@@ -31,30 +31,17 @@ static Race::Race* g_plugin;
 
 const auto MODULE_OID = 0;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Race",
-        "Define racial and subrace characteristics",
-        "orth",
-        "plenarius@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Race::Race(params);
+    g_plugin = new Race::Race(services);
     return g_plugin;
 }
 
 
 namespace Race {
 
-Race::Race(const Plugin::CreateParams& params)
-    : Plugin(params)
+Race::Race(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

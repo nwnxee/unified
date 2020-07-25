@@ -15,30 +15,17 @@ using namespace NWNXLib::Services;
 
 static SpellChecker::SpellChecker* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "SpellChecker",
-        "Function to check spelling",
-        "Morderon (With use of Hunspell)",
-        "will386@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new SpellChecker::SpellChecker(params);
+    g_plugin = new SpellChecker::SpellChecker(services);
     return g_plugin;
 }
 
 
 namespace SpellChecker {
 
-SpellChecker::SpellChecker(const Plugin::CreateParams& params)
-    : Plugin(params)
+SpellChecker::SpellChecker(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 
 #define REGISTER(func) \

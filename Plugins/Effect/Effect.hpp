@@ -11,7 +11,7 @@ namespace Effect {
 class Effect : public NWNXLib::Plugin
 {
 public:
-    Effect(const Plugin::CreateParams& params);
+    Effect(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Effect();
 
 private:

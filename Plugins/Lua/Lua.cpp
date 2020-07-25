@@ -19,22 +19,9 @@
 using namespace NWNXLib;
 static Lua::Lua* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Lua",
-        "Allows users to call lua code with NWScript binding.",
-        "dparoli",
-        "d.paroli@tiscali.it",
-        1,
-        false
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Lua::Lua(params);
+    g_plugin = new Lua::Lua(services);
     return g_plugin;
 }
 
@@ -46,7 +33,7 @@ namespace Lua {
     static Hooking::FunctionHook* s_RunScriptHook;
     static Hooking::FunctionHook* s_RunScriptSituationHook;
 
-    Lua::Lua(const Plugin::CreateParams& params) : Plugin(params)
+    Lua::Lua(Services::ProxyServiceList* services) : Plugin(services)
     {
         std::string userDir = std::string(Globals::ExoBase()->m_sUserDirectory.CStr());
 

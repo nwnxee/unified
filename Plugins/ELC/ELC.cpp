@@ -40,22 +40,9 @@ using namespace NWNXLib::API::Constants;
 
 static ELC::ELC* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "ELC",
-        "A customisable replacement for ValidateCharacter: ELC & ILR",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new ELC::ELC(params);
+    g_plugin = new ELC::ELC(services);
     return g_plugin;
 }
 
@@ -104,8 +91,8 @@ const int32_t CHARACTER_EPIC_LEVEL          = 21;
 const int32_t NUM_SPELL_LEVELS              = 10;
 
 
-ELC::ELC(const Plugin::CreateParams& params)
-    : Plugin(params)
+ELC::ELC(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

@@ -11,7 +11,7 @@ namespace Area {
 class Area : public NWNXLib::Plugin
 {
 public:
-    Area(const Plugin::CreateParams& params);
+    Area(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Area();
 
 private:

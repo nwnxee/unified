@@ -7,7 +7,7 @@ namespace ServerLogRedirector {
 class ServerLogRedirector : public NWNXLib::Plugin
 {
 public:
-    ServerLogRedirector(const Plugin::CreateParams& params);
+    ServerLogRedirector(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ServerLogRedirector();
 
 private:

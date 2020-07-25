@@ -13,30 +13,17 @@ using namespace NWNXLib::API;
 
 static ItemProperty::ItemProperty* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "ItemProperty",
-        "Miscellaneous itemproperty functions",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new ItemProperty::ItemProperty(params);
+    g_plugin = new ItemProperty::ItemProperty(services);
     return g_plugin;
 }
 
 
 namespace ItemProperty {
 
-ItemProperty::ItemProperty(const Plugin::CreateParams& params)
-    : Plugin(params)
+ItemProperty::ItemProperty(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

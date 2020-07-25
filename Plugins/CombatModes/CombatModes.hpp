@@ -8,7 +8,7 @@ namespace CombatModes {
 class CombatModes : public NWNXLib::Plugin
 {
 public:
-    CombatModes(const Plugin::CreateParams& params);
+    CombatModes(NWNXLib::Services::ProxyServiceList* services);
     virtual ~CombatModes();
 
 private:

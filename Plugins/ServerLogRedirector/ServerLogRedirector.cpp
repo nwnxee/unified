@@ -7,22 +7,9 @@ using namespace NWNXLib;
 
 static ServerLogRedirector::ServerLogRedirector* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "ServerLogRedirector",
-        "Redirects server log output to the NWNX logger.",
-        "niv",
-        "niv@nwnx.io",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new ServerLogRedirector::ServerLogRedirector(params);
+    g_plugin = new ServerLogRedirector::ServerLogRedirector(services);
     return g_plugin;
 }
 
@@ -35,8 +22,8 @@ using namespace NWNXLib::Services;
 static bool s_printString;
 static bool s_hideValidateGFFResourceMessage;
 
-ServerLogRedirector::ServerLogRedirector(const Plugin::CreateParams& params)
-    : Plugin(params)
+ServerLogRedirector::ServerLogRedirector(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     // Hook logging so it always emits to stdout/stderr.
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CExoDebugInternal14WriteToLogFileERK10CExoString,

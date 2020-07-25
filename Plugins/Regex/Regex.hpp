@@ -12,7 +12,7 @@ namespace Regex {
 class Regex : public NWNXLib::Plugin
 {
 public:
-    Regex(const Plugin::CreateParams& params);
+    Regex(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Regex();
 
 private:

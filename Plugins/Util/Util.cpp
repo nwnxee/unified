@@ -40,30 +40,17 @@ using namespace NWNXLib::API;
 
 static Util::Util* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Util",
-        "Miscellaneous utility functions",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Util::Util(params);
+    g_plugin = new Util::Util(services);
     return g_plugin;
 }
 
 
 namespace Util {
 
-Util::Util(const Plugin::CreateParams& params)
-    : Plugin(params),
+Util::Util(Services::ProxyServiceList* services)
+    : Plugin(services),
       m_scriptCompiler(nullptr)
 {
 #define REGISTER(func) \

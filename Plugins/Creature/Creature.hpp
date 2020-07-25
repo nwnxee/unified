@@ -11,7 +11,7 @@ namespace Creature {
 class Creature : public NWNXLib::Plugin
 {
 public:
-    Creature(const Plugin::CreateParams& params);
+    Creature(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Creature();
 
 private:

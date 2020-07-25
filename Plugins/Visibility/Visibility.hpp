@@ -11,7 +11,7 @@ namespace Visibility {
 class Visibility : public NWNXLib::Plugin
 {
 public:
-    Visibility(const Plugin::CreateParams& params);
+    Visibility(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Visibility();
 
 private:

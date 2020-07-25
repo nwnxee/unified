@@ -34,22 +34,9 @@ using namespace NWNXLib::API;
 
 static Creature::Creature* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Creature",
-        "Functions exposing additional creature properties",
-        "various / sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Creature::Creature(params);
+    g_plugin = new Creature::Creature(services);
     return g_plugin;
 }
 
@@ -61,8 +48,8 @@ bool Creature::s_bCasterLevelHooksInitialized = false;
 bool Creature::s_bCriticalMultiplierHooksInitialized = false;
 bool Creature::s_bCriticalRangeHooksInitialized = false;
 
-Creature::Creature(const Plugin::CreateParams& params)
-    : Plugin(params)
+Creature::Creature(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

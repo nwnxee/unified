@@ -31,7 +31,7 @@ namespace Weapon {
 class Weapon : public NWNXLib::Plugin
 {
 public:
-    Weapon(const Plugin::CreateParams& params);
+    Weapon(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Weapon();
 
 private:

@@ -11,7 +11,7 @@ namespace Item {
 class Item : public NWNXLib::Plugin
 {
 public:
-    Item(const Plugin::CreateParams& params);
+    Item(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Item();
 
 private:

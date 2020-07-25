@@ -18,7 +18,7 @@ namespace Race {
 class Race : public NWNXLib::Plugin
 {
 public:
-    Race(const Plugin::CreateParams& params);
+    Race(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Race();
 
 private:

@@ -11,7 +11,7 @@ namespace Object {
 class Object : public NWNXLib::Plugin
 {
 public:
-    Object(const Plugin::CreateParams& params);
+    Object(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Object();
 
 private:

@@ -20,7 +20,7 @@ class Scripts;
 class Profiler : public NWNXLib::Plugin
 {
 public:
-    Profiler(const Plugin::CreateParams& params);
+    Profiler(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Profiler();
 
 private:

@@ -10,7 +10,7 @@ namespace WebHook {
 class WebHook : public NWNXLib::Plugin
 {
 public:
-    WebHook(const Plugin::CreateParams& params);
+    WebHook(NWNXLib::Services::ProxyServiceList* services);
     virtual ~WebHook();
     static ArgumentStack SendWebHookHTTPS(NWNXLib::Services::Events::ArgumentStack&&);
 };

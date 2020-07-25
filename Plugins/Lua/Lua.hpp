@@ -19,7 +19,7 @@ namespace Lua {
 	class Lua : public NWNXLib::Plugin
 	{
 	public:
-	    Lua(const Plugin::CreateParams& params);
+	    Lua(NWNXLib::Services::ProxyServiceList* services);
 	    virtual ~Lua();
 	    lua_State *m_luaInstance;
 	    Events::ArgumentStack Eval(Events::ArgumentStack&& args);

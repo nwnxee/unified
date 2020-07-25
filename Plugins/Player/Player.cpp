@@ -41,30 +41,17 @@ using namespace NWNXLib::API;
 
 static Player::Player* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Player",
-        "Functions exposing additional player properties and commands",
-        "various / sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Player::Player(params);
+    g_plugin = new Player::Player(services);
     return g_plugin;
 }
 
 
 namespace Player {
 
-Player::Player(const Plugin::CreateParams& params)
-    : Plugin(params)
+Player::Player(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

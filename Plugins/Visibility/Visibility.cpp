@@ -17,30 +17,17 @@ using namespace NWNXLib::API;
 
 static Visibility::Visibility* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Visibility",
-        "Allows the visibility of objects to be overridden globally or per player",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Visibility::Visibility(params);
+    g_plugin = new Visibility::Visibility(services);
     return g_plugin;
 }
 
 
 namespace Visibility {
 
-Visibility::Visibility(const Plugin::CreateParams& params)
-    : Plugin(params)
+Visibility::Visibility(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

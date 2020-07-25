@@ -12,7 +12,7 @@ namespace Feedback {
 class Feedback : public NWNXLib::Plugin
 {
 public:
-    Feedback(const Plugin::CreateParams& params);
+    Feedback(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Feedback();
 
 private:

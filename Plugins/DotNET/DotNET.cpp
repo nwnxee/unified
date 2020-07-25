@@ -20,22 +20,9 @@
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "DotNET",
-        ".NET nwscript bindings and more",
-        "mtijanic",
-        "sherincall@gmail.com",
-        1,
-        false
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    return new DotNET::DotNET(params);
+    return new DotNET::DotNET(services);
 }
 
 using namespace NWNXLib::Services;
@@ -146,7 +133,7 @@ bool DotNET::InitThunks()
     return true;
 }
 
-DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
+DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
 {
     ASSERT_OR_THROW(Instance == nullptr);
     Instance = this;

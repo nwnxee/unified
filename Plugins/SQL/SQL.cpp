@@ -21,22 +21,9 @@ using namespace NWNXLib;
 
 static SQL::SQL* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "SQL",
-        "Execute queries and retrieve results from an SQL database.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new SQL::SQL(params);
+    g_plugin = new SQL::SQL(services);
     return g_plugin;
 }
 
@@ -44,8 +31,8 @@ using namespace NWNXLib::Services;
 
 namespace SQL {
 
-SQL::SQL(const Plugin::CreateParams& params)
-    : Plugin(params), m_nextQueryId(0), m_queryMetrics(false)
+SQL::SQL(Services::ProxyServiceList* services)
+    : Plugin(services), m_nextQueryId(0), m_queryMetrics(false)
 {
 
 #define REGISTER(func) \

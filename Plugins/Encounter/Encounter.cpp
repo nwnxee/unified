@@ -14,30 +14,17 @@ using namespace NWNXLib::API;
 
 static Encounter::Encounter* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Encounter",
-        "Functions exposing additional encounter properties",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Encounter::Encounter(params);
+    g_plugin = new Encounter::Encounter(services);
     return g_plugin;
 }
 
 
 namespace Encounter {
 
-Encounter::Encounter(const Plugin::CreateParams& params)
-    : Plugin(params)
+Encounter::Encounter(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

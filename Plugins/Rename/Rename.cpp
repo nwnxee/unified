@@ -39,29 +39,16 @@ const int NWNX_RENAME_PLAYERNAME_OBFUSCATE = 1;
 const int NWNX_RENAME_PLAYERNAME_OVERRIDE = 2;
 const int NWNX_RENAME_PLAYERNAME_ANONYMOUS = 3;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Rename",
-        "Functions to facilitate renaming, overriding and customization of player names.",
-        "Silvard / orth",
-        "jusenkyo at gmail.com",
-        3,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Rename::Rename(params);
+    g_plugin = new Rename::Rename(services);
     return g_plugin;
 }
 
 namespace Rename {
 
-Rename::Rename(const Plugin::CreateParams& params)
-  : Plugin(params)
+Rename::Rename(Services::ProxyServiceList* services)
+  : Plugin(services)
 {
 #define REGISTER(func)              \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&Rename::func, this, std::placeholders::_1))

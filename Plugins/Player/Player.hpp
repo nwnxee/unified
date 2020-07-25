@@ -14,7 +14,7 @@ namespace Player {
 class Player : public NWNXLib::Plugin
 {
 public:
-    Player(const Plugin::CreateParams& params);
+    Player(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Player();
 
 private:

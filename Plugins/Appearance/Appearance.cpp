@@ -16,30 +16,17 @@ using namespace NWNXLib::API;
 
 static Appearance::Appearance* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Appearance",
-        "Allows the appearance and some other things of creatures to be overridden per player",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Appearance::Appearance(params);
+    g_plugin = new Appearance::Appearance(services);
     return g_plugin;
 }
 
 
 namespace Appearance {
 
-Appearance::Appearance(const Plugin::CreateParams& params)
-    : Plugin(params)
+Appearance::Appearance(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

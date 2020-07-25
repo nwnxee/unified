@@ -16,22 +16,9 @@ using namespace NWNXLib::API;
 
 static Feedback::Feedback* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Feedback",
-        "Allows combatlog, feedback and journal updated messages to be hidden globally or per player",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Feedback::Feedback(params);
+    g_plugin = new Feedback::Feedback(services);
     return g_plugin;
 }
 
@@ -46,8 +33,8 @@ const int32_t FEEDBACK_MESSAGE = 0;
 const int32_t COMBATLOG_MESSAGE = 1;
 const int32_t JOURNALUPDATED_MESSAGE = 2;
 
-Feedback::Feedback(const Plugin::CreateParams& params)
-    : Plugin(params)
+Feedback::Feedback(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

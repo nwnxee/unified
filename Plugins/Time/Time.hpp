@@ -10,7 +10,7 @@ namespace Time {
 class Time : public NWNXLib::Plugin
 {
 public:
-    Time(const Plugin::CreateParams& params);
+    Time(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Time();
 
 private:

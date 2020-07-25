@@ -62,7 +62,7 @@ public: // Structures
     };
 
 public:
-    Events(const Plugin::CreateParams& params);
+    Events(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Events();
 
     // Pushes event data to the stack - won't do anything until SignalEvent is called.

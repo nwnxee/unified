@@ -45,29 +45,16 @@ using namespace NWNXLib::API::Constants;
 
 static Events::Events* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Events",
-        "Provides an interface for plugins to create event-based systems, and exposes some events through that interface.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Events::Events(params);
+    g_plugin = new Events::Events(services);
     return g_plugin;
 }
 
 namespace Events {
 
-Events::Events(const Plugin::CreateParams& params)
-    : Plugin(params), m_eventDepth(0)
+Events::Events(Services::ProxyServiceList* services)
+    : Plugin(services), m_eventDepth(0)
 {
     if (g_plugin == nullptr) // :(
         g_plugin = this;

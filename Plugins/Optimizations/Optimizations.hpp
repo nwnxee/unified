@@ -11,7 +11,7 @@ class ObjectTagLookup;
 class Optimizations : public NWNXLib::Plugin
 {
 public:
-    Optimizations(const Plugin::CreateParams& params);
+    Optimizations(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Optimizations();
 
 private:

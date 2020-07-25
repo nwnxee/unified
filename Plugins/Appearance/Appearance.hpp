@@ -13,7 +13,7 @@ namespace Appearance {
 class Appearance : public NWNXLib::Plugin
 {
 public:
-    Appearance(const Plugin::CreateParams& params);
+    Appearance(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Appearance();
 
 private:

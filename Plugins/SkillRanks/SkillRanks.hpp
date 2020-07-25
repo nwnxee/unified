@@ -13,7 +13,7 @@ namespace SkillRanks {
 class SkillRanks : public NWNXLib::Plugin
 {
 public:
-    SkillRanks(const Plugin::CreateParams& params);
+    SkillRanks(NWNXLib::Services::ProxyServiceList* services);
     virtual ~SkillRanks();
 
 private:
