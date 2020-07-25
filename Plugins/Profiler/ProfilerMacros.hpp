@@ -110,7 +110,6 @@ DECLARE_PROFILE_TARGET_FAST(                                                    
 
 #define DEFINE_PROFILER_TARGET_FAST(hooker, name, address, ret, ...)                              \
 {                                                                                                 \
-    hooker->RequestExclusiveHook<address, ret, __VA_ARGS__>                                       \
+    g_##name##Hook = hooker->RequestExclusiveHook<address, ret, __VA_ARGS__>                      \
         (&ProfileLanding__##name<__VA_ARGS__>);                                                   \
-    g_##name##Hook = hooker->FindHookByAddress(address);                                          \
 }

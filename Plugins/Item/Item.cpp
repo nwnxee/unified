@@ -13,30 +13,17 @@ using namespace NWNXLib::API;
 
 static Item::Item* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-  return new Plugin::Info
-  {
-    "Item",
-    "Functions exposing additional item properties",
-    "Various / sherincall / Bhaal",
-    "marca.argentea at gmail.com",
-    3,
-    true
-  };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Item::Item(params);
+    g_plugin = new Item::Item(services);
     return g_plugin;
 }
 
 
 namespace Item {
 
-Item::Item(const Plugin::CreateParams& params)
-  : Plugin(params)
+Item::Item(Services::ProxyServiceList* services)
+  : Plugin(services)
 {
 #define REGISTER(func)              \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -63,7 +50,7 @@ Item::~Item()
 
 CNWSItem *Item::item(ArgumentStack& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {

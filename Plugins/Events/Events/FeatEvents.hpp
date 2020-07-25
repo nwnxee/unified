@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/Vector.hpp"
 #include "API/CNWSCreature.hpp"
 #include "Common.hpp"
@@ -19,8 +18,8 @@ private:
             CNWSCreature* thisPtr,
             uint16_t nFeat,
             uint16_t nSubFeat,
-            NWNXLib::API::Types::ObjectID oidTarget,
-            NWNXLib::API::Types::ObjectID oidArea,
+            ObjectID oidTarget,
+            ObjectID oidArea,
             Vector* pvTarget
         );
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "API/Types.hpp"
 #include "API/API/CGameEffect.hpp"
 
 #include <deque>
@@ -21,7 +20,7 @@ constexpr bool is_argument_type()
 {
     return (std::is_same_v<T, int32_t>
         || std::is_same_v<T, float>
-        || std::is_same_v<T, API::Types::ObjectID>
+        || std::is_same_v<T, ObjectID>
         || std::is_same_v<T, std::string>
         || std::is_same_v<T, CGameEffect*>
         || std::is_same_v<T, NullArgument>);
@@ -31,7 +30,7 @@ constexpr bool is_argument_type()
 
 struct ScriptVariant
 {
-    using Variant = std::variant<NullArgument, int32_t, float, API::Types::ObjectID, std::string, CGameEffect*>;
+    using Variant = std::variant<NullArgument, int32_t, float, ObjectID, std::string, CGameEffect*>;
     Variant m_data;
 
     // Constructors
@@ -68,7 +67,7 @@ struct ScriptVariant
     {
         if (Holds<int32_t>()) { return std::to_string(Get<int32_t>()); }
         else if (Holds<float>()) { return std::to_string(Get<float>()); }
-        else if (Holds<API::Types::ObjectID>()) { return Utils::ObjectIDToString(Get<API::Types::ObjectID>()); }
+        else if (Holds<ObjectID>()) { return Utils::ObjectIDToString(Get<ObjectID>()); }
         else if (Holds<std::string>()) { return Get<std::string>(); }
         else if (Holds<NullArgument>()) { return "(null)"; }
         else if (Holds<CGameEffect*>())

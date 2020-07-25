@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "Common.hpp"

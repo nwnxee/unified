@@ -24,22 +24,9 @@ using namespace NWNXLib;
 
 static Chat::Chat* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Chat",
-        "Allows chat events to be captured, skipped, and manual chat messages to be dispatched.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Chat::Chat(params);
+    g_plugin = new Chat::Chat(services);
     return g_plugin;
 }
 
@@ -48,8 +35,8 @@ using namespace NWNXLib::Services;
 
 namespace Chat {
 
-Chat::Chat(const Plugin::CreateParams& params)
-    : Plugin(params), m_skipMessage(false), m_depth(0)
+Chat::Chat(Services::ProxyServiceList* services)
+    : Plugin(services), m_skipMessage(false), m_depth(0)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -74,16 +61,15 @@ Chat::Chat(const Plugin::CreateParams& params)
     m_hearingDistances[Constants::ChatChannel::PlayerWhisper] = 3.0f;
     m_customHearingDistances = false;
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
-    m_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_);
+    m_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
 }
 
 Chat::~Chat()
 {
 }
 
-void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatChannel::TYPE channel, Types::ObjectID sender,
-    CExoString message, Types::PlayerID target, CExoString* tellName)
+void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatChannel::TYPE channel, ObjectID sender,
+    CExoString message, PlayerID target, CExoString* tellName)
 {
     Chat& plugin = *g_plugin;
 
@@ -206,12 +192,12 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     int32_t retVal = false;
     const auto channel = static_cast<Constants::ChatChannel::TYPE>(Events::ExtractArgument<int32_t>(args));
     const auto message = Events::ExtractArgument<std::string>(args);
-    const auto speaker = Events::ExtractArgument<Types::ObjectID>(args);
-    const auto target = Events::ExtractArgument<Types::ObjectID>(args);
+    const auto speaker = Events::ExtractArgument<ObjectID>(args);
+    const auto target = Events::ExtractArgument<ObjectID>(args);
 
     const bool hasManualPlayerId = target != Constants::OBJECT_INVALID;
 
-    const Types::PlayerID playerId = hasManualPlayerId ?
+    const PlayerID playerId = hasManualPlayerId ?
         Globals::AppManager()->m_pServerExoApp->GetPlayerIDByGameObjectID(target) :
         Constants::PLAYERID_ALL_CLIENTS;
 
@@ -298,7 +284,7 @@ Events::ArgumentStack Chat::GetTarget(Events::ArgumentStack&&)
 Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 {
     const auto distance = Services::Events::ExtractArgument<float>(args);
-    const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerOid = Services::Events::ExtractArgument<ObjectID>(args);
     const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
 
     if (playerOid == Constants::OBJECT_INVALID)
@@ -326,7 +312,7 @@ Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 
 Events::ArgumentStack Chat::GetChatHearingDistance(Events::ArgumentStack&& args)
 {
-    const auto playerOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerOid = Services::Events::ExtractArgument<ObjectID>(args);
     const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
     float retVal = m_hearingDistances[channel];
 

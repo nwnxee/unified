@@ -27,7 +27,7 @@ class FixUnlimitedPotionsBug;
 class Tweaks : public NWNXLib::Plugin
 {
 public:
-    Tweaks(const Plugin::CreateParams& params);
+    Tweaks(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Tweaks();
 
 private:

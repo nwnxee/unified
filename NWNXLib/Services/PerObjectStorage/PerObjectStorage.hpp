@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Utils.hpp"
@@ -58,7 +57,7 @@ private:
         StringMap&  GetStringMap();
         PointerMap& GetPointerMap();
 
-        ObjectStorage(API::Types::ObjectID owner);
+        ObjectStorage(ObjectID owner);
         ~ObjectStorage();
 
         void CloneFrom(ObjectStorage *other);
@@ -66,7 +65,7 @@ private:
         std::string Serialize(bool persistonly = true);
         void Deserialize(const char *serialized, bool persist = true);
 
-        API::Types::ObjectID        m_oidOwner;
+        ObjectID        m_oidOwner;
         bool                        m_bCloned;
         std::unique_ptr<IntMap>     m_IntMap;
         std::unique_ptr<FloatMap>   m_FloatMap;
@@ -74,7 +73,7 @@ private:
         std::unique_ptr<PointerMap> m_PointerMap;
     };
 
-    static ObjectStorage* GetObjectStorage(API::Types::ObjectID object);
+    static ObjectStorage* GetObjectStorage(ObjectID object);
     static ObjectStorage* GetObjectStorage(CGameObject *pGameObject);
     static void DestroyObjectStorage(CGameObject *pGameObject);
 };
@@ -104,34 +103,34 @@ public:
     //
     // Interfaces using objectID instead of CGameObject pointer
     //
-    void Set(API::Types::ObjectID object, const std::string& key, int value, bool persist = false)
+    void Set(ObjectID object, const std::string& key, int value, bool persist = false)
     {
         return Set(Utils::GetGameObject(object), key, value, persist);
     }
-    void Set(API::Types::ObjectID object, const std::string& key, float value, bool persist = false)
+    void Set(ObjectID object, const std::string& key, float value, bool persist = false)
     {
         return Set(Utils::GetGameObject(object), key, value, persist);
     }
-    void Set(API::Types::ObjectID object, const std::string& key, std::string value, bool persist = false)
+    void Set(ObjectID object, const std::string& key, std::string value, bool persist = false)
     {
         return Set(Utils::GetGameObject(object), key, value, persist);
     }
-    void Set(API::Types::ObjectID object, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
+    void Set(ObjectID object, const std::string& key, void *value, PerObjectStorage::CleanupFunc cleanup = nullptr)
     {
         return Set(Utils::GetGameObject(object), key, value, cleanup);
     }
     template <typename T> std::optional<T>
-    Get(API::Types::ObjectID object, const std::string& key)
+    Get(ObjectID object, const std::string& key)
     {
         return Get<T>(Utils::GetGameObject(object), key);
     }
 
-    void Remove(API::Types::ObjectID object, const std::string& key)
+    void Remove(ObjectID object, const std::string& key)
     {
         return Remove(Utils::GetGameObject(object), key);
     }
 
-    void RemoveRegex(API::Types::ObjectID object, const std::string& regex)
+    void RemoveRegex(ObjectID object, const std::string& regex)
     {
         return RemoveRegex(Utils::GetGameObject(object), regex);
     }

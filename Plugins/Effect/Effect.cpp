@@ -16,30 +16,17 @@ using namespace NWNXLib::API;
 
 static Effect::Effect* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Effect",
-        "Miscellaneous Effectity functions",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Effect::Effect(params);
+    g_plugin = new Effect::Effect(services);
     return g_plugin;
 }
 
 
 namespace Effect {
 
-Effect::Effect(const Plugin::CreateParams& params)
-    : Plugin(params)
+Effect::Effect(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -65,10 +52,10 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
 
     eff->m_sCustomTag = Services::Events::ExtractArgument<std::string>(args).c_str();
 
-    eff->m_oidParamObjectID[3] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
-    eff->m_oidParamObjectID[2] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
-    eff->m_oidParamObjectID[1] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
-    eff->m_oidParamObjectID[0] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
+    eff->m_oidParamObjectID[3] = Services::Events::ExtractArgument<ObjectID>(args);
+    eff->m_oidParamObjectID[2] = Services::Events::ExtractArgument<ObjectID>(args);
+    eff->m_oidParamObjectID[1] = Services::Events::ExtractArgument<ObjectID>(args);
+    eff->m_oidParamObjectID[0] = Services::Events::ExtractArgument<ObjectID>(args);
 
     eff->m_sParamString[5] = Services::Events::ExtractArgument<std::string>(args).c_str();
     eff->m_sParamString[4] = Services::Events::ExtractArgument<std::string>(args).c_str();
@@ -106,7 +93,7 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
     eff->m_bShowIcon          = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_bExpose            = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_nSpellId           = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_oidCreator         = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
+    eff->m_oidCreator         = Services::Events::ExtractArgument<ObjectID>(args);
     eff->m_nExpiryTimeOfDay   = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_nExpiryCalendarDay = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_fDuration          = Services::Events::ExtractArgument<float>(args);
@@ -128,7 +115,7 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, (float)eff->m_fDuration);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nExpiryCalendarDay);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nExpiryTimeOfDay);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidCreator);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidCreator);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nSpellId);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bExpose);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bShowIcon);
@@ -176,10 +163,10 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[4].CStr()));
     Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[5].CStr()));
 
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[0]);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[1]);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[2]);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[3]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[0]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[1]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[2]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[3]);
 
     Services::Events::InsertArgument(stack, std::string(eff->m_sCustomTag.CStr()));
 

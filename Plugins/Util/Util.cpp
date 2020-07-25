@@ -40,30 +40,17 @@ using namespace NWNXLib::API;
 
 static Util::Util* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Util",
-        "Miscellaneous utility functions",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Util::Util(params);
+    g_plugin = new Util::Util(services);
     return g_plugin;
 }
 
 
 namespace Util {
 
-Util::Util(const Plugin::CreateParams& params)
-    : Plugin(params),
+Util::Util(Services::ProxyServiceList* services)
+    : Plugin(services),
       m_scriptCompiler(nullptr)
 {
 #define REGISTER(func) \
@@ -364,7 +351,7 @@ ArgumentStack Util::GetServerTicksPerSecond(ArgumentStack&&)
 
 ArgumentStack Util::GetLastCreatedObject(ArgumentStack&& args)
 {
-    Types::ObjectID retVal = Constants::OBJECT_INVALID;
+    ObjectID retVal = Constants::OBJECT_INVALID;
 
     const auto objectType = Services::Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(objectType >= 0);
@@ -579,10 +566,9 @@ ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
 
 ArgumentStack Util::PluginExists(ArgumentStack&& args)
 {
-    std::string pluginName = Services::Events::ExtractArgument<std::string>(args);
-    std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
+    auto pluginName = Services::Events::ExtractArgument<std::string>(args);
 
-    return GetServices()->m_plugins->FindPluginByName(pluginNameWithoutPrefix) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
+    return GetServices()->m_plugins->FindPluginByName(pluginName) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
 }
 
 ArgumentStack Util::GetUserDirectory(ArgumentStack&&)
@@ -592,11 +578,11 @@ ArgumentStack Util::GetUserDirectory(ArgumentStack&&)
 
 ArgumentStack Util::CreateDoor(ArgumentStack&& args)
 {
-    Types::ObjectID retVal = Constants::OBJECT_INVALID;
+    ObjectID retVal = Constants::OBJECT_INVALID;
 
     const auto strResRef = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!strResRef.empty());
-    const auto oidArea = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto oidArea = Services::Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
     const auto posX = Services::Events::ExtractArgument<float>(args);
     const auto posY = Services::Events::ExtractArgument<float>(args);

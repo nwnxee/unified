@@ -10,7 +10,7 @@ class Array;
 class Data : public NWNXLib::Plugin
 {
 public:
-    Data(const Plugin::CreateParams& params);
+    Data(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Data();
 
 private:

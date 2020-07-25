@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
@@ -12,7 +11,7 @@ public:
     DeadCreatureFiresOnAreaExit(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static int32_t CNWSArea__RemoveObjectFromArea_hook(CNWSArea*, NWNXLib::API::Types::ObjectID);
+    static int32_t CNWSArea__RemoveObjectFromArea_hook(CNWSArea*, ObjectID);
     static NWNXLib::Hooking::FunctionHook* pRemoveObjectFromArea_hook;
 };
 

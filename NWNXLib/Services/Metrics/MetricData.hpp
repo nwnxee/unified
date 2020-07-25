@@ -4,9 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 struct MetricData
 {
@@ -23,7 +21,5 @@ public:
     Fields m_fields;
     Tags m_tags;
 };
-
-}
 
 }

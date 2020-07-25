@@ -25,22 +25,9 @@ using namespace NWNXLib;
 
 static Profiler::Profiler* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Profiler",
-        "Acquires shared hooks to expose various useful metrics.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Profiler::Profiler(params);
+    g_plugin = new Profiler::Profiler(services);
     return g_plugin;
 }
 
@@ -55,8 +42,8 @@ static std::chrono::milliseconds g_recalibrationPeriod;
 static bool g_recalibrate = false;
 static bool g_tickrate = false;
 
-Profiler::Profiler(const Plugin::CreateParams& params)
-    : Plugin(params)
+Profiler::Profiler(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     g_hooks = GetServices()->m_hooks.get();
     g_metrics = GetServices()->m_metrics.get();

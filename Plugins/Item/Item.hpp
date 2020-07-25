@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSItem.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
@@ -12,7 +11,7 @@ namespace Item {
 class Item : public NWNXLib::Plugin
 {
 public:
-    Item(const Plugin::CreateParams& params);
+    Item(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Item();
 
 private:

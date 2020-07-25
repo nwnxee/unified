@@ -19,18 +19,19 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerQuickChatMessageHoo
 QuickChatEvents::QuickChatEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh>(&HandlePlayerToServerQuickChatMessageHook);
-        m_HandlePlayerToServerQuickChatMessageHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh);
+        m_HandlePlayerToServerQuickChatMessageHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh>
+            (&HandlePlayerToServerQuickChatMessageHook);
     });
 }
 
 int32_t QuickChatEvents::HandlePlayerToServerQuickChatMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer, uint8_t nMinor)
 {
     int32_t retVal;
-    Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
+    ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : OBJECT_INVALID;
     std::string quickChatCommand = std::to_string(Utils::PeekMessage<int16_t>(thisPtr, 0));
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("QUICKCHAT_COMMAND", quickChatCommand);
 
         return Events::SignalEvent(ev, oidPlayer);

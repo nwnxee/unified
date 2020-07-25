@@ -23,22 +23,9 @@ using namespace NWNXLib::API;
 
 static Dialog::Dialog* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Dialog",
-        "Functions exposing additional dialog properties",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Dialog::Dialog(params);
+    g_plugin = new Dialog::Dialog(services);
     return g_plugin;
 }
 
@@ -168,8 +155,8 @@ void Dialog::Hooks::RunScript(bool before, CNWSDialog *pThis,
         scriptType = SCRIPT_TYPE_OTHER;
 }
 
-Dialog::Dialog(const Plugin::CreateParams& params)
-    : Plugin(params)
+Dialog::Dialog(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -349,7 +336,7 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
 
 ArgumentStack Dialog::End(ArgumentStack&& args)
 {
-    auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObject)))

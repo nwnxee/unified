@@ -36,11 +36,14 @@ namespace NWNXLib::Assert {
 
 void Fail(const char* condition, const char* file, int line, const char* message);
 
-template <typename ... Args>
-void Fail(const char* condition, const char* file, int line, const char* format, Args ... args);
-
 void SetCrashOnFailure(bool crash);
 
-#include "Assert.inl"
+template <typename ... Args>
+void Fail(const char* condition, const char* file, int line, const char* format, Args ... args)
+{
+    char buffer[1536];
+    std::sprintf(buffer, format, args ...);
+    Fail(condition, file, line, buffer);
+}
 
 }

@@ -11,29 +11,16 @@ using namespace NWNXLib::Services;
 
 static Regex::Regex* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Regex",
-        "Regular expression functions",
-        "orth",
-        "plenarius@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Regex::Regex(params);
+    g_plugin = new Regex::Regex(services);
     return g_plugin;
 }
 
 namespace Regex {
 
-Regex::Regex(const Plugin::CreateParams& params)
-    : Plugin(params)
+Regex::Regex(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 
 #define REGISTER(func) \

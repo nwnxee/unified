@@ -62,7 +62,7 @@ public: // Structures
     };
 
 public:
-    Events(const Plugin::CreateParams& params);
+    Events(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Events();
 
     // Pushes event data to the stack - won't do anything until SignalEvent is called.
@@ -72,7 +72,7 @@ public:
     static std::string GetEventData(const std::string& tag);
 
     // Returns true if the event can proceed, or false if the event has been skipped.
-    static bool SignalEvent(const std::string& eventName, const NWNXLib::API::Types::ObjectID target, std::string *result=nullptr);
+    static bool SignalEvent(const std::string& eventName, const ObjectID target, std::string *result=nullptr);
 
     static void InitOnFirstSubscribe(const std::string& eventName, std::function<void(void)> init);
 
@@ -103,7 +103,7 @@ private:
     uint8_t m_eventDepth;
 
     std::unordered_map<std::string, std::function<void(void)>> m_initList;
-    std::unordered_map<std::string, std::set<NWNXLib::API::Types::ObjectID>> m_dispatchList;
+    std::unordered_map<std::string, std::set<ObjectID>> m_dispatchList;
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
     std::unique_ptr<BarterEvents> m_barterEvents;

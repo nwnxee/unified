@@ -17,30 +17,17 @@ using namespace NWNXLib::API;
 
 static Visibility::Visibility* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Visibility",
-        "Allows the visibility of objects to be overridden globally or per player",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Visibility::Visibility(params);
+    g_plugin = new Visibility::Visibility(services);
     return g_plugin;
 }
 
 
 namespace Visibility {
 
-Visibility::Visibility(const Plugin::CreateParams& params)
-    : Plugin(params)
+Visibility::Visibility(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -51,8 +38,8 @@ Visibility::Visibility(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_>(&Visibility::TestObjectVisibleHook);
-    m_TestObjectVisibilityHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_);
+    m_TestObjectVisibilityHook = GetServices()->m_hooks->RequestExclusiveHook
+        <API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_>(&Visibility::TestObjectVisibleHook);
 }
 
 Visibility::~Visibility()
@@ -85,7 +72,7 @@ int32_t Visibility::TestObjectVisibleHook(
     return bInvisible ? false : g_plugin->m_TestObjectVisibilityHook->CallOriginal<int32_t>(pThis, pAreaObject, pPlayerGameObject);
 }
 
-int32_t Visibility::GetGlobalOverride(Types::ObjectID targetId)
+int32_t Visibility::GetGlobalOverride(ObjectID targetId)
 {
     int32_t retVal = -1;
 
@@ -97,7 +84,7 @@ int32_t Visibility::GetGlobalOverride(Types::ObjectID targetId)
     return retVal;
 }
 
-int32_t Visibility::GetPersonalOverride(Types::ObjectID playerId, Types::ObjectID targetId)
+int32_t Visibility::GetPersonalOverride(ObjectID playerId, ObjectID targetId)
 {
     int32_t retVal = -1;
 
@@ -111,8 +98,8 @@ int32_t Visibility::GetPersonalOverride(Types::ObjectID playerId, Types::ObjectI
 
 ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalOverride(targetId) :
                                                                GetPersonalOverride(playerId, targetId);
@@ -122,8 +109,8 @@ ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
 
 ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
 {
-    auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
     const auto override = Services::Events::ExtractArgument<int32_t>(args);
     std::string varName = Utils::ObjectIDToString(targetId);
 

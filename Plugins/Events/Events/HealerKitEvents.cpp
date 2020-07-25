@@ -11,13 +11,14 @@ namespace Events {
 
 using namespace NWNXLib;
 
-static NWNXLib::Hooking::FunctionHook* m_AIActionHealHook=nullptr;
+static NWNXLib::Hooking::FunctionHook* s_AIActionHealHook;
 
 HealerKitEvents::HealerKitEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>(&AIActionHealHook);
-        m_AIActionHealHook =  hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode);
+        s_AIActionHealHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
+            (&AIActionHealHook);
     });
 }
 
@@ -36,7 +37,7 @@ uint32_t HealerKitEvents::AIActionHealHook(
     if (Events::SignalEvent("NWNX_ON_HEALER_KIT_BEFORE", pCreature->m_idSelf, &sAux))
     {
 
-        retVal = m_AIActionHealHook->CallOriginal<uint32_t>(pCreature, pNode);
+        retVal = s_AIActionHealHook->CallOriginal<uint32_t>(pCreature, pNode);
     }
     else
     {

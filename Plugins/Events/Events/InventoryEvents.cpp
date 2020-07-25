@@ -20,24 +20,24 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerGuiInventoryMessageHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AddItemHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AddGoldHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_RemoveGoldHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerGuiInventoryMessageHook;
+static NWNXLib::Hooking::FunctionHook* s_AddItemHook;
+static NWNXLib::Hooking::FunctionHook* s_AddGoldHook;
+static NWNXLib::Hooking::FunctionHook* s_RemoveGoldHook;
 
 InventoryEvents::InventoryEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_(SELECT|OPEN)_.*", [hooker]()
     {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh>(
-                &HandlePlayerToServerGuiInventoryMessageHook);
-        m_HandlePlayerToServerGuiInventoryMessageHook = hooker->FindHookByAddress(
-                API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh);
+        s_HandlePlayerToServerGuiInventoryMessageHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN11CNWSMessage39HandlePlayerToServerGuiInventoryMessageEP10CNWSPlayerh>
+            (&HandlePlayerToServerGuiInventoryMessageHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_ITEM_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii>(&AddItemHook);
-        m_AddItemHook = hooker->FindHookByAddress(API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii);
+        s_AddItemHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN15CItemRepository7AddItemEPP8CNWSItemhhii>
+            (&AddItemHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_ITEM_.*", [hooker]() {
@@ -45,13 +45,15 @@ InventoryEvents::InventoryEvents(Services::HooksProxy* hooker)
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_ADD_GOLD_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature7AddGoldEii>(&AddGoldHook);
-        m_AddGoldHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature7AddGoldEii);
+        s_AddGoldHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature7AddGoldEii>
+            (&AddGoldHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_INVENTORY_REMOVE_GOLD_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10RemoveGoldEii>(&RemoveGoldHook);
-        m_RemoveGoldHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature10RemoveGoldEii);
+        s_RemoveGoldHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature10RemoveGoldEii>
+            (&RemoveGoldHook);
     });
 }
 
@@ -60,18 +62,18 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
     int32_t retVal;
 
     if (!pPlayer)
-        return m_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+        return s_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
 
     switch (nMinor)
     {
         case MessageGuiInventoryMinor::Status:
         {
-            auto target = Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF;
+            auto target = Utils::PeekMessage<ObjectID>(thisPtr, 0) & 0x7FFFFFFF;
             auto open = (bool)(Utils::PeekMessage<uint8_t>(thisPtr, 4) & 0x10);
 
             if (open)
             {
-                auto PushAndSignal = [&](std::string ev) -> bool
+                auto PushAndSignal = [&](const std::string& ev) -> bool
                 {
                     Events::PushEventData("TARGET_INVENTORY", Utils::ObjectIDToString(target));
                     return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
@@ -79,7 +81,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
 
                 if (PushAndSignal("NWNX_ON_INVENTORY_OPEN_BEFORE"))
                 {
-                    retVal = m_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+                    retVal = s_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
                 }
                 else
                 {
@@ -100,7 +102,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
             }
             else
             {
-                retVal = m_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+                retVal = s_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
             }
             break;
         }
@@ -114,7 +116,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
             {
                 uint8_t currentPanel = pPlayer->m_pInventoryGUI->m_nSelectedInventoryPanel;
 
-                auto PushAndSignal = [&](std::string ev) -> bool
+                auto PushAndSignal = [&](const std::string& ev) -> bool
                 {
                     Events::PushEventData("CURRENT_PANEL", std::to_string(currentPanel));
                     Events::PushEventData("SELECTED_PANEL", std::to_string(selectedPanel));
@@ -124,7 +126,7 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
 
                 if (PushAndSignal("NWNX_ON_INVENTORY_SELECT_PANEL_BEFORE"))
                 {
-                    retVal = m_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer,
+                    retVal = s_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer,
                                                                                                   nMinor);
                 }
                 else
@@ -142,13 +144,13 @@ int32_t InventoryEvents::HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage
             }
             else
             {
-                retVal = m_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+                retVal = s_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
             }
             break;
         }
 
         default:
-            retVal = m_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+            retVal = s_HandlePlayerToServerGuiInventoryMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
             break;
     }
 
@@ -165,17 +167,17 @@ int32_t InventoryEvents::AddItemHook(CItemRepository* thisPtr, CNWSItem** ppItem
     // Early out if parent isn't an item or placeable or Bad Things(tm) happen
     if(!Utils::AsNWSItem(pContainer) && !Utils::AsNWSPlaceable(pContainer))
     {
-        return m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
+        return s_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
     }
 
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(ppItem && *ppItem ? (**ppItem).m_idSelf : OBJECT_INVALID));
         return Events::SignalEvent(ev, thisPtr->m_oidParent);
     };
 
     if (PushAndSignal("NWNX_ON_INVENTORY_ADD_ITEM_BEFORE"))
     {
-        retVal = m_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
+        retVal = s_AddItemHook->CallOriginal<int32_t>(thisPtr, ppItem, x, y, bAllowEncumbrance, bMergeItem);
     }
     else
     {
@@ -212,7 +214,7 @@ void InventoryEvents::AddGoldHook(CNWSCreature *pCreature, int32_t nGold, int32_
 
     if (PushAndSignal("NWNX_ON_INVENTORY_ADD_GOLD_BEFORE"))
     {
-        m_AddGoldHook->CallOriginal<void>(pCreature, nGold, bDisplayFeedBack);
+        s_AddGoldHook->CallOriginal<void>(pCreature, nGold, bDisplayFeedBack);
     }
 
     PushAndSignal("NWNX_ON_INVENTORY_ADD_GOLD_AFTER");
@@ -227,7 +229,7 @@ void InventoryEvents::RemoveGoldHook(CNWSCreature *pCreature, int32_t nGold, int
 
     if (PushAndSignal("NWNX_ON_INVENTORY_REMOVE_GOLD_BEFORE"))
     {
-        m_RemoveGoldHook->CallOriginal<void>(pCreature, nGold, bDisplayFeedBack);
+        s_RemoveGoldHook->CallOriginal<void>(pCreature, nGold, bDisplayFeedBack);
     }
 
     PushAndSignal("NWNX_ON_INVENTORY_REMOVE_GOLD_AFTER");

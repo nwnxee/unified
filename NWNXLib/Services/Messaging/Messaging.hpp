@@ -8,9 +8,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Messaging
 {
@@ -49,7 +47,5 @@ public:
 private:
     std::vector<Messaging::HandlerId> m_subscribed;
 };
-
-}
 
 }

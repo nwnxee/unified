@@ -5,8 +5,6 @@
 #include "API/Constants.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "API/Types.hpp"
-#include "API/Version.hpp"
 #include "Assert.hpp"
 #include "Log.hpp"
 

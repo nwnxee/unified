@@ -11,7 +11,7 @@ namespace Encounter {
 class Encounter : public NWNXLib::Plugin
 {
 public:
-    Encounter(const Plugin::CreateParams& params);
+    Encounter(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Encounter();
 
 private:

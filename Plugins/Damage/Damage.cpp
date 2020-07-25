@@ -19,29 +19,16 @@ using namespace NWNXLib::API;
 
 static Damage::Damage* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Damage",
-        "Damage related functions",
-        "Bhaal (original nwnx2 plugin from Baaleos)",
-        "marca.argentea at gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Damage::Damage(params);
+    g_plugin = new Damage::Damage(services);
     return g_plugin;
 }
 
 namespace Damage {
 
-Damage::Damage(const Plugin::CreateParams& params)
-  : Plugin(params)
+Damage::Damage(Services::ProxyServiceList* services)
+  : Plugin(services)
 {
 
 #define REGISTER(func) \
@@ -57,11 +44,9 @@ Damage::Damage(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti>(&Damage::OnApplyDamage);
+    m_OnApplyDamageHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti>(&Damage::OnApplyDamage);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, void>(&Damage::OnSignalDamage);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, void>(&Damage::OnSignalDamage);
-
-    m_OnApplyDamageHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti);
 
     m_EventScripts["DAMAGE"] = "";
     m_EventScripts["ATTACK"] = "";
@@ -75,7 +60,7 @@ ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
 {
     const std::string event = Services::Events::ExtractArgument<std::string>(args);
     const std::string script = Services::Events::ExtractArgument<std::string>(args);
-    Types::ObjectID oidOwner = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    ObjectID oidOwner = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (oidOwner == Constants::OBJECT_INVALID)
     {
@@ -228,8 +213,8 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     std::bitset<13> positive;
 
     // read input
-    uint32_t oidSource = Services::Events::ExtractArgument<Types::ObjectID>(args);
-    uint32_t oidTarget = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    uint32_t oidSource = Services::Events::ExtractArgument<ObjectID>(args);
+    uint32_t oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
 
     for (int k = 0; k < 12; k++)
     {

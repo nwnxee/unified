@@ -2,9 +2,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 template <>
 std::vector<MetricData> Resamplers::Sum<std::chrono::nanoseconds>(std::vector<MetricData>&& data)
@@ -336,8 +334,6 @@ bool Resamplers::TestLogicalEquality(const MetricData& first, const MetricData& 
 
     // At this point, we're a match.
     return true;
-}
-
 }
 
 }

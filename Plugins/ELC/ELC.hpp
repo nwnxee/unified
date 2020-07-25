@@ -84,7 +84,7 @@ namespace ValidationFailureSubType
 class ELC : public NWNXLib::Plugin
 {
 public:
-    ELC(const Plugin::CreateParams& params);
+    ELC(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ELC();
 
 private:
@@ -98,7 +98,7 @@ private:
     int32_t m_validationFailureSubType;
     int32_t m_validationFailureMessageStrRef;
 
-    NWNXLib::API::Types::ObjectID m_ILRItemOID;
+    ObjectID m_ILRItemOID;
     int32_t m_ELCLevel;
     int32_t m_ELCSkillID;
     int32_t m_ELCFeatID;

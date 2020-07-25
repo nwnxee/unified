@@ -31,30 +31,17 @@ static Race::Race* g_plugin;
 
 const auto MODULE_OID = 0;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Race",
-        "Define racial and subrace characteristics",
-        "orth",
-        "plenarius@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Race::Race(params);
+    g_plugin = new Race::Race(services);
     return g_plugin;
 }
 
 
 namespace Race {
 
-Race::Race(const Plugin::CreateParams& params)
-    : Plugin(params)
+Race::Race(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -98,7 +85,7 @@ Race::Race(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveInitiativeEv, void, CNWSCreature*>(&ResolveInitiativeHook);
 
     // If a level up has been confirmed we rerun the racial applications in case of new feats, level based adjustments etc.
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji, int32_t, CNWSMessage*, Types::PlayerID, int32_t>(&SendServerToPlayerLevelUp_ConfirmationHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji, int32_t, CNWSMessage*, PlayerID, int32_t>(&SendServerToPlayerLevelUp_ConfirmationHook);
 
     // Swap race with parent race due to hardcoded checks here
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, int32_t, CNWSCreatureStats*, CNWSCreature*>(&GetFavoredEnemyBonusHook);
@@ -107,8 +94,7 @@ Race::Race(const Plugin::CreateParams& params)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats33GetMeetsPrestigeClassRequirementsEP8CNWClass, int32_t, CNWSCreatureStats*, CNWClass*>(&GetMeetsPrestigeClassRequirementsHook);
 
     //Don't swap, check as both parent and child race
-    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem>(&CheckItemRaceRestrictionsHook);
-    m_CheckRacialResHook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem);
+    m_CheckRacialResHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem>(&CheckItemRaceRestrictionsHook);
 
     // Need to set up default parent race to invalid before the on module load sets up the parents
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules12LoadRaceInfoEv, void, CNWRules *>(&LoadRaceInfoHook);
@@ -127,7 +113,7 @@ Race::Race(const Plugin::CreateParams& params)
              {
                  if (message[0] == "VALIDATE_CHARACTER_BEFORE" || message[0] == "VALIDATE_CHARACTER_AFTER")
                  {
-                     Types::ObjectID objectID = std::strtoul(message[1].c_str(), nullptr, 16);
+                     ObjectID objectID = std::strtoul(message[1].c_str(), nullptr, 16);
 
                      HandleValidateCharacter(objectID, message[0] == "VALIDATE_CHARACTER_BEFORE");
                  }
@@ -629,7 +615,7 @@ void Race::ResolveInitiativeHook(CNWSCreature *pCreature)
     }
 }
 
-void Race::HandleValidateCharacter(Types::ObjectID oidCreature, bool bBefore)
+void Race::HandleValidateCharacter(ObjectID oidCreature, bool bBefore)
 {
     auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidCreature);
 
@@ -688,7 +674,7 @@ void Race::ValidateCharacterHook(
 void Race::SendServerToPlayerLevelUp_ConfirmationHook(
         bool before,
         CNWSMessage *,
-        Types::PlayerID playerId,
+        PlayerID playerId,
         int32_t bValidated)
 {
     // Reapply the racial effects in case there are level specific ones

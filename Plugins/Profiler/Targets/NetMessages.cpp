@@ -17,28 +17,16 @@ NetMessages::NetMessages(Services::HooksProxy* hooker,
     g_metrics = metrics;
 
     hooker->RequestSharedHook<Functions::_ZN11CNWSMessage34ComputeGameObjectUpdateForCategoryEjjP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayP29CNWSPlayerLUOSortedObjectListi, int32_t,
-        CNWSMessage*,
-        uint32_t,
-        uint32_t,
-        CNWSPlayer*,
-        CNWSObject*,
-        CGameObjectArray*,
-        CNWSPlayerLUOSortedObjectList*,
-        int32_t>(&ComputeGameObjectUpdateForCategory);
+        CNWSMessage*, uint32_t, uint32_t, CNWSPlayer*, CNWSObject*, CGameObjectArray*, CNWSPlayerLUOSortedObjectList*, int32_t>
+        (&ComputeGameObjectUpdateForCategory);
 
     hooker->RequestSharedHook<Functions::_ZN11CNWSMessage25SendServerToPlayerMessageEjhhPhj, int32_t,
-        CNWSMessage*,
-        Types::PlayerID,
-        uint8_t,
-        uint8_t,
-        uint8_t*,
-        uint32_t>(&SendServerToPlayerMessageHook);
+        CNWSMessage*, PlayerID, uint8_t, uint8_t, uint8_t*, uint32_t>
+        (&SendServerToPlayerMessageHook);
 
     hooker->RequestSharedHook<Functions::_ZN11CNWSMessage27HandlePlayerToServerMessageEjPhj, int32_t,
-        CNWSMessage*,
-        Types::PlayerID,
-        uint8_t*,
-        uint32_t>(&HandlePlayerToServerMessageHook);
+        CNWSMessage*, PlayerID, uint8_t*, uint32_t>
+        (&HandlePlayerToServerMessageHook);
 
     Services::Resamplers::ResamplerFuncPtr sumResampler = &Services::Resamplers::template Sum<uint32_t>;
     metrics->SetResampler("GameObjectUpdate", sumResampler, std::chrono::seconds(1));
@@ -73,7 +61,7 @@ void NetMessages::ComputeGameObjectUpdateForCategory(bool before,
 
 void NetMessages::SendServerToPlayerMessageHook(bool before,
     CNWSMessage*,
-    Types::PlayerID pid,
+    PlayerID pid,
     uint8_t major,
     uint8_t minor,
     uint8_t*,
@@ -100,7 +88,7 @@ void NetMessages::SendServerToPlayerMessageHook(bool before,
 
 void NetMessages::HandlePlayerToServerMessageHook(bool before,
     CNWSMessage*,
-    Types::PlayerID pid,
+    PlayerID pid,
     uint8_t* buffer,
     uint32_t bufferLen)
 {

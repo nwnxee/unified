@@ -75,10 +75,15 @@ std::string ResolveAddress(uintptr_t address)
     if (address > ASLR::GetRelocatedAddress(0))
         address -= ASLR::GetRelocatedAddress(0);
 
-    auto it = --s_FunctionMap.upper_bound(address);
-    char offset[64];
-    std::snprintf(offset, sizeof(offset), "+0x%lx", address - it->first);
-    return it->second + offset;
+    auto it = s_FunctionMap.upper_bound(address);
+    if (it != s_FunctionMap.begin())
+    {
+        --it;
+        char offset[64];
+        std::snprintf(offset, sizeof(offset), "+0x%lx", address - it->first);
+        return it->second + offset;
+    }
+    return "<UNKNOWN>";
 }
 
 uintptr_t GetFunctionAddress(const std::string& mangledname)

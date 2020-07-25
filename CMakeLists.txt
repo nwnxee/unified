@@ -16,7 +16,6 @@ find_package(Sanitizers)
 set(TARGET_NWN_BUILD 8193)
 set(TARGET_NWN_BUILD_REVISION 13)
 set(PLUGIN_PREFIX NWNX_)
-set(NWNX64 1)
 
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
 function(add_plugin target)
@@ -47,14 +46,6 @@ set(NWNX_STANDARD_FLAGS "-m64 -march=x86-64 -fdiagnostics-show-option -fno-omit-
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${NWNX_STANDARD_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_CXX} -std=c++17")
-
-# Define targets.
-# TAR_RELEASE_FINAL: Shipping version.
-# TAR_RELEASE: Fast testing version.
-# TAR_DEUBG: Slow testing version.
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DTAR_RELEASE_FINAL=1 -DTAR_RELEASE=1 -DTAR_DEBUG=0")
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DTAR_RELEASE_FINAL=0 -DTAR_RELEASE=1 -DTAR_DEBUG=1")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTAR_RELEASE_FINAL=0 -DTAR_RELEASE=0 -DTAR_DEBUG=1")
 
 add_definitions(-DNWNX_PLUGIN_PREFIX="${PLUGIN_PREFIX}")
 add_definitions(-DNWNX_TARGET_NWN_BUILD=${TARGET_NWN_BUILD})

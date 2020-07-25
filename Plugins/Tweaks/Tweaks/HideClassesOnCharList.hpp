@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Common.hpp"
 
 namespace Tweaks {
@@ -11,9 +10,7 @@ public:
     HideClassesOnCharList(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(
-        CNWSMessage*, NWNXLib::API::Types::PlayerID,
-        NWNXLib::API::Types::ObjectID, int32_t);
+    static int32_t SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage*, PlayerID, ObjectID, int32_t);
 };
 
 }

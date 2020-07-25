@@ -34,22 +34,9 @@ using namespace NWNXLib::API;
 
 static Creature::Creature* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Creature",
-        "Functions exposing additional creature properties",
-        "various / sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Creature::Creature(params);
+    g_plugin = new Creature::Creature(services);
     return g_plugin;
 }
 
@@ -61,8 +48,8 @@ bool Creature::s_bCasterLevelHooksInitialized = false;
 bool Creature::s_bCriticalMultiplierHooksInitialized = false;
 bool Creature::s_bCriticalRangeHooksInitialized = false;
 
-Creature::Creature(const Plugin::CreateParams& params)
-    : Plugin(params)
+Creature::Creature(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -181,7 +168,7 @@ Creature::~Creature()
 
 CNWSCreature *Creature::creature(ArgumentStack& args)
 {
-    const auto creatureId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (creatureId == Constants::OBJECT_INVALID)
     {
@@ -1460,7 +1447,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
 
     if (!pGetWalkRate_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature11GetWalkRateEv>(
+        pGetWalkRate_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature11GetWalkRateEv>(
             +[](CNWSCreature *pThis) -> float
             {
                 float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
@@ -1469,7 +1456,6 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
                 return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
 
             });
-        pGetWalkRate_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature11GetWalkRateEv);
     }
 
     if (auto *pCreature = creature(args))
@@ -1578,7 +1564,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
     {
         try
         {
-            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(
+            pCanLevelUp_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(
                     +[](CNWSCreatureStats *pThis) -> int32_t
                     {
                         if (bSkipLevelUpValidation)
@@ -1589,14 +1575,13 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                         }
                         return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
                     });
-            pCanLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv);
         }
         catch (...)
         {
             LOG_NOTICE("NWNX_MaxLevel will manage CanLevelUp.");
         }
 
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
+        pValidateLevelUp_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
                 +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
                 {
                     if (bSkipLevelUpValidation)
@@ -1608,7 +1593,6 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                     }
                     return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
                 });
-        pValidateLevelUp_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh);
     }
 
     if (auto *pCreature = creature(args))
@@ -1796,7 +1780,7 @@ ArgumentStack Creature::GetTotalEffectBonus(ArgumentStack&& args)
     {
         CNWSObject *versus = NULL;
         const auto bonusType = Services::Events::ExtractArgument<int32_t>(args);
-        const auto versus_id = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto versus_id = Services::Events::ExtractArgument<ObjectID>(args);
         if (versus_id != Constants::OBJECT_INVALID)
         {
             CGameObject *pObject = API::Globals::AppManager()->m_pServerExoApp->GetGameObject(versus_id);
@@ -2519,7 +2503,7 @@ ArgumentStack Creature::AddAssociate(ArgumentStack&& args)
 {
     if (auto* pCreature = creature(args))
     {
-        auto oidAssociate = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        auto oidAssociate = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidAssociate != Constants::OBJECT_INVALID);
         auto associateType = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(associateType > Constants::AssociateType::None);

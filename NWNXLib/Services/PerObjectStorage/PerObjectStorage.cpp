@@ -27,7 +27,7 @@ PerObjectStorage::ObjectStorage* PerObjectStorage::GetObjectStorage(CGameObject 
     return static_cast<ObjectStorage*>(pGameObject->m_pNwnxData);
 }
 
-PerObjectStorage::ObjectStorage* PerObjectStorage::GetObjectStorage(API::Types::ObjectID object)
+PerObjectStorage::ObjectStorage* PerObjectStorage::GetObjectStorage(ObjectID object)
 {
     return GetObjectStorage(Utils::GetGameObject(object));
 }
@@ -144,7 +144,7 @@ PerObjectStorage::ObjectStorage::PointerMap& PerObjectStorage::ObjectStorage::Ge
     return *m_PointerMap;
 }
 
-PerObjectStorage::ObjectStorage::ObjectStorage(API::Types::ObjectID owner)
+PerObjectStorage::ObjectStorage::ObjectStorage(ObjectID owner)
 {
     m_oidOwner = owner;
     m_bCloned = false;

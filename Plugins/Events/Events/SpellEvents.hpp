@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/Vector.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
@@ -18,9 +17,9 @@ private:
         CNWSObject*,
         uint32_t,
         Vector,
-        NWNXLib::API::Types::ObjectID,
+        ObjectID,
         int8_t,
-        NWNXLib::API::Types::ObjectID,
+        ObjectID,
         bool,
         bool,
         int8_t,

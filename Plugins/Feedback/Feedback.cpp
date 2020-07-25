@@ -16,38 +16,25 @@ using namespace NWNXLib::API;
 
 static Feedback::Feedback* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Feedback",
-        "Allows combatlog, feedback and journal updated messages to be hidden globally or per player",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Feedback::Feedback(params);
+    g_plugin = new Feedback::Feedback(services);
     return g_plugin;
 }
 
 
 namespace Feedback {
 
-static NWNXLib::Hooking::FunctionHook* m_SendFeedbackMessageHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCCMessageHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerJournalUpdatedHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_SendFeedbackMessageHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerCCMessageHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerJournalUpdatedHook = nullptr;
 
 const int32_t FEEDBACK_MESSAGE = 0;
 const int32_t COMBATLOG_MESSAGE = 1;
 const int32_t JOURNALUPDATED_MESSAGE = 2;
 
-Feedback::Feedback(const Plugin::CreateParams& params)
-    : Plugin(params)
+Feedback::Feedback(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -59,14 +46,17 @@ Feedback::Feedback(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer>(&SendFeedbackMessageHook);
-    m_SendFeedbackMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer);
+    s_SendFeedbackMessageHook = GetServices()->m_hooks->RequestExclusiveHook
+        <API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer>
+        (&SendFeedbackMessageHook);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData>(&SendServerToPlayerCCMessageHook);
-    m_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData);
+    s_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->RequestExclusiveHook
+        <API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData>
+        (&SendServerToPlayerCCMessageHook);
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString>(&SendServerToPlayerJournalUpdatedHook);
-    m_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString);
+    s_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->RequestExclusiveHook
+        <API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString>
+        (&SendServerToPlayerJournalUpdatedHook);
 }
 
 Feedback::~Feedback()
@@ -84,7 +74,7 @@ void Feedback::SendFeedbackMessageHook(
 
     if (g_plugin->m_FeedbackMessageWhitelist == bSuppressFeedback)
     {
-        m_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pData, pPlayer);
+        s_SendFeedbackMessageHook->CallOriginal<void>(pCreature, nFeedbackID, pData, pPlayer);
     }
 }
 
@@ -101,7 +91,7 @@ int32_t Feedback::SendServerToPlayerCCMessageHook(
     auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(COMBATLOG_MESSAGE, nMinor) : personalState;
 
     return g_plugin->m_CombatMessageWhitelist != bSuppressFeedback ? false :
-                    m_SendServerToPlayerCCMessageHook->CallOriginal<int32_t>(pMessage, nPlayerId, nMinor, pMessageData, pAttackData);
+                    s_SendServerToPlayerCCMessageHook->CallOriginal<int32_t>(pMessage, nPlayerId, nMinor, pMessageData, pAttackData);
 }
 
 int32_t Feedback::SendServerToPlayerJournalUpdatedHook(
@@ -115,7 +105,7 @@ int32_t Feedback::SendServerToPlayerJournalUpdatedHook(
     auto bSuppressFeedback = (personalState == -1) ? GetGlobalState(JOURNALUPDATED_MESSAGE, 0) : personalState;
 
     return bSuppressFeedback ? false :
-                    m_SendServerToPlayerJournalUpdatedHook->CallOriginal<int32_t>(pMessage, pPlayer, bQuest, bCompleted, locName);
+                    s_SendServerToPlayerJournalUpdatedHook->CallOriginal<int32_t>(pMessage, pPlayer, bQuest, bCompleted, locName);
 }
 
 bool Feedback::GetGlobalState(int32_t messageType, int32_t messageId)
@@ -125,7 +115,7 @@ bool Feedback::GetGlobalState(int32_t messageType, int32_t messageId)
     return g_plugin->m_GlobalHiddenMessageSet.find(realMessageId) != g_plugin->m_GlobalHiddenMessageSet.end();
 }
 
-int32_t Feedback::GetPersonalState(Types::ObjectID playerId, int32_t messageType, int32_t messageId)
+int32_t Feedback::GetPersonalState(ObjectID playerId, int32_t messageType, int32_t messageId)
 {
     int32_t value = -1;
 
@@ -141,7 +131,7 @@ int32_t Feedback::GetPersonalState(Types::ObjectID playerId, int32_t messageType
 
 ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
 
@@ -153,7 +143,7 @@ ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 
 ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
     const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
     const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
     const auto state = Services::Events::ExtractArgument<int32_t>(args);

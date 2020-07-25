@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "API/Types.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -12,7 +11,7 @@ namespace Util {
 class Util : public NWNXLib::Plugin
 {
 public:
-    Util(const Plugin::CreateParams& params);
+    Util(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Util();
 
 private:

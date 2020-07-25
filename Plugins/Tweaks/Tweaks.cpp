@@ -20,35 +20,21 @@
 
 #include "Services/Config/Config.hpp"
 
-#include "API/Version.hpp"
 
 using namespace NWNXLib;
 
 static Tweaks::Tweaks* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Tweaks",
-        "Tweaks the behaviour of NWN.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Tweaks::Tweaks(params);
+    g_plugin = new Tweaks::Tweaks(services);
     return g_plugin;
 }
 
 namespace Tweaks {
 
-Tweaks::Tweaks(const Plugin::CreateParams& params)
-    : Plugin(params)
+Tweaks::Tweaks(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     if (GetServices()->m_config->Get<bool>("HIDE_CLASSES_ON_CHAR_LIST", false))
     {

@@ -13,30 +13,17 @@ using namespace NWNXLib::API;
 
 static ItemProperty::ItemProperty* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "ItemProperty",
-        "Miscellaneous itemproperty functions",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new ItemProperty::ItemProperty(params);
+    g_plugin = new ItemProperty::ItemProperty(services);
     return g_plugin;
 }
 
 
 namespace ItemProperty {
 
-ItemProperty::ItemProperty(const Plugin::CreateParams& params)
-    : Plugin(params)
+ItemProperty::ItemProperty(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -68,7 +55,7 @@ ArgumentStack ItemProperty::PackIP(ArgumentStack&& args)
     auto usable       = Services::Events::ExtractArgument<int32_t>(args);
     auto spellId      = Services::Events::ExtractArgument<int32_t>(args);
 
-    auto creator      = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
+    auto creator      = Services::Events::ExtractArgument<ObjectID>(args);
     auto tag          = Services::Events::ExtractArgument<std::string>(args);
 
     ip->SetNumIntegersInitializeToNegativeOne(9);
@@ -97,7 +84,7 @@ ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
     auto ip = Services::Events::ExtractArgument<CGameEffect*>(args);
 
     Services::Events::InsertArgument(stack, ip->GetString(0).CStr());
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)ip->m_oidCreator);
+    Services::Events::InsertArgument(stack, (ObjectID)ip->m_oidCreator);
     Services::Events::InsertArgument(stack, (int32_t)ip->m_nSpellId);
     Services::Events::InsertArgument(stack, ip->GetInteger(8));
     Services::Events::InsertArgument(stack, ip->GetInteger(7));

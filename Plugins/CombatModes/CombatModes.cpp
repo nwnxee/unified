@@ -4,7 +4,6 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
-#include "API/Types.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Utils.hpp"
@@ -15,34 +14,20 @@ using namespace NWNXLib::API::Constants;
 
 static CombatModes::CombatModes* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "CombatModes",
-        "Allows subscribing to Combat Mode toggle events",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new CombatModes::CombatModes(params);
+    g_plugin = new CombatModes::CombatModes(services);
     return g_plugin;
 }
 
 namespace CombatModes {
 
-static Hooking::FunctionHook* g_SetCombatModeHook = nullptr;
+static Hooking::FunctionHook* s_SetCombatModeHook;
 
-CombatModes::CombatModes(const Plugin::CreateParams& params)
-    : Plugin(params), m_Skipped(false), m_FlurryOfBlows(false)
+CombatModes::CombatModes(Services::ProxyServiceList* services)
+    : Plugin(services), m_Skipped(false), m_FlurryOfBlows(false)
 {
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
-    g_SetCombatModeHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN12CNWSCreature13SetCombatModeEhi);
+    s_SetCombatModeHook = GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
         [this](const std::vector<std::string>& message)
@@ -119,7 +104,7 @@ void CombatModes::SetCombatModeHook(CNWSCreature* thisPtr, uint8_t nNewMode, int
                 return;
             }
         }
-        return g_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
+        return s_SetCombatModeHook->CallOriginal<void>(thisPtr, nNewMode, bForceNewMode);
     }
 }
 

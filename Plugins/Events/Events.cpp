@@ -45,29 +45,16 @@ using namespace NWNXLib::API::Constants;
 
 static Events::Events* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Events",
-        "Provides an interface for plugins to create event-based systems, and exposes some events through that interface.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Events::Events(params);
+    g_plugin = new Events::Events(services);
     return g_plugin;
 }
 
 namespace Events {
 
-Events::Events(const Plugin::CreateParams& params)
-    : Plugin(params), m_eventDepth(0)
+Events::Events(Services::ProxyServiceList* services)
+    : Plugin(services), m_eventDepth(0)
 {
     if (g_plugin == nullptr) // :(
         g_plugin = this;
@@ -170,7 +157,7 @@ std::string Events::GetEventData(const std::string& tag)
     return retVal;
 }
 
-bool Events::SignalEvent(const std::string& eventName, const Types::ObjectID target, std::string *result)
+bool Events::SignalEvent(const std::string& eventName, const ObjectID target, std::string *result)
 {
     bool skipped = false;
 
@@ -299,7 +286,7 @@ ArgumentStack Events::PushEventData(ArgumentStack&& args)
 ArgumentStack Events::SignalEvent(ArgumentStack&& args)
 {
     const auto event = Services::Events::ExtractArgument<std::string>(args);
-    const auto object = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto object = Services::Events::ExtractArgument<ObjectID>(args);
     bool signalled = SignalEvent(event, object);
 
     return Services::Events::Arguments(signalled ? 1 : 0);
@@ -378,7 +365,7 @@ ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
       ASSERT_OR_THROW(!eventName.empty());
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
@@ -396,7 +383,7 @@ ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
       ASSERT_OR_THROW(!eventName.empty());
     const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);

@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSCreature.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
@@ -12,7 +11,7 @@ namespace Creature {
 class Creature : public NWNXLib::Plugin
 {
 public:
-    Creature(const Plugin::CreateParams& params);
+    Creature(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Creature();
 
 private:

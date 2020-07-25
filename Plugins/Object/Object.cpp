@@ -37,30 +37,17 @@ using namespace NWNXLib::API;
 
 static Object::Object* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Object",
-        "Functions exposing additional object properties",
-        "various / sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Object::Object(params);
+    g_plugin = new Object::Object(services);
     return g_plugin;
 }
 
 
 namespace Object {
 
-Object::Object(const Plugin::CreateParams& params)
-    : Plugin(params)
+Object::Object(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -120,7 +107,7 @@ Object::~Object()
 
 CNWSObject *Object::object(ArgumentStack& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -135,7 +122,7 @@ CNWSObject *Object::object(ArgumentStack& args)
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
 {
     int retval = -1;
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -153,7 +140,7 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
 {
     std::string key = "";
     int type = -1;
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -175,7 +162,7 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
 // NOTE: StringToObject does not receive an object argument.
 ArgumentStack Object::StringToObject(ArgumentStack&& args)
 {
-    Types::ObjectID retVal;
+    ObjectID retVal;
 
     const auto id = Services::Events::ExtractArgument<std::string>(args);
 
@@ -183,7 +170,7 @@ ArgumentStack Object::StringToObject(ArgumentStack&& args)
         retVal = Constants::OBJECT_INVALID;
     else
     {
-        retVal = static_cast<Types::ObjectID>(stoul(id, nullptr, 16));
+        retVal = static_cast<ObjectID>(stoul(id, nullptr, 16));
 
         if (!Globals::AppManager()->m_pServerExoApp->GetGameObject(retVal))
             retVal = Constants::OBJECT_INVALID;
@@ -268,13 +255,13 @@ ArgumentStack Object::Serialize(ArgumentStack&& args)
 // NOTE: Deserialize does not receive an object argument.
 ArgumentStack Object::Deserialize(ArgumentStack&& args)
 {
-    Types::ObjectID retval = Constants::OBJECT_INVALID;
+    ObjectID retval = Constants::OBJECT_INVALID;
 
     const auto serialized = Services::Events::ExtractArgument<std::string>(args);
 
     if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
     {
-        retval = static_cast<Types::ObjectID>(pObject->m_idSelf);
+        retval = static_cast<ObjectID>(pObject->m_idSelf);
         ASSERT(Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
     }
 
@@ -421,7 +408,7 @@ ArgumentStack Object::AddToArea(ArgumentStack&& args)
 {
     if (auto *pObject = object(args))
     {
-        const auto oidArea = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidArea = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
         const auto posX = Services::Events::ExtractArgument<float>(args);
         const auto posY = Services::Events::ExtractArgument<float>(args);
@@ -685,7 +672,7 @@ ArgumentStack Object::Export(ArgumentStack&& args)
     const auto fileName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!fileName.empty());
       ASSERT_OR_THROW(fileName.size() <= 16);
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto *pGameObject = Utils::GetGameObject(oidObject))
@@ -728,7 +715,7 @@ ArgumentStack Object::GetInt(ArgumentStack&& args)
 {
     int32_t retVal = 0;
 
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -741,7 +728,7 @@ ArgumentStack Object::GetInt(ArgumentStack&& args)
 
 ArgumentStack Object::SetInt(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -755,7 +742,7 @@ ArgumentStack Object::SetInt(ArgumentStack&& args)
 
 ArgumentStack Object::DeleteInt(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -769,7 +756,7 @@ ArgumentStack Object::GetString(ArgumentStack&& args)
 {
     std::string retVal;
 
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -782,7 +769,7 @@ ArgumentStack Object::GetString(ArgumentStack&& args)
 
 ArgumentStack Object::SetString(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -796,7 +783,7 @@ ArgumentStack Object::SetString(ArgumentStack&& args)
 
 ArgumentStack Object::DeleteString(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -810,7 +797,7 @@ ArgumentStack Object::GetFloat(ArgumentStack&& args)
 {
     float retVal = 0.0f;
 
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -823,7 +810,7 @@ ArgumentStack Object::GetFloat(ArgumentStack&& args)
 
 ArgumentStack Object::SetFloat(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -838,7 +825,7 @@ ArgumentStack Object::SetFloat(ArgumentStack&& args)
 
 ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -850,7 +837,7 @@ ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
 
 ArgumentStack Object::DeleteVarRegex(ArgumentStack&& args)
 {
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto regex = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!regex.empty());
@@ -879,7 +866,7 @@ ArgumentStack Object::GetPositionIsInTrigger(ArgumentStack&& args)
 
 ArgumentStack Object::GetInternalObjectType(ArgumentStack&& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (auto* go = Utils::GetGameObject(objectId))
     {
@@ -895,7 +882,7 @@ ArgumentStack Object::AcquireItem(ArgumentStack&& args)
 
     if (auto *pObject = object(args))
     {
-        const auto oidItem = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidItem = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
 
         if (auto *pItem = API::Globals::AppManager()->m_pServerExoApp->GetItemByGameObjectID(oidItem))
@@ -932,7 +919,7 @@ ArgumentStack Object::ClearSpellEffectsOnOthers(ArgumentStack&& args)
 ArgumentStack Object::PeekUUID(ArgumentStack&& args)
 {
     std::string retVal;
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
 
     if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))

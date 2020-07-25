@@ -414,7 +414,7 @@ void DotNET::nwnxPushFloat(float f)
 void DotNET::nwnxPushObject(uint32_t o)
 {
     auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, (Types::ObjectID)o);
+    events->Push(nwnxActivePlugin, nwnxActiveFunction, (ObjectID)o);
 }
 void DotNET::nwnxPushString(const char *s)
 {
@@ -444,7 +444,7 @@ float DotNET::nwnxPopFloat()
 uint32_t DotNET::nwnxPopObject()
 {
     auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<Types::ObjectID>(nwnxActivePlugin, nwnxActiveFunction).value_or(Constants::OBJECT_INVALID);
+    return events->Pop<ObjectID>(nwnxActivePlugin, nwnxActiveFunction).value_or(Constants::OBJECT_INVALID);
 }
 const char* DotNET::nwnxPopString()
 {

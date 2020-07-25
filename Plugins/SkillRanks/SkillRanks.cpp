@@ -34,29 +34,16 @@ const auto avgMask = (1u << 8u);
 const auto sumMask = (1u << 9u);
 const auto areaModPOSKey = "SKILLRANK_MOD_";
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "SkillRanks",
-        "Skill rank modifications via feats and other methods.",
-        "orth",
-        "plenarius@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new SkillRanks::SkillRanks(params);
+    g_plugin = new SkillRanks::SkillRanks(services);
     return g_plugin;
 }
 
 namespace SkillRanks {
 
-SkillRanks::SkillRanks(const Plugin::CreateParams& params)
-    : Plugin(params)
+SkillRanks::SkillRanks(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 
 #define REGISTER(func) \
@@ -901,7 +888,7 @@ ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
 
 ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {
@@ -920,7 +907,7 @@ ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 
 ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {

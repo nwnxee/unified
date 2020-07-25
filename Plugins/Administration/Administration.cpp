@@ -11,7 +11,6 @@
 #include "API/CServerInfo.hpp"
 #include "API/CNWSRules.hpp"
 #include "API/Globals.hpp"
-#include "API/Types.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSModule.hpp"
@@ -25,22 +24,9 @@ using namespace NWNXLib;
 
 static Administration::Administration* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Administration",
-        "Provides functionality to administrate a server.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Administration::Administration(params);
+    g_plugin = new Administration::Administration(services);
     return g_plugin;
 }
 
@@ -49,8 +35,8 @@ using namespace NWNXLib::Services;
 
 namespace Administration {
 
-Administration::Administration(const Plugin::CreateParams& params)
-    : Plugin(params)
+Administration::Administration(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 
 #define REGISTER(func) \
@@ -134,7 +120,7 @@ Events::ArgumentStack Administration::ShutdownServer(Events::ArgumentStack&&)
 
 Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStack&& args)
 {
-    const auto objectId = Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Events::ExtractArgument<ObjectID>(args);
     const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
 
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
@@ -145,7 +131,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
         LOG_ERROR("Attempted to delete invalid player");
         return Events::Arguments();
     }
-    API::Types::PlayerID playerId = player->m_nPlayerID;
+    PlayerID playerId = player->m_nPlayerID;
 
     std::string bicname     = player->m_resFileName.GetResRefStr();
     std::string servervault = CExoString(Globals::ExoBase()->m_pcExoAliasList->GetAliasPath("SERVERVAULT", 0)).CStr();

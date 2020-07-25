@@ -10,7 +10,7 @@ namespace Administration {
 class Administration : public NWNXLib::Plugin
 {
 public:
-    Administration(const Plugin::CreateParams& params);
+    Administration(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Administration();
 
     ArgumentStack GetPlayerPassword         (ArgumentStack&& args);

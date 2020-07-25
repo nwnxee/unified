@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "API/Types.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -12,7 +11,7 @@ namespace Dialog {
 class Dialog : public NWNXLib::Plugin
 {
 public:
-    Dialog(const Plugin::CreateParams& params);
+    Dialog(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Dialog();
 
 private:

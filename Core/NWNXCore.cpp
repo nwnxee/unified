@@ -286,7 +286,7 @@ void NWNXCore::InitialSetupPlugins()
     for (auto& dynamicLibrary : files)
     {
         const std::string& pluginName = dynamicLibrary;
-        const std::string pluginNameWithoutExtension = pluginName.substr(0, pluginName.find_last_of('.'));
+        const std::string pluginNameWithoutExtension = Utils::basename(pluginName);
 
         if (pluginNameWithoutExtension == NWNX_CORE_PLUGIN_NAME || pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
         {
@@ -300,8 +300,6 @@ void NWNXCore::InitialSetupPlugins()
 
         std::unique_ptr<Services::ProxyServiceList> services = ConstructProxyServices(pluginNameWithoutExtension);
 
-        Plugin::CreateParams params = { services.get() };
-
         if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
@@ -313,9 +311,9 @@ void NWNXCore::InitialSetupPlugins()
             LOG_DEBUG("Loading plugin %s", pluginName);
             std::stringstream ss;
             ss << pluginDir << "/" << pluginName;
-            auto registrationToken = m_services->m_plugins->LoadPlugin(ss.str(), std::move(params));
+            auto registrationToken = m_services->m_plugins->LoadPlugin(ss.str(), services.get());
             auto data = *m_services->m_plugins->FindPluginById(registrationToken.m_id);
-            LOG_INFO("Loaded plugin %u (%s) v%u by %s.", data.m_id, data.m_info->m_name, data.m_info->m_version, data.m_info->m_author);
+            LOG_INFO("Loaded plugin %u (%s).", data.m_id, pluginNameWithoutExtension);
             m_pluginProxyServiceMap.insert(std::make_pair(std::move(registrationToken), std::move(services)));
         }
         catch (const std::runtime_error& err)
@@ -503,11 +501,10 @@ void NWNXCore::UnloadPlugin(std::pair<Services::Plugins::RegistrationToken,
     auto data = *m_services->m_plugins->FindPluginById(plugin.first.m_id);
 
     const Plugins::PluginID pluginId = data.m_id;
-    const std::string pluginName = data.m_info->m_name;
-
+    const std::string pluginName = Utils::basename(data.m_path);
     try
     {
-        m_services->m_plugins->UnloadPlugin(std::forward<Plugins::RegistrationToken>(plugin.first), Plugin::UnloadReason::SHUTTING_DOWN);
+        m_services->m_plugins->UnloadPlugin(std::forward<Plugins::RegistrationToken>(plugin.first));
         LOG_INFO("Unloaded plugin %d (%s).", pluginId, pluginName);
     }
     catch (const std::runtime_error& err)

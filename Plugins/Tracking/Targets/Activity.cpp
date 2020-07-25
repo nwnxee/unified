@@ -10,7 +10,6 @@
 #include "API/Constants.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/Functions.hpp"
-#include "API/Version.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 
