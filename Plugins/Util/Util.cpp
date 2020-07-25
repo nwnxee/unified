@@ -566,10 +566,9 @@ ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
 
 ArgumentStack Util::PluginExists(ArgumentStack&& args)
 {
-    std::string pluginName = Services::Events::ExtractArgument<std::string>(args);
-    std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
+    auto pluginName = Services::Events::ExtractArgument<std::string>(args);
 
-    return GetServices()->m_plugins->FindPluginByName(pluginNameWithoutPrefix) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
+    return GetServices()->m_plugins->FindPluginByName(pluginName) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
 }
 
 ArgumentStack Util::GetUserDirectory(ArgumentStack&&)
