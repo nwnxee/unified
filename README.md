@@ -23,6 +23,8 @@ Using NWNX:EE, developers can make plugins to do anything they want, including b
 
 NWNX:EE is not just for plugin developers. Module creators can use plugins created by the NWNX:EE contributors to expand the scripting and systems functionality of their modules.
 
+Check out the [Awesome NWNX page](Awesome-NWNX.md) for a list projects using NWNX.
+
 ## What versions of the server are supported?
 
 The most recent build of NWN:EE that is supported can be discovered at the top of this file. Please note that we do NOT support any server binaries other than the one in the dedicated server package. We support neither the binary released through the Beamdog client nor the one released through the Steam client. That said, the Steam and Beamdog binaries are almost always identical to the one in the dedicated server package, see the top of this readme for a md5sum of the binary we support.
