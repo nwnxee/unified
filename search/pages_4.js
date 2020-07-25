@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['migration_5fguide_3040',['Migration_Guide',['../md_Plugins_SQL_Migration_Guide.html',1,'']]]
+  ['how_20to_20contribute_20to_20nwnx_3aee_3043',['How to contribute to NWNX:EE',['../md_CONTRIBUTING.html',1,'']]]
 ];
