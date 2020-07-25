@@ -58,6 +58,7 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 
 - [NWNX-WSL](https://github.com/Daztek/NWNX-WSL) -  A brief guide to setting up NWNX:EE on WSL1
 - [NWNX Setup](https://github.com/mtijanic/nwn-misc/blob/master/nwnx-server-setup/nwnx-setup.sh) - Commands to set up NWNX on Ubuntu 18.04
+- [NWSync guide](https://docs.google.com/document/d/1eYRTd6vzk7OrLpr2zlwnUk7mgUsyiZzLoR6k54njBVI/edit#) - Official NWSync Technical User Manual 1.78
 
 ## Other links
 
