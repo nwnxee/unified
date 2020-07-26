@@ -51,9 +51,7 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     }
     else
     {
-        std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
-
-        if (!Core::g_core->m_services->m_plugins->FindPluginByName(pluginNameWithoutPrefix))
+        if (!Core::g_core->m_services->m_plugins->FindPluginByName(pluginName))
         {
             LOG_ERROR("Plugin '%s' is not loaded but NWScript '%s' tried to call function '%s'.",
                     pluginName, Utils::GetCurrentScript(), eventName);
