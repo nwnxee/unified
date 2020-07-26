@@ -23,7 +23,7 @@ class ItemChargesCost;
 class FixDispelEffectLevels;
 class AddPrestigeclassCasterLevels;
 class FixUnlimitedPotionsBug;
-class UnhardcodeShieldAC;
+class UnhardcodeShields;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -50,7 +50,7 @@ private:
     std::unique_ptr<FixDispelEffectLevels> m_FixDispelEffectLevels;
     std::unique_ptr<AddPrestigeclassCasterLevels> m_AddPrestigeclassCasterLevels;
     std::unique_ptr<FixUnlimitedPotionsBug> m_FixUnlimitedPotionsBug;
-    std::unique_ptr<UnhardcodeShieldAC> m_UnhardcodeShieldAC;
+    std::unique_ptr<UnhardcodeShields> m_UnhardcodeShields;
 };
 
 }

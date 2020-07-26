@@ -18,5 +18,5 @@ add_plugin(Tweaks
     "Tweaks/FixDispelEffectLevels.cpp"
     "Tweaks/AddPrestigeclassCasterLevels.cpp"
     "Tweaks/FixUnlimitedPotionsBug.cpp"
-    "Tweaks/UnhardcodeShieldAC.cpp"
+    "Tweaks/UnhardcodeShields.cpp"
 )

@@ -17,7 +17,7 @@
 #include "Tweaks/FixDispelEffectLevels.hpp"
 #include "Tweaks/AddPrestigeclassCasterLevels.hpp"
 #include "Tweaks/FixUnlimitedPotionsBug.hpp"
-#include "Tweaks/UnhardcodeShieldAC.hpp"
+#include "Tweaks/UnhardcodeShields.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -161,10 +161,10 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
         m_FixUnlimitedPotionsBug = std::make_unique<FixUnlimitedPotionsBug>(GetServices()->m_hooks.get());
     }
 
-    if (GetServices()->m_config->Get<bool>("UNHARDCODE_SHIELD_AC", false))
+    if (GetServices()->m_config->Get<bool>("UNHARDCODE_SHIELDS", false))
     {
-        LOG_INFO("Using baseitems.2da to determine shield AC");
-        m_UnhardcodeShieldAC = std::make_unique<UnhardcodeShieldAC>(GetServices()->m_hooks.get());
+        LOG_INFO("Using baseitems.2da to define shield AC and create shield-like items");
+        m_UnhardcodeShields = std::make_unique<UnhardcodeShields>(GetServices()->m_hooks.get());
     }
 }
 
