@@ -11,6 +11,8 @@ https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 - ServerLogRedirector: added environment variable `NWNX_SERVERLOGREDIRECTOR_HIDE_VALIDATEGFFRESOURCE_MESSAGES` to hide `*** ValidateGFFResource sent by user.` messages from the NWNX log.
 - Events: added BroadcastSpellCast event to SpellEvents
 - Events: added TogglePause to InputEvents
+- Tweaks: added `NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG` to prevent the unlimited potions/scrolls bug.
+- Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SHIELDS` to change shield AC and create new shield-like items using the BaseAC column in baseitems.2da.
 
 ##### New Plugins
 N/A

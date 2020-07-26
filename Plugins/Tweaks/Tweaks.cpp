@@ -17,6 +17,7 @@
 #include "Tweaks/FixDispelEffectLevels.hpp"
 #include "Tweaks/AddPrestigeclassCasterLevels.hpp"
 #include "Tweaks/FixUnlimitedPotionsBug.hpp"
+#include "Tweaks/UnhardcodeShields.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -144,6 +145,12 @@ Tweaks::Tweaks(Services::ProxyServiceList* services)
     {
         LOG_INFO("Fixing unlimited potion/scroll uses bug");
         m_FixUnlimitedPotionsBug = std::make_unique<FixUnlimitedPotionsBug>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("UNHARDCODE_SHIELDS", false))
+    {
+        LOG_INFO("Using baseitems.2da to define shield AC and create shield-like items");
+        m_UnhardcodeShields = std::make_unique<UnhardcodeShields>(GetServices()->m_hooks.get());
     }
 }
 
