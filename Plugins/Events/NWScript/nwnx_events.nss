@@ -124,7 +124,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    ITEM                  | object | Convert to object with NWNX_Object_StringToObject()|
+    ITEM_OBJECT_ID        | object | Convert to object with NWNX_Object_StringToObject()|
     SLOT                  | int    | INVENTORY_SLOT_* Constant|
     BEFORE_RESULT         | int    | TRUE/FALSE, only in _AFTER events|
 
