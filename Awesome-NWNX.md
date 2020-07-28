@@ -69,6 +69,7 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 - [NWN Lexicon](https://nwnlexicon.com/) - Community-based NWScript Language Reference and Resource Guide
 - [NWN Wiki](https://nwn.wiki/) - Neverwinter Nights (1 and 2) modding wiki
 - [NWN Fandom Wiki](https://nwn.fandom.com/wiki/) - Player oriented NWN wiki
+- [NWN Text Color Token Generator](https://colortoken.nwn1.net/) - Website to generate color tokens for NWN
 
 ## Legacy stuff
 
@@ -80,5 +81,3 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 - [nwnx2-arelith](https://github.com/Liareth/nwnx2-arelith) - 1.69 Arelith server NWNX implementation
 - [Sinfar-NWNX](https://github.com/Psionix/Sinfar-NWNX) - 1.69 server (linux) and client (windows,linux) implementations for Sinfar servers.
 - [nwnxlite](https://github.com/mtijanic/nwnxlite) - 32bit NWN:EE mysql connector for Windows servers
-
-
