@@ -45,6 +45,7 @@ A curated list of awesome NWNX projects and shiny things, and other adjacent NWN
 - \[C#\] [NWN.FinalFantasy](https://github.com/zunath/NWN.FinalFantasy) - Server-side C# code used in the Neverwinter Nights Final Fantasy 8: Hortus Memoria module.
 - \[C#\] [SWLOR](https://github.com/zunath/SWLOR_NWN) - Server-side C# code used in the Neverwinter Nights Star Wars: Legends of the Old Republic module.
 - \[C#\] [nwn-dotnet](https://github.com/rgranger/nwn-dotnet) - C# code for a nwnx persistent world 
+- [Dungeon Adventures; Underdark Adventures](https://neverwintervault.org/project/nwn1/module/gameworld/two-old-persistent-worlds) - Persistent Worlds active from 2002-2006, shared on nwvault.
 
 The following PWs are written in technologies no longer supported by NWNX:EE, but they are still useful as a source of information and ideas:
 
