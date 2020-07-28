@@ -32,6 +32,7 @@ A curated list of awesome NWNX projects and shiny things, and other adjacent NWN
 - \[C#\] [NWN.Core](https://github.com/nwn-dotnet/NWN.Core) - Core function wrappers and interop functions for NWNX DotNet
 - \[C#\] [NWN .NET Barebone Template](https://github.com/nwn-dotnet/nwn-dotnet-barebone-template) - A minimal (one file) implementation of NWNXEE DotNet using the NWN.Core library.
 - [MemeticAI](https://github.com/squattingmonk/memeticai) - Flexible collection of scripts for building responsive, modular NPC
+- [NWScript Utility Scripts](https://github.com/Finaldeath/nwscript_utility_scripts) - Community collection of various useful nwscript snippets
 
 ## Persistent Worlds
 
