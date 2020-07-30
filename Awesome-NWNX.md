@@ -17,6 +17,7 @@ A curated list of awesome NWNX projects and shiny things, and other adjacent NWN
 - [Nasher](https://github.com/squattingmonk/nasher.nim) - A build tool for Neverwinter Nights projects 
 - [nwn-devbase](https://github.com/jakkn/nwn-devbase) - Command line tool used to version control NWN module development
 - [nwnsc](https://github.com/nwneetools/nwnsc) - Neverwinter Nights Enhanced Edition Script Compiler Project
+    - [Document: nwscript](http://www.nynaeve.net/Skywing/nwn2/Documentation/ncs.html) - Nwscript Basics
 - [nwnexplorer](https://github.com/virusman/nwnexplorer) - NWN Explorer and nwntools sources. Updated for NWN:EE
 - [nwsync](https://github.com/Beamdog/nwsync/) -  Supporting utilities for NWSync
 - [nwsync_gui](https://github.com/WilliamDraco/nwsync_gui) - An unofficial multi-platform gui for NWSync
