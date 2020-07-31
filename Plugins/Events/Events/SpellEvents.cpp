@@ -39,8 +39,9 @@ SpellEvents::SpellEvents(Services::HooksProxy* hooker)
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_BROADCAST_CAST_SPELL_.*", [hooker]() {
-        hooker->RequestExclusiveHook<NWNXLib::API::Functions::_ZN12CNWSCreature18BroadcastSpellCastEjht>(&BroadcastSpellCastHook);
-        s_BroadcastSpellCastHook = hooker->FindHookByAddress(NWNXLib::API::Functions::_ZN12CNWSCreature18BroadcastSpellCastEjht);
+        s_BroadcastSpellCastHook = hooker->RequestExclusiveHook
+             <NWNXLib::API::Functions::_ZN12CNWSCreature18BroadcastSpellCastEjht>
+             (&BroadcastSpellCastHook);
     });
 }
 
