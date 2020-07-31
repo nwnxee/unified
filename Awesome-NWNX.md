@@ -72,6 +72,7 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 - [NWN Wiki](https://nwn.wiki/) - Neverwinter Nights (1 and 2) modding wiki
 - [NWN Fandom Wiki](https://nwn.fandom.com/wiki/) - Player oriented NWN wiki
 - [NWN Text Color Token Generator](https://colortoken.nwn1.net/) - Website to generate color tokens for NWN
+- [NCS explained](http://www.nynaeve.net/Skywing/nwn2/Documentation/ncs.html) - NWScript VM basics and NCS format documentation
 
 ## Legacy stuff
 
