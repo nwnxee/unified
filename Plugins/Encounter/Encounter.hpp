@@ -24,6 +24,11 @@ private:
     ArgumentStack SetPlayerTriggeredOnly                    (ArgumentStack&& args);
     ArgumentStack GetResetTime                              (ArgumentStack&& args);
     ArgumentStack SetResetTime                              (ArgumentStack&& args);
+    ArgumentStack GetNumberOfSpawnPoints                    (ArgumentStack&& args);
+    ArgumentStack GetSpawnPointByIndex                      (ArgumentStack&& args);
+    ArgumentStack GetMinNumSpawned                          (ArgumentStack&& args);
+    ArgumentStack GetMaxNumSpawned                          (ArgumentStack&& args);
+    ArgumentStack GetCurrentNumSpawned                      (ArgumentStack&& args);
 
     CNWSEncounter *encounter(ArgumentStack& args);
 
