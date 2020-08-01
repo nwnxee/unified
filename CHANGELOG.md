@@ -26,6 +26,8 @@ N/A
 - Player: SetCustomToken()
 - Player: SetCreatureNameOverride()
 - Util: CreateDoor()
+- Encounters: GetNumberOfSpawnPoints(), GetSpawnPointByIndex()
+- Encounters: GetMinNumSpawned(), GetMaxNumSpawned(), GetCurrentNumSpawned()
 
 ### Changed
 - Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.

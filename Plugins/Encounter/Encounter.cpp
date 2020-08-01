@@ -3,6 +3,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSEncounter.hpp"
+#include "API/CEncounterSpawnPoint.hpp"
 #include "API/CEncounterListEntry.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -39,6 +40,11 @@ Encounter::Encounter(Services::ProxyServiceList* services)
     REGISTER(SetPlayerTriggeredOnly);
     REGISTER(GetResetTime);
     REGISTER(SetResetTime);
+    REGISTER(GetNumberOfSpawnPoints);
+    REGISTER(GetSpawnPointByIndex);
+    REGISTER(GetMinNumSpawned);
+    REGISTER(GetMaxNumSpawned);
+    REGISTER(GetCurrentNumSpawned);
 
 #undef REGISTER
 }
@@ -88,6 +94,7 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
     if (auto *pEncounter = encounter(args))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(index >= 0.0);
 
         if (index < pEncounter->m_nNumEncounterListEntries)
         {
@@ -107,7 +114,7 @@ ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
         const auto resRef = Services::Events::ExtractArgument<std::string>(args);
         auto cr = Services::Events::ExtractArgument<float>(args);
-          ASSERT_OR_THROW(cr >= 0.0);
+        ASSERT_OR_THROW(cr >= 0.0);
         auto unique = Services::Events::ExtractArgument<int32_t>(args);
         unique = !!unique;
 
@@ -192,12 +199,78 @@ ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
     if (auto *pEncounter = encounter(args))
     {
         auto resetTime = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(resetTime >= 0);
+        ASSERT_OR_THROW(resetTime >= 0);
 
         pEncounter->m_nResetTime = resetTime;
     }
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Encounter::GetNumberOfSpawnPoints(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nNumSpawnPoints;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Encounter::GetSpawnPointByIndex(ArgumentStack&& args)
+{
+    float x = 0.0, y = 0.0, z = 0.0, o = 0.0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(index >= 0);
+
+        if (index < pEncounter->m_nNumSpawnPoints)
+        {
+            x = pEncounter->m_pSpawnPointList[index].m_vPosition.x;
+            y = pEncounter->m_pSpawnPointList[index].m_vPosition.y;
+            z = pEncounter->m_pSpawnPointList[index].m_vPosition.z;
+            o = pEncounter->m_pSpawnPointList[index].m_fOrientation;
+        }
+    }
+
+    return Services::Events::Arguments(x, y, z, o);
+}
+
+ArgumentStack Encounter::GetMinNumSpawned(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nMinNumSpawnedCreatures;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Encounter::GetMaxNumSpawned(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nMaxSpawnedCreatures;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Encounter::GetCurrentNumSpawned(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nNumSpawnedCreatures;
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }
