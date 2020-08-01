@@ -151,6 +151,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ga1094adf1239743f918d6aaeddbdea885"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#ga1094adf1239743f918d6aaeddbdea885">NWNX_Encounter_SetResetTime</a> (object encounter, int resetTime)</td></tr>
 <tr class="memdesc:ga1094adf1239743f918d6aaeddbdea885"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the reset time of encounter.  <a href="group__encounter.html#ga1094adf1239743f918d6aaeddbdea885">More...</a><br /></td></tr>
 <tr class="separator:ga1094adf1239743f918d6aaeddbdea885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f2f114e00194fdfe429a136c85d430f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#ga9f2f114e00194fdfe429a136c85d430f">NWNX_Encounter_GetNumberOfSpawnPoints</a> (object encounter)</td></tr>
+<tr class="memdesc:ga9f2f114e00194fdfe429a136c85d430f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of spawn points of encounter.  <a href="group__encounter.html#ga9f2f114e00194fdfe429a136c85d430f">More...</a><br /></td></tr>
+<tr class="separator:ga9f2f114e00194fdfe429a136c85d430f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7f78fea14b6484c7e2700a6b1e3054d"><td class="memItemLeft" align="right" valign="top">location&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#gac7f78fea14b6484c7e2700a6b1e3054d">NWNX_Encounter_GetSpawnPointByIndex</a> (object encounter, int index)</td></tr>
+<tr class="memdesc:gac7f78fea14b6484c7e2700a6b1e3054d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the spawn point list entry at the specified index.  <a href="group__encounter.html#gac7f78fea14b6484c7e2700a6b1e3054d">More...</a><br /></td></tr>
+<tr class="separator:gac7f78fea14b6484c7e2700a6b1e3054d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6f2a549f73a6609c089b8b7d2227791e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#ga6f2a549f73a6609c089b8b7d2227791e">NWNX_Encounter_GetMinNumSpawned</a> (object encounter)</td></tr>
+<tr class="memdesc:ga6f2a549f73a6609c089b8b7d2227791e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the minimum amount of creatures that encounter will spawn.  <a href="group__encounter.html#ga6f2a549f73a6609c089b8b7d2227791e">More...</a><br /></td></tr>
+<tr class="separator:ga6f2a549f73a6609c089b8b7d2227791e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae8357f2f4fc6a232aa95e351061b3d97"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#gae8357f2f4fc6a232aa95e351061b3d97">NWNX_Encounter_GetMaxNumSpawned</a> (object encounter)</td></tr>
+<tr class="memdesc:gae8357f2f4fc6a232aa95e351061b3d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the maximum amount of creatures that encounter will spawn.  <a href="group__encounter.html#gae8357f2f4fc6a232aa95e351061b3d97">More...</a><br /></td></tr>
+<tr class="separator:gae8357f2f4fc6a232aa95e351061b3d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b3afc41feff135f4480b596eb627e43"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__encounter.html#ga3b3afc41feff135f4480b596eb627e43">NWNX_Encounter_GetCurrentNumSpawned</a> (object encounter)</td></tr>
+<tr class="memdesc:ga3b3afc41feff135f4480b596eb627e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current number of creatures that are spawned and alive.  <a href="group__encounter.html#ga3b3afc41feff135f4480b596eb627e43">More...</a><br /></td></tr>
+<tr class="separator:ga3b3afc41feff135f4480b596eb627e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga57d47ecbb856f487ee70f7fce6c4b3f4"></a>
@@ -178,7 +193,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The number of creatures in the encounter list. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00066">66</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00093">93</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -218,7 +233,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structNWNX__Encounter__CreatureListEntry.html" title="A creature list entry for an encounter.">NWNX_Encounter_CreatureListEntry</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00076">76</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00103">103</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -264,7 +279,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00093">93</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00120">120</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -293,7 +308,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The faction id. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00106">106</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00133">133</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -332,7 +347,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00116">116</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00143">143</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -359,9 +374,9 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>TRUE is encounter is player triggered only. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if encounter is player triggered only. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00126">126</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00153">153</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -400,7 +415,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00136">136</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00163">163</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -429,7 +444,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The seconds the encounter is defined to reset. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00146">146</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00173">173</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -468,7 +483,163 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00156">156</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00183">183</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga9f2f114e00194fdfe429a136c85d430f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9f2f114e00194fdfe429a136c85d430f">&#9670;&nbsp;</a></span>NWNX_Encounter_GetNumberOfSpawnPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Encounter_GetNumberOfSpawnPoints </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>encounter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the number of spawn points of encounter. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">encounter</td><td>The encounter object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The count of the spawn points for the encounter. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00193">193</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+
+</div>
+</div>
+<a id="gac7f78fea14b6484c7e2700a6b1e3054d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7f78fea14b6484c7e2700a6b1e3054d">&#9670;&nbsp;</a></span>NWNX_Encounter_GetSpawnPointByIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">location NWNX_Encounter_GetSpawnPointByIndex </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>encounter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the spawn point list entry at the specified index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">encounter</td><td>The encounter object. </td></tr>
+    <tr><td class="paramname">index</td><td>The index of the spawn point in the encounter list. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Location of spawn point. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00203">203</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga6f2a549f73a6609c089b8b7d2227791e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6f2a549f73a6609c089b8b7d2227791e">&#9670;&nbsp;</a></span>NWNX_Encounter_GetMinNumSpawned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Encounter_GetMinNumSpawned </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>encounter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the minimum amount of creatures that encounter will spawn. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">encounter</td><td>The encounter object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the minimal amount. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00219">219</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+
+</div>
+</div>
+<a id="gae8357f2f4fc6a232aa95e351061b3d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae8357f2f4fc6a232aa95e351061b3d97">&#9670;&nbsp;</a></span>NWNX_Encounter_GetMaxNumSpawned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Encounter_GetMaxNumSpawned </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>encounter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the maximum amount of creatures that encounter will spawn. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">encounter</td><td>The encounter object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the maximal amount. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00229">229</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga3b3afc41feff135f4480b596eb627e43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3b3afc41feff135f4480b596eb627e43">&#9670;&nbsp;</a></span>NWNX_Encounter_GetCurrentNumSpawned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Encounter_GetCurrentNumSpawned </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>encounter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the current number of creatures that are spawned and alive. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">encounter</td><td>The encounter object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>amount of creatures </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__encounter_8nss_source.html#l00239">239</a> of file <a class="el" href="nwnx__encounter_8nss_source.html">nwnx_encounter.nss</a>.</p>
 
 </div>
 </div>
@@ -478,7 +649,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Jul 31 2020 20:50:20 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Aug 1 2020 13:28:38 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

@@ -1,5 +1,15 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__short_8nss.html#a095de03bdae6ab47dc5c839884888bef":[4,0,2,26,0,3,188],
+"nwnx__redis__short_8nss.html#a0f748e83fa81a30c644930a241fe08e9":[4,0,2,26,0,3,95],
+"nwnx__redis__short_8nss.html#a1227844f9e9ec05b98972733836c9b32":[4,0,2,26,0,3,84],
+"nwnx__redis__short_8nss.html#a15c40ca88434e8b341c23377a90ad6b0":[4,0,2,26,0,3,208],
+"nwnx__redis__short_8nss.html#a165b5882ccd88192902783f3a41bc739":[4,0,2,26,0,3,23],
+"nwnx__redis__short_8nss.html#a16f36180b712e0179ec4c2ce76c10326":[4,0,2,26,0,3,3],
+"nwnx__redis__short_8nss.html#a174c161c43361ee07e4c62c38e584bc3":[4,0,2,26,0,3,100],
+"nwnx__redis__short_8nss.html#a17b9dfcc5cb7170f358f2156f090434c":[4,0,2,26,0,3,83],
+"nwnx__redis__short_8nss.html#a17db5fc0aa1b751f6b500ac6d2e25c4c":[4,0,2,26,0,3,28],
+"nwnx__redis__short_8nss.html#a19d6271f016a58f991089ab8d5a87860":[4,0,2,26,0,3,82],
 "nwnx__redis__short_8nss.html#a1a338ff0373d858aafa3ef2e44fc9457":[4,0,2,26,0,3,221],
 "nwnx__redis__short_8nss.html#a1aaf78e5d191a48bed74f7394ef2bca2":[4,0,2,26,0,3,57],
 "nwnx__redis__short_8nss.html#a1af006c9794f2b37aedafc9143635fca":[4,0,2,26,0,3,46],
@@ -239,15 +249,5 @@ var NAVTREEINDEX9 =
 "on__pubsub_8nss_source.html":[4,0,2,26,0,4],
 "pages.html":[],
 "structNWNX__Creature__MemorisedSpell.html":[0,6,3],
-"structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[0,6,3,2],
-"structNWNX__Creature__MemorisedSpell.html#aa08e4d7e4f0f2b8b8c639e152670329a":[0,6,3,0],
-"structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b":[0,6,3,3],
-"structNWNX__Creature__MemorisedSpell.html#adc7177afc73856b1ac6b2481c250418b":[0,6,3,1],
-"structNWNX__Creature__SpecialAbility.html":[0,6,2],
-"structNWNX__Creature__SpecialAbility.html#a12855dd394f582dfae061237afa14172":[0,6,2,0],
-"structNWNX__Creature__SpecialAbility.html#a15cf0191817ec4432918e349d765f094":[0,6,2,2],
-"structNWNX__Creature__SpecialAbility.html#a29feef7d645de43a1d4c9e7b923b0d58":[0,6,2,1],
-"structNWNX__Damage__AttackEventData.html":[0,7,3],
-"structNWNX__Damage__AttackEventData.html#a02fb96244bd01690723d23386250b2e9":[0,7,3,4],
-"structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f":[0,7,3,16]
+"structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[0,6,3,2]
 };

@@ -9,5 +9,10 @@ var nwnx__encounter_8nss =
     [ "NWNX_Encounter_SetPlayerTriggeredOnly", "group__encounter.html#gab4fb5b83a7852007af7714b3e6e33fd8", null ],
     [ "NWNX_Encounter_GetResetTime", "group__encounter.html#gac5518f02ee12132540934acfcd58c780", null ],
     [ "NWNX_Encounter_SetResetTime", "group__encounter.html#ga1094adf1239743f918d6aaeddbdea885", null ],
+    [ "NWNX_Encounter_GetNumberOfSpawnPoints", "group__encounter.html#ga9f2f114e00194fdfe429a136c85d430f", null ],
+    [ "NWNX_Encounter_GetSpawnPointByIndex", "group__encounter.html#gac7f78fea14b6484c7e2700a6b1e3054d", null ],
+    [ "NWNX_Encounter_GetMinNumSpawned", "group__encounter.html#ga6f2a549f73a6609c089b8b7d2227791e", null ],
+    [ "NWNX_Encounter_GetMaxNumSpawned", "group__encounter.html#gae8357f2f4fc6a232aa95e351061b3d97", null ],
+    [ "NWNX_Encounter_GetCurrentNumSpawned", "group__encounter.html#ga3b3afc41feff135f4480b596eb627e43", null ],
     [ "NWNX_Encounter", "group__encounter.html#ga5520d2e57f6ca7692c81d047205397fe", null ]
 ];

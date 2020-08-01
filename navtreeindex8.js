@@ -1,5 +1,15 @@
 var NAVTREEINDEX8 =
 {
+"nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4":[4,0,2,23,0,0,37],
+"nwnx__player_8nss_source.html":[4,0,2,23,0,0],
+"nwnx__player__qbs_8nss.html":[4,0,2,23,0,1],
+"nwnx__player__qbs_8nss_source.html":[4,0,2,23,0,1],
+"nwnx__profiler_8nss.html":[4,0,2,24,0,0],
+"nwnx__profiler_8nss_source.html":[4,0,2,24,0,0],
+"nwnx__race_8nss.html":[4,0,2,25,0,0],
+"nwnx__race_8nss_source.html":[4,0,2,25,0,0],
+"nwnx__race__2da_8nss.html":[4,0,2,25,0,1],
+"nwnx__race__2da_8nss_source.html":[4,0,2,25,0,1],
 "nwnx__redis_8nss.html":[4,0,2,26,0,0],
 "nwnx__redis_8nss.html#a00721a1a72e3716da38384e448c5c3d2":[4,0,2,26,0,0,159],
 "nwnx__redis_8nss.html#a00b5b59e96491c4201fdf02a6b1f02f6":[4,0,2,26,0,0,35],
@@ -239,15 +249,5 @@ var NAVTREEINDEX8 =
 "nwnx__redis__short_8nss.html#a089769506113c2d9d469abb37175ec06":[4,0,2,26,0,3,192],
 "nwnx__redis__short_8nss.html#a08fc9dcb346f533e2dace8df76b8899a":[4,0,2,26,0,3,108],
 "nwnx__redis__short_8nss.html#a08fffe6ef3612def17719eb92bf93431":[4,0,2,26,0,3,8],
-"nwnx__redis__short_8nss.html#a094b45713d22b8d68b46cd6d41b0cf54":[4,0,2,26,0,3,160],
-"nwnx__redis__short_8nss.html#a095de03bdae6ab47dc5c839884888bef":[4,0,2,26,0,3,188],
-"nwnx__redis__short_8nss.html#a0f748e83fa81a30c644930a241fe08e9":[4,0,2,26,0,3,95],
-"nwnx__redis__short_8nss.html#a1227844f9e9ec05b98972733836c9b32":[4,0,2,26,0,3,84],
-"nwnx__redis__short_8nss.html#a15c40ca88434e8b341c23377a90ad6b0":[4,0,2,26,0,3,208],
-"nwnx__redis__short_8nss.html#a165b5882ccd88192902783f3a41bc739":[4,0,2,26,0,3,23],
-"nwnx__redis__short_8nss.html#a16f36180b712e0179ec4c2ce76c10326":[4,0,2,26,0,3,3],
-"nwnx__redis__short_8nss.html#a174c161c43361ee07e4c62c38e584bc3":[4,0,2,26,0,3,100],
-"nwnx__redis__short_8nss.html#a17b9dfcc5cb7170f358f2156f090434c":[4,0,2,26,0,3,83],
-"nwnx__redis__short_8nss.html#a17db5fc0aa1b751f6b500ac6d2e25c4c":[4,0,2,26,0,3,28],
-"nwnx__redis__short_8nss.html#a19d6271f016a58f991089ab8d5a87860":[4,0,2,26,0,3,82]
+"nwnx__redis__short_8nss.html#a094b45713d22b8d68b46cd6d41b0cf54":[4,0,2,26,0,3,160]
 };
