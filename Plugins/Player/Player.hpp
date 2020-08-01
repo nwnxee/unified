@@ -52,6 +52,7 @@ private:
     ArgumentStack SetResManOverride                 (ArgumentStack&& args);
     ArgumentStack SetCustomToken                    (ArgumentStack&& args);
     ArgumentStack SetCreatureNameOverride           (ArgumentStack&& args);
+    ArgumentStack FloatingTextStringOnCreature      (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

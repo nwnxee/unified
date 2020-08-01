@@ -302,6 +302,13 @@ void NWNX_Player_SetCustomToken(object oPlayer, int nCustomTokenNumber, string s
 /// @param sName The name for the creature for this player, "" to clear the override.
 void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, string sName);
 
+/// @brief Display floaty text above oCreature for oPlayer only.
+/// @note This will also display the floaty text above creatures that are not part of oPlayer's faction.
+/// @param oPlayer The player to display the text to.
+/// @param oCreature The creature to display the text above.
+/// @param sText The text to display.
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -747,6 +754,17 @@ void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, strin
     string sFunc = "SetCreatureNameOverride";
 
     NWNX_PushArgumentString(NWNX_Player, sFunc, sName);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oCreature);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText)
+{
+    string sFunc = "FloatingTextStringOnCreature";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sText);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oCreature);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
