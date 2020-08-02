@@ -25,6 +25,7 @@
 #include "API/CNWSWaypoint.hpp"
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
+#include "API/CNWCCMessageData.hpp"
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/CLastUpdateObject.hpp"
@@ -91,6 +92,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(SetResManOverride);
     REGISTER(SetCustomToken);
     REGISTER(SetCreatureNameOverride);
+    REGISTER(FloatingTextStringOnCreature);
 
 #undef REGISTER
 
@@ -1425,6 +1427,32 @@ ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
             }
         }
     }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::FloatingTextStringOnCreature(ArgumentStack&& args)
+{
+    if (auto *pPlayer = player(args))
+    {
+        auto oidCreature = Services::Events::ExtractArgument<ObjectID>(args);
+          ASSERT_OR_THROW(oidCreature != Constants::OBJECT_INVALID);
+        auto text = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(!text.empty());
+
+        if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidCreature)))
+        {
+            if (auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
+            {
+                CNWCCMessageData messageData;
+                messageData.SetObjectID(0, pCreature->m_idSelf);
+                messageData.SetInteger(9, 94);
+                messageData.SetString(0, text);
+
+                pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::Feedback, &messageData, nullptr);
+            }
+        }
+    }
+
     return Services::Events::Arguments();
 }
 
