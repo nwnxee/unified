@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"structNWNX__Creature__MemorisedSpell.html":[0,6,3],
+"structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[0,6,3,2],
 "structNWNX__Creature__MemorisedSpell.html#aa08e4d7e4f0f2b8b8c639e152670329a":[0,6,3,0],
 "structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b":[0,6,3,3],
 "structNWNX__Creature__MemorisedSpell.html#adc7177afc73856b1ac6b2481c250418b":[0,6,3,1],
