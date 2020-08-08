@@ -2,6 +2,7 @@
 #include "nwn_api.hpp"
 
 #include "CResRef.hpp"
+#include "ScriptParamsList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -16,6 +17,7 @@ typedef int BOOL;
 struct CNWSDialogLinkReply
 {
     CResRef m_sActive;
+    ScriptParamsList m_lConditionParams;
     uint32_t m_nIndex;
     BOOL m_bDisplayInactive;
 

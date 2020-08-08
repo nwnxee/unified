@@ -61,6 +61,8 @@ struct CNetLayerInternal
     uint32_t m_nSessionInfoSectionSize[5];
     BOOL m_bSessionInfoChanged[5];
     BOOL m_bConnected;
+    int32_t m_nServerBuildVersion;
+    int32_t m_nServerPatchRevision;
     BOOL m_bConnectToSession;
     CExoString m_sConnectPassword;
     uint32_t m_nConnectType;
@@ -226,6 +228,7 @@ struct CNetLayerInternal
     BOOL CloseStandardConnection(int32_t nConnectonToClose);
     BOOL ValidatePlayerAgainstLastSuccessfulLogin(CExoString sPlayerName, CExoString sPublicCDKey);
     CExoString GetRouterPortMapDescription();
+    BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision);
     void CheckMasterServerTimeouts();
     void SetSteamLobbyMetaData(int32_t nConnectionId);
     uint32_t GetSessionSectionSize(uint32_t sectionType);

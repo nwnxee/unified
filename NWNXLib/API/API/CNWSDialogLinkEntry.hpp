@@ -2,6 +2,7 @@
 #include "nwn_api.hpp"
 
 #include "CResRef.hpp"
+#include "ScriptParamsList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -15,6 +16,7 @@ NWN_API_PROLOGUE(CNWSDialogLinkEntry)
 struct CNWSDialogLinkEntry
 {
     CResRef m_sActive;
+    ScriptParamsList m_lConditionParams;
     uint32_t m_nIndex;
 
 

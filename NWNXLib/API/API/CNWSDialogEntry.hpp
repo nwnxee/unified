@@ -4,6 +4,7 @@
 #include "CExoLocString.hpp"
 #include "CExoString.hpp"
 #include "CResRef.hpp"
+#include "ScriptParamsList.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -24,6 +25,7 @@ struct CNWSDialogEntry
     CNWSDialogLinkReply * m_pReplies;
     uint32_t m_nReplies;
     CResRef m_sScript;
+    ScriptParamsList m_lActionParams;
     uint32_t m_nDelay;
     CResRef m_sSound;
     CExoString m_sQuestTag;

@@ -49,9 +49,8 @@ struct CNWSCreatureStats
     int32_t m_nAge;
     uint8_t m_nGender;
     uint32_t m_nExperience;
+    BOOL m_bIsDMCharacterFile;
     BOOL m_bIsPC;
-    BOOL m_bIsDM;
-    BOOL m_bIsDMFile;
     BOOL m_bIsAIDisabledPossess;
     BOOL m_bIsAIDisabledOverride;
     BOOL m_bDMManifested;
@@ -184,6 +183,8 @@ struct CNWSCreatureStats
     BOOL GetIsClassAvailable(uint8_t nClass);
     BOOL GetMeetsPrestigeClassRequirements(CNWClass * pClass);
     uint8_t GetHitDie(uint8_t nMultiClass, uint8_t nDefaultClass);
+    BOOL GetIsDM();
+    BOOL GetIsPlayerDM();
     CExoString GetFullName();
     CExoString * GetTag();
     uint8_t GetLevel(BOOL bUseNegativeLevels = false);

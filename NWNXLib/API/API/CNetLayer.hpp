@@ -93,6 +93,7 @@ struct CNetLayer
     BOOL GetPlayerAddressData(uint32_t nConnectionId, uint32_t * nProtocol, uint8_t * * pNetAddress1, uint8_t * * pNetAddress2, uint32_t * nPort);
     void StoreMessage(uint8_t * pData, uint32_t nMsgLength);
     BOOL GetGameMasterPermision() const;
+    void SetGameMasterPermission(BOOL state);
     BOOL TranslateAddressFromString(char * szAddress, uint32_t * nProtocol, uint8_t * pNetAddress1, uint8_t * pNetAddress2, uint32_t * nWPort);
     class CExoNet * GetExoNet();
     CExoString GetServerNetworkAddress();
@@ -117,6 +118,7 @@ struct CNetLayer
     CExoString GetRouterPortMapDescription();
     void SetNWSyncData(const NWSyncAdvertisement & datra);
     const NWSyncAdvertisement & GetNWSyncData() const;
+    BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNetLayer

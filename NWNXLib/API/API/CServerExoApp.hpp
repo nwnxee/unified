@@ -105,7 +105,7 @@ struct CServerExoApp : CBaseExoApp
     CServerAIMaster * GetServerAIMaster();
     void * GetSysAdminList();
     void * GetPlayerList();
-    void * GetNWSMessage();
+    class CNWSMessage * GetNWSMessage();
     CNetLayer * GetNetLayer();
     class CNWPlaceMeshManager * GetPlaceMeshManager();
     int16_t GetServerMode();
