@@ -2197,7 +2197,7 @@ ArgumentStack Creature::JumpToLimbo(ArgumentStack&& args)
 {
     if (auto *pCreature = creature(args))
     {
-        if (!pCreature->m_bPlayerCharacter && !pCreature->m_pStats->m_bIsPC && !pCreature->m_pStats->m_bIsDM)
+        if (!pCreature->m_bPlayerCharacter && !pCreature->m_pStats->m_bIsPC && !pCreature->m_pStats->m_bIsDMCharacterFile)
         {
             pCreature->RemoveFromArea();
             Utils::GetModule()->AddObjectToLimbo(pCreature->m_idSelf);

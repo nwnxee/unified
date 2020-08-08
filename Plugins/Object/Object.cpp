@@ -131,7 +131,7 @@ ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
     else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
     {
         auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
-        retval = pVarTable->m_lVarList.num;
+        retval = pVarTable->m_vars.size();
     }
     return Services::Events::Arguments(retval);
 }
@@ -148,12 +148,21 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
     }
     else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
     {
-        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        const uint32_t index = Services::Events::ExtractArgument<int32_t>(args);
         auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
-        if (index < pVarTable->m_lVarList.num)
+        if (index < pVarTable->m_vars.size())
         {
-            type = static_cast<int>(pVarTable->m_lVarList.element[index].m_nType);
-            key  = pVarTable->m_lVarList.element[index].m_sName.CStr();
+            uint32_t i = 0;
+            for (auto& it : pVarTable->m_vars)
+            {
+                if (i == index)
+                {
+                    key = it.first.CStr();
+                    type = -1; // FIXMEEEE
+                    break;
+                }
+                i++;
+            }
         }
     }
     return Services::Events::Arguments(type, key);

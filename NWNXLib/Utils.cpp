@@ -263,42 +263,24 @@ bool operator!=(Vector& v1, Vector& v2)
 bool CompareVariables(CNWSScriptVarTable *pVars1, CNWSScriptVarTable *pVars2)
 {
     // Fast paths
-    if (pVars1->m_lVarList.num == 0 && pVars2->m_lVarList.num == 0)
+    if (pVars1->m_vars.size() == 0 && pVars2->m_vars.size() == 0)
         return true;
-    if (pVars1->m_lVarList.num != pVars2->m_lVarList.num)
+    if (pVars1->m_vars.size() != pVars2->m_vars.size())
         return false;
 
-    // O(n^2) compare
-    for (int32_t i = 0; i < pVars1->m_lVarList.num; i++)
+    for (auto& it : pVars1->m_vars)
     {
-        CNWSScriptVar *pVar1 = &pVars1->m_lVarList.element[i];
-        switch (pVar1->m_nType)
-        {
-            case 1:
-                if (pVars2->GetInt(pVar1->m_sName) != pVar1->m_uValue.m_int)
-                    return false;
-                break;
-            case 2:
-                if (pVars2->GetFloat(pVar1->m_sName) != pVar1->m_uValue.m_float)
-                    return false;
-                break;
-            case 3:
-                if (pVars2->GetString(pVar1->m_sName) != *pVar1->m_uValue.m_string)
-                    return false;
-                break;
-            case 4:
-                if (pVars2->GetObject(pVar1->m_sName) != pVar1->m_uValue.m_objectId)
-                    return false;
-                break;
-            case 5:
-            {
-                CScriptLocation& loc1 = *pVar1->m_uValue.m_location;
-                CScriptLocation loc2 = pVars2->GetLocation(pVar1->m_sName);
-                if (loc1.m_oArea != loc2.m_oArea || loc1.m_vPosition != loc2.m_vPosition || loc1.m_vOrientation != loc2.m_vOrientation)
-                    return false;
-                break;
-            }
-        }
+        auto name = it.first;
+        if (pVars1->GetInt(name)    != pVars2->GetInt(name)      ||
+            pVars1->GetFloat(name)  != pVars2->GetFloat(name)    ||
+            pVars1->GetString(name) != pVars2->GetString(name)   ||
+            pVars1->GetObject(name) != pVars2->GetObject(name))
+           return false;
+
+        auto loc1 = pVars1->GetLocation(name);
+        auto loc2 = pVars2->GetLocation(name);
+        if (loc1.m_oArea != loc2.m_oArea || loc1.m_vPosition != loc2.m_vPosition || loc1.m_vOrientation != loc2.m_vOrientation)
+            return false;
     }
     return true;
 }
