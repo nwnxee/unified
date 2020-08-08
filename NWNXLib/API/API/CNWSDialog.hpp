@@ -58,6 +58,8 @@ struct CNWSDialog
     void Cleanup();
     BOOL LoadDialog(CResGFF * pRes, BOOL bLoadReplies);
     CNWSObject * GetSpeaker(CNWSObject * pNWSObjectOwner, const CExoString & sSpeaker);
+    BOOL CheckScript(CNWSObject* pNWSObjectSpeaker, const CResRef& sActive, const CExoArrayList<ScriptParam>& scriptParams);
+    void RunScript(CNWSObject* pNWSObjectSpeaker, const CResRef& sScript, const CExoArrayList<ScriptParam>& scriptParams);
     uint32_t GetStartEntry(CNWSObject * pNWSObjectOwner);
     BOOL GetStartEntryOneLiner(CNWSObject * pNWSObjectOwner, CExoLocString & sOneLiner, CResRef & sSound, CResRef & sScript, ScriptParamsList & scriptParams);
     float SetDialogDelay(CNWSObject * pNWSObjectOwner, CExoLocString sLocText, uint32_t nMinSeconds, BOOL bEnableNPCTiming);

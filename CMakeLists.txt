@@ -14,7 +14,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 find_package(Sanitizers)
 
 set(TARGET_NWN_BUILD 8193)
-set(TARGET_NWN_BUILD_REVISION 13)
+set(TARGET_NWN_BUILD_REVISION 14)
 set(PLUGIN_PREFIX NWNX_)
 
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
