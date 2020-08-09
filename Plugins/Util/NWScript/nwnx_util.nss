@@ -184,6 +184,9 @@ int NWNX_Util_GetScriptReturnValue();
 /// @return The door, or OBJECT_INVALID on failure.
 object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "");
 
+/// @brief Set the object that will be returned by GetItemActivator.
+/// @param oObject An object.
+void NWNX_Util_SetItemActivator(object oObject);
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -444,3 +447,13 @@ object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag
 
     return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
 }
+
+void NWNX_Util_SetItemActivator(object oObject)
+{
+    string sFunc = "SetItemActivator";
+
+    NWNX_PushArgumentObject(NWNX_Util, sFunc, oObject);
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+

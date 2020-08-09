@@ -13,6 +13,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 - Events: added TogglePause to InputEvents
 - Tweaks: added `NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG` to prevent the unlimited potions/scrolls bug.
 - Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SHIELDS` to change shield AC and create new shield-like items using the BaseAC column in baseitems.2da.
+- Utils: added SetItemActivator to set the value returned by GetItemActivator
 
 ##### New Plugins
 N/A
