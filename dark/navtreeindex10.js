@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"on__pubsub_8nss_source.html":[4,0,2,26,0,4],
+"pages.html":[],
 "structNWNX__Creature__MemorisedSpell.html":[0,6,3],
 "structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[0,6,3,2],
 "structNWNX__Creature__MemorisedSpell.html#aa08e4d7e4f0f2b8b8c639e152670329a":[0,6,3,0],
