@@ -84,6 +84,7 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(GetUserDirectory);
     REGISTER(GetScriptReturnValue);
     REGISTER(CreateDoor);
+    REGISTER(SetItemActivator);
 
 #undef REGISTER
 
@@ -632,6 +633,19 @@ ArgumentStack Util::CreateDoor(ArgumentStack&& args)
         LOG_WARNING("CreateDoor: Invalid Area");
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Util::SetItemActivator(ArgumentStack&& args)
+{
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+
+    auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+    if (pGameObject)
+      Utils::GetModule()->m_oidLastItemActivator = pGameObject->m_idSelf;
+    else
+      Utils::GetModule()->m_oidLastItemActivator = Constants::OBJECT_INVALID;
+
+    return Services::Events::Arguments();
 }
 
 }
