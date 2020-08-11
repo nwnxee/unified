@@ -27,6 +27,12 @@ struct CNWSScriptVar
     CNWSScriptVar & operator=(const CNWSScriptVar &);
     void Reset(uint32_t nVarType);
 
+    bool HasInt() const { return m_int != 0; }
+    bool HasFloat() const { return m_float != 0.0f; }
+    bool HasObject() const { return m_objectId != NWNXLib::API::Constants::OBJECT_INVALID; }
+    bool HasString() const { return !m_string.IsEmpty(); }
+    bool HasLocation() const { return m_location.m_oArea != NWNXLib::API::Constants::OBJECT_INVALID; }
+
 
 #ifdef NWN_CLASS_EXTENSION_CNWSScriptVar
     NWN_CLASS_EXTENSION_CNWSScriptVar

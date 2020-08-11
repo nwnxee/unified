@@ -158,7 +158,12 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
                 if (i == index)
                 {
                     key = it.first.CStr();
-                    type = -1; // FIXMEEEE
+                         if (it.second.HasInt())      type = 1;
+                    else if (it.second.HasFloat())    type = 2;
+                    else if (it.second.HasString())   type = 3;
+                    else if (it.second.HasObject())   type = 4;
+                    else if (it.second.HasLocation()) type = 5;
+                    else type = 0;
                     break;
                 }
                 i++;
