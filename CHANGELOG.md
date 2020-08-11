@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.13...HEAD
+https://github.com/nwnxee/unified/compare/build8193.14...HEAD
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+## 8193.14
+https://github.com/nwnxee/unified/compare/build8193.13...build8193.14
 
 ### Added
 - ServerLogRedirector: added environment variable `NWNX_SERVERLOGREDIRECTOR_HIDE_VALIDATEGFFRESOURCE_MESSAGES` to hide `*** ValidateGFFResource sent by user.` messages from the NWNX log.
@@ -14,9 +38,6 @@ https://github.com/nwnxee/unified/compare/build8193.13...HEAD
 - Tweaks: added `NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG` to prevent the unlimited potions/scrolls bug.
 - Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SHIELDS` to change shield AC and create new shield-like items using the BaseAC column in baseitems.2da.
 - Utils: added SetItemActivator to set the value returned by GetItemActivator
-
-##### New Plugins
-N/A
 
 ##### New NWScript Functions
 - Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()
@@ -37,12 +58,6 @@ N/A
 ### Changed
 - Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.
 - Profiler: Corrected a typo preventing the retrieval of certain event data (OVERHEAD_COMPENSTION_FORCE -> OVERHEAD_COMPENSATION_FORCE). Note: breaking change.
-
-### Deprecated
-N/A
-
-### Removed
-N/A
 
 ### Fixed
 - Core: fixed NWNX ResourceDirectory init crashing on failed module load
