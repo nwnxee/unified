@@ -190,27 +190,15 @@ DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
         args.push_back((void*)&StackPushString); // reserved utf8
         args.push_back((void*)&StackPushObject);
         args.push_back((void*)&StackPushVector);
-        args.push_back((void*)&StackPushEffect);
-        args.push_back((void*)&StackPushEvent);
-        args.push_back((void*)&StackPushLocation);
-        args.push_back((void*)&StackPushTalent);
-        args.push_back((void*)&StackPushItemProperty);
+        args.push_back((void*)&StackPushGameDefinedStructure);
         args.push_back((void*)&StackPopInteger);
         args.push_back((void*)&StackPopFloat);
         args.push_back((void*)&StackPopString);
         args.push_back((void*)&StackPopString); // reserved utf8
         args.push_back((void*)&StackPopObject);
         args.push_back((void*)&StackPopVector);
-        args.push_back((void*)&StackPopEffect);
-        args.push_back((void*)&StackPopEvent);
-        args.push_back((void*)&StackPopLocation);
-        args.push_back((void*)&StackPopTalent);
-        args.push_back((void*)&StackPopItemProperty);
-        args.push_back((void*)&FreeEffect);
-        args.push_back((void*)&FreeEvent);
-        args.push_back((void*)&FreeLocation);
-        args.push_back((void*)&FreeTalent);
-        args.push_back((void*)&FreeItemProperty);
+        args.push_back((void*)&StackPopGameDefinedStructure);
+        args.push_back((void*)&FreeGameDefinedStructure);
         args.push_back((void*)&ClosureAssignCommand);
         args.push_back((void*)&ClosureDelayCommand);
         args.push_back((void*)&ClosureActionDoCommand);
@@ -230,9 +218,6 @@ DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
         args.push_back((void*)&nwnxPopEffect);
         args.push_back((void*)&nwnxPopItemProperty);
         args.push_back((void*)&nwnxCallFunction);
-        args.push_back((void*)&StackPushGameDefinedStructure);
-        args.push_back((void*)&StackPopGameDefinedStructure);
-        args.push_back((void*)&FreeGameDefinedStructure);
     rc = bootstrap(args.data(), args.size()*sizeof(void*));
     if (rc != 0)
         LOG_FATAL("Failed to execute bootstrap function; rc=0x%x", rc);

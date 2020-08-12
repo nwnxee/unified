@@ -1,21 +1,34 @@
 namespace NWN
 {
-    public partial class NWScript
+    public static partial class NWScript
     {
         public const uint OBJECT_INVALID = 0x7F000000;
-        //  Constants
+
+        public const int ENGINE_NUM_STRUCTURES = 6;
+        public const int ENGINE_STRUCTURE_EFFECT = 0;
+        public const int ENGINE_STRUCTURE_EVENT = 1;
+        public const int ENGINE_STRUCTURE_LOCATION = 2;
+        public const int ENGINE_STRUCTURE_TALENT = 3;
+        public const int ENGINE_STRUCTURE_ITEM_PROPERTY = 4;
+        public const int ENGINE_STRUCTURE_SQL_QUERY = 5;
+
+        // Constants
         public const int NUM_INVENTORY_SLOTS = 18;
+
         public const int TRUE = 1;
         public const int FALSE = 0;
+
         public const float DIRECTION_EAST = 0.0f;
         public const float DIRECTION_NORTH = 90.0f;
         public const float DIRECTION_WEST = 180.0f;
         public const float DIRECTION_SOUTH = 270.0f;
         public const float PI = 3.141592f;
+
         public const int ATTITUDE_NEUTRAL = 0;
         public const int ATTITUDE_AGGRESSIVE = 1;
         public const int ATTITUDE_DEFENSIVE = 2;
         public const int ATTITUDE_SPECIAL = 3;
+
         public const int TALKVOLUME_TALK = 0;
         public const int TALKVOLUME_WHISPER = 1;
         public const int TALKVOLUME_SHOUT = 2;
@@ -23,6 +36,7 @@ namespace NWN
         public const int TALKVOLUME_SILENT_SHOUT = 4;
         public const int TALKVOLUME_PARTY = 5;
         public const int TALKVOLUME_TELL = 6;
+
         public const int INVENTORY_SLOT_HEAD = 0;
         public const int INVENTORY_SLOT_CHEST = 1;
         public const int INVENTORY_SLOT_BOOTS = 2;
@@ -41,25 +55,29 @@ namespace NWN
         public const int INVENTORY_SLOT_CWEAPON_R = 15;
         public const int INVENTORY_SLOT_CWEAPON_B = 16;
         public const int INVENTORY_SLOT_CARMOUR = 17;
+
         // Effect type constants
         public const int DURATION_TYPE_INSTANT = 0;
         public const int DURATION_TYPE_TEMPORARY = 1;
         public const int DURATION_TYPE_PERMANENT = 2;
+
         public const int SUBTYPE_MAGICAL = 8;
         public const int SUBTYPE_SUPERNATURAL = 16;
         public const int SUBTYPE_EXTRAORDINARY = 24;
-        public const int ABILITY_STRENGTH = 0;
-        //  should be the same as in nwseffectlist.cpp
+
+        public const int ABILITY_STRENGTH = 0; // should be the same as in nwseffectlist.cpp
         public const int ABILITY_DEXTERITY = 1;
         public const int ABILITY_CONSTITUTION = 2;
         public const int ABILITY_INTELLIGENCE = 3;
         public const int ABILITY_WISDOM = 4;
         public const int ABILITY_CHARISMA = 5;
+
         public const int SHAPE_SPELLCYLINDER = 0;
         public const int SHAPE_CONE = 1;
         public const int SHAPE_CUBE = 2;
         public const int SHAPE_SPELLCONE = 3;
         public const int SHAPE_SPHERE = 4;
+
         public const int METAMAGIC_NONE = 0;
         public const int METAMAGIC_EMPOWER = 1;
         public const int METAMAGIC_EXTEND = 2;
@@ -68,6 +86,7 @@ namespace NWN
         public const int METAMAGIC_SILENT = 16;
         public const int METAMAGIC_STILL = 32;
         public const int METAMAGIC_ANY = 255;
+
         public const int OBJECT_TYPE_CREATURE = 1;
         public const int OBJECT_TYPE_ITEM = 2;
         public const int OBJECT_TYPE_TRIGGER = 4;
@@ -77,13 +96,17 @@ namespace NWN
         public const int OBJECT_TYPE_PLACEABLE = 64;
         public const int OBJECT_TYPE_STORE = 128;
         public const int OBJECT_TYPE_ENCOUNTER = 256;
+        public const int OBJECT_TYPE_TILE = 512;
         public const int OBJECT_TYPE_ALL = 32767;
+
         public const int OBJECT_TYPE_INVALID = 32767;
+
         public const int GENDER_MALE = 0;
         public const int GENDER_FEMALE = 1;
         public const int GENDER_BOTH = 2;
         public const int GENDER_OTHER = 3;
         public const int GENDER_NONE = 4;
+
         public const int DAMAGE_TYPE_BLUDGEONING = 1;
         public const int DAMAGE_TYPE_PIERCING = 2;
         public const int DAMAGE_TYPE_SLASHING = 4;
@@ -95,12 +118,16 @@ namespace NWN
         public const int DAMAGE_TYPE_FIRE = 256;
         public const int DAMAGE_TYPE_NEGATIVE = 512;
         public const int DAMAGE_TYPE_POSITIVE = 1024;
+
         public const int DAMAGE_TYPE_SONIC = 2048;
-        //  The base weapon damage is the base damage delivered by the weapon before
-        //  any additional types of damage (e.g. fire) have been added.
+
+        // The base weapon damage is the base damage delivered by the weapon before
+        // any additional types of damage (e.g. fire) have been added.
         public const int DAMAGE_TYPE_BASE_WEAPON = 4096;
-        //  Special versus flag just for AC effects
+
+        // Special versus flag just for AC effects
         public const int AC_VS_DAMAGE_TYPE_ALL = 4103;
+
         public const int DAMAGE_BONUS_1 = 1;
         public const int DAMAGE_BONUS_2 = 2;
         public const int DAMAGE_BONUS_3 = 3;
@@ -131,6 +158,7 @@ namespace NWN
         public const int DAMAGE_BONUS_18 = 28;
         public const int DAMAGE_BONUS_19 = 29;
         public const int DAMAGE_BONUS_20 = 30;
+
         public const int DAMAGE_POWER_NORMAL = 0;
         public const int DAMAGE_POWER_PLUS_ONE = 1;
         public const int DAMAGE_POWER_PLUS_TWO = 2;
@@ -153,26 +181,33 @@ namespace NWN
         public const int DAMAGE_POWER_PLUS_EIGHTEEN = 19;
         public const int DAMAGE_POWER_PLUS_NINTEEN = 20;
         public const int DAMAGE_POWER_PLUS_TWENTY = 21;
+
         public const int ATTACK_BONUS_MISC = 0;
         public const int ATTACK_BONUS_ONHAND = 1;
         public const int ATTACK_BONUS_OFFHAND = 2;
+
         public const int AC_DODGE_BONUS = 0;
         public const int AC_NATURAL_BONUS = 1;
         public const int AC_ARMOUR_ENCHANTMENT_BONUS = 2;
         public const int AC_SHIELD_ENCHANTMENT_BONUS = 3;
         public const int AC_DEFLECTION_BONUS = 4;
+
         public const int MISS_CHANCE_TYPE_NORMAL = 0;
         public const int MISS_CHANCE_TYPE_VS_RANGED = 1;
         public const int MISS_CHANCE_TYPE_VS_MELEE = 2;
+
         public const int DOOR_ACTION_OPEN = 0;
         public const int DOOR_ACTION_UNLOCK = 1;
         public const int DOOR_ACTION_BASH = 2;
         public const int DOOR_ACTION_IGNORE = 3;
         public const int DOOR_ACTION_KNOCK = 4;
+
         public const int PLACEABLE_ACTION_USE = 0;
         public const int PLACEABLE_ACTION_UNLOCK = 1;
         public const int PLACEABLE_ACTION_BASH = 2;
         public const int PLACEABLE_ACTION_KNOCK = 4;
+
+
         public const int RACIAL_TYPE_DWARF = 0;
         public const int RACIAL_TYPE_ELF = 1;
         public const int RACIAL_TYPE_GNOME = 2;
@@ -200,16 +235,19 @@ namespace NWN
         public const int RACIAL_TYPE_ALL = 28;
         public const int RACIAL_TYPE_INVALID = 28;
         public const int RACIAL_TYPE_OOZE = 29;
+
         public const int ALIGNMENT_ALL = 0;
         public const int ALIGNMENT_NEUTRAL = 1;
         public const int ALIGNMENT_LAWFUL = 2;
         public const int ALIGNMENT_CHAOTIC = 3;
         public const int ALIGNMENT_GOOD = 4;
         public const int ALIGNMENT_EVIL = 5;
+
         public const int SAVING_THROW_ALL = 0;
         public const int SAVING_THROW_FORT = 1;
         public const int SAVING_THROW_REFLEX = 2;
         public const int SAVING_THROW_WILL = 3;
+
         public const int SAVING_THROW_TYPE_ALL = 0;
         public const int SAVING_THROW_TYPE_NONE = 0;
         public const int SAVING_THROW_TYPE_MIND_SPELLS = 1;
@@ -231,6 +269,7 @@ namespace NWN
         public const int SAVING_THROW_TYPE_EVIL = 17;
         public const int SAVING_THROW_TYPE_LAW = 18;
         public const int SAVING_THROW_TYPE_CHAOS = 19;
+
         public const int IMMUNITY_TYPE_NONE = 0;
         public const int IMMUNITY_TYPE_MIND_SPELLS = 1;
         public const int IMMUNITY_TYPE_POISON = 2;
@@ -264,6 +303,7 @@ namespace NWN
         public const int IMMUNITY_TYPE_SNEAK_ATTACK = 30;
         public const int IMMUNITY_TYPE_CRITICAL_HIT = 31;
         public const int IMMUNITY_TYPE_DEATH = 32;
+
         public const int AREA_TRANSITION_RANDOM = 0;
         public const int AREA_TRANSITION_USER_DEFINED = 1;
         public const int AREA_TRANSITION_CITY_01 = 2;
@@ -370,11 +410,13 @@ namespace NWN
         public const int AREA_TRANSITION_WASTELAND_03 = 103;
         public const int AREA_TRANSITION_DROW_03 = 104;
         public const int AREA_TRANSITION_DROW_04 = 105;
-        //  Legacy area-transition constants.  Do not delete these.
+
+        // Legacy area-transition constants.  Do not delete these.
         public const int AREA_TRANSITION_CITY = 2;
         public const int AREA_TRANSITION_CRYPT = 7;
         public const int AREA_TRANSITION_FOREST = 58;
         public const int AREA_TRANSITION_RURAL = 63;
+
         public const int BODY_NODE_HAND = 0;
         public const int BODY_NODE_CHEST = 1;
         public const int BODY_NODE_MONSTER_0 = 2;
@@ -387,36 +429,49 @@ namespace NWN
         public const int BODY_NODE_MONSTER_7 = 9;
         public const int BODY_NODE_MONSTER_8 = 10;
         public const int BODY_NODE_MONSTER_9 = 11;
+
         public const float RADIUS_SIZE_SMALL = 1.67f;
         public const float RADIUS_SIZE_MEDIUM = 3.33f;
         public const float RADIUS_SIZE_LARGE = 5.0f;
         public const float RADIUS_SIZE_HUGE = 6.67f;
         public const float RADIUS_SIZE_GARGANTUAN = 8.33f;
         public const float RADIUS_SIZE_COLOSSAL = 10.0f;
-        //  these are magic numbers.  they should correspond to the values layed out in ExecuteCommandGetEffectType
+
+        // These are magic numbers. They should correspond to the values layed out in ExecuteCommandGetEffectType
         public const int EFFECT_TYPE_INVALIDEFFECT = 0;
+
         public const int EFFECT_TYPE_DAMAGE_RESISTANCE = 1;
-        // int EFFECT_TYPE_ABILITY_BONUS               = 2;
+
+        // int EFFECT_TYPE_ABILITY_BONUS = 2;
         public const int EFFECT_TYPE_REGENERATE = 3;
-        // int EFFECT_TYPE_SAVING_THROW_BONUS          = 4;
-        // int EFFECT_TYPE_MODIFY_AC                   = 5;
-        // int EFFECT_TYPE_ATTACK_BONUS                = 6;
+
+        // int EFFECT_TYPE_SAVING_THROW_BONUS = 4;
+        // int EFFECT_TYPE_MODIFY_AC = 5;
+        // int EFFECT_TYPE_ATTACK_BONUS = 6;
         public const int EFFECT_TYPE_DAMAGE_REDUCTION = 7;
-        // int EFFECT_TYPE_DAMAGE_BONUS                = 8;
+
+        // int EFFECT_TYPE_DAMAGE_BONUS = 8;
         public const int EFFECT_TYPE_TEMPORARY_HITPOINTS = 9;
-        // int EFFECT_TYPE_DAMAGE_IMMUNITY             = 10;
+
+        // int EFFECT_TYPE_DAMAGE_IMMUNITY = 10;
         public const int EFFECT_TYPE_ENTANGLE = 11;
         public const int EFFECT_TYPE_INVULNERABLE = 12;
         public const int EFFECT_TYPE_DEAF = 13;
         public const int EFFECT_TYPE_RESURRECTION = 14;
+
         public const int EFFECT_TYPE_IMMUNITY = 15;
-        // int EFFECT_TYPE_BLIND                       = 16;
+
+        // int EFFECT_TYPE_BLIND = 16;
         public const int EFFECT_TYPE_ENEMY_ATTACK_BONUS = 17;
+
         public const int EFFECT_TYPE_ARCANE_SPELL_FAILURE = 18;
-        // int EFFECT_TYPE_MOVEMENT_SPEED              = 19;
+
+        // int EFFECT_TYPE_MOVEMENT_SPEED = 19;
         public const int EFFECT_TYPE_AREA_OF_EFFECT = 20;
+
         public const int EFFECT_TYPE_BEAM = 21;
-        // int EFFECT_TYPE_SPELL_RESISTANCE            = 22;
+
+        // int EFFECT_TYPE_SPELL_RESISTANCE = 22;
         public const int EFFECT_TYPE_CHARMED = 23;
         public const int EFFECT_TYPE_CONFUSED = 24;
         public const int EFFECT_TYPE_FRIGHTENED = 25;
@@ -479,12 +534,14 @@ namespace NWN
         public const int EFFECT_TYPE_SPELL_FAILURE = 82;
         public const int EFFECT_TYPE_CUTSCENEGHOST = 83;
         public const int EFFECT_TYPE_CUTSCENEIMMOBILIZE = 84;
+
         public const int ITEM_APPR_TYPE_SIMPLE_MODEL = 0;
         public const int ITEM_APPR_TYPE_WEAPON_COLOR = 1;
         public const int ITEM_APPR_TYPE_WEAPON_MODEL = 2;
         public const int ITEM_APPR_TYPE_ARMOR_MODEL = 3;
         public const int ITEM_APPR_TYPE_ARMOR_COLOR = 4;
         public const int ITEM_APPR_NUM_TYPES = 5;
+
         public const int ITEM_APPR_ARMOR_COLOR_LEATHER1 = 0;
         public const int ITEM_APPR_ARMOR_COLOR_LEATHER2 = 1;
         public const int ITEM_APPR_ARMOR_COLOR_CLOTH1 = 2;
@@ -492,6 +549,7 @@ namespace NWN
         public const int ITEM_APPR_ARMOR_COLOR_METAL1 = 4;
         public const int ITEM_APPR_ARMOR_COLOR_METAL2 = 5;
         public const int ITEM_APPR_ARMOR_NUM_COLORS = 6;
+
         public const int ITEM_APPR_ARMOR_MODEL_RFOOT = 0;
         public const int ITEM_APPR_ARMOR_MODEL_LFOOT = 1;
         public const int ITEM_APPR_ARMOR_MODEL_RSHIN = 2;
@@ -512,12 +570,15 @@ namespace NWN
         public const int ITEM_APPR_ARMOR_MODEL_LHAND = 17;
         public const int ITEM_APPR_ARMOR_MODEL_ROBE = 18;
         public const int ITEM_APPR_ARMOR_NUM_MODELS = 19;
+
         public const int ITEM_APPR_WEAPON_MODEL_BOTTOM = 0;
         public const int ITEM_APPR_WEAPON_MODEL_MIDDLE = 1;
         public const int ITEM_APPR_WEAPON_MODEL_TOP = 2;
+
         public const int ITEM_APPR_WEAPON_COLOR_BOTTOM = 0;
         public const int ITEM_APPR_WEAPON_COLOR_MIDDLE = 1;
         public const int ITEM_APPR_WEAPON_COLOR_TOP = 2;
+
         public const int ITEM_PROPERTY_ABILITY_BONUS = 0;
         public const int ITEM_PROPERTY_AC_BONUS = 1;
         public const int ITEM_PROPERTY_AC_BONUS_VS_ALIGNMENT_GROUP = 2;
@@ -532,6 +593,7 @@ namespace NWN
         public const int ITEM_PROPERTY_BASE_ITEM_WEIGHT_REDUCTION = 11;
         public const int ITEM_PROPERTY_BONUS_FEAT = 12;
         public const int ITEM_PROPERTY_BONUS_SPELL_SLOT_OF_LEVEL_N = 13;
+
         public const int ITEM_PROPERTY_CAST_SPELL = 15;
         public const int ITEM_PROPERTY_DAMAGE_BONUS = 16;
         public const int ITEM_PROPERTY_DAMAGE_BONUS_VS_ALIGNMENT_GROUP = 17;
@@ -542,10 +604,13 @@ namespace NWN
         public const int ITEM_PROPERTY_DAMAGE_REDUCTION = 22;
         public const int ITEM_PROPERTY_DAMAGE_RESISTANCE = 23;
         public const int ITEM_PROPERTY_DAMAGE_VULNERABILITY = 24;
+
         public const int ITEM_PROPERTY_DARKVISION = 26;
         public const int ITEM_PROPERTY_DECREASED_ABILITY_SCORE = 27;
         public const int ITEM_PROPERTY_DECREASED_AC = 28;
         public const int ITEM_PROPERTY_DECREASED_SKILL_MODIFIER = 29;
+
+
         public const int ITEM_PROPERTY_ENHANCED_CONTAINER_REDUCED_WEIGHT = 32;
         public const int ITEM_PROPERTY_EXTRA_MELEE_DAMAGE_TYPE = 33;
         public const int ITEM_PROPERTY_EXTRA_RANGED_DAMAGE_TYPE = 34;
@@ -581,25 +646,32 @@ namespace NWN
         public const int ITEM_PROPERTY_USE_LIMITATION_SPECIFIC_ALIGNMENT = 65;
         public const int ITEM_PROPERTY_USE_LIMITATION_TILESET = 66;
         public const int ITEM_PROPERTY_REGENERATION_VAMPIRIC = 67;
+
         public const int ITEM_PROPERTY_TRAP = 70;
         public const int ITEM_PROPERTY_TRUE_SEEING = 71;
         public const int ITEM_PROPERTY_ON_MONSTER_HIT = 72;
         public const int ITEM_PROPERTY_TURN_RESISTANCE = 73;
         public const int ITEM_PROPERTY_MASSIVE_CRITICALS = 74;
         public const int ITEM_PROPERTY_FREEDOM_OF_MOVEMENT = 75;
-        //  no longer working, poison is now a on_hit subtype
+
+        // no longer working, poison is now a on_hit subtype
         public const int ITEM_PROPERTY_POISON = 76;
+
         public const int ITEM_PROPERTY_MONSTER_DAMAGE = 77;
         public const int ITEM_PROPERTY_IMMUNITY_SPELLS_BY_LEVEL = 78;
+
         public const int ITEM_PROPERTY_SPECIAL_WALK = 79;
         public const int ITEM_PROPERTY_HEALERS_KIT = 80;
         public const int ITEM_PROPERTY_WEIGHT_INCREASE = 81;
         public const int ITEM_PROPERTY_ONHITCASTSPELL = 82;
         public const int ITEM_PROPERTY_VISUALEFFECT = 83;
         public const int ITEM_PROPERTY_ARCANE_SPELL_FAILURE = 84;
+
         public const int ITEM_PROPERTY_MATERIAL = 85;
         public const int ITEM_PROPERTY_QUALITY = 86;
         public const int ITEM_PROPERTY_ADDITIONAL = 87;
+
+
         public const int BASE_ITEM_SHORTSWORD = 0;
         public const int BASE_ITEM_LONGSWORD = 1;
         public const int BASE_ITEM_BATTLEAXE = 2;
@@ -646,6 +718,7 @@ namespace NWN
         public const int BASE_ITEM_MAGICSTAFF = 45;
         public const int BASE_ITEM_MAGICWAND = 46;
         public const int BASE_ITEM_MORNINGSTAR = 47;
+
         public const int BASE_ITEM_POTIONS = 49;
         public const int BASE_ITEM_QUARTERSTAFF = 50;
         public const int BASE_ITEM_RAPIER = 51;
@@ -679,17 +752,22 @@ namespace NWN
         public const int BASE_ITEM_CLOAK = 80;
         public const int BASE_ITEM_GRENADE = 81;
         public const int BASE_ITEM_TRIDENT = 95;
+
         public const int BASE_ITEM_BLANK_POTION = 101;
         public const int BASE_ITEM_BLANK_SCROLL = 102;
         public const int BASE_ITEM_BLANK_WAND = 103;
+
         public const int BASE_ITEM_ENCHANTED_POTION = 104;
         public const int BASE_ITEM_ENCHANTED_SCROLL = 105;
         public const int BASE_ITEM_ENCHANTED_WAND = 106;
+
         public const int BASE_ITEM_DWARVENWARAXE = 108;
         public const int BASE_ITEM_CRAFTMATERIALMED = 109;
         public const int BASE_ITEM_CRAFTMATERIALSML = 110;
         public const int BASE_ITEM_WHIP = 111;
+
         public const int BASE_ITEM_INVALID = 256;
+
         public const int VFX_NONE = -1;
         public const int VFX_DUR_BLUR = 0;
         public const int VFX_DUR_DARKNESS = 1;
@@ -715,8 +793,10 @@ namespace NWN
         public const int VFX_FNF_DISPEL_GREATER = 21;
         public const int VFX_FNF_FIREBALL = 22;
         public const int VFX_FNF_FIRESTORM = 23;
+
         public const int VFX_FNF_IMPLOSION = 24;
-        // int VFX_FNF_MASS_HASTE = 25 ;
+
+        // int VFX_FNF_MASS_HASTE = 25;
         public const int VFX_FNF_MASS_HEAL = 26;
         public const int VFX_FNF_MASS_MIND_AFFECTING = 27;
         public const int VFX_FNF_METEOR_SWARM = 28;
@@ -735,8 +815,10 @@ namespace NWN
         public const int VFX_FNF_WORD = 41;
         public const int VFX_IMP_AC_BONUS = 42;
         public const int VFX_IMP_ACID_L = 43;
+
         public const int VFX_IMP_ACID_S = 44;
-        // int VFX_IMP_ALTER_WEAPON = 45 ;
+
+        // int VFX_IMP_ALTER_WEAPON = 45;
         public const int VFX_IMP_BLIND_DEAF_M = 46;
         public const int VFX_IMP_BREACH = 47;
         public const int VFX_IMP_CONFUSION_S = 48;
@@ -749,8 +831,10 @@ namespace NWN
         public const int VFX_IMP_DIVINE_STRIKE_HOLY = 55;
         public const int VFX_IMP_DOMINATE_S = 56;
         public const int VFX_IMP_DOOM = 57;
+
         public const int VFX_IMP_FEAR_S = 58;
-        // int VFX_IMP_FLAME_L = 59 ;
+
+        // int VFX_IMP_FLAME_L = 59;
         public const int VFX_IMP_FLAME_M = 60;
         public const int VFX_IMP_FLAME_S = 61;
         public const int VFX_IMP_FROST_L = 62;
@@ -767,11 +851,13 @@ namespace NWN
         public const int VFX_BEAM_LIGHTNING = 73;
         public const int VFX_IMP_LIGHTNING_M = 74;
         public const int VFX_IMP_LIGHTNING_S = 75;
+
         public const int VFX_IMP_MAGBLUE = 76;
-        // int VFX_IMP_MAGBLUE2 = 77 ;
-        // int VFX_IMP_MAGBLUE3 = 78 ;
-        // int VFX_IMP_MAGBLUE4 = 79 ;
-        // int VFX_IMP_MAGBLUE5 = 80 ;
+
+        // int VFX_IMP_MAGBLUE2 = 77;
+        // int VFX_IMP_MAGBLUE3 = 78;
+        // int VFX_IMP_MAGBLUE4 = 79;
+        // int VFX_IMP_MAGBLUE5 = 80;
         public const int VFX_IMP_NEGATIVE_ENERGY = 81;
         public const int VFX_DUR_PARALYZE_HOLD = 82;
         public const int VFX_IMP_POISON_L = 83;
@@ -809,30 +895,36 @@ namespace NWN
         public const int VFX_COM_BLOOD_CRT_RED = 115;
         public const int VFX_COM_BLOOD_CRT_GREEN = 116;
         public const int VFX_COM_BLOOD_CRT_YELLOW = 117;
+
         public const int VFX_COM_SPARKS_PARRY = 118;
-        // int VFX_COM_GIB = 119 ;
+
+        // int VFX_COM_GIB = 119;
         public const int VFX_COM_UNLOAD_MODEL = 120;
         public const int VFX_COM_CHUNK_RED_SMALL = 121;
         public const int VFX_COM_CHUNK_RED_MEDIUM = 122;
         public const int VFX_COM_CHUNK_GREEN_SMALL = 123;
         public const int VFX_COM_CHUNK_GREEN_MEDIUM = 124;
         public const int VFX_COM_CHUNK_YELLOW_SMALL = 125;
+
         public const int VFX_COM_CHUNK_YELLOW_MEDIUM = 126;
-        // int VFX_ITM_ACID = 127 ;
-        // int VFX_ITM_FIRE = 128 ;
-        // int VFX_ITM_FROST = 129 ;
-        // int VFX_ITM_ILLUMINATED_BLUE = 130 ;
-        // int VFX_ITM_ILLUMINATED_PURPLE = 131 ;
-        // int VFX_ITM_ILLUMINATED_RED = 132 ;
-        // int VFX_ITM_LIGHTNING = 133 ;
-        // int VFX_ITM_PULSING_BLUE = 134 ;
-        // int VFX_ITM_PULSING_PURPLE = 135 ;
-        // int VFX_ITM_PULSING_RED = 136 ;
-        // int VFX_ITM_SMOKING = 137 ;
+
+        // int VFX_ITM_ACID = 127;
+        // int VFX_ITM_FIRE = 128;
+        // int VFX_ITM_FROST = 129;
+        // int VFX_ITM_ILLUMINATED_BLUE = 130;
+        // int VFX_ITM_ILLUMINATED_PURPLE = 131;
+        // int VFX_ITM_ILLUMINATED_RED = 132;
+        // int VFX_ITM_LIGHTNING = 133;
+        // int VFX_ITM_PULSING_BLUE = 134;
+        // int VFX_ITM_PULSING_PURPLE = 135;
+        // int VFX_ITM_PULSING_RED = 136;
+        // int VFX_ITM_SMOKING = 137;
         public const int VFX_DUR_SPELLTURNING = 138;
         public const int VFX_IMP_IMPROVE_ABILITY_SCORE = 139;
         public const int VFX_IMP_CHARM = 140;
+
         public const int VFX_IMP_MAGICAL_VISION = 141;
+
         // int VFX_IMP_LAW_HELP = 142;
         // int VFX_IMP_CHAOS_HELP = 143;
         public const int VFX_IMP_EVIL_HELP = 144;
@@ -992,8 +1084,10 @@ namespace NWN
         public const int VFX_DUR_TENTACLE = 346;
         public const int VFX_DUR_PETRIFY = 351;
         public const int VFX_DUR_FREEZE_ANIMATION = 352;
+
         public const int VFX_COM_CHUNK_STONE_SMALL = 353;
         public const int VFX_COM_CHUNK_STONE_MEDIUM = 354;
+
         public const int VFX_BEAM_SILENT_LIGHTNING = 307;
         public const int VFX_BEAM_SILENT_FIRE = 308;
         public const int VFX_BEAM_SILENT_COLD = 309;
@@ -1006,6 +1100,7 @@ namespace NWN
         public const int VFX_DUR_BIGBYS_CLENCHED_FIST = 316;
         public const int VFX_DUR_BIGBYS_CRUSHING_HAND = 317;
         public const int VFX_DUR_BIGBYS_GRASPING_HAND = 318;
+
         public const int VFX_DUR_CALTROPS = 319;
         public const int VFX_DUR_SMOKE = 320;
         public const int VFX_DUR_PIXIEDUST = 321;
@@ -1236,7 +1331,8 @@ namespace NWN
         public const int VFX_IMP_STARBURST_GREEN = 644;
         public const int VFX_IMP_STARBURST_RED = 645;
         public const int VFX_IMP_NIGHTMARE_HEAD_HIT = 670;
-        // VFX_Persistent.2da
+
+        //VFX_Persistent.2da
         public const int AOE_PER_FOGACID = 0;
         public const int AOE_PER_FOGFIRE = 1;
         public const int AOE_PER_FOGSTINK = 2;
@@ -1246,7 +1342,9 @@ namespace NWN
         public const int AOE_PER_WALLWIND = 6;
         public const int AOE_PER_WALLBLADE = 7;
         public const int AOE_PER_WEB = 8;
+
         public const int AOE_PER_ENTANGLE = 9;
+
         // int AOE_PER_CHAOS = 10;
         public const int AOE_PER_DARKNESS = 11;
         public const int AOE_MOB_CIRCEVIL = 12;
@@ -1283,8 +1381,8 @@ namespace NWN
         public const int AOE_PER_OVERMIND = 43;
         public const int AOE_MOB_HORRIFICAPPEARANCE = 44;
         public const int AOE_MOB_TROGLODYTE_STENCH = 45;
-        public const int SPELL_ALL_SPELLS = -1;
-        //  used for spell immunity.
+
+        public const int SPELL_ALL_SPELLS = -1; // used for spell immunity.
         public const int SPELL_ACID_FOG = 0;
         public const int SPELL_AID = 1;
         public const int SPELL_ANIMATE_DEAD = 2;
@@ -1296,7 +1394,9 @@ namespace NWN
         public const int SPELL_BLINDNESS_AND_DEAFNESS = 8;
         public const int SPELL_BULLS_STRENGTH = 9;
         public const int SPELL_BURNING_HANDS = 10;
+
         public const int SPELL_CALL_LIGHTNING = 11;
+
         // int SPELL_CALM_EMOTIONS = 12;
         public const int SPELL_CATS_GRACE = 13;
         public const int SPELL_CHAIN_LIGHTNING = 14;
@@ -1352,10 +1452,14 @@ namespace NWN
         public const int SPELL_GHOUL_TOUCH = 64;
         public const int SPELL_GLOBE_OF_INVULNERABILITY = 65;
         public const int SPELL_GREASE = 66;
+
         public const int SPELL_GREATER_DISPELLING = 67;
-        // int SPELL_GREATER_MAGIC_WEAPON              = 68;
+
+        // int SPELL_GREATER_MAGIC_WEAPON = 68;
         public const int SPELL_GREATER_PLANAR_BINDING = 69;
+
         public const int SPELL_GREATER_RESTORATION = 70;
+
         // int SPELL_GREATER_SHADOW_CONJURATION = 71;
         public const int SPELL_GREATER_SPELL_BREACH = 72;
         public const int SPELL_GREATER_SPELL_MANTLE = 73;
@@ -1393,11 +1497,15 @@ namespace NWN
         public const int SPELL_MAGIC_CIRCLE_AGAINST_GOOD = 105;
         public const int SPELL_MAGIC_CIRCLE_AGAINST_LAW = 106;
         public const int SPELL_MAGIC_MISSILE = 107;
+
         public const int SPELL_MAGIC_VESTMENT = 546;
-        // int SPELL_MAGIC_WEAPON                      = 109;
+
+        // int SPELL_MAGIC_WEAPON = 109;
         public const int SPELL_MASS_BLINDNESS_AND_DEAFNESS = 110;
+
         public const int SPELL_MASS_CHARM = 111;
-        //  int SPELL_MASS_DOMINATION = 112;
+
+        // int SPELL_MASS_DOMINATION = 112;
         public const int SPELL_MASS_HASTE = 113;
         public const int SPELL_MASS_HEAL = 114;
         public const int SPELL_MELFS_ACID_ARROW = 115;
@@ -1442,7 +1550,9 @@ namespace NWN
         public const int SPELL_SANCTUARY = 154;
         public const int SPELL_SCARE = 155;
         public const int SPELL_SEARING_LIGHT = 156;
+
         public const int SPELL_SEE_INVISIBILITY = 157;
+
         // int SPELL_SHADES = 158;
         // int SPELL_SHADOW_CONJURATION = 159;
         public const int SPELL_SHADOW_SHIELD = 160;
@@ -1605,11 +1715,14 @@ namespace NWN
         public const int SPELLABILITY_SUMMON_ANIMAL_COMPANION = 317;
         public const int SPELLABILITY_SUMMON_FAMILIAR = 318;
         public const int SPELLABILITY_ELEMENTAL_SHAPE = 319;
+
         public const int SPELLABILITY_WILD_SHAPE = 320;
+
         // int SPELL_PROTECTION_FROM_ALIGNMENT = 321;
         // int SPELL_MAGIC_CIRCLE_AGAINST_ALIGNMENT = 322;
         // int SPELL_AURA_VERSUS_ALIGNMENT = 323;
         public const int SPELL_SHADES_SUMMON_SHADOW = 324;
+
         // int SPELL_PROTECTION_FROM_ELEMENTS_COLD = 325;
         // int SPELL_PROTECTION_FROM_ELEMENTS_FIRE = 326;
         // int SPELL_PROTECTION_FROM_ELEMENTS_ACID = 327;
@@ -1664,6 +1777,7 @@ namespace NWN
         public const int SPELL_LEGEND_LORE = 376;
         public const int SPELL_FIND_TRAPS = 377;
         public const int SPELLABILITY_SUMMON_MEPHIT = 378;
+
         public const int SPELLABILITY_SUMMON_CELESTIAL = 379;
         public const int SPELLABILITY_BATTLE_MASTERY = 380;
         public const int SPELLABILITY_DIVINE_STRENGTH = 381;
@@ -1673,6 +1787,7 @@ namespace NWN
         public const int SPELLABILITY_ROGUES_CUNNING = 385;
         public const int SPELLABILITY_ACTIVATE_ITEM = 386;
         public const int SPELLABILITY_DRAGON_FEAR = 412;
+
         public const int SPELL_DIVINE_FAVOR = 414;
         public const int SPELL_TRUE_STRIKE = 415;
         public const int SPELL_FLARE = 416;
@@ -1745,21 +1860,26 @@ namespace NWN
         public const int SPELL_TRAP_BOLT = 488;
         public const int SPELL_TRAP_DART = 493;
         public const int SPELL_TRAP_SHURIKEN = 494;
+
         public const int SPELLABILITY_BREATH_PETRIFY = 495;
         public const int SPELLABILITY_TOUCH_PETRIFY = 496;
         public const int SPELLABILITY_GAZE_PETRIFY = 497;
         public const int SPELLABILITY_MANTICORE_SPIKES = 498;
+
+
         public const int SPELL_ROD_OF_WONDER = 499;
         public const int SPELL_DECK_OF_MANY_THINGS = 500;
         public const int SPELL_ELEMENTAL_SUMMONING_ITEM = 502;
         public const int SPELL_DECK_AVATAR = 503;
         public const int SPELL_DECK_GEMSPRAY = 504;
         public const int SPELL_DECK_BUTTERFLYSPRAY = 505;
+
         public const int SPELL_HEALINGKIT = 506;
         public const int SPELL_POWERSTONE = 507;
         public const int SPELL_SPELLSTAFF = 508;
         public const int SPELL_CHARGER = 500;
         public const int SPELL_DECHARGER = 510;
+
         public const int SPELL_KOBOLD_JUMP = 511;
         public const int SPELL_CRUMBLE = 512;
         public const int SPELL_INFESTATION_OF_MAGGOTS = 513;
@@ -1787,17 +1907,23 @@ namespace NWN
         public const int SPELL_BLADE_THIRST = 535;
         public const int SPELL_DEAFENING_CLANG = 536;
         public const int SPELL_CLOUD_OF_BEWILDERMENT = 569;
+
+
         public const int SPELL_KEEN_EDGE = 539;
         public const int SPELL_BLACKSTAFF = 541;
         public const int SPELL_FLAME_WEAPON = 542;
         public const int SPELL_ICE_DAGGER = 543;
         public const int SPELL_MAGIC_WEAPON = 544;
         public const int SPELL_GREATER_MAGIC_WEAPON = 545;
+
+
         public const int SPELL_STONEHOLD = 547;
         public const int SPELL_DARKFIRE = 548;
         public const int SPELL_GLYPH_OF_WARDING = 549;
+
         public const int SPELLABILITY_MINDBLAST = 551;
         public const int SPELLABILITY_CHARMMONSTER = 552;
+
         public const int SPELL_IOUN_STONE_DUSTY_ROSE = 554;
         public const int SPELL_IOUN_STONE_PALE_BLUE = 555;
         public const int SPELL_IOUN_STONE_SCARLET_BLUE = 556;
@@ -1805,56 +1931,72 @@ namespace NWN
         public const int SPELL_IOUN_STONE_DEEP_RED = 558;
         public const int SPELL_IOUN_STONE_PINK = 559;
         public const int SPELL_IOUN_STONE_PINK_GREEN = 560;
+
         public const int SPELLABILITY_WHIRLWIND = 561;
         public const int SPELLABILITY_COMMAND_THE_HORDE = 571;
+
         public const int SPELLABILITY_AA_IMBUE_ARROW = 600;
         public const int SPELLABILITY_AA_SEEKER_ARROW_1 = 601;
         public const int SPELLABILITY_AA_SEEKER_ARROW_2 = 602;
         public const int SPELLABILITY_AA_HAIL_OF_ARROWS = 603;
         public const int SPELLABILITY_AA_ARROW_OF_DEATH = 604;
+
         public const int SPELLABILITY_AS_GHOSTLY_VISAGE = 605;
         public const int SPELLABILITY_AS_DARKNESS = 606;
         public const int SPELLABILITY_AS_INVISIBILITY = 607;
         public const int SPELLABILITY_AS_IMPROVED_INVISIBLITY = 608;
+
         public const int SPELLABILITY_BG_CREATEDEAD = 609;
         public const int SPELLABILITY_BG_FIENDISH_SERVANT = 610;
         public const int SPELLABILITY_BG_INFLICT_SERIOUS_WOUNDS = 611;
         public const int SPELLABILITY_BG_INFLICT_CRITICAL_WOUNDS = 612;
         public const int SPELLABILITY_BG_CONTAGION = 613;
         public const int SPELLABILITY_BG_BULLS_STRENGTH = 614;
+
         public const int SPELL_FLYING_DEBRIS = 620;
+
         public const int SPELLABILITY_DC_DIVINE_WRATH = 622;
+
         public const int SPELLABILITY_PM_ANIMATE_DEAD = 623;
         public const int SPELLABILITY_PM_SUMMON_UNDEAD = 624;
         public const int SPELLABILITY_PM_UNDEAD_GRAFT_1 = 625;
         public const int SPELLABILITY_PM_UNDEAD_GRAFT_2 = 626;
         public const int SPELLABILITY_PM_SUMMON_GREATER_UNDEAD = 627;
         public const int SPELLABILITY_PM_DEATHLESS_MASTER_TOUCH = 628;
+
         public const int SPELL_EPIC_HELLBALL = 636;
         public const int SPELL_EPIC_MUMMY_DUST = 637;
         public const int SPELL_EPIC_DRAGON_KNIGHT = 638;
         public const int SPELL_EPIC_MAGE_ARMOR = 639;
         public const int SPELL_EPIC_RUIN = 640;
+
         public const int SPELLABILITY_DW_DEFENSIVE_STANCE = 641;
+
         public const int SPELLABILITY_EPIC_MIGHTY_RAGE = 642;
         public const int SPELLABILITY_EPIC_CURSE_SONG = 644;
         public const int SPELLABILITY_EPIC_IMPROVED_WHIRLWIND = 645;
+
+
         public const int SPELLABILITY_EPIC_SHAPE_DRAGONKIN = 646;
         public const int SPELLABILITY_EPIC_SHAPE_DRAGON = 647;
+
         public const int SPELL_CRAFT_DYE_CLOTHCOLOR_1 = 648;
         public const int SPELL_CRAFT_DYE_CLOTHCOLOR_2 = 649;
         public const int SPELL_CRAFT_DYE_LEATHERCOLOR_1 = 650;
         public const int SPELL_CRAFT_DYE_LEATHERCOLOR_2 = 651;
         public const int SPELL_CRAFT_DYE_METALCOLOR_1 = 652;
         public const int SPELL_CRAFT_DYE_METALCOLOR_2 = 653;
+
         public const int SPELL_CRAFT_ADD_ITEM_PROPERTY = 654;
         public const int SPELL_CRAFT_POISON_WEAPON_OR_AMMO = 655;
+
         public const int SPELL_CRAFT_CRAFT_WEAPON_SKILL = 656;
         public const int SPELL_CRAFT_CRAFT_ARMOR_SKILL = 657;
         public const int SPELLABILITY_DRAGON_BREATH_NEGATIVE = 698;
         public const int SPELLABILITY_SEAHAG_EVILEYE = 803;
         public const int SPELLABILITY_AURA_HORRIFICAPPEARANCE = 804;
         public const int SPELLABILITY_TROGLODYTE_STENCH = 805;
+
         public const int SPELL_HORSE_MENU = 812;
         public const int SPELL_HORSE_MOUNT = 813;
         public const int SPELL_HORSE_DISMOUNT = 814;
@@ -1862,7 +2004,8 @@ namespace NWN
         public const int SPELL_HORSE_PARTY_DISMOUNT = 816;
         public const int SPELL_HORSE_ASSIGN_MOUNT = 817;
         public const int SPELL_PALADIN_SUMMON_MOUNT = 818;
-        //  these constants must match those in poison.2da
+
+        // these constants must match those in poison.2da
         public const int POISON_NIGHTSHADE = 0;
         public const int POISON_SMALL_CENTIPEDE_POISON = 1;
         public const int POISON_BLADE_BANE = 2;
@@ -1907,7 +2050,8 @@ namespace NWN
         public const int POISON_PHASE_SPIDER_VENOM = 41;
         public const int POISON_WRAITH_SPIDER_VENOM = 42;
         public const int POISON_IRON_GOLEM = 43;
-        //  these constants match those in disease.2da
+
+        // these constants match those in disease.2da
         public const int DISEASE_BLINDING_SICKNESS = 0;
         public const int DISEASE_CACKLE_FEVER = 1;
         public const int DISEASE_DEVIL_CHILLS = 2;
@@ -1925,8 +2069,9 @@ namespace NWN
         public const int DISEASE_BURROW_MAGGOTS = 14;
         public const int DISEASE_SOLDIER_SHAKES = 15;
         public const int DISEASE_VERMIN_MADNESS = 16;
-        //  the thing after CREATURE_TYPE_ should refer to the
-        //  actual "subtype" in the lists given above.
+
+        // the thing after CREATURE_TYPE_ should refer to the
+        // actual "subtype" in the lists given above.
         public const int CREATURE_TYPE_RACIAL_TYPE = 0;
         public const int CREATURE_TYPE_PLAYER_CHAR = 1;
         public const int CREATURE_TYPE_CLASS = 2;
@@ -1934,11 +2079,14 @@ namespace NWN
         public const int CREATURE_TYPE_IS_ALIVE = 4;
         public const int CREATURE_TYPE_HAS_SPELL_EFFECT = 5;
         public const int CREATURE_TYPE_DOES_NOT_HAVE_SPELL_EFFECT = 6;
+
         public const int CREATURE_TYPE_PERCEPTION = 7;
         // int CREATURE_TYPE_ALIGNMENT       = 2;
+
         public const int REPUTATION_TYPE_FRIEND = 0;
         public const int REPUTATION_TYPE_ENEMY = 1;
         public const int REPUTATION_TYPE_NEUTRAL = 2;
+
         public const int PERCEPTION_SEEN_AND_HEARD = 0;
         public const int PERCEPTION_NOT_SEEN_AND_NOT_HEARD = 1;
         public const int PERCEPTION_HEARD_AND_NOT_SEEN = 2;
@@ -1947,8 +2095,10 @@ namespace NWN
         public const int PERCEPTION_HEARD = 5;
         public const int PERCEPTION_NOT_SEEN = 6;
         public const int PERCEPTION_SEEN = 7;
+
         public const int PLAYER_CHAR_NOT_PC = FALSE;
         public const int PLAYER_CHAR_IS_PC = TRUE;
+
         public const int CLASS_TYPE_BARBARIAN = 0;
         public const int CLASS_TYPE_BARD = 1;
         public const int CLASS_TYPE_CLERIC = 2;
@@ -1995,8 +2145,10 @@ namespace NWN
         public const int CLASS_TYPE_EYE_OF_GRUUMSH = 39;
         public const int CLASS_TYPE_SHOU_DISCIPLE = 40;
         public const int CLASS_TYPE_PURPLE_DRAGON_KNIGHT = 41;
+
         public const int CLASS_TYPE_INVALID = 255;
-        //  These are for the LevelUpHenchman command.
+
+        // These are for the LevelUpHenchman command.
         public const int PACKAGE_BARBARIAN = 0;
         public const int PACKAGE_BARD = 1;
         public const int PACKAGE_CLERIC = 2;
@@ -2126,15 +2278,19 @@ namespace NWN
         public const int PACKAGE_WIZARD_PALEMASTER_2NDCLASS = 128;
         public const int PACKAGE_NPC_ARIBETH_PALADIN = 129;
         public const int PACKAGE_NPC_ARIBETH_BLACKGUARD = 130;
+
         public const int PACKAGE_INVALID = 255;
-        //  These are for GetFirstInPersistentObject() and GetNextInPersistentObject()
+
+        // These are for GetFirstInPersistentObject() and GetNextInPersistentObject()
         public const int PERSISTENT_ZONE_ACTIVE = 0;
         public const int PERSISTENT_ZONE_FOLLOW = 1;
+
         public const int STANDARD_FACTION_HOSTILE = 0;
         public const int STANDARD_FACTION_COMMONER = 1;
         public const int STANDARD_FACTION_MERCHANT = 2;
         public const int STANDARD_FACTION_DEFENDER = 3;
-        //  Skill defines
+
+        // Skill defines
         public const int SKILL_ANIMAL_EMPATHY = 0;
         public const int SKILL_CONCENTRATION = 1;
         public const int SKILL_DISABLE_TRAP = 2;
@@ -2163,10 +2319,13 @@ namespace NWN
         public const int SKILL_CRAFT_ARMOR = 25;
         public const int SKILL_CRAFT_WEAPON = 26;
         public const int SKILL_RIDE = 27;
+
         public const int SKILL_ALL_SKILLS = 255;
+
         public const int SUBSKILL_FLAGTRAP = 100;
         public const int SUBSKILL_RECOVERTRAP = 101;
         public const int SUBSKILL_EXAMINETRAP = 102;
+
         public const int FEAT_ALERTNESS = 0;
         public const int FEAT_AMBIDEXTERITY = 1;
         public const int FEAT_ARMOR_PROFICIENCY_HEAVY = 2;
@@ -2246,7 +2405,9 @@ namespace NWN
         public const int FEAT_IMPROVED_CRITICAL_WAR_HAMMER = 77;
         public const int FEAT_IMPROVED_CRITICAL_HEAVY_FLAIL = 78;
         public const int FEAT_IMPROVED_CRITICAL_KAMA = 79;
+
         public const int FEAT_IMPROVED_CRITICAL_KUKRI = 80;
+
         // int FEAT_IMPROVED_CRITICAL_NUNCHAKU = 81;
         public const int FEAT_IMPROVED_CRITICAL_SHURIKEN = 82;
         public const int FEAT_IMPROVED_CRITICAL_SCYTHE = 83;
@@ -2283,7 +2444,9 @@ namespace NWN
         public const int FEAT_WEAPON_FOCUS_WAR_HAMMER = 115;
         public const int FEAT_WEAPON_FOCUS_HEAVY_FLAIL = 116;
         public const int FEAT_WEAPON_FOCUS_KAMA = 117;
+
         public const int FEAT_WEAPON_FOCUS_KUKRI = 118;
+
         // int FEAT_WEAPON_FOCUS_NUNCHAKU = 119;
         public const int FEAT_WEAPON_FOCUS_SHURIKEN = 120;
         public const int FEAT_WEAPON_FOCUS_SCYTHE = 121;
@@ -2320,7 +2483,9 @@ namespace NWN
         public const int FEAT_WEAPON_SPECIALIZATION_WAR_HAMMER = 153;
         public const int FEAT_WEAPON_SPECIALIZATION_HEAVY_FLAIL = 154;
         public const int FEAT_WEAPON_SPECIALIZATION_KAMA = 155;
+
         public const int FEAT_WEAPON_SPECIALIZATION_KUKRI = 156;
+
         // int FEAT_WEAPON_SPECIALIZATION_NUNCHAKU = 157;
         public const int FEAT_WEAPON_SPECIALIZATION_SHURIKEN = 158;
         public const int FEAT_WEAPON_SPECIALIZATION_SCYTHE = 159;
@@ -2449,7 +2614,9 @@ namespace NWN
         public const int FEAT_BARBARIAN_RAGE = 293;
         public const int FEAT_TURN_UNDEAD = 294;
         public const int FEAT_QUIVERING_PALM = 296;
+
         public const int FEAT_EMPTY_BODY = 297;
+
         // int FEAT_DETECT_EVIL = 298;
         public const int FEAT_LAY_ON_HANDS = 299;
         public const int FEAT_AURA_OF_COURAGE = 300;
@@ -2544,7 +2711,9 @@ namespace NWN
         public const int FEAT_HARPER_CATS_GRACE = 442;
         public const int FEAT_HARPER_EAGLES_SPLENDOR = 443;
         public const int FEAT_HARPER_INVISIBILITY = 444;
+
         public const int FEAT_PRESTIGE_ENCHANT_ARROW_1 = 445;
+
         public const int FEAT_PRESTIGE_ENCHANT_ARROW_2 = 446;
         public const int FEAT_PRESTIGE_ENCHANT_ARROW_3 = 447;
         public const int FEAT_PRESTIGE_ENCHANT_ARROW_4 = 448;
@@ -2554,24 +2723,31 @@ namespace NWN
         public const int FEAT_PRESTIGE_SEEKER_ARROW_2 = 452;
         public const int FEAT_PRESTIGE_HAIL_OF_ARROWS = 453;
         public const int FEAT_PRESTIGE_ARROW_OF_DEATH = 454;
+
+
         public const int FEAT_PRESTIGE_DEATH_ATTACK_1 = 455;
         public const int FEAT_PRESTIGE_DEATH_ATTACK_2 = 456;
         public const int FEAT_PRESTIGE_DEATH_ATTACK_3 = 457;
         public const int FEAT_PRESTIGE_DEATH_ATTACK_4 = 458;
         public const int FEAT_PRESTIGE_DEATH_ATTACK_5 = 459;
+
         public const int FEAT_BLACKGUARD_SNEAK_ATTACK_1D6 = 460;
         public const int FEAT_BLACKGUARD_SNEAK_ATTACK_2D6 = 461;
         public const int FEAT_BLACKGUARD_SNEAK_ATTACK_3D6 = 462;
+
         public const int FEAT_PRESTIGE_POISON_SAVE_1 = 463;
         public const int FEAT_PRESTIGE_POISON_SAVE_2 = 464;
         public const int FEAT_PRESTIGE_POISON_SAVE_3 = 465;
         public const int FEAT_PRESTIGE_POISON_SAVE_4 = 466;
         public const int FEAT_PRESTIGE_POISON_SAVE_5 = 467;
+
         public const int FEAT_PRESTIGE_SPELL_GHOSTLY_VISAGE = 468;
         public const int FEAT_PRESTIGE_DARKNESS = 469;
         public const int FEAT_PRESTIGE_INVISIBILITY_1 = 470;
         public const int FEAT_PRESTIGE_INVISIBILITY_2 = 471;
+
         public const int FEAT_SMITE_GOOD = 472;
+
         public const int FEAT_PRESTIGE_DARK_BLESSING = 473;
         public const int FEAT_INFLICT_LIGHT_WOUNDS = 474;
         public const int FEAT_INFLICT_MODERATE_WOUNDS = 475;
@@ -2682,6 +2858,7 @@ namespace NWN
         public const int FEAT_EPIC_ENERGY_RESISTANCE_SONIC_8 = 580;
         public const int FEAT_EPIC_ENERGY_RESISTANCE_SONIC_9 = 581;
         public const int FEAT_EPIC_ENERGY_RESISTANCE_SONIC_10 = 582;
+
         public const int FEAT_EPIC_FORTITUDE = 583;
         public const int FEAT_EPIC_PROWESS = 584;
         public const int FEAT_EPIC_REFLEXES = 585;
@@ -2794,6 +2971,7 @@ namespace NWN
         public const int FEAT_EPIC_WEAPON_SPECIALIZATION_DOUBLEAXE = 692;
         public const int FEAT_EPIC_WEAPON_SPECIALIZATION_TWOBLADEDSWORD = 693;
         public const int FEAT_EPIC_WEAPON_SPECIALIZATION_CREATURE = 694;
+
         public const int FEAT_EPIC_WILL = 695;
         public const int FEAT_EPIC_IMPROVED_COMBAT_CASTING = 696;
         public const int FEAT_EPIC_IMPROVED_KI_STRIKE_4 = 697;
@@ -2953,6 +3131,7 @@ namespace NWN
         public const int FEAT_EPIC_IMPROVED_STUNNING_FIST_8 = 851;
         public const int FEAT_EPIC_IMPROVED_STUNNING_FIST_9 = 852;
         public const int FEAT_EPIC_IMPROVED_STUNNING_FIST_10 = 853;
+
         // int FEAT_EPIC_PLANAR_TURNING     =  854;
         public const int FEAT_EPIC_BANE_OF_ENEMIES = 855;
         public const int FEAT_EPIC_DODGE = 856;
@@ -2965,6 +3144,7 @@ namespace NWN
         public const int FEAT_EPIC_AUTOMATIC_STILL_SPELL_1 = 863;
         public const int FEAT_EPIC_AUTOMATIC_STILL_SPELL_2 = 864;
         public const int FEAT_EPIC_AUTOMATIC_STILL_SPELL_3 = 865;
+
         public const int FEAT_SHOU_DISCIPLE_MARTIAL_FLURRY_LIGHT = 866;
         public const int FEAT_WHIRLWIND_ATTACK = 867;
         public const int FEAT_IMPROVED_WHIRLWIND = 868;
@@ -3018,6 +3198,7 @@ namespace NWN
         public const int FEAT_SKILL_FOCUS_INTIMIDATE = 916;
         public const int FEAT_EPIC_SKILL_FOCUS_BLUFF = 917;
         public const int FEAT_EPIC_SKILL_FOCUS_INTIMIDATE = 918;
+
         public const int FEAT_WEAPON_OF_CHOICE_CLUB = 919;
         public const int FEAT_WEAPON_OF_CHOICE_DAGGER = 920;
         public const int FEAT_WEAPON_OF_CHOICE_LIGHTMACE = 921;
@@ -3043,9 +3224,11 @@ namespace NWN
         public const int FEAT_WEAPON_OF_CHOICE_DIREMACE = 941;
         public const int FEAT_WEAPON_OF_CHOICE_DOUBLEAXE = 942;
         public const int FEAT_WEAPON_OF_CHOICE_TWOBLADEDSWORD = 943;
+
         public const int FEAT_BREW_POTION = 944;
         public const int FEAT_SCRIBE_SCROLL = 945;
         public const int FEAT_CRAFT_WAND = 946;
+
         public const int FEAT_DWARVEN_DEFENDER_DEFENSIVE_STANCE = 947;
         public const int FEAT_DAMAGE_REDUCTION_6 = 948;
         public const int FEAT_PRESTIGE_DEFENSIVE_AWARENESS_1 = 949;
@@ -3060,6 +3243,7 @@ namespace NWN
         public const int FEAT_EPIC_OVERWHELMING_CRITICAL_DWAXE = 958;
         public const int FEAT_WEAPON_OF_CHOICE_DWAXE = 959;
         public const int FEAT_USE_POISON = 960;
+
         public const int FEAT_DRAGON_ARMOR = 961;
         public const int FEAT_DRAGON_ABILITIES = 962;
         public const int FEAT_DRAGON_IMMUNE_PARALYSIS = 963;
@@ -3159,6 +3343,7 @@ namespace NWN
         public const int FEAT_EPIC_DRUID_INFINITE_ELEMENTAL_SHAPE = 1069;
         public const int FEAT_PRESTIGE_POISON_SAVE_EPIC = 1070;
         public const int FEAT_EPIC_SUPERIOR_WEAPON_FOCUS = 1071;
+
         public const int FEAT_WEAPON_FOCUS_TRIDENT = 1072;
         public const int FEAT_WEAPON_SPECIALIZATION_TRIDENT = 1073;
         public const int FEAT_IMPROVED_CRITICAL_TRIDENT = 1074;
@@ -3193,7 +3378,8 @@ namespace NWN
         public const int FEAT_PLAYER_TOOL_08 = 1113;
         public const int FEAT_PLAYER_TOOL_09 = 1114;
         public const int FEAT_PLAYER_TOOL_10 = 1115;
-        //  Special Attack Defines
+
+        // Special Attack Defines
         public const int SPECIAL_ATTACK_INVALID = 0;
         public const int SPECIAL_ATTACK_CALLED_SHOT_LEG = 1;
         public const int SPECIAL_ATTACK_CALLED_SHOT_ARM = 2;
@@ -3205,7 +3391,8 @@ namespace NWN
         public const int SPECIAL_ATTACK_STUNNING_FIST = 8;
         public const int SPECIAL_ATTACK_FLURRY_OF_BLOWS = 9;
         public const int SPECIAL_ATTACK_RAPID_SHOT = 10;
-        //  Combat Mode Defines
+
+        // Combat Mode Defines
         public const int COMBAT_MODE_INVALID = 0;
         public const int COMBAT_MODE_PARRY = 1;
         public const int COMBAT_MODE_POWER_ATTACK = 2;
@@ -3217,14 +3404,16 @@ namespace NWN
         public const int COMBAT_MODE_DEFENSIVE_CASTING = 8;
         public const int COMBAT_MODE_DIRTY_FIGHTING = 9;
         public const int COMBAT_MODE_DEFENSIVE_STANCE = 10;
-        //  These represent the row in the difficulty 2da, rather than
-        //  a difficulty value.
+
+        // These represent the row in the difficulty 2da, rather than
+        // a difficulty value.
         public const int ENCOUNTER_DIFFICULTY_VERY_EASY = 0;
         public const int ENCOUNTER_DIFFICULTY_EASY = 1;
         public const int ENCOUNTER_DIFFICULTY_NORMAL = 2;
         public const int ENCOUNTER_DIFFICULTY_HARD = 3;
         public const int ENCOUNTER_DIFFICULTY_IMPOSSIBLE = 4;
-        //  Looping animation constants.
+
+        // Looping animation constants.
         public const int ANIMATION_LOOPING_PAUSE = 0;
         public const int ANIMATION_LOOPING_PAUSE2 = 1;
         public const int ANIMATION_LOOPING_LISTEN = 2;
@@ -3268,7 +3457,58 @@ namespace NWN
         public const int ANIMATION_LOOPING_CUSTOM20 = 40;
         public const int ANIMATION_MOUNT1 = 41;
         public const int ANIMATION_DISMOUNT1 = 42;
-        //  Fire and forget animation constants.
+        public const int ANIMATION_LOOPING_CUSTOM21 = 43;
+        public const int ANIMATION_LOOPING_CUSTOM22 = 44;
+        public const int ANIMATION_LOOPING_CUSTOM23 = 45;
+        public const int ANIMATION_LOOPING_CUSTOM24 = 46;
+        public const int ANIMATION_LOOPING_CUSTOM25 = 47;
+        public const int ANIMATION_LOOPING_CUSTOM26 = 48;
+        public const int ANIMATION_LOOPING_CUSTOM27 = 49;
+        public const int ANIMATION_LOOPING_CUSTOM28 = 50;
+        public const int ANIMATION_LOOPING_CUSTOM29 = 51;
+        public const int ANIMATION_LOOPING_CUSTOM30 = 52;
+        public const int ANIMATION_LOOPING_CUSTOM31 = 53;
+        public const int ANIMATION_LOOPING_CUSTOM32 = 54;
+        public const int ANIMATION_LOOPING_CUSTOM33 = 55;
+        public const int ANIMATION_LOOPING_CUSTOM34 = 56;
+        public const int ANIMATION_LOOPING_CUSTOM35 = 57;
+        public const int ANIMATION_LOOPING_CUSTOM36 = 58;
+        public const int ANIMATION_LOOPING_CUSTOM37 = 59;
+        public const int ANIMATION_LOOPING_CUSTOM38 = 60;
+        public const int ANIMATION_LOOPING_CUSTOM39 = 61;
+        public const int ANIMATION_LOOPING_CUSTOM40 = 62;
+        public const int ANIMATION_LOOPING_CUSTOM41 = 63;
+        public const int ANIMATION_LOOPING_CUSTOM42 = 64;
+        public const int ANIMATION_LOOPING_CUSTOM43 = 65;
+        public const int ANIMATION_LOOPING_CUSTOM44 = 66;
+        public const int ANIMATION_LOOPING_CUSTOM45 = 67;
+        public const int ANIMATION_LOOPING_CUSTOM46 = 68;
+        public const int ANIMATION_LOOPING_CUSTOM47 = 69;
+        public const int ANIMATION_LOOPING_CUSTOM48 = 70;
+        public const int ANIMATION_LOOPING_CUSTOM49 = 71;
+        public const int ANIMATION_LOOPING_CUSTOM50 = 72;
+        public const int ANIMATION_LOOPING_CUSTOM51 = 73;
+        public const int ANIMATION_LOOPING_CUSTOM52 = 74;
+        public const int ANIMATION_LOOPING_CUSTOM53 = 75;
+        public const int ANIMATION_LOOPING_CUSTOM54 = 76;
+        public const int ANIMATION_LOOPING_CUSTOM55 = 77;
+        public const int ANIMATION_LOOPING_CUSTOM56 = 78;
+        public const int ANIMATION_LOOPING_CUSTOM57 = 79;
+        public const int ANIMATION_LOOPING_CUSTOM58 = 80;
+        public const int ANIMATION_LOOPING_CUSTOM59 = 81;
+        public const int ANIMATION_LOOPING_CUSTOM60 = 82;
+        public const int ANIMATION_LOOPING_CUSTOM61 = 83;
+        public const int ANIMATION_LOOPING_CUSTOM62 = 84;
+        public const int ANIMATION_LOOPING_CUSTOM63 = 85;
+        public const int ANIMATION_LOOPING_CUSTOM64 = 86;
+        public const int ANIMATION_LOOPING_CUSTOM65 = 87;
+        public const int ANIMATION_LOOPING_CUSTOM66 = 88;
+        public const int ANIMATION_LOOPING_CUSTOM67 = 89;
+        public const int ANIMATION_LOOPING_CUSTOM68 = 90;
+        public const int ANIMATION_LOOPING_CUSTOM69 = 91;
+        public const int ANIMATION_LOOPING_CUSTOM70 = 92;
+
+        // Fire and forget animation constants.
         public const int ANIMATION_FIREFORGET_HEAD_TURN_LEFT = 100;
         public const int ANIMATION_FIREFORGET_HEAD_TURN_RIGHT = 101;
         public const int ANIMATION_FIREFORGET_PAUSE_SCRATCH_HEAD = 102;
@@ -3286,21 +3526,25 @@ namespace NWN
         public const int ANIMATION_FIREFORGET_DODGE_SIDE = 114;
         public const int ANIMATION_FIREFORGET_DODGE_DUCK = 115;
         public const int ANIMATION_FIREFORGET_SPASM = 116;
-        //  Placeable animation constants
+
+        // Placeable animation constants
         public const int ANIMATION_PLACEABLE_ACTIVATE = 200;
         public const int ANIMATION_PLACEABLE_DEACTIVATE = 201;
         public const int ANIMATION_PLACEABLE_OPEN = 202;
         public const int ANIMATION_PLACEABLE_CLOSE = 203;
-        //  Door animation constants
+
+        // Door animation constants
         public const int ANIMATION_DOOR_CLOSE = 204;
         public const int ANIMATION_DOOR_OPEN1 = 205;
         public const int ANIMATION_DOOR_OPEN2 = 206;
         public const int ANIMATION_DOOR_DESTROY = 207;
+
         public const int TALENT_TYPE_SPELL = 0;
         public const int TALENT_TYPE_FEAT = 1;
         public const int TALENT_TYPE_SKILL = 2;
-        //  These must match the values in nwscreature.h and nwccreaturemenu.cpp
-        //  Cannot use the value -1 because that is used to start a conversation
+
+        // These must match the values in nwscreature.h and nwccreaturemenu.cpp
+        // Cannot use the value -1 because that is used to start a conversation
         public const int ASSOCIATE_COMMAND_STANDGROUND = -2;
         public const int ASSOCIATE_COMMAND_ATTACKNEAREST = -3;
         public const int ASSOCIATE_COMMAND_HEALMASTER = -4;
@@ -3323,14 +3567,16 @@ namespace NWN
         public const int ASSOCIATE_COMMAND_TOGGLECASTING = -21;
         public const int ASSOCIATE_COMMAND_TOGGLESTEALTH = -22;
         public const int ASSOCIATE_COMMAND_TOGGLESEARCH = -23;
-        //  These match the values in nwscreature.h
+
+        // These match the values in nwscreature.h
         public const int ASSOCIATE_TYPE_NONE = 0;
         public const int ASSOCIATE_TYPE_HENCHMAN = 1;
         public const int ASSOCIATE_TYPE_ANIMALCOMPANION = 2;
         public const int ASSOCIATE_TYPE_FAMILIAR = 3;
         public const int ASSOCIATE_TYPE_SUMMONED = 4;
         public const int ASSOCIATE_TYPE_DOMINATED = 5;
-        //  These must match the list in nwscreaturestats.cpp
+
+        // These must match the list in nwscreaturestats.cpp
         public const int TALENT_CATEGORY_HARMFUL_AREAEFFECT_DISCRIMINANT = 1;
         public const int TALENT_CATEGORY_HARMFUL_RANGED = 2;
         public const int TALENT_CATEGORY_HARMFUL_TOUCH = 3;
@@ -3353,10 +3599,13 @@ namespace NWN
         public const int TALENT_CATEGORY_BENEFICIAL_PROTECTION_POTION = 20;
         public const int TALENT_CATEGORY_BENEFICIAL_ENHANCEMENT_POTION = 21;
         public const int TALENT_CATEGORY_HARMFUL_MELEE = 22;
+
         public const int INVENTORY_DISTURB_TYPE_ADDED = 0;
         public const int INVENTORY_DISTURB_TYPE_REMOVED = 1;
         public const int INVENTORY_DISTURB_TYPE_STOLEN = 2;
+
         public const int GUI_PANEL_PLAYER_DEATH = 0;
+
         public const int VOICE_CHAT_ATTACK = 0;
         public const int VOICE_CHAT_BATTLECRY1 = 1;
         public const int VOICE_CHAT_BATTLECRY2 = 2;
@@ -3406,6 +3655,7 @@ namespace NWN
         public const int VOICE_CHAT_GOODIDEA = 46;
         public const int VOICE_CHAT_BADIDEA = 47;
         public const int VOICE_CHAT_THREATEN = 48;
+
         public const int POLYMORPH_TYPE_WEREWOLF = 0;
         public const int POLYMORPH_TYPE_WERERAT = 1;
         public const int POLYMORPH_TYPE_WERECAT = 2;
@@ -3479,15 +3729,18 @@ namespace NWN
         public const int POLYMORPH_TYPE_SPECTRE = 76;
         public const int POLYMORPH_TYPE_VAMPIRE_FEMALE = 77;
         public const int POLYMORPH_TYPE_NULL_HUMAN = 78;
+
         public const int INVISIBILITY_TYPE_NORMAL = 1;
         public const int INVISIBILITY_TYPE_DARKNESS = 2;
         public const int INVISIBILITY_TYPE_IMPROVED = 4;
+
         public const int CREATURE_SIZE_INVALID = 0;
         public const int CREATURE_SIZE_TINY = 1;
         public const int CREATURE_SIZE_SMALL = 2;
         public const int CREATURE_SIZE_MEDIUM = 3;
         public const int CREATURE_SIZE_LARGE = 4;
         public const int CREATURE_SIZE_HUGE = 5;
+
         public const int SPELL_SCHOOL_GENERAL = 0;
         public const int SPELL_SCHOOL_ABJURATION = 1;
         public const int SPELL_SCHOOL_CONJURATION = 2;
@@ -3497,6 +3750,7 @@ namespace NWN
         public const int SPELL_SCHOOL_ILLUSION = 6;
         public const int SPELL_SCHOOL_NECROMANCY = 7;
         public const int SPELL_SCHOOL_TRANSMUTATION = 8;
+
         public const int ANIMAL_COMPANION_CREATURE_TYPE_BADGER = 0;
         public const int ANIMAL_COMPANION_CREATURE_TYPE_WOLF = 1;
         public const int ANIMAL_COMPANION_CREATURE_TYPE_BEAR = 2;
@@ -3507,6 +3761,7 @@ namespace NWN
         public const int ANIMAL_COMPANION_CREATURE_TYPE_DIREWOLF = 7;
         public const int ANIMAL_COMPANION_CREATURE_TYPE_DIRERAT = 8;
         public const int ANIMAL_COMPANION_CREATURE_TYPE_NONE = 255;
+
         public const int FAMILIAR_CREATURE_TYPE_BAT = 0;
         public const int FAMILIAR_CREATURE_TYPE_CRAGCAT = 1;
         public const int FAMILIAR_CREATURE_TYPE_HELLHOUND = 2;
@@ -3519,28 +3774,34 @@ namespace NWN
         public const int FAMILIAR_CREATURE_TYPE_PSEUDO_DRAGON = 9;
         public const int FAMILIAR_CREATURE_TYPE_EYEBALL = 10;
         public const int FAMILIAR_CREATURE_TYPE_NONE = 255;
+
         public const int CAMERA_MODE_CHASE_CAMERA = 0;
         public const int CAMERA_MODE_TOP_DOWN = 1;
         public const int CAMERA_MODE_STIFF_CHASE_CAMERA = 2;
+
         public const int WEATHER_INVALID = -1;
         public const int WEATHER_CLEAR = 0;
         public const int WEATHER_RAIN = 1;
         public const int WEATHER_SNOW = 2;
         public const int WEATHER_USE_AREA_SETTINGS = -1;
+
         public const int REST_EVENTTYPE_REST_INVALID = 0;
         public const int REST_EVENTTYPE_REST_STARTED = 1;
         public const int REST_EVENTTYPE_REST_FINISHED = 2;
         public const int REST_EVENTTYPE_REST_CANCELLED = 3;
+
         public const int PROJECTILE_PATH_TYPE_DEFAULT = 0;
         public const int PROJECTILE_PATH_TYPE_HOMING = 1;
         public const int PROJECTILE_PATH_TYPE_BALLISTIC = 2;
         public const int PROJECTILE_PATH_TYPE_HIGH_BALLISTIC = 3;
         public const int PROJECTILE_PATH_TYPE_ACCELERATING = 4;
+
         public const int GAME_DIFFICULTY_VERY_EASY = 0;
         public const int GAME_DIFFICULTY_EASY = 1;
         public const int GAME_DIFFICULTY_NORMAL = 2;
         public const int GAME_DIFFICULTY_CORE_RULES = 3;
         public const int GAME_DIFFICULTY_DIFFICULT = 4;
+
         public const int TILE_MAIN_LIGHT_COLOR_BLACK = 0;
         public const int TILE_MAIN_LIGHT_COLOR_DIM_WHITE = 1;
         public const int TILE_MAIN_LIGHT_COLOR_WHITE = 2;
@@ -3573,6 +3834,7 @@ namespace NWN
         public const int TILE_MAIN_LIGHT_COLOR_DARK_ORANGE = 29;
         public const int TILE_MAIN_LIGHT_COLOR_PALE_ORANGE = 30;
         public const int TILE_MAIN_LIGHT_COLOR_ORANGE = 31;
+
         public const int TILE_SOURCE_LIGHT_COLOR_BLACK = 0;
         public const int TILE_SOURCE_LIGHT_COLOR_WHITE = 1;
         public const int TILE_SOURCE_LIGHT_COLOR_PALE_DARK_YELLOW = 2;
@@ -3589,6 +3851,7 @@ namespace NWN
         public const int TILE_SOURCE_LIGHT_COLOR_PALE_RED = 13;
         public const int TILE_SOURCE_LIGHT_COLOR_PALE_DARK_ORANGE = 14;
         public const int TILE_SOURCE_LIGHT_COLOR_PALE_ORANGE = 15;
+
         public const int PANEL_BUTTON_MAP = 0;
         public const int PANEL_BUTTON_INVENTORY = 1;
         public const int PANEL_BUTTON_JOURNAL = 2;
@@ -3597,6 +3860,7 @@ namespace NWN
         public const int PANEL_BUTTON_SPELLS = 5;
         public const int PANEL_BUTTON_REST = 6;
         public const int PANEL_BUTTON_PLAYER_VERSUS_PLAYER = 7;
+
         public const int ACTION_MOVETOPOINT = 0;
         public const int ACTION_PICKUPITEM = 1;
         public const int ACTION_DROPITEM = 2;
@@ -3626,7 +3890,9 @@ namespace NWN
         public const int ACTION_SMITEGOOD = 40;
         public const int ACTION_KIDAMAGE = 41;
         public const int ACTION_RANDOMWALK = 43;
+
         public const int ACTION_INVALID = 65535;
+
         public const int TRAP_BASE_TYPE_MINOR_SPIKE = 0;
         public const int TRAP_BASE_TYPE_AVERAGE_SPIKE = 1;
         public const int TRAP_BASE_TYPE_STRONG_SPIKE = 2;
@@ -3675,6 +3941,8 @@ namespace NWN
         public const int TRAP_BASE_TYPE_EPIC_FIRE = 45;
         public const int TRAP_BASE_TYPE_EPIC_FROST = 46;
         public const int TRAP_BASE_TYPE_EPIC_SONIC = 47;
+
+
         public const int TRACK_RURALDAY1 = 1;
         public const int TRACK_RURALDAY2 = 2;
         public const int TRACK_RURALNIGHT = 3;
@@ -3750,12 +4018,16 @@ namespace NWN
         public const int TRACK_HOTU_BATTLE_HELL = 73;
         public const int TRACK_HOTU_BATTLE_BOSS1 = 74;
         public const int TRACK_HOTU_BATTLE_BOSS2 = 75;
+
+
         public const int STEALTH_MODE_DISABLED = 0;
         public const int STEALTH_MODE_ACTIVATED = 1;
         public const int DETECT_MODE_PASSIVE = 0;
         public const int DETECT_MODE_ACTIVE = 1;
         public const int DEFENSIVE_CASTING_MODE_DISABLED = 0;
         public const int DEFENSIVE_CASTING_MODE_ACTIVATED = 1;
+
+
         public const int APPEARANCE_TYPE_INVALID = -1;
         public const int APPEARANCE_TYPE_ALLIP = 186;
         public const int APPEARANCE_TYPE_ARANEA = 157;
@@ -4161,6 +4433,7 @@ namespace NWN
         public const int APPEARANCE_TYPE_DROW_FEMALE_1 = 478;
         public const int APPEARANCE_TYPE_DROW_FEMALE_2 = 479;
         public const int APPEARANCE_TYPE_DROW_WARRIOR_3 = 480;
+
         public const int PHENOTYPE_NORMAL = 0;
         public const int PHENOTYPE_BIG = 2;
         public const int PHENOTYPE_CUSTOM1 = 3;
@@ -4181,6 +4454,7 @@ namespace NWN
         public const int PHENOTYPE_CUSTOM16 = 18;
         public const int PHENOTYPE_CUSTOM17 = 19;
         public const int PHENOTYPE_CUSTOM18 = 20;
+
         public const int CAMERA_TRANSITION_TYPE_SNAP = 0;
         public const int CAMERA_TRANSITION_TYPE_CRAWL = 2;
         public const int CAMERA_TRANSITION_TYPE_VERY_SLOW = 5;
@@ -4188,11 +4462,13 @@ namespace NWN
         public const int CAMERA_TRANSITION_TYPE_MEDIUM = 40;
         public const int CAMERA_TRANSITION_TYPE_FAST = 70;
         public const int CAMERA_TRANSITION_TYPE_VERY_FAST = 100;
+
         public const float FADE_SPEED_SLOWEST = 0.003f;
         public const float FADE_SPEED_SLOW = 0.005f;
         public const float FADE_SPEED_MEDIUM = 0.01f;
         public const float FADE_SPEED_FAST = 0.017f;
         public const float FADE_SPEED_FASTEST = 0.25f;
+
         public const int EVENT_HEARTBEAT = 1001;
         public const int EVENT_PERCEIVE = 1002;
         public const int EVENT_END_COMBAT_ROUND = 1003;
@@ -4201,6 +4477,7 @@ namespace NWN
         public const int EVENT_DAMAGED = 1006;
         public const int EVENT_DISTURBED = 1008;
         public const int EVENT_SPELL_CAST_AT = 1011;
+
         public const int AI_LEVEL_INVALID = -1;
         public const int AI_LEVEL_DEFAULT = -1;
         public const int AI_LEVEL_VERY_LOW = 0;
@@ -4208,16 +4485,22 @@ namespace NWN
         public const int AI_LEVEL_NORMAL = 2;
         public const int AI_LEVEL_HIGH = 3;
         public const int AI_LEVEL_VERY_HIGH = 4;
+
         public const int AREA_INVALID = -1;
         public const int AREA_NATURAL = 1;
         public const int AREA_ARTIFICIAL = 0;
         public const int AREA_ABOVEGROUND = 1;
         public const int AREA_UNDERGROUND = 0;
+
         public const int AREA_HEIGHT = 0;
         public const int AREA_WIDTH = 1;
+
         public const int PORTRAIT_INVALID = 65535;
+
         public const int USE_CREATURE_LEVEL = 0;
-        //  The following is all the item property constants...
+
+
+        // The following is all the item property constants...
         public const int IP_CONST_ABILITY_STR = 0;
         public const int IP_CONST_ABILITY_DEX = 1;
         public const int IP_CONST_ABILITY_CON = 2;
@@ -4518,6 +4801,7 @@ namespace NWN
         public const int IP_CONST_ONHIT_DURATION_25_PERCENT_3_ROUNDS = 2;
         public const int IP_CONST_ONHIT_DURATION_50_PERCENT_2_ROUNDS = 3;
         public const int IP_CONST_ONHIT_DURATION_75_PERCENT_1_ROUND = 4;
+
         public const int IP_CONST_ONHIT_CASTSPELL_ACID_FOG = 0;
         public const int IP_CONST_ONHIT_CASTSPELL_BESTOW_CURSE = 1;
         public const int IP_CONST_ONHIT_CASTSPELL_BLADE_BARRIER = 2;
@@ -4568,6 +4852,7 @@ namespace NWN
         public const int IP_CONST_ONHIT_CASTSPELL_POISON = 50;
         public const int IP_CONST_ONHIT_CASTSPELL_POWER_WORD_KILL = 51;
         public const int IP_CONST_ONHIT_CASTSPELL_POWER_WORD_STUN = 52;
+
         public const int IP_CONST_ONHIT_CASTSPELL_SCARE = 54;
         public const int IP_CONST_ONHIT_CASTSPELL_SEARING_LIGHT = 55;
         public const int IP_CONST_ONHIT_CASTSPELL_SILENCE = 56;
@@ -4576,6 +4861,7 @@ namespace NWN
         public const int IP_CONST_ONHIT_CASTSPELL_SLOW = 59;
         public const int IP_CONST_ONHIT_CASTSPELL_SOUND_BURST = 60;
         public const int IP_CONST_ONHIT_CASTSPELL_STINKING_CLOUD = 61;
+
         public const int IP_CONST_ONHIT_CASTSPELL_STORM_OF_VENGEANCE = 63;
         public const int IP_CONST_ONHIT_CASTSPELL_SUNBEAM = 64;
         public const int IP_CONST_ONHIT_CASTSPELL_VAMPIRIC_TOUCH = 65;
@@ -4584,6 +4870,7 @@ namespace NWN
         public const int IP_CONST_ONHIT_CASTSPELL_WEB = 68;
         public const int IP_CONST_ONHIT_CASTSPELL_WEIRD = 69;
         public const int IP_CONST_ONHIT_CASTSPELL_WORD_OF_FAITH = 70;
+
         public const int IP_CONST_ONHIT_CASTSPELL_CREEPING_DOOM = 72;
         public const int IP_CONST_ONHIT_CASTSPELL_DESTRUCTION = 73;
         public const int IP_CONST_ONHIT_CASTSPELL_HORRID_WILTING = 74;
@@ -4632,6 +4919,7 @@ namespace NWN
         public const int IP_CONST_ONHIT_CASTSPELL_SCINTILLATING_SPHERE = 117;
         public const int IP_CONST_ONHIT_CASTSPELL_UNDEATH_TO_DEATH = 118;
         public const int IP_CONST_ONHIT_CASTSPELL_STONEHOLD = 119;
+
         public const int IP_CONST_ONHIT_CASTSPELL_EVIL_BLIGHT = 121;
         public const int IP_CONST_ONHIT_CASTSPELL_ONHIT_TELEPORT = 122;
         public const int IP_CONST_ONHIT_CASTSPELL_ONHIT_SLAYRAKSHASA = 123;
@@ -4652,6 +4940,7 @@ namespace NWN
         public const int IP_CONST_ONHIT_CASTSPELL_KNOCKDOWN = 138;
         public const int IP_CONST_ONHIT_CASTSPELL_FREEZE = 139;
         public const int IP_CONST_ONHIT_CASTSPELL_COMBUST = 140;
+
         public const int IP_CONST_POISON_1D2_STRDAMAGE = 0;
         public const int IP_CONST_POISON_1D2_DEXDAMAGE = 1;
         public const int IP_CONST_POISON_1D2_CONDAMAGE = 2;
@@ -4736,6 +5025,7 @@ namespace NWN
         public const int IP_CONST_DAMAGEREDUCTION_18 = 17;
         public const int IP_CONST_DAMAGEREDUCTION_19 = 18;
         public const int IP_CONST_DAMAGEREDUCTION_20 = 19;
+
         public const int IP_CONST_IMMUNITYSPELL_ACID_FOG = 0;
         public const int IP_CONST_IMMUNITYSPELL_AID = 1;
         public const int IP_CONST_IMMUNITYSPELL_BARKSKIN = 2;
@@ -4852,8 +5142,7 @@ namespace NWN
         public const int IP_CONST_IMMUNITYSPELL_EVARDS_BLACK_TENTACLES = 185;
         public const int IP_CONST_IMMUNITYSPELL_LEGEND_LORE = 186;
         public const int IP_CONST_IMMUNITYSPELL_FIND_TRAPS = 187;
-        public const int IP_CONST_SPELLLEVEL_0 = 0;
-        //  hmm are these necessary?
+        public const int IP_CONST_SPELLLEVEL_0 = 0; // hmm are these necessary?
         public const int IP_CONST_SPELLLEVEL_1 = 1;
         public const int IP_CONST_SPELLLEVEL_2 = 2;
         public const int IP_CONST_SPELLLEVEL_3 = 3;
@@ -5317,6 +5606,7 @@ namespace NWN
         public const int IP_CONST_ARCANE_SPELL_FAILURE_PLUS_40_PERCENT = 17;
         public const int IP_CONST_ARCANE_SPELL_FAILURE_PLUS_45_PERCENT = 18;
         public const int IP_CONST_ARCANE_SPELL_FAILURE_PLUS_50_PERCENT = 19;
+
         public const int ACTION_MODE_DETECT = 0;
         public const int ACTION_MODE_STEALTH = 1;
         public const int ACTION_MODE_PARRY = 2;
@@ -5329,6 +5619,7 @@ namespace NWN
         public const int ACTION_MODE_IMPROVED_EXPERTISE = 9;
         public const int ACTION_MODE_DEFENSIVE_CAST = 10;
         public const int ACTION_MODE_DIRTY_FIGHTING = 11;
+
         public const int ITEM_VISUAL_ACID = 0;
         public const int ITEM_VISUAL_COLD = 1;
         public const int ITEM_VISUAL_ELECTRICAL = 2;
@@ -5336,16 +5627,19 @@ namespace NWN
         public const int ITEM_VISUAL_SONIC = 4;
         public const int ITEM_VISUAL_HOLY = 5;
         public const int ITEM_VISUAL_EVIL = 6;
-        //  these constants must match those in the skyboxes.2da
+
+        // these constants must match those in the skyboxes.2da
         public const int SKYBOX_NONE = 0;
         public const int SKYBOX_GRASS_CLEAR = 1;
         public const int SKYBOX_GRASS_STORM = 2;
         public const int SKYBOX_DESERT_CLEAR = 3;
         public const int SKYBOX_WINTER_CLEAR = 4;
         public const int SKYBOX_ICY = 5;
+
         public const int FOG_TYPE_ALL = 0;
         public const int FOG_TYPE_SUN = 1;
         public const int FOG_TYPE_MOON = 2;
+
         public const int FOG_COLOR_RED = 16711680;
         public const int FOG_COLOR_RED_DARK = 6684672;
         public const int FOG_COLOR_GREEN = 65280;
@@ -5363,7 +5657,8 @@ namespace NWN
         public const int FOG_COLOR_ORANGE_DARK = 13395456;
         public const int FOG_COLOR_BROWN = 10053120;
         public const int FOG_COLOR_BROWN_DARK = 6697728;
-        //  these constants must match those in the AmbientSound.2da
+
+        // these constants must match those in the AmbientSound.2da
         public const int AMBIENT_SOUND_NONE = 0;
         public const int AMBIENT_SOUND_MEN_WHISPER_INSIDE = 1;
         public const int AMBIENT_SOUND_WOMEN_WHISPER_INSIDE = 2;
@@ -5471,7 +5766,8 @@ namespace NWN
         public const int AMBIENT_SOUND_CAVE_EVIL_2_XP2 = 105;
         public const int AMBIENT_SOUND_CAVE_EVIL_3_XP2 = 106;
         public const int AMBIENT_SOUND_TAVERN_ROWDY = 107;
-        //  these constants must match those in the FootstepSounds.2da
+
+        // these constants must match those in the FootstepSounds.2da
         public const int FOOTSTEP_TYPE_INVALID = -1;
         public const int FOOTSTEP_TYPE_NORMAL = 0;
         public const int FOOTSTEP_TYPE_LARGE = 1;
@@ -5483,8 +5779,10 @@ namespace NWN
         public const int FOOTSTEP_TYPE_SPIDER = 7;
         public const int FOOTSTEP_TYPE_SKELETON = 8;
         public const int FOOTSTEP_TYPE_LEATHER_WING = 9;
+
         public const int FOOTSTEP_TYPE_FEATHER_WING = 10;
-        // int FOOTSTEP_TYPE_LIZARD                      = 11; // Was not ever used/fully implemented.
+
+        // int FOOTSTEP_TYPE_LIZARD = 11; // Was not ever used/fully implemented.
         public const int FOOTSTEP_TYPE_NONE = 12;
         public const int FOOTSTEP_TYPE_SEAGULL = 13;
         public const int FOOTSTEP_TYPE_SHARK = 14;
@@ -5492,7 +5790,8 @@ namespace NWN
         public const int FOOTSTEP_TYPE_WATER_LARGE = 16;
         public const int FOOTSTEP_TYPE_HORSE = 17;
         public const int FOOTSTEP_TYPE_DEFAULT = 65535;
-        //  these constants must match those in the WingModel.2da
+
+        // these constants must match those in the WingModel.2da
         public const int CREATURE_WING_TYPE_NONE = 0;
         public const int CREATURE_WING_TYPE_DEMON = 1;
         public const int CREATURE_WING_TYPE_ANGEL = 2;
@@ -5500,12 +5799,14 @@ namespace NWN
         public const int CREATURE_WING_TYPE_DRAGON = 4;
         public const int CREATURE_WING_TYPE_BUTTERFLY = 5;
         public const int CREATURE_WING_TYPE_BIRD = 6;
-        //  these constants must match those in the TailModel.2da
+
+        // these constants must match those in the TailModel.2da
         public const int CREATURE_TAIL_TYPE_NONE = 0;
         public const int CREATURE_TAIL_TYPE_LIZARD = 1;
         public const int CREATURE_TAIL_TYPE_BONE = 2;
         public const int CREATURE_TAIL_TYPE_DEVIL = 3;
-        //  these constants must match those in the CAPart.2da
+
+        // these constants must match those in the CAPart.2da
         public const int CREATURE_PART_RIGHT_FOOT = 0;
         public const int CREATURE_PART_LEFT_FOOT = 1;
         public const int CREATURE_PART_RIGHT_SHIN = 2;
@@ -5525,15 +5826,18 @@ namespace NWN
         public const int CREATURE_PART_RIGHT_HAND = 16;
         public const int CREATURE_PART_LEFT_HAND = 17;
         public const int CREATURE_PART_HEAD = 20;
+
         public const int CREATURE_MODEL_TYPE_NONE = 0;
         public const int CREATURE_MODEL_TYPE_SKIN = 1;
         public const int CREATURE_MODEL_TYPE_TATTOO = 2;
         public const int CREATURE_MODEL_TYPE_UNDEAD = 255;
+
         public const int COLOR_CHANNEL_SKIN = 0;
         public const int COLOR_CHANNEL_HAIR = 1;
         public const int COLOR_CHANNEL_TATTOO_1 = 2;
         public const int COLOR_CHANNEL_TATTOO_2 = 3;
-        //  The following resrefs must match those in the tileset's set file.
+
+        // The following resrefs must match those in the tileset's set file.
         public const string TILESET_RESREF_BEHOLDER_CAVES = "tib01";
         public const string TILESET_RESREF_CASTLE_INTERIOR = "tic01";
         public const string TILESET_RESREF_CITY_EXTERIOR = "tcn01";
@@ -5552,7 +5856,8 @@ namespace NWN
         public const string TILESET_RESREF_RURAL_WINTER = "tts01";
         public const string TILESET_RESREF_SEWERS = "tds01";
         public const string TILESET_RESREF_UNDERDARK = "ttu01";
-        //  These constants determine which name table to use when generating random names.
+
+        // These constants determine which name table to use when generating random names.
         public const int NAME_FIRST_GENERIC_MALE = -1;
         public const int NAME_ANIMAL = 0;
         public const int NAME_FAMILIAR = 1;
@@ -5577,6 +5882,7 @@ namespace NWN
         public const int NAME_FIRST_HUMAN_MALE = 20;
         public const int NAME_FIRST_HUMAN_FEMALE = 21;
         public const int NAME_LAST_HUMAN = 22;
+
         public const int EVENT_SCRIPT_MODULE_ON_HEARTBEAT = 3000;
         public const int EVENT_SCRIPT_MODULE_ON_USER_DEFINED_EVENT = 3001;
         public const int EVENT_SCRIPT_MODULE_ON_MODULE_LOAD = 3002;
@@ -5595,14 +5901,18 @@ namespace NWN
         public const int EVENT_SCRIPT_MODULE_ON_EQUIP_ITEM = 3015;
         public const int EVENT_SCRIPT_MODULE_ON_UNEQUIP_ITEM = 3016;
         public const int EVENT_SCRIPT_MODULE_ON_PLAYER_CHAT = 3017;
+        public const int EVENT_SCRIPT_MODULE_ON_PLAYER_TARGET = 3018;
+
         public const int EVENT_SCRIPT_AREA_ON_HEARTBEAT = 4000;
         public const int EVENT_SCRIPT_AREA_ON_USER_DEFINED_EVENT = 4001;
         public const int EVENT_SCRIPT_AREA_ON_ENTER = 4002;
         public const int EVENT_SCRIPT_AREA_ON_EXIT = 4003;
+
         public const int EVENT_SCRIPT_AREAOFEFFECT_ON_HEARTBEAT = 11000;
         public const int EVENT_SCRIPT_AREAOFEFFECT_ON_USER_DEFINED_EVENT = 11001;
         public const int EVENT_SCRIPT_AREAOFEFFECT_ON_OBJECT_ENTER = 11002;
         public const int EVENT_SCRIPT_AREAOFEFFECT_ON_OBJECT_EXIT = 11003;
+
         public const int EVENT_SCRIPT_CREATURE_ON_HEARTBEAT = 5000;
         public const int EVENT_SCRIPT_CREATURE_ON_NOTICE = 5001;
         public const int EVENT_SCRIPT_CREATURE_ON_SPELLCASTAT = 5002;
@@ -5616,6 +5926,7 @@ namespace NWN
         public const int EVENT_SCRIPT_CREATURE_ON_DEATH = 5010;
         public const int EVENT_SCRIPT_CREATURE_ON_USER_DEFINED_EVENT = 5011;
         public const int EVENT_SCRIPT_CREATURE_ON_BLOCKED_BY_DOOR = 5012;
+
         public const int EVENT_SCRIPT_TRIGGER_ON_HEARTBEAT = 7000;
         public const int EVENT_SCRIPT_TRIGGER_ON_OBJECT_ENTER = 7001;
         public const int EVENT_SCRIPT_TRIGGER_ON_OBJECT_EXIT = 7002;
@@ -5623,6 +5934,7 @@ namespace NWN
         public const int EVENT_SCRIPT_TRIGGER_ON_TRAPTRIGGERED = 7004;
         public const int EVENT_SCRIPT_TRIGGER_ON_DISARMED = 7005;
         public const int EVENT_SCRIPT_TRIGGER_ON_CLICKED = 7006;
+
         public const int EVENT_SCRIPT_PLACEABLE_ON_CLOSED = 9000;
         public const int EVENT_SCRIPT_PLACEABLE_ON_DAMAGED = 9001;
         public const int EVENT_SCRIPT_PLACEABLE_ON_DEATH = 9002;
@@ -5639,6 +5951,7 @@ namespace NWN
         public const int EVENT_SCRIPT_PLACEABLE_ON_USER_DEFINED_EVENT = 9013;
         public const int EVENT_SCRIPT_PLACEABLE_ON_DIALOGUE = 9014;
         public const int EVENT_SCRIPT_PLACEABLE_ON_LEFT_CLICK = 9015;
+
         public const int EVENT_SCRIPT_DOOR_ON_OPEN = 10000;
         public const int EVENT_SCRIPT_DOOR_ON_CLOSE = 10001;
         public const int EVENT_SCRIPT_DOOR_ON_DAMAGE = 10002;
@@ -5654,13 +5967,122 @@ namespace NWN
         public const int EVENT_SCRIPT_DOOR_ON_CLICKED = 10012;
         public const int EVENT_SCRIPT_DOOR_ON_DIALOGUE = 10013;
         public const int EVENT_SCRIPT_DOOR_ON_FAIL_TO_OPEN = 10014;
+
         public const int EVENT_SCRIPT_ENCOUNTER_ON_OBJECT_ENTER = 13000;
         public const int EVENT_SCRIPT_ENCOUNTER_ON_OBJECT_EXIT = 13001;
         public const int EVENT_SCRIPT_ENCOUNTER_ON_HEARTBEAT = 13002;
         public const int EVENT_SCRIPT_ENCOUNTER_ON_ENCOUNTER_EXHAUSTED = 13003;
         public const int EVENT_SCRIPT_ENCOUNTER_ON_USER_DEFINED_EVENT = 13004;
+
         public const int EVENT_SCRIPT_STORE_ON_OPEN = 14000;
         public const int EVENT_SCRIPT_STORE_ON_CLOSE = 14001;
+
+        public const int OBJECT_VISUAL_TRANSFORM_SCALE = 10;
+        public const int OBJECT_VISUAL_TRANSFORM_ROTATE_X = 21;
+        public const int OBJECT_VISUAL_TRANSFORM_ROTATE_Y = 22;
+        public const int OBJECT_VISUAL_TRANSFORM_ROTATE_Z = 23;
+        public const int OBJECT_VISUAL_TRANSFORM_TRANSLATE_X = 31;
+        public const int OBJECT_VISUAL_TRANSFORM_TRANSLATE_Y = 32;
+        public const int OBJECT_VISUAL_TRANSFORM_TRANSLATE_Z = 33;
+        public const int OBJECT_VISUAL_TRANSFORM_ANIMATION_SPEED = 40;
+
+        public const int VIBRATOR_MOTOR_ANY = 0;
+        public const int VIBRATOR_MOTOR_LEFT = 1;
+        public const int VIBRATOR_MOTOR_RIGHT = 2;
+
+        public const int SCREEN_ANCHOR_TOP_LEFT = 0;
+        public const int SCREEN_ANCHOR_TOP_RIGHT = 1;
+        public const int SCREEN_ANCHOR_BOTTOM_LEFT = 2;
+        public const int SCREEN_ANCHOR_BOTTOM_RIGHT = 3;
+        public const int SCREEN_ANCHOR_CENTER = 4;
+
+        public const int DOMAIN_AIR = 0;
+        public const int DOMAIN_ANIMAL = 1;
+        public const int DOMAIN_DEATH = 3;
+        public const int DOMAIN_DESTRUCTION = 4;
+        public const int DOMAIN_EARTH = 5;
+        public const int DOMAIN_EVIL = 6;
+        public const int DOMAIN_FIRE = 7;
+        public const int DOMAIN_GOOD = 8;
+        public const int DOMAIN_HEALING = 9;
+        public const int DOMAIN_KNOWLEDGE = 10;
+        public const int DOMAIN_MAGIC = 13;
+        public const int DOMAIN_PLANT = 14;
+        public const int DOMAIN_PROTECTION = 15;
+        public const int DOMAIN_STRENGTH = 16;
+        public const int DOMAIN_SUN = 17;
+        public const int DOMAIN_TRAVEL = 18;
+        public const int DOMAIN_TRICKERY = 19;
+        public const int DOMAIN_WAR = 20;
+        public const int DOMAIN_WATER = 21;
+
+        public const int MOUSECURSOR_DEFAULT = 1;
+        public const int MOUSECURSOR_DEFAULT_DOWN = 2;
+        public const int MOUSECURSOR_WALK = 3;
+        public const int MOUSECURSOR_WALK_DOWN = 4;
+        public const int MOUSECURSOR_NOWALK = 5;
+        public const int MOUSECURSOR_NOWALK_DOWN = 6;
+        public const int MOUSECURSOR_ATTACK = 7;
+        public const int MOUSECURSOR_ATTACK_DOWN = 8;
+        public const int MOUSECURSOR_NOATTACK = 9;
+        public const int MOUSECURSOR_NOATTACK_DOWN = 10;
+        public const int MOUSECURSOR_TALK = 11;
+        public const int MOUSECURSOR_TALK_DOWN = 12;
+        public const int MOUSECURSOR_NOTALK = 13;
+        public const int MOUSECURSOR_NOTALK_DOWN = 14;
+        public const int MOUSECURSOR_FOLLOW = 15;
+        public const int MOUSECURSOR_FOLLOW_DOWN = 16;
+        public const int MOUSECURSOR_EXAMINE = 17;
+        public const int MOUSECURSOR_EXAMINE_DOWN = 18;
+        public const int MOUSECURSOR_NOEXAMINE = 19;
+        public const int MOUSECURSOR_NOEXAMINE_DOWN = 20;
+        public const int MOUSECURSOR_TRANSITION = 21;
+        public const int MOUSECURSOR_TRANSITION_DOWN = 22;
+        public const int MOUSECURSOR_DOOR = 23;
+        public const int MOUSECURSOR_DOOR_DOWN = 24;
+        public const int MOUSECURSOR_USE = 25;
+        public const int MOUSECURSOR_USE_DOWN = 26;
+        public const int MOUSECURSOR_NOUSE = 27;
+        public const int MOUSECURSOR_NOUSE_DOWN = 28;
+        public const int MOUSECURSOR_MAGIC = 29;
+        public const int MOUSECURSOR_MAGIC_DOWN = 30;
+        public const int MOUSECURSOR_NOMAGIC = 31;
+        public const int MOUSECURSOR_NOMAGIC_DOWN = 32;
+        public const int MOUSECURSOR_DISARM = 33;
+        public const int MOUSECURSOR_DISARM_DOWN = 34;
+        public const int MOUSECURSOR_NODISARM = 35;
+        public const int MOUSECURSOR_NODISARM_DOWN = 36;
+        public const int MOUSECURSOR_ACTION = 37;
+        public const int MOUSECURSOR_ACTION_DOWN = 38;
+        public const int MOUSECURSOR_NOACTION = 39;
+        public const int MOUSECURSOR_NOACTION_DOWN = 40;
+        public const int MOUSECURSOR_LOCK = 41;
+        public const int MOUSECURSOR_LOCK_DOWN = 42;
+        public const int MOUSECURSOR_NOLOCK = 43;
+        public const int MOUSECURSOR_NOLOCK_DOWN = 44;
+        public const int MOUSECURSOR_PUSHPIN = 45;
+        public const int MOUSECURSOR_PUSHPIN_DOWN = 46;
+        public const int MOUSECURSOR_CREATE = 47;
+        public const int MOUSECURSOR_CREATE_DOWN = 48;
+        public const int MOUSECURSOR_NOCREATE = 49;
+        public const int MOUSECURSOR_NOCREATE_DOWN = 50;
+        public const int MOUSECURSOR_KILL = 51;
+        public const int MOUSECURSOR_KILL_DOWN = 52;
+        public const int MOUSECURSOR_NOKILL = 53;
+        public const int MOUSECURSOR_NOKILL_DOWN = 54;
+        public const int MOUSECURSOR_HEAL = 55;
+        public const int MOUSECURSOR_HEAL_DOWN = 56;
+        public const int MOUSECURSOR_NOHEAL = 57;
+        public const int MOUSECURSOR_NOHEAL_DOWN = 58;
+        public const int MOUSECURSOR_RUNARROW = 59;
+        public const int MOUSECURSOR_WALKARROW = 75;
+        public const int MOUSECURSOR_PICKUP = 91;
+        public const int MOUSECURSOR_PICKUP_DOWN = 92;
+        public const int MOUSECURSOR_CUSTOM_00 = 93;       // gui_mp_custom00u
+        public const int MOUSECURSOR_CUSTOM_00_DOWN = 94;  // gui_mp_custom00d
+        public const int MOUSECURSOR_CUSTOM_99 = 291;      // gui_mp_custom99u
+        public const int MOUSECURSOR_CUSTOM_99_DOWN = 292; // gui_mp_custom99d
+
         public const string sLanguage = "nwscript";
     }
 }

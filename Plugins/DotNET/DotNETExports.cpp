@@ -135,36 +135,6 @@ void DotNET::StackPushVector(Vector value)
     }
 }
 
-void DotNET::StackPushEffect(CGameEffect* value)
-{
-    LOG_WARNING("StackPushEffect is deprecated. Use StackPushGameDefinedStructure instead.");
-    StackPushGameDefinedStructure(0, value);
-}
-
-void DotNET::StackPushEvent(CScriptEvent* value)
-{
-    LOG_WARNING("StackPushEvent is deprecated. Use StackPushGameDefinedStructure instead.");
-    StackPushGameDefinedStructure(1, value);
-}
-
-void DotNET::StackPushLocation(CScriptLocation* value)
-{
-    LOG_WARNING("StackPushLocation is deprecated. Use StackPushGameDefinedStructure instead.");
-    StackPushGameDefinedStructure(2, value);
-}
-
-void DotNET::StackPushTalent(CScriptTalent* value)
-{
-    LOG_WARNING("StackPushTalent is deprecated. Use StackPushGameDefinedStructure instead.");
-    StackPushGameDefinedStructure(3, value);
-}
-
-void DotNET::StackPushItemProperty(CGameEffect* value)
-{
-    LOG_WARNING("StackPushItemProperty is deprecated. Use StackPushGameDefinedStructure instead.");
-    StackPushGameDefinedStructure(4, value);
-}
-
 void DotNET::StackPushGameDefinedStructure(int32_t structId, void* value)
 {
     auto vm = Globals::VirtualMachine();
@@ -263,36 +233,6 @@ Vector DotNET::StackPopVector()
     return value;
 }
 
-CGameEffect* DotNET::StackPopEffect()
-{
-    LOG_WARNING("StackPopEffect is deprecated. Use StackPopGameDefinedStructure instead.");
-    return reinterpret_cast<CGameEffect*>(StackPopGameDefinedStructure(0));
-}
-
-CScriptEvent* DotNET::StackPopEvent()
-{
-    LOG_WARNING("StackPopEvent is deprecated. Use StackPopGameDefinedStructure instead.");
-    return reinterpret_cast<CScriptEvent*>(StackPopGameDefinedStructure(1));
-}
-
-CScriptLocation* DotNET::StackPopLocation()
-{
-    LOG_WARNING("StackPopLocation is deprecated. Use StackPopGameDefinedStructure instead.");
-    return reinterpret_cast<CScriptLocation*>(StackPopGameDefinedStructure(2));
-}
-
-CScriptTalent* DotNET::StackPopTalent()
-{
-    LOG_WARNING("StackPopTalent is deprecated. Use StackPopGameDefinedStructure instead.");
-    return reinterpret_cast<CScriptTalent*>(StackPopGameDefinedStructure(3));
-}
-
-CGameEffect* DotNET::StackPopItemProperty()
-{
-    LOG_WARNING("StackPopItemProperty is deprecated. Use StackPopGameDefinedStructure instead.");
-    return reinterpret_cast<CGameEffect*>(StackPopGameDefinedStructure(4));
-}
-
 void* DotNET::StackPopGameDefinedStructure(int32_t structId)
 {
     auto vm = Globals::VirtualMachine();
@@ -308,61 +248,6 @@ void* DotNET::StackPopGameDefinedStructure(int32_t structId)
 
     LOG_DEBUG("Popped game defined structure %i at 0x%x.", structId, value);
     return value;
-}
-
-void DotNET::FreeEffect(void* ptr)
-{
-    LOG_WARNING("FreeEffect is deprecated. Use FreeGameDefinedStructure instead.");
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing effect at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(0, ptr);
-    }
-}
-
-void DotNET::FreeEvent(void* ptr)
-{
-    LOG_WARNING("FreeEvent is deprecated. Use FreeGameDefinedStructure instead.");
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing event at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(1, ptr);
-    }
-}
-
-void DotNET::FreeLocation(void* ptr)
-{
-    LOG_WARNING("FreeLocation is deprecated. Use FreeGameDefinedStructure instead.");
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing location at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(2, ptr);
-    }
-}
-
-void DotNET::FreeTalent(void* ptr)
-{
-    LOG_WARNING("FreeTalent is deprecated. Use FreeGameDefinedStructure instead.");
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing talent at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(3, ptr);
-    }
-}
-
-void DotNET::FreeItemProperty(void* ptr)
-{
-    LOG_WARNING("FreeItemProperty is deprecated. Use FreeGameDefinedStructure instead.");
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing item property at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(4, ptr);
-    }
 }
 
 void DotNET::FreeGameDefinedStructure(int32_t structId, void* ptr)
