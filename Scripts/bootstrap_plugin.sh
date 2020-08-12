@@ -34,10 +34,6 @@ cat > "Plugins/$1/README.md" <<-EOT
 @page $lower_case Readme
 @ingroup $lower_case
 
-Author: $(git config user.name)
-Contact: $(git config user.email)
-Version: 1
-
 ## Environment Variables
 
 | Variable Name            |  Type  | Default Value |
@@ -51,7 +47,6 @@ cat > "Plugins/$1/$1.hpp" <<-EOT
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "API/Types.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -61,7 +56,7 @@ namespace $1
 class $1 : public NWNXLib::Plugin
 {
 public:
-    $1(const Plugin::CreateParams& params);
+    $1(NWNXLib::Services::ProxyServiceList* services);
     virtual ~$1() {}
 };
 
@@ -78,30 +73,18 @@ using namespace NWNXLib::API;
 
 static $1::$1* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-  return new Plugin::Info
-  {
-    "$1",
-    "",
-    "",
-    "",
-    1,
-    false
-  };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new $1::$1(params);
+    g_plugin = new $1::$1(services);
     return g_plugin;
 }
+
 
 namespace $1
 {
 
-$1::$1(const Plugin::CreateParams& params)
-  : Plugin(params)
+$1::$1(Services::ProxyServiceList* services)
+  : Plugin(services)
 {
 #define REGISTER(func)              \\
     GetServices()->m_events->RegisterEvent(#func, \\
@@ -110,5 +93,5 @@ $1::$1(const Plugin::CreateParams& params)
 #undef REGISTER
 }
 
-} // namespace $1
+}
 EOT
