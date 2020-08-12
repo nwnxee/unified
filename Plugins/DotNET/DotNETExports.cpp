@@ -137,26 +137,31 @@ void DotNET::StackPushVector(Vector value)
 
 void DotNET::StackPushEffect(CGameEffect* value)
 {
+    LOG_WARNING("StackPushEffect is deprecated. Use StackPushGameDefinedStructure instead.");
     StackPushGameDefinedStructure(0, value);
 }
 
 void DotNET::StackPushEvent(CScriptEvent* value)
 {
+    LOG_WARNING("StackPushEvent is deprecated. Use StackPushGameDefinedStructure instead.");
     StackPushGameDefinedStructure(1, value);
 }
 
 void DotNET::StackPushLocation(CScriptLocation* value)
 {
+    LOG_WARNING("StackPushLocation is deprecated. Use StackPushGameDefinedStructure instead.");
     StackPushGameDefinedStructure(2, value);
 }
 
 void DotNET::StackPushTalent(CScriptTalent* value)
 {
+    LOG_WARNING("StackPushTalent is deprecated. Use StackPushGameDefinedStructure instead.");
     StackPushGameDefinedStructure(3, value);
 }
 
 void DotNET::StackPushItemProperty(CGameEffect* value)
 {
+    LOG_WARNING("StackPushItemProperty is deprecated. Use StackPushGameDefinedStructure instead.");
     StackPushGameDefinedStructure(4, value);
 }
 
@@ -260,26 +265,31 @@ Vector DotNET::StackPopVector()
 
 CGameEffect* DotNET::StackPopEffect()
 {
+    LOG_WARNING("StackPopEffect is deprecated. Use StackPopGameDefinedStructure instead.");
     return reinterpret_cast<CGameEffect*>(StackPopGameDefinedStructure(0));
 }
 
 CScriptEvent* DotNET::StackPopEvent()
 {
+    LOG_WARNING("StackPopEvent is deprecated. Use StackPopGameDefinedStructure instead.");
     return reinterpret_cast<CScriptEvent*>(StackPopGameDefinedStructure(1));
 }
 
 CScriptLocation* DotNET::StackPopLocation()
 {
+    LOG_WARNING("StackPopLocation is deprecated. Use StackPopGameDefinedStructure instead.");
     return reinterpret_cast<CScriptLocation*>(StackPopGameDefinedStructure(2));
 }
 
 CScriptTalent* DotNET::StackPopTalent()
 {
+    LOG_WARNING("StackPopTalent is deprecated. Use StackPopGameDefinedStructure instead.");
     return reinterpret_cast<CScriptTalent*>(StackPopGameDefinedStructure(3));
 }
 
 CGameEffect* DotNET::StackPopItemProperty()
 {
+    LOG_WARNING("StackPopItemProperty is deprecated. Use StackPopGameDefinedStructure instead.");
     return reinterpret_cast<CGameEffect*>(StackPopGameDefinedStructure(4));
 }
 
@@ -302,6 +312,7 @@ void* DotNET::StackPopGameDefinedStructure(int32_t structId)
 
 void DotNET::FreeEffect(void* ptr)
 {
+    LOG_WARNING("FreeEffect is deprecated. Use FreeGameDefinedStructure instead.");
     if (ptr)
     {
         auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
@@ -312,6 +323,7 @@ void DotNET::FreeEffect(void* ptr)
 
 void DotNET::FreeEvent(void* ptr)
 {
+    LOG_WARNING("FreeEvent is deprecated. Use FreeGameDefinedStructure instead.");
     if (ptr)
     {
         auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
@@ -322,6 +334,7 @@ void DotNET::FreeEvent(void* ptr)
 
 void DotNET::FreeLocation(void* ptr)
 {
+    LOG_WARNING("FreeLocation is deprecated. Use FreeGameDefinedStructure instead.");
     if (ptr)
     {
         auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
@@ -332,6 +345,7 @@ void DotNET::FreeLocation(void* ptr)
 
 void DotNET::FreeTalent(void* ptr)
 {
+    LOG_WARNING("FreeTalent is deprecated. Use FreeGameDefinedStructure instead.");
     if (ptr)
     {
         auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
@@ -342,6 +356,7 @@ void DotNET::FreeTalent(void* ptr)
 
 void DotNET::FreeItemProperty(void* ptr)
 {
+    LOG_WARNING("FreeItemProperty is deprecated. Use FreeGameDefinedStructure instead.");
     if (ptr)
     {
         auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
