@@ -53,6 +53,7 @@ private:
     ArgumentStack SetCustomToken                    (ArgumentStack&& args);
     ArgumentStack SetCreatureNameOverride           (ArgumentStack&& args);
     ArgumentStack FloatingTextStringOnCreature      (ArgumentStack&& args);
+    ArgumentStack ToggleDM                          (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

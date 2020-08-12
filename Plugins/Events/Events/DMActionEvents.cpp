@@ -2,6 +2,8 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CGameObjectArray.hpp"
+#include "API/CNetLayer.hpp"
+#include "API/CNetLayerPlayerInfo.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWSPlayer.hpp"
 #include "API/CNWSMessage.hpp"
@@ -608,6 +610,42 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
             }
 
             retVal = HandleGiveEvent(thisPtr, pPlayer, nMinor, bGroup, event, alignmentType);
+            break;
+        }
+        case Constants::MessageDungeonMasterMinor::Login:
+        {
+            event += "PLAYERDM_LOGIN";
+            int32_t offset = 0;
+            auto length = Utils::PeekMessage<int32_t>(thisPtr, offset);
+            offset += sizeof(length);
+
+            std::string password;
+            password.reserve(length+1);
+            password.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), length);
+            password[length] = '\0';
+
+            auto PushAndSignalPlayerDMLoginEvent = [&](const std::string& ev) -> bool {
+                Events::PushEventData("PASSWORD", password);
+                return Events::SignalEvent(ev, oidDM);
+            };
+
+            if (PushAndSignalPlayerDMLoginEvent(event + "_BEFORE"))
+            {
+                retVal = s_HandlePlayerToServerDungeonMasterMessageHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor, bGroup);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignalPlayerDMLoginEvent(event + "_AFTER");
+
+            break;
+        }
+        case Constants::MessageDungeonMasterMinor::Logout:
+        {
+            event += "PLAYERDM_LOGOUT";
+            DefaultSignalEvent();
             break;
         }
         default:

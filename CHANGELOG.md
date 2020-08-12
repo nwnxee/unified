@@ -8,13 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 
 ### Added
-N/A
+- Events: added skippable PlayerDM Login/Logout events to DMActionEvents
 
 ##### New Plugins
 N/A
 
 ##### New NWScript Functions
-N/A
+- Player: ToggleDM()
 
 ### Changed
 N/A
@@ -37,7 +37,6 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.14
 - Events: added TogglePause to InputEvents
 - Tweaks: added `NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG` to prevent the unlimited potions/scrolls bug.
 - Tweaks: added `NWNX_TWEAKS_UNHARDCODE_SHIELDS` to change shield AC and create new shield-like items using the BaseAC column in baseitems.2da.
-- Utils: added SetItemActivator to set the value returned by GetItemActivator
 
 ##### New NWScript Functions
 - Creature: {Get|Set}CriticalMultiplier{Modifier|Override}() and {Get|Set}CriticalRange{Modifier|Override}()
@@ -54,6 +53,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.14
 - Player: SetCreatureNameOverride()
 - Player: FloatingTextStringOnCreature();
 - Util: CreateDoor()
+- Util: SetItemActivator()
 
 ### Changed
 - Object: SetPosition() now has a toggle(default true) to update subareas if oObject is a creature, this means any traps/triggers at the new position will fire their events.
