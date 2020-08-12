@@ -2,6 +2,9 @@
 
 # NWNX:EE (build 8193.14 - v80 - DEVELOPMENT build)
 
+This branch contains the latest development build of NWN. Please use the  [nwnx-stable](https://github.com/nwnxee/unified/tree/nwnx-stable) branch to get the latest stable NWN build (8193.13).
+
+
 - Latest release: [build8193.14](https://github.com/nwnxee/unified/releases/tag/build8193.14) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819314)
 - Docker tag: `nwnxee/unified:build8193.14`
 - nwserver-linux md5: `ecd524d473774e9413c232419c18a213`
