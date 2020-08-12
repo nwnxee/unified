@@ -55,7 +55,6 @@ Object::Object(Services::ProxyServiceList* services)
 
     REGISTER(GetLocalVariableCount);
     REGISTER(GetLocalVariable);
-    REGISTER(StringToObject);
     REGISTER(SetPosition);
     REGISTER(GetCurrentHitPoints);
     REGISTER(SetCurrentHitPoints);
@@ -173,26 +172,6 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
     return Services::Events::Arguments(type, key);
 }
 
-// NOTE: StringToObject does not receive an object argument.
-ArgumentStack Object::StringToObject(ArgumentStack&& args)
-{
-    ObjectID retVal;
-
-    const auto id = Services::Events::ExtractArgument<std::string>(args);
-
-    if (id.empty())
-        retVal = Constants::OBJECT_INVALID;
-    else
-    {
-        retVal = static_cast<ObjectID>(stoul(id, nullptr, 16));
-
-        if (!Globals::AppManager()->m_pServerExoApp->GetGameObject(retVal))
-            retVal = Constants::OBJECT_INVALID;
-    }
-
-    return Services::Events::Arguments(retVal);
-}
-
 ArgumentStack Object::SetPosition(ArgumentStack&& args)
 {
     if (auto *pObject = object(args))
@@ -201,17 +180,7 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
         pos.z = Services::Events::ExtractArgument<float>(args);
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
-        int32_t bUpdateSubareas;
-
-        // TODO: Remove this try/catch at some point
-        try
-        {
-            bUpdateSubareas = Services::Events::ExtractArgument<int32_t>(args);
-        }
-        catch (const std::runtime_error& e)
-        {
-            bUpdateSubareas = true;
-        }
+        auto bUpdateSubareas = !!Services::Events::ExtractArgument<int32_t>(args);
 
         pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
 

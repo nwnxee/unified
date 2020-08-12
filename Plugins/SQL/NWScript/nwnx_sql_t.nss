@@ -83,7 +83,7 @@ void main()
             NWNX_Tests_Report("NWNX_SQL", "ReadString", s == "FourtyTwooo");
 
             string sObjId = NWNX_SQL_ReadDataInActiveRow(3); // In base 10
-            object o2 = NWNX_Object_StringToObject(IntToHexString(StringToInt(sObjId)));
+            object o2 = StringToObject(IntToHexString(StringToInt(sObjId)));
             NWNX_Tests_Report("NWNX_SQL", "ReadObjectId", o == o2);
 
             object o3 = NWNX_SQL_ReadFullObjectInActiveRow(4, GetArea(o), v.x, v.y, v.z);

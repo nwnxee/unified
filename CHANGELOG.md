@@ -20,10 +20,12 @@ N/A
 N/A
 
 ### Deprecated
-N/A
+- Object: StringToObject();
 
 ### Removed
-N/A
+- Creature: {Get|Set}{ClericDomain|WizardSpecialization}()
+- Creature: SetAbilityScore()
+- Object: {Get|Set|Delete}Persistent{Int|String|Float}()
 
 ### Fixed
 N/A

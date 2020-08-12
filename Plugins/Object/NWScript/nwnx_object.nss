@@ -70,6 +70,7 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 /// @param id The object id.
 /// @return An object from the provided object ID.
 /// @remark This is the counterpart to ObjectToString.
+/// @deprecated Use the basegame StringToObject() function. This will be removed in a future NWNX release.
 object NWNX_Object_StringToObject(string id);
 
 /// @brief Set oObject's position.
@@ -207,69 +208,6 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 /// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
 void NWNX_Object_Export(string sFileName, object oObject);
 
-/// @brief Get oObject's persistent integer variable sVarName.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @return The value or 0 on error.
-/// @deprecated Please use NWNX_Object_GetInt()
-int NWNX_Object_GetPersistentInt(object oObject, string sVarName);
-
-/// @brief Set oObject's persistent integer variable sVarName to nValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @param nValue The integer value to to set
-/// @deprecated Please use NWNX_Object_SetInt()
-void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue);
-
-/// @brief Delete oObject's persistent integer variable sVarName.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @deprecated Please use NWNX_Object_DeleteInt()
-void NWNX_Object_DeletePersistentInt(object oObject, string sVarName);
-
-/// @brief Get oObject's persistent string variable sVarName.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @return The value or "" on error.
-/// @deprecated Please use NWNX_Object_GetString()
-string NWNX_Object_GetPersistentString(object oObject, string sVarName);
-
-/// @brief Set oObject's persistent string variable sVarName to sValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @param sValue The string value to to set
-/// @deprecated Please use NWNX_Object_SetString()
-void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue);
-
-/// @brief Delete oObject's persistent string variable sVarName.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @deprecated Please use NWNX_Object_DeleteString()
-void NWNX_Object_DeletePersistentString(object oObject, string sVarName);
-
-/// @brief Get oObject's persistent float variable sVarName.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @return The value or 0.0f on error.
-/// @deprecated Please use NWNX_Object_GetFloat()
-float NWNX_Object_GetPersistentFloat(object oObject, string sVarName);
-
-/// @brief Set oObject's persistent float variable sVarName to fValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @param fValue The float value to to set
-/// @deprecated Please use NWNX_Object_SetFloat()
-void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue);
-
-/// @brief Delete oObject's persistent float variable sVarName.
-/// @param oObject The object to set the variable on.
-/// @param sVarName The variable name.
-/// @deprecated Please use NWNX_Object_DeleteFloat()
-void NWNX_Object_DeletePersistentFloat(object oObject, string sVarName);
-
 /// @brief Get oObject's integer variable sVarName.
 /// @param oObject The object to get the variable from.
 /// @param sVarName The variable name.
@@ -404,11 +342,9 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 
 object NWNX_Object_StringToObject(string id)
 {
-    string sFunc = "StringToObject";
+    WriteTimestampedLogEntry("WARNING: NWNX_Object_StringToObject() is deprecated, please use the basegame's StringToObject()");
 
-    NWNX_PushArgumentString(NWNX_Object, sFunc, id);
-    NWNX_CallFunction(NWNX_Object, sFunc);
-    return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
+    return StringToObject(id);
 }
 
 void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE)
@@ -647,69 +583,6 @@ void NWNX_Object_Export(string sFileName, object oObject)
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sFileName);
     NWNX_CallFunction(NWNX_Object, sFunc);
-}
-
-int NWNX_Object_GetPersistentInt(object oObject, string sVarName)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_GetPersistentInt() is deprecated, please use NWNX_Object_GetInt()");
-
-    return NWNX_Object_GetInt(oObject, sVarName);
-}
-
-void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_SetPersistentInt() is deprecated, please use NWNX_Object_SetInt()");
-
-    NWNX_Object_SetInt(oObject, sVarName, nValue, TRUE);
-}
-
-void NWNX_Object_DeletePersistentInt(object oObject, string sVarName)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_DeletePersistentInt() is deprecated, please use NWNX_Object_DeleteInt()");
-
-    NWNX_Object_DeleteInt(oObject, sVarName);
-}
-
-string NWNX_Object_GetPersistentString(object oObject, string sVarName)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_GetPersistentString() is deprecated, please use NWNX_Object_GetString()");
-
-    return NWNX_Object_GetString(oObject, sVarName);
-}
-
-void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_SetPersistentString() is deprecated, please use NWNX_Object_SetString()");
-
-    NWNX_Object_SetString(oObject, sVarName, sValue, TRUE);
-}
-
-void NWNX_Object_DeletePersistentString(object oObject, string sVarName)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_DeletePersistentString() is deprecated, please use NWNX_Object_DeleteString()");
-
-    NWNX_Object_DeleteString(oObject, sVarName);
-}
-
-float NWNX_Object_GetPersistentFloat(object oObject, string sVarName)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_GetPersistentFloat() is deprecated, please use NWNX_Object_GetFloat()");
-
-    return NWNX_Object_GetFloat(oObject, sVarName);
-}
-
-void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_SetPersistentFloat() is deprecated, please use NWNX_Object_SetFloat()");
-
-    NWNX_Object_SetFloat(oObject, sVarName, fValue, TRUE);
-}
-
-void NWNX_Object_DeletePersistentFloat(object oObject, string sVarName)
-{
-    WriteTimestampedLogEntry("WARNING: NWNX_Object_DeletePersistentFloat() is deprecated, please use NWNX_Object_DeleteFloat()");
-
-    NWNX_Object_DeleteFloat(oObject, sVarName);
 }
 
 int NWNX_Object_GetInt(object oObject, string sVarName)

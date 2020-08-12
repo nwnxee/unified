@@ -196,13 +196,6 @@ void NWNX_Creature_SetBaseAC(object creature, int ac);
 /// @return The base AC.
 int NWNX_Creature_GetBaseAC(object creature);
 
-/// @brief Sets the ability score of the creature to the value.
-/// @param creature The creature object.
-/// @param ability The ability constant.
-/// @param value The value to set.
-/// @deprecated Use NWNX_Creature_SetRawAbilityScore(). This will be removed in future NWNX releases.
-void NWNX_Creature_SetAbilityScore(object creature, int ability, int value);
-
 /// @brief Sets the ability score of the creature to the provided value.
 /// @note Does not apply racial bonuses/penalties.
 /// @param creature The creature object.
@@ -317,18 +310,6 @@ void NWNX_Creature_ClearMemorisedKnownSpells(object creature, int class, int spe
 /// @param index The index. Index bounds: 0 <= index < NWNX_Creature_GetMemorisedSpellCountByLevel().
 void NWNX_Creature_ClearMemorisedSpell(object creature, int class, int level, int index);
 
-/// @brief Gets whether or not creature has a specialist school of wizardry.
-/// @param creature The creature object.
-/// @return TRUE if the wizard specializes.
-/// @deprecated Use GetSpecialization(). This will be removed in future NWNX releases.
-int NWNX_Creature_GetWizardSpecialization(object creature);
-
-/// @brief Sets creature's wizard specialist school.
-/// @param creature The creature object.
-/// @param school The wizard school constant.
-/// @deprecated Use NWNX_Creature_SetSpecialization(). This will be removed in future NWNX releases.
-void NWNX_Creature_SetWizardSpecialization(object creature, int school);
-
 /// @brief Gets the maximum hit points for creature for level.
 /// @param creature The creature object.
 /// @param level The level.
@@ -385,19 +366,6 @@ void NWNX_Creature_SetAlignmentGoodEvil(object creature, int value);
 /// @param creature The creature object.
 /// @param value The value to set.
 void NWNX_Creature_SetAlignmentLawChaos(object creature, int value);
-
-/// @brief Gets one of creature's cleric domains.
-/// @param creature The creature object.
-/// @param index The first or second domain.
-/// @deprecated Use GetDomain(). This will be removed in future NWNX releases.
-int NWNX_Creature_GetClericDomain(object creature, int index);
-
-/// @brief Sets one of creature's cleric domains.
-/// @param creature The creature object.
-/// @param index The first or second domain.
-/// @param domain The domain constant to set.
-/// @deprecated Use NWNX_Creature_SetDomain(). This will be removed in future NWNX releases.
-void NWNX_Creature_SetClericDomain(object creature, int index, int domain);
 
 /// @brief Get the soundset index for creature.
 /// @param creature The creature object.
@@ -981,12 +949,6 @@ int NWNX_Creature_GetBaseAC(object creature)
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetAbilityScore(object creature, int ability, int value)
-{
-    WriteTimestampedLogEntry("NWNX_Creature: SetAbilityScore() is deprecated. Use native NWNX_Creature_SetRawAbilityScore() instead");
-    NWNX_Creature_SetRawAbilityScore(creature, ability, value);
-}
-
 void NWNX_Creature_SetRawAbilityScore(object creature, int ability, int value)
 {
     string sFunc = "SetRawAbilityScore";
@@ -1267,30 +1229,6 @@ void NWNX_Creature_SetAlignmentLawChaos(object creature, int value)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Creature, sFunc);
-}
-
-int NWNX_Creature_GetClericDomain(object creature, int index)
-{
-    WriteTimestampedLogEntry("NWNX_Creature: GetClericDomain() is deprecated. Please use the basegame's GetDomain() instead");
-    return GetDomain(creature, index, CLASS_TYPE_CLERIC);
-}
-
-void NWNX_Creature_SetClericDomain(object creature, int index, int domain)
-{
-    WriteTimestampedLogEntry("NWNX_Creature: SetClericDomain() is deprecated. Please use NWNX_Creature_SetDomain() instead");
-    NWNX_Creature_SetDomain(creature, CLASS_TYPE_CLERIC, index, domain);
-}
-
-int NWNX_Creature_GetWizardSpecialization(object creature)
-{
-    WriteTimestampedLogEntry("NWNX_Creature: GetWizardSpecialization() is deprecated. Please use the basegame's GetSpecialization() instead");
-    return GetSpecialization(creature, CLASS_TYPE_WIZARD);
-}
-
-void NWNX_Creature_SetWizardSpecialization(object creature, int school)
-{
-    WriteTimestampedLogEntry("NWNX_Creature: SetWizardSpecialization() is deprecated. Please use NWNX_Creature_SetSpecialization() instead");
-    NWNX_Creature_SetSpecialization(creature, CLASS_TYPE_WIZARD, school);
 }
 
 int NWNX_Creature_GetSoundset(object creature)
