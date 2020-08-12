@@ -59,6 +59,7 @@ var group__object =
     [ "NWNX_Object_PeekUUID", "group__object.html#gadaee4243a13c21ff4b802f40998fd385", null ],
     [ "NWNX_Object_GetDoorHasVisibleModel", "group__object.html#ga759532f6c96a533c55d226baf62de2dd", null ],
     [ "NWNX_Object_GetIsDestroyable", "group__object.html#ga78ec105f4a5438d13687f98c294ce228", null ],
+    [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_STRING", "group__object.html#gaa71beb1c2fc7685215d8f80ef9a1541f", null ],

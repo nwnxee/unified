@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['changelog_3053',['Changelog',['../md_CHANGELOG.html',1,'']]],
-  ['core_20functionality_3054',['Core Functionality',['../group__nwnx.html',1,'']]]
+  ['changelog_3055',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['core_20functionality_3056',['Core Functionality',['../group__nwnx.html',1,'']]]
 ];
