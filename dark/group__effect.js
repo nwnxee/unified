@@ -40,6 +40,8 @@ var group__effect =
       [ "oParam1", "structNWNX__EffectUnpacked.html#ae212b9e53edeadb67a0d56cbaee86993", null ],
       [ "oParam2", "structNWNX__EffectUnpacked.html#aaa72768f0647c1057c9417f82cccfd23", null ],
       [ "oParam3", "structNWNX__EffectUnpacked.html#a099a70008ff66f2a79cd34902104d688", null ],
+      [ "vParam0", "structNWNX__EffectUnpacked.html#a2a662e0b9af4a7c7aff93d810cb87f54", null ],
+      [ "vParam1", "structNWNX__EffectUnpacked.html#a02dd1d1841933c337c9ee948e6264d4f", null ],
       [ "sTag", "structNWNX__EffectUnpacked.html#ab019b2443ab59a615e79429ba68dd193", null ]
     ] ],
     [ "NWNX_Effect_UnpackEffect", "group__effect.html#ga10a9c2babd8ee53cf383342585b239e7", null ],
