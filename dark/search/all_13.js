@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['unique_1507',['unique',['../structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601',1,'NWNX_Encounter_CreatureListEntry']]],
-  ['unlink_1508',['UNLINK',['../nwnx__redis__short_8nss.html#aa1fa7cbf23cda9c2431f3c44a2eb3175',1,'nwnx_redis_short.nss']]],
-  ['unwatch_1509',['UNWATCH',['../nwnx__redis__short_8nss.html#a3a728ec56f956f7c8dc04740fb06ea53',1,'nwnx_redis_short.nss']]],
-  ['util_1510',['Util',['../group__util.html',1,'']]]
+  ['unique_1508',['unique',['../structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601',1,'NWNX_Encounter_CreatureListEntry']]],
+  ['unlink_1509',['UNLINK',['../nwnx__redis__short_8nss.html#aa1fa7cbf23cda9c2431f3c44a2eb3175',1,'nwnx_redis_short.nss']]],
+  ['unwatch_1510',['UNWATCH',['../nwnx__redis__short_8nss.html#a3a728ec56f956f7c8dc04740fb06ea53',1,'nwnx_redis_short.nss']]],
+  ['util_1511',['Util',['../group__util.html',1,'']]]
 ];
