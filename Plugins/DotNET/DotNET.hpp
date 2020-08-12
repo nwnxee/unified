@@ -45,6 +45,7 @@ private:
     static void StackPushLocation(CScriptLocation* value);
     static void StackPushTalent(CScriptTalent* value);
     static void StackPushItemProperty(CGameEffect* value);
+    static void StackPushGameDefinedStructure(int32_t structId, void* value);
     static int32_t StackPopInteger();
     static float StackPopFloat();
     static const char* StackPopString();
@@ -55,11 +56,13 @@ private:
     static CScriptLocation* StackPopLocation();
     static CScriptTalent* StackPopTalent();
     static CGameEffect* StackPopItemProperty();
+    static void* StackPopGameDefinedStructure(int32_t structId);
     static void FreeEffect(void* ptr);
     static void FreeEvent(void* ptr);
     static void FreeLocation(void* ptr);
     static void FreeTalent(void* ptr);
     static void FreeItemProperty(void* ptr);
+    static void FreeGameDefinedStructure(int32_t structId, void* ptr);
     static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId);
     static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId);
     static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId);

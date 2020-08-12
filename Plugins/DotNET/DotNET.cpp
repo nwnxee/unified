@@ -230,6 +230,9 @@ DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
         args.push_back((void*)&nwnxPopEffect);
         args.push_back((void*)&nwnxPopItemProperty);
         args.push_back((void*)&nwnxCallFunction);
+        args.push_back((void*)&StackPushGameDefinedStructure);
+        args.push_back((void*)&StackPopGameDefinedStructure);
+        args.push_back((void*)&FreeGameDefinedStructure);
     rc = bootstrap(args.data(), args.size()*sizeof(void*));
     if (rc != 0)
         LOG_FATAL("Failed to execute bootstrap function; rc=0x%x", rc);
