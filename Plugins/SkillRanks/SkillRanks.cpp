@@ -554,7 +554,7 @@ char SkillRanks::GetSkillRankHook(
 {
     if (nSkill >= Globals::Rules()->m_nNumSkills)
         return 0;
-    if (thisPtr->m_bIsDM)
+    if (thisPtr->GetIsDM())
         return 127;
 
     int32_t baseRank = thisPtr->m_lstSkillRanks[nSkill];

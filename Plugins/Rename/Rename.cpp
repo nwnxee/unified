@@ -154,11 +154,11 @@ void Rename::SetOrRestorePlayerName(bool before, CNWSPlayer *targetPlayer, CNWSP
 
     // There's a moment when a player is just logging in that pStats doesn't exist yet.
     if (targetCreature == nullptr || targetCreature->m_pStats == nullptr || (!g_plugin->m_RenameAllowDM &&
-                                                                             (targetCreature->m_pStats->m_bIsDM ||
+                                                                             (targetCreature->m_pStats->GetIsDM() ||
                                                                               targetCreature->m_nAssociateType == 7 ||
                                                                               targetCreature->m_nAssociateType == 8)) ||
         (observerCreature != nullptr && (observerCreature->m_pStats == nullptr || (!g_plugin->m_RenameAllowDM &&
-                                                                                   (observerCreature->m_pStats->m_bIsDM ||
+                                                                                   (observerCreature->m_pStats->GetIsDM() ||
                                                                                     observerCreature->m_nAssociateType == 7 ||
                                                                                     observerCreature->m_nAssociateType == 8)))))
     {

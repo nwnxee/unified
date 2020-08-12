@@ -40,7 +40,7 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
 
     Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", [hooker]() {
         s_UseItemHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorj>
+            <API::Functions::_ZN12CNWSCreature7UseItemEjhhj6Vectorji>
             (&UseItemHook);
     });
 
@@ -138,7 +138,8 @@ int32_t ItemEvents::UseItemHook(
     uint8_t subPropIndex,
     ObjectID target,
     Vector targetPosition,
-    ObjectID area)
+    ObjectID area,
+    int32_t bUseCharges)
 {
     int32_t retVal;
     std::string result;
@@ -151,7 +152,8 @@ int32_t ItemEvents::UseItemHook(
         Events::PushEventData("TARGET_POSITION_X", std::to_string(targetPosition.x));
         Events::PushEventData("TARGET_POSITION_Y", std::to_string(targetPosition.y));
         Events::PushEventData("TARGET_POSITION_Z", std::to_string(targetPosition.z));
-    return Events::SignalEvent(ev, thisPtr->m_idSelf, &result);
+        Events::PushEventData("USE_CHARGES",       std::to_string(bUseCharges));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf, &result);
     };
 
     if (PushAndSignal("NWNX_ON_USE_ITEM_BEFORE"))

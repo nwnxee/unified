@@ -375,7 +375,8 @@ ArgumentStack Player::ShowVisualEffect(ArgumentStack&& args)
         auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
         if (pMessage)
         {
-            pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos);
+            ObjectVisualTransformData ovtd;
+            pMessage->SendServerToPlayerArea_VisualEffect(pPlayer, effectId, pos, ovtd);
         }
     }
     return Services::Events::Arguments();

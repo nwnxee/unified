@@ -74,6 +74,7 @@ _______________________________________
     TARGET_POSITION_X       | float  | |
     TARGET_POSITION_Y       | float  | |
     TARGET_POSITION_Z       | float  | |
+    USE_CHARGES             | int  | |
 
     @note You can set the event result to "0" (send feedback to the client that the item cannot be used, default)
     or "1" to suppress that feedback.

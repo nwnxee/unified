@@ -77,3 +77,12 @@ struct CExoString
 NWN_API_EPILOGUE(CExoString)
 #endif
 
+namespace std {
+template <> struct hash<CExoString>
+{
+    std::size_t operator()(const CExoString& k) const
+    {
+        return std::hash<std::string>{}(k.CStr());
+    }
+};
+}

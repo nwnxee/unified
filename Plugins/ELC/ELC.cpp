@@ -365,7 +365,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     }
 
     // Check for DM character file
-    if (pCreatureStats->m_bIsDMFile)
+    if (pCreatureStats->m_bIsDMCharacterFile)
     {
         if (auto strrefFailure = HandleValidationFailure(
                 ValidationFailureType::Character,

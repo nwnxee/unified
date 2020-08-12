@@ -22,8 +22,6 @@ struct CScriptLocation
     Vector m_vOrientation;
     OBJECT_ID m_oArea;
 
-    CScriptLocation();
-    ~CScriptLocation();
     void CopyScriptLocation(CScriptLocation * pLocation);
     BOOL SaveLocation(CResGFF * pRes, CResStruct * pStruct);
     BOOL LoadLocation(CResGFF * pRes, CResStruct * pStruct);

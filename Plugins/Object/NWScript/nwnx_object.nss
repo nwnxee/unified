@@ -9,6 +9,7 @@ const string NWNX_Object = "NWNX_Object"; ///< @private
 /// @anchor object_localvar_types
 /// @name Local Variable Types
 /// @{
+const int NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN  = 0;
 const int NWNX_OBJECT_LOCALVAR_TYPE_INT      = 1;
 const int NWNX_OBJECT_LOCALVAR_TYPE_FLOAT    = 2;
 const int NWNX_OBJECT_LOCALVAR_TYPE_STRING   = 3;
@@ -54,6 +55,14 @@ int NWNX_Object_GetLocalVariableCount(object obj);
 /// @param obj The object.
 /// @param index The index.
 /// @note Index bounds: 0 >= index < NWNX_Object_GetLocalVariableCount().
+/// @note As of build 8193.14 local variables no longer have strict ordering.
+///       this means that any change to the variables can result in drastically
+///       different order when iterating.
+/// @note As of build 8193.14, this function takes O(n) time, where n is the number
+///       of locals on the object. Individual variable access with GetLocalXxx()
+///       is now O(1) though.
+/// @note As of build 8193.14, this function may return variable type UNKNOWN
+///       if the value is the default (0/0.0/""/OBJECT_INVALID) for the type.
 /// @return An NWNX_Object_LocalVariable struct.
 struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int index);
 

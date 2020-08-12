@@ -61,9 +61,7 @@ static T StackPopGameDefinedStructure(int id)
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
     CVirtualMachineScript* script = new CVirtualMachineScript();
-    script->m_nCodeSize = 0;
     script->m_pCode = NULL;
-    script->m_nLoadedFromSave = 0;
     script->m_nSecondaryInstructPtr = 0;
     script->m_nInstructPtr = 0;
     script->m_nStackSize = 0;
