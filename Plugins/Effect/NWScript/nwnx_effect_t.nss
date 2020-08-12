@@ -47,6 +47,8 @@ void printeff(struct NWNX_EffectUnpacked n)
     s += "oParam1 = " + ObjectToString(n.oParam1) + "\n";
     s += "oParam2 = " + ObjectToString(n.oParam2) + "\n";
     s += "oParam3 = " + ObjectToString(n.oParam3) + "\n";
+    s += "vParam0 = {" + FloatToString(n.vParam0.x) + ", " + FloatToString(n.vParam0.y) + ", " + FloatToString(n.vParam0.z) + "}\n";
+    s += "vParam1 = {" + FloatToString(n.vParam1.x) + ", " + FloatToString(n.vParam1.y) + ", " + FloatToString(n.vParam1.z) + "}\n";
 
     s += "sTag = " + "'" + n.sTag + "'" + "\n";
 

@@ -50,6 +50,8 @@ struct NWNX_EffectUnpacked
     object oParam1; ///< @todo Describe
     object oParam2; ///< @todo Describe
     object oParam3; ///< @todo Describe
+    vector vParam0; ///< @todo Describe
+    vector vParam1; ///< @todo Describe
 
     string sTag; ///< @todo Describe
 };
@@ -94,6 +96,14 @@ struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
     struct NWNX_EffectUnpacked n;
     n.sTag = NWNX_GetReturnValueString(NWNX_Effect, sFunc);
 
+    float fZ = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    float fY = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    float fX = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    n.vParam1 = Vector(fX, fY, fZ);
+    fZ = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    fY = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    fX = NWNX_GetReturnValueFloat(NWNX_Effect, sFunc);
+    n.vParam0 = Vector(fX, fY, fZ);
     n.oParam3 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
     n.oParam2 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
     n.oParam1 = NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
@@ -183,6 +193,14 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam1);
     NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam2);
     NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam3);
+
+    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.x);
+    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.y);
+    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.z);
+
+    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.x);
+    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.y);
+    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.z);
 
     NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sTag);
 

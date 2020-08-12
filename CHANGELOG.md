@@ -17,7 +17,7 @@ N/A
 - Player: ToggleDM()
 
 ### Changed
-N/A
+- Effect: (Un)PackEffect now supports vector params
 
 ### Deprecated
 N/A
