@@ -1199,6 +1199,9 @@ namespace MessageDungeonMasterMinor
         Difficulty                       = 0x11,
         ViewInventory                    = 0x12,
         SpawnTrapOnObject                = 0x13,
+        Login                            = 0x14,
+        Logout                           = 0x15,
+        LoginState                       = 0x16,
         Heal                             = 0x20,
         Kill                             = 0x21,
         Goto                             = 0x22,
@@ -1267,6 +1270,9 @@ namespace MessageDungeonMasterMinor
             case Difficulty:             return "Difficulty";
             case ViewInventory:          return "ViewInventory";
             case SpawnTrapOnObject:      return "SpawnTrapOnObject";
+            case Login:                  return "Login";
+            case Logout:                 return "Logout";
+            case LoginState:             return "LoginState";
             case Heal:                   return "Heal";
             case Kill:                   return "Kill";
             case Goto:                   return "Goto";

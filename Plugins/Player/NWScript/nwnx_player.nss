@@ -309,6 +309,12 @@ void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, strin
 /// @param sText The text to display.
 void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText);
 
+/// @brief Toggle oPlayer's PlayerDM status.
+/// @note This function does nothing for actual DMClient DMs.
+/// @param oPlayer The player.
+/// @param bIsDM TRUE to toggle dm mode on, FALSE for off.
+void NWNX_Player_ToggleDM(object oPlayer, int bIsDM);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -766,6 +772,16 @@ void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, 
 
     NWNX_PushArgumentString(NWNX_Player, sFunc, sText);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oCreature);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_ToggleDM(object oPlayer, int bIsDM)
+{
+    string sFunc = "ToggleDM";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, bIsDM);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
