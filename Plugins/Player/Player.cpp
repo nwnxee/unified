@@ -1435,6 +1435,12 @@ ArgumentStack Player::ToggleDM(ArgumentStack&& args)
 
         if (auto *pPlayerInfo = pNetLayer->GetPlayerInfo(pPlayer->m_nPlayerID))
         {
+            if (!pPlayerInfo->SatisfiesBuild(8193, 14))
+            {
+                LOG_WARNING("ToggleDM: Target player's client does not support PlayerDM functionality");
+                return Services::Events::Arguments();
+            }
+
             if (pPlayerInfo->m_bGameMasterPrivileges && !pPlayerInfo->m_bGameMasterIsPlayerLogin)
             {
                 LOG_WARNING("ToggleDM: Called on a DMClient DM");
