@@ -310,7 +310,7 @@ void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, strin
 void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText);
 
 /// @brief Toggle oPlayer's PlayerDM status.
-/// @note This function does nothing for actual DMClient DMs.
+/// @note This function does nothing for actual DMClient DMs or players with a client version < 8193.14
 /// @param oPlayer The player.
 /// @param bIsDM TRUE to toggle dm mode on, FALSE for off.
 void NWNX_Player_ToggleDM(object oPlayer, int bIsDM);
