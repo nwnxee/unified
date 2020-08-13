@@ -32,6 +32,7 @@
 #include "Events/UUIDEvents.hpp"
 #include "Events/ResourceEvents.hpp"
 #include "Events/QuickbarEvents.hpp"
+#include "Events/DebugEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -121,6 +122,7 @@ Events::Events(Services::ProxyServiceList* services)
     m_uuidEvents        = std::make_unique<UUIDEvents>(hooker);
     m_resourceEvents    = std::make_unique<ResourceEvents>(GetServices()->m_tasks.get());
     m_quickbarEvents    = std::make_unique<QuickbarEvents>(hooker);
+    m_debugEvents       = std::make_unique<DebugEvents>(hooker);
 }
 
 Events::~Events()
