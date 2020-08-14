@@ -315,6 +315,12 @@ void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, 
 /// @param bIsDM TRUE to toggle dm mode on, FALSE for off.
 void NWNX_Player_ToggleDM(object oPlayer, int bIsDM);
 
+/// @brief Override the mouse cursor of oObject for oPlayer only
+/// @param oPlayer The player object.
+/// @param oObject The object.
+/// @param nCursor The cursor, one of MOUSECURSOR_*. -1 to clear the override.
+void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, int nCursor);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -782,6 +788,17 @@ void NWNX_Player_ToggleDM(object oPlayer, int bIsDM)
     string sFunc = "ToggleDM";
 
     NWNX_PushArgumentInt(NWNX_Player, sFunc, bIsDM);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, int nCursor)
+{
+    string sFunc = "SetObjectMouseCursorOverride";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nCursor);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
