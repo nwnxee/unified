@@ -40,6 +40,7 @@ var nwnx__player_8nss =
     [ "NWNX_Player_FloatingTextStringOnCreature", "group__player.html#ga2ae474cf0bc8bfc8310738f9c89dd2e1", null ],
     [ "NWNX_Player_ToggleDM", "group__player.html#gaaacb3c57cd5fd2c4d7e23cf39aab4fe1", null ],
     [ "NWNX_Player_SetObjectMouseCursorOverride", "group__player.html#ga5c409a9ebdfd0c9d78b5cacb438e890d", null ],
+    [ "NWNX_Player_SetObjectHiliteColorOverride", "group__player.html#ga3ec05eeabc9672622304bc2beceb2473", null ],
     [ "NWNX_Player_INTERNAL_StopGuiTimingBar", "nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4", null ],
     [ "NWNX_Player", "group__player.html#gacd1c1162e2432e9e61eea99322364c13", null ],
     [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],

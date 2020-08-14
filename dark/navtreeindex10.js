@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"nwnx__weapon_8nss_source.html":[4,0,2,41,0,0],
+"nwnx__webhook_8nss.html":[4,0,2,42,0,0],
 "nwnx__webhook_8nss_source.html":[4,0,2,42,0,0],
 "nwnx__webhook__rch_8nss.html":[4,0,2,42,0,1],
 "nwnx__webhook__rch_8nss.html#ad2b8a8163359a3d236d704a29d454103":[4,0,2,42,0,1,0],

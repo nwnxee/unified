@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c":[4,0,2,26,0,2,1],
+"nwnx__redis__ps_8nss_source.html":[4,0,2,26,0,2],
 "nwnx__redis__short_8nss.html":[4,0,2,26,0,3],
 "nwnx__redis__short_8nss.html#a02c9479d34b11b3a3f30a0bc085b7e17":[4,0,2,26,0,3,62],
 "nwnx__redis__short_8nss.html#a0345d498ec3c04bcf6fc66da3e849eac":[4,0,2,26,0,3,58],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "nwnx__util_8nss_source.html":[4,0,2,39,0,0],
 "nwnx__visibility_8nss.html":[4,0,2,40,0,0],
 "nwnx__visibility_8nss_source.html":[4,0,2,40,0,0],
-"nwnx__weapon_8nss.html":[4,0,2,41,0,0],
-"nwnx__weapon_8nss_source.html":[4,0,2,41,0,0],
-"nwnx__webhook_8nss.html":[4,0,2,42,0,0]
+"nwnx__weapon_8nss.html":[4,0,2,41,0,0]
 };
