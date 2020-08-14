@@ -16,6 +16,7 @@ N/A
 
 ##### New NWScript Functions
 - Player: ToggleDM()
+- Player: SetObjectMouseCursorOverride()
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params

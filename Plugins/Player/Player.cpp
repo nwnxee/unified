@@ -94,6 +94,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(SetCreatureNameOverride);
     REGISTER(FloatingTextStringOnCreature);
     REGISTER(ToggleDM);
+    REGISTER(SetObjectMouseCursorOverride);
 
 #undef REGISTER
 
@@ -1467,6 +1468,66 @@ ArgumentStack Player::ToggleDM(ArgumentStack&& args)
         }
     }
 
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
+{
+    static bool bSetObjectMouseCursorOverrideHook;
+
+    if (!bSetObjectMouseCursorOverrideHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
+                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
+                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+                {
+                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    {
+                        static std::optional<int32_t> cursorId;
+                        static int32_t swapCursorId;
+
+                        if (before)
+                        {
+                            cursorId = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate,
+                                "OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+                            if (cursorId)
+                            {
+                                swapCursorId = *cursorId;
+                                std::swap(swapCursorId, pObject->m_nMouseCursor);
+                            }
+                        }
+                        else
+                        {
+                            if (cursorId)
+                            {
+                                std::swap(swapCursorId, pObject->m_nMouseCursor);
+                            }
+                        }
+                    }
+                });
+
+        bSetObjectMouseCursorOverrideHook = true;
+    }
+
+    if (auto *pPlayer = player(args))
+    {
+        auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto cursorId = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        {
+            if (cursorId < 0)
+            {
+                GetServices()->m_perObjectStorage->Remove(pObject->m_idSelf, "OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+            }
+            else
+            {
+                GetServices()->m_perObjectStorage->Set(pObject->m_idSelf, "OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), cursorId);
+            }
+        }
+    }
     return Services::Events::Arguments();
 }
 
