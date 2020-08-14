@@ -55,6 +55,7 @@ private:
     ArgumentStack FloatingTextStringOnCreature      (ArgumentStack&& args);
     ArgumentStack ToggleDM                          (ArgumentStack&& args);
     ArgumentStack SetObjectMouseCursorOverride      (ArgumentStack&& args);
+    ArgumentStack SetObjectHiliteColorOverride      (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 
