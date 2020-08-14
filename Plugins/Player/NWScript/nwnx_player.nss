@@ -321,6 +321,12 @@ void NWNX_Player_ToggleDM(object oPlayer, int bIsDM);
 /// @param nCursor The cursor, one of MOUSECURSOR_*. -1 to clear the override.
 void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, int nCursor);
 
+/// @brief Override the hilite color of oObject for oPlayer only
+/// @param oPlayer The player object.
+/// @param oObject The object.
+/// @param nColor The color in 0xRRGGBB format, -1 to clear the override.
+void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, int nColor);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -798,6 +804,17 @@ void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, in
     string sFunc = "SetObjectMouseCursorOverride";
 
     NWNX_PushArgumentInt(NWNX_Player, sFunc, nCursor);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, int nColor)
+{
+    string sFunc = "SetObjectHiliteColorOverride";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nColor);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 

@@ -95,6 +95,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(FloatingTextStringOnCreature);
     REGISTER(ToggleDM);
     REGISTER(SetObjectMouseCursorOverride);
+    REGISTER(SetObjectHiliteColorOverride);
 
 #undef REGISTER
 
@@ -1478,8 +1479,7 @@ ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
     if (!bSetObjectMouseCursorOverrideHook)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
-                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*,
-                    CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
@@ -1525,6 +1525,70 @@ ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
             else
             {
                 GetServices()->m_perObjectStorage->Set(pObject->m_idSelf, "OBJCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), cursorId);
+            }
+        }
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
+{
+    static bool bSetObjectHiliteColorHook;
+
+    if (!bSetObjectHiliteColorHook)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>(
+                +[](bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, ObjectID oidObjectToUpdate) -> void
+                {
+                    if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
+                    {
+                        static std::optional<int32_t> hiliteColor;
+                        static Vector swapHiliteColor;
+
+                        if (before)
+                        {
+                            hiliteColor = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObjectToUpdate,
+                                "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+
+                            if (hiliteColor)
+                            {
+                                float r = (float)((*hiliteColor >> 16) & 0xFF) / 255.0f;
+                                float g = (float)((*hiliteColor >> 8) & 0xFF) / 255.0f;
+                                float b = (float)(*hiliteColor & 0xFF) / 255.0f;
+
+                                swapHiliteColor = {r, g, b};
+                                std::swap(swapHiliteColor, pObject->m_vHiliteColor);
+                            }
+                        }
+                        else
+                        {
+                            if (hiliteColor)
+                            {
+                                std::swap(swapHiliteColor, pObject->m_vHiliteColor);
+                            }
+                        }
+                    }
+                });
+
+        bSetObjectHiliteColorHook = true;
+    }
+
+    if (auto *pPlayer = player(args))
+    {
+        auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
+          ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
+        auto hiliteColor = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(hiliteColor <= 0xFFFFFF);
+
+        if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidTarget)))
+        {
+            if (hiliteColor < 0)
+            {
+                GetServices()->m_perObjectStorage->Remove(pObject->m_idSelf, "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
+            }
+            else
+            {
+                GetServices()->m_perObjectStorage->Set(pObject->m_idSelf, "OBJHCO_" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject), hiliteColor);
             }
         }
     }
