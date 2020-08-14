@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 
 ### Added
 - Events: added skippable PlayerDM Login/Logout events to DMActionEvents
+- Events: added skippable RunScript and RunScriptChunk events to DebugEvents
 
 ##### New Plugins
 N/A

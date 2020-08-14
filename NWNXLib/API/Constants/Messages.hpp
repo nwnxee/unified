@@ -699,9 +699,10 @@ namespace MessageCheatMinor
         ComputeSafeLocation                      = 0x1a,
         EnableScriptDebugger                     = 0x1b,
         ToggleHitDieDebugging                    = 0x1c,
+        RunScriptChunk                           = 0x1d,
     };
     constexpr int32_t MIN   = 1;
-    constexpr int32_t MAX   = 0x1c;
+    constexpr int32_t MAX   = 0x1d;
 
     constexpr const char* ToString(const unsigned value)
     {
@@ -736,6 +737,7 @@ namespace MessageCheatMinor
             "ComputeSafeLocation",
             "EnableScriptDebugger",
             "ToggleHitDieDebugging",
+            "RunScriptChunk",
         };
 
         return (value > MAX) ? "(invalid)" : TYPE_STRINGS[value];
