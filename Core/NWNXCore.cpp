@@ -324,35 +324,68 @@ void NWNXCore::InitialSetupPlugins()
     }
 }
 
-void NWNXCore::InitialSetupResourceDirectory()
+void NWNXCore::InitialSetupResourceDirectories()
 {
-    auto path = m_coreServices->m_config->Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
-    auto cleanDirectory = m_coreServices->m_config->Get<bool>("CLEAN_UP_NWNX_RESOURCE_DIRECTORY", false);
-    auto priority = m_coreServices->m_config->Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
+    auto nwnxResDirPath = m_coreServices->m_config->Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
+    auto nwnxResDirPriority = m_coreServices->m_config->Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
 
-    m_services->m_tasks->QueueOnMainThread(
-        [path, cleanDirectory, priority]
+    std::unordered_map<std::string, std::pair<std::string, int32_t>> resourceDirectories;
+    resourceDirectories.emplace("NWNX", std::make_pair(nwnxResDirPath, nwnxResDirPriority));
+
+    if (auto customResmanDefinition = m_coreServices->m_config->Get<std::string>("CUSTOM_RESMAN_DEFINITION"))
+    {
+        std::string crdPath = *customResmanDefinition;
+        FILE* file = std::fopen(crdPath.c_str(), "r");
+
+        if (file)
+        {
+            LOG_INFO("Custom Resman Definition File: %s", crdPath);
+
+            char line[640];
+            char alias[64];
+            char path[512];
+            int32_t priority;
+
+            while (std::fgets(line, 640, file))
+            {
+                if (sscanf(line, "%s %s %i", alias, path, &priority) == 3)
+                {
+                    resourceDirectories.try_emplace(alias, std::make_pair(path, priority));
+                }
+                else
+                {
+                    std::string errorLine = std::string(line);
+                    LOG_WARNING("Invalid Custom Resman Definition Line: %s", Utils::trim(errorLine));
+                }
+            }
+
+            std::fclose(file);
+        }
+        else
+            LOG_ERROR("Failed to open Custom Resman Definition File: %s", crdPath);
+    }
+
+    m_services->m_tasks->QueueOnMainThread([resourceDirectories]
         {
             if (g_CoreShuttingDown)
                 return;
 
-            CExoString sAlias = CExoString("NWNX:");
-            CExoString sPath = CExoString(path);
-
-            LOG_INFO("Setting up '%s' resource directory with path: %s", sAlias, sPath);
-
-            Globals::ExoBase()->m_pcExoAliasList->Add(sAlias, sPath);
-
-            if (!Globals::ExoResMan()->CreateDirectory(sAlias))
+            for (const auto& resDir : resourceDirectories)
             {
-                if (cleanDirectory)
-                {
-                    LOG_INFO("Cleaning up '%s' resource directory", sAlias);
-                    Globals::ExoResMan()->CleanDirectory(sAlias, true, true);
-                }
-            }
+                CExoString alias = CExoString(resDir.first + ":");
+                CExoString path = CExoString(resDir.second.first);
 
-            Globals::ExoResMan()->AddResourceDirectory(sAlias, priority, true);
+                if (Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(alias).IsEmpty())
+                {
+                    LOG_INFO("Setting up Resource Directory: %s%s (Priority: %i)", alias, path, resDir.second.second);
+
+                    Globals::ExoBase()->m_pcExoAliasList->Add(alias, path);
+                    Globals::ExoResMan()->CreateDirectory(alias);
+                    Globals::ExoResMan()->AddResourceDirectory(alias, resDir.second.second, true);
+                }
+                else
+                    LOG_WARNING("Resource Directory with alias '%s' already exists. Please use nwn.ini to redefine base game resource directories.", alias);
+            }
         });
 }
 
@@ -568,7 +601,7 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
         {
             g_core->InitialSetupHooks();
             g_core->InitialSetupPlugins();
-            g_core->InitialSetupResourceDirectory();
+            g_core->InitialSetupResourceDirectories();
             g_core->InitialSetupCommands();
         }
         catch (const std::runtime_error& ex)
