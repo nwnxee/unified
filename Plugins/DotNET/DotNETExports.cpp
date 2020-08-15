@@ -22,42 +22,6 @@ using namespace NWNXLib::API;
 
 namespace DotNET {
 
-template <typename T>
-static int StackPushGameDefinedStructure(int id, T value)
-{
-    auto vm = Globals::VirtualMachine();
-    LOG_DEBUG("Pushing game defined structure %i at 0x%x.", id, value);
-    ASSERT(vm->m_nRecursionLevel >= 0);
-
-    T gameStruct = reinterpret_cast<T>(value);
-    auto ret = vm->StackPushEngineStructure(id, gameStruct);
-    if (!ret)
-    {
-        LOG_WARNING("Failed to push game defined structure %i at 0x%x - recursion level %i.",
-            id, value, vm->m_nRecursionLevel);
-    }
-    return ret;
-}
-
-template <typename T>
-static T StackPopGameDefinedStructure(int id)
-{
-    auto vm = Globals::VirtualMachine();
-    ASSERT(vm->m_nRecursionLevel >= 0);
-
-    void* value;
-    if (!vm->StackPopEngineStructure(id, &value))
-    {
-        LOG_WARNING("Failed to pop game defined structure %i - recursion level %i.",
-            id, vm->m_nRecursionLevel);
-        return nullptr;
-    }
-
-    LOG_DEBUG("Popped game defined structure %i at 0x%x.", id, value);
-    return reinterpret_cast<T>(value);
-}
-
-
 static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 {
     CVirtualMachineScript* script = new CVirtualMachineScript();
@@ -73,9 +37,6 @@ static CVirtualMachineScript* CreateScriptForClosure(uint64_t eventId)
 
     return script;
 }
-
-
-
 
 void DotNET::CallBuiltIn(int32_t id)
 {
@@ -174,29 +135,20 @@ void DotNET::StackPushVector(Vector value)
     }
 }
 
-void DotNET::StackPushEffect(CGameEffect* value)
+void DotNET::StackPushGameDefinedStructure(int32_t structId, void* value)
 {
-    PushedCount += StackPushGameDefinedStructure(0, value);
-}
+    auto vm = Globals::VirtualMachine();
+    LOG_DEBUG("Pushing game defined structure %i at 0x%x.", structId, value);
+    ASSERT(vm->m_nRecursionLevel >= 0);
 
-void DotNET::StackPushEvent(CScriptEvent* value)
-{
-    PushedCount += StackPushGameDefinedStructure(1, value);
-}
+    auto ret = vm->StackPushEngineStructure(structId, value);
+    if (!ret)
+    {
+        LOG_WARNING("Failed to push game defined structure %i at 0x%x - recursion level %i.",
+            structId, value, vm->m_nRecursionLevel);
+    }
 
-void DotNET::StackPushLocation(CScriptLocation* value)
-{
-    PushedCount += StackPushGameDefinedStructure(2, value);
-}
-
-void DotNET::StackPushTalent(CScriptTalent* value)
-{
-    PushedCount += StackPushGameDefinedStructure(3, value);
-}
-
-void DotNET::StackPushItemProperty(CGameEffect* value)
-{
-    PushedCount += StackPushGameDefinedStructure(4, value);
+    PushedCount += ret;
 }
 
 int32_t DotNET::StackPopInteger()
@@ -281,78 +233,30 @@ Vector DotNET::StackPopVector()
     return value;
 }
 
-CGameEffect* DotNET::StackPopEffect()
+void* DotNET::StackPopGameDefinedStructure(int32_t structId)
 {
-    return StackPopGameDefinedStructure<CGameEffect*>(0);
-}
+    auto vm = Globals::VirtualMachine();
+    ASSERT(vm->m_nRecursionLevel >= 0);
 
-CScriptEvent* DotNET::StackPopEvent()
-{
-    return StackPopGameDefinedStructure<CScriptEvent*>(1);
-}
-
-CScriptLocation* DotNET::StackPopLocation()
-{
-    return StackPopGameDefinedStructure<CScriptLocation*>(2);
-}
-
-CScriptTalent* DotNET::StackPopTalent()
-{
-    return StackPopGameDefinedStructure<CScriptTalent*>(3);
-}
-
-CGameEffect* DotNET::StackPopItemProperty()
-{
-    return StackPopGameDefinedStructure<CGameEffect*>(4);
-}
-
-void DotNET::FreeEffect(void* ptr)
-{
-    if (ptr)
+    void* value;
+    if (!vm->StackPopEngineStructure(structId, &value))
     {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing effect at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(0, ptr);
+        LOG_WARNING("Failed to pop game defined structure %i - recursion level %i.",
+            structId, vm->m_nRecursionLevel);
+        return nullptr;
     }
+
+    LOG_DEBUG("Popped game defined structure %i at 0x%x.", structId, value);
+    return value;
 }
 
-void DotNET::FreeEvent(void* ptr)
+void DotNET::FreeGameDefinedStructure(int32_t structId, void* ptr)
 {
     if (ptr)
     {
         auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing event at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(1, ptr);
-    }
-}
-
-void DotNET::FreeLocation(void* ptr)
-{
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing location at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(2, ptr);
-    }
-}
-
-void DotNET::FreeTalent(void* ptr)
-{
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing talent at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(3, ptr);
-    }
-}
-
-void DotNET::FreeItemProperty(void* ptr)
-{
-    if (ptr)
-    {
-        auto cmd = static_cast<CNWVirtualMachineCommands*>(Globals::VirtualMachine()->m_pCmdImplementer);
-        LOG_DEBUG("Freeing item property at 0x%x", ptr);
-        cmd->DestroyGameDefinedStructure(4, ptr);
+        LOG_DEBUG("Freeing game structure at 0x%x", ptr);
+        cmd->DestroyGameDefinedStructure(structId, ptr);
     }
 }
 
