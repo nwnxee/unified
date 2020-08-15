@@ -158,7 +158,7 @@ int32_t ItemEvents::UseItemHook(
 
     if (PushAndSignal("NWNX_ON_USE_ITEM_BEFORE"))
     {
-        retVal = s_UseItemHook->CallOriginal<int32_t>(thisPtr, item, propIndex, subPropIndex, target, targetPosition, area);
+        retVal = s_UseItemHook->CallOriginal<int32_t>(thisPtr, item, propIndex, subPropIndex, target, targetPosition, area, bUseCharges);
     }
     else
     {
