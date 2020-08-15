@@ -18,6 +18,7 @@ N/A
 - Player: ToggleDM()
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
+- Effects: ReplaceEffect()
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params

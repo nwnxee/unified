@@ -78,5 +78,25 @@ void main()
     unpacked = NWNX_Effect_UnpackEffect(e);
     NWNX_Tests_Report("NWNX_Effect", "SetEffectExpiredScript", unpacked.sParam4 == "effect_test");
 
+
+    e = GetFirstEffect(oCreature);
+    while (GetIsEffectValid(e))
+    {
+        if (GetEffectTag(e) == "NWNX_EFFECT_TEST")
+            break;
+        e = GetNextEffect(oCreature);
+    }
+    NWNX_Effect_ReplaceEffect(oCreature, e, TagEffect(e, "NWNX_EFFECT_REPLACED"));
+    e = GetFirstEffect(oCreature);
+    while (GetIsEffectValid(e))
+    {
+        if (GetEffectTag(e) == "NWNX_EFFECT_REPLACED")
+        {
+            NWNX_Tests_Report("NWNX_Effect", "ReplaceEffect", TRUE);
+            break;
+        }
+        e = GetNextEffect(oCreature);
+    }
+
     WriteTimestampedLogEntry("NWNX_Effect unit test end.");
 }
