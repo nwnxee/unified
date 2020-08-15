@@ -20,10 +20,6 @@ void main()
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.key == "nwnx_object_test");
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.type == NWNX_OBJECT_LOCALVAR_TYPE_INT);
 
-    string sObj = ObjectToString(o);
-    NWNX_Tests_Report("NWNX_Object", "StringToObject", NWNX_Object_StringToObject(sObj) == o);
-    NWNX_Tests_Report("NWNX_Object", "Negative: StringToObject", NWNX_Object_StringToObject("!@#!@#!@#!") == OBJECT_INVALID);
-
     vector vPos = GetPosition(o);
     vPos.x += 1;
     NWNX_Object_SetPosition(o, vPos);

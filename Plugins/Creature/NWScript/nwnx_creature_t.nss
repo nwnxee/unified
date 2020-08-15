@@ -93,8 +93,8 @@ void main()
 
     int nOldStr = GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE);
     NWNX_Creature_SetRawAbilityScore(oCreature, ABILITY_STRENGTH, 25);
-    NWNX_Tests_Report("NWNX_Creature", "SetAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
-    NWNX_Tests_Report("NWNX_Creature", "SetAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
+    NWNX_Tests_Report("NWNX_Creature", "SetRawAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
+    NWNX_Tests_Report("NWNX_Creature", "SetRawAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
 
     ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectPolymorph(POLYMORPH_TYPE_BADGER), oCreature);
     NWNX_Tests_Report("NWNX_Creature", "GetPrePolymorphAbilityScore", 25 == NWNX_Creature_GetPrePolymorphAbilityScore(oCreature, ABILITY_STRENGTH));
@@ -207,11 +207,6 @@ void main()
     NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_WIZARD, (nSchool+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD) == (nSchool+1)%5);
 
-    //Test old functions for compatibility (deprecated)
-    nSchool = NWNX_Creature_GetWizardSpecialization(oCreature);
-    NWNX_Creature_SetWizardSpecialization(oCreature, (nSchool+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etWizardSpecialization", NWNX_Creature_GetWizardSpecialization(oCreature) == (nSchool+1)%5);
-
     //Test domain functions on a class that doesn't have domains
     int nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1);
     NWNX_Tests_Report("NWNX_Creature", "GetDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1) == 0);
@@ -243,14 +238,6 @@ void main()
     nDomain2 = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 2);
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 2, (nDomain2+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 2) == (nDomain2+1)%5);
-
-    //Test old functions for compatibility (deprecated)
-    nDomain = NWNX_Creature_GetClericDomain(oCreature, 1);
-    NWNX_Creature_SetClericDomain(oCreature, 1, (nDomain+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etClericDomain", NWNX_Creature_GetClericDomain(oCreature, 1) == (nDomain+1)%5);
-    nDomain2 = NWNX_Creature_GetClericDomain(oCreature, 2);
-    NWNX_Creature_SetClericDomain(oCreature, 2, (nDomain2+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etClericDomain", NWNX_Creature_GetClericDomain(oCreature, 2) == (nDomain2+1)%5);
 
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }
