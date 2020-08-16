@@ -24,6 +24,7 @@ private:
     ArgumentStack SetEffectExpiredScript(ArgumentStack&& args);
     ArgumentStack GetEffectExpiredData(ArgumentStack&& args);
     ArgumentStack GetEffectExpiredCreator(ArgumentStack&& args);
+    ArgumentStack ReplaceEffect(ArgumentStack&& args);
 };
 
 }

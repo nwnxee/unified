@@ -37,6 +37,7 @@ Effect::Effect(Services::ProxyServiceList* services)
     REGISTER(SetEffectExpiredScript);
     REGISTER(GetEffectExpiredData);
     REGISTER(GetEffectExpiredCreator);
+    REGISTER(ReplaceEffect);
 
 #undef REGISTER
 
@@ -250,6 +251,38 @@ ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
     }
 
     return Services::Events::Arguments(g_plugin->m_effectExpiredCreator);
+}
+
+ArgumentStack Effect::ReplaceEffect(ArgumentStack&& args)
+{
+    int found = 0;
+    auto objId = Services::Events::ExtractArgument<ObjectID>(args);
+    auto eOld  = Services::Events::ExtractArgument<CGameEffect*>(args);
+    auto eNew  = Services::Events::ExtractArgument<CGameEffect*>(args);
+
+    ASSERT_OR_THROW(eNew->m_nType == eOld->m_nType);
+
+    if (auto* obj = Utils::AsNWSObject(Utils::GetGameObject(objId)))
+    {
+        for (auto* eff : obj->m_appliedEffects)
+        {
+            if (eff->m_nID == eOld->m_nID)
+            {
+                eff->m_nSubType              = eNew->m_nSubType;
+                eff->m_fDuration             = eNew->m_fDuration;
+                eff->m_nExpiryCalendarDay    = eNew->m_nExpiryCalendarDay;
+                eff->m_nExpiryTimeOfDay      = eNew->m_nExpiryTimeOfDay;
+                eff->m_oidCreator            = eNew->m_oidCreator;
+                eff->m_nSpellId              = eNew->m_nSpellId;
+                eff->m_nCasterLevel          = eNew->m_nCasterLevel;
+                eff->m_nItemPropertySourceId = eNew->m_nItemPropertySourceId;
+                eff->m_sCustomTag            = eNew->m_sCustomTag;
+                eff->UpdateLinked();
+                found++;
+            }
+        }
+    }
+    return found;
 }
 
 }

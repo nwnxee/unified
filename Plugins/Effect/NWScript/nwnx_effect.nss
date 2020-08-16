@@ -84,6 +84,12 @@ string NWNX_Effect_GetEffectExpiredData();
 /// @return The object from which the effect originated.
 object NWNX_Effect_GetEffectExpiredCreator();
 
+/// @brief replace an already applied effect on an object
+/// Only duration, subtype, tag and spell related fields can be overwritten.
+/// @note eNew and eOld need to have the same type.
+/// @return Number of internal effects updated.
+int NWNX_Effect_ReplaceEffect(object obj, effect eOld, effect eNew);
+
 /// @}
 
 struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
@@ -237,4 +243,17 @@ object NWNX_Effect_GetEffectExpiredCreator()
     NWNX_CallFunction(NWNX_Effect, sFunc);
 
     return NWNX_GetReturnValueObject(NWNX_Effect, sFunc);
+}
+
+int NWNX_Effect_ReplaceEffect(object obj, effect eOld, effect eNew)
+{
+    string sFunc = "ReplaceEffect";
+
+    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, eNew);
+    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, eOld);
+    NWNX_PushArgumentObject(NWNX_Effect, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
 }
