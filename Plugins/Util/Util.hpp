@@ -43,6 +43,7 @@ private:
     ArgumentStack GetScriptReturnValue          (ArgumentStack&& args);
     ArgumentStack CreateDoor                    (ArgumentStack&& args);
     ArgumentStack SetItemActivator              (ArgumentStack&& args);
+    ArgumentStack GetWorldTime                  (ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;

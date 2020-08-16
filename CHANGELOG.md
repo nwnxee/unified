@@ -16,10 +16,11 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 N/A
 
 ##### New NWScript Functions
+- Effect: ReplaceEffect()
 - Player: ToggleDM()
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
-- Effects: ReplaceEffect()
+- Util: GetWorldTime()
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params

@@ -85,6 +85,7 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(GetScriptReturnValue);
     REGISTER(CreateDoor);
     REGISTER(SetItemActivator);
+    REGISTER(GetWorldTime);
 
 #undef REGISTER
 
@@ -646,6 +647,22 @@ ArgumentStack Util::SetItemActivator(ArgumentStack&& args)
       Utils::GetModule()->m_oidLastItemActivator = Constants::OBJECT_INVALID;
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetWorldTime(ArgumentStack&& args)
+{
+    const auto secondsFromNow = Services::Events::ExtractArgument<float>(args);
+      ASSERT_OR_THROW(secondsFromNow >= 0.0f);
+    auto *pWorldTimer = Globals::AppManager()->m_pServerExoApp->GetWorldTimer();
+
+    uint32_t currentCalendarDay, currentTimeOfDay, retvalCalendarDay, retvalTimeOfDay;
+    uint32_t incrementCalendarDay = pWorldTimer->GetCalendarDayFromSeconds(secondsFromNow);
+    uint32_t incrementTimeOfDay = pWorldTimer->GetTimeOfDayFromSeconds(secondsFromNow);
+
+    pWorldTimer->GetWorldTime(&currentCalendarDay, &currentTimeOfDay);
+    pWorldTimer->AddWorldTimes(currentCalendarDay, currentTimeOfDay, incrementCalendarDay, incrementTimeOfDay, &retvalCalendarDay, &retvalTimeOfDay);
+
+    return Services::Events::Arguments((int32_t)retvalCalendarDay, (int32_t)retvalTimeOfDay);
 }
 
 }
