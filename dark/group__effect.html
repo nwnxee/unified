@@ -139,6 +139,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga9dfcfd6d65f0e22b66dd9c6b51df5484"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484">NWNX_Effect_GetEffectExpiredCreator</a> ()</td></tr>
 <tr class="memdesc:ga9dfcfd6d65f0e22b66dd9c6b51df5484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the effect creator.  <a href="group__effect.html#ga9dfcfd6d65f0e22b66dd9c6b51df5484">More...</a><br /></td></tr>
 <tr class="separator:ga9dfcfd6d65f0e22b66dd9c6b51df5484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab4c4af97dfa245d6774c2d6cdccd720b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b">NWNX_Effect_ReplaceEffect</a> (object obj, effect eOld, effect eNew)</td></tr>
+<tr class="memdesc:gab4c4af97dfa245d6774c2d6cdccd720b"><td class="mdescLeft">&#160;</td><td class="mdescRight">replace an already applied effect on an object Only duration, subtype, tag and spell related fields can be overwritten.  <a href="group__effect.html#gab4c4af97dfa245d6774c2d6cdccd720b">More...</a><br /></td></tr>
+<tr class="separator:gab4c4af97dfa245d6774c2d6cdccd720b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga10a9c2babd8ee53cf383342585b239e7"></a>
@@ -166,7 +169,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__EffectUnpacked.html" title="An unpacked effect.">NWNX_EffectUnpacked</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00089">89</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00095">95</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -195,7 +198,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The effect. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00151">151</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00157">157</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -243,7 +246,7 @@ Functions</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>OBJECT_SELF in the script is the object the effect is applied to. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Only works for TEMPORARY and PERMANENT effects applied to an object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00211">211</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00217">217</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -266,7 +269,7 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Should only be called from a script set with <a class="el" href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec" title="Set a script with optional data that runs when an effect expires.">NWNX_Effect_SetEffectExpiredScript()</a>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The data attached to the effect. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00224">224</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00230">230</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -289,7 +292,47 @@ Functions</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>Should only be called from a script set with <a class="el" href="group__effect.html#ga3c6b1b67f4bd4332f8b2b4fdf8217aec" title="Set a script with optional data that runs when an effect expires.">NWNX_Effect_SetEffectExpiredScript()</a>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The object from which the effect originated. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00233">233</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00239">239</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab4c4af97dfa245d6774c2d6cdccd720b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab4c4af97dfa245d6774c2d6cdccd720b">&#9670;&nbsp;</a></span>NWNX_Effect_ReplaceEffect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Effect_ReplaceEffect </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">effect&#160;</td>
+          <td class="paramname"><em>eOld</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">effect&#160;</td>
+          <td class="paramname"><em>eNew</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>replace an already applied effect on an object Only duration, subtype, tag and spell related fields can be overwritten. </p>
+<dl class="section note"><dt>Note</dt><dd>eNew and eOld need to have the same type. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of internal effects updated. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__effect_8nss_source.html#l00248">248</a> of file <a class="el" href="nwnx__effect_8nss_source.html">nwnx_effect.nss</a>.</p>
 
 </div>
 </div>
@@ -299,7 +342,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Aug 16 2020 15:39:41 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Aug 16 2020 15:58:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
