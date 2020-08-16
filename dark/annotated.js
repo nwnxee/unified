@@ -13,6 +13,7 @@ var annotated =
     [ "NWNX_Redis_PubSubMessageData", "structNWNX__Redis__PubSubMessageData.html", "structNWNX__Redis__PubSubMessageData" ],
     [ "NWNX_SkillRanks_SkillFeat", "structNWNX__SkillRanks__SkillFeat.html", "structNWNX__SkillRanks__SkillFeat" ],
     [ "NWNX_Time_HighResTimestamp", "structNWNX__Time__HighResTimestamp.html", "structNWNX__Time__HighResTimestamp" ],
+    [ "NWNX_Util_WorldTime", "structNWNX__Util__WorldTime.html", "structNWNX__Util__WorldTime" ],
     [ "NWNX_Weapon_DevastatingCriticalEvent_Data", "structNWNX__Weapon__DevastatingCriticalEvent__Data.html", "structNWNX__Weapon__DevastatingCriticalEvent__Data" ],
     [ "NWNX_WebHook_Message", "structNWNX__WebHook__Message.html", "structNWNX__WebHook__Message" ]
 ];

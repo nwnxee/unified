@@ -2,6 +2,10 @@ var group__util =
 [
     [ "Readme", "group__util.html#util", null ],
     [ "nwnx_util.nss", "nwnx__util_8nss.html", null ],
+    [ "NWNX_Util_WorldTime", "structNWNX__Util__WorldTime.html", [
+      [ "nCalendarDay", "structNWNX__Util__WorldTime.html#afc097db3b754424f759865e53f56de39", null ],
+      [ "nTimeOfDay", "structNWNX__Util__WorldTime.html#a40e833c28b4d71306dd171afe50dc3a9", null ]
+    ] ],
     [ "NWNX_Util_GetCurrentScriptName", "group__util.html#ga972eafd2cce6e28be85212774a0a4cf4", null ],
     [ "NWNX_Util_GetAsciiTableString", "group__util.html#ga1e18a85480ecf06727502ef50937bc71", null ],
     [ "NWNX_Util_Hash", "group__util.html#ga5e4f594854644fa1d465d9a68fbc9497", null ],
@@ -31,6 +35,7 @@ var group__util =
     [ "NWNX_Util_GetScriptReturnValue", "group__util.html#gaa162793a2d0aa5cae40598351bf7cde0", null ],
     [ "NWNX_Util_CreateDoor", "group__util.html#ga0ed499c4c5e08d2d89bab118797d35e5", null ],
     [ "NWNX_Util_SetItemActivator", "group__util.html#gaf603bdb6ed957e9016094ddcbde043b3", null ],
+    [ "NWNX_Util_GetWorldTime", "group__util.html#ga3563b909d3ba600fc6a535a4636195f7", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NSS", "group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NCS", "group__util.html#gac7c3717541176f4e20e5824aa2668dd0", null ],
     [ "NWNX_UTIL_RESREF_TYPE_AREA_ARE", "group__util.html#ga610bf05a8489288df5ce9ad2326bd54c", null ],
