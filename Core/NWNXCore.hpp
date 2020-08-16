@@ -50,7 +50,7 @@ private:
     void InitialSetupHooks();
     void InitialVersionCheck();
     void InitialSetupPlugins();
-    void InitialSetupResourceDirectory();
+    void InitialSetupResourceDirectories();
     void InitialSetupCommands();
 
     void UnloadPlugins();
