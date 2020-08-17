@@ -695,7 +695,7 @@ var searchData=
   ['nwnx_5futil_5fgetscriptreturnvalue_2426',['NWNX_Util_GetScriptReturnValue',['../group__util.html#gaa162793a2d0aa5cae40598351bf7cde0',1,'nwnx_util.nss']]],
   ['nwnx_5futil_5fgetservertickspersecond_2427',['NWNX_Util_GetServerTicksPerSecond',['../group__util.html#gac9df9a6c3e6b9a8b767719c04a485188',1,'nwnx_util.nss']]],
   ['nwnx_5futil_5fgetuserdirectory_2428',['NWNX_Util_GetUserDirectory',['../group__util.html#gab9b71c82c64c7ae1a72187e47a828bed',1,'nwnx_util.nss']]],
-  ['nwnx_5futil_5fgetworldtime_2429',['NWNX_Util_GetWorldTime',['../group__util.html#ga3563b909d3ba600fc6a535a4636195f7',1,'nwnx_util.nss']]],
+  ['nwnx_5futil_5fgetworldtime_2429',['NWNX_Util_GetWorldTime',['../group__util.html#ga2fe4ad85ca9096632b400e44ee2c0d70',1,'nwnx_util.nss']]],
   ['nwnx_5futil_5fhash_2430',['NWNX_Util_Hash',['../group__util.html#ga5e4f594854644fa1d465d9a68fbc9497',1,'nwnx_util.nss']]],
   ['nwnx_5futil_5fisvalidresref_2431',['NWNX_Util_IsValidResRef',['../group__util.html#ga4ea0cf79071aa794e483b1bc3d53c08b',1,'nwnx_util.nss']]],
   ['nwnx_5futil_5fitempropertytoeffect_2432',['NWNX_Util_ItemPropertyToEffect',['../group__util.html#gad787ec7652e9b2a750ab9534a051c1e0',1,'nwnx_util.nss']]],
