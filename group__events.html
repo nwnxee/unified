@@ -117,7 +117,7 @@ Files</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga1f7aeeb1c0a8f4166b8d1dbefa521294"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a> (string evt, string script)</td></tr>
+<tr class="memitem:ga1f7aeeb1c0a8f4166b8d1dbefa521294"><td class="memItemLeft" align="right" valign="top">*void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">NWNX_Events_SubscribeEvent</a> (string evt, string script)</td></tr>
 <tr class="memdesc:ga1f7aeeb1c0a8f4166b8d1dbefa521294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scripts can subscribe to events.  <a href="group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294">More...</a><br /></td></tr>
 <tr class="separator:ga1f7aeeb1c0a8f4166b8d1dbefa521294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf3739a883b618d64af4d0d19b85e5815"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__events.html#gaf3739a883b618d64af4d0d19b85e5815">NWNX_Events_UnsubscribeEvent</a> (string evt, string script)</td></tr>
@@ -1597,6 +1597,24 @@ RunScriptChunk Debug Event</h2>
 </table>
 <dl class="section note"><dt>Note</dt><dd>This event also runs for players that do not have permission to execute the command.</dd></dl>
 <hr  />
+ <h2><a class="anchor" id="autotoc_md211"></a>
+Buy/Sell Store Events</h2>
+<ul>
+<li>NWNX_ON_STORE_REQUEST_BUY_BEFORE</li>
+<li>NWNX_ON_STORE_REQUEST_BUY_AFTER</li>
+<li>NWNX_ON_STORE_REQUEST_SELL_BEFORE</li>
+<li>NWNX_ON_STORE_REQUEST_SELL_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The creature buying or selling an item</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ITEM  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">The item being bought or sold. Convert to object with StringToObject()   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">STORE  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">The store the item is being sold to or bought from. Convert to object with StringToObject()   </td></tr>
+</table>
+<hr  />
 <p> Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants). Others can be signalled via script code via <a class="el" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">evt</td><td>The event name. </td></tr>
@@ -1605,7 +1623,7 @@ RunScriptChunk Debug Event</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01256">1256</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01273">1273</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1644,7 +1662,7 @@ RunScriptChunk Debug Event</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01265">1265</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01282">1282</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1675,7 +1693,7 @@ RunScriptChunk Debug Event</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01274">1274</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01291">1291</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1706,7 +1724,7 @@ RunScriptChunk Debug Event</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p><dl class="section remark"><dt>Remarks</dt><dd>target will be available as OBJECT_SELF in subscribed event scripts. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01283">1283</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01300">1300</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1727,7 +1745,7 @@ RunScriptChunk Debug Event</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01293">1293</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01310">1310</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1774,10 +1792,12 @@ RunScriptChunk Debug Event</h2>
 <li>{Enter|Exit}Stealth events</li>
 <li>Object {Lock|Unlock} events</li>
 <li>Quickbar Events</li>
-<li>Input Pause Event </li>
+<li>Input Pause Event</li>
+<li>Debug events</li>
+<li>Store events </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01302">1302</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01319">1319</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1808,7 +1828,7 @@ RunScriptChunk Debug Event</h2>
 <li>Sticky Player Name event -&gt; "1" or "0" </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01309">1309</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01326">1326</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1829,7 +1849,7 @@ RunScriptChunk Debug Event</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01317">1317</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01334">1334</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1866,7 +1886,7 @@ RunScriptChunk Debug Event</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01325">1325</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01342">1342</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1904,7 +1924,7 @@ RunScriptChunk Debug Event</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01335">1335</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01352">1352</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1942,7 +1962,7 @@ RunScriptChunk Debug Event</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01345">1345</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01362">1362</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1952,7 +1972,7 @@ RunScriptChunk Debug Event</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Aug 17 2020 17:06:47 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Aug 17 2020 19:39:22 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
