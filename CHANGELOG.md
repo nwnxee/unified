@@ -11,6 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 - Core: added environment variable `NWNX_CORE_CUSTOM_RESMAN_DEFINITION` to specify a file with additional resource directories.
 - Events: added skippable PlayerDM Login/Logout events to DMActionEvents
 - Events: added skippable RunScript and RunScriptChunk events to DebugEvents
+- Events: added skippable RequestBuy/Sell events to StoreEvents
 
 ##### New Plugins
 N/A

@@ -43,6 +43,7 @@ class UUIDEvents;
 class ResourceEvents;
 class QuickbarEvents;
 class DebugEvents;
+class StoreEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -136,6 +137,7 @@ private:
     std::unique_ptr<ResourceEvents> m_resourceEvents;
     std::unique_ptr<QuickbarEvents> m_quickbarEvents;
     std::unique_ptr<DebugEvents> m_debugEvents;
+    std::unique_ptr<StoreEvents> m_storeEvents;
 };
 
 }
