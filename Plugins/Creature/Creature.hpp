@@ -118,6 +118,7 @@ private:
     ArgumentStack SetCriticalRangeOverride      (ArgumentStack&& args);
     ArgumentStack GetCriticalRangeOverride      (ArgumentStack&& args);
     ArgumentStack AddAssociate                  (ArgumentStack&& args);
+    ArgumentStack SetEffectIconFlashing         (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 

@@ -16,6 +16,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 N/A
 
 ##### New NWScript Functions
+- Creature: SetEffectIconFlashing()
 - Effect: ReplaceEffect()
 - Player: ToggleDM()
 - Player: SetObjectMouseCursorOverride()
