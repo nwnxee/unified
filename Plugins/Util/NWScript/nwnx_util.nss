@@ -28,7 +28,7 @@ const int NWNX_UTIL_RESREF_TYPE_STORE     = 2051;
 const int NWNX_UTIL_RESREF_TYPE_WAYPOINT  = 2058;
 ///@}
 
-/// @brief An world time struct
+/// @brief A world time struct
 struct NWNX_Util_WorldTime
 {
     int nCalendarDay; ///< The calendar day
@@ -197,9 +197,10 @@ void NWNX_Util_SetItemActivator(object oObject);
 
 /// @brief Get the world time as calendar day and time of day.
 /// @note This function is useful for calculating effect expiry times.
-/// @param fSecondsFromNow If bigger than 0.0f it will return a world time in the future.
+/// @param fAdjustment An adjustment in seconds, 0.0f will return the current world time,
+/// positive or negative values will return a world time in the future or past.
 /// @return A NWNX_Util_WorldTime struct with the calendar day and time of day.
-struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fSecondsFromNow = 0.0f);
+struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fAdjustment = 0.0f);
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -469,11 +470,11 @@ void NWNX_Util_SetItemActivator(object oObject)
     NWNX_CallFunction(NWNX_Util, sFunc);
 }
 
-struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fSecondsFromNow = 0.0f)
+struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fAdjustment = 0.0f)
 {
     string sFunc = "GetWorldTime";
 
-    NWNX_PushArgumentFloat(NWNX_Util, sFunc, fSecondsFromNow);
+    NWNX_PushArgumentFloat(NWNX_Util, sFunc, fAdjustment);
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     struct NWNX_Util_WorldTime strWorldTime;

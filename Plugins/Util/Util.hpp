@@ -39,7 +39,7 @@ private:
     ArgumentStack RegisterServerConsoleCommand  (ArgumentStack&& args);
     ArgumentStack UnregisterServerConsoleCommand(ArgumentStack&& args);
     ArgumentStack PluginExists                  (ArgumentStack&& args);
-    ArgumentStack GetUserDirectory              (ArgumentStack&&);
+    ArgumentStack GetUserDirectory              (ArgumentStack&& args);
     ArgumentStack GetScriptReturnValue          (ArgumentStack&& args);
     ArgumentStack CreateDoor                    (ArgumentStack&& args);
     ArgumentStack SetItemActivator              (ArgumentStack&& args);

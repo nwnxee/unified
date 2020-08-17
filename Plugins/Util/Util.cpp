@@ -33,6 +33,7 @@
 #include <string>
 #include <cstdio>
 #include <regex>
+#include <cmath>
 
 
 using namespace NWNXLib;
@@ -651,16 +652,23 @@ ArgumentStack Util::SetItemActivator(ArgumentStack&& args)
 
 ArgumentStack Util::GetWorldTime(ArgumentStack&& args)
 {
-    const auto secondsFromNow = Services::Events::ExtractArgument<float>(args);
-      ASSERT_OR_THROW(secondsFromNow >= 0.0f);
+    const auto adjustment = Services::Events::ExtractArgument<float>(args);
+
     auto *pWorldTimer = Globals::AppManager()->m_pServerExoApp->GetWorldTimer();
-
+    uint32_t adjustmentCalendarDay = pWorldTimer->GetCalendarDayFromSeconds(std::fabs(adjustment));
+    uint32_t adjustmentTimeOfDay = pWorldTimer->GetTimeOfDayFromSeconds(std::fabs(adjustment));
     uint32_t currentCalendarDay, currentTimeOfDay, retvalCalendarDay, retvalTimeOfDay;
-    uint32_t incrementCalendarDay = pWorldTimer->GetCalendarDayFromSeconds(secondsFromNow);
-    uint32_t incrementTimeOfDay = pWorldTimer->GetTimeOfDayFromSeconds(secondsFromNow);
-
     pWorldTimer->GetWorldTime(&currentCalendarDay, &currentTimeOfDay);
-    pWorldTimer->AddWorldTimes(currentCalendarDay, currentTimeOfDay, incrementCalendarDay, incrementTimeOfDay, &retvalCalendarDay, &retvalTimeOfDay);
+
+    if (adjustment > 0.0f)
+        pWorldTimer->AddWorldTimes(currentCalendarDay, currentTimeOfDay, adjustmentCalendarDay, adjustmentTimeOfDay, &retvalCalendarDay, &retvalTimeOfDay);
+    else if (adjustment < 0.0f)
+        pWorldTimer->SubtractWorldTimes(currentCalendarDay, currentTimeOfDay, adjustmentCalendarDay, adjustmentTimeOfDay, &retvalCalendarDay, &retvalTimeOfDay);
+    else
+    {
+        retvalCalendarDay = currentCalendarDay;
+        retvalTimeOfDay = currentTimeOfDay;
+    }
 
     return Services::Events::Arguments((int32_t)retvalCalendarDay, (int32_t)retvalTimeOfDay);
 }
