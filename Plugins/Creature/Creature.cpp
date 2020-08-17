@@ -19,6 +19,7 @@
 #include "API/CResGFF.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/C2DA.hpp"
+#include "API/CEffectIconObject.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -158,6 +159,7 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetCriticalRangeOverride);
     REGISTER(GetCriticalRangeOverride);
     REGISTER(AddAssociate);
+    REGISTER(SetEffectIconFlashing);
 
 #undef REGISTER
 }
@@ -2515,6 +2517,27 @@ ArgumentStack Creature::AddAssociate(ArgumentStack&& args)
                 pCreature->AddAssociate(oidAssociate, associateType);
             else
                 LOG_WARNING("AddAssociate: Cannot add PCs as associate");
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::SetEffectIconFlashing(ArgumentStack&& args)
+{
+    if (auto* pCreature = creature(args))
+    {
+        auto iconId = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(iconId >= 0);
+          ASSERT_OR_THROW(iconId <= 255);
+        auto flashing = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        for (auto* effectIconObject : pCreature->m_aEffectIcons)
+        {
+            if (effectIconObject->m_nIcon == iconId && effectIconObject->m_nPlayerBar)
+            {
+                effectIconObject->m_bFlashing = flashing;
+            }
         }
     }
 
