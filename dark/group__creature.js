@@ -119,6 +119,7 @@ var group__creature =
     [ "NWNX_Creature_GetCriticalRangeOverride", "group__creature.html#gaf3a3048abd469980487c640d2c9d1877", null ],
     [ "NWNX_Creature_AddAssociate", "group__creature.html#ga2d409d9021d548809df96419085ae480", null ],
     [ "NWNX_Creature_SetEffectIconFlashing", "group__creature.html#ga21360c24d3e29125d4691571f72a9f6d", null ],
+    [ "NWNX_Creature_OverrideDamageLevel", "group__creature.html#ga445a30a2f40834a69ab0771d084097de", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],
