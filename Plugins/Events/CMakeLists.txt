@@ -29,4 +29,5 @@ add_plugin(Events
     "Events/UUIDEvents.cpp"
     "Events/ResourceEvents.cpp"
     "Events/QuickbarEvents.cpp"
-    "Events/DebugEvents.cpp")
+    "Events/DebugEvents.cpp"
+    "Events/StoreEvents.cpp")

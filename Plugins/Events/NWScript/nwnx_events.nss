@@ -1137,6 +1137,21 @@ _______________________________________
     @note This event also runs for players that do not have permission to execute the command.
 
 _______________________________________
+    ## Buy/Sell Store Events
+    - NWNX_ON_STORE_REQUEST_BUY_BEFORE
+    - NWNX_ON_STORE_REQUEST_BUY_AFTER
+    - NWNX_ON_STORE_REQUEST_SELL_BEFORE
+    - NWNX_ON_STORE_REQUEST_SELL_AFTER
+
+    `OBJECT_SELF` = The creature buying or selling an item
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    ITEM                  | object | The item being bought or sold. Convert to object with StringToObject()  |
+    STORE                 | object | The store the item is being sold to or bought from. Convert to object with StringToObject() |
+
+_______________________________________
+*/
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -1220,6 +1235,8 @@ string NWNX_Events_GetEventData(string tag);
 /// - Object {Lock|Unlock} events
 /// - Quickbar Events
 /// - Input Pause Event
+/// - Debug events
+/// - Store events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
