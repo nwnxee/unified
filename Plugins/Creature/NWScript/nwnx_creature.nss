@@ -751,8 +751,14 @@ void NWNX_Creature_AddAssociate(object oCreature, object oAssociate, int nAssoci
 /// @brief Set whether an effect icon is flashing or not.
 /// @param oCreature The target creature.
 /// @param nIconId The icon id, see effecticons.2da.
-/// @param TRUE for flashing, FALSE for not flashing.
+/// @param bFlashing TRUE for flashing, FALSE for not flashing.
 void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFlashing);
+
+/// @brief Override the damage level of oCreature.
+/// @note Damage levels are the damage state under a creature's name, for example: 'Near Death'
+/// @param oCreature The target creature.
+/// @param nDamageLevel A damage level, see damagelevels.2da. Allowed values: 0-255 or -1 to remove the override.
+void NWNX_Creature_OverrideDamageLevel(object oCreature, int nDamageLevel);
 
 /// @}
 
@@ -1897,6 +1903,15 @@ void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFla
 
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bFlashing);
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nIconId);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_OverrideDamageLevel(object oCreature, int nDamageLevel)
+{
+    string sFunc = "OverrideDamageLevel";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nDamageLevel);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
