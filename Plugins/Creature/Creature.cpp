@@ -160,6 +160,7 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(GetCriticalRangeOverride);
     REGISTER(AddAssociate);
     REGISTER(SetEffectIconFlashing);
+    REGISTER(OverrideDamageLevel);
 
 #undef REGISTER
 }
@@ -2539,6 +2540,33 @@ ArgumentStack Creature::SetEffectIconFlashing(ArgumentStack&& args)
                 effectIconObject->m_bFlashing = flashing;
             }
         }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::OverrideDamageLevel(ArgumentStack&& args)
+{
+    static NWNXLib::Hooking::FunctionHook* pGetDamageLevelHook;
+    if (!pGetDamageLevelHook)
+    {
+        pGetDamageLevelHook = g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN10CNWSObject14GetDamageLevelEv>(
+            +[](CNWSObject *thisPtr) -> uint8_t
+            {
+                auto damageLevel = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_idSelf, "CREATURE_DAMAGE_LEVEL_OVERRIDE");
+                return damageLevel ? *damageLevel : pGetDamageLevelHook->CallOriginal<uint8_t>(thisPtr);
+            });
+    }
+
+    if (auto* pCreature = creature(args))
+    {
+        auto damageLevel = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(damageLevel <= 255);
+
+        if (damageLevel < 0)
+            GetServices()->m_perObjectStorage->Remove(pCreature->m_idSelf, "CREATURE_DAMAGE_LEVEL_OVERRIDE");
+        else
+            GetServices()->m_perObjectStorage->Set(pCreature->m_idSelf, "CREATURE_DAMAGE_LEVEL_OVERRIDE", damageLevel);
     }
 
     return Services::Events::Arguments();

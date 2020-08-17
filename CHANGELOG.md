@@ -17,6 +17,7 @@ N/A
 
 ##### New NWScript Functions
 - Creature: SetEffectIconFlashing()
+- Creature: OverrideDamageLevel()
 - Effect: ReplaceEffect()
 - Player: ToggleDM()
 - Player: SetObjectMouseCursorOverride()
