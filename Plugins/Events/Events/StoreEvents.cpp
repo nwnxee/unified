@@ -1,5 +1,6 @@
 #include "Events/StoreEvents.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSStore.hpp"
 #include "API/Functions.hpp"
 #include "API/Constants.hpp"
 #include "Events.hpp"
@@ -29,10 +30,18 @@ StoreEvents::StoreEvents(Services::HooksProxy* hooker)
 int32_t StoreEvents::RequestBuyHook(CNWSCreature *pCreature, ObjectID oidItemToBuy, ObjectID oidStore, ObjectID oidDesiredRepository)
 {
     int32_t retVal;
+    int32_t price = 0;
+
+    auto *pStore = Utils::AsNWSStore(Utils::GetGameObject(oidStore));
+    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItemToBuy));
+
+    if (pStore && pItem)
+        price = pStore->CalculateItemSellPrice(pItem, pCreature->m_idSelf);
 
     auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(oidItemToBuy));
         Events::PushEventData("STORE", Utils::ObjectIDToString(oidStore));
+        Events::PushEventData("PRICE", std::to_string(price));
         return Events::SignalEvent(ev, pCreature->m_idSelf);
     };
 
@@ -49,10 +58,18 @@ int32_t StoreEvents::RequestBuyHook(CNWSCreature *pCreature, ObjectID oidItemToB
 int32_t StoreEvents::RequestSellHook(CNWSCreature *pCreature, ObjectID oidItemToSell, ObjectID oidStore)
 {
     int32_t retVal;
+    int32_t price = 0;
+
+    auto *pStore = Utils::AsNWSStore(Utils::GetGameObject(oidStore));
+    auto *pItem = Utils::AsNWSItem(Utils::GetGameObject(oidItemToSell));
+
+    if (pStore && pItem)
+        price = pStore->CalculateItemBuyPrice(pItem, pCreature->m_idSelf);
 
     auto PushAndSignalEvent = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString(oidItemToSell));
         Events::PushEventData("STORE", Utils::ObjectIDToString(oidStore));
+        Events::PushEventData("PRICE", std::to_string(price));
         return Events::SignalEvent(ev, pCreature->m_idSelf);
     };
 
