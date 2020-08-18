@@ -1152,7 +1152,6 @@ _______________________________________
 
 _______________________________________
 */
-*/
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
 const int NWNX_EVENTS_OBJECT_TYPE_ITEM              = 6;
