@@ -29,6 +29,7 @@
 #include "Services/Plugins/Plugins.hpp"
 #include "Services/Commands/Commands.hpp"
 #include "Services/Tasks/Tasks.hpp"
+#include "Services/Messaging/Messaging.hpp"
 
 #include <string>
 #include <cstdio>
@@ -113,30 +114,30 @@ Util::Util(Services::ProxyServiceList* services)
                 }
             });
 
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSModule16LoadModuleFinishEv, uint32_t>(
-            +[](bool before, CNWSModule*)
+    GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
+        [](const std::vector<std::string>& message)
+        {
+            if (message[0] == "ON_MODULE_LOAD_FINISH")
             {
-                if (before)
+                if (auto startScript = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT"))
                 {
-                    if (auto startScript = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT"))
-                    {
-                        LOG_NOTICE("Running module start script: %s", *startScript);
-                        Utils::ExecuteScript(*startScript, 0);
-                    }
+                    LOG_NOTICE("Running module start script: %s", *startScript);
+                    Utils::ExecuteScript(*startScript, 0);
+                }
 
-                    if (auto startChunk = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
-                    {
-                        LOG_NOTICE("Running module start script chunk: %s", *startChunk);
+                if (auto startChunk = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
+                {
+                    LOG_NOTICE("Running module start script chunk: %s", *startChunk);
 
-                        bool bWrapIntoMain = startChunk->find("void main()") == std::string::npos;
-                        if (Globals::VirtualMachine()->RunScriptChunk(*startChunk, 0, true, bWrapIntoMain))
-                        {
-                            LOG_ERROR("Failed to run module start script chunk with error: %s",
-                                    Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
-                        }
+                    bool bWrapIntoMain = startChunk->find("void main()") == std::string::npos;
+                    if (Globals::VirtualMachine()->RunScriptChunk(*startChunk, 0, true, bWrapIntoMain))
+                    {
+                        LOG_ERROR("Failed to run module start script chunk with error: %s",
+                            Globals::VirtualMachine()->m_pJitCompiler->m_sCapturedError.CStr());
                     }
                 }
-            });
+            }
+        });
 }
 
 Util::~Util()

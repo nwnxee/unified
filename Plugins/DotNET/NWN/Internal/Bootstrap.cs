@@ -10,6 +10,7 @@ namespace NWN
         public delegate void MainLoopHandlerDelegate(ulong frame);
         public delegate int RunScriptHandlerDelegate(string script, uint oid);
         public delegate void ClosureHandlerDelegate(ulong eid, uint oid);
+        public delegate void SignalHandlerDelegate(string signal);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct AllHandlers
@@ -17,6 +18,7 @@ namespace NWN
             public MainLoopHandlerDelegate  MainLoop;
             public RunScriptHandlerDelegate RunScript;
             public ClosureHandlerDelegate   Closure;
+            public SignalHandlerDelegate    Signal;
         }
 
         [SuppressUnmanagedCodeSecurity][UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -183,6 +185,7 @@ namespace NWN
             handlers.MainLoop  = NWN.Internal.OnMainLoop;
             handlers.RunScript = NWN.Internal.OnRunScript;
             handlers.Closure   = NWN.Internal.OnClosure;
+            handlers.Signal    = NWN.Internal.OnSignal;
             RegisterHandlers(handlers);
 
             try

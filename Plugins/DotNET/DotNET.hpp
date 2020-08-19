@@ -20,12 +20,14 @@ private:
     using MainLoopHandlerType  = void (*)(uint64_t);
     using RunScriptHandlerType = int (*)(const char *, uint32_t);
     using ClosureHandlerType = void (*)(uint64_t, uint32_t);
+    using SignalHandlerType = void (*)(const char*);
 
     struct AllHandlers
     {
         MainLoopHandlerType  MainLoop;
         RunScriptHandlerType RunScript;
         ClosureHandlerType   Closure;
+        SignalHandlerType    SignalHandler;
     };
     static inline AllHandlers Handlers;
 

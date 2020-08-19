@@ -67,6 +67,26 @@ namespace NWN
             OBJECT_SELF = old;
         }
 
+        public static void OnSignal(string signal)
+        {
+            try
+            {
+                switch (signal)
+                {
+                    case "ON_MODULE_LOAD_FINISH":
+                        NWN.Entrypoints.OnModuleLoad();
+                        break;
+                    case "ON_DESTROY_SERVER":
+                        NWN.Entrypoints.OnShutdown();
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
         public static void ClosureAssignCommand(uint obj, ActionDelegate func)
         {
             if (NativeFunctions.ClosureAssignCommand(obj, NextEventId) != 0)

@@ -5,6 +5,7 @@
 #include "API/Functions.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
+#include "Services/Messaging/Messaging.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -323,6 +324,16 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
+
+    LOG_DEBUG("Registered core signal handler: %p", Handlers.SignalHandler);
+    Instance->GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
+        [](const std::vector<std::string>& message)
+        {
+            int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
+            Handlers.SignalHandler(message[0].c_str());
+            int spAfter = Utils::PopScriptContext();
+            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+        });
 }
 
 }
