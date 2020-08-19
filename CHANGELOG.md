@@ -17,6 +17,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 N/A
 
 ##### New NWScript Functions
+- Creature: {Get|Set}Encounter()
 - Creature: SetEffectIconFlashing()
 - Creature: OverrideDamageLevel()
 - Effect: ReplaceEffect()

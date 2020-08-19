@@ -120,6 +120,8 @@ private:
     ArgumentStack AddAssociate                  (ArgumentStack&& args);
     ArgumentStack SetEffectIconFlashing         (ArgumentStack&& args);
     ArgumentStack OverrideDamageLevel           (ArgumentStack&& args);
+    ArgumentStack SetEncounter                  (ArgumentStack&& args);
+    ArgumentStack GetEncounter                  (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
