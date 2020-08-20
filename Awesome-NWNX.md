@@ -14,20 +14,21 @@ A curated list of awesome NWNX projects and shiny things, and other adjacent NWN
 *Tools that help build things with NWN and NWNX*
 
 - [neverwinter.nim](https://github.com/niv/neverwinter.nim/) - CLI tools and nim library used in Neverwinter Nights: Enhanced Edition development
-- [Nasher](https://github.com/squattingmonk/nasher.nim) - A build tool for Neverwinter Nights projects 
+- [Nasher](https://github.com/squattingmonk/nasher.nim) - A build tool for Neverwinter Nights projects
 - [nwn-devbase](https://github.com/jakkn/nwn-devbase) - Command line tool used to version control NWN module development
 - [nwnsc](https://github.com/nwneetools/nwnsc) - Neverwinter Nights Enhanced Edition Script Compiler Project
 - [nwnexplorer](https://github.com/virusman/nwnexplorer) - NWN Explorer and nwntools sources. Updated for NWN:EE
 - [nwsync](https://github.com/Beamdog/nwsync/) -  Supporting utilities for NWSync
 - [nwsync_gui](https://github.com/WilliamDraco/nwsync_gui) - An unofficial multi-platform gui for NWSync
-- [NWNFileFormats](https://github.com/Liareth/NWNFileFormats) -  For developers - a modern (and hopefully fast?) C++ API to read NWN / Aurora engine file formats 
+- [NWNFileFormats](https://github.com/Liareth/NWNFileFormats) -  For developers - a modern (and hopefully fast?) C++ API to read NWN / Aurora engine file formats
+- [nwn_sqlite](https://github.com/hendrikgit/nwn_sqlite#nwn_sqlite) - Writes information from a module, gff, 2da to a sqlite database file
 
 ## Frameworks
 
 *Frameworks for developing your own modules with NWNX*
 
-- [EventSystem](https://github.com/Daztek/EventSystem) -  A modular Event System for Neverwinter Nights: Enhanced Edition using NWNX:EE. 
-- [NWN Core Framework](https://github.com/squattingmonk/nwn-core-framework) - An extendable event management system for Neverwinter Nights 
+- [EventSystem](https://github.com/Daztek/EventSystem) -  A modular Event System for Neverwinter Nights: Enhanced Edition using NWNX:EE.
+- [NWN Core Framework](https://github.com/squattingmonk/nwn-core-framework) - An extendable event management system for Neverwinter Nights
 - \[C#\] [NWN.NET](https://github.com/nwn-dotnet/NWN.NET) -  A library for accessing NWN and NWNX APIs in a managed way
 - \[C#\] [NWN.Core](https://github.com/nwn-dotnet/NWN.Core) - Core function wrappers and interop functions for NWNX DotNet
 - \[C#\] [NWN .NET Barebone Template](https://github.com/nwn-dotnet/nwn-dotnet-barebone-template) - A minimal (one file) implementation of NWNXEE DotNet using the NWN.Core library.
@@ -73,6 +74,8 @@ The following PWs are written in technologies no longer supported by NWNX:EE, bu
 - [NWN Fandom Wiki](https://nwn.fandom.com/wiki/) - Player oriented NWN wiki
 - [NWN Text Color Token Generator](https://colortoken.nwn1.net/) - Website to generate color tokens for NWN
 - [NCS explained](http://www.nynaeve.net/Skywing/nwn2/Documentation/ncs.html) - NWScript VM basics and NCS format documentation
+- [nwnstatusbot](https://gitlab.com/hendrikgit/nwnstatusbot#nwnstatusbot) - Discord bot showing status of Neverwinter Nights EE servers by querying the Beamdog API
+- [nwninfobot](https://gitlab.com/hendrikgit/nwninfobot#nwninfobot) - Discord bot showing information about nwnxee functions and base game functions
 
 ## Legacy stuff
 
