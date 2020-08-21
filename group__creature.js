@@ -120,6 +120,8 @@ var group__creature =
     [ "NWNX_Creature_AddAssociate", "group__creature.html#ga2d409d9021d548809df96419085ae480", null ],
     [ "NWNX_Creature_SetEffectIconFlashing", "group__creature.html#ga21360c24d3e29125d4691571f72a9f6d", null ],
     [ "NWNX_Creature_OverrideDamageLevel", "group__creature.html#ga445a30a2f40834a69ab0771d084097de", null ],
+    [ "NWNX_Creature_SetEncounter", "group__creature.html#ga0e15e53492fb6b92b72a56887688ada2", null ],
+    [ "NWNX_Creature_GetEncounter", "group__creature.html#ga9afd7b8b548d719351fb63ce1eb99293", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],

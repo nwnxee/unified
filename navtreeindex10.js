@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"structNWNX__Creature__SpecialAbility.html":[0,6,2],
+"structNWNX__Creature__SpecialAbility.html#a12855dd394f582dfae061237afa14172":[0,6,2,0],
+"structNWNX__Creature__SpecialAbility.html#a15cf0191817ec4432918e349d765f094":[0,6,2,2],
+"structNWNX__Creature__SpecialAbility.html#a29feef7d645de43a1d4c9e7b923b0d58":[0,6,2,1],
 "structNWNX__Damage__AttackEventData.html":[0,7,3],
 "structNWNX__Damage__AttackEventData.html#a02fb96244bd01690723d23386250b2e9":[0,7,3,4],
 "structNWNX__Damage__AttackEventData.html#a086c6998c3f5de7813d81ac0e2eecb5f":[0,7,3,16],
