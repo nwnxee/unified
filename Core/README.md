@@ -34,7 +34,7 @@ The core of NWNX:EE that does all the things.
 | `runscript <script name>` | Executes the given nwscript. Example: `runscript dm_killallplayers`
 | `eval <script chunk>` | Executes the given nwscript chunk. Example: `eval ApplyEffectToObject(DURATION_TYPE_INSTANT, EffectDeath(), GetFirstPC());`
 | `evalx <script chunk>` | Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: `evalx NWNX_Administration_ShutdownServer();`
-| `loglevel <plugin> [<loglevel>]` | Sets the log level of the given plugin. Example: `loglevel Events 7`
+| `loglevel <plugin> [<loglevel>]` | Sets the log level of the given plugin. `<plugin>` should not have the `NWNX_` prefix.  Example: `loglevel Events 7`
 | `logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]` | Control the output format of logs. Example: `logformat color timestamp noplugin nosource`
 
 ## Custom Resman Definition File
