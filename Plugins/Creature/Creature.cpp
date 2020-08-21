@@ -161,6 +161,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(AddAssociate);
     REGISTER(SetEffectIconFlashing);
     REGISTER(OverrideDamageLevel);
+    REGISTER(SetEncounter);
+    REGISTER(GetEncounter);
 
 #undef REGISTER
 }
@@ -2570,6 +2572,31 @@ ArgumentStack Creature::OverrideDamageLevel(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::SetEncounter(ArgumentStack&& args)
+{
+    if (auto* pCreature = creature(args))
+    {
+        auto encounterId = Services::Events::ExtractArgument<ObjectID>(args);
+        if (encounterId == Constants::OBJECT_INVALID || (Globals::AppManager()->m_pServerExoApp->GetEncounterByGameObjectID(encounterId)))
+        {
+            pCreature->m_oidEncounter = encounterId;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetEncounter(ArgumentStack&& args)
+{
+    ObjectID retVal = Constants::OBJECT_INVALID;
+    if (auto* pCreature = creature(args))
+    {
+        retVal = static_cast<ObjectID>(pCreature->m_oidEncounter);
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

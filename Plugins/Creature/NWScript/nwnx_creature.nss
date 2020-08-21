@@ -760,6 +760,16 @@ void NWNX_Creature_SetEffectIconFlashing(object oCreature, int nIconId, int bFla
 /// @param nDamageLevel A damage level, see damagelevels.2da. Allowed values: 0-255 or -1 to remove the override.
 void NWNX_Creature_OverrideDamageLevel(object oCreature, int nDamageLevel);
 
+/// @brief Set the encounter source of oCreature.
+/// @param oCreature The target creature.
+/// @param oEncounter The source encounter
+void NWNX_Creature_SetEncounter(object oCreature, object oEncounter);
+
+/// @brief Get the source of oCreature.
+/// @param oCreature The target creature.
+/// @return oEncounter The encounter
+object NWNX_Creature_GetEncounter(object oCreature);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -1915,3 +1925,23 @@ void NWNX_Creature_OverrideDamageLevel(object oCreature, int nDamageLevel)
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
+
+void NWNX_Creature_SetEncounter(object oCreature, object oEncounter)
+{
+    string sFunc = "SetEncounter";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oEncounter);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+object NWNX_Creature_GetEncounter(object oCreature)
+{
+    string sFunc = "GetEncounter";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Creature, sFunc);
+}
+
