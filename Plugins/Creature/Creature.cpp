@@ -1042,6 +1042,12 @@ ArgumentStack Creature::SetMovementRate(ArgumentStack&& args)
     if (auto *pCreature = creature(args))
     {
         const auto rate = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (pCreature->m_pStats->m_nMovementRate == Constants::MovementRate::Immobile)
+        {
+            pCreature->m_nAIState |= Constants::AIState::CanUseLegs;
+        }
+
         pCreature->m_pStats->SetMovementRate(rate);
     }
     return Services::Events::Arguments();

@@ -38,7 +38,7 @@ N/A
 - Object: {Get|Set|Delete}Persistent{Int|String|Float}()
 
 ### Fixed
-N/A
+- Creature: SetMovementRate() now properly reattaches the creature's legs when switching from NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE to the other constants
 
 ## 8193.14
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.14
