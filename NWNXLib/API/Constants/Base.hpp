@@ -93,6 +93,21 @@ namespace AIPriority
     }
 }
 
+namespace AIState
+{
+    enum TYPE
+    {
+        IsAlive           = 0x01,
+        CanUseLegs        = 0x02,
+        CanUseHands       = 0x04,
+        CanUseMouth       = 0x08,
+        CanUseEars        = 0x10,
+        CanUseEyes        = 0x20,
+        CanUseMind        = 0x40,
+        IsAbleToGoHostile = 0x80,
+    };
+}
+
 namespace ResRefType
 {
     enum TYPE
