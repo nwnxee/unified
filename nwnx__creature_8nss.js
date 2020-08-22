@@ -109,6 +109,7 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_OverrideDamageLevel", "group__creature.html#ga445a30a2f40834a69ab0771d084097de", null ],
     [ "NWNX_Creature_SetEncounter", "group__creature.html#ga0e15e53492fb6b92b72a56887688ada2", null ],
     [ "NWNX_Creature_GetEncounter", "group__creature.html#ga9afd7b8b548d719351fb63ce1eb99293", null ],
+    [ "NWNX_Creature_GetIsBartering", "group__creature.html#ga3dbffac4654be2a32707775255e39c15", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
