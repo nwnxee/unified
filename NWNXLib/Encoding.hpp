@@ -10,8 +10,9 @@ namespace NWNXLib::Encoding {
 enum Locale
 {
     Default,
-    Western,
-    Russian,
+    cp1250,
+    cp1251,
+    cp1252,
 };
 
 Locale GetDefaultLocale();
