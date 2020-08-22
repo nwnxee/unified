@@ -166,7 +166,7 @@ Console Commands</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>evalx &lt;script chunk&gt;</code>  </td><td class="markdownTableBodyNone">Executes the given nwscript chunk, this command already includes all nwnx headers available in the module. Example: <code>evalx <a class="el" href="group__admin.html#ga637a42678c8d730015dba00efddef6aa" title="Signals the server to immediately shut down.">NWNX_Administration_ShutdownServer()</a>;</code>   </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>loglevel &lt;plugin&gt; [&lt;loglevel&gt;]</code>  </td><td class="markdownTableBodyNone">Sets the log level of the given plugin. Example: <code>loglevel Events 7</code>   </td></tr>
+<td class="markdownTableBodyNone"><code>loglevel &lt;plugin&gt; [&lt;loglevel&gt;]</code>  </td><td class="markdownTableBodyNone">Sets the log level of the given plugin. <code>&lt;plugin&gt;</code> should not have the <code>NWNX_</code> prefix. Example: <code>loglevel Events 7</code>   </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]</code>  </td><td class="markdownTableBodyNone">Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code>   </td></tr>
 </table>
@@ -850,7 +850,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Aug 22 2020 10:54:48 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Aug 22 2020 10:59:22 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
