@@ -19,6 +19,7 @@
 #include "API/CResGFF.hpp"
 #include "API/CTwoDimArrays.hpp"
 #include "API/C2DA.hpp"
+#include "API/CNWSBarter.hpp"
 #include "API/CEffectIconObject.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -163,6 +164,7 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(OverrideDamageLevel);
     REGISTER(SetEncounter);
     REGISTER(GetEncounter);
+    REGISTER(GetIsBartering);
 
 #undef REGISTER
 }
@@ -2585,6 +2587,7 @@ ArgumentStack Creature::SetEncounter(ArgumentStack&& args)
     if (auto* pCreature = creature(args))
     {
         auto encounterId = Services::Events::ExtractArgument<ObjectID>(args);
+
         if (encounterId == Constants::OBJECT_INVALID || (Globals::AppManager()->m_pServerExoApp->GetEncounterByGameObjectID(encounterId)))
         {
             pCreature->m_oidEncounter = encounterId;
@@ -2597,9 +2600,22 @@ ArgumentStack Creature::SetEncounter(ArgumentStack&& args)
 ArgumentStack Creature::GetEncounter(ArgumentStack&& args)
 {
     ObjectID retVal = Constants::OBJECT_INVALID;
+
     if (auto* pCreature = creature(args))
     {
-        retVal = static_cast<ObjectID>(pCreature->m_oidEncounter);
+        retVal = pCreature->m_oidEncounter;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::GetIsBartering(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_pBarterInfo != nullptr && pCreature->m_pBarterInfo->m_bWindowOpen;
     }
 
     return Services::Events::Arguments(retVal);

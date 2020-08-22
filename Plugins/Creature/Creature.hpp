@@ -122,6 +122,7 @@ private:
     ArgumentStack OverrideDamageLevel           (ArgumentStack&& args);
     ArgumentStack SetEncounter                  (ArgumentStack&& args);
     ArgumentStack GetEncounter                  (ArgumentStack&& args);
+    ArgumentStack GetIsBartering                (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
