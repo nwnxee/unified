@@ -90,6 +90,7 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
     std::string resRef = "";
     float cr = 0.0;
     int32_t unique = 0;
+    int32_t alreadyUsed = 0;
 
     if (auto *pEncounter = encounter(args))
     {
@@ -101,10 +102,11 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
             resRef = pEncounter->m_pEncounterList[index].m_cCreatureResRef.GetResRefStr();
             cr = pEncounter->m_pEncounterList[index].m_fCR;
             unique = pEncounter->m_pEncounterList[index].m_bUnique;
+            alreadyUsed = pEncounter->m_pEncounterList[index].m_bAlreadyUsed;
         }
     }
 
-    return Services::Events::Arguments(resRef, cr, unique);
+    return Services::Events::Arguments(resRef, cr, unique, alreadyUsed);
 }
 
 ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
@@ -117,12 +119,15 @@ ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
         ASSERT_OR_THROW(cr >= 0.0);
         auto unique = Services::Events::ExtractArgument<int32_t>(args);
         unique = !!unique;
+        auto alreadyUsed = Services::Events::ExtractArgument<int32_t>(args);
+        alreadyUsed = !!alreadyUsed;
 
         if (index < pEncounter->m_nNumEncounterListEntries)
         {
             pEncounter->m_pEncounterList[index].m_cCreatureResRef = resRef.c_str();
             pEncounter->m_pEncounterList[index].m_fCR = cr;
             pEncounter->m_pEncounterList[index].m_fCreaturePoints = pEncounter->CalculatePointsFromCR(cr);
+            pEncounter->m_pEncounterList[index].m_bAlreadyUsed = alreadyUsed;
             pEncounter->m_pEncounterList[index].m_bUnique = unique;
         }
     }

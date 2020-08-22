@@ -12,6 +12,7 @@ struct NWNX_Encounter_CreatureListEntry
     string resref; ///< The resref.
     float challengeRating; ///< The challenge rating.
     int unique; ///< Creature will be unique to the encounter.
+    int alreadyUsed; //< Creature has already been used.
 };
 
 
@@ -110,6 +111,7 @@ struct NWNX_Encounter_CreatureListEntry NWNX_Encounter_GetEncounterCreatureByInd
 
     NWNX_CallFunction(NWNX_Encounter, sFunc);
 
+    creatureEntry.alreadyUsed = NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
     creatureEntry.unique = NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
     creatureEntry.challengeRating = NWNX_GetReturnValueFloat(NWNX_Encounter, sFunc);
     creatureEntry.resref = NWNX_GetReturnValueString(NWNX_Encounter, sFunc);
@@ -121,6 +123,7 @@ void NWNX_Encounter_SetEncounterCreatureByIndex(object encounter, int index, str
 {
     string sFunc = "SetEncounterCreatureByIndex";
 
+    NWNX_PushArgumentInt(NWNX_Encounter, sFunc, creatureEntry.alreadyUsed);
     NWNX_PushArgumentInt(NWNX_Encounter, sFunc, creatureEntry.unique);
     NWNX_PushArgumentFloat(NWNX_Encounter, sFunc, creatureEntry.challengeRating);
     NWNX_PushArgumentString(NWNX_Encounter, sFunc, creatureEntry.resref);
