@@ -331,7 +331,7 @@ int32_t ItemEvents::CanEquipItemHook(CNWSCreature* thisPtr, CNWSItem* pItem, uin
     Events::PushEventData("BEFORE_RESULT", std::to_string(retVal));
     Events::SignalEvent("NWNX_ON_VALIDATE_ITEM_EQUIP_AFTER", thisPtr->m_idSelf, &sAfterEventResult);
 
-    retVal = sAfterEventResult.empty() ? retVal : sAfterEventResult == "1";
+    retVal = sAfterEventResult.empty() ? retVal : std::stoi(sAfterEventResult);
 
     return retVal;
 }
