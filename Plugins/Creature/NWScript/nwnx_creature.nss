@@ -765,10 +765,15 @@ void NWNX_Creature_OverrideDamageLevel(object oCreature, int nDamageLevel);
 /// @param oEncounter The source encounter
 void NWNX_Creature_SetEncounter(object oCreature, object oEncounter);
 
-/// @brief Get the source of oCreature.
+/// @brief Get the encounter source of oCreature.
 /// @param oCreature The target creature.
-/// @return oEncounter The encounter
+/// @return The encounter, OBJECT_INVALID if not part of an encounter or on error
 object NWNX_Creature_GetEncounter(object oCreature);
+
+/// @brief Get if oCreature is currently bartering.
+/// @param oCreature The target creature.
+/// @return TRUE if oCreature is bartering, FALSE if not or on error.
+int NWNX_Creature_GetIsBartering(object oCreature);
 
 /// @}
 
@@ -1945,3 +1950,12 @@ object NWNX_Creature_GetEncounter(object oCreature)
     return NWNX_GetReturnValueObject(NWNX_Creature, sFunc);
 }
 
+int NWNX_Creature_GetIsBartering(object oCreature)
+{
+    string sFunc = "GetIsBartering";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}

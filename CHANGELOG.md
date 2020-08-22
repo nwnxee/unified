@@ -20,6 +20,7 @@ N/A
 - Creature: {Get|Set}Encounter()
 - Creature: SetEffectIconFlashing()
 - Creature: OverrideDamageLevel()
+- Creature: GetIsBartering()
 - Effect: ReplaceEffect()
 - Player: ToggleDM()
 - Player: SetObjectMouseCursorOverride()
