@@ -54,7 +54,11 @@ _______________________________________
     ITEM_OBJECT_ID          | object | Convert to object with StringToObject()|
     BEFORE_RESULT           | int    | TRUE/FALSE, only in _AFTER events|
 
-    @note Setting the result to "0" will cause the item to appear unusable (red) in the inventory.
+    @note The event result should be one of:
+      "0" - Equip denied
+      "1" - Equip okay
+      "2" - Swap currently equipped item
+      "3" - Unequip items in both hands before equipping
     @note Setting the result of this event will NOT prevent the item from being equipped, only used (e.g. scrolls/wands). See the "NWNX_ON_VALIDATE_ITEM_EQUIP_*" events to control equip behaviour.
     @note If the BEFORE event is not skipped, BEFORE_RESULT is the value of running the function normally. Otherwise, this is the set result value.
 
