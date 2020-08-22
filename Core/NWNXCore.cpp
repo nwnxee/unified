@@ -466,18 +466,18 @@ void NWNXCore::InitialSetupCommands()
             std::string plugin = args.substr(0, space);
             std::string level = args.substr(space + 1);
 
-            std::string pluginName = g_core->m_services->m_plugins->GetCanonicalPluginName(plugin);
+            std::string pluginName = g_core->m_services->m_plugins->GetCanonicalPluginName("NWNX_" + plugin);
 
             if (!pluginName.empty())
             {
                 if (auto logLevel = Utils::from_string<uint32_t>(level))
                 {
                     LOG_INFO("Setting log level of plugin '%s' to '%u'", pluginName, *logLevel);
-                    Log::SetLogLevel(("NWNX_" + pluginName).c_str(), static_cast<Log::Channel::Enum>(*logLevel));
+                    Log::SetLogLevel(pluginName.c_str(), static_cast<Log::Channel::Enum>(*logLevel));
                 }
                 else if (level == plugin) // no level given.
                 {
-                    LOG_INFO("Log level for %s is %u", pluginName, Log::GetLogLevel(("NWNX_"+pluginName).c_str()));
+                    LOG_INFO("Log level for %s is %u", pluginName, Log::GetLogLevel(pluginName.c_str()));
                 }
                 else
                 {
