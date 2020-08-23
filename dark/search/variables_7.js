@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['level_2632',['level',['../structNWNX__Creature__SpecialAbility.html#a15cf0191817ec4432918e349d765f094',1,'NWNX_Creature_SpecialAbility']]]
+  ['key_2633',['key',['../structNWNX__Object__LocalVariable.html#a71602dfd910b91f55beda204d293e7c4',1,'NWNX_Object_LocalVariable']]]
 ];

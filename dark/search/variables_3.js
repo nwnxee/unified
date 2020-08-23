@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['elinkleft_2585',['eLinkLeft',['../structNWNX__EffectUnpacked.html#afda0d34cd6152afc231de7fd7f9fd374',1,'NWNX_EffectUnpacked']]],
-  ['elinkright_2586',['eLinkRight',['../structNWNX__EffectUnpacked.html#ab8aea15f6489112deb7f74f45b26f9c7',1,'NWNX_EffectUnpacked']]]
+  ['domain_2586',['domain',['../structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b',1,'NWNX_Creature_MemorisedSpell']]]
 ];

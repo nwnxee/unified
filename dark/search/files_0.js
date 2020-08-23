@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['awesome_2dnwnx_2emd_1570',['Awesome-NWNX.md',['../Awesome-NWNX_8md.html',1,'']]]
+  ['awesome_2dnwnx_2emd_1571',['Awesome-NWNX.md',['../Awesome-NWNX_8md.html',1,'']]]
 ];

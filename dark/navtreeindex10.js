@@ -96,6 +96,7 @@ var NAVTREEINDEX10 =
 "structNWNX__EffectUnpacked.html#af8c0afa7dc0d93eb5597534aacbcbcb7":[0,11,2,32],
 "structNWNX__EffectUnpacked.html#afda0d34cd6152afc231de7fd7f9fd374":[0,11,2,10],
 "structNWNX__Encounter__CreatureListEntry.html":[0,13,2],
+"structNWNX__Encounter__CreatureListEntry.html#a4b02de9028d3e4ddf4927ed1d3919be9":[0,13,2,3],
 "structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566":[0,13,2,1],
 "structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601":[0,13,2,2],
 "structNWNX__Encounter__CreatureListEntry.html#afd224e140c4b64e6ad8e9c20c7e265c6":[0,13,2,0],

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['domain_2584',['domain',['../structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b',1,'NWNX_Creature_MemorisedSpell']]]
+  ['challengerating_2584',['challengeRating',['../structNWNX__Encounter__CreatureListEntry.html#a9097b69d43e0f0e13d28b122f129c566',1,'NWNX_Encounter_CreatureListEntry']]],
+  ['channel_2585',['channel',['../structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa',1,'NWNX_Redis_PubSubMessageData']]]
 ];

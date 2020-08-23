@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unique_3001',['unique',['../structNWNX__Encounter__CreatureListEntry.html#ad9fd36779fea2410a0c7c91ca019d601',1,'NWNX_Encounter_CreatureListEntry']]]
+  ['type_3002',['type',['../structNWNX__Object__LocalVariable.html#a8d610962730ec74152b0fca0a45fce6d',1,'NWNX_Object_LocalVariable']]]
 ];
