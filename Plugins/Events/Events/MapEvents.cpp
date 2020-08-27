@@ -42,23 +42,16 @@ MapEvents::MapEvents(Services::HooksProxy* hooker)
 int32_t MapEvents::HandleMapPinSetMapPinAtMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer)
 {
     int32_t retVal;
-
     ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
-
     int offset = 0;
-    // Peek at the coordinates first
-    float x = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(x);
-    float y = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(y);
-    float z = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(z);
 
-    // Get number of bytes for the message
-    int len = Utils::PeekMessage<int32_t>(thisPtr, offset); offset += sizeof(len);
+    // Peek at the coordinates first
+    auto x = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(x);
+    auto y = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(y);
+    auto z = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(z);
 
     // Copy the string over
-    std::string note;
-    note.reserve(len+1);
-    note.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), len);
-    note[len] = '\0';
+    auto note = Utils::PeekMessage<std::string>(thisPtr, offset);
 
     Events::PushEventData("PIN_X", std::to_string(x));
     Events::PushEventData("PIN_Y", std::to_string(y));
@@ -85,28 +78,20 @@ int32_t MapEvents::HandleMapPinSetMapPinAtMessageHook(CNWSMessage *thisPtr, CNWS
 int32_t MapEvents::HandleMapPinChangePinMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pPlayer)
 {
     int32_t retVal;
-
     ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
-
     int offset = 0;
 
     // Peek at the coordinates first
-    float x = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(x);
-    float y = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(y);
-    float z = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(z);
-
-    // Get number of bytes for the message
-    int len = Utils::PeekMessage<int32_t>(thisPtr, offset); offset += sizeof(len);
+    auto x = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(x);
+    auto y = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(y);
+    auto z = Utils::PeekMessage<float>(thisPtr, offset); offset += sizeof(z);
 
     // Copy the string over
-    std::string note;
-    note.reserve(len+1);
-    note.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), len);
-    note[len] = '\0';
-    offset += len;
+    auto note = Utils::PeekMessage<std::string>(thisPtr, offset);
+    offset += note.length() + 4;
 
     // Copy the pin id over
-    int32_t pin_id = Utils::PeekMessage<int32_t>(thisPtr, offset);
+    auto pin_id = Utils::PeekMessage<int32_t>(thisPtr, offset);
 
     Events::PushEventData("PIN_X", std::to_string(x));
     Events::PushEventData("PIN_Y", std::to_string(y));
@@ -139,7 +124,7 @@ int32_t MapEvents::HandleMapPinDestroyMapPinMessageHook(CNWSMessage *thisPtr, CN
     ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
 
     // Send the pin id
-    int32_t pin_id = Utils::PeekMessage<int32_t>(thisPtr, 0);
+    auto pin_id = Utils::PeekMessage<int32_t>(thisPtr, 0);
 
     Events::PushEventData("PIN_ID", std::to_string(pin_id));
 
