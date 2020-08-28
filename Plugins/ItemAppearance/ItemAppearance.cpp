@@ -21,30 +21,17 @@ using namespace NWNXLib::API;
 
 static ItemAppearance::ItemAppearance* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-  return new Plugin::Info
-  {
-    "ItemAppearance",
-    "Functions exposing additional item appearance functionality",
-    "orth",
-    "plenarius@gmail.com",
-    3,
-    true
-  };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new ItemAppearance::ItemAppearance(params);
+    g_plugin = new ItemAppearance::ItemAppearance(services);
     return g_plugin;
 }
 
 
 namespace ItemAppearance {
 
-ItemAppearance::ItemAppearance(const Plugin::CreateParams& params)
-  : Plugin(params)
+ItemAppearance::ItemAppearance(Services::ProxyServiceList* services)
+        : Plugin(services)
 {
 #define REGISTER(func)              \
     GetServices()->m_events->RegisterEvent(#func, std::bind(&ItemAppearance::func, this, std::placeholders::_1))
@@ -67,7 +54,7 @@ ItemAppearance::~ItemAppearance()
 
 CNWSItem *ItemAppearance::item(ArgumentStack& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {

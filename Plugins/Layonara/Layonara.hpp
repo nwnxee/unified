@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include <list>
 #include <map>
@@ -16,7 +15,7 @@ namespace Layonara {
 class Layonara : public NWNXLib::Plugin
 {
 public:
-    Layonara(const Plugin::CreateParams& params);
+    Layonara(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Layonara();
 
 private:
@@ -89,7 +88,7 @@ private:
 
     unordered_map<uint8_t, std::array<int32_t, 10>> m_GemBonuses;
     unordered_map<uint8_t, int8_t> m_SurfaceMaterialSpeeds;
-    unordered_map<NWNXLib::API::Types::ObjectID, int32_t> m_objectCurrentMaterial;
+    unordered_map<ObjectID, int32_t> m_objectCurrentMaterial;
 
     std::list<int32_t> m_ElementalDamageTypes;
     std::list<int32_t> m_PhysicalDamageTypes;

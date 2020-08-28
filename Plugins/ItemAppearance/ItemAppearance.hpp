@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSItem.hpp"
 #include <list>
 #include <map>
@@ -15,7 +14,7 @@ namespace ItemAppearance {
 class ItemAppearance : public NWNXLib::Plugin
 {
 public:
-    ItemAppearance(const Plugin::CreateParams& params);
+    ItemAppearance(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ItemAppearance();
 
 private:
