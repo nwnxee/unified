@@ -290,9 +290,10 @@ uint32_t ItemEvents::FindItemWithBaseItemIdHook(CItemRepository* thisPtr, uint32
 
 int32_t ItemEvents::LearnScrollHook(CNWSCreature *thisPtr, ObjectID oidScrollToLearn)
 {
-    int32_t retVal;
+    int32_t retVal = false;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
+        Events::PushEventData("RESULT", std::to_string(retVal));
         Events::PushEventData("SCROLL", Utils::ObjectIDToString(oidScrollToLearn));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
