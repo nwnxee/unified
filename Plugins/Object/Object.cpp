@@ -682,7 +682,7 @@ ArgumentStack Object::Export(ArgumentStack&& args)
             case Constants::ObjectType::Item:       ExportObject(Constants::ResRefType::UTI); break;
             case Constants::ObjectType::Placeable:  ExportObject(Constants::ResRefType::UTP); break;
             case Constants::ObjectType::Waypoint:   ExportObject(Constants::ResRefType::UTW); break;
-            case Constants::ObjectType::Store:      ExportObject(Constants::ResRefType::UTS); break;
+            case Constants::ObjectType::Store:      ExportObject(Constants::ResRefType::UTM); break;
             case Constants::ObjectType::Door:       ExportObject(Constants::ResRefType::UTD); break;
             case Constants::ObjectType::Trigger:    ExportObject(Constants::ResRefType::UTT); break;
             default:
