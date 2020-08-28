@@ -965,9 +965,7 @@ void Layonara::SetPositionHook(bool before, CNWSObject* thisPtr, Vector vPos, in
         auto pServer = Globals::AppManager()->m_pServerExoApp;
         auto pCreature = pServer->GetCreatureByGameObjectID(thisPtr->m_idSelf);
         auto pMaster = pServer->GetCreatureByGameObjectID(pCreature->m_oidMaster);
-        auto pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(thisPtr->m_idSelf);
-        if ((pMaster != nullptr && !pMaster->m_bPlayerCharacter) ||
-                (pPlayer && pPlayer->m_nCharacterType == Constants::CharacterType::DM) || pCreature->m_nAssociateType == 7 || pCreature->m_nAssociateType == 8 ||
+        if ((pMaster != nullptr && !pMaster->m_bPlayerCharacter) || pCreature->m_pStats->GetIsDM() || pCreature->m_nAssociateType == 7 || pCreature->m_nAssociateType == 8 ||
             !pCreature->m_bPlayerCharacter)
         {
             return;
