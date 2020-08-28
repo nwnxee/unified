@@ -33,13 +33,8 @@ int32_t DebugEvents::HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, 
         case Constants::MessageCheatMinor::RunScript:
         {
             int32_t offset = 0;
-            auto length = Utils::PeekMessage<int32_t>(thisPtr, offset);
-            offset += sizeof(length);
-            std::string scriptName;
-            scriptName.reserve(length+1);
-            scriptName.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), length);
-            scriptName[length] = '\0';
-            offset += length;
+            auto scriptName = Utils::PeekMessage<std::string>(thisPtr, offset);
+            offset += scriptName.length() + 4;
 
             OBJECT_ID oidTarget = pPlayer->SatisfiesBuild(8193, 14) ?
                              Utils::PeekMessage<OBJECT_ID>(thisPtr, offset) : Constants::OBJECT_INVALID;
@@ -65,13 +60,8 @@ int32_t DebugEvents::HandlePlayerToServerCheatMessageHook(CNWSMessage *thisPtr, 
         case Constants::MessageCheatMinor::RunScriptChunk:
         {
             int32_t offset = 0;
-            auto length = Utils::PeekMessage<int32_t>(thisPtr, offset);
-            offset += sizeof(length);
-            std::string scriptChunk;
-            scriptChunk.reserve(length+1);
-            scriptChunk.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), length);
-            scriptChunk[length] = '\0';
-            offset += length;
+            auto scriptChunk = Utils::PeekMessage<std::string>(thisPtr, offset);
+            offset += scriptChunk.length() + 4;
 
             auto oidTarget = Utils::PeekMessage<OBJECT_ID>(thisPtr, offset);
             if (oidTarget == Constants::OBJECT_INVALID)
