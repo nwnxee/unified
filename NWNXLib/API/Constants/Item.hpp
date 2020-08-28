@@ -212,7 +212,7 @@ namespace BaseItem
         CraftMaterialSmall                         = 110,
         Whip                                       = 111,
         CraftBase                                  = 112,
-        Invalid                                    = 255,
+        Invalid                                    = 256,
         CEP_Trident                                = 300,
         CEP_HeavyPick                              = 301,
         CEP_LightPick                              = 302,
