@@ -119,6 +119,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     SCROLL                | object | Convert to object with StringToObject()
+    RESULT                | int    | Returns TRUE in the _AFTER if the learning was successful, FALSE otherwise
 
 _______________________________________
     ## Validate Item Equip Events
