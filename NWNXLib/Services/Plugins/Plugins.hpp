@@ -20,7 +20,6 @@ public: // Structures
     {
         PluginID m_id;
         std::string m_path;
-        Plugin::Info* m_info;
         Plugin* m_plugin;
     };
 
@@ -33,19 +32,14 @@ private: // Structures
     struct PluginDataInternal
     {
     public: // Structures
-        using PluginInfoFuncPtr = Plugin::Info*(*)();
-        using PluginLoadFuncPtr = Plugin*(*)(Plugin::CreateParams);
-        using PluginUnloadFuncPtr = void(*)(const Plugin::UnloadReason);
+        using PluginLoadFuncPtr = Plugin*(*)(ProxyServiceList*);
 
     public:
         PluginID m_id;
         std::string m_path;
-        std::unique_ptr<Plugin::Info> m_info;
         std::unique_ptr<Plugin> m_plugin;
         void* m_handle;
-        PluginInfoFuncPtr m_pluginInfoFunc;
         PluginLoadFuncPtr m_pluginLoadFunc;
-        PluginUnloadFuncPtr m_pluginUnloadFunc;
     };
 
     using PluginMap = std::map<PluginID, PluginDataInternal>;
@@ -54,8 +48,8 @@ public:
     Plugins();
     ~Plugins();
 
-    RegistrationToken LoadPlugin(const std::string& path, Plugin::CreateParams&& params);
-    void UnloadPlugin(RegistrationToken&& token, const Plugin::UnloadReason reason);
+    RegistrationToken LoadPlugin(const std::string& path, ProxyServiceList* services);
+    void UnloadPlugin(RegistrationToken&& token);
 
     std::optional<PluginData> FindPluginById(const PluginID id) const;
     std::optional<PluginData> FindPluginByName(const std::string& name) const;
@@ -65,7 +59,7 @@ public:
 
 private:
     PluginMap m_plugins;
-    void UnloadPluginInternal(PluginMap::iterator plugin, const Plugin::UnloadReason reason);
+    void UnloadPluginInternal(PluginMap::iterator plugin);
     PluginID GetNextAvailableId();
 };
 

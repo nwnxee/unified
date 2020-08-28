@@ -27,44 +27,44 @@ struct CExoString
     CExoString(int32_t value);
     CExoString(const std::string & other);
     CExoString & operator=(const std::string & other);
-    void string();
+    void string() const;
     ~CExoString();
     CExoString & operator=(const CExoString & string);
     CExoString & operator=(const char * string);
-    BOOL operator==(const CExoString & string);
-    BOOL operator==(const char * string);
-    BOOL operator!=(const CExoString & string);
-    BOOL operator!=(const char * string);
-    BOOL operator<(const CExoString & string);
-    BOOL operator<(const char * string);
-    BOOL operator>(const CExoString & string);
-    BOOL operator>(const char * string);
-    BOOL operator<=(const CExoString & string);
-    BOOL operator<=(const char * string);
-    BOOL operator>=(const CExoString & string);
-    BOOL operator>=(const char * string);
-    char operator[](int32_t position);
-    CExoString operator+(const CExoString & string);
-    int32_t AsINT();
-    float AsFLOAT();
-    char * CStr();
-    int32_t Find(const CExoString & string, int32_t position = 0);
-    int32_t Find(char ch, int32_t position = 0);
-    int32_t FindNot(char ch, int32_t position = 0);
+    BOOL operator==(const CExoString & string) const;
+    BOOL operator==(const char * string) const;
+    BOOL operator!=(const CExoString & string) const;
+    BOOL operator!=(const char * string) const;
+    BOOL operator<(const CExoString & string) const;
+    BOOL operator<(const char * string) const;
+    BOOL operator>(const CExoString & string) const;
+    BOOL operator>(const char * string) const;
+    BOOL operator<=(const CExoString & string) const;
+    BOOL operator<=(const char * string) const;
+    BOOL operator>=(const CExoString & string) const;
+    BOOL operator>=(const char * string) const;
+    char operator[](int32_t position) const;
+    CExoString operator+(const CExoString & string) const;
+    int32_t AsINT() const;
+    float AsFLOAT() const;
+    char * CStr() const;
+    int32_t Find(const CExoString & string, int32_t position = 0) const;
+    int32_t Find(char ch, int32_t position = 0) const;
+    int32_t FindNot(char ch, int32_t position = 0) const;
     void Format(const char * format);
-    int32_t GetLength();
+    int32_t GetLength() const;
     void Insert(const CExoString & string, int32_t position);
-    BOOL IsEmpty();
-    CExoString Left(int32_t count);
-    CExoString LowerCase();
-    CExoString Right(int32_t count);
-    CExoString SubString(int32_t start, int32_t count = - 1);
-    CExoString UpperCase();
-    BOOL CompareNoCase(const CExoString & sString);
-    BOOL ComparePrefixNoCase(const CExoString & sString, int32_t nSize);
+    BOOL IsEmpty() const;
+    CExoString Left(int32_t count) const;
+    CExoString LowerCase() const;
+    CExoString Right(int32_t count) const;
+    CExoString SubString(int32_t start, int32_t count = - 1) const;
+    CExoString UpperCase() const;
+    BOOL CompareNoCase(const CExoString & sString) const;
+    BOOL ComparePrefixNoCase(const CExoString & sString, int32_t nSize) const;
     BOOL StripNonAlphaNumeric(BOOL bFileName = true, BOOL bEmail = false, BOOL bMasterServer = false);
-    CExoString Strip(bool leading = true, bool trailing = true, const char * set = " \t\v\r\n\f");
-    CExoString AsTAG();
+    CExoString Strip(bool leading = true, bool trailing = true, const char * set = " \t\v\r\n\f") const;
+    CExoString AsTAG() const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoString
@@ -77,3 +77,12 @@ struct CExoString
 NWN_API_EPILOGUE(CExoString)
 #endif
 
+namespace std {
+template <> struct hash<CExoString>
+{
+    std::size_t operator()(const CExoString& k) const
+    {
+        return std::hash<std::string>{}(k.CStr());
+    }
+};
+}

@@ -83,7 +83,7 @@ void main()
             NWNX_Tests_Report("NWNX_SQL", "ReadString", s == "FourtyTwooo");
 
             string sObjId = NWNX_SQL_ReadDataInActiveRow(3); // In base 10
-            object o2 = NWNX_Object_StringToObject(IntToHexString(StringToInt(sObjId)));
+            object o2 = StringToObject(IntToHexString(StringToInt(sObjId)));
             NWNX_Tests_Report("NWNX_SQL", "ReadObjectId", o == o2);
 
             object o3 = NWNX_SQL_ReadFullObjectInActiveRow(4, GetArea(o), v.x, v.y, v.z);
@@ -165,7 +165,7 @@ void main()
     NWNX_SQL_ExecuteQuery("delete from stress_test where i_key > 0");
     int res = NWNX_SQL_GetAffectedRows();
     WriteTimestampedLogEntry("Deleted " + IntToString(res) + " rows.");
-    report ("Delete rows", res == STRESS_CNT);
+    NWNX_Tests_Report("NWNX_SQL", "Delete rows", res == STRESS_CNT);
 
     // now do some elegant inserts
     string test3 = "";
@@ -190,19 +190,19 @@ void main()
     NWNX_SQL_ExecuteQuery("delete from stress_test where i_key > 0");
     res = NWNX_SQL_GetAffectedRows();
     WriteTimestampedLogEntry("Deleted " + IntToString(res) + " rows.");
-    NWNX_Tests_Report("Delete rows", res == STRESS_CNT);
+    NWNX_Tests_Report("NWNX_SQL", "Delete rows", res == STRESS_CNT);
 
     // Test some error output.
     b = NWNX_SQL_ExecuteQuery("create table error_test (col varchar(10))");
-    NWNX_Tests_Report("Test Table Create", b);
+    NWNX_Tests_Report("NWNX_SQL", "Test Table Create", b);
 
     b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcdefghij')");
-    NWNX_Tests_Report("good insert", b);
+    NWNX_Tests_Report("NWNX_SQL", "good insert", b);
 
     if (db_type != "SQLITE")
     {// SQLite doesn't care about size constraints of columns
         b = NWNX_SQL_ExecuteQuery("insert into error_test values('abcde000fghij')");
-        report ("bad insert", !b);
+        NWNX_Tests_Report("NWNX_SQL", "bad insert", !b);
         if (!b) {
         WriteTimestampedLogEntry("There should be an error a couple rows up.");
         }

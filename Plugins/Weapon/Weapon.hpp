@@ -5,7 +5,6 @@
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
@@ -32,7 +31,7 @@ namespace Weapon {
 class Weapon : public NWNXLib::Plugin
 {
 public:
-    Weapon(const Plugin::CreateParams& params);
+    Weapon(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Weapon();
 
 private:

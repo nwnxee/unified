@@ -70,6 +70,7 @@ struct CNWSpell
     BOOL m_bHostile;
     int32_t m_nFeatId;
     BOOL m_bHasProjectile;
+    uint32_t m_nSpellId;
 
     CNWSpell();
     ~CNWSpell();

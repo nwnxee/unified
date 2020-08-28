@@ -14,4 +14,9 @@ add_plugin(Tweaks
     "Tweaks/DeadCreatureFiresOnAreaExit.cpp"
     "Tweaks/PreserveActionsOnDMPossess.cpp"
     "Tweaks/FixGreaterSanctuaryBug.cpp"
+    "Tweaks/ItemChargesCost.cpp"
+    "Tweaks/FixDispelEffectLevels.cpp"
+    "Tweaks/AddPrestigeclassCasterLevels.cpp"
+    "Tweaks/FixUnlimitedPotionsBug.cpp"
+    "Tweaks/UnhardcodeShields.cpp"
 )

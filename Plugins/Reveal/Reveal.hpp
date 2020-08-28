@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "Common.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
@@ -13,7 +12,7 @@ namespace Reveal {
 class Reveal : public NWNXLib::Plugin
 {
 public:
-    Reveal(const Plugin::CreateParams& params);
+    Reveal(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Reveal();
 
 private:

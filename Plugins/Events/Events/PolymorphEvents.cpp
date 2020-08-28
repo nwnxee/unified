@@ -10,22 +10,20 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 
-static Hooking::FunctionHook* m_OnApplyPolymorphHook = nullptr;
-static Hooking::FunctionHook* m_OnRemovePolymorphHook = nullptr;
+static Hooking::FunctionHook* s_OnApplyPolymorphHook;
+static Hooking::FunctionHook* s_OnRemovePolymorphHook;
 
 PolymorphEvents::PolymorphEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_POLYMORPH_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti,
-            int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
+        s_OnApplyPolymorphHook = hooker->RequestExclusiveHook
+            <Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
             (PolymorphEvents::OnApplyPolymorphHook);
-        m_OnApplyPolymorphHook = hooker->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler16OnApplyPolymorphEP10CNWSObjectP11CGameEffecti);
     });
     Events::InitOnFirstSubscribe("NWNX_ON_UNPOLYMORPH_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect,
-            int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>
+        s_OnRemovePolymorphHook = hooker->RequestExclusiveHook
+            <Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>
             (PolymorphEvents::OnRemovePolymorphHook);
-        m_OnRemovePolymorphHook = hooker->FindHookByAddress(Functions::_ZN21CNWSEffectListHandler17OnRemovePolymorphEP10CNWSObjectP11CGameEffect);
     });
 
 }
@@ -47,7 +45,7 @@ int32_t PolymorphEvents::OnApplyPolymorphHook
     Events::PushEventData("POLYMORPH_TYPE", std::to_string(type));
     if (Events::SignalEvent("NWNX_ON_POLYMORPH_BEFORE", pObject->m_idSelf))
     {
-        retVal = m_OnApplyPolymorphHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);
+        retVal = s_OnApplyPolymorphHook->CallOriginal<int32_t>(pThis, pObject, pEffect, bLoadingGame);
     }
     else
     {
@@ -73,7 +71,7 @@ int32_t PolymorphEvents::OnRemovePolymorphHook
 
     if (Events::SignalEvent("NWNX_ON_UNPOLYMORPH_BEFORE", pObject->m_idSelf))
     {
-        retVal = m_OnRemovePolymorphHook->CallOriginal<int32_t>(pThis, pObject, pEffect);
+        retVal = s_OnRemovePolymorphHook->CallOriginal<int32_t>(pThis, pObject, pEffect);
     }
     else
     {

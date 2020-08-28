@@ -2,9 +2,7 @@
 
 #include <cstdint>
 
-namespace NWNXLib {
-
-namespace Platform {
+namespace NWNXLib::Platform {
 
 class ASLR
 {
@@ -18,7 +16,5 @@ private:
     static uintptr_t s_baseAddress;
     static uintptr_t s_globalBaseAddress;
 };
-
-}
 
 }

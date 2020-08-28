@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "API/Types.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -12,18 +11,18 @@ namespace Dialog {
 class Dialog : public NWNXLib::Plugin
 {
 public:
-    Dialog(const Plugin::CreateParams& params);
+    Dialog(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Dialog();
 
 private:
     struct Hooks {
         static void GetStartEntry(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner);
-        static void GetStartEntryOneLiner(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript);
+        static void GetStartEntryOneLiner(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript, const CExoArrayList<ScriptParam>&);
         static void SendDialogEntry(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, int32_t bPlayHelloSound);
         static void SendDialogReplies(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly);
         static void HandleReply(bool, CNWSDialog *pThis, uint32_t nPlayerID, CNWSObject* pNWSObjectOwner, uint32_t nReplyIndex, int32_t bEscapeDialog, uint32_t currentEntryIndex);
-        static void CheckScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*);
-        static void RunScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*);
+        static void CheckScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*, const CExoArrayList<ScriptParam>&);
+        static void RunScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*, const CExoArrayList<ScriptParam>&);
     };
     static enum State {
         DIALOG_STATE_INVALID,

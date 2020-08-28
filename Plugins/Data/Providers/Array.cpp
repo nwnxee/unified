@@ -2,7 +2,6 @@
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
-using namespace NWNXLib::API::Types;
 using namespace NWNXLib::Services;
 
 namespace Data {
@@ -53,18 +52,15 @@ Events::ArgumentStack Array::ArrayAt(Events::ArgumentStack&& rawArgs)
     const CommonArgs args = ExtractCommonArgs(rawArgs);
     const int32_t index = Events::ExtractArgument<int32_t>(rawArgs);
 
-    Events::ArgumentStack ret;
-
     switch (args.type)
     {
-        case ArrayType::FLOAT: Events::InsertArgument(ret, ArrayImpl<float>::At(args.oid, args.tag, index)); break;
-        case ArrayType::INTEGER: Events::InsertArgument(ret, ArrayImpl<int32_t>::At(args.oid, args.tag, index)); break;
-        case ArrayType::OBJECT: Events::InsertArgument(ret, ArrayImpl<ObjectID>::At(args.oid, args.tag, index)); break;
-        case ArrayType::STRING: Events::InsertArgument(ret, ArrayImpl<std::string>::At(args.oid, args.tag, index)); break;
-        default: ASSERT_FAIL(); break;
+        case ArrayType::FLOAT:   return Events::Arguments(ArrayImpl<float>::At(args.oid, args.tag, index));
+        case ArrayType::INTEGER: return Events::Arguments(ArrayImpl<int32_t>::At(args.oid, args.tag, index));
+        case ArrayType::OBJECT:  return Events::Arguments(ArrayImpl<ObjectID>::At(args.oid, args.tag, index));
+        case ArrayType::STRING:  return Events::Arguments(ArrayImpl<std::string>::At(args.oid, args.tag, index));
+        default: ASSERT_FAIL();  return Events::Arguments();
     }
 
-    return ret;
 }
 
 Events::ArgumentStack Array::ArrayClear(Events::ArgumentStack&& rawArgs)
@@ -80,7 +76,7 @@ Events::ArgumentStack Array::ArrayClear(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArrayContains(Events::ArgumentStack&& rawArgs)
@@ -97,9 +93,7 @@ Events::ArgumentStack Array::ArrayContains(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    Events::ArgumentStack ret;
-    Events::InsertArgument(ret, containsElement ? 1 : 0);
-    return ret;
+    return Events::Arguments(containsElement ? 1 : 0);
 }
 
 Events::ArgumentStack Array::ArrayCopy(Events::ArgumentStack&& rawArgs)
@@ -116,7 +110,7 @@ Events::ArgumentStack Array::ArrayCopy(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArrayErase(Events::ArgumentStack&& rawArgs)
@@ -133,24 +127,21 @@ Events::ArgumentStack Array::ArrayErase(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArrayFind(Events::ArgumentStack&& rawArgs)
 {
     const CommonArgs args = ExtractCommonArgs(rawArgs);
-    Events::ArgumentStack ret;
 
     switch (args.type)
     {
-        case ArrayType::FLOAT: Events::InsertArgument(ret, ArrayImpl<float>::Find(args.oid, args.tag, Events::ExtractArgument<float>(rawArgs))); break;
-        case ArrayType::INTEGER: Events::InsertArgument(ret, ArrayImpl<int32_t>::Find(args.oid, args.tag, Events::ExtractArgument<int32_t>(rawArgs))); break;
-        case ArrayType::OBJECT: Events::InsertArgument(ret, ArrayImpl<ObjectID>::Find(args.oid, args.tag, Events::ExtractArgument<ObjectID>(rawArgs))); break;
-        case ArrayType::STRING: Events::InsertArgument(ret, ArrayImpl<std::string>::Find(args.oid, args.tag, Events::ExtractArgument<std::string>(rawArgs))); break;
-        default: ASSERT_FAIL(); break;
+        case ArrayType::FLOAT:   return Events::Arguments(ArrayImpl<float>::Find(args.oid, args.tag, Events::ExtractArgument<float>(rawArgs)));
+        case ArrayType::INTEGER: return Events::Arguments(ArrayImpl<int32_t>::Find(args.oid, args.tag, Events::ExtractArgument<int32_t>(rawArgs)));
+        case ArrayType::OBJECT:  return Events::Arguments(ArrayImpl<ObjectID>::Find(args.oid, args.tag, Events::ExtractArgument<ObjectID>(rawArgs)));
+        case ArrayType::STRING:  return Events::Arguments(ArrayImpl<std::string>::Find(args.oid, args.tag, Events::ExtractArgument<std::string>(rawArgs)));
+        default: ASSERT_FAIL();  return Events::Arguments();
     }
-
-    return ret;
 }
 
 Events::ArgumentStack Array::ArrayInsert(Events::ArgumentStack&& rawArgs)
@@ -167,7 +158,7 @@ Events::ArgumentStack Array::ArrayInsert(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArrayPushBack(Events::ArgumentStack&& rawArgs)
@@ -183,7 +174,7 @@ Events::ArgumentStack Array::ArrayPushBack(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArrayResize(Events::ArgumentStack&& rawArgs)
@@ -200,7 +191,7 @@ Events::ArgumentStack Array::ArrayResize(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArrayShuffle(Events::ArgumentStack&& rawArgs)
@@ -216,7 +207,7 @@ Events::ArgumentStack Array::ArrayShuffle(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArraySize(Events::ArgumentStack&& rawArgs)
@@ -233,9 +224,7 @@ Events::ArgumentStack Array::ArraySize(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    Events::ArgumentStack ret;
-    Events::InsertArgument(ret, size);
-    return ret;
+    return Events::Arguments(size);
 }
 
 Events::ArgumentStack Array::ArraySortAscending(Events::ArgumentStack&& rawArgs)
@@ -251,7 +240,7 @@ Events::ArgumentStack Array::ArraySortAscending(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArraySortDescending(Events::ArgumentStack&& rawArgs)
@@ -267,7 +256,7 @@ Events::ArgumentStack Array::ArraySortDescending(Events::ArgumentStack&& rawArgs
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 Events::ArgumentStack Array::ArraySet(Events::ArgumentStack&& rawArgs)
@@ -284,7 +273,7 @@ Events::ArgumentStack Array::ArraySet(Events::ArgumentStack&& rawArgs)
         default: ASSERT_FAIL(); break;
     }
 
-    return Events::ArgumentStack();
+    return Events::Arguments();
 }
 
 }

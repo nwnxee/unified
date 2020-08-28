@@ -13,8 +13,8 @@ NWNXLib::Hooking::FunctionHook* DisableMonkAbilitiesWhenPolymorphed::pGetUseMonk
 
 DisableMonkAbilitiesWhenPolymorphed::DisableMonkAbilitiesWhenPolymorphed(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv>(&CNWSCreature__GetUseMonkAbilities_hook);
-    pGetUseMonkAbilities_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv);
+    pGetUseMonkAbilities_hook = hooker->RequestExclusiveHook
+        <Functions::_ZN12CNWSCreature19GetUseMonkAbilitiesEv>(&CNWSCreature__GetUseMonkAbilities_hook);
 }
 
 int32_t DisableMonkAbilitiesWhenPolymorphed::CNWSCreature__GetUseMonkAbilities_hook(CNWSCreature *pThis)

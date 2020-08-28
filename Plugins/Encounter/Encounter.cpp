@@ -3,6 +3,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSEncounter.hpp"
+#include "API/CEncounterSpawnPoint.hpp"
 #include "API/CEncounterListEntry.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -14,30 +15,17 @@ using namespace NWNXLib::API;
 
 static Encounter::Encounter* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Encounter",
-        "Functions exposing additional encounter properties",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Encounter::Encounter(params);
+    g_plugin = new Encounter::Encounter(services);
     return g_plugin;
 }
 
 
 namespace Encounter {
 
-Encounter::Encounter(const Plugin::CreateParams& params)
-    : Plugin(params)
+Encounter::Encounter(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -52,6 +40,11 @@ Encounter::Encounter(const Plugin::CreateParams& params)
     REGISTER(SetPlayerTriggeredOnly);
     REGISTER(GetResetTime);
     REGISTER(SetResetTime);
+    REGISTER(GetNumberOfSpawnPoints);
+    REGISTER(GetSpawnPointByIndex);
+    REGISTER(GetMinNumSpawned);
+    REGISTER(GetMaxNumSpawned);
+    REGISTER(GetCurrentNumSpawned);
 
 #undef REGISTER
 }
@@ -62,7 +55,7 @@ Encounter::~Encounter()
 
 CNWSEncounter *Encounter::encounter(ArgumentStack& args)
 {
-    const auto encounterId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto encounterId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (encounterId == Constants::OBJECT_INVALID)
     {
@@ -82,7 +75,6 @@ CNWSEncounter *Encounter::encounter(ArgumentStack& args)
 
 ArgumentStack Encounter::GetNumberOfCreaturesInEncounterList(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -90,65 +82,61 @@ ArgumentStack Encounter::GetNumberOfCreaturesInEncounterList(ArgumentStack&& arg
         retVal = pEncounter->m_nNumEncounterListEntries;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string resRef = "";
     float cr = 0.0;
     int32_t unique = 0;
+    int32_t alreadyUsed = 0;
 
     if (auto *pEncounter = encounter(args))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(index >= 0.0);
 
         if (index < pEncounter->m_nNumEncounterListEntries)
         {
             resRef = pEncounter->m_pEncounterList[index].m_cCreatureResRef.GetResRefStr();
             cr = pEncounter->m_pEncounterList[index].m_fCR;
             unique = pEncounter->m_pEncounterList[index].m_bUnique;
+            alreadyUsed = pEncounter->m_pEncounterList[index].m_bAlreadyUsed;
         }
     }
 
-    Services::Events::InsertArgument(stack, resRef);
-    Services::Events::InsertArgument(stack, cr);
-    Services::Events::InsertArgument(stack, unique);
-
-    return stack;
+    return Services::Events::Arguments(resRef, cr, unique, alreadyUsed);
 }
 
 ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         const auto index = Services::Events::ExtractArgument<int32_t>(args);
         const auto resRef = Services::Events::ExtractArgument<std::string>(args);
         auto cr = Services::Events::ExtractArgument<float>(args);
-          ASSERT_OR_THROW(cr >= 0.0);
+        ASSERT_OR_THROW(cr >= 0.0);
         auto unique = Services::Events::ExtractArgument<int32_t>(args);
         unique = !!unique;
+        auto alreadyUsed = Services::Events::ExtractArgument<int32_t>(args);
+        alreadyUsed = !!alreadyUsed;
 
         if (index < pEncounter->m_nNumEncounterListEntries)
         {
             pEncounter->m_pEncounterList[index].m_cCreatureResRef = resRef.c_str();
             pEncounter->m_pEncounterList[index].m_fCR = cr;
             pEncounter->m_pEncounterList[index].m_fCreaturePoints = pEncounter->CalculatePointsFromCR(cr);
+            pEncounter->m_pEncounterList[index].m_bAlreadyUsed = alreadyUsed;
             pEncounter->m_pEncounterList[index].m_bUnique = unique;
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Encounter::GetFactionId(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -156,15 +144,11 @@ ArgumentStack Encounter::GetFactionId(ArgumentStack&& args)
         retVal = pEncounter->m_nFactionId;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetFactionId(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         auto factionId = Services::Events::ExtractArgument<int32_t>(args);
@@ -174,12 +158,11 @@ ArgumentStack Encounter::SetFactionId(ArgumentStack&& args)
         pEncounter->m_nFactionId = factionId;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Encounter::GetPlayerTriggeredOnly(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -187,15 +170,11 @@ ArgumentStack Encounter::GetPlayerTriggeredOnly(ArgumentStack&& args)
         retVal = pEncounter->m_bPlayerTriggeredOnly;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         auto playerTriggeredOnly = Services::Events::ExtractArgument<int32_t>(args);
@@ -205,12 +184,11 @@ ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
         pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
     if (auto *pEncounter = encounter(args))
@@ -218,24 +196,86 @@ ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)
         retVal = pEncounter->m_nResetTime;
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pEncounter = encounter(args))
     {
         auto resetTime = Services::Events::ExtractArgument<int32_t>(args);
-          ASSERT_OR_THROW(resetTime >= 0);
+        ASSERT_OR_THROW(resetTime >= 0);
 
         pEncounter->m_nResetTime = resetTime;
     }
 
-    return stack;
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Encounter::GetNumberOfSpawnPoints(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nNumSpawnPoints;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Encounter::GetSpawnPointByIndex(ArgumentStack&& args)
+{
+    float x = 0.0, y = 0.0, z = 0.0, o = 0.0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(index >= 0);
+
+        if (index < pEncounter->m_nNumSpawnPoints)
+        {
+            x = pEncounter->m_pSpawnPointList[index].m_vPosition.x;
+            y = pEncounter->m_pSpawnPointList[index].m_vPosition.y;
+            z = pEncounter->m_pSpawnPointList[index].m_vPosition.z;
+            o = pEncounter->m_pSpawnPointList[index].m_fOrientation;
+        }
+    }
+
+    return Services::Events::Arguments(x, y, z, o);
+}
+
+ArgumentStack Encounter::GetMinNumSpawned(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nMinNumSpawnedCreatures;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Encounter::GetMaxNumSpawned(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nMaxSpawnedCreatures;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Encounter::GetCurrentNumSpawned(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_nNumSpawnedCreatures;
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

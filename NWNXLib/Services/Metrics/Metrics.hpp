@@ -9,9 +9,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Tasks;
 
@@ -83,7 +81,5 @@ private:
 
     std::string ConstructName(const std::string& name);
 };
-
-}
 
 }

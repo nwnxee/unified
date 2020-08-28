@@ -11,24 +11,26 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* m_AddLockObjectActionHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_AddUnlockObjectActionHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_AddLockObjectActionHook;
+static NWNXLib::Hooking::FunctionHook* s_AddUnlockObjectActionHook;
 
 ObjectEvents::ObjectEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_LOCK_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSObject19AddLockObjectActionEj>(&AddLockObjectActionHook);
-        m_AddLockObjectActionHook = hooker->FindHookByAddress(API::Functions::_ZN10CNWSObject19AddLockObjectActionEj);
+        s_AddLockObjectActionHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN10CNWSObject19AddLockObjectActionEj>
+            (&AddLockObjectActionHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_UNLOCK_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji>(&AddUnlockObjectActionHook);
-        m_AddUnlockObjectActionHook = hooker->FindHookByAddress(API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji);
+        s_AddUnlockObjectActionHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji>
+            (&AddUnlockObjectActionHook);
     });
 
 }
 
-int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, Types::ObjectID oidDoor)
+int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, ObjectID oidDoor)
 {
     int32_t retVal;
 
@@ -40,7 +42,7 @@ int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, Types::Object
 
     if (PushAndSignal("NWNX_ON_OBJECT_LOCK_BEFORE"))
     {
-        retVal = m_AddLockObjectActionHook->CallOriginal<int32_t>(thisPtr, oidDoor);
+        retVal = s_AddLockObjectActionHook->CallOriginal<int32_t>(thisPtr, oidDoor);
     }
     else
     {
@@ -52,7 +54,7 @@ int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, Types::Object
     return retVal;
 }
 
-int32_t ObjectEvents::AddUnlockObjectActionHook(CNWSObject *thisPtr, Types::ObjectID oidDoor, Types::ObjectID oidThievesTool, int32_t nActivePropertyIndex)
+int32_t ObjectEvents::AddUnlockObjectActionHook(CNWSObject *thisPtr, ObjectID oidDoor, ObjectID oidThievesTool, int32_t nActivePropertyIndex)
 {
     int32_t retVal;
 
@@ -66,7 +68,7 @@ int32_t ObjectEvents::AddUnlockObjectActionHook(CNWSObject *thisPtr, Types::Obje
 
     if (PushAndSignal("NWNX_ON_OBJECT_UNLOCK_BEFORE"))
     {
-        retVal = m_AddUnlockObjectActionHook->CallOriginal<int32_t>(thisPtr, oidDoor, oidThievesTool, nActivePropertyIndex);
+        retVal = s_AddUnlockObjectActionHook->CallOriginal<int32_t>(thisPtr, oidDoor, oidThievesTool, nActivePropertyIndex);
     }
     else
     {

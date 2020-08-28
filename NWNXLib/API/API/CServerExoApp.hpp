@@ -105,7 +105,7 @@ struct CServerExoApp : CBaseExoApp
     CServerAIMaster * GetServerAIMaster();
     void * GetSysAdminList();
     void * GetPlayerList();
-    void * GetNWSMessage();
+    class CNWSMessage * GetNWSMessage();
     CNetLayer * GetNetLayer();
     class CNWPlaceMeshManager * GetPlaceMeshManager();
     int16_t GetServerMode();
@@ -186,6 +186,8 @@ struct CServerExoApp : CBaseExoApp
     void AddSubNetProfileSendSize(uint32_t nPlayerID, uint32_t nSize);
     BOOL GetCreatureDeathLogging();
     void SetCreatureDeathLogging(BOOL );
+    BOOL GetHeartBeatLogging();
+    void SetHeartBeatLogging(BOOL );
     uint32_t GetClientsRequiredToDisableCPUSleep();
     BOOL GetStickyCombatModesEnabled();
     void SetStickyCombatModesEnabled(BOOL v);

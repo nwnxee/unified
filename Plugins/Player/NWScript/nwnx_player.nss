@@ -271,13 +271,61 @@ void NWNX_Player_UpdateItemName(object oPlayer, object oItem);
 /// @return TRUE if possession succeeded.
 int NWNX_Player_PossessCreature(object oPossessor, object oPossessed, int bMindImmune = TRUE, int bCreateDefaultQB = FALSE);
 
-/// @brief returns the platform ID of the given player (NWNX_PLAYER_PLATFORM_*)
+/// @brief Returns the platform ID of the given player (NWNX_PLAYER_PLATFORM_*)
+/// @param oPlayer The player object.
 int NWNX_Player_GetPlatformId(object oPlayer);
 
-/// @brief returns the game language of the given player (uses NWNX_DIALOG_LANGUAGE_*)
+/// @brief Returns the game language of the given player (uses NWNX_DIALOG_LANGUAGE_*)
 /// @details This function returns the ID of the game language displayed to the player.
 /// Uses the same constants as nwnx_dialog.
+/// @param oPlayer The player object.
 int NWNX_Player_GetLanguage(object oPlayer);
+
+/// @brief Override sOldResName with sNewResName of nResType for oPlayer.
+/// @warning If sNewResName does not exist on oPlayer's client it will crash their game.
+/// @param oPlayer The player object.
+/// @param nResType The res type, see nwnx_util.nss for constants.
+/// @param sOldResName The old res name, 16 characters or less.
+/// @param sNewResName The new res name or "" to clear a previous override, 16 characters or less.
+void NWNX_Player_SetResManOverride(object oPlayer, int nResType, string sOldResName, string sNewResName);
+
+/// @brief Set nCustomTokenNumber to sTokenValue for oPlayer only.
+/// @note The basegame SetCustomToken() will override any personal tokens.
+/// @param oPlayer The player object.
+/// @param nCustomTokenNumber The token number.
+/// @param sTokenValue The token text.
+void NWNX_Player_SetCustomToken(object oPlayer, int nCustomTokenNumber, string sTokenValue);
+
+/// @brief Override the name of creature for player only
+/// @param oPlayer The player object.
+/// @param oCreature The creature object.
+/// @param sName The name for the creature for this player, "" to clear the override.
+void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, string sName);
+
+/// @brief Display floaty text above oCreature for oPlayer only.
+/// @note This will also display the floaty text above creatures that are not part of oPlayer's faction.
+/// @param oPlayer The player to display the text to.
+/// @param oCreature The creature to display the text above.
+/// @param sText The text to display.
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText);
+
+/// @brief Toggle oPlayer's PlayerDM status.
+/// @note This function does nothing for actual DMClient DMs or players with a client version < 8193.14
+/// @param oPlayer The player.
+/// @param bIsDM TRUE to toggle dm mode on, FALSE for off.
+void NWNX_Player_ToggleDM(object oPlayer, int bIsDM);
+
+/// @brief Override the mouse cursor of oObject for oPlayer only
+/// @param oPlayer The player object.
+/// @param oObject The object.
+/// @param nCursor The cursor, one of MOUSECURSOR_*. -1 to clear the override.
+void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, int nCursor);
+
+/// @brief Override the hilite color of oObject for oPlayer only
+/// @param oPlayer The player object.
+/// @param oObject The object.
+/// @param nColor The color in 0xRRGGBB format, -1 to clear the override.
+void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, int nColor);
 
 /// @}
 
@@ -694,4 +742,81 @@ int NWNX_Player_GetLanguage(object oPlayer)
 
     NWNX_CallFunction(NWNX_Player, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetResManOverride(object oPlayer, int nResType, string sOldResName, string sNewResName)
+{
+    string sFunc = "SetResManOverride";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sNewResName);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sOldResName);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nResType);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetCustomToken(object oPlayer, int nCustomTokenNumber, string sTokenValue)
+{
+    string sFunc = "SetCustomToken";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sTokenValue);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nCustomTokenNumber);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetCreatureNameOverride(object oPlayer, object oCreature, string sName)
+{
+    string sFunc = "SetCreatureNameOverride";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sName);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oCreature);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_FloatingTextStringOnCreature(object oPlayer, object oCreature, string sText)
+{
+    string sFunc = "FloatingTextStringOnCreature";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sText);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oCreature);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_ToggleDM(object oPlayer, int bIsDM)
+{
+    string sFunc = "ToggleDM";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, bIsDM);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, int nCursor)
+{
+    string sFunc = "SetObjectMouseCursorOverride";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nCursor);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, int nColor)
+{
+    string sFunc = "SetObjectHiliteColorOverride";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nColor);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }

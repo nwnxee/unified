@@ -2,7 +2,6 @@
 #include "Encoding.hpp"
 
 #include "Assert.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"
@@ -85,7 +84,10 @@ std::vector<uint8_t> SerializeGameObject(CGameObject *pObject, bool bStripPCFlag
             break;
     }
 
-    return std::vector<uint8_t>(pData, pData+dataLength);
+    std::vector<uint8_t> serialized(pData, pData+dataLength);
+    delete[] pData;
+
+    return serialized;
 }
 
 CGameObject *DeserializeGameObject(const std::vector<uint8_t>& serialized)

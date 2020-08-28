@@ -18,6 +18,7 @@
 #include "NWPLAYERLISTITEM.hpp"
 #include "NWSyncAdvertisement.hpp"
 #include "Vector.hpp"
+#include <memory>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -66,7 +67,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     CExoArrayList<CExoString> m_pHakFiles;
     CResRef m_cStartMovie;
     CNWSScriptVarTable m_ScriptVars;
-    CExoString m_sScripts[18];
+    CExoString m_sScripts[19];
     uint32_t m_nLastHeartbeatScriptCalendarDay;
     uint32_t m_nLastHeartbeatScriptTimeOfDay;
     CExoArrayList<CNWSTagNode> m_aTagLookupTable;
@@ -130,6 +131,10 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     OBJECT_ID m_oidLastPlayerChatObjectId;
     CExoString m_sLastPlayerChatMessage;
     uint8_t m_nLastPlayerChatType;
+    OBJECT_ID m_oidLastPlayerToSelectTarget;
+    OBJECT_ID m_oidPlayerTargetObject;
+    Vector m_vPlayerTargetPosition;
+    std::shared_ptr<void*> m_sqlite3;
 
     CNWSModule(CExoString sModuleFilename, BOOL bSetAutoRequest, BOOL bIsSaveGame = false, int32_t nSourceType = 0);
     ~CNWSModule();
@@ -185,11 +190,14 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL IsObjectInLimbo(OBJECT_ID id);
     void CleanUpLimboList();
     uint8_t IsOfficialCampaign(void );
+    void DestroyModuleSqliteDatabase();
     void PostProcess();
     BOOL SaveModuleIFOStart(CResGFF * pRes, CResStruct * pTopLevelStruct);
     BOOL SaveModuleIFOFinish(CResGFF * pRes, CResStruct * pTopLevelStruct, CERFFile * cSaveFile, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);
     void SaveLimboCreatures(CResGFF * pRes, CResStruct * pTopLevelStruct);
     BOOL LoadLimboCreatures(CResGFF * pRes, CResStruct * pStruct, BOOL bLoadStateInfo);
+    BOOL SaveSqliteDatabase(CERFFile * cSaveFile);
+    BOOL LoadSqliteDatabase();
     BOOL SaveModuleFAC(CERFFile * cSaveFile);
     BOOL SaveStatic(CERFFile * cSaveFile, CExoString sFileType, RESTYPE nResType, BOOL bIsGFF = true);
     BOOL SavePlayers(CResGFF * pResIFO, CResStruct * pStructIFO, CExoString & sPath, CExoArrayList<OBJECT_ID> & aPlayers);

@@ -1,17 +1,13 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "API/CExoDebugInternal.hpp"
-#include "API/CExoString.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include <memory>
 
 namespace ServerLogRedirector {
 
 class ServerLogRedirector : public NWNXLib::Plugin
 {
 public:
-    ServerLogRedirector(const Plugin::CreateParams& params);
+    ServerLogRedirector(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ServerLogRedirector();
 
 private:

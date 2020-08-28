@@ -9,11 +9,34 @@ const string NWNX_Object = "NWNX_Object"; ///< @private
 /// @anchor object_localvar_types
 /// @name Local Variable Types
 /// @{
+const int NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN  = 0;
 const int NWNX_OBJECT_LOCALVAR_TYPE_INT      = 1;
 const int NWNX_OBJECT_LOCALVAR_TYPE_FLOAT    = 2;
 const int NWNX_OBJECT_LOCALVAR_TYPE_STRING   = 3;
 const int NWNX_OBJECT_LOCALVAR_TYPE_OBJECT   = 4;
 const int NWNX_OBJECT_LOCALVAR_TYPE_LOCATION = 5;
+/// @}
+
+/// @anchor object_internal_types
+/// @name Internal Object Types
+/// @{
+const int NWNX_OBJECT_TYPE_INTERNAL_INVALID = -1;
+const int NWNX_OBJECT_TYPE_INTERNAL_GUI = 1;
+const int NWNX_OBJECT_TYPE_INTERNAL_TILE = 2;
+const int NWNX_OBJECT_TYPE_INTERNAL_MODULE = 3;
+const int NWNX_OBJECT_TYPE_INTERNAL_AREA = 4;
+const int NWNX_OBJECT_TYPE_INTERNAL_CREATURE = 5;
+const int NWNX_OBJECT_TYPE_INTERNAL_ITEM = 6;
+const int NWNX_OBJECT_TYPE_INTERNAL_TRIGGER = 7;
+const int NWNX_OBJECT_TYPE_INTERNAL_PROJECTILE = 8;
+const int NWNX_OBJECT_TYPE_INTERNAL_PLACEABLE = 9;
+const int NWNX_OBJECT_TYPE_INTERNAL_DOOR = 10;
+const int NWNX_OBJECT_TYPE_INTERNAL_AREAOFEFFECT = 11;
+const int NWNX_OBJECT_TYPE_INTERNAL_WAYPOINT = 12;
+const int NWNX_OBJECT_TYPE_INTERNAL_ENCOUNTER = 13;
+const int NWNX_OBJECT_TYPE_INTERNAL_STORE = 14;
+const int NWNX_OBJECT_TYPE_INTERNAL_PORTAL = 15;
+const int NWNX_OBJECT_TYPE_INTERNAL_SOUND = 16;
 /// @}
 
 /// A local variable structure.
@@ -32,6 +55,14 @@ int NWNX_Object_GetLocalVariableCount(object obj);
 /// @param obj The object.
 /// @param index The index.
 /// @note Index bounds: 0 >= index < NWNX_Object_GetLocalVariableCount().
+/// @note As of build 8193.14 local variables no longer have strict ordering.
+///       this means that any change to the variables can result in drastically
+///       different order when iterating.
+/// @note As of build 8193.14, this function takes O(n) time, where n is the number
+///       of locals on the object. Individual variable access with GetLocalXxx()
+///       is now O(1) though.
+/// @note As of build 8193.14, this function may return variable type UNKNOWN
+///       if the value is the default (0/0.0/""/OBJECT_INVALID) for the type.
 /// @return An NWNX_Object_LocalVariable struct.
 struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int index);
 
@@ -39,12 +70,20 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 /// @param id The object id.
 /// @return An object from the provided object ID.
 /// @remark This is the counterpart to ObjectToString.
+/// @deprecated Use the basegame StringToObject() function. This will be removed in a future NWNX release.
 object NWNX_Object_StringToObject(string id);
 
-/// @brief Set an object's position.
+/// @brief Set oObject's position.
+/// @param oObject The object.
+/// @param vPosition A vector position.
+/// @param bUpdateSubareas If TRUE and oObject is a creature, any triggers/traps at vPosition will fire their events.
+void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE);
+
+/// @brief Get an object's hit points.
+/// @note Unlike the native GetCurrentHitpoints function, this excludes temporary hitpoints.
 /// @param obj The object.
-/// @param pos A vector position.
-void NWNX_Object_SetPosition(object obj, vector pos);
+/// @return The hit points.
+int NWNX_Object_GetCurrentHitPoints(object obj);
 
 /// @brief Set an object's hit points.
 /// @param obj The object.
@@ -79,16 +118,16 @@ string NWNX_Object_GetDialogResref(object obj);
 /// @param dialog The name of the dialog resref.
 void NWNX_Object_SetDialogResref(object obj, string dialog);
 
-/// @brief Set an object's appearance.
+/// @brief Set oPlaceable's appearance.
 /// @note Will not update for PCs until they re-enter the area.
-/// @param obj The object.
-/// @param app The appearance id.
-void NWNX_Object_SetAppearance(object obj, int app);
+/// @param oPlaceable The placeable.
+/// @param nAppearance The appearance id.
+void NWNX_Object_SetAppearance(object oPlaceable, int nAppearance);
 
-/// @brief Get an object's appearance.
-/// @param obj The object.
+/// @brief Get oPlaceable's appearance.
+/// @param oPlaceable The placeable.
 /// @return The appearance id.
-int NWNX_Object_GetAppearance(object obj);
+int NWNX_Object_GetAppearance(object oPlaceable);
 
 /// @brief Determine if an object has a visual effect.
 /// @param obj The object.
@@ -169,59 +208,111 @@ void NWNX_Object_RemoveIconEffect(object obj, int nIcon);
 /// @param oObject The object to export. Valid object types: Creature, Item, Placeable, Waypoint, Door, Store, Trigger
 void NWNX_Object_Export(string sFileName, object oObject);
 
-/// @brief Get oObject's persistent integer variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @brief Get oObject's integer variable sVarName.
+/// @param oObject The object to get the variable from.
 /// @param sVarName The variable name.
 /// @return The value or 0 on error.
-int NWNX_Object_GetPersistentInt(object oObject, string sVarName);
+int NWNX_Object_GetInt(object oObject, string sVarName);
 
-/// @brief Set oObject's persistent integer variable sVarName to nValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+/// @brief Set oObject's integer variable sVarName to nValue.
 /// @param oObject The object to set the variable on.
 /// @param sVarName The variable name.
 /// @param nValue The integer value to to set
-void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue);
+/// @param bPersist When TRUE, the value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+void NWNX_Object_SetInt(object oObject, string sVarName, int nValue, int bPersist);
 
-/// @brief Delete oObject's persistent integer variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @brief Delete oObject's integer variable sVarName.
+/// @param oObject The object to delete the variable from.
 /// @param sVarName The variable name.
-void NWNX_Object_DeletePersistentInt(object oObject, string sVarName);
+void NWNX_Object_DeleteInt(object oObject, string sVarName);
 
-/// @brief Get oObject's persistent string variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @brief Get oObject's string variable sVarName.
+/// @param oObject The object to get the variable from.
 /// @param sVarName The variable name.
 /// @return The value or "" on error.
-string NWNX_Object_GetPersistentString(object oObject, string sVarName);
+string NWNX_Object_GetString(object oObject, string sVarName);
 
-/// @brief Set oObject's persistent string variable sVarName to sValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+/// @brief Set oObject's string variable sVarName to sValue.
 /// @param oObject The object to set the variable on.
 /// @param sVarName The variable name.
 /// @param sValue The string value to to set
-void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue);
+/// @param bPersist When TRUE, the value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+void NWNX_Object_SetString(object oObject, string sVarName, string sValue, int bPersist);
 
-/// @brief Delete oObject's persistent string variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @brief Delete oObject's string variable sVarName.
+/// @param oObject The object to delete the variable from.
 /// @param sVarName The variable name.
-void NWNX_Object_DeletePersistentString(object oObject, string sVarName);
+void NWNX_Object_DeleteString(object oObject, string sVarName);
 
-/// @brief Get oObject's persistent float variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @brief Get oObject's float variable sVarName.
+/// @param oObject The object to get the variable from.
 /// @param sVarName The variable name.
 /// @return The value or 0.0f on error.
-float NWNX_Object_GetPersistentFloat(object oObject, string sVarName);
+float NWNX_Object_GetFloat(object oObject, string sVarName);
 
-/// @brief Set oObject's persistent float variable sVarName to sValue.
-/// @note The value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+/// @brief Set oObject's float variable sVarName to fValue.
 /// @param oObject The object to set the variable on.
 /// @param sVarName The variable name.
 /// @param fValue The float value to to set
-void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue);
+/// @param bPersist When TRUE, the value is persisted to GFF, this means that it'll be saved in the .bic file of a player's character or when an object is serialized.
+void NWNX_Object_SetFloat(object oObject, string sVarName, float fValue, int bPersist);
 
 /// @brief Delete oObject's persistent float variable sVarName.
-/// @param oObject The object to set the variable on.
+/// @param oObject The object to delete the variable from.
 /// @param sVarName The variable name.
-void NWNX_Object_DeletePersistentFloat(object oObject, string sVarName);
+void NWNX_Object_DeleteFloat(object oObject, string sVarName);
+
+/// @brief Delete any variables that match sRegex
+/// @note It will only remove variables set by NWNX_Object_Set{Int|String|Float}()
+/// @param oObject The object to delete the variables from.
+/// @param sRegex The regular expression, for example .*Test.* removes every variable that has Test in it.
+void NWNX_Object_DeleteVarRegex(object oObject, string sRegex);
+
+/// @brief Get if vPosition is inside oTrigger's geometry.
+/// @note The Z value of vPosition is ignored.
+/// @param oTrigger The trigger.
+/// @param vPosition The position.
+/// @return TRUE if vPosition is inside oTrigger's geometry.
+int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition);
+
+/// @brief Gets the given object's internal type (NWNX_OBJECT_TYPE_INTERNAL_*)
+/// @param oObject The object.
+/// @return The object's type (NWNX_OBJECT_TYPE_INTERNAL_*)
+int NWNX_Object_GetInternalObjectType(object oObject);
+
+/// @brief Have oObject acquire oItem.
+/// @note Useful to give deserialized items to an object, may not work if oItem is already possessed by an object.
+/// @param oObject The object receiving oItem, must be a Creature, Placeable, Store or Item
+/// @param oItem The item.
+/// @return TRUE on success.
+int NWNX_Object_AcquireItem(object oObject, object oItem);
+
+/// @brief Cause oObject to face fDirection.
+/// @note This function is almost identical to SetFacing(), the only difference being that it allows you to specify
+/// the target object without the use of AssignCommand(). This is useful when you want to change the facing of an object
+/// in an ExecuteScriptChunk() call where AssignCommand() does not work.
+/// @param oObject The object to change its facing of
+/// @param fDirection The direction the object should face
+void NWNX_Object_SetFacing(object oObject, float fDirection);
+
+/// @brief Clear all spell effects oObject has applied to others.
+/// @param oObject The object that applied the spell effects.
+void NWNX_Object_ClearSpellEffectsOnOthers(object oObject);
+
+/// @brief Peek at the UUID of oObject without assigning one if it does not have one
+/// @param oObject The object
+/// @return The UUID or "" when the object does not have or cannot have an UUID
+string NWNX_Object_PeekUUID(object oObject);
+
+/// @brief Get if oDoor has a visible model.
+/// @param oDoor The door
+/// @return TRUE if oDoor has a visible model
+int NWNX_Object_GetDoorHasVisibleModel(object oDoor);
+
+/// @brief Get if oObject is destroyable.
+/// @param oObject The object
+/// @return TRUE if oObject is destroyable.
+int NWNX_Object_GetIsDestroyable(object oObject);
 
 /// @}
 
@@ -251,23 +342,32 @@ struct NWNX_Object_LocalVariable NWNX_Object_GetLocalVariable(object obj, int in
 
 object NWNX_Object_StringToObject(string id)
 {
-    string sFunc = "StringToObject";
+    WriteTimestampedLogEntry("WARNING: NWNX_Object_StringToObject() is deprecated, please use the basegame's StringToObject()");
 
-    NWNX_PushArgumentString(NWNX_Object, sFunc, id);
-    NWNX_CallFunction(NWNX_Object, sFunc);
-    return NWNX_GetReturnValueObject(NWNX_Object, sFunc);
+    return StringToObject(id);
 }
 
-void NWNX_Object_SetPosition(object obj, vector pos)
+void NWNX_Object_SetPosition(object oObject, vector vPosition, int bUpdateSubareas = TRUE)
 {
     string sFunc = "SetPosition";
 
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.x);
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.y);
-    NWNX_PushArgumentFloat(NWNX_Object, sFunc, pos.z);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bUpdateSubareas);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.x);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.z);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetCurrentHitPoints(object creature)
+{
+    string sFunc = "GetCurrentHitPoints";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, creature);
     NWNX_CallFunction(NWNX_Object, sFunc);
 
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
 void NWNX_Object_SetCurrentHitPoints(object creature, int hp)
@@ -330,23 +430,23 @@ void NWNX_Object_SetDialogResref(object obj, string dialog)
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetAppearance(object obj, int app)
+void NWNX_Object_SetAppearance(object oPlaceable, int nAppearance)
 {
     string sFunc = "SetAppearance";
 
-    NWNX_PushArgumentInt(NWNX_Object, sFunc, app);
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nAppearance);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oPlaceable);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-int NWNX_Object_GetAppearance(object obj)
+int NWNX_Object_GetAppearance(object oPlaceable)
 {
     string sFunc = "GetAppearance";
 
-    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
-
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oPlaceable);
     NWNX_CallFunction(NWNX_Object, sFunc);
+
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
@@ -485,9 +585,9 @@ void NWNX_Object_Export(string sFileName, object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-int NWNX_Object_GetPersistentInt(object oObject, string sVarName)
+int NWNX_Object_GetInt(object oObject, string sVarName)
 {
-    string sFunc = "GetPersistentInt";
+    string sFunc = "GetInt";
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
@@ -496,28 +596,29 @@ int NWNX_Object_GetPersistentInt(object oObject, string sVarName)
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPersistentInt(object oObject, string sVarName, int nValue)
+void NWNX_Object_SetInt(object oObject, string sVarName, int nValue, int bPersist)
 {
-    string sFunc = "SetPersistentInt";
+    string sFunc = "SetInt";
 
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bPersist);
     NWNX_PushArgumentInt(NWNX_Object, sFunc, nValue);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_DeletePersistentInt(object oObject, string sVarName)
+void NWNX_Object_DeleteInt(object oObject, string sVarName)
 {
-    string sFunc = "DeletePersistentInt";
+    string sFunc = "DeleteInt";
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-string NWNX_Object_GetPersistentString(object oObject, string sVarName)
+string NWNX_Object_GetString(object oObject, string sVarName)
 {
-    string sFunc = "GetPersistentString";
+    string sFunc = "GetString";
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
@@ -526,28 +627,29 @@ string NWNX_Object_GetPersistentString(object oObject, string sVarName)
     return NWNX_GetReturnValueString(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPersistentString(object oObject, string sVarName, string sValue)
+void NWNX_Object_SetString(object oObject, string sVarName, string sValue, int bPersist)
 {
-    string sFunc = "SetPersistentString";
+    string sFunc = "SetString";
 
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bPersist);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sValue);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_DeletePersistentString(object oObject, string sVarName)
+void NWNX_Object_DeleteString(object oObject, string sVarName)
 {
-    string sFunc = "DeletePersistentString";
+    string sFunc = "DeleteString";
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-float NWNX_Object_GetPersistentFloat(object oObject, string sVarName)
+float NWNX_Object_GetFloat(object oObject, string sVarName)
 {
-    string sFunc = "GetPersistentFloat";
+    string sFunc = "GetFloat";
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
@@ -556,21 +658,112 @@ float NWNX_Object_GetPersistentFloat(object oObject, string sVarName)
     return NWNX_GetReturnValueFloat(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_SetPersistentFloat(object oObject, string sVarName, float fValue)
+void NWNX_Object_SetFloat(object oObject, string sVarName, float fValue, int bPersist)
 {
-    string sFunc = "SetPersistentFloat";
+    string sFunc = "SetFloat";
 
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bPersist);
     NWNX_PushArgumentFloat(NWNX_Object, sFunc, fValue);
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
 }
 
-void NWNX_Object_DeletePersistentFloat(object oObject, string sVarName)
+void NWNX_Object_DeleteFloat(object oObject, string sVarName)
 {
-    string sFunc = "DeletePersistentFloat";
+    string sFunc = "DeleteFloat";
 
     NWNX_PushArgumentString(NWNX_Object, sFunc, sVarName);
     NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_DeleteVarRegex(object oObject, string sRegex)
+{
+    string sFunc = "DeleteVarRegex";
+
+    NWNX_PushArgumentString(NWNX_Object, sFunc, sRegex);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetPositionIsInTrigger(object oTrigger, vector vPosition)
+{
+    string sFunc = "GetPositionIsInTrigger";
+
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.z);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, vPosition.x);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oTrigger);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetInternalObjectType(object oObject)
+{
+    string sFunc = "GetInternalObjectType";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_AcquireItem(object oObject, object oItem)
+{
+    string sFunc = "AcquireItem";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oItem);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetFacing(object oObject, float fDirection)
+{
+    string sFunc = "SetFacing";
+
+    NWNX_PushArgumentFloat(NWNX_Object, sFunc, fDirection);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_ClearSpellEffectsOnOthers(object oObject)
+{
+    string sFunc = "ClearSpellEffectsOnOthers";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+string NWNX_Object_PeekUUID(object oObject)
+{
+    string sFunc = "PeekUUID";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetDoorHasVisibleModel(object oDoor)
+{
+    string sFunc = "GetDoorHasVisibleModel";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oDoor);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetIsDestroyable(object oObject)
+{
+    string sFunc = "GetIsDestroyable";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }

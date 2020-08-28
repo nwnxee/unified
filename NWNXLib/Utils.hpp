@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/CGameObject.hpp"
 #include "API/CNWSScriptVarTable.hpp"
 #include "API/Vector.hpp"
@@ -15,10 +14,10 @@
 
 namespace NWNXLib::Utils {
 
-std::string ObjectIDToString(const API::Types::ObjectID id);
+std::string ObjectIDToString(const ObjectID id);
 
 std::string GetCurrentScript();
-void ExecuteScript(const std::string& script, API::Types::ObjectID oidOwner);
+void ExecuteScript(const std::string& script, ObjectID oidOwner);
 
 // Since there's no RTTI, and NWN's dynamic casts don't work in NWNX.
 // These return nullptr if the object type isn't right.
@@ -36,7 +35,7 @@ CNWSStore*              AsNWSStore(CGameObject* obj);
 CNWSTrigger*            AsNWSTrigger(CGameObject* obj);
 CNWSWaypoint*           AsNWSWaypoint(CGameObject* obj);
 
-CGameObject* GetGameObject(API::Types::ObjectID objectId);
+CGameObject* GetGameObject(ObjectID objectId);
 CNWSModule* GetModule();
 
 // Wrappers around non-virtual methods repeated for all NWS types
@@ -64,15 +63,17 @@ T PeekMessage(CNWSMessage *pMessage, int32_t offset)
     return value;
 }
 
-void AddStealthEvent(int32_t which, API::Types::ObjectID oidSelf, API::Types::ObjectID oidTarget);
-void AddObjectEnterAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea);
-void AddObjectExitAreaEvent(API::Types::ObjectID oid, API::Types::ObjectID oidArea);
-void AddOnAcquireItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy, API::Types::ObjectID oidFrom, int32_t stackSize);
-void AddOnLoseItemEvent(API::Types::ObjectID oidItem, API::Types::ObjectID oidBy);
-void AddDestroyObjectEvent(API::Types::ObjectID oid);
+void AddStealthEvent(int32_t which, ObjectID oidSelf, ObjectID oidTarget);
+void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea);
+void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea);
+void AddOnAcquireItemEvent(ObjectID oidItem, ObjectID oidBy, ObjectID oidFrom, int32_t stackSize);
+void AddOnLoseItemEvent(ObjectID oidItem, ObjectID oidBy);
+void AddDestroyObjectEvent(ObjectID oid);
 
 // Returns the SP
-int PushScriptContext(API::Types::ObjectID oid, bool valid = true);
+int PushScriptContext(ObjectID oid, bool valid = true);
 int PopScriptContext();
+
+void SetOrientation(CNWSObject *pObject, float facing);
 
 }

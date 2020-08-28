@@ -20,10 +20,6 @@ void main()
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.key == "nwnx_object_test");
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.type == NWNX_OBJECT_LOCALVAR_TYPE_INT);
 
-    string sObj = ObjectToString(o);
-    NWNX_Tests_Report("NWNX_Object", "StringToObject", NWNX_Object_StringToObject(sObj) == o);
-    NWNX_Tests_Report("NWNX_Object", "Negative: StringToObject", NWNX_Object_StringToObject("!@#!@#!@#!") == OBJECT_INVALID);
-
     vector vPos = GetPosition(o);
     vPos.x += 1;
     NWNX_Object_SetPosition(o, vPos);
@@ -41,14 +37,14 @@ void main()
     NWNX_Object_SetDialogResref(o, dialog);
     NWNX_Tests_Report("NWNX_Object", "SetDialogResRef/GetDialogResRef", NWNX_Object_GetDialogResref(o) == dialog);
 
-    NWNX_Object_SetPersistentInt(o, "TestInt", 10);
-    NWNX_Object_SetPersistentString(o, "TestString_1", "This is a string.");
-    NWNX_Object_SetPersistentString(o, "TestString_2", "This is another string.");
-    NWNX_Object_SetPersistentFloat(o, "TestFloat", 1.5f);
-    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentInt", NWNX_Object_GetPersistentInt(o, "TestInt") == 10);
-    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentString #1", NWNX_Object_GetPersistentString(o, "TestString_1") == "This is a string.");
-    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentString #2", NWNX_Object_GetPersistentString(o, "TestString_2") == "This is another string.");
-    NWNX_Tests_Report("NWNX_Object", "Set/GetPersistentFloat", NWNX_Object_GetPersistentFloat(o, "TestFloat") == 1.5f);
+    NWNX_Object_SetInt(o, "TestInt", 10, TRUE);
+    NWNX_Object_SetString(o, "TestString_1", "This is a string.", TRUE);
+    NWNX_Object_SetString(o, "TestString_2", "This is another string.", TRUE);
+    NWNX_Object_SetFloat(o, "TestFloat", 1.5f, TRUE);
+    NWNX_Tests_Report("NWNX_Object", "Set/GetInt", NWNX_Object_GetInt(o, "TestInt") == 10);
+    NWNX_Tests_Report("NWNX_Object", "Set/GetString #1", NWNX_Object_GetString(o, "TestString_1") == "This is a string.");
+    NWNX_Tests_Report("NWNX_Object", "Set/GetString #2", NWNX_Object_GetString(o, "TestString_2") == "This is another string.");
+    NWNX_Tests_Report("NWNX_Object", "Set/GetFloat", NWNX_Object_GetFloat(o, "TestFloat") == 1.5f);
 
     string sSerialized = NWNX_Object_Serialize(o);
     NWNX_Tests_Report("NWNX_Object", "Serialize", sSerialized != "");
@@ -57,19 +53,26 @@ void main()
     object oDeserialized = NWNX_Object_Deserialize(sSerialized);
     NWNX_Tests_Report("NWNX_Object", "Deserialize", GetIsObjectValid(oDeserialized));
 
-    NWNX_Object_DeletePersistentInt(o, "TestInt");
-    NWNX_Object_DeletePersistentString(o, "TestString_1");
-    NWNX_Object_DeletePersistentString(o, "TestString_2");
-    NWNX_Object_DeletePersistentFloat(o, "TestFloat");
-    NWNX_Tests_Report("NWNX_Object", "DeletePersistentInt", NWNX_Object_GetPersistentInt(o, "TestInt") == 0);
-    NWNX_Tests_Report("NWNX_Object", "DeletePersistentString #1", NWNX_Object_GetPersistentString(o, "TestString_1") == "");
-    NWNX_Tests_Report("NWNX_Object", "DeletePersistentString #2", NWNX_Object_GetPersistentString(o, "TestString_2") == "");
-    NWNX_Tests_Report("NWNX_Object", "DeletePersistentFloat", NWNX_Object_GetPersistentFloat(o, "TestFloat") == 0.0f);
+    NWNX_Object_DeleteInt(o, "TestInt");
+    NWNX_Object_DeleteString(o, "TestString_1");
+    NWNX_Object_DeleteString(o, "TestString_2");
+    NWNX_Object_DeleteFloat(o, "TestFloat");
+    NWNX_Tests_Report("NWNX_Object", "DeleteInt", NWNX_Object_GetInt(o, "TestInt") == 0);
+    NWNX_Tests_Report("NWNX_Object", "DeleteString #1", NWNX_Object_GetString(o, "TestString_1") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeleteString #2", NWNX_Object_GetString(o, "TestString_2") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeleteFloat", NWNX_Object_GetFloat(o, "TestFloat") == 0.0f);
 
-    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentInt", NWNX_Object_GetPersistentInt(oDeserialized, "TestInt") == 10);
-    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentString #1", NWNX_Object_GetPersistentString(oDeserialized, "TestString_1") == "This is a string.");
-    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentString #2", NWNX_Object_GetPersistentString(oDeserialized, "TestString_2") == "This is another string.");
-    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetPersistentFloat", NWNX_Object_GetPersistentFloat(oDeserialized, "TestFloat") == 1.5f);
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetInt", NWNX_Object_GetInt(oDeserialized, "TestInt") == 10);
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetString #1", NWNX_Object_GetString(oDeserialized, "TestString_1") == "This is a string.");
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetString #2", NWNX_Object_GetString(oDeserialized, "TestString_2") == "This is another string.");
+    NWNX_Tests_Report("NWNX_Object", "(Deserialized Object) GetFloat", NWNX_Object_GetFloat(oDeserialized, "TestFloat") == 1.5f);
+
+    NWNX_Object_DeleteVarRegex(oDeserialized, ".*TestString.*");
+
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetInt(oDeserialized, "TestInt") == 10);
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetString(oDeserialized, "TestString_1") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetString(oDeserialized, "TestString_2") == "");
+    NWNX_Tests_Report("NWNX_Object", "DeleteVarRegex", NWNX_Object_GetFloat(oDeserialized, "TestFloat") == 1.5f);
 
     WriteTimestampedLogEntry("Deserialized " + GetName(oDeserialized) + " in " + GetName(GetArea(oDeserialized)));
 

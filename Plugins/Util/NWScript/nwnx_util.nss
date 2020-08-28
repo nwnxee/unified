@@ -28,6 +28,13 @@ const int NWNX_UTIL_RESREF_TYPE_STORE     = 2051;
 const int NWNX_UTIL_RESREF_TYPE_WAYPOINT  = 2058;
 ///@}
 
+/// @brief A world time struct
+struct NWNX_Util_WorldTime
+{
+    int nCalendarDay; ///< The calendar day
+    int nTimeOfDay; ///< The time of day
+};
+
 /// @brief Gets the name of the currently executing script.
 /// @note If depth is > 0, it will return the name of the script that called this one via ExecuteScript().
 /// @param depth to seek the executing script.
@@ -135,6 +142,65 @@ string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMa
 /// @return The script file contents or "" on error.
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
 
+/// @brief Adds a nss file to the UserDirectory/nwnx folder.
+/// @note Will override existing nss files that are in the module
+/// @param sFileName The script filename without extension, 16 or less characters.
+/// @param sContents The contents of the nss file
+/// @return TRUE on success.
+int NWNX_Util_AddNSSFile(string sFileName, string sContents);
+
+/// @brief Remove sFileName of nType from the UserDirectory/nwnx folder.
+/// @param sFileName The filename without extension, 16 or less characters.
+/// @param nType The @ref resref_types "Resref Type".
+/// @return TRUE on success.
+int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType);
+
+/// @brief Set the NWScript instruction limit
+/// @param nInstructionLimit The new limit or -1 to reset to default.
+void NWNX_Util_SetInstructionLimit(int nInstructionLimit);
+
+/// @brief Register a server console command that will execute a script chunk.
+/// @note Example usage: NWNX_Util_RegisterServerConsoleCommand("test", "PrintString(\"Test Command -> Args: $args\");");
+/// @param sCommand The name of the command.
+/// @param sScriptChunk The script chunk to run. You can use $args to get the console command arguments.
+/// @return TRUE on success.
+int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk);
+
+/// @brief Unregister a server console command that was registered with NWNX_Util_RegisterServerConsoleCommand().
+/// @param sCommand The name of the command.
+void NWNX_Util_UnregisterServerConsoleCommand(string sCommand);
+
+/// @brief Determines if the given plugin exists and is enabled.
+/// @param sPlugin The name of the plugin to check. This is the case sensitive plugin name as used by NWNX_CallFunction, NWNX_PushArgumentX
+/// @note Example usage: NWNX_Util_PluginExists("NWNX_Creature");
+/// @return TRUE if the plugin exists and is enabled, otherwise FALSE.
+int NWNX_Util_PluginExists(string sPlugin);
+
+/// @brief Gets the server's current working user folder.
+/// @return The absolute path of the server's home directory (-userDirectory)
+string NWNX_Util_GetUserDirectory();
+
+/// @brief Get the return value of the last run script with a StartingConditional
+/// @return Return value of the last run script.
+int NWNX_Util_GetScriptReturnValue();
+
+/// @brief Create a door.
+/// @param sResRef The ResRef of the door.
+/// @param locLocation The location to create the door at.
+/// @param sNewTag An optional new tag for the door.
+/// @return The door, or OBJECT_INVALID on failure.
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "");
+
+/// @brief Set the object that will be returned by GetItemActivator.
+/// @param oObject An object.
+void NWNX_Util_SetItemActivator(object oObject);
+
+/// @brief Get the world time as calendar day and time of day.
+/// @note This function is useful for calculating effect expiry times.
+/// @param fAdjustment An adjustment in seconds, 0.0f will return the current world time,
+/// positive or negative values will return a world time in the future or past.
+/// @return A NWNX_Util_WorldTime struct with the calendar day and time of day.
+struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fAdjustment = 0.0f);
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -303,4 +369,117 @@ string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_AddNSSFile(string sFileName, string sContents)
+{
+    string sFunc = "AddNSSFile";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sContents);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType)
+{
+    string sFunc = "RemoveNWNXResourceFile";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nType);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetInstructionLimit(int nInstructionLimit)
+{
+    string sFunc = "SetInstructionLimit";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructionLimit);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk)
+{
+    string sFunc = "RegisterServerConsoleCommand";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptChunk);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_UnregisterServerConsoleCommand(string sCommand)
+{
+    string sFunc = "UnregisterServerConsoleCommand";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sCommand);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_PluginExists(string sPlugin)
+{
+    string sFunc = "PluginExists";
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sPlugin);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetUserDirectory()
+{
+    string sFunc = "GetUserDirectory";
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetScriptReturnValue()
+{
+    string sFunc = "GetScriptReturnValue";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag)
+{
+    string sFunc = "CreateDoor";
+
+    vector vPosition = GetPositionFromLocation(locLocation);
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sNewTag);
+    NWNX_PushArgumentFloat(NWNX_Util, sFunc, GetFacingFromLocation(locLocation));
+    NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.z);
+    NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.x);
+    NWNX_PushArgumentObject(NWNX_Util, sFunc, GetAreaFromLocation(locLocation));
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sResRef);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetItemActivator(object oObject)
+{
+    string sFunc = "SetItemActivator";
+
+    NWNX_PushArgumentObject(NWNX_Util, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fAdjustment = 0.0f)
+{
+    string sFunc = "GetWorldTime";
+
+    NWNX_PushArgumentFloat(NWNX_Util, sFunc, fAdjustment);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    struct NWNX_Util_WorldTime strWorldTime;
+    strWorldTime.nTimeOfDay = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    strWorldTime.nCalendarDay = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+
+    return strWorldTime;
 }

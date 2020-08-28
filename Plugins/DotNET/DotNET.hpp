@@ -8,7 +8,7 @@ namespace DotNET {
 class DotNET : public NWNXLib::Plugin
 {
 public:
-    DotNET(const Plugin::CreateParams& params);
+    DotNET(NWNXLib::Services::ProxyServiceList* services);
     virtual ~DotNET();
 
 private:
@@ -20,12 +20,14 @@ private:
     using MainLoopHandlerType  = void (*)(uint64_t);
     using RunScriptHandlerType = int (*)(const char *, uint32_t);
     using ClosureHandlerType = void (*)(uint64_t, uint32_t);
+    using SignalHandlerType = void (*)(const char*);
 
     struct AllHandlers
     {
         MainLoopHandlerType  MainLoop;
         RunScriptHandlerType RunScript;
         ClosureHandlerType   Closure;
+        SignalHandlerType    SignalHandler;
     };
     static inline AllHandlers Handlers;
 
@@ -40,26 +42,14 @@ private:
     static void StackPushString(const char* value);
     static void StackPushObject(uint32_t value);
     static void StackPushVector(Vector value);
-    static void StackPushEffect(CGameEffect* value);
-    static void StackPushEvent(CScriptEvent* value);
-    static void StackPushLocation(CScriptLocation* value);
-    static void StackPushTalent(CScriptTalent* value);
-    static void StackPushItemProperty(CGameEffect* value);
+    static void StackPushGameDefinedStructure(int32_t structId, void* value);
     static int32_t StackPopInteger();
     static float StackPopFloat();
     static const char* StackPopString();
     static uint32_t StackPopObject();
     static Vector StackPopVector();
-    static CGameEffect* StackPopEffect();
-    static CScriptEvent* StackPopEvent();
-    static CScriptLocation* StackPopLocation();
-    static CScriptTalent* StackPopTalent();
-    static CGameEffect* StackPopItemProperty();
-    static void FreeEffect(void* ptr);
-    static void FreeEvent(void* ptr);
-    static void FreeLocation(void* ptr);
-    static void FreeTalent(void* ptr);
-    static void FreeItemProperty(void* ptr);
+    static void* StackPopGameDefinedStructure(int32_t structId);
+    static void FreeGameDefinedStructure(int32_t structId, void* ptr);
     static int32_t ClosureAssignCommand(uint32_t oid, uint64_t eventId);
     static int32_t ClosureDelayCommand(uint32_t oid, float duration, uint64_t eventId);
     static int32_t ClosureActionDoCommand(uint32_t oid, uint64_t eventId);

@@ -19,21 +19,21 @@ namespace Lua {
 	class Lua : public NWNXLib::Plugin
 	{
 	public:
-	    Lua(const Plugin::CreateParams& params);
+	    Lua(NWNXLib::Services::ProxyServiceList* services);
 	    virtual ~Lua();
 	    lua_State *m_luaInstance;
 	    Events::ArgumentStack Eval(Events::ArgumentStack&& args);
 	    Events::ArgumentStack EvalVoid(Events::ArgumentStack&& args);
 	    Events::ArgumentStack RunEvent(Events::ArgumentStack&& args);
-	    void OnToken(Types::ObjectID oid, char* token);
-	    bool OnScript(const char* scriptName, NWNXLib::API::Types::ObjectID objId, bool valid);
+	    void OnToken(ObjectID oid, char* token);
+	    bool OnScript(const char* scriptName, ObjectID objId, bool valid);
 	private:
-	    void SetObjectSelf(Types::ObjectID objSelf = Constants::OBJECT_INVALID);
+	    void SetObjectSelf(ObjectID objSelf = Constants::OBJECT_INVALID);
 	    int m_tokenFunction;
 	    int m_eventFunction;
 	    int m_runScriptTable;
-	    std::function<void(Types::ObjectID objSelf)> m_setObjSelfFunction;
-	    Types::ObjectID m_object_self;
+	    std::function<void(ObjectID objSelf)> m_setObjSelfFunction;
+	    ObjectID m_object_self;
 	};
 
 }

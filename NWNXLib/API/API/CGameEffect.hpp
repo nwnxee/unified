@@ -2,6 +2,7 @@
 #include "nwn_api.hpp"
 
 #include "CExoString.hpp"
+#include "Vector.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -36,6 +37,7 @@ struct CGameEffect
     float m_nParamFloat[4];
     CExoString m_sParamString[6];
     OBJECT_ID m_oidParamObjectID[4];
+    Vector m_vParamVector[2];
     BOOL m_bSkipOnLoad;
     uint64_t m_nItemPropertySourceId;
     CExoString m_sCustomTag;
@@ -56,12 +58,14 @@ struct CGameEffect
     void SetObjectID(int32_t nStorageLocation, OBJECT_ID oidValue);
     CExoString GetString(int32_t nStorageLocation);
     void SetString(int32_t nStorageLocation, CExoString sString);
-    BOOL operator==(const CGameEffect & effect);
-    BOOL operator!=(const CGameEffect & effect);
+    Vector GetVector(int32_t nStorageLocation);
+    void SetVector(int32_t nStorageLocation, Vector vVector);
+    BOOL operator==(const CGameEffect & effect) const;
+    BOOL operator!=(const CGameEffect & effect) const;
     void CopyEffect(CGameEffect * pEffect, BOOL bIgnoreArrayLists = false);
     void SetExpiryTime(uint32_t nCalendarDayExpiry, uint32_t nTimeOfDayExpiry);
     void GetExpiryTime(uint32_t * nCurrentCalendarDay, uint32_t * nCurrentTimeOfDay);
-    CExoString GetCustomTag();
+    CExoString GetCustomTag() const;
     void SetCustomTag(const CExoString & sTag);
     void SetLinked(CGameEffect * pLeft, CGameEffect * pRight);
     void UpdateLinked();

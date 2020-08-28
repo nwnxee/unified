@@ -183,6 +183,12 @@ void SQLite::PrepareString(int32_t position, const std::string& value)
     m_paramValues[position] = value;
 }
 
+void SQLite::PrepareBinary(int32_t position, const std::vector<uint8_t> &value)
+{
+    (void)position; (void)value;
+    ASSERT_FAIL_MSG("Binary format not implemented for SQLite");
+}
+
 int SQLite::GetAffectedRows()
 {
     return m_affectedRows;

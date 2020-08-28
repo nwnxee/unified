@@ -11,6 +11,7 @@
 #include "API/Constants.hpp"
 
 #include <sstream>
+#include <regex>
 
 namespace NWNXLib::Services {
 
@@ -26,7 +27,7 @@ PerObjectStorage::ObjectStorage* PerObjectStorage::GetObjectStorage(CGameObject 
     return static_cast<ObjectStorage*>(pGameObject->m_pNwnxData);
 }
 
-PerObjectStorage::ObjectStorage* PerObjectStorage::GetObjectStorage(API::Types::ObjectID object)
+PerObjectStorage::ObjectStorage* PerObjectStorage::GetObjectStorage(ObjectID object)
 {
     return GetObjectStorage(Utils::GetGameObject(object));
 }
@@ -50,7 +51,7 @@ void PerObjectStorage::Set(CGameObject *pGameObject, const std::string& key, std
 {
     if (auto *pOS = GetObjectStorage(pGameObject))
     {
-        pOS->GetStringMap().emplace(key, std::make_pair<>(std::move(value), persist));
+        pOS->GetStringMap()[key] = std::make_pair<>(std::move(value), persist);
     }
 }
 void PerObjectStorage::Set(CGameObject *pGameObject, const std::string& key, void *value, CleanupFunc cleanup)
@@ -76,6 +77,36 @@ void PerObjectStorage::Remove(CGameObject *pGameObject, const std::string& key)
             pOS->m_FloatMap->erase(key);
         if (pOS->m_PointerMap)
             pOS->m_PointerMap->erase(key);
+    }
+}
+
+void PerObjectStorage::RemoveRegex(CGameObject *pGameObject, const std::string& regex)
+{
+    if (auto *pOS = GetObjectStorage(pGameObject))
+    {
+        std::regex rgx(regex);
+
+        auto Remove = [&](auto &map) -> void {
+            std::vector<std::string> erase;
+
+            for (const auto& it: *map)
+            {
+                if (std::regex_match(it.first, rgx))
+                    erase.push_back(it.first);
+            }
+
+            for (const auto& e: erase)
+            {
+                map->erase(e);
+            }
+        };
+
+        if (pOS->m_StringMap)
+            Remove(pOS->m_StringMap);
+        if (pOS->m_IntMap)
+            Remove(pOS->m_IntMap);
+        if (pOS->m_FloatMap)
+            Remove(pOS->m_FloatMap);
     }
 }
 
@@ -113,7 +144,7 @@ PerObjectStorage::ObjectStorage::PointerMap& PerObjectStorage::ObjectStorage::Ge
     return *m_PointerMap;
 }
 
-PerObjectStorage::ObjectStorage::ObjectStorage(API::Types::ObjectID owner)
+PerObjectStorage::ObjectStorage::ObjectStorage(ObjectID owner)
 {
     m_oidOwner = owner;
     m_bCloned = false;
@@ -201,7 +232,7 @@ std::string PerObjectStorage::ObjectStorage::Serialize(bool persistonly)
 
         if (count > 0)
         {
-            ss << "[FLTMAP:" << m_FloatMap->size() << "]";
+            ss << "[FLTMAP:" << count << "]";
             for (auto it: *m_FloatMap)
                 if (!persistonly || it.second.second)
                     ss << "<" << it.first.length() << ">" << it.first << " = " << it.second.first << ";";
@@ -215,7 +246,7 @@ std::string PerObjectStorage::ObjectStorage::Serialize(bool persistonly)
 
         if (count > 0)
         {
-            ss << "[STRMAP:" << m_StringMap->size() << "]";
+            ss << "[STRMAP:" << count << "]";
             for (auto it: *m_StringMap)
                 if (!persistonly || it.second.second)
                     ss << "<" << it.first.length() << ">" << it.first << " = " << "<" << it.second.first.length() << ">" << it.second.first << ";";
@@ -322,6 +353,10 @@ void PerObjectStorageProxy::Set(CGameObject *pGameObject, const std::string& key
 void PerObjectStorageProxy::Remove(CGameObject *pGameObject, const std::string& key)
 {
     m_proxyBase.Remove(pGameObject, m_pluginName + "!" + key);
+}
+void PerObjectStorageProxy::RemoveRegex(CGameObject *pGameObject, const std::string& regex)
+{
+    m_proxyBase.RemoveRegex(pGameObject, "(?:" + m_pluginName + "!)" + regex);
 }
 
 

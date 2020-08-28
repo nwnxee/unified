@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
@@ -12,7 +11,7 @@ public:
     PreserveActionsOnDMPossess(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void CNWSCreature__PossessCreatureDM_hook(CNWSCreature*, NWNXLib::API::Types::ObjectID, uint8_t);
+    static void CNWSCreature__PossessCreatureDM_hook(CNWSCreature*, ObjectID, uint8_t);
 };
 
 }

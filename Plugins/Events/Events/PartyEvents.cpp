@@ -13,14 +13,14 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Platform;
 
-static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerPartyHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerPartyHook;
 
 PartyEvents::PartyEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_PARTY_.*", [hooker]() {
-        hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh, int32_t,
-            CNWSMessage*, CNWSPlayer*, uint8_t>(&HandlePartyMessageHook);
-        m_HandlePlayerToServerPartyHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh);
+        s_HandlePlayerToServerPartyHook = hooker->RequestExclusiveHook
+            <Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh, int32_t, CNWSMessage*, CNWSPlayer*, uint8_t>
+            (&HandlePartyMessageHook);
     });
 }
 
@@ -29,8 +29,8 @@ int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
     int32_t retVal;
 
     std::string event = "NWNX_ON_PARTY_";
-    Types::ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
-    std::string sOidOther = Utils::ObjectIDToString(Utils::PeekMessage<Types::ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
+    ObjectID oidPlayer = pPlayer ? pPlayer->m_oidNWSObject : Constants::OBJECT_INVALID;
+    std::string sOidOther = Utils::ObjectIDToString(Utils::PeekMessage<ObjectID>(thisPtr, 0) & 0x7FFFFFFF);
 
     std::string argname;
     switch (nMinor)
@@ -76,7 +76,7 @@ int32_t PartyEvents::HandlePartyMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
 
     if (Events::SignalEvent(event + "_BEFORE", oidPlayer))
     {
-        retVal = m_HandlePlayerToServerPartyHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
+        retVal = s_HandlePlayerToServerPartyHook->CallOriginal<int32_t>(thisPtr, pPlayer, nMinor);
     }
     else
     {

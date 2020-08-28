@@ -21,6 +21,7 @@
 #include "API/CNWBaseItemArray.hpp"
 #include "API/CItemRepository.hpp"
 #include "API/CExoFile.hpp"
+#include "API/CNWSUUID.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/CLoopingVisualEffect.hpp"
@@ -36,30 +37,17 @@ using namespace NWNXLib::API;
 
 static Object::Object* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Object",
-        "Functions exposing additional object properties",
-        "various / sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Object::Object(params);
+    g_plugin = new Object::Object(services);
     return g_plugin;
 }
 
 
 namespace Object {
 
-Object::Object(const Plugin::CreateParams& params)
-    : Plugin(params)
+Object::Object(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -67,8 +55,8 @@ Object::Object(const Plugin::CreateParams& params)
 
     REGISTER(GetLocalVariableCount);
     REGISTER(GetLocalVariable);
-    REGISTER(StringToObject);
     REGISTER(SetPosition);
+    REGISTER(GetCurrentHitPoints);
     REGISTER(SetCurrentHitPoints);
     REGISTER(SetMaxHitPoints);
     REGISTER(Serialize);
@@ -90,15 +78,24 @@ Object::Object(const Plugin::CreateParams& params)
     REGISTER(RemoveIconEffect);
     REGISTER(AddIconEffect);
     REGISTER(Export);
-    REGISTER(GetPersistentInt);
-    REGISTER(SetPersistentInt);
-    REGISTER(DeletePersistentInt);
-    REGISTER(GetPersistentString);
-    REGISTER(SetPersistentString);
-    REGISTER(DeletePersistentString);
-    REGISTER(GetPersistentFloat);
-    REGISTER(SetPersistentFloat);
-    REGISTER(DeletePersistentFloat);
+    REGISTER(GetInt);
+    REGISTER(SetInt);
+    REGISTER(DeleteInt);
+    REGISTER(GetString);
+    REGISTER(SetString);
+    REGISTER(DeleteString);
+    REGISTER(GetFloat);
+    REGISTER(SetFloat);
+    REGISTER(DeleteFloat);
+    REGISTER(DeleteVarRegex);
+    REGISTER(GetPositionIsInTrigger);
+    REGISTER(GetInternalObjectType);
+    REGISTER(AcquireItem);
+    REGISTER(SetFacing);
+    REGISTER(ClearSpellEffectsOnOthers);
+    REGISTER(PeekUUID);
+    REGISTER(GetDoorHasVisibleModel);
+    REGISTER(GetIsDestroyable);
 
 #undef REGISTER
 }
@@ -109,7 +106,7 @@ Object::~Object()
 
 CNWSObject *Object::object(ArgumentStack& args)
 {
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -123,9 +120,8 @@ CNWSObject *Object::object(ArgumentStack& args)
 
 ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int retval = -1;
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -134,18 +130,16 @@ ArgumentStack Object::GetLocalVariableCount(ArgumentStack&& args)
     else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
     {
         auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
-        retval = pVarTable->m_lVarList.num;
+        retval = pVarTable->m_vars.size();
     }
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string key = "";
     int type = -1;
-    const auto objectId = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (objectId == Constants::OBJECT_INVALID)
     {
@@ -153,104 +147,112 @@ ArgumentStack Object::GetLocalVariable(ArgumentStack&& args)
     }
     else if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
     {
-        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        const uint32_t index = Services::Events::ExtractArgument<int32_t>(args);
         auto *pVarTable = Utils::GetScriptVarTable(pGameObject);
-        if (index < pVarTable->m_lVarList.num)
+        if (index < pVarTable->m_vars.size())
         {
-            type = static_cast<int>(pVarTable->m_lVarList.element[index].m_nType);
-            key  = pVarTable->m_lVarList.element[index].m_sName.CStr();
+            uint32_t i = 0;
+            for (auto& it : pVarTable->m_vars)
+            {
+                if (i == index)
+                {
+                    key = it.first.CStr();
+                         if (it.second.HasInt())      type = 1;
+                    else if (it.second.HasFloat())    type = 2;
+                    else if (it.second.HasString())   type = 3;
+                    else if (it.second.HasObject())   type = 4;
+                    else if (it.second.HasLocation()) type = 5;
+                    else type = 0;
+                    break;
+                }
+                i++;
+            }
         }
     }
-    Services::Events::InsertArgument(stack, type);
-    Services::Events::InsertArgument(stack, key);
-    return stack;
-}
-
-// NOTE: StringToObject does not receive an object argument.
-ArgumentStack Object::StringToObject(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-
-    const auto id = Services::Events::ExtractArgument<std::string>(args);
-    Types::ObjectID retval = static_cast<Types::ObjectID>(stoul(id, nullptr, 16));
-
-    if (!Globals::AppManager()->m_pServerExoApp->GetGameObject(retval))
-        retval = Constants::OBJECT_INVALID;
-
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(type, key);
 }
 
 ArgumentStack Object::SetPosition(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pObject = object(args))
     {
-        Vector pos;
+        Vector pos{};
         pos.z = Services::Events::ExtractArgument<float>(args);
         pos.y = Services::Events::ExtractArgument<float>(args);
         pos.x = Services::Events::ExtractArgument<float>(args);
+        auto bUpdateSubareas = !!Services::Events::ExtractArgument<int32_t>(args);
 
         pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
+
+        if (bUpdateSubareas)
+        {
+            if (auto *pCreature = Utils::AsNWSCreature(pObject))
+            {
+                pCreature->UpdateSubareasOnJumpPosition(pos, pCreature->m_oidArea);
+            }
+        }
     }
-    return stack;
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::GetCurrentHitPoints(ArgumentStack&& args)
+{
+    int32_t retval = 0;
+    if (auto *pObject = object(args))
+    {
+        retval = pObject->m_nCurrentHitPoints;
+    }
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::SetCurrentHitPoints(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pObject = object(args))
     {
         const auto hp = Services::Events::ExtractArgument<int32_t>(args);
         pObject->m_nCurrentHitPoints = hp;
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::SetMaxHitPoints(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pObject = object(args))
     {
         const auto hp = Services::Events::ExtractArgument<int32_t>(args);
         pObject->m_nBaseHitPoints = hp;
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::Serialize(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retval = "";
     if (CGameObject *pObject = static_cast<CGameObject*>(object(args)))
     {
         retval = SerializeGameObjectB64(pObject);
     }
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
 // NOTE: Deserialize does not receive an object argument.
 ArgumentStack Object::Deserialize(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-    Types::ObjectID retval = Constants::OBJECT_INVALID;
+    ObjectID retval = Constants::OBJECT_INVALID;
 
     const auto serialized = Services::Events::ExtractArgument<std::string>(args);
 
     if (CGameObject *pObject = DeserializeGameObjectB64(serialized))
     {
-        retval = static_cast<Types::ObjectID>(pObject->m_idSelf);
+        retval = static_cast<ObjectID>(pObject->m_idSelf);
         ASSERT(Globals::AppManager()->m_pServerExoApp->GetGameObject(retval));
     }
 
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retval = "";
     if (auto *pObject = object(args))
     {
@@ -263,13 +265,11 @@ ArgumentStack Object::GetDialogResref(ArgumentStack&& args)
         else
             retval = pObject->GetDialogResref().GetResRefStr();
     }
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pObject = object(args))
     {
         const auto dialog = Services::Events::ExtractArgument<std::string>(args);
@@ -283,25 +283,22 @@ ArgumentStack Object::SetDialogResref(ArgumentStack&& args)
             pDoor->m_cDialog = resref;
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::GetAppearance(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retval = 0;
     if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         retval = pPlaceable->m_nAppearance;
     }
 
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         const auto app = Services::Events::ExtractArgument<int32_t>(args);
@@ -309,36 +306,33 @@ ArgumentStack Object::SetAppearance(ArgumentStack&& args)
 
         pPlaceable->m_nAppearance=app;
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::GetHasVisualEffect(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-    int32_t retVal=0;
+    int32_t retVal = 0;
 
     if (auto *pObject = object(args))
     {
         const auto nVfx = Services::Events::ExtractArgument<int32_t>(args);
 
         auto& vfx = pObject->m_lstLoopingVisualEffects;
-        for (int k = 0; k< vfx.num; k++)
+        for (int k = 0; k < vfx.num; k++)
         {
             if (vfx.element[k] && vfx.element[k]->m_nId == nVfx)
             {
-                retVal=1;
+                retVal = 1;
                 break;
             }
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Object::CheckFit(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = -1;
 
     if (auto *pObject = object(args))
@@ -353,8 +347,7 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
             pRepo = pItem->m_pItemRepository;
         else
         {
-            Services::Events::InsertArgument(stack, retVal);
-            return stack;
+            return Services::Events::Arguments(retVal);
         }
         retVal = 0;
         const auto baseitem = Services::Events::ExtractArgument<int32_t>(args);
@@ -378,13 +371,11 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
                 break;
         }
     }
-    Services::Events::InsertArgument(stack, retVal);
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Object::GetDamageImmunity(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = -1;
 
     if (auto *pObject = object(args))
@@ -393,17 +384,14 @@ ArgumentStack Object::GetDamageImmunity(ArgumentStack&& args)
         ASSERT_OR_THROW(damageFlags >= 0);
         retVal = pObject->GetDamageImmunityByFlags(damageFlags);
     }
-    Services::Events::InsertArgument(stack, retVal);
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Object::AddToArea(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pObject = object(args))
     {
-        const auto oidArea = Services::Events::ExtractArgument<Types::ObjectID>(args);
+        const auto oidArea = Services::Events::ExtractArgument<ObjectID>(args);
           ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
         const auto posX = Services::Events::ExtractArgument<float>(args);
         const auto posY = Services::Events::ExtractArgument<float>(args);
@@ -418,25 +406,22 @@ ArgumentStack Object::AddToArea(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::GetPlaceableIsStatic(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retval = -1;
     if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         retval = pPlaceable->m_bStaticObject;
     }
 
-    Services::Events::InsertArgument(stack, retval);
-    return stack;
+    return Services::Events::Arguments(retval);
 }
 
 ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
         const auto isStatic = Services::Events::ExtractArgument<int32_t>(args);
@@ -454,12 +439,11 @@ ArgumentStack Object::SetPlaceableIsStatic(ArgumentStack&& args)
             pPlaceable->m_bUseable = false;
         }
     }
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::GetAutoRemoveKey(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = -1;
 
     if (auto *pObject = object(args))
@@ -480,15 +464,11 @@ ArgumentStack Object::GetAutoRemoveKey(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pObject = object(args))
     {
         const auto bRemoveKey = !!Services::Events::ExtractArgument<int32_t>(args);
@@ -509,12 +489,11 @@ ArgumentStack Object::SetAutoRemoveKey(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retVal;
 
     if (auto *pObject = object(args))
@@ -536,15 +515,11 @@ ArgumentStack Object::GetTriggerGeometry(ArgumentStack&& args)
         }
     }
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pObject = object(args))
     {
         const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
@@ -605,13 +580,11 @@ ArgumentStack Object::SetTriggerGeometry(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::RemoveIconEffect(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pObject = object(args))
     {
         const auto nIcon = Services::Events::ExtractArgument<int32_t>(args);
@@ -628,13 +601,11 @@ ArgumentStack Object::RemoveIconEffect(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     if (auto *pObject = object(args))
     {
         const auto nIcon = Services::Events::ExtractArgument<int32_t>(args);
@@ -676,17 +647,15 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         pObject->ApplyEffect(effIcon, false, true);
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 ArgumentStack Object::Export(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     const auto fileName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!fileName.empty());
       ASSERT_OR_THROW(fileName.size() <= 16);
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto *pGameObject = Utils::GetGameObject(oidObject))
@@ -722,15 +691,14 @@ ArgumentStack Object::Export(ArgumentStack&& args)
         }
     }
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
-ArgumentStack Object::GetPersistentInt(ArgumentStack&& args)
+ArgumentStack Object::GetInt(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     int32_t retVal = 0;
 
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -738,46 +706,40 @@ ArgumentStack Object::GetPersistentInt(ArgumentStack&& args)
     if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(oidObject, "PERINT!" + varName))
         retVal = *value;
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
-ArgumentStack Object::SetPersistentInt(ArgumentStack&& args)
+ArgumentStack Object::SetInt(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<int32_t>(args);
+    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, true);
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERINT!" + varName, value, persist);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
-ArgumentStack Object::DeletePersistentInt(ArgumentStack&& args)
+ArgumentStack Object::DeleteInt(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
     g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERINT!" + varName);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
-ArgumentStack Object::GetPersistentString(ArgumentStack&& args)
+ArgumentStack Object::GetString(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     std::string retVal;
 
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -785,46 +747,40 @@ ArgumentStack Object::GetPersistentString(ArgumentStack&& args)
     if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<std::string>(oidObject, "PERSTR!" + varName))
         retVal = *value;
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
-ArgumentStack Object::SetPersistentString(ArgumentStack&& args)
+ArgumentStack Object::SetString(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<std::string>(args);
+    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, true);
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERSTR!" + varName, value, persist);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
-ArgumentStack Object::DeletePersistentString(ArgumentStack&& args)
+ArgumentStack Object::DeleteString(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
     g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERSTR!" + varName);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
-ArgumentStack Object::GetPersistentFloat(ArgumentStack&& args)
+ArgumentStack Object::GetFloat(ArgumentStack&& args)
 {
-    ArgumentStack stack;
     float retVal = 0.0f;
 
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
@@ -832,39 +788,160 @@ ArgumentStack Object::GetPersistentFloat(ArgumentStack&& args)
     if (auto value = g_plugin->GetServices()->m_perObjectStorage->Get<float>(oidObject, "PERFLT!" + varName))
         retVal = *value;
 
-    Services::Events::InsertArgument(stack, retVal);
-
-    return stack;
+    return Services::Events::Arguments(retVal);
 }
 
-ArgumentStack Object::SetPersistentFloat(ArgumentStack&& args)
+ArgumentStack Object::SetFloat(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
     const auto value = Services::Events::ExtractArgument<float>(args);
+    bool persist = Services::Events::ExtractArgument<int32_t>(args) != 0;
 
-    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, true);
+    g_plugin->GetServices()->m_perObjectStorage->Set(oidObject, "PERFLT!" + varName, value, persist);
 
-    return stack;
+    return Services::Events::Arguments();
 }
 
 
-ArgumentStack Object::DeletePersistentFloat(ArgumentStack&& args)
+ArgumentStack Object::DeleteFloat(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
-    const auto oidObject = Services::Events::ExtractArgument<Types::ObjectID >(args);
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
     const auto varName = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!varName.empty());
 
     g_plugin->GetServices()->m_perObjectStorage->Remove(oidObject, "PERFLT!" + varName);
 
-    return stack;
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::DeleteVarRegex(ArgumentStack&& args)
+{
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+    const auto regex = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!regex.empty());
+
+    g_plugin->GetServices()->m_perObjectStorage->RemoveRegex(oidObject, "((?:PERINT!)|(?:PERSTR!)|(?:PERFLT!))" + regex);
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::GetPositionIsInTrigger(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pTrigger = Utils::AsNWSTrigger(object(args)))
+    {
+        const auto fX = Services::Events::ExtractArgument<float>(args);
+        const auto fY = Services::Events::ExtractArgument<float>(args);
+        const auto fZ = Services::Events::ExtractArgument<float>(args);
+
+        Vector vPosition = {fX, fY, fZ};
+        retVal = pTrigger->InTrigger(vPosition);
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetInternalObjectType(ArgumentStack&& args)
+{
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+
+    if (auto* go = Utils::GetGameObject(objectId))
+    {
+        return Services::Events::Arguments(go->m_nObjectType);
+    }
+
+    return Services::Events::Arguments(-1);
+}
+
+ArgumentStack Object::AcquireItem(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pObject = object(args))
+    {
+        const auto oidItem = Services::Events::ExtractArgument<ObjectID>(args);
+          ASSERT_OR_THROW(oidItem != Constants::OBJECT_INVALID);
+
+        if (auto *pItem = API::Globals::AppManager()->m_pServerExoApp->GetItemByGameObjectID(oidItem))
+        {
+            retVal = Utils::AcquireItem(pItem, pObject);
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::SetFacing(ArgumentStack&& args)
+{
+    if (auto *pObject = object(args))
+    {
+        const auto degrees = Services::Events::ExtractArgument<float>(args);
+
+        Utils::SetOrientation(pObject, degrees);
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::ClearSpellEffectsOnOthers(ArgumentStack&& args)
+{
+    if (auto *pObject = object(args))
+    {
+        pObject->ClearSpellEffectsOnOthers();
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::PeekUUID(ArgumentStack&& args)
+{
+    std::string retVal;
+    const auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+      ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
+
+    if (auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId))
+    {
+        static auto CanCarryUUID = reinterpret_cast<bool(*)(int32_t)>(
+                Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID12CanCarryUUIDEi));
+
+        if (CanCarryUUID(pGameObject->m_nObjectType))
+        {
+            if (auto *pArea = Utils::AsNWSArea(pGameObject))
+                retVal = pArea->m_pUUID.m_uuid.CStr();
+            else if (auto *pObject = Utils::AsNWSObject(pGameObject))
+                retVal = pObject->m_pUUID.m_uuid.CStr();
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetDoorHasVisibleModel(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+    if (auto *pDoor = Utils::AsNWSDoor(object(args)))
+    {
+        retVal = pDoor->m_bVisibleModel;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetIsDestroyable(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+    if (auto *pObject = object(args))
+    {
+        retVal = pObject->m_bDestroyable;
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

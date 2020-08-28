@@ -8,7 +8,7 @@ namespace MaxLevel {
 class MaxLevel : public NWNXLib::Plugin
 {
 public:
-    MaxLevel(const Plugin::CreateParams& params);
+    MaxLevel(NWNXLib::Services::ProxyServiceList* services);
     virtual ~MaxLevel();
 
 private:

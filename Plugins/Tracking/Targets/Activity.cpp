@@ -10,7 +10,6 @@
 #include "API/Constants.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/Functions.hpp"
-#include "API/Version.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 
@@ -62,7 +61,7 @@ void Activity::MainLoopUpdate(bool before, CServerExoAppInternal* thisPtr)
                     areaName = std::string(area->m_cResRef.GetResRef(), area->m_cResRef.GetLength());
                 }
 
-                if (creature->m_pStats->m_bIsDM || creature->m_nAssociateType == 7 || creature->m_nAssociateType == 8)
+                if (creature->m_pStats->m_bIsDMCharacterFile || creature->m_nAssociateType == 7 || creature->m_nAssociateType == 8)
                 {
                     clientType = "DM";
                 }

@@ -1,34 +1,20 @@
 #include "Data.hpp"
-#include "API/Version.hpp"
 #include "Providers/Array.hpp"
 
 using namespace NWNXLib;
 
 static Data::Data* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Data",
-        "Provides a number of data structures for nwn code to use.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Data::Data(params);
+    g_plugin = new Data::Data(services);
     return g_plugin;
 }
 
 namespace Data {
 
-Data::Data(const Plugin::CreateParams& params)
-    : Plugin(params)
+Data::Data(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     m_arrayProvider = std::make_unique<Array>(*GetServices()->m_events);
 }

@@ -44,6 +44,7 @@ void main()
     NWNX_Tests_Report("NWNX_Creature", "GetFeatByIndex", NWNX_Creature_GetFeatByIndex(oCreature, nFeatCountTotal) == FEAT_PLAYER_TOOL_01);
 
     NWNX_Tests_Report("NWNX_Creature", "GetFeatByLevel", NWNX_Creature_GetFeatByLevel(oCreature, 1, nFeatCountLvl1) == FEAT_PLAYER_TOOL_01);
+    NWNX_Tests_Report("NWNX_Creature", "GetFeatGrantLevel", NWNX_Creature_GetFeatGrantLevel(oCreature, FEAT_PLAYER_TOOL_01) == 1);
 
     NWNX_Creature_AddFeat(oCreature, FEAT_BARBARIAN_RAGE);
     NWNX_Tests_Report("NWNX_Creature", "GetHighestLevelOfFeat", NWNX_Creature_GetHighestLevelOfFeat(oCreature, FEAT_BARBARIAN_RAGE) == FEAT_BARBARIAN_RAGE);
@@ -92,8 +93,8 @@ void main()
 
     int nOldStr = GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE);
     NWNX_Creature_SetRawAbilityScore(oCreature, ABILITY_STRENGTH, 25);
-    NWNX_Tests_Report("NWNX_Creature", "SetAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
-    NWNX_Tests_Report("NWNX_Creature", "SetAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
+    NWNX_Tests_Report("NWNX_Creature", "SetRawAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
+    NWNX_Tests_Report("NWNX_Creature", "SetRawAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
 
     ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectPolymorph(POLYMORPH_TYPE_BADGER), oCreature);
     NWNX_Tests_Report("NWNX_Creature", "GetPrePolymorphAbilityScore", 25 == NWNX_Creature_GetPrePolymorphAbilityScore(oCreature, ABILITY_STRENGTH));
@@ -192,6 +193,51 @@ void main()
     int bDisarmable = NWNX_Creature_GetDisarmable(oCreature);
     NWNX_Creature_SetDisarmable(oCreature, !bDisarmable);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDisarmable", NWNX_Creature_GetDisarmable(oCreature) != bDisarmable);
+
+    //Spawn a Wizard
+    oCreature = CreateObject(OBJECT_TYPE_CREATURE, "NW_ELFMAGE001", GetStartingLocation());
+    if (!GetIsObjectValid(oCreature))
+    {
+        WriteTimestampedLogEntry("NWNX_Creature test: Failed to create creature");
+        return;
+    }
+
+    //Test specialization functions on a class that has specialization
+    int nSchool = NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD);
+    NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_WIZARD, (nSchool+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD) == (nSchool+1)%5);
+
+    //Test domain functions on a class that doesn't have domains
+    int nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1);
+    NWNX_Tests_Report("NWNX_Creature", "GetDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1) == 0);
+    NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_WIZARD, 1, (nDomain+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1) == (nDomain+1)%5);
+    int nDomain2 = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2);
+    NWNX_Tests_Report("NWNX_Creature", "GetDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2) == 0);
+    NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_WIZARD, 2, (nDomain2+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2) == (nDomain2+1)%5);
+
+    //Spawn a cleric
+    oCreature = CreateObject(OBJECT_TYPE_CREATURE, "NW_BANDIT004", GetStartingLocation());
+    if (!GetIsObjectValid(oCreature))
+    {
+        WriteTimestampedLogEntry("NWNX_Creature test: Failed to create creature");
+        return;
+    }
+
+    //Test specialization functions on a class that doesn't have specialization
+    nSchool = NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC);
+    NWNX_Tests_Report("NWNX_Creature", "GetSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC) == 0);
+    NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_CLERIC, (nSchool+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC) == (nSchool+1)%5);
+
+    //Test domain functions on a class that has domains
+    nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1);
+    NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 1, (nDomain+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1) == (nDomain+1)%5);
+    nDomain2 = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 2);
+    NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 2, (nDomain2+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 2) == (nDomain2+1)%5);
 
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

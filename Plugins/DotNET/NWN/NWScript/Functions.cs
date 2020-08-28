@@ -1,9 +1,11 @@
+using System;
+using System.Numerics;
 namespace NWN
 {
-    public partial class NWScript
+    public static partial class NWScript
     {
         public static uint OBJECT_SELF => Internal.OBJECT_SELF;
-        
+
         /// <summary>
         /// Assign aActionToAssign to oActionSubject.
         /// * No return value, but if an error occurs, the log file will contain
@@ -39,7 +41,6 @@ namespace NWN
         }
 
         /// <summary>
-
         ///  Get an integer between 0 and nMaxInteger-1.
         ///  Return value on error: 0
         /// </summary>
@@ -270,10 +271,10 @@ namespace NWN
         ///  * No return value, but if an error occurs the log file will contain
         ///    "MoveToPoint failed."
         /// </summary>
-        public static void ActionMoveToLocation(NWN.Location lDestination, int bRun = FALSE)
+        public static void ActionMoveToLocation(IntPtr lDestination, int bRun = FALSE)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(bRun);
-            NWN.Internal.NativeFunctions.StackPushLocation(lDestination.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lDestination);
             NWN.Internal.NativeFunctions.CallBuiltIn(21);
         }
 
@@ -356,7 +357,7 @@ namespace NWN
         ///  Get the position of oTarget
         ///  * Return value on error: vector (0.0f, 0.0f, 0.0f)
         /// </summary>
-        public static NWN.Vector GetPosition(uint oTarget)
+        public static Vector3 GetPosition(uint oTarget)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oTarget);
             NWN.Internal.NativeFunctions.CallBuiltIn(27);
@@ -423,15 +424,15 @@ namespace NWN
         ///  - nInventorySlot: INVENTORY_SLOT_*
         ///  * No return value, but if an error occurs the log file will contain
         ///    "ActionEquipItem failed."
-        /// 
-        ///  Note: 
-        ///        If the creature already has an item equipped in the slot specified, it will be 
+        ///
+        ///  Note:
+        ///        If the creature already has an item equipped in the slot specified, it will be
         ///        unequipped automatically by the call to ActionEquipItem.
-        ///      
+        ///
         ///        In order for ActionEquipItem to succeed the creature must be able to equip the
         ///        item oItem normally. This means that:
         ///        1) The item is in the creature's inventory.
-        ///        2) The item must already be identified (if magical). 
+        ///        2) The item must already be identified (if magical).
         ///        3) The creature has the level required to equip the item (if magical and ILR is on).
         ///        4) The creature possesses the required feats to equip the item (such as weapon proficiencies).
         /// </summary>
@@ -876,7 +877,7 @@ namespace NWN
 
         /// <summary>
         ///  Find the position of sSubstring inside sString
-        ///  - nStart: The character position to start searching at (from the left end of the string). 
+        ///  - nStart: The character position to start searching at (from the left end of the string).
         ///  * Return value on error: -1
         /// </summary>
         public static int FindSubString(string sString, string sSubString, int nStart = 0)
@@ -1010,11 +1011,11 @@ namespace NWN
         ///  Create a Heal effect. This should be applied as an instantaneous effect.
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nDamageToHeal < 0.
         /// </summary>
-        public static NWN.Effect EffectHeal(int nDamageToHeal)
+        public static IntPtr EffectHeal(int nDamageToHeal)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageToHeal);
             NWN.Internal.NativeFunctions.CallBuiltIn(78);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1024,25 +1025,25 @@ namespace NWN
         ///  - nDamageType: DAMAGE_TYPE_*
         ///  - nDamagePower: DAMAGE_POWER_*
         /// </summary>
-        public static NWN.Effect EffectDamage(int nDamageAmount, int nDamageType = DAMAGE_TYPE_MAGICAL, int nDamagePower = DAMAGE_POWER_NORMAL)
+        public static IntPtr EffectDamage(int nDamageAmount, int nDamageType = DAMAGE_TYPE_MAGICAL, int nDamagePower = DAMAGE_POWER_NORMAL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamagePower);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageAmount);
             NWN.Internal.NativeFunctions.CallBuiltIn(79);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create an Ability Increase effect
         ///  - bAbilityToIncrease: ABILITY_*
         /// </summary>
-        public static NWN.Effect EffectAbilityIncrease(int nAbilityToIncrease, int nModifyBy)
+        public static IntPtr EffectAbilityIncrease(int nAbilityToIncrease, int nModifyBy)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifyBy);
             NWN.Internal.NativeFunctions.StackPushInteger(nAbilityToIncrease);
             NWN.Internal.NativeFunctions.CallBuiltIn(80);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1052,22 +1053,22 @@ namespace NWN
         ///  - nAmount
         ///  - nLimit
         /// </summary>
-        public static NWN.Effect EffectDamageResistance(int nDamageType, int nAmount, int nLimit = 0)
+        public static IntPtr EffectDamageResistance(int nDamageType, int nAmount, int nLimit = 0)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nLimit);
             NWN.Internal.NativeFunctions.StackPushInteger(nAmount);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(81);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Resurrection effect. This should be applied as an instantaneous effect.
         /// </summary>
-        public static NWN.Effect EffectResurrection()
+        public static IntPtr EffectResurrection()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(82);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1081,14 +1082,14 @@ namespace NWN
         ///    summoned. If zero, it will just fade in somewhere near the target.  If the value is 1
         ///    it will use the appear animation, and if it's 2 it will use appear2 (which doesn't exist for most creatures)
         /// </summary>
-        public static NWN.Effect EffectSummonCreature(string sCreatureResref, int nVisualEffectId = VFX_NONE, float fDelaySeconds = 0.0f, int nUseAppearAnimation = 0)
+        public static IntPtr EffectSummonCreature(string sCreatureResref, int nVisualEffectId = VFX_NONE, float fDelaySeconds = 0.0f, int nUseAppearAnimation = 0)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nUseAppearAnimation);
             NWN.Internal.NativeFunctions.StackPushFloat(fDelaySeconds);
             NWN.Internal.NativeFunctions.StackPushInteger(nVisualEffectId);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCreatureResref);
             NWN.Internal.NativeFunctions.CallBuiltIn(83);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1105,30 +1106,30 @@ namespace NWN
         /// <summary>
         ///  Get the first in-game effect on oCreature.
         /// </summary>
-        public static NWN.Effect GetFirstEffect(uint oCreature)
+        public static IntPtr GetFirstEffect(uint oCreature)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oCreature);
             NWN.Internal.NativeFunctions.CallBuiltIn(85);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Get the next in-game effect on oCreature.
         /// </summary>
-        public static NWN.Effect GetNextEffect(uint oCreature)
+        public static IntPtr GetNextEffect(uint oCreature)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oCreature);
             NWN.Internal.NativeFunctions.CallBuiltIn(86);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Remove eEffect from oCreature.
         ///  * No return value
         /// </summary>
-        public static void RemoveEffect(uint oCreature, NWN.Effect eEffect)
+        public static void RemoveEffect(uint oCreature, IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.StackPushObject(oCreature);
             NWN.Internal.NativeFunctions.CallBuiltIn(87);
         }
@@ -1137,9 +1138,9 @@ namespace NWN
         ///  * Returns TRUE if eEffect is a valid effect. The effect must have been applied to
         ///  * an object or else it will return FALSE
         /// </summary>
-        public static int GetIsEffectValid(NWN.Effect eEffect)
+        public static int GetIsEffectValid(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(88);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -1148,9 +1149,9 @@ namespace NWN
         ///  Get the duration type (DURATION_TYPE_*) of eEffect.
         ///  * Return value if eEffect is not valid: -1
         /// </summary>
-        public static int GetEffectDurationType(NWN.Effect eEffect)
+        public static int GetEffectDurationType(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(89);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -1159,9 +1160,9 @@ namespace NWN
         ///  Get the subtype (SUBTYPE_*) of eEffect.
         ///  * Return value on error: 0
         /// </summary>
-        public static int GetEffectSubType(NWN.Effect eEffect)
+        public static int GetEffectSubType(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(90);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -1170,9 +1171,9 @@ namespace NWN
         ///  Get the object that created eEffect.
         ///  * Returns OBJECT_INVALID if eEffect is not a valid effect.
         /// </summary>
-        public static uint GetEffectCreator(NWN.Effect eEffect)
+        public static uint GetEffectCreator(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(91);
             return NWN.Internal.NativeFunctions.StackPopObject();
         }
@@ -1316,9 +1317,9 @@ namespace NWN
         ///  distance between two points.
         ///  * Return value on error: 0.0f
         /// </summary>
-        public static float VectorMagnitude(NWN.Vector? vVector)
+        public static float VectorMagnitude(Vector3 vVector)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vVector.HasValue ? vVector.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vVector);
             NWN.Internal.NativeFunctions.CallBuiltIn(104);
             return NWN.Internal.NativeFunctions.StackPopFloat();
         }
@@ -1436,11 +1437,11 @@ namespace NWN
         ///  (Effects default to magical if the subtype is not set)
         ///  Magical effects are removed by resting, and by dispel magic
         /// </summary>
-        public static NWN.Effect MagicalEffect(NWN.Effect eEffect)
+        public static IntPtr MagicalEffect(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(112);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1448,11 +1449,11 @@ namespace NWN
         ///  (Effects default to magical if the subtype is not set)
         ///  Permanent supernatural effects are not removed by resting
         /// </summary>
-        public static NWN.Effect SupernaturalEffect(NWN.Effect eEffect)
+        public static IntPtr SupernaturalEffect(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(113);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1460,11 +1461,11 @@ namespace NWN
         ///  (Effects default to magical if the subtype is not set)
         ///  Extraordinary effects are removed by resting, but not by dispel magic
         /// </summary>
-        public static NWN.Effect ExtraordinaryEffect(NWN.Effect eEffect)
+        public static IntPtr ExtraordinaryEffect(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(114);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1474,13 +1475,13 @@ namespace NWN
         ///  - nDamageType: DAMAGE_TYPE_*
         ///    * Default value for nDamageType should only ever be used in this function prototype.
         /// </summary>
-        public static NWN.Effect EffectACIncrease(int nValue, int nModifyType = AC_DODGE_BONUS, int nDamageType = AC_VS_DAMAGE_TYPE_ALL)
+        public static IntPtr EffectACIncrease(int nValue, int nModifyType = AC_DODGE_BONUS, int nDamageType = AC_VS_DAMAGE_TYPE_ALL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nModifyType);
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.CallBuiltIn(115);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1503,17 +1504,17 @@ namespace NWN
         ///           SAVING_THROW_ALL
         ///           SAVING_THROW_FORT
         ///           SAVING_THROW_REFLEX
-        ///           SAVING_THROW_WILL 
+        ///           SAVING_THROW_WILL
         ///  - nValue: size of the Saving Throw increase
         ///  - nSaveType: SAVING_THROW_TYPE_* (e.g. SAVING_THROW_TYPE_ACID )
         /// </summary>
-        public static NWN.Effect EffectSavingThrowIncrease(int nSave, int nValue, int nSaveType = SAVING_THROW_TYPE_ALL)
+        public static IntPtr EffectSavingThrowIncrease(int nSave, int nValue, int nSaveType = SAVING_THROW_TYPE_ALL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSaveType);
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.StackPushInteger(nSave);
             NWN.Internal.NativeFunctions.CallBuiltIn(117);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1521,12 +1522,12 @@ namespace NWN
         ///  - nBonus: size of attack bonus
         ///  - nModifierType: ATTACK_BONUS_*
         /// </summary>
-        public static NWN.Effect EffectAttackIncrease(int nBonus, int nModifierType = ATTACK_BONUS_MISC)
+        public static IntPtr EffectAttackIncrease(int nBonus, int nModifierType = ATTACK_BONUS_MISC)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifierType);
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.CallBuiltIn(118);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1536,13 +1537,13 @@ namespace NWN
         ///  - nLimit: How much damage the effect can absorb before disappearing.
         ///    Set to zero for infinite
         /// </summary>
-        public static NWN.Effect EffectDamageReduction(int nAmount, int nDamagePower, int nLimit = 0)
+        public static IntPtr EffectDamageReduction(int nAmount, int nDamagePower, int nLimit = 0)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nLimit);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamagePower);
             NWN.Internal.NativeFunctions.StackPushInteger(nAmount);
             NWN.Internal.NativeFunctions.CallBuiltIn(119);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1552,12 +1553,12 @@ namespace NWN
         ///  NOTE! You *must* use the DAMAGE_BONUS_* constants! Using other values may
         ///        result in odd behaviour.
         /// </summary>
-        public static NWN.Effect EffectDamageIncrease(int nBonus, int nDamageType = DAMAGE_TYPE_MAGICAL)
+        public static IntPtr EffectDamageIncrease(int nBonus, int nDamageType = DAMAGE_TYPE_MAGICAL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.CallBuiltIn(120);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1668,12 +1669,12 @@ namespace NWN
         ///    origin of the effect(normally the spell-caster's position).
         ///  Return value on error: OBJECT_INVALID
         /// </summary>
-        public static uint GetFirstObjectInShape(int nShape, float fSize, NWN.Location lTarget, int bLineOfSight = FALSE, int nObjectFilter = OBJECT_TYPE_CREATURE, NWN.Vector? vOrigin = null)
+        public static uint GetFirstObjectInShape(int nShape, float fSize, IntPtr lTarget, int bLineOfSight = FALSE, int nObjectFilter = OBJECT_TYPE_CREATURE, Vector3 vOrigin = default)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vOrigin.HasValue ? vOrigin.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vOrigin);
             NWN.Internal.NativeFunctions.StackPushInteger(nObjectFilter);
             NWN.Internal.NativeFunctions.StackPushInteger(bLineOfSight);
-            NWN.Internal.NativeFunctions.StackPushLocation(lTarget.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTarget);
             NWN.Internal.NativeFunctions.StackPushFloat(fSize);
             NWN.Internal.NativeFunctions.StackPushInteger(nShape);
             NWN.Internal.NativeFunctions.CallBuiltIn(128);
@@ -1706,12 +1707,12 @@ namespace NWN
         ///    of the effect (normally the spell-caster's position).
         ///  Return value on error: OBJECT_INVALID
         /// </summary>
-        public static uint GetNextObjectInShape(int nShape, float fSize, NWN.Location lTarget, int bLineOfSight = FALSE, int nObjectFilter = OBJECT_TYPE_CREATURE, NWN.Vector? vOrigin = null)
+        public static uint GetNextObjectInShape(int nShape, float fSize, IntPtr lTarget, int bLineOfSight = FALSE, int nObjectFilter = OBJECT_TYPE_CREATURE, Vector3 vOrigin = default)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vOrigin.HasValue ? vOrigin.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vOrigin);
             NWN.Internal.NativeFunctions.StackPushInteger(nObjectFilter);
             NWN.Internal.NativeFunctions.StackPushInteger(bLineOfSight);
-            NWN.Internal.NativeFunctions.StackPushLocation(lTarget.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTarget);
             NWN.Internal.NativeFunctions.StackPushFloat(fSize);
             NWN.Internal.NativeFunctions.StackPushInteger(nShape);
             NWN.Internal.NativeFunctions.CallBuiltIn(129);
@@ -1723,10 +1724,10 @@ namespace NWN
         ///  When applied, this effect will restrict the creature's movement and apply a
         ///  (-2) to all attacks and a -4 to AC.
         /// </summary>
-        public static NWN.Effect EffectEntangle()
+        public static IntPtr EffectEntangle()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(130);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1736,17 +1737,17 @@ namespace NWN
         ///     EventActivateItem() - This creates an OnActivateItem module event. The script for handling
         ///                           this event can be set in Module Properties on the Event Tab.
         ///     EventConversation() - This creates on OnConversation creature event. The script for handling
-        ///                           this event can be set by viewing the Creature Properties on a 
+        ///                           this event can be set by viewing the Creature Properties on a
         ///                           creature and then clicking on the Scripts Tab.
         ///     EventSpellCastAt()  - This creates an OnSpellCastAt event. The script for handling this
-        ///                           event can be set in the Scripts Tab of the Properties menu 
+        ///                           event can be set in the Scripts Tab of the Properties menu
         ///                           for the object.
         ///     EventUserDefined()  - This creates on OnUserDefined event. The script for handling this event
         ///                           can be set in the Scripts Tab of the Properties menu for the object/area/module.
         /// </summary>
-        public static void SignalEvent(uint oObject, NWN.Event evToRun)
+        public static void SignalEvent(uint oObject, IntPtr evToRun)
         {
-            NWN.Internal.NativeFunctions.StackPushEvent(evToRun.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EVENT, evToRun);
             NWN.Internal.NativeFunctions.StackPushObject(oObject);
             NWN.Internal.NativeFunctions.CallBuiltIn(131);
         }
@@ -1759,18 +1760,18 @@ namespace NWN
         ///      SignalEvent(oObject, EventUserDefined(9999));
         ///  Once the event has been signaled. The script associated with the OnUserDefined event will
         ///  run on the object oObject.
-        /// 
+        ///
         ///  To specify the OnUserDefined script that should run, view the object's Properties
         ///  and click on the Scripts Tab. Then specify a script for the OnUserDefined event.
         ///  From inside the OnUserDefined script call:
         ///     GetUserDefinedEventNumber() to retrieve the value of nUserDefinedEventNumber
         ///     that was used when the event was signaled.
         /// </summary>
-        public static NWN.Event EventUserDefined(int nUserDefinedEventNumber)
+        public static IntPtr EventUserDefined(int nUserDefinedEventNumber)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nUserDefinedEventNumber);
             NWN.Internal.NativeFunctions.CallBuiltIn(132);
-            return new NWN.Event(NWN.Internal.NativeFunctions.StackPopEvent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EVENT);
         }
 
         /// <summary>
@@ -1779,12 +1780,12 @@ namespace NWN
         ///    applied will die in an extraordinary fashion
         ///  - nDisplayFeedback
         /// </summary>
-        public static NWN.Effect EffectDeath(int nSpectacularDeath = FALSE, int nDisplayFeedback = TRUE)
+        public static IntPtr EffectDeath(int nSpectacularDeath = FALSE, int nDisplayFeedback = TRUE)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDisplayFeedback);
             NWN.Internal.NativeFunctions.StackPushInteger(nSpectacularDeath);
             NWN.Internal.NativeFunctions.CallBuiltIn(133);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1793,10 +1794,10 @@ namespace NWN
         ///  is removed. This should be applied as a temporary effect with a 3 second
         ///  duration minimum (1 second to fall, 1 second sitting, 1 second to get up).
         /// </summary>
-        public static NWN.Effect EffectKnockdown()
+        public static IntPtr EffectKnockdown()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(134);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1826,9 +1827,9 @@ namespace NWN
         /// <summary>
         ///  Normalize vVector
         /// </summary>
-        public static NWN.Vector VectorNormalize(NWN.Vector? vVector)
+        public static Vector3 VectorNormalize(Vector3 vVector)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vVector.HasValue ? vVector.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vVector);
             NWN.Internal.NativeFunctions.CallBuiltIn(137);
             return NWN.Internal.NativeFunctions.StackPopVector();
         }
@@ -1842,7 +1843,7 @@ namespace NWN
         ///  - nWisMod: wisdom modifier
         ///  - nChaMod: charisma modifier
         /// </summary>
-        public static NWN.Effect EffectCurse(int nStrMod = 1, int nDexMod = 1, int nConMod = 1, int nIntMod = 1, int nWisMod = 1, int nChaMod = 1)
+        public static IntPtr EffectCurse(int nStrMod = 1, int nDexMod = 1, int nConMod = 1, int nIntMod = 1, int nWisMod = 1, int nChaMod = 1)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nChaMod);
             NWN.Internal.NativeFunctions.StackPushInteger(nWisMod);
@@ -1851,7 +1852,7 @@ namespace NWN
             NWN.Internal.NativeFunctions.StackPushInteger(nDexMod);
             NWN.Internal.NativeFunctions.StackPushInteger(nStrMod);
             NWN.Internal.NativeFunctions.CallBuiltIn(138);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1886,17 +1887,17 @@ namespace NWN
         ///  - vVector
         ///  - bPrepend: if this is TRUE, the message will be prefixed with "PRINTVECTOR:"
         /// </summary>
-        public static void PrintVector(NWN.Vector? vVector, int bPrepend)
+        public static void PrintVector(Vector3 vVector, int bPrepend)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(bPrepend);
-            NWN.Internal.NativeFunctions.StackPushVector(vVector.HasValue ? vVector.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vVector);
             NWN.Internal.NativeFunctions.CallBuiltIn(141);
         }
 
         /// <summary>
         ///  Create a vector with the specified values for x, y and z
         /// </summary>
-        public static NWN.Vector Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
+        public static Vector3 Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(z);
             NWN.Internal.NativeFunctions.StackPushFloat(y);
@@ -1908,16 +1909,16 @@ namespace NWN
         /// <summary>
         ///  Cause the caller to face vTarget
         /// </summary>
-        public static void SetFacingPoint(NWN.Vector? vTarget)
+        public static void SetFacingPoint(Vector3 vTarget)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vTarget.HasValue ? vTarget.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vTarget);
             NWN.Internal.NativeFunctions.CallBuiltIn(143);
         }
 
         /// <summary>
         ///  Convert fAngle to a vector
         /// </summary>
-        public static NWN.Vector AngleToVector(float fAngle)
+        public static Vector3 AngleToVector(float fAngle)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fAngle);
             NWN.Internal.NativeFunctions.CallBuiltIn(144);
@@ -1927,9 +1928,9 @@ namespace NWN
         /// <summary>
         ///  Convert vVector to an angle
         /// </summary>
-        public static float VectorToAngle(NWN.Vector? vVector)
+        public static float VectorToAngle(Vector3 vVector)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vVector.HasValue ? vVector.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vVector);
             NWN.Internal.NativeFunctions.CallBuiltIn(145);
             return NWN.Internal.NativeFunctions.StackPopFloat();
         }
@@ -1963,10 +1964,10 @@ namespace NWN
         /// <summary>
         ///  Create a Paralyze effect
         /// </summary>
-        public static NWN.Effect EffectParalyze()
+        public static IntPtr EffectParalyze()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(148);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -1978,20 +1979,20 @@ namespace NWN
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nImmunityToSpell is
         ///    invalid.
         /// </summary>
-        public static NWN.Effect EffectSpellImmunity(int nImmunityToSpell = SPELL_ALL_SPELLS)
+        public static IntPtr EffectSpellImmunity(int nImmunityToSpell = SPELL_ALL_SPELLS)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nImmunityToSpell);
             NWN.Internal.NativeFunctions.CallBuiltIn(149);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Deaf effect
         /// </summary>
-        public static NWN.Effect EffectDeaf()
+        public static IntPtr EffectDeaf()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(150);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2009,9 +2010,9 @@ namespace NWN
         /// <summary>
         ///  Set oObject's local location variable sVarname to lValue
         /// </summary>
-        public static void SetLocalLocation(uint oObject, string sVarName, NWN.Location lValue)
+        public static void SetLocalLocation(uint oObject, string sVarName, IntPtr lValue)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lValue.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lValue);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sVarName);
             NWN.Internal.NativeFunctions.StackPushObject(oObject);
             NWN.Internal.NativeFunctions.CallBuiltIn(152);
@@ -2020,21 +2021,21 @@ namespace NWN
         /// <summary>
         ///  Get oObject's local location variable sVarname
         /// </summary>
-        public static NWN.Location GetLocalLocation(uint oObject, string sVarName)
+        public static IntPtr GetLocalLocation(uint oObject, string sVarName)
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sVarName);
             NWN.Internal.NativeFunctions.StackPushObject(oObject);
             NWN.Internal.NativeFunctions.CallBuiltIn(153);
-            return new NWN.Location(NWN.Internal.NativeFunctions.StackPopLocation());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_LOCATION);
         }
 
         /// <summary>
         ///  Create a Sleep effect
         /// </summary>
-        public static NWN.Effect EffectSleep()
+        public static IntPtr EffectSleep()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(154);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2055,55 +2056,55 @@ namespace NWN
         /// <summary>
         ///  Create a Charm effect
         /// </summary>
-        public static NWN.Effect EffectCharmed()
+        public static IntPtr EffectCharmed()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(156);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Confuse effect
         /// </summary>
-        public static NWN.Effect EffectConfused()
+        public static IntPtr EffectConfused()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(157);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Frighten effect
         /// </summary>
-        public static NWN.Effect EffectFrightened()
+        public static IntPtr EffectFrightened()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(158);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Dominate effect
         /// </summary>
-        public static NWN.Effect EffectDominated()
+        public static IntPtr EffectDominated()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(159);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Daze effect
         /// </summary>
-        public static NWN.Effect EffectDazed()
+        public static IntPtr EffectDazed()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(160);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Stun effect
         /// </summary>
-        public static NWN.Effect EffectStunned()
+        public static IntPtr EffectStunned()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(161);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2131,12 +2132,12 @@ namespace NWN
         ///  - nAmount: amount of damage to be regenerated per time interval
         ///  - fIntervalSeconds: length of interval in seconds
         /// </summary>
-        public static NWN.Effect EffectRegenerate(int nAmount, float fIntervalSeconds)
+        public static IntPtr EffectRegenerate(int nAmount, float fIntervalSeconds)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fIntervalSeconds);
             NWN.Internal.NativeFunctions.StackPushInteger(nAmount);
             NWN.Internal.NativeFunctions.CallBuiltIn(164);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2147,11 +2148,11 @@ namespace NWN
         ///    50 = 50% faster
         ///    99 = almost twice as fast
         /// </summary>
-        public static NWN.Effect EffectMovementSpeedIncrease(int nPercentChange)
+        public static IntPtr EffectMovementSpeedIncrease(int nPercentChange)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPercentChange);
             NWN.Internal.NativeFunctions.CallBuiltIn(165);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2210,9 +2211,9 @@ namespace NWN
         ///  Get the effect type (EFFECT_TYPE_*) of eEffect.
         ///  * Return value if eEffect is invalid: EFFECT_INVALIDEFFECT
         /// </summary>
-        public static int GetEffectType(NWN.Effect eEffect)
+        public static int GetEffectType(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(170);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -2221,14 +2222,14 @@ namespace NWN
         ///  Create an Area Of Effect effect in the area of the creature it is applied to.
         ///  If the scripts are not specified, default ones will be used.
         /// </summary>
-        public static NWN.Effect EffectAreaOfEffect(int nAreaEffectId, string sOnEnterScript = "", string sHeartbeatScript = "", string sOnExitScript = "")
+        public static IntPtr EffectAreaOfEffect(int nAreaEffectId, string sOnEnterScript = "", string sHeartbeatScript = "", string sOnExitScript = "")
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sOnExitScript);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sHeartbeatScript);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sOnEnterScript);
             NWN.Internal.NativeFunctions.StackPushInteger(nAreaEffectId);
             NWN.Internal.NativeFunctions.CallBuiltIn(171);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2324,12 +2325,15 @@ namespace NWN
         ///  - nMissEffect: if this is TRUE, a random vector near or past the target will
         ///    be generated, on which to play the effect
         /// </summary>
-        public static NWN.Effect EffectVisualEffect(int nVisualEffectId, int nMissEffect = FALSE)
+        public static IntPtr EffectVisualEffect(int nVisualEffectId, int nMissEffect = FALSE, float fScale = 1.0f, Vector3 vTranslate = default, Vector3 vRotate = default)
         {
+            NWN.Internal.NativeFunctions.StackPushVector(vRotate);
+            NWN.Internal.NativeFunctions.StackPushVector(vTranslate);
+            NWN.Internal.NativeFunctions.StackPushFloat(fScale);
             NWN.Internal.NativeFunctions.StackPushInteger(nMissEffect);
             NWN.Internal.NativeFunctions.StackPushInteger(nVisualEffectId);
             NWN.Internal.NativeFunctions.CallBuiltIn(180);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2493,7 +2497,7 @@ namespace NWN
         ///  Note: Not all creatures will be able to sit and not all
         ///        objects can be sat on.
         ///        The object oChair must also be marked as usable in the toolset.
-        /// 
+        ///
         ///  For Example: To get a player to sit in oChair when they click on it,
         ///  place the following script in the OnUsed event for the object oChair.
         ///  void main()
@@ -2542,12 +2546,12 @@ namespace NWN
 
         /// <summary>
         ///  Get the destination object for the given object.
-        /// 
+        ///
         ///  All objects can hold a transition target, but only Doors and Triggers
         ///  will be made clickable by the game engine (This may change in the
         ///  future). You can set and query transition targets on other objects for
         ///  your own scripted purposes.
-        /// 
+        ///
         ///  * Returns OBJECT_INVALID if oTransition does not hold a target.
         /// </summary>
         public static uint GetTransitionTarget(uint oTransition)
@@ -2568,12 +2572,12 @@ namespace NWN
         ///  determining if an effect will be removed or not and as such should never be
         ///  packaged *only* with other visual effects in a link.
         /// </summary>
-        public static NWN.Effect EffectLinkEffects(NWN.Effect eChildEffect, NWN.Effect eParentEffect)
+        public static IntPtr EffectLinkEffects(IntPtr eChildEffect, IntPtr eParentEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eParentEffect.Handle);
-            NWN.Internal.NativeFunctions.StackPushEffect(eChildEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eParentEffect);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eChildEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(199);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2611,7 +2615,7 @@ namespace NWN
         ///           then if nShift is 15, the law/chaos value will become 50 and the
         ///           good/evil value will become 55
         ///  - nShift: this is the desired shift in alignment
-        ///  - bAllPartyMembers: when TRUE the alignment shift of oSubject also has a 
+        ///  - bAllPartyMembers: when TRUE the alignment shift of oSubject also has a
         ///                      diminished affect all members of oSubject's party (if oSubject is a Player).
         ///                      When FALSE the shift only affects oSubject.
         ///  * No return value
@@ -2696,14 +2700,17 @@ namespace NWN
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nBeamVisualEffect is
         ///    not valid.
         /// </summary>
-        public static NWN.Effect EffectBeam(int nBeamVisualEffect, uint oEffector, int nBodyPart, int bMissEffect = FALSE)
+        public static IntPtr EffectBeam(int nBeamVisualEffect, uint oEffector, int nBodyPart, int bMissEffect = FALSE, float fScale = 1.0f, Vector3 vTranslate = default, Vector3 vRotate = default)
         {
+            NWN.Internal.NativeFunctions.StackPushVector(vRotate);
+            NWN.Internal.NativeFunctions.StackPushVector(vTranslate);
+            NWN.Internal.NativeFunctions.StackPushFloat(fScale);
             NWN.Internal.NativeFunctions.StackPushInteger(bMissEffect);
             NWN.Internal.NativeFunctions.StackPushInteger(nBodyPart);
             NWN.Internal.NativeFunctions.StackPushObject(oEffector);
             NWN.Internal.NativeFunctions.StackPushInteger(nBeamVisualEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(207);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -2733,7 +2740,7 @@ namespace NWN
         ///        as oSourceFactionMember in the following call will fail:
         ///        AdjustReputation(oNPC,oPC,-100);
         ///        Instead you should pass in the PC object as the first
-        ///        parameter as in the following call which should succeed: 
+        ///        parameter as in the following call which should succeed:
         ///        AdjustReputation(oPC,oNPC,-100);
         ///  Note: Will fail if oSourceFactionMember is a plot object.
         /// </summary>
@@ -2775,53 +2782,53 @@ namespace NWN
         ///  Create a Spell Resistance Increase effect.
         ///  - nValue: size of spell resistance increase
         /// </summary>
-        public static NWN.Effect EffectSpellResistanceIncrease(int nValue)
+        public static IntPtr EffectSpellResistanceIncrease(int nValue)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.CallBuiltIn(212);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Get the location of oObject.
         /// </summary>
-        public static NWN.Location GetLocation(uint oObject)
+        public static IntPtr GetLocation(uint oObject)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oObject);
             NWN.Internal.NativeFunctions.CallBuiltIn(213);
-            return new NWN.Location(NWN.Internal.NativeFunctions.StackPopLocation());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_LOCATION);
         }
 
         /// <summary>
         ///  The subject will jump to lLocation instantly (even between areas).
         ///  If lLocation is invalid, nothing will happen.
         /// </summary>
-        public static void ActionJumpToLocation(NWN.Location lLocation)
+        public static void ActionJumpToLocation(IntPtr lLocation)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.CallBuiltIn(214);
         }
 
         /// <summary>
         ///  Create a location.
         /// </summary>
-        public static NWN.Location Location(uint oArea, NWN.Vector? vPosition, float fOrientation)
+        public static IntPtr Location(uint oArea, Vector3 vPosition, float fOrientation)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fOrientation);
-            NWN.Internal.NativeFunctions.StackPushVector(vPosition.HasValue ? vPosition.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vPosition);
             NWN.Internal.NativeFunctions.StackPushObject(oArea);
             NWN.Internal.NativeFunctions.CallBuiltIn(215);
-            return new NWN.Location(NWN.Internal.NativeFunctions.StackPopLocation());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_LOCATION);
         }
 
         /// <summary>
         ///  Apply eEffect at lLocation.
         /// </summary>
-        public static void ApplyEffectAtLocation(int nDurationType, NWN.Effect eEffect, NWN.Location lLocation, float fDuration = 0.0f)
+        public static void ApplyEffectAtLocation(int nDurationType, IntPtr eEffect, IntPtr lLocation, float fDuration = 0.0f)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fDuration);
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.StackPushInteger(nDurationType);
             NWN.Internal.NativeFunctions.CallBuiltIn(216);
         }
@@ -2859,11 +2866,11 @@ namespace NWN
         /// <summary>
         ///  Apply eEffect to oTarget.
         /// </summary>
-        public static void ApplyEffectToObject(int nDurationType, NWN.Effect eEffect, uint oTarget, float fDuration = 0.0f)
+        public static void ApplyEffectToObject(int nDurationType, IntPtr eEffect, uint oTarget, float fDuration = 0.0f)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fDuration);
             NWN.Internal.NativeFunctions.StackPushObject(oTarget);
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.StackPushInteger(nDurationType);
             NWN.Internal.NativeFunctions.CallBuiltIn(220);
         }
@@ -2884,18 +2891,18 @@ namespace NWN
         /// <summary>
         ///  Get the location of the caller's last spell target.
         /// </summary>
-        public static NWN.Location GetSpellTargetLocation()
+        public static IntPtr GetSpellTargetLocation()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(222);
-            return new NWN.Location(NWN.Internal.NativeFunctions.StackPopLocation());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_LOCATION);
         }
 
         /// <summary>
         ///  Get the position vector from lLocation.
         /// </summary>
-        public static NWN.Vector GetPositionFromLocation(NWN.Location lLocation)
+        public static Vector3 GetPositionFromLocation(IntPtr lLocation)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.CallBuiltIn(223);
             return NWN.Internal.NativeFunctions.StackPopVector();
         }
@@ -2903,9 +2910,9 @@ namespace NWN
         /// <summary>
         ///  Get the area's object ID from lLocation.
         /// </summary>
-        public static uint GetAreaFromLocation(NWN.Location lLocation)
+        public static uint GetAreaFromLocation(IntPtr lLocation)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.CallBuiltIn(224);
             return NWN.Internal.NativeFunctions.StackPopObject();
         }
@@ -2913,9 +2920,9 @@ namespace NWN
         /// <summary>
         ///  Get the orientation value from lLocation.
         /// </summary>
-        public static float GetFacingFromLocation(NWN.Location lLocation)
+        public static float GetFacingFromLocation(IntPtr lLocation)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.CallBuiltIn(225);
             return NWN.Internal.NativeFunctions.StackPopFloat();
         }
@@ -2948,14 +2955,14 @@ namespace NWN
         ///    further specify the type of creature that we are looking for.
         ///  * Return value on error: OBJECT_INVALID
         /// </summary>
-        public static uint GetNearestCreatureToLocation(int nFirstCriteriaType, int nFirstCriteriaValue, NWN.Location lLocation, int nNth = 1, int nSecondCriteriaType = -1, int nSecondCriteriaValue = -1, int nThirdCriteriaType = -1, int nThirdCriteriaValue = -1)
+        public static uint GetNearestCreatureToLocation(int nFirstCriteriaType, int nFirstCriteriaValue, IntPtr lLocation, int nNth = 1, int nSecondCriteriaType = -1, int nSecondCriteriaValue = -1, int nThirdCriteriaType = -1, int nThirdCriteriaValue = -1)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nThirdCriteriaValue);
             NWN.Internal.NativeFunctions.StackPushInteger(nThirdCriteriaType);
             NWN.Internal.NativeFunctions.StackPushInteger(nSecondCriteriaValue);
             NWN.Internal.NativeFunctions.StackPushInteger(nSecondCriteriaType);
             NWN.Internal.NativeFunctions.StackPushInteger(nNth);
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.StackPushInteger(nFirstCriteriaValue);
             NWN.Internal.NativeFunctions.StackPushInteger(nFirstCriteriaType);
             NWN.Internal.NativeFunctions.CallBuiltIn(226);
@@ -2985,10 +2992,10 @@ namespace NWN
         ///  - nNth
         ///  * Return value on error: OBJECT_INVALID
         /// </summary>
-        public static uint GetNearestObjectToLocation(int nObjectType, NWN.Location lLocation, int nNth = 1)
+        public static uint GetNearestObjectToLocation(int nObjectType, IntPtr lLocation, int nNth = 1)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nNth);
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.StackPushInteger(nObjectType);
             NWN.Internal.NativeFunctions.CallBuiltIn(228);
             return NWN.Internal.NativeFunctions.StackPopObject();
@@ -3059,13 +3066,13 @@ namespace NWN
         ///    the end-user to simulate
         ///    a high-level magic user having lots of advance warning of impending trouble.
         /// </summary>
-        public static void ActionCastSpellAtLocation(int nSpell, NWN.Location lTargetLocation, int nMetaMagic = METAMAGIC_ANY, int bCheat = FALSE, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int bInstantSpell = FALSE)
+        public static void ActionCastSpellAtLocation(int nSpell, IntPtr lTargetLocation, int nMetaMagic = METAMAGIC_ANY, int bCheat = FALSE, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT, int bInstantSpell = FALSE)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(bInstantSpell);
             NWN.Internal.NativeFunctions.StackPushInteger(nProjectilePathType);
             NWN.Internal.NativeFunctions.StackPushInteger(bCheat);
             NWN.Internal.NativeFunctions.StackPushInteger(nMetaMagic);
-            NWN.Internal.NativeFunctions.StackPushLocation(lTargetLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTargetLocation);
             NWN.Internal.NativeFunctions.StackPushInteger(nSpell);
             NWN.Internal.NativeFunctions.CallBuiltIn(234);
         }
@@ -3166,11 +3173,11 @@ namespace NWN
         ///  - bUseAppearAnimation
         ///  - sNewTag - if this string is not empty, it will replace the default tag from the template
         /// </summary>
-        public static uint CreateObject(int nObjectType, string sTemplate, NWN.Location lLocation, int bUseAppearAnimation = FALSE, string sNewTag = "")
+        public static uint CreateObject(int nObjectType, string sTemplate, IntPtr lLocation, int bUseAppearAnimation = FALSE, string sNewTag = "")
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sNewTag);
             NWN.Internal.NativeFunctions.StackPushInteger(bUseAppearAnimation);
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sTemplate);
             NWN.Internal.NativeFunctions.StackPushInteger(nObjectType);
             NWN.Internal.NativeFunctions.CallBuiltIn(243);
@@ -3186,21 +3193,21 @@ namespace NWN
         ///  This function doesn't cast the spell specified, it only creates an event so that
         ///  when the event is signaled on an object, the object will use its OnSpellCastAt script
         ///  to react to the spell being cast.
-        /// 
-        ///  To specify the OnSpellCastAt script that should run, view the Object's Properties 
+        ///
+        ///  To specify the OnSpellCastAt script that should run, view the Object's Properties
         ///  and click on the Scripts Tab. Then specify a script for the OnSpellCastAt event.
         ///  From inside the OnSpellCastAt script call:
         ///      GetLastSpellCaster() to get the object that cast the spell (oCaster).
         ///      GetLastSpell() to get the type of spell cast (nSpell)
         ///      GetLastSpellHarmful() to determine if the spell cast at the object was harmful.
         /// </summary>
-        public static NWN.Event EventSpellCastAt(uint oCaster, int nSpell, int bHarmful = TRUE)
+        public static IntPtr EventSpellCastAt(uint oCaster, int nSpell, int bHarmful = TRUE)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(bHarmful);
             NWN.Internal.NativeFunctions.StackPushInteger(nSpell);
             NWN.Internal.NativeFunctions.StackPushObject(oCaster);
             NWN.Internal.NativeFunctions.CallBuiltIn(244);
-            return new NWN.Event(NWN.Internal.NativeFunctions.StackPopEvent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EVENT);
         }
 
         /// <summary>
@@ -3258,36 +3265,36 @@ namespace NWN
         ///  Create a Poison effect.
         ///  - nPoisonType: POISON_*
         /// </summary>
-        public static NWN.Effect EffectPoison(int nPoisonType)
+        public static IntPtr EffectPoison(int nPoisonType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPoisonType);
             NWN.Internal.NativeFunctions.CallBuiltIn(250);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Disease effect.
         ///  - nDiseaseType: DISEASE_*
         /// </summary>
-        public static NWN.Effect EffectDisease(int nDiseaseType)
+        public static IntPtr EffectDisease(int nDiseaseType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDiseaseType);
             NWN.Internal.NativeFunctions.CallBuiltIn(251);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Silence effect.
         /// </summary>
-        public static NWN.Effect EffectSilence()
+        public static IntPtr EffectSilence()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(252);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Set the name of oObject.
-        /// 
+        ///
         ///  - oObject: the object for which you are changing the name (area, creature, placeable, item, or door).
         ///  - sNewName: the new name that the object will use.
         ///  Note: SetName() does not work on player objects.
@@ -3485,19 +3492,19 @@ namespace NWN
         /// <summary>
         ///  Create a Haste effect.
         /// </summary>
-        public static NWN.Effect EffectHaste()
+        public static IntPtr EffectHaste()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(270);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Slow effect.
         /// </summary>
-        public static NWN.Effect EffectSlow()
+        public static IntPtr EffectSlow()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(271);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -3514,11 +3521,11 @@ namespace NWN
         ///  Create an Immunity effect.
         ///  - nImmunityType: IMMUNITY_TYPE_*
         /// </summary>
-        public static NWN.Effect EffectImmunity(int nImmunityType)
+        public static IntPtr EffectImmunity(int nImmunityType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nImmunityType);
             NWN.Internal.NativeFunctions.CallBuiltIn(273);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -3542,12 +3549,12 @@ namespace NWN
         ///  - nDamageType: DAMAGE_TYPE_*
         ///  - nPercentImmunity
         /// </summary>
-        public static NWN.Effect EffectDamageImmunityIncrease(int nDamageType, int nPercentImmunity)
+        public static IntPtr EffectDamageImmunityIncrease(int nDamageType, int nPercentImmunity)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPercentImmunity);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(275);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -3761,14 +3768,14 @@ namespace NWN
         ///      SignalEvent(oCreature, EventConversation());
         ///  Once the event has been signaled. The script associated with the OnConversation event will
         ///  run on the creature oCreature.
-        /// 
+        ///
         ///  To specify the OnConversation script that should run, view the Creature Properties on
         ///  the creature and click on the Scripts Tab. Then specify a script for the OnConversation event.
         /// </summary>
-        public static NWN.Event EventConversation()
+        public static IntPtr EventConversation()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(295);
-            return new NWN.Event(NWN.Internal.NativeFunctions.StackPopEvent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EVENT);
         }
 
         /// <summary>
@@ -3796,10 +3803,10 @@ namespace NWN
         /// <summary>
         ///  Get the distance between lLocationA and lLocationB.
         /// </summary>
-        public static float GetDistanceBetweenLocations(NWN.Location lLocationA, NWN.Location lLocationB)
+        public static float GetDistanceBetweenLocations(IntPtr lLocationA, IntPtr lLocationB)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocationB.Handle);
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocationA.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocationB);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocationA);
             NWN.Internal.NativeFunctions.CallBuiltIn(298);
             return NWN.Internal.NativeFunctions.StackPopFloat();
         }
@@ -3842,33 +3849,33 @@ namespace NWN
         ///  Create a Spell Talent.
         ///  - nSpell: SPELL_*
         /// </summary>
-        public static NWN.Talent TalentSpell(int nSpell)
+        public static IntPtr TalentSpell(int nSpell)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSpell);
             NWN.Internal.NativeFunctions.CallBuiltIn(301);
-            return new NWN.Talent(NWN.Internal.NativeFunctions.StackPopTalent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_TALENT);
         }
 
         /// <summary>
         ///  Create a Feat Talent.
         ///  - nFeat: FEAT_*
         /// </summary>
-        public static NWN.Talent TalentFeat(int nFeat)
+        public static IntPtr TalentFeat(int nFeat)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nFeat);
             NWN.Internal.NativeFunctions.CallBuiltIn(302);
-            return new NWN.Talent(NWN.Internal.NativeFunctions.StackPopTalent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_TALENT);
         }
 
         /// <summary>
         ///  Create a Skill Talent.
         ///  - nSkill: SKILL_*
         /// </summary>
-        public static NWN.Talent TalentSkill(int nSkill)
+        public static IntPtr TalentSkill(int nSkill)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSkill);
             NWN.Internal.NativeFunctions.CallBuiltIn(303);
-            return new NWN.Talent(NWN.Internal.NativeFunctions.StackPopTalent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_TALENT);
         }
 
         /// <summary>
@@ -3891,9 +3898,9 @@ namespace NWN
         ///  Get the spell (SPELL_*) that applied eSpellEffect.
         ///  * Returns -1 if eSpellEffect was applied outside a spell script.
         /// </summary>
-        public static int GetEffectSpellId(NWN.Effect eSpellEffect)
+        public static int GetEffectSpellId(IntPtr eSpellEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eSpellEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eSpellEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(305);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -3901,10 +3908,10 @@ namespace NWN
         /// <summary>
         ///  Determine whether oCreature has tTalent.
         /// </summary>
-        public static int GetCreatureHasTalent(NWN.Talent tTalent, uint oCreature = OBJECT_INVALID)
+        public static int GetCreatureHasTalent(IntPtr tTalent, uint oCreature = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oCreature);
-            NWN.Internal.NativeFunctions.StackPushTalent(tTalent.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_TALENT, tTalent);
             NWN.Internal.NativeFunctions.CallBuiltIn(306);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -3914,12 +3921,12 @@ namespace NWN
         ///  - nCategory: TALENT_CATEGORY_*
         ///  - oCreature
         /// </summary>
-        public static NWN.Talent GetCreatureTalentRandom(int nCategory, uint oCreature = OBJECT_INVALID)
+        public static IntPtr GetCreatureTalentRandom(int nCategory, uint oCreature = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oCreature);
             NWN.Internal.NativeFunctions.StackPushInteger(nCategory);
             NWN.Internal.NativeFunctions.CallBuiltIn(307);
-            return new NWN.Talent(NWN.Internal.NativeFunctions.StackPopTalent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_TALENT);
         }
 
         /// <summary>
@@ -3929,32 +3936,32 @@ namespace NWN
         ///  - nCRMax: Challenge Rating of the talent
         ///  - oCreature
         /// </summary>
-        public static NWN.Talent GetCreatureTalentBest(int nCategory, int nCRMax, uint oCreature = OBJECT_INVALID)
+        public static IntPtr GetCreatureTalentBest(int nCategory, int nCRMax, uint oCreature = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oCreature);
             NWN.Internal.NativeFunctions.StackPushInteger(nCRMax);
             NWN.Internal.NativeFunctions.StackPushInteger(nCategory);
             NWN.Internal.NativeFunctions.CallBuiltIn(308);
-            return new NWN.Talent(NWN.Internal.NativeFunctions.StackPopTalent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_TALENT);
         }
 
         /// <summary>
         ///  Use tChosenTalent on oTarget.
         /// </summary>
-        public static void ActionUseTalentOnObject(NWN.Talent tChosenTalent, uint oTarget)
+        public static void ActionUseTalentOnObject(IntPtr tChosenTalent, uint oTarget)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oTarget);
-            NWN.Internal.NativeFunctions.StackPushTalent(tChosenTalent.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_TALENT, tChosenTalent);
             NWN.Internal.NativeFunctions.CallBuiltIn(309);
         }
 
         /// <summary>
         ///  Use tChosenTalent at lTargetLocation.
         /// </summary>
-        public static void ActionUseTalentAtLocation(NWN.Talent tChosenTalent, NWN.Location lTargetLocation)
+        public static void ActionUseTalentAtLocation(IntPtr tChosenTalent, IntPtr lTargetLocation)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lTargetLocation.Handle);
-            NWN.Internal.NativeFunctions.StackPushTalent(tChosenTalent.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTargetLocation);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_TALENT, tChosenTalent);
             NWN.Internal.NativeFunctions.CallBuiltIn(310);
         }
 
@@ -3982,9 +3989,9 @@ namespace NWN
         /// <summary>
         ///  Jump to lDestination.  The action is added to the TOP of the action queue.
         /// </summary>
-        public static void JumpToLocation(NWN.Location lDestination)
+        public static void JumpToLocation(IntPtr lDestination)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lDestination.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lDestination);
             NWN.Internal.NativeFunctions.CallBuiltIn(313);
         }
 
@@ -3993,11 +4000,11 @@ namespace NWN
         ///  - nHitPoints: a positive integer
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nHitPoints < 0.
         /// </summary>
-        public static NWN.Effect EffectTemporaryHitpoints(int nHitPoints)
+        public static IntPtr EffectTemporaryHitpoints(int nHitPoints)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nHitPoints);
             NWN.Internal.NativeFunctions.CallBuiltIn(314);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -4415,12 +4422,12 @@ namespace NWN
         ///  - nValue
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nSkill is invalid.
         /// </summary>
-        public static NWN.Effect EffectSkillIncrease(int nSkill, int nValue)
+        public static IntPtr EffectSkillIncrease(int nSkill, int nValue)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.StackPushInteger(nSkill);
             NWN.Internal.NativeFunctions.CallBuiltIn(351);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -4463,13 +4470,13 @@ namespace NWN
         ///  - nLawChaos: ALIGNMENT_LAWFUL/ALIGNMENT_CHAOTIC/ALIGNMENT_ALL
         ///  - nGoodEvil: ALIGNMENT_GOOD/ALIGNMENT_EVIL/ALIGNMENT_ALL
         /// </summary>
-        public static NWN.Effect VersusAlignmentEffect(NWN.Effect eEffect, int nLawChaos = ALIGNMENT_ALL, int nGoodEvil = ALIGNMENT_ALL)
+        public static IntPtr VersusAlignmentEffect(IntPtr eEffect, int nLawChaos = ALIGNMENT_ALL, int nGoodEvil = ALIGNMENT_ALL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nGoodEvil);
             NWN.Internal.NativeFunctions.StackPushInteger(nLawChaos);
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(355);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -4477,22 +4484,22 @@ namespace NWN
         ///  - eEffect
         ///  - nRacialType: RACIAL_TYPE_*
         /// </summary>
-        public static NWN.Effect VersusRacialTypeEffect(NWN.Effect eEffect, int nRacialType)
+        public static IntPtr VersusRacialTypeEffect(IntPtr eEffect, int nRacialType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nRacialType);
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(356);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Set eEffect to be versus traps.
         /// </summary>
-        public static NWN.Effect VersusTrapEffect(NWN.Effect eEffect)
+        public static IntPtr VersusTrapEffect(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(357);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -4508,9 +4515,9 @@ namespace NWN
         /// <summary>
         ///  * Returns TRUE if tTalent is valid.
         /// </summary>
-        public static int GetIsTalentValid(NWN.Talent tTalent)
+        public static int GetIsTalentValid(IntPtr tTalent)
         {
-            NWN.Internal.NativeFunctions.StackPushTalent(tTalent.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_TALENT, tTalent);
             NWN.Internal.NativeFunctions.CallBuiltIn(359);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -4518,11 +4525,11 @@ namespace NWN
         /// <summary>
         ///  Causes the action subject to move away from lMoveAwayFrom.
         /// </summary>
-        public static void ActionMoveAwayFromLocation(NWN.Location lMoveAwayFrom, int bRun = FALSE, float fMoveAwayRange = 40.0f)
+        public static void ActionMoveAwayFromLocation(IntPtr lMoveAwayFrom, int bRun = FALSE, float fMoveAwayRange = 40.0f)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fMoveAwayRange);
             NWN.Internal.NativeFunctions.StackPushInteger(bRun);
-            NWN.Internal.NativeFunctions.StackPushLocation(lMoveAwayFrom.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lMoveAwayFrom);
             NWN.Internal.NativeFunctions.CallBuiltIn(360);
         }
 
@@ -4541,9 +4548,9 @@ namespace NWN
         /// <summary>
         ///  Get the type (TALENT_TYPE_*) of tTalent.
         /// </summary>
-        public static int GetTypeFromTalent(NWN.Talent tTalent)
+        public static int GetTypeFromTalent(IntPtr tTalent)
         {
-            NWN.Internal.NativeFunctions.StackPushTalent(tTalent.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_TALENT, tTalent);
             NWN.Internal.NativeFunctions.CallBuiltIn(362);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -4551,9 +4558,9 @@ namespace NWN
         /// <summary>
         ///  Get the ID of tTalent.  This could be a SPELL_*, FEAT_* or SKILL_*.
         /// </summary>
-        public static int GetIdFromTalent(NWN.Talent tTalent)
+        public static int GetIdFromTalent(IntPtr tTalent)
         {
-            NWN.Internal.NativeFunctions.StackPushTalent(tTalent.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_TALENT, tTalent);
             NWN.Internal.NativeFunctions.CallBuiltIn(363);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -4638,8 +4645,8 @@ namespace NWN
 
         /// <summary>
         ///  Get the public part of the CD Key that oPlayer used when logging in.
-        ///  - nSinglePlayerCDKey: If set to TRUE, the player's public CD Key will 
-        ///    be returned when the player is playing in single player mode 
+        ///  - nSinglePlayerCDKey: If set to TRUE, the player's public CD Key will
+        ///    be returned when the player is playing in single player mode
         ///    (otherwise returns an empty string in single player mode).
         /// </summary>
         public static string GetPCPublicCDKey(uint oPlayer, int nSinglePlayerCDKey = FALSE)
@@ -4753,10 +4760,10 @@ namespace NWN
         ///  Create a Turned effect.
         ///  Turned effects are supernatural by default.
         /// </summary>
-        public static NWN.Effect EffectTurned()
+        public static IntPtr EffectTurned()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(379);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -4788,11 +4795,11 @@ namespace NWN
         /// <summary>
         ///  Force the action subject to move to lDestination.
         /// </summary>
-        public static void ActionForceMoveToLocation(NWN.Location lDestination, int bRun = FALSE, float fTimeout = 30.0f)
+        public static void ActionForceMoveToLocation(IntPtr lDestination, int bRun = FALSE, float fTimeout = 30.0f)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fTimeout);
             NWN.Internal.NativeFunctions.StackPushInteger(bRun);
-            NWN.Internal.NativeFunctions.StackPushLocation(lDestination.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lDestination);
             NWN.Internal.NativeFunctions.CallBuiltIn(382);
         }
 
@@ -4845,11 +4852,11 @@ namespace NWN
         ///  - fHitPointChangePerRound: this can be positive or negative, but not zero.
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if fHitPointChangePerRound is 0.
         /// </summary>
-        public static NWN.Effect EffectHitPointChangeWhenDying(float fHitPointChangePerRound)
+        public static IntPtr EffectHitPointChangeWhenDying(float fHitPointChangePerRound)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fHitPointChangePerRound);
             NWN.Internal.NativeFunctions.CallBuiltIn(387);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5147,10 +5154,10 @@ namespace NWN
         /// <summary>
         ///  Get the starting location of the module.
         /// </summary>
-        public static NWN.Location GetStartingLocation()
+        public static IntPtr GetStartingLocation()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(411);
-            return new NWN.Location(NWN.Internal.NativeFunctions.StackPopLocation());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_LOCATION);
         }
 
         /// <summary>
@@ -5198,9 +5205,9 @@ namespace NWN
         /// <summary>
         ///  Set the position of oSound.
         /// </summary>
-        public static void SoundObjectSetPosition(uint oSound, NWN.Vector? vPosition)
+        public static void SoundObjectSetPosition(uint oSound, Vector3 vPosition)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vPosition.HasValue ? vPosition.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vPosition);
             NWN.Internal.NativeFunctions.StackPushObject(oSound);
             NWN.Internal.NativeFunctions.CallBuiltIn(416);
         }
@@ -5287,13 +5294,13 @@ namespace NWN
         /// <summary>
         ///  Activate oItem.
         /// </summary>
-        public static NWN.Event EventActivateItem(uint oItem, NWN.Location lTarget, uint oTarget = OBJECT_INVALID)
+        public static IntPtr EventActivateItem(uint oItem, IntPtr lTarget, uint oTarget = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oTarget);
-            NWN.Internal.NativeFunctions.StackPushLocation(lTarget.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTarget);
             NWN.Internal.NativeFunctions.StackPushObject(oItem);
             NWN.Internal.NativeFunctions.CallBuiltIn(424);
-            return new NWN.Event(NWN.Internal.NativeFunctions.StackPopEvent());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EVENT);
         }
 
         /// <summary>
@@ -5463,10 +5470,10 @@ namespace NWN
         ///  Use this in an OnItemActivated module script to get the location of the item's
         ///  target.
         /// </summary>
-        public static NWN.Location GetItemActivatedTargetLocation()
+        public static IntPtr GetItemActivatedTargetLocation()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(441);
-            return new NWN.Location(NWN.Internal.NativeFunctions.StackPopLocation());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_LOCATION);
         }
 
         /// <summary>
@@ -5518,12 +5525,12 @@ namespace NWN
         ///  - nAbility: ABILITY_*
         ///  - nModifyBy: This is the amount by which to decrement the ability
         /// </summary>
-        public static NWN.Effect EffectAbilityDecrease(int nAbility, int nModifyBy)
+        public static IntPtr EffectAbilityDecrease(int nAbility, int nModifyBy)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifyBy);
             NWN.Internal.NativeFunctions.StackPushInteger(nAbility);
             NWN.Internal.NativeFunctions.CallBuiltIn(446);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5531,12 +5538,12 @@ namespace NWN
         ///  - nPenalty
         ///  - nModifierType: ATTACK_BONUS_*
         /// </summary>
-        public static NWN.Effect EffectAttackDecrease(int nPenalty, int nModifierType = ATTACK_BONUS_MISC)
+        public static IntPtr EffectAttackDecrease(int nPenalty, int nModifierType = ATTACK_BONUS_MISC)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifierType);
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.CallBuiltIn(447);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5544,12 +5551,12 @@ namespace NWN
         ///  - nPenalty
         ///  - nDamageType: DAMAGE_TYPE_*
         /// </summary>
-        public static NWN.Effect EffectDamageDecrease(int nPenalty, int nDamageType = DAMAGE_TYPE_MAGICAL)
+        public static IntPtr EffectDamageDecrease(int nPenalty, int nDamageType = DAMAGE_TYPE_MAGICAL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.CallBuiltIn(448);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5557,12 +5564,12 @@ namespace NWN
         ///  - nDamageType: DAMAGE_TYPE_*
         ///  - nPercentImmunity
         /// </summary>
-        public static NWN.Effect EffectDamageImmunityDecrease(int nDamageType, int nPercentImmunity)
+        public static IntPtr EffectDamageImmunityDecrease(int nDamageType, int nPercentImmunity)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPercentImmunity);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(449);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5572,13 +5579,13 @@ namespace NWN
         ///  - nDamageType: DAMAGE_TYPE_*
         ///    * Default value for nDamageType should only ever be used in this function prototype.
         /// </summary>
-        public static NWN.Effect EffectACDecrease(int nValue, int nModifyType = AC_DODGE_BONUS, int nDamageType = AC_VS_DAMAGE_TYPE_ALL)
+        public static IntPtr EffectACDecrease(int nValue, int nModifyType = AC_DODGE_BONUS, int nDamageType = AC_VS_DAMAGE_TYPE_ALL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nModifyType);
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.CallBuiltIn(450);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5589,11 +5596,11 @@ namespace NWN
         ///    50 = 50% slower
         ///    99 = almost immobile
         /// </summary>
-        public static NWN.Effect EffectMovementSpeedDecrease(int nPercentChange)
+        public static IntPtr EffectMovementSpeedDecrease(int nPercentChange)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPercentChange);
             NWN.Internal.NativeFunctions.CallBuiltIn(451);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5602,39 +5609,39 @@ namespace NWN
         ///           SAVING_THROW_ALL
         ///           SAVING_THROW_FORT
         ///           SAVING_THROW_REFLEX
-        ///           SAVING_THROW_WILL 
+        ///           SAVING_THROW_WILL
         ///  - nValue: size of the Saving Throw decrease
         ///  - nSaveType: SAVING_THROW_TYPE_* (e.g. SAVING_THROW_TYPE_ACID )
         /// </summary>
-        public static NWN.Effect EffectSavingThrowDecrease(int nSave, int nValue, int nSaveType = SAVING_THROW_TYPE_ALL)
+        public static IntPtr EffectSavingThrowDecrease(int nSave, int nValue, int nSaveType = SAVING_THROW_TYPE_ALL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSaveType);
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.StackPushInteger(nSave);
             NWN.Internal.NativeFunctions.CallBuiltIn(452);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Skill Decrease effect.
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nSkill is invalid.
         /// </summary>
-        public static NWN.Effect EffectSkillDecrease(int nSkill, int nValue)
+        public static IntPtr EffectSkillDecrease(int nSkill, int nValue)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.StackPushInteger(nSkill);
             NWN.Internal.NativeFunctions.CallBuiltIn(453);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Spell Resistance Decrease effect.
         /// </summary>
-        public static NWN.Effect EffectSpellResistanceDecrease(int nValue)
+        public static IntPtr EffectSpellResistanceDecrease(int nValue)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nValue);
             NWN.Internal.NativeFunctions.CallBuiltIn(454);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5663,11 +5670,11 @@ namespace NWN
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nInvisibilityType
         ///    is invalid.
         /// </summary>
-        public static NWN.Effect EffectInvisibility(int nInvisibilityType)
+        public static IntPtr EffectInvisibility(int nInvisibilityType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nInvisibilityType);
             NWN.Internal.NativeFunctions.CallBuiltIn(457);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5677,21 +5684,21 @@ namespace NWN
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nPercentage < 1 or
         ///    nPercentage > 100.
         /// </summary>
-        public static NWN.Effect EffectConcealment(int nPercentage, int nMissType = MISS_CHANCE_TYPE_NORMAL)
+        public static IntPtr EffectConcealment(int nPercentage, int nMissType = MISS_CHANCE_TYPE_NORMAL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nMissType);
             NWN.Internal.NativeFunctions.StackPushInteger(nPercentage);
             NWN.Internal.NativeFunctions.CallBuiltIn(458);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Darkness effect.
         /// </summary>
-        public static NWN.Effect EffectDarkness()
+        public static IntPtr EffectDarkness()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(459);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5700,20 +5707,20 @@ namespace NWN
         ///  cause the dispel effect to use the level of the creature that created the
         ///  effect.
         /// </summary>
-        public static NWN.Effect EffectDispelMagicAll(int nCasterLevel = USE_CREATURE_LEVEL)
+        public static IntPtr EffectDispelMagicAll(int nCasterLevel = USE_CREATURE_LEVEL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nCasterLevel);
             NWN.Internal.NativeFunctions.CallBuiltIn(460);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create an Ultravision effect.
         /// </summary>
-        public static NWN.Effect EffectUltravision()
+        public static IntPtr EffectUltravision()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(461);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5721,23 +5728,23 @@ namespace NWN
         ///  - nNumLevels: the number of negative levels to apply.
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nNumLevels > 100.
         /// </summary>
-        public static NWN.Effect EffectNegativeLevel(int nNumLevels, int bHPBonus = FALSE)
+        public static IntPtr EffectNegativeLevel(int nNumLevels, int bHPBonus = FALSE)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(bHPBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nNumLevels);
             NWN.Internal.NativeFunctions.CallBuiltIn(462);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Polymorph effect.
         /// </summary>
-        public static NWN.Effect EffectPolymorph(int nPolymorphSelection, int nLocked = FALSE)
+        public static IntPtr EffectPolymorph(int nPolymorphSelection, int nLocked = FALSE)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nLocked);
             NWN.Internal.NativeFunctions.StackPushInteger(nPolymorphSelection);
             NWN.Internal.NativeFunctions.CallBuiltIn(463);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5745,47 +5752,47 @@ namespace NWN
         ///  - nDifficultyClass: must be a non-zero, positive number
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nDifficultyClass <= 0.
         /// </summary>
-        public static NWN.Effect EffectSanctuary(int nDifficultyClass)
+        public static IntPtr EffectSanctuary(int nDifficultyClass)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDifficultyClass);
             NWN.Internal.NativeFunctions.CallBuiltIn(464);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a True Seeing effect.
         /// </summary>
-        public static NWN.Effect EffectTrueSeeing()
+        public static IntPtr EffectTrueSeeing()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(465);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a See Invisible effect.
         /// </summary>
-        public static NWN.Effect EffectSeeInvisible()
+        public static IntPtr EffectSeeInvisible()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(466);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Time Stop effect.
         /// </summary>
-        public static NWN.Effect EffectTimeStop()
+        public static IntPtr EffectTimeStop()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(467);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Create a Blindness effect.
         /// </summary>
-        public static NWN.Effect EffectBlindness()
+        public static IntPtr EffectBlindness()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(468);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5847,13 +5854,13 @@ namespace NWN
         ///    nMaxSpellLevelAbsorbed is not between -1 and 9 inclusive, or nSpellSchool
         ///    is invalid.
         /// </summary>
-        public static NWN.Effect EffectSpellLevelAbsorption(int nMaxSpellLevelAbsorbed, int nTotalSpellLevelsAbsorbed = 0, int nSpellSchool = SPELL_SCHOOL_GENERAL)
+        public static IntPtr EffectSpellLevelAbsorption(int nMaxSpellLevelAbsorbed, int nTotalSpellLevelsAbsorbed = 0, int nSpellSchool = SPELL_SCHOOL_GENERAL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSpellSchool);
             NWN.Internal.NativeFunctions.StackPushInteger(nTotalSpellLevelsAbsorbed);
             NWN.Internal.NativeFunctions.StackPushInteger(nMaxSpellLevelAbsorbed);
             NWN.Internal.NativeFunctions.CallBuiltIn(472);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5862,11 +5869,11 @@ namespace NWN
         ///  cause the dispel effect to use the level of the creature that created the
         ///  effect.
         /// </summary>
-        public static NWN.Effect EffectDispelMagicBest(int nCasterLevel = USE_CREATURE_LEVEL)
+        public static IntPtr EffectDispelMagicBest(int nCasterLevel = USE_CREATURE_LEVEL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nCasterLevel);
             NWN.Internal.NativeFunctions.CallBuiltIn(473);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5922,12 +5929,12 @@ namespace NWN
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nPercentage < 1 or
         ///    nPercentage > 100.
         /// </summary>
-        public static NWN.Effect EffectMissChance(int nPercentage, int nMissChanceType = MISS_CHANCE_TYPE_NORMAL)
+        public static IntPtr EffectMissChance(int nPercentage, int nMissChanceType = MISS_CHANCE_TYPE_NORMAL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nMissChanceType);
             NWN.Internal.NativeFunctions.StackPushInteger(nPercentage);
             NWN.Internal.NativeFunctions.CallBuiltIn(477);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5958,12 +5965,12 @@ namespace NWN
         ///  - nAnimation determines which appear and disappear animations to use. Most creatures
         ///  only have animation 1, although a few have 2 (like beholders)
         /// </summary>
-        public static NWN.Effect EffectDisappearAppear(NWN.Location lLocation, int nAnimation = 1)
+        public static IntPtr EffectDisappearAppear(IntPtr lLocation, int nAnimation = 1)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAnimation);
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.CallBuiltIn(480);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5972,11 +5979,11 @@ namespace NWN
         ///  - nAnimation determines which appear and disappear animations to use. Most creatures
         ///  only have animation 1, although a few have 2 (like beholders)
         /// </summary>
-        public static NWN.Effect EffectDisappear(int nAnimation = 1)
+        public static IntPtr EffectDisappear(int nAnimation = 1)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAnimation);
             NWN.Internal.NativeFunctions.CallBuiltIn(481);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -5984,11 +5991,11 @@ namespace NWN
         ///  - nAnimation determines which appear and disappear animations to use. Most creatures
         ///  only have animation 1, although a few have 2 (like beholders)
         /// </summary>
-        public static NWN.Effect EffectAppear(int nAnimation = 1)
+        public static IntPtr EffectAppear(int nAnimation = 1)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAnimation);
             NWN.Internal.NativeFunctions.CallBuiltIn(482);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -6016,11 +6023,11 @@ namespace NWN
         ///  - nAttacks: maximum is 5, even with the effect stacked
         ///  * Returns an effect of type EFFECT_TYPE_INVALIDEFFECT if nAttacks > 5.
         /// </summary>
-        public static NWN.Effect EffectModifyAttacks(int nAttacks)
+        public static IntPtr EffectModifyAttacks(int nAttacks)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAttacks);
             NWN.Internal.NativeFunctions.CallBuiltIn(485);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -6043,13 +6050,13 @@ namespace NWN
         ///  NOTE! You *must* use the DAMAGE_BONUS_* constants! Using other values may
         ///        result in odd behaviour.
         /// </summary>
-        public static NWN.Effect EffectDamageShield(int nDamageAmount, int nRandomAmount, int nDamageType)
+        public static IntPtr EffectDamageShield(int nDamageAmount, int nRandomAmount, int nDamageType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nRandomAmount);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageAmount);
             NWN.Internal.NativeFunctions.CallBuiltIn(487);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -6231,10 +6238,10 @@ namespace NWN
         ///  - lTarget
         ///  - nProjectilePathType: PROJECTILE_PATH_TYPE_*
         /// </summary>
-        public static void ActionCastFakeSpellAtLocation(int nSpell, NWN.Location lTarget, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT)
+        public static void ActionCastFakeSpellAtLocation(int nSpell, IntPtr lTarget, int nProjectilePathType = PROJECTILE_PATH_TYPE_DEFAULT)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nProjectilePathType);
-            NWN.Internal.NativeFunctions.StackPushLocation(lTarget.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTarget);
             NWN.Internal.NativeFunctions.StackPushInteger(nSpell);
             NWN.Internal.NativeFunctions.CallBuiltIn(502);
         }
@@ -6331,7 +6338,7 @@ namespace NWN
         ///  - sCreatureTemplate3
         ///  - sCreatureTemplate4
         /// </summary>
-        public static NWN.Effect EffectSwarm(int nLooping, string sCreatureTemplate1, string sCreatureTemplate2 = "", string sCreatureTemplate3 = "", string sCreatureTemplate4 = "")
+        public static IntPtr EffectSwarm(int nLooping, string sCreatureTemplate1, string sCreatureTemplate2 = "", string sCreatureTemplate3 = "", string sCreatureTemplate4 = "")
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCreatureTemplate4);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCreatureTemplate3);
@@ -6339,7 +6346,7 @@ namespace NWN
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCreatureTemplate1);
             NWN.Internal.NativeFunctions.StackPushInteger(nLooping);
             NWN.Internal.NativeFunctions.CallBuiltIn(510);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -6376,11 +6383,11 @@ namespace NWN
         ///  - nMainLight1Color: TILE_MAIN_LIGHT_COLOR_*
         ///  - nMainLight2Color: TILE_MAIN_LIGHT_COLOR_*
         /// </summary>
-        public static void SetTileMainLightColor(NWN.Location lTileLocation, int nMainLight1Color, int nMainLight2Color)
+        public static void SetTileMainLightColor(IntPtr lTileLocation, int nMainLight1Color, int nMainLight2Color)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nMainLight2Color);
             NWN.Internal.NativeFunctions.StackPushInteger(nMainLight1Color);
-            NWN.Internal.NativeFunctions.StackPushLocation(lTileLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTileLocation);
             NWN.Internal.NativeFunctions.CallBuiltIn(514);
         }
 
@@ -6391,11 +6398,11 @@ namespace NWN
         ///  - nSourceLight1Color: TILE_SOURCE_LIGHT_COLOR_*
         ///  - nSourceLight2Color: TILE_SOURCE_LIGHT_COLOR_*
         /// </summary>
-        public static void SetTileSourceLightColor(NWN.Location lTileLocation, int nSourceLight1Color, int nSourceLight2Color)
+        public static void SetTileSourceLightColor(IntPtr lTileLocation, int nSourceLight1Color, int nSourceLight2Color)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSourceLight2Color);
             NWN.Internal.NativeFunctions.StackPushInteger(nSourceLight1Color);
-            NWN.Internal.NativeFunctions.StackPushLocation(lTileLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTileLocation);
             NWN.Internal.NativeFunctions.CallBuiltIn(515);
         }
 
@@ -6415,9 +6422,9 @@ namespace NWN
         ///  lTile.
         ///  - lTile: the vector part of this is the tile grid (x,y) coordinate of the tile.
         /// </summary>
-        public static int GetTileMainLight1Color(NWN.Location lTile)
+        public static int GetTileMainLight1Color(IntPtr lTile)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lTile.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTile);
             NWN.Internal.NativeFunctions.CallBuiltIn(517);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -6428,9 +6435,9 @@ namespace NWN
         ///  - lTile: the vector part of this is the tile grid (x,y) coordinate of the
         ///    tile.
         /// </summary>
-        public static int GetTileMainLight2Color(NWN.Location lTile)
+        public static int GetTileMainLight2Color(IntPtr lTile)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lTile.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTile);
             NWN.Internal.NativeFunctions.CallBuiltIn(518);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -6441,9 +6448,9 @@ namespace NWN
         ///  - lTile: the vector part of this is the tile grid (x,y) coordinate of the
         ///    tile.
         /// </summary>
-        public static int GetTileSourceLight1Color(NWN.Location lTile)
+        public static int GetTileSourceLight1Color(IntPtr lTile)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lTile.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTile);
             NWN.Internal.NativeFunctions.CallBuiltIn(519);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -6454,9 +6461,9 @@ namespace NWN
         ///  - lTile: the vector part of this is the tile grid (x,y) coordinate of the
         ///    tile.
         /// </summary>
-        public static int GetTileSourceLight2Color(NWN.Location lTile)
+        public static int GetTileSourceLight2Color(IntPtr lTile)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(lTile.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTile);
             NWN.Internal.NativeFunctions.CallBuiltIn(520);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -6849,11 +6856,11 @@ namespace NWN
         ///  - nHitDice: a positive number representing the number of hit dice for the
         /// /  decrease
         /// </summary>
-        public static NWN.Effect EffectTurnResistanceDecrease(int nHitDice)
+        public static IntPtr EffectTurnResistanceDecrease(int nHitDice)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nHitDice);
             NWN.Internal.NativeFunctions.CallBuiltIn(552);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -6861,11 +6868,11 @@ namespace NWN
         ///  - nHitDice: a positive number representing the number of hit dice for the
         ///    increase
         /// </summary>
-        public static NWN.Effect EffectTurnResistanceIncrease(int nHitDice)
+        public static IntPtr EffectTurnResistanceIncrease(int nHitDice)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nHitDice);
             NWN.Internal.NativeFunctions.CallBuiltIn(553);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -7150,12 +7157,12 @@ namespace NWN
 
         /// <summary>
         ///  SpawnScriptDebugger() will cause the script debugger to be executed
-        ///  after this command is executed!  
+        ///  after this command is executed!
         ///  In order to compile the script for debugging go to Tools->Options->Script Editor
         ///  and check the box labeled "Generate Debug Information When Compiling Scripts"
         ///  After you have checked the above box, recompile the script that you want to debug.
         ///  If the script file isn't compiled for debugging, this command will do nothing.
-        ///  Remove any SpawnScriptDebugger() calls once you have finished 
+        ///  Remove any SpawnScriptDebugger() calls once you have finished
         ///  debugging the script.
         /// </summary>
         public static void SpawnScriptDebugger()
@@ -7213,10 +7220,10 @@ namespace NWN
         ///  returns an effect that will petrify the target
         ///  * currently applies EffectParalyze and the stoneskin visual effect.
         /// </summary>
-        public static NWN.Effect EffectPetrify()
+        public static IntPtr EffectPetrify()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(583);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -7245,10 +7252,10 @@ namespace NWN
         ///  returns an effect that is guaranteed to paralyze a creature.
         ///  this effect is identical to EffectParalyze except that it cannot be resisted.
         /// </summary>
-        public static NWN.Effect EffectCutsceneParalyze()
+        public static IntPtr EffectCutsceneParalyze()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(585);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -7318,10 +7325,10 @@ namespace NWN
         ///  The var name must be unique across the entire database, regardless of the variable type.
         ///  If you want a variable to pertain to a specific player in the game, provide a player object.
         /// </summary>
-        public static void SetCampaignVector(string sCampaignName, string sVarName, NWN.Vector? vVector, uint oPlayer = OBJECT_INVALID)
+        public static void SetCampaignVector(string sCampaignName, string sVarName, Vector3 vVector, uint oPlayer = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oPlayer);
-            NWN.Internal.NativeFunctions.StackPushVector(vVector.HasValue ? vVector.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vVector);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sVarName);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCampaignName);
             NWN.Internal.NativeFunctions.CallBuiltIn(591);
@@ -7333,10 +7340,10 @@ namespace NWN
         ///  The var name must be unique across the entire database, regardless of the variable type.
         ///  If you want a variable to pertain to a specific player in the game, provide a player object.
         /// </summary>
-        public static void SetCampaignLocation(string sCampaignName, string sVarName, NWN.Location locLocation, uint oPlayer = OBJECT_INVALID)
+        public static void SetCampaignLocation(string sCampaignName, string sVarName, IntPtr locLocation, uint oPlayer = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oPlayer);
-            NWN.Internal.NativeFunctions.StackPushLocation(locLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, locLocation);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sVarName);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCampaignName);
             NWN.Internal.NativeFunctions.CallBuiltIn(592);
@@ -7402,7 +7409,7 @@ namespace NWN
         ///  The var name must be unique across the entire database, regardless of the variable type.
         ///  If you want a variable to pertain to a specific player in the game, provide a player object.
         /// </summary>
-        public static NWN.Vector GetCampaignVector(string sCampaignName, string sVarName, uint oPlayer = OBJECT_INVALID)
+        public static Vector3 GetCampaignVector(string sCampaignName, string sVarName, uint oPlayer = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oPlayer);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sVarName);
@@ -7417,13 +7424,13 @@ namespace NWN
         ///  The var name must be unique across the entire database, regardless of the variable type.
         ///  If you want a variable to pertain to a specific player in the game, provide a player object.
         /// </summary>
-        public static NWN.Location GetCampaignLocation(string sCampaignName, string sVarName, uint oPlayer = OBJECT_INVALID)
+        public static IntPtr GetCampaignLocation(string sCampaignName, string sVarName, uint oPlayer = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oPlayer);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sVarName);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCampaignName);
             NWN.Internal.NativeFunctions.CallBuiltIn(598);
-            return new NWN.Location(NWN.Internal.NativeFunctions.StackPopLocation());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_LOCATION);
         }
 
         /// <summary>
@@ -7448,11 +7455,11 @@ namespace NWN
         ///  If the object is a creature, they will be created at the location.
         ///  If a new tag is specified, it will be assigned to the new object.
         /// </summary>
-        public static uint CopyObject(uint oSource, NWN.Location locLocation, uint oOwner = OBJECT_INVALID, string sNewTag = "")
+        public static uint CopyObject(uint oSource, IntPtr locLocation, uint oOwner = OBJECT_INVALID, string sNewTag = "")
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sNewTag);
             NWN.Internal.NativeFunctions.StackPushObject(oOwner);
-            NWN.Internal.NativeFunctions.StackPushLocation(locLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, locLocation);
             NWN.Internal.NativeFunctions.StackPushObject(oSource);
             NWN.Internal.NativeFunctions.CallBuiltIn(600);
             return NWN.Internal.NativeFunctions.StackPopObject();
@@ -7493,11 +7500,11 @@ namespace NWN
         ///  If you specify an owner, the object will try to be created in their repository
         ///  If the owner can't handle the item (or if it's a creature) it will be created on the ground.
         /// </summary>
-        public static uint RetrieveCampaignObject(string sCampaignName, string sVarName, NWN.Location locLocation, uint oOwner = OBJECT_INVALID, uint oPlayer = OBJECT_INVALID)
+        public static uint RetrieveCampaignObject(string sCampaignName, string sVarName, IntPtr locLocation, uint oOwner = OBJECT_INVALID, uint oPlayer = OBJECT_INVALID)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oPlayer);
             NWN.Internal.NativeFunctions.StackPushObject(oOwner);
-            NWN.Internal.NativeFunctions.StackPushLocation(locLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, locLocation);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sVarName);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sCampaignName);
             NWN.Internal.NativeFunctions.CallBuiltIn(603);
@@ -7508,10 +7515,10 @@ namespace NWN
         ///  Returns an effect that is guaranteed to dominate a creature
         ///  Like EffectDominated but cannot be resisted
         /// </summary>
-        public static NWN.Effect EffectCutsceneDominated()
+        public static IntPtr EffectCutsceneDominated()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(604);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -7571,11 +7578,11 @@ namespace NWN
         ///  adds an item property to the specified item
         ///  Only temporary and permanent duration types are allowed.
         /// </summary>
-        public static void AddItemProperty(int nDurationType, NWN.ItemProperty ipProperty, uint oItem, float fDuration = 0.0f)
+        public static void AddItemProperty(int nDurationType, IntPtr ipProperty, uint oItem, float fDuration = 0.0f)
         {
             NWN.Internal.NativeFunctions.StackPushFloat(fDuration);
             NWN.Internal.NativeFunctions.StackPushObject(oItem);
-            NWN.Internal.NativeFunctions.StackPushItemProperty(ipProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ipProperty);
             NWN.Internal.NativeFunctions.StackPushInteger(nDurationType);
             NWN.Internal.NativeFunctions.CallBuiltIn(609);
         }
@@ -7583,9 +7590,9 @@ namespace NWN
         /// <summary>
         ///  removes an item property from the specified item
         /// </summary>
-        public static void RemoveItemProperty(uint oItem, NWN.ItemProperty ipProperty)
+        public static void RemoveItemProperty(uint oItem, IntPtr ipProperty)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(ipProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ipProperty);
             NWN.Internal.NativeFunctions.StackPushObject(oItem);
             NWN.Internal.NativeFunctions.CallBuiltIn(610);
         }
@@ -7593,9 +7600,9 @@ namespace NWN
         /// <summary>
         ///  if the item property is valid this will return true
         /// </summary>
-        public static int GetIsItemPropertyValid(NWN.ItemProperty ipProperty)
+        public static int GetIsItemPropertyValid(IntPtr ipProperty)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(ipProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ipProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(611);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -7603,30 +7610,30 @@ namespace NWN
         /// <summary>
         ///  Gets the first item property on an item
         /// </summary>
-        public static NWN.ItemProperty GetFirstItemProperty(uint oItem)
+        public static IntPtr GetFirstItemProperty(uint oItem)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oItem);
             NWN.Internal.NativeFunctions.CallBuiltIn(612);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Will keep retrieving the next and the next item property on an Item,
         ///  will return an invalid item property when the list is empty.
         /// </summary>
-        public static NWN.ItemProperty GetNextItemProperty(uint oItem)
+        public static IntPtr GetNextItemProperty(uint oItem)
         {
             NWN.Internal.NativeFunctions.StackPushObject(oItem);
             NWN.Internal.NativeFunctions.CallBuiltIn(613);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  will return the item property type (ie. holy avenger)
         /// </summary>
-        public static int GetItemPropertyType(NWN.ItemProperty ip)
+        public static int GetItemPropertyType(IntPtr ip)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(ip.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ip);
             NWN.Internal.NativeFunctions.CallBuiltIn(614);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -7634,9 +7641,9 @@ namespace NWN
         /// <summary>
         ///  will return the duration type of the item property
         /// </summary>
-        public static int GetItemPropertyDurationType(NWN.ItemProperty ip)
+        public static int GetItemPropertyDurationType(IntPtr ip)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(ip.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ip);
             NWN.Internal.NativeFunctions.CallBuiltIn(615);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -7646,12 +7653,12 @@ namespace NWN
         ///  ability constant(IP_CONST_ABILITY_*) and the bonus.  The bonus should
         ///  be a positive integer between 1 and 12.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyAbilityBonus(int nAbility, int nBonus)
+        public static IntPtr ItemPropertyAbilityBonus(int nAbility, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nAbility);
             NWN.Internal.NativeFunctions.CallBuiltIn(616);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7659,11 +7666,11 @@ namespace NWN
         ///  The bonus should be a positive integer between 1 and 20. The modifier
         ///  type depends on the item it is being applied to.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyACBonus(int nBonus)
+        public static IntPtr ItemPropertyACBonus(int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.CallBuiltIn(617);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7673,12 +7680,12 @@ namespace NWN
         ///  The AC bonus should be an integer between 1 and 20.  The modifier
         ///  type depends on the item it is being applied to.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyACBonusVsAlign(int nAlignGroup, int nACBonus)
+        public static IntPtr ItemPropertyACBonusVsAlign(int nAlignGroup, int nACBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nACBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlignGroup);
             NWN.Internal.NativeFunctions.CallBuiltIn(618);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7689,12 +7696,12 @@ namespace NWN
         ///  NOTE: Only the first 3 damage types may be used here, the 3 basic
         ///        physical types.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyACBonusVsDmgType(int nDamageType, int nACBonus)
+        public static IntPtr ItemPropertyACBonusVsDmgType(int nDamageType, int nACBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nACBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(619);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7703,12 +7710,12 @@ namespace NWN
         ///  bonus should be an integer between 1 and 20.  The modifier type depends
         ///  on the item it is being applied to.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyACBonusVsRace(int nRace, int nACBonus)
+        public static IntPtr ItemPropertyACBonusVsRace(int nRace, int nACBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nACBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nRace);
             NWN.Internal.NativeFunctions.CallBuiltIn(620);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7717,12 +7724,12 @@ namespace NWN
         ///  bonus.  The AC bonus should be an integer between 1 and 20.  The
         ///  modifier type depends on the item it is being applied to.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyACBonusVsSAlign(int nAlign, int nACBonus)
+        public static IntPtr ItemPropertyACBonusVsSAlign(int nAlign, int nACBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nACBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlign);
             NWN.Internal.NativeFunctions.CallBuiltIn(621);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7730,11 +7737,11 @@ namespace NWN
         ///  enhancement bonus.  The Enhancement bonus should be an integer between
         ///  1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyEnhancementBonus(int nEnhancementBonus)
+        public static IntPtr ItemPropertyEnhancementBonus(int nEnhancementBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nEnhancementBonus);
             NWN.Internal.NativeFunctions.CallBuiltIn(622);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7743,12 +7750,12 @@ namespace NWN
         ///  and the enhancement bonus.  The Enhancement bonus should be an integer
         ///  between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyEnhancementBonusVsAlign(int nAlignGroup, int nBonus)
+        public static IntPtr ItemPropertyEnhancementBonusVsAlign(int nAlignGroup, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlignGroup);
             NWN.Internal.NativeFunctions.CallBuiltIn(623);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7757,12 +7764,12 @@ namespace NWN
         ///  enhancement bonus.  The enhancement bonus should be an integer between
         ///  1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyEnhancementBonusVsRace(int nRace, int nBonus)
+        public static IntPtr ItemPropertyEnhancementBonusVsRace(int nRace, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nRace);
             NWN.Internal.NativeFunctions.CallBuiltIn(624);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7771,12 +7778,12 @@ namespace NWN
         ///  enhancement bonus.  The enhancement bonus should be an integer between
         ///  1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyEnhancementBonusVsSAlign(int nAlign, int nBonus)
+        public static IntPtr ItemPropertyEnhancementBonusVsSAlign(int nAlign, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlign);
             NWN.Internal.NativeFunctions.CallBuiltIn(625);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7784,33 +7791,33 @@ namespace NWN
         ///  enhancement penalty.  The enhancement penalty should be a POSITIVE
         ///  integer between 1 and 5 (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyEnhancementPenalty(int nPenalty)
+        public static IntPtr ItemPropertyEnhancementPenalty(int nPenalty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.CallBuiltIn(626);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property weight reduction.  You need to specify the weight
         ///  reduction constant(IP_CONST_REDUCEDWEIGHT_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyWeightReduction(int nReduction)
+        public static IntPtr ItemPropertyWeightReduction(int nReduction)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nReduction);
             NWN.Internal.NativeFunctions.CallBuiltIn(627);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property Bonus Feat.  You need to specify the the feat
         ///  constant(IP_CONST_FEAT_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyBonusFeat(int nFeat)
+        public static IntPtr ItemPropertyBonusFeat(int nFeat)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nFeat);
             NWN.Internal.NativeFunctions.CallBuiltIn(628);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7819,12 +7826,12 @@ namespace NWN
         ///  spell casting class) and the level of the bonus spell.  The level of the
         ///  bonus spell should be an integer between 0 and 9.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyBonusLevelSpell(int nClass, int nSpellLevel)
+        public static IntPtr ItemPropertyBonusLevelSpell(int nClass, int nSpellLevel)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSpellLevel);
             NWN.Internal.NativeFunctions.StackPushInteger(nClass);
             NWN.Internal.NativeFunctions.CallBuiltIn(629);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -7842,7 +7849,7 @@ namespace NWN
         ///        not work.
         ///  NOTE: Even if spells have multiple versions of different levels they are only
         ///        listed below once.
-        /// 
+        ///
         ///  WANDS:
         ///           Acid_Splash
         ///           Activate_Item
@@ -8034,7 +8041,7 @@ namespace NWN
         ///           Wall_of_Fire
         ///           Web
         ///           Wounding_Whispers
-        /// 
+        ///
         ///  POTIONS:
         ///           Activate_Item
         ///           Aid
@@ -8207,21 +8214,21 @@ namespace NWN
         ///           Unique_Power
         ///           Unique_Power_Self_Only
         ///           Virtue
-        /// 
+        ///
         ///  GENERAL USE (ie. everything else):
         ///           Just about every spell is useable by all the general use items so instead we
         ///           will only list the ones that are not allowed:
         ///           Special_Alcohol_Beer
         ///           Special_Alcohol_Spirits
         ///           Special_Alcohol_Wine
-        /// 
+        ///
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyCastSpell(int nSpell, int nNumUses)
+        public static IntPtr ItemPropertyCastSpell(int nSpell, int nNumUses)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nNumUses);
             NWN.Internal.NativeFunctions.StackPushInteger(nSpell);
             NWN.Internal.NativeFunctions.CallBuiltIn(630);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8230,12 +8237,12 @@ namespace NWN
         ///  NOTE: not all the damage types will work, use only the following: Acid, Bludgeoning,
         ///        Cold, Electrical, Fire, Piercing, Slashing, Sonic.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageBonus(int nDamageType, int nDamage)
+        public static IntPtr ItemPropertyDamageBonus(int nDamageType, int nDamage)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamage);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(631);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8245,13 +8252,13 @@ namespace NWN
         ///  NOTE: not all the damage types will work, use only the following: Acid, Bludgeoning,
         ///        Cold, Electrical, Fire, Piercing, Slashing, Sonic.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageBonusVsAlign(int nAlignGroup, int nDamageType, int nDamage)
+        public static IntPtr ItemPropertyDamageBonusVsAlign(int nAlignGroup, int nDamageType, int nDamage)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamage);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlignGroup);
             NWN.Internal.NativeFunctions.CallBuiltIn(632);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8261,13 +8268,13 @@ namespace NWN
         ///  NOTE: not all the damage types will work, use only the following: Acid, Bludgeoning,
         ///        Cold, Electrical, Fire, Piercing, Slashing, Sonic.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageBonusVsRace(int nRace, int nDamageType, int nDamage)
+        public static IntPtr ItemPropertyDamageBonusVsRace(int nRace, int nDamageType, int nDamage)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamage);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nRace);
             NWN.Internal.NativeFunctions.CallBuiltIn(633);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8277,13 +8284,13 @@ namespace NWN
         ///  NOTE: not all the damage types will work, use only the following: Acid, Bludgeoning,
         ///        Cold, Electrical, Fire, Piercing, Slashing, Sonic.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageBonusVsSAlign(int nAlign, int nDamageType, int nDamage)
+        public static IntPtr ItemPropertyDamageBonusVsSAlign(int nAlign, int nDamageType, int nDamage)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamage);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlign);
             NWN.Internal.NativeFunctions.CallBuiltIn(634);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8293,23 +8300,23 @@ namespace NWN
         ///  NOTE: not all the damage types will work, use only the following: Acid, Bludgeoning,
         ///        Cold, Electrical, Fire, Piercing, Slashing, Sonic.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageImmunity(int nDamageType, int nImmuneBonus)
+        public static IntPtr ItemPropertyDamageImmunity(int nDamageType, int nImmuneBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nImmuneBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(635);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property damage penalty.  You must specify the damage penalty.
         ///  The damage penalty should be a POSITIVE integer between 1 and 5 (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamagePenalty(int nPenalty)
+        public static IntPtr ItemPropertyDamagePenalty(int nPenalty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.CallBuiltIn(636);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8318,12 +8325,12 @@ namespace NWN
         ///  and the amount of HP of damage constant(IP_CONST_DAMAGESOAK_*) will be soaked
         ///  up if your weapon is not of high enough enhancement.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageReduction(int nEnhancement, int nHPSoak)
+        public static IntPtr ItemPropertyDamageReduction(int nEnhancement, int nHPSoak)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nHPSoak);
             NWN.Internal.NativeFunctions.StackPushInteger(nEnhancement);
             NWN.Internal.NativeFunctions.CallBuiltIn(637);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8331,12 +8338,12 @@ namespace NWN
         ///  constant(IP_CONST_DAMAGETYPE_*) and the amount of HP of damage constant
         ///  (IP_CONST_DAMAGERESIST_*) that will be resisted against each round.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageResistance(int nDamageType, int nHPResist)
+        public static IntPtr ItemPropertyDamageResistance(int nDamageType, int nHPResist)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nHPResist);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(638);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8344,21 +8351,21 @@ namespace NWN
         ///  constant(IP_CONST_DAMAGETYPE_*) that you want the user to be extra vulnerable to
         ///  and the percentage vulnerability constant(IP_CONST_DAMAGEVULNERABILITY_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDamageVulnerability(int nDamageType, int nVulnerability)
+        public static IntPtr ItemPropertyDamageVulnerability(int nDamageType, int nVulnerability)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nVulnerability);
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(639);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Return Item property Darkvision.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDarkvision()
+        public static IntPtr ItemPropertyDarkvision()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(640);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8366,12 +8373,12 @@ namespace NWN
         ///  constant(IP_CONST_ABILITY_*) and the modifier constant.  The modifier must be
         ///  a POSITIVE integer between 1 and 10 (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDecreaseAbility(int nAbility, int nModifier)
+        public static IntPtr ItemPropertyDecreaseAbility(int nAbility, int nModifier)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifier);
             NWN.Internal.NativeFunctions.StackPushInteger(nAbility);
             NWN.Internal.NativeFunctions.CallBuiltIn(641);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8379,12 +8386,12 @@ namespace NWN
         ///  modifier type constant(IP_CONST_ACMODIFIERTYPE_*) and the armor class penalty.
         ///  The penalty must be a POSITIVE integer between 1 and 5 (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDecreaseAC(int nModifierType, int nPenalty)
+        public static IntPtr ItemPropertyDecreaseAC(int nModifierType, int nPenalty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.StackPushInteger(nModifierType);
             NWN.Internal.NativeFunctions.CallBuiltIn(642);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8392,12 +8399,12 @@ namespace NWN
         ///  skill to be decreased(SKILL_*) and the amount of the penalty.  The penalty
         ///  must be a POSITIVE integer between 1 and 10 (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyDecreaseSkill(int nSkill, int nPenalty)
+        public static IntPtr ItemPropertyDecreaseSkill(int nSkill, int nPenalty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.StackPushInteger(nSkill);
             NWN.Internal.NativeFunctions.CallBuiltIn(643);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8405,11 +8412,11 @@ namespace NWN
         ///  containers that reduce the weight of the objects inside them.  You must
         ///  specify the container weight reduction type constant(IP_CONST_CONTAINERWEIGHTRED_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyContainerReducedWeight(int nContainerType)
+        public static IntPtr ItemPropertyContainerReducedWeight(int nContainerType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nContainerType);
             NWN.Internal.NativeFunctions.CallBuiltIn(644);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8419,11 +8426,11 @@ namespace NWN
         ///        here.
         ///  NOTE: It is also only applicable to melee weapons.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyExtraMeleeDamageType(int nDamageType)
+        public static IntPtr ItemPropertyExtraMeleeDamageType(int nDamageType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(645);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8433,60 +8440,60 @@ namespace NWN
         ///        here.
         ///  NOTE: It is also only applicable to ranged weapons.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyExtraRangeDamageType(int nDamageType)
+        public static IntPtr ItemPropertyExtraRangeDamageType(int nDamageType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamageType);
             NWN.Internal.NativeFunctions.CallBuiltIn(646);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property haste.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyHaste()
+        public static IntPtr ItemPropertyHaste()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(647);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property Holy Avenger.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyHolyAvenger()
+        public static IntPtr ItemPropertyHolyAvenger()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(648);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property immunity to miscellaneous effects.  You must specify the
         ///  effect to which the user is immune, it is a constant(IP_CONST_IMMUNITYMISC_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyImmunityMisc(int nImmunityType)
+        public static IntPtr ItemPropertyImmunityMisc(int nImmunityType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nImmunityType);
             NWN.Internal.NativeFunctions.CallBuiltIn(649);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property improved evasion.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyImprovedEvasion()
+        public static IntPtr ItemPropertyImprovedEvasion()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(650);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property bonus spell resistance.  You must specify the bonus spell
         ///  resistance constant(IP_CONST_SPELLRESISTANCEBONUS_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyBonusSpellResistance(int nBonus)
+        public static IntPtr ItemPropertyBonusSpellResistance(int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.CallBuiltIn(651);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8495,12 +8502,12 @@ namespace NWN
         ///  applied to and the bonus that is be applied.  The bonus must be an integer
         ///  between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyBonusSavingThrowVsX(int nBonusType, int nBonus)
+        public static IntPtr ItemPropertyBonusSavingThrowVsX(int nBonusType, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nBonusType);
             NWN.Internal.NativeFunctions.CallBuiltIn(652);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8509,22 +8516,22 @@ namespace NWN
         ///  to which the user gets the bonus and the bonus that he/she will get.  The
         ///  bonus must be an integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyBonusSavingThrow(int nBaseSaveType, int nBonus)
+        public static IntPtr ItemPropertyBonusSavingThrow(int nBaseSaveType, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nBaseSaveType);
             NWN.Internal.NativeFunctions.CallBuiltIn(653);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property keen.  This means a critical threat range of 19-20 on a
         ///  weapon will be increased to 17-20 etc.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyKeen()
+        public static IntPtr ItemPropertyKeen()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(654);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8532,12 +8539,12 @@ namespace NWN
         ///  light(IP_CONST_LIGHTBRIGHTNESS_*) and the color constant of the light
         ///  (IP_CONST_LIGHTCOLOR_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyLight(int nBrightness, int nColor)
+        public static IntPtr ItemPropertyLight(int nBrightness, int nColor)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nColor);
             NWN.Internal.NativeFunctions.StackPushInteger(nBrightness);
             NWN.Internal.NativeFunctions.CallBuiltIn(655);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8545,21 +8552,21 @@ namespace NWN
         ///  specify the maximum modifier for strength that is allowed on a ranged weapon.
         ///  The modifier must be a positive integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyMaxRangeStrengthMod(int nModifier)
+        public static IntPtr ItemPropertyMaxRangeStrengthMod(int nModifier)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifier);
             NWN.Internal.NativeFunctions.CallBuiltIn(656);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property no damage.  This means the weapon will do no damage in
         ///  combat.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyNoDamage()
+        public static IntPtr ItemPropertyNoDamage()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(657);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8603,13 +8610,13 @@ namespace NWN
         ///       STUN              :nSpecial is the duration/percentage of effecting victim.
         ///                          constant(IP_CONST_ONHIT_DURATION_*)
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyOnHitProps(int nProperty, int nSaveDC, int nSpecial = 0)
+        public static IntPtr ItemPropertyOnHitProps(int nProperty, int nSaveDC, int nSpecial = 0)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSpecial);
             NWN.Internal.NativeFunctions.StackPushInteger(nSaveDC);
             NWN.Internal.NativeFunctions.StackPushInteger(nProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(658);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8618,12 +8625,12 @@ namespace NWN
         ///  penalty to be applied.  The penalty must be a POSITIVE integer between 1 and 20
         ///  (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyReducedSavingThrowVsX(int nBaseSaveType, int nPenalty)
+        public static IntPtr ItemPropertyReducedSavingThrowVsX(int nBaseSaveType, int nPenalty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.StackPushInteger(nBaseSaveType);
             NWN.Internal.NativeFunctions.CallBuiltIn(659);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8632,23 +8639,23 @@ namespace NWN
         ///  to be applied.  The constant for the base type starts with (IP_CONST_SAVEBASETYPE_*).
         ///  The penalty must be a POSITIVE integer between 1 and 20 (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyReducedSavingThrow(int nBonusType, int nPenalty)
+        public static IntPtr ItemPropertyReducedSavingThrow(int nBonusType, int nPenalty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.StackPushInteger(nBonusType);
             NWN.Internal.NativeFunctions.CallBuiltIn(660);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property regeneration.  You must specify the regeneration amount.
         ///  The amount must be an integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyRegeneration(int nRegenAmount)
+        public static IntPtr ItemPropertyRegeneration(int nRegenAmount)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nRegenAmount);
             NWN.Internal.NativeFunctions.CallBuiltIn(661);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8656,56 +8663,56 @@ namespace NWN
         ///  will get a bonus(SKILL_*) and the amount of the bonus.  The bonus amount must
         ///  be an integer between 1 and 50.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertySkillBonus(int nSkill, int nBonus)
+        public static IntPtr ItemPropertySkillBonus(int nSkill, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nSkill);
             NWN.Internal.NativeFunctions.CallBuiltIn(662);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property spell immunity vs. specific spell.  You must specify the
         ///  spell to which the user will be immune(IP_CONST_IMMUNITYSPELL_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertySpellImmunitySpecific(int nSpell)
+        public static IntPtr ItemPropertySpellImmunitySpecific(int nSpell)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSpell);
             NWN.Internal.NativeFunctions.CallBuiltIn(663);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property spell immunity vs. spell school.  You must specify the
         ///  school to which the user will be immune(IP_CONST_SPELLSCHOOL_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertySpellImmunitySchool(int nSchool)
+        public static IntPtr ItemPropertySpellImmunitySchool(int nSchool)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSchool);
             NWN.Internal.NativeFunctions.CallBuiltIn(664);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property Thieves tools.  You must specify the modifier you wish
         ///  the tools to have.  The modifier must be an integer between 1 and 12.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyThievesTools(int nModifier)
+        public static IntPtr ItemPropertyThievesTools(int nModifier)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifier);
             NWN.Internal.NativeFunctions.CallBuiltIn(665);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property Attack bonus.  You must specify an attack bonus.  The bonus
         ///  must be an integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyAttackBonus(int nBonus)
+        public static IntPtr ItemPropertyAttackBonus(int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.CallBuiltIn(666);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8713,12 +8720,12 @@ namespace NWN
         ///  alignment group constant(IP_CONST_ALIGNMENTGROUP_*) and the attack bonus.  The
         ///  bonus must be an integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyAttackBonusVsAlign(int nAlignGroup, int nBonus)
+        public static IntPtr ItemPropertyAttackBonusVsAlign(int nAlignGroup, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlignGroup);
             NWN.Internal.NativeFunctions.CallBuiltIn(667);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8726,12 +8733,12 @@ namespace NWN
         ///  racial group constant(IP_CONST_RACIALTYPE_*) and the attack bonus.  The bonus
         ///  must be an integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyAttackBonusVsRace(int nRace, int nBonus)
+        public static IntPtr ItemPropertyAttackBonusVsRace(int nRace, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nRace);
             NWN.Internal.NativeFunctions.CallBuiltIn(668);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8739,23 +8746,23 @@ namespace NWN
         ///  the alignment you want the bonus to work against(IP_CONST_ALIGNMENT_*) and the
         ///  attack bonus.  The bonus must be an integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyAttackBonusVsSAlign(int nAlignment, int nBonus)
+        public static IntPtr ItemPropertyAttackBonusVsSAlign(int nAlignment, int nBonus)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nBonus);
             NWN.Internal.NativeFunctions.StackPushInteger(nAlignment);
             NWN.Internal.NativeFunctions.CallBuiltIn(669);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property attack penalty.  You must specify the attack penalty.
         ///  The penalty must be a POSITIVE integer between 1 and 5 (ie. 1 = -1).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyAttackPenalty(int nPenalty)
+        public static IntPtr ItemPropertyAttackPenalty(int nPenalty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nPenalty);
             NWN.Internal.NativeFunctions.CallBuiltIn(670);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8765,96 +8772,96 @@ namespace NWN
         ///  bonus).  For this parmeter you use the constants beginning with:
         ///       (IP_CONST_UNLIMITEDAMMO_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyUnlimitedAmmo(int nAmmoDamage = IP_CONST_UNLIMITEDAMMO_BASIC)
+        public static IntPtr ItemPropertyUnlimitedAmmo(int nAmmoDamage = IP_CONST_UNLIMITEDAMMO_BASIC)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAmmoDamage);
             NWN.Internal.NativeFunctions.CallBuiltIn(671);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property limit use by alignment group.  You must specify the
         ///  alignment group(s) that you want to be able to use this item(IP_CONST_ALIGNMENTGROUP_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyLimitUseByAlign(int nAlignGroup)
+        public static IntPtr ItemPropertyLimitUseByAlign(int nAlignGroup)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAlignGroup);
             NWN.Internal.NativeFunctions.CallBuiltIn(672);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property limit use by class.  You must specify the class(es) who
         ///  are able to use this item(IP_CONST_CLASS_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyLimitUseByClass(int nClass)
+        public static IntPtr ItemPropertyLimitUseByClass(int nClass)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nClass);
             NWN.Internal.NativeFunctions.CallBuiltIn(673);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property limit use by race.  You must specify the race(s) who are
         ///  allowed to use this item(IP_CONST_RACIALTYPE_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyLimitUseByRace(int nRace)
+        public static IntPtr ItemPropertyLimitUseByRace(int nRace)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nRace);
             NWN.Internal.NativeFunctions.CallBuiltIn(674);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property limit use by specific alignment.  You must specify the
         ///  alignment(s) of those allowed to use the item(IP_CONST_ALIGNMENT_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyLimitUseBySAlign(int nAlignment)
+        public static IntPtr ItemPropertyLimitUseBySAlign(int nAlignment)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAlignment);
             NWN.Internal.NativeFunctions.CallBuiltIn(675);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  replace this function it does nothing.
         /// </summary>
-        public static NWN.ItemProperty BadBadReplaceMeThisDoesNothing()
+        public static IntPtr BadBadReplaceMeThisDoesNothing()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(676);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property vampiric regeneration.  You must specify the amount of
         ///  regeneration.  The regen amount must be an integer between 1 and 20.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyVampiricRegeneration(int nRegenAmount)
+        public static IntPtr ItemPropertyVampiricRegeneration(int nRegenAmount)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nRegenAmount);
             NWN.Internal.NativeFunctions.CallBuiltIn(677);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property Trap.  You must specify the trap level constant
         ///  (IP_CONST_TRAPSTRENGTH_*) and the trap type constant(IP_CONST_TRAPTYPE_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyTrap(int nTrapLevel, int nTrapType)
+        public static IntPtr ItemPropertyTrap(int nTrapLevel, int nTrapType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nTrapType);
             NWN.Internal.NativeFunctions.StackPushInteger(nTrapLevel);
             NWN.Internal.NativeFunctions.CallBuiltIn(678);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property true seeing.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyTrueSeeing()
+        public static IntPtr ItemPropertyTrueSeeing()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(679);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8878,43 +8885,43 @@ namespace NWN
         ///  NOTE: These can only be applied to monster NATURAL weapons (ie. bite, claw,
         ///        gore, and slam).  IT WILL NOT WORK ON NORMAL WEAPONS.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyOnMonsterHitProperties(int nProperty, int nSpecial = 0)
+        public static IntPtr ItemPropertyOnMonsterHitProperties(int nProperty, int nSpecial = 0)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSpecial);
             NWN.Internal.NativeFunctions.StackPushInteger(nProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(680);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property turn resistance.  You must specify the resistance bonus.
         ///  The bonus must be an integer between 1 and 50.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyTurnResistance(int nModifier)
+        public static IntPtr ItemPropertyTurnResistance(int nModifier)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifier);
             NWN.Internal.NativeFunctions.CallBuiltIn(681);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property Massive Critical.  You must specify the extra damage
         ///  constant(IP_CONST_DAMAGEBONUS_*) of the criticals.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyMassiveCritical(int nDamage)
+        public static IntPtr ItemPropertyMassiveCritical(int nDamage)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamage);
             NWN.Internal.NativeFunctions.CallBuiltIn(682);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property free action.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyFreeAction()
+        public static IntPtr ItemPropertyFreeAction()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(683);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8923,11 +8930,11 @@ namespace NWN
         ///  NOTE: These can only be applied to monster NATURAL weapons (ie. bite, claw,
         ///        gore, and slam).  IT WILL NOT WORK ON NORMAL WEAPONS.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyMonsterDamage(int nDamage)
+        public static IntPtr ItemPropertyMonsterDamage(int nDamage)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nDamage);
             NWN.Internal.NativeFunctions.CallBuiltIn(684);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8936,11 +8943,11 @@ namespace NWN
         ///  between 1 and 9.  By putting in a 3 it will mean the user is immune to all
         ///  3rd level and lower spells.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyImmunityToSpellLevel(int nLevel)
+        public static IntPtr ItemPropertyImmunityToSpellLevel(int nLevel)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nLevel);
             NWN.Internal.NativeFunctions.CallBuiltIn(685);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8948,33 +8955,33 @@ namespace NWN
         ///  automatically use the zombie walk.  This will apply the special walk animation
         ///  to the user.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertySpecialWalk(int nWalkType = 0)
+        public static IntPtr ItemPropertySpecialWalk(int nWalkType = 0)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nWalkType);
             NWN.Internal.NativeFunctions.CallBuiltIn(686);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property healers kit.  You must specify the level of the kit.
         ///  The modifier must be an integer between 1 and 12.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyHealersKit(int nModifier)
+        public static IntPtr ItemPropertyHealersKit(int nModifier)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModifier);
             NWN.Internal.NativeFunctions.CallBuiltIn(687);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns Item property weight increase.  You must specify the weight increase
         ///  constant(IP_CONST_WEIGHTINCREASE_*).
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyWeightIncrease(int nWeight)
+        public static IntPtr ItemPropertyWeightIncrease(int nWeight)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nWeight);
             NWN.Internal.NativeFunctions.CallBuiltIn(688);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -8998,12 +9005,12 @@ namespace NWN
         ///  - nPercent - percentage of failure
         ///  - nSpellSchool - the school of spells affected.
         /// </summary>
-        public static NWN.Effect EffectSpellFailure(int nPercent = 100, int nSpellSchool = SPELL_SCHOOL_GENERAL)
+        public static IntPtr EffectSpellFailure(int nPercent = 100, int nSpellSchool = SPELL_SCHOOL_GENERAL)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nSpellSchool);
             NWN.Internal.NativeFunctions.StackPushInteger(nPercent);
             NWN.Internal.NativeFunctions.CallBuiltIn(690);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -9262,10 +9269,10 @@ namespace NWN
         ///  Returns an effect of type EFFECT_TYPE_ETHEREAL which works just like EffectSanctuary
         ///  except that the observers get no saving throw
         /// </summary>
-        public static NWN.Effect EffectEthereal()
+        public static IntPtr EffectEthereal()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(711);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -9488,16 +9495,16 @@ namespace NWN
         ///  ITEM_APPR_TYPE_WEAPON_MODEL      ITEM_APPR_WEAPON_MODEL_*            Model #
         ///  ITEM_APPR_TYPE_ARMOR_MODEL       ITEM_APPR_ARMOR_MODEL_*             Model #
         ///  ITEM_APPR_TYPE_ARMOR_COLOR       ITEM_APPR_ARMOR_COLOR_* [0]         0-175 [1]
-        /// 
+        ///
         ///  [0] Alternatively, where ITEM_APPR_TYPE_ARMOR_COLOR is specified, if per-part coloring is
         ///  desired, the following equation can be used for nIndex to achieve that:
-        /// 
+        ///
         ///    ITEM_APPR_ARMOR_NUM_COLORS + (ITEM_APPR_ARMOR_MODEL_ * ITEM_APPR_ARMOR_NUM_COLORS) + ITEM_APPR_ARMOR_COLOR_
-        /// 
+        ///
         ///  For example, to change the CLOTH1 channel of the torso, nIndex would be:
-        /// 
+        ///
         ///    6 + (7 * 6) + 2 = 50
-        /// 
+        ///
         ///  [1] When specifying per-part coloring, the value 255 is allowed and corresponds with the logical
         ///  function 'clear colour override', which clears the per-part override for that part.
         /// </summary>
@@ -9530,20 +9537,20 @@ namespace NWN
         ///  when a successful strike is made, or (when applied to armor) is struck by an opponent.
         ///  - nSpell uses the IP_CONST_ONHIT_CASTSPELL_* constants
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyOnHitCastSpell(int nSpell, int nLevel)
+        public static IntPtr ItemPropertyOnHitCastSpell(int nSpell, int nLevel)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nLevel);
             NWN.Internal.NativeFunctions.StackPushInteger(nSpell);
             NWN.Internal.NativeFunctions.CallBuiltIn(733);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns the SubType number of the item property. See the 2DA files for value definitions.
         /// </summary>
-        public static int GetItemPropertySubType(NWN.ItemProperty iProperty)
+        public static int GetItemPropertySubType(IntPtr iProperty)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(iProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, iProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(734);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -9594,11 +9601,11 @@ namespace NWN
         ///  Creates a visual effect (ITEM_VISUAL_*) that may be applied to
         ///  melee weapons only.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyVisualEffect(int nEffect)
+        public static IntPtr ItemPropertyVisualEffect(int nEffect)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(739);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -9734,7 +9741,7 @@ namespace NWN
         /// <summary>
         ///  Returns whether or not there is a direct line of sight
         ///  between the two objects. (Not blocked by any geometry).
-        /// 
+        ///
         ///  PLEASE NOTE: This is an expensive function and may
         ///               degrade performance if used frequently.
         /// </summary>
@@ -9749,17 +9756,17 @@ namespace NWN
         /// <summary>
         ///  Returns whether or not there is a direct line of sight
         ///  between the two vectors. (Not blocked by any geometry).
-        /// 
+        ///
         ///  This function must be run on a valid object in the area
         ///  it will not work on the module or area.
-        /// 
+        ///
         ///  PLEASE NOTE: This is an expensive function and may
         ///               degrade performance if used frequently.
         /// </summary>
-        public static int LineOfSightVector(NWN.Vector? vSource, NWN.Vector? vTarget)
+        public static int LineOfSightVector(Vector3 vSource, Vector3 vTarget)
         {
-            NWN.Internal.NativeFunctions.StackPushVector(vTarget.HasValue ? vTarget.Value : new NWN.Vector());
-            NWN.Internal.NativeFunctions.StackPushVector(vSource.HasValue ? vSource.Value : new NWN.Vector());
+            NWN.Internal.NativeFunctions.StackPushVector(vTarget);
+            NWN.Internal.NativeFunctions.StackPushVector(vSource);
             NWN.Internal.NativeFunctions.CallBuiltIn(753);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -9804,21 +9811,21 @@ namespace NWN
         ///  to pathfind through other creatures without bumping into them
         ///  for the duration of the effect.
         /// </summary>
-        public static NWN.Effect EffectCutsceneGhost()
+        public static IntPtr EffectCutsceneGhost()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(757);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
         ///  Creates an item property that offsets the effect on arcane spell failure
         ///  that a particular item has. Parameters come from the ITEM_PROP_ASF_* group.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyArcaneSpellFailure(int nModLevel)
+        public static IntPtr ItemPropertyArcaneSpellFailure(int nModLevel)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nModLevel);
             NWN.Internal.NativeFunctions.CallBuiltIn(758);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -9911,10 +9918,10 @@ namespace NWN
         ///  Returns an effect that when applied will paralyze the target's legs, rendering
         ///  them unable to walk but otherwise unpenalized. This effect cannot be resisted.
         /// </summary>
-        public static NWN.Effect EffectCutsceneImmobilize()
+        public static IntPtr EffectCutsceneImmobilize()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(767);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -9933,9 +9940,9 @@ namespace NWN
         /// <summary>
         ///  Returns the Cost Table number of the item property. See the 2DA files for value definitions.
         /// </summary>
-        public static int GetItemPropertyCostTable(NWN.ItemProperty iProp)
+        public static int GetItemPropertyCostTable(IntPtr iProp)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(iProp.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, iProp);
             NWN.Internal.NativeFunctions.CallBuiltIn(769);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -9944,9 +9951,9 @@ namespace NWN
         ///  Returns the Cost Table value (index of the cost table) of the item property.
         ///  See the 2DA files for value definitions.
         /// </summary>
-        public static int GetItemPropertyCostTableValue(NWN.ItemProperty iProp)
+        public static int GetItemPropertyCostTableValue(IntPtr iProp)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(iProp.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, iProp);
             NWN.Internal.NativeFunctions.CallBuiltIn(770);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -9954,9 +9961,9 @@ namespace NWN
         /// <summary>
         ///  Returns the Param1 number of the item property. See the 2DA files for value definitions.
         /// </summary>
-        public static int GetItemPropertyParam1(NWN.ItemProperty iProp)
+        public static int GetItemPropertyParam1(IntPtr iProp)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(iProp.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, iProp);
             NWN.Internal.NativeFunctions.CallBuiltIn(771);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -9964,9 +9971,9 @@ namespace NWN
         /// <summary>
         ///  Returns the Param1 value of the item property. See the 2DA files for value definitions.
         /// </summary>
-        public static int GetItemPropertyParam1Value(NWN.ItemProperty iProp)
+        public static int GetItemPropertyParam1Value(IntPtr iProp)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(iProp.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, iProp);
             NWN.Internal.NativeFunctions.CallBuiltIn(772);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -10103,7 +10110,7 @@ namespace NWN
 
         /// <summary>
         ///  Gets the fog color in the area specified.
-        ///  nFogType specifies wether the Sun, or Moon fog type is returned. 
+        ///  nFogType specifies wether the Sun, or Moon fog type is returned.
         ///     Valid values for nFogType are FOG_TYPE_SUN or FOG_TYPE_MOON.
         ///  If no valid area (or object) is specified, it uses the area of caller.
         ///  If an object other than an area is specified, will use the area that the object is currently in.
@@ -10133,7 +10140,7 @@ namespace NWN
 
         /// <summary>
         ///  Gets the fog amount in the area specified.
-        ///  nFogType = nFogType specifies wether the Sun, or Moon fog type is returned. 
+        ///  nFogType = nFogType specifies wether the Sun, or Moon fog type is returned.
         ///     Valid values for nFogType are FOG_TYPE_SUN or FOG_TYPE_MOON.
         ///  If no valid area (or object) is specified, it uses the area of caller.
         ///  If an object other than an area is specified, will use the area that the object is currently in.
@@ -10244,8 +10251,8 @@ namespace NWN
         ///       CREATURE_WING_TYPE_BUTTERFLY
         ///       CREATURE_WING_TYPE_BIRD
         ///  - oCreature: the creature to change the wing type for.
-        ///  Note: Only two creature model types will support wings. 
-        ///  The MODELTYPE for the part based (playable races) 'P' 
+        ///  Note: Only two creature model types will support wings.
+        ///  The MODELTYPE for the part based (playable races) 'P'
         ///  and MODELTYPE 'W'in the appearance.2da
         /// </summary>
         public static void SetCreatureWingType(int nWingType, uint oCreature = OBJECT_INVALID)
@@ -10261,12 +10268,12 @@ namespace NWN
         ///  armor (i.e. whether or not the creature is wearing armor does not affect
         ///  the return value).
         ///  Note: Only works on part based creatures, which is typically restricted to
-        ///  the playable races (unless some new part based custom content has been 
+        ///  the playable races (unless some new part based custom content has been
         ///  added to the module).
-        /// 
+        ///
         ///  returns CREATURE_PART_INVALID if used on a non-creature object,
         ///  or if the creature does not use a part based model.
-        /// 
+        ///
         ///  - nPart (CREATURE_PART_*)
         ///       CREATURE_PART_RIGHT_FOOT
         ///       CREATURE_PART_LEFT_FOOT
@@ -10300,7 +10307,7 @@ namespace NWN
         ///  Sets the body part model to be used on the creature specified.
         ///  The model names for parts need to be in the following format:
         ///    p<m/f><race letter><phenotype>_<body part><model number>.mdl
-        /// 
+        ///
         ///  - nPart (CREATURE_PART_*)
         ///       CREATURE_PART_RIGHT_FOOT
         ///       CREATURE_PART_LEFT_FOOT
@@ -10327,7 +10334,7 @@ namespace NWN
         ///       CREATURE_MODEL_TYPE_TATTOO (for body parts that support tattoos, i.e. not heads/feet/hands).
         ///       CREATURE_MODEL_TYPE_UNDEAD (undead model only exists for the right arm parts).
         ///  - oCreature: the creature to change the body part for.
-        ///  Note: Only part based creature appearance types are supported. 
+        ///  Note: Only part based creature appearance types are supported.
         ///  i.e. The model types for the playable races ('P') in the appearance.2da
         /// </summary>
         public static void SetCreatureBodyPart(int nPart, int nModelNumber, uint oCreature = OBJECT_INVALID)
@@ -10363,8 +10370,8 @@ namespace NWN
         ///       CREATURE_TAIL_TYPE_BONE
         ///       CREATURE_TAIL_TYPE_DEVIL
         ///  - oCreature: the creature to change the Tail type for.
-        ///  Note: Only two creature model types will support Tails. 
-        ///  The MODELTYPE for the part based (playable) races 'P' 
+        ///  Note: Only two creature model types will support Tails.
+        ///  The MODELTYPE for the part based (playable) races 'P'
         ///  and MODELTYPE 'T'in the appearance.2da
         /// </summary>
         public static void SetCreatureTailType(int nTailType, uint oCreature = OBJECT_INVALID)
@@ -10556,14 +10563,14 @@ namespace NWN
         ///                            type specified will fire instead (as specified in the
         ///                            traps.2da).
         /// </summary>
-        public static uint CreateTrapAtLocation(int nTrapType, NWN.Location lLocation, float fSize = 2.0f, string sTag = "", int nFaction = STANDARD_FACTION_HOSTILE, string sOnDisarmScript = "", string sOnTrapTriggeredScript = "")
+        public static uint CreateTrapAtLocation(int nTrapType, IntPtr lLocation, float fSize = 2.0f, string sTag = "", int nFaction = STANDARD_FACTION_HOSTILE, string sOnDisarmScript = "", string sOnTrapTriggeredScript = "")
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sOnTrapTriggeredScript);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sOnDisarmScript);
             NWN.Internal.NativeFunctions.StackPushInteger(nFaction);
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sTag);
             NWN.Internal.NativeFunctions.StackPushFloat(fSize);
-            NWN.Internal.NativeFunctions.StackPushLocation(lLocation.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lLocation);
             NWN.Internal.NativeFunctions.StackPushInteger(nTrapType);
             NWN.Internal.NativeFunctions.CallBuiltIn(809);
             return NWN.Internal.NativeFunctions.StackPopObject();
@@ -10760,7 +10767,7 @@ namespace NWN
         /// <summary>
         ///  Locks the player's camera pitch to its current pitch setting,
         ///  or unlocks the player's camera pitch.
-        ///  Stops the player from tilting their camera angle. 
+        ///  Stops the player from tilting their camera angle.
         ///  - oPlayer: A player object.
         ///  - bLocked: TRUE/FALSE.
         /// </summary>
@@ -10895,7 +10902,7 @@ namespace NWN
         /// <summary>
         ///  Change the portrait of oTarget to use the Portrait Id specified.
         ///  - oTarget: the object for which you are changing the portrait.
-        ///  - nPortraitId: The Id of the new portrait to use. 
+        ///  - nPortraitId: The Id of the new portrait to use.
         ///                 nPortraitId refers to a row in the Portraits.2da
         ///  Note: Not all portrait Ids are suitable for use with all object types.
         ///        Setting the portrait Id will also cause the portrait ResRef
@@ -10924,7 +10931,7 @@ namespace NWN
         /// <summary>
         ///  Change the portrait of oTarget to use the Portrait ResRef specified.
         ///  - oTarget: the object for which you are changing the portrait.
-        ///  - sPortraitResRef: The ResRef of the new portrait to use. 
+        ///  - sPortraitResRef: The ResRef of the new portrait to use.
         ///                     The ResRef should not include any trailing size letter ( e.g. po_el_f_09_ ).
         ///  Note: Not all portrait ResRefs are suitable for use with all object types.
         ///        Setting the portrait ResRef will also cause the portrait Id
@@ -10950,7 +10957,7 @@ namespace NWN
 
         /// <summary>
         ///  Get the description of oObject.
-        ///  - oObject: the object from which you are obtaining the description. 
+        ///  - oObject: the object from which you are obtaining the description.
         ///             Can be a creature, item, placeable, door, trigger or module object.
         ///  - bOriginalDescription:  if set to true any new description specified via a SetDescription scripting command
         ///                    is ignored and the original object's description is returned instead.
@@ -10969,7 +10976,7 @@ namespace NWN
 
         /// <summary>
         ///  Set the description of oObject.
-        ///  - oObject: the object for which you are changing the description 
+        ///  - oObject: the object for which you are changing the description
         ///             Can be a creature, placeable, item, door, or trigger.
         ///  - sNewDescription: the new description that the object will use.
         ///  - bIdentified: If oObject is an item, setting this to TRUE will set the identified description,
@@ -11034,7 +11041,7 @@ namespace NWN
         ///  Set the last player chat(text) message before it gets sent to other players.
         ///  - sNewChatMessage: The new chat text to be sent onto other players.
         ///                     Setting the player chat message to an empty string "",
-        ///                     will cause the chat message to be discarded 
+        ///                     will cause the chat message to be discarded
         ///                     (i.e. it will not be sent to other players).
         ///  Note: The new chat message gets sent after the OnPlayerChat script exits.
         /// </summary>
@@ -11063,7 +11070,7 @@ namespace NWN
 
         /// <summary>
         ///  Get the Color of oObject from the color channel specified.
-        ///  - oObject: the object from which you are obtaining the color. 
+        ///  - oObject: the object from which you are obtaining the color.
         ///             Can be a creature that has color information (i.e. the playable races).
         ///  - nColorChannel: The color channel that you want to get the color value of.
         ///                    COLOR_CHANNEL_SKIN
@@ -11104,11 +11111,11 @@ namespace NWN
         ///  - nMasterialType: The Material Type should be a positive integer between 0 and 77 (see iprp_matcost.2da).
         ///  Note: The Material Type property will only affect the cost of the item if you modify the cost in the iprp_matcost.2da.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyMaterial(int nMaterialType)
+        public static IntPtr ItemPropertyMaterial(int nMaterialType)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nMaterialType);
             NWN.Internal.NativeFunctions.CallBuiltIn(845);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -11117,11 +11124,11 @@ namespace NWN
         ///               IP_CONST_QUALITY_*
         ///  Note: The quality property will only affect the cost of the item if you modify the cost in the iprp_qualcost.2da.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyQuality(int nQuality)
+        public static IntPtr ItemPropertyQuality(int nQuality)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nQuality);
             NWN.Internal.NativeFunctions.CallBuiltIn(846);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
@@ -11130,17 +11137,17 @@ namespace NWN
         ///               IP_CONST_ADDITIONAL_*
         ///  Note: The additional property only affects the cost of the item if you modify the cost in the iprp_addcost.2da.
         /// </summary>
-        public static NWN.ItemProperty ItemPropertyAdditional(int nAdditionalProperty)
+        public static IntPtr ItemPropertyAdditional(int nAdditionalProperty)
         {
             NWN.Internal.NativeFunctions.StackPushInteger(nAdditionalProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(847);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Sets a new tag for oObject.
         ///  Will do nothing for invalid objects or the module object.
-        /// 
+        ///
         ///  Note: Care needs to be taken with this function.
         ///        Changing the tag for creature with waypoints will make them stop walking them.
         ///        Changing waypoint, door or trigger tags will break their area transitions.
@@ -11156,9 +11163,9 @@ namespace NWN
         ///  Returns the string tag set for the provided effect.
         ///  - If no tag has been set, returns an empty string.
         /// </summary>
-        public static string GetEffectTag(NWN.Effect eEffect)
+        public static string GetEffectTag(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(849);
             return NWN.Internal.NativeFunctions.StackPopStringUTF8();
         }
@@ -11167,12 +11174,12 @@ namespace NWN
         ///  Tags the effect with the provided string.
         ///  - Any other tags in the link will be overwritten.
         /// </summary>
-        public static NWN.Effect TagEffect(NWN.Effect eEffect, string sNewTag)
+        public static IntPtr TagEffect(IntPtr eEffect, string sNewTag)
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sNewTag);
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(850);
-            return new NWN.Effect(NWN.Internal.NativeFunctions.StackPopEffect());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_EFFECT);
         }
 
         /// <summary>
@@ -11180,9 +11187,9 @@ namespace NWN
         ///  - If not created by a creature, returns 0.
         ///  - If created by a spell-like ability, returns 0.
         /// </summary>
-        public static int GetEffectCasterLevel(NWN.Effect eEffect)
+        public static int GetEffectCasterLevel(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(851);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -11191,9 +11198,9 @@ namespace NWN
         ///  Returns the total duration of the effect in seconds.
         ///  - Returns 0 if the duration type of the effect is not DURATION_TYPE_TEMPORARY.
         /// </summary>
-        public static int GetEffectDuration(NWN.Effect eEffect)
+        public static int GetEffectDuration(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(852);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -11202,9 +11209,9 @@ namespace NWN
         ///  Returns the remaining duration of the effect in seconds.
         ///  - Returns 0 if the duration type of the effect is not DURATION_TYPE_TEMPORARY.
         /// </summary>
-        public static int GetEffectDurationRemaining(NWN.Effect eEffect)
+        public static int GetEffectDurationRemaining(IntPtr eEffect)
         {
-            NWN.Internal.NativeFunctions.StackPushEffect(eEffect.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_EFFECT, eEffect);
             NWN.Internal.NativeFunctions.CallBuiltIn(853);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -11213,9 +11220,9 @@ namespace NWN
         ///  Returns the string tag set for the provided item property.
         ///  - If no tag has been set, returns an empty string.
         /// </summary>
-        public static string GetItemPropertyTag(NWN.ItemProperty nProperty)
+        public static string GetItemPropertyTag(IntPtr nProperty)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(nProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, nProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(854);
             return NWN.Internal.NativeFunctions.StackPopStringUTF8();
         }
@@ -11224,21 +11231,21 @@ namespace NWN
         ///  Tags the item property with the provided string.
         ///  - Any tags currently set on the item property will be overwritten.
         /// </summary>
-        public static NWN.ItemProperty TagItemProperty(NWN.ItemProperty nProperty, string sNewTag)
+        public static IntPtr TagItemProperty(IntPtr nProperty, string sNewTag)
         {
             NWN.Internal.NativeFunctions.StackPushStringUTF8(sNewTag);
-            NWN.Internal.NativeFunctions.StackPushItemProperty(nProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, nProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(855);
-            return new NWN.ItemProperty(NWN.Internal.NativeFunctions.StackPopItemProperty());
+            return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY);
         }
 
         /// <summary>
         ///  Returns the total duration of the item property in seconds.
         ///  - Returns 0 if the duration type of the item property is not DURATION_TYPE_TEMPORARY.
         /// </summary>
-        public static int GetItemPropertyDuration(NWN.ItemProperty nProperty)
+        public static int GetItemPropertyDuration(IntPtr nProperty)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(nProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, nProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(856);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -11247,9 +11254,9 @@ namespace NWN
         ///  Returns the remaining duration of the item property in seconds.
         ///  - Returns 0 if the duration type of the item property is not DURATION_TYPE_TEMPORARY.
         /// </summary>
-        public static int GetItemPropertyDurationRemaining(NWN.ItemProperty nProperty)
+        public static int GetItemPropertyDurationRemaining(IntPtr nProperty)
         {
-            NWN.Internal.NativeFunctions.StackPushItemProperty(nProperty.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, nProperty);
             NWN.Internal.NativeFunctions.CallBuiltIn(857);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -11259,9 +11266,9 @@ namespace NWN
         ///  Will optionally set a new area tag and displayed name. The new area is accessible
         ///  immediately, but initialisation scripts for the area and all contained creatures will only
         ///  run after the current script finishes (so you can clean up objects before returning).
-        /// 
+        ///
         ///  Returns the new area, or OBJECT_INVALID on failure.
-        /// 
+        ///
         ///  Note: When spawning a second instance of a existing area, you will have to manually
         ///        adjust all transitions (doors, triggers) with the relevant script commands,
         ///        or players might end up in the wrong area.
@@ -11277,7 +11284,7 @@ namespace NWN
 
         /// <summary>
         ///  Destroys the given area object and everything in it.
-        /// 
+        ///
         ///  Return values:
         ///     0: Object not an area or invalid.
         ///    -1: Area contains spawn location and removal would leave module without entrypoint.
@@ -11293,9 +11300,9 @@ namespace NWN
 
         /// <summary>
         ///  Creates a copy of a existing area, including everything inside of it (except players).
-        /// 
+        ///
         ///  Returns the new area, or OBJECT_INVALID on error.
-        /// 
+        ///
         ///  Note: You will have to manually adjust all transitions (doors, triggers) with the
         ///        relevant script commands, or players might end up in the wrong area.
         /// </summary>
@@ -11327,7 +11334,7 @@ namespace NWN
 
         /// <summary>
         ///  Sets the transition target for oTransition.
-        /// 
+        ///
         ///  Notes:
         ///  - oTransition can be any valid game object, except areas.
         ///  - oTarget can be any valid game object with a location, or OBJECT_INVALID (to unlink).
@@ -11374,10 +11381,10 @@ namespace NWN
         /// <summary>
         ///  Sets if the given creature has explored tile at x, y of the given area.
         ///  Note that creature needs to be a player- or player-possessed creature.
-        /// 
+        ///
         ///  Keep in mind that tile exploration also controls object visibility in areas
         ///  and the fog of war for interior and underground areas.
-        /// 
+        ///
         ///  Return values:
         ///   -1: Area or creature invalid.
         ///    0: Tile was not explored before setting newState.
@@ -11398,10 +11405,10 @@ namespace NWN
         ///  Returns whether the given tile at x, y, for the given creature in the stated
         ///  area is visible on the map.
         ///  Note that creature needs to be a player- or player-possessed creature.
-        /// 
+        ///
         ///  Keep in mind that tile exploration also controls object visibility in areas
         ///  and the fog of war for interior and underground areas.
-        /// 
+        ///
         ///  Return values:
         ///   -1: Area or creature invalid.
         ///    0: Tile is not explored yet.
@@ -11419,13 +11426,13 @@ namespace NWN
 
         /// <summary>
         ///  Sets the creature to auto-explore the map as it walks around.
-        /// 
+        ///
         ///  Keep in mind that tile exploration also controls object visibility in areas
         ///  and the fog of war for interior and underground areas.
-        /// 
+        ///
         ///  This means that if you turn off auto exploration, it falls to you to manage this
         ///  through SetTileExplored(); otherwise, the player will not be able to see anything.
-        /// 
+        ///
         ///  Valid arguments: TRUE and FALSE.
         ///  Does nothing for non-creatures.
         ///  Returns the previous state (or -1 if non-creature).
@@ -11454,9 +11461,9 @@ namespace NWN
         ///  equivalent to the walkmesh type).
         ///  Returns 0 if the location is invalid or has no surface type.
         /// </summary>
-        public static int GetSurfaceMaterial(NWN.Location at)
+        public static int GetSurfaceMaterial(IntPtr at)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(at.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, at);
             NWN.Internal.NativeFunctions.CallBuiltIn(870);
             return NWN.Internal.NativeFunctions.StackPopInteger();
         }
@@ -11465,9 +11472,9 @@ namespace NWN
         ///  Returns the z-offset at which the walkmesh is at the given location.
         ///  Returns -6.0 for invalid locations.
         /// </summary>
-        public static float GetGroundHeight(NWN.Location at)
+        public static float GetGroundHeight(IntPtr at)
         {
-            NWN.Internal.NativeFunctions.StackPushLocation(at.Handle);
+            NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, at);
             NWN.Internal.NativeFunctions.CallBuiltIn(871);
             return NWN.Internal.NativeFunctions.StackPopFloat();
         }
@@ -11823,6 +11830,526 @@ namespace NWN
         public static void Reserved899()
         {
             NWN.Internal.NativeFunctions.CallBuiltIn(899);
+        }
+
+        /// <summary>
+        /// Makes oPC load texture sNewName instead of sOldName.
+        /// If oPC is OBJECT_INVALID, it will apply the override to all active players
+        /// Setting sNewName to "" will clear the override and revert to original.
+        /// </summary>
+        public static void SetTextureOverride(string sOldName, string sNewName = "", uint oPC = OBJECT_INVALID)
+        {
+            NWN.Internal.NativeFunctions.StackPushObject(oPC);
+            NWN.Internal.NativeFunctions.StackPushString(sNewName);
+            NWN.Internal.NativeFunctions.StackPushString(sOldName);
+            NWN.Internal.NativeFunctions.CallBuiltIn(900);
+        }
+
+        /// <summary>
+        /// Displays sMsg on oPC's screen.
+        /// The message is displayed on top of whatever is on the screen, including UI elements
+        ///  nX, nY - coordinates of the first character to be displayed. The value is in terms
+        ///           of character 'slot' relative to the nAnchor anchor point.
+        ///           If the number is negative, it is applied from the bottom/right.
+        ///  nAnchor - SCREEN_ANCHOR_* constant
+        ///  fLife - Duration in seconds until the string disappears.
+        ///  nRGBA, nRGBA2 - Colors of the string in 0xRRGGBBAA format. String starts at nRGBA,
+        ///                  but as it nears end of life, it will slowly blend into nRGBA2.
+        ///  nID - Optional ID of a string. If not 0, subsequent calls to PostString will
+        ///        remove the old string with the same ID, even if it's lifetime has not elapsed.
+        ///        Only positive values are allowed.
+        ///  sFont - If specified, use this custom font instead of default console font.
+        /// </summary>
+        public static void PostString(uint oPC, string sMsg, int nX = 0, int nY = 0, int nAnchor = SCREEN_ANCHOR_TOP_LEFT, float fLife = 10.0f, int nRGBA = 2147418367, int nRGBA2 = 2147418367, int nID = 0, string sFont = "")
+        {
+            NWN.Internal.NativeFunctions.StackPushString(sFont);
+            NWN.Internal.NativeFunctions.StackPushInteger(nID);
+            NWN.Internal.NativeFunctions.StackPushInteger(nRGBA2);
+            NWN.Internal.NativeFunctions.StackPushInteger(nRGBA);
+            NWN.Internal.NativeFunctions.StackPushFloat(fLife);
+            NWN.Internal.NativeFunctions.StackPushInteger(nAnchor);
+            NWN.Internal.NativeFunctions.StackPushInteger(nY);
+            NWN.Internal.NativeFunctions.StackPushInteger(nX);
+            NWN.Internal.NativeFunctions.StackPushString(sMsg);
+            NWN.Internal.NativeFunctions.StackPushObject(oPC);
+            NWN.Internal.NativeFunctions.CallBuiltIn(901);
+        }
+
+        /// <summary>
+        /// Returns oCreature's spell school specialization in nClass (SPELL_SCHOOL_* constants)
+        /// Unless custom content is used, only Wizards have spell schools
+        /// Returns -1 on error
+        /// </summary>
+        public static int GetSpecialization(uint oCreature, int nClass = CLASS_TYPE_WIZARD)
+        {
+            NWN.Internal.NativeFunctions.StackPushInteger(nClass);
+            NWN.Internal.NativeFunctions.StackPushObject(oCreature);
+            NWN.Internal.NativeFunctions.CallBuiltIn(902);
+            return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Returns oCreature's domain in nClass (DOMAIN_* constants)
+        /// nDomainIndex - 1 or 2
+        /// Unless custom content is used, only Clerics have domains
+        /// Returns -1 on error
+        /// </summary>
+        public static int GetDomain(uint oCreature, int nDomainIndex = 1, int nClass = CLASS_TYPE_CLERIC)
+        {
+            NWN.Internal.NativeFunctions.StackPushInteger(nClass);
+            NWN.Internal.NativeFunctions.StackPushInteger(nDomainIndex);
+            NWN.Internal.NativeFunctions.StackPushObject(oCreature);
+            NWN.Internal.NativeFunctions.CallBuiltIn(903);
+            return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Returns the build number of oPlayer (i.e. 8193).
+        /// Returns 0 if the given object isn't a player or did not advertise their build info.
+        /// </summary>
+        public static int GetPlayerBuildVersionMajor(uint oPlayer)
+        {
+            NWN.Internal.NativeFunctions.StackPushObject(oPlayer);
+            NWN.Internal.NativeFunctions.CallBuiltIn(904);
+            return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Returns the patch revision of oPlayer (i.e. 8).
+        /// Returns 0 if the given object isn't a player or did not advertise their build info.
+        /// </summary>
+        public static int GetPlayerBuildVersionMinor(uint oPlayer)
+        {
+            NWN.Internal.NativeFunctions.StackPushObject(oPlayer);
+            NWN.Internal.NativeFunctions.CallBuiltIn(905);
+            return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Returns the script parameter value for a given parameter name.
+        /// Script parameters can be set for conversation scripts in the toolset's
+        /// Conversation Editor, or for any script with SetScriptParam().
+        /// * Will return "" if a parameter with the given name does not exist.
+        /// </summary>
+        public static string GetScriptParam(string sParamName)
+        {
+          NWN.Internal.NativeFunctions.StackPushString(sParamName);
+          NWN.Internal.NativeFunctions.CallBuiltIn(906);
+          return NWN.Internal.NativeFunctions.StackPopString();
+        }
+
+        /// <summary>
+        /// Set a script parameter value for the next script to be run.
+        /// Call this function to set parameters right before calling ExecuteScript().
+        /// </summary>
+        public static void SetScriptParam(string sParamName, string sParamValue)
+        {
+          NWN.Internal.NativeFunctions.StackPushString(sParamValue);
+          NWN.Internal.NativeFunctions.StackPushString(sParamName);
+          NWN.Internal.NativeFunctions.CallBuiltIn(907);
+        }
+
+        /// <summary>
+        /// Returns the number of uses per day remaining of the given item and item property.
+        /// * Will return 0 if the given item does not have the requested item property,
+        ///   or the item property is not uses/day.
+        /// </summary>
+        public static int GetItemPropertyUsesPerDayRemaining(uint oItem, IntPtr ip)
+        {
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ip);
+          NWN.Internal.NativeFunctions.StackPushObject(oItem);
+          NWN.Internal.NativeFunctions.CallBuiltIn(908);
+          return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Sets the number of uses per day remaining of the given item and item property.
+        /// * Will do nothing if the given item and item property is not uses/day.
+        /// * Will constrain nUsesPerDay to the maximum allowed as the cost table defines.
+        /// </summary>
+        public static void SetItemPropertyUsesPerDayRemaining(uint oItem, IntPtr ip, int nUsesPerDay)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nUsesPerDay);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ip);
+          NWN.Internal.NativeFunctions.StackPushObject(oItem);
+          NWN.Internal.NativeFunctions.CallBuiltIn(909);
+        }
+
+        /// <summary>
+        /// Queue an action to use an active item property.
+        /// * oItem - item that has the item property to use
+        /// * ip - item property to use
+        /// * object oTarget - target
+        /// * nSubPropertyIndex - specify if your itemproperty has subproperties (such as subradial spells)
+        /// * bDecrementCharges - decrement charges if item property is limited
+        /// </summary>
+        public static void ActionUseItemOnObject(uint oItem, IntPtr ip, uint oTarget, int nSubPropertyIndex = 0, int bDecrementCharges = TRUE)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(bDecrementCharges);
+          NWN.Internal.NativeFunctions.StackPushInteger(nSubPropertyIndex);
+          NWN.Internal.NativeFunctions.StackPushObject(oTarget);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ip);
+          NWN.Internal.NativeFunctions.StackPushObject(oItem);
+          NWN.Internal.NativeFunctions.CallBuiltIn(910);
+        }
+
+        /// <summary>
+        /// Queue an action to use an active item property.
+        /// * oItem - item that has the item property to use
+        /// * ip - item property to use
+        /// * location lTarget - target location (must be in the same area as item possessor)
+        /// * nSubPropertyIndex - specify if your itemproperty has subproperties (such as subradial spells)
+        /// * bDecrementCharges - decrement charges if item property is limited
+        /// </summary>
+        public static void ActionUseItemAtLocation(uint oItem, IntPtr ip, IntPtr lTarget, int nSubPropertyIndex = 0, int bDecrementCharges = TRUE)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(bDecrementCharges);
+          NWN.Internal.NativeFunctions.StackPushInteger(nSubPropertyIndex);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lTarget);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_ITEM_PROPERTY, ip);
+          NWN.Internal.NativeFunctions.StackPushObject(oItem);
+          NWN.Internal.NativeFunctions.CallBuiltIn(911);
+        }
+
+        /// <summary>
+        /// Makes oPC enter a targeting mode, letting them select an object as a target
+        /// If a PC selects a target, it will trigger the module OnPlayerTarget event.
+        /// </summary>
+        public static void EnterTargetingMode(uint oPC, int nValidObjectTypes = OBJECT_TYPE_ALL, int nMouseCursorId = MOUSECURSOR_MAGIC, int nBadTargetCursor = MOUSECURSOR_NOMAGIC)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nBadTargetCursor);
+          NWN.Internal.NativeFunctions.StackPushInteger(nMouseCursorId);
+          NWN.Internal.NativeFunctions.StackPushInteger(nValidObjectTypes);
+          NWN.Internal.NativeFunctions.StackPushObject(oPC);
+          NWN.Internal.NativeFunctions.CallBuiltIn(912);
+        }
+
+        /// <summary>
+        /// Gets the target object in the module OnPlayerTarget event.
+        /// Returns the area object when the target is the ground.
+        /// </summary>
+        public static uint GetTargetingModeSelectedObject()
+        {
+          NWN.Internal.NativeFunctions.CallBuiltIn(913);
+          return NWN.Internal.NativeFunctions.StackPopObject();
+        }
+
+        /// <summary>
+        /// Gets the target position in the module OnPlayerTarget event.
+        /// </summary>
+        public static Vector3 GetTargetingModeSelectedPosition()
+        {
+          NWN.Internal.NativeFunctions.CallBuiltIn(914);
+          return NWN.Internal.NativeFunctions.StackPopVector();
+        }
+
+        /// <summary>
+        /// Gets the player object that triggered the OnPlayerTarget event.
+        /// </summary>
+        public static uint GetLastPlayerToSelectTarget()
+        {
+          NWN.Internal.NativeFunctions.CallBuiltIn(915);
+          return NWN.Internal.NativeFunctions.StackPopObject();
+        }
+
+        /// <summary>
+        /// Sets oObject's hilite color to nColor
+        /// The nColor format is 0xRRGGBB; -1 clears the color override.
+        /// </summary>
+        public static void SetObjectHiliteColor(uint oObject, int nColor = -1)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nColor);
+          NWN.Internal.NativeFunctions.StackPushObject(oObject);
+          NWN.Internal.NativeFunctions.CallBuiltIn(916);
+        }
+
+        /// <summary>
+        /// Sets the cursor (MOUSECURSOR_*) to use when hovering over oObject
+        /// </summary>
+        public static void SetObjectMouseCursor(uint oObject, int nCursor = -1)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nCursor);
+          NWN.Internal.NativeFunctions.StackPushObject(oObject);
+          NWN.Internal.NativeFunctions.CallBuiltIn(917);
+        }
+
+        /// <summary>
+        /// Returns TRUE if the given player-controlled creature has DM privileges
+        /// gained through a player login (as opposed to the DM client).
+        /// Note: GetIsDM() also returns TRUE for player creature DMs.
+        /// </summary>
+        public static int GetIsPlayerDM(uint oCreature)
+        {
+          NWN.Internal.NativeFunctions.StackPushObject(oCreature);
+          NWN.Internal.NativeFunctions.CallBuiltIn(918);
+          return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Sets the detailed wind data for oArea
+        /// The predefined values in the toolset are:
+        ///   NONE:  vDirection=(1.0, 1.0, 0.0), fMagnitude=0.0, fYaw=0.0,   fPitch=0.0
+        ///   LIGHT: vDirection=(1.0, 1.0, 0.0), fMagnitude=1.0, fYaw=100.0, fPitch=3.0
+        ///   HEAVY: vDirection=(1.0, 1.0, 0.0), fMagnitude=2.0, fYaw=150.0, fPitch=5.0
+        /// </summary>
+        public static void SetAreaWind(uint oArea, Vector3 vDirection, float fMagnitude, float fYaw, float fPitch)
+        {
+          NWN.Internal.NativeFunctions.StackPushFloat(fPitch);
+          NWN.Internal.NativeFunctions.StackPushFloat(fYaw);
+          NWN.Internal.NativeFunctions.StackPushFloat(fMagnitude);
+          NWN.Internal.NativeFunctions.StackPushVector(vDirection);
+          NWN.Internal.NativeFunctions.StackPushObject(oArea);
+          NWN.Internal.NativeFunctions.CallBuiltIn(919);
+        }
+
+        /// <summary>
+        /// Replace's oObject's texture sOld with sNew.
+        /// Specifying sNew = "" will restore the original texture.
+        /// If sNew cannot be found, the original texture will be restored.
+        /// sNew must refer to a simple texture, not PLT
+        /// </summary>
+        public static void ReplaceObjectTexture(uint oObject, string sOld, string sNew = "")
+        {
+          NWN.Internal.NativeFunctions.StackPushString(sNew);
+          NWN.Internal.NativeFunctions.StackPushString(sOld);
+          NWN.Internal.NativeFunctions.StackPushObject(oObject);
+          NWN.Internal.NativeFunctions.CallBuiltIn(920);
+        }
+
+        /// <summary>
+        /// Destroys the given sqlite database, clearing out all data and schema.
+        /// This operation is _immediate_ and _irreversible_, even when
+        /// inside a transaction or running query.
+        /// Existing active/prepared sqlqueries will remain functional, but any references
+        /// to stored data or schema members will be invalidated.
+        /// oObject: Same as SqlPrepareQueryObject().
+        ///          To reset a campaign database, please use DestroyCampaignDatabase().
+        /// </summary>
+        public static void SqlDestroyDatabase(uint oObject)
+        {
+          NWN.Internal.NativeFunctions.StackPushObject(oObject);
+          NWN.Internal.NativeFunctions.CallBuiltIn(921);
+        }
+
+        /// <summary>
+        /// Returns "" if the last Sql command succeeded; or a human-readable error otherwise.
+        /// Additionally, all SQL errors are logged to the server log.
+        /// </summary>
+        public static string SqlGetError(IntPtr sqlQuery)
+        {
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(922);
+          return NWN.Internal.NativeFunctions.StackPopString();
+        }
+
+        /// <summary>
+        /// Sets up a query.
+        /// This will NOT run the query; only make it available for parameter binding.
+        /// To run the query, you need to call SqlStep(); even if you do not
+        /// expect result data.
+        /// sDatabase: The name of a campaign database.
+        ///            Note that when accessing campaign databases, you do not write access
+        ///            to the builtin tables needed for CampaignDB functionality.
+        /// N.B.: You can pass sqlqueries into DelayCommand; HOWEVER
+        ///       *** they will NOT survive a game save/load ***
+        ///       Any commands on a restored sqlquery will fail.
+        /// </summary>
+        public static IntPtr SqlPrepareQueryCampaign(string sDatabase, string sQuery)
+        {
+          NWN.Internal.NativeFunctions.StackPushString(sQuery);
+          NWN.Internal.NativeFunctions.StackPushString(sDatabase);
+          NWN.Internal.NativeFunctions.CallBuiltIn(923);
+          return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY);
+        }
+
+        /// <summary>
+        /// Sets up a query.
+        /// This will NOT run the query; only make it available for parameter binding.
+        /// To run the query, you need to call SqlStep(); even if you do not
+        /// expect result data.
+        /// oObject: Can be either the module (GetModule()), or a player character.
+        ///          The database is persisted to savegames in case of the module,
+        ///          and to character files in case of a player characters.
+        ///          Other objects cannot carry databases, and this function call
+        ///          will error for them.
+        /// N.B: Databases on objects (especially player characters!) should be kept
+        ///      to a reasonable size. Delete old data you no longer need.
+        ///      If you attempt to store more than a few megabytes of data on a
+        ///      player creature, you may have a bad time.
+        /// N.B.: You can pass sqlqueries into DelayCommand; HOWEVER
+        ///       *** they will NOT survive a game save/load ***
+        ///       Any commands on a restored sqlquery will fail.
+        /// </summary>
+        public static IntPtr SqlPrepareQueryObject(uint oObject, string sQuery)
+        {
+          NWN.Internal.NativeFunctions.StackPushString(sQuery);
+          NWN.Internal.NativeFunctions.StackPushObject(oObject);
+          NWN.Internal.NativeFunctions.CallBuiltIn(924);
+          return NWN.Internal.NativeFunctions.StackPopGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY);
+        }
+
+        /// <summary>
+        /// Bind an integer to a named parameter of the given prepared query.
+        /// Example:
+        ///   sqlquery v = SqlPrepareQueryObject(GetModule(), "insert into test (col) values (@myint);");
+        ///   SqlBindInt(v, "@v", 5);
+        ///   SqlStep(v);
+        /// </summary>
+        public static void SqlBindInt(IntPtr sqlQuery, string sParam, int nValue)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nValue);
+          NWN.Internal.NativeFunctions.StackPushString(sParam);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(925);
+        }
+
+        /// <summary>
+        /// Bind a float to a named parameter of the given prepared query.
+        /// </summary>
+        public static void SqlBindFloat(IntPtr sqlQuery, string sParam, float fFloat)
+        {
+          NWN.Internal.NativeFunctions.StackPushFloat(fFloat);
+          NWN.Internal.NativeFunctions.StackPushString(sParam);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(926);
+        }
+
+        /// <summary>
+        /// Bind a string to a named parameter of the given prepared query.
+        /// </summary>
+        public static void SqlBindString(IntPtr sqlQuery, string sParam, string sString)
+        {
+          NWN.Internal.NativeFunctions.StackPushString(sString);
+          NWN.Internal.NativeFunctions.StackPushString(sParam);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(927);
+        }
+
+        /// <summary>
+        /// Bind a vector to a named parameter of the given prepared query.
+        /// </summary>
+        public static void SqlBindVector(IntPtr sqlQuery, string sParam, Vector3 vVector)
+        {
+          NWN.Internal.NativeFunctions.StackPushVector(vVector);
+          NWN.Internal.NativeFunctions.StackPushString(sParam);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(928);
+        }
+
+        /// <summary>
+        /// Bind a object to a named parameter of the given prepared query.
+        /// Objects are serialized, NOT stored as a reference!
+        /// Currently supported object types: Creatures, Items, Placeables, Waypoints, Stores, Doors, Triggers
+        /// </summary>
+        public static void SqlBindObject(IntPtr sqlQuery, string sParam, uint oObject)
+        {
+          NWN.Internal.NativeFunctions.StackPushObject(oObject);
+          NWN.Internal.NativeFunctions.StackPushString(sParam);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(929);
+        }
+
+        /// <summary>
+        /// Executes the given query and fetches a row; returning true if row data was
+        /// made available; false otherwise. Note that this will return false even if
+        /// the query ran successfully but did not return data.
+        /// You need to call SqlPrepareQuery() and potentially SqlBind* before calling this.
+        /// Example:
+        ///   sqlquery n = SqlPrepareQueryObject(GetFirstPC(), "select widget from widgets;");
+        ///   while (SqlStep(n))
+        ///     SendMessageToPC(GetFirstPC(), "Found widget: " + SqlGetString(n, 0));
+        /// </summary>
+        public static int SqlStep(IntPtr sqlQuery)
+        {
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(930);
+          return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Retrieve a column cast as an integer of the currently stepped row.
+        /// You can call this after SqlStep() returned TRUE.
+        /// In case of error, 0 will be returned.
+        /// In traditional fashion, nIndex starts at 0.
+        /// </summary>
+        public static int SqlGetInt(IntPtr sqlQuery, int nIndex)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nIndex);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(931);
+          return NWN.Internal.NativeFunctions.StackPopInteger();
+        }
+
+        /// <summary>
+        /// Retrieve a column cast as a float of the currently stepped row.
+        /// You can call this after SqlStep() returned TRUE.
+        /// In case of error, 0.0f will be returned.
+        /// In traditional fashion, nIndex starts at 0.
+        /// </summary>
+        public static float SqlGetFloat(IntPtr sqlQuery, int nIndex)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nIndex);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(932);
+          return NWN.Internal.NativeFunctions.StackPopFloat();
+        }
+
+        /// <summary>
+        /// Retrieve a column cast as a string of the currently stepped row.
+        /// You can call this after SqlStep() returned TRUE.
+        /// In case of error, a empty string will be returned.
+        /// In traditional fashion, nIndex starts at 0.
+        /// </summary>
+        public static string SqlGetString(IntPtr sqlQuery, int nIndex)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nIndex);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(933);
+          return NWN.Internal.NativeFunctions.StackPopString();
+        }
+
+        /// <summary>
+        /// Retrieve a vector of the currently stepped query.
+        /// You can call this after SqlStep() returned TRUE.
+        /// In case of error, a zero vector will be returned.
+        /// In traditional fashion, nIndex starts at 0.
+        /// </summary>
+        public static Vector3 SqlGetVector(IntPtr sqlQuery, int nIndex)
+        {
+          NWN.Internal.NativeFunctions.StackPushInteger(nIndex);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(934);
+          return NWN.Internal.NativeFunctions.StackPopVector();
+        }
+
+        /// <summary>
+        /// Retrieve a object of the currently stepped query.
+        /// You can call this after SqlStep() returned TRUE.
+        /// The object will be spawned into a inventory if it is a item and the receiver
+        /// has the capability to receive it, otherwise at lSpawnAt.
+        /// Objects are serialized, NOT stored as a reference!
+        /// In case of error, INVALID_OBJECT will be returned.
+        /// In traditional fashion, nIndex starts at 0.
+        /// </summary>
+        public static uint SqlGetObject(IntPtr sqlQuery, int nIndex, IntPtr lSpawnAt, uint oInventory = OBJECT_INVALID)
+        {
+          NWN.Internal.NativeFunctions.StackPushObject(oInventory);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_LOCATION, lSpawnAt);
+          NWN.Internal.NativeFunctions.StackPushInteger(nIndex);
+          NWN.Internal.NativeFunctions.StackPushGameDefinedStructure(ENGINE_STRUCTURE_SQL_QUERY, sqlQuery);
+          NWN.Internal.NativeFunctions.CallBuiltIn(935);
+          return NWN.Internal.NativeFunctions.StackPopObject();
+        }
+
+        /// <summary>
+        /// Convert sHex, a string containing a hexadecimal object id,
+        /// into a object reference. Counterpart to StringToObject().
+        /// </summary>
+        public static uint StringToObject(string sHex)
+        {
+          NWN.Internal.NativeFunctions.StackPushString(sHex);
+          NWN.Internal.NativeFunctions.CallBuiltIn(936);
+          return NWN.Internal.NativeFunctions.StackPopObject();
         }
     }
 }

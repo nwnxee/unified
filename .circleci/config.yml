@@ -25,7 +25,7 @@ jobs:
   docs-build:
     <<: *defaults
     docker:
-      - image: plenarius/nwnxee-doc-builder:0.0.3
+      - image: plenarius/nwnxee-doc-builder:0.0.5
     steps:
       - attach_workspace:
           at: ~/nwnxee

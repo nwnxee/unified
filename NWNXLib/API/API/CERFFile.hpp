@@ -6,7 +6,7 @@
 #include "CERFString.hpp"
 #include "CExoLinkedList.hpp"
 #include "NWERFHEADER.hpp"
-
+#include <memory>
 
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(CERFFile)
@@ -51,6 +51,7 @@ struct CERFFile
     BOOL WriteStringTable();
     BOOL SetNumEntries(uint32_t nEntries);
     BOOL WriteResource(char * szResName, RESTYPE rtResType, CRes * pRes, BOOL bIsGFF = true);
+    BOOL WriteResource(const char * szResName, RESTYPE rtResType, DataBlockRef pData);
     BOOL Finish();
 
 

@@ -10,7 +10,7 @@ namespace ThreadWatchdog {
 class ThreadWatchdog : public NWNXLib::Plugin
 {
 public:
-    ThreadWatchdog(const Plugin::CreateParams& params);
+    ThreadWatchdog(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ThreadWatchdog();
 
 private:

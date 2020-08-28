@@ -51,6 +51,7 @@ struct CNWRace
     CExoString GetNamePluralText();
     CExoString GetDescriptionText();
     CExoString GetDefaultBiographyText();
+    char GetAbilityAdjust(uint8_t nAbilityId);
     BOOL IsFirstLevelGrantedFeat(uint16_t nFeat);
     void LoadFeatsTable(CExoString sTable);
 

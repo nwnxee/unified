@@ -3,9 +3,7 @@
 #include <algorithm>
 #include <chrono>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 AsyncWorkerThread::AsyncWorkerThread(Tasks& manager)
     : m_manager(manager),
@@ -207,8 +205,6 @@ void TasksProxy::ClearFinishedTasks()
         const bool finished = iter->wait_for(std::chrono::seconds(0)) == std::future_status::ready;
         iter = finished ? m_work.erase(iter) : std::next(iter);
     }
-}
-
 }
 
 }

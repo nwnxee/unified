@@ -19,14 +19,12 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* DeadCreatureFiresOnAreaExit::pRemoveObjectFromArea_hook;
 DeadCreatureFiresOnAreaExit::DeadCreatureFiresOnAreaExit(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj>
-                                    (&CNWSArea__RemoveObjectFromArea_hook);
-
-    pRemoveObjectFromArea_hook = hooker->FindHookByAddress(Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj);
+    pRemoveObjectFromArea_hook = hooker->RequestExclusiveHook
+        <Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj>(&CNWSArea__RemoveObjectFromArea_hook);
 }
 
 
-int32_t DeadCreatureFiresOnAreaExit::CNWSArea__RemoveObjectFromArea_hook(CNWSArea *pArea, Types::ObjectID objectId)
+int32_t DeadCreatureFiresOnAreaExit::CNWSArea__RemoveObjectFromArea_hook(CNWSArea *pArea, ObjectID objectId)
 {
     pArea->m_aGameObjects.Remove(objectId);
 

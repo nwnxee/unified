@@ -46,9 +46,7 @@ CNWVirtualMachineCommands* GetVmCommands()
 CVirtualMachineScript* CreateScriptForClosure(const char* token)
 {
     CVirtualMachineScript* script = new CVirtualMachineScript();
-    script->m_nCodeSize = 0;
     script->m_pCode = NULL;
-    script->m_nLoadedFromSave = 0;
     script->m_nSecondaryInstructPtr = 0;
     script->m_nInstructPtr = 0;
     script->m_nStackSize = 0;

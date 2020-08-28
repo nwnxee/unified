@@ -15,30 +15,17 @@ using namespace NWNXLib::Services;
 
 static SpellChecker::SpellChecker* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "SpellChecker",
-        "Function to check spelling",
-        "Morderon (With use of Hunspell)",
-        "will386@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new SpellChecker::SpellChecker(params);
+    g_plugin = new SpellChecker::SpellChecker(services);
     return g_plugin;
 }
 
 
 namespace SpellChecker {
 
-SpellChecker::SpellChecker(const Plugin::CreateParams& params)
-    : Plugin(params)
+SpellChecker::SpellChecker(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 
 #define REGISTER(func) \
@@ -95,9 +82,6 @@ void SpellChecker::Init(NWNXLib::Services::ConfigProxy* config)
 }
 ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
-
     std::string sentence = Services::Events::ExtractArgument<std::string>(args);
 
     std::string  word;
@@ -120,19 +104,13 @@ ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
         sc = SpellChecker::spell_e(SpellChecker::created, list[i].c_str());
         if(sc == 0)
             output += list[i] + ",";
-
-
-
     }
 
-    Services::Events::InsertArgument(stack, output);
-    return stack;
+    return Services::Events::Arguments(output);
 }
 
 ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
 {
-    ArgumentStack stack;
-
     std::string word = Services::Events::ExtractArgument<std::string>(args);
 
     const char* cword;
@@ -152,11 +130,8 @@ ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
 
             SpellChecker::free_e(SpellChecker::created, &wlst, ns);
         }
-
     }
-
-    Services::Events::InsertArgument(stack, output);
-    return stack;
+    return Services::Events::Arguments(output);
 }
 
 
