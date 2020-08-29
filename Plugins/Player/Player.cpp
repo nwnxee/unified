@@ -97,6 +97,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(SetObjectMouseCursorOverride);
     REGISTER(SetObjectHiliteColorOverride);
     REGISTER(RemoveEffectFromTURD);
+    REGISTER(SetSpawnLocation);
 
 #undef REGISTER
 
@@ -1619,6 +1620,32 @@ ArgumentStack Player::RemoveEffectFromTURD(ArgumentStack&& args)
             }
 
             break;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::SetSpawnLocation(ArgumentStack&& args)
+{
+    if (auto *pPlayer = player(args))
+    {
+        auto oidArea = Services::Events::ExtractArgument<ObjectID>(args);
+          ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
+          ASSERT_OR_THROW(Utils::AsNWSArea(Utils::GetGameObject(oidArea)));
+        auto x = Services::Events::ExtractArgument<float>(args);
+        auto y = Services::Events::ExtractArgument<float>(args);
+        auto z = Services::Events::ExtractArgument<float>(args);
+        auto facing = Services::Events::ExtractArgument<float>(args);
+
+        if (auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+        {
+            pPlayer->m_bFromTURD = true;
+
+            pCreature->m_oidDesiredArea = oidArea;
+            pCreature->m_vDesiredAreaLocation = {x, y, z};
+            pCreature->m_bDesiredAreaUpdateComplete = false;
+            Utils::SetOrientation(pCreature, facing);
         }
     }
 

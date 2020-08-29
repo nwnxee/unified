@@ -57,6 +57,7 @@ private:
     ArgumentStack SetObjectMouseCursorOverride      (ArgumentStack&& args);
     ArgumentStack SetObjectHiliteColorOverride      (ArgumentStack&& args);
     ArgumentStack RemoveEffectFromTURD              (ArgumentStack&& args);
+    ArgumentStack SetSpawnLocation                  (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

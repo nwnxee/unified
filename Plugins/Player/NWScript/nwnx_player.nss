@@ -328,10 +328,16 @@ void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, in
 void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, int nColor);
 
 /// @brief Remove effects with sEffectTag from oPlayer's TURD
-/// @note This function should be called in the NWNX_ON_CLIENT_DISCONNECT_AFTER event
+/// @note This function should be called in the NWNX_ON_CLIENT_DISCONNECT_AFTER event, OnClientLeave is too early for the TURD to exist.
 /// @param oPlayer The player object.
 /// @param sEffectTag The effect tag.
 void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag);
+
+/// @brief Set the location oPlayer will spawn when logging in to the server.
+/// @note This function is best called in the NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE event, OnClientEnter will be too late.
+/// @param The player object.
+/// @param locSpawn The location.
+void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn);
 
 /// @}
 
@@ -832,6 +838,22 @@ void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag)
     string sFunc = "RemoveEffectFromTURD";
 
     NWNX_PushArgumentString(NWNX_Player, sFunc, sEffectTag);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn)
+{
+    string sFunc = "SetSpawnLocation";
+
+    vector vPosition = GetPositionFromLocation(locSpawn);
+
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, GetFacingFromLocation(locSpawn));
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, vPosition.z);
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, vPosition.x);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, GetAreaFromLocation(locSpawn));
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);

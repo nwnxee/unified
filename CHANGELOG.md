@@ -26,6 +26,7 @@ N/A
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
 - Player: RemoveEffectFromTURD()
+- Player: SetSpawnLocation()
 - Util: GetWorldTime()
 
 ### Changed
