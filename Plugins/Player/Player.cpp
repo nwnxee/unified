@@ -96,6 +96,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(ToggleDM);
     REGISTER(SetObjectMouseCursorOverride);
     REGISTER(SetObjectHiliteColorOverride);
+    REGISTER(RemoveEffectFromTURD);
 
 #undef REGISTER
 
@@ -1592,6 +1593,35 @@ ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
             }
         }
     }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::RemoveEffectFromTURD(ArgumentStack&& args)
+{
+    const auto oidPlayer = Services::Events::ExtractArgument<ObjectID>(args);
+      ASSERT_OR_THROW(oidPlayer != Constants::OBJECT_INVALID);
+    const auto effectTag = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!effectTag.empty());
+
+    auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    for (auto *pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
+    {
+        auto *pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
+
+        if (pTURD && pTURD->m_oidPlayer == oidPlayer)
+        {
+            for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
+            {
+                auto *pEffect = pTURD->m_appliedEffects.element[i];
+
+                if (pEffect->m_sCustomTag == effectTag)
+                    pTURD->RemoveEffect(pEffect);
+            }
+
+            break;
+        }
+    }
+
     return Services::Events::Arguments();
 }
 

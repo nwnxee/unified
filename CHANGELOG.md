@@ -25,6 +25,7 @@ N/A
 - Player: ToggleDM()
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
+- Player: RemoveEffectFromTURD()
 - Util: GetWorldTime()
 
 ### Changed

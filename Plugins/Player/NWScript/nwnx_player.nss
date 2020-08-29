@@ -327,6 +327,12 @@ void NWNX_Player_SetObjectMouseCursorOverride(object oPlayer, object oObject, in
 /// @param nColor The color in 0xRRGGBB format, -1 to clear the override.
 void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, int nColor);
 
+/// @brief Remove effects with sEffectTag from oPlayer's TURD
+/// @note This function should be called in the NWNX_ON_CLIENT_DISCONNECT_AFTER event
+/// @param oPlayer The player object.
+/// @param sEffectTag The effect tag.
+void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -816,6 +822,16 @@ void NWNX_Player_SetObjectHiliteColorOverride(object oPlayer, object oObject, in
 
     NWNX_PushArgumentInt(NWNX_Player, sFunc, nColor);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oObject);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag)
+{
+    string sFunc = "RemoveEffectFromTURD";
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, sEffectTag);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
     NWNX_CallFunction(NWNX_Player, sFunc);
