@@ -28,6 +28,7 @@ N/A
 - Player: RemoveEffectFromTURD()
 - Player: SetSpawnLocation()
 - Util: GetWorldTime()
+- Util: {Get|Set}ResourceOverride()
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params

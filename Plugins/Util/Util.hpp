@@ -44,6 +44,8 @@ private:
     ArgumentStack CreateDoor                    (ArgumentStack&& args);
     ArgumentStack SetItemActivator              (ArgumentStack&& args);
     ArgumentStack GetWorldTime                  (ArgumentStack&& args);
+    ArgumentStack SetResourceOverride           (ArgumentStack&& args);
+    ArgumentStack GetResourceOverride           (ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
