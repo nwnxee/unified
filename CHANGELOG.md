@@ -29,6 +29,7 @@ N/A
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params
+- Events: added a `RESULT` event data tag to LearnScroll in ItemEvents 
 
 ### Deprecated
 - Object: StringToObject();
