@@ -2,16 +2,16 @@
 
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/CNWSArea.hpp"
 #include "API/CNWSModule.hpp"
-#include "API/CNWSTransition.hpp"
 #include "API/CNWSTrigger.hpp"
 #include "API/CNWSTile.hpp"
 #include "API/CNWTileData.hpp"
 #include "API/CNWSAmbientSound.hpp"
+#include "API/CResStruct.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
-#include "Services/Events/Events.hpp"
 
 
 using namespace NWNXLib;
@@ -65,6 +65,9 @@ Area::Area(Services::ProxyServiceList* services)
     REGISTER(TestDirectLine);
     REGISTER(GetMusicIsPlaying);
     REGISTER(CreateGenericTrigger);
+    REGISTER(AddObjectToExclusionList);
+    REGISTER(RemoveObjectFromExclusionList);
+    REGISTER(ExportGIT);
 
 #undef REGISTER
 }
@@ -91,16 +94,6 @@ CNWSArea *Area::area(ArgumentStack& args)
     }
 
     return pArea;
-}
-
-CNWSTile *Area::GetTile(CNWSArea *pArea, float x, float y)
-{
-    int nTile = (int)(y / 10) * pArea->m_nWidth + (int)(x / 10);
-
-    if (nTile >= 0 && nTile < (pArea->m_nWidth * pArea->m_nHeight))
-        return &pArea->m_pTile[nTile];
-    else
-        return nullptr;
 }
 
 ArgumentStack Area::GetNumberOfPlayersInArea(ArgumentStack&& args)
@@ -572,9 +565,7 @@ ArgumentStack Area::GetTileAnimationLoop(ArgumentStack&& args)
           ASSERT_OR_THROW(tileAnimLoop >= 1);
           ASSERT_OR_THROW(tileAnimLoop <= 3);
 
-        CNWSTile *pTile = GetTile(pArea, tileX, tileY);
-
-        if (pTile)
+        if (auto *pTile = pArea->GetTile({tileX, tileY, 0.0f}))
         {
             switch(tileAnimLoop)
             {
@@ -616,9 +607,7 @@ ArgumentStack Area::SetTileAnimationLoop(ArgumentStack&& args)
           ASSERT_OR_THROW(tileAnimLoop <= 3);
         const auto tileEnabled = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        CNWSTile *pTile = GetTile(pArea, tileX, tileY);
-
-        if (pTile)
+        if (auto *pTile = pArea->GetTile({tileX, tileY, 0.0f}))
         {
             switch(tileAnimLoop)
             {
@@ -657,9 +646,7 @@ ArgumentStack Area::GetTileModelResRef(ArgumentStack&& args)
         const auto tileY = Services::Events::ExtractArgument<float>(args);
         ASSERT_OR_THROW(tileY >= 0.0f);
 
-        CNWSTile* pTile = GetTile(pArea, tileX, tileY);
-
-        if (pTile)
+        if (auto *pTile = pArea->GetTile({tileX, tileY, 0.0f}))
         {
             retVal = pTile->m_pTileData->GetModelResRef().GetResRefStr();
         }
@@ -746,6 +733,141 @@ ArgumentStack Area::CreateGenericTrigger(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(oidTrigger);
+}
+
+ArgumentStack Area::AddObjectToExclusionList(ArgumentStack&& args)
+{
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    m_ExportExclusionList.emplace(oidObject);
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Area::RemoveObjectFromExclusionList(ArgumentStack&& args)
+{
+    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
+      ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
+
+    m_ExportExclusionList.erase(oidObject);
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Area::ExportGIT(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pArea = area(args))
+    {
+        auto fileName = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(fileName.size() <= 16);
+        if (fileName.empty())
+            fileName = pArea->m_cResRef.GetResRefStr();
+
+        const auto exportVarTable = !!Services::Events::ExtractArgument<int32_t>(args);
+        const auto exportUUID = !!Services::Events::ExtractArgument<int32_t>(args);
+        const auto objectFilter = Services::Events::ExtractArgument<int32_t>(args);
+
+        CResGFF    resGff;
+        CResStruct resStruct{};
+
+        if (resGff.CreateGFFFile(&resStruct, "GIT ", "V3.2"))
+        {
+            CExoArrayList<ObjectID> creatures, items, doors, triggers, encounters, waypoints, sounds, placeables, stores, aoes;
+            std::unordered_map<ObjectID, ObjectID> creatureAreaMap;
+
+            for (int i = 0; i < pArea->m_aGameObjects.num; i++)
+            {
+                if (auto *pGameObject = Utils::GetGameObject(pArea->m_aGameObjects[i]))
+                {
+                    if (m_ExportExclusionList.find(pGameObject->m_idSelf) != m_ExportExclusionList.end())
+                        continue;
+
+                    if (auto *pCreature = Utils::AsNWSCreature(pGameObject))
+                    {
+                        if (pCreature->m_pStats->m_bIsPC ||
+                            pCreature->m_pStats->GetIsDM() ||
+                            (pCreature->m_nAssociateType > Constants::AssociateType::None &&
+                            pCreature->m_nAssociateType < Constants::AssociateType::Dominated))
+                            continue;
+
+                        // Temporarily set pCreature's areaID to OBJECT_INVALID
+                        // When loading the creatures from the GIT, if the creature's areaID is the same as pArea's it
+                        // won't call AddToArea() which leaves all the creatures in limbo.
+                        creatureAreaMap.emplace(pGameObject->m_idSelf, pCreature->m_oidArea);
+                        pCreature->m_oidArea = Constants::OBJECT_INVALID;
+
+                        creatures.Add(pGameObject->m_idSelf);
+                    }
+                    else if (Utils::AsNWSItem(pGameObject))
+                        items.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSDoor(pGameObject))
+                        doors.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSTrigger(pGameObject))
+                        triggers.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSEncounter(pGameObject))
+                        encounters.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSWaypoint(pGameObject))
+                        waypoints.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSSoundObject(pGameObject))
+                        sounds.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSPlaceable(pGameObject))
+                        placeables.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSStore(pGameObject))
+                        stores.Add(pGameObject->m_idSelf);
+                    else if (Utils::AsNWSAreaOfEffectObject(pGameObject))
+                        aoes.Add(pGameObject->m_idSelf);
+                    else
+                        continue;
+                }
+            }
+
+            if (objectFilter != 32767)
+            {
+                if (!(objectFilter & 1))
+                    pArea->SaveCreatures(&resGff, &resStruct, creatures, false);
+                if (!(objectFilter & 2))
+                    pArea->SaveItems(&resGff, &resStruct, items, false);
+                if (!(objectFilter & 4))
+                    pArea->SaveTriggers(&resGff, &resStruct, triggers, false);
+                if (!(objectFilter & 8))
+                    pArea->SaveDoors(&resGff, &resStruct, doors, false);
+                if (!(objectFilter & 16))
+                    pArea->SaveAreaEffects(&resGff, &resStruct, aoes, false);
+                if (!(objectFilter & 32))
+                    pArea->SaveWaypoints(&resGff, &resStruct, waypoints, false);
+                if (!(objectFilter & 64))
+                    pArea->SavePlaceables(&resGff, &resStruct, placeables, false);
+                if (!(objectFilter & 128))
+                    pArea->SaveStores(&resGff, &resStruct, stores, false);
+                if (!(objectFilter & 256))
+                    pArea->SaveEncounters(&resGff, &resStruct, encounters, false);
+
+                // No NWScript OBJECT_TYPE_* constant for Sound Objects
+                pArea->SaveSounds(&resGff, &resStruct, sounds, false);
+            }
+
+            pArea->SaveProperties(&resGff, &resStruct);
+
+            if (exportVarTable)
+                pArea->m_ScriptVars.SaveVarTable(&resGff, &resStruct);
+            if (exportUUID)
+                pArea->m_pUUID.SaveToGff(&resGff, &resStruct);
+
+            retVal = resGff.WriteGFFFile("NWNX:" + fileName, Constants::ResRefType::GIT);
+
+            // Restore the areaIDs of all creatures
+            for (auto pair : creatureAreaMap)
+            {
+                if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pair.first)))
+                    pCreature->m_oidArea = pair.second;
+            }
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }
