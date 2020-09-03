@@ -12,6 +12,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 - Events: added skippable PlayerDM Login/Logout events to DMActionEvents
 - Events: added skippable RunScript and RunScriptChunk events to DebugEvents
 - Events: added skippable RequestBuy/Sell events to StoreEvents
+- Events: added skippable Heal events to new HealingEvents
 
 ##### New Plugins
 N/A
@@ -30,6 +31,7 @@ N/A
 ### Changed
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents 
+- Events: Renamed HealerKitEvents to HealingEvents, event names have not changed
 
 ### Deprecated
 - Object: StringToObject();
