@@ -114,6 +114,11 @@ struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriti
 /// @note This is only for use with the Devastating Critical Event Script.
 void NWNX_Weapon_BypassDevastatingCritical();
 
+// @brief Sets weapon to gain 1.5 strength bonus.
+// @param oWeapon Should be a melee weapon.
+// @param nEnable TRUE for bonus. FALSE to turn off bonus.
+void NWNX_Weapon_SetOneHalfStrength(object oWeapon, int nEnable);
+
 /// @}
 
 void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)
@@ -297,4 +302,12 @@ struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriti
     data.nDamage = NWNX_GetReturnValueInt(NWNX_Weapon, sFunc);
 
     return data;
+}
+
+void NWNX_Weapon_SetOneHalfStrength(object oWeapon, int nEnable)
+{
+    string sFunc = "SetOneHalfStrength";
+    NWNX_PushArgumentInt(NWNX_Weapon, sFunc, nEnable);
+    NWNX_PushArgumentObject(NWNX_Weapon, sFunc, oWeapon);
+    NWNX_CallFunction(NWNX_Weapon, sFunc);
 }
