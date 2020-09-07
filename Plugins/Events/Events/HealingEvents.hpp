@@ -13,7 +13,7 @@ public:
 
 private:
     static uint32_t AIActionHealHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
-    static int64_t OnApplyHealHook(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pGameEffect, int32_t bLoadingGame);
+    static int32_t OnApplyHealHook(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pGameEffect, int32_t bLoadingGame);
 
 };
 

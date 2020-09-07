@@ -23,7 +23,7 @@ HealingEvents::HealingEvents(Services::HooksProxy* hooker)
     });
     Events::InitOnFirstSubscribe("NWNX_ON_HEAL_.*", [hooker]() {
         s_OnApplyHealHook = hooker->RequestExclusiveHook
-                <API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti, int64_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
+                <API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
                 (&OnApplyHealHook);
     });
 }
@@ -64,7 +64,7 @@ uint32_t HealingEvents::AIActionHealHook(
     return retVal;
 }
 
-int64_t HealingEvents::OnApplyHealHook(
+int32_t HealingEvents::OnApplyHealHook(
         CNWSEffectListHandler *pThis,
         CNWSObject *pObject,
         CGameEffect *pGameEffect,
