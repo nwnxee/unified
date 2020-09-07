@@ -18,6 +18,8 @@ private:
 
     ArgumentStack PackIP(ArgumentStack&& args);
     ArgumentStack UnpackIP(ArgumentStack&& args);
+    ArgumentStack GetActiveProperty(ArgumentStack&& args);
+
 };
 
 }

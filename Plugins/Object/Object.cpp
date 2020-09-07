@@ -96,6 +96,8 @@ Object::Object(Services::ProxyServiceList* services)
     REGISTER(PeekUUID);
     REGISTER(GetDoorHasVisibleModel);
     REGISTER(GetIsDestroyable);
+    REGISTER(DoSpellImmunity);
+    REGISTER(DoSpellLevelAbsorption);
 
 #undef REGISTER
 }
@@ -939,6 +941,30 @@ ArgumentStack Object::GetIsDestroyable(ArgumentStack&& args)
     if (auto *pObject = object(args))
     {
         retVal = pObject->m_bDestroyable;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::DoSpellImmunity(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pObject = object(args))
+    {
+        if(auto *pVersus = object(args))
+            retVal = pObject->DoSpellImmunity(pVersus);
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::DoSpellLevelAbsorption(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pObject = object(args))
+    {
+        if(auto *pVersus = object(args))
+            retVal = pObject->DoSpellLevelAbsorption(pVersus);
     }
 
     return Services::Events::Arguments(retVal);

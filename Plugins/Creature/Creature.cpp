@@ -160,6 +160,9 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetCriticalRangeOverride);
     REGISTER(GetCriticalRangeOverride);
     REGISTER(AddAssociate);
+    REGISTER(SetLastItemCasterLevel);
+    REGISTER(GetLastItemCasterLevel);
+    REGISTER(GetArmorClassVersus);
     REGISTER(SetEffectIconFlashing);
     REGISTER(OverrideDamageLevel);
     REGISTER(SetEncounter);
@@ -2618,6 +2621,39 @@ ArgumentStack Creature::GetIsBartering(ArgumentStack&& args)
         retVal = pCreature->m_pBarterInfo != nullptr && pCreature->m_pBarterInfo->m_bWindowOpen;
     }
 
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetLastItemCasterLevel(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        auto casterLvl = Services::Events::ExtractArgument<int32_t>(args);
+          ASSERT_OR_THROW(casterLvl >= 0);
+        pCreature->m_nLastItemCastSpellLevel = casterLvl;
+    }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetLastItemCasterLevel(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_nLastItemCastSpellLevel;
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::GetArmorClassVersus(ArgumentStack&& args)
+{
+    int32_t retVal = -255;
+    if (auto *pCreature = creature(args))
+    {
+        auto *pVersus = creature(args);
+        auto bTouchAttack = Services::Events::ExtractArgument<int32_t>(args);
+        retVal = pCreature->m_pStats->GetArmorClassVersus(pVersus, bTouchAttack);
+    }
     return Services::Events::Arguments(retVal);
 }
 
