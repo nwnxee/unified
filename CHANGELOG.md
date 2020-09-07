@@ -31,7 +31,6 @@ N/A
 ### Changed
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents 
-- Events: Renamed HealerKitEvents to HealingEvents, event names have not changed
 
 ### Deprecated
 - Object: StringToObject();
