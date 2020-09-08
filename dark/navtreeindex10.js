@@ -1,5 +1,17 @@
 var NAVTREEINDEX10 =
 {
+"nwnx__webhook_8nss.html":[4,0,2,42,0,0],
+"nwnx__webhook_8nss_source.html":[4,0,2,42,0,0],
+"nwnx__webhook__rch_8nss.html":[4,0,2,42,0,1],
+"nwnx__webhook__rch_8nss.html#ad2b8a8163359a3d236d704a29d454103":[4,0,2,42,0,1,0],
+"nwnx__webhook__rch_8nss_source.html":[4,0,2,42,0,1],
+"on__pubsub_8nss.html":[4,0,2,26,0,4],
+"on__pubsub_8nss.html#acdef7a1fd863a6d3770c1268cb06add3":[4,0,2,26,0,4,0],
+"on__pubsub_8nss_source.html":[4,0,2,26,0,4],
+"pages.html":[],
+"structNWNX__Creature__MemorisedSpell.html":[0,6,3],
+"structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[0,6,3,2],
+"structNWNX__Creature__MemorisedSpell.html#aa08e4d7e4f0f2b8b8c639e152670329a":[0,6,3,0],
 "structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b":[0,6,3,3],
 "structNWNX__Creature__MemorisedSpell.html#adc7177afc73856b1ac6b2481c250418b":[0,6,3,1],
 "structNWNX__Creature__SpecialAbility.html":[0,6,2],

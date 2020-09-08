@@ -130,6 +130,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2207133bdd8e10cb9b975c5929ce930d"><td class="memItemLeft" align="right" valign="top">itemproperty&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__itemproperty.html#ga2207133bdd8e10cb9b975c5929ce930d">NWNX_ItemProperty_PackIP</a> (struct <a class="el" href="structNWNX__IPUnpacked.html">NWNX_IPUnpacked</a> ip)</td></tr>
 <tr class="memdesc:ga2207133bdd8e10cb9b975c5929ce930d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert unpacked itemproperty structure to native type.  <a href="group__itemproperty.html#ga2207133bdd8e10cb9b975c5929ce930d">More...</a><br /></td></tr>
 <tr class="separator:ga2207133bdd8e10cb9b975c5929ce930d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2ff80e8eebd0ddac305967fe931f3cf"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structNWNX__IPUnpacked.html">NWNX_IPUnpacked</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__itemproperty.html#gab2ff80e8eebd0ddac305967fe931f3cf">NWNX_ItemProperty_GetActiveProperty</a> (object oItem, int nIndex)</td></tr>
+<tr class="memdesc:gab2ff80e8eebd0ddac305967fe931f3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the active item property at the index.  <a href="group__itemproperty.html#gab2ff80e8eebd0ddac305967fe931f3cf">More...</a><br /></td></tr>
+<tr class="separator:gab2ff80e8eebd0ddac305967fe931f3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga343761a726e4bcf8a1dc3ab493ad7a91"></a>
@@ -157,7 +160,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__IPUnpacked.html" title="An unpacked itemproperty.">NWNX_IPUnpacked</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__itemprop_8nss_source.html#l00038">38</a> of file <a class="el" href="nwnx__itemprop_8nss_source.html">nwnx_itemprop.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__itemprop_8nss_source.html#l00044">44</a> of file <a class="el" href="nwnx__itemprop_8nss_source.html">nwnx_itemprop.nss</a>.</p>
 
 </div>
 </div>
@@ -186,7 +189,47 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The itemproperty. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__itemprop_8nss_source.html#l00062">62</a> of file <a class="el" href="nwnx__itemprop_8nss_source.html">nwnx_itemprop.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__itemprop_8nss_source.html#l00068">68</a> of file <a class="el" href="nwnx__itemprop_8nss_source.html">nwnx_itemprop.nss</a>.</p>
+
+</div>
+</div>
+<a id="gab2ff80e8eebd0ddac305967fe931f3cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2ff80e8eebd0ddac305967fe931f3cf">&#9670;&nbsp;</a></span>NWNX_ItemProperty_GetActiveProperty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structNWNX__IPUnpacked.html">NWNX_IPUnpacked</a> NWNX_ItemProperty_GetActiveProperty </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oItem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nIndex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the active item property at the index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oItem</td><td>- the item with the property </td></tr>
+    <tr><td class="paramname">nIndex</td><td>- the index such as returned by some Item Events </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A constructed <a class="el" href="structNWNX__IPUnpacked.html" title="An unpacked itemproperty.">NWNX_IPUnpacked</a>, except for creator, and spell id. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__itemprop_8nss_source.html#l00089">89</a> of file <a class="el" href="nwnx__itemprop_8nss_source.html">nwnx_itemprop.nss</a>.</p>
 
 </div>
 </div>
@@ -196,7 +239,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Sep 8 2020 13:35:59 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Sep 8 2020 13:41:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

@@ -17,5 +17,6 @@ var group__itemproperty =
       [ "sTag", "structNWNX__IPUnpacked.html#a812ab3e4d434a6e636613446bc23d005", null ]
     ] ],
     [ "NWNX_ItemProperty_UnpackIP", "group__itemproperty.html#ga343761a726e4bcf8a1dc3ab493ad7a91", null ],
-    [ "NWNX_ItemProperty_PackIP", "group__itemproperty.html#ga2207133bdd8e10cb9b975c5929ce930d", null ]
+    [ "NWNX_ItemProperty_PackIP", "group__itemproperty.html#ga2207133bdd8e10cb9b975c5929ce930d", null ],
+    [ "NWNX_ItemProperty_GetActiveProperty", "group__itemproperty.html#gab2ff80e8eebd0ddac305967fe931f3cf", null ]
 ];

@@ -1,5 +1,17 @@
 var NAVTREEINDEX9 =
 {
+"nwnx__redis__ps_8nss_source.html":[4,0,2,26,0,2],
+"nwnx__redis__short_8nss.html":[4,0,2,26,0,3],
+"nwnx__redis__short_8nss.html#a02c9479d34b11b3a3f30a0bc085b7e17":[4,0,2,26,0,3,62],
+"nwnx__redis__short_8nss.html#a0345d498ec3c04bcf6fc66da3e849eac":[4,0,2,26,0,3,58],
+"nwnx__redis__short_8nss.html#a052706b9124767a3b96c4573447715e7":[4,0,2,26,0,3,41],
+"nwnx__redis__short_8nss.html#a06da5fff5f62edbfc0c27da983a68275":[4,0,2,26,0,3,167],
+"nwnx__redis__short_8nss.html#a0711873ab5ab313bdf85f9a385eac80f":[4,0,2,26,0,3,54],
+"nwnx__redis__short_8nss.html#a089769506113c2d9d469abb37175ec06":[4,0,2,26,0,3,192],
+"nwnx__redis__short_8nss.html#a08fc9dcb346f533e2dace8df76b8899a":[4,0,2,26,0,3,108],
+"nwnx__redis__short_8nss.html#a08fffe6ef3612def17719eb92bf93431":[4,0,2,26,0,3,8],
+"nwnx__redis__short_8nss.html#a094b45713d22b8d68b46cd6d41b0cf54":[4,0,2,26,0,3,160],
+"nwnx__redis__short_8nss.html#a095de03bdae6ab47dc5c839884888bef":[4,0,2,26,0,3,188],
 "nwnx__redis__short_8nss.html#a0f748e83fa81a30c644930a241fe08e9":[4,0,2,26,0,3,95],
 "nwnx__redis__short_8nss.html#a1227844f9e9ec05b98972733836c9b32":[4,0,2,26,0,3,84],
 "nwnx__redis__short_8nss.html#a15c40ca88434e8b341c23377a90ad6b0":[4,0,2,26,0,3,208],
@@ -237,17 +249,5 @@ var NAVTREEINDEX9 =
 "nwnx__visibility_8nss.html":[4,0,2,40,0,0],
 "nwnx__visibility_8nss_source.html":[4,0,2,40,0,0],
 "nwnx__weapon_8nss.html":[4,0,2,41,0,0],
-"nwnx__weapon_8nss_source.html":[4,0,2,41,0,0],
-"nwnx__webhook_8nss.html":[4,0,2,42,0,0],
-"nwnx__webhook_8nss_source.html":[4,0,2,42,0,0],
-"nwnx__webhook__rch_8nss.html":[4,0,2,42,0,1],
-"nwnx__webhook__rch_8nss.html#ad2b8a8163359a3d236d704a29d454103":[4,0,2,42,0,1,0],
-"nwnx__webhook__rch_8nss_source.html":[4,0,2,42,0,1],
-"on__pubsub_8nss.html":[4,0,2,26,0,4],
-"on__pubsub_8nss.html#acdef7a1fd863a6d3770c1268cb06add3":[4,0,2,26,0,4,0],
-"on__pubsub_8nss_source.html":[4,0,2,26,0,4],
-"pages.html":[],
-"structNWNX__Creature__MemorisedSpell.html":[0,6,3],
-"structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[0,6,3,2],
-"structNWNX__Creature__MemorisedSpell.html#aa08e4d7e4f0f2b8b8c639e152670329a":[0,6,3,0]
+"nwnx__weapon_8nss_source.html":[4,0,2,41,0,0]
 };
