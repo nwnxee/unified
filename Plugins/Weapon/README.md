@@ -43,6 +43,7 @@ NWNX_Weapon_SetDevastatingCriticalEventScript() | Set a script to be called when
 NWNX_Weapon_GetDevastatingCriticalEventData() | Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)
 NWNX_Weapon_BypassDevastatingCritical() | Must be called inside the devastating critical event script. If called, no devastating critical will occur.
 NWNX_Weapon_SetOneHalfStrength() | Gives a melee weapon extra damage equal to one-half strength modifier.
+NWNX_Weapon_GetOneHalfStrength() | Retrieves if a melee weapon is receiving extra strength
 
 The NWNX_Weapon_SetOption() function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively. 
 

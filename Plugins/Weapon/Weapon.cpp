@@ -53,6 +53,8 @@ Weapon::Weapon(Services::ProxyServiceList* services)
     REGISTER(GetEventData);
     REGISTER(SetEventData);
     REGISTER(SetOneHalfStrength);
+    REGISTER(GetOneHalfStrength);
+
 #undef REGISTER
 
     m_GetWeaponFocusHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem>(&Weapon::GetWeaponFocus);
@@ -1204,11 +1206,27 @@ ArgumentStack Weapon::SetOneHalfStrength(ArgumentStack&& args)
     }
 
     auto bMulti = Services::Events::ExtractArgument<int32_t>(args);
+    bool bPersist = !!Services::Events::ExtractArgument<int32_t>(args);
     if(bMulti)
-        g_plugin->GetServices()->m_perObjectStorage->Set(objectId, "ONE_HALF_STRENGTH", 1);
+        g_plugin->GetServices()->m_perObjectStorage->Set(objectId, "ONE_HALF_STRENGTH", 1, bPersist);
     else
         g_plugin->GetServices()->m_perObjectStorage->Remove(objectId, "ONE_HALF_STRENGTH");
 
     return Services::Events::Arguments();
 }
+
+ArgumentStack Weapon::GetOneHalfStrength(ArgumentStack&& args)
+{
+    auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+    int32_t retVal = 0;
+    if(objectId != Constants::OBJECT_INVALID)
+    {
+        auto exist = g_plugin->GetServices()->m_perObjectStorage->Get<int32_t>(objectId, "ONE_HALF_STRENGTH");
+        if(exist)
+            retVal = exist.value();
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
 }

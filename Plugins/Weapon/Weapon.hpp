@@ -54,6 +54,7 @@ private:
     ArgumentStack GetEventData                         (ArgumentStack&& args);
     ArgumentStack SetEventData                         (ArgumentStack&& args);
     ArgumentStack SetOneHalfStrength                   (ArgumentStack&& args);
+    ArgumentStack GetOneHalfStrength                   (ArgumentStack&& args);
 
     NWNXLib::Hooking::FunctionHook* m_GetWeaponFocusHook;
     NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponFocusHook;

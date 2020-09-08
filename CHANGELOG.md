@@ -27,7 +27,7 @@ N/A
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
 - Util: GetWorldTime()
-- Weapon: SetOneHalfStrength()
+- Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params
