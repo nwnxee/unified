@@ -114,9 +114,9 @@ struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriti
 /// @note This is only for use with the Devastating Critical Event Script.
 void NWNX_Weapon_BypassDevastatingCritical();
 
-// @brief Sets weapon to gain 1.5 strength bonus.
-// @param oWeapon Should be a melee weapon.
-// @param nEnable TRUE for bonus. FALSE to turn off bonus.
+/// @brief Sets weapon to gain 1.5 strength bonus.
+/// @param oWeapon Should be a melee weapon.
+/// @param nEnable TRUE for bonus. FALSE to turn off bonus.
 void NWNX_Weapon_SetOneHalfStrength(object oWeapon, int nEnable);
 
 /// @}
