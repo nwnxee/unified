@@ -6,13 +6,14 @@
 
 namespace Events {
 
-class HealerKitEvents
+class HealingEvents
 {
 public:
-    HealerKitEvents(NWNXLib::Services::HooksProxy* hooker);
+    HealingEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
     static uint32_t AIActionHealHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);
+    static int32_t OnApplyHealHook(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pGameEffect, int32_t bLoadingGame);
 
 };
 
