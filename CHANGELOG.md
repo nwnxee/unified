@@ -12,6 +12,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 - Events: added skippable PlayerDM Login/Logout events to DMActionEvents
 - Events: added skippable RunScript and RunScriptChunk events to DebugEvents
 - Events: added skippable RequestBuy/Sell events to StoreEvents
+- Events: added skippable Heal events to new HealingEvents
 - Weapon: added 'NWNX_WEAPON_GOOD_AIM_SLING' non-halfling sling users with the feat Good Aim gain an additional +1 AB as a halfling currently does. Note: Throwing weapons are already included in the base game
 
 ##### New Plugins
@@ -22,8 +23,13 @@ N/A
 - Creature: SetEffectIconFlashing()
 - Creature: OverrideDamageLevel()
 - Creature: GetIsBartering()
+- Creature: {Get|Set}LastItemCasterLeve()
+- Creature: GetArmorClassVersus()
 - Effect: ReplaceEffect()
 - Player: ToggleDM()
+- ItemProperty: GetActiveProperty()
+- Object: DoSpellImmunity()
+- Object: DoSpellLevelAbsorption()
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
 - Util: GetWorldTime()

@@ -118,6 +118,9 @@ private:
     ArgumentStack SetCriticalRangeOverride      (ArgumentStack&& args);
     ArgumentStack GetCriticalRangeOverride      (ArgumentStack&& args);
     ArgumentStack AddAssociate                  (ArgumentStack&& args);
+    ArgumentStack SetLastItemCasterLevel        (ArgumentStack&& args);
+    ArgumentStack GetLastItemCasterLevel        (ArgumentStack&& args);
+    ArgumentStack GetArmorClassVersus           (ArgumentStack&& args);
     ArgumentStack SetEffectIconFlashing         (ArgumentStack&& args);
     ArgumentStack OverrideDamageLevel           (ArgumentStack&& args);
     ArgumentStack SetEncounter                  (ArgumentStack&& args);

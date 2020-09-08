@@ -33,6 +33,12 @@ struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip);
 /// @return The itemproperty.
 itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked ip);
 
+/// @brief Gets the active item property at the index
+/// @param oItem - the item with the property
+/// @param nIndex - the index such as returned by some Item Events
+/// @return A constructed NWNX_IPUnpacked, except for creator, and spell id.
+struct NWNX_IPUnpacked NWNX_ItemProperty_GetActiveProperty(object oItem, int nIndex);
+
 /// @}
 
 struct NWNX_IPUnpacked NWNX_ItemProperty_UnpackIP(itemproperty ip)
@@ -78,4 +84,27 @@ itemproperty NWNX_ItemProperty_PackIP(struct NWNX_IPUnpacked n)
 
     NWNX_CallFunction(NWNX_ItemProperty, sFunc);
     return NWNX_GetReturnValueItemProperty(NWNX_ItemProperty, sFunc);
+}
+
+struct NWNX_IPUnpacked NWNX_ItemProperty_GetActiveProperty(object oItem, int nIndex)
+{
+    string sFunc = "GetActiveProperty";
+    NWNX_PushArgumentInt(NWNX_ItemProperty, sFunc, nIndex);
+    NWNX_PushArgumentObject(NWNX_ItemProperty, sFunc, oItem);
+    NWNX_CallFunction(NWNX_ItemProperty, sFunc);
+
+    struct NWNX_IPUnpacked n;
+
+    n.nProperty       = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nSubType        = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nCostTable      = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nCostTableValue = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nParam1         = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nParam1Value    = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nUsesPerDay     = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.nChanceToAppear = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.bUsable         = NWNX_GetReturnValueInt(NWNX_ItemProperty, sFunc);
+    n.sTag            = NWNX_GetReturnValueString(NWNX_ItemProperty, sFunc);
+
+    return n;
 }

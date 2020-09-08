@@ -16,7 +16,7 @@
 #include "Events/StealthEvents.hpp"
 #include "Events/SpellEvents.hpp"
 #include "Events/PartyEvents.hpp"
-#include "Events/HealerKitEvents.hpp"
+#include "Events/HealingEvents.hpp"
 #include "Events/SkillEvents.hpp"
 #include "Events/PolymorphEvents.hpp"
 #include "Events/EffectEvents.hpp"
@@ -106,7 +106,7 @@ Events::Events(Services::ProxyServiceList* services)
     m_stealthEvents     = std::make_unique<StealthEvents>(hooker);
     m_spellEvents       = std::make_unique<SpellEvents>(hooker);
     m_partyEvents       = std::make_unique<PartyEvents>(hooker);
-    m_healerKitEvents   = std::make_unique<HealerKitEvents>(hooker);
+    m_healingEvents     = std::make_unique<HealingEvents>(hooker);
     m_skillEvents       = std::make_unique<SkillEvents>(hooker);
     m_mapEvents         = std::make_unique<MapEvents>(hooker);
     m_polymorphEvents   = std::make_unique<PolymorphEvents>(hooker);
