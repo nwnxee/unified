@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['bgrewriteaof_1627',['BGREWRITEAOF',['../nwnx__redis__short_8nss.html#a507cb6780d0bdf803b1aae686cf29a97',1,'nwnx_redis_short.nss']]],
-  ['bgsave_1628',['BGSAVE',['../nwnx__redis__short_8nss.html#a16f36180b712e0179ec4c2ce76c10326',1,'nwnx_redis_short.nss']]],
-  ['bitcount_1629',['BITCOUNT',['../nwnx__redis__short_8nss.html#aebf3a63f4832df507da56cff69468e8d',1,'nwnx_redis_short.nss']]],
-  ['bitfield_1630',['BITFIELD',['../nwnx__redis__short_8nss.html#a8e9b0dcdd09694782a06d6498245db21',1,'nwnx_redis_short.nss']]],
-  ['bitop_1631',['BITOP',['../nwnx__redis__short_8nss.html#a30228c530313bcf1e01d89bcb8de1990',1,'nwnx_redis_short.nss']]],
-  ['bitpos_1632',['BITPOS',['../nwnx__redis__short_8nss.html#ae074f94aa4e0caa434041a0edaf5eb3c',1,'nwnx_redis_short.nss']]],
-  ['blpop_1633',['BLPOP',['../nwnx__redis__short_8nss.html#a08fffe6ef3612def17719eb92bf93431',1,'nwnx_redis_short.nss']]],
-  ['brpop_1634',['BRPOP',['../nwnx__redis__short_8nss.html#a40a53f13200e006d312351b80707dd08',1,'nwnx_redis_short.nss']]],
-  ['brpoplpush_1635',['BRPOPLPUSH',['../nwnx__redis__short_8nss.html#a2b9c8096beeb08b5721e668555c7fea1',1,'nwnx_redis_short.nss']]],
-  ['bzpopmax_1636',['BZPOPMAX',['../nwnx__redis__short_8nss.html#a6e75b89da73816241d1b4ebb721b094f',1,'nwnx_redis_short.nss']]],
-  ['bzpopmin_1637',['BZPOPMIN',['../nwnx__redis__short_8nss.html#a8c240c5acffdc7c10826d8db38b03d70',1,'nwnx_redis_short.nss']]]
+  ['bgrewriteaof_1629',['BGREWRITEAOF',['../nwnx__redis__short_8nss.html#a507cb6780d0bdf803b1aae686cf29a97',1,'nwnx_redis_short.nss']]],
+  ['bgsave_1630',['BGSAVE',['../nwnx__redis__short_8nss.html#a16f36180b712e0179ec4c2ce76c10326',1,'nwnx_redis_short.nss']]],
+  ['bitcount_1631',['BITCOUNT',['../nwnx__redis__short_8nss.html#aebf3a63f4832df507da56cff69468e8d',1,'nwnx_redis_short.nss']]],
+  ['bitfield_1632',['BITFIELD',['../nwnx__redis__short_8nss.html#a8e9b0dcdd09694782a06d6498245db21',1,'nwnx_redis_short.nss']]],
+  ['bitop_1633',['BITOP',['../nwnx__redis__short_8nss.html#a30228c530313bcf1e01d89bcb8de1990',1,'nwnx_redis_short.nss']]],
+  ['bitpos_1634',['BITPOS',['../nwnx__redis__short_8nss.html#ae074f94aa4e0caa434041a0edaf5eb3c',1,'nwnx_redis_short.nss']]],
+  ['blpop_1635',['BLPOP',['../nwnx__redis__short_8nss.html#a08fffe6ef3612def17719eb92bf93431',1,'nwnx_redis_short.nss']]],
+  ['brpop_1636',['BRPOP',['../nwnx__redis__short_8nss.html#a40a53f13200e006d312351b80707dd08',1,'nwnx_redis_short.nss']]],
+  ['brpoplpush_1637',['BRPOPLPUSH',['../nwnx__redis__short_8nss.html#a2b9c8096beeb08b5721e668555c7fea1',1,'nwnx_redis_short.nss']]],
+  ['bzpopmax_1638',['BZPOPMAX',['../nwnx__redis__short_8nss.html#a6e75b89da73816241d1b4ebb721b094f',1,'nwnx_redis_short.nss']]],
+  ['bzpopmin_1639',['BZPOPMIN',['../nwnx__redis__short_8nss.html#a8c240c5acffdc7c10826d8db38b03d70',1,'nwnx_redis_short.nss']]]
 ];

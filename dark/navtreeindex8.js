@@ -1,5 +1,9 @@
 var NAVTREEINDEX8 =
 {
+"nwnx__encounter_8nss.html":[4,0,2,12,0,0],
+"nwnx__encounter_8nss_source.html":[4,0,2,12,0,0],
+"nwnx__events_8nss.html":[4,0,2,13,0,0],
+"nwnx__events_8nss_source.html":[4,0,2,13,0,0],
 "nwnx__feedback_8nss.html":[4,0,2,15,0,0],
 "nwnx__feedback_8nss_source.html":[4,0,2,15,0,0],
 "nwnx__item_8nss.html":[4,0,2,16,0,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX8 =
 "nwnx__redis_8nss.html#afd098f298bdd45109ae41a5f6df86c9b":[4,0,2,26,0,0,162],
 "nwnx__redis_8nss.html#afdfb18360848f63680a64863cd321af3":[4,0,2,26,0,0,68],
 "nwnx__redis_8nss.html#affd51a6b56cb4f6e53dec42d524d1d74":[4,0,2,26,0,0,120],
-"nwnx__redis_8nss_source.html":[4,0,2,26,0,0],
-"nwnx__redis__lib_8nss.html":[4,0,2,26,0,1],
-"nwnx__redis__lib_8nss_source.html":[4,0,2,26,0,1],
-"nwnx__redis__ps_8nss.html":[4,0,2,26,0,2],
-"nwnx__redis__ps_8nss.html#a64b6374c703673f57977a0473ec6f52c":[4,0,2,26,0,2,1]
+"nwnx__redis_8nss_source.html":[4,0,2,26,0,0]
 };

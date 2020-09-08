@@ -117,6 +117,7 @@ Added</h2>
 <li>Events: added skippable RunScript and RunScriptChunk events to DebugEvents</li>
 <li>Events: added skippable RequestBuy/Sell events to StoreEvents</li>
 <li>Events: added skippable Heal events to new HealingEvents</li>
+<li>Weapon: added 'NWNX_WEAPON_GOOD_AIM_SLING' non-halfling sling users with the feat Good Aim gain an additional +1 AB as a halfling currently does. Note: Throwing weapons are already included in the base game</li>
 </ul>
 <h4><a class="anchor" id="autotoc_md10"></a>
 New Plugins</h4>
@@ -138,12 +139,15 @@ New NWScript Functions</h4>
 <li>Player: SetObjectMouseCursorOverride()</li>
 <li>Player: SetObjectHiliteColorOverride()</li>
 <li>Util: GetWorldTime()</li>
+<li>Weapon: {Get|Set}OneHalfStrength()</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md12"></a>
 Changed</h2>
 <ul>
 <li>Effect: (Un)PackEffect now supports vector params</li>
 <li>Events: added a <code>RESULT</code> event data tag to LearnScroll in ItemEvents</li>
+<li>Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time</li>
+<li>Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon***Feat and will be used in addition to any set feats</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Deprecated</h2>
@@ -822,7 +826,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Sep 8 2020 13:41:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Sep 8 2020 13:49:15 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
