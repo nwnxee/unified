@@ -13,6 +13,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 - Events: added skippable RunScript and RunScriptChunk events to DebugEvents
 - Events: added skippable RequestBuy/Sell events to StoreEvents
 - Events: added skippable Heal events to new HealingEvents
+- Weapon: added 'NWNX_WEAPON_GOOD_AIM_SLING' non-halfling sling users with the feat Good Aim gain an additional +1 AB as a halfling currently does. Note: Throwing weapons are already included in the base game
 
 ##### New Plugins
 N/A
@@ -32,10 +33,13 @@ N/A
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
 - Util: GetWorldTime()
+- Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params
-- Events: added a `RESULT` event data tag to LearnScroll in ItemEvents 
+- Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
+- Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
+- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon***Feat and will be used in addition to any set feats
 
 ### Deprecated
 - Object: StringToObject();
