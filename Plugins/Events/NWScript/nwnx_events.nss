@@ -119,6 +119,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     SCROLL                | object | Convert to object with StringToObject()
+    RESULT                | int    | Returns TRUE in the _AFTER if the learning was successful, FALSE otherwise
 
 _______________________________________
     ## Validate Item Equip Events
@@ -531,6 +532,18 @@ _______________________________________
     ITEM_PROPERTY_INDEX   | int    | |
     MOVE_TO_TARGET        | int    | |
     ACTION_RESULT         | int    | |
+
+_______________________________________
+    ## Healing Events
+    - NWNX_ON_HEAL_BEFORE
+    - NWNX_ON_HEAL_AFTER
+
+    `OBJECT_SELF` = The creature performing the heal
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    TARGET_OBJECT_ID      | object | Convert to object with StringToObject() |
+    HEAL_AMOUNT           | int    | How many HP the heal will provide |
 
 _______________________________________
     ## Party Action Events
@@ -1217,7 +1230,7 @@ string NWNX_Events_GetEventData(string tag);
 /// ONLY WORKS WITH THE FOLLOWING EVENTS:
 /// - Feat events
 /// - Item events
-/// - Healer's Kit event
+/// - Healing events
 /// - CombatMode events
 /// - Party events
 /// - Skill events
@@ -1255,6 +1268,7 @@ void NWNX_Events_SkipEvent();
 /// - Ammo Reload event -> Forced ammunition returned
 /// - Trap events -> "1" or "0"
 /// - Sticky Player Name event -> "1" or "0"
+/// - Heal event -> Amount of HP to heal
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name

@@ -4,6 +4,9 @@
 #include "API/Globals.hpp"
 #include "API/CGameEffect.hpp"
 #include "API/Functions.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
+#include "API/CNWSItem.hpp"
 #include "Utils.hpp"
 
 #include <string>
@@ -31,6 +34,7 @@ ItemProperty::ItemProperty(Services::ProxyServiceList* services)
 
     REGISTER(PackIP);
     REGISTER(UnpackIP);
+    REGISTER(GetActiveProperty);
 
 #undef REGISTER
 
@@ -97,6 +101,34 @@ ArgumentStack ItemProperty::UnpackIP(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, ip->GetInteger(0));
 
     Utils::DestroyGameEffect(ip);
+    return stack;
+}
+
+ArgumentStack ItemProperty::GetActiveProperty(ArgumentStack&& args)
+{
+    auto objectId = Services::Events::ExtractArgument<ObjectID>(args);
+      ASSERT_OR_THROW(objectId != Constants::OBJECT_INVALID);
+
+    auto *pGameObject = Globals::AppManager()->m_pServerExoApp->GetGameObject(objectId);
+    auto *pItem = Utils::AsNWSItem(pGameObject);
+      ASSERT_OR_THROW(pItem);
+
+    auto index = Services::Events::ExtractArgument<int32_t>(args);
+    auto ip = pItem->GetActiveProperty(index);
+      ASSERT_OR_THROW(ip);
+
+    ArgumentStack stack;
+
+    Services::Events::InsertArgument(stack, ip->m_sCustomTag.CStr());
+    Services::Events::InsertArgument(stack, ip->m_bUseable);
+    Services::Events::InsertArgument(stack, ip->m_nChanceOfAppearing);
+    Services::Events::InsertArgument(stack, ip->m_nUsesPerDay);
+    Services::Events::InsertArgument(stack, ip->m_nParam1Value);
+    Services::Events::InsertArgument(stack, ip->m_nParam1);
+    Services::Events::InsertArgument(stack, ip->m_nCostTableValue);
+    Services::Events::InsertArgument(stack, ip->m_nCostTable);
+    Services::Events::InsertArgument(stack, ip->m_nSubType);
+    Services::Events::InsertArgument(stack, ip->m_nPropertyName);
     return stack;
 }
 

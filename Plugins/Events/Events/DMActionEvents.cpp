@@ -615,14 +615,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
         case Constants::MessageDungeonMasterMinor::Login:
         {
             event += "PLAYERDM_LOGIN";
-            int32_t offset = 0;
-            auto length = Utils::PeekMessage<int32_t>(thisPtr, offset);
-            offset += sizeof(length);
-
-            std::string password;
-            password.reserve(length+1);
-            password.assign(reinterpret_cast<const char*>(thisPtr->m_pnReadBuffer + thisPtr->m_nReadBufferPtr + offset), length);
-            password[length] = '\0';
+            auto password = Utils::PeekMessage<std::string>(thisPtr, 0);
 
             auto PushAndSignalPlayerDMLoginEvent = [&](const std::string& ev) -> bool {
                 Events::PushEventData("PASSWORD", password);

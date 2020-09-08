@@ -775,6 +775,23 @@ object NWNX_Creature_GetEncounter(object oCreature);
 /// @return TRUE if oCreature is bartering, FALSE if not or on error.
 int NWNX_Creature_GetIsBartering(object oCreature);
 
+/// @brief Sets caster level for the last item used. Use in a spellhook or spell event before to set caster level for any spells cast from the item.
+/// @param oCreature the creature who used the item.
+/// @param nCasterLvl the desired caster level.
+void NWNX_Creature_SetLastItemCasterLevel(object oCreature, int nCasterLvl);
+
+/// @brief Gets the caster level of the last item used.
+/// @param oCreature the creature who used the item.
+/// @return returns the creatures last used item's level.
+int NWNX_Creature_GetLastItemCasterLevel(object oCreature);
+
+/// @brief Gets the Armor classed of attacked against versus
+/// @param oAttacked The one being attacked
+/// @param oVersus The one doing the attacking
+/// @param nTouch TRUE for touch attacks
+/// @return -255 on Error, Flat footed AC if oVersus is invalid or the Attacked AC versus oVersus.
+int NWNX_Creature_GetArmorClassVersus(object oAttacked, object oVersus, int nTouch=FALSE);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -1955,6 +1972,35 @@ int NWNX_Creature_GetIsBartering(object oCreature)
     string sFunc = "GetIsBartering";
 
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetLastItemCasterLevel(object oCreature, int nCasterLvl)
+{
+    string sFunc = "SetLastItemCasterLevel";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nCasterLvl);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+
+int NWNX_Creature_GetLastItemCasterLevel(object oCreature)
+{
+    string sFunc = "GetLastItemCasterLevel";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetArmorClassVersus(object oAttacked, object oVersus, int nTouch=FALSE)
+{
+    string sFunc = "GetArmorClassVersus";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nTouch);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oVersus);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oAttacked);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
