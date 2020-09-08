@@ -24,6 +24,7 @@ class FixDispelEffectLevels;
 class AddPrestigeclassCasterLevels;
 class FixUnlimitedPotionsBug;
 class UnhardcodeShields;
+class BlockDMSpawnItem;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -51,6 +52,7 @@ private:
     std::unique_ptr<AddPrestigeclassCasterLevels> m_AddPrestigeclassCasterLevels;
     std::unique_ptr<FixUnlimitedPotionsBug> m_FixUnlimitedPotionsBug;
     std::unique_ptr<UnhardcodeShields> m_UnhardcodeShields;
+    std::unique_ptr<BlockDMSpawnItem> m_BlockDMSpawnItem;
 };
 
 }

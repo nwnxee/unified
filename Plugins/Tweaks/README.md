@@ -26,6 +26,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_ADD_PRESTIGECLASS_CASTER_LEVELS`: true or false
 * `NWNX_TWEAKS_FIX_UNLIMITED_POTIONS_BUG`: true or false
 * `NWNX_TWEAKS_UNHARDCODE_SHIELDS`: true or false
+* `NWNX_TWEAKS_BLOCK_DM_SPAWNITEM`: true or false
 
 ## Environment variable values
 
