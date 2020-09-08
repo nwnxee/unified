@@ -47,7 +47,7 @@ var NAVTREEINDEX =
 "group__data.html#ga4abeceb1d9508b282d0e8e16c6ac7743",
 "group__events.html#ga4adf46d9794ba89a03e0a61c1cc65fb4",
 "group__object.html#gadc1a34e2cbe53faef7bd5a1fffaae8a1",
-"group__race.html#autotoc_md238",
+"group__race.html#autotoc_md239",
 "group__sql.html#gabdbc6892dd0ea7484e01eeb01fcabfdd",
 "nwnx__player_8nss_source.html",
 "nwnx__redis__short_8nss.html#a0f748e83fa81a30c644930a241fe08e9",
