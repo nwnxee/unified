@@ -314,6 +314,18 @@ int NWNX_Object_GetDoorHasVisibleModel(object oDoor);
 /// @return TRUE if oObject is destroyable.
 int NWNX_Object_GetIsDestroyable(object oObject);
 
+/// @brief Checks for specific spell immunity. Should only be called in spellscripts
+/// @param oDefender The object defending against the spell.
+/// @param oCaster The object casting the spell.
+/// @return -1 if defender has no immunity, 2 if the defender is immune
+int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster);
+
+/// @brief Checks for spell school/level immunities and mantles. Should only be called in spellscripts
+/// @param oDefender The object defending against the spell.
+/// @param oCaster The object casting the spell.
+/// @return -1 defender no immunity. 2 if immune. 3 if immune, but the immunity has a limit (example: mantles)
+int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -766,4 +778,24 @@ int NWNX_Object_GetIsDestroyable(object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster)
+{
+    string sFunc = "DoSpellImmunity";
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oCaster);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oDefender);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return  NWNX_GetReturnValueInt(NWNX_Object,sFunc);
+}
+
+int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster)
+{
+    string sFunc = "DoSpellLevelAbsorption";
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oCaster);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oDefender);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return  NWNX_GetReturnValueInt(NWNX_Object,sFunc);
 }
