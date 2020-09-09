@@ -88,6 +88,8 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(CreateDoor);
     REGISTER(SetItemActivator);
     REGISTER(GetWorldTime);
+    REGISTER(SetResourceOverride);
+    REGISTER(GetResourceOverride);
 
 #undef REGISTER
 
@@ -672,6 +674,39 @@ ArgumentStack Util::GetWorldTime(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments((int32_t)retvalCalendarDay, (int32_t)retvalTimeOfDay);
+}
+
+ArgumentStack Util::SetResourceOverride(ArgumentStack&& args)
+{
+    auto resType = Services::Events::ExtractArgument<int32_t>(args);
+      ASSERT_OR_THROW(resType >= Constants::ResRefType::MIN);
+      ASSERT_OR_THROW(resType <= Constants::ResRefType::MAX);
+    auto oldName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!oldName.empty());
+      ASSERT_OR_THROW(oldName.size() <= 16);
+    auto newName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(newName.size() <= 16);
+
+    if (newName.empty())
+        Globals::ExoResMan()->RemoveOverride(oldName.c_str(), resType);
+    else
+        Globals::ExoResMan()->AddOverride(oldName.c_str(), newName.c_str(), resType);
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetResourceOverride(ArgumentStack&& args)
+{
+    auto resType = Services::Events::ExtractArgument<int32_t>(args);
+      ASSERT_OR_THROW(resType >= Constants::ResRefType::MIN);
+      ASSERT_OR_THROW(resType <= Constants::ResRefType::MAX);
+    auto resName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!resName.empty());
+      ASSERT_OR_THROW(resName.size() <= 16);
+
+    std::string overrideResName = Globals::ExoResMan()->GetOverride(resName.c_str(), resType).GetResRefStr();
+
+    return overrideResName == resName ? "" : overrideResName;
 }
 
 }

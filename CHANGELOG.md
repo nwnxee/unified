@@ -20,6 +20,9 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 N/A
 
 ##### New NWScript Functions
+- Area: AddObjectToExclusionList()
+- Area: RemoveObjectFromExclusionList()
+- Area: ExportGIT()
 - Creature: {Get|Set}Encounter()
 - Creature: SetEffectIconFlashing()
 - Creature: OverrideDamageLevel()
@@ -33,7 +36,10 @@ N/A
 - Object: DoSpellLevelAbsorption()
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
+- Player: RemoveEffectFromTURD()
+- Player: SetSpawnLocation()
 - Util: GetWorldTime()
+- Util: {Get|Set}ResourceOverride()
 - Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
