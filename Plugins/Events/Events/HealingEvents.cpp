@@ -1,4 +1,4 @@
-#include "Events/HealerKitEvents.hpp"
+#include "Events/HealingEvents.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWSObjectActionNode.hpp"
@@ -12,17 +12,23 @@ namespace Events {
 using namespace NWNXLib;
 
 static NWNXLib::Hooking::FunctionHook* s_AIActionHealHook;
+static NWNXLib::Hooking::FunctionHook* s_OnApplyHealHook;
 
-HealerKitEvents::HealerKitEvents(Services::HooksProxy* hooker)
+HealingEvents::HealingEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_HEALER_KIT_.*", [hooker]() {
         s_AIActionHealHook = hooker->RequestExclusiveHook
             <API::Functions::_ZN12CNWSCreature12AIActionHealEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
             (&AIActionHealHook);
     });
+    Events::InitOnFirstSubscribe("NWNX_ON_HEAL_.*", [hooker]() {
+        s_OnApplyHealHook = hooker->RequestExclusiveHook
+                <API::Functions::_ZN21CNWSEffectListHandler11OnApplyHealEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>
+                (&OnApplyHealHook);
+    });
 }
 
-uint32_t HealerKitEvents::AIActionHealHook(
+uint32_t HealingEvents::AIActionHealHook(
     CNWSCreature *pCreature,
     CNWSObjectActionNode *pNode)
 {
@@ -52,9 +58,40 @@ uint32_t HealerKitEvents::AIActionHealHook(
     Events::PushEventData("ITEM_OBJECT_ID", Utils::ObjectIDToString((uintptr_t)(pNode->m_pParameter[1]))); //oidItemUsed
     Events::PushEventData("ITEM_PROPERTY_INDEX", std::to_string((uintptr_t)(pNode->m_pParameter[2]))); //nActiveItemPropertyIndex
     Events::PushEventData("MOVE_TO_TARGET", std::to_string((uintptr_t)(pNode->m_pParameter[3]))); //nMoveToTarget
-    Events::PushEventData("ACTION_RESULT", std::to_string(retVal)); //nMoveToTarget
+    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
 
     Events::SignalEvent("NWNX_ON_HEALER_KIT_AFTER", pCreature->m_idSelf);
+    return retVal;
+}
+
+int32_t HealingEvents::OnApplyHealHook(
+        CNWSEffectListHandler *pThis,
+        CNWSObject *pObject,
+        CGameEffect *pGameEffect,
+        int32_t bLoadingGame)
+{
+    uint32_t retVal;
+    std::string sAux;
+    int32_t nHealAmount = pGameEffect->GetInteger(0);
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(pObject->m_idSelf));
+    Events::PushEventData("HEAL_AMOUNT", std::to_string(nHealAmount));
+
+    if (Events::SignalEvent("NWNX_ON_HEAL_BEFORE", pGameEffect->m_oidCreator, &sAux))
+    {
+        retVal = s_OnApplyHealHook->CallOriginal<int64_t>(pThis, pObject, pGameEffect, bLoadingGame);
+    }
+    else
+    {
+        nHealAmount = atoi(sAux.c_str());
+        pGameEffect->SetInteger(0, nHealAmount);
+        retVal = s_OnApplyHealHook->CallOriginal<int64_t>(pThis, pObject, pGameEffect, bLoadingGame);
+    }
+
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(pObject->m_idSelf));
+    Events::PushEventData("HEAL_AMOUNT", std::to_string(nHealAmount));
+    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
+
+    Events::SignalEvent("NWNX_ON_HEAL_AFTER", pGameEffect->m_oidCreator);
     return retVal;
 }
 

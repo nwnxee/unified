@@ -26,7 +26,7 @@ class MapEvents;
 class StealthEvents;
 class SpellEvents;
 class PartyEvents;
-class HealerKitEvents;
+class HealingEvents;
 class SkillEvents;
 class PolymorphEvents;
 class EffectEvents;
@@ -120,7 +120,7 @@ private:
     std::unique_ptr<StealthEvents> m_stealthEvents;
     std::unique_ptr<SpellEvents> m_spellEvents;
     std::unique_ptr<PartyEvents> m_partyEvents;
-    std::unique_ptr<HealerKitEvents> m_healerKitEvents;
+    std::unique_ptr<HealingEvents> m_healingEvents;
     std::unique_ptr<SkillEvents> m_skillEvents;
     std::unique_ptr<PolymorphEvents> m_polymorphEvents;
     std::unique_ptr<EffectEvents> m_effectEvents;

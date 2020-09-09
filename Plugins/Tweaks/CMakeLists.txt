@@ -19,4 +19,5 @@ add_plugin(Tweaks
     "Tweaks/AddPrestigeclassCasterLevels.cpp"
     "Tweaks/FixUnlimitedPotionsBug.cpp"
     "Tweaks/UnhardcodeShields.cpp"
+    "Tweaks/BlockDMSpawnItem.cpp"
 )

@@ -53,6 +53,8 @@ private:
     ArgumentStack SetDevastatingCriticalEventScript    (ArgumentStack&& args);
     ArgumentStack GetEventData                         (ArgumentStack&& args);
     ArgumentStack SetEventData                         (ArgumentStack&& args);
+    ArgumentStack SetOneHalfStrength                   (ArgumentStack&& args);
+    ArgumentStack GetOneHalfStrength                   (ArgumentStack&& args);
 
     NWNXLib::Hooking::FunctionHook* m_GetWeaponFocusHook;
     NWNXLib::Hooking::FunctionHook* m_GetEpicWeaponFocusHook;
@@ -88,17 +90,17 @@ private:
     static int32_t GetUseMonkAttackTables           (CNWSCreatureStats *pStats, int32_t bForceUnarmed);
     static int32_t ToggleMode                       (CNWSCreature *pCreature, uint8_t nMode);
 
-    std::map<std::uint32_t, std::uint32_t> m_WeaponFocusMap;
-    std::map<std::uint32_t, std::uint32_t> m_EpicWeaponFocusMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponFocusMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_EpicWeaponFocusMap;
     std::map<std::uint32_t, std::uint8_t>  m_WeaponFinesseSizeMap;
-    std::map<std::uint32_t, std::uint32_t> m_WeaponImprovedCriticalMap;
-    std::map<std::uint32_t, std::uint32_t> m_WeaponSpecializationMap;
-    std::map<std::uint32_t, std::uint32_t> m_EpicWeaponSpecializationMap;
-    std::map<std::uint32_t, std::uint32_t> m_EpicWeaponOverwhelmingCriticalMap;
-    std::map<std::uint32_t, std::uint32_t> m_EpicWeaponDevastatingCriticalMap;
-    std::map<std::uint32_t, std::uint32_t> m_WeaponOfChoiceMap;
-    std::map<std::uint32_t, std::uint32_t> m_GreaterWeaponSpecializationMap;
-    std::map<std::uint32_t, std::uint32_t> m_GreaterWeaponFocusMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponImprovedCriticalMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponSpecializationMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_EpicWeaponSpecializationMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_EpicWeaponOverwhelmingCriticalMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_EpicWeaponDevastatingCriticalMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_WeaponOfChoiceMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_GreaterWeaponSpecializationMap;
+    std::map<std::uint32_t, std::set<std::uint32_t>> m_GreaterWeaponFocusMap;
 
     std::set<std::uint32_t>  m_WeaponUnarmedSet;
     std::set<std::uint32_t>  m_MonkWeaponSet;
@@ -113,5 +115,6 @@ private:
 
     int m_GreaterFocusAttackBonus = 1;
     int m_GreaterWeaponSpecializationDamageBonus = 2;
+    bool m_GASling = false;
 };
 }
