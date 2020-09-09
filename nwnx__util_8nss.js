@@ -30,6 +30,8 @@ var nwnx__util_8nss =
     [ "NWNX_Util_CreateDoor", "group__util.html#ga0ed499c4c5e08d2d89bab118797d35e5", null ],
     [ "NWNX_Util_SetItemActivator", "group__util.html#gaf603bdb6ed957e9016094ddcbde043b3", null ],
     [ "NWNX_Util_GetWorldTime", "group__util.html#ga2fe4ad85ca9096632b400e44ee2c0d70", null ],
+    [ "NWNX_Util_SetResourceOverride", "group__util.html#ga9720df89114f2dfa938f3cd26ada4a71", null ],
+    [ "NWNX_Util_GetResourceOverride", "group__util.html#gaf153695212a83eac7df3e3ff3b8adf59", null ],
     [ "NWNX_Util", "group__util.html#ga5b42918210c34bc2856fd77a858a8baa", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NSS", "group__util.html#ga44497bc0ee50b6fc9525d1fe40fed2e6", null ],
     [ "NWNX_UTIL_RESREF_TYPE_NCS", "group__util.html#gac7c3717541176f4e20e5824aa2668dd0", null ],

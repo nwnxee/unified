@@ -59,6 +59,8 @@ var group__player =
     [ "NWNX_Player_ToggleDM", "group__player.html#gaaacb3c57cd5fd2c4d7e23cf39aab4fe1", null ],
     [ "NWNX_Player_SetObjectMouseCursorOverride", "group__player.html#ga5c409a9ebdfd0c9d78b5cacb438e890d", null ],
     [ "NWNX_Player_SetObjectHiliteColorOverride", "group__player.html#ga3ec05eeabc9672622304bc2beceb2473", null ],
+    [ "NWNX_Player_RemoveEffectFromTURD", "group__player.html#ga410cc4505666aedf13136d61236e1007", null ],
+    [ "NWNX_Player_SetSpawnLocation", "group__player.html#ga9ee3f2a0e9d42efced12e3992e366a4a", null ],
     [ "NWNX_Player_QBS_Empty", "group__player.html#ga12d642ac5b5fad0078ace6c222c7ab38", null ],
     [ "NWNX_Player_QBS_UseItem", "group__player.html#ga86c1edebbcfd652b79adf34e73b9c317", null ],
     [ "NWNX_Player_QBS_EquipItem", "group__player.html#gafcca025e7811f1b7babab77d6ef5d115", null ],

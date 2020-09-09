@@ -43,15 +43,15 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "group__appearance.html#ga2fcd956e0a0f733dc438c78f16502c36",
-"group__creature.html#ga41dc246ae5e9399a26c06d3966d8b125",
-"group__data.html#ga1877305b2d71c97f2c34dbbed3815fdc",
-"group__events.html#ga1f7aeeb1c0a8f4166b8d1dbefa521294",
-"group__object.html#gacc402018cb67fd3d026fb212a99dfd53",
-"group__profiler.html#ga495550a915f20515c9be66513245fdb4",
-"group__sql.html#ga60dd9ffe0369ff795d4e375452edec51",
-"nwnx__encounter_8nss.html",
-"nwnx__redis__lib_8nss.html",
-"nwnx__visibility_8nss.html"
+"group__creature.html#ga3dbffac4654be2a32707775255e39c15",
+"group__damage.html#gac9d174eaf11af9aa77da1e8b94db2224",
+"group__encounter.html#gad85333d88eb73973046fb706f02f6319",
+"group__object.html#gabac51683829dcd5e2898b1e072d2b760",
+"group__player.html#gafcca025e7811f1b7babab77d6ef5d115",
+"group__sql.html#ga38fdaf8c308512015849ac94ffede3bb",
+"nwnx__consts_8nss.html",
+"nwnx__redis_8nss.html#af709ac752f4ba0034e475a5b840278a7",
+"nwnx__ruby_8nss.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
