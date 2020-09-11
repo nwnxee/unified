@@ -30,6 +30,11 @@ N/A
 - Creature: {Get|Set}LastItemCasterLeve()
 - Creature: GetArmorClassVersus()
 - Effect: ReplaceEffect()
+- Effect: GetTrueEffectCount()
+- Effect: GetTrueEffect()
+- Effect: RemoveEffectById()
+- Effect: ReplaceEffectByElement()
+- Effect: SetEffectImmunityBypass()
 - Player: ToggleDM()
 - ItemProperty: GetActiveProperty()
 - Object: DoSpellImmunity()
@@ -44,6 +49,7 @@ N/A
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params
+- Effect: UnpackEffect additionally now supports outputting the effect ID.
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
 - Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
 - Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon***Feat and will be used in addition to any set feats
