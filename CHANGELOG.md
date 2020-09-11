@@ -43,6 +43,7 @@ N/A
 - Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
+- Damage: damage event script now also triggered by damage to placeables
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
 - Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
