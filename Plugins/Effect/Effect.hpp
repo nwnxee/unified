@@ -18,6 +18,9 @@ private:
     std::string m_effectExpiredData;
     uint32_t m_effectExpiredDepth;
     ObjectID m_effectExpiredCreator;
+    bool m_bBypassImm = false;
+
+    NWNXLib::Hooking::FunctionHook* m_GetEffectImmunityHook;
 
     ArgumentStack PackEffect(ArgumentStack&& args);
     ArgumentStack UnpackEffect(ArgumentStack&& args);
@@ -25,6 +28,15 @@ private:
     ArgumentStack GetEffectExpiredData(ArgumentStack&& args);
     ArgumentStack GetEffectExpiredCreator(ArgumentStack&& args);
     ArgumentStack ReplaceEffect(ArgumentStack&& args);
+    ArgumentStack GetTrueEffectCount(ArgumentStack&& args);
+    ArgumentStack GetTrueEffect(ArgumentStack&& args);
+    ArgumentStack ReplaceEffectByElement(ArgumentStack&& args);
+    ArgumentStack RemoveEffectById(ArgumentStack&& args);
+    ArgumentStack SetEffectImmunityBypass(ArgumentStack&& args);
+    static int32_t  GetEffectImmunityHook(CNWSCreatureStats *pStats, uint8_t nType, CNWSCreature * pVersus, BOOL bConsiderFeats=true);
+
+    ArgumentStack ResolveUnpack(CGameEffect *eff, bool bLink=true);
+    void InitEffectImmHook();
 };
 
 }
