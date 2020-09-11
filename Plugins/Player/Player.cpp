@@ -96,6 +96,8 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(ToggleDM);
     REGISTER(SetObjectMouseCursorOverride);
     REGISTER(SetObjectHiliteColorOverride);
+    REGISTER(RemoveEffectFromTURD);
+    REGISTER(SetSpawnLocation);
 
 #undef REGISTER
 
@@ -1592,6 +1594,61 @@ ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
             }
         }
     }
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::RemoveEffectFromTURD(ArgumentStack&& args)
+{
+    const auto oidPlayer = Services::Events::ExtractArgument<ObjectID>(args);
+      ASSERT_OR_THROW(oidPlayer != Constants::OBJECT_INVALID);
+    const auto effectTag = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!effectTag.empty());
+
+    auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    for (auto *pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
+    {
+        auto *pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
+
+        if (pTURD && pTURD->m_oidPlayer == oidPlayer)
+        {
+            for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
+            {
+                auto *pEffect = pTURD->m_appliedEffects.element[i];
+
+                if (pEffect->m_sCustomTag == effectTag)
+                    pTURD->RemoveEffect(pEffect);
+            }
+
+            break;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::SetSpawnLocation(ArgumentStack&& args)
+{
+    if (auto *pPlayer = player(args))
+    {
+        auto oidArea = Services::Events::ExtractArgument<ObjectID>(args);
+          ASSERT_OR_THROW(oidArea != Constants::OBJECT_INVALID);
+          ASSERT_OR_THROW(Utils::AsNWSArea(Utils::GetGameObject(oidArea)));
+        auto x = Services::Events::ExtractArgument<float>(args);
+        auto y = Services::Events::ExtractArgument<float>(args);
+        auto z = Services::Events::ExtractArgument<float>(args);
+        auto facing = Services::Events::ExtractArgument<float>(args);
+
+        if (auto pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+        {
+            pPlayer->m_bFromTURD = true;
+
+            pCreature->m_oidDesiredArea = oidArea;
+            pCreature->m_vDesiredAreaLocation = {x, y, z};
+            pCreature->m_bDesiredAreaUpdateComplete = false;
+            Utils::SetOrientation(pCreature, facing);
+        }
+    }
+
     return Services::Events::Arguments();
 }
 

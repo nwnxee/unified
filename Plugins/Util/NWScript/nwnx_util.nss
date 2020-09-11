@@ -201,6 +201,19 @@ void NWNX_Util_SetItemActivator(object oObject);
 /// positive or negative values will return a world time in the future or past.
 /// @return A NWNX_Util_WorldTime struct with the calendar day and time of day.
 struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fAdjustment = 0.0f);
+
+/// @brief Set a server-side resource override.
+/// @param nResType A @ref resref_types "Resref Type".
+/// @param sOldName The old resource name, 16 characters or less.
+/// @param sNewName The new resource name or "" to clear a previous override, 16 characters or less.
+void NWNX_Util_SetResourceOverride(int nResType, string sOldName, string sNewName);
+
+/// @brief Get a server-side resource override.
+/// @param nResType A @ref resref_types "Resref Type".
+/// @param sName The name of the resource, 16 characters or less.
+/// @return The resource override, or "" if one is not set.
+string NWNX_Util_GetResourceOverride(int nResType, string sName);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -482,4 +495,25 @@ struct NWNX_Util_WorldTime NWNX_Util_GetWorldTime(float fAdjustment = 0.0f)
     strWorldTime.nCalendarDay = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 
     return strWorldTime;
+}
+
+void NWNX_Util_SetResourceOverride(int nResType, string sOldName, string sNewName)
+{
+    string sFunc = "SetResourceOverride";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sNewName);
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sOldName);
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nResType);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+string NWNX_Util_GetResourceOverride(int nResType, string sName)
+{
+    string sFunc = "GetResourceOverride";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sName);
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nResType);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }

@@ -18,6 +18,7 @@
 #include "Tweaks/AddPrestigeclassCasterLevels.hpp"
 #include "Tweaks/FixUnlimitedPotionsBug.hpp"
 #include "Tweaks/UnhardcodeShields.hpp"
+#include "Tweaks/BlockDMSpawnItem.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -151,6 +152,12 @@ Tweaks::Tweaks(Services::ProxyServiceList* services)
     {
         LOG_INFO("Using baseitems.2da to define shield AC and create shield-like items");
         m_UnhardcodeShields = std::make_unique<UnhardcodeShields>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("BLOCK_DM_SPAWNITEM", false))
+    {
+        LOG_INFO("Blocking the dm_spawnitem console command");
+        m_BlockDMSpawnItem = std::make_unique<BlockDMSpawnItem>(GetServices()->m_hooks.get());
     }
 }
 

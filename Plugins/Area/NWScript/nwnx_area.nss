@@ -223,6 +223,25 @@ int NWNX_Area_GetMusicIsPlaying(object oArea, int bBattleMusic = FALSE);
 /// @sa NWNX_Object_SetTriggerGeometry() if you wish to draw the trigger as something other than a square.
 object NWNX_Area_CreateGenericTrigger(object oArea, float fX, float fY, float fZ, string sTag = "", float fSize = 1.0f);
 
+/// @brief Add oObject to the ExportGIT exclusion list, objects on this list won't be exported when NWNX_Area_ExportGIT() is called.
+/// @param oObject The object to add
+void NWNX_Area_AddObjectToExclusionList(object oObject);
+
+/// @brief Remove oObject from the ExportGIT exclusion list.
+/// @param oObject The object to add
+void NWNX_Area_RemoveObjectFromExclusionList(object oObject);
+
+/// @brief Export the GIT of oArea to the UserDirectory/nwnx folder.
+/// @note Take care with local objects set on objects, they will likely not reference the same object after a server restart.
+/// @param oArea The area to export the GIT of.
+/// @param sFileName The filename, 16 characters or less. If left blank the resref of oArea will be used.
+/// @param bExportVarTable If TRUE, local variables set on oArea will be exported too.
+/// @param bExportUUID If TRUE, the UUID of oArea will be exported, if it has one.
+/// @param nObjectFilter One or more OBJECT_TYPE_* constants. These object will not be exported. For example OBJECT_TYPE_CREATURE | OBJECT_TYPE_DOOR
+/// will not export creatures and doors. Use OBJECT_TYPE_ALL to filter all objects or 0 to export all objects.
+/// @return TRUE if exported successfully, FALSE if not.
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -547,4 +566,34 @@ object NWNX_Area_CreateGenericTrigger(object oArea, float fX, float fY, float fZ
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueObject(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_AddObjectToExclusionList(object oObject)
+{
+    string sFunc = "AddObjectToExclusionList";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+void NWNX_Area_RemoveObjectFromExclusionList(object oObject)
+{
+    string sFunc = "RemoveObjectFromExclusionList";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0)
+{
+    string sFunc = "ExportGIT";
+
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, nObjectFilter);
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportUUID);
+    NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportVarTable);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sFileName);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
 }

@@ -12,24 +12,41 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 - Events: added skippable PlayerDM Login/Logout events to DMActionEvents
 - Events: added skippable RunScript and RunScriptChunk events to DebugEvents
 - Events: added skippable RequestBuy/Sell events to StoreEvents
+- Events: added skippable Heal events to new HealingEvents
+- Tweaks: added `NWNX_TWEAKS_BLOCK_DM_SPAWNITEM` to block the usage of dm_spawnitem
+- Weapon: added 'NWNX_WEAPON_GOOD_AIM_SLING' non-halfling sling users with the feat Good Aim gain an additional +1 AB as a halfling currently does. Note: Throwing weapons are already included in the base game
 
 ##### New Plugins
 N/A
 
 ##### New NWScript Functions
+- Area: AddObjectToExclusionList()
+- Area: RemoveObjectFromExclusionList()
+- Area: ExportGIT()
 - Creature: {Get|Set}Encounter()
 - Creature: SetEffectIconFlashing()
 - Creature: OverrideDamageLevel()
 - Creature: GetIsBartering()
+- Creature: {Get|Set}LastItemCasterLeve()
+- Creature: GetArmorClassVersus()
 - Effect: ReplaceEffect()
 - Player: ToggleDM()
+- ItemProperty: GetActiveProperty()
+- Object: DoSpellImmunity()
+- Object: DoSpellLevelAbsorption()
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
+- Player: RemoveEffectFromTURD()
+- Player: SetSpawnLocation()
 - Util: GetWorldTime()
+- Util: {Get|Set}ResourceOverride()
+- Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
 - Effect: (Un)PackEffect now supports vector params
-- Events: added a `RESULT` event data tag to LearnScroll in ItemEvents 
+- Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
+- Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
+- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon***Feat and will be used in addition to any set feats
 
 ### Deprecated
 - Object: StringToObject();
