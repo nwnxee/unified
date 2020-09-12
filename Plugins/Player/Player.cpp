@@ -149,6 +149,7 @@ ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
 
         if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidTarget)))
         {
+            pPlaceable->m_bHasInventory = 1;
             pPlaceable->OpenInventory(oidPlayer);
         }
     }

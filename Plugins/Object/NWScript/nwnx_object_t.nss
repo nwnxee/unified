@@ -111,6 +111,12 @@ void main()
     NWNX_Tests_Report("NWNX_Object", "SetAutoRemoveKey", NWNX_Object_GetAutoRemoveKey(oPlc) == 1);
     DestroyObject(oPlc);
 
+    int bHasInventory = GetHasInventory(oPlc);
+    oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
+    NWNX_Object_SetHasInventory(oPlc, !bHasInventory);
+    NWNX_Tests_Report("NWNX_Object", "SetHasInventory", GetHasInventory(oPlc) == !bHasInventory);
+    DestroyObject(oPlc);
+
     DestroyObject(o);
     DestroyObject(oDeserialized);
     WriteTimestampedLogEntry("NWNX_Object unit test end.");

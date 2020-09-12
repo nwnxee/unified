@@ -98,6 +98,7 @@ Object::Object(Services::ProxyServiceList* services)
     REGISTER(GetIsDestroyable);
     REGISTER(DoSpellImmunity);
     REGISTER(DoSpellLevelAbsorption);
+    REGISTER(SetHasInventory);
 
 #undef REGISTER
 }
@@ -970,4 +971,17 @@ ArgumentStack Object::DoSpellLevelAbsorption(ArgumentStack&& args)
     return Services::Events::Arguments(retVal);
 }
 
+ArgumentStack Object::SetHasInventory(ArgumentStack&& args)
+{
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    {
+        const auto hasInventory = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(hasInventory >= 0);
+        ASSERT_OR_THROW(hasInventory <= 1);
+
+        pPlaceable->m_bHasInventory = hasInventory;
+    }
+
+    return Services::Events::Arguments();
+}
 }

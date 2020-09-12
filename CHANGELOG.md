@@ -34,6 +34,7 @@ N/A
 - ItemProperty: GetActiveProperty()
 - Object: DoSpellImmunity()
 - Object: DoSpellLevelAbsorption()
+- Object: SetHasInventory()
 - Player: SetObjectMouseCursorOverride()
 - Player: SetObjectHiliteColorOverride()
 - Player: RemoveEffectFromTURD()
