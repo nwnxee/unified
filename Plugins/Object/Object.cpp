@@ -975,9 +975,7 @@ ArgumentStack Object::SetHasInventory(ArgumentStack&& args)
 {
     if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
     {
-        const auto hasInventory = Services::Events::ExtractArgument<int32_t>(args);
-        ASSERT_OR_THROW(hasInventory >= 0);
-        ASSERT_OR_THROW(hasInventory <= 1);
+        const auto hasInventory = !!Services::Events::ExtractArgument<int32_t>(args);
 
         pPlaceable->m_bHasInventory = hasInventory;
     }

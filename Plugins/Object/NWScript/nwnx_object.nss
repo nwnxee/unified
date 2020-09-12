@@ -330,7 +330,7 @@ int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster);
 /// @param obj The placeable.
 /// @param bHasInventory TRUE/FALSE
 /// @note Only works on placeables.
-void NWNX_Object_SetAutoRemoveKey(object obj, int bHasInventory);
+void NWNX_Object_SetHasInventory(object obj, int bHasInventory);
 
 /// @}
 
