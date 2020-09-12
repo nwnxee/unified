@@ -154,7 +154,6 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
 {
     const auto objectId = Events::ExtractArgument<ObjectID>(args);
     const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
-    const auto retainTurd = Events::ExtractArgument<int32_t>(args);
 
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
     CNWSPlayer* player = exoApp->GetClientObjectByObjectId(objectId);
@@ -190,7 +189,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     }
 
     GetServices()->m_tasks->QueueOnMainThread(
-        [filename, playerId, bPreserveBackup, retainTurd, objectId, playerName]
+        [filename, playerId, bPreserveBackup, objectId, playerName]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk
             Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, "");
@@ -208,24 +207,21 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
                 unlink(filename.c_str());
             }
 
-            if (!retainTurd)
+            CNWSCreature* creature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectId);
+            std::string characterName = Utils::ExtractLocString(creature->m_pStats->m_lsFirstName);
+            std::string characterLastName = Utils::ExtractLocString(creature->m_pStats->m_lsLastName);
+
+            if (!characterLastName.empty())
             {
-                CNWSCreature* creature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectId);
-                std::string characterName = Utils::ExtractLocString(creature->m_pStats->m_lsFirstName);
-                std::string characterLastName = Utils::ExtractLocString(creature->m_pStats->m_lsLastName);
+                characterName += characterName.empty() ? characterLastName : " " + characterLastName;
+            }
 
-                if (!characterLastName.empty())
-                {
-                    characterName += characterName.empty() ? characterLastName : " " + characterLastName;
-                }
+            CExoLinkedListNode *foundNode = FindTURD(playerName, characterName);
 
-                CExoLinkedListNode *foundNode = FindTURD(playerName, characterName);
-
-                if (foundNode)
-                {
-                    LOG_NOTICE("Deleted TURD of %s (%s)", characterName, playerName);
-                    Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal->Remove(foundNode);
-                }
+            if (foundNode)
+            {
+                LOG_NOTICE("Deleted TURD of %s (%s)", characterName, playerName);
+                Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal->Remove(foundNode);
             }
         });
 
