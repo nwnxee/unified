@@ -77,7 +77,8 @@ void NWNX_Administration_ShutdownServer();
 ///
 /// @param oPC The player to delete.
 /// @param bPreserveBackup If true, it will leave the file on server, only appending ".deleted0" to the bic filename.
-void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup = TRUE);
+/// @param bRetainTURD If true, the TURD will not be removed from the running server
+void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup = TRUE, int bRetainTURD = FALSE);
 
 /// @brief Bans the provided IP.
 /// @param ip The IP Address to ban.
@@ -203,10 +204,11 @@ void NWNX_Administration_ShutdownServer()
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
 
-void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup)
+void NWNX_Administration_DeletePlayerCharacter(object oPC, int bPreserveBackup, int bRetainTURD)
 {
     string sFunc = "DeletePlayerCharacter";
 
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, bRetainTURD);
     NWNX_PushArgumentInt(NWNX_Administration, sFunc, bPreserveBackup);
     NWNX_PushArgumentObject(NWNX_Administration, sFunc, oPC);
     NWNX_CallFunction(NWNX_Administration, sFunc);
