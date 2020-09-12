@@ -22,7 +22,7 @@ FixUnlimitedPotionsBug::FixUnlimitedPotionsBug(Services::HooksProxy* hooker)
     s_AddEventDeltaTimeHook = hooker->FindHookByAddress(Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv);
 }
 
-void FixUnlimitedPotionsBug::CServerAIMaster__AddEventDeltaTime(bool before, CServerAIMaster* thisPtr, uint32_t nDaysFromNow, uint32_t nTimeFromNow, OBJECT_ID nCallerObjectId, OBJECT_ID nObjectId, uint32_t nEventId, void* pScript)
+void FixUnlimitedPotionsBug::CServerAIMaster__AddEventDeltaTime(bool before, CServerAIMaster*, uint32_t, uint32_t, OBJECT_ID, OBJECT_ID nObjectId, uint32_t nEventId, void*)
 {
     if (before || !s_bUsableItemRemoval || nEventId != Constants::Event::DestroyObject)
         return;
@@ -39,7 +39,7 @@ void FixUnlimitedPotionsBug::CServerAIMaster__AddEventDeltaTime(bool before, CSe
         }
         if (pOwnerCreature && pOwnerCreature->m_bPlayerCharacter)
         {
-            auto ret = pOwnerCreature->RemoveItem(pItem, true, true, false, true);
+            pOwnerCreature->RemoveItem(pItem, true, true, false, true);
         }
     }
 }
