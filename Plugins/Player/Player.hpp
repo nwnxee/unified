@@ -58,6 +58,7 @@ private:
     ArgumentStack SetObjectHiliteColorOverride      (ArgumentStack&& args);
     ArgumentStack RemoveEffectFromTURD              (ArgumentStack&& args);
     ArgumentStack SetSpawnLocation                  (ArgumentStack&& args);
+    ArgumentStack SendDMAllCreatorLists             (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

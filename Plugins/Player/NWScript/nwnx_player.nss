@@ -339,6 +339,10 @@ void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag);
 /// @param locSpawn The location.
 void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn);
 
+/// @brief Resends palettes to a DM.
+/// @param oPlayer - the DM to send them to.
+void NWNX_Player_SendDMAllCreatorLists(object oPlayer);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -856,5 +860,12 @@ void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn)
     NWNX_PushArgumentObject(NWNX_Player, sFunc, GetAreaFromLocation(locSpawn));
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
 
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+void NWNX_Player_SendDMAllCreatorLists(object oPlayer)
+{
+    string sFunc = "SendDMAllCreatorLists";
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
