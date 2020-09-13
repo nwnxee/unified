@@ -1659,7 +1659,7 @@ ArgumentStack Player::SendDMAllCreatorLists(ArgumentStack&& args)
     {
         auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
 
-        if(pCreature->m_pStats->GetIsDM())
+        if(pCreature && pCreature->m_pStats->GetIsDM())
         {
             if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             {
