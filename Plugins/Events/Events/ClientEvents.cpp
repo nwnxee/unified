@@ -2,6 +2,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSArea.hpp"
 #include "API/Constants.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNetLayer.hpp"
@@ -48,8 +49,14 @@ ClientEvents::ClientEvents(HooksProxy* hooker)
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_EXPORT_CHARACTER_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage36SendServerToPlayerModule_ExportReplyEP10CNWSPlayer>(&SendServerToPlayerModule_ExportReplyHook);
-        m_SendServerToPlayerModule_ExportReplyHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage36SendServerToPlayerModule_ExportReplyEP10CNWSPlayer);
+        m_SendServerToPlayerModule_ExportReplyHook = hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage36SendServerToPlayerModule_ExportReplyEP10CNWSPlayer>(
+                &SendServerToPlayerModule_ExportReplyHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_SERVER_SEND_AREA_.*", [hooker]()
+    {
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage33SendServerToPlayerArea_ClientAreaEP10CNWSPlayerP8CNWSAreafffRK6Vectori, int32_t>
+                (&SendServerToPlayerArea_ClientAreaHook);
     });
 }
 
@@ -173,6 +180,14 @@ int32_t ClientEvents::SendServerToPlayerModule_ExportReplyHook(CNWSMessage *pMes
     Events::SignalEvent("NWNX_ON_CLIENT_EXPORT_CHARACTER_AFTER", pPlayer->m_oidNWSObject);
 
     return retVal;
+}
+
+void ClientEvents::SendServerToPlayerArea_ClientAreaHook(bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSArea *pArea,
+                                                         float, float, float, const Vector*, BOOL bPlayerIsNewToModule)
+{
+    Events::PushEventData("AREA", Utils::ObjectIDToString(pArea->m_idSelf));
+    Events::PushEventData("PLAYER_NEW_TO_MODULE", std::to_string(bPlayerIsNewToModule));
+    Events::SignalEvent(before ? "NWNX_ON_SERVER_SEND_AREA_BEFORE" : "NWNX_ON_SERVER_SEND_AREA_AFTER", pPlayer->m_oidNWSObject);
 }
 
 }
