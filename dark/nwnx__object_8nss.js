@@ -46,6 +46,7 @@ var nwnx__object_8nss =
     [ "NWNX_Object_GetIsDestroyable", "group__object.html#ga78ec105f4a5438d13687f98c294ce228", null ],
     [ "NWNX_Object_DoSpellImmunity", "group__object.html#ga78eef6c5393f4c24778bee5681514f01", null ],
     [ "NWNX_Object_DoSpellLevelAbsorption", "group__object.html#ga0543152520c56d3c3d3d724a38409f7d", null ],
+    [ "NWNX_Object_SetHasInventory", "group__object.html#gab63c89b09324e876db4f5417e430ea31", null ],
     [ "NWNX_Object", "group__object.html#ga5870cbabf1a8a4fdd11ce0b2cd4bd569", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],

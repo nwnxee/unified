@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"nwnx__reveal_8nss.html":[4,0,2,29,0,0],
+"nwnx__reveal_8nss_source.html":[4,0,2,29,0,0],
 "nwnx__ruby_8nss.html":[4,0,2,30,0,0],
 "nwnx__ruby_8nss_source.html":[4,0,2,30,0,0],
 "nwnx__skillranks_8nss.html":[4,0,2,32,0,0],
