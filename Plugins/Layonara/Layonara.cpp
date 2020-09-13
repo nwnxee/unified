@@ -541,6 +541,15 @@ ArgumentStack Layonara::ApplyRune(ArgumentStack&& args)
         eff->m_nParamInteger[1] = 2 * power;
         eff->m_nParamInteger[2] = RacialType::Invalid;
         effects.push_back(eff);
+        if (m_GemBonuses[gem][2] == Skill::DisableTrap)
+        {
+            auto *eff = new CGameEffect(true);
+            eff->m_nType = EffectTrueType::SkillIncrease;
+            eff->m_nParamInteger[0] = Skill::SetTrap;
+            eff->m_nParamInteger[1] = 2 * power;
+            eff->m_nParamInteger[2] = RacialType::Invalid;
+            effects.push_back(eff);
+        }
     }
 
     // Forestal for Damage Immunities
@@ -762,6 +771,8 @@ ArgumentStack Layonara::GetRuneDescription(ArgumentStack&& args)
         retVal = retVal + "+" + std::to_string(2 * power) + " to ";
         if (m_GemBonuses[gem][2] == Skill::AllSkills)
             retVal = retVal + "All Skills";
+        else if (m_GemBonuses[gem][2] == Skill::DisableTrap)
+            retVal = retVal + "Disable/Set Trap";
         else
             retVal = retVal + Skill::ToString(m_GemBonuses[gem][2]);
         retVal = retVal + "\n";
