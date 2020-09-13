@@ -57,6 +57,7 @@ N/A
 - Object: {Get|Set|Delete}Persistent{Int|String|Float}()
 
 ### Fixed
+- Administration: DeletePlayerCharacter() now deletes the TURD as well
 - Creature: SetMovementRate() now properly reattaches the creature's legs when switching from NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE to the other constants
 
 ## 8193.14

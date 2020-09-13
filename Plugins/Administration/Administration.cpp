@@ -4,6 +4,8 @@
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CExoBase.hpp"
@@ -72,6 +74,36 @@ Administration::Administration(Services::ProxyServiceList* services)
 
 Administration::~Administration()
 {
+}
+
+CExoLinkedListNode* Administration::FindTURD(std::string playerName, std::string characterName)
+{
+    CExoLinkedListNode *foundNode = nullptr;
+
+    auto *turds = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    for (auto *node = turds->pHead; node; node = node->pNext)
+    {
+        auto *turd = static_cast<CNWSPlayerTURD*>(node->pObject);
+
+        if (turd)
+        {
+            std::string turdCharacterName = Utils::ExtractLocString(turd->m_lsFirstName);
+            std::string turdLastName = Utils::ExtractLocString(turd->m_lsLastName);
+
+            if (!turdLastName.empty())
+            {
+                turdCharacterName += turdCharacterName.empty() ? turdLastName : " " + turdLastName;
+            }
+
+            if (turd->m_sCommunityName.CStr() == playerName &&
+                characterName == turdCharacterName)
+            {
+                foundNode = node;
+                break;
+            }
+        }
+    }
+    return foundNode;
 }
 
 Events::ArgumentStack Administration::GetPlayerPassword(Events::ArgumentStack&&)
@@ -146,6 +178,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     }
 
     std::string filename = servervault + playerdir + "/" + bicname + ".bic";
+    std::string playerName = player->GetPlayerName().CStr();
 
     LOG_NOTICE("Deleting %s %s", filename, bPreserveBackup ? "(backed up)" : "(no backup)");
 
@@ -156,7 +189,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     }
 
     GetServices()->m_tasks->QueueOnMainThread(
-        [filename, playerId, bPreserveBackup]
+        [filename, playerId, bPreserveBackup, objectId, playerName]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk
             Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, "");
@@ -172,6 +205,23 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
             else
             {
                 unlink(filename.c_str());
+            }
+
+            CNWSCreature* creature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectId);
+            std::string characterName = Utils::ExtractLocString(creature->m_pStats->m_lsFirstName);
+            std::string characterLastName = Utils::ExtractLocString(creature->m_pStats->m_lsLastName);
+
+            if (!characterLastName.empty())
+            {
+                characterName += characterName.empty() ? characterLastName : " " + characterLastName;
+            }
+
+            CExoLinkedListNode *foundNode = FindTURD(playerName, characterName);
+
+            if (foundNode)
+            {
+                LOG_NOTICE("Deleted TURD of %s (%s)", characterName, playerName);
+                Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal->Remove(foundNode);
             }
         });
 
@@ -518,31 +568,7 @@ Events::ArgumentStack Administration::DeleteTURD(Events::ArgumentStack&& args)
     ASSERT_OR_THROW(!playerName.empty());
     ASSERT_OR_THROW(!characterName.empty());
 
-    CExoLinkedListNode *foundNode = nullptr;
-
-    auto *turds = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
-    for (auto *node = turds->pHead; node; node = node->pNext)
-    {
-        auto *turd = static_cast<CNWSPlayerTURD*>(node->pObject);
-
-        if (turd)
-        {
-            std::string turdCharacterName = Utils::ExtractLocString(turd->m_lsFirstName);
-            std::string turdLastName = Utils::ExtractLocString(turd->m_lsLastName);
-
-            if (!turdLastName.empty())
-            {
-                turdCharacterName += turdCharacterName.empty() ? turdLastName : " " + turdLastName;
-            }
-
-            if (turd->m_sCommunityName.CStr() == playerName &&
-                characterName == turdCharacterName)
-            {
-                foundNode = node;
-                break;
-            }
-        }
-    }
+    CExoLinkedListNode *foundNode = FindTURD(playerName, characterName);
 
     if (foundNode)
     {
