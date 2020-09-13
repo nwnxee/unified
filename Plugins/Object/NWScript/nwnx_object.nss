@@ -326,6 +326,12 @@ int NWNX_Object_DoSpellImmunity(object oDefender, object oCaster);
 /// @return -1 defender no immunity. 2 if immune. 3 if immune, but the immunity has a limit (example: mantles)
 int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster);
 
+/// @brief Sets if a placeable has an inventory.
+/// @param obj The placeable.
+/// @param bHasInventory TRUE/FALSE
+/// @note Only works on placeables.
+void NWNX_Object_SetHasInventory(object obj, int bHasInventory);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -798,4 +804,14 @@ int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return  NWNX_GetReturnValueInt(NWNX_Object,sFunc);
+}
+
+void NWNX_Object_SetHasInventory(object obj, int bHasInventory)
+{
+    string sFunc = "SetHasInventory";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, bHasInventory);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }
