@@ -98,6 +98,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(SetObjectHiliteColorOverride);
     REGISTER(RemoveEffectFromTURD);
     REGISTER(SetSpawnLocation);
+    REGISTER(SendDMAllCreatorLists);
 
 #undef REGISTER
 
@@ -1647,6 +1648,28 @@ ArgumentStack Player::SetSpawnLocation(ArgumentStack&& args)
             pCreature->m_vDesiredAreaLocation = {x, y, z};
             pCreature->m_bDesiredAreaUpdateComplete = false;
             Utils::SetOrientation(pCreature, facing);
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Player::SendDMAllCreatorLists(ArgumentStack&& args)
+{
+    if(auto *pPlayer = player(args))
+    {
+        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+
+        if(pCreature && pCreature->m_pStats->GetIsDM())
+        {
+            if (auto* pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
+            {
+                auto original = pPlayer->m_bWasSentITP;
+                pPlayer->m_bWasSentITP=false;
+                pMessage->SendServerToPlayerDungeonMasterCreatorLists(pPlayer);
+                pPlayer->m_bWasSentITP=original;
+            }
+
         }
     }
 

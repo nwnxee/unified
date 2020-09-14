@@ -40,6 +40,7 @@ N/A
 - Player: SetObjectHiliteColorOverride()
 - Player: RemoveEffectFromTURD()
 - Player: SetSpawnLocation()
+- Player: SendDMAllCreatorLists()
 - Util: GetWorldTime()
 - Util: {Get|Set}ResourceOverride()
 - Weapon: {Get|Set}OneHalfStrength()
