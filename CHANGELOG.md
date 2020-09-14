@@ -13,6 +13,7 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 - Events: added skippable RunScript and RunScriptChunk events to DebugEvents
 - Events: added skippable RequestBuy/Sell events to StoreEvents
 - Events: added skippable Heal events to new HealingEvents
+- Events: added ServerSendArea event to ClientEvents
 - Tweaks: added `NWNX_TWEAKS_BLOCK_DM_SPAWNITEM` to block the usage of dm_spawnitem
 - Weapon: added 'NWNX_WEAPON_GOOD_AIM_SLING' non-halfling sling users with the feat Good Aim gain an additional +1 AB as a halfling currently does. Note: Throwing weapons are already included in the base game
 
@@ -39,6 +40,7 @@ N/A
 - Player: SetObjectHiliteColorOverride()
 - Player: RemoveEffectFromTURD()
 - Player: SetSpawnLocation()
+- Player: SendDMAllCreatorLists()
 - Util: GetWorldTime()
 - Util: {Get|Set}ResourceOverride()
 - Weapon: {Get|Set}OneHalfStrength()
