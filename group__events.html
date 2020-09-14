@@ -1635,6 +1635,22 @@ Buy/Sell Store Events</h2>
 <td class="markdownTableBodyNone">PRICE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">The buy or sell price   </td></tr>
 </table>
 <hr  />
+ <h2><a class="anchor" id="autotoc_md213"></a>
+Server Send Area Events</h2>
+<ul>
+<li>NWNX_ON_SERVER_SEND_AREA_BEFORE</li>
+<li>NWNX_ON_SERVER_SEND_AREA_AFTER</li>
+</ul>
+<p><code>OBJECT_SELF</code> = The player</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Event Data Tag  </th><th class="markdownTableHeadNone">Type  </th><th class="markdownTableHeadNone">Notes   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">AREA  </td><td class="markdownTableBodyNone">object  </td><td class="markdownTableBodyNone">The area the server is sending. Convert to object with StringToObject()   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">PLAYER_NEW_TO_MODULE  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">TRUE if it's the player's first time logging into the server since a restart   </td></tr>
+</table>
+<hr  />
 <p> Some events are dispatched via the NWNX plugin (see NWNX_EVENTS_EVENT_* constants). Others can be signalled via script code via <a class="el" href="group__events.html#gab4a9847f9f4b134c0618429671f78a53">NWNX_Events_SignalEvent()</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">evt</td><td>The event name. </td></tr>
@@ -1643,7 +1659,7 @@ Buy/Sell Store Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01291">1291</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01303">1303</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1682,7 +1698,7 @@ Buy/Sell Store Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01300">1300</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01312">1312</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1713,7 +1729,7 @@ Buy/Sell Store Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01309">1309</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01321">1321</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1744,7 +1760,7 @@ Buy/Sell Store Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p><dl class="section remark"><dt>Remarks</dt><dd>target will be available as OBJECT_SELF in subscribed event scripts. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01318">1318</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01330">1330</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1765,7 +1781,7 @@ Buy/Sell Store Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01328">1328</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01340">1340</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1817,7 +1833,7 @@ Buy/Sell Store Events</h2>
 <li>Store events </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01337">1337</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01349">1349</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1849,7 +1865,7 @@ Buy/Sell Store Events</h2>
 <li>Heal event -&gt; Amount of HP to heal </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01344">1344</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01356">1356</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1870,7 +1886,7 @@ Buy/Sell Store Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01352">1352</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01364">1364</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1907,7 +1923,7 @@ Buy/Sell Store Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01360">1360</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01372">1372</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1945,7 +1961,7 @@ Buy/Sell Store Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01370">1370</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01382">1382</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1983,7 +1999,7 @@ Buy/Sell Store Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01380">1380</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01392">1392</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1993,7 +2009,7 @@ Buy/Sell Store Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Sep 13 2020 08:04:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Sep 14 2020 12:05:48 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
