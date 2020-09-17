@@ -39,7 +39,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.14</span>
+								&#160;<span id="projectnumber">8193.16</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -104,10 +104,10 @@ $(document).ready(function(){initNavTree('md_Plugins_Weapon_README.html','');});
 <div class="title">Weapon Plugin Reference </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md346"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md353"></a>
 Environment Variables</h1>
 <p>None.</p>
-<h1><a class="anchor" id="autotoc_md347"></a>
+<h1><a class="anchor" id="autotoc_md354"></a>
 Description</h1>
 <p>Functions exposing additional weapon properties.</p>
 <p>Allows modifying which feats count as which for the weapon feats. Can be used to add feats like WEAPON_FOCUS_* to custom weapons. All you have to do is:</p>
@@ -120,7 +120,7 @@ Description</h1>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> FEAT_WEAPON_FOCUS_KATAR = 3000; </div>
 <div class="line"><span class="keywordtype">int</span> BASE_ITEM_KATAR = 310;</div>
 <div class="line"><a class="code" href="group__weapon.html#gaa74f691d599e48f697719ea8731f11be">NWNX_Weapon_SetWeaponFocusFeat</a>(BASE_ITEM_KATAR, FEAT_WEAPON_FOCUS_KATAR);</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md348"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md355"></a>
 Available functions</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -165,7 +165,7 @@ Available functions</h1>
 <td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga3656299a57ac60f31a0139b569319478" title="Gets if the weapon is set to gain addition .5 strength bonus.">NWNX_Weapon_GetOneHalfStrength()</a>  </td><td class="markdownTableBodyNone">Retrieves if a melee weapon is receiving extra strength   </td></tr>
 </table>
 <p>The <a class="el" href="group__weapon.html#gab865cdef1423787f87307127c2d66c1b" title="Set plugin options.">NWNX_Weapon_SetOption()</a> function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively.</p>
-<h1><a class="anchor" id="autotoc_md349"></a>
+<h1><a class="anchor" id="autotoc_md356"></a>
 Example for Critical Event Script</h1>
 <p>This script just prints some info to the log and then bypasses the devastating critical 50% of the time. You have to set your script with <a class="el" href="group__weapon.html#ga4c1988ef71d5aecb896e18544ac71a08" title="Set Devastating Critical Event Script.">NWNX_Weapon_SetDevastatingCriticalEventScript()</a> (in the OnModuleLoad script for example)</p>
 <p>Note: <code>oWeapon</code> in <code><a class="el" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html" title="Devastating critical event data.">NWNX_Weapon_DevastatingCriticalEvent_Data</a></code> will be <code>OBJECT_INVALID</code> for Gloves/Unarmed Strike Devastating Critical Events.</p>
@@ -205,7 +205,7 @@ Example for Critical Event Script</h1>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Wed Sep 16 2020 20:25:39 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Sep 17 2020 11:31:05 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
