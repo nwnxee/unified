@@ -335,7 +335,7 @@ void NWNX_Player_RemoveEffectFromTURD(object oPlayer, string sEffectTag);
 
 /// @brief Set the location oPlayer will spawn when logging in to the server.
 /// @note This function is best called in the NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE event, OnClientEnter will be too late.
-/// @param The player object.
+/// @param oPlayer The player object.
 /// @param locSpawn The location.
 void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn);
 
