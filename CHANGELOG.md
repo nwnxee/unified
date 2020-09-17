@@ -26,7 +26,7 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Administration: fix crash in DeletePlayerCharacter()
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
