@@ -5,7 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.14...HEAD
+https://github.com/nwnxee/unified/compare/build8193.16...HEAD
+
+### Added
+N/A
+
+##### New Plugins
+N/A
+
+##### New NWScript Functions
+N/A
+
+### Changed
+N/A
+
+### Deprecated
+N/A
+
+### Removed
+N/A
+
+### Fixed
+N/A
+
+## 8193.16
+https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 
 ### Added
 - Core: added environment variable `NWNX_CORE_CUSTOM_RESMAN_DEFINITION` to specify a file with additional resource directories.
@@ -16,9 +40,6 @@ https://github.com/nwnxee/unified/compare/build8193.14...HEAD
 - Events: added ServerSendArea event to ClientEvents
 - Tweaks: added `NWNX_TWEAKS_BLOCK_DM_SPAWNITEM` to block the usage of dm_spawnitem
 - Weapon: added 'NWNX_WEAPON_GOOD_AIM_SLING' non-halfling sling users with the feat Good Aim gain an additional +1 AB as a halfling currently does. Note: Throwing weapons are already included in the base game
-
-##### New Plugins
-N/A
 
 ##### New NWScript Functions
 - Area: AddObjectToExclusionList()
