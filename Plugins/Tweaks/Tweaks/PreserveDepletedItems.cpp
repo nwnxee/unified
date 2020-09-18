@@ -20,7 +20,7 @@ PreserveDepletedItems::PreserveDepletedItems(Services::HooksProxy* hooker)
 }
 
 
-void PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(bool before, CNWSCreature *pThis, CNWSObjectActionNode *pNode)
+void PreserveDepletedItems::CNWSCreature__AIActionItemCastSpell_hook(bool before, CNWSCreature*, CNWSObjectActionNode *pNode)
 {
     static int bPlot;
     // If at risk of destroying the item, set the item to plot, then set it back
