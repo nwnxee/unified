@@ -23,7 +23,7 @@ The **NWNX_Feat plugin does not provide modifications to skill ranks**, use the 
 These commands should be ran `on_module_load`.
 
 * [AB](#ab)
-* [AB](#ability)
+* [ABILITY](#ability)
 * [ABVSRACE](#abvsrace)
 * [AC](#ac)
 * [ACVSRACE](#acvsrace)
@@ -52,6 +52,17 @@ The `AB` entry is used to modify an attack bonus. Note: this is not a change to 
 ##### Example script on_module_load
 ```c
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_AB, 1);
+```
+***
+### ABILITY
+The `ABILITY` entry is used to modify an ability bonus.
+
+* Param1 = ABILITY_ constant
+* Param2 = Modifier value (+/-)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_ABILITY, ABILITY_STRENGTH, 1);
 ```
 ***
 ### ABVSRACE
