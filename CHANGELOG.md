@@ -11,10 +11,12 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 N/A
 
 ##### New Plugins
-N/A
+The following plugins were added:
+- **Feat**: Allows to define a variety of effects that are granted to feat holders.
 
 ##### New NWScript Functions
-N/A
+- Feat: SetFeatModifier()
+- Feat: CreatureRefreshFeats()
 
 ### Changed
 N/A
