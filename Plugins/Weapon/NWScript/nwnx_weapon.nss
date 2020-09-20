@@ -93,6 +93,7 @@ void NWNX_Weapon_SetGreaterWeaponSpecializationFeat(int nBaseItem, int nFeat);
 void NWNX_Weapon_SetGreaterWeaponFocusFeat(int nBaseItem, int nFeat);
 
 /// @brief Set base item as monk weapon.
+/// @note Requires activation of CombatModes plugin for Flurry of Blows.
 /// @param nBaseItem The base item id.
 void NWNX_Weapon_SetWeaponIsMonkWeapon(int nBaseItem);
 
