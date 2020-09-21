@@ -164,15 +164,19 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
     // the racial modifiers.
     if (effectsLevelAdded)
     {
+        std::vector<uint16_t> remove(128);
         for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
         {
             auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
             if (eff->m_sCustomTag == "NWNX_Race_RacialMod")
             {
-                pCreature->RemoveEffect(eff);
+                remove.push_back(eff->m_nID);
             }
         }
+        for (auto id: remove)
+            pCreature->RemoveEffectById(id);
     }
+
 
     // AB
     auto modAB = g_plugin->m_RaceAB[nRace];
