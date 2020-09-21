@@ -177,7 +177,6 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
             pCreature->RemoveEffectById(id);
     }
 
-
     // AB
     auto modAB = g_plugin->m_RaceAB[nRace];
     if (modAB != 0)
