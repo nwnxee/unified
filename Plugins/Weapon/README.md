@@ -37,7 +37,7 @@ NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat() | Associate an epic weapon de
 NWNX_Weapon_SetWeaponOfChoiceFeat() | Associate a weapon of choice feat to a weapon You may set multiple feats for each weapon and all will function.
 NWNX_Weapon_SetGreaterWeaponFocusFeat() | Associate a greater weapon focus feat (default: +1 attack bonus) to a weapon You may set multiple feats for each weapon and all will function.
 NWNX_Weapon_SetGreaterWeaponSpecializationFeat() | Associate a greater weapon specialization feat (default: +2 damage bonus) to a weapon You may set multiple feats for each weapon and all will function.
-NWNX_Weapon_SetWeaponIsMonkWeapon() | Set the weapon to be considered a monk weapon
+NWNX_Weapon_SetWeaponIsMonkWeapon() | Set the weapon to be considered a monk weapon (requires activation of CombatModes plugin for Flurry of Blows)
 NWNX_Weapon_SetOption() | Set different options of the plugin
 NWNX_Weapon_SetDevastatingCriticalEventScript() | Set a script to be called when a devastating critical event occurs
 NWNX_Weapon_GetDevastatingCriticalEventData() | Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)
