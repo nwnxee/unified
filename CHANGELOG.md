@@ -16,7 +16,6 @@ The following plugins were added:
 
 ##### New NWScript Functions
 - Feat: SetFeatModifier()
-- Feat: CreatureRefreshFeats()
 
 ### Changed
 N/A

@@ -38,11 +38,6 @@ const int NWNX_FEAT_MODIFIER_SRINCLEVEL     = 19;
 /// @param iParam1, iParam2, iParam3 The parameters for this racial modifier.
 void NWNX_Feat_SetFeatModifier(int iFeat, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF, int iParam4 = 0xDEADBEEF);
 
-/// @brief Refreshes feat bonuses for a creature
-/// @param oCreature The creature to refresh.
-/// @note Only needs to be used OnEquip/OnUnequip or after Adding Removing feats through NWNX
-void NWNX_Feat_CreatureRefreshFeats(object oCreature);
-
 /// @}
 
 void NWNX_Feat_SetFeatModifier(int iFeat, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF, int iParam4 = 0xDEADBEEF)
@@ -57,14 +52,4 @@ void NWNX_Feat_SetFeatModifier(int iFeat, int iMod, int iParam1, int iParam2 = 0
     NWNX_PushArgumentInt(NWNX_Feat, sFunc, iFeat);
 
     NWNX_CallFunction(NWNX_Feat, sFunc);
-}
-
-void NWNX_Feat_CreatureRefreshFeats(object oCreature)
-{
-    string sFunc = "CreatureRefreshFeats";
-
-    NWNX_PushArgumentObject(NWNX_Feat, sFunc, oCreature);
-
-    NWNX_CallFunction(NWNX_Feat, sFunc);
-
 }

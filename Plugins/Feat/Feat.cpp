@@ -8,12 +8,10 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
-#include "API/CNWSPlayer.hpp"
 #include "API/Constants.hpp"
 #include "API/Constants/Effect.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Services/Config/Config.hpp"
 #include <cmath>
 
@@ -42,7 +40,6 @@ Feat::Feat(Services::ProxyServiceList* services)
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetFeatModifier);
-    REGISTER(CreatureRefreshFeats);
 
 #undef REGISTER
 
@@ -53,11 +50,10 @@ Feat::Feat(Services::ProxyServiceList* services)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti, int32_t, CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t>(&SavingThrowRollHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti, int32_t, CNWSCreature*, CNWSObject*, int32_t>(&GetWeaponPowerHook);
 
-    // Most feat adjustments are done here using effects only once per server reset or after a level up
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii, void, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t>(&LoadCharacterFinishHook);
-
-    // If a level up has been confirmed we rerun the feat applications in case of new feats, level based adjustments etc.
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji, int32_t, CNWSMessage*, PlayerID, int32_t>(&SendServerToPlayerLevelUp_ConfirmationHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats7AddFeatEt, int32_t, CNWSCreatureStats*, uint16_t>(&AddFeatHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, int32_t, CNWSCreatureStats*, uint16_t>(&RemoveFeatHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>(&OnApplyBonusFeatHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>(&OnRemoveBonusFeatHook);
 }
 
 Feat::~Feat()
@@ -65,6 +61,7 @@ Feat::~Feat()
 }
 
 void Feat::DoEffect(CNWSCreature *pCreature,
+                    uint16_t featId,
                     uint16_t nType,
                     int32_t param0,
                     int32_t param1,
@@ -74,260 +71,233 @@ void Feat::DoEffect(CNWSCreature *pCreature,
                     int32_t param5)
 {
     auto *eff = new CGameEffect(true);
+    std::string sCustomTag = "NWNX_Feat_FeatMod_" + std::to_string(featId);
     eff->m_oidCreator         = MODULE_OID;
     eff->m_nType              = nType;
     eff->m_nSubType           = Constants::EffectSubType::Supernatural | Constants::EffectDurationType::Innate;
-    eff->m_bShowIcon          = g_plugin->m_ShowEffectIcon;;
+    eff->m_bShowIcon          = g_plugin->m_ShowEffectIcon;
     eff->m_nParamInteger[0]   = param0;
     eff->m_nParamInteger[1]   = param1;
     eff->m_nParamInteger[2]   = param2;
     eff->m_nParamInteger[3]   = param3;
     eff->m_nParamInteger[4]   = param4;
     eff->m_nParamInteger[5]   = param5;
-    eff->m_sCustomTag         = "NWNX_Feat_FeatMod";
+    eff->m_sCustomTag         = sCustomTag;
     pCreature->ApplyEffect(eff, true, true);
 }
 
-void Feat::ApplyFeatEffects(CNWSCreature *pCreature, bool bRefresh = false)
+void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
 {
-    auto pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-    auto effectsLevelAdded = *pPOS->Get<int>(pCreature->m_idSelf, "FEATMODS_ADDED_LEVEL");
-
-    if (!bRefresh && (pCreature->m_pStats == nullptr || pCreature->m_pStats->GetLevel(true) == effectsLevelAdded))
-        return;
-
-    auto nLevel = pCreature->m_pStats->GetLevel(true);
-
-    // Remove any existing feat effects, this is done when the player levels up and we reapply
-    // the feat modifiers.
-    if (effectsLevelAdded)
+    // AB
+    auto modAB = g_plugin->m_FeatAB[nFeat];
+    if (modAB != 0)
     {
-        for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+        g_plugin->DoEffect(pCreature, nFeat,
+                           modAB > 0 ? AttackIncrease : AttackDecrease,
+                           abs(modAB), 0, Constants::RacialType::Invalid);
+    }
+
+    // ABILITY
+    for (auto &abilityMod : g_plugin->m_FeatAbility[nFeat])
+    {
+        auto abilityType = abilityMod.first;
+        auto mod = abilityMod.second;
+        if (mod != 0)
         {
-            auto eff = (CGameEffect *) pCreature->m_appliedEffects.element[i];
-            if (eff->m_sCustomTag == "NWNX_Feat_FeatMod")
+            g_plugin->DoEffect(pCreature, nFeat,
+                               mod > 0 ? AbilityIncrease : AbilityDecrease,
+                               abilityType, abs(mod));
+        }
+    }
+
+    // ABVSRACE
+    for (auto &ABVsRaceMod : g_plugin->m_FeatABVsRace[nFeat])
+    {
+        auto vsRace = ABVsRaceMod.first;
+        auto modVsRace = ABVsRaceMod.second;
+        if (modVsRace != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat,
+                               modVsRace > 0 ? AttackIncrease : AttackDecrease,
+                               abs(modVsRace), 0, vsRace);
+        }
+    }
+
+    // AC
+    auto modAC = g_plugin->m_FeatAC[nFeat];
+    if (modAC != 0)
+    {
+        g_plugin->DoEffect(pCreature, nFeat,
+                           modAC > 0 ? ACIncrease : ACDecrease, Constants::ACBonus::Dodge,
+                           abs(modAC), Constants::RacialType::Invalid, 0, 0, 4103);
+    }
+
+    // ACVSRACE
+    for (auto &ACVsRaceMod : g_plugin->m_FeatACVsRace[nFeat])
+    {
+        auto vsRace = ACVsRaceMod.first;
+        auto modVsRace = ACVsRaceMod.second;
+        if (modVsRace != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat,
+                               modVsRace > 0 ? ACIncrease : ACDecrease, Constants::ACBonus::Dodge,
+                               abs(modVsRace), vsRace, 0, 0, 4103);
+        }
+    }
+
+    // CONCEALMENT
+    auto modConceal = g_plugin->m_FeatConcealment[nFeat];
+    if (modConceal != 0)
+    {
+        g_plugin->DoEffect(pCreature, nFeat,Concealment, modConceal, Constants::RacialType::Invalid);
+    }
+
+    // DMGIMMUNITY
+    for (auto &dmgImmunityMod : g_plugin->m_FeatDmgImmunity[nFeat])
+    {
+        auto modDmgImmunityType = dmgImmunityMod.first;
+        auto modDmgImmunityValue = dmgImmunityMod.second;
+        if (modDmgImmunityValue != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat,
+                               modDmgImmunityValue > 0 ? DamageImmunityIncrease : DamageImmunityDecrease,
+                               modDmgImmunityType, abs(modDmgImmunityValue));
+        }
+    }
+
+    // DMGREDUCTION
+    for (auto &dmgResistMod : g_plugin->m_FeatDmgReduction[nFeat])
+    {
+        auto modDmgReductionType = dmgResistMod.first;
+        auto modDmgReductionValue = dmgResistMod.second;
+        if (modDmgReductionValue != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat, DamageReduction, modDmgReductionType, modDmgReductionValue);
+        }
+    }
+
+    // DMGRESIST
+    for (auto &dmgResistMod : g_plugin->m_FeatDmgResist[nFeat])
+    {
+        auto modDmgResistType = dmgResistMod.first;
+        auto modDmgResistValue = dmgResistMod.second;
+        if (modDmgResistValue != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat, DamageResistance, modDmgResistType, modDmgResistValue);
+        }
+    }
+
+    // IMMUNITY
+    for (auto &immunity : g_plugin->m_FeatImmunities[nFeat])
+    {
+        g_plugin->DoEffect(pCreature, nFeat, Immunity, immunity,Constants::RacialType::Invalid);
+    }
+
+    // MOVEMENTSPEED
+    auto modSpeed = g_plugin->m_FeatMovementSpeed[nFeat];
+    if (modSpeed != 0)
+    {
+        g_plugin->DoEffect(pCreature, nFeat, MovementSpeedIncrease, modSpeed);
+    }
+
+    // REGENERATION
+    auto modRegenAmount = g_plugin->m_FeatRegeneration[nFeat].first;
+    auto modRegenInterval = g_plugin->m_FeatRegeneration[nFeat].second;
+    if (modRegenAmount != 0)
+    {
+        g_plugin->DoEffect(pCreature, nFeat, Regenerate, modRegenAmount,
+                modRegenInterval > 0 ? modRegenInterval * 1000 : 6000);
+    }
+
+    // SAVE
+    for (auto &saveMod : g_plugin->m_FeatSave[nFeat])
+    {
+        auto saveType = saveMod.first;
+        auto mod = saveMod.second;
+        if (mod != 0)
+        {
+            g_plugin->DoEffect(pCreature, nFeat,
+                               mod > 0 ? SavingThrowIncrease : SavingThrowDecrease, abs(mod),
+                               saveType, Constants::SavingThrowType::All, Constants::RacialType::Invalid);
+        }
+    }
+
+    // SAVEVSRACE
+    for (auto &saveMod : g_plugin->m_FeatSaveVsRace[nFeat])
+    {
+        auto saveType = saveMod.first;
+        for (auto &saveVsFeatMod : g_plugin->m_FeatSaveVsRace[nFeat][saveType])
+        {
+            auto saveVsRace = saveVsFeatMod.first;
+            auto modVsRace = saveVsFeatMod.second;
+            if (modVsRace != 0)
             {
-                pCreature->RemoveEffect(eff);
+                g_plugin->DoEffect(pCreature, nFeat,
+                                   modVsRace > 0 ? SavingThrowIncrease : SavingThrowDecrease, abs(modVsRace),
+                                   saveType, Constants::SavingThrowType::All, saveVsRace);
             }
         }
     }
 
-    for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
+    // SAVEVSTYPE
+    for (auto &saveMod : g_plugin->m_FeatSaveVsType[nFeat])
     {
-        auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
-        // AB
-        auto modAB = g_plugin->m_FeatAB[nFeat];
-        if (modAB != 0)
+        auto saveType = saveMod.first;
+        for (auto &saveVsTypeMod : g_plugin->m_FeatSaveVsType[nFeat][saveType])
         {
-            g_plugin->DoEffect(pCreature,
-                               modAB > 0 ? AttackIncrease : AttackDecrease,
-                               abs(modAB), 0, Constants::RacialType::Invalid);
-        }
-
-        // ABILITY
-        for (auto &abilityMod : g_plugin->m_FeatAbility[nFeat])
-        {
-            auto abilityType = abilityMod.first;
-            auto mod = abilityMod.second;
-            if (mod != 0)
+            auto saveVsType = saveVsTypeMod.first;
+            auto modVsType = saveVsTypeMod.second;
+            if (modVsType != 0)
             {
-                g_plugin->DoEffect(pCreature,
-                                   mod > 0 ? AbilityIncrease : AbilityDecrease,
-                                   abilityType, abs(mod));
+                g_plugin->DoEffect(pCreature, nFeat,
+                                   modVsType > 0 ? SavingThrowIncrease : SavingThrowDecrease, abs(modVsType),
+                                   saveType, saveVsType, Constants::RacialType::Invalid);
             }
         }
-
-        // ABVSRACE
-        for (auto &ABVsRaceMod : g_plugin->m_FeatABVsRace[nFeat])
-        {
-            auto vsRace = ABVsRaceMod.first;
-            auto modVsRace = ABVsRaceMod.second;
-            if (modVsRace != 0)
-            {
-                g_plugin->DoEffect(pCreature,
-                                   modVsRace > 0 ? AttackIncrease : AttackDecrease,
-                                   abs(modVsRace), 0, vsRace);
-            }
-        }
-
-        // AC
-        auto modAC = g_plugin->m_FeatAC[nFeat];
-        if (modAC != 0)
-        {
-            g_plugin->DoEffect(pCreature,
-                               modAC > 0 ? ACIncrease : ACDecrease, Constants::ACBonus::Dodge,
-                               abs(modAC), Constants::RacialType::Invalid, 0, 0, 4103);
-        }
-
-        // ACVSRACE
-        for (auto &ACVsRaceMod : g_plugin->m_FeatACVsRace[nFeat])
-        {
-            auto vsRace = ACVsRaceMod.first;
-            auto modVsRace = ACVsRaceMod.second;
-            if (modVsRace != 0)
-            {
-                g_plugin->DoEffect(pCreature,
-                                   modVsRace > 0 ? ACIncrease : ACDecrease, Constants::ACBonus::Dodge,
-                                   abs(modVsRace), vsRace, 0, 0, 4103);
-            }
-        }
-
-        // CONCEALMENT
-        auto modConceal = g_plugin->m_FeatConcealment[nFeat];
-        if (modConceal != 0)
-        {
-            g_plugin->DoEffect(pCreature, Concealment, modConceal, Constants::RacialType::Invalid);
-        }
-
-        // DMGIMMUNITY
-        for (auto &dmgImmunityMod : g_plugin->m_FeatDmgImmunity[nFeat])
-        {
-            auto modDmgImmunityType = dmgImmunityMod.first;
-            auto modDmgImmunityValue = dmgImmunityMod.second;
-            if (modDmgImmunityValue != 0)
-            {
-                g_plugin->DoEffect(pCreature,
-                                   modDmgImmunityValue > 0 ? DamageImmunityIncrease : DamageImmunityDecrease,
-                                   modDmgImmunityType, abs(modDmgImmunityValue));
-            }
-        }
-
-        // DMGREDUCTION
-        for (auto &dmgResistMod : g_plugin->m_FeatDmgReduction[nFeat])
-        {
-            auto modDmgReductionType = dmgResistMod.first;
-            auto modDmgReductionValue = dmgResistMod.second;
-            if (modDmgReductionValue != 0)
-            {
-                g_plugin->DoEffect(pCreature, DamageReduction, modDmgReductionType, modDmgReductionValue);
-            }
-        }
-
-        // DMGRESIST
-        for (auto &dmgResistMod : g_plugin->m_FeatDmgResist[nFeat])
-        {
-            auto modDmgResistType = dmgResistMod.first;
-            auto modDmgResistValue = dmgResistMod.second;
-            if (modDmgResistValue != 0)
-            {
-                g_plugin->DoEffect(pCreature, DamageResistance, modDmgResistType, modDmgResistValue);
-            }
-        }
-
-        // IMMUNITY
-        for (auto &immunity : g_plugin->m_FeatImmunities[nFeat])
-        {
-            g_plugin->DoEffect(pCreature, Immunity, immunity,Constants::RacialType::Invalid);
-        }
-
-        // MOVEMENTSPEED
-        auto modSpeed = g_plugin->m_FeatMovementSpeed[nFeat];
-        if (modSpeed != 0)
-        {
-            g_plugin->DoEffect(pCreature, MovementSpeedIncrease, modSpeed);
-        }
-
-        // REGENERATION
-        auto modRegenAmount = g_plugin->m_FeatRegeneration[nFeat].first;
-        auto modRegenInterval = g_plugin->m_FeatRegeneration[nFeat].second;
-        if (modRegenAmount != 0)
-        {
-            g_plugin->DoEffect(pCreature, Regenerate, modRegenAmount,
-                    modRegenInterval > 0 ? modRegenInterval * 1000 : 6000);
-        }
-
-        // SAVE
-        for (auto &saveMod : g_plugin->m_FeatSave[nFeat])
-        {
-            auto saveType = saveMod.first;
-            auto mod = saveMod.second;
-            if (mod != 0)
-            {
-                g_plugin->DoEffect(pCreature,
-                                   mod > 0 ? SavingThrowIncrease : SavingThrowDecrease, abs(mod),
-                                   saveType, Constants::SavingThrowType::All, Constants::RacialType::Invalid);
-            }
-        }
-
-        // SAVEVSRACE
-        for (auto &saveMod : g_plugin->m_FeatSaveVsRace[nFeat])
-        {
-            auto saveType = saveMod.first;
-            for (auto &saveVsFeatMod : g_plugin->m_FeatSaveVsRace[nFeat][saveType])
-            {
-                auto saveVsRace = saveVsFeatMod.first;
-                auto modVsRace = saveVsFeatMod.second;
-                if (modVsRace != 0)
-                {
-                    g_plugin->DoEffect(pCreature,
-                                       modVsRace > 0 ? SavingThrowIncrease : SavingThrowDecrease, abs(modVsRace),
-                                       saveType, Constants::SavingThrowType::All, saveVsRace);
-                }
-            }
-        }
-
-        // SAVEVSTYPE
-        for (auto &saveMod : g_plugin->m_FeatSaveVsType[nFeat])
-        {
-            auto saveType = saveMod.first;
-            for (auto &saveVsTypeMod : g_plugin->m_FeatSaveVsType[nFeat][saveType])
-            {
-                auto saveVsType = saveVsTypeMod.first;
-                auto modVsType = saveVsTypeMod.second;
-                if (modVsType != 0)
-                {
-                    g_plugin->DoEffect(pCreature,
-                                       modVsType > 0 ? SavingThrowIncrease : SavingThrowDecrease, abs(modVsType),
-                                       saveType, saveVsType, Constants::RacialType::Invalid);
-                }
-            }
-        }
-
-        // SAVEVSTYPERACE
-        for (auto &saveMod : g_plugin->m_FeatSaveVsTypeRace[nFeat])
-        {
-            auto saveType = saveMod.first;
-            for (auto &saveVsTypeMod : g_plugin->m_FeatSaveVsTypeRace[nFeat][saveType])
-            {
-                auto saveVsType = saveVsTypeMod.first;
-                for (auto &saveVsTypeRaceMod : g_plugin->m_FeatSaveVsTypeRace[nFeat][saveType][saveVsType])
-                {
-                    auto saveVsRace = saveVsTypeRaceMod.first;
-                    auto modVsTypeRace = saveVsTypeRaceMod.second;
-                    if (modVsTypeRace != 0)
-                    {
-                        g_plugin->DoEffect(pCreature,
-                                           modVsTypeRace > 0 ? SavingThrowIncrease : SavingThrowDecrease,
-                                           abs(modVsTypeRace), saveType, saveVsType, saveVsRace);
-                    }
-                }
-            }
-        }
-
-        // SPELLIMMUNITY
-        for (auto &spellImmunity : g_plugin->m_FeatSpellImmunities[nFeat])
-        {
-            g_plugin->DoEffect(pCreature, SpellImmunity, spellImmunity);
-        }
-
-        // SR
-        auto mod_SRCharGen = g_plugin->m_FeatSRCharGen[nFeat].first;
-        auto mod_SRMax = g_plugin->m_FeatSRCharGen[nFeat].second;
-        auto mod_SRInc = std::get<0>(g_plugin->m_FeatSR[nFeat]);
-        auto mod_SRLevel = std::get<1>(g_plugin->m_FeatSR[nFeat]);
-        auto mod_SRStart = std::get<2>(g_plugin->m_FeatSR[nFeat]);
-        auto mod_SRPerLevelCalc = 0;
-        if (mod_SRLevel > 0)
-            mod_SRPerLevelCalc = int32_t(std::floor(((nLevel - mod_SRStart + 1) / mod_SRLevel) * mod_SRInc));
-        int32_t mod_SR = mod_SRCharGen + (mod_SRPerLevelCalc > 0 ? mod_SRPerLevelCalc : 0);
-        mod_SR = (mod_SR > mod_SRMax && mod_SRMax > 0) ? mod_SRMax : mod_SR;
-        if (mod_SR != 0)
-        {
-            g_plugin->DoEffect(pCreature, SpellResistanceIncrease, mod_SR);
-        }
-
     }
-    pPOS->Set(pCreature->m_idSelf, "FEATMODS_ADDED_LEVEL", nLevel);
+
+    // SAVEVSTYPERACE
+    for (auto &saveMod : g_plugin->m_FeatSaveVsTypeRace[nFeat])
+    {
+        auto saveType = saveMod.first;
+        for (auto &saveVsTypeMod : g_plugin->m_FeatSaveVsTypeRace[nFeat][saveType])
+        {
+            auto saveVsType = saveVsTypeMod.first;
+            for (auto &saveVsTypeRaceMod : g_plugin->m_FeatSaveVsTypeRace[nFeat][saveType][saveVsType])
+            {
+                auto saveVsRace = saveVsTypeRaceMod.first;
+                auto modVsTypeRace = saveVsTypeRaceMod.second;
+                if (modVsTypeRace != 0)
+                {
+                    g_plugin->DoEffect(pCreature, nFeat,
+                                       modVsTypeRace > 0 ? SavingThrowIncrease : SavingThrowDecrease,
+                                       abs(modVsTypeRace), saveType, saveVsType, saveVsRace);
+                }
+            }
+        }
+    }
+
+    // SPELLIMMUNITY
+    for (auto &spellImmunity : g_plugin->m_FeatSpellImmunities[nFeat])
+    {
+        g_plugin->DoEffect(pCreature, nFeat, SpellImmunity, spellImmunity);
+    }
+
+    // SR
+    auto mod_SRCharGen = g_plugin->m_FeatSRCharGen[nFeat].first;
+    auto mod_SRMax = g_plugin->m_FeatSRCharGen[nFeat].second;
+    auto mod_SRInc = std::get<0>(g_plugin->m_FeatSR[nFeat]);
+    auto mod_SRLevel = std::get<1>(g_plugin->m_FeatSR[nFeat]);
+    auto mod_SRStart = std::get<2>(g_plugin->m_FeatSR[nFeat]);
+    auto mod_SRPerLevelCalc = 0;
+    if (mod_SRLevel > 0)
+        mod_SRPerLevelCalc = int32_t(std::floor(((pCreature->m_pStats->GetLevel(true) - mod_SRStart + 1) / mod_SRLevel) * mod_SRInc));
+    int32_t mod_SR = mod_SRCharGen + (mod_SRPerLevelCalc > 0 ? mod_SRPerLevelCalc : 0);
+    mod_SR = (mod_SR > mod_SRMax && mod_SRMax > 0) ? mod_SRMax : mod_SR;
+    if (mod_SR != 0)
+    {
+        g_plugin->DoEffect(pCreature, nFeat, SpellResistanceIncrease, mod_SR);
+    }
 }
 
 void Feat::SavingThrowRollHook(
@@ -464,36 +434,69 @@ void Feat::GetWeaponPowerHook(bool before, CNWSCreature *pCreature, CNWSObject *
     }
 }
 
-void Feat::LoadCharacterFinishHook(bool before, CServerExoAppInternal *, CNWSPlayer *pPlayer, int32_t, int32_t)
+void Feat::AddFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
 {
-    // We only want to do this in the AFTER
-    if (before)
-        return;
-    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-    g_plugin->ApplyFeatEffects(pCreature);
-}
-
-void Feat::SendServerToPlayerLevelUp_ConfirmationHook(
-        bool before,
-        CNWSMessage *,
-        PlayerID playerId,
-        int32_t bValidated)
-{
-    // Reapply the feat effects in case there are level specific ones
-    if (!before)
+    if(g_plugin->m_Feats.find(featId) != g_plugin->m_Feats.end())
     {
-        if (bValidated)
+        if (!pCreatureStats->HasFeat(featId))
         {
-            auto *client = Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(playerId, 0);
-            auto *pPlayer = static_cast<CNWSPlayer *>(client);
-            auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-            ApplyFeatEffects(pCreature);
+            g_plugin->ApplyFeatEffects(pCreatureStats->m_pBaseCreature, featId);
         }
     }
 }
 
-void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, int32_t param2, int32_t param3, int32_t param4)
+void Feat::RemoveFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
 {
+    if(g_plugin->m_Feats.find(featId) != g_plugin->m_Feats.end())
+    {
+        if (pCreatureStats->HasFeat(featId))
+        {
+            std::vector<uint16_t> remove(128);
+            for (int i = 0; i < pCreatureStats->m_pBaseCreature->m_appliedEffects.num; i++)
+            {
+                auto eff = (CGameEffect *) pCreatureStats->m_pBaseCreature->m_appliedEffects.element[i];
+                std::string featTag = "NWNX_Feat_FeatMod_" + std::to_string(featId);
+                if (eff->m_sCustomTag == featTag)
+                {
+                    remove.push_back(eff->m_nID);
+                }
+            }
+            for (auto id: remove)
+                pCreatureStats->m_pBaseCreature->RemoveEffectById(id);
+        }
+    }
+}
+
+void Feat::AddFeatHook(bool before, CNWSCreatureStats *pCreatureStats, uint16_t featId)
+{
+    if (before)
+        AddFeatEffects(pCreatureStats, featId);
+}
+
+void Feat::OnApplyBonusFeatHook(bool before, CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect*, int32_t featId)
+{
+    auto pCreatureStats = Utils::AsNWSCreature(pObject)->m_pStats;
+    if (pCreatureStats && before)
+        AddFeatEffects(pCreatureStats, featId);
+}
+
+void Feat::RemoveFeatHook(bool before, CNWSCreatureStats *pCreatureStats, uint16_t featId)
+{
+    if (before)
+        RemoveFeatEffects(pCreatureStats, featId);
+}
+
+void Feat::OnRemoveBonusFeatHook(bool before, CNWSEffectListHandler *, CNWSObject *pObject, CGameEffect *pEffect)
+{
+    auto pCreatureStats = Utils::AsNWSCreature(pObject)->m_pStats;
+    auto featId = pEffect->GetInteger(0);
+    if (pCreatureStats && before)
+        RemoveFeatEffects(pCreatureStats, featId);
+}
+
+bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, int32_t param2, int32_t param3, int32_t param4)
+{
+    bool retVal = true;
     auto featNameText = Globals::Rules()->m_lstFeats[featId].GetNameText();
     auto featName = featNameText.CStr();
     std::string sFeat = std::to_string(featId);
@@ -510,6 +513,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Ability modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatAbility[featId][param1] = param2;
@@ -521,6 +525,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: AB modifier vs Race modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatABVsRace[featId][param1] = param2;
@@ -539,6 +544,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: AC modifier vs Race modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatACVsRace[featId][param1] = param2;
@@ -551,6 +557,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param1 < 1 || param1 > 100)
             {
                 LOG_ERROR("%s: Natural Concealment modifier improperly set, value must be between 1 and 100.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatConcealment[featId] = param1;
@@ -562,6 +569,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Damage Immunity modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatDmgImmunity[featId][param1] = param2;
@@ -576,6 +584,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Damage Reduction modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatDmgReduction[featId][param1] = param2;
@@ -587,6 +596,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Damage Resist modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatDmgResist[featId][param1] = param2;
@@ -619,6 +629,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Regeneration modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatRegeneration[featId] = std::make_pair(param1, param2);
@@ -630,6 +641,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Save modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatSave[featId][param1] = param2;
@@ -641,6 +653,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF || param3 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Save vs Race modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatSaveVsRace[featId][param1][param2] = param3;
@@ -654,6 +667,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF || param3 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Save vs Type modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatSaveVsType[featId][param1][param2] = param3;
@@ -667,6 +681,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF || param3 == (int32_t)0xDEADBEEF || param4 == (int32_t)0xDEADBEEF)
             {
                 LOG_ERROR("%s: Save vs Type and Race modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatSaveVsTypeRace[featId][param1][param2][param3] = param4;
@@ -705,6 +720,7 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
             if (param2 == (int32_t)0xDEADBEEF || param3 == (int32_t)0xDEADBEEF || param2 <= 0 || param3 <= 0)
             {
                 LOG_ERROR("%s: Incremental Spell Resistance modifier improperly set.", featName);
+                retVal = false;
                 break;
             }
             g_plugin->m_FeatSR[featId] = {param1, param2, param3};
@@ -714,9 +730,11 @@ void Feat::SetFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1,
         case INVALID:
         {
             LOG_ERROR("Feat modifier not recognized.");
+            retVal = false;
             break;
         }
     }
+    return retVal;
 }
 
 ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
@@ -728,27 +746,10 @@ ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
     auto param3 = Services::Events::ExtractArgument<int>(args);
     auto param4 = Services::Events::ExtractArgument<int>(args);
 
-    SetFeatModifier(featId, featMod, param1, param2, param3, param4);
+    if (DoFeatModifier(featId, featMod, param1, param2, param3, param4) && !g_plugin->m_Feats.count(featId))
+        g_plugin->m_Feats.insert(featId);
 
     return Services::Events::Arguments();
-}
-
-ArgumentStack Feat::CreatureRefreshFeats(ArgumentStack&& args)
-{
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-
-    if (creatureId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("CreatureRefreshFeats() function called on OBJECT_INVALID");
-    }
-    else
-    {
-        auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
-        ApplyFeatEffects(pCreature, true);
-    }
-
-    return Services::Events::Arguments();
-
 }
 
 }

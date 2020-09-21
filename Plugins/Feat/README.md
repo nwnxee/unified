@@ -12,10 +12,6 @@ Adding new feats is beyond the scope of this documentation. The builder should k
 
 Once your feat has been added (or it's also fine to modify existing feats) builders run the NWNX_Feat_SetFeatModifier() as illustrated below.
 
-Builders who intend to add feats with modifiers to items should note they need to run the `NWNX_Feat_CreatureRefreshFeats()` command On{Un|}Equip. 
-
-The `NWNX_Feat_CreatureRefreshFeats()` command will also need to be ran if the builder dynamically adds/removes feats to a PC with NWNX_Creature_{Add|Remove}Feat* type commands.
-
 The **NWNX_Feat plugin does not provide modifications to skill ranks**, use the NWNX_SkillRanks plugin for changing those.
 
 ## Feat Modifiers

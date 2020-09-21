@@ -5,8 +5,7 @@
 #include "Services/Hooks/Hooks.hpp"
 #include <list>
 #include <map>
-#include <tuple>
-
+#include <set>
 using namespace std;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
@@ -25,7 +24,6 @@ private:
     bool m_ShowEffectIcon;
 
     ArgumentStack SetFeatModifier(ArgumentStack&& args);
-    ArgumentStack CreatureRefreshFeats(ArgumentStack&& args);
 
     enum FeatModifier
     {
@@ -51,6 +49,7 @@ private:
         SRINCLEVEL     = 19,
     };
 
+    set<uint16_t> m_Feats;
     unordered_map<uint16_t, int32_t>                                                  m_FeatAB;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatAbility;
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_FeatABVsRace;
@@ -71,15 +70,19 @@ private:
     unordered_map<uint16_t, pair<uint8_t, uint8_t>>                                   m_FeatSRCharGen;
     unordered_map<uint16_t, tuple<uint8_t, uint8_t, uint8_t>>                         m_FeatSR;
 
-    static void DoEffect(CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
-    static void ApplyFeatEffects(CNWSCreature*, bool);
-    static void SetFeatModifier(int32_t, FeatModifier, int32_t, int32_t, int32_t, int32_t);
+    static void DoEffect(CNWSCreature*, uint16_t, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
+    static void ApplyFeatEffects(CNWSCreature*, uint16_t);
+    static void AddFeatEffects(CNWSCreatureStats*, uint16_t);
+    static void RemoveFeatEffects(CNWSCreatureStats*, uint16_t);
+    static bool DoFeatModifier(int32_t, FeatModifier, int32_t, int32_t, int32_t, int32_t);
 
-    static void LoadCharacterFinishHook(bool, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t);
+    static void AddFeatHook(bool, CNWSCreatureStats*, uint16_t);
+    static void RemoveFeatHook(bool, CNWSCreatureStats*, uint16_t);
+    static void OnApplyBonusFeatHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
+    static void OnRemoveBonusFeatHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*);
     static void SavingThrowRollHook(bool, CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t);
     static void GetWeaponPowerHook(bool, CNWSCreature*, CNWSObject*, int32_t);
     static void GetTotalEffectBonusHook(bool, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
-    static void SendServerToPlayerLevelUp_ConfirmationHook(bool, CNWSMessage*, PlayerID, int32_t);
 };
 
 }
