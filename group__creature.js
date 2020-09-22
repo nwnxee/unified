@@ -126,6 +126,8 @@ var group__creature =
     [ "NWNX_Creature_SetLastItemCasterLevel", "group__creature.html#gaaf4852e6a077da9128b3923ff52701df", null ],
     [ "NWNX_Creature_GetLastItemCasterLevel", "group__creature.html#ga236441a51419c1f8d8f334c9255798e1", null ],
     [ "NWNX_Creature_GetArmorClassVersus", "group__creature.html#gacd4022d011b84e8b015b4bbe5abca7fa", null ],
+    [ "NWNX_Creature_GetWalkAnimation", "group__creature.html#ga82df154139fe280327b544db96c2469f", null ],
+    [ "NWNX_Creature_SetWalkAnimation", "group__creature.html#ga9c46ab23cd58e1e9108f333b3f65062f", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],

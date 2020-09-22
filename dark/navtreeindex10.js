@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"nwnx__redis__short_8nss.html#affe5b552f1dd6710fe6eeec022c71955":[4,0,2,26,0,3,144],
+"nwnx__redis__short_8nss_source.html":[4,0,2,26,0,3],
+"nwnx__regex_8nss.html":[4,0,2,27,0,0],
+"nwnx__regex_8nss_source.html":[4,0,2,27,0,0],
 "nwnx__rename_8nss.html":[4,0,2,28,0,0],
 "nwnx__rename_8nss_source.html":[4,0,2,28,0,0],
 "nwnx__reveal_8nss.html":[4,0,2,29,0,0],
