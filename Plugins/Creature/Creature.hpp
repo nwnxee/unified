@@ -126,6 +126,8 @@ private:
     ArgumentStack SetEncounter                  (ArgumentStack&& args);
     ArgumentStack GetEncounter                  (ArgumentStack&& args);
     ArgumentStack GetIsBartering                (ArgumentStack&& args);
+    ArgumentStack GetWalkAnimation              (ArgumentStack&& args);
+    ArgumentStack SetWalkAnimation              (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
