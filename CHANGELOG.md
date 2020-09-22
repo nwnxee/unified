@@ -15,6 +15,7 @@ The following plugins were added:
 - **Feat**: Allows to define a variety of effects that are granted to feat holders.
 
 ##### New NWScript Functions
+- Creature: {Get|Set}WalkAnimation()
 - Feat: SetFeatModifier()
 
 ### Changed
@@ -27,7 +28,8 @@ N/A
 N/A
 
 ### Fixed
-N/A
+- Administration: fix crash in DeletePlayerCharacter()
+- Race: fixed effect clean up after level up
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
