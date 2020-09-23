@@ -11,10 +11,12 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 
 ##### New Plugins
-N/A
+The following plugins were added:
+- **Feat**: Allows to define a variety of effects that are granted to feat holders.
 
 ##### New NWScript Functions
 - Creature: {Get|Set}WalkAnimation()
+- Feat: SetFeatModifier()
 
 ### Changed
 N/A
