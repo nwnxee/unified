@@ -14,7 +14,7 @@ N/A
 N/A
 
 ##### New NWScript Functions
-N/A
+- Creature: {Get|Set}WalkAnimation()
 
 ### Changed
 N/A
@@ -27,6 +27,7 @@ N/A
 
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
+- Race: fixed effect clean up after level up
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16

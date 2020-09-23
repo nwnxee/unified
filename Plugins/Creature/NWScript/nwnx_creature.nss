@@ -792,6 +792,16 @@ int NWNX_Creature_GetLastItemCasterLevel(object oCreature);
 /// @return -255 on Error, Flat footed AC if oVersus is invalid or the Attacked AC versus oVersus.
 int NWNX_Creature_GetArmorClassVersus(object oAttacked, object oVersus, int nTouch=FALSE);
 
+/// @brief Gets the current walk animation of oCreature.
+/// @param oCreature The target creature.
+/// @return -1 on Error, otherwise the walk animation number
+int NWNX_Creature_GetWalkAnimation(object oCreature);
+
+/// @brief Sets the current walk animation of oCreature.
+/// @param oCreature The target creature.
+/// @param nAnimation The walk animation number.
+void NWNX_Creature_SetWalkAnimation(object oCreature, int nAnimation);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2004,4 +2014,21 @@ int NWNX_Creature_GetArmorClassVersus(object oAttacked, object oVersus, int nTou
     NWNX_CallFunction(NWNX_Creature, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetWalkAnimation(object oCreature)
+{
+    string sFunc = "GetWalkAnimation";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetWalkAnimation(object oCreature, int nAnimation)
+{
+    string sFunc = "SetWalkAnimation";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nAnimation);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }
