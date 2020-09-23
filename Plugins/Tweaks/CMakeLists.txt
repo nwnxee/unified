@@ -8,7 +8,7 @@ add_plugin(Tweaks
     "Tweaks/ParryAllAttacks.cpp"
     "Tweaks/SneakAttackCritImmunity.cpp"
     "Tweaks/PreserveDepletedItems.cpp"
-    "Tweaks/HideDMsOnCharList.cpp"
+    "Tweaks/HidePlayersOnCharList.cpp"
     "Tweaks/DisableMonkAbilitiesWhenPolymorphed.cpp"
     "Tweaks/StringToIntBaseToAuto.cpp"
     "Tweaks/DeadCreatureFiresOnAreaExit.cpp"
