@@ -92,8 +92,7 @@ Tweaks::Tweaks(Services::ProxyServiceList* services)
         LOG_INFO("NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST has been deprecated, please use NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST = 1");
         m_HidePlayersOnCharList = std::make_unique<HidePlayersOnCharList>(GetServices()->m_hooks.get(), 1);
     }
-
-    if (auto mode = GetServices()->m_config->Get<int>("HIDE_PLAYERS_ON_CHAR_LIST", 0))
+    else if (auto mode = GetServices()->m_config->Get<int>("HIDE_PLAYERS_ON_CHAR_LIST", 0))
     {
         if (mode == 1)
             LOG_INFO("DMs will not be visible on character list.");
