@@ -54,8 +54,6 @@ Layonara::Layonara(Services::ProxyServiceList* services)
     REGISTER(SetDuelistCannyDefense);
     REGISTER(SetDuelistGrace);
     REGISTER(SetDuelistElaborateParry);
-    REGISTER(SetSpellswordIgnoreSpellFailure);
-    REGISTER(SetUndeadSlayerImmunity);
     REGISTER(SetSubraceDayEffects);
     REGISTER(ApplyRune);
     REGISTER(CombineRunes);
@@ -140,16 +138,24 @@ CNWSItem *Layonara::GetItemInSlotHook(CNWSInventory *pThis, uint32_t nSlot)
     return g_plugin->m_GetItemInSlotHook->CallOriginal<CNWSItem*>(pThis, nSlot);
 }
 
-void Layonara::SetArrowsEffect(CNWSCreature *pCreature, bool bOff)
+void Layonara::RemoveEffectByTag(CNWSCreature *pCreature, std::string sCustomTag)
 {
+    std::vector<uint16_t> remove(128);
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "NWNX_Layonara_QuiverArrows")
+        if (eff->m_sCustomTag == sCustomTag)
         {
-            pCreature->RemoveEffectById(eff->m_nID);
+            remove.push_back(eff->m_nID);
         }
     }
+    for (auto id: remove)
+        pCreature->RemoveEffectById(id);
+}
+
+void Layonara::SetArrowsEffect(CNWSCreature *pCreature, bool bOff)
+{
+    RemoveEffectByTag(pCreature, "NWNX_Layonara_QuiverArrows");
     if (bOff)
         return;
 
@@ -235,14 +241,7 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
 
     auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
 
-    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
-    {
-        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "NWNX_Layonara_DuelistCannyDefense")
-        {
-            pCreature->RemoveEffect(eff);
-        }
-    }
+    RemoveEffectByTag(pCreature, "NWNX_Layonara_DuelistCannyDefense");
 
     if (nBonus != -1)
     {
@@ -278,14 +277,7 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
 
     auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
 
-    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
-    {
-        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "NWNX_Layonara_DuelistGrace")
-        {
-            pCreature->RemoveEffect(eff);
-        }
-    }
+    RemoveEffectByTag(pCreature, "NWNX_Layonara_DuelistGrace");
 
     if (nBonus != -1)
     {
@@ -319,14 +311,7 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
 
     auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
 
-    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
-    {
-        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "NWNX_Layonara_DuelistElaborateParry")
-        {
-            pCreature->RemoveEffect(eff);
-        }
-    }
+    RemoveEffectByTag(pCreature, "NWNX_Layonara_DuelistElaborateParry");
 
     if (nBonus != -1)
     {
@@ -345,70 +330,6 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
     return stack;
 }
 
-ArgumentStack Layonara::SetSpellswordIgnoreSpellFailure(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto nBonus = Services::Events::ExtractArgument<int32_t>(args);
-
-    if (creatureId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
-        return stack;
-    }
-
-    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
-
-    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
-    {
-        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "NWNX_Layonara_SpellswordIgnoreSpellFailure")
-        {
-            pCreature->RemoveEffect(eff);
-        }
-    }
-
-    if (nBonus != -1)
-    {
-        auto *eff = new CGameEffect(true);
-        eff->m_oidCreator         = 0;
-        eff->m_nType              = EffectTrueType::ArcaneSpellFailure;
-        eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
-        eff->m_bShowIcon          = 0;
-        eff->m_nParamInteger[0]   = nBonus;
-        eff->m_sCustomTag         = "NWNX_Layonara_SpellswordIgnoreSpellFailure";
-        pCreature->ApplyEffect(eff, true, true);
-    }
-
-    return stack;
-}
-
-ArgumentStack Layonara::SetUndeadSlayerImmunity(ArgumentStack&& args)
-{
-    ArgumentStack stack;
-    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto nImmunity = Services::Events::ExtractArgument<int32_t>(args);
-
-    if (creatureId == Constants::OBJECT_INVALID)
-    {
-        LOG_NOTICE("NWNX_Layonara function called on OBJECT_INVALID");
-        return stack;
-    }
-
-    auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
-
-    auto *eff = new CGameEffect(true);
-    eff->m_oidCreator         = 0;
-    eff->m_nType              = EffectTrueType::Immunity;
-    eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
-    eff->m_bShowIcon          = 0;
-    eff->m_nParamInteger[0]   = nImmunity;
-    eff->m_nParamInteger[1]   = RacialType::Invalid;
-    pCreature->ApplyEffect(eff, true, true);
-
-    return stack;
-}
-
 ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
 {
     ArgumentStack stack;
@@ -423,14 +344,7 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
 
     auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
 
-    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
-    {
-        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "NWNX_Layonara_SubraceDayEffects")
-        {
-            pCreature->RemoveEffectById(eff->m_nID);
-        }
-    }
+    RemoveEffectByTag(pCreature, "NWNX_Layonara_SubraceDayEffects");
 
     if (nActive)
     {
@@ -835,14 +749,8 @@ ArgumentStack Layonara::SetQuiver(ArgumentStack&& args)
 
     auto pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId);
 
-    for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
-    {
-        auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
-        if (eff->m_sCustomTag == "NWNX_Layonara_Quiver" || eff->m_sCustomTag == "NWNX_Layonara_QuiverArrows")
-        {
-            pCreature->RemoveEffectById(eff->m_nID);
-        }
-    }
+    RemoveEffectByTag(pCreature, "NWNX_Layonara_Quiver");
+    RemoveEffectByTag(pCreature, "NWNX_Layonara_QuiverArrows");
 
     if (nColor == -1)
     {

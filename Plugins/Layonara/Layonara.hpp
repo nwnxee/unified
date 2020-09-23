@@ -19,6 +19,7 @@ public:
     virtual ~Layonara();
 
 private:
+    static void RemoveEffectByTag(CNWSCreature *pCreature, std::string sCustomTag);
     static void SetArrowsEffect(CNWSCreature *pCreature, bool bOff=false);
     static CNWSItem *GetItemInSlotHook(CNWSInventory*, uint32_t);
     static void SetPositionHook(bool, CNWSObject*, Vector, int32_t);
@@ -98,8 +99,6 @@ private:
     ArgumentStack SetDuelistCannyDefense          (ArgumentStack&& args);
     ArgumentStack SetDuelistGrace                 (ArgumentStack&& args);
     ArgumentStack SetDuelistElaborateParry        (ArgumentStack&& args);
-    ArgumentStack SetSpellswordIgnoreSpellFailure (ArgumentStack&& args);
-    ArgumentStack SetUndeadSlayerImmunity         (ArgumentStack&& args);
     ArgumentStack SetSubraceDayEffects            (ArgumentStack&& args);
     ArgumentStack ApplyRune                       (ArgumentStack&& args);
     ArgumentStack CombineRunes                    (ArgumentStack&& args);

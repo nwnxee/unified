@@ -31,16 +31,6 @@ void NWNX_Layonara_SetDuelistGrace(object creature, int nBonus);
 /// @param nBonus The bonus amount.
 void NWNX_Layonara_SetDuelistElaborateParry(object creature, int nBonus);
 
-/// @brief Enable the Spellsword Ignore Spell Failure effects.
-/// @param creature The creature object.
-/// @param nBonus The bonus amount.
-void NWNX_Layonara_SetSpellswordIgnoreSpellFailure(object creature, int nBonus);
-
-/// @brief Enable the Undead Slayer Immunity effects.
-/// @param creature The creature object.
-/// @param nImmunity The immunity type.
-void NWNX_Layonara_SetUndeadSlayerImmunity(object creature, int nImmunity);
-
 /// @brief Set the Subrace Effects for Daytime
 /// @param creature The creature object.
 /// @param nActive TRUE if turned on.
@@ -125,26 +115,6 @@ void NWNX_Layonara_SetDuelistElaborateParry(object creature, int nBonus)
     string sFunc = "SetDuelistElaborateParry";
 
     NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Layonara, sFunc);
-}
-
-void NWNX_Layonara_SetSpellswordIgnoreSpellFailure(object creature, int nBonus)
-{
-    string sFunc = "SetSpellswordIgnoreSpellFailure";
-
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nBonus);
-    NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
-
-    NWNX_CallFunction(NWNX_Layonara, sFunc);
-}
-
-void NWNX_Layonara_SetUndeadSlayerImmunity(object creature, int nImmunity)
-{
-    string sFunc = "SetUndeadSlayerImmunity";
-
-    NWNX_PushArgumentInt(NWNX_Layonara, sFunc, nImmunity);
     NWNX_PushArgumentObject(NWNX_Layonara, sFunc, creature);
 
     NWNX_CallFunction(NWNX_Layonara, sFunc);
