@@ -23,6 +23,7 @@ These commands should be ran `on_module_load`.
 * [ABVSRACE](#abvsrace)
 * [AC](#ac)
 * [ACVSRACE](#acvsrace)
+* [ARCANESPELLFAILURE](#arcanespellfailure)
 * [CONCEALMENT](#concealment)
 * [DMGREDUCTION](#dmgreduction)
 * [DMGRESIST](#dmgresist)
@@ -91,6 +92,16 @@ The `ACVSRACE` entry is used to modify the base AC versus another race.
 ##### Example script on_module_load
 ```c
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_ACVSRACE, RACIAL_TYPE_DRAGON, 4);
+```
+***
+### ARCANESPELLFAILURE
+The `ARCANESPELLFAILURE` can modify the arcane spell failure for the creature.
+
+* Param1 = The percentage change to their failure (-100/+100)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_ARCANESPELLFAILURE, -30);
 ```
 ***
 ### CONCEALMENT

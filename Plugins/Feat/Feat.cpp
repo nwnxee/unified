@@ -145,6 +145,13 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
         }
     }
 
+    // ARCANESPELLFAILURE
+    auto modArcaneSpellFailure = g_plugin->m_FeatArcaneSpellFailure[nFeat];
+    if (modArcaneSpellFailure != 0)
+    {
+        g_plugin->DoEffect(pCreature, nFeat, ArcaneSpellFailure, modArcaneSpellFailure);
+    }
+
     // CONCEALMENT
     auto modConceal = g_plugin->m_FeatConcealment[nFeat];
     if (modConceal != 0)
@@ -550,6 +557,12 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
             g_plugin->m_FeatACVsRace[featId][param1] = param2;
             auto versusRaceName = Globals::Rules()->m_lstRaces[param1].GetNamePluralText();
             LOG_INFO("%s: Setting AC modifier vs %s to %d.", featName, versusRaceName, param2);
+            break;
+        }
+        case ARCANESPELLFAILURE:
+        {
+            g_plugin->m_FeatArcaneSpellFailure[featId] = param1;
+            LOG_INFO("%s: Adjusting Arcane Spell Failure by %d%%.", featName, param1);
             break;
         }
         case CONCEALMENT:

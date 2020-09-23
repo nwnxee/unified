@@ -27,26 +27,27 @@ private:
 
     enum FeatModifier
     {
-        INVALID        = 0,
-        AB             = 1,
-        ABILITY        = 2,
-        ABVSRACE       = 3,
-        AC             = 4,
-        ACVSRACE       = 5,
-        CONCEALMENT    = 6,
-        DMGIMMUNITY    = 7,
-        DMGREDUCTION   = 8,
-        DMGRESIST      = 9,
-        IMMUNITY       = 10,
-        MOVEMENTSPEED  = 11,
-        REGENERATION   = 12,
-        SAVE           = 13,
-        SAVEVSRACE     = 14,
-        SAVEVSTYPE     = 15,
-        SAVEVSTYPERACE = 16,
-        SPELLIMMUNITY  = 17,
-        SRCHARGEN      = 18,
-        SRINCLEVEL     = 19,
+        INVALID            = 0,
+        AB                 = 1,
+        ABILITY            = 2,
+        ABVSRACE           = 3,
+        AC                 = 4,
+        ACVSRACE           = 5,
+        ARCANESPELLFAILURE = 6,
+        CONCEALMENT        = 7,
+        DMGIMMUNITY        = 8,
+        DMGREDUCTION       = 9,
+        DMGRESIST          = 10,
+        IMMUNITY           = 11,
+        MOVEMENTSPEED      = 12,
+        REGENERATION       = 13,
+        SAVE               = 14,
+        SAVEVSRACE         = 15,
+        SAVEVSTYPE         = 16,
+        SAVEVSTYPERACE     = 17,
+        SPELLIMMUNITY      = 18,
+        SRCHARGEN          = 19,
+        SRINCLEVEL         = 20,
     };
 
     set<uint16_t> m_Feats;
@@ -55,6 +56,7 @@ private:
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_FeatABVsRace;
     unordered_map<uint16_t, int32_t>                                                  m_FeatAC;
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_FeatACVsRace;
+    unordered_map<uint16_t, uint8_t>                                                  m_FeatArcaneSpellFailure;
     unordered_map<uint16_t, uint8_t>                                                  m_FeatConcealment;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgImmunity;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatDmgReduction;
