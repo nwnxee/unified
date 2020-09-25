@@ -15,6 +15,7 @@ N/A
 
 ##### New NWScript Functions
 - Creature: {Get|Set}WalkAnimation()
+- Object: GetCurrentAnimation()
 
 ### Changed
 N/A

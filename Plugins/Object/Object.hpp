@@ -61,6 +61,7 @@ private:
     ArgumentStack DoSpellImmunity           (ArgumentStack&& args);
     ArgumentStack DoSpellLevelAbsorption    (ArgumentStack&& args);
     ArgumentStack SetHasInventory           (ArgumentStack&& args);
+    ArgumentStack GetCurrentAnimation       (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };
