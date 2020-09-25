@@ -7,7 +7,7 @@
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/SneakAttackCritImmunity.hpp"
 #include "Tweaks/PreserveDepletedItems.hpp"
-#include "Tweaks/HideDMsOnCharList.hpp"
+#include "Tweaks/HidePlayersOnCharList.hpp"
 #include "Tweaks/DisableMonkAbilitiesWhenPolymorphed.hpp"
 #include "Tweaks/StringToIntBaseToAuto.hpp"
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
@@ -89,8 +89,18 @@ Tweaks::Tweaks(Services::ProxyServiceList* services)
 
     if (GetServices()->m_config->Get<bool>("HIDE_DMS_ON_CHAR_LIST", false))
     {
-        LOG_INFO("DMs will not be visible on character list");
-        m_HideDMsOnCharList = std::make_unique<HideDMsOnCharList>(GetServices()->m_hooks.get());
+        LOG_INFO("NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST has been deprecated, please use NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST = 1");
+        m_HidePlayersOnCharList = std::make_unique<HidePlayersOnCharList>(GetServices()->m_hooks.get(), 1);
+    }
+    else if (auto mode = GetServices()->m_config->Get<int>("HIDE_PLAYERS_ON_CHAR_LIST", 0))
+    {
+        if (mode == 1)
+            LOG_INFO("DMs will not be visible on character list.");
+        else if (mode == 2)
+            LOG_INFO("PCs will not be visible on character list.");
+        else if (mode == 3)
+            LOG_INFO("DMs and PCs will not be visible on character list.");
+        m_HidePlayersOnCharList = std::make_unique<HidePlayersOnCharList>(GetServices()->m_hooks.get(), mode);
     }
 
     if (GetServices()->m_config->Get<bool>("DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED", false))
