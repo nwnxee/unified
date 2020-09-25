@@ -480,7 +480,7 @@ void Rename::GlobalNameChange(
                         switch (playerNameOverrideState)
                         {
                             case NWNX_RENAME_PLAYERNAME_OBFUSCATE:
-                                playerInfo->m_sPlayerName = CExoString(GenerateRandomPlayerName(7).c_str());
+                                playerInfo->m_sPlayerName = CExoString(GenerateRandomPlayerName(7, targetOid).c_str());
                                 break;
                             case NWNX_RENAME_PLAYERNAME_OVERRIDE:
                                 playerInfo->m_sPlayerName = std::get<1>(g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID]);
@@ -507,8 +507,11 @@ CExoLocString Rename::ContainString(const std::string& str)
     return locStr;
 }
 
-std::string Rename::GenerateRandomPlayerName(size_t length)
+std::string Rename::GenerateRandomPlayerName(size_t length, ObjectID targetOid)
 {
+    auto iter = m_ObfuscatedNames.find(targetOid);
+    if (iter != m_ObfuscatedNames.end())
+        return iter->second;
     static std::mt19937 rngEngine(std::random_device{}());
     static const std::string charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     std::uniform_int_distribution<int> distribution(0, charSet.length() - 1);
@@ -518,6 +521,7 @@ std::string Rename::GenerateRandomPlayerName(size_t length)
     {
         randomPlayername += charSet[distribution(rngEngine)];
     }
+    m_ObfuscatedNames[targetOid] = randomPlayername;
     return randomPlayername;
 }
 

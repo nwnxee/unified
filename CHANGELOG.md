@@ -28,6 +28,7 @@ N/A
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
 - Race: fixed effect clean up after level up
+- Rename: community name only obfuscates once a server reset
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
