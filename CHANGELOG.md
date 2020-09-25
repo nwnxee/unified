@@ -16,7 +16,6 @@ The following plugins were added:
 
 ##### New NWScript Functions
 - Creature: {Get|Set}WalkAnimation()
-- Feat: SetFeatModifier()
 
 ### Changed
 N/A
