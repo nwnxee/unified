@@ -86,7 +86,7 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
 
                 for (const auto& path : paths)
                 {
-                    int wd = inotify_add_watch(inotifyFd, path.second.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
+                    int wd = inotify_add_watch(inotifyFd, path.second.c_str(), IN_CREATE | IN_DELETE | IN_CLOSE_WRITE);
 
                     if (wd != -1)
                         aliases[wd] = path.first;
@@ -120,7 +120,7 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
 
                             if (event->len)
                             {
-                                if (event->mask & IN_MODIFY)
+                                if (event->mask & IN_CLOSE_WRITE)
                                 {
                                     events.emplace_back(event->name, aliases[event->wd], "MODIFIED");
                                 }
