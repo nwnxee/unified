@@ -120,11 +120,12 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
     [ "Environment Variables", "group__tracking.html#autotoc_md347", null ],
     [ "Environment Variables", "group__tweaks.html#autotoc_md348", null ],
     [ "Environment variable values", "group__tweaks.html#autotoc_md349", [
-      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md350", null ]
+      [ "NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST", "group__tweaks.html#autotoc_md350", null ],
+      [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md351", null ]
     ] ],
-    [ "Environment Variables", "group__util.html#autotoc_md351", null ],
-    [ "Limitations", "group__webhook.html#autotoc_md357", null ],
-    [ "Example usage", "group__webhook.html#autotoc_md358", null ],
+    [ "Environment Variables", "group__util.html#autotoc_md352", null ],
+    [ "Limitations", "group__webhook.html#autotoc_md358", null ],
+    [ "Example usage", "group__webhook.html#autotoc_md359", null ],
     [ "nwnx.nss", "nwnx_8nss.html", "nwnx_8nss" ],
     [ "nwnx_consts.nss", "nwnx__consts_8nss.html", "nwnx__consts_8nss" ],
     [ "nwnx_tests.nss", "nwnx__tests_8nss.html", "nwnx__tests_8nss" ]
