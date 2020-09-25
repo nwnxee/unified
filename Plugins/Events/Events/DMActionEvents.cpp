@@ -233,7 +233,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
             int32_t objectType;
             std::string x = std::to_string(Utils::PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
             std::string y = std::to_string(Utils::PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
-            std::string z = std::to_string(Utils::PeekMessage<float>(thisPtr, offset));
+            std::string z = std::to_string(Utils::PeekMessage<float>(thisPtr, offset)); offset += sizeof(float);
 
             switch (nMinor)
             {
@@ -244,8 +244,12 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
                     objectType = ObjectType::Item;
                     break;
                 case MessageDungeonMasterMinor::SpawnPlaceable:
+                {
                     objectType = ObjectType::Placeable;
+                    // Placeables have extra orientation data
+                    offset += sizeof(float) + sizeof(float) + sizeof(float);
                     break;
+                }
                 case MessageDungeonMasterMinor::SpawnWaypoint:
                     objectType = ObjectType::Waypoint;
                     break;
@@ -263,6 +267,8 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
                     break;
             }
 
+            auto resref = Utils::PeekMessage<CResRef>(thisPtr, offset);
+
             auto PushAndSignal = [&](const std::string& ev) -> bool {
                 Events::PushEventData("AREA", area);
                 Events::PushEventData("OBJECT", object);
@@ -270,6 +276,7 @@ int32_t DMActionEvents::HandleDMMessageHook(CNWSMessage *thisPtr, CNWSPlayer *pP
                 Events::PushEventData("POS_X", x);
                 Events::PushEventData("POS_Y", y);
                 Events::PushEventData("POS_Z", z);
+                Events::PushEventData("RESREF", resref.GetResRefStr());
                 return Events::SignalEvent(ev, oidDM);
             };
 

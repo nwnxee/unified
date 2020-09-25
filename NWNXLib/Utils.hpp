@@ -76,6 +76,18 @@ inline std::string PeekMessage<std::string>(CNWSMessage *pMessage, int32_t offse
     return string;
 }
 
+template <>
+inline CResRef PeekMessage<CResRef>(CNWSMessage *pMessage, int32_t offset)
+{
+    std::string string;
+
+    string.reserve(16 + 1);
+    string.assign(reinterpret_cast<const char*>(pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset), 16);
+    string[16] = '\0';
+
+    return CResRef(string);
+}
+
 void AddStealthEvent(int32_t which, ObjectID oidSelf, ObjectID oidTarget);
 void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea);
 void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea);
