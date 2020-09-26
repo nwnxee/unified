@@ -99,6 +99,7 @@ Object::Object(Services::ProxyServiceList* services)
     REGISTER(DoSpellImmunity);
     REGISTER(DoSpellLevelAbsorption);
     REGISTER(SetHasInventory);
+    REGISTER(GetCurrentAnimation);
 
 #undef REGISTER
 }
@@ -982,4 +983,17 @@ ArgumentStack Object::SetHasInventory(ArgumentStack&& args)
 
     return Services::Events::Arguments();
 }
+
+ArgumentStack Object::GetCurrentAnimation(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        retVal = pObject->m_nAnimation;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
 }

@@ -22,6 +22,7 @@ public:
 private:
     std::unordered_map<ObjectID, std::unordered_map<ObjectID, std::tuple<CExoString, CExoString, int32_t>>> m_RenamePlayerNames;
     std::unordered_map<ObjectID, std::tuple<CExoString, CExoLocString, CExoLocString>> m_RenameOriginalNames;
+    std::unordered_map<ObjectID, std::string> m_ObfuscatedNames;
     int32_t m_RenameOnModuleCharList;
     std::unordered_set<PlayerID> m_RenameAddedToPlayerList;
     bool m_RenameOnPlayerList;
@@ -44,7 +45,7 @@ private:
     void GlobalNameChange(bool, PlayerID, PlayerID);
 
     CExoLocString ContainString(const std::string& str);
-    std::string GenerateRandomPlayerName(size_t length);
+    std::string GenerateRandomPlayerName(size_t length, ObjectID targetOid);
 
     void SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlayerId);
 

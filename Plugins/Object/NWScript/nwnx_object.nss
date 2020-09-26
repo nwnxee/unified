@@ -332,6 +332,13 @@ int NWNX_Object_DoSpellLevelAbsorption(object oDefender, object oCaster);
 /// @note Only works on placeables.
 void NWNX_Object_SetHasInventory(object obj, int bHasInventory);
 
+/// @brief Get the current animation of oObject
+/// @note The returned value will be an engine animation constant, not a NWScript ANIMATION_ constant.
+///       See: https://github.com/nwnxee/unified/blob/master/NWNXLib/API/Constants/Animation.hpp
+/// @param oObject The object
+/// @return -1 on error or the engine animation constant
+int NWNX_Object_GetCurrentAnimation(object oObject);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -814,4 +821,14 @@ void NWNX_Object_SetHasInventory(object obj, int bHasInventory)
     NWNX_PushArgumentObject(NWNX_Object, sFunc, obj);
 
     NWNX_CallFunction(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetCurrentAnimation(object oObject)
+{
+    string sFunc = "GetCurrentAnimation";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
 }
