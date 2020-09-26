@@ -10,6 +10,14 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CNWSObject.hpp"
 #include "Utils.hpp"
+#include "Services/Config/Config.hpp"
+#include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWRules.hpp"
+#include "API/CNWItemProperty.hpp"
+#include "API/CNWSCombatRound.hpp"
+#include "API/CNWSItem.hpp"
+#include "API/CNWSInventory.hpp"
 
 #include <string>
 
@@ -45,9 +53,24 @@ Effect::Effect(Services::ProxyServiceList* services)
     REGISTER(ReplaceEffectByElement);
     REGISTER(RemoveEffectById);
     REGISTER(SetEffectImmunityBypass);
+    REGISTER(SetDamageReductionBypass);
 
 #undef REGISTER
 
+    auto bDR = GetServices()->m_config->Get<bool>("EXTEND_DAMAGE_REDUCTION_ITEM_PROPERTIES", false);
+    auto bSC = GetServices()->m_config->Get<bool>("EXTEND_SNEAK_CRIT_IMM_ITEM_PROPERTIES", false);
+
+    if(bDR || bSC)
+    {
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN15CServerAIMaster21OnItemPropertyAppliedEP8CNWSItemP15CNWItemPropertyP12CNWSCreatureji, bool, CServerAIMaster*, CNWSItem*, CNWItemProperty*, CNWSCreature*, uint32_t, BOOL>(&OnItemPropertyAppliedHook);
+        if(bDR)
+            GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler22OnApplyDamageReductionEP10CNWSObjectP11CGameEffecti, bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL>(&OnApplyDamageReductionHook);
+        if(bSC)
+        {
+            GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler21OnApplyEffectImmunityEP10CNWSObjectP11CGameEffecti, bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, BOOL>(&OnApplyEffectImmunityHook);
+            m_GetEffectImmunityHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats17GetEffectImmunityEhP12CNWSCreaturei>(&GetEffectImmunityHook);
+        }
+    }
 }
 
 Effect::~Effect()
@@ -427,6 +450,40 @@ int32_t Effect::GetEffectImmunityHook(CNWSCreatureStats *pStats, uint8_t nType, 
     if(g_plugin->m_bBypassImm)
         return false;
 
+    if(nType == Constants::ImmunityType::CriticalHit || nType == Constants::ImmunityType::SneakAttack)
+    {
+        if(bConsiderFeats && pStats->HasFeat(Constants::Feat::DeathlessMastery))
+            return true;
+
+        auto effectList = pStats->m_pBaseCreature->m_appliedEffects;
+        uint8_t highest = 0;
+        for (int32_t i = 0; i < effectList.num; i++)
+        {
+            auto *eff = effectList.element[i];
+
+            if(eff->m_nType==Constants::EffectTrueType::Immunity && eff->m_nParamInteger[0]==nType)
+            {
+                if((eff->m_nParamInteger[1] == Constants::RacialType::All || (pVersus != nullptr && eff->m_nParamInteger[1] == pVersus->m_pStats->m_nRace)) && //race check
+                   (eff->m_nParamInteger[2] == Constants::Alignment::All || (pVersus != nullptr && eff->m_nParamInteger[2] == pVersus->m_pStats->m_nAlignmentLawChaos)) &&
+                   (eff->m_nParamInteger[3] == Constants::Alignment::All || (pVersus != nullptr && eff->m_nParamInteger[3] == pVersus->m_pStats->m_nAlignmentGoodEvil)))
+                {
+                    if(eff->m_nParamInteger[4] == 0 || eff->m_nParamInteger[4] == 100)
+                        return true;
+
+                    if(eff->m_nParamInteger[4] > highest)
+                        highest = eff->m_nParamInteger[4];
+                }
+
+            }
+
+        }
+
+        if(highest > 0 && Globals::Rules()->RollDice(1, 100) <= highest)
+            return true;
+
+        return false;
+    }
+
     return g_plugin->m_GetEffectImmunityHook->CallOriginal<BOOL>(pStats, nType, pVersus, bConsiderFeats);
 }
 
@@ -442,6 +499,143 @@ ArgumentStack Effect::SetEffectImmunityBypass(ArgumentStack&& args)
 
     g_plugin->m_bBypassImm = Services::Events::ExtractArgument<int32_t>(args);
     return Services::Events::Arguments();
+}
+
+void Effect::InitDamageReductionHooks()
+{
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSObject17DoDamageReductionEP12CNWSCreatureihii, bool, CNWSObject*, CNWSCreature*, int32_t, uint8_t, BOOL, BOOL>(&DoDamageReductionHook);
+    g_plugin->m_bInitRed = true;
+}
+
+void Effect::OnItemPropertyAppliedHook(bool before, CServerAIMaster*, CNWSItem*, CNWItemProperty *pItemProperty, CNWSCreature*, uint32_t, BOOL)
+{
+    if(before)
+    {
+        if(pItemProperty->m_nParam1Value > 0)
+        {
+            if(pItemProperty->m_nPropertyName==Constants::ItemProperty::DamageReduction || pItemProperty->m_nPropertyName==Constants::ItemProperty::ImmunityMiscellaneous)
+            {
+                g_plugin->m_iMaterial=pItemProperty->m_nParam1Value;
+            }
+        }
+    }
+}
+
+void Effect::OnApplyDamageReductionHook(bool before, CNWSEffectListHandler*, CNWSObject*, CGameEffect* pEffect, BOOL)
+{
+    if(before && g_plugin->m_iMaterial > 0)
+    {
+        pEffect->SetInteger(3, g_plugin->m_iMaterial);
+        g_plugin->m_iMaterial=0;
+    }
+}
+
+void Effect::DoDamageReductionHook(bool before, CNWSObject *pObject, CNWSCreature *pCreature, int32_t, uint8_t, BOOL, BOOL)
+{
+    static std::unordered_map<uint64_t, int32_t> sEffects;
+    if(before)
+    {
+        CNWSItem* pWeapon = nullptr;
+        pWeapon = pCreature->m_pcCombatRound->GetCurrentAttackWeapon();
+        if(pWeapon == nullptr)
+            return; //no need to continue as there is no material type
+
+        if(pWeapon->m_nBaseItem == Constants::BaseItem::HeavyCrossbow || pWeapon->m_nBaseItem == Constants::BaseItem::LightCrossbow)
+            pWeapon = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Bolts);
+        else if(pWeapon->m_nBaseItem == Constants::BaseItem::Longbow || pWeapon->m_nBaseItem == Constants::BaseItem::Shortbow)
+            pWeapon = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Arrows);
+        else if(pWeapon->m_nBaseItem == Constants::BaseItem::Sling)
+            pWeapon = pCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Bullets);
+        if(pWeapon == nullptr)
+            return;
+        bool bRemoveDR;
+        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
+        {
+                auto *eff = pObject->m_appliedEffects.element[i];
+                bRemoveDR=false;
+                if(eff->m_nType==Constants::EffectTrueType::DamageReduction && eff->m_nParamInteger[3] > 0)
+                {
+                    auto redType = eff->m_nParamInteger[3];
+                    auto range = g_plugin->m_bypass.equal_range(redType);
+                    for (auto it= range.first; it != range.second; ++it)
+                    {
+                        auto bypass = it->second;
+                        for (int i = 0; i < pWeapon->m_lstPassiveProperties.num; i++)
+                        {
+                            auto property = pWeapon->GetPassiveProperty(i);
+                            if (property->m_nPropertyName == bypass.m_nPropertyName &&
+                                (property->m_nCostTableValue == bypass.m_nCostTableValue || bypass.m_nCostTableValue==-1) &&
+                                (property->m_nSubType == bypass.m_nSubType || bypass.m_nSubType==-1)  &&
+                                (property->m_nParam1Value == bypass.m_nParam1Value || bypass.m_nParam1Value==-1))
+                            {
+                                if(!bypass.bReverse)
+                                {
+                                   bRemoveDR=true;
+                                }
+                                break; //as long as we found a property, break
+                            }
+                            if(bypass.bReverse && i==pWeapon->m_lstPassiveProperties.num-1) //last property and we still didn't find it, so remove DR
+                                bRemoveDR=true;
+                        }
+                        if(bRemoveDR) break; // no reason to kep checking
+                    }
+
+                }
+
+                if(bRemoveDR)
+                {
+                    sEffects[eff->m_nID] = eff->m_nParamInteger[1];
+                    eff->m_nParamInteger[1]=0;
+                }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < pObject->m_appliedEffects.num; i++)
+        {
+                auto *eff = pObject->m_appliedEffects.element[i];
+
+                if(eff->m_nType==Constants::EffectTrueType::DamageReduction)
+                {
+                    auto original = sEffects.find(eff->m_nID);
+                    if (original != std::end(sEffects))
+                    {
+                        eff->m_nParamInteger[1]=original->second;
+                        sEffects.erase(eff->m_nID);
+                    }
+                }
+        }
+    }
+}
+
+ArgumentStack Effect::SetDamageReductionBypass(ArgumentStack&& args)
+{
+    if(!g_plugin->m_bInitRed)
+        InitDamageReductionHooks();
+
+    auto material = Services::Events::ExtractArgument<int32_t>(args);
+    auto propType = Services::Events::ExtractArgument<int32_t>(args);
+    auto subType =  Services::Events::ExtractArgument<int32_t>(args);
+    auto costValue = Services::Events::ExtractArgument<int32_t>(args);
+    auto param1Value =  Services::Events::ExtractArgument<int32_t>(args);
+    auto reverse =  Services::Events::ExtractArgument<int32_t>(args);
+    m_bypassRed ip;
+    ip.m_nPropertyName=propType;
+    ip.m_nSubType=subType;
+    ip.m_nParam1Value=param1Value;
+    ip.m_nCostTableValue=costValue;
+    ip.bReverse=reverse;
+    g_plugin->m_bypass.insert(std::make_pair(material, ip));
+    return Services::Events::Arguments();
+}
+
+void Effect::OnApplyEffectImmunityHook(bool before, CNWSEffectListHandler*, CNWSObject *, CGameEffect * pEffect, BOOL)
+{
+    if(before && g_plugin->m_iMaterial > 0)
+    {
+        pEffect->SetInteger(4, g_plugin->m_iMaterial);
+        g_plugin->m_iMaterial=0;
+    }
 }
 
 }

@@ -119,6 +119,15 @@ int NWNX_Effect_RemoveEffectById(object oObject,  string sID);
 /// @param nEnable set to true to turn on.
 void NWNX_Effect_SetEffectImmunityBypass(int nEnable);
 
+/// @brief Sets what item property bypasses a damage reduction material
+/// @param nMaterial the material or cost value of the damage reduction to be bypaassed
+/// @param nPropertyType The Property type (ITEM_PROPERTY*) of the item property that bypasses the reduction
+/// @param nSubType The subtype of the item property. Set to -1 to ignore.
+/// @param nCostValue The Cost Param Value of the item property
+/// @param nParamValue The Param 1 Value of the item property
+/// @param bReverse The damage reduction will instead resist damage if this item property is present.
+void NWNX_Effect_SetDamageReductionBypass(int nMaterial, int nPropertyType, int nSubType=-1, int nCostValue=-1, int nParamValue=-1, int bReverse=FALSE);
+
 /// @}
 
 struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=TRUE)
@@ -387,5 +396,18 @@ void NWNX_Effect_SetEffectImmunityBypass(int nEnable)
 {
     string sFunc = "SetEffectImmunityBypass";
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, nEnable);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+}
+
+void NWNX_Effect_SetDamageReductionBypass(int nMaterial, int nPropertyType, int nSubType=-1, int nCostValue=-1, int nParamValue=-1, int bReverse=FALSE)
+{
+    string sFunc = "SetDamageReductionBypass";
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, bReverse);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nParamValue);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nCostValue);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nSubType);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nPropertyType);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nMaterial);
+
     NWNX_CallFunction(NWNX_Effect, sFunc);
 }
