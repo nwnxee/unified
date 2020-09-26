@@ -30,6 +30,7 @@ static Hooking::FunctionHook* s_UseLoreOnItemHook;
 static Hooking::FunctionHook* s_PayToIdenfifyItemHook;
 static Hooking::FunctionHook* s_SplitItemHook;
 static Hooking::FunctionHook* s_CanUseItemHook;
+static Hooking::FunctionHook* s_AcquireItemHook;
 
 ItemEvents::ItemEvents(Services::HooksProxy* hooker)
 {
@@ -107,6 +108,12 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
         s_SplitItemHook = hooker->RequestExclusiveHook
             <API::Functions::_ZN12CNWSCreature9SplitItemEP8CNWSItemi>
             (&SplitItemHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_ITEM_ACQUIRE_.*", [hooker]() {
+        s_AcquireItemHook = hooker->RequestExclusiveHook
+                <API::Functions::_ZN12CNWSCreature11AcquireItemEPP8CNWSItemjjhhii>
+                (&AcquireItemHook);
     });
 }
 
@@ -483,6 +490,34 @@ void ItemEvents::SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItem, int32_t n
     }
 
     PushAndSignal("NWNX_ON_ITEM_SPLIT_AFTER");
+}
+
+int32_t ItemEvents::AcquireItemHook(
+        CNWSCreature* thisPtr, CNWSItem* *pItem,
+        ObjectID oidPossessor, ObjectID oidTargetRepo,
+        uint8_t x, uint8_t y,
+        int32_t bOriginatingFromScript, int32_t bDisplayFeedback)
+{
+    int32_t retVal = false;
+
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        Events::PushEventData("ITEM", Utils::ObjectIDToString((*pItem)->m_idSelf));
+        Events::PushEventData("RESULT", std::to_string(retVal));
+        return Events::SignalEvent(ev, thisPtr->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_ITEM_ACQUIRE_BEFORE"))
+    {
+        retVal = s_AcquireItemHook->CallOriginal<int32_t>(thisPtr, pItem, oidPossessor, oidTargetRepo, x, y, bOriginatingFromScript, bDisplayFeedback);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignal("NWNX_ON_ITEM_ACQUIRE_AFTER");
+
+    return retVal;
 }
 
 }
