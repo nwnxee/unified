@@ -209,6 +209,20 @@ _______________________________________
     NUMBER_SPLIT_OFF      | int    | |
 
 _______________________________________
+    ## Acquire Item Events
+    - NWNX_ON_ITEM_ACQUIRE_BEFORE
+    - NWNX_ON_ITEM_ACQUIRE_AFTER
+
+    `OBJECT_SELF` = The creature trying to acquire the item
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    ITEM                  | object | Convert to object with StringToObject()|
+    RESULT                | int    | Returns TRUE in the _AFTER if the acquisition was successful, FALSE otherwise
+
+    @note This event currently only works with creatures
+
+_______________________________________
     ## Feat Use Events
     - NWNX_ON_USE_FEAT_BEFORE
     - NWNX_ON_USE_FEAT_AFTER
@@ -259,6 +273,9 @@ _______________________________________
     POS_X                 | float  | |
     POS_Y                 | float  | |
     POS_Z                 | float  | |
+    RESREF                | string | The resref of the object that's being spawned. |
+
+    @note When spawning a standard trap, the resref will be an index into traps.2da.
 
 _______________________________________
     ## DM Give Item Events
