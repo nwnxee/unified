@@ -56,7 +56,7 @@ private:
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_FeatABVsRace;
     unordered_map<uint16_t, int32_t>                                                  m_FeatAC;
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_FeatACVsRace;
-    unordered_map<uint16_t, uint8_t>                                                  m_FeatArcaneSpellFailure;
+    unordered_map<uint16_t, int8_t>                                                   m_FeatArcaneSpellFailure;
     unordered_map<uint16_t, uint8_t>                                                  m_FeatConcealment;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgImmunity;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatDmgReduction;
