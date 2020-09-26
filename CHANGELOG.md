@@ -16,6 +16,7 @@ N/A
 
 ##### New NWScript Functions
 - Creature: {Get|Set}WalkAnimation()
+- Object: GetCurrentAnimation()
 
 ### Changed
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
