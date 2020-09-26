@@ -168,6 +168,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetEncounter);
     REGISTER(GetEncounter);
     REGISTER(GetIsBartering);
+    REGISTER(GetWalkAnimation);
+    REGISTER(SetWalkAnimation);
 
 #undef REGISTER
 }
@@ -2655,6 +2657,31 @@ ArgumentStack Creature::GetArmorClassVersus(ArgumentStack&& args)
         retVal = pCreature->m_pStats->GetArmorClassVersus(pVersus, bTouchAttack);
     }
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::GetWalkAnimation(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_nWalkAnimation;
+    }
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetWalkAnimation(ArgumentStack&& args)
+{
+    if (auto* pCreature = creature(args))
+    {
+        auto animation = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (animation >= 0)
+        {
+            pCreature->m_nWalkAnimation = animation;
+        }
+    }
+
+    return Services::Events::Arguments();
 }
 
 }

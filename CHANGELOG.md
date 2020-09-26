@@ -9,24 +9,26 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
 - Events: added skippable Acquire events to ItemEvents
+- Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 
 ##### New Plugins
 N/A
 
 ##### New NWScript Functions
-N/A
+- Creature: {Get|Set}WalkAnimation()
 
 ### Changed
 N/A
 
 ### Deprecated
-N/A
+- Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed
 N/A
 
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
+- Race: fixed effect clean up after level up
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
