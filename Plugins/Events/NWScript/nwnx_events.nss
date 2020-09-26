@@ -273,6 +273,9 @@ _______________________________________
     POS_X                 | float  | |
     POS_Y                 | float  | |
     POS_Z                 | float  | |
+    RESREF                | string | The resref of the object that's being spawned. |
+
+    @note When spawning a standard trap, the resref will be an index into traps.2da.
 
 _______________________________________
     ## DM Give Item Events
