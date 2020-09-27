@@ -20,6 +20,7 @@ N/A
 
 ### Changed
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
+- Visibility: added two new visibility types to always show an object regardless of range.
 
 ### Deprecated
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
