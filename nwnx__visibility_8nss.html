@@ -112,12 +112,12 @@ $(document).ready(function(){initNavTree('nwnx__visibility_8nss.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga40cc33dfa69d9df16d927347917f5218"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#ga40cc33dfa69d9df16d927347917f5218">NWNX_Visibility_GetVisibilityOverride</a> (object player, object target)</td></tr>
-<tr class="memdesc:ga40cc33dfa69d9df16d927347917f5218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the existing visibility override for given (player, target) pair.  <a href="group__visibility.html#ga40cc33dfa69d9df16d927347917f5218">More...</a><br /></td></tr>
-<tr class="separator:ga40cc33dfa69d9df16d927347917f5218"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacfbe8fe6e053be016311e24c15a1fd18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#gacfbe8fe6e053be016311e24c15a1fd18">NWNX_Visibility_SetVisibilityOverride</a> (object player, object target, int override)</td></tr>
-<tr class="memdesc:gacfbe8fe6e053be016311e24c15a1fd18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the default visibility rules about how player perceives the target object.  <a href="group__visibility.html#gacfbe8fe6e053be016311e24c15a1fd18">More...</a><br /></td></tr>
-<tr class="separator:gacfbe8fe6e053be016311e24c15a1fd18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9d0eb79e0c13bcfcb696ccfbd5ab11ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#ga9d0eb79e0c13bcfcb696ccfbd5ab11ef">NWNX_Visibility_GetVisibilityOverride</a> (object oPlayer, object oTarget)</td></tr>
+<tr class="memdesc:ga9d0eb79e0c13bcfcb696ccfbd5ab11ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the existing visibility override for given (oPlayer, oTarget) pair. If oPlayer is OBJECT_INVALID, the global visibility override will be returned.  <a href="group__visibility.html#ga9d0eb79e0c13bcfcb696ccfbd5ab11ef">More...</a><br /></td></tr>
+<tr class="separator:ga9d0eb79e0c13bcfcb696ccfbd5ab11ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacaa7614a849cd656edef0395d5876d95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#gacaa7614a849cd656edef0395d5876d95">NWNX_Visibility_SetVisibilityOverride</a> (object oPlayer, object oTarget, int nOverride)</td></tr>
+<tr class="memdesc:gacaa7614a849cd656edef0395d5876d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the default visibility rules about how oPlayer perceives oTarget. If oPlayer is OBJECT_INVALID, the global visibility override will be set.  <a href="group__visibility.html#gacaa7614a849cd656edef0395d5876d95">More...</a><br /></td></tr>
+<tr class="separator:gacaa7614a849cd656edef0395d5876d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -132,6 +132,10 @@ Variables</h2></td></tr>
 <tr class="separator:ga86990aa8b04d68e3faec79e265260bad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7bee8f633939b839c3220f72c24f7974"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#ga7bee8f633939b839c3220f72c24f7974">NWNX_VISIBILITY_DM_ONLY</a> = 2</td></tr>
 <tr class="separator:ga7bee8f633939b839c3220f72c24f7974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga00b490a03f5734cc94fe1b72e15e7be7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#ga00b490a03f5734cc94fe1b72e15e7be7">NWNX_VISIBILITY_ALWAYS_VISIBLE</a> = 3</td></tr>
+<tr class="separator:ga00b490a03f5734cc94fe1b72e15e7be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga89ddd2655b6e288213e046134dfbf2be"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#ga89ddd2655b6e288213e046134dfbf2be">NWNX_VISIBILITY_ALWAYS_VISIBLE_DM_ONLY</a> = 4</td></tr>
+<tr class="separator:ga89ddd2655b6e288213e046134dfbf2be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -140,7 +144,7 @@ Variables</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_ae46fabea9884ae777249dbe6bcad7ea.html">Visibility</a></li><li class="navelem"><a class="el" href="dir_335fe9865fdeca7cf0c2f1e5ca16773e.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__visibility_8nss.html">nwnx_visibility.nss</a></li>
 				<li class="footer">
-					Generated on Sat Sep 26 2020 18:01:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Sep 27 2020 09:31:01 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

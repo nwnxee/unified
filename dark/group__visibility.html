@@ -117,16 +117,16 @@ Files</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga40cc33dfa69d9df16d927347917f5218"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#ga40cc33dfa69d9df16d927347917f5218">NWNX_Visibility_GetVisibilityOverride</a> (object player, object target)</td></tr>
-<tr class="memdesc:ga40cc33dfa69d9df16d927347917f5218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the existing visibility override for given (player, target) pair.  <a href="group__visibility.html#ga40cc33dfa69d9df16d927347917f5218">More...</a><br /></td></tr>
-<tr class="separator:ga40cc33dfa69d9df16d927347917f5218"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacfbe8fe6e053be016311e24c15a1fd18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#gacfbe8fe6e053be016311e24c15a1fd18">NWNX_Visibility_SetVisibilityOverride</a> (object player, object target, int override)</td></tr>
-<tr class="memdesc:gacfbe8fe6e053be016311e24c15a1fd18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the default visibility rules about how player perceives the target object.  <a href="group__visibility.html#gacfbe8fe6e053be016311e24c15a1fd18">More...</a><br /></td></tr>
-<tr class="separator:gacfbe8fe6e053be016311e24c15a1fd18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9d0eb79e0c13bcfcb696ccfbd5ab11ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#ga9d0eb79e0c13bcfcb696ccfbd5ab11ef">NWNX_Visibility_GetVisibilityOverride</a> (object oPlayer, object oTarget)</td></tr>
+<tr class="memdesc:ga9d0eb79e0c13bcfcb696ccfbd5ab11ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Queries the existing visibility override for given (oPlayer, oTarget) pair. If oPlayer is OBJECT_INVALID, the global visibility override will be returned.  <a href="group__visibility.html#ga9d0eb79e0c13bcfcb696ccfbd5ab11ef">More...</a><br /></td></tr>
+<tr class="separator:ga9d0eb79e0c13bcfcb696ccfbd5ab11ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacaa7614a849cd656edef0395d5876d95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__visibility.html#gacaa7614a849cd656edef0395d5876d95">NWNX_Visibility_SetVisibilityOverride</a> (object oPlayer, object oTarget, int nOverride)</td></tr>
+<tr class="memdesc:gacaa7614a849cd656edef0395d5876d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overrides the default visibility rules about how oPlayer perceives oTarget. If oPlayer is OBJECT_INVALID, the global visibility override will be set.  <a href="group__visibility.html#gacaa7614a849cd656edef0395d5876d95">More...</a><br /></td></tr>
+<tr class="separator:gacaa7614a849cd656edef0395d5876d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga40cc33dfa69d9df16d927347917f5218"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga40cc33dfa69d9df16d927347917f5218">&#9670;&nbsp;</a></span>NWNX_Visibility_GetVisibilityOverride()</h2>
+<a id="ga9d0eb79e0c13bcfcb696ccfbd5ab11ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9d0eb79e0c13bcfcb696ccfbd5ab11ef">&#9670;&nbsp;</a></span>NWNX_Visibility_GetVisibilityOverride()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,13 +135,13 @@ Functions</h2></td></tr>
           <td class="memname">int NWNX_Visibility_GetVisibilityOverride </td>
           <td>(</td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
+          <td class="paramname"><em>oPlayer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
+          <td class="paramname"><em>oTarget</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -151,37 +151,30 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Queries the existing visibility override for given (player, target) pair. </p>
-<p>If player is OBJECT_INVALID, the global visibility override will be returned</p><ul>
-<li>Player == VALID -&gt; returns:<ul>
-<li>NWNX_VISIBILITY_DEFAULT = Player override not set</li>
-<li>NWNX_VISIBILITY_VISIBLE = Target is always visible for player</li>
-<li>NWNX_VISIBILITY_HIDDEN = Target is always hidden for player</li>
+<p>Queries the existing visibility override for given (oPlayer, oTarget) pair. If oPlayer is OBJECT_INVALID, the global visibility override will be returned. </p>
+<ul>
+<li>NWNX_VISIBILITY_DEFAULT = Override not set.</li>
+<li>NWNX_VISIBILITY_VISIBLE = Target is visible but still adheres to default visibility rules.</li>
+<li>NWNX_VISIBILITY_HIDDEN = Target is always hidden.</li>
+<li>NWNX_VISIBILITY_DM_ONLY = Target is only visible to DMs but still adheres to default visibility rules.</li>
+<li>NWNX_VISIBILITY_ALWAYS_VISIBLE = Target is always visible in all circumstances.</li>
+<li>NWNX_VISIBILITY_ALWAYS_VISIBLE_DM_ONLY = Target is always visible only to DMs in all circumstances.</li>
 </ul>
-</li>
-<li>Player == OBJECT_INVALID -&gt; returns:<ul>
-<li>NWNX_VISIBILITY_DEFAULT = Global override not set</li>
-<li>NWNX_VISIBILITY_VISIBLE = Target is globally visible</li>
-<li>NWNX_VISIBILITY_HIDDEN = Target is globally hidden</li>
-<li>NWNX_VISIBILITY_DM_ONLY = Target is only visible to DMs <dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">player</td><td>The PC Object or OBJECT_INVALID. </td></tr>
-    <tr><td class="paramname">target</td><td>The object for which we're querying the visibility. </td></tr>
+    <tr><td class="paramname">oPlayer</td><td>The PC Object or OBJECT_INVALID. </td></tr>
+    <tr><td class="paramname">oTarget</td><td>The object for which we're querying the visibility override. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="group__visibility.html#vis_types">Visibility Type</a>. </dd></dl>
-</li>
-</ul>
-</li>
-</ul>
 
 <p class="definition">Definition at line <a class="el" href="nwnx__visibility_8nss_source.html#l00058">58</a> of file <a class="el" href="nwnx__visibility_8nss_source.html">nwnx_visibility.nss</a>.</p>
 
 </div>
 </div>
-<a id="gacfbe8fe6e053be016311e24c15a1fd18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacfbe8fe6e053be016311e24c15a1fd18">&#9670;&nbsp;</a></span>NWNX_Visibility_SetVisibilityOverride()</h2>
+<a id="gacaa7614a849cd656edef0395d5876d95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacaa7614a849cd656edef0395d5876d95">&#9670;&nbsp;</a></span>NWNX_Visibility_SetVisibilityOverride()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,19 +183,19 @@ Functions</h2></td></tr>
           <td class="memname">void NWNX_Visibility_SetVisibilityOverride </td>
           <td>(</td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
+          <td class="paramname"><em>oPlayer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>target</em>, </td>
+          <td class="paramname"><em>oTarget</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>override</em>&#160;</td>
+          <td class="paramname"><em>nOverride</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -212,28 +205,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Overrides the default visibility rules about how player perceives the target object. </p>
-<p>If player is OBJECT_INVALID, the global visibility override will be set</p><ul>
-<li>Player == VALID -&gt; override:<ul>
-<li>NWNX_VISIBILITY_DEFAULT = Remove the player override</li>
-<li>NWNX_VISIBILITY_VISIBLE = Target is always visible for player</li>
-<li>NWNX_VISIBILITY_HIDDEN = Target is always hidden for player</li>
+<p>Overrides the default visibility rules about how oPlayer perceives oTarget. If oPlayer is OBJECT_INVALID, the global visibility override will be set. </p>
+<ul>
+<li>NWNX_VISIBILITY_DEFAULT = Remove a set override.</li>
+<li>NWNX_VISIBILITY_VISIBLE = Target is visible but still adheres to default visibility rules.</li>
+<li>NWNX_VISIBILITY_HIDDEN = Target is always hidden.</li>
+<li>NWNX_VISIBILITY_DM_ONLY = Target is only visible to DMs but still adheres to default visibility rules.</li>
+<li>NWNX_VISIBILITY_ALWAYS_VISIBLE = Target is always visible in all circumstances.</li>
+<li>NWNX_VISIBILITY_ALWAYS_VISIBLE_DM_ONLY = Target is always visible to DMs in all circumstances.</li>
 </ul>
-</li>
-<li>Player == OBJECT_INVALID -&gt; override:<ul>
-<li>NWNX_VISIBILITY_DEFAULT = Remove the global override</li>
-<li>NWNX_VISIBILITY_VISIBLE = Target is globally visible</li>
-<li>NWNX_VISIBILITY_HIDDEN = Target is globally hidden</li>
-<li>NWNX_VISIBILITY_DM_ONLY = Target is only visible to DMs</li>
-</ul>
-</li>
-</ul>
-<dl class="section note"><dt>Note</dt><dd>Player state overrides the global state which means if a global state is set to NWNX_VISIBILITY_HIDDEN or NWNX_VISIBILITY_DM_ONLY but the player's state is set to NWNX_VISIBILITY_VISIBLE for the target, the object will be visible to the player. </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Setting too many objects to ALWAYS_VISIBLE in an area will impact the performance of your players. Use sparingly.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Player state overrides the global state which means if a global state is set to NWNX_VISIBILITY_HIDDEN or NWNX_VISIBILITY_DM_ONLY but the player's state is set to NWNX_VISIBILITY_VISIBLE for the target, the object will be visible to the player.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">player</td><td>The PC Object or OBJECT_INVALID. </td></tr>
-    <tr><td class="paramname">target</td><td>The object for which we're altering the visibility. </td></tr>
-    <tr><td class="paramname">override</td><td>The visibility type from <a class="el" href="group__visibility.html#vis_types">Visibility Types</a>. </td></tr>
+    <tr><td class="paramname">oPlayer</td><td>The PC Object or OBJECT_INVALID. </td></tr>
+    <tr><td class="paramname">oTarget</td><td>The object for which we're altering the visibility. </td></tr>
+    <tr><td class="paramname">nOverride</td><td>The visibility type from <a class="el" href="group__visibility.html#vis_types">Visibility Types</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -307,13 +294,45 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga00b490a03f5734cc94fe1b72e15e7be7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga00b490a03f5734cc94fe1b72e15e7be7">&#9670;&nbsp;</a></span>NWNX_VISIBILITY_ALWAYS_VISIBLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_VISIBILITY_ALWAYS_VISIBLE = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__visibility_8nss_source.html#l00016">16</a> of file <a class="el" href="nwnx__visibility_8nss_source.html">nwnx_visibility.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga89ddd2655b6e288213e046134dfbf2be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga89ddd2655b6e288213e046134dfbf2be">&#9670;&nbsp;</a></span>NWNX_VISIBILITY_ALWAYS_VISIBLE_DM_ONLY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int NWNX_VISIBILITY_ALWAYS_VISIBLE_DM_ONLY = 4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__visibility_8nss_source.html#l00017">17</a> of file <a class="el" href="nwnx__visibility_8nss_source.html">nwnx_visibility.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Sep 26 2020 18:01:32 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Sep 27 2020 09:31:03 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
