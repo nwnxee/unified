@@ -92,8 +92,8 @@ object NWNX_Effect_GetEffectExpiredCreator();
 int NWNX_Effect_ReplaceEffect(object obj, effect eOld, effect eNew);
 
 /// @brief Gets the true effect count
-/// @param oObjece The object to get the count of.
-/// @return the number of effects (item propertiies and other non-exposed effects included)
+/// @param oObject The object to get the count of.
+/// @return the number of effects (item properties and other non-exposed effects included)
 int NWNX_Effect_GetTrueEffectCount(object oObject);
 
 /// @brief Gets a specific effect on an object. This can grab effects normally hidden from developers, such as item properties.
