@@ -36,7 +36,7 @@ const int NWNX_FEAT_MODIFIER_SRINCLEVEL         = 20;
 /// @brief Sets a feat modifier.
 /// @param iFeat The Feat constant or value in feat.2da.
 /// @param iMod The @ref feat_modifiers "feat modifier" to set.
-/// @param iParam1, iParam2, iParam3 The parameters for this racial modifier.
+/// @param iParam1, iParam2, iParam3, iParam4 The parameters for this feat modifier.
 void NWNX_Feat_SetFeatModifier(int iFeat, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF, int iParam4 = 0xDEADBEEF);
 
 /// @}
