@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"nwnx__redis__short_8nss.html#af15545f2b874e9ee02b6d3cc37434fa8":[4,0,2,26,0,3,30],
+"nwnx__redis__short_8nss.html#af2f46bcd914140eeb49598d63951c3d4":[4,0,2,26,0,3,49],
 "nwnx__redis__short_8nss.html#af450c0c8bdbfdd4b3b1e75b1d1240eb7":[4,0,2,26,0,3,174],
 "nwnx__redis__short_8nss.html#af497f2f31bf361e09929e1e6399c4b72":[4,0,2,26,0,3,127],
 "nwnx__redis__short_8nss.html#af628aa6c7cd81d264a9e22be1ab2d0c9":[4,0,2,26,0,3,196],
