@@ -46,6 +46,7 @@ private:
     ArgumentStack GetWorldTime                  (ArgumentStack&& args);
     ArgumentStack SetResourceOverride           (ArgumentStack&& args);
     ArgumentStack GetResourceOverride           (ArgumentStack&& args);
+    ArgumentStack GetScriptParamIsSet           (ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
