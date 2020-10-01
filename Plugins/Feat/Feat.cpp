@@ -320,9 +320,9 @@ void Feat::SavingThrowRollHook(
     static uint16_t savingThrowBonusLimit;
     if (before)
     {
-        savingThrowBonusLimit = Globals::AppManager()->m_pServerExoApp->GetSavingThrowBonusLimit();
+        savingThrowBonusLimit = server->GetSavingThrowBonusLimit();
 
-        auto tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(oidSaveVersus);
+        auto tgtCreature = server->GetCreatureByGameObjectID(oidSaveVersus);
         for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
         {
             auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
@@ -364,6 +364,12 @@ void Feat::GetTotalEffectBonusHook(
 
     if (before)
     {
+        if (nEffectBonusType == 1)
+            attackBonusLimit = server->GetAttackBonusLimit();
+        else if (nEffectBonusType == 3)
+            saveBonusLimit = server->GetSavingThrowBonusLimit();
+        else if (nEffectBonusType == 4)
+            abilityBonusLimit = server->GetAbilityBonusLimit();
         CNWSCreature* tgtCreature = nullptr;
         if (pObject != nullptr)
         {
@@ -374,7 +380,6 @@ void Feat::GetTotalEffectBonusHook(
             auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
             if (nEffectBonusType == 1)
             {
-                attackBonusLimit = server->GetAttackBonusLimit();
                 auto modABBonus = g_plugin->m_FeatAB[nFeat];
                 uint8_t modABVSRaceBonus = 0;
                 if (tgtCreature)
@@ -383,7 +388,6 @@ void Feat::GetTotalEffectBonusHook(
             }
             else if (nEffectBonusType == 3)
             {
-                saveBonusLimit = server->GetSavingThrowBonusLimit();
                 auto modSaveBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
                 uint8_t modSaveVSRaceBonus = 0;
                 if (tgtCreature)
@@ -400,7 +404,6 @@ void Feat::GetTotalEffectBonusHook(
             }
             else if (nEffectBonusType == 4)
             {
-                abilityBonusLimit = server->GetAbilityBonusLimit();
                 auto modAbilityBonus = g_plugin->m_FeatAbility[nFeat][nSkill];
                 server->SetAbilityBonusLimit(server->GetAbilityBonusLimit() + modAbilityBonus);
             }
@@ -423,13 +426,13 @@ void Feat::GetWeaponPowerHook(bool before, CNWSCreature *pCreature, CNWSObject *
     static uint16_t attackBonusLimit;
     if (before)
     {
+        attackBonusLimit = server->GetAttackBonusLimit();
         for (int32_t j = 0; j < pCreature->m_pStats->m_lstFeats.num; j++)
         {
             auto nFeat = pCreature->m_pStats->m_lstFeats.element[j];
-            attackBonusLimit = Globals::AppManager()->m_pServerExoApp->GetAttackBonusLimit();
             auto modABBonus = g_plugin->m_FeatAB[nFeat];
             uint8_t modABVSRaceBonus = 0;
-            auto tgtCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pObject->m_idSelf);
+            auto tgtCreature = server->GetCreatureByGameObjectID(pObject->m_idSelf);
             if (tgtCreature)
                 modABVSRaceBonus = g_plugin->m_FeatABVsRace[nFeat][tgtCreature->m_pStats->m_nRace];
             server->SetAttackBonusLimit(server->GetAttackBonusLimit() + modABBonus + modABVSRaceBonus);
