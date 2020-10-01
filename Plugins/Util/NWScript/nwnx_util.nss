@@ -214,6 +214,11 @@ void NWNX_Util_SetResourceOverride(int nResType, string sOldName, string sNewNam
 /// @return The resource override, or "" if one is not set.
 string NWNX_Util_GetResourceOverride(int nResType, string sName);
 
+/// @brief Get if a script param is set.
+/// @param sParamName The script parameter name to check.
+/// @return TRUE if the script param is set, FALSE if not or on error.
+int NWNX_Util_GetScriptParamIsSet(string sParamName);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -516,4 +521,14 @@ string NWNX_Util_GetResourceOverride(int nResType, string sName)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetScriptParamIsSet(string sParamName)
+{
+    string sFunc = "GetScriptParamIsSet";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sParamName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
