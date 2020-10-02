@@ -16,6 +16,8 @@ N/A
 
 ##### New NWScript Functions
 - Creature: {Get|Set}WalkAnimation()
+- Creature: SetAttackRollOverride()
+- Creature: SetParryAllAttacks()
 - Object: GetCurrentAnimation()
 - Util: GetScriptParamIsSet()
 
