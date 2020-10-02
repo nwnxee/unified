@@ -32,6 +32,7 @@ N/A
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
 - Object: fixed a possible crash in CheckFit()
+- Player: fixed bic getting overwritten when using PossessCreature() and crashing in between areas
 - Race: fixed effect clean up after level up
 - Rename: community name only obfuscates once a server reset
 

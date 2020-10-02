@@ -1175,7 +1175,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
 
     if (!pUnsummonMyselfHook)
     {
-        // When a PC is logging off we don't want this creature to unsummon themselves
+        // When a PC is logging off we don't want this creature to unsummon themselves (unless crashed in AT)
         pUnsummonMyselfHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature14UnsummonMyselfEv>(
                 +[](CNWSCreature *pPossessed) -> void
                 {
@@ -1183,16 +1183,34 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                     auto possessorOidPOS = pPOS->Get<int>(pPossessed->m_idSelf, "possessorOid");
                     auto pServer = Globals::AppManager()->m_pServerExoApp;
                     auto *pPossessor = possessorOidPOS ? pServer->GetCreatureByGameObjectID(*possessorOidPOS) : nullptr;
-                    if (pPossessor)
+
+                    //Possessed, not in limbo
+                    if (pPossessor && pPossessed->m_oidArea != Constants::OBJECT_INVALID)
                     {
                         pPossessor->UnpossessFamiliar();
-                        pPossessor->RemoveAssociate(pPossessed->m_idSelf);
-                        pPOS->Remove(pPossessor->m_idSelf, "possessedOid");
-                        pPOS->Remove(pPossessed->m_idSelf, "possessorOid");
                     }
                     else
                     {
                         pUnsummonMyselfHook->CallOriginal<void>(pPossessed);
+                        // Remove the mind immunity effect from the possessor if they were in limbo
+                        if (pPossessor && pPossessed->m_oidArea == Constants::OBJECT_INVALID)
+                        {
+                            for (int i = 0; i < pPossessor->m_appliedEffects.num; i++)
+                            {
+                                auto *eff = pPossessor->m_appliedEffects.element[i];
+                                if (eff->m_nType == Constants::EffectTrueType::Immunity &&
+                                    eff->m_nSubType == Constants::EffectSubType::Magical &&
+                                    eff->m_oidCreator == pPossessor->m_idSelf &&
+                                    eff->m_fDuration == 4.0f &&
+                                    eff->m_nCasterLevel == -1 &&
+                                    eff->m_nParamInteger[0] == Constants::ImmunityType::MindSpells &&
+                                    eff->m_nParamInteger[1] == Constants::RacialType::Invalid)
+                                {
+                                    pPossessor->RemoveEffectById(eff->m_nID);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 });
 
