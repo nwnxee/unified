@@ -372,7 +372,7 @@ int BridgeServer::BroadcastMessage(std::unique_ptr<Message> msg)
         }
     }
 
-    return msg->destination == -1 || sent;
+    return sent;
 }
 
 BridgeServer::~BridgeServer()
