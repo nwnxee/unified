@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"nwnx__redis__short_8nss.html#af115823d095e003d6c42e931106698f4":[4,0,2,26,0,3,166],
+"nwnx__redis__short_8nss.html#af12666ce4befe1fa83fc09de1e84f1f3":[4,0,2,26,0,3,185],
 "nwnx__redis__short_8nss.html#af15545f2b874e9ee02b6d3cc37434fa8":[4,0,2,26,0,3,30],
 "nwnx__redis__short_8nss.html#af2f46bcd914140eeb49598d63951c3d4":[4,0,2,26,0,3,49],
 "nwnx__redis__short_8nss.html#af450c0c8bdbfdd4b3b1e75b1d1240eb7":[4,0,2,26,0,3,174],
@@ -44,6 +46,12 @@ var NAVTREEINDEX10 =
 "on__pubsub_8nss.html#acdef7a1fd863a6d3770c1268cb06add3":[4,0,2,26,0,4,0],
 "on__pubsub_8nss_source.html":[4,0,2,26,0,4],
 "pages.html":[],
+"structNWNX__Area__TileInfo.html":[0,3,2],
+"structNWNX__Area__TileInfo.html#a2272f4e3492d04d21fd90b15fe1db78d":[0,3,2,0],
+"structNWNX__Area__TileInfo.html#a3d62c52ed6d20acdfd5468396e6d62a1":[0,3,2,2],
+"structNWNX__Area__TileInfo.html#a8f251dcba2c20218ca755ad14ac30bf6":[0,3,2,3],
+"structNWNX__Area__TileInfo.html#a9401d512230306a66f9896d24847f2f2":[0,3,2,4],
+"structNWNX__Area__TileInfo.html#af58eb65e41d9b1cec04ba3af9ff11025":[0,3,2,1],
 "structNWNX__Creature__MemorisedSpell.html":[0,6,3],
 "structNWNX__Creature__MemorisedSpell.html#a3d9cd596f9cd780ae69f4a497a90a335":[0,6,3,2],
 "structNWNX__Creature__MemorisedSpell.html#aa08e4d7e4f0f2b8b8c639e152670329a":[0,6,3,0],
@@ -177,9 +185,9 @@ var NAVTREEINDEX10 =
 "structNWNX__Player__QuickBarSlot.html#ac9251f3b6703b0113937c30477ea0d56":[0,24,3,11],
 "structNWNX__Player__QuickBarSlot.html#ad973e77c76a8bff61f210e4c88c3847a":[0,24,3,10],
 "structNWNX__Player__QuickBarSlot.html#afcf6328e5234a277b0ba49172cdc8bb9":[0,24,3,0],
-"structNWNX__Redis__PubSubMessageData.html":[3,10],
-"structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79":[3,10,1],
-"structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,10,0],
+"structNWNX__Redis__PubSubMessageData.html":[3,11],
+"structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79":[3,11,1],
+"structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,11,0],
 "structNWNX__SkillRanks__SkillFeat.html":[0,33,2],
 "structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a":[0,33,2,1],
 "structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d":[0,33,2,10],
@@ -241,11 +249,5 @@ var NAVTREEINDEX10 =
 "structNWNX__WebHook__Message.html#ad140bcf66224acce998f2d7ca3edd547":[0,43,3,22],
 "structNWNX__WebHook__Message.html#ad1a2af81fea4de75d522d42d357f01ee":[0,43,3,11],
 "structNWNX__WebHook__Message.html#adcd42dcbacf76889672ad8f4c2b53306":[0,43,3,33],
-"structNWNX__WebHook__Message.html#ae6ca50f2fc799a581ea7714864559026":[0,43,3,16],
-"structNWNX__WebHook__Message.html#aede5d86741cf96192df5228c3fae7e59":[0,43,3,31],
-"structNWNX__WebHook__Message.html#af237da5c3358bf7ba843609f3e5522ad":[0,43,3,28],
-"structNWNX__WebHook__Message.html#af2a9aa3908d087a99d6d3795047af16a":[0,43,3,21],
-"structNWNX__WebHook__Message.html#afba59b7a86a2f2956dde237c882bb4a8":[0,43,3,38],
-"structNWNX__WebHook__Message.html#afd77404e0c5eca11bf383c50896d276e":[0,43,3,30],
-"structNWNX__WebHook__Message.html#afd8b5c47c7de32c4c3b29e4111340736":[0,43,3,41]
+"structNWNX__WebHook__Message.html#ae6ca50f2fc799a581ea7714864559026":[0,43,3,16]
 };

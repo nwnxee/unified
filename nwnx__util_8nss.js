@@ -27,7 +27,7 @@ var nwnx__util_8nss =
     [ "NWNX_Util_PluginExists", "group__util.html#gaa7ead2a0ea727ef1c5f8cd007681f14a", null ],
     [ "NWNX_Util_GetUserDirectory", "group__util.html#gab9b71c82c64c7ae1a72187e47a828bed", null ],
     [ "NWNX_Util_GetScriptReturnValue", "group__util.html#gaa162793a2d0aa5cae40598351bf7cde0", null ],
-    [ "NWNX_Util_CreateDoor", "group__util.html#ga0ed499c4c5e08d2d89bab118797d35e5", null ],
+    [ "NWNX_Util_CreateDoor", "group__util.html#ga8ca817683c192a4073768bb01e94f35f", null ],
     [ "NWNX_Util_SetItemActivator", "group__util.html#gaf603bdb6ed957e9016094ddcbde043b3", null ],
     [ "NWNX_Util_GetWorldTime", "group__util.html#ga2fe4ad85ca9096632b400e44ee2c0d70", null ],
     [ "NWNX_Util_SetResourceOverride", "group__util.html#ga9720df89114f2dfa938f3cd26ada4a71", null ],

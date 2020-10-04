@@ -2,6 +2,13 @@ var group__area =
 [
     [ "Readme", "group__area.html#area", null ],
     [ "nwnx_area.nss", "nwnx__area_8nss.html", null ],
+    [ "NWNX_Area_TileInfo", "structNWNX__Area__TileInfo.html", [
+      [ "nID", "structNWNX__Area__TileInfo.html#a2272f4e3492d04d21fd90b15fe1db78d", null ],
+      [ "nHeight", "structNWNX__Area__TileInfo.html#af58eb65e41d9b1cec04ba3af9ff11025", null ],
+      [ "nOrientation", "structNWNX__Area__TileInfo.html#a3d62c52ed6d20acdfd5468396e6d62a1", null ],
+      [ "nGridX", "structNWNX__Area__TileInfo.html#a8f251dcba2c20218ca755ad14ac30bf6", null ],
+      [ "nGridY", "structNWNX__Area__TileInfo.html#a9401d512230306a66f9896d24847f2f2", null ]
+    ] ],
     [ "NWNX_Area_GetNumberOfPlayersInArea", "group__area.html#gaa7e6831063235acdb013fdc5846d00a7", null ],
     [ "NWNX_Area_GetLastEntered", "group__area.html#ga90447d876b274d5bbab292416ee3a462", null ],
     [ "NWNX_Area_GetLastLeft", "group__area.html#ga60a89999247bd166627369396cb17dd6", null ],
@@ -35,6 +42,7 @@ var group__area =
     [ "NWNX_Area_AddObjectToExclusionList", "group__area.html#ga589b7a9a57ee9d49c5d2e32135493733", null ],
     [ "NWNX_Area_RemoveObjectFromExclusionList", "group__area.html#gab0b13eef969b968e5e939f6611ac79e6", null ],
     [ "NWNX_Area_ExportGIT", "group__area.html#gacbb1219727ec3d9652445ee59b5cedbc", null ],
+    [ "NWNX_Area_GetTileInfo", "group__area.html#ga2d43e14449c05ff38e56a229d220a5b6", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
     [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
     [ "NWNX_AREA_PVP_SETTING_FULL_PVP", "group__area.html#ga8a6f21649b08da34ecc397f7fd621176", null ],
