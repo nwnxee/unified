@@ -15,12 +15,14 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 N/A
 
 ##### New NWScript Functions
+- Area: GetTileInfo()
 - Creature: {Get|Set}WalkAnimation()
 - Object: GetCurrentAnimation()
 - Util: GetScriptParamIsSet()
 
 ### Changed
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
+- Util: added an optional appearance type parameter to CreateDoor()
 - Visibility: added two new visibility types to always show an object regardless of range.
 
 ### Deprecated
