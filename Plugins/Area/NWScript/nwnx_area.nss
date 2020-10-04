@@ -40,6 +40,16 @@ const int NWNX_AREA_COLOR_TYPE_SUN_AMBIENT          = 2;
 const int NWNX_AREA_COLOR_TYPE_SUN_DIFFUSE          = 3;
 /// @}
 
+/// @brief A tile info struct
+struct NWNX_Area_TileInfo
+{
+    int nID; ///< The tile's ID
+    int nHeight; ///< The tile's height
+    int nOrientation; ///< The tile's orientation
+    int nGridX; ///< The tile's grid x position
+    int nGridY; ///< The tile's grid y position
+};
+
 /// @brief Gets the number of players in area.
 /// @param area The area object.
 /// @return The player count for the area.
@@ -241,6 +251,12 @@ void NWNX_Area_RemoveObjectFromExclusionList(object oObject);
 /// will not export creatures and doors. Use OBJECT_TYPE_ALL to filter all objects or 0 to export all objects.
 /// @return TRUE if exported successfully, FALSE if not.
 int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0);
+
+/// @brief Get the tile info of the tile at [fTileX, fTileY] in oArea.
+/// @param oArea The area name.
+/// @param fTileX, fTileY The coordinates of the tile.
+/// @return A NWNX_Area_TileInfo struct with tile info.
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfo(object oArea, float fTileX, float fTileY);
 
 /// @}
 
@@ -596,4 +612,24 @@ int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable
     NWNX_CallFunction(NWNX_Area, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+struct NWNX_Area_TileInfo NWNX_Area_GetTileInfo(object oArea, float fTileX, float fTileY)
+{
+    string sFunc = "GetTileInfo";
+
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileY);
+    NWNX_PushArgumentFloat(NWNX_Area, sFunc, fTileX);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    struct NWNX_Area_TileInfo str;
+
+    str.nGridY = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nGridX = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nOrientation = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nHeight = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+    str.nID = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+
+    return str;
 }

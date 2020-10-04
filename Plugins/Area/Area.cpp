@@ -68,6 +68,7 @@ Area::Area(Services::ProxyServiceList* services)
     REGISTER(AddObjectToExclusionList);
     REGISTER(RemoveObjectFromExclusionList);
     REGISTER(ExportGIT);
+    REGISTER(GetTileInfo);
 
 #undef REGISTER
 }
@@ -869,5 +870,30 @@ ArgumentStack Area::ExportGIT(ArgumentStack&& args)
 
     return Services::Events::Arguments(retVal);
 }
+
+ArgumentStack Area::GetTileInfo(ArgumentStack&& args)
+{
+    int32_t id = -1, height = -1, orientation = -1, x = -1, y = -1;
+
+    if (auto *pArea = area(args))
+    {
+        const auto tileX = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileX >= 0.0f);
+        const auto tileY = Services::Events::ExtractArgument<float>(args);
+          ASSERT_OR_THROW(tileY >= 0.0f);
+
+        if (auto *pTile = pArea->GetTile({tileX, tileY, 0.0f}))
+        {
+            id = pTile->m_nID;
+            height = pTile->m_nHeight;
+            orientation = pTile->m_nOrientation;
+            x = pTile->m_nGridX;
+            y = pTile->m_nGridY;
+        }
+    }
+
+    return Services::Events::Arguments(id, height, orientation, x, y);
+}
+
 
 }
