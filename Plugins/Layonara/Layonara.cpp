@@ -1,6 +1,7 @@
 #include "Layonara.hpp"
 
 #include "API/CAppManager.hpp"
+#include "API/CNWCCMessageData.hpp"
 #include "API/CScriptEvent.hpp"
 #include "API/CServerAIMaster.hpp"
 #include "API/CServerExoApp.hpp"
@@ -33,6 +34,7 @@ using namespace NWNXLib::API;
 using namespace Constants;
 
 static Layonara::Layonara* g_plugin;
+static NWNXLib::Hooking::FunctionHook* s_SetStealthModeHook;
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
@@ -69,6 +71,8 @@ Layonara::Layonara(Services::ProxyServiceList* services)
             &Layonara::GetItemInSlotHook);
     GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObject11SetPositionE6Vectori, void,
             CNWSObject*, Vector, int32_t>(&SetPositionHook);
+    s_SetStealthModeHook = GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature14SetStealthModeEh>
+                    (&Layonara::SetStealthModeHook);
     m_GetItemInSlotHook = GetServices()->m_hooks->FindHookByAddress(API::Functions::_ZN13CNWSInventory13GetItemInSlotEj);
     m_GemBonuses[Gems::GRE] = {SavingThrowType::Poison, SavingThrow::All, Skill::Listen, DamageType::Positive,
                                Ability::Strength, Ability::Charisma, -1, -1, -1, -1};
@@ -960,4 +964,50 @@ ArgumentStack Layonara::ClearSurfaceMaterial(ArgumentStack&& args)
 
     return stack;
 }
+
+void Layonara::SendMessageToCombatLog(CNWSCreature* target, const std::string& msg)
+{
+    if (!target->m_pStats->m_bIsPC)
+        return;
+    CNWCCMessageData* pMessageData = new CNWCCMessageData();
+    CExoString message(msg);
+    pMessageData->SetString(0, message);
+    target->SendFeedbackMessage(0xCC, pMessageData, 0);
+}
+
+void Layonara::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nHideMode)
+{
+    if (thisPtr->m_nStealthMode != nHideMode)
+    {
+        thisPtr->m_nStealthMode = nHideMode;
+        thisPtr->ComputeModifiedMovementRate();
+
+        auto* pArea = thisPtr->GetArea();
+        if (nHideMode && pArea && pArea->m_aGameObjects.num)
+        {
+            if (!thisPtr->m_pStats->HasFeat(Constants::Feat::HideInPlainSight))
+                nHideMode = 0;
+            if (!nHideMode && thisPtr->m_pStats->HasFeat(2602))
+            {
+                if ((pArea->m_nFlags & 4) && !(pArea->m_nFlags & 1) && !(pArea->m_nFlags & 2))
+                    nHideMode = 1;
+            }
+
+            if (nHideMode)
+                SendMessageToCombatLog(thisPtr, "Using Hide in Plain Sight");
+
+            for (auto object : pArea->m_aGameObjects)
+            {
+                if (object != thisPtr->m_idSelf)
+                {
+                    if (auto* pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(object))
+                    {
+                        pCreature->DoPerceptionUpdateOnCreature(thisPtr, nHideMode);
+                    }
+                }
+            }
+        }
+    }
+}
+
 }

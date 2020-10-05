@@ -23,6 +23,8 @@ private:
     static void SetArrowsEffect(CNWSCreature *pCreature, bool bOff=false);
     static CNWSItem *GetItemInSlotHook(CNWSInventory*, uint32_t);
     static void SetPositionHook(bool, CNWSObject*, Vector, int32_t);
+    static void SetStealthModeHook(CNWSCreature*, uint8_t);
+    static void SendMessageToCombatLog(CNWSCreature* target, const std::string& msg);
     NWNXLib::Hooking::FunctionHook* m_GetItemInSlotHook;
 
     enum Gems
