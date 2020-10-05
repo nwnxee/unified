@@ -140,7 +140,7 @@ CNWSItem *Layonara::GetItemInSlotHook(CNWSInventory *pThis, uint32_t nSlot)
 
 void Layonara::RemoveEffectByTag(CNWSCreature *pCreature, std::string sCustomTag)
 {
-    std::vector<uint16_t> remove(128);
+    std::vector<uint64_t> remove(128);
     for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
     {
         auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];
@@ -243,7 +243,7 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
 
     RemoveEffectByTag(pCreature, "NWNX_Layonara_DuelistCannyDefense");
 
-    if (nBonus != -1)
+    if (nBonus > 0)
     {
         auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
@@ -257,7 +257,7 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
         eff->m_nParamInteger[4]   = 0;
         eff->m_nParamInteger[5]   = 4103;
         eff->m_sCustomTag         = "NWNX_Layonara_DuelistCannyDefense";
-        pCreature->ApplyEffect(eff, true, true);
+        pCreature->ApplyEffect(eff);
     }
 
     return stack;
@@ -279,7 +279,7 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
 
     RemoveEffectByTag(pCreature, "NWNX_Layonara_DuelistGrace");
 
-    if (nBonus != -1)
+    if (nBonus > 0)
     {
         auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
@@ -291,7 +291,7 @@ ArgumentStack Layonara::SetDuelistGrace(ArgumentStack&& args)
         eff->m_nParamInteger[2]   = SavingThrowType::All;
         eff->m_nParamInteger[3]   = RacialType::Invalid;
         eff->m_sCustomTag         = "NWNX_Layonara_DuelistGrace";
-        pCreature->ApplyEffect(eff, true, true);
+        pCreature->ApplyEffect(eff);
     }
 
     return stack;
@@ -313,7 +313,7 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
 
     RemoveEffectByTag(pCreature, "NWNX_Layonara_DuelistElaborateParry");
 
-    if (nBonus != -1)
+    if (nBonus > 0)
     {
         auto *eff = new CGameEffect(true);
         eff->m_oidCreator         = 0;
@@ -324,7 +324,7 @@ ArgumentStack Layonara::SetDuelistElaborateParry(ArgumentStack&& args)
         eff->m_nParamInteger[1]   = nBonus;
         eff->m_nParamInteger[2]   = RacialType::Invalid;
         eff->m_sCustomTag         = "NWNX_Layonara_DuelistElaborateParry";
-        pCreature->ApplyEffect(eff, true, true);
+        pCreature->ApplyEffect(eff);
     }
 
     return stack;
@@ -357,7 +357,7 @@ ArgumentStack Layonara::SetSubraceDayEffects(ArgumentStack&& args)
         eff->m_nParamInteger[1]   = 0;
         eff->m_nParamInteger[2]   = RacialType::Invalid;
         eff->m_sCustomTag         = "NWNX_Layonara_SubraceDayEffects";
-        pCreature->ApplyEffect(eff, true, true);
+        pCreature->ApplyEffect(eff);
 
         auto *eff2 = new CGameEffect(true);
         eff2->m_oidCreator         = 0;
