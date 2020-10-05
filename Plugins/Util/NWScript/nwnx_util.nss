@@ -188,8 +188,9 @@ int NWNX_Util_GetScriptReturnValue();
 /// @param sResRef The ResRef of the door.
 /// @param locLocation The location to create the door at.
 /// @param sNewTag An optional new tag for the door.
+/// @param nAppearanceType An optional index into doortypes.2da for appearance.
 /// @return The door, or OBJECT_INVALID on failure.
-object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "");
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1);
 
 /// @brief Set the object that will be returned by GetItemActivator.
 /// @param oObject An object.
@@ -462,12 +463,13 @@ int NWNX_Util_GetScriptReturnValue()
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
-object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag)
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1)
 {
     string sFunc = "CreateDoor";
 
     vector vPosition = GetPositionFromLocation(locLocation);
 
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nAppearanceType);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sNewTag);
     NWNX_PushArgumentFloat(NWNX_Util, sFunc, GetFacingFromLocation(locLocation));
     NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.z);

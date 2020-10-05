@@ -16,6 +16,7 @@ The following plugins were added:
 - **Feat**: Allows to define a variety of effects that are granted to feat holders.
 
 ##### New NWScript Functions
+- Area: GetTileInfo()
 - Creature: {Get|Set}WalkAnimation()
 - Feat: SetFeatModifier()
 - Object: GetCurrentAnimation()
@@ -23,6 +24,7 @@ The following plugins were added:
 
 ### Changed
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
+- Util: added an optional appearance type parameter to CreateDoor()
 - Visibility: added two new visibility types to always show an object regardless of range.
 
 ### Deprecated
