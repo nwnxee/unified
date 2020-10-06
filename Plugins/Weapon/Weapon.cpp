@@ -131,7 +131,7 @@ ArgumentStack Weapon::SetGreaterWeaponFocusFeat(ArgumentStack&& args)
       ASSERT_OR_THROW(pBaseItem);
 
     auto w = m_GreaterWeaponFocusMap.find(w_bitem);
-    if ( w != m_WeaponFocusMap.end())
+    if ( w != m_GreaterWeaponFocusMap.end())
     {
         w->second.emplace((uint32_t)feat);
     }
