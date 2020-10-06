@@ -38,6 +38,7 @@ N/A
 - Object: fixed a possible crash in CheckFit()
 - Race: fixed effect clean up after level up
 - Rename: community name only obfuscates once a server reset
+- Weapon: fixed bug in SetGreaterWeaponFocusFeat()
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
