@@ -50,6 +50,7 @@ int32_t StoreEvents::RequestBuyHook(CNWSCreature *pCreature, ObjectID oidItemToB
     else
         retVal = false;
 
+    Events::PushEventData("RESULT", std::to_string(retVal));
     PushAndSignalEvent("NWNX_ON_STORE_REQUEST_BUY_AFTER");
 
     return retVal;
@@ -78,6 +79,7 @@ int32_t StoreEvents::RequestSellHook(CNWSCreature *pCreature, ObjectID oidItemTo
     else
         retVal = false;
 
+    Events::PushEventData("RESULT", std::to_string(retVal));
     PushAndSignalEvent("NWNX_ON_STORE_REQUEST_SELL_AFTER");
 
     return retVal;

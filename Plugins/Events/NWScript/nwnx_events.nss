@@ -1184,6 +1184,7 @@ _______________________________________
     ITEM                  | object | The item being bought or sold. Convert to object with StringToObject()  |
     STORE                 | object | The store the item is being sold to or bought from. Convert to object with StringToObject() |
     PRICE                 | int    | The buy or sell price |
+    RESULT                | int    | TRUE/FALSE whether the request was successful. Only in *_AFTER events.
 
 _______________________________________
     ## Server Send Area Events
