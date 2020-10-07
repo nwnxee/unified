@@ -24,6 +24,7 @@ The following plugins were added:
 
 ### Changed
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
+- Events: `NWNX_ON_STORE_REQUEST_*_AFTER` now provides the result as event data.
 - Util: added an optional appearance type parameter to CreateDoor()
 - Visibility: added two new visibility types to always show an object regardless of range.
 

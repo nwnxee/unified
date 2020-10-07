@@ -218,6 +218,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     ITEM                  | object | Convert to object with StringToObject()|
+    GIVER                 | object | Convert to object with StringToObject() (will be INVALID if picked up from ground)|
     RESULT                | int    | Returns TRUE in the _AFTER if the acquisition was successful, FALSE otherwise
 
     @note This event currently only works with creatures
@@ -1184,6 +1185,7 @@ _______________________________________
     ITEM                  | object | The item being bought or sold. Convert to object with StringToObject()  |
     STORE                 | object | The store the item is being sold to or bought from. Convert to object with StringToObject() |
     PRICE                 | int    | The buy or sell price |
+    RESULT                | int    | TRUE/FALSE whether the request was successful. Only in *_AFTER events.
 
 _______________________________________
     ## Server Send Area Events

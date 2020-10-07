@@ -493,22 +493,26 @@ void ItemEvents::SplitItemHook(CNWSCreature *thisPtr, CNWSItem *pItem, int32_t n
 }
 
 int32_t ItemEvents::AcquireItemHook(
-        CNWSCreature* thisPtr, CNWSItem* *pItem,
+        CNWSCreature* thisPtr, CNWSItem* *ppItem,
         ObjectID oidPossessor, ObjectID oidTargetRepo,
         uint8_t x, uint8_t y,
         int32_t bOriginatingFromScript, int32_t bDisplayFeedback)
 {
     int32_t retVal = false;
 
+    if (!ppItem || !(*ppItem))
+        return s_AcquireItemHook->CallOriginal<int32_t>(thisPtr, ppItem, oidPossessor, oidTargetRepo, x, y, bOriginatingFromScript, bDisplayFeedback);
+
     auto PushAndSignal = [&](const std::string& ev) -> bool {
-        Events::PushEventData("ITEM", Utils::ObjectIDToString((*pItem)->m_idSelf));
+        Events::PushEventData("ITEM", Utils::ObjectIDToString((*ppItem)->m_idSelf));
+        Events::PushEventData("GIVER", Utils::ObjectIDToString(oidPossessor));
         Events::PushEventData("RESULT", std::to_string(retVal));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
 
     if (PushAndSignal("NWNX_ON_ITEM_ACQUIRE_BEFORE"))
     {
-        retVal = s_AcquireItemHook->CallOriginal<int32_t>(thisPtr, pItem, oidPossessor, oidTargetRepo, x, y, bOriginatingFromScript, bDisplayFeedback);
+        retVal = s_AcquireItemHook->CallOriginal<int32_t>(thisPtr, ppItem, oidPossessor, oidTargetRepo, x, y, bOriginatingFromScript, bDisplayFeedback);
     }
     else
     {
