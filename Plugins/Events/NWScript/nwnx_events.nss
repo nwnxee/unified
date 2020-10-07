@@ -218,6 +218,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     ITEM                  | object | Convert to object with StringToObject()|
+    GIVER                 | object | Convert to object with StringToObject() (will be INVALID if picked up from ground)|
     RESULT                | int    | Returns TRUE in the _AFTER if the acquisition was successful, FALSE otherwise
 
     @note This event currently only works with creatures
