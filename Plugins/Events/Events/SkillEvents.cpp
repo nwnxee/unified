@@ -52,6 +52,7 @@ int32_t SkillEvents::UseSkillHook(
         retVal = false;
     }
 
+    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_USE_SKILL_AFTER");
 
     return retVal;

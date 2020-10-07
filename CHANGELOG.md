@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
 - Events: added skippable Acquire events to ItemEvents
+- Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 
 ##### New Plugins
