@@ -500,8 +500,12 @@ int32_t ItemEvents::AcquireItemHook(
 {
     int32_t retVal = false;
 
+    if (!pItem || !(*pItem))
+        return s_AcquireItemHook->CallOriginal<int32_t>(thisPtr, pItem, oidPossessor, oidTargetRepo, x, y, bOriginatingFromScript, bDisplayFeedback);
+    
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("ITEM", Utils::ObjectIDToString((*pItem)->m_idSelf));
+        Events::PushEventData("GIVER", Utils::ObjectIDToString(oidPossessor));
         Events::PushEventData("RESULT", std::to_string(retVal));
         return Events::SignalEvent(ev, thisPtr->m_idSelf);
     };
