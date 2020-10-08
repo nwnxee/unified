@@ -28,6 +28,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Services/Messaging/Messaging.hpp"
 #include "Encoding.hpp"
 
 
@@ -1837,6 +1838,12 @@ ArgumentStack Creature::SetOriginalName(ArgumentStack&& args)
         {
             ASSERT_OR_THROW(!name.empty());
             pCreature->m_pStats->m_lsFirstName = locName;
+        }
+
+        if (pCreature->m_bPlayerCharacter || pCreature->m_pStats->m_bIsPC || pCreature->m_pStats->m_bIsDMCharacterFile)
+        {
+            g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
+                                                                   {NWNXLib::Utils::ObjectIDToString(pCreature->m_idSelf)});
         }
     }
 
