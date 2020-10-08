@@ -461,7 +461,7 @@ void Feat::RemoveFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
     {
         if (pCreatureStats->HasFeat(featId))
         {
-            std::vector<uint16_t> remove(128);
+            std::vector<uint64_t> remove(128);
             for (int i = 0; i < pCreatureStats->m_pBaseCreature->m_appliedEffects.num; i++)
             {
                 auto eff = (CGameEffect *) pCreatureStats->m_pBaseCreature->m_appliedEffects.element[i];
