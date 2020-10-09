@@ -11,6 +11,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Events: added skippable Acquire events to ItemEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
+- Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 
 ##### New Plugins
 N/A
@@ -644,6 +645,3 @@ The following plugins were added:
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
-
-### Added
-- Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
