@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/Vector.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"

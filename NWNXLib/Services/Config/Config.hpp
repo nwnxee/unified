@@ -5,9 +5,7 @@
 #include <string>
 #include <optional>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Config
 {
@@ -81,8 +79,6 @@ T ConfigProxy::Require(const std::string& key) const
     }
 
     return r.value();
-}
-
 }
 
 }

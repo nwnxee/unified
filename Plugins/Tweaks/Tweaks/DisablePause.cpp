@@ -17,10 +17,8 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* DisablePause::pSetPauseState_hook;
 DisablePause::DisablePause(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN21CServerExoAppInternal13SetPauseStateEhi>
-                                    (&CServerExoAppInternal__SetPauseState_hook);
-
-    pSetPauseState_hook = hooker->FindHookByAddress(Functions::_ZN21CServerExoAppInternal13SetPauseStateEhi);
+    pSetPauseState_hook = hooker->RequestExclusiveHook
+        <Functions::_ZN21CServerExoAppInternal13SetPauseStateEhi>(&CServerExoAppInternal__SetPauseState_hook);
 }
 
 void DisablePause::CServerExoAppInternal__SetPauseState_hook(CServerExoAppInternal* thisPtr, uint8_t nState, int32_t bPause)

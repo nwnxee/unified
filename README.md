@@ -1,14 +1,10 @@
 [![Discord](https://img.shields.io/discord/382306806866771978.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.gg/hxTt8Fr)
 
-# NWNX:EE (build 8193.11 - v80 - DEVELOPMENT build)
+# NWNX:EE (build 8193.16 - v81 - STABLE build)
 
-This branch is targeting a development build. For the latest stable, use the [nwnx-stable](https://github.com/nwnxee/unified/tree/nwnx-stable) branch.
-
-- Latest release: [build8193.12](https://github.com/nwnxee/unified/releases/tag/build8193.12) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819312) 
-- Docker tag: `nwnxee/unified:build8193.12`
-- nwserver-linux md5: `749db3a1fbe55f4082d3f8b4f3bb88f6`
-
-
+- Latest release: [build8193.16](https://github.com/nwnxee/unified/releases/tag/build8193.16) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819316)
+- Docker tag: `nwnxee/unified:build8193.16`
+- nwserver-linux md5: `e58f839dbe21f024f94432961b38683f`
 
 @mainpage
 @tableofcontents
@@ -24,6 +20,8 @@ Using NWNX:EE, developers can make plugins to do anything they want, including b
 3.  Modify existing mechanics that are conventionally difficult or impossible to change, such as the core combat rules or the path finding engine.
 
 NWNX:EE is not just for plugin developers. Module creators can use plugins created by the NWNX:EE contributors to expand the scripting and systems functionality of their modules.
+
+Check out the [Awesome NWNX page](Awesome-NWNX.md) for a list projects using NWNX.
 
 ## What versions of the server are supported?
 
@@ -96,7 +94,7 @@ As of NWN:EE Release 8193 it is possible to run `nwserver-linux` and NWNX:EE on 
 
 ## Compiling NWNX:EE (native)
 
-Please note that you need a modern C++17 compatible compiler to build NWNX:EE. The code is confirmed to build on GCC 7.4+ or Clang 5.0+. It may be possible to build on an older compiler.
+Please note that you need a modern C++17 compatible compiler to build NWNX:EE. The code is confirmed to build on GCC 7.4+, Clang 5.0+ might work but is not supported. It may be possible to build on an older compiler.
 
 Each plugin may have one or more dependencies that must be satisfied in order to build that plugin. Refer to each individual plugin's CMakeLists.txt to determine their dependencies.
 

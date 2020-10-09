@@ -13,13 +13,13 @@ namespace Appearance {
 class Appearance : public NWNXLib::Plugin
 {
 public:
-    Appearance(const Plugin::CreateParams& params);
+    Appearance(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Appearance();
 
 private:
     static CNWSPlayer *Player(ArgumentStack& args);
     static void ComputeGameObjectUpdateForObjectHook(bool, CNWSMessage*,
-        CNWSPlayer*, CNWSObject*, CGameObjectArray*, NWNXLib::API::Types::ObjectID);
+        CNWSPlayer*, CNWSObject*, CGameObjectArray*, ObjectID);
 
     enum OverrideType {
         AppearanceType  = 0,

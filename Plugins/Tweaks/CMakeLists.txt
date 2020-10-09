@@ -8,7 +8,7 @@ add_plugin(Tweaks
     "Tweaks/ParryAllAttacks.cpp"
     "Tweaks/SneakAttackCritImmunity.cpp"
     "Tweaks/PreserveDepletedItems.cpp"
-    "Tweaks/HideDMsOnCharList.cpp"
+    "Tweaks/HidePlayersOnCharList.cpp"
     "Tweaks/DisableMonkAbilitiesWhenPolymorphed.cpp"
     "Tweaks/StringToIntBaseToAuto.cpp"
     "Tweaks/DeadCreatureFiresOnAreaExit.cpp"
@@ -17,4 +17,7 @@ add_plugin(Tweaks
     "Tweaks/ItemChargesCost.cpp"
     "Tweaks/FixDispelEffectLevels.cpp"
     "Tweaks/AddPrestigeclassCasterLevels.cpp"
+    "Tweaks/FixUnlimitedPotionsBug.cpp"
+    "Tweaks/UnhardcodeShields.cpp"
+    "Tweaks/BlockDMSpawnItem.cpp"
 )

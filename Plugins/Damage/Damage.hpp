@@ -28,7 +28,7 @@ namespace Damage {
 class Damage : public NWNXLib::Plugin
 {
 public:
-    Damage(const Plugin::CreateParams& params);
+    Damage(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Damage();
 
 private:

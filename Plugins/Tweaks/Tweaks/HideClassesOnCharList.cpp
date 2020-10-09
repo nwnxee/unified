@@ -21,7 +21,7 @@ HideClassesOnCharList::HideClassesOnCharList(Services::HooksProxy* hooker)
 }
 
 int32_t HideClassesOnCharList::SendServerToPlayerPlayModuleCharacterListResponseHook(
-    CNWSMessage* thisPtr, Types::PlayerID playerId, Types::ObjectID charId, int32_t add)
+    CNWSMessage* thisPtr, PlayerID playerId, ObjectID charId, int32_t add)
 {
     thisPtr->CreateWriteMessage(sizeof(playerId), playerId, true);
 

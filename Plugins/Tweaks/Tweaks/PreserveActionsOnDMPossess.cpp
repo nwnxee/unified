@@ -23,7 +23,7 @@ PreserveActionsOnDMPossess::PreserveActionsOnDMPossess(Services::HooksProxy* hoo
 }
 
 void PreserveActionsOnDMPossess::CNWSCreature__PossessCreatureDM_hook(
-        CNWSCreature* thisPtr, Types::ObjectID nObjectId, uint8_t nMode)
+        CNWSCreature* thisPtr, ObjectID nObjectId, uint8_t nMode)
 {
     if (nObjectId != Constants::OBJECT_INVALID)
     {

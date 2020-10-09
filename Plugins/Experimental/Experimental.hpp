@@ -9,7 +9,7 @@ class SuppressPlayerLoginInfo;
 class Experimental : public NWNXLib::Plugin
 {
 public:
-    Experimental(const Plugin::CreateParams& params);
+    Experimental(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Experimental();
 
 private:

@@ -93,8 +93,8 @@ void main()
 
     int nOldStr = GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE);
     NWNX_Creature_SetRawAbilityScore(oCreature, ABILITY_STRENGTH, 25);
-    NWNX_Tests_Report("NWNX_Creature", "SetAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
-    NWNX_Tests_Report("NWNX_Creature", "SetAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
+    NWNX_Tests_Report("NWNX_Creature", "SetRawAbilityScore", nOldStr != GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
+    NWNX_Tests_Report("NWNX_Creature", "SetRawAbilityScore", 25      == GetAbilityScore(oCreature, ABILITY_STRENGTH, TRUE));
 
     ApplyEffectToObject(DURATION_TYPE_PERMANENT, EffectPolymorph(POLYMORPH_TYPE_BADGER), oCreature);
     NWNX_Tests_Report("NWNX_Creature", "GetPrePolymorphAbilityScore", 25 == NWNX_Creature_GetPrePolymorphAbilityScore(oCreature, ABILITY_STRENGTH));
@@ -207,11 +207,6 @@ void main()
     NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_WIZARD, (nSchool+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_WIZARD) == (nSchool+1)%5);
 
-    //Test old functions for compatibility (deprecated)
-    nSchool = NWNX_Creature_GetWizardSpecialization(oCreature);
-    NWNX_Creature_SetWizardSpecialization(oCreature, (nSchool+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etWizardSpecialization", NWNX_Creature_GetWizardSpecialization(oCreature) == (nSchool+1)%5);
-
     //Test domain functions on a class that doesn't have domains
     int nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1);
     NWNX_Tests_Report("NWNX_Creature", "GetDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 1) == 0);
@@ -222,35 +217,45 @@ void main()
     NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_WIZARD, 2, (nDomain2+1)%5);
     NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_WIZARD, 2) == (nDomain2+1)%5);
 
+    //Get/Set Last Item Caster level
+    NWNX_Creature_SetLastItemCasterLevel(oCreature, 5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etLastItemCasterLevel", NWNX_Creature_GetLastItemCasterLevel(oCreature) == 5);
+
     //Spawn a cleric
-    oCreature = CreateObject(OBJECT_TYPE_CREATURE, "NW_BANDIT004", GetStartingLocation());
-    if (!GetIsObjectValid(oCreature))
+    object oCreature2 = CreateObject(OBJECT_TYPE_CREATURE, "NW_BANDIT004", GetStartingLocation());
+    if (!GetIsObjectValid(oCreature2))
     {
         WriteTimestampedLogEntry("NWNX_Creature test: Failed to create creature");
         return;
     }
 
     //Test specialization functions on a class that doesn't have specialization
-    nSchool = NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC);
-    NWNX_Tests_Report("NWNX_Creature", "GetSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC) == 0);
-    NWNX_Creature_SetSpecialization(oCreature, CLASS_TYPE_CLERIC, (nSchool+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature, CLASS_TYPE_CLERIC) == (nSchool+1)%5);
+    nSchool = NWNX_Creature_GetSpecialization(oCreature2, CLASS_TYPE_CLERIC);
+    NWNX_Tests_Report("NWNX_Creature", "GetSpecialization", NWNX_Creature_GetSpecialization(oCreature2, CLASS_TYPE_CLERIC) == 0);
+    NWNX_Creature_SetSpecialization(oCreature2, CLASS_TYPE_CLERIC, (nSchool+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etSpecialization", NWNX_Creature_GetSpecialization(oCreature2, CLASS_TYPE_CLERIC) == (nSchool+1)%5);
 
     //Test domain functions on a class that has domains
-    nDomain = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1);
-    NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 1, (nDomain+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 1) == (nDomain+1)%5);
-    nDomain2 = NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 2);
-    NWNX_Creature_SetDomain(oCreature, CLASS_TYPE_CLERIC, 2, (nDomain2+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature, CLASS_TYPE_CLERIC, 2) == (nDomain2+1)%5);
+    nDomain = NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 1);
+    NWNX_Creature_SetDomain(oCreature2, CLASS_TYPE_CLERIC, 1, (nDomain+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 1) == (nDomain+1)%5);
+    nDomain2 = NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 2);
+    NWNX_Creature_SetDomain(oCreature2, CLASS_TYPE_CLERIC, 2, (nDomain2+1)%5);
+    NWNX_Tests_Report("NWNX_Creature", "{S,G}etDomain", NWNX_Creature_GetDomain(oCreature2, CLASS_TYPE_CLERIC, 2) == (nDomain2+1)%5);
 
-    //Test old functions for compatibility (deprecated)
-    nDomain = NWNX_Creature_GetClericDomain(oCreature, 1);
-    NWNX_Creature_SetClericDomain(oCreature, 1, (nDomain+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etClericDomain", NWNX_Creature_GetClericDomain(oCreature, 1) == (nDomain+1)%5);
-    nDomain2 = NWNX_Creature_GetClericDomain(oCreature, 2);
-    NWNX_Creature_SetClericDomain(oCreature, 2, (nDomain2+1)%5);
-    NWNX_Tests_Report("NWNX_Creature", "{S,G}etClericDomain", NWNX_Creature_GetClericDomain(oCreature, 2) == (nDomain2+1)%5);
+	//Test Armor class versus function, elf mage vs bandit
+    NWNX_Tests_Report("NWNX_Creature", "Without a Versus GetArmorClassVersus", NWNX_Creature_GetArmorClassVersus(oCreature, OBJECT_INVALID) > 0);
+    int nOldAC = NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2);
+    int nOldTouchAC = NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2, TRUE);
+    NWNX_Tests_Report("NWNX_Creature", "Hard AC GetArmorClassVersus", nOldAC >=  0);
+    NWNX_Tests_Report("NWNX_Creature", "Touch AC GetArmorClassVersus", nOldTouchAC >=  0);
+    //Increase non-touch ac
+    ApplyEffectToObject(DURATION_TYPE_TEMPORARY, EffectACIncrease(5, AC_NATURAL_BONUS), oCreature, 10.0);
+    NWNX_Tests_Report("NWNX_Creature", "Hard AC increased after hard buff GetArmorClassVersus", nOldAC <  NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2));
+    NWNX_Tests_Report("NWNX_Creature", "Touch AC did not increase after hard buff GetArmorClassVersus", nOldTouchAC ==  NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2, TRUE));
+    //Increase touch AC against oVersus
+    ApplyEffectToObject(DURATION_TYPE_TEMPORARY, VersusRacialTypeEffect(EffectACIncrease(5, AC_DEFLECTION_BONUS), RACIAL_TYPE_HUMAN), oCreature, 10.0);
+    NWNX_Tests_Report("NWNX_Creature", "Touch AC increased after deflection buff GetArmorClassVersus", nOldTouchAC <  NWNX_Creature_GetArmorClassVersus(oCreature, oCreature2, TRUE));
 
     WriteTimestampedLogEntry("NWNX_Creature unit test end.");
 }

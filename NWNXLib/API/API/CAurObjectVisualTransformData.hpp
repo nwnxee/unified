@@ -19,7 +19,11 @@ struct CAurObjectVisualTransformData
     Vector m_translate;
     float m_animationSpeed;
 
-
+    CAurObjectVisualTransformData() :
+        m_scale(Vector{1.0, 1.0, 1.0}),
+        m_rotate(Vector{0.0, 0.0, 0.0}),
+        m_translate(Vector{0.0, 0.0, 0.0}),
+        m_animationSpeed(1.0) {}
 
 #ifdef NWN_CLASS_EXTENSION_CAurObjectVisualTransformData
     NWN_CLASS_EXTENSION_CAurObjectVisualTransformData

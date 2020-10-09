@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "Common.hpp"
@@ -51,7 +50,7 @@ private:
     void InitialSetupHooks();
     void InitialVersionCheck();
     void InitialSetupPlugins();
-    void InitialSetupResourceDirectory();
+    void InitialSetupResourceDirectories();
     void InitialSetupCommands();
 
     void UnloadPlugins();

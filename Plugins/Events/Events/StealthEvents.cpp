@@ -9,25 +9,28 @@ namespace Events {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static NWNXLib::Hooking::FunctionHook* m_SetStealthModeHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_DoSpotDetectionHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* m_DoListenDetectionHook = nullptr;
+static NWNXLib::Hooking::FunctionHook* s_SetStealthModeHook;
+static NWNXLib::Hooking::FunctionHook* s_DoSpotDetectionHook;
+static NWNXLib::Hooking::FunctionHook* s_DoListenDetectionHook;
 
 StealthEvents::StealthEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_E.*_STEALTH_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature14SetStealthModeEh>(&SetStealthModeHook);
-        m_SetStealthModeHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature14SetStealthModeEh);
+        s_SetStealthModeHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature14SetStealthModeEh>
+            (&SetStealthModeHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i, int32_t>(&DoListenDetectionHook);
-        m_DoListenDetectionHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i);
+        s_DoListenDetectionHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature17DoListenDetectionEPS_i, int32_t>
+            (&DoListenDetectionHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_SPOT_DETECTION.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i, int32_t>(&DoSpotDetectionHook);
-        m_DoSpotDetectionHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i);
+        s_DoSpotDetectionHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature15DoSpotDetectionEPS_i, int32_t>
+            (&DoSpotDetectionHook);
     });
 }
 
@@ -40,7 +43,7 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
     {
         if (Events::SignalEvent("NWNX_ON_ENTER_STEALTH_BEFORE", thisPtr->m_idSelf))
         {
-            m_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
+            s_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
         }
         else
         {
@@ -53,7 +56,7 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
     {
         if (Events::SignalEvent("NWNX_ON_EXIT_STEALTH_BEFORE", thisPtr->m_idSelf))
         {
-            m_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
+            s_SetStealthModeHook->CallOriginal<void>(thisPtr, nStealthMode);
         }
         else
         {
@@ -100,7 +103,7 @@ int32_t StealthEvents::DoListenDetectionHook(
     if (!pTarget->m_nStealthMode && !bTargetInvisible)
         return true;
 
-    return HandleDetectionHook("LISTEN", m_DoListenDetectionHook, pThis, pTarget, bTargetInvisible);
+    return HandleDetectionHook("LISTEN", s_DoListenDetectionHook, pThis, pTarget, bTargetInvisible);
 }
 
 int32_t StealthEvents::DoSpotDetectionHook(
@@ -114,7 +117,7 @@ int32_t StealthEvents::DoSpotDetectionHook(
     if (!pTarget->m_nStealthMode)
         return true;
 
-    return HandleDetectionHook("SPOT", m_DoSpotDetectionHook, pThis, pTarget, bTargetInvisible);
+    return HandleDetectionHook("SPOT", s_DoSpotDetectionHook, pThis, pTarget, bTargetInvisible);
 }
 
 }

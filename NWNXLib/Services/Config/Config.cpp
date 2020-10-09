@@ -2,9 +2,7 @@
 #include <cstdlib>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 Config::Config()
 {
@@ -47,8 +45,6 @@ std::optional<std::string> Config::Set(const std::string&, const std::string&,
     const std::string&)
 {
     throw std::runtime_error("Config::Set is not yet implemented.");
-}
-
 }
 
 }

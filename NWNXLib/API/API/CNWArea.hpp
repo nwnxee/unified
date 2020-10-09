@@ -59,6 +59,10 @@ struct CNWArea
     uint8_t m_nChanceOfSnow;
     uint8_t m_nChanceOfLightning;
     uint8_t m_nWindAmount;
+    Vector m_vWindDirection;
+    float m_fWindMagnitude;
+    float m_fWindYaw;
+    float m_fWindPitch;
     BOOL m_bNoRestingAllowed;
     uint8_t m_nShadowOpacity;
     float m_fFogClipDistance;
@@ -87,6 +91,7 @@ struct CNWArea
     virtual BOOL SetFog(int32_t nFogValue, Vector vColor);
     virtual BOOL SetIsNight(BOOL bIsNight);
     virtual BOOL SetWind(uint8_t nAmount);
+    void SetCustomWind(Vector vDirection, float fMagnitude, float fYaw, float fPitch);
 
 
 #ifdef NWN_CLASS_EXTENSION_CNWArea

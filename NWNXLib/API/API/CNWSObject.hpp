@@ -14,7 +14,9 @@
 #include "CScriptLocation.hpp"
 #include "MaterialShaderParam.hpp"
 #include "ObjectVisualTransformData.hpp"
+#include "TextureReplaceInfo.hpp"
 #include "Vector.hpp"
+#include <memory>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -132,9 +134,13 @@ struct CNWSObject : CGameObject
     uint16_t m_nEffectArrayIndex;
     BOOL m_bApplyingPostProcessEffects;
     BOOL m_bOpenDoorAnimationPlayed;
+    Vector m_vHiliteColor;
+    int32_t m_nMouseCursor;
     CNWSTransition m_pTransition;
+    std::shared_ptr<void*> m_sqlite_db;
     ObjectVisualTransformData m_pVisualTransformData;
     CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
+    CExoArrayList<TextureReplaceInfo> m_lTextureReplaceInfo;
     CNWSUUID m_pUUID;
 
     CNWSObject(uint8_t nObjectType, OBJECT_ID oidId = 0x7f000000, BOOL bCharacterObject = false, BOOL bAddObjectToArray = true);
@@ -224,7 +230,7 @@ struct CNWSObject : CGameObject
     BOOL GetHasFeatEffectApplied(uint16_t nFeatId);
     virtual uint32_t GetEffectSpellId();
     virtual void SetEffectSpellId(uint32_t n);
-    void AddLoopingVisualEffect(uint16_t nVisEffectID, OBJECT_ID oidOriginator = 0x7f000000, uint8_t nBodyPart = 0);
+    void AddLoopingVisualEffect(uint16_t nVisEffectID, OBJECT_ID oidOriginator = 0x7f000000, uint8_t nBodyPart = 0, ObjectVisualTransformData ovtd = ObjectVisualTransformData());
     void RemoveLoopingVisualEffect(uint16_t nVisEffectID);
     void BroadcastDialog(CExoString sSpokenString, float fRadius);
     Vector CalculateSpellRangedMissTarget(OBJECT_ID oidSource, OBJECT_ID oidTarget);
@@ -252,14 +258,24 @@ struct CNWSObject : CGameObject
     void CalculateLastSpellProjectileTime(uint8_t nProjectilePathType = 0);
     void SpawnBodyBag();
     void ReportOverflow(int32_t nOverflowFeedbackType, int32_t nTotal, int32_t nError, BOOL bCritical = false);
+    std::shared_ptr<void*> GetObjectSqlDatabase();
+    virtual bool GetCanCarrySqlDatabase();
+    void DestroyObjectSqlDatabase();
     void SaveVisualTransform(CResGFF * pRes, CResStruct * pStruct);
     void LoadVisualTransform(CResGFF * pRes, CResStruct * pStruct);
     void SaveMaterialOverrides(CResGFF * pRes, CResStruct * pStruct);
     void LoadMaterialOverrides(CResGFF * pRes, CResStruct * pStruct);
+    void SaveMiscVisuals(CResGFF * pRes, CResStruct * pStruct);
+    void LoadMiscVisuals(CResGFF * pRes, CResStruct * pStruct);
+    void SaveTextureOverrides(CResGFF * pRes, CResStruct * pStruct);
+    void LoadTextureOverrides(CResGFF * pRes, CResStruct * pStruct);
+    void LoadSqliteDatabase(CResGFF * pRes, CResStruct * pStruct);
+    void SaveSqliteDatabase(CResGFF * pRes, CResStruct * pStruct);
     void SetVisualTransformData(const ObjectVisualTransformData & data);
     void SetMaterialShaderParamI(const CExoString & sMaterialName, const CExoString & sParamName, int nValue);
     void SetMaterialShaderParamVec4(const CExoString & sMaterialName, const CExoString & sParamName, float fValue1, float fValue2, float fValue3, float fValue4);
     void ResetMaterialShaderParams(const CExoString & sMaterialName = "", const CExoString & sParamName = "");
+    void SetTextureReplace(const CExoString & sOld, const CExoString & sNew);
     void AddActionNodeParameter(CNWSObjectActionNode * pNode, uint32_t nParameterNumber, uint32_t nParameterType, void * pParameter);
     void RunActions(uint32_t nCalendarDay, uint32_t nTimeOfDay, uint64_t nStartOfUpdate);
     BOOL TerminateAISliceAfterAction(uint32_t nActionId);

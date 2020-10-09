@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 
 #include <regex>
 
@@ -13,7 +12,7 @@ namespace Regex {
 class Regex : public NWNXLib::Plugin
 {
 public:
-    Regex(const Plugin::CreateParams& params);
+    Regex(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Regex();
 
 private:

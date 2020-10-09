@@ -4,9 +4,7 @@
 #include <functional>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 struct Resamplers
 {
@@ -69,7 +67,5 @@ public:
 };
 
 #include "Services/Metrics/Resamplers.inl"
-
-}
 
 }

@@ -2,7 +2,6 @@
 #include "Encoding.hpp"
 
 #include "Assert.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSItem.hpp"

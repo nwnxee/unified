@@ -1,6 +1,6 @@
 find_package(Ruby)
 if (RUBY_FOUND)
     add_plugin(Ruby "Ruby.cpp")
-    target_include_directories(Ruby PRIVATE "${RUBY_INCLUDE_DIRS}")
+    target_include_directories(Ruby SYSTEM PRIVATE "${RUBY_INCLUDE_DIRS}")
     target_link_libraries(Ruby ${RUBY_LIBRARY})
 endif (RUBY_FOUND)

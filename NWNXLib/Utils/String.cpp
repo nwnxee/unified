@@ -3,8 +3,7 @@
 #include <stdlib.h> 
 #include <string.h>
 
-namespace NWNXLib {
-namespace Utils {
+namespace NWNXLib::Utils {
 
 template<> std::optional<bool> from_string(const std::string& str)
 {
@@ -145,5 +144,18 @@ std::vector<std::string> split(const std::string& sp, char delim, bool skipEmpty
     return out;
 }
 
+std::string basename(const std::string& path)
+{
+    std::string name = path;
+    auto slash = name.find_last_of('/');
+    if (slash != std::string::npos)
+        name = name.substr(slash+1);
+
+    auto dot = name.find_last_of('.');
+    if (dot != std::string::npos)
+        name = name.substr(0, dot);
+    return name;
 }
+
+
 }

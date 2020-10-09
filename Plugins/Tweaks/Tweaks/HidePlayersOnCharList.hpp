@@ -1,16 +1,17 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Common.hpp"
 
 namespace Tweaks {
 
-class HideDMsOnCharList
+class HidePlayersOnCharList
 {
 public:
-    HideDMsOnCharList(NWNXLib::Services::HooksProxy* hooker);
+    HidePlayersOnCharList(NWNXLib::Services::HooksProxy* hooker, int mode);
 
 private:
+    static int s_hideCharBehavior;
+
     static int32_t HandlePlayerToServerPlayModuleCharacterList_StartHook(
         CNWSMessage*, CNWSPlayer*);
 };

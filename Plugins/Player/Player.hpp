@@ -14,7 +14,7 @@ namespace Player {
 class Player : public NWNXLib::Plugin
 {
 public:
-    Player(const Plugin::CreateParams& params);
+    Player(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Player();
 
 private:
@@ -50,10 +50,19 @@ private:
     ArgumentStack GetPlatformId                     (ArgumentStack&& args);
     ArgumentStack GetLanguage                       (ArgumentStack&& args);
     ArgumentStack SetResManOverride                 (ArgumentStack&& args);
+    ArgumentStack SetCustomToken                    (ArgumentStack&& args);
+    ArgumentStack SetCreatureNameOverride           (ArgumentStack&& args);
+    ArgumentStack FloatingTextStringOnCreature      (ArgumentStack&& args);
+    ArgumentStack ToggleDM                          (ArgumentStack&& args);
+    ArgumentStack SetObjectMouseCursorOverride      (ArgumentStack&& args);
+    ArgumentStack SetObjectHiliteColorOverride      (ArgumentStack&& args);
+    ArgumentStack RemoveEffectFromTURD              (ArgumentStack&& args);
+    ArgumentStack SetSpawnLocation                  (ArgumentStack&& args);
+    ArgumentStack SendDMAllCreatorLists             (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 
-    std::unordered_map<std::string, std::pair<NWNXLib::API::Types::ObjectID, bool>> m_PersistentLocationWP;
+    std::unordered_map<std::string, std::pair<ObjectID, bool>> m_PersistentLocationWP;
 };
 
 }

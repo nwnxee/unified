@@ -26,4 +26,6 @@ std::string& trim(std::string& str);
 std::string join(const std::vector<std::string>& str, const char* delim = " ");
 std::vector<std::string> split(const std::string& str, char delim, bool skipEmpty = true, bool trimmed = true);
 
+std::string basename(const std::string& path);
+
 }

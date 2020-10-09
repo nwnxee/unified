@@ -13,7 +13,7 @@ add_plugin(Events
     "Events/StealthEvents.cpp"
     "Events/SpellEvents.cpp"
     "Events/PartyEvents.cpp"
-    "Events/HealerKitEvents.cpp"
+    "Events/HealingEvents.cpp"
     "Events/SkillEvents.cpp"
     "Events/PolymorphEvents.cpp"
     "Events/EffectEvents.cpp"
@@ -28,4 +28,6 @@ add_plugin(Events
     "Events/ObjectEvents.cpp"
     "Events/UUIDEvents.cpp"
     "Events/ResourceEvents.cpp"
-    "Events/QuickbarEvents.cpp")
+    "Events/QuickbarEvents.cpp"
+    "Events/DebugEvents.cpp"
+    "Events/StoreEvents.cpp")

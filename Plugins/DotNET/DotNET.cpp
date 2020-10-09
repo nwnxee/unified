@@ -5,6 +5,7 @@
 #include "API/Functions.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
+#include "Services/Messaging/Messaging.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -13,28 +14,16 @@
 
 #include "sdk/coreclr_delegates.h"
 #include "sdk/hostfxr.h"
+#include <dirent.h>
 #include <dlfcn.h>
 #include <limits.h>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "DotNET",
-        ".NET nwscript bindings and more",
-        "mtijanic",
-        "sherincall@gmail.com",
-        1,
-        false
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    return new DotNET::DotNET(params);
+    return new DotNET::DotNET(services);
 }
 
 using namespace NWNXLib::Services;
@@ -61,14 +50,7 @@ bool DotNET::InitThunks()
         const char *paths[] = {
             "libnethost.so",
             "./libnethost.so",
-            "lib/libnethost.so",
-            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.3/runtimes/linux-x64/native/libnethost.so",
-            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.2/runtimes/linux-x64/native/libnethost.so",
-            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.1/runtimes/linux-x64/native/libnethost.so",
-            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.1.0/runtimes/linux-x64/native/libnethost.so",
-            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.0.2/runtimes/linux-x64/native/libnethost.so",
-            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.0.1/runtimes/linux-x64/native/libnethost.so",
-            "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/3.0.0/runtimes/linux-x64/native/libnethost.so"
+            "lib/libnethost.so"
         };
         for (size_t i = 0; i < std::size(paths); i++)
         {
@@ -77,6 +59,48 @@ bool DotNET::InitThunks()
             {
                 LOG_INFO("Loaded libnethost.so from: %s (autodetected)", paths[i]);
                 break;
+            }
+        }
+    }
+
+    if (!nethost)
+    {
+        const auto hostBaseDir = "/usr/share/dotnet/packs/Microsoft.NETCore.App.Host.linux-x64/";
+        const auto hostLibSuffix = "/runtimes/linux-x64/native/libnethost.so";
+
+        DIR* dir = opendir(hostBaseDir);
+
+        if (dir != nullptr)
+        {
+            dirent* directoryEntry = readdir(dir);
+            std::vector<std::string> paths;
+
+            while (directoryEntry != nullptr)
+            {
+                if (directoryEntry->d_type == DT_DIR)
+                {
+                    const auto path = (std::string(hostBaseDir) + directoryEntry->d_name + hostLibSuffix);
+                    paths.push_back(path);
+                }
+
+                directoryEntry = readdir(dir);
+            }
+
+            closedir(dir);
+
+            if (!paths.empty())
+            {
+                std::sort(paths.begin(), paths.end(), std::greater<std::string>());
+                for (std::string path : paths)
+                {
+                    nethost = dlopen(path.c_str(), RTLD_LAZY);
+
+                    if (nethost)
+                    {
+                        LOG_INFO("Loaded libnethost.so from: %s (autodetected)", path);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -110,7 +134,7 @@ bool DotNET::InitThunks()
     return true;
 }
 
-DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
+DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
 {
     ASSERT_OR_THROW(Instance == nullptr);
     Instance = this;
@@ -167,27 +191,15 @@ DotNET::DotNET(const Plugin::CreateParams& params) : Plugin(params)
         args.push_back((void*)&StackPushString); // reserved utf8
         args.push_back((void*)&StackPushObject);
         args.push_back((void*)&StackPushVector);
-        args.push_back((void*)&StackPushEffect);
-        args.push_back((void*)&StackPushEvent);
-        args.push_back((void*)&StackPushLocation);
-        args.push_back((void*)&StackPushTalent);
-        args.push_back((void*)&StackPushItemProperty);
+        args.push_back((void*)&StackPushGameDefinedStructure);
         args.push_back((void*)&StackPopInteger);
         args.push_back((void*)&StackPopFloat);
         args.push_back((void*)&StackPopString);
         args.push_back((void*)&StackPopString); // reserved utf8
         args.push_back((void*)&StackPopObject);
         args.push_back((void*)&StackPopVector);
-        args.push_back((void*)&StackPopEffect);
-        args.push_back((void*)&StackPopEvent);
-        args.push_back((void*)&StackPopLocation);
-        args.push_back((void*)&StackPopTalent);
-        args.push_back((void*)&StackPopItemProperty);
-        args.push_back((void*)&FreeEffect);
-        args.push_back((void*)&FreeEvent);
-        args.push_back((void*)&FreeLocation);
-        args.push_back((void*)&FreeTalent);
-        args.push_back((void*)&FreeItemProperty);
+        args.push_back((void*)&StackPopGameDefinedStructure);
+        args.push_back((void*)&FreeGameDefinedStructure);
         args.push_back((void*)&ClosureAssignCommand);
         args.push_back((void*)&ClosureDelayCommand);
         args.push_back((void*)&ClosureActionDoCommand);
@@ -270,8 +282,8 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
 
     LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScript);
     static Hooking::FunctionHook* RunScriptHook;
-    Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
-        +[](CVirtualMachine* thisPtr, CExoString* script, Types::ObjectID objId, int32_t valid)
+    RunScriptHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
+        +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid)
         {
             if (!script || *script == "")
                 return 1;
@@ -292,12 +304,11 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
-    RunScriptHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji);
 
     LOG_DEBUG("Registered closure handler: %p", Handlers.Closure);
     static Hooking::FunctionHook* RunScriptSituationHook;
-    Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
-        +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, Types::ObjectID objId, int32_t valid)
+    RunScriptSituationHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
+        +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid)
         {
             uint64_t eventId;
             if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
@@ -313,7 +324,16 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
             return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
         }
     );
-    RunScriptSituationHook = Instance->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji);
+
+    LOG_DEBUG("Registered core signal handler: %p", Handlers.SignalHandler);
+    Instance->GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
+        [](const std::vector<std::string>& message)
+        {
+            int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
+            Handlers.SignalHandler(message[0].c_str());
+            int spAfter = Utils::PopScriptContext();
+            ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
+        });
 }
 
 }

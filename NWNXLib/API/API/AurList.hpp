@@ -1,9 +1,6 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "AurList.hpp"
-
-
 #ifdef NWN_API_PROLOGUE
 NWN_API_PROLOGUE(AurList)
 #endif

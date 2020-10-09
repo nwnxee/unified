@@ -9,29 +9,16 @@ using namespace NWNXLib;
 
 static Optimizations::Optimizations* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Optimizations",
-        "Optimizations that improve performance of various game elements",
-        "mtijanic",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Optimizations::Optimizations(params);
+    g_plugin = new Optimizations::Optimizations(services);
     return g_plugin;
 }
 
 namespace Optimizations {
 
-Optimizations::Optimizations(const Plugin::CreateParams& params)
-        : Plugin(params)
+Optimizations::Optimizations(Services::ProxyServiceList* services)
+        : Plugin(services)
 {
     if (GetServices()->m_config->Get<bool>("ASYNC_LOG_FLUSH", false))
     {

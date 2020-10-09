@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSCreature.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
@@ -12,7 +11,7 @@ namespace Creature {
 class Creature : public NWNXLib::Plugin
 {
 public:
-    Creature(const Plugin::CreateParams& params);
+    Creature(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Creature();
 
 private:
@@ -55,6 +54,7 @@ private:
     ArgumentStack SetMovementRate               (ArgumentStack&& args);
     ArgumentStack GetMovementRateFactor         (ArgumentStack&& args);
     ArgumentStack SetMovementRateFactor         (ArgumentStack&& args);
+    ArgumentStack SetMovementRateFactorCap      (ArgumentStack&& args);
     ArgumentStack SetAlignmentGoodEvil          (ArgumentStack&& args);
     ArgumentStack SetAlignmentLawChaos          (ArgumentStack&& args);
     ArgumentStack SetDomain                     (ArgumentStack&& args);
@@ -109,18 +109,41 @@ private:
     ArgumentStack SetCasterLevelOverride        (ArgumentStack&& args);
     ArgumentStack GetCasterLevelOverride        (ArgumentStack&& args);
     ArgumentStack JumpToLimbo                   (ArgumentStack&& args);
+    ArgumentStack SetCriticalMultiplierModifier (ArgumentStack&& args);
+    ArgumentStack GetCriticalMultiplierModifier (ArgumentStack&& args);
+    ArgumentStack SetCriticalMultiplierOverride (ArgumentStack&& args);
+    ArgumentStack GetCriticalMultiplierOverride (ArgumentStack&& args);
+    ArgumentStack SetCriticalRangeModifier      (ArgumentStack&& args);
+    ArgumentStack GetCriticalRangeModifier      (ArgumentStack&& args);
+    ArgumentStack SetCriticalRangeOverride      (ArgumentStack&& args);
+    ArgumentStack GetCriticalRangeOverride      (ArgumentStack&& args);
+    ArgumentStack AddAssociate                  (ArgumentStack&& args);
+    ArgumentStack SetLastItemCasterLevel        (ArgumentStack&& args);
+    ArgumentStack GetLastItemCasterLevel        (ArgumentStack&& args);
+    ArgumentStack GetArmorClassVersus           (ArgumentStack&& args);
+    ArgumentStack SetEffectIconFlashing         (ArgumentStack&& args);
+    ArgumentStack OverrideDamageLevel           (ArgumentStack&& args);
+    ArgumentStack SetEncounter                  (ArgumentStack&& args);
+    ArgumentStack GetEncounter                  (ArgumentStack&& args);
+    ArgumentStack GetIsBartering                (ArgumentStack&& args);
+    ArgumentStack GetWalkAnimation              (ArgumentStack&& args);
+    ArgumentStack SetWalkAnimation              (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
 
 private:
     static bool s_bAdjustCasterLevel;
     static bool s_bCasterLevelHooksInitialized;
+    static bool s_bCriticalMultiplierHooksInitialized;
+    static bool s_bCriticalRangeHooksInitialized;
 
     static void InitCasterLevelHooks();
     static void CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
     static void CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
     static void CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
     static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
+    static void InitCriticalMultiplierHook();
+    static void InitCriticalRangeHook();
 
 };
 

@@ -17,6 +17,12 @@ namespace NWNXLib::Services {
 
 Events::EventDataInternal* Events::GetEventData(const std::string& pluginName, const std::string& eventName)
 {
+    static Events::EventDataInternal* s_cached = nullptr;
+    if(s_cached && s_cached->m_data.m_pluginName == pluginName && s_cached->m_data.m_eventName == eventName)
+    {
+        return s_cached;
+    }
+
     EventList& events = m_eventMap[pluginName];
     auto it = std::find_if(std::begin(events), std::end(events),
         [&eventName](const std::unique_ptr<EventDataInternal>& data) -> bool
@@ -24,7 +30,8 @@ Events::EventDataInternal* Events::GetEventData(const std::string& pluginName, c
             return data->m_data.m_eventName == eventName;
         }
     );
-    return (it == std::end(events)) ? nullptr : it->get();
+
+    return s_cached = (it == std::end(events) ? nullptr : it->get());
 }
 
 void Events::Call(const std::string& pluginName, const std::string& eventName)
@@ -44,9 +51,7 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     }
     else
     {
-        std::string pluginNameWithoutPrefix = pluginName.substr(5, pluginName.length() - 5);
-
-        if (!Core::g_core->m_services->m_plugins->FindPluginByName(pluginNameWithoutPrefix))
+        if (!Core::g_core->m_services->m_plugins->FindPluginByName(pluginName))
         {
             LOG_ERROR("Plugin '%s' is not loaded but NWScript '%s' tried to call function '%s'.",
                     pluginName, Utils::GetCurrentScript(), eventName);
@@ -149,29 +154,4 @@ void EventsProxy::ClearEvent(const std::string& eventName)
     m_proxyBase.ClearEvent(std::move(concreteToken));
 }
 
-
-
-template<> std::optional<int32_t>&              Events::Argument::Get<int32_t>()             { return m_int; }
-template<> std::optional<float>&                Events::Argument::Get<float>()               { return m_float; }
-template<> std::optional<API::Types::ObjectID>& Events::Argument::Get<API::Types::ObjectID>(){ return m_object; }
-template<> std::optional<std::string>&          Events::Argument::Get<std::string>()         { return m_string; }
-template<> std::optional<CGameEffect*>&         Events::Argument::Get<CGameEffect*>()        { return m_effect; }
-
-std::string Events::Argument::toString() const
-{
-    if (m_int)    return std::to_string(*m_int);
-    if (m_float)  return std::to_string(*m_float);
-    if (m_object) return Utils::ObjectIDToString(*m_object);
-    if (m_string) return *m_string;
-    if (m_effect) return *m_effect ? std::string("EffectID:") + std::to_string((*m_effect)->m_nID) : std::string("nullptr effect");
-
-    return std::string("");
-}
-
-}
-
-std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg)
-{
-    os << arg.toString();
-    return os;
 }

@@ -1,10 +1,10 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoArrayList.hpp"
 #include "CExoString.hpp"
 #include "CNWSScriptVar.hpp"
 #include "CScriptLocation.hpp"
+#include <unordered_map>
 
 
 #ifdef NWN_API_PROLOGUE
@@ -22,10 +22,9 @@ typedef uint32_t OBJECT_ID;
 
 struct CNWSScriptVarTable
 {
-    CExoArrayList<CNWSScriptVar> m_lVarList;
+    std::unordered_map<CExoString, CNWSScriptVar> m_vars;
     CNWSCreature * m_pCreature;
 
-    ~CNWSScriptVarTable();
     int32_t GetInt(CExoString & sVarName);
     float GetFloat(CExoString & sVarName);
     CExoString GetString(CExoString & sVarName);

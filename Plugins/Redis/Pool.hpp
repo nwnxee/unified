@@ -58,7 +58,6 @@ public:
     //    Any returned above that are discarded.
     void Reconfigure(MakeFunc make, size_t min = 1, size_t max = 10)
     {
-        ASSERT(min >= 0);
         ASSERT(min < max);
 
         std::lock_guard<std::mutex> lock(m_pool_mtx);

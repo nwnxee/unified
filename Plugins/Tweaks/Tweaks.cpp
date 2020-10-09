@@ -7,7 +7,7 @@
 #include "Tweaks/ParryAllAttacks.hpp"
 #include "Tweaks/SneakAttackCritImmunity.hpp"
 #include "Tweaks/PreserveDepletedItems.hpp"
-#include "Tweaks/HideDMsOnCharList.hpp"
+#include "Tweaks/HidePlayersOnCharList.hpp"
 #include "Tweaks/DisableMonkAbilitiesWhenPolymorphed.hpp"
 #include "Tweaks/StringToIntBaseToAuto.hpp"
 #include "Tweaks/DeadCreatureFiresOnAreaExit.hpp"
@@ -16,38 +16,27 @@
 #include "Tweaks/ItemChargesCost.hpp"
 #include "Tweaks/FixDispelEffectLevels.hpp"
 #include "Tweaks/AddPrestigeclassCasterLevels.hpp"
+#include "Tweaks/FixUnlimitedPotionsBug.hpp"
+#include "Tweaks/UnhardcodeShields.hpp"
+#include "Tweaks/BlockDMSpawnItem.hpp"
 
 #include "Services/Config/Config.hpp"
 
-#include "API/Version.hpp"
 
 using namespace NWNXLib;
 
 static Tweaks::Tweaks* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Tweaks",
-        "Tweaks the behaviour of NWN.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Tweaks::Tweaks(params);
+    g_plugin = new Tweaks::Tweaks(services);
     return g_plugin;
 }
 
 namespace Tweaks {
 
-Tweaks::Tweaks(const Plugin::CreateParams& params)
-    : Plugin(params)
+Tweaks::Tweaks(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     if (GetServices()->m_config->Get<bool>("HIDE_CLASSES_ON_CHAR_LIST", false))
     {
@@ -100,8 +89,18 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
 
     if (GetServices()->m_config->Get<bool>("HIDE_DMS_ON_CHAR_LIST", false))
     {
-        LOG_INFO("DMs will not be visible on character list");
-        m_HideDMsOnCharList = std::make_unique<HideDMsOnCharList>(GetServices()->m_hooks.get());
+        LOG_INFO("NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST has been deprecated, please use NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST = 1");
+        m_HidePlayersOnCharList = std::make_unique<HidePlayersOnCharList>(GetServices()->m_hooks.get(), 1);
+    }
+    else if (auto mode = GetServices()->m_config->Get<int>("HIDE_PLAYERS_ON_CHAR_LIST", 0))
+    {
+        if (mode == 1)
+            LOG_INFO("DMs will not be visible on character list.");
+        else if (mode == 2)
+            LOG_INFO("PCs will not be visible on character list.");
+        else if (mode == 3)
+            LOG_INFO("DMs and PCs will not be visible on character list.");
+        m_HidePlayersOnCharList = std::make_unique<HidePlayersOnCharList>(GetServices()->m_hooks.get(), mode);
     }
 
     if (GetServices()->m_config->Get<bool>("DISABLE_MONK_ABILITIES_WHEN_POLYMORPHED", false))
@@ -151,6 +150,24 @@ Tweaks::Tweaks(const Plugin::CreateParams& params)
     {
         LOG_INFO("Automatically adding prestige class caster levels using (Div|Arc)SpellLvlMod colums in classes.2da");
         m_AddPrestigeclassCasterLevels = std::make_unique<AddPrestigeclassCasterLevels>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("FIX_UNLIMITED_POTIONS_BUG", false))
+    {
+        LOG_INFO("Fixing unlimited potion/scroll uses bug");
+        m_FixUnlimitedPotionsBug = std::make_unique<FixUnlimitedPotionsBug>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("UNHARDCODE_SHIELDS", false))
+    {
+        LOG_INFO("Using baseitems.2da to define shield AC and create shield-like items");
+        m_UnhardcodeShields = std::make_unique<UnhardcodeShields>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("BLOCK_DM_SPAWNITEM", false))
+    {
+        LOG_INFO("Blocking the dm_spawnitem console command");
+        m_BlockDMSpawnItem = std::make_unique<BlockDMSpawnItem>(GetServices()->m_hooks.get());
     }
 }
 
