@@ -239,6 +239,7 @@ _______________________________________
     TARGET_POSITION_X     | float  | |
     TARGET_POSITION_Y     | float  | |
     TARGET_POSITION_Z     | float  | |
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
 _______________________________________
     ## DM Give Events
@@ -628,6 +629,7 @@ _______________________________________
     TARGET_POSITION_X     | float | |
     TARGET_POSITION_Y     | float | |
     TARGET_POSITION_Z     | float | |
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
     @note Probably only really works with the following activated skills:
     `SKILL_ANIMAL_EMPATHY`, `SKILL_DISABLE_TRAP`, `SKILL_HEAL`, `SKILL_OPEN_LOCK`,
@@ -1044,6 +1046,7 @@ _______________________________________
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
     DOOR                  | object | Convert to object with StringToObject()
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
 _______________________________________
     ## Object Unlock Events
@@ -1057,6 +1060,7 @@ _______________________________________
     DOOR                  | object | Convert to object with StringToObject()
     THIEVES_TOOL          | object | Convert to object with StringToObject()
     ACTIVE_PROPERTY_INDEX | int    |
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
 _______________________________________
     ## UUID Collision Events
