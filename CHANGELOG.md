@@ -644,3 +644,6 @@ The following plugins were added:
 - Object: GetLocalVariable and GetLocalVariableCount now work with Area and Module object
 - Events: DMActionEvents now return valid TARGET event data
 - Core: Serialization now stores locals and effects for all objects, instead of only items
+
+### Added
+- Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
