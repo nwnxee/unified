@@ -12,6 +12,7 @@
 #include "API/CExoArrayList.hpp"
 #include "API/CNWRules.hpp"
 #include "API/CNWClass.hpp"
+#include "API/CNWCCMessageData.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CFactionManager.hpp"
@@ -20,6 +21,7 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/C2DA.hpp"
 #include "API/CNWSBarter.hpp"
+#include "API/CNWSCombatRound.hpp"
 #include "API/CEffectIconObject.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -28,6 +30,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "Services/Messaging/Messaging.hpp"
 #include "Encoding.hpp"
 
 
@@ -49,6 +52,7 @@ bool Creature::s_bAdjustCasterLevel = false;
 bool Creature::s_bCasterLevelHooksInitialized = false;
 bool Creature::s_bCriticalMultiplierHooksInitialized = false;
 bool Creature::s_bCriticalRangeHooksInitialized = false;
+bool Creature::s_bResolveAttackRollHookInitialized = false;
 
 Creature::Creature(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -170,6 +174,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(GetIsBartering);
     REGISTER(GetWalkAnimation);
     REGISTER(SetWalkAnimation);
+    REGISTER(SetAttackRollOverride);
+    REGISTER(SetParryAllAttacks);
 
 #undef REGISTER
 }
@@ -1838,6 +1844,12 @@ ArgumentStack Creature::SetOriginalName(ArgumentStack&& args)
             ASSERT_OR_THROW(!name.empty());
             pCreature->m_pStats->m_lsFirstName = locName;
         }
+
+        if (pCreature->m_bPlayerCharacter || pCreature->m_pStats->m_bIsPC || pCreature->m_pStats->m_bIsDMCharacterFile)
+        {
+            g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
+                                                                   {NWNXLib::Utils::ObjectIDToString(pCreature->m_idSelf)});
+        }
     }
 
     return Services::Events::Arguments();
@@ -2679,6 +2691,269 @@ ArgumentStack Creature::SetWalkAnimation(ArgumentStack&& args)
         {
             pCreature->m_nWalkAnimation = animation;
         }
+    }
+
+    return Services::Events::Arguments();
+}
+
+void Creature::DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget)
+{
+    auto nDiceRoll = Globals::Rules()->RollDice(1, 20);
+    auto pAttackData = thisPtr->m_pcCombatRound->GetAttack(thisPtr->m_pcCombatRound->m_nCurrentAttack);
+    auto nAttackMod = 0;
+    auto nAutoFailOnOne = true;
+    auto nAutoSucceedOnTwenty = true;
+    auto rollIter = g_plugin->m_RollModifier.find(nDiceRoll);
+    if (rollIter != g_plugin->m_RollModifier.end())
+    {
+        auto modIterCreature = rollIter->second.find(thisPtr->m_idSelf);
+        if (modIterCreature != rollIter->second.end())
+        {
+            nAttackMod += modIterCreature->second;
+            if (nDiceRoll == 1)
+                nAutoFailOnOne = false;
+            else if (nDiceRoll == 20)
+                nAutoSucceedOnTwenty = false;
+        }
+        else
+        {
+            auto modIterAll = rollIter->second.find(Constants::OBJECT_INVALID);
+            if (modIterAll != rollIter->second.end())
+            {
+                nAttackMod += modIterAll->second;
+                if (nDiceRoll == 1)
+                    nAutoFailOnOne = false;
+                else if (nDiceRoll == 20)
+                    nAutoSucceedOnTwenty = false;
+            }
+        }
+    }
+
+    CNWSCreatureStats *pThisStats = thisPtr->m_pStats;
+    CNWSCreature *pTargetCreature = Utils::AsNWSCreature(pTarget);
+
+    if (pTargetCreature)
+    {
+        //Test Sneak
+        thisPtr->ResolveSneakAttack(pTargetCreature);
+        thisPtr->ResolveDeathAttack(pTargetCreature);
+    }
+
+    //Coup de grace
+    if (pAttackData->m_bCoupDeGrace)
+    {
+        pAttackData->m_nToHitRoll = 20;
+        pAttackData->m_nAttackResult = 7;
+        pAttackData->m_nToHitMod = pThisStats->GetAttackModifierVersus(pTargetCreature);
+        return;
+    }
+
+    if (Globals::EnableCombatDebugging())
+    {
+        auto sInfo = pThisStats->GetFullName() + CExoString(" Attack Roll: ") +
+                     CExoString(std::to_string(nDiceRoll));
+        if (nAttackMod < 0)
+            sInfo = sInfo + CExoString(" - ") + CExoString(std::to_string(nAttackMod * -1)) +
+                    CExoString(" (Roll Modifier)");
+        else if (nAttackMod > 0)
+            sInfo = sInfo + CExoString(" + ") + CExoString(std::to_string(nAttackMod)) +
+                    CExoString(" (Roll Modifier)");
+        pAttackData->m_sAttackDebugText = sInfo;
+    }
+
+    //Update rolls
+    pAttackData->m_nToHitMod = pThisStats->GetAttackModifierVersus(pTargetCreature);
+    pAttackData->m_nToHitRoll = nDiceRoll;
+    pAttackData->m_nToHitMod += nAttackMod;
+
+    auto nModifiedRoll = pAttackData->m_nToHitRoll + pAttackData->m_nToHitMod;
+    auto nAC = !pTargetCreature ? 0 : pTargetCreature->m_pStats->GetArmorClassVersus(thisPtr, 0);
+    bool bHit = nModifiedRoll >= nAC;
+
+    //Test parry/deflect/concealment
+    if (thisPtr->ResolveDefensiveEffects(pTarget, bHit))
+    {
+        return;
+    }
+
+    //Parry
+    if (pTargetCreature && pAttackData->m_nToHitRoll != 20 &&
+        pTargetCreature->m_nCombatMode == 1 &&
+        pTargetCreature->m_pcCombatRound->m_nParryActions &&
+        !pTargetCreature->m_pcCombatRound->m_bRoundPaused &&
+        pTargetCreature->m_nState != 6 && !pAttackData->m_bRangedAttack &&
+        !(pTargetCreature->GetRangeWeaponEquipped()))
+    {
+
+        auto nParrySkill = pTargetCreature->m_pStats->GetSkillRank(Constants::Skill::Parry, thisPtr,
+                                                                   0);
+        auto nParryCheck = Globals::Rules()->RollDice(1, 20) + nParrySkill - nModifiedRoll;
+        pTargetCreature->m_pcCombatRound->m_nParryActions--;
+
+        if (nParryCheck >= 0)
+        {
+            pAttackData->m_nAttackResult = 2;
+            if (nParryCheck >= Globals::Rules()->GetRulesetIntEntry("PARRY_RIPOSTE_DIFFERENCE", 10))
+                pTargetCreature->m_pcCombatRound->AddParryAttack(thisPtr->m_idSelf);
+            return;
+        }
+
+        pTargetCreature->m_pcCombatRound->AddParryIndex();
+    }
+
+    if (pAttackData->m_nToHitRoll == 1 && nAutoFailOnOne)
+    {
+        pAttackData->m_nAttackResult = 4;
+        pAttackData->m_nMissedBy = 1;
+        return;
+    }
+    else if ((pAttackData->m_nToHitRoll != 20 || !nAutoSucceedOnTwenty) && nModifiedRoll < nAC)
+    {
+        pAttackData->m_nAttackResult = 4;
+        pAttackData->m_nMissedBy = static_cast<char>(nModifiedRoll - nAC);
+        if (pAttackData->m_nMissedBy < 0)
+            pAttackData->m_nMissedBy = static_cast<char>(-pAttackData->m_nMissedBy);
+        return;
+    }
+
+    //If attack connects
+    auto nCritThreat = pThisStats->GetCriticalHitRoll(thisPtr->m_pcCombatRound->GetOffHandAttack());
+
+    //Critical hit check
+    if (nCritThreat <= pAttackData->m_nToHitRoll)
+    {
+        pAttackData->m_nThreatRoll = Globals::Rules()->RollDice(1, 20);
+        pAttackData->m_bCriticalThreat = 1;
+        //Crit confirmed
+        if (pAttackData->m_nThreatRoll + pAttackData->m_nToHitMod >= nAC)
+        {
+            if (!pTargetCreature)
+            {
+                pAttackData->m_nAttackResult = 3;
+                return;
+            }
+            auto nDifficultySetting = Globals::AppManager()->m_pServerExoApp->GetDifficultyOption(
+                    0);
+            //Checking very easy difficulty, monster attack on PC or controlled familiar
+            if (nDifficultySetting == 1 && !thisPtr->m_bPlayerCharacter &&
+                (pTargetCreature->m_bPlayerCharacter || pTargetCreature->GetIsPossessedFamiliar())
+                && !thisPtr->GetIsPossessedFamiliar())
+            {
+                pAttackData->m_nAttackResult = 1;
+                return;
+            }
+
+            if (!pTargetCreature->m_pStats->GetEffectImmunity(Constants::ImmunityType::CriticalHit,
+                                                              thisPtr, 1))
+            {
+                pAttackData->m_nAttackResult = 3;
+                return;
+            }
+            auto pMessage = new CNWCCMessageData();
+            pMessage->SetObjectID(0, pTarget->m_idSelf);
+            pMessage->SetInteger(0, 126);
+            pAttackData->m_alstPendingFeedback.Add(pMessage);
+        }
+    }
+
+    //Regular hit
+    pAttackData->m_nAttackResult = 1;
+}
+
+bool Creature::InitResolveAttackRollHook()
+{
+    static NWNXLib::Hooking::FunctionHook* pResolveAttackRoll_hook;
+    if (!pResolveAttackRoll_hook)
+    {
+        try
+        {
+            g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>(
+                    +[](CNWSCreature *thisPtr, CNWSObject *pTarget) -> void
+                    {
+                        auto pTargetCreature = Utils::AsNWSCreature(pTarget);
+                        int32_t bRoundPaused = false;
+                        if (g_plugin->m_ParryAllAttacks[thisPtr->m_idSelf] ||
+                        g_plugin->m_ParryAllAttacks[Constants::OBJECT_INVALID])
+                        {
+                            if (auto *pCreature = pTargetCreature)
+                            {
+                                if (pCreature->m_nCombatMode == Constants::CombatMode::Parry &&
+                                    pCreature->m_pcCombatRound->m_nParryActions > 0 &&
+                                    !pCreature->GetRangeWeaponEquipped())
+                                {
+                                    bRoundPaused = pCreature->m_pcCombatRound->m_bRoundPaused;
+                                    pCreature->m_pcCombatRound->m_bRoundPaused = false;
+                                }
+                            }
+                        }
+
+                        DoResolveAttackHook(thisPtr, pTarget);
+
+                        if (g_plugin->m_ParryAllAttacks[pTarget->m_idSelf] ||
+                            g_plugin->m_ParryAllAttacks[Constants::OBJECT_INVALID])
+                        {
+                            if (bRoundPaused)
+                                pTargetCreature->m_pcCombatRound->m_bRoundPaused = true;
+                        }
+
+                    });
+            pResolveAttackRoll_hook = g_plugin->GetServices()->m_hooks->FindHookByAddress(
+                    Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject);
+        }
+        catch (...)
+        {
+            LOG_ERROR("Can't hook ResolveAttackRoll, is ParryAllAttacks Tweak turned on?");
+            return false;
+        }
+    }
+    s_bResolveAttackRollHookInitialized = true;
+    return true;
+}
+
+ArgumentStack Creature::SetAttackRollOverride(ArgumentStack&& args)
+{
+    if (!s_bResolveAttackRollHookInitialized)
+        if (!InitResolveAttackRollHook())
+            return Services::Events::Arguments();
+
+    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
+    auto nDie = Services::Events::ExtractArgument<int32_t>(args);
+    const auto nModifier = Services::Events::ExtractArgument<int32_t>(args);
+
+    if (nDie < 1 || 20 < nDie)
+    {
+        LOG_ERROR("Dice roll must be set between 1 and 20!");
+    }
+    else
+    {
+        if (creatureId == Constants::OBJECT_INVALID)
+        {
+            g_plugin->m_RollModifier[nDie][Constants::OBJECT_INVALID] = nModifier;
+        }
+        else
+        {
+            g_plugin->m_RollModifier[nDie][Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId)->m_idSelf] = nModifier;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::SetParryAllAttacks(ArgumentStack&& args)
+{
+    if (!s_bResolveAttackRollHookInitialized)
+        if (!InitResolveAttackRollHook())
+            return Services::Events::Arguments();
+
+    const auto creatureId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto bParry = !!Services::Events::ExtractArgument<int32_t>(args);
+    if (creatureId == Constants::OBJECT_INVALID)
+    {
+        g_plugin->m_ParryAllAttacks[Constants::OBJECT_INVALID] = bParry;
+    }
+    else
+    {
+        g_plugin->m_ParryAllAttacks[Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId)->m_idSelf] = bParry;
     }
 
     return Services::Events::Arguments();

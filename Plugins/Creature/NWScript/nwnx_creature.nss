@@ -802,6 +802,18 @@ int NWNX_Creature_GetWalkAnimation(object oCreature);
 /// @param nAnimation The walk animation number.
 void NWNX_Creature_SetWalkAnimation(object oCreature, int nAnimation);
 
+/// @brief Changes the attack modifier depending on the dice roll. Used to skip autofail on 1 and autosucceed on 20 as well.
+/// @param oCreature The attacking creature, use OBJECT_INVALID for all.
+/// @param nRoll The dice roll to modify.
+/// @param nModifier The modifier to the attack, use 0 to turn off autofail for 1/autosucceed for 20 with no attack modifier value.
+void NWNX_Creature_SetAttackRollOverride(object oCreature, int nRoll, int nModifier);
+
+/// @brief Works like the tweak but can be turned on and off for all creatures or single ones.
+/// @param oCreature The parrying creature, use OBJECT_INVALID for all.
+/// @param bParry TRUE to parry all attacks.
+/// @note Use this command on_module_load instead of the NWNX_TWEAKS_PARRY_ALL_ATTACKS tweak if using NWNX_Creature_SetAttackRollOverride()
+void NWNX_Creature_SetParryAllAttacks(object oCreature, int bParry);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2029,6 +2041,23 @@ void NWNX_Creature_SetWalkAnimation(object oCreature, int nAnimation)
 {
     string sFunc = "SetWalkAnimation";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, nAnimation);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetAttackRollOverride(object oCreature, int nRoll, int nModifier)
+{
+    string sFunc = "SetAttackRollOverride";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nModifier);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nRoll);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetParryAllAttacks(object oCreature, int bParry)
+{
+    string sFunc = "SetParryAllAttacks";
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bParry);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
