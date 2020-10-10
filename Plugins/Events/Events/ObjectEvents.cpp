@@ -49,6 +49,7 @@ int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, ObjectID oidD
         retVal = false;
     }
 
+    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_OBJECT_LOCK_AFTER");
 
     return retVal;
@@ -75,6 +76,7 @@ int32_t ObjectEvents::AddUnlockObjectActionHook(CNWSObject *thisPtr, ObjectID oi
         retVal = false;
     }
 
+    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_OBJECT_UNLOCK_AFTER");
 
     return retVal;

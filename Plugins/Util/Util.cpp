@@ -90,6 +90,7 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(GetWorldTime);
     REGISTER(SetResourceOverride);
     REGISTER(GetResourceOverride);
+    REGISTER(GetScriptParamIsSet);
 
 #undef REGISTER
 
@@ -596,6 +597,16 @@ ArgumentStack Util::CreateDoor(ArgumentStack&& args)
     const auto facing = Services::Events::ExtractArgument<float>(args);
     const auto tag = Services::Events::ExtractArgument<std::string>(args);
 
+    int32_t appearance = -1;
+    try
+    {
+        appearance = Services::Events::ExtractArgument<int32_t>(args);
+    }
+    catch (const std::runtime_error& e)
+    {
+        LOG_WARNING("NWNX_Util_CreateDoor() called without appearance parameter, please update nwnx_util.nss");
+    }
+
     auto resRef = CResRef(strResRef);
     Vector position = {posX, posY, posZ};
 
@@ -619,6 +630,8 @@ ArgumentStack Util::CreateDoor(ArgumentStack&& args)
             pDoor->LoadDoor(&gff, &resStruct);
             pDoor->LoadVarTable(&gff, &resStruct);
             pDoor->SetPosition(position);
+            if (appearance >= 0)
+                pDoor->m_nAppearanceType = appearance;
             Utils::SetOrientation(pDoor, facing);
 
             if (!tag.empty())
@@ -707,6 +720,31 @@ ArgumentStack Util::GetResourceOverride(ArgumentStack&& args)
     std::string overrideResName = Globals::ExoResMan()->GetOverride(resName.c_str(), resType).GetResRefStr();
 
     return overrideResName == resName ? "" : overrideResName;
+}
+
+ArgumentStack Util::GetScriptParamIsSet(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    const auto paramName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!paramName.empty());
+
+    auto *pVirtualMachine = API::Globals::VirtualMachine();
+    if (pVirtualMachine && pVirtualMachine->m_nRecursionLevel >= 0)
+    {
+        auto &scriptParams = pVirtualMachine->m_lScriptParams[pVirtualMachine->m_nRecursionLevel];
+
+        for (const auto& scriptParam : scriptParams)
+        {
+            if (scriptParam.key.CStr() == paramName)
+            {
+                retVal = true;
+                break;
+            }
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
 }
 
 }

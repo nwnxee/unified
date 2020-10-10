@@ -164,7 +164,7 @@ void Race::ApplyRaceEffects(CNWSCreature *pCreature)
     // the racial modifiers.
     if (effectsLevelAdded)
     {
-        std::vector<uint16_t> remove(128);
+        std::vector<uint64_t> remove(128);
         for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
         {
             auto eff = (CGameEffect*)pCreature->m_appliedEffects.element[i];

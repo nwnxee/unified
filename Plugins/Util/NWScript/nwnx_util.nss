@@ -188,8 +188,9 @@ int NWNX_Util_GetScriptReturnValue();
 /// @param sResRef The ResRef of the door.
 /// @param locLocation The location to create the door at.
 /// @param sNewTag An optional new tag for the door.
+/// @param nAppearanceType An optional index into doortypes.2da for appearance.
 /// @return The door, or OBJECT_INVALID on failure.
-object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "");
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1);
 
 /// @brief Set the object that will be returned by GetItemActivator.
 /// @param oObject An object.
@@ -213,6 +214,11 @@ void NWNX_Util_SetResourceOverride(int nResType, string sOldName, string sNewNam
 /// @param sName The name of the resource, 16 characters or less.
 /// @return The resource override, or "" if one is not set.
 string NWNX_Util_GetResourceOverride(int nResType, string sName);
+
+/// @brief Get if a script param is set.
+/// @param sParamName The script parameter name to check.
+/// @return TRUE if the script param is set, FALSE if not or on error.
+int NWNX_Util_GetScriptParamIsSet(string sParamName);
 
 /// @}
 
@@ -457,12 +463,13 @@ int NWNX_Util_GetScriptReturnValue()
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
-object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag)
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1)
 {
     string sFunc = "CreateDoor";
 
     vector vPosition = GetPositionFromLocation(locLocation);
 
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nAppearanceType);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sNewTag);
     NWNX_PushArgumentFloat(NWNX_Util, sFunc, GetFacingFromLocation(locLocation));
     NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.z);
@@ -516,4 +523,14 @@ string NWNX_Util_GetResourceOverride(int nResType, string sName)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetScriptParamIsSet(string sParamName)
+{
+    string sFunc = "GetScriptParamIsSet";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sParamName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
