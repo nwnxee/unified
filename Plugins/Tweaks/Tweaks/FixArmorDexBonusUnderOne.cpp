@@ -22,13 +22,13 @@ FixArmorDexBonusUnderOne::FixArmorDexBonusUnderOne(Services::HooksProxy* hooker)
                                     (&CNWSCreatureStats__GetDEXMod_hook);
 }
 
-uint8_t FixArmorDexBonusUnderOne::CNWSCreatureStats__GetDEXMod_hook(CNWSCreature *pThis, int32_t bArmorDexCap)
+uint8_t FixArmorDexBonusUnderOne::CNWSCreatureStats__GetDEXMod_hook(CNWSCreatureStats *pThis, int32_t bArmorDexCap)
 {
-    int nDexAC = pThis->m_pStats->m_nDexterityModifier;
+    auto nDexAC = pThis->m_nDexterityModifier;
 
     if (bArmorDexCap)
     {
-        auto pArmor = pThis->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Chest);
+        auto pArmor = pThis->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::Chest);
         int nTempValue = 0;
         if (pArmor && (nTempValue = pArmor->ComputeArmorClass()) > 0)
         {

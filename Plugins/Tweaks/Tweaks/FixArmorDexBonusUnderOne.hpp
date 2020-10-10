@@ -11,7 +11,7 @@ public:
     FixArmorDexBonusUnderOne(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static uint8_t CNWSCreatureStats__GetDEXMod_hook(CNWSCreature *pThis, int32_t bArmorDexCap);
+    static uint8_t CNWSCreatureStats__GetDEXMod_hook(CNWSCreatureStats *pThis, int32_t bArmorDexCap);
 };
 
 }
