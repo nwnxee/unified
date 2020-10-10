@@ -19,6 +19,7 @@
 #include "Tweaks/FixUnlimitedPotionsBug.hpp"
 #include "Tweaks/UnhardcodeShields.hpp"
 #include "Tweaks/BlockDMSpawnItem.hpp"
+#include "Tweaks/FixArmorDexBonusUnderOne.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -168,6 +169,11 @@ Tweaks::Tweaks(Services::ProxyServiceList* services)
     {
         LOG_INFO("Blocking the dm_spawnitem console command");
         m_BlockDMSpawnItem = std::make_unique<BlockDMSpawnItem>(GetServices()->m_hooks.get());
+    }
+    if (GetServices()->m_config->Get<bool>("FIX_ARMOR_DEX_BONUS_UNDER_ONE", false))
+    {
+        LOG_INFO("Allowing armors with max DEX bonus under 1.");
+        m_FixArmorDexBonusUnderOne = std::make_unique<FixArmorDexBonusUnderOne>(GetServices()->m_hooks.get());
     }
 }
 
