@@ -41,6 +41,7 @@ N/A
 - Player: fixed bic getting overwritten when using PossessCreature() and crashing in between areas
 - Race: fixed effect clean up after level up
 - Rename: community name only obfuscates once a server reset
+- Rename: properly updates original name if NWNX_Creature_SetOriginalName() is used
 - Weapon: fixed bug in SetGreaterWeaponFocusFeat()
 
 ## 8193.16
