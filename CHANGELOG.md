@@ -18,6 +18,8 @@ N/A
 ##### New NWScript Functions
 - Area: GetTileInfo()
 - Creature: {Get|Set}WalkAnimation()
+- Creature: SetAttackRollOverride()
+- Creature: SetParryAllAttacks()
 - Object: GetCurrentAnimation()
 - Util: GetScriptParamIsSet()
 
