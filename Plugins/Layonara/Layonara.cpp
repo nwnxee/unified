@@ -987,7 +987,8 @@ void Layonara::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nHideMode)
         {
             if (!thisPtr->m_pStats->HasFeat(Constants::Feat::HideInPlainSight))
                 nHideMode = 0;
-            if (!nHideMode && thisPtr->m_pStats->HasFeat(2602))
+
+            if (!nHideMode && thisPtr->m_pStats->HasFeat(Constants::Feat::EpicRanger))
             {
                 if ((pArea->m_nFlags & 4) && !(pArea->m_nFlags & 1) && !(pArea->m_nFlags & 2))
                     nHideMode = 1;
