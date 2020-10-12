@@ -37,6 +37,7 @@ var modules =
     [ "SpellChecker", "group__spellchecker.html", "group__spellchecker" ],
     [ "SQL", "group__sql.html", "group__sql" ],
     [ "ThreadWatchdog", "group__threadwatchdog.html", "group__threadwatchdog" ],
+    [ "Tileset", "group__tileset.html", "group__tileset" ],
     [ "Time", "group__time.html", "group__time" ],
     [ "Tracking", "group__tracking.html", "group__tracking" ],
     [ "Tweaks", "group__tweaks.html", "group__tweaks" ],
