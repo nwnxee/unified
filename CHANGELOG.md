@@ -14,7 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 
 ##### New Plugins
-N/A
+- Tileset: An advanced plugin that exposes additional tileset and tile properties and allows builders to override the tiles of an area created with CreateArea().
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
