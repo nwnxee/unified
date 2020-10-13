@@ -16,6 +16,7 @@ var modules =
     [ "Encounter", "group__encounter.html", "group__encounter" ],
     [ "Events", "group__events.html", "group__events" ],
     [ "Experimental", "group__experimental.html", "group__experimental" ],
+    [ "Feat", "group__feat.html", "group__feat" ],
     [ "Feedback", "group__feedback.html", "group__feedback" ],
     [ "Item", "group__item.html", "group__item" ],
     [ "ItemProperty", "group__itemproperty.html", "group__itemproperty" ],

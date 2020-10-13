@@ -15,6 +15,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Encounter", "dir_bf7b181b7d07eec0e4a023ccab1d7777.html", "dir_bf7b181b7d07eec0e4a023ccab1d7777" ],
     [ "Events", "dir_423adc3517f1d20a5f719b24142510ea.html", "dir_423adc3517f1d20a5f719b24142510ea" ],
     [ "Experimental", "dir_6e0c5d987c338b0072956bd3eccf79be.html", null ],
+    [ "Feat", "dir_afbfad71a23b4f2e0a514ba6cf564f5b.html", "dir_afbfad71a23b4f2e0a514ba6cf564f5b" ],
     [ "Feedback", "dir_cec99290c1cd131a34cbea0b5d3e3a8f.html", "dir_cec99290c1cd131a34cbea0b5d3e3a8f" ],
     [ "Item", "dir_8528ea76bce6f11033f11c3bac34ed32.html", "dir_8528ea76bce6f11033f11c3bac34ed32" ],
     [ "ItemProperty", "dir_fad520b62fe1864a3ce89e5e537cfebd.html", "dir_fad520b62fe1864a3ce89e5e537cfebd" ],

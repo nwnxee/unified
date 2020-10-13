@@ -42,17 +42,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__appearance.html#ga132a6f839050229094581fe7dd7a2dc5",
-"group__creature.html#ga38dd236e58cb6e6e33a22e04ee38bc20",
-"group__damage.html#damage",
-"group__encounter.html#ga7d6f20a2a2036d9bdff05235f3dd9f0e",
-"group__object.html#gaa41fc9594c49da9708602813a55f5dde",
-"group__player.html#gad6af04a6f0f5796d727c7aeaa04f0c02",
-"group__spellchecker.html#gacf06740191d7fc00fa355929b1904667",
-"group__weapon.html#ga8b44b89c281c98729d2afb1312dc8afe",
-"nwnx__redis_8nss.html#ab00e971eb58521b6635f02e47513b5bb",
-"nwnx__redis__short_8nss.html#ace13dc547d9c27caf4103b11ef14b409",
-"structNWNX__Tileset__CustomTileData.html#a800fec1c59fd92234fa6d7cf4e4b3964"
+"group__appearance.html",
+"group__creature.html#ga38d29252f531846224e89b861fa3765c",
+"group__damage.html",
+"group__encounter.html#ga6f2a549f73a6609c089b8b7d2227791e",
+"group__object.html#ga11f4a73b409e6d3726f84fd4c556344c",
+"group__player.html#ga72bfb37a517d25bdd690d5744d2c4b80",
+"group__reveal.html#ga88cfee3997f219dca4d75eb5c04e2df8",
+"group__util.html#gaa7ead2a0ea727ef1c5f8cd007681f14a",
+"nwnx__redis_8nss.html#a52caa07fdb3ddc25813c7090df60d255",
+"nwnx__redis__short_8nss.html#a7550a241db2886f7e122a77a41f4739c",
+"structNWNX__EffectUnpacked.html#ab019b2443ab59a615e79429ba68dd193"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
