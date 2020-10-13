@@ -11,10 +11,12 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Events: added skippable Acquire events to ItemEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
+- Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 
 ##### New Plugins
 The following plugins were added:
-- **Feat**: Allows to define a variety of effects that are granted to feat holders.
+- Feat: Allows to define a variety of effects that are granted to feat holders.
+- Tileset: An advanced plugin that exposes additional tileset and tile properties and allows builders to override the tiles of an area created with CreateArea().
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
@@ -43,6 +45,7 @@ N/A
 - Player: fixed bic getting overwritten when using PossessCreature() and crashing in between areas
 - Race: fixed effect clean up after level up
 - Rename: community name only obfuscates once a server reset
+- Rename: properly updates original name if NWNX_Creature_SetOriginalName() is used
 - Weapon: fixed bug in SetGreaterWeaponFocusFeat()
 
 ## 8193.16
