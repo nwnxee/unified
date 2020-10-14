@@ -15,7 +15,8 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ##### New Plugins
 The following plugins were added:
-- **Feat**: Allows to define a variety of effects that are granted to feat holders.
+- Feat: Allows to define a variety of effects that are granted to feat holders.
+- Tileset: An advanced plugin that exposes additional tileset and tile properties and allows builders to override the tiles of an area created with CreateArea().
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
