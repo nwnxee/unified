@@ -981,6 +981,7 @@ void Layonara::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nHideMode)
     {
         thisPtr->m_nStealthMode = nHideMode;
         thisPtr->ComputeModifiedMovementRate();
+        bool bRangerSet = false;
 
         auto* pArea = thisPtr->GetArea();
         if (nHideMode && pArea && pArea->m_aGameObjects.num)
@@ -991,7 +992,11 @@ void Layonara::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nHideMode)
             if (!nHideMode && thisPtr->m_pStats->HasFeat(Constants::Feat::EpicRanger))
             {
                 if ((pArea->m_nFlags & 4) && !(pArea->m_nFlags & 1) && !(pArea->m_nFlags & 2))
+                {
                     nHideMode = 1;
+                    bRangerSet = true;
+                    thisPtr->m_pStats->AddFeat(Constants::Feat::HideInPlainSight);
+                }
             }
 
             if (nHideMode)
@@ -1007,6 +1012,8 @@ void Layonara::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nHideMode)
                     }
                 }
             }
+            if (bRangerSet)
+                thisPtr->m_pStats->RemoveFeat(Constants::Feat::HideInPlainSight);
         }
     }
 }
