@@ -41,6 +41,7 @@ N/A
 
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
+- Events: fixed a nullptr deref crash in BarterEvents
 - Object: fixed a possible crash in CheckFit()
 - Player: fixed bic getting overwritten when using PossessCreature() and crashing in between areas
 - Race: fixed effect clean up after level up
