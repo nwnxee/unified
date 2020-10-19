@@ -184,6 +184,11 @@ void SpellEvents::EffectAppliedHook(bool before, CNWSEffectListHandler*, CNWSObj
         return;
 
     Events::PushEventData("SPELL_ID", std::to_string(pObject->m_nLastSpellId));
+    Events::PushEventData("SPELL_CLASS", std::to_string(pObject->m_nLastSpellCastMulticlass));
+    Events::PushEventData("SPELL_FEAT", std::to_string(pObject->m_nLastSpellCastFeat));
+    Events::PushEventData("SPELL_DOMAIN", std::to_string(pObject->m_nLastDomainLevel));
+    Events::PushEventData("SPELL_SPONTANEOUS", std::to_string(pObject->m_bLastSpellCastSpontaneous));
+    Events::PushEventData("SPELL_METAMAGIC", std::to_string(pObject->m_nLastSpellCastMetaType));
     Events::SignalEvent(before ? "NWNX_ON_SPELL_INTERRUPTED_BEFORE" : "NWNX_ON_SPELL_INTERRUPTED_AFTER" , pObject->m_idSelf);
 }
 }

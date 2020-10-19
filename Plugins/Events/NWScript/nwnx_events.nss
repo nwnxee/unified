@@ -515,7 +515,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    SPELL_MULTICLASS      | int | Index of the spell casting class (0-2) |
+    SPELL_CLASS           | int | Index of the spell casting class (0-2) |
     SPELL_LEVEL           | int | |
     SPELL_SLOT            | int | |
     SPELL_ID              | int | |
@@ -533,7 +533,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    SPELL_MULTICLASS      | int    | Index of the spell casting class (0-2) |
+    SPELL_CLASS           | int    | Index of the spell casting class (0-2) |
     SPELL_LEVEL           | int    | |
     SPELL_SLOT            | int    | |
 
@@ -547,6 +547,11 @@ _______________________________________
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     SPELL_ID              | int | |
+    SPELL_CLASS           | int | Index of the spell casting class (0-2) |
+    SPELL_DOMAIN          | int | |
+    SPELL_METAMAGIC       | int | |
+    SPELL_FEAT            | int | |
+    SPELL_SPONTANEOUS     | int | |
 
 _______________________________________
     ## Healer Kit Use Events
