@@ -26,6 +26,7 @@ class FixUnlimitedPotionsBug;
 class UnhardcodeShields;
 class BlockDMSpawnItem;
 class FixArmorDexBonusUnderOne;
+class FixItemNullptrInCItemRepository;
 
 class Tweaks : public NWNXLib::Plugin
 {
@@ -55,6 +56,7 @@ private:
     std::unique_ptr<UnhardcodeShields> m_UnhardcodeShields;
     std::unique_ptr<BlockDMSpawnItem> m_BlockDMSpawnItem;
     std::unique_ptr<FixArmorDexBonusUnderOne> m_FixArmorDexBonusUnderOne;
+    std::unique_ptr<FixItemNullptrInCItemRepository> m_FixItemNullptrInCItemRepository;
 };
 
 }
