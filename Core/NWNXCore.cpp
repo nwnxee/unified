@@ -388,6 +388,8 @@ void NWNXCore::InitialSetupResourceDirectories()
                 {
                     LOG_INFO("Setting up Resource Directory: %s%s (Priority: %i)", alias, path, resDir.second.second);
 
+                    g_core->m_CustomResourceDirectoryAliases.emplace_back(resDir.first);
+
                     Globals::ExoBase()->m_pcExoAliasList->Add(alias, path);
                     Globals::ExoResMan()->CreateDirectory(alias);
                     Globals::ExoResMan()->AddResourceDirectory(alias, resDir.second.second, true);

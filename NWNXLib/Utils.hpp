@@ -101,4 +101,5 @@ int PopScriptContext();
 
 void SetOrientation(CNWSObject *pObject, float facing);
 
+bool IsValidCustomResourceDirectoryAlias(const std::string& filename);
 }

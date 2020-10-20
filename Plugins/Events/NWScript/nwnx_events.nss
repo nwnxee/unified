@@ -1098,11 +1098,11 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    ALIAS                 | string | NWNX for /nwnx, DEVELOPMENT for /development
+    ALIAS                 | string | NWNX for /nwnx, DEVELOPMENT for /development. Also supports valid aliases from the Custom Resman Definition File
     RESREF                | string | The ResRef of the file
     TYPE                  | int    | The type of the file, see NWNX_UTIL_RESREF_TYPE_*
 
-    Note: These events fire when a file gets added/removed/modified in the /nwnx or /development folder
+    Note: These events fire when a file gets added/removed/modified in resource folders like /nwnx, /development and those defined in the Custom Resman Definition File
 
 _______________________________________
     ## ELC Events

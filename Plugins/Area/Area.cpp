@@ -771,6 +771,23 @@ ArgumentStack Area::ExportGIT(ArgumentStack&& args)
         const auto exportUUID = !!Services::Events::ExtractArgument<int32_t>(args);
         const auto objectFilter = Services::Events::ExtractArgument<int32_t>(args);
 
+        std::string alias;
+        try
+        {
+            alias = Services::Events::ExtractArgument<std::string>(args);
+        }
+        catch (const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Area_ExportGIT() called without alias parameter, please update nwnx_area.nss");
+            alias = "NWNX";
+        }
+
+        if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
+        {
+            LOG_WARNING("NWNX_Area_ExportGIT() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
+            alias = "NWNX";
+        }
+
         CResGFF    resGff;
         CResStruct resStruct{};
 
@@ -857,7 +874,7 @@ ArgumentStack Area::ExportGIT(ArgumentStack&& args)
             if (exportUUID)
                 pArea->m_pUUID.SaveToGff(&resGff, &resStruct);
 
-            retVal = resGff.WriteGFFFile("NWNX:" + fileName, Constants::ResRefType::GIT);
+            retVal = resGff.WriteGFFFile(alias + ":" + fileName, Constants::ResRefType::GIT);
 
             // Restore the areaIDs of all creatures
             for (auto pair : creatureAreaMap)
