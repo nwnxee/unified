@@ -484,6 +484,19 @@ _______________________________________
     TARGET_OBJECT_ID      | object | Convert to object with StringToObject()
 
 _______________________________________
+    ## Disarm Events
+    - NWNX_ON_DISARM_BEFORE
+    - NWNX_ON_DISARM_AFTER
+
+    `OBJECT_SELF` = The creature who is being disarmed
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    DISARMER_OBJECT_ID    | object | The object disarming the creature
+    FEAT_ID               | int    | The feat used to perform the disarming (Normal vs Improved Disarm)
+    ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
+
+_______________________________________
     ## Cast Spell Events
     - NWNX_ON_CAST_SPELL_BEFORE
     - NWNX_ON_CAST_SPELL_AFTER
@@ -516,7 +529,6 @@ _______________________________________
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
     SPELL_MULTICLASS      | int | Index of the spell casting class (0-2) |
-    SPELL_LEVEL           | int | |
     SPELL_SLOT            | int | |
     SPELL_ID              | int | |
     SPELL_DOMAIN          | int | |
@@ -1289,6 +1301,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Input Pause Event
 /// - Debug events
 /// - Store events
+/// - Disarm event
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
