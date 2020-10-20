@@ -26,9 +26,14 @@
 #include "API/CScriptLocation.hpp"
 #include "API/CExoString.hpp"
 #include "API/CExoArrayList.hpp"
+#include "../Core/NWNXCore.hpp"
 
+#include <cmath>
 #include <sstream>
-#include <math.h>
+
+namespace Core {
+    extern NWNXCore* g_core;
+}
 
 namespace NWNXLib::Utils {
 
@@ -423,12 +428,18 @@ void SetOrientation(CNWSObject *pObject, float facing)
         return;
 
     float radians = facing * (M_PI / 180);
-    auto vOrientation = Vector{cos(radians), sin(radians), 0.0f};
+    auto vOrientation = Vector{std::cos(radians), std::sin(radians), 0.0f};
 
     if (auto *pPlaceable = Utils::AsNWSPlaceable(pObject))
         pPlaceable->SetOrientation(vOrientation);
     else
         pObject->SetOrientation(vOrientation);
+}
+
+bool IsValidCustomResourceDirectoryAlias(const std::string& alias)
+{
+    const auto& crda = Core::g_core->GetCustomResourceDirectoryAliases();
+    return std::find(crda.begin(), crda.end(), alias) != crda.end();
 }
 
 }

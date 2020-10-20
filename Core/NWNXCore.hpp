@@ -29,6 +29,8 @@ public:
 
     std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
 
+    const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
+
 private: // Structures
     using PluginProxyServiceMap = std::map<
         NWNXLib::Services::Plugins::RegistrationToken,
@@ -65,6 +67,7 @@ private:
     static void MainLoopInternalHandler(bool, CServerExoAppInternal*);
 
     int m_ScriptChunkRecursion;
+    std::vector<std::string> m_CustomResourceDirectoryAliases;
 };
 
 }

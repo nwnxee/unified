@@ -241,7 +241,7 @@ void NWNX_Area_AddObjectToExclusionList(object oObject);
 /// @param oObject The object to add
 void NWNX_Area_RemoveObjectFromExclusionList(object oObject);
 
-/// @brief Export the GIT of oArea to the UserDirectory/nwnx folder.
+/// @brief Export the GIT of oArea to the UserDirectory/nwnx folder, or to the location of sAlias.
 /// @note Take care with local objects set on objects, they will likely not reference the same object after a server restart.
 /// @param oArea The area to export the GIT of.
 /// @param sFileName The filename, 16 characters or less. If left blank the resref of oArea will be used.
@@ -249,8 +249,9 @@ void NWNX_Area_RemoveObjectFromExclusionList(object oObject);
 /// @param bExportUUID If TRUE, the UUID of oArea will be exported, if it has one.
 /// @param nObjectFilter One or more OBJECT_TYPE_* constants. These object will not be exported. For example OBJECT_TYPE_CREATURE | OBJECT_TYPE_DOOR
 /// will not export creatures and doors. Use OBJECT_TYPE_ALL to filter all objects or 0 to export all objects.
+/// @param sAlias The alias of the resource directory to add the .git file to. Default: UserDirectory/nwnx
 /// @return TRUE if exported successfully, FALSE if not.
-int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0);
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0, string sAlias = "NWNX");
 
 /// @brief Get the tile info of the tile at [fTileX, fTileY] in oArea.
 /// @param oArea The area name.
@@ -600,10 +601,11 @@ void NWNX_Area_RemoveObjectFromExclusionList(object oObject)
     NWNX_CallFunction(NWNX_Area, sFunc);
 }
 
-int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0)
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0, string sAlias = "NWNX")
 {
     string sFunc = "ExportGIT";
 
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sAlias);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, nObjectFilter);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportUUID);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportVarTable);
