@@ -109,7 +109,102 @@ $(document).ready(function(){initNavTree('group__weapon.html','');});
 <div class="title">Weapon</div>  </div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
+
+
+<h3><a id="weapon"></a>Readme</h3><div class="textblock">Functions exposing additional weapon properties.<h2><a class="anchor" id="autotoc_md400"></a>
+Function Documentation and Examples</h2>
+<p>Allows modifying which feats count as which for the weapon feats. Can be used to add feats like WEAPON_FOCUS_* to custom weapons. All you have to do is:</p>
+<ol type="1">
+<li>Create a custom feat and add it to your hak.</li>
+<li>Create the new base item ID for your new weapon or use one that already exists.</li>
+<li>On the OnModuleLoad event script of your module define the association between the weapon and the feat using the functions defined in the <em>nwnx_weapon</em> script</li>
+</ol>
+<p>For example, if you added the <code>FEAT_WEAPON_FOCUS_KATAR</code> on line 3000 of your <em>feat.2da</em> and you added the new <code>BASE_ITEM_KATAR</code> on line 310 of your <em>baseitems.2da</em>, in the OnModuleLoad script just add (don't forget to include the <em>nwnx_weapon</em> script) :</p>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> FEAT_WEAPON_FOCUS_KATAR = 3000; </div>
+<div class="line"><span class="keywordtype">int</span> BASE_ITEM_KATAR = 310;</div>
+<div class="line"><a class="code" href="group__weapon.html#gaa74f691d599e48f697719ea8731f11be">NWNX_Weapon_SetWeaponFocusFeat</a>(BASE_ITEM_KATAR, FEAT_WEAPON_FOCUS_KATAR);</div>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md401"></a>
+Available functions</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Script function  </th><th class="markdownTableHeadNone">Description   </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#gaa74f691d599e48f697719ea8731f11be" title="Set nFeat as weapon focus feat for a base item.">NWNX_Weapon_SetWeaponFocusFeat()</a>  </td><td class="markdownTableBodyNone">Associate a weapon focus feat to a weapon. You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#gae8574965a3aae542e79e051bfad60217" title="Set required creature size for a weapon base item to be finessable.">NWNX_Weapon_SetWeaponFinesseSize()</a>  </td><td class="markdownTableBodyNone">Define the required creature size for a weapon in order to be finessable   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#gad8f1eb5b7d131d39144ff34de3990d3a" title="Set weapon base item to be considered as unarmed for weapon finesse feat.">NWNX_Weapon_SetWeaponUnarmed()</a>  </td><td class="markdownTableBodyNone">Set the weapon to be considered unarmed regarding the finesse feat   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#gad6bf3d2ce2abfeb00c289345ff92a92a" title="Set a feat as weapon improved critical for a base item.">NWNX_Weapon_SetWeaponImprovedCriticalFeat()</a>  </td><td class="markdownTableBodyNone">Associate a weapon improved critical feat to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga8deec30028f3ba99c22c775ed8edb973" title="Set a feat as weapon specialization for a base item.">NWNX_Weapon_SetWeaponSpecializationFeat()</a>  </td><td class="markdownTableBodyNone">Associate a weapon specialization feat to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#gac1feedb8c13806da113a4a8d10c8990a" title="Set a feat as epic weapon focus for a base item.">NWNX_Weapon_SetEpicWeaponFocusFeat()</a>  </td><td class="markdownTableBodyNone">Associate an epic weapon focus feat to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga928cbbcbedeb6fcd313d5da26e4f547a" title="Set a feat as epic weapon specialization for a base item.">NWNX_Weapon_SetEpicWeaponSpecializationFeat()</a>  </td><td class="markdownTableBodyNone">Associate an epic weapon specialization feat to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga28e07d7cdb7e021a82b47752cb67840d" title="Set a feat as epic weapon overwhelming critical for a base item.">NWNX_Weapon_SetEpicWeaponOverwhelmingCriticalFeat()</a>  </td><td class="markdownTableBodyNone">Associate an epic weapon overwhelming critical feat to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga80e14c89a4e729d72f0cc6fb9c249675" title="Set a feat as epic weapon devastating critical for a base item.">NWNX_Weapon_SetEpicWeaponDevastatingCriticalFeat()</a>  </td><td class="markdownTableBodyNone">Associate an epic weapon devastating critical feat to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga9f7b80d39ddb553be2764ad399c98f2d" title="Set a feat as weapon of choice for a base item.">NWNX_Weapon_SetWeaponOfChoiceFeat()</a>  </td><td class="markdownTableBodyNone">Associate a weapon of choice feat to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga74ace8b29031865e3f08f01e5a660cb1" title="Set a feat as greater weapon focus for a base item.">NWNX_Weapon_SetGreaterWeaponFocusFeat()</a>  </td><td class="markdownTableBodyNone">Associate a greater weapon focus feat (default: +1 attack bonus) to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga390c5fc0caf45d77be05324a8af3762c" title="Set a feat as greater weapon specialization for a base item.">NWNX_Weapon_SetGreaterWeaponSpecializationFeat()</a>  </td><td class="markdownTableBodyNone">Associate a greater weapon specialization feat (default: +2 damage bonus) to a weapon You may set multiple feats for each weapon and all will function.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga16ec75cebc8186286084e58172f62e82" title="Set base item as monk weapon.">NWNX_Weapon_SetWeaponIsMonkWeapon()</a>  </td><td class="markdownTableBodyNone">Set the weapon to be considered a monk weapon (requires activation of CombatModes plugin for Flurry of Blows)   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#gab865cdef1423787f87307127c2d66c1b" title="Set plugin options.">NWNX_Weapon_SetOption()</a>  </td><td class="markdownTableBodyNone">Set different options of the plugin   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga4c1988ef71d5aecb896e18544ac71a08" title="Set Devastating Critical Event Script.">NWNX_Weapon_SetDevastatingCriticalEventScript()</a>  </td><td class="markdownTableBodyNone">Set a script to be called when a devastating critical event occurs   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga197c4fe02b6ad0b905bae126f262d8b7" title="Get Devastating Critical Event Data.">NWNX_Weapon_GetDevastatingCriticalEventData()</a>  </td><td class="markdownTableBodyNone">Must be called inside the devastating critical event script. Returns a structure with the data of the devastating critical event (weapon, target and damage)   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73" title="Bypass Devastating Critical.">NWNX_Weapon_BypassDevastatingCritical()</a>  </td><td class="markdownTableBodyNone">Must be called inside the devastating critical event script. If called, no devastating critical will occur.   </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#gae7c6f1ab3a37f621abeb432622071c0c" title="Sets weapon to gain .5 strength bonus.">NWNX_Weapon_SetOneHalfStrength()</a>  </td><td class="markdownTableBodyNone">Gives a melee weapon extra damage equal to one-half strength modifier.   </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><a class="el" href="group__weapon.html#ga3656299a57ac60f31a0139b569319478" title="Gets if the weapon is set to gain addition .5 strength bonus.">NWNX_Weapon_GetOneHalfStrength()</a>  </td><td class="markdownTableBodyNone">Retrieves if a melee weapon is receiving extra strength   </td></tr>
+</table>
+<p>The <a class="el" href="group__weapon.html#gab865cdef1423787f87307127c2d66c1b" title="Set plugin options.">NWNX_Weapon_SetOption()</a> function can be used to define the attack and damage bonusses of the Greater Weapon Focus Feats and Greater Weapon Specialization Feats respectively.</p>
+<h2><a class="anchor" id="autotoc_md402"></a>
+Example for Critical Event Script</h2>
+<p>This script just prints some info to the log and then bypasses the devastating critical 50% of the time. You have to set your script with <a class="el" href="group__weapon.html#ga4c1988ef71d5aecb896e18544ac71a08" title="Set Devastating Critical Event Script.">NWNX_Weapon_SetDevastatingCriticalEventScript()</a> (in the OnModuleLoad script for example)</p>
+<dl class="section warning"><dt>Warning</dt><dd><code>oWeapon</code> in <code><a class="el" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html" title="Devastating critical event data.">NWNX_Weapon_DevastatingCriticalEvent_Data</a></code> will be <code>OBJECT_INVALID</code> for Gloves/Unarmed Strike Devastating Critical Events.</dd></dl>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;nwnx_weapon&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> <a class="code" href="on__pubsub_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a>()</div>
+<div class="line">{</div>
+<div class="line">   <span class="keyword">struct </span><a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html">NWNX_Weapon_DevastatingCriticalEvent_Data</a> data = <a class="code" href="group__weapon.html#ga197c4fe02b6ad0b905bae126f262d8b7">NWNX_Weapon_GetDevastatingCriticalEventData</a>();</div>
+<div class="line">   <span class="keywordtype">object</span> oAttacker = OBJECT_SELF;</div>
+<div class="line">   <span class="keywordtype">object</span> <a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a">oWeapon</a> = data.<a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a">oWeapon</a>;</div>
+<div class="line">   <span class="keywordtype">object</span> <a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23">oTarget</a> = data.<a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23">oTarget</a>;</div>
+<div class="line">   <span class="keywordtype">int</span> <a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d">nDamage</a> = data.<a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d">nDamage</a>;</div>
+<div class="line"> </div>
+<div class="line">   WriteTimestampedLogEntry(<span class="stringliteral">&quot;Devastating Critical Event: Attaker: &quot;</span> + GetName(oAttacker) +</div>
+<div class="line">      <span class="stringliteral">&quot;, Weapon: &quot;</span>+ GetName(<a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a">oWeapon</a>) +</div>
+<div class="line">      <span class="stringliteral">&quot;, Target: &quot;</span>+ GetName(<a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23">oTarget</a>) +</div>
+<div class="line">      <span class="stringliteral">&quot;, Damage: &quot;</span> + IntToString(<a class="code" href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d">nDamage</a>));</div>
+<div class="line"> </div>
+<div class="line">   <span class="keywordflow">if</span>(d100()&gt;50)</div>
+<div class="line">   {</div>
+<div class="line">      <a class="code" href="group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73">NWNX_Weapon_BypassDevastatingCritical</a>();</div>
+<div class="line">      WriteTimestampedLogEntry(<span class="stringliteral">&quot;Devastating Critical Bypassed&quot;</span>);</div>
+<div class="line">   }</div>
+<div class="line">}</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>As of NWN:EE Version 8193.6 builders can define the feats associated with weapons in the new <em>baseitems.2da</em> columns. The following new columns can now have the corresponding feat referenced per baseitem row:<ul>
+<li>WeaponFocusFeat</li>
+<li>EpicWeaponFocusFeat</li>
+<li>WeaponSpecializationFeat</li>
+<li>EpicWeaponSpecializationFeat</li>
+<li>WeaponImprovedCriticalFeat</li>
+<li>EpicWeaponOverwhelmingCriticalFeat</li>
+<li>EpicWeaponDevastatingCriticalFeat</li>
+<li>WeaponOfChoiceFeat </li>
+</ul>
+</dd></dl>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__weapon_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__weapon_8nss.html">nwnx_weapon.nss</a></td></tr>
@@ -970,11 +1065,19 @@ Variables</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="agroup__weapon_html_ga475625ae5cff73b4fe1361ea515cbd73"><div class="ttname"><a href="group__weapon.html#ga475625ae5cff73b4fe1361ea515cbd73">NWNX_Weapon_BypassDevastatingCritical</a></div><div class="ttdeci">void NWNX_Weapon_BypassDevastatingCritical()</div><div class="ttdoc">Bypass Devastating Critical.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00289">nwnx_weapon.nss:289</a></div></div>
+<div class="ttc" id="aon__pubsub_8nss_html_acdef7a1fd863a6d3770c1268cb06add3"><div class="ttname"><a href="on__pubsub_8nss.html#acdef7a1fd863a6d3770c1268cb06add3">main</a></div><div class="ttdeci">void main()</div><div class="ttdef"><b>Definition:</b> <a href="on__pubsub_8nss_source.html#l00007">on_pubsub.nss:7</a></div></div>
+<div class="ttc" id="astructNWNX__Weapon__DevastatingCriticalEvent__Data_html_ad61f6ae678343f3781deacdb33efb27d"><div class="ttname"><a href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#ad61f6ae678343f3781deacdb33efb27d">NWNX_Weapon_DevastatingCriticalEvent_Data::nDamage</a></div><div class="ttdeci">int nDamage</div><div class="ttdoc">The damage points delivered.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00029">nwnx_weapon.nss:29</a></div></div>
+<div class="ttc" id="agroup__weapon_html_ga197c4fe02b6ad0b905bae126f262d8b7"><div class="ttname"><a href="group__weapon.html#ga197c4fe02b6ad0b905bae126f262d8b7">NWNX_Weapon_GetDevastatingCriticalEventData</a></div><div class="ttdeci">struct NWNX_Weapon_DevastatingCriticalEvent_Data NWNX_Weapon_GetDevastatingCriticalEventData()</div><div class="ttdoc">Get Devastating Critical Event Data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00299">nwnx_weapon.nss:299</a></div></div>
+<div class="ttc" id="astructNWNX__Weapon__DevastatingCriticalEvent__Data_html_a05c644a763be5a9e7614b16137de7c23"><div class="ttname"><a href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a05c644a763be5a9e7614b16137de7c23">NWNX_Weapon_DevastatingCriticalEvent_Data::oTarget</a></div><div class="ttdeci">object oTarget</div><div class="ttdoc">The target hit with a devastating critical.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00028">nwnx_weapon.nss:28</a></div></div>
+<div class="ttc" id="astructNWNX__Weapon__DevastatingCriticalEvent__Data_html"><div class="ttname"><a href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html">NWNX_Weapon_DevastatingCriticalEvent_Data</a></div><div class="ttdoc">Devastating critical event data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00025">nwnx_weapon.nss:25</a></div></div>
+<div class="ttc" id="astructNWNX__Weapon__DevastatingCriticalEvent__Data_html_a0ab39f5f5fdd4c3c995f8b84a5193c6a"><div class="ttname"><a href="structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a">NWNX_Weapon_DevastatingCriticalEvent_Data::oWeapon</a></div><div class="ttdeci">object oWeapon</div><div class="ttdoc">The weapon used to cause the event.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00027">nwnx_weapon.nss:27</a></div></div>
+<div class="ttc" id="agroup__weapon_html_gaa74f691d599e48f697719ea8731f11be"><div class="ttname"><a href="group__weapon.html#gaa74f691d599e48f697719ea8731f11be">NWNX_Weapon_SetWeaponFocusFeat</a></div><div class="ttdeci">void NWNX_Weapon_SetWeaponFocusFeat(int nBaseItem, int nFeat)</div><div class="ttdoc">Set nFeat as weapon focus feat for a base item.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__weapon_8nss_source.html#l00131">nwnx_weapon.nss:131</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Oct 19 2020 21:11:16 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Oct 20 2020 01:49:49 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

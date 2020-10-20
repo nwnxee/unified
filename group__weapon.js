@@ -1,5 +1,6 @@
 var group__weapon =
 [
+    [ "Readme", "group__weapon.html#weapon", null ],
     [ "nwnx_weapon.nss", "nwnx__weapon_8nss.html", null ],
     [ "NWNX_Weapon_DevastatingCriticalEvent_Data", "structNWNX__Weapon__DevastatingCriticalEvent__Data.html", [
       [ "oWeapon", "structNWNX__Weapon__DevastatingCriticalEvent__Data.html#a0ab39f5f5fdd4c3c995f8b84a5193c6a", null ],

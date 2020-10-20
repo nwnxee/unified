@@ -150,8 +150,11 @@ var dir_ce92b3ebeae221968cfbe8aae0d60ffe =
       [ "NWNX_TWEAKS_ITEM_CHARGES_COST_MODE", "group__tweaks.html#autotoc_md398", null ]
     ] ],
     [ "Environment Variables", "group__util.html#autotoc_md399", null ],
-    [ "Limitations", "group__webhook.html#autotoc_md405", null ],
-    [ "Example usage", "group__webhook.html#autotoc_md406", null ],
+    [ "Function Documentation and Examples", "group__weapon.html#autotoc_md400", null ],
+    [ "Available functions", "group__weapon.html#autotoc_md401", null ],
+    [ "Example for Critical Event Script", "group__weapon.html#autotoc_md402", null ],
+    [ "Limitations", "group__webhook.html#autotoc_md403", null ],
+    [ "Example usage", "group__webhook.html#autotoc_md404", null ],
     [ "nwnx.nss", "nwnx_8nss.html", "nwnx_8nss" ],
     [ "nwnx_consts.nss", "nwnx__consts_8nss.html", "nwnx__consts_8nss" ],
     [ "nwnx_tests.nss", "nwnx__tests_8nss.html", "nwnx__tests_8nss" ]
