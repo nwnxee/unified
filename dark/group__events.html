@@ -838,18 +838,16 @@ Set Memorized Spell Slot Events</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">SPELL_MULTICLASS  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone">Index of the spell casting class (0-2)   </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">SPELL_LEVEL  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">SPELL_SLOT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">SPELL_ID  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">SPELL_DOMAIN  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">SPELL_METAMAGIC  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">SPELL_FROMCLIENT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<td class="markdownTableBodyNone">SPELL_METAMAGIC  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">SPELL_FROMCLIENT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">ACTION_RESULT  </td><td class="markdownTableBodyNone">int  </td><td class="markdownTableBodyNone"></td></tr>
 </table>
 <hr  />
@@ -1707,7 +1705,7 @@ Server Send Area Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01340">1340</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01339">1339</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1744,7 @@ Server Send Area Events</h2>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01349">1349</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01348">1348</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1777,7 +1775,7 @@ Server Send Area Events</h2>
 </div><div class="memdoc">
 <p>Pushes event data at the provided tag, which subscribers can access with GetEventData. This should be called BEFORE SignalEvent. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01358">1358</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01357">1357</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1808,7 +1806,7 @@ Server Send Area Events</h2>
 </div><div class="memdoc">
 <p>Signals an event. This will dispatch a notification to all subscribed handlers. Returns TRUE if anyone was subscribed to the event, FALSE otherwise. </p><dl class="section remark"><dt>Remarks</dt><dd>target will be available as OBJECT_SELF in subscribed event scripts. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01367">1367</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01366">1366</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1829,7 +1827,7 @@ Server Send Area Events</h2>
 </div><div class="memdoc">
 <p>Retrieves the event data for the currently executing script. THIS SHOULD ONLY BE CALLED FROM WITHIN AN EVENT HANDLER. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01377">1377</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01376">1376</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1882,7 +1880,7 @@ Server Send Area Events</h2>
 <li>Disarm event </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01386">1386</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01385">1385</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1914,7 +1912,7 @@ Server Send Area Events</h2>
 <li>Heal event -&gt; Amount of HP to heal </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01393">1393</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01392">1392</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1935,7 +1933,7 @@ Server Send Area Events</h2>
 <p>Returns the current event name</p>
 <p>Returns "" on error </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01401">1401</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01400">1400</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -1972,7 +1970,7 @@ Server Send Area Events</h2>
 </div><div class="memdoc">
 <p>Toggles DispatchListMode for sEvent+sScript If enabled, sEvent for sScript will only be signalled if the target object is on its dispatch list. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01409">1409</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01408">1408</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2010,7 +2008,7 @@ Server Send Area Events</h2>
 
 <p>Add oObject to the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01419">1419</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01418">1418</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2048,7 +2046,7 @@ Server Send Area Events</h2>
 
 <p>Remove oObject from the dispatch list for sEvent+sScript. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01429">1429</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__events_8nss_source.html#l01428">1428</a> of file <a class="el" href="nwnx__events_8nss_source.html">nwnx_events.nss</a>.</p>
 
 </div>
 </div>
@@ -2058,7 +2056,7 @@ Server Send Area Events</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Oct 20 2020 01:49:51 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Oct 20 2020 01:56:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
