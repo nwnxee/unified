@@ -138,9 +138,12 @@ New NWScript Functions</h4>
 <h2><a class="anchor" id="autotoc_md12"></a>
 Changed</h2>
 <ul>
+<li>Area: ExportGIT() now supports valid custom resource directory aliases.</li>
 <li>Events: <code>NWNX_ON_DM_SPAWN_OBJECT_*</code> now provides the resref as event data.</li>
 <li>Events: <code>NWNX_ON_STORE_REQUEST_*_AFTER</code> now provides the result as event data.</li>
+<li>Events: ResourceEvents now support valid custom resource directory aliases.</li>
 <li>Util: added an optional appearance type parameter to CreateDoor()</li>
+<li>Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.</li>
 <li>Visibility: added two new visibility types to always show an object regardless of range.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
@@ -572,7 +575,7 @@ Fixed</h2>
 Added</h2>
 <ul>
 <li>Core: Added the environment variable <code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK</code> to enable NWNX function calls in ExecuteScriptChunk(), by default these will be blocked</li>
-<li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga091bdd0e7c99ed5254ca138db05d7156" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gacdadf3dcc484a8cd093e18920579c5a1" title="Compiles and adds a script to the UserDirectory/nwnx folder.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
+<li>Core: NWNX will now create a <code>/nwnx</code> folder in your UserDirectory, its resman priority is slightly below the <code>/development</code> folder. Currently it's used by <a class="el" href="group__object.html#ga091bdd0e7c99ed5254ca138db05d7156" title="Export an object to the UserDirectory/nwnx folder.">NWNX_Object_Export()</a> and <a class="el" href="group__util.html#gabe413b0610a460dfc310fafc1149ba6d" title="Compiles and adds a script to the UserDirectory/nwnx folder, or to the location of sAlias.">NWNX_Util_AddScript()</a> to place their objects/scripts in.</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_CLEAN_UP_NWNX_RESOURCE_DIRECTORY</code>, setting this to true will delete all contents in the <code>/nwnx</code> folder on startup of the server. Default: false</li>
 <li>Core: Added the environment variable <code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY</code> which lets you change the resman priority of the <code>/nwnx</code> folder. Default: 70000000</li>
 <li>Core: Added the following console commands: <code>runscript</code>, <code>eval</code>, <code>evalx</code>, <code>loglevel</code>, <code>logformat</code><ul>
@@ -892,7 +895,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Tue Oct 20 2020 01:56:16 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Oct 20 2020 17:34:37 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>

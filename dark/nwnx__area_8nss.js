@@ -32,7 +32,7 @@ var nwnx__area_8nss =
     [ "NWNX_Area_CreateGenericTrigger", "group__area.html#ga70470c5fd872dd9204c486c04ed8f037", null ],
     [ "NWNX_Area_AddObjectToExclusionList", "group__area.html#ga589b7a9a57ee9d49c5d2e32135493733", null ],
     [ "NWNX_Area_RemoveObjectFromExclusionList", "group__area.html#gab0b13eef969b968e5e939f6611ac79e6", null ],
-    [ "NWNX_Area_ExportGIT", "group__area.html#gacbb1219727ec3d9652445ee59b5cedbc", null ],
+    [ "NWNX_Area_ExportGIT", "group__area.html#gaf4cd40dfca87acbe7c81e13b0a3fa035", null ],
     [ "NWNX_Area_GetTileInfo", "group__area.html#ga2d43e14449c05ff38e56a229d220a5b6", null ],
     [ "NWNX_Area", "group__area.html#ga0b1c1bee8f3cf52b50393d35321987f7", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
