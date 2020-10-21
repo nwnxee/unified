@@ -21,6 +21,7 @@ The following plugins were added:
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
+- Area: ExportARE()
 - Creature: {Get|Set}WalkAnimation()
 - Creature: SetAttackRollOverride()
 - Creature: SetParryAllAttacks()
