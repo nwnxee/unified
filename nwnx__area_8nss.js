@@ -34,6 +34,7 @@ var nwnx__area_8nss =
     [ "NWNX_Area_RemoveObjectFromExclusionList", "group__area.html#gab0b13eef969b968e5e939f6611ac79e6", null ],
     [ "NWNX_Area_ExportGIT", "group__area.html#gaf4cd40dfca87acbe7c81e13b0a3fa035", null ],
     [ "NWNX_Area_GetTileInfo", "group__area.html#ga2d43e14449c05ff38e56a229d220a5b6", null ],
+    [ "NWNX_Area_ExportARE", "group__area.html#ga1689ac8ea1e81b862a9019c3e55cf35b", null ],
     [ "NWNX_Area", "group__area.html#ga0b1c1bee8f3cf52b50393d35321987f7", null ],
     [ "NWNX_AREA_PVP_SETTING_NO_PVP", "group__area.html#gaf2a48df36736c711a5e967f0ad3bd45e", null ],
     [ "NWNX_AREA_PVP_SETTING_PARTY_PVP", "group__area.html#ga5197514db99c85e79fd5e6c7224aa84b", null ],
