@@ -11,7 +11,7 @@ public:
     FixItemNullptrInCItemRepository(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static int64_t CItemRepository__CalculateContentsWeight_hook(CItemRepository *pThis);
+    static int32_t CItemRepository__CalculateContentsWeight_hook(CItemRepository *pThis);
 };
 
 }

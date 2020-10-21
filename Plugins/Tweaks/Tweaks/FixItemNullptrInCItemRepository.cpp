@@ -26,11 +26,9 @@ FixItemNullptrInCItemRepository::FixItemNullptrInCItemRepository(Services::Hooks
                                     (&CItemRepository__CalculateContentsWeight_hook);
 }
 
-int64_t FixItemNullptrInCItemRepository::CItemRepository__CalculateContentsWeight_hook(CItemRepository *pThis)
+int32_t FixItemNullptrInCItemRepository::CItemRepository__CalculateContentsWeight_hook(CItemRepository *pThis)
 {
-    int64_t nResult = 0;
-    CNWItemProperty *pItemProperty;
-    float fReduction;
+    int32_t nResult = 0;
     auto *pServer = Globals::AppManager()->m_pServerExoApp;
     std::vector<CExoLinkedListNode*> badItem(32);
     for (auto *node = pThis->m_oidItems.m_pcExoLinkedListInternal->pHead; node; node = node->pNext)
@@ -53,21 +51,25 @@ int64_t FixItemNullptrInCItemRepository::CItemRepository__CalculateContentsWeigh
             ASSERT_FAIL_MSG("An item repository owned by a character played by `%s` referenced a nullptr item", playerName.CStr());
             continue;
         }
-        if (pParentItem && pParentItem->GetPropertyByTypeExists(0x20, 0))
+        if (pParentItem && pParentItem->GetPropertyByTypeExists(Constants::ItemProperty::EnhancedContainerReducedWeight))
         {
-            pParentItem->GetPropertyByType(&pItemProperty, 0x20u, 0);
-            auto costTable = Globals::Rules()->m_p2DArrays->GetIPRPCostTable(0xFu);
-            auto costTableValue = pItemProperty->m_nCostTableValue;
-            costTable->GetFLOATEntry(costTableValue, CExoString("Value"), &fReduction);
-            auto itemWeight = pItem->GetWeight();
-            auto nItemAdjustedWeight = itemWeight - (itemWeight * fReduction);
-            nResult += (int64_t)floor(nItemAdjustedWeight);
+            float fReduction;
+            CNWItemProperty *pItemProperty;
+            pParentItem->GetPropertyByType(&pItemProperty, Constants::ItemProperty::EnhancedContainerReducedWeight);
+
+            Globals::Rules()->m_p2DArrays->GetIPRPCostTable(0xFu)->GetFLOATEntry(pItemProperty->m_nCostTableValue, CExoString("Value"), &fReduction);
+            int32_t nItemAdjustedWeight;
+            nItemAdjustedWeight = (int32_t)(pItem->GetWeight() - (pItem->GetWeight() * fReduction));
+
+            nResult += nItemAdjustedWeight;
         }
         else
             nResult += pItem->GetWeight();
     }
+
     for (auto bad: badItem)
         pThis->m_oidItems.Remove(bad);
+
     return nResult;
 }
 
