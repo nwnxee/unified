@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include "API/CNWSObject.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
@@ -12,14 +11,14 @@ namespace Object {
 class Object : public NWNXLib::Plugin
 {
 public:
-    Object(const Plugin::CreateParams& params);
+    Object(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Object();
 
 private:
     ArgumentStack GetLocalVariableCount     (ArgumentStack&& args);
     ArgumentStack GetLocalVariable          (ArgumentStack&& args);
-    ArgumentStack StringToObject            (ArgumentStack&& args);
     ArgumentStack SetPosition               (ArgumentStack&& args);
+    ArgumentStack GetCurrentHitPoints       (ArgumentStack&& args);
     ArgumentStack SetCurrentHitPoints       (ArgumentStack&& args);
     ArgumentStack SetMaxHitPoints           (ArgumentStack&& args);
     ArgumentStack Serialize                 (ArgumentStack&& args);
@@ -52,6 +51,17 @@ private:
     ArgumentStack DeleteFloat               (ArgumentStack&& args);
     ArgumentStack DeleteVarRegex            (ArgumentStack&& args);
     ArgumentStack GetPositionIsInTrigger    (ArgumentStack&& args);
+    ArgumentStack GetInternalObjectType     (ArgumentStack&& args);
+    ArgumentStack AcquireItem               (ArgumentStack&& args);
+    ArgumentStack SetFacing                 (ArgumentStack&& args);
+    ArgumentStack ClearSpellEffectsOnOthers (ArgumentStack&& args);
+    ArgumentStack PeekUUID                  (ArgumentStack&& args);
+    ArgumentStack GetDoorHasVisibleModel    (ArgumentStack&& args);
+    ArgumentStack GetIsDestroyable          (ArgumentStack&& args);
+    ArgumentStack DoSpellImmunity           (ArgumentStack&& args);
+    ArgumentStack DoSpellLevelAbsorption    (ArgumentStack&& args);
+    ArgumentStack SetHasInventory           (ArgumentStack&& args);
+    ArgumentStack GetCurrentAnimation       (ArgumentStack&& args);
 
     CNWSObject *object(ArgumentStack& args);
 };

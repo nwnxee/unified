@@ -13,7 +13,7 @@ namespace SQL {
 class SQL : public NWNXLib::Plugin
 {
 public:
-    SQL(const Plugin::CreateParams& params);
+    SQL(NWNXLib::Services::ProxyServiceList* services);
     virtual ~SQL();
 
     ArgumentStack PrepareQuery                  (ArgumentStack&& args);

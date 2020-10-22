@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "API/Types.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -12,7 +11,7 @@ namespace Util {
 class Util : public NWNXLib::Plugin
 {
 public:
-    Util(const Plugin::CreateParams& params);
+    Util(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Util();
 
 private:
@@ -39,6 +38,15 @@ private:
     ArgumentStack SetInstructionLimit           (ArgumentStack&& args);
     ArgumentStack RegisterServerConsoleCommand  (ArgumentStack&& args);
     ArgumentStack UnregisterServerConsoleCommand(ArgumentStack&& args);
+    ArgumentStack PluginExists                  (ArgumentStack&& args);
+    ArgumentStack GetUserDirectory              (ArgumentStack&& args);
+    ArgumentStack GetScriptReturnValue          (ArgumentStack&& args);
+    ArgumentStack CreateDoor                    (ArgumentStack&& args);
+    ArgumentStack SetItemActivator              (ArgumentStack&& args);
+    ArgumentStack GetWorldTime                  (ArgumentStack&& args);
+    ArgumentStack SetResourceOverride           (ArgumentStack&& args);
+    ArgumentStack GetResourceOverride           (ArgumentStack&& args);
+    ArgumentStack GetScriptParamIsSet           (ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;

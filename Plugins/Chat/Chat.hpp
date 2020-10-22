@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Common.hpp"
 #include "Plugin.hpp"
 #include "API/Constants/Misc.hpp"
@@ -15,7 +14,7 @@ namespace Chat {
 class Chat : public NWNXLib::Plugin
 {
 public:
-    Chat(const Plugin::CreateParams& params);
+    Chat(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Chat();
 
 private:
@@ -23,8 +22,8 @@ private:
 
     NWNXLib::API::Constants::ChatChannel::TYPE m_activeChannel;
     std::string m_activeMessage;
-    NWNXLib::API::Types::ObjectID m_activeSenderObjectId;
-    NWNXLib::API::Types::ObjectID m_activeTargetObjectId;
+    ObjectID m_activeSenderObjectId;
+    ObjectID m_activeTargetObjectId;
 
     std::string m_chatScript;
     bool m_skipMessage;
@@ -32,8 +31,8 @@ private:
     std::unordered_map<NWNXLib::API::Constants::ChatChannel::TYPE, float> m_hearingDistances;
     uint32_t m_depth;
 
-    static void SendServerToPlayerChatMessage(CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, NWNXLib::API::Types::ObjectID sender,
-        CExoString message, NWNXLib::API::Types::ObjectID target, CExoString* tellName);
+    static void SendServerToPlayerChatMessage(CNWSMessage* thisPtr, NWNXLib::API::Constants::ChatChannel::TYPE channel, ObjectID sender,
+        CExoString message, ObjectID target, CExoString* tellName);
 
     ArgumentStack SendMessage               (ArgumentStack&& args);
     ArgumentStack RegisterChatScript        (ArgumentStack&& args);

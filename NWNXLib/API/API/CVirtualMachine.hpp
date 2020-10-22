@@ -2,9 +2,11 @@
 #include "nwn_api.hpp"
 
 #include "CExoArrayList.hpp"
+#include "CExoString.hpp"
 #include "CVirtualMachineFile.hpp"
 #include "CVirtualMachineScript.hpp"
 #include "CVirtualMachineStack.hpp"
+#include "ScriptParam.hpp"
 #include "Vector.hpp"
 
 
@@ -12,13 +14,11 @@
 NWN_API_PROLOGUE(CVirtualMachine)
 #endif
 
-struct CExoString;
 struct CResGFF;
 struct CResStruct;
 struct CScriptCompiler;
 struct CScriptLog;
 struct CScriptLog;
-struct CVirtualMachineCache;
 struct CVirtualMachineCmdImplementer;
 struct CVirtualMachineDebuggingContext;
 
@@ -37,6 +37,7 @@ struct CVirtualMachine
     CVirtualMachineScript m_pVirtualMachineScript[8];
     BOOL m_bValidObjectRunScript[8];
     OBJECT_ID m_oidObjectRunScript[8];
+    CExoArrayList<ScriptParam> m_lScriptParams[8];
     CVirtualMachineStack m_cRunTimeStack;
     int32_t m_nInstructPtrLevel;
     int32_t m_pnRunTimeInstructPtr[128];
@@ -47,7 +48,6 @@ struct CVirtualMachine
     BOOL m_bDebugGUIRequired;
     BOOL m_bDebuggerSpawned;
     CVirtualMachineFile m_cVMFile;
-    CVirtualMachineCache * m_pCache;
     CScriptLog * m_pLog;
     CExoArrayList<CScriptLog *> m_aScriptLog;
     BOOL m_bEnableScriptLogging;
@@ -63,6 +63,9 @@ struct CVirtualMachine
     BOOL RunScriptSituation(void * pScriptSituation, OBJECT_ID oid, BOOL bOidValid = true);
     BOOL GetRunScriptReturnValue(int32_t * nParameterType, void * * pParameter);
     void SetDebugGUIFlag(BOOL bValue);
+    void SetScriptParameters(const CExoArrayList<ScriptParam> & lParameters);
+    CExoString GetScriptParameter(const CExoString & paramName);
+    void SetScriptParameter(const CExoString & paramName, const CExoString & paramValue);
     void SetCommandImplementer(CVirtualMachineCmdImplementer * pImplementer);
     BOOL StackPopInteger(int32_t * nInteger);
     BOOL StackPushInteger(int32_t nInteger);
@@ -77,11 +80,11 @@ struct CVirtualMachine
     BOOL StackPopEngineStructure(int32_t nEngineStructure, void * * ppEngineStructure);
     BOOL StackPushEngineStructure(int32_t nEngineStructure, void * pEngineStructure);
     void DeleteScriptSituation(void * pScript);
-    int32_t ExecuteCode(int32_t * nInstructionPointer, char * pCode, int32_t nCodeLength, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
+    int32_t ExecuteCode(int32_t * nInstructionPointer, DataBlockRef pCode, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
     BOOL Test_RunAllScriptsInDirectory(CExoString & sRunDirectoryAlias);
     BOOL DeleteScript(CVirtualMachineScript * pScript);
     int32_t ExecuteInstructions(int32_t nRecursionLevel, int32_t nNodeLocation);
-    void InitializeScript(CVirtualMachineScript * pScript, char * pData, int32_t nDataSize);
+    void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pData);
     BOOL PopInstructionPtr(int32_t * nInstructionPointer);
     BOOL PushInstructionPtr(int32_t nInstructionPointer);
     int32_t ReadScriptFile(CExoString * sFileName);

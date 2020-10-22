@@ -32,7 +32,7 @@ void UUIDEvents::LoadFromGffHook(bool bBefore, CNWSUUID *thisPtr, CResGFF *pResG
 
         if (success && !uuid.IsEmpty())
         {
-            auto LookupObjectIdByUUID = reinterpret_cast<Types::ObjectID(*)(CExoString&)>(
+            auto LookupObjectIdByUUID = reinterpret_cast<ObjectID(*)(CExoString&)>(
                     Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID20LookupObjectIdByUUIDERK10CExoString));
 
             bCollided = LookupObjectIdByUUID(uuid) != Constants::OBJECT_INVALID;

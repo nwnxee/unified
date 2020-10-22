@@ -12,22 +12,9 @@ using namespace NWNXLib;
 
 static WebHook::WebHook* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "WebHook",
-        "Users can send Slack-formatted HTTP/HTTPS webhooks with this plugin.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new WebHook::WebHook(params);
+    g_plugin = new WebHook::WebHook(services);
     return g_plugin;
 }
 
@@ -39,8 +26,8 @@ using namespace NWNXLib::Services;
 
 namespace WebHook {
 
-WebHook::WebHook(const Plugin::CreateParams& params)
-    : Plugin(params)
+WebHook::WebHook(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     GetServices()->m_events->RegisterEvent("SendWebHookHTTPS", &SendWebHookHTTPS);
 }
@@ -116,6 +103,9 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
             auto res = cli->second->post(path.c_str(), message, "application/json");
             g_plugin->GetServices()->m_tasks->QueueOnMainThread([message, host, path, origPath, res]()
             {
+                if (Core::g_CoreShuttingDown)
+                    return;
+
                 auto messaging = g_plugin->GetServices()->m_messaging.get();
                 auto moduleOid = NWNXLib::Utils::ObjectIDToString(Utils::GetModule()->m_idSelf);
 

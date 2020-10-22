@@ -1,7 +1,7 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/CGameEffect.hpp"
+#include "ScriptVariant.hpp"
 #include "Services/Services.hpp"
 
 #include <cstdint>
@@ -13,33 +13,15 @@
 #include <vector>
 #include <optional>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Events
 {
 public: // Structures
-    struct Argument
-    {
-        std::optional<int32_t>              m_int;
-        std::optional<float>                m_float;
-        std::optional<API::Types::ObjectID> m_object;
-        std::optional<std::string>          m_string;
-        std::optional<CGameEffect*>         m_effect;
+    // Defined in ScriptVariant.hpp
+    using Argument = ScriptVariant;
+    using ArgumentStack = ScriptVariantStack;
 
-        // Constructors
-        Argument(int32_t v)                : m_int(v)    { }
-        Argument(float v)                  : m_float(v)  { }
-        Argument(API::Types::ObjectID v)   : m_object(v) { }
-        Argument(std::string v)            : m_string(std::move(v)) { }
-        Argument(CGameEffect* v)           : m_effect(v) { }
-
-        template <typename T> std::optional<T>& Get();
-        std::string toString() const;
-    };
-
-    using ArgumentStack = std::stack<Argument>;
     using FunctionCallback = std::function<ArgumentStack(ArgumentStack&& in)>;
 
     struct EventData
@@ -107,10 +89,78 @@ private:
     std::vector<Events::RegistrationToken> m_registrationTokens;
 };
 
-#include "Services/Events/Events.inl"
 
+
+template <typename T>
+void Events::Push(const std::string& pluginName, const std::string& eventName, T&& value)
+{
+    if (auto* event = GetEventData(pluginName, eventName))
+    {
+        event->m_arguments.push(Events::Argument(std::forward<T>(value)));
+        LOG_DEBUG("Pushing argument '%s'. Event '%s', Plugin: '%s'.",
+            event->m_arguments.top(), eventName, pluginName);
+    }
+    else
+    {
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName, eventName);
+    }
+}
+
+template <typename T>
+std::optional<T> Events::Pop(const std::string& pluginName, const std::string& eventName)
+{
+    if (auto* event = GetEventData(pluginName, eventName))
+    {
+        if (event->m_returns.empty())
+        {
+            LOG_ERROR("Plugin '%s', event '%s': Tried to get a return value when one did not exist.",
+                pluginName, eventName);
+            return std::optional<T>();
+        }
+
+        if (!event->m_returns.top().Holds<T>())
+        {
+            LOG_ERROR("Plugin '%s', event '%s': Type mismatch in return values",
+                pluginName, eventName);
+        }
+        else
+        {
+            LOG_DEBUG("Returning value '%s'. Event '%s', Plugin: '%s'.",
+                event->m_returns.top(), eventName, pluginName);
+
+            // I'm probably using all these moves wrong..
+            return event->m_returns.extract<T>();
+        }
+    }
+    else
+    {
+        LOG_ERROR("Plugin '%s' does not have an event '%s' registered", pluginName, eventName);
+    }
+    return std::optional<T>();
+}
+
+template <typename T>
+void Events::InsertArgument(ArgumentStack& stack, T&& arg)
+{
+    stack.push(std::forward<T>(arg));
+}
+
+template <typename... Args>
+void Events::InsertArguments(ArgumentStack& stack, Args&&... args)
+{
+    stack.push(std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+Events::ArgumentStack Events::Arguments(Args&&... args)
+{
+    return {std::forward<Args>(args)...};
+}
+
+template <typename T>
+T Events::ExtractArgument(ArgumentStack& arguments)
+{
+    return arguments.extract<T>();
 }
 
 }
-
-std::ostream& operator<<(std::ostream& os, const NWNXLib::Services::Events::Argument& arg);

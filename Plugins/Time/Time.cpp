@@ -11,30 +11,17 @@ using namespace NWNXLib::API;
 
 static Time::Time* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Time",
-        "Functions exposing system time information",
-        "zunath",
-        "coolty3001@yahoo.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Time::Time(params);
+    g_plugin = new Time::Time(services);
     return g_plugin;
 }
 
 
 namespace Time {
 
-Time::Time(const Plugin::CreateParams& params)
-    : Plugin(params)
+Time::Time(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \

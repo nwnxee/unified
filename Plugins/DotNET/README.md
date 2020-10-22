@@ -16,7 +16,7 @@ Implement your server scripts in C# (and other dotnet languages)
 
 ### Dependencies
 
-You will need `dotnet-sdk-3.0` installed on the server to use this plugin. The same package is used to build the managed code.  Installation instructions are [here](https://dotnet.microsoft.com/download/linux-package-manager/sdk-current).
+You will need `dotnet-sdk-3.1` installed on the server to use this plugin. The same package is used to build the managed code.  Installation instructions are [here](https://dotnet.microsoft.com/download/linux-package-manager/sdk-current).
 
 There are no compiletime dependencies for the unmanaged code.
 
@@ -43,7 +43,7 @@ If you get the following error:
 
     Unable to load libnethost.so. .NET plugin will be unavailable.
 
-make sure you have `dotnet-sdk-3.0` (or later?) installed on your system. If it is present, run `locate libnethost.so` to find the location of the library. Then add it to:
+make sure you have `dotnet-sdk-3.1` (or later?) installed on your system. If it is present, run `locate libnethost.so` to find the location of the library. Then add it to:
 
     export NWNX_DOTNET_NETHOST_PATH=/full/path/to/libnethost.so
 

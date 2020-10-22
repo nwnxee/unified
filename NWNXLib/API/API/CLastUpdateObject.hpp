@@ -8,6 +8,7 @@
 #include "CResRef.hpp"
 #include "MaterialShaderParam.hpp"
 #include "ObjectVisualTransformData.hpp"
+#include "TextureReplaceInfo.hpp"
 #include "Vector.hpp"
 
 
@@ -36,6 +37,7 @@ struct CLastUpdateObject
     Vector m_vOrientation;
     int32_t m_nAnimation;
     float m_fAnimSpeed;
+    uint8_t m_nWalkAnimation;
     Vector m_vWalkTo;
     uint8_t m_nPlayerPathNumber;
     uint8_t m_nWalkedPathCutVerify;
@@ -107,6 +109,9 @@ struct CLastUpdateObject
     uint8_t m_nAbilityFinalCHA;
     ObjectVisualTransformData m_pObjectVisualTransformData;
     CExoArrayList<MaterialShaderParam> m_lMaterialShaderParameters;
+    CExoArrayList<TextureReplaceInfo> m_lTextureReplaceInfo;
+    Vector m_vHiliteColor;
+    int32_t m_nMouseCursor;
     int32_t m_nUpdateDisplayNameSeq;
     int32_t m_nUpdateHiddenSeq;
     CNWSPlayerLUOQuickbarItemButton * m_pQuickbarButton;

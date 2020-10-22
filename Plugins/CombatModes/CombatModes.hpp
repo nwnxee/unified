@@ -2,14 +2,13 @@
 
 #include "Plugin.hpp"
 #include "API/CNWSCreature.hpp"
-#include "API/Types.hpp"
 
 namespace CombatModes {
 
 class CombatModes : public NWNXLib::Plugin
 {
 public:
-    CombatModes(const Plugin::CreateParams& params);
+    CombatModes(NWNXLib::Services::ProxyServiceList* services);
     virtual ~CombatModes();
 
 private:

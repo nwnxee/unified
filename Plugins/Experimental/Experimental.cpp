@@ -8,29 +8,16 @@ using namespace NWNXLib;
 
 static Experimental::Experimental* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Experimental",
-        "Adds experimental functionality that's not really useful for the general user.",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Experimental::Experimental(params);
+    g_plugin = new Experimental::Experimental(services);
     return g_plugin;
 }
 
 namespace Experimental {
 
-Experimental::Experimental(const Plugin::CreateParams& params)
-        : Plugin(params)
+Experimental::Experimental(Services::ProxyServiceList* services)
+        : Plugin(services)
 {
     if (GetServices()->m_config->Get<bool>("SUPPRESS_PLAYER_LOGIN_INFO", false))
     {

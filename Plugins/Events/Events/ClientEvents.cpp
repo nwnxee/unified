@@ -2,6 +2,7 @@
 #include "API/CAppManager.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSArea.hpp"
 #include "API/Constants.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNetLayer.hpp"
@@ -9,7 +10,6 @@
 #include "API/CNWSModule.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "API/Version.hpp"
 #include "Events.hpp"
 
 namespace Events {
@@ -18,8 +18,10 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
+static NWNXLib::Hooking::FunctionHook* m_ServerCharacterSaveHook;
 static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerCharListHook;
 static NWNXLib::Hooking::FunctionHook* m_CheckStickyPlayerNameReservedHook;
+static NWNXLib::Hooking::FunctionHook* m_SendServerToPlayerModule_ExportReplyHook;
 
 ClientEvents::ClientEvents(HooksProxy* hooker)
 {
@@ -28,17 +30,55 @@ ClientEvents::ClientEvents(HooksProxy* hooker)
             CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
     });
 
+    Events::InitOnFirstSubscribe("NWNX_ON_SERVER_CHARACTER_SAVE_.*", [hooker]() {
+        m_ServerCharacterSaveHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN10CNWSPlayer19SaveServerCharacterEi, int32_t, CNWSPlayer*, int32_t>
+            (&OnServerCharacterSave);
+    });
+
     Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_CONNECT_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer, int32_t,
-            CNWSMessage*, CNWSPlayer*>(&SendServerToPlayerCharListHook);
-        m_SendServerToPlayerCharListHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer);
+        m_SendServerToPlayerCharListHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN11CNWSMessage26SendServerToPlayerCharListEP10CNWSPlayer, int32_t, CNWSMessage*, CNWSPlayer*>
+            (&SendServerToPlayerCharListHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i, int32_t,
-                CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>(&CheckStickyPlayerNameReservedHook);
-        m_CheckStickyPlayerNameReservedHook = hooker->FindHookByAddress(API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i);
+        m_CheckStickyPlayerNameReservedHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN13CServerExoApp29CheckStickyPlayerNameReservedE10CExoStringS0_S0_i, int32_t, CServerExoApp*, CExoString*, CExoString*, CExoString*, int32_t>
+            (&CheckStickyPlayerNameReservedHook);
     });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_CLIENT_EXPORT_CHARACTER_.*", [hooker]() {
+        m_SendServerToPlayerModule_ExportReplyHook = hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage36SendServerToPlayerModule_ExportReplyEP10CNWSPlayer>(
+                &SendServerToPlayerModule_ExportReplyHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_SERVER_SEND_AREA_.*", [hooker]()
+    {
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage33SendServerToPlayerArea_ClientAreaEP10CNWSPlayerP8CNWSAreafffRK6Vectori, int32_t>
+                (&SendServerToPlayerArea_ClientAreaHook);
+    });
+}
+
+int32_t ClientEvents::OnServerCharacterSave(CNWSPlayer* savingChar, int32_t bBackupPlayer)
+{
+    int32_t retVal;
+
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
+        return Events::SignalEvent(ev, savingChar->GetGameObject()->m_idSelf);
+    };
+
+    if (PushAndSignal("NWNX_ON_SERVER_CHARACTER_SAVE_BEFORE"))
+    {
+        retVal = m_ServerCharacterSaveHook->CallOriginal<int32_t>(savingChar, bBackupPlayer);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    PushAndSignal("NWNX_ON_SERVER_CHARACTER_SAVE_AFTER");
+    return retVal;
 }
 
 void ClientEvents::RemovePCFromWorldHook(bool before, CServerExoAppInternal*, CNWSPlayer* player)
@@ -72,7 +112,7 @@ int32_t ClientEvents::SendServerToPlayerCharListHook(CNWSMessage* pThis, CNWSPla
     std::string ipAddress = pNetLayer->GetPlayerAddress(pPlayer->m_nPlayerID).CStr();
 
     std::string reason;
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("PLAYER_NAME", playerName);
         Events::PushEventData("CDKEY", cdKey);
         Events::PushEventData("IS_DM", isDM);
@@ -103,7 +143,7 @@ int32_t ClientEvents::CheckStickyPlayerNameReservedHook(
     int32_t retVal;
 
     std::string valid;
-    auto PushAndSignal = [&](std::string ev) -> bool {
+    auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("PLAYER_NAME", p_sPlayerName->CStr());
         Events::PushEventData("CDKEY", p_sClientCDKey->CStr());
         Events::PushEventData("LEGACY_CDKEY", p_sClientLegacyCDKey->CStr());
@@ -122,6 +162,32 @@ int32_t ClientEvents::CheckStickyPlayerNameReservedHook(
     PushAndSignal("NWNX_ON_CHECK_STICKY_PLAYER_NAME_RESERVED_AFTER");
     return retVal;
 
+}
+
+int32_t ClientEvents::SendServerToPlayerModule_ExportReplyHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer)
+{
+    int32_t retVal;
+
+    if (Events::SignalEvent("NWNX_ON_CLIENT_EXPORT_CHARACTER_BEFORE", pPlayer->m_oidNWSObject))
+    {
+        retVal = m_SendServerToPlayerModule_ExportReplyHook->CallOriginal<int32_t>(pMessage, pPlayer);
+    }
+    else
+    {
+        retVal = false;
+    }
+
+    Events::SignalEvent("NWNX_ON_CLIENT_EXPORT_CHARACTER_AFTER", pPlayer->m_oidNWSObject);
+
+    return retVal;
+}
+
+void ClientEvents::SendServerToPlayerArea_ClientAreaHook(bool before, CNWSMessage*, CNWSPlayer *pPlayer, CNWSArea *pArea,
+                                                         float, float, float, const Vector*, BOOL bPlayerIsNewToModule)
+{
+    Events::PushEventData("AREA", Utils::ObjectIDToString(pArea->m_idSelf));
+    Events::PushEventData("PLAYER_NEW_TO_MODULE", std::to_string(bPlayerIsNewToModule));
+    Events::SignalEvent(before ? "NWNX_ON_SERVER_SEND_AREA_BEFORE" : "NWNX_ON_SERVER_SEND_AREA_AFTER", pPlayer->m_oidNWSObject);
 }
 
 }

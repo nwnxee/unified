@@ -49,7 +49,7 @@ struct CExoInput
     BOOL SetMouseMode(uint8_t nMode);
     uint8_t GetMouseMode();
     BOOL IsRemappableKey(uint8_t nKey);
-    uint32_t GetMilliSecondsSinceLastUserActivity();
+    uint32_t GetMilliSecondsSinceLastUserActivity() const;
 
 
 #ifdef NWN_CLASS_EXTENSION_CExoInput

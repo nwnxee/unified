@@ -25,22 +25,9 @@ using namespace NWNXLib;
 
 static Profiler::Profiler* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Profiler",
-        "Acquires shared hooks to expose various useful metrics.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Profiler::Profiler(params);
+    g_plugin = new Profiler::Profiler(services);
     return g_plugin;
 }
 
@@ -55,8 +42,8 @@ static std::chrono::milliseconds g_recalibrationPeriod;
 static bool g_recalibrate = false;
 static bool g_tickrate = false;
 
-Profiler::Profiler(const Plugin::CreateParams& params)
-    : Plugin(params)
+Profiler::Profiler(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     g_hooks = GetServices()->m_hooks.get();
     g_metrics = GetServices()->m_metrics.get();
@@ -65,7 +52,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     if (config->Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
     {
-        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSTION_FORCE");
+        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSATION_FORCE");
 
         if (forcedOverhead)
         {
@@ -148,14 +135,14 @@ Profiler::Profiler(const Plugin::CreateParams& params)
 
     {
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
-        [this, sum](std::vector<std::string> message)
+        [this, sum](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 1);
-            SetPerfScopeResampler(std::move(message[0]));
+            SetPerfScopeResampler(message[0]);
         });
 
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_PUSH_PERF_SCOPE",
-            [this](std::vector<std::string> message)
+            [this](const std::vector<std::string>& message)
             {
                 ASSERT(message.size() >= 1);
                 ASSERT(message.size() % 2 == 1);
@@ -172,7 +159,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
             });
 
         GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_POP_PERF_SCOPE",
-            [this](std::vector<std::string>)
+            [this](const std::vector<std::string>&)
             {
                 PopPerfScope();
             });
@@ -206,7 +193,7 @@ Profiler::Profiler(const Plugin::CreateParams& params)
         });
 }
 
-void Profiler::SetPerfScopeResampler(std::string&& name)
+void Profiler::SetPerfScopeResampler(const std::string& name)
 {
     Services::Resamplers::ResamplerFuncPtr sum = &Services::Resamplers::template Sum<int64_t>;
     GetServices()->m_metrics->SetResampler(name, sum, std::chrono::seconds(1));

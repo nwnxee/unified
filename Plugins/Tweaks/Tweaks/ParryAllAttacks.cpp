@@ -3,7 +3,6 @@
 #include "API/CNWSCombatRound.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "API/Version.hpp"
 #include "API/Constants.hpp"
 
 #include "Services/Hooks/Hooks.hpp"
@@ -18,10 +17,8 @@ using namespace NWNXLib::API;
 NWNXLib::Hooking::FunctionHook* ParryAllAttacks::pResolveAttackRoll_hook;
 ParryAllAttacks::ParryAllAttacks(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>
-                                    (&CNWSCreature__ResolveAttackRoll_hook);
-
-    pResolveAttackRoll_hook = hooker->FindHookByAddress(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject);
+    pResolveAttackRoll_hook = hooker->RequestExclusiveHook
+        <Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>(&CNWSCreature__ResolveAttackRoll_hook);
 }
 
 

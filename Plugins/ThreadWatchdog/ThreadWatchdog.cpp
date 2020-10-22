@@ -1,6 +1,5 @@
 #include "ThreadWatchdog.hpp"
 #include "API/Functions.hpp"
-#include "API/Version.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Config/Config.hpp"
@@ -9,22 +8,9 @@ using namespace NWNXLib;
 
 static ThreadWatchdog::ThreadWatchdog* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "ThreadWatchdog",
-        "TODO",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new ThreadWatchdog::ThreadWatchdog(params);
+    g_plugin = new ThreadWatchdog::ThreadWatchdog(services);
     return g_plugin;
 }
 
@@ -36,8 +22,8 @@ static uint64_t s_watchdogLastObservedCounter = 0;
 static uint32_t s_watchdogPeriod;
 static uint32_t s_watchdogKillThreshold;
 
-ThreadWatchdog::ThreadWatchdog(const Plugin::CreateParams& params)
-    : Plugin(params)
+ThreadWatchdog::ThreadWatchdog(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
 

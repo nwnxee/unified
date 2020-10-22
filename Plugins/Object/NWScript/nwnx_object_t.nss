@@ -20,10 +20,6 @@ void main()
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.key == "nwnx_object_test");
     NWNX_Tests_Report("NWNX_Object", "GetLocalVariable", lv.type == NWNX_OBJECT_LOCALVAR_TYPE_INT);
 
-    string sObj = ObjectToString(o);
-    NWNX_Tests_Report("NWNX_Object", "StringToObject", NWNX_Object_StringToObject(sObj) == o);
-    NWNX_Tests_Report("NWNX_Object", "Negative: StringToObject", NWNX_Object_StringToObject("!@#!@#!@#!") == OBJECT_INVALID);
-
     vector vPos = GetPosition(o);
     vPos.x += 1;
     NWNX_Object_SetPosition(o, vPos);
@@ -113,6 +109,12 @@ void main()
     oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
     NWNX_Object_SetAutoRemoveKey(oPlc, 1);
     NWNX_Tests_Report("NWNX_Object", "SetAutoRemoveKey", NWNX_Object_GetAutoRemoveKey(oPlc) == 1);
+    DestroyObject(oPlc);
+
+    int bHasInventory = GetHasInventory(oPlc);
+    oPlc = CreateObject(OBJECT_TYPE_PLACEABLE, "nw_plc_driftwd1", GetStartingLocation());
+    NWNX_Object_SetHasInventory(oPlc, !bHasInventory);
+    NWNX_Tests_Report("NWNX_Object", "SetHasInventory", GetHasInventory(oPlc) == !bHasInventory);
     DestroyObject(oPlc);
 
     DestroyObject(o);

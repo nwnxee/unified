@@ -2,7 +2,6 @@
 
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
-#include "API/Types.hpp"
 #include <iostream>
 
 
@@ -21,7 +20,7 @@ class SpellChecker : public NWNXLib::Plugin
     typedef void (*Free_Exp)(SplHandle* e, char***, int);
 
 public:
-    SpellChecker(const Plugin::CreateParams& params);
+    SpellChecker(NWNXLib::Services::ProxyServiceList* services);
     virtual ~SpellChecker();
 
 

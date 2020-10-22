@@ -16,30 +16,17 @@ using namespace NWNXLib::API;
 
 static Effect::Effect* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Effect",
-        "Miscellaneous Effectity functions",
-        "sherincall",
-        "sherincall@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Effect::Effect(params);
+    g_plugin = new Effect::Effect(services);
     return g_plugin;
 }
 
 
 namespace Effect {
 
-Effect::Effect(const Plugin::CreateParams& params)
-    : Plugin(params)
+Effect::Effect(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -50,6 +37,7 @@ Effect::Effect(const Plugin::CreateParams& params)
     REGISTER(SetEffectExpiredScript);
     REGISTER(GetEffectExpiredData);
     REGISTER(GetEffectExpiredCreator);
+    REGISTER(ReplaceEffect);
 
 #undef REGISTER
 
@@ -65,10 +53,20 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
 
     eff->m_sCustomTag = Services::Events::ExtractArgument<std::string>(args).c_str();
 
-    eff->m_oidParamObjectID[3] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
-    eff->m_oidParamObjectID[2] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
-    eff->m_oidParamObjectID[1] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
-    eff->m_oidParamObjectID[0] = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
+    auto vector1z = Services::Events::ExtractArgument<float>(args);
+    auto vector1y = Services::Events::ExtractArgument<float>(args);
+    auto vector1x = Services::Events::ExtractArgument<float>(args);
+    eff->m_vParamVector[1] = {vector1x, vector1y, vector1z};
+
+    auto vector0z = Services::Events::ExtractArgument<float>(args);
+    auto vector0y = Services::Events::ExtractArgument<float>(args);
+    auto vector0x = Services::Events::ExtractArgument<float>(args);
+    eff->m_vParamVector[0] = {vector0x, vector0y, vector0z};
+
+    eff->m_oidParamObjectID[3] = Services::Events::ExtractArgument<ObjectID>(args);
+    eff->m_oidParamObjectID[2] = Services::Events::ExtractArgument<ObjectID>(args);
+    eff->m_oidParamObjectID[1] = Services::Events::ExtractArgument<ObjectID>(args);
+    eff->m_oidParamObjectID[0] = Services::Events::ExtractArgument<ObjectID>(args);
 
     eff->m_sParamString[5] = Services::Events::ExtractArgument<std::string>(args).c_str();
     eff->m_sParamString[4] = Services::Events::ExtractArgument<std::string>(args).c_str();
@@ -94,19 +92,19 @@ ArgumentStack Effect::PackEffect(ArgumentStack&& args)
     // Overwrite num integers from 8
     eff->m_nNumIntegers = Services::Events::ExtractArgument<int32_t>(args);
 
-    int32_t bRightLinkValid = Services::Events::ExtractArgument<int32_t>(args);
-    CGameEffect *pRightLink = Services::Events::ExtractArgument<CGameEffect*>(args);
+    auto bRightLinkValid = Services::Events::ExtractArgument<int32_t>(args);
+    auto *pRightLink = Services::Events::ExtractArgument<CGameEffect*>(args);
     eff->m_pLinkRight = (bRightLinkValid) ? pRightLink : nullptr;
 
-    int32_t bLeftLinkValid = Services::Events::ExtractArgument<int32_t>(args);
-    CGameEffect *pLeftLink = Services::Events::ExtractArgument<CGameEffect*>(args);
+    auto bLeftLinkValid = Services::Events::ExtractArgument<int32_t>(args);
+    auto *pLeftLink = Services::Events::ExtractArgument<CGameEffect*>(args);
     eff->m_pLinkLeft = (bLeftLinkValid) ? pLeftLink : nullptr;
 
     eff->m_nCasterLevel       = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_bShowIcon          = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_bExpose            = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_nSpellId           = Services::Events::ExtractArgument<int32_t>(args);
-    eff->m_oidCreator         = Services::Events::ExtractArgument<API::Types::ObjectID>(args);
+    eff->m_oidCreator         = Services::Events::ExtractArgument<ObjectID>(args);
     eff->m_nExpiryTimeOfDay   = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_nExpiryCalendarDay = Services::Events::ExtractArgument<int32_t>(args);
     eff->m_fDuration          = Services::Events::ExtractArgument<float>(args);
@@ -128,7 +126,7 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, (float)eff->m_fDuration);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nExpiryCalendarDay);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nExpiryTimeOfDay);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidCreator);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidCreator);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_nSpellId);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bExpose);
     Services::Events::InsertArgument(stack, (int32_t)eff->m_bShowIcon);
@@ -176,10 +174,18 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
     Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[4].CStr()));
     Services::Events::InsertArgument(stack, std::string(eff->m_sParamString[5].CStr()));
 
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[0]);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[1]);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[2]);
-    Services::Events::InsertArgument(stack, (API::Types::ObjectID)eff->m_oidParamObjectID[3]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[0]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[1]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[2]);
+    Services::Events::InsertArgument(stack, (ObjectID)eff->m_oidParamObjectID[3]);
+
+    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[0].x);
+    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[0].y);
+    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[0].z);
+
+    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[1].x);
+    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[1].y);
+    Services::Events::InsertArgument(stack, (float)eff->m_vParamVector[1].z);
 
     Services::Events::InsertArgument(stack, std::string(eff->m_sCustomTag.CStr()));
 
@@ -245,6 +251,38 @@ ArgumentStack Effect::GetEffectExpiredCreator(ArgumentStack&&)
     }
 
     return Services::Events::Arguments(g_plugin->m_effectExpiredCreator);
+}
+
+ArgumentStack Effect::ReplaceEffect(ArgumentStack&& args)
+{
+    int found = 0;
+    auto objId = Services::Events::ExtractArgument<ObjectID>(args);
+    auto eOld  = Services::Events::ExtractArgument<CGameEffect*>(args);
+    auto eNew  = Services::Events::ExtractArgument<CGameEffect*>(args);
+
+    ASSERT_OR_THROW(eNew->m_nType == eOld->m_nType);
+
+    if (auto* obj = Utils::AsNWSObject(Utils::GetGameObject(objId)))
+    {
+        for (auto* eff : obj->m_appliedEffects)
+        {
+            if (eff->m_nID == eOld->m_nID)
+            {
+                eff->m_nSubType              = eNew->m_nSubType;
+                eff->m_fDuration             = eNew->m_fDuration;
+                eff->m_nExpiryCalendarDay    = eNew->m_nExpiryCalendarDay;
+                eff->m_nExpiryTimeOfDay      = eNew->m_nExpiryTimeOfDay;
+                eff->m_oidCreator            = eNew->m_oidCreator;
+                eff->m_nSpellId              = eNew->m_nSpellId;
+                eff->m_nCasterLevel          = eNew->m_nCasterLevel;
+                eff->m_nItemPropertySourceId = eNew->m_nItemPropertySourceId;
+                eff->m_sCustomTag            = eNew->m_sCustomTag;
+                eff->UpdateLinked();
+                found++;
+            }
+        }
+    }
+    return found;
 }
 
 }

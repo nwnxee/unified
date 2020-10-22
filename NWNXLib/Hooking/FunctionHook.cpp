@@ -1,9 +1,7 @@
 #include "Hooking/FunctionHook.hpp"
 #include "Assert.hpp"
 
-namespace NWNXLib {
-
-namespace Hooking {
+namespace NWNXLib::Hooking {
 
 FunctionHook::FunctionHook(uintptr_t originalFunction, uintptr_t newFunction)
 {
@@ -26,8 +24,6 @@ FunctionHook::~FunctionHook()
 {
     funchook_uninstall(m_funchook, 0);
     funchook_destroy(m_funchook);
-}
-
 }
 
 }

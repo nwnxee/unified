@@ -3,7 +3,6 @@
 #include "Plugin.hpp"
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "API/Types.hpp"
 
 using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
 
@@ -12,13 +11,15 @@ namespace ItemProperty {
 class ItemProperty : public NWNXLib::Plugin
 {
 public:
-    ItemProperty(const Plugin::CreateParams& params);
+    ItemProperty(NWNXLib::Services::ProxyServiceList* services);
     virtual ~ItemProperty();
 
 private:
 
     ArgumentStack PackIP(ArgumentStack&& args);
     ArgumentStack UnpackIP(ArgumentStack&& args);
+    ArgumentStack GetActiveProperty(ArgumentStack&& args);
+
 };
 
 }

@@ -8,22 +8,9 @@ using namespace NWNXLib;
 
 static Metrics_InfluxDB::Metrics_InfluxDB* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Metrics (Influx DB)",
-        "Exports profiling information to Influx DB.",
-        "niv / Liareth",
-        "n@e-ix.net / liarethnwn@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Metrics_InfluxDB::Metrics_InfluxDB(params);
+    g_plugin = new Metrics_InfluxDB::Metrics_InfluxDB(services);
     return g_plugin;
 }
 
@@ -31,8 +18,8 @@ namespace Metrics_InfluxDB {
 
 using namespace NWNXLib::Services;
 
-Metrics_InfluxDB::Metrics_InfluxDB(const Plugin::CreateParams& params)
-    : Plugin(params)
+Metrics_InfluxDB::Metrics_InfluxDB(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
     auto host = GetServices()->m_config->Require<std::string>("HOST");
     auto port = GetServices()->m_config->Require<int32_t>("PORT");

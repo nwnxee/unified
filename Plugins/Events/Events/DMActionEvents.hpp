@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Common.hpp"
 #include <cstdint>

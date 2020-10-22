@@ -8,16 +8,14 @@
 #include <unordered_map>
 #include <vector>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class Messaging
 {
 public: // Structures
     using Tag = std::string;
     using Message = std::vector<std::string>;
-    using Handler = std::function<void(Message)>;
+    using Handler = std::function<void(const Message&)>;
     using HandlerId = uint32_t;
 
 public:
@@ -49,7 +47,5 @@ public:
 private:
     std::vector<Messaging::HandlerId> m_subscribed;
 };
-
-}
 
 }

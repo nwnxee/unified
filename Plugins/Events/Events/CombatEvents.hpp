@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include "API/Types.hpp"
 #include "Common.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
@@ -14,7 +13,7 @@ public:
 
 private:
     static void StartCombatRoundHook(bool, CNWSCombatRound*, uint32_t);
-    static NWNXLib::Hooking::FunctionHook* m_hook;
+    static int32_t ApplyDisarmHook(CNWSEffectListHandler*, CNWSObject *, CGameEffect *, BOOL);
 };
 
 }

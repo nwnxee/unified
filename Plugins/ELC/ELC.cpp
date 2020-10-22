@@ -40,22 +40,9 @@ using namespace NWNXLib::API::Constants;
 
 static ELC::ELC* g_plugin;
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "ELC",
-        "A customisable replacement for ValidateCharacter: ELC & ILR",
-        "Daz",
-        "daztek@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new ELC::ELC(params);
+    g_plugin = new ELC::ELC(services);
     return g_plugin;
 }
 
@@ -101,13 +88,11 @@ const int32_t STRREF_CUSTOM                                 = 164;
 const int32_t NUM_CREATURE_ITEM_SLOTS       = 4;
 const int32_t NUM_MULTICLASS                = 3;
 const int32_t CHARACTER_EPIC_LEVEL          = 21;
-const int32_t MIN_STARTING_ABILITY_VALUE    = 8;
-const int32_t MAX_STARTING_ABILITY_VALUE    = 18;
 const int32_t NUM_SPELL_LEVELS              = 10;
 
 
-ELC::ELC(const Plugin::CreateParams& params)
-    : Plugin(params)
+ELC::ELC(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 #define REGISTER(func) \
     GetServices()->m_events->RegisterEvent(#func, \
@@ -204,6 +189,9 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
             {"VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
+
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
+            { "NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
 
     // *** Server Restrictions **********************************************************************************************
     CServerInfo *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
@@ -377,7 +365,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     }
 
     // Check for DM character file
-    if (pCreatureStats->m_bIsDMFile)
+    if (pCreatureStats->m_bIsDMCharacterFile)
     {
         if (auto strrefFailure = HandleValidationFailure(
                 ValidationFailureType::Character,
@@ -494,10 +482,13 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             nAbility[nAbilityGain]--;
     }
 
+    static int32_t charGenBaseAbilityMin = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MIN", 8);
+    static int32_t charGenBaseAbilityMax = Globals::Rules()->GetRulesetIntEntry("CHARGEN_BASE_ABILITY_MAX", 18);
+
     // Check if >18 in an ability
     for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
     {
-        if (nAbility[nAbilityIndex] > MAX_STARTING_ABILITY_VALUE)
+        if (nAbility[nAbilityIndex] > charGenBaseAbilityMax)
         {
             if (auto strrefFailure = HandleValidationFailure(
                     ValidationFailureType::Character,
@@ -512,13 +503,17 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
     // Point Buy System calculation
     uint8_t nAbilityAtLevel[6] = {0};
     uint8_t nPointBuy = pRace->m_nAbilitiesPointBuyNumber;
+
+    static int32_t abilityCostIncrement2 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT2", 14);
+    static int32_t abilityCostIncrement3 = Globals::Rules()->GetRulesetIntEntry("CHARGEN_ABILITY_COST_INCREMENT3", 16);
+
     for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
     {
         nAbilityAtLevel[nAbilityIndex] = nAbility[nAbilityIndex];
 
-        while (nAbility[nAbilityIndex] > MIN_STARTING_ABILITY_VALUE)
+        while (nAbility[nAbilityIndex] > charGenBaseAbilityMin)
         {
-            if (nAbility[nAbilityIndex] > 16)
+            if (nAbility[nAbilityIndex] > abilityCostIncrement3)
             {
                 if (nPointBuy < 3)
                 {
@@ -534,7 +529,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
                 nAbility[nAbilityIndex]--;
                 nPointBuy -= 3;
             }
-            else if (nAbility[nAbilityIndex] > 14)
+            else if (nAbility[nAbilityIndex] > abilityCostIncrement2)
             {
                 if (nPointBuy < 2)
                 {
@@ -697,7 +692,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             {
                 for (int nAbilityIndex = 0; nAbilityIndex <= Ability::MAX; nAbilityIndex++)
                 {
-                    nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForLevel(nAbilityIndex, nLevel);
+                    nAbilityAtLevel[nAbilityIndex] += pClass->GetAbilityGainForSingleLevel(nAbilityIndex, nMultiClassLevel[nMultiClassLeveledUpIn]);
                 }
             }
         }
@@ -829,9 +824,10 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
                 listSkillRanks[nSkill] += nRankChange;
 
                 // Can't have more than Level + 3 in a class skill, or (Level + 3) / 2 for a non class skill
+                static int32_t skillMaxLevel1Bonus = Globals::Rules()->GetRulesetIntEntry("CHARGEN_SKILL_MAX_LEVEL_1_BONUS", 3);
                 if (bClassSkill)
                 {
-                    if (listSkillRanks[nSkill] > nLevel + 3)
+                    if (listSkillRanks[nSkill] > nLevel + skillMaxLevel1Bonus)
                     {
                         if (auto strrefFailure = HandleValidationFailure(
                                 ValidationFailureType::Skill,
@@ -844,7 +840,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
                 }
                 else
                 {
-                    if (listSkillRanks[nSkill] > (nLevel + 3) / 2)
+                    if (listSkillRanks[nSkill] > (nLevel + skillMaxLevel1Bonus) / 2)
                     {
                         if (auto strrefFailure = HandleValidationFailure(
                                 ValidationFailureType::Skill,
@@ -880,7 +876,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
         uint8_t nNumberBonusFeats = 0;
 
         // First and every nth level gets a normal feat
-        if ((nLevel == 1) || (nLevel % pRace->m_nNormalFeatEveryNthLevel == 0))
+        if ((nLevel == 1) || ((pRace->m_nNormalFeatEveryNthLevel != 0) && (nLevel % pRace->m_nNormalFeatEveryNthLevel == 0)))
         {
             nNumberNormalFeats = pRace->m_nNumberNormalFeatsEveryNthLevel;
         }
@@ -1825,6 +1821,9 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
             {"VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
+
+    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
+            {"NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
 
     return 0;
 }

@@ -93,6 +93,21 @@ namespace AIPriority
     }
 }
 
+namespace AIState
+{
+    enum TYPE
+    {
+        IsAlive           = 0x01,
+        CanUseLegs        = 0x02,
+        CanUseHands       = 0x04,
+        CanUseMouth       = 0x08,
+        CanUseEars        = 0x10,
+        CanUseEyes        = 0x20,
+        CanUseMind        = 0x40,
+        IsAbleToGoHostile = 0x80,
+    };
+}
+
 namespace ResRefType
 {
     enum TYPE
@@ -178,6 +193,7 @@ namespace ResRefType
         SQL    = 2075,
         TML    = 2076,
         SQ3    = 2077,
+        LOD    = 2078,
         IDS    = 9996,
         ERF    = 9997,
         BIF    = 9998,
@@ -272,6 +288,7 @@ namespace ResRefType
             case SQL:    return "SQL";
             case TML:    return "TML";
             case SQ3:    return "SQ3";
+            case LOD:    return "LOD";
             case IDS:    return "IDS";
             case ERF:    return "ERF";
             case BIF:    return "BIF";

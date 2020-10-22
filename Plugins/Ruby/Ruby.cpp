@@ -1,5 +1,4 @@
 #include "Ruby.hpp"
-#include "API/Version.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
 
@@ -8,23 +7,9 @@
 using namespace NWNXLib;
 
 static Ruby::Ruby* g_plugin;
-
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "Ruby",
-        "Allows users to execute arbitrary Ruby from the game.",
-        "Liareth",
-        "liarethnwn@gmail.com",
-        1,
-        false // Not hotswappable -- we don't want to tear down the VM ... bad stuff happens.
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new Ruby::Ruby(params);
+    g_plugin = new Ruby::Ruby(services);
     return g_plugin;
 }
 
@@ -32,8 +17,8 @@ using namespace NWNXLib::Services;
 
 namespace Ruby {
 
-Ruby::Ruby(const Plugin::CreateParams& params)
-    : Plugin(params), m_nextEvaluationId(0)
+Ruby::Ruby(Services::ProxyServiceList* services)
+    : Plugin(services), m_nextEvaluationId(0)
 {
     m_evaluateMetrics = GetServices()->m_config->Get<bool>("EVALUATE_METRICS", false);
 

@@ -34,29 +34,16 @@ const auto avgMask = (1u << 8u);
 const auto sumMask = (1u << 9u);
 const auto areaModPOSKey = "SKILLRANK_MOD_";
 
-NWNX_PLUGIN_ENTRY Plugin::Info* PluginInfo()
+NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
-    return new Plugin::Info
-    {
-        "SkillRanks",
-        "Skill rank modifications via feats and other methods.",
-        "orth",
-        "plenarius@gmail.com",
-        1,
-        true
-    };
-}
-
-NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Plugin::CreateParams params)
-{
-    g_plugin = new SkillRanks::SkillRanks(params);
+    g_plugin = new SkillRanks::SkillRanks(services);
     return g_plugin;
 }
 
 namespace SkillRanks {
 
-SkillRanks::SkillRanks(const Plugin::CreateParams& params)
-    : Plugin(params)
+SkillRanks::SkillRanks(Services::ProxyServiceList* services)
+    : Plugin(services)
 {
 
 #define REGISTER(func) \
@@ -75,16 +62,16 @@ SkillRanks::SkillRanks(const Plugin::CreateParams& params)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules13LoadSkillInfoEv, void, CNWRules*>(&LoadSkillInfoHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules15LoadRulesetInfoEv, void, CNWRules*>(&LoadRulesetInfoHook);
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti,
-        int32_t, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
+        char, CNWSCreatureStats*, uint8_t, CNWSObject*, int32_t>(&GetSkillRankHook);
 }
 
 SkillRanks::~SkillRanks()
 {
 }
 
-void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
+void SkillRanks::LoadRulesetInfoHook(bool before, CNWRules* pRules)
 {
     // We only want to do this in the AFTER
     if (before || !pRules)
@@ -93,7 +80,7 @@ void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
     g_plugin->m_blindnessMod = pRules->GetRulesetIntEntry("BLIND_PENALTY_TO_SKILL_CHECK", 4);
 
     g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
-                                                           [](const std::vector<std::string> message)
+                                                           [](const std::vector<std::string>& message)
                                                            {
                                                                auto nSkill = std::stoi(message[0]);
                                                                auto nRace = std::stoi(message[1]);
@@ -559,7 +546,7 @@ void SkillRanks::LoadSkillInfoHook(bool before, CNWRules* pRules)
     }
 }
 
-int32_t SkillRanks::GetSkillRankHook(
+char SkillRanks::GetSkillRankHook(
         CNWSCreatureStats* thisPtr,
         uint8_t nSkill,
         CNWSObject* pVersus,
@@ -567,7 +554,7 @@ int32_t SkillRanks::GetSkillRankHook(
 {
     if (nSkill >= Globals::Rules()->m_nNumSkills)
         return 0;
-    if (thisPtr->m_bIsDM)
+    if (thisPtr->GetIsDM())
         return 127;
 
     int32_t baseRank = thisPtr->m_lstSkillRanks[nSkill];
@@ -694,7 +681,11 @@ int32_t SkillRanks::GetSkillRankHook(
     if (pArea)
     {
         auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
-        retVal += *pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill));
+        if(auto areaMod = pPOS->Get<int>(pArea->m_idSelf, areaModPOSKey + std::to_string(nSkill))) 
+        {
+            retVal += *areaMod;
+        }
+
     }
 
     if (!bHasOverrideKeyAbilityFeat)
@@ -897,7 +888,7 @@ ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
 
 ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {
@@ -916,7 +907,7 @@ ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 
 ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<Types::ObjectID>(args);
+    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {

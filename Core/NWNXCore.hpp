@@ -1,6 +1,5 @@
 #pragma once
 
-#include "API/Types.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "Common.hpp"
@@ -30,6 +29,8 @@ public:
 
     std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
 
+    const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
+
 private: // Structures
     using PluginProxyServiceMap = std::map<
         NWNXLib::Services::Plugins::RegistrationToken,
@@ -51,7 +52,7 @@ private:
     void InitialSetupHooks();
     void InitialVersionCheck();
     void InitialSetupPlugins();
-    void InitialSetupResourceDirectory();
+    void InitialSetupResourceDirectories();
     void InitialSetupCommands();
 
     void UnloadPlugins();
@@ -66,6 +67,7 @@ private:
     static void MainLoopInternalHandler(bool, CServerExoAppInternal*);
 
     int m_ScriptChunkRecursion;
+    std::vector<std::string> m_CustomResourceDirectoryAliases;
 };
 
 }

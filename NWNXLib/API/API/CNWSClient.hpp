@@ -7,7 +7,6 @@
 NWN_API_PROLOGUE(CNWSClient)
 #endif
 
-struct CNWSDungeonMaster;
 struct CNWSPlayer;
 
 
@@ -20,7 +19,7 @@ struct CNWSClient
 
     CNWSClient(uint32_t nPlayerID);
     virtual ~CNWSClient();
-    virtual CNWSDungeonMaster * AsNWSDungeonMaster();
+    virtual CNWSPlayer * AsNWSDungeonMaster();
     virtual CNWSPlayer * AsNWSPlayer();
 
 
