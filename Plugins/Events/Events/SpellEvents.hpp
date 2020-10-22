@@ -37,6 +37,7 @@ private:
     );
     static void ClearMemorizedSpellSlotHook(CNWSCreatureStats*, uint8_t, uint8_t, uint8_t);
     static void BroadcastSpellCastHook(CNWSCreature*, uint32_t, uint8_t, uint16_t);
+    static void EffectAppliedHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
 };
 
 }
