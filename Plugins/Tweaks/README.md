@@ -31,6 +31,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_UNHARDCODE_SHIELDS`: true or false
 * `NWNX_TWEAKS_BLOCK_DM_SPAWNITEM`: true or false
 * `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`: true or false
+* `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`: true or false
 
 ## Environment variable values
 
