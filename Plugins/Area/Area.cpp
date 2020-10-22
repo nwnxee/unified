@@ -8,6 +8,7 @@
 #include "API/CNWTileData.hpp"
 #include "API/CNWSAmbientSound.hpp"
 #include "API/CResStruct.hpp"
+#include "API/CResList.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/Constants.hpp"
@@ -69,6 +70,7 @@ Area::Area(Services::ProxyServiceList* services)
     REGISTER(RemoveObjectFromExclusionList);
     REGISTER(ExportGIT);
     REGISTER(GetTileInfo);
+    REGISTER(ExportARE);
 
 #undef REGISTER
 }
@@ -115,7 +117,7 @@ ArgumentStack Area::GetLastEntered(ArgumentStack&& args)
 
     if (auto *pArea = area(args))
     {
-        retVal = static_cast<ObjectID>(pArea->m_oidLastEntered);
+        retVal = pArea->m_oidLastEntered;
     }
 
     return Services::Events::Arguments(retVal);
@@ -127,7 +129,7 @@ ArgumentStack Area::GetLastLeft(ArgumentStack&& args)
 
     if (auto *pArea = area(args))
     {
-        retVal = static_cast<ObjectID>(pArea->m_oidLastLeft);
+        retVal = pArea->m_oidLastLeft;
     }
 
     return Services::Events::Arguments(retVal);
@@ -771,6 +773,23 @@ ArgumentStack Area::ExportGIT(ArgumentStack&& args)
         const auto exportUUID = !!Services::Events::ExtractArgument<int32_t>(args);
         const auto objectFilter = Services::Events::ExtractArgument<int32_t>(args);
 
+        std::string alias;
+        try
+        {
+            alias = Services::Events::ExtractArgument<std::string>(args);
+        }
+        catch (const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Area_ExportGIT() called without alias parameter, please update nwnx_area.nss");
+            alias = "NWNX";
+        }
+
+        if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
+        {
+            LOG_WARNING("NWNX_Area_ExportGIT() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
+            alias = "NWNX";
+        }
+
         CResGFF    resGff;
         CResStruct resStruct{};
 
@@ -857,7 +876,7 @@ ArgumentStack Area::ExportGIT(ArgumentStack&& args)
             if (exportUUID)
                 pArea->m_pUUID.SaveToGff(&resGff, &resStruct);
 
-            retVal = resGff.WriteGFFFile("NWNX:" + fileName, Constants::ResRefType::GIT);
+            retVal = resGff.WriteGFFFile(alias + ":" + fileName, Constants::ResRefType::GIT);
 
             // Restore the areaIDs of all creatures
             for (auto pair : creatureAreaMap)
@@ -895,5 +914,151 @@ ArgumentStack Area::GetTileInfo(ArgumentStack&& args)
     return Services::Events::Arguments(id, height, orientation, x, y);
 }
 
+ArgumentStack Area::ExportARE(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+
+    if (auto *pArea = area(args))
+    {
+        const auto fileName = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(!fileName.empty());
+          ASSERT_OR_THROW(fileName.size() <= 16);
+        const auto newName = Services::Events::ExtractArgument<std::string>(args);
+        const auto newTag = Services::Events::ExtractArgument<std::string>(args);
+        auto alias = Services::Events::ExtractArgument<std::string>(args);
+          ASSERT_OR_THROW(!alias.empty());
+
+        if (!Utils::IsValidCustomResourceDirectoryAlias(alias))
+        {
+            LOG_WARNING("NWNX_Area_ExportARE() called with an invalid alias: %s, defaulting to 'NWNX'", alias);
+            alias = "NWNX";
+        }
+
+        CResGFF    resGff;
+        CResStruct resStruct{};
+
+        if (resGff.CreateGFFFile(&resStruct, "ARE ", "V3.2"))
+        {
+            char field[32];
+
+            // Important Stuff
+            std::sprintf(field, "Name");
+            resGff.WriteFieldCExoLocString(&resStruct, newName.empty() ? pArea->m_lsName : Utils::CreateLocString(newName), field);
+            std::sprintf(field, "Tag");
+            resGff.WriteFieldCExoString(&resStruct, newTag.empty() ? pArea->m_sTag : CExoString(newTag).AsTAG(), field);
+            std::sprintf(field, "ResRef");
+            resGff.WriteFieldCExoString(&resStruct, CResRef(fileName), field);
+            std::sprintf(field, "Width");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nWidth, field);
+            std::sprintf(field, "Height");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nHeight, field);
+            std::sprintf(field, "Tileset");
+            resGff.WriteFieldCResRef(&resStruct, pArea->m_refTileSet, field);
+
+            // Less Important Stuff
+            std::sprintf(field, "ChanceLightning");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nChanceOfLightning, field);
+            std::sprintf(field, "ChanceRain");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nChanceOfRain, field);
+            std::sprintf(field, "ChanceSnow");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nChanceOfSnow, field);
+            std::sprintf(field, "DayNightCycle");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_bUseDayNightCycle, field);
+            std::sprintf(field, "Flags");
+            resGff.WriteFieldDWORD(&resStruct, pArea->m_nFlags, field);
+            std::sprintf(field, "FogClipDist");
+            resGff.WriteFieldFLOAT(&resStruct, pArea->m_fFogClipDistance, field);
+            std::sprintf(field, "IsNight");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_bIsNight, field);
+            std::sprintf(field, "LightingScheme");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_nLightingScheme, field);
+            std::sprintf(field, "LoadScreenID");
+            resGff.WriteFieldWORD(&resStruct, pArea->m_nLoadScreenID, field);
+            std::sprintf(field, "ModListenCheck");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nAreaListenModifier, field);
+            std::sprintf(field, "ModSpotCheck");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nAreaSpotModifier, field);
+            std::sprintf(field, "MoonAmbientColor");
+            resGff.WriteFieldDWORD(&resStruct, pArea->m_nMoonAmbientColor, field);
+            std::sprintf(field, "MoonDiffuseColor");
+            resGff.WriteFieldDWORD(&resStruct, pArea->m_nMoonDiffuseColor, field);
+            std::sprintf(field, "MoonFogAmount");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_nMoonFogAmount, field);
+            std::sprintf(field, "MoonFogColor");
+            resGff.WriteFieldDWORD(&resStruct, pArea->m_nMoonFogColor, field);
+            std::sprintf(field, "MoonShadows");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_bMoonShadows, field);
+            std::sprintf(field, "NoRest");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_bNoRestingAllowed, field);
+            std::sprintf(field, "OnHeartbeat");
+            resGff.WriteFieldCResRef(&resStruct, pArea->m_sScripts[0], field);
+            std::sprintf(field, "OnUserDefined");
+            resGff.WriteFieldCResRef(&resStruct, pArea->m_sScripts[1], field);
+            std::sprintf(field, "OnEnter");
+            resGff.WriteFieldCResRef(&resStruct, pArea->m_sScripts[2], field);
+            std::sprintf(field, "OnExit");
+            resGff.WriteFieldCResRef(&resStruct, pArea->m_sScripts[3], field);
+            std::sprintf(field, "PlayerVsPlayer");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_nPVPSetting, field);
+            std::sprintf(field, "ShadowOpacity");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_nShadowOpacity, field);
+            std::sprintf(field, "SkyBox");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_nSkyBox, field);
+            std::sprintf(field, "SunAmbientColor");
+            resGff.WriteFieldDWORD(&resStruct, pArea->m_nSunAmbientColor, field);
+            std::sprintf(field, "SunDiffuseColor");
+            resGff.WriteFieldDWORD(&resStruct, pArea->m_nSunDiffuseColor, field);
+            std::sprintf(field, "SunFogAmount");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_nSunFogAmount, field);
+            std::sprintf(field, "SunFogColor");
+            resGff.WriteFieldDWORD(&resStruct, pArea->m_nSunFogColor, field);
+            std::sprintf(field, "SunShadows");
+            resGff.WriteFieldBYTE(&resStruct, pArea->m_bSunShadows, field);
+            std::sprintf(field, "WindPower");
+            resGff.WriteFieldINT(&resStruct, pArea->m_nWindAmount, field);
+
+            // Tile Stuff
+            CResList resList{};
+            std::sprintf(field, "Tile_List");
+            resGff.AddList(&resList, &resStruct, field);
+            auto numTiles = pArea->m_nWidth * pArea->m_nHeight;
+
+            for (int tileNum = 0; tileNum < numTiles; tileNum++)
+            {
+                auto *pTile = &pArea->m_pTile[tileNum];
+
+                resGff.AddListElement(&resStruct, &resList, 1);
+
+                std::sprintf(field, "Tile_ID");
+                resGff.WriteFieldINT(&resStruct, pTile->m_nID, field);
+                std::sprintf(field, "Tile_Orientation");
+                resGff.WriteFieldINT(&resStruct, pTile->m_nOrientation, field);
+                std::sprintf(field, "Tile_Height");
+                resGff.WriteFieldINT(&resStruct, pTile->m_nHeight, field);
+
+                std::sprintf(field, "Tile_MainLight1");
+                resGff.WriteFieldBYTE(&resStruct, pTile->m_nMainLight1Color == 255 ? 0 : pTile->m_nMainLight1Color, field);
+                std::sprintf(field, "Tile_MainLight2");
+                resGff.WriteFieldBYTE(&resStruct, pTile->m_nMainLight2Color == 255 ? 0 : pTile->m_nMainLight2Color, field);
+
+                std::sprintf(field, "Tile_SrcLight1");
+                resGff.WriteFieldBYTE(&resStruct, pTile->m_nSourceLight1Color == 255 ? 0 : pTile->m_nSourceLight1Color, field);
+                std::sprintf(field, "Tile_SrcLight2");
+                resGff.WriteFieldBYTE(&resStruct, pTile->m_nSourceLight2Color == 255 ? 0 : pTile->m_nSourceLight2Color, field);
+
+                std::sprintf(field, "Tile_AnimLoop1");
+                resGff.WriteFieldBYTE(&resStruct, pTile->m_nAnimLoop1, field);
+                std::sprintf(field, "Tile_AnimLoop2");
+                resGff.WriteFieldBYTE(&resStruct, pTile->m_nAnimLoop2, field);
+                std::sprintf(field, "Tile_AnimLoop3");
+                resGff.WriteFieldBYTE(&resStruct, pTile->m_nAnimLoop3, field);
+            }
+
+            retVal = resGff.WriteGFFFile(alias + ":" + fileName, Constants::ResRefType::ARE);
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
 
 }

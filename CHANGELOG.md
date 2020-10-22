@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
 - Events: added skippable Acquire events to ItemEvents
+- Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Events: added Spell Interruption events to SpellEvents
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
@@ -21,6 +22,7 @@ The following plugins were added:
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
+- Area: ExportARE()
 - Creature: {Get|Set}WalkAnimation()
 - Creature: SetAttackRollOverride()
 - Creature: SetParryAllAttacks()
@@ -29,9 +31,12 @@ The following plugins were added:
 - Util: GetScriptParamIsSet()
 
 ### Changed
+- Area: ExportGIT() now supports valid custom resource directory aliases. 
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
 - Events: `NWNX_ON_STORE_REQUEST_*_AFTER` now provides the result as event data.
+- Events: ResourceEvents now support valid custom resource directory aliases.
 - Util: added an optional appearance type parameter to CreateDoor()
+- Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.
 - Visibility: added two new visibility types to always show an object regardless of range.
 
 ### Deprecated

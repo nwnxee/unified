@@ -52,6 +52,7 @@ CNWSScriptVarTable *GetScriptVarTable(CGameObject *pObject);
 void DestroyGameEffect(CGameEffect* pEffect);
 
 std::string ExtractLocString(CExoLocString& locStr, int32_t nID = 0, uint8_t bGender = 0);
+CExoLocString CreateLocString(const std::string& str, int32_t nID = 0, uint8_t bGender = 0);
 
 template <typename T>
 inline T PeekMessage(CNWSMessage *pMessage, int32_t offset)
@@ -101,4 +102,5 @@ int PopScriptContext();
 
 void SetOrientation(CNWSObject *pObject, float facing);
 
+bool IsValidCustomResourceDirectoryAlias(const std::string& filename);
 }

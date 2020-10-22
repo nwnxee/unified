@@ -241,22 +241,32 @@ void NWNX_Area_AddObjectToExclusionList(object oObject);
 /// @param oObject The object to add
 void NWNX_Area_RemoveObjectFromExclusionList(object oObject);
 
-/// @brief Export the GIT of oArea to the UserDirectory/nwnx folder.
+/// @brief Export the .git file of oArea to the UserDirectory/nwnx folder, or to the location of sAlias.
 /// @note Take care with local objects set on objects, they will likely not reference the same object after a server restart.
-/// @param oArea The area to export the GIT of.
-/// @param sFileName The filename, 16 characters or less. If left blank the resref of oArea will be used.
+/// @param oArea The area to export the .git file of.
+/// @param sFileName The filename, 16 characters or less and should be lowercase. If left blank the resref of oArea will be used.
 /// @param bExportVarTable If TRUE, local variables set on oArea will be exported too.
 /// @param bExportUUID If TRUE, the UUID of oArea will be exported, if it has one.
 /// @param nObjectFilter One or more OBJECT_TYPE_* constants. These object will not be exported. For example OBJECT_TYPE_CREATURE | OBJECT_TYPE_DOOR
 /// will not export creatures and doors. Use OBJECT_TYPE_ALL to filter all objects or 0 to export all objects.
+/// @param sAlias The alias of the resource directory to add the .git file to. Default: UserDirectory/nwnx
 /// @return TRUE if exported successfully, FALSE if not.
-int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0);
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0, string sAlias = "NWNX");
 
 /// @brief Get the tile info of the tile at [fTileX, fTileY] in oArea.
 /// @param oArea The area name.
 /// @param fTileX, fTileY The coordinates of the tile.
 /// @return A NWNX_Area_TileInfo struct with tile info.
 struct NWNX_Area_TileInfo NWNX_Area_GetTileInfo(object oArea, float fTileX, float fTileY);
+
+/// @brief Export the .are file of oArea to the UserDirectory/nwnx folder, or to the location of sAlias.
+/// @param oArea The area to export the .are file of.
+/// @param sFileName The filename, 16 characters or less and should be lowercase. This will also be the resref of the area.
+/// @param sNewName Optional new name of the area. Leave blank to use the current name.
+/// @param sNewTag Optional new tag of the area. Leave blank to use the current tag.
+/// @param sAlias The alias of the resource directory to add the .are file to. Default: UserDirectory/nwnx
+/// @return TRUE if exported successfully, FALSE if not.
+int NWNX_Area_ExportARE(object oArea, string sFileName, string sNewName = "", string sNewTag = "", string sAlias = "NWNX");
 
 /// @}
 
@@ -600,10 +610,11 @@ void NWNX_Area_RemoveObjectFromExclusionList(object oObject)
     NWNX_CallFunction(NWNX_Area, sFunc);
 }
 
-int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0)
+int NWNX_Area_ExportGIT(object oArea, string sFileName = "", int bExportVarTable = TRUE, int bExportUUID = TRUE, int nObjectFilter = 0, string sAlias = "NWNX")
 {
     string sFunc = "ExportGIT";
 
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sAlias);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, nObjectFilter);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportUUID);
     NWNX_PushArgumentInt(NWNX_Area, sFunc, bExportVarTable);
@@ -632,4 +643,18 @@ struct NWNX_Area_TileInfo NWNX_Area_GetTileInfo(object oArea, float fTileX, floa
     str.nID = NWNX_GetReturnValueInt(NWNX_Area, sFunc);
 
     return str;
+}
+
+int NWNX_Area_ExportARE(object oArea, string sFileName, string sNewName = "", string sNewTag = "", string sAlias = "NWNX")
+{
+    string sFunc = "ExportARE";
+
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sAlias);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sNewTag);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sNewName);
+    NWNX_PushArgumentString(NWNX_Area, sFunc, sFileName);
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
 }

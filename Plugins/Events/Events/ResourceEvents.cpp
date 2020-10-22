@@ -1,4 +1,5 @@
 #include "Events/ResourceEvents.hpp"
+#include "../../../Core/NWNXCore.hpp"
 #include "API/CExoBase.hpp"
 #include "API/CExoAliasList.hpp"
 #include "API/CNWSModule.hpp"
@@ -15,6 +16,7 @@
 #include <fcntl.h>
 
 namespace Core {
+    extern NWNXCore* g_core;
     extern bool g_CoreShuttingDown;
 }
 
@@ -45,9 +47,9 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
             return;
         }
 
-        const char* aliasesToWatch[] = {"NWNX", "DEVELOPMENT"};
         std::unordered_map<std::string, std::string> paths;
-        for (auto &alias : aliasesToWatch)
+
+        auto AddAlias = [&](const std::string& alias)
         {
             CExoString path = Globals::ExoBase()->m_pcExoAliasList->GetAliasPath(alias);
 
@@ -56,7 +58,16 @@ ResourceEvents::ResourceEvents(Services::TasksProxy* tasks)
                 LOG_DEBUG("Adding path '%s' for alias '%s'", path, alias);
                 paths.emplace(alias, path.CStr());
             }
+        };
+
+        // Add all the custom resource directories
+        for (auto &alias : Core::g_core->GetCustomResourceDirectoryAliases())
+        {
+            AddAlias(alias);
         }
+
+        // Manually add DEVELOPMENT
+        AddAlias("DEVELOPMENT");
 
         m_pollThread = std::make_unique<std::thread>([tasks, pipeReadFd, paths]()
         {
