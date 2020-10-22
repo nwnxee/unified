@@ -11,8 +11,10 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Events: added skippable Acquire events to ItemEvents
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
+- Events: added Spell Interruption events to SpellEvents
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
+- Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
 
 ##### New Plugins
 The following plugins were added:
@@ -21,6 +23,7 @@ The following plugins were added:
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
+- Area: ExportARE()
 - Creature: {Get|Set}WalkAnimation()
 - Creature: SetAttackRollOverride()
 - Creature: SetParryAllAttacks()

@@ -550,6 +550,22 @@ _______________________________________
     SPELL_SLOT            | int    | |
 
 _______________________________________
+    ## Spell Interrupted Events
+    - NWNX_ON_SPELL_INTERRUPTED_BEFORE
+    - NWNX_ON_SPELL_INTERRUPTED_AFTER
+
+    `OBJECT_SELF` = The creature whose spell was interrupted
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    SPELL_ID              | int | |
+    SPELL_CLASS           | int | Index of the spell casting class (0-2) |
+    SPELL_DOMAIN          | int | |
+    SPELL_METAMAGIC       | int | |
+    SPELL_FEAT            | int | |
+    SPELL_SPONTANEOUS     | int | |
+
+_______________________________________
     ## Healer Kit Use Events
     - NWNX_ON_HEALER_KIT_BEFORE
     - NWNX_ON_HEALER_KIT_AFTER

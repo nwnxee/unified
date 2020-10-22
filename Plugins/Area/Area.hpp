@@ -51,6 +51,7 @@ private:
     ArgumentStack RemoveObjectFromExclusionList (ArgumentStack&& args);
     ArgumentStack ExportGIT                     (ArgumentStack&& args);
     ArgumentStack GetTileInfo                   (ArgumentStack&& args);
+    ArgumentStack ExportARE                     (ArgumentStack&& args);
 
     CNWSArea *area(ArgumentStack& args);
 
