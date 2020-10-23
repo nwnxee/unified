@@ -29,6 +29,7 @@ The following plugins were added:
 - Creature: SetParryAllAttacks()
 - Feat: SetFeatModifier()
 - Object: GetCurrentAnimation()
+- Player: AddCustomJournalEntry() and GetJournalEntry()
 - Util: GetScriptParamIsSet()
 
 ### Changed
