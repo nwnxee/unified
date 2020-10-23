@@ -1766,10 +1766,10 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 int overwrite = -1;
                 if (entries.num > 0)
                 {
-                    auto pEntry = entries.element;
-                    for (int i = entries.num-1; i >=0; i--, pEntry--)
+                    for (int i = entries.num - 1; i >= 0; i--)
                     {
-                        if (pEntry->szPlot_Id.CStr() == tag)
+                        auto pEntry = entries.element[i];
+                        if (pEntry.szPlot_Id.CStr() == tag)
                         {
                             overwrite = i; 
                             //Overwrite existing entry
@@ -1824,10 +1824,10 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
             ASSERT_OR_THROW(tag.size() > 0);
             if (entries.num > 0)
             {
-                auto pEntry = entries.element;
-                for (int i = entries.num-1; i >= 0; i--, pEntry--)
+                for (int i = entries.num - 1; i >= 0; i--)
                 {
-                    if (pEntry->szPlot_Id.CStr() == tag)
+                    auto pEntry = entries.element[i];
+                    if (pEntry.szPlot_Id.CStr() == tag)
                     {
                         SJournalEntry lastJournalEntry = entries[i];
                         return Services::Events::Arguments
