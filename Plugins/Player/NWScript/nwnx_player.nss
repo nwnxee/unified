@@ -363,7 +363,7 @@ void NWNX_Player_SendDMAllCreatorLists(object oPlayer);
 /// @warning Custom entries are wiped on client enter - they must be reapplied.
 /// @param oPlayer The player object.
 /// @param journalEntry The journal entry in the form of a struct.
-/// @param silentUpdate 0 = Notify player via sound effects and feedback message, 1 = Supress sound effects and feedback message
+/// @param silentUpdate 0 = Notify player via sound effects and feedback message, 1 = Suppress sound effects and feedback message
 /// @return a positive number to indicate the new amount of journal entries on the player.
 /// @note In contrast to conventional nwn journal entries - this method will overwrite entries with the same tag, so the index / count of entries
 /// will only increase if you add new entries with unique tags
@@ -949,4 +949,3 @@ struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, stri
     entry.sTag = questTag;
     return entry;
 }
-

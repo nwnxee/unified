@@ -1708,36 +1708,33 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
     if (auto *pPlayer = player(args))
     {
         auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-        
+
         if (pCreature && pCreature->m_pJournal)
         {
-            auto entries = pCreature->m_pJournal->m_lstEntries;
-            
             const auto questName = Services::Events::ExtractArgument<std::string>(args);
             const auto questText = Services::Events::ExtractArgument<std::string>(args);
             const auto tag = Services::Events::ExtractArgument<std::string>(args);
-            
-            ASSERT_OR_THROW(tag.size() > 0);
-            
+
+            ASSERT_OR_THROW(!tag.empty());
+
             const auto state = Services::Events::ExtractArgument<int32_t>(args);
             const auto priority = Services::Events::ExtractArgument<int32_t>(args);
             const auto completed = Services::Events::ExtractArgument<int32_t>(args);
-            const auto diplayed = Services::Events::ExtractArgument<int32_t>(args);
+            const auto displayed = Services::Events::ExtractArgument<int32_t>(args);
             const auto updated = Services::Events::ExtractArgument<int32_t>(args);
-            
+
             auto calDay = Services::Events::ExtractArgument<int32_t>(args);
             auto timeDay = Services::Events::ExtractArgument<int32_t>(args);
             auto silentUpdate = Services::Events::ExtractArgument<int32_t>(args);
-            
+
             ASSERT_OR_THROW(state >= 0);
             ASSERT_OR_THROW(priority >= 0); 
             ASSERT_OR_THROW(completed >= 0); 
-            ASSERT_OR_THROW(diplayed >= 0); 
+            ASSERT_OR_THROW(displayed >= 0);
             ASSERT_OR_THROW(updated >= 0); 
             ASSERT_OR_THROW(silentUpdate >= 0);
-            
-            
-            //If server owner leaves this 0 - the entry will be added with todays date
+
+            // If server owner leaves this 0 - the entry will be added with today's date
             if (calDay <= 0)
             {
                 calDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeCalendarDay();
@@ -1747,22 +1744,23 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             {
                 timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeTimeOfDay();
             }
-       
-            auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());       
+
+            auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
             if (pMessage)
             {
-                SJournalEntry newJournal; //Only instantiate the struct if the message was created
-                newJournal.szName       = Utils::CreateLocString(questName,0,0);
-                newJournal.szText       = Utils::CreateLocString(questText,0,0);
-                newJournal.nCalendarDay = calDay;
-                newJournal.nTimeOfDay   = timeDay;
-                newJournal.szPlot_Id    = CExoString(tag.c_str());
-                newJournal.nState       = state;
-                newJournal.nPriority    = priority;
-                newJournal.nPictureIndex= 0; // Not implemented by bioware/beamdog  
-                newJournal.bQuestCompleted= completed; 
-                newJournal.bQuestDisplayed= diplayed; 
-                newJournal.bUpdated     = updated; 
+                auto entries = pCreature->m_pJournal->m_lstEntries;
+                SJournalEntry newJournal; // Only instantiate the struct if the message was created
+                newJournal.szName          = Utils::CreateLocString(questName,0,0);
+                newJournal.szText          = Utils::CreateLocString(questText,0,0);
+                newJournal.nCalendarDay    = calDay;
+                newJournal.nTimeOfDay      = timeDay;
+                newJournal.szPlot_Id       = CExoString(tag.c_str());
+                newJournal.nState          = state;
+                newJournal.nPriority       = priority;
+                newJournal.nPictureIndex   = 0; // Not implemented by bioware/beamdog
+                newJournal.bQuestCompleted = completed;
+                newJournal.bQuestDisplayed = displayed;
+                newJournal.bUpdated        = updated;
                 int overwrite = -1;
                 if (entries.num > 0)
                 {
@@ -1772,17 +1770,17 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                         if (pEntry.szPlot_Id.CStr() == tag)
                         {
                             overwrite = i; 
-                            //Overwrite existing entry
+                            // Overwrite existing entry
                             pCreature->m_pJournal->m_lstEntries[i] = newJournal;
                             break;
                         }
                     }
                 }
-                //If we have overwritten an existing entry - we don't need to perform an add -
-                //Instead we perform an update only
+                // If we have overwritten an existing entry - we don't need to perform an add -
+                // Instead we perform an update only
                 if(overwrite == -1)
                 {
-                    //New entry added
+                    // New entry added
                     pCreature->m_pJournal->m_lstEntries.Add(newJournal);
                 }
                 pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
@@ -1795,8 +1793,8 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                                                             newJournal.nTimeOfDay,
                                                             newJournal.szName,
                                                             newJournal.szText);
-                retval =pCreature->m_pJournal->m_lstEntries.num; // Success
-                    
+                retval = pCreature->m_pJournal->m_lstEntries.num; // Success
+
                 //If no update message is desired, we can keep it silent.
                 if(!silentUpdate)
                 {
@@ -1821,7 +1819,7 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
         {
             auto entries = pCreature->m_pJournal->m_lstEntries;
             const auto tag = Services::Events::ExtractArgument<std::string>(args);
-            ASSERT_OR_THROW(tag.size() > 0);
+            ASSERT_OR_THROW(!tag.empty());
             if (entries.num > 0)
             {
                 for (int i = entries.num - 1; i >= 0; i--)
@@ -1832,22 +1830,22 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
                         SJournalEntry lastJournalEntry = entries[i];
                         return Services::Events::Arguments
                         (
-                            std::string(Utils::ExtractLocString(lastJournalEntry.szText)),  
+                            std::string(Utils::ExtractLocString(lastJournalEntry.szText)),
                             std::string(Utils::ExtractLocString(lastJournalEntry.szName)),
                             (int32_t)lastJournalEntry.nCalendarDay,
                             (int32_t)lastJournalEntry.nTimeOfDay,
                             (int32_t)lastJournalEntry.nState,
-                            (int32_t)lastJournalEntry.nPriority,                    
+                            (int32_t)lastJournalEntry.nPriority,
                             (int32_t)lastJournalEntry.bQuestCompleted,
                             (int32_t)lastJournalEntry.bQuestDisplayed,
                             (int32_t)lastJournalEntry.bUpdated 
-                        );   
+                        );
                     }
                 }
-            }        
+            }
         }
     }
-    return Services::Events::Arguments(-1);   
+    return Services::Events::Arguments(-1);
 }
 
 }
