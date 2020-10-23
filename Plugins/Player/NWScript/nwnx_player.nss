@@ -942,11 +942,11 @@ struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, stri
     entry.nQuestCompleted = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
     entry.nPriority = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
     entry.nState = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
-    entry.sTag = NWNX_GetReturnValueString(NWNX_Player, sFunc);
     entry.nTimeOfDay = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
     entry.nCalendarDay = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
     entry.sName = NWNX_GetReturnValueString(NWNX_Player, sFunc);
     entry.sText = NWNX_GetReturnValueString(NWNX_Player, sFunc);
+    entry.sTag = questTag;
     return entry;
 }
 

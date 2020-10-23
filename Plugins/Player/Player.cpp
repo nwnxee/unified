@@ -1836,7 +1836,6 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
                             std::string(Utils::ExtractLocString(lastJournalEntry.szName)),
                             (int32_t)lastJournalEntry.nCalendarDay,
                             (int32_t)lastJournalEntry.nTimeOfDay,
-                            std::string(lastJournalEntry.szPlot_Id.CStr()),            
                             (int32_t)lastJournalEntry.nState,
                             (int32_t)lastJournalEntry.nPriority,                    
                             (int32_t)lastJournalEntry.bQuestCompleted,
