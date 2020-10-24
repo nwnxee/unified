@@ -759,6 +759,20 @@ int32_t Weapon::GetMeleeDamageBonus(CNWSCreatureStats* pStats, int32_t bOffHand,
         if (bOffHand)
         {
             pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+
+            // Check for two handed
+            if (pWeapon == nullptr)
+            {
+                auto *pMain = pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+                if (pMain)
+                {
+                    auto *pBase = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pMain->m_nBaseItem);
+                    if (pBase && pBase->m_nWeaponWield == 8)
+                    {
+                        pWeapon = pMain;
+                    }
+                }
+            }
         }
         else
         {
@@ -815,6 +829,20 @@ int32_t Weapon::GetDamageBonus(CNWSCreatureStats* pStats, CNWSCreature *pCreatur
     if (bOffHand)
     {
         pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+
+        // Check for two handed
+        if (pWeapon == nullptr)
+        {
+            auto *pMain = pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+            if (pMain)
+            {
+                auto *pBase = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pMain->m_nBaseItem);
+                if (pBase && pBase->m_nWeaponWield == 8)
+                {
+                    pWeapon = pMain;
+                }
+            }
+        }
     }
     else
     {
@@ -1012,6 +1040,20 @@ int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, int32_t bOffHand,
     if (bOffHand)
     {
         pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+
+        // Check for two handed
+        if (pWeapon == nullptr)
+        {
+            auto *pMain = pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+            if (pMain)
+            {
+                auto *pBase = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pMain->m_nBaseItem);
+                if (pBase && pBase->m_nWeaponWield == 8)
+                {
+                    pWeapon = pMain;
+                }
+            }
+        }
     }
     else
     {
