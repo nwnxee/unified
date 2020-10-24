@@ -39,6 +39,7 @@ The following plugins were added:
 - Util: added an optional appearance type parameter to CreateDoor()
 - Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.
 - Visibility: added two new visibility types to always show an object regardless of range.
+- Weapon: Good Aim Feat now takes value from ruleset.2da
 
 ### Deprecated
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
