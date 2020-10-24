@@ -55,6 +55,7 @@ N/A
 - Rename: community name only obfuscates once a server reset
 - Rename: properly updates original name if NWNX_Creature_SetOriginalName() is used
 - Weapon: fixed bug in SetGreaterWeaponFocusFeat()
+- Weapon: fixed bug in offhand attack and damage bonus calculations with Greater Weapon feats and two handed weapons
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
