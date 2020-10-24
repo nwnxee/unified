@@ -887,7 +887,7 @@ int32_t Weapon::GetDamageBonus(CNWSCreatureStats* pStats, CNWSCreature *pCreatur
             auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
             if (pCurrentAttack->m_nAttackResult == 3)
             {
-                auto nCriticalThreat = pStats->GetCriticalHitMultiplier(true);
+                auto nCriticalThreat = pStats->GetCriticalHitMultiplier(bOffHand);
                 sDebugMsg = sDebugMsg + CExoString(std::to_string(plugin.m_GreaterWeaponSpecializationDamageBonus * nCriticalThreat)) +
                                         CExoString(" (Greater Weapon Specialization Feat) (Critical x") +
                                         CExoString(std::to_string(nCriticalThreat)) + CExoString(")");
