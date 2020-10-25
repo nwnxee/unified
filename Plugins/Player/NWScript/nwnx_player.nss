@@ -24,6 +24,22 @@ struct NWNX_Player_QuickBarSlot
     object oAssociate; ///< @todo Describe
 };
 
+/// @brief A journal entry.
+struct NWNX_Player_JournalEntry
+{
+    string sName;///< @todo Describe
+    string sText;///< @todo Describe
+    string sTag;///< @todo Describe
+    int nState;///< @todo Describe
+    int nPriority;///< @todo Describe
+    int nQuestCompleted;///< @todo Describe
+    int nQuestDisplayed;///< @todo Describe
+    int nUpdated;///< @todo Describe
+    int nCalendarDay;///< @todo Describe
+    int nTimeOfDay;///< @todo Describe
+};
+
+
 /// @name Timing Bar Types
 /// @anchor timing_bar_types
 ///
@@ -342,6 +358,25 @@ void NWNX_Player_SetSpawnLocation(object oPlayer, location locSpawn);
 /// @brief Resends palettes to a DM.
 /// @param oPlayer - the DM to send them to.
 void NWNX_Player_SendDMAllCreatorLists(object oPlayer);
+
+/// @brief Give a custom journal entry to oPlayer.
+/// @warning Custom entries are wiped on client enter - they must be reapplied.
+/// @param oPlayer The player object.
+/// @param journalEntry The journal entry in the form of a struct.
+/// @param silentUpdate 0 = Notify player via sound effects and feedback message, 1 = Suppress sound effects and feedback message
+/// @return a positive number to indicate the new amount of journal entries on the player.
+/// @note In contrast to conventional nwn journal entries - this method will overwrite entries with the same tag, so the index / count of entries
+/// will only increase if you add new entries with unique tags
+int NWNX_Player_AddCustomJournalEntry(object oPlayer, struct NWNX_Player_JournalEntry journalEntry, int nSilentUpdate = 0);
+
+/// @brief Returns a struct containing a journal entry that can then be modified.
+/// @param oPlayer The player object.
+/// @param questTag The quest tag you wish to get the journal entry for.
+/// @return a struct containing the journal entry data.
+/// @note This method will return -1 for the Updated field in the event that no matching journal entry was found,
+/// only the last matching quest tag will be returned. Eg: If you add 3 journal updates to a player, only the 3rd one will be returned as
+/// that is the active one that the player currently sees.
+struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, string questTag);
 
 /// @}
 
@@ -868,4 +903,49 @@ void NWNX_Player_SendDMAllCreatorLists(object oPlayer)
     string sFunc = "SendDMAllCreatorLists";
     NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
     NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+int NWNX_Player_AddCustomJournalEntry(object oPlayer, struct NWNX_Player_JournalEntry journalEntry, int nSilentUpdate = 0)
+{
+    string sFunc = "AddCustomJournalEntry";
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nSilentUpdate);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, journalEntry.nTimeOfDay);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, journalEntry.nCalendarDay);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, journalEntry.nUpdated);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, journalEntry.nQuestDisplayed);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, journalEntry.nQuestCompleted);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, journalEntry.nPriority);
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, journalEntry.nState);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, journalEntry.sTag);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, journalEntry.sText);
+    NWNX_PushArgumentString(NWNX_Player, sFunc, journalEntry.sName);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+}
+
+struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, string questTag)
+{
+    string sFunc = "GetJournalEntry";
+    struct NWNX_Player_JournalEntry entry;
+
+    NWNX_PushArgumentString(NWNX_Player, sFunc, questTag);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+
+    entry.nUpdated = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    if(entry.nUpdated == -1) // -1 set as an indicator to say that the entry was not found
+    {
+        return entry;
+    }
+    entry.nQuestDisplayed = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    entry.nQuestCompleted = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    entry.nPriority = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    entry.nState = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    entry.nTimeOfDay = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    entry.nCalendarDay = NWNX_GetReturnValueInt(NWNX_Player, sFunc);
+    entry.sName = NWNX_GetReturnValueString(NWNX_Player, sFunc);
+    entry.sText = NWNX_GetReturnValueString(NWNX_Player, sFunc);
+    entry.sTag = questTag;
+    return entry;
 }
