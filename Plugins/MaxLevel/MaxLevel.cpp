@@ -154,6 +154,11 @@ uint32_t MaxLevel::GetExpNeededForLevelUpHook(CNWSCreatureStats *pStats)
 // If the player is at level 40 or lower we get the XP required from the normal array, otherwise we use our map
 void MaxLevel::LevelDownHook(CNWSCreatureStats *pStats, CNWLevelStats *pLevelStats)
 {
+    if (!pStats->m_bIsPC)
+    {
+        g_plugin->m_LevelDownHook->CallOriginal<void>(pStats, pLevelStats);
+        return;
+    }
     auto nXP = pStats->m_nExperience;
     int32_t totalLevels = pStats->GetLevel(false);
     uint32_t xp_threshold = 0;
