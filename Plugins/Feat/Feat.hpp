@@ -48,6 +48,7 @@ private:
         SPELLIMMUNITY      = 18,
         SRCHARGEN          = 19,
         SRINCLEVEL         = 20,
+        SPELLSAVEDC        = 21,
     };
 
     set<uint16_t> m_Feats;
@@ -68,6 +69,7 @@ private:
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_FeatSaveVsRace;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_FeatSaveVsType;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, unordered_map<uint16_t, int16_t>>>> m_FeatSaveVsTypeRace;
+    unordered_map<uint16_t, int32_t>                                                  m_FeatSpellSaveDC;
     unordered_map<uint16_t, list<uint32_t>>                                           m_FeatSpellImmunities;
     unordered_map<uint16_t, pair<uint8_t, uint8_t>>                                   m_FeatSRCharGen;
     unordered_map<uint16_t, tuple<uint8_t, uint8_t, uint8_t>>                         m_FeatSR;

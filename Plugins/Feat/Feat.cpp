@@ -284,6 +284,30 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
         }
     }
 
+    // SPELLSAVEDC
+    if (g_plugin->m_FeatSpellSaveDC[nFeat] != 0)
+    {
+        static NWNXLib::Hooking::FunctionHook* pCalculateSpellSaveDC_hook;
+        if (!pCalculateSpellSaveDC_hook)
+        {
+            pCalculateSpellSaveDC_hook = g_plugin->GetServices()->m_hooks->RequestExclusiveHook
+                    <Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi>(
+                    +[](CNWSCreature *pThis, int32_t nSpellID) -> int
+                    {
+                        int iMods = 0;
+                        for (auto &spellSaveDCMod : g_plugin->m_FeatSpellSaveDC)
+                        {
+                            if (pThis->m_pStats->HasFeat(spellSaveDCMod.first))
+                            {
+                                iMods += spellSaveDCMod.second;
+                            }
+                        }
+                        return iMods + pCalculateSpellSaveDC_hook->CallOriginal<int32_t>(pThis, nSpellID);
+                    });
+        }
+    }
+
+
     // SPELLIMMUNITY
     for (auto &spellImmunity : g_plugin->m_FeatSpellImmunities[nFeat])
     {
@@ -721,6 +745,12 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
             }
             auto spellName = Globals::Rules()->m_pSpellArray[0].GetSpell(param1)->GetSpellNameText();
             LOG_INFO("%s: Setting %s Spell Immunity.", featName, spellName);
+            break;
+        }
+        case SPELLSAVEDC:
+        {
+            g_plugin->m_FeatSpellSaveDC[featId] = param1;
+            LOG_INFO("%s: Caster's Spell Save DC will be modified by %d.", featName, param1);
             break;
         }
         case SRCHARGEN:
