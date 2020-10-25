@@ -49,6 +49,7 @@ N/A
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
 - Events: fixed a nullptr deref crash in BarterEvents
+- Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
 - MaxLevel: fixed bug interfering with leveling down NPCs
 - Object: fixed a possible crash in CheckFit()
 - Player: fixed bic getting overwritten when using PossessCreature() and crashing in between areas
