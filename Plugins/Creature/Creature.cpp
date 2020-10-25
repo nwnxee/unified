@@ -2748,7 +2748,7 @@ void Creature::DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget)
         return;
     }
 
-    if (Globals::EnableCombatDebugging())
+    if (*Globals::EnableCombatDebugging())
     {
         auto sInfo = pThisStats->GetFullName() + CExoString(" Attack Roll: ") +
                      CExoString(std::to_string(nDiceRoll));
