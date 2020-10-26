@@ -160,7 +160,7 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
         }
         else
         {
-            auto index = g_plugin->m_GlobalHiddenMessageSet.find(messageId);
+            auto index = g_plugin->m_GlobalHiddenMessageSet.find(realMessageId);
             if (index != g_plugin->m_GlobalHiddenMessageSet.end())
             {
                 g_plugin->m_GlobalHiddenMessageSet.erase(index);
