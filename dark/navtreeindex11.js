@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"structNWNX__EffectUnpacked.html#a5ed11b2fb51d8013abbf02a62fa3abef":[0,11,2,18],
+"structNWNX__EffectUnpacked.html#a6616a557c8c9c73faa051ff023450212":[0,11,2,11],
 "structNWNX__EffectUnpacked.html#a6a53401666ca79d2cbe12e8e8f1183fa":[0,11,2,30],
 "structNWNX__EffectUnpacked.html#a7f21f59f525f1dc6ea93333c3358f858":[0,11,2,25],
 "structNWNX__EffectUnpacked.html#a85df1dde50a90a21f05b1733f14f9ce0":[0,11,2,20],

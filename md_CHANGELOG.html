@@ -149,6 +149,7 @@ Changed</h2>
 <li>Util: added an optional appearance type parameter to CreateDoor()</li>
 <li>Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.</li>
 <li>Visibility: added two new visibility types to always show an object regardless of range.</li>
+<li>Weapon: Good Aim Feat now takes value from ruleset.2da</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Deprecated</h2>
@@ -171,6 +172,7 @@ Fixed</h2>
 <li>Rename: community name only obfuscates once a server reset</li>
 <li>Rename: properly updates original name if <a class="el" href="group__creature.html#ga1ca18c6575ef041368e50f978441e7ca" title="Set the original first or last name of creature.">NWNX_Creature_SetOriginalName()</a> is used</li>
 <li>Weapon: fixed bug in SetGreaterWeaponFocusFeat()</li>
+<li>Weapon: fixed bug in offhand attack and damage bonus calculations with Greater Weapon feats and two handed weapons</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md16"></a>
 8193.16</h1>
@@ -901,7 +903,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Oct 26 2020 23:31:00 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Oct 26 2020 23:35:17 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="dark/">Dark version</a>
 				</li>
