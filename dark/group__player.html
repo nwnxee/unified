@@ -164,6 +164,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Player__QuickBarSlot.html">NWNX_Player_QuickBarSlot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A quickbar slot.  <a href="structNWNX__Player__QuickBarSlot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNWNX__Player__JournalEntry.html">NWNX_Player_JournalEntry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A journal entry.  <a href="structNWNX__Player__JournalEntry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -299,6 +302,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga6366e5eeaa5aab4d84116517b48369c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga6366e5eeaa5aab4d84116517b48369c6">NWNX_Player_SendDMAllCreatorLists</a> (object oPlayer)</td></tr>
 <tr class="memdesc:ga6366e5eeaa5aab4d84116517b48369c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resends palettes to a DM.  <a href="group__player.html#ga6366e5eeaa5aab4d84116517b48369c6">More...</a><br /></td></tr>
 <tr class="separator:ga6366e5eeaa5aab4d84116517b48369c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85bdd2dedfa94e2858c1a38cf8d63035"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga85bdd2dedfa94e2858c1a38cf8d63035">NWNX_Player_AddCustomJournalEntry</a> (object oPlayer, struct <a class="el" href="structNWNX__Player__JournalEntry.html">NWNX_Player_JournalEntry</a> journalEntry, int nSilentUpdate=0)</td></tr>
+<tr class="memdesc:ga85bdd2dedfa94e2858c1a38cf8d63035"><td class="mdescLeft">&#160;</td><td class="mdescRight">Give a custom journal entry to oPlayer.  <a href="group__player.html#ga85bdd2dedfa94e2858c1a38cf8d63035">More...</a><br /></td></tr>
+<tr class="separator:ga85bdd2dedfa94e2858c1a38cf8d63035"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7b4bd8dc15a9ef673335c9539de1c2c7"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structNWNX__Player__JournalEntry.html">NWNX_Player_JournalEntry</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga7b4bd8dc15a9ef673335c9539de1c2c7">NWNX_Player_GetJournalEntry</a> (object oPlayer, string questTag)</td></tr>
+<tr class="memdesc:ga7b4bd8dc15a9ef673335c9539de1c2c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a struct containing a journal entry that can then be modified.  <a href="group__player.html#ga7b4bd8dc15a9ef673335c9539de1c2c7">More...</a><br /></td></tr>
+<tr class="separator:ga7b4bd8dc15a9ef673335c9539de1c2c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga12d642ac5b5fad0078ace6c222c7ab38"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structNWNX__Player__QuickBarSlot.html">NWNX_Player_QuickBarSlot</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__player.html#ga12d642ac5b5fad0078ace6c222c7ab38">NWNX_Player_QBS_Empty</a> (int type=<a class="el" href="group__player.html#ga24e0da78fc6d24ff26f3a53f8630f0bd">NWNX_PLAYER_QBS_TYPE_EMPTY</a>)</td></tr>
 <tr class="memdesc:ga12d642ac5b5fad0078ace6c222c7ab38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an empty QBS of given type.  <a href="group__player.html#ga12d642ac5b5fad0078ace6c222c7ab38">More...</a><br /></td></tr>
 <tr class="separator:ga12d642ac5b5fad0078ace6c222c7ab38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -385,7 +394,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00348">348</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00383">383</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -431,7 +440,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00358">358</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00393">393</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -485,7 +494,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Only one timing bar can be ran at the same time. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00391">391</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00426">426</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -524,7 +533,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00410">410</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00445">445</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -564,7 +573,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Clicking on the ground or using WASD will trigger walking instead of running. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00415">415</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00450">450</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -604,7 +613,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An <a class="el" href="structNWNX__Player__QuickBarSlot.html" title="A quickbar slot.">NWNX_Player_QuickBarSlot</a> struct. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00425">425</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00460">460</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -650,7 +659,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00451">451</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00486">486</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -679,7 +688,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The filename for this player's bic. (Not including the ".bic") </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00474">474</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00509">509</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -725,7 +734,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00483">483</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00518">518</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -764,7 +773,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00496">496</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00531">531</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -803,7 +812,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00507">507</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00542">542</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -831,7 +840,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00518">518</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00553">553</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -859,7 +868,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00528">528</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00563">563</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -898,7 +907,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00538">538</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00573">573</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -926,7 +935,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00548">548</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00583">583</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -954,7 +963,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00558">558</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00593">593</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1000,7 +1009,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00568">568</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00603">603</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1046,7 +1055,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00579">579</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00614">614</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1085,7 +1094,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00590">590</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00625">625</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1132,7 +1141,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Only works with instant effects: VFX_COM_*, VFX_FNF_*, VFX_IMP_* </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00600">600</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00635">635</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1161,7 +1170,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>You may need to use DelayCommand if you're manipulating values through nwnx and forcing a UI refresh, 0.5s seemed to be fine </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00611">611</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00646">646</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1208,7 +1217,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section remark"><dt>Remarks</dt><dd>Only works if player and target are in the same area. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00620">620</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00655">655</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1248,7 +1257,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A string representation of the tiles explored for that area. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00631">631</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00666">666</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1294,7 +1303,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00642">642</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00677">677</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1333,7 +1342,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00653">653</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00688">688</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1386,7 +1395,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00663">663</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00698">698</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1433,7 +1442,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Only really works with looping effects: VFX_DUR_*. Other types <em>kind</em> of work, they'll play when reentering the area and the object is in view or when they come back in view range. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00675">675</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00710">710</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1479,7 +1488,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00686">686</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00721">721</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1519,7 +1528,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if the quest has been completed. -1 if the player does not have the journal entry. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00697">697</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00732">732</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1573,7 +1582,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00708">708</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00743">743</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1622,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00720">720</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00755">755</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1670,7 +1679,7 @@ The possessing creature will be left wherever they were when beginning the posse
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>TRUE if possession succeeded. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00730">730</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00765">765</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1698,7 +1707,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00743">743</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00778">778</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1726,7 +1735,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00753">753</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00788">788</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1780,7 +1789,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00763">763</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00798">798</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1827,7 +1836,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00775">775</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00810">810</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1873,7 +1882,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00786">786</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00821">821</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1920,7 +1929,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00797">797</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00832">832</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -1960,7 +1969,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00808">808</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00843">843</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2006,7 +2015,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00818">818</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00853">853</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2052,7 +2061,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00829">829</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00864">864</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2092,7 +2101,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00840">840</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00875">875</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2132,7 +2141,7 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00850">850</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00885">885</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2160,7 +2169,97 @@ The possessing creature will be left wherever they were when beginning the posse
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00866">866</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00901">901</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga85bdd2dedfa94e2858c1a38cf8d63035"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga85bdd2dedfa94e2858c1a38cf8d63035">&#9670;&nbsp;</a></span>NWNX_Player_AddCustomJournalEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Player_AddCustomJournalEntry </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structNWNX__Player__JournalEntry.html">NWNX_Player_JournalEntry</a>&#160;</td>
+          <td class="paramname"><em>journalEntry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nSilentUpdate</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Give a custom journal entry to oPlayer. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Custom entries are wiped on client enter - they must be reapplied. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oPlayer</td><td>The player object. </td></tr>
+    <tr><td class="paramname">journalEntry</td><td>The journal entry in the form of a struct. </td></tr>
+    <tr><td class="paramname">silentUpdate</td><td>0 = Notify player via sound effects and feedback message, 1 = Suppress sound effects and feedback message </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a positive number to indicate the new amount of journal entries on the player. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>In contrast to conventional nwn journal entries - this method will overwrite entries with the same tag, so the index / count of entries will only increase if you add new entries with unique tags </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00908">908</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7b4bd8dc15a9ef673335c9539de1c2c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7b4bd8dc15a9ef673335c9539de1c2c7">&#9670;&nbsp;</a></span>NWNX_Player_GetJournalEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structNWNX__Player__JournalEntry.html">NWNX_Player_JournalEntry</a> NWNX_Player_GetJournalEntry </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>oPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>questTag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a struct containing a journal entry that can then be modified. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">oPlayer</td><td>The player object. </td></tr>
+    <tr><td class="paramname">questTag</td><td>The quest tag you wish to get the journal entry for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a struct containing the journal entry data. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This method will return -1 for the Updated field in the event that no matching journal entry was found, only the last matching quest tag will be returned. Eg: If you add 3 journal updates to a player, only the 3rd one will be returned as that is the active one that the player currently sees. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00927">927</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2586,7 +2685,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00032">32</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00048">48</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2602,7 +2701,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00033">33</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00049">49</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2618,7 +2717,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00034">34</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00050">50</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2634,7 +2733,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00035">35</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00051">51</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2650,7 +2749,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00036">36</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00052">52</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2666,7 +2765,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00037">37</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00053">53</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2682,7 +2781,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00038">38</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00054">54</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2698,7 +2797,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00039">39</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00055">55</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2714,7 +2813,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00040">40</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00056">56</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2730,7 +2829,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00046">46</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00062">62</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2746,7 +2845,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00047">47</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00063">63</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2762,7 +2861,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00048">48</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00064">64</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2778,7 +2877,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00049">49</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00065">65</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2794,7 +2893,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00050">50</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00066">66</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2810,7 +2909,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00051">51</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00067">67</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2826,7 +2925,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00052">52</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00068">68</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2842,7 +2941,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00053">53</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00069">69</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2858,7 +2957,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00054">54</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00070">70</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2874,7 +2973,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00055">55</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00071">71</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2890,7 +2989,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00056">56</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00072">72</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2906,7 +3005,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00057">57</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00073">73</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2922,7 +3021,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00058">58</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00074">74</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2938,7 +3037,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00059">59</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00075">75</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2954,7 +3053,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00060">60</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00076">76</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -2970,7 +3069,7 @@ The possessing creature will be left wherever they were when beginning the posse
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00061">61</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__player_8nss_source.html#l00077">77</a> of file <a class="el" href="nwnx__player_8nss_source.html">nwnx_player.nss</a>.</p>
 
 </div>
 </div>
@@ -3272,12 +3371,12 @@ The possessing creature will be left wherever they were when beginning the posse
 <div class="ttc" id="agroup__sql_html_ga60dd9ffe0369ff795d4e375452edec51"><div class="ttname"><a href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a></div><div class="ttdeci">string NWNX_SQL_ReadDataInActiveRow(int column=0)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00148">nwnx_sql.nss:148</a></div></div>
 <div class="ttc" id="agroup__sql_html_ga38fdaf8c308512015849ac94ffede3bb"><div class="ttname"><a href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a></div><div class="ttdeci">int NWNX_SQL_ReadyToReadNextRow()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00133">nwnx_sql.nss:133</a></div></div>
 <div class="ttc" id="agroup__sql_html_ga585546f0c7907cecde5a59508cbf4535"><div class="ttname"><a href="group__sql.html#ga585546f0c7907cecde5a59508cbf4535">NWNX_SQL_PreparedString</a></div><div class="ttdeci">void NWNX_SQL_PreparedString(int position, string value)</div><div class="ttdoc">Set the string value of a prepared statement at given position.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00166">nwnx_sql.nss:166</a></div></div>
-<div class="ttc" id="agroup__player_html_ga6044329c0cd5af08851f8f7e5aa34202"><div class="ttname"><a href="group__player.html#ga6044329c0cd5af08851f8f7e5aa34202">NWNX_Player_SetPersistentLocation</a></div><div class="ttdeci">void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly=TRUE)</div><div class="ttdoc">Place waypoints on module load representing where a PC should start.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__player_8nss_source.html#l00708">nwnx_player.nss:708</a></div></div>
+<div class="ttc" id="agroup__player_html_ga6044329c0cd5af08851f8f7e5aa34202"><div class="ttname"><a href="group__player.html#ga6044329c0cd5af08851f8f7e5aa34202">NWNX_Player_SetPersistentLocation</a></div><div class="ttdeci">void NWNX_Player_SetPersistentLocation(string sCDKeyOrCommunityName, string sBicFileName, object oWP, int bFirstConnectOnly=TRUE)</div><div class="ttdoc">Place waypoints on module load representing where a PC should start.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__player_8nss_source.html#l00743">nwnx_player.nss:743</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Oct 25 2020 19:51:53 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Oct 26 2020 23:31:30 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>

@@ -44,6 +44,8 @@ var nwnx__player_8nss =
     [ "NWNX_Player_RemoveEffectFromTURD", "group__player.html#ga410cc4505666aedf13136d61236e1007", null ],
     [ "NWNX_Player_SetSpawnLocation", "group__player.html#ga9ee3f2a0e9d42efced12e3992e366a4a", null ],
     [ "NWNX_Player_SendDMAllCreatorLists", "group__player.html#ga6366e5eeaa5aab4d84116517b48369c6", null ],
+    [ "NWNX_Player_AddCustomJournalEntry", "group__player.html#ga85bdd2dedfa94e2858c1a38cf8d63035", null ],
+    [ "NWNX_Player_GetJournalEntry", "group__player.html#ga7b4bd8dc15a9ef673335c9539de1c2c7", null ],
     [ "NWNX_Player_INTERNAL_StopGuiTimingBar", "nwnx__player_8nss.html#a298b9ee34689c819b0b7a374319dccf4", null ],
     [ "NWNX_Player", "group__player.html#gacd1c1162e2432e9e61eea99322364c13", null ],
     [ "NWNX_PLAYER_TIMING_BAR_TRAP_FLAG", "group__player.html#ga6e4e9e99af2c8ebacacd2f8a9f8c3d4b", null ],

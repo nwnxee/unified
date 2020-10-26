@@ -18,6 +18,18 @@ var group__player =
       [ "nAssociateType", "structNWNX__Player__QuickBarSlot.html#ac9251f3b6703b0113937c30477ea0d56", null ],
       [ "oAssociate", "structNWNX__Player__QuickBarSlot.html#a6a017ab874ff47027808370fbc0b571e", null ]
     ] ],
+    [ "NWNX_Player_JournalEntry", "structNWNX__Player__JournalEntry.html", [
+      [ "sName", "structNWNX__Player__JournalEntry.html#a1545953fdad34ab60630f79427014689", null ],
+      [ "sText", "structNWNX__Player__JournalEntry.html#a21245184bdc23b4469d0174628d55aef", null ],
+      [ "sTag", "structNWNX__Player__JournalEntry.html#a726f979fe2fb1b4421837e7b03ca50e2", null ],
+      [ "nState", "structNWNX__Player__JournalEntry.html#a02daf84bfbeeb961c42def1f59a36b58", null ],
+      [ "nPriority", "structNWNX__Player__JournalEntry.html#a8025516fc1028c7636de3d13ac825378", null ],
+      [ "nQuestCompleted", "structNWNX__Player__JournalEntry.html#af3e36f4de033d6498448b90746774144", null ],
+      [ "nQuestDisplayed", "structNWNX__Player__JournalEntry.html#a114c9b9849ada8ba43412eaedc247cb4", null ],
+      [ "nUpdated", "structNWNX__Player__JournalEntry.html#af5d0d937f35c5cd9b5e869aad9f241db", null ],
+      [ "nCalendarDay", "structNWNX__Player__JournalEntry.html#a013d4f2d38fa2201621825acdfcda245", null ],
+      [ "nTimeOfDay", "structNWNX__Player__JournalEntry.html#a2dfe9a66ca7502de58ff6249a7d679d5", null ]
+    ] ],
     [ "NWNX_Player_ForcePlaceableExamineWindow", "group__player.html#ga9858c43c6d7bcb4c6fd2484eb87a85c0", null ],
     [ "NWNX_Player_ForcePlaceableInventoryWindow", "group__player.html#ga44be8ea8530e6c50a2dbde4083bf66cd", null ],
     [ "NWNX_Player_StartGuiTimingBar", "group__player.html#gac5ea091db58633d8352c95822ff8e7a9", null ],
@@ -62,6 +74,8 @@ var group__player =
     [ "NWNX_Player_RemoveEffectFromTURD", "group__player.html#ga410cc4505666aedf13136d61236e1007", null ],
     [ "NWNX_Player_SetSpawnLocation", "group__player.html#ga9ee3f2a0e9d42efced12e3992e366a4a", null ],
     [ "NWNX_Player_SendDMAllCreatorLists", "group__player.html#ga6366e5eeaa5aab4d84116517b48369c6", null ],
+    [ "NWNX_Player_AddCustomJournalEntry", "group__player.html#ga85bdd2dedfa94e2858c1a38cf8d63035", null ],
+    [ "NWNX_Player_GetJournalEntry", "group__player.html#ga7b4bd8dc15a9ef673335c9539de1c2c7", null ],
     [ "NWNX_Player_QBS_Empty", "group__player.html#ga12d642ac5b5fad0078ace6c222c7ab38", null ],
     [ "NWNX_Player_QBS_UseItem", "group__player.html#ga86c1edebbcfd652b79adf34e73b9c317", null ],
     [ "NWNX_Player_QBS_EquipItem", "group__player.html#gafcca025e7811f1b7babab77d6ef5d115", null ],
