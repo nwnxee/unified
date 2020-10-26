@@ -44,7 +44,6 @@ private:
     static void RestorePlayerName(CNWSCreature *targetCreature, bool playerList=false);
     void GlobalNameChange(bool, PlayerID, PlayerID);
 
-    CExoLocString ContainString(const std::string& str);
     std::string GenerateRandomPlayerName(size_t length, ObjectID targetOid);
 
     void SendNameUpdate(CNWSCreature *targetCreature, PlayerID observerPlayerId);
