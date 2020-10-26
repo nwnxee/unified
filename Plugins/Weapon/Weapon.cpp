@@ -759,6 +759,20 @@ int32_t Weapon::GetMeleeDamageBonus(CNWSCreatureStats* pStats, int32_t bOffHand,
         if (bOffHand)
         {
             pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+
+            // Check for two handed
+            if (pWeapon == nullptr)
+            {
+                auto *pMain = pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+                if (pMain)
+                {
+                    auto *pBase = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pMain->m_nBaseItem);
+                    if (pBase && pBase->m_nWeaponWield == 8)
+                    {
+                        pWeapon = pMain;
+                    }
+                }
+            }
         }
         else
         {
@@ -815,6 +829,20 @@ int32_t Weapon::GetDamageBonus(CNWSCreatureStats* pStats, CNWSCreature *pCreatur
     if (bOffHand)
     {
         pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+
+        // Check for two handed
+        if (pWeapon == nullptr)
+        {
+            auto *pMain = pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+            if (pMain)
+            {
+                auto *pBase = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pMain->m_nBaseItem);
+                if (pBase && pBase->m_nWeaponWield == 8)
+                {
+                    pWeapon = pMain;
+                }
+            }
+        }
     }
     else
     {
@@ -852,6 +880,26 @@ int32_t Weapon::GetDamageBonus(CNWSCreatureStats* pStats, CNWSCreature *pCreatur
     if (bApplicableFeatExists && bHasApplicableFeat)
     {
         nBonus += plugin.m_GreaterWeaponSpecializationDamageBonus;
+
+        if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
+        {
+            auto sDebugMsg = CExoString(" + ");
+            auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
+            if (pCurrentAttack->m_nAttackResult == 3)
+            {
+                auto nCriticalThreat = pStats->GetCriticalHitMultiplier(bOffHand);
+                sDebugMsg = sDebugMsg + CExoString(std::to_string(plugin.m_GreaterWeaponSpecializationDamageBonus * nCriticalThreat)) +
+                                        CExoString(" (Greater Weapon Specialization Feat) (Critical x") +
+                                        CExoString(std::to_string(nCriticalThreat)) + CExoString(")");
+            }
+            else
+            {
+                sDebugMsg = sDebugMsg + CExoString(std::to_string(plugin.m_GreaterWeaponSpecializationDamageBonus)) +
+                                        CExoString(" (Greater Weapon Specialization Feat) ");
+            }
+            auto sDamageDebugText = pCurrentAttack->m_sDamageDebugText;
+            pCurrentAttack->m_sDamageDebugText = pCurrentAttack->m_sDamageDebugText + sDebugMsg;
+        }
     }
 
     return nBonus;
@@ -945,11 +993,29 @@ int32_t Weapon::GetAttackModifierVersus(CNWSCreatureStats* pStats, CNWSCreature*
     if (bApplicableFeatExists && bHasApplicableFeat)
     {
         nMod += plugin.m_GreaterFocusAttackBonus;
+
+        if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
+        {
+            auto sDebugMsg = CExoString(" + ") +
+                             CExoString(std::to_string(plugin.m_GreaterFocusAttackBonus)) +
+                             CExoString(" (Greater Weapon Focus Feat)") ;
+            auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
+            pCurrentAttack->m_sAttackDebugText = pCurrentAttack->m_sAttackDebugText + sDebugMsg;
+        }
     }
 
     if(plugin.m_GASling && nBaseItem == Constants::BaseItem::Sling && pStats->m_nRace != Constants::RacialType::Halfling && pStats->HasFeat(Constants::Feat::GoodAim))
     {
-        nMod += 1;
+        nMod += Globals::Rules()->GetRulesetIntEntry("GOOD_AIM_MODIFIER", 1);
+
+        if (*Globals::EnableCombatDebugging() && pStats->m_bIsPC)
+        {
+            auto sDebugMsg = CExoString(" + ") +
+                             CExoString(std::to_string(Globals::Rules()->GetRulesetIntEntry("GOOD_AIM_MODIFIER", 1))) +
+                             CExoString(" (Good Aim Feat)") ;
+            auto *pCurrentAttack = pStats->m_pBaseCreature->m_pcCombatRound->GetAttack(pStats->m_pBaseCreature->m_pcCombatRound->m_nCurrentAttack);
+            pCurrentAttack->m_sAttackDebugText = pCurrentAttack->m_sAttackDebugText + sDebugMsg;
+        }
     }
 
     return nMod;
@@ -974,6 +1040,20 @@ int32_t Weapon::GetMeleeAttackBonus(CNWSCreatureStats* pStats, int32_t bOffHand,
     if (bOffHand)
     {
         pWeapon=pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::LeftHand);
+
+        // Check for two handed
+        if (pWeapon == nullptr)
+        {
+            auto *pMain = pStats->m_pBaseCreature->m_pInventory->GetItemInSlot(Constants::EquipmentSlot::RightHand);
+            if (pMain)
+            {
+                auto *pBase = Globals::Rules()->m_pBaseItemArray->GetBaseItem(pMain->m_nBaseItem);
+                if (pBase && pBase->m_nWeaponWield == 8)
+                {
+                    pWeapon = pMain;
+                }
+            }
+        }
     }
     else
     {
