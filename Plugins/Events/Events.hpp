@@ -44,6 +44,7 @@ class ResourceEvents;
 class QuickbarEvents;
 class DebugEvents;
 class StoreEvents;
+class ChatEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -138,6 +139,7 @@ private:
     std::unique_ptr<QuickbarEvents> m_quickbarEvents;
     std::unique_ptr<DebugEvents> m_debugEvents;
     std::unique_ptr<StoreEvents> m_storeEvents;
+    std::unique_ptr<ChatEvents> m_chatEvents;
 };
 
 }
