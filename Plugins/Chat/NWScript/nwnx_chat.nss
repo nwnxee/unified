@@ -38,30 +38,36 @@ int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SE
 /// @brief Registers the script which receives all chat messages.
 /// @note If a script was previously registered, this one will take over.
 /// @param script The script name to handle the chat events.
+/// @deprecated Please use the events system (NWNX_ON_CHAT_SEND_*)
 void NWNX_Chat_RegisterChatScript(string script);
 
 /// @brief Skips a chat message
 /// @note Must be called from a chat or system script handler.
+/// @deprecated Please use the events system (NWNX_ON_CHAT_SEND_*)
 void NWNX_Chat_SkipMessage();
 
 /// @brief Gets the chat @ref chat_channels "channel".
 /// @note Must be called from a chat or system script handler.
 /// @return The @ref chat_channels "channel" the message is sent.
+/// @deprecated Please use the events system (NWNX_ON_CHAT_SEND_*)
 int NWNX_Chat_GetChannel();
 
 /// @brief Gets the message.
 /// @note Must be called from a chat or system script handler.
 /// @return The message sent.
+/// @deprecated Please use the events system (NWNX_ON_CHAT_SEND_*)
 string NWNX_Chat_GetMessage();
 
 /// @brief Gets the sender of the message.
 /// @note Must be called from a chat or system script handler.
 /// @return The object sending the message.
+/// @deprecated Please use the events system (NWNX_ON_CHAT_SEND_*)
 object NWNX_Chat_GetSender();
 
 /// @brief Gets the target of the message.
 /// @note Must be called from an chat or system script handler.
 /// @return The target of the message or OBJECT_INVALID if no target.
+/// @deprecated Targets are only available in tells and those messages are suppressed for NWNX
 object NWNX_Chat_GetTarget();
 
 /// @brief Sets the distance with which the player hears talks or whispers.
@@ -92,6 +98,7 @@ int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SE
 
 void NWNX_Chat_RegisterChatScript(string script)
 {
+    WriteTimestampedLogEntry("NWNX_Chat: RegisterChatScript() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
     string sFunc = "RegisterChatScript";
 
     NWNX_PushArgumentString(NWNX_Chat, sFunc, script);
@@ -100,6 +107,7 @@ void NWNX_Chat_RegisterChatScript(string script)
 
 void NWNX_Chat_SkipMessage()
 {
+    WriteTimestampedLogEntry("NWNX_Chat: SkipMessage() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
     string sFunc = "SkipMessage";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
@@ -107,6 +115,7 @@ void NWNX_Chat_SkipMessage()
 
 int NWNX_Chat_GetChannel()
 {
+    WriteTimestampedLogEntry("NWNX_Chat: GetChannel() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
     string sFunc = "GetChannel";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
@@ -115,6 +124,7 @@ int NWNX_Chat_GetChannel()
 
 string NWNX_Chat_GetMessage()
 {
+    WriteTimestampedLogEntry("NWNX_Chat: GetMessage() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
     string sFunc = "GetMessage";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
@@ -123,6 +133,7 @@ string NWNX_Chat_GetMessage()
 
 object NWNX_Chat_GetSender()
 {
+    WriteTimestampedLogEntry("NWNX_Chat: GetSender() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
     string sFunc = "GetSender";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);
@@ -131,6 +142,7 @@ object NWNX_Chat_GetSender()
 
 object NWNX_Chat_GetTarget()
 {
+    WriteTimestampedLogEntry("NWNX_Chat: GetTarget() is deprecated. This function is no longer useful since targets are only determined in tells and those have been suppressed.");
     string sFunc = "GetTarget";
 
     NWNX_CallFunction(NWNX_Chat, sFunc);

@@ -101,6 +101,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
 
     if (plugin.m_depth > 0 || !plugin.m_skipMessage)
     {
+        // TODO: Only keep this functionality after deprecation period, it may make sense to just put it in Player
         if (g_plugin->m_customHearingDistances)
         {
             auto server = Globals::AppManager()->m_pServerExoApp;
@@ -259,6 +260,7 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     return Events::Arguments(retVal);
 }
 
+// TODO: Remove next six functions after deprecation period
 Events::ArgumentStack Chat::RegisterChatScript(Events::ArgumentStack&& args)
 {
     m_chatScript = Events::ExtractArgument<std::string>(args);
@@ -291,6 +293,7 @@ Events::ArgumentStack Chat::GetTarget(Events::ArgumentStack&&)
     return Events::Arguments(m_activeTargetObjectId);
 }
 
+// TODO Should these be moved to Player after deprecation period?
 Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 {
     const auto distance = Services::Events::ExtractArgument<float>(args);

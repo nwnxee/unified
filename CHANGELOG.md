@@ -45,6 +45,7 @@ The following plugins were added:
 - Weapon: Good Aim Feat now takes value from ruleset.2da
 
 ### Deprecated
+- Chat: NWNX_Chat_RegisterChatScript() and the functionality to retrieve chat message information has been deprecated and handled now through Chat Events
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed
