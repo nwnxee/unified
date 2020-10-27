@@ -204,7 +204,7 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     if (playerId != Constants::PLAYERID_INVALIDID)
     {
         bool sentMessage = false;
-        CNWSMessage* messageDispatch = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        auto* messageDispatch = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
 
         if (hasManualPlayerId)
         {
@@ -234,6 +234,16 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
             else if (channel == Constants::ChatChannel::DmWhisper)
             {
                 messageDispatch->SendServerToPlayerChat_DM_Whisper(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::PlayerParty)
+            {
+                messageDispatch->SendServerToPlayerChat_Party(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::DmParty)
+            {
+                messageDispatch->SendServerToPlayerChat_Party(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
         }
