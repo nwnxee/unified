@@ -27,7 +27,7 @@ int32_t ChatEvents::HandlePlayerToServerChatMessageHook(CNWSMessage* pMessage, C
     int32_t retVal = 0;
 
     auto channel = nMinor;
-    std::string sMessage;
+    CExoString sMessage;
 
     ObjectID oidTarget = Constants::OBJECT_INVALID;
 
@@ -46,6 +46,8 @@ int32_t ChatEvents::HandlePlayerToServerChatMessageHook(CNWSMessage* pMessage, C
         sMessage = Utils::PeekMessage<std::string>(pMessage, 0);
     }
 
+    Globals::AppManager()->m_pServerExoApp->StripColorTokens(sMessage);
+
     ObjectID senderOid = API::Constants::OBJECT_INVALID;
     if (pPlayer != nullptr)
     {
@@ -58,7 +60,7 @@ int32_t ChatEvents::HandlePlayerToServerChatMessageHook(CNWSMessage* pMessage, C
     Events::PushEventData("CHANNEL", std::to_string(channel));
 
     // Hide the message from appearing in the log if the target is valid to keep tell content out of logs
-    Events::PushEventData("MESSAGE", sMessage, oidTarget != OBJECT_INVALID);
+    Events::PushEventData("MESSAGE", sMessage.CStr(), oidTarget != OBJECT_INVALID);
 
     if (Events::SignalEvent("NWNX_ON_CHAT_SEND_BEFORE", senderOid))
     {
