@@ -8,6 +8,7 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSPlayer.hpp"
 #include "API/Constants.hpp"
 #include "API/Constants/Effect.hpp"
 #include "API/Globals.hpp"
@@ -54,6 +55,8 @@ Feat::Feat(Services::ProxyServiceList* services)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, int32_t, CNWSCreatureStats*, uint16_t>(&RemoveFeatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>(&OnApplyBonusFeatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>(&OnRemoveBonusFeatHook);
+
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSPlayer8DropTURDEv, int32_t, CNWSPlayer*>(&DropTURDHook);
 }
 
 Feat::~Feat()
@@ -526,6 +529,26 @@ void Feat::OnRemoveBonusFeatHook(bool before, CNWSEffectListHandler *, CNWSObjec
     auto featId = pEffect->GetInteger(0);
     if (pCreatureStats && before)
         RemoveFeatEffects(pCreatureStats, featId);
+}
+
+void Feat::DropTURDHook(bool before, CNWSPlayer *pPlayer)
+{
+    if (before)
+    {
+        std::vector<uint64_t> remove(128);
+        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
+        for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+        {
+            auto eff = (CGameEffect *) pCreature->m_appliedEffects.element[i];
+            std::string sCustomTag = eff->m_sCustomTag.CStr();
+            if (sCustomTag.find("NWNX_Feat_FeatMod_", 0) == 0)
+            {
+                remove.push_back(eff->m_nID);
+            }
+        }
+        for (auto id: remove)
+            pCreature->RemoveEffectById(id);
+    }
 }
 
 bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, int32_t param2, int32_t param3, int32_t param4)
