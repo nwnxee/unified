@@ -134,13 +134,13 @@ string GetTableCreateString(string tag, object obj=OBJECT_INVALID) {
         obj = GetModule();
     // for simplicy sake, everything is turned into a string.  Possible enhancement
     // to create specific tables for int/float/whatever.
-    return "create table if not exists " + GetTableName(tag, obj) + " ( ind integer primary key, value text)";
+    return "CREATE TABLE IF NOT EXISTS " + GetTableName(tag, obj) + " ( ind INTEGER PRIMARY KEY, value TEXT)";
 }
 
 int TableExists(string tag, object obj=OBJECT_INVALID) {
     if (obj == OBJECT_INVALID)
         obj = GetModule();
-    string stmt = "SELECT NAME FROM SQLITE_MASTER WHERE TYPE = 'table' AND NAME = '" + GetTableName(tag, obj) + "'";
+    string stmt = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + GetTableName(tag, obj) + "'";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
     return SqlStep(sqlQuery);
 }
@@ -184,7 +184,7 @@ string Array_At_Str(string tag, int index, object obj=OBJECT_INVALID)
     if (!TableExists(tag, obj)) {
         CreateArrayTable(tag, obj);
     }
-    string stmt = "SELECT VALUE FROM "+GetTableName(tag, obj)+" WHERE IND = @ind";
+    string stmt = "SELECT value FROM "+GetTableName(tag, obj)+" WHERE ind = @ind";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
     if ( SqlStep(sqlQuery) ) {
         return SqlGetString(sqlQuery, 0);
@@ -232,7 +232,7 @@ int Array_Contains_Str(string tag, string element, object obj=OBJECT_INVALID)
         obj = GetModule();
     WriteTimestampedLogEntry("looking for " + element + " in " + GetTableName(tag, obj));
     CreateArrayTable(tag, obj);
-    string stmt = "SELECT COUNT(1) FROM "+GetTableName(tag, obj)+" WHERE VALUE = @element";
+    string stmt = "SELECT COUNT(1) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
     string v = "";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
     //WriteTimestampedLogEntry("Error returned: " + SqlGetError(sqlQuery));
@@ -281,8 +281,8 @@ void Array_Erase(string tag, int index, object obj=OBJECT_INVALID)
 {
     if (obj == OBJECT_INVALID)
         obj = GetModule();
-    ExecuteStatement("DELETE FROM "+GetTableName(tag, obj)+" WHERE IND = " + IntToString(index), obj);
-    ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET IND = IND - 1 WHERE IND > " + IntToString(index), obj);
+    ExecuteStatement("DELETE FROM "+GetTableName(tag, obj)+" WHERE ind = " + IntToString(index), obj);
+    ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET ind = ind - 1 WHERE ind > " + IntToString(index), obj);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -293,7 +293,7 @@ int Array_Find_Str(string tag, string element, object obj=OBJECT_INVALID)
     if (obj == OBJECT_INVALID)
         obj = GetModule();
     int tmp = -1;
-    string stmt = "SELECT MIN(IND) FROM "+GetTableName(tag, obj)+" WHERE VALUE = @element";
+    string stmt = "SELECT MIN(ind) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
     SqlBindString(sqlQuery, "@element", element);
     if ( SqlStep(sqlQuery) ) {
@@ -329,7 +329,7 @@ void Array_Insert_Str(string tag, int index, string element, object obj=OBJECT_I
     if (obj == OBJECT_INVALID)
         obj = GetModule();
     if (index < rows) {
-        ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET IND = IND + 1 WHERE IND >= "+IntToString(index), obj);
+        ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET ind = ind + 1 WHERE ind >= "+IntToString(index), obj);
         ExecuteStatement("INSERT INTO "+GetTableName(tag, obj)+" VALUES ( " + IntToString(index) + ", '" + element + "')", obj);
     }
 }
@@ -390,9 +390,9 @@ void Array_Shuffle(string tag, object obj=OBJECT_INVALID)
         obj = GetModule();
 
     string table = GetTableName(tag, obj);
-    ExecuteStatement("CREATE TABLE " +table+ "_TEMP AS SELECT ROW_NUMBER() OVER(ORDER BY RANDOM())-1, VALUE FROM " +table, obj);
+    ExecuteStatement("CREATE TABLE " +table+ "_temp AS SELECT ROW_NUMBER() OVER(ORDER BY RANDOM())-1, value FROM " +table, obj);
     ExecuteStatement("DELETE FROM " +table , obj);
-    ExecuteStatement("INSERT INTO " +table+ " SELECT * FROM " +table+ "_TEMP", obj);
+    ExecuteStatement("INSERT INTO " +table+ " SELECT * FROM " +table+ "_temp", obj);
     ExecuteStatement("DROP TABLE " +table+ "_TEMP", obj);
 }
 
@@ -413,19 +413,19 @@ void Array_Sort(string tag, string direction, int type, object obj=OBJECT_INVALI
         obj = GetModule();
 
     // default orderBy for strings.
-    string orderBy = "order by value " + direction;
+    string orderBy = "ORDER BY value " + direction;
     switch(type) {
         case TYPE_INTEGER:
-            orderBy = "order by cast(value as integer)" + direction;
+            orderBy = "ORDER BY CAST(value AS INTEGER)" + direction;
             break;
         case TYPE_FLOAT:
-            orderBy = "order by cast(value as decimal)" + direction;
+            orderBy = "ORDER BY CAST(value AS DECIMAL)" + direction;
             break;
     }
-    ExecuteStatement("CREATE TABLE " +table+  "_TEMP AS SELECT ROW_NUMBER() OVER(" + orderBy + ")-1, VALUE FROM " +table, obj);
+    ExecuteStatement("CREATE TABLE " +table+  "_temp AS SELECT ROW_NUMBER() OVER(" + orderBy + ")-1, value FROM " +table, obj);
     ExecuteStatement("DELETE FROM " +table, obj);
-    ExecuteStatement("INSERT INTO " +table+ " SELECT * FROM " +table+ "_TEMP", obj);
-    ExecuteStatement("DROP TABLE " +table+ "_TEMP", obj);
+    ExecuteStatement("INSERT INTO " +table+ " SELECT * FROM " +table+ "_temp", obj);
+    ExecuteStatement("DROP TABLE " +table+ "_temp", obj);
 }
 
 void Array_SortAscending(string tag, int type=TYPE_STRING, object obj=OBJECT_INVALID)
@@ -447,7 +447,7 @@ void Array_Set_Str(string tag, int index, string element, object obj=OBJECT_INVA
         obj = GetModule();
     int rows = GetRowCount(tag, obj);
     if (index < rows) {
-        ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET VALUE = '"+element+"' WHERE IND = "+IntToString(index), obj);
+        ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET value = '"+element+"' WHERE ind = "+IntToString(index), obj);
     }
 }
 
@@ -471,7 +471,7 @@ void Array_Debug_Dump(string tag, string title = "xxx", object obj=OBJECT_INVALI
         WriteTimestampedLogEntry("== " + title + " ======================================");
     }
     WriteTimestampedLogEntry("Table name = " + GetTableName(tag, obj));
-    string stmt = "SELECT IND, VALUE FROM " + GetTableName(tag, obj);
+    string stmt = "SELECT ind, value FROM " + GetTableName(tag, obj);
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
     int    ind = -1;
     string value = "";
