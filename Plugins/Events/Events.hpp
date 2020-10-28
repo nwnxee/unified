@@ -69,7 +69,7 @@ public:
     virtual ~Events();
 
     // Pushes event data to the stack - won't do anything until SignalEvent is called.
-    static void PushEventData(const std::string& tag, const std::string& data);
+    static void PushEventData(const std::string& tag, const std::string& data, bool bHideDataInLog = false);
 
     // Get event data
     static std::string GetEventData(const std::string& tag);
