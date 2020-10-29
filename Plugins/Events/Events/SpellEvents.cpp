@@ -65,6 +65,13 @@ void SpellEvents::CastSpellHook
     bool isInstantSpell
 )
 {
+    if (!Events::IsIDInWhitelist("NWNX_ON_CAST_SPELL", spellID))
+    {
+        s_SpellCastAndImpactHook->CallOriginal<void>(thisPtr, spellID, targetPosition, oidTarget, multiClass, oidItem,
+                                                     spellCountered, counteringSpell, projectilePathType, isInstantSpell);
+        return;
+    }
+
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("SPELL_ID", std::to_string(spellID));
 

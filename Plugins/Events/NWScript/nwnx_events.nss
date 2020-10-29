@@ -1350,6 +1350,28 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object o
 /// Remove oObject from the dispatch list for sEvent+sScript.
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
 
+/// @brief Toggle the whitelisting of IDs for sEvent.
+///
+/// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
+/// - NWNX_ON_CAST_SPELL -> SpellID
+///
+/// @note This enables the whitelist for ALL scripts subscribed to sEvent.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param bEnable TRUE to enable the whitelist, FALSE to disable
+void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable);
+
+/// @brief Add nID to the whitelist of sEvent.
+/// @note See NWNX_Events_ToggleIDWhitelist for valid events and ID types.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param nID The ID.
+void NWNX_Events_AddIDToWhitelist(string sEvent, int nID);
+
+/// @brief Remove nID from the whitelist of sEvent.
+/// @note See NWNX_Events_ToggleIDWhitelist for valid events and ID types.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param nID The ID.
+void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID);
+
 /// @}
 
 void NWNX_Events_SubscribeEvent(string evt, string script)
@@ -1447,6 +1469,33 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, obj
 
     NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable)
+{
+    string sFunc = "ToggleIDWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, bEnable);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)
+{
+    string sFunc = "AddIDToWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, nID);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID)
+{
+    string sFunc = "RemoveIDFromWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, nID);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }

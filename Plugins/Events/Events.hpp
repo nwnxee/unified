@@ -78,6 +78,9 @@ public:
 
     static void InitOnFirstSubscribe(const std::string& eventName, std::function<void(void)> init);
 
+    static bool IsIDInWhitelist(const std::string& eventName, int32_t id);
+    static void ForceEnableWhitelist(const std::string& eventName);
+
 private: // Structures
     using EventMapType = std::unordered_map<std::string, std::vector<std::string>>;
 
@@ -93,6 +96,9 @@ private:
     ArgumentStack ToggleDispatchListMode(ArgumentStack&& args);
     ArgumentStack AddObjectToDispatchList(ArgumentStack&& args);
     ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args);
+    ArgumentStack ToggleIDWhitelist(ArgumentStack&& args);
+    ArgumentStack AddIDToWhitelist(ArgumentStack&& args);
+    ArgumentStack RemoveIDFromWhitelist(ArgumentStack&& args);
 
     // Pushes a brand new event data onto the event data stack, set up with the correct defaults.
     // Only does it if needed though, based on the current event depth!
@@ -106,6 +112,7 @@ private:
 
     std::unordered_map<std::string, std::function<void(void)>> m_initList;
     std::unordered_map<std::string, std::set<ObjectID>> m_dispatchList;
+    std::unordered_map<std::string, std::set<int32_t>> m_idWhitelist;
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
     std::unique_ptr<BarterEvents> m_barterEvents;
