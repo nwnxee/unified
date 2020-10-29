@@ -775,7 +775,7 @@ int32_t Race::GetFavoredEnemyBonusHook(CNWSCreatureStats *pCreatureStats, CNWSCr
             nParentFeat = pfi->second;
         }
     }
-    
+
     if (nFeat == -1 && nParentFeat == -1)
         return 0;
 
