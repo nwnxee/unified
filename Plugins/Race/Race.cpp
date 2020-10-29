@@ -760,7 +760,11 @@ int32_t Race::GetFavoredEnemyBonusHook(CNWSCreatureStats *pCreatureStats, CNWSCr
     }
 
     // If either the target's race or its parent race has a favored enemy feat associated with it we check the attacker for that feat
-    auto nFeat = g_plugin->m_RaceFavoredEnemyFeat[pTgtCreature->m_pStats->m_nRace];
+    auto nFeat = -1;
+    auto fi = g_plugin->m_RaceFavoredEnemyFeat.find(pTgtCreature->m_pStats->m_nRace);
+    if (fi != g_plugin->m_RaceParent.end())
+        nFeat = fi->second;
+
     auto nParentFeat = -1;
     auto pri = g_plugin->m_RaceParent.find(pTgtCreature->m_pStats->m_nRace);
     if ( pri != g_plugin->m_RaceParent.end())
@@ -771,6 +775,9 @@ int32_t Race::GetFavoredEnemyBonusHook(CNWSCreatureStats *pCreatureStats, CNWSCr
             nParentFeat = pfi->second;
         }
     }
+    
+    if (nFeat == -1 && nParentFeat == -1)
+        return 0;
 
     uint8_t nBonus = 0;
     if (pCreatureStats->m_bIsPC)
