@@ -2,6 +2,7 @@ var nwnx__race_8nss =
 [
     [ "NWNX_Race_SetRacialModifier", "group__race.html#ga008aebe423e8f5f148e3119c8459d2b9", null ],
     [ "NWNX_Race_GetParentRace", "group__race.html#gabaf553f259396e06a67b0e580d2ecaae", null ],
+    [ "NWNX_Race_SetFavoredEnemyFeat", "group__race.html#ga08cac1e5093adf088f302d2194538b68", null ],
     [ "NWNX_Race", "group__race.html#gae13fcdcf250a00412a0f61c5f2b48f8d", null ],
     [ "NWNX_RACE_MODIFIER_INVALID", "group__race.html#ga4a698ce24f3f663775a8d418131edaeb", null ],
     [ "NWNX_RACE_MODIFIER_AB", "group__race.html#gaab7fe982751745821c2b1dd3e82ae243", null ],
