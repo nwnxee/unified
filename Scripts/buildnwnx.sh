@@ -15,9 +15,6 @@ while getopts "hcj:dst" o; do
         j) # Concurrent job count for the make command
             JOBS="-j $OPTARG"
             ;;
-        d) # Build debug configuration
-            BUILD_TYPE="Debug"
-            ;;
         s) # Enable the address and undefined behaviour sanitisers
             SANITIZE="-DSANITIZE_ADDRESS=On -DSANITIZE_UNDEFINED=On"
             ;;
