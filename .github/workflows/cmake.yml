@@ -16,7 +16,7 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries.tar",
+            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries",
             os: ubuntu-20.04,
             cc: "gcc-7", cxx: "g++-7"
           }
@@ -50,14 +50,10 @@ jobs:
       shell: bash
       run: mv dark light/
 
-    - name: Pack
-      working-directory: ${{runner.workspace}}/unified
-      run: cmake -E tar cfv ../${{ matrix.config.artifact }} Binaries/
-
     - name: Upload
       uses: actions/upload-artifact@v1
       with:
-       path: ../${{ matrix.config.artifact }}
+       path: Binaries
        name: ${{ matrix.config.artifact }}
 
     - name: Deploy Docs
@@ -65,7 +61,7 @@ jobs:
       with:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        BRANCH: gh-pages # The branch the action should deploy to.
-       FOLDER: Documentation # The folder the action should deploy.
+       FOLDER: Documentation/light # The folder the action should deploy.
        CLEAN: true # Automatically remove deleted files from the deploy branch
 
   release:
