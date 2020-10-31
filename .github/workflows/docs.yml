@@ -10,6 +10,7 @@ on:
       - '**.css'
       - '**.txt'
       - '**.yml'
+      - 'docgen/**'
 env:
   BUILD_TYPE: RelWithDebInfo
 
