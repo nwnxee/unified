@@ -17,7 +17,7 @@ jobs:
         config:
         - {
             name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries.tar",
-            os: ubuntu-latest,
+            os: ubuntu-20.04,
             cc: "gcc-7", cxx: "g++-7"
           }
 
@@ -44,6 +44,11 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: make docs && make dark-docs && mv ../Documentation/dark ../Documentation/light/
+
+    - name: Move Dark Docs into Light for GH-Pages
+      working-directory: ${{runner.workspace}}/unified/Documentation
+      shell: bash
+      run: mv dark light/
 
     - name: Pack
       working-directory: ${{runner.workspace}}/unified
