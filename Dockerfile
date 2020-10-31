@@ -2,6 +2,10 @@ FROM nwnxee/builder as builder
 WORKDIR /nwnx/home
 COPY ./ .
 # Compile nwnx
+ARG CC=gcc
+ENV CC=$CC
+ARG CXX=g++
+ENV CXX=$CXX
 RUN Scripts/buildnwnx.sh -j $(nproc)
 
 FROM beamdog/nwserver:8193.16
