@@ -91,17 +91,17 @@ jobs:
            ./NWNX-EE.zip
            ./NWScript.zip
 
-    - name: Set up Docker Buildx
-      id: buildx
+    - name: Set up Docker buildnwnx
+      id: buildnwnx
       uses: docker/setup-buildx-action@master
 
     - name: Cache Docker layers
       uses: actions/cache@v2
       with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        path: /tmp/.buildnwnx-cache
+        key: ${{ runner.os }}-buildnwnx-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-buildx-
+          ${{ runner.os }}-buildnwnx-
 
     - name: Login to DockerHub
       uses: docker/login-action@v1
@@ -115,11 +115,11 @@ jobs:
       with:
         context: ./
         file: ./Dockerfile
-        builder: ${{ steps.buildx.outputs.name }}
+        builder: ${{ steps.buildnwnx.outputs.name }}
         push: true
         tags: plenarius/unified:${{ steps.vars.outputs.sha_short }}
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache
+        cache-from: type=local,src=/tmp/.buildnwnx-cache
+        cache-to: type=local,dest=/tmp/.buildnwnx-cache
         build-args: |
           CC=gcc-7
           CXX=g++-7
