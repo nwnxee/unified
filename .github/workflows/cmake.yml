@@ -17,7 +17,7 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu GCC 7", artifact: "NWNX-EE.7z",
+            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries.tar",
             os: ubuntu-latest,
             cc: "gcc-7", cxx: "g++-7"
           }
@@ -56,8 +56,8 @@ jobs:
       run: make docs && make dark-docs
 
     - name: Pack
-      working-directory: ${{runner.workspace}}/unified/Binaries
-      run: cmake -E tar cfv ../../${{ matrix.config.artifact }} --format=7zip .
+      working-directory: ${{runner.workspace}}/unified
+      run: cmake -E tar cfv ../${{ matrix.config.artifact }} Binaries/
 
     - name: Upload
       uses: actions/upload-artifact@v1
