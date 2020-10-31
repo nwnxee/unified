@@ -47,7 +47,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE -- -j 3
+      run: cmake --build . --config $BUILD_TYPE -- -j 6
 
     - name: Make Docs
       working-directory: ${{runner.workspace}}/build
@@ -62,7 +62,7 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v1
       with:
-       path: ./${{ matrix.config.artifact }}
+       path: ../${{ matrix.config.artifact }}
        name: ${{ matrix.config.artifact }}
 
   release:
