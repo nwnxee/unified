@@ -13,6 +13,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Set outputs
+      id: vars
+      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+    - name: Get current time
+      uses: 1466587594/get-current-time@v2
+      id: current-time
+
     - name: Install Additional packages
       run: sudo apt-get install libhunspell-dev libluajit-5.1-dev doxygen
 
@@ -38,6 +46,10 @@ jobs:
       working-directory: ${{runner.workspace}}/unified/Documentation
       shell: bash
       run: mv dark light/
+
+    - name: Drop timestamp into Binaries folder
+      working-directory: ${{runner.workspace}}/unified/Binaries
+      run: echo "${{ steps.current-time.outputs.readableTime }}" > ${{ steps.vars.outputs.sha_short }}.txt
 
     - name: Pack the Binaries
       working-directory: ${{runner.workspace}}/unified/Binaries
@@ -78,6 +90,39 @@ jobs:
         files: |
            ./NWNX-EE.zip
            ./NWScript.zip
+
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@master
+
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: ./
+        file: ./Dockerfile
+        builder: ${{ steps.buildx.outputs.name }}
+        push: true
+        tags: plenarius/unified:${{ steps.vars.outputs.sha_short }}
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
 
   release:
     if: contains(github.ref, 'tags/build')
