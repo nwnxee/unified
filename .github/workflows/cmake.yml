@@ -16,7 +16,9 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries.zip",
+            name: "Ubuntu GCC 7",
+            binaries: "NWNX-EE.zip",
+            scripts: "NWScript.zip",
             os: ubuntu-20.04,
           }
 
@@ -39,33 +41,55 @@ jobs:
       shell: bash
       run: cmake --build . --config $BUILD_TYPE -- -j 6
 
-    - name: Make Docs
+    - name: Generate Documentation
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: make docs && make dark-docs
 
-    - name: Move Dark Docs into Light for GH-Pages
+    - name: Move Dark Docs into Proper Location
       working-directory: ${{runner.workspace}}/unified/Documentation
       shell: bash
       run: mv dark light/
 
-    - name: Pack
+    - name: Pack the Binaries
       working-directory: ${{runner.workspace}}/unified/Binaries
-      run: cmake -E tar cfv ../${{ matrix.config.artifact }} --format=zip .
+      run: cmake -E tar cfv ../${{ matrix.config.binaries }} --format=zip .
 
-    - name: Upload
+    - name: Pack the Scripts
+      working-directory: ${{runner.workspace}}/unified
+      shell: bash
+      run: zip -j ./${{ matrix.config.scripts }} `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
+
+    - name: Upload Binaries
       uses: actions/upload-artifact@v1
       with:
-       path: ./${{ matrix.config.artifact }}
-       name: ${{ matrix.config.artifact }}
+       path: ./${{ matrix.config.binaries }}
+       name: ${{ matrix.config.binaries }}
 
-    - name: Deploy Docs
+    - name: Upload Scripts
+      uses: actions/upload-artifact@v1
+      with:
+        path: ./${{ matrix.config.scripts }}
+        name: ${{ matrix.config.scripts }}
+
+    - name: Deploy Documents to Github Pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        BRANCH: gh-pages # The branch the action should deploy to.
        FOLDER: Documentation/light # The folder the action should deploy.
        CLEAN: true # Automatically remove deleted files from the deploy branch
+
+    - name: Deploy Prerelease
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
+        files: |
+           ./${{ matrix.config.binaries }}
+           ./${{ matrix.config.scripts }}
 
   release:
     if: contains(github.ref, 'tags/v')
@@ -102,7 +126,9 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries.zip",
+            name: "Ubuntu GCC 7",
+            binaries: "NWNX-EE.zip",
+            scripts: "NWScript.zip",
             os: ubuntu-20.04
           }
     needs: release
@@ -111,7 +137,7 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v1
       with:
-        name: ${{ matrix.config.artifact }}
+        name: ${{ matrix.config.binaries }}
         path: ./
 
     - name: Download URL
@@ -131,6 +157,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-        asset_path: ./${{ matrix.config.artifact }}
-        asset_name: ${{ matrix.config.artifact }}
+        asset_path: ./${{ matrix.config.binaries }}
+        asset_name: ${{ matrix.config.binaries }}
         asset_content_type: application/x-gtar
