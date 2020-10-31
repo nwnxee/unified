@@ -98,8 +98,8 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu GCC 7", artifact: "NWNX-EE.7z",
-            os: ubuntu-latest
+            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries",
+            os: ubuntu-20.04
           }
     needs: release
 
