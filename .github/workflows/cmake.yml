@@ -9,19 +9,7 @@ env:
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-        - {
-            name: "Ubuntu GCC 7",
-            binaries: "NWNX-EE.zip",
-            scripts: "NWScript.zip",
-            os: ubuntu-20.04,
-          }
-
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
 
@@ -53,24 +41,24 @@ jobs:
 
     - name: Pack the Binaries
       working-directory: ${{runner.workspace}}/unified/Binaries
-      run: cmake -E tar cfv ../${{ matrix.config.binaries }} --format=zip .
+      run: cmake -E tar cfv ../NWNX-EE.zip --format=zip .
 
     - name: Pack the Scripts
       working-directory: ${{runner.workspace}}/unified
       shell: bash
-      run: zip -j ./${{ matrix.config.scripts }} `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
+      run: zip -j ./NWScript.zip `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
 
     - name: Upload Binaries
       uses: actions/upload-artifact@v1
       with:
-       path: ./${{ matrix.config.binaries }}
-       name: ${{ matrix.config.binaries }}
+       path: ./NWNX-EE.zip
+       name: NWNX-EE.zip
 
     - name: Upload Scripts
       uses: actions/upload-artifact@v1
       with:
-        path: ./${{ matrix.config.scripts }}
-        name: ${{ matrix.config.scripts }}
+        path: ./NWScript.zip
+        name: NWScript.zip
 
     - name: Deploy Documents to Github Pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
@@ -80,7 +68,7 @@ jobs:
        FOLDER: Documentation/light
        CLEAN: true
 
-    - name: Deploy Prerelease
+    - name: Deploy Latest Development Build
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -88,12 +76,12 @@ jobs:
         prerelease: false
         title: "Development Build"
         files: |
-           ./${{ matrix.config.binaries }}
-           ./${{ matrix.config.scripts }}
+           ./NWNX-EE.zip
+           ./NWScript.zip
 
   release:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: build
 
     steps:
@@ -119,25 +107,20 @@ jobs:
 
   publish:
     if: contains(github.ref, 'tags/build')
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {
-            name: "Ubuntu GCC 7",
-            binaries: "NWNX-EE.zip",
-            scripts: "NWScript.zip",
-            os: ubuntu-20.04
-          }
+    runs-on: ubuntu-20.04
     needs: release
 
     steps:
-    - name: Download artifact
+    - name: Download Binaries
       uses: actions/download-artifact@v1
       with:
-        name: ${{ matrix.config.binaries }}
+        name: NWNX-EE.zip
+        path: ./
+
+    - name: Download Scripts
+      uses: actions/download-artifact@v1
+      with:
+        name: NWScript.zip
         path: ./
 
     - name: Download URL
@@ -150,13 +133,24 @@ jobs:
         upload_url=`cat ./upload_url`
         echo ::set-output name=upload_url::$upload_url
 
-    - name: Upload to Release
+    - name: Upload Binaries to Release
       id: upload_to_release
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
-        asset_path: ./${{ matrix.config.binaries }}
-        asset_name: ${{ matrix.config.binaries }}
-        asset_content_type: application/x-gtar
+        asset_path: ./NWNX-EE.zip
+        asset_name: NWNX-EE.zip
+        asset_content_type: application/zip
+
+    - name: Upload Scripts to Release
+      id: upload_to_release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.set_upload_url.outputs.upload_url }}
+        asset_path: ./NWScript.zip
+        asset_name: NWScript.zip
+        asset_content_type: application/zip
