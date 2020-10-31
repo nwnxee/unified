@@ -22,8 +22,8 @@ RUN runDeps="hunspell \
     && apt-get -y install --no-install-recommends $runDeps \
     && rm -r /var/cache/apt /var/lib/apt/lists
 
-RUN mkdir /nwn/nwnx/Binaries
-WORKDIR /nwnx/home/Binaries
+RUN mkdir -p /nwn/nwnx
+WORKDIR /nwn/nwnx
 RUN wget -O - https://github.com/plenarius/unified/releases/download/latest/NWNX-EE.zip
 RUN unzip NWNX-EE.zip
 RUN ls -al
