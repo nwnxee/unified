@@ -3,8 +3,8 @@ FROM beamdog/nwserver:8193.16
 # Install plugin run dependencies
 RUN runDeps="hunspell \
     libmariadb3 \
-    libpq-dev \
-    libsqlite3-dev \
+    libpq5 \
+    libsqlite3-0 \
     libruby2.5 \
     luajit libluajit-5.1 \
     libssl1.1 \
@@ -20,8 +20,7 @@ RUN runDeps="hunspell \
     && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
     && mv prod.list /etc/apt/sources.list.d/microsoft-prod.list \
     && apt-get update \
-    && apt-get -y install --no-install-recommends $runDeps \
-    && rm -r /var/cache/apt /var/lib/apt/lists
+    && apt-get -y install --no-install-recommends $runDeps
 
 RUN mkdir -p /nwn/nwnx
 RUN wget https://github.com/plenarius/unified/releases/download/latest/NWNX-EE.zip
@@ -31,6 +30,10 @@ RUN ls -al
 # Patch run-server.sh with our modifications
 COPY ./Scripts/Docker/run-server.patch /nwn
 RUN patch /nwn/run-server.sh < /nwn/run-server.patch
+
+# Remove unneeded packages
+RUN apt-get remove --purge ca-certificates wget gpg apt-transport-https unzip patch
+RUN rm -r /var/cache/apt /var/lib/apt/lists
 
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
