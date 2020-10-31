@@ -134,7 +134,7 @@ jobs:
         echo ::set-output name=upload_url::$upload_url
 
     - name: Upload Binaries to Release
-      id: upload_to_release
+      id: upload_binaries_to_release
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -145,7 +145,7 @@ jobs:
         asset_content_type: application/zip
 
     - name: Upload Scripts to Release
-      id: upload_to_release
+      id: upload_scripts_to_release
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
