@@ -16,9 +16,8 @@ jobs:
       matrix:
         config:
         - {
-            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries",
+            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries.zip",
             os: ubuntu-20.04,
-            cc: "gcc-7", cxx: "g++-7"
           }
 
     steps:
@@ -50,10 +49,14 @@ jobs:
       shell: bash
       run: mv dark light/
 
+    - name: Pack
+      working-directory: ${{runner.workspace}}/unified/Binaries
+      run: cmake -E tar cfv ../${{ matrix.config.artifact }} --format=zip .
+
     - name: Upload
       uses: actions/upload-artifact@v1
       with:
-       path: Binaries
+       path: ./${{ matrix.config.artifact }}
        name: ${{ matrix.config.artifact }}
 
     - name: Deploy Docs
@@ -66,7 +69,7 @@ jobs:
 
   release:
     if: contains(github.ref, 'tags/v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: build
 
     steps:
@@ -84,7 +87,8 @@ jobs:
       - name: Store Release url
         run: |
           echo "${{ steps.create_release.outputs.upload_url }}" > ./upload_url
-      - uses: actions/upload-artifact@v1
+
+    - uses: actions/upload-artifact@v1
         with:
           path: ./upload_url
           name: upload_url
@@ -98,7 +102,7 @@ jobs:
       matrix:
         config:
           - {
-            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries",
+            name: "Ubuntu GCC 7", artifact: "NWNX-EE-Binaries.zip",
             os: ubuntu-20.04
           }
     needs: release
@@ -119,6 +123,7 @@ jobs:
         run: |
           upload_url=`cat ./upload_url`
           echo ::set-output name=upload_url::$upload_url
+  
       - name: Upload to Release
         id: upload_to_release
         uses: actions/upload-release-asset@v1.0.1
