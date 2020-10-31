@@ -24,13 +24,13 @@ RUN runDeps="hunspell \
 
 RUN mkdir -p /nwn/nwnx
 WORKDIR /nwn/nwnx
-RUN wget -O - https://github.com/plenarius/unified/releases/download/latest/NWNX-EE.zip
+RUN wget https://github.com/plenarius/unified/releases/download/latest/NWNX-EE.zip
 RUN unzip NWNX-EE.zip
 RUN ls -al
 
 # Patch run-server.sh with our modifications
 WORKDIR /nwn
-RUN wget -O - https://github.com/plenarius/unified/Scripts/Docker/run-server.patch
+RUN wget https://github.com/plenarius/unified/Scripts/Docker/run-server.patch
 RUN patch /nwn/run-server.sh < /nwn/run-server.patch
 
 # Configure nwserver to run with nwnx
