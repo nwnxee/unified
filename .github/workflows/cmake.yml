@@ -3,7 +3,6 @@ name: CMake
 on: [push]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: RelWithDebInfo
   CC: gcc-7 -m64
   CXX: g++-7 -m64
@@ -29,31 +28,22 @@ jobs:
       run: sudo apt-get install libhunspell-dev libmagick++-6.q16-dev graphviz libluajit-5.1-dev doxygen gcc-7 g++-7
 
     - name: Create Build Environment
-      # Some projects don't allow in-source building, so create a separate build directory
-      # We'll use this as our working directory for all subsequent commands
       run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
-      # Use a bash shell so we can use the same syntax for environment variable
-      # access regardless of the host operating system
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      # Note the current convention is to use the -S and -B options here to specify source
-      # and build directories, but this is only available with CMake 3.13 and higher.
-      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: CC="gcc-7 -m64" CXX="g++-7 -m64" cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config $BUILD_TYPE -- -j 6
 
     - name: Make Docs
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: make docs && make dark-docs
+      run: make docs && make dark-docs && mv ../Documentation/dark ../Documentation/light/
 
     - name: Pack
       working-directory: ${{runner.workspace}}/unified
@@ -64,6 +54,14 @@ jobs:
       with:
        path: ../${{ matrix.config.artifact }}
        name: ${{ matrix.config.artifact }}
+
+    - name: Deploy Docs
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       BRANCH: gh-pages # The branch the action should deploy to.
+       FOLDER: Documentation # The folder the action should deploy.
+       CLEAN: true # Automatically remove deleted files from the deploy branch
 
   release:
     if: contains(github.ref, 'tags/v')
