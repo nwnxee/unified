@@ -29,6 +29,9 @@ while getopts "hcj:dst" o; do
 done
 shift $((OPTIND-1))
 
+CC=gcc-7 -m64
+CXX=g++-7 -m64
+
 if [ ${CLEAN} == 0 ]; then
     if [ -d ./Binaries ]; then
         echo "Removing Binaries"
