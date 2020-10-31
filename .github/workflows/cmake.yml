@@ -96,7 +96,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v2
-  
+
       - name: Set up Docker bldnwnx
         id: bldnwnx
         uses: docker/setup-buildx-action@master
@@ -130,8 +130,8 @@ jobs:
             CC=gcc-7
             CXX=g++-7
 
-       - name: Image digest
-         run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
 
   release:
