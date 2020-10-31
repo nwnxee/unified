@@ -20,14 +20,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set outputs
-      id: vars
-      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-
-    - name: Get current time
-      uses: 1466587594/get-current-time@v2
-      id: current-time
-
     - name: Cache Doxygen
       uses: actions/cache@v2
       id: doxygen-cache
