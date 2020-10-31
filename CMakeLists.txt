@@ -61,7 +61,7 @@ add_subdirectory(Core)
 add_subdirectory(docgen)
 
 # Detect every plugin and store it in plugins . . .
-file(GLOB plugins Plugins/*/CMakeLists.txt)
+file(GLOB plugins Plugins/U*/CMakeLists.txt)
 
 # Allow skipping certain plugins by putting their names in env. variable
 foreach(skipped $ENV{NWNX_SKIP_PLUGINS})

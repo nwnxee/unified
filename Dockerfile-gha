@@ -33,6 +33,8 @@ RUN patch /nwn/run-server.sh < /nwn/run-server.patch
 # Remove unneeded packages
 RUN apt-get -y remove --purge wget gpg apt-transport-https unzip patch
 RUN apt-get -y autoremove
+RUN apt-get clean
+RUN dpkg -l
 RUN rm -r /var/cache/apt /var/lib/apt/lists
 
 # Configure nwserver to run with nwnx
