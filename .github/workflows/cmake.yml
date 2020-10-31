@@ -120,6 +120,9 @@ jobs:
         tags: plenarius/unified:${{ steps.vars.outputs.sha_short }}
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
+        build-args: |
+          CC=gcc-7
+          CXX=g++-7
 
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
