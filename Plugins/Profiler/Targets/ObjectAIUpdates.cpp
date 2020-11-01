@@ -11,17 +11,17 @@ using namespace NWNXLib;
 
 static Services::MetricsProxy* g_metrics;
 
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateArea, int32_t, CNWSArea*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateAreaOfEffect, void, CNWSAreaOfEffectObject*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateCreature, void, CNWSCreature*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateDoor, void, CNWSDoor*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateEncounter, void, CNWSEncounter*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateItem, void, CNWSItem*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateModule, int32_t, CNWSModule*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdatePlaceable, void, CNWSPlaceable*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateStore, void, CNWSStore*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateTrigger, void, CNWSTrigger*);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateWaypoint, void, CNWSWaypoint*);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateArea, int32_t, CNWSArea*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateAreaOfEffect, void, CNWSAreaOfEffectObject*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateCreature, void, CNWSCreature*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateDoor, void, CNWSDoor*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateEncounter, void, CNWSEncounter*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateItem, void, CNWSItem*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateModule, int32_t, CNWSModule*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdatePlaceable, void, CNWSPlaceable*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateStore, void, CNWSStore*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateTrigger, void, CNWSTrigger*)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, AIUpdateWaypoint, void, CNWSWaypoint*)
 
 ObjectAIUpdates::ObjectAIUpdates(NWNXLib::Services::HooksProxy* hooker,
     NWNXLib::Services::MetricsProxy* metrics)
