@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(NWNX-Unified)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE RelWithDebInfo)
+endif()
+
 if (NOT CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     message( FATAL_ERROR "NWNX:EE can only be built with the CMAKE_BUILD_TYPE=RelWithDebInfo configuration." )
 endif()
