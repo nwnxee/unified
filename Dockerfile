@@ -39,7 +39,7 @@ COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn/
 RUN patch /nwn/run-server.sh < /nwn/run-server.patch
 
 # Security upgrades and remove unneeded packages
-RUN apt-get -y upgrade
+RUN apt-get -y upgrade \
     && apt-get -y remove --purge wget gpg apt-transport-https unzip patch \
     && apt-get -y autoremove
     && apt-get clean
