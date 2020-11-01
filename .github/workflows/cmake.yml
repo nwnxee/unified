@@ -66,13 +66,13 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_C_COMPILER_LAUNCHER="ccache gcc-7" -DCMAKE_CXX_COMPILER_LAUNCHER="ccache g++-7"
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: |
-        ccache -p && ccache -z && cmake --build . --config $BUILD_TYPE -- -j 4 && ccache -s
+        cmake --build . --config $BUILD_TYPE -- -j 4
 
     - name: Drop timestamp into Binaries folder
       working-directory: ${{runner.workspace}}/unified/Binaries
