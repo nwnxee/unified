@@ -64,8 +64,9 @@ jobs:
     - name: Configure CMake
       shell: cmake -P {0}
       run: |
-        set(path_separator ":")
-        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}${path_separator}$ENV{PATH}")
+        set(ENV{CC} gcc-7)
+        set(ENV{CXX} g++-7)
+        set(ENV{PATH} "/usr/lib/ccache:$ENV{GITHUB_WORKSPACE}:$ENV{PATH}")
         execute_process(
           COMMAND cmake
             -S .
