@@ -27,7 +27,7 @@ jobs:
       id: dependencies-cache
       with:
         path: "~/dependencies"
-        key: dependencies-2
+        key: dependencies-3
 
     - name: Install Cache Additional Dependencies
       env:
@@ -36,20 +36,12 @@ jobs:
         if [[ "$CACHE_HIT" == 'true' ]]; then
           sudo cp --force --recursive ~/dependencies/* /
         else
-          sudo apt-get install libhunspell-dev libluajit-5.1-dev
+          sudo apt-get install libhunspell-dev libluajit-5.1-dev ccache
           mkdir -p ~/dependencies
-          for dep in libhunspell-dev libluajit-5.1-dev; do
+          for dep in libhunspell-dev libluajit-5.1-dev ccache; do
               dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/dependencies/
           done
         fi
-
-    - name: Download ccache
-      id: ccache
-      shell: cmake -P {0}
-      run: |
-        set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v3.7.7/${{ runner.os }}.tar.xz")
-        file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
-        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
 
     - name: Prepare ccache timestamp
       id: ccache_cache_timestamp
@@ -89,7 +81,7 @@ jobs:
     - name: Build
       shell: cmake -P {0}
       run: |
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
+        execute_process(COMMAND /usr/sbin/update-ccache-symlinks)
         set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
         set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
         set(ENV{CCACHE_COMPRESS} "true")
