@@ -23,8 +23,8 @@ RUN runDeps="hunspell \
     && apt-get -y install --no-install-recommends $runDeps
 
 RUN mkdir -p /nwn/nwnx
-RUN ls -al
-RUN unzip unified/NWNX-EE.zip && rm unified/NWNX-EE.zip && mv *.so *.txt /nwn/nwnx
+COPY ./NWNX-EE.zip /nwn/nwnx
+RUN unzip /nwn/nwnx/NWNX-EE.zip -d /nwn/nwnx && rm /nwn/nwnx/NWNX-EE.zip
 
 # Patch run-server.sh with our modifications
 COPY ./Scripts/Docker/run-server.patch /nwn
