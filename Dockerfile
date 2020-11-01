@@ -38,12 +38,12 @@ RUN runDeps="hunspell \
 COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn/
 RUN patch /nwn/run-server.sh < /nwn/run-server.patch
 
-# Remove unneeded packages
-RUN apt-get -y upgrade ##Security updates
-RUN apt-get -y remove --purge wget gpg apt-transport-https unzip patch
-RUN apt-get -y autoremove
-RUN apt-get clean
-RUN rm -r /var/cache/apt /var/lib/apt/lists
+# Security upgrades and remove unneeded packages
+RUN apt-get -y upgrade
+    && apt-get -y remove --purge wget gpg apt-transport-https unzip patch \
+    && apt-get -y autoremove
+    && apt-get clean
+    && rm -r /var/cache/apt /var/lib/apt/lists
 
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
