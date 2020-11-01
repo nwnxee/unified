@@ -139,7 +139,8 @@ jobs:
            ./NWNX-EE.zip
            ./NWScript.zip
 
-    - uses: sarisia/actions-status-discord@v1
+    - name: Notify Discord of New Binaries
+      uses: sarisia/actions-status-discord@v1
       if: github.event_name == 'push'
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
@@ -186,7 +187,7 @@ jobs:
 
       - name: Push poi image to GitHub Container Registry
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -209,7 +210,8 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-      - uses: sarisia/actions-status-discord@v1
+      - name: Notify Discord of New Docker Images
+        uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: A new docker image with the latest binaries has been published to the Docker Hub.
