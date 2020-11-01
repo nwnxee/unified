@@ -52,10 +52,10 @@ jobs:
     - name: ccache cache files
       uses: actions/cache@v1.1.0
       with:
-      path: .ccache
-      key: gcc-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
-      restore-keys: |
-        gcc-ccache-
+        path: .ccache
+        key: gcc-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+        restore-keys: |
+          gcc-ccache-
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -77,7 +77,7 @@ jobs:
         set(ENV{CCACHE_MAXSIZE} "400M")
         execute_process(COMMAND ccache -p)
         execute_process(COMMAND ccache -z)
-        
+
         execute_process(cmake --build . --config $BUILD_TYPE -- -j 4)
 
         execute_process(COMMAND ccache -s)
