@@ -170,6 +170,13 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: A new docker image with the latest binaries has been published to the Docker Hub.
+          description: |
+            Visit [Docker Hub](https://hub.docker.com/layers/plenarius/unified/${{ steps.vars.outputs.sha_short }}/images/${{ steps.docker_build.outputs.digest }}) for more information.
+
 
   release:
     if: contains(github.ref, 'tags/build')
