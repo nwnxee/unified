@@ -5,11 +5,6 @@ on:
     paths:
       - '**.nss'
       - '**.md'
-      - '**.html'
-      - '**.xml'
-      - '**.css'
-      - '**.txt'
-      - '**.yml'
       - 'docgen/**'
 env:
   BUILD_TYPE: RelWithDebInfo
