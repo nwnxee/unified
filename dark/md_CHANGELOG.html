@@ -165,6 +165,7 @@ Removed</h2>
 Fixed</h2>
 <ul>
 <li>Administration: fix crash in DeletePlayerCharacter()</li>
+<li>Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes</li>
 <li>Events: fixed a nullptr deref crash in BarterEvents</li>
 <li>Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed</li>
 <li>MaxLevel: fixed bug interfering with leveling down NPCs</li>
@@ -905,7 +906,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Nov 1 2020 04:30:23 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Nov 1 2020 16:55:08 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16.
 					<a href="../">Light version</a>
 				</li>
