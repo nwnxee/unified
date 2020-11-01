@@ -61,3 +61,4 @@ jobs:
        BRANCH: gh-pages
        FOLDER: Documentation/light
        CLEAN: true
+
