@@ -1,4 +1,4 @@
-name: Binaries
+name: Build Binaries and Containers
 
 on: [push, pull_request]
 
