@@ -49,7 +49,7 @@ The following plugins were added:
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed
-N/A
+- Optimizations: `OBJECT_TAG_LOOKUP` optimization has been removed. It caused instability and didn't really improve perf.
 
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
