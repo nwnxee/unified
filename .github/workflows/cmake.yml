@@ -204,7 +204,7 @@ jobs:
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
 
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag plenarius/unified:${{ steps.vars.outputs.sha_short }} $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
       - name: Image digest
