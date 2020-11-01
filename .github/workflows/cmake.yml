@@ -49,7 +49,6 @@ jobs:
       id: ccache_cache_timestamp
       shell: cmake -P {0}
       run: |
-        sudo /usr/sbin/update-ccache-symlinks
         string(TIMESTAMP current_date "%Y-%m-%d-%H;%M;%S" UTC)
         message("::set-output name=timestamp::${current_date}")
 
@@ -62,7 +61,7 @@ jobs:
           gcc-ccache-
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${{runner.workspace}}/build
+      run: sudo /usr/sbin/update-ccache-symlinks && export PATH="/usr/lib/ccache:$PATH" && cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
       shell: bash
@@ -72,8 +71,7 @@ jobs:
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: |
-        export PATH="/usr/lib/ccache:$PATH" && cmake --build . --config $BUILD_TYPE -- -j 4
+      run: cmake --build . --config $BUILD_TYPE -- -j 4
 
     - name: Drop timestamp into Binaries folder
       working-directory: ${{runner.workspace}}/unified/Binaries
