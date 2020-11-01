@@ -23,7 +23,6 @@ RUN runDeps="hunspell \
     && apt-get -y install --no-install-recommends $runDeps
 
 RUN mkdir -p /nwn/nwnx
-RUN wget https://github.com/plenarius/unified/releases/download/latest/NWNX-EE.zip
 RUN unzip NWNX-EE.zip && rm NWNX-EE.zip && mv *.so *.txt /nwn/nwnx
 
 # Patch run-server.sh with our modifications
