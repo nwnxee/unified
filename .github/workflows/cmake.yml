@@ -59,7 +59,7 @@ jobs:
           gcc-ccache-
 
     - name: Create Build Environment
-      run: sudo /usr/sbin/update-ccache-symlinks && cmake -E make_directory ${{runner.workspace}}/build
+      run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
       shell: cmake -P {0}
