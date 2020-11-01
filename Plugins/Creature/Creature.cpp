@@ -366,7 +366,6 @@ ArgumentStack Creature::GetMeetsFeatRequirements(ArgumentStack&& args)
         CExoArrayList<uint16_t> unused = {};
 
         retVal = pCreature->m_pStats->FeatRequirementsMet(static_cast<uint16_t>(feat), &unused);
-        free(unused.element);
     }
     return Services::Events::Arguments(retVal);
 }
