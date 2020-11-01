@@ -23,6 +23,12 @@ struct MetaFunction
 
 MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
 {
+    if (real_malloc == nullptr)
+    {
+        LOG_WARNING("NWNX_Diagnostics.so is not preloaded, memory sanitizer will not work.");
+        LOG_WARNING("Please see Diagnostics/README.md for instructions");
+        return;
+    }
     hooker->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
             +[](bool before, CServerExoAppInternal*)
             {
@@ -30,6 +36,13 @@ MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
                     FreePending();
             });
     enabled = true;
+}
+MemorySanitizer::~MemorySanitizer()
+{
+    if (enabled)
+    {
+        LOG_WARNING("Shutting down MSAN, a crash is imminent. This is not a bug.");
+    }
 }
 
 void MemorySanitizer::ReportError(void *ptr)

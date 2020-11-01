@@ -14,6 +14,7 @@ class MemorySanitizer
 {
 public:
     MemorySanitizer(NWNXLib::Services::HooksProxy* hooker);
+    ~MemorySanitizer();
 
     static void *malloc(size_t size);
     static void free(void *ptr);
