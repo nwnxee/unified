@@ -87,7 +87,7 @@ private:
     static void SavingThrowRollHook(bool, CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t);
     static void GetWeaponPowerHook(bool, CNWSCreature*, CNWSObject*, int32_t);
     static void GetTotalEffectBonusHook(bool, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
-    static void DropTURDHook(bool before, CNWSPlayer *pPlayer);
+    static void RemovePCFromWorldHook(bool before, CServerExoAppInternal*, CNWSPlayer*);
 };
 
 }

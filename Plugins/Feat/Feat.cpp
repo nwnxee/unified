@@ -56,7 +56,7 @@ Feat::Feat(Services::ProxyServiceList* services)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>(&OnApplyBonusFeatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>(&OnRemoveBonusFeatHook);
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSPlayer8DropTURDEv, int32_t, CNWSPlayer*>(&DropTURDHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal17RemovePCFromWorldEP10CNWSPlayer, int32_t, CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
 }
 
 Feat::~Feat()
@@ -531,7 +531,7 @@ void Feat::OnRemoveBonusFeatHook(bool before, CNWSEffectListHandler *, CNWSObjec
         RemoveFeatEffects(pCreatureStats, featId);
 }
 
-void Feat::DropTURDHook(bool before, CNWSPlayer *pPlayer)
+void Feat::RemovePCFromWorldHook(bool before, CServerExoAppInternal*, CNWSPlayer *pPlayer)
 {
     if (before)
     {
