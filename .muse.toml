@@ -1,0 +1,1 @@
+build = "CMAKE_BUILD_TYPE=RelWithDebInfo cmake"
