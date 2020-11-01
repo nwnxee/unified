@@ -1,7 +1,6 @@
 FROM beamdog/nwserver:8193.16
 RUN mkdir -p /nwn/nwnx
 COPY ./NWNX-EE.zip /nwn/nwnx
-RUN unzip /nwn/nwnx/NWNX-EE.zip -d /nwn/nwnx && rm /nwn/nwnx/NWNX-EE.zip
 
 # Install plugin run dependencies
 RUN runDeps="hunspell \
@@ -24,6 +23,9 @@ RUN runDeps="hunspell \
     && mv prod.list /etc/apt/sources.list.d/microsoft-prod.list \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps
+
+# Unzip the built binaries from Github Actions
+RUN unzip /nwn/nwnx/NWNX-EE.zip -d /nwn/nwnx && rm /nwn/nwnx/NWNX-EE.zip
 
 # Patch run-server.sh with our modifications
 COPY ./Scripts/Docker/run-server.patch /nwn
