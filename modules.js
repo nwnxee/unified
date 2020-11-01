@@ -9,6 +9,7 @@ var modules =
     [ "Creature", "group__creature.html", "group__creature" ],
     [ "Damage", "group__damage.html", "group__damage" ],
     [ "Data", "group__data.html", "group__data" ],
+    [ "Diagnostics", "group__diagnostics.html", "group__diagnostics" ],
     [ "Dialog", "group__dialog.html", "group__dialog" ],
     [ "DotNET", "group__dotnet.html", "group__dotnet" ],
     [ "Effect", "group__effect.html", "group__effect" ],

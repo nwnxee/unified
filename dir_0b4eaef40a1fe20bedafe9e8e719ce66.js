@@ -8,6 +8,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "Creature", "dir_efcc7e8cb6d48fa5ae53e4b1e4942f85.html", "dir_efcc7e8cb6d48fa5ae53e4b1e4942f85" ],
     [ "Damage", "dir_31d9e918c93dcca42dee91f234076bec.html", "dir_31d9e918c93dcca42dee91f234076bec" ],
     [ "Data", "dir_ae5d6ac362edcee64c7fbd49e8710ae7.html", "dir_ae5d6ac362edcee64c7fbd49e8710ae7" ],
+    [ "Diagnostics", "dir_97e558bfbec1edbb6e4131ca504f3627.html", null ],
     [ "Dialog", "dir_20f7fb784d609dfd229486badd900ddb.html", "dir_20f7fb784d609dfd229486badd900ddb" ],
     [ "DotNET", "dir_ee8f441d91e7d21dc4f7060a96c12362.html", null ],
     [ "Effect", "dir_11aaeb639a522ceaac16b6aae5391291.html", "dir_11aaeb639a522ceaac16b6aae5391291" ],

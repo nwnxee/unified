@@ -9,9 +9,10 @@ var searchData=
   ['decrby_86',['DECRBY',['../nwnx__redis__short_8nss.html#a9cf0c607c7debf92224adb2853161f18',1,'nwnx_redis_short.nss']]],
   ['del_87',['DEL',['../nwnx__redis__short_8nss.html#a8f16bec7bd796e3490a8abbd9feb0f0f',1,'nwnx_redis_short.nss']]],
   ['deprecated_20list_88',['Deprecated List',['../deprecated.html',1,'']]],
-  ['dialog_89',['Dialog',['../group__dialog.html',1,'']]],
-  ['discard_90',['DISCARD',['../nwnx__redis__short_8nss.html#a0711873ab5ab313bdf85f9a385eac80f',1,'nwnx_redis_short.nss']]],
-  ['domain_91',['domain',['../structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b',1,'NWNX_Creature_MemorisedSpell']]],
-  ['dotnet_92',['DotNET',['../group__dotnet.html',1,'']]],
-  ['dump_93',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]]
+  ['diagnostics_89',['Diagnostics',['../group__diagnostics.html',1,'']]],
+  ['dialog_90',['Dialog',['../group__dialog.html',1,'']]],
+  ['discard_91',['DISCARD',['../nwnx__redis__short_8nss.html#a0711873ab5ab313bdf85f9a385eac80f',1,'nwnx_redis_short.nss']]],
+  ['domain_92',['domain',['../structNWNX__Creature__MemorisedSpell.html#aa4c41f82a0cc4321ef229bf99d9e303b',1,'NWNX_Creature_MemorisedSpell']]],
+  ['dotnet_93',['DotNET',['../group__dotnet.html',1,'']]],
+  ['dump_94',['DUMP',['../nwnx__redis__short_8nss.html#ac45dccd86cae41535f1a1cc466839509',1,'nwnx_redis_short.nss']]]
 ];
