@@ -9,6 +9,7 @@
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSPlayerTURD.hpp"
 #include "API/Constants.hpp"
 #include "API/Constants/Effect.hpp"
 #include "API/Globals.hpp"
@@ -56,7 +57,7 @@ Feat::Feat(Services::ProxyServiceList* services)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>(&OnApplyBonusFeatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>(&OnRemoveBonusFeatHook);
 
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal17RemovePCFromWorldEP10CNWSPlayer, int32_t, CServerExoAppInternal*, CNWSPlayer*>(&RemovePCFromWorldHook);
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, int32_t, CNWSPlayer*, CNWSPlayerTURD*>(&EatTURDHook);
 }
 
 Feat::~Feat()
@@ -531,15 +532,15 @@ void Feat::OnRemoveBonusFeatHook(bool before, CNWSEffectListHandler *, CNWSObjec
         RemoveFeatEffects(pCreatureStats, featId);
 }
 
-void Feat::RemovePCFromWorldHook(bool before, CServerExoAppInternal*, CNWSPlayer *pPlayer)
+void Feat::EatTURDHook(bool before, CNWSPlayer*, CNWSPlayerTURD *pPlayerTURD)
 {
-    if (before)
+    if (before && pPlayerTURD)
     {
         std::vector<uint64_t> remove(128);
-        CNWSCreature *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-        for (int i = 0; i < pCreature->m_appliedEffects.num; i++)
+        for (int i = 0; i < pPlayerTURD->m_appliedEffects.num; i++)
         {
-            auto eff = (CGameEffect *) pCreature->m_appliedEffects.element[i];
+            auto *eff = pPlayerTURD->m_appliedEffects.element[i];
+
             std::string sCustomTag = eff->m_sCustomTag.CStr();
             if (sCustomTag.find("NWNX_Feat_FeatMod_", 0) == 0)
             {
@@ -547,7 +548,7 @@ void Feat::RemovePCFromWorldHook(bool before, CServerExoAppInternal*, CNWSPlayer
             }
         }
         for (auto id: remove)
-            pCreature->RemoveEffectById(id);
+            pPlayerTURD->RemoveEffectById(id);
     }
 }
 
