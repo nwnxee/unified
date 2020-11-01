@@ -8,11 +8,12 @@
 
 namespace Diagnostics {
 
+struct Backtrace { void *bt[8]; };
+
 class MemorySanitizer
 {
 public:
-    MemorySanitizer(NWNXLib::Services::HooksProxy* hooker, NWNXLib::Services::TasksProxy* tasker);
-    ~MemorySanitizer();
+    MemorySanitizer(NWNXLib::Services::HooksProxy* hooker);
 
     static void *malloc(size_t size);
     static void free(void *ptr);
@@ -22,10 +23,10 @@ public:
     static void FreePending();
 
     static inline NWNXLib::Services::TasksProxy* tasker;
-    static inline std::unordered_map<void*, void**> active_allocations;
+    static inline std::unordered_map<void*, Backtrace> active_allocations;
     static inline std::unordered_set<void*> pending_free;
 
-    static inline std::mutex lock;
+    static inline std::recursive_mutex lock;
     static inline bool enabled = false;
 
     static inline void *(*real_calloc)(size_t, size_t);

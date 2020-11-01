@@ -15,18 +15,24 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Diagnostics {
 
+static bool preloaded = false;
+void auto_constructor() __attribute__((constructor));
+void auto_constructor() { preloaded = true; }
+
 Diagnostics::Diagnostics(Services::ProxyServiceList* services)
         : Plugin(services)
 {
-    if (GetServices()->m_config->Get<bool>("MEMORY_SANITIZER", false))
+    if (preloaded)
     {
         LOG_INFO("Memory sanitizer enabled");
-        m_MemorySanitizer = std::make_unique<MemorySanitizer>(GetServices()->m_hooks.get(), GetServices()->m_tasks.get());
+        m_MemorySanitizer = std::make_unique<MemorySanitizer>(GetServices()->m_hooks.get());
+    }
+    else
+    {
+        LOG_WARNING("Diagnostics will not do anything unless preloaded. See the readme file");
     }
 }
 
-Diagnostics::~Diagnostics()
-{
-}
+Diagnostics::~Diagnostics() { }
 
 }

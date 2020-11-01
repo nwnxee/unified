@@ -21,29 +21,33 @@ struct MetaFunction
     ~MetaFunction() { meta = oldmeta; }
 };
 
-
-MemorySanitizer::MemorySanitizer(Services::HooksProxy*, Services::TasksProxy* tasker)
+MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
 {
+    hooker->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
+            +[](bool before, CServerExoAppInternal*)
+            {
+                if (!before)
+                    FreePending();
+            });
     enabled = true;
-    tasker = tasker;
-}
-MemorySanitizer::~MemorySanitizer()
-{
-    enabled = false;
 }
 
 void MemorySanitizer::ReportError(void *ptr)
 {
     try
     {
-        void **bt = active_allocations.at(ptr);
-        char buffer[16*1024];
-        char** resolvedFrames = backtrace_symbols(bt, 8);
+        Backtrace bt;
+        {
+            std::lock_guard<std::recursive_mutex> guard(lock);
+            bt = active_allocations.at(ptr);
+        }
+        char buffer[16*1024] = "";
+        char** resolvedFrames = backtrace_symbols(bt.bt, 8);
         std::strncat(buffer, "\n  Allocation backtrace:\n", sizeof(buffer)-1);
         for (int i = 0; i < 8; ++i)
         {
             uintptr_t addr, addr2;
-            char backtraceBuffer[2048];
+            char backtraceBuffer[2048] = "";
             std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
             if (std::sscanf(backtraceBuffer, "    ./nwserver-linux(+%lx) [%lx]", &addr, &addr2) == 2)
             {
@@ -52,7 +56,8 @@ void MemorySanitizer::ReportError(void *ptr)
             }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
-        LOG_NOTICE("%s", buffer);
+        std::puts(buffer);
+        //LOG_NOTICE("%s", buffer);
     } catch (std::out_of_range& e)
     {
         LOG_NOTICE("Pointer %p not found in active allocations list.", ptr);
@@ -65,7 +70,7 @@ void MemorySanitizer::ReportError(void *ptr)
         MemorySanitizer::ReportError(ptr);    \
   } } while(0)
 
-constexpr uint8_t  UNINIT = 0x55;
+constexpr uint8_t  UNINIT = 0x69;
 constexpr uint32_t MAGIC1 = 0x76aade08;
 constexpr uint64_t MAGIC2 = 0x8d0308b6e7dce543ull;
 constexpr uint64_t MAGIC3 = 0xe561f9248d7563d1ull;
@@ -121,11 +126,10 @@ void *MemorySanitizer::malloc(size_t size)
     void *ptr = malloc(size + FenceSize);
     ptr = InitFence(ptr, size);
 
-    void *bt[8];
-    backtrace(bt, 8);
+    Backtrace bt;
+    backtrace(bt.bt, 8);
 
-    LOG_NOTICE("allocated %p", ptr);
-    std::lock_guard<std::mutex> guard(lock);
+    std::lock_guard<std::recursive_mutex> guard(lock);
     active_allocations[ptr] = bt;
 
     return ptr;
@@ -136,18 +140,29 @@ void MemorySanitizer::free(void *ptr)
     if (!enabled || meta) return real_free(ptr);
     MetaFunction mf;
 
+    {
+        std::lock_guard<std::recursive_mutex> guard(lock);
+        if (active_allocations.count(ptr) == 0)
+        {
+            // Logging infra is not reentrant.
+            //LOG_WARNING("Freeing non-allocated pointer %p.", ptr);
+            return real_free(ptr);
+        }
+    }
+
     size_t size = CheckFence(ptr);
     memset(ptr, UNINIT, size);
 
-    std::lock_guard<std::mutex> guard(lock);
-    MSAN_ASSERT(active_allocations.count(ptr) == 1, ptr, "Freeing non-allocated pointer.");
+    std::lock_guard<std::recursive_mutex> guard(lock);
     MSAN_ASSERT(pending_free.count(ptr) == 0, ptr, "Double free detected.");
     pending_free.insert(ptr);
 }
 
 void *MemorySanitizer::calloc(size_t num, size_t size)
 {
-    ResolveSymbols();
+    // dlsym calls calloc(), so just return null to avoid infinite recursion
+    //ResolveSymbols();
+    if (real_calloc == nullptr) return nullptr;
     if (!enabled || meta) return real_calloc(num, size);
 
     size_t fullsize = num * size;
@@ -171,7 +186,7 @@ void *MemorySanitizer::realloc(void *ptr, size_t size)
 void MemorySanitizer::FreePending()
 {
     MetaFunction mf;
-    std::lock_guard<std::mutex> guard(lock);
+    std::lock_guard<std::recursive_mutex> guard(lock);
     
     for (auto* ptr : pending_free)
     {
@@ -187,15 +202,17 @@ void MemorySanitizer::FreePending()
         active_allocations.erase(ptr);
         real_free((char*)ptr - sizeof(MemoryFenceHead));
     }
+    pending_free.clear();
 }
 
 void MemorySanitizer::ResolveSymbols()
 {
-    if (real_malloc) return;
+    if (real_calloc) return;
+    MetaFunction mf;
 
+    real_calloc  = (void*(*)(size_t,size_t)) dlsym(RTLD_NEXT, "calloc");
     real_malloc  = (void*(*)(size_t))        dlsym(RTLD_NEXT, "malloc");
     real_free    = (void(*)(void*))          dlsym(RTLD_NEXT, "free");
-    real_calloc  = (void*(*)(size_t,size_t)) dlsym(RTLD_NEXT, "calloc");
     real_realloc = (void*(*)(void*,size_t))  dlsym(RTLD_NEXT, "realloc");
 }
 
