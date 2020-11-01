@@ -49,6 +49,7 @@ Race::Race(Services::ProxyServiceList* services)
 
     REGISTER(SetRacialModifier);
     REGISTER(GetParentRace);
+    REGISTER(SetFavoredEnemyFeat);
 
 #undef REGISTER
 
@@ -88,7 +89,6 @@ Race::Race(Services::ProxyServiceList* services)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji, int32_t, CNWSMessage*, PlayerID, int32_t>(&SendServerToPlayerLevelUp_ConfirmationHook);
 
     // Swap race with parent race due to hardcoded checks here
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, int32_t, CNWSCreatureStats*, CNWSCreature*>(&GetFavoredEnemyBonusHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature25CreateDefaultQuickButtonsEv, void, CNWSCreature*>(&CreateDefaultQuickButtonsHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih, int32_t, CNWSCreatureStats*, uint8_t, int32_t, uint8_t>(&LevelUpAutomaticHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats33GetMeetsPrestigeClassRequirementsEP8CNWClass, int32_t, CNWSCreatureStats*, CNWClass*>(&GetMeetsPrestigeClassRequirementsHook);
@@ -98,6 +98,9 @@ Race::Race(Services::ProxyServiceList* services)
 
     // Need to set up default parent race to invalid before the on module load sets up the parents
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules12LoadRaceInfoEv, void, CNWRules *>(&LoadRaceInfoHook);
+
+    // Check for favored enemy bonuses on either the race or parent race including custom set favored enemy feats for custom races
+    GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, int32_t, CNWSCreatureStats*, CNWSCreature*>(&GetFavoredEnemyBonusHook);
 
     // Try to hook ValidateCharacter, if we can't it means NWNX_ELC is loaded and we need to subscribe to its broadcast message instead.
     try
@@ -724,9 +727,99 @@ void Race::SetOrRestoreRace(bool before, CNWSCreatureStats *pCreatureStats, CNWS
     }
 }
 
-void Race::GetFavoredEnemyBonusHook(bool before, CNWSCreatureStats *pCreatureStats, CNWSCreature *pTgtCreature)
+int32_t Race::GetFavoredEnemyBonusHook(CNWSCreatureStats *pCreatureStats, CNWSCreature *pTgtCreature)
 {
-    SetOrRestoreRace(before, pCreatureStats, pTgtCreature->m_pStats);
+    static bool bFavoredEnemyRacesInitialized = false;
+    if (!bFavoredEnemyRacesInitialized)
+    {
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Aberration] = Constants::Feat::FavoredEnemy_Aberration;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Animal] = Constants::Feat::FavoredEnemy_Animal;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Beast] = Constants::Feat::FavoredEnemy_Beast;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Construct] = Constants::Feat::FavoredEnemy_Construct;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Dragon] = Constants::Feat::FavoredEnemy_Dragon;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Dwarf] = Constants::Feat::FavoredEnemy_Dwarf;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Elemental] = Constants::Feat::FavoredEnemy_Elemental;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Elf] = Constants::Feat::FavoredEnemy_Elf;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Fey] = Constants::Feat::FavoredEnemy_Fey;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Giant] = Constants::Feat::FavoredEnemy_Giant;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Gnome] = Constants::Feat::FavoredEnemy_Gnome;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Halfelf] = Constants::Feat::FavoredEnemy_Halfelf;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Halfling] = Constants::Feat::FavoredEnemy_Halfling;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Halforc] = Constants::Feat::FavoredEnemy_Halforc;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Human] = Constants::Feat::FavoredEnemy_Human;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidGoblinoid] = Constants::Feat::FavoredEnemy_Goblinoid;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidMonstrous] = Constants::Feat::FavoredEnemy_Monstrous;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidOrc] = Constants::Feat::FavoredEnemy_Orc;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::HumanoidReptilian] = Constants::Feat::FavoredEnemy_Reptilian;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::MagicalBeast] = Constants::Feat::FavoredEnemy_MagicalBeast;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Outsider] = Constants::Feat::FavoredEnemy_Outsider;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Shapechanger] = Constants::Feat::FavoredEnemy_Shapechanger;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Undead] = Constants::Feat::FavoredEnemy_Undead;
+        g_plugin->m_RaceFavoredEnemyFeat[Constants::RacialType::Vermin] = Constants::Feat::FavoredEnemy_Vermin;
+        bFavoredEnemyRacesInitialized = true;
+    }
+
+    // If either the target's race or its parent race has a favored enemy feat associated with it we check the attacker for that feat
+    auto nFeat = -1;
+    auto fi = g_plugin->m_RaceFavoredEnemyFeat.find(pTgtCreature->m_pStats->m_nRace);
+    if (fi != g_plugin->m_RaceParent.end())
+        nFeat = fi->second;
+
+    auto nParentFeat = -1;
+    auto pri = g_plugin->m_RaceParent.find(pTgtCreature->m_pStats->m_nRace);
+    if ( pri != g_plugin->m_RaceParent.end())
+    {
+        auto pfi = g_plugin->m_RaceFavoredEnemyFeat.find(pri->second);
+        if (pfi != g_plugin->m_RaceFavoredEnemyFeat.end())
+        {
+            nParentFeat = pfi->second;
+        }
+    }
+
+    if (nFeat == -1 && nParentFeat == -1)
+        return 0;
+
+    uint8_t nBonus = 0;
+    if (pCreatureStats->m_bIsPC)
+    {
+        int32_t nMulticlass = -1;
+        for (auto* levelStats : pCreatureStats->m_lstLevelStats)
+        {
+            for (auto feat : levelStats->m_lstFeats)
+            {
+                if (feat == nFeat || feat == nParentFeat)
+                {
+                    for (int i = 0; i < pCreatureStats->m_nNumMultiClasses; i++)
+                    {
+                        if (pCreatureStats->m_ClassInfo[i].m_nClass == levelStats->m_nClass)
+                        {
+                            nMulticlass = i;
+                            break;
+                        }
+                    }
+                }
+                if (nMulticlass != -1)
+                    break;
+            }
+            if (nMulticlass != -1)
+                break;
+        }
+
+        if (nMulticlass == -1)
+            return 0;
+
+        if (pCreatureStats->m_ClassInfo[nMulticlass].m_nClass == Constants::ClassType::Harper)
+            nBonus = pCreatureStats->m_ClassInfo[nMulticlass].m_nLevel / 4 + 1;
+        else
+            nBonus= pCreatureStats->m_ClassInfo[nMulticlass].m_nLevel / 5 + 1;
+
+        return nBonus;
+    }
+
+    if (!pCreatureStats->HasFeat(nFeat))
+        return 0;
+    nBonus = pCreatureStats->GetLevel(0) / 5 + 1;
+    return nBonus;
 }
 
 void Race::CreateDefaultQuickButtonsHook(bool before, CNWSCreature *pCreature)
@@ -1056,6 +1149,21 @@ ArgumentStack Race::GetParentRace(ArgumentStack&& args)
     auto raceId = Services::Events::ExtractArgument<int>(args);
     auto parentRace = g_plugin->m_RaceParent[raceId] == RacialType::Invalid ? raceId : g_plugin->m_RaceParent[raceId];
     return Services::Events::Arguments(parentRace);
+}
+
+ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
+{
+    auto raceId = Services::Events::ExtractArgument<int>(args);
+    auto featId = Services::Events::ExtractArgument<int>(args);
+
+    CNWFeat *pFeat = Globals::Rules()->GetFeat(featId);
+    ASSERT_OR_THROW(pFeat);
+
+    g_plugin->m_RaceFavoredEnemyFeat[raceId] = featId;
+
+    LOG_INFO("%s: Setting Favored Enemy Feat to %s.", Globals::Rules()->m_lstRaces[raceId].GetNameText().CStr(), pFeat->GetNameText().CStr());
+
+    return Services::Events::Arguments();
 }
 
 }

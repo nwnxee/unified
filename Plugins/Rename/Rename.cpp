@@ -183,8 +183,8 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, ObjectID ob
         auto overrideName = std::get<1>(g_plugin->m_RenamePlayerNames[targetOid][observerOid]);
         if (playerList)
         {
-            targetCreature->m_pStats->m_lsFirstName = g_plugin->ContainString(overrideName.CStr());
-            targetCreature->m_pStats->m_lsLastName = g_plugin->ContainString("");
+            targetCreature->m_pStats->m_lsFirstName = Utils::CreateLocString(overrideName.CStr());
+            targetCreature->m_pStats->m_lsLastName = Utils::CreateLocString("");
         }
         targetCreature->m_sDisplayName = displayName;
         LOG_DEBUG("Observer %x will see %x as %s due to personal override", observerOid, targetOid, overrideName.m_sString);
@@ -195,8 +195,8 @@ void Rename::SetPlayerNameAsObservedBy(CNWSCreature *targetCreature, ObjectID ob
         auto overrideName = std::get<1>(g_plugin->m_RenamePlayerNames[targetOid][Constants::OBJECT_INVALID]);
         if (playerList)
         {
-            targetCreature->m_pStats->m_lsFirstName = g_plugin->ContainString(overrideName.CStr());
-            targetCreature->m_pStats->m_lsLastName = g_plugin->ContainString("");
+            targetCreature->m_pStats->m_lsFirstName = Utils::CreateLocString(overrideName.CStr());
+            targetCreature->m_pStats->m_lsLastName = Utils::CreateLocString("");
         }
         targetCreature->m_sDisplayName = displayName;
         LOG_DEBUG("Observer %x will see %x as %s due to global override", observerOid, targetOid, overrideName.m_sString);
@@ -498,13 +498,6 @@ void Rename::GlobalNameChange(
             SetOrRestorePlayerName(before, targetPlayer, observerPlayer, true);
         }
     }
-}
-
-CExoLocString Rename::ContainString(const std::string& str)
-{
-    CExoLocString locStr;
-    locStr.AddString(0,CExoString(str.c_str()),0);
-    return locStr;
 }
 
 std::string Rename::GenerateRandomPlayerName(size_t length, ObjectID targetOid)

@@ -11,17 +11,17 @@ using namespace NWNXLib;
 
 static Services::MetricsProxy* g_metrics;
 
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerArea, void, CNWSArea*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerAreaOfEffect, void, CNWSAreaOfEffectObject*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerCreature, void, CNWSCreature*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerDoor, void, CNWSDoor*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerEncounter, void, CNWSEncounter*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerItem,void, CNWSItem*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerModule, void, CNWSModule*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerPlaceable, void, CNWSPlaceable*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerStore, void, CNWSStore*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerTrigger, void, CNWSTrigger*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
-DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerWaypoint, void, CNWSWaypoint*, uint32_t, uint32_t, void*, uint32_t, uint32_t);
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerArea, void, CNWSArea*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerAreaOfEffect, void, CNWSAreaOfEffectObject*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerCreature, void, CNWSCreature*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerDoor, void, CNWSDoor*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerEncounter, void, CNWSEncounter*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerItem,void, CNWSItem*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerModule, void, CNWSModule*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerPlaceable, void, CNWSPlaceable*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerStore, void, CNWSStore*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerTrigger, void, CNWSTrigger*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
+DECLARE_PROFILE_TARGET_FAST_SIMPLE(*g_metrics, EventHandlerWaypoint, void, CNWSWaypoint*, uint32_t, uint32_t, void*, uint32_t, uint32_t)
 
 ObjectEventHandlers::ObjectEventHandlers(NWNXLib::Services::HooksProxy* hooker,
     NWNXLib::Services::MetricsProxy* metrics)
