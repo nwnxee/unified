@@ -97,32 +97,38 @@ jobs:
         execute_process(COMMAND ccache -s)
 
     - name: Drop timestamp into Binaries folder
+      if: github.event_name == 'push'
       working-directory: ${{runner.workspace}}/unified/Binaries
       run: echo "${{ steps.ccache_cache_timestamp.outputs.timestamp }}" > ${{ steps.vars.outputs.sha_short }}.txt
 
     - name: Pack the Binaries
+      if: github.event_name == 'push'
       working-directory: ${{runner.workspace}}/unified/Binaries
       run: cmake -E tar cfv ../NWNX-EE.zip --format=zip .
 
     - name: Pack the Scripts
+      if: github.event_name == 'push'
       working-directory: ${{runner.workspace}}/unified
       shell: bash
       run: zip -j ./NWScript.zip `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
 
     - name: Upload Binaries
       uses: actions/upload-artifact@v1
+      if: github.event_name == 'push'
       with:
        path: ./NWNX-EE.zip
        name: NWNX-EE.zip
 
     - name: Upload Scripts
       uses: actions/upload-artifact@v1
+      if: github.event_name == 'push'
       with:
         path: ./NWScript.zip
         name: NWScript.zip
 
     - name: Deploy Latest Development Build
       uses: "marvinpinto/action-automatic-releases@latest"
+      if: github.event_name == 'push'
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
@@ -133,6 +139,7 @@ jobs:
            ./NWScript.zip
 
     - uses: sarisia/actions-status-discord@v1
+      if: github.event_name == 'push'
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         title: New binaries of NWNX:EE have been built.
@@ -141,6 +148,7 @@ jobs:
 
   docker:
     runs-on: ubuntu-20.04
+    if: github.event_name == 'push'
     needs: build
     steps:
       - uses: actions/checkout@v2
