@@ -4,8 +4,8 @@ on: [push, pull_request]
 
 env:
   BUILD_TYPE: RelWithDebInfo
-  CC: gcc-7 -m64
-  CXX: g++-7 -m64
+  CC: ccache gcc-7 -m64
+  CXX: ccache g++-7 -m64
 
 jobs:
   build:
@@ -69,8 +69,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: |
-        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
-        set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
+        set(ENV{CCACHE_BASEDIR} "$ENV{GITHUB_WORKSPACE}")
         set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
         set(ENV{CCACHE_COMPRESS} "true")
         set(ENV{CCACHE_COMPRESSLEVEL} "6")
