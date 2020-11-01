@@ -82,6 +82,7 @@ jobs:
       shell: cmake -P {0}
       run: |
         execute_process(COMMAND /usr/sbin/update-ccache-symlinks)
+        file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
         set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
         set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
         set(ENV{CCACHE_COMPRESS} "true")
