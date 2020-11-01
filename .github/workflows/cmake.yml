@@ -18,8 +18,9 @@ jobs:
 
     - name: Set outputs
       id: vars
-      run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-
+      run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "/usr/lib/ccache" >> $GITHUB_PATH
     - name: Get current time
       uses: 1466587594/get-current-time@v2
       id: current-time
@@ -61,7 +62,7 @@ jobs:
           gcc-ccache-
 
     - name: Create Build Environment
-      run: sudo /usr/sbin/update-ccache-symlinks && export PATH="/usr/lib/ccache:$PATH" && cmake -E make_directory ${{runner.workspace}}/build
+      run: sudo /usr/sbin/update-ccache-symlinks && cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
       shell: bash
