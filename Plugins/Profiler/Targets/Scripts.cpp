@@ -81,7 +81,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, RunScript,
             return tags;
         }
     ),
-    int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t);
+    int32_t, CVirtualMachine*, CExoString*, uint32_t, int32_t)
 
 Scripts::Scripts(const bool areaTimings, const bool typeTimings,
     NWNXLib::Services::HooksProxy* hooker,

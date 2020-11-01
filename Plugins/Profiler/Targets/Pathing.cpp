@@ -47,7 +47,7 @@ DECLARE_PROFILE_TARGET_FAST(*g_metrics, PlotPath,
             return tags;
         }
     ),
-    int32_t, CNWSModule*, CPathfindInformation*, uint32_t);
+    int32_t, CNWSModule*, CPathfindInformation*, uint32_t)
 
 Pathing::Pathing(NWNXLib::Services::HooksProxy* hooker,
     NWNXLib::Services::MetricsProxy* metrics)

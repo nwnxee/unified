@@ -42,6 +42,7 @@ The following plugins were added:
 - Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.
 - Visibility: added two new visibility types to always show an object regardless of range.
 - Weapon: Good Aim Feat now takes value from ruleset.2da
+- We now only allow builds with the `CMAKE_BUILD_TYPE=RelWithDebInfo` configuration. `Debug` builds produce unexpected behaviour and `Release` builds are generally unnecessary and mess with Assert functionality.
 
 ### Deprecated
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
