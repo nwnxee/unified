@@ -4,8 +4,6 @@ on: [push, pull_request]
 
 env:
   BUILD_TYPE: RelWithDebInfo
-  CC: ccache gcc-7 -m64
-  CXX: ccache g++-7 -m64
   CCACHE_BASEDIR: $ENV{GITHUB_WORKSPACE}
   CCACHE_DIR: $ENV{GITHUB_WORKSPACE}/.ccache
   CCACHE_COMPRESS: true
@@ -55,7 +53,7 @@ jobs:
         message("::set-output name=timestamp::${current_date}")
 
     - name: ccache cache files
-      uses: actions/cache@v1.1.0
+      uses: actions/cache@v2
       with:
         path: .ccache
         key: gcc-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
@@ -68,7 +66,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
