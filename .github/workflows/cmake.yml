@@ -36,12 +36,20 @@ jobs:
         if [[ "$CACHE_HIT" == 'true' ]]; then
           sudo cp --force --recursive ~/dependencies/* /
         else
-          sudo apt-get install libhunspell-dev libluajit-5.1-dev ccache
+          sudo apt-get install libhunspell-dev libluajit-5.1-dev
           mkdir -p ~/dependencies
-          for dep in libhunspell-dev libluajit-5.1-dev ccache; do
+          for dep in libhunspell-dev libluajit-5.1-dev; do
               dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/dependencies/
           done
         fi
+
+    - name: Download ccache
+      id: ccache
+      shell: cmake -P {0}
+      run: |
+        set(ccache_url "https://github.com/cristianadam/ccache/releases/download/v$ENV{CCACHE_VERSION}/${{ runner.os }}.tar.xz")
+        file(DOWNLOAD "${ccache_url}" ./ccache.tar.xz SHOW_PROGRESS)
+        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ./ccache.tar.xz)
 
     - name: Prepare ccache timestamp
       id: ccache_cache_timestamp
@@ -64,9 +72,7 @@ jobs:
     - name: Configure CMake
       shell: cmake -P {0}
       run: |
-        set(ENV{CC} gcc-7)
-        set(ENV{CXX} g++-7)
-        set(ENV{PATH} "/usr/lib/ccache:$ENV{GITHUB_WORKSPACE}:$ENV{PATH}")
+        set(ENV{PATH} "$ENV{GITHUB_WORKSPACE}:$ENV{PATH}")
         execute_process(
           COMMAND cmake
             -S .
