@@ -1,12 +1,22 @@
 name: Build Binaries and Containers
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+      - 'docgen/**'
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+      - 'docgen/**'
 
 env:
-  BUILD_TYPE: RelWithDebInfo
   CC: gcc-7 -m64
   CXX: g++-7 -m64
-  IMAGE_NAME: nwnxee
 
 jobs:
   build:

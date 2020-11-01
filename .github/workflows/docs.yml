@@ -2,12 +2,19 @@ name: Documentation
 
 on:
   push:
+    branches:
+      - master
     paths:
       - '**.nss'
       - '**.md'
       - 'docgen/**'
-env:
-  BUILD_TYPE: RelWithDebInfo
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '**.nss'
+      - '**.md'
+      - 'docgen/**'
 
 jobs:
   build:
@@ -42,7 +49,7 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE
 
     - name: Generate Documentation
       working-directory: ${{runner.workspace}}/build
