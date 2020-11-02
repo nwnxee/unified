@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
-- Chat: targeted messages can now be sent on party channel
+- Creature: targeted messages can now be sent on party channel with updated SendMessage()
 - Events: added skippable Acquire events to ItemEvents
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
@@ -29,9 +29,11 @@ The following plugins were added:
 - Creature: {Get|Set}WalkAnimation()
 - Creature: SetAttackRollOverride()
 - Creature: SetParryAllAttacks()
+- Creature: SendMessage()
 - Feat: SetFeatModifier()
 - Object: GetCurrentAnimation()
 - Player: AddCustomJournalEntry() and GetJournalEntry()
+- Player: {Get|Set}ChatHearingDistance()
 - Util: GetScriptParamIsSet()
 
 ### Changed
@@ -45,7 +47,7 @@ The following plugins were added:
 - Weapon: Good Aim Feat now takes value from ruleset.2da
 
 ### Deprecated
-- Chat: NWNX_Chat_RegisterChatScript() and the functionality to retrieve chat message information has been deprecated and handled now through Chat Events
+- Chat: NWNX_Chat has been deprecated and handled now through Chat Events (NWNX_ON_CHAT_SEND_*), NWNX_Creature_SendMessage() and NWNX_Player_{Get|Set}ChatHearingDistance().
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed

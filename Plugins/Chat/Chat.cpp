@@ -60,8 +60,9 @@ Chat::Chat(Services::ProxyServiceList* services)
     m_hearingDistances[Constants::ChatChannel::DmWhisper]     = 3.0f;
     m_hearingDistances[Constants::ChatChannel::PlayerWhisper] = 3.0f;
     m_customHearingDistances = false;
-
-    m_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
+    LOG_INFO("NWNX_Chat has been deprecated. Please use NWNX_Creature_SendMessage(), "
+             "NWNX_Player_{Get|Set}ChatHearingDistance() and the NWNX_ON_CHAT_SEND_* event for chat functionality.");
+    //m_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
 }
 
 Chat::~Chat()

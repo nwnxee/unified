@@ -3,6 +3,7 @@
 /// @{
 /// @file nwnx_creature.nss
 #include "nwnx"
+#include "nwnx_consts"
 
 const string NWNX_Creature = "NWNX_Creature"; ///< @private
 
@@ -813,6 +814,15 @@ void NWNX_Creature_SetAttackRollOverride(object oCreature, int nRoll, int nModif
 /// @param bParry TRUE to parry all attacks.
 /// @note Use this command on_module_load instead of the NWNX_TWEAKS_PARRY_ALL_ATTACKS tweak if using NWNX_Creature_SetAttackRollOverride()
 void NWNX_Creature_SetParryAllAttacks(object oCreature, int bParry);
+
+/// @brief Sends a chat message from a creature.
+/// @remark If no target is provided, then it broadcasts to all eligible targets.
+/// @param oCreature The sender of the message.
+/// @param nChannel The @ref chat_channels "channel" to send the message.
+/// @param sMessage The message to send.
+/// @param oTarget The receiver of the message
+/// @return TRUE if successful, FALSE otherwise.
+int NWNX_Creature_SendMessage(object oCreature, string sMessage, int nChannel = NWNX_CHAT_CHANNEL_PLAYER_TALK, object oTarget = OBJECT_INVALID);
 
 /// @}
 
@@ -2060,4 +2070,16 @@ void NWNX_Creature_SetParryAllAttacks(object oCreature, int bParry)
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bParry);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_SendMessage(object oCreature, string sMessage, int nChannel = NWNX_CHAT_CHANNEL_PLAYER_TALK, object oTarget = OBJECT_INVALID)
+{
+    string sFunc = "SendMessage";
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oTarget);
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, nChannel);
+    NWNX_PushArgumentString(NWNX_Creature, sFunc, sMessage);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
