@@ -53,6 +53,7 @@ The following plugins were added:
 
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
+- Core: debug dumps now properly resolve nwserver functions regardless of path and binary name used
 - Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes
 - Events: fixed a nullptr deref crash in BarterEvents
 - Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
