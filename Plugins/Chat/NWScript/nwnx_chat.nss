@@ -3,28 +3,9 @@
 /// @{
 /// @file nwnx_chat.nss
 #include "nwnx"
+#include "nwnx_consts"
 
 const string NWNX_Chat = "NWNX_Chat"; ///< @private
-
-/// @name Chat Channels
-/// @anchor chat_channels
-///
-/// Constants defining the various chat channels.
-/// @{
-const int NWNX_CHAT_CHANNEL_PLAYER_TALK     = 1;
-const int NWNX_CHAT_CHANNEL_PLAYER_SHOUT    = 2;
-const int NWNX_CHAT_CHANNEL_PLAYER_WHISPER  = 3;
-const int NWNX_CHAT_CHANNEL_PLAYER_TELL     = 4;
-const int NWNX_CHAT_CHANNEL_SERVER_MSG      = 5;
-const int NWNX_CHAT_CHANNEL_PLAYER_PARTY    = 6;
-const int NWNX_CHAT_CHANNEL_PLAYER_DM       = 14;
-const int NWNX_CHAT_CHANNEL_DM_TALK         = 17;
-const int NWNX_CHAT_CHANNEL_DM_SHOUT        = 18;
-const int NWNX_CHAT_CHANNEL_DM_WHISPER      = 19;
-const int NWNX_CHAT_CHANNEL_DM_TELL         = 20;
-const int NWNX_CHAT_CHANNEL_DM_PARTY        = 22;
-const int NWNX_CHAT_CHANNEL_DM_DM           = 30;
-/// @}
 
 /// @brief Sends a chat message.
 /// @remark If no target is provided, then it broadcasts to all eligible targets.
@@ -33,6 +14,7 @@ const int NWNX_CHAT_CHANNEL_DM_DM           = 30;
 /// @param sender The sender of the message.
 /// @param target The receiver of the message.
 /// @return TRUE if successful, FALSE otherwise.
+/// @deprecated Please use NWNX_Creature_SendMessage()
 int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SELF, object target = OBJECT_INVALID);
 
 /// @brief Registers the script which receives all chat messages.
@@ -86,85 +68,89 @@ float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int cha
 
 int NWNX_Chat_SendMessage(int channel, string message, object sender = OBJECT_SELF, object target = OBJECT_INVALID)
 {
+    WriteTimestampedLogEntry("NWNX_Chat: NWNX_Chat_SendMessage() is deprecated. Please use NWNX_Creature_SendMessage() now. Note the argument order has changed");
     string sFunc = "SendMessage";
+    NWNX_PushArgumentObject("NWNX_Creature", sFunc, target);
+    NWNX_PushArgumentInt("NWNX_Creature", sFunc, channel);
+    NWNX_PushArgumentString("NWNX_Creature", sFunc, message);
+    NWNX_PushArgumentObject("NWNX_Creature", sFunc, sender);
+    NWNX_CallFunction("NWNX_Creature", sFunc);
 
-    NWNX_PushArgumentObject(NWNX_Chat, sFunc, target);
-    NWNX_PushArgumentObject(NWNX_Chat, sFunc, sender);
-    NWNX_PushArgumentString(NWNX_Chat, sFunc, message);
-    NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
-    NWNX_CallFunction(NWNX_Chat, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Chat, sFunc);
+    return NWNX_GetReturnValueInt("NWNX_Creature", sFunc);
 }
 
 void NWNX_Chat_RegisterChatScript(string script)
 {
     WriteTimestampedLogEntry("NWNX_Chat: RegisterChatScript() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
-    string sFunc = "RegisterChatScript";
 
-    NWNX_PushArgumentString(NWNX_Chat, sFunc, script);
-    NWNX_CallFunction(NWNX_Chat, sFunc);
+    NWNX_PushArgumentString("NWNX_Events", "SubscribeEvent", script);
+    NWNX_PushArgumentString("NWNX_Events", "SubscribeEvent", "NWNX_ON_CHAT_SEND_BEFORE");
+    NWNX_CallFunction("NWNX_Events", "SubscribeEvent");
 }
 
 void NWNX_Chat_SkipMessage()
 {
     WriteTimestampedLogEntry("NWNX_Chat: SkipMessage() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
-    string sFunc = "SkipMessage";
 
-    NWNX_CallFunction(NWNX_Chat, sFunc);
+    NWNX_CallFunction("NWNX_Events", "SkipEvent");
 }
 
 int NWNX_Chat_GetChannel()
 {
     WriteTimestampedLogEntry("NWNX_Chat: GetChannel() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
-    string sFunc = "GetChannel";
 
-    NWNX_CallFunction(NWNX_Chat, sFunc);
-    return NWNX_GetReturnValueInt(NWNX_Chat, sFunc);
+    NWNX_PushArgumentString("NWNX_Events", "GetEventData", "CHANNEL");
+    NWNX_CallFunction("NWNX_Events", "GetEventData");
+    return StringToInt(NWNX_GetReturnValueString("NWNX_Events", "GetEventData"));
 }
 
 string NWNX_Chat_GetMessage()
 {
     WriteTimestampedLogEntry("NWNX_Chat: GetMessage() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
-    string sFunc = "GetMessage";
 
-    NWNX_CallFunction(NWNX_Chat, sFunc);
-    return NWNX_GetReturnValueString(NWNX_Chat, sFunc);
+    NWNX_PushArgumentString("NWNX_Events", "GetEventData", "MESSAGE");
+    NWNX_CallFunction("NWNX_Events", "GetEventData");
+    return NWNX_GetReturnValueString("NWNX_Events", "GetEventData");
 }
 
 object NWNX_Chat_GetSender()
 {
     WriteTimestampedLogEntry("NWNX_Chat: GetSender() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
-    string sFunc = "GetSender";
 
-    NWNX_CallFunction(NWNX_Chat, sFunc);
-    return NWNX_GetReturnValueObject(NWNX_Chat, sFunc);
+    NWNX_PushArgumentString("NWNX_Events", "GetEventData", "SENDER");
+    NWNX_CallFunction("NWNX_Events", "GetEventData");
+    return StringToObject(NWNX_GetReturnValueString("NWNX_Events", "GetEventData"));
 }
 
 object NWNX_Chat_GetTarget()
 {
     WriteTimestampedLogEntry("NWNX_Chat: GetTarget() is deprecated. This function is no longer useful since targets are only determined in tells and those have been suppressed.");
-    string sFunc = "GetTarget";
 
-    NWNX_CallFunction(NWNX_Chat, sFunc);
-    return NWNX_GetReturnValueObject(NWNX_Chat, sFunc);
+    NWNX_PushArgumentString("NWNX_Events", "GetEventData", "TARGET");
+    NWNX_CallFunction("NWNX_Events", "GetEventData");
+    return StringToObject(NWNX_GetReturnValueString("NWNX_Events", "GetEventData"));
 }
 
 void NWNX_Chat_SetChatHearingDistance(float distance, object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
 {
+    WriteTimestampedLogEntry("NWNX_Chat: SetChatHearingDistance() is deprecated. This function has been moved to NWNX_Player. Note the argument order has changed");
+
     string sFunc = "SetChatHearingDistance";
 
-    NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
-    NWNX_PushArgumentObject(NWNX_Chat, sFunc, listener);
-    NWNX_PushArgumentFloat(NWNX_Chat, sFunc, distance);
-    NWNX_CallFunction(NWNX_Chat, sFunc);
+    NWNX_PushArgumentInt("NWNX_Player", sFunc, channel);
+    NWNX_PushArgumentFloat("NWNX_Player", sFunc, distance);
+    NWNX_PushArgumentObject("NWNX_Player", sFunc, listener);
+    NWNX_CallFunction("NWNX_Player", sFunc);
 }
 
 float NWNX_Chat_GetChatHearingDistance(object listener = OBJECT_INVALID, int channel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
 {
+    WriteTimestampedLogEntry("NWNX_Chat: GetChatHearingDistance() is deprecated. This function has been moved to NWNX_Player. Note the argument order has changed.");
+
     string sFunc = "GetChatHearingDistance";
 
-    NWNX_PushArgumentInt(NWNX_Chat, sFunc, channel);
-    NWNX_PushArgumentObject(NWNX_Chat, sFunc, listener);
-    NWNX_CallFunction(NWNX_Chat, sFunc);
-    return NWNX_GetReturnValueFloat(NWNX_Chat, sFunc);
+    NWNX_PushArgumentInt("NWNX_Player", sFunc, channel);
+    NWNX_PushArgumentObject("NWNX_Player", sFunc, listener);
+    NWNX_CallFunction("NWNX_Player", sFunc);
+    return NWNX_GetReturnValueFloat("NWNX_Player", sFunc);
 }

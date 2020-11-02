@@ -1,8 +1,29 @@
 /// @ingroup nwnx
 /// @addtogroup consts NWNX Constants
 /// @brief Provides various NWScript <-> NWNX Constants Translation Table functions
+/// as well as defining shared constants for multiple plugins
 /// @{
 /// @file nwnx_consts.nss
+
+/// @name Chat Channels
+/// @anchor chat_channels
+///
+/// Constants defining the various chat channels.
+/// @{
+const int NWNX_CHAT_CHANNEL_PLAYER_TALK     = 1;
+const int NWNX_CHAT_CHANNEL_PLAYER_SHOUT    = 2;
+const int NWNX_CHAT_CHANNEL_PLAYER_WHISPER  = 3;
+const int NWNX_CHAT_CHANNEL_PLAYER_TELL     = 4;
+const int NWNX_CHAT_CHANNEL_SERVER_MSG      = 5;
+const int NWNX_CHAT_CHANNEL_PLAYER_PARTY    = 6;
+const int NWNX_CHAT_CHANNEL_PLAYER_DM       = 14;
+const int NWNX_CHAT_CHANNEL_DM_TALK         = 17;
+const int NWNX_CHAT_CHANNEL_DM_SHOUT        = 18;
+const int NWNX_CHAT_CHANNEL_DM_WHISPER      = 19;
+const int NWNX_CHAT_CHANNEL_DM_TELL         = 20;
+const int NWNX_CHAT_CHANNEL_DM_PARTY        = 22;
+const int NWNX_CHAT_CHANNEL_DM_DM           = 30;
+/// @}
 
 /// @brief Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.
 /// @param nAnimation The nwn animation constant
