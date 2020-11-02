@@ -1,16 +1,6 @@
-FROM nwnxee/builder as builder
-WORKDIR /nwnx/home
-COPY ./ .
-# Compile nwnx
-ARG CC=gcc
-ENV CC=$CC
-ARG CXX=g++
-ENV CXX=$CXX
-RUN Scripts/buildnwnx.sh -j $(nproc)
-
 FROM beamdog/nwserver:8193.16
 RUN mkdir -p /nwn/nwnx
-COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
+COPY ./NWNX-EE.zip /nwn/nwnx
 
 # Install plugin run dependencies
 RUN runDeps="hunspell \
@@ -34,8 +24,11 @@ RUN runDeps="hunspell \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps
 
+# Unzip the built binaries from Github Actions
+RUN unzip /nwn/nwnx/NWNX-EE.zip -d /nwn/nwnx && rm /nwn/nwnx/NWNX-EE.zip
+
 # Patch run-server.sh with our modifications
-COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn/
+COPY ./Scripts/Docker/run-server.patch /nwn
 RUN patch /nwn/run-server.sh < /nwn/run-server.patch
 
 # Security upgrades and remove unneeded packages
