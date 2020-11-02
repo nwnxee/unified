@@ -49,7 +49,7 @@ std::string GetStackTrace(uint8_t levels)
             if (std::sscanf(backtraceBuffer, "    %63[^(](+%lx) [%lx]", path, &addr, &addr2) == 3)
             {
                 std::snprintf(backtraceBuffer, sizeof(backtraceBuffer),
-                    "    %s(%s) [0x%lx]\n", path, Platform::Debug::ResolveAddress(addr).c_str(), addr2);
+                    "    %s(%s) [0x%lx]\n", path, ResolveAddress(addr).c_str(), addr2);
             }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
