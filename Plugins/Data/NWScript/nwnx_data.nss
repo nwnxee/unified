@@ -129,26 +129,31 @@ void NWNX_Data_Array_Set_Str(object obj, string tag, int index, string element);
 // return the value contained in location "index"
 string NWNX_Data_Array_At_Str(object obj, string tag, int index)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_At_Str(tag, index, obj);
 }
 
 float NWNX_Data_Array_At_Flt(object obj, string tag, int index)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_At_Flt(tag, index, obj);
 }
 
 int NWNX_Data_Array_At_Int(object obj, string tag, int index)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_At_Int(tag, index, obj);
 }
 
 object NWNX_Data_Array_At_Obj(object obj, string tag, int index)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_At_Obj(tag, index, obj);
 }
 
 void NWNX_Data_Array_Clear(int type, object obj, string tag)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Clear(tag, obj);
 }
 
@@ -156,21 +161,25 @@ void NWNX_Data_Array_Clear(int type, object obj, string tag)
 // Return true/value (1/0) if the array contains the value "element"
 int NWNX_Data_Array_Contains_Str(object obj, string tag, string element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Contains_Str(tag, element, obj);
 }
 
 int NWNX_Data_Array_Contains_Flt(object obj, string tag, float element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Contains_Flt(tag, element, obj);
 }
 
 int NWNX_Data_Array_Contains_Int(object obj, string tag, int element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Contains_Int(tag, element, obj);
 }
 
 int NWNX_Data_Array_Contains_Obj(object obj, string tag, object element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Contains_Obj(tag, element, obj);
 }
 
@@ -178,12 +187,14 @@ int NWNX_Data_Array_Contains_Obj(object obj, string tag, object element)
 ////////////////////////////////////////////////////////////////////////////////
 void NWNX_Data_Array_Copy(int type, object obj, string tag, string otherTag)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Copy(tag, otherTag, obj);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void NWNX_Data_Array_Erase(int type, object obj, string tag, int index)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Erase(tag, index, obj);
 }
 
@@ -192,21 +203,25 @@ void NWNX_Data_Array_Erase(int type, object obj, string tag, int index)
 // if not found, return NWNX_DATA_INVALID_INDEX
 int NWNX_Data_Array_Find_Str(object obj, string tag, string element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Find_Str(tag, element, obj);
 }
 
 int NWNX_Data_Array_Find_Flt(object obj, string tag, float element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Find_Flt(tag, element, obj);
 }
 
 int NWNX_Data_Array_Find_Int(object obj, string tag, int element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Find_Int(tag, element, obj);
 }
 
 int NWNX_Data_Array_Find_Obj(object obj, string tag, object element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Find_Obj(tag, element, obj);
 }
 
@@ -216,21 +231,25 @@ int NWNX_Data_Array_Find_Obj(object obj, string tag, object element)
 // arrays.
 void NWNX_Data_Array_Insert_Str(object obj, string tag, int index, string element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Insert_Str(tag, index, element, obj);
 }
 
 void NWNX_Data_Array_Insert_Flt(object obj, string tag, int index, float element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Insert_Flt(tag, index, element, obj);
 }
 
 void NWNX_Data_Array_Insert_Int(object obj, string tag, int index, int element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Insert_Int(tag, index, element, obj);
 }
 
 void NWNX_Data_Array_Insert_Obj(object obj, string tag, int index, object element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Insert_Obj(tag, index, element, obj);
 }
 
@@ -238,21 +257,25 @@ void NWNX_Data_Array_Insert_Obj(object obj, string tag, int index, object elemen
 // Insert a new element at the end of the array.
 void NWNX_Data_Array_PushBack_Str(object obj, string tag, string element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_PushBack_Str(tag, element, obj);
 }
 
 void NWNX_Data_Array_PushBack_Flt(object obj, string tag, float element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_PushBack_Flt(tag, element, obj);
 }
 
 void NWNX_Data_Array_PushBack_Int(object obj, string tag, int element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_PushBack_Int(tag, element, obj);
 }
 
 void NWNX_Data_Array_PushBack_Obj(object obj, string tag, object element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_PushBack_Obj(tag, element, obj);
 }
 
@@ -260,18 +283,21 @@ void NWNX_Data_Array_PushBack_Obj(object obj, string tag, object element)
 // Cuts the array off at size 'size'.  Elements beyond size are removed.
 void NWNX_Data_Array_Resize(int type, object obj, string tag, int size)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Resize(tag, size, obj);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void NWNX_Data_Array_Shuffle(int type, object obj, string tag)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Shuffle(tag, obj);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 int NWNX_Data_Array_Size(int type, object obj, string tag)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     return Array_Size(tag, obj);
 }
 
@@ -281,16 +307,19 @@ int NWNX_Data_Array_Size(int type, object obj, string tag)
 // odd results
 void NWNX_Data_Array_Sort(object obj, string tag, string direction)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Sort(tag, direction, TYPE_STRING, obj);
 }
 
 void NWNX_Data_Array_SortAscending(int type, object obj, string tag)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_SortAscending(tag, TYPE_STRING, obj);
 }
 
 void NWNX_Data_Array_SortDescending(int type, object obj, string tag)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_SortDescending(tag, TYPE_STRING, obj);
 }
 
@@ -299,20 +328,24 @@ void NWNX_Data_Array_SortDescending(int type, object obj, string tag)
 // This will quietly eat values if index > array size
 void NWNX_Data_Array_Set_Str(object obj, string tag, int index, string element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Set_Str(tag, index, element, obj);
 }
 
 void NWNX_Data_Array_Set_Flt(object obj, string tag, int index, float element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Set_Flt(tag, index, element, obj);
 }
 
 void NWNX_Data_Array_Set_Int(object obj, string tag, int index, int element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Set_Int(tag, index, element, obj);
 }
 
 void NWNX_Data_Array_Set_Obj(object obj, string tag, int index, object element)
 {
+	WriteTimestampedLogEntry("WARNING:  NWNX_Data is deprecated.  You should migrate to Array (see inc_array)");
     Array_Set_Obj(tag, index, element, obj);
 }
