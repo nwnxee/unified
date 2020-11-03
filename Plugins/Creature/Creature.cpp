@@ -2993,6 +2993,11 @@ ArgumentStack Creature::SendMessage(ArgumentStack&& args)
                 messageDispatch->SendServerToPlayerChat_DM_Talk(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
+            else if (channel == Constants::ChatChannel::DmDm || channel == Constants::ChatChannel::PlayerDm)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Silent_Shout(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
             else if (channel == Constants::ChatChannel::PlayerShout || channel == Constants::ChatChannel::DmShout)
             {
                 messageDispatch->SendServerToPlayerChat_Shout(playerId, speaker, message.c_str());
@@ -3008,12 +3013,7 @@ ArgumentStack Creature::SendMessage(ArgumentStack&& args)
                 messageDispatch->SendServerToPlayerChat_DM_Whisper(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
-            else if (channel == Constants::ChatChannel::PlayerParty)
-            {
-                messageDispatch->SendServerToPlayerChat_Party(playerId, speaker, message.c_str());
-                sentMessage = true;
-            }
-            else if (channel == Constants::ChatChannel::DmParty)
+            else if (channel == Constants::ChatChannel::PlayerParty || channel == Constants::ChatChannel::DmParty)
             {
                 messageDispatch->SendServerToPlayerChat_Party(playerId, speaker, message.c_str());
                 sentMessage = true;

@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
-- Creature: targeted messages can now be sent on party channel with updated SendMessage()
+- Creature: targeted messages can now be sent on party or dm channel with updated SendMessage()
 - Events: added skippable Acquire events to ItemEvents
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
