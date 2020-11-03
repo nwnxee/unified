@@ -1,3 +1,5 @@
+#include "nwnx_regex"
+
 /// @addtogroup data Data
 /// @brief Provides a number of data structures for NWN code to use (simulated arrays)
 /// @{
@@ -126,22 +128,29 @@ void Array_Set_Str(string tag, int index, string element, object obj=OBJECT_INVA
 string GetTableName(string tag, object obj=OBJECT_INVALID) {
     if (obj == OBJECT_INVALID)
         obj = GetModule();
-    return "array_" + ObjectToString(obj) + "_" + tag;
+
+    string sName = "array_" + ObjectToString(obj) + "_" + tag;
+    // Remove invalid characters from the tag rather than failing.
+    string sCleansed = NWNX_Regex_Replace(sName, "[^A-Za-z0-9_\$@#]", "");
+    // But provide some feedback.
+    if (GetStringLength(sName) != GetStringLength(sCleansed) || GetStringLength(sCleansed) == 0) {
+        WriteTimestampedLogEntry("WARNING:  Invalid table name detected for array with tag <" + tag + ">.  Only characters (a-zA-Z0-9), _, @, $ and # are allowed. Using <"+sCleansed+"> instead.");
+
+    }
+    // Table name wraped in quotes to avoid token expansion.
+    return "\""+sCleansed+"\"";
 }
 
 string GetTableCreateString(string tag, object obj=OBJECT_INVALID) {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-    // for simplicy sake, everything is turned into a string.  Possible enhancement
+    // for simplicity sake, everything is turned into a string.  Possible enhancement
     // to create specific tables for int/float/whatever.
-    return "CREATE TABLE IF NOT EXISTS " + GetTableName(tag, obj) + " ( ind INTEGER PRIMARY KEY, value TEXT)";
+    return "CREATE TABLE IF NOT EXISTS " + GetTableName(tag, obj) + " ( ind INTEGER PRIMARY KEY, value TEXT )";
 }
 
 int TableExists(string tag, object obj=OBJECT_INVALID) {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-    string stmt = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '" + GetTableName(tag, obj) + "'";
+    string stmt = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = @tablename";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+    SqlBindString(sqlQuery, "@tablename", GetTableName(tag, obj));
     return SqlStep(sqlQuery);
 }
 
@@ -155,8 +164,6 @@ void ExecuteStatement(string statement, object obj=OBJECT_INVALID) {
 }
 
 void CreateArrayTable(string tag, object obj=OBJECT_INVALID) {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
     string createStatement = GetTableCreateString(tag, obj);
     ExecuteStatement(createStatement, obj);
 }
@@ -179,13 +186,12 @@ int GetRowCount(string tag, object obj=OBJECT_INVALID) {
 // return the value contained in location "index"
 string Array_At_Str(string tag, int index, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-    if (!TableExists(tag, obj)) {
-        CreateArrayTable(tag, obj);
-    }
-    string stmt = "SELECT value FROM "+GetTableName(tag, obj)+" WHERE ind = @ind";
+    // Just "create if not exists" to ensure it exists for the insert.
+    CreateArrayTable(tag, obj);
+
+    string stmt = "SELECT value FROM " + GetTableName(tag, obj) + " WHERE ind = @ind";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+    SqlBindInt(sqlQuery, "@ind", index);
     if ( SqlStep(sqlQuery) ) {
         return SqlGetString(sqlQuery, 0);
     }
@@ -228,22 +234,15 @@ void Array_Clear(string tag, object obj=OBJECT_INVALID)
 // Return true/value (1/0) if the array contains the value "element"
 int Array_Contains_Str(string tag, string element, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-    WriteTimestampedLogEntry("looking for " + element + " in " + GetTableName(tag, obj));
     CreateArrayTable(tag, obj);
     string stmt = "SELECT COUNT(1) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
-    string v = "";
-    sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
-    //WriteTimestampedLogEntry("Error returned: " + SqlGetError(sqlQuery));
-    SqlBindString(sqlQuery, "@element", element);
-    //WriteTimestampedLogEntry("Error returned: " + SqlGetError(sqlQuery));
 
-    //WriteTimestampedLogEntry("SQL: " + stmt);
+    sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+    SqlBindString(sqlQuery, "@element", element);
+
     int pos = -1;
     if ( SqlStep(sqlQuery) ) {
         pos = SqlGetInt(sqlQuery, 0);
-        //WriteTimestampedLogEntry("Return value was " + IntToString(pos));
         if (pos > 0) {
             return TRUE;
         }
@@ -270,19 +269,26 @@ int Array_Contains_Obj(string tag, object element, object obj=OBJECT_INVALID)
 ////////////////////////////////////////////////////////////////////////////////
 void Array_Copy(string tag, string otherTag, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
     CreateArrayTable(otherTag, obj);
-    ExecuteStatement("insert into "+GetTableName(otherTag, obj)+" select * from "+GetTableName(tag, obj), obj);
+    ExecuteStatement("INSERT INTO "+GetTableName(otherTag, obj)+" SELECT * FROM "+GetTableName(tag, obj), obj);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Array_Erase(string tag, int index, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-    ExecuteStatement("DELETE FROM "+GetTableName(tag, obj)+" WHERE ind = " + IntToString(index), obj);
-    ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET ind = ind - 1 WHERE ind > " + IntToString(index), obj);
+    int rows = GetRowCount(tag, obj);
+    // Silently fail if "index" is outside the range of valid indicies.
+    if (index >= 0 && index < rows) {
+	    string stmt = "DELETE FROM "+GetTableName(tag, obj)+" WHERE ind = @ind";
+	    sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+	    SqlBindInt(sqlQuery, "@ind", index);
+	    SqlStep(sqlQuery);
+	
+	    stmt = "UPDATE "+GetTableName(tag, obj)+" SET ind = ind - 1 WHERE ind > @ind";
+	    sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+	    SqlBindInt(sqlQuery, "@ind", index);
+	    SqlStep(sqlQuery);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -290,15 +296,12 @@ void Array_Erase(string tag, int index, object obj=OBJECT_INVALID)
 // if not found, return INVALID_INDEX
 int Array_Find_Str(string tag, string element, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
     int tmp = -1;
     string stmt = "SELECT MIN(ind) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
     SqlBindString(sqlQuery, "@element", element);
     if ( SqlStep(sqlQuery) ) {
         tmp = SqlGetInt(sqlQuery, 0);
-        WriteTimestampedLogEntry("Returned value = " + IntToString(tmp));
         return tmp;
     }
     return INVALID_INDEX;
@@ -326,11 +329,19 @@ int Array_Find_Obj(string tag, object element, object obj=OBJECT_INVALID)
 void Array_Insert_Str(string tag, int index, string element, object obj=OBJECT_INVALID)
 {
     int rows = GetRowCount(tag, obj);
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-    if (index < rows) {
+    // Index numbers are off by one, much like C arrays, so for "rows=10" - values are 0-9.
+    // It's not unreasonable to fail if you try to insert ind=10 into an array who's indexes
+    // only go to 9, but I guess it doesn't hurt as long as we're not allowing gaps in
+    // index numbers.
+    if (index >= 0 && index <= rows) {
+        // index is passed as an integer, so immune (as far as I know) to SQL injection for a one shot query.
         ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET ind = ind + 1 WHERE ind >= "+IntToString(index), obj);
-        ExecuteStatement("INSERT INTO "+GetTableName(tag, obj)+" VALUES ( " + IntToString(index) + ", '" + element + "')", obj);
+        // Element, however, is not.
+        string stmt = "INSERT INTO "+GetTableName(tag, obj)+" VALUES ( @ind, @element )";
+        sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+        SqlBindInt(sqlQuery, "@ind", index);
+        SqlBindString(sqlQuery, "@element", element);
+        SqlStep(sqlQuery);
     }
 }
 
@@ -353,10 +364,14 @@ void Array_Insert_Obj(string tag, int index, object element, object obj=OBJECT_I
 // Insert a new element at the end of the array.
 void Array_PushBack_Str(string tag, string element, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
+    // If rowCount = 10, indexes are from 0 to 9, so this becomes the 11th entry at index 10.
     int rowCount = GetRowCount(tag, obj);
-    ExecuteStatement("INSERT INTO "+GetTableName(tag, obj)+" VALUES ( " + IntToString(rowCount) + ", '" + element + "')", obj);
+
+    string stmt = "INSERT INTO "+GetTableName(tag, obj)+" VALUES ( @ind, @element )";
+    sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+    SqlBindInt(sqlQuery, "@ind", rowCount);
+    SqlBindString(sqlQuery, "@element", element);
+    SqlStep(sqlQuery);
 }
 
 void Array_PushBack_Flt(string tag, float element, object obj=OBJECT_INVALID)
@@ -378,17 +393,13 @@ void Array_PushBack_Obj(string tag, object element, object obj=OBJECT_INVALID)
 // Cuts the array off at size 'size'.  Elements beyond size are removed.
 void Array_Resize(string tag, int size, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-    ExecuteStatement("delete from "+GetTableName(tag, obj)+" where ind >= " + IntToString(size), obj);
+    // Int immune to sql injection so easier to one-shot it.
+    ExecuteStatement("DELETE FROM "+GetTableName(tag, obj)+" WHERE ind >= " + IntToString(size), obj);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Array_Shuffle(string tag, object obj=OBJECT_INVALID)
 {
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
-
     string table = GetTableName(tag, obj);
     ExecuteStatement("CREATE TABLE " +table+ "_temp AS SELECT ROW_NUMBER() OVER(ORDER BY RANDOM())-1, value FROM " +table, obj);
     ExecuteStatement("DELETE FROM " +table , obj);
@@ -403,14 +414,17 @@ int Array_Size(string tag, object obj=OBJECT_INVALID)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Sort the array by value according to 'direciton' (ASC or DESC)
-// Note that this is a lexical sort, so sorting an array of ints or floats will have
-// odd results
-void Array_Sort(string tag, string direction, int type, object obj=OBJECT_INVALID)
+// Sort the array by value according to 'direction' (ASC or DESC).
+// Supplying a type allows for correct numerical sorting of integers or floats.
+void Array_Sort(string tag, string dir="ASC", int type=TYPE_STRING, object obj=OBJECT_INVALID)
 {
     string table = GetTableName(tag, obj);
-    if (obj == OBJECT_INVALID)
-        obj = GetModule();
+    string direction = GetStringUpperCase(dir);
+
+    if ( ! (direction == "ASC" || direction == "DESC") ) {
+        WriteTimestampedLogEntry("WARNING:  Invalid sort direction <" + direction + "> supplied.  Defaulting to ASC.");
+        direction = "ASC";
+    }
 
     // default orderBy for strings.
     string orderBy = "ORDER BY value " + direction;
@@ -443,11 +457,13 @@ void Array_SortDescending(string tag, int type=TYPE_STRING, object obj=OBJECT_IN
 // This will quietly eat values if index > array size
 void Array_Set_Str(string tag, int index, string element, object obj=OBJECT_INVALID)
 {
-     if (obj == OBJECT_INVALID)
-        obj = GetModule();
     int rows = GetRowCount(tag, obj);
-    if (index < rows) {
-        ExecuteStatement("UPDATE "+GetTableName(tag, obj)+" SET value = '"+element+"' WHERE ind = "+IntToString(index), obj);
+    if (index >= 0 && index <= rows) {
+        string stmt = "UPDATE "+GetTableName(tag, obj)+" SET value = @element WHERE ind = @ind";
+        sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+        SqlBindInt(sqlQuery, "@ind", rows);
+        SqlBindString(sqlQuery, "@element", element);
+        SqlStep(sqlQuery);
     }
 }
 
@@ -481,5 +497,3 @@ void Array_Debug_Dump(string tag, string title = "xxx", object obj=OBJECT_INVALI
         WriteTimestampedLogEntry(tag + "[" + IntToString(ind) + "] = " + value);
     }
 }
-
-
