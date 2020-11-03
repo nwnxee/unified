@@ -1240,7 +1240,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes
     ----------------------|--------|-------
-    CHANNEL               | int    | The channel the chat message was sent (see @ref chat_channels in the NWNX_Chat Plugin)
+    CHANNEL               | int    | The channel the chat message was sent (see @ref chat_channels nwnx_consts.nss)
     MESSAGE               | string | The message sent
     TARGET                | object | The recipient of the message (for tells only)
 
