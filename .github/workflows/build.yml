@@ -149,15 +149,6 @@ jobs:
            ./NWNX-EE.zip
            ./NWScript.zip
 
-    - name: Notify Discord of New Binaries
-      uses: sarisia/actions-status-discord@v1
-      if: github.event_name == 'push'
-      with:
-        webhook: ${{ secrets.DISCORD_NOTIFICATIONS_WEBHOOK }}
-        title: New binaries of NWNX:EE have been built.
-        description: |
-          Click [here](${{ github.repository }}/releases/tag/latest) to download.
-
   docker:
     runs-on: ubuntu-20.04
     if: github.event_name == 'push'
@@ -204,16 +195,6 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-
-      - name: Notify Discord of New Docker Images
-        uses: sarisia/actions-status-discord@v1
-        with:
-          webhook: ${{ secrets.DISCORD_DOCKER_WEBHOOK }}
-          title: A new docker image with the latest binaries has been published to the Docker Hub and GitHub Container Registry.
-          description: |
-            * [Docker Hub](https://hub.docker.com/layers/${{ github.repository_owner }}/unified/${{ steps.vars.outputs.sha_short }}/images/${{ steps.docker_build.outputs.digest }})
-            * [GHCR](https://github.com/orgs/nwnxee/packages/container/package/nwnxee)
-
 
   release:
     if: contains(github.ref, 'tags/build')
