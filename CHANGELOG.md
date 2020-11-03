@@ -22,6 +22,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 The following plugins were added:
 - Feat: Allows to define a variety of effects that are granted to feat holders.
 - Tileset: An advanced plugin that exposes additional tileset and tile properties and allows builders to override the tiles of an area created with CreateArea().
+- Diagnostics: Plugin exposing diagnostic facilities to help server debugging.
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
@@ -34,6 +35,7 @@ The following plugins were added:
 - Object: GetCurrentAnimation()
 - Player: AddCustomJournalEntry() and GetJournalEntry()
 - Player: {Get|Set}ChatHearingDistance()
+- Race: SetFavoredEnemyFeat()
 - Util: GetScriptParamIsSet()
 
 ### Changed
@@ -45,16 +47,18 @@ The following plugins were added:
 - Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.
 - Visibility: added two new visibility types to always show an object regardless of range.
 - Weapon: Good Aim Feat now takes value from ruleset.2da
+- We now only allow builds with the `CMAKE_BUILD_TYPE=RelWithDebInfo` configuration. `Debug` builds produce unexpected behaviour and `Release` builds are generally unnecessary and mess with Assert functionality.
 
 ### Deprecated
 - Chat: NWNX_Chat has been deprecated and handled now through Chat Events (NWNX_ON_CHAT_SEND_*), NWNX_Creature_SendMessage() and NWNX_Player_{Get|Set}ChatHearingDistance().
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed
-N/A
+- Optimizations: `OBJECT_TAG_LOOKUP` optimization has been removed. It caused instability and didn't really improve perf.
 
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
+- Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes
 - Events: fixed a nullptr deref crash in BarterEvents
 - Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
 - MaxLevel: fixed bug interfering with leveling down NPCs

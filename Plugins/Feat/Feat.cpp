@@ -8,6 +8,8 @@
 #include "API/CNWSpellArray.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
+#include "API/CNWSPlayer.hpp"
+#include "API/CNWSPlayerTURD.hpp"
 #include "API/Constants.hpp"
 #include "API/Constants/Effect.hpp"
 #include "API/Globals.hpp"
@@ -54,6 +56,8 @@ Feat::Feat(Services::ProxyServiceList* services)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, int32_t, CNWSCreatureStats*, uint16_t>(&RemoveFeatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t>(&OnApplyBonusFeatHook);
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect, int32_t, CNWSEffectListHandler*, CNWSObject*, CGameEffect*>(&OnRemoveBonusFeatHook);
+
+    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, int32_t, CNWSPlayer*, CNWSPlayerTURD*>(&EatTURDHook);
 }
 
 Feat::~Feat()
@@ -526,6 +530,26 @@ void Feat::OnRemoveBonusFeatHook(bool before, CNWSEffectListHandler *, CNWSObjec
     auto featId = pEffect->GetInteger(0);
     if (pCreatureStats && before)
         RemoveFeatEffects(pCreatureStats, featId);
+}
+
+void Feat::EatTURDHook(bool before, CNWSPlayer*, CNWSPlayerTURD *pPlayerTURD)
+{
+    if (before && pPlayerTURD)
+    {
+        std::vector<uint64_t> remove(128);
+        for (int i = 0; i < pPlayerTURD->m_appliedEffects.num; i++)
+        {
+            auto *eff = pPlayerTURD->m_appliedEffects.element[i];
+
+            std::string sCustomTag = eff->m_sCustomTag.CStr();
+            if (sCustomTag.find("NWNX_Feat_FeatMod_", 0) == 0)
+            {
+                remove.push_back(eff->m_nID);
+            }
+        }
+        for (auto id: remove)
+            pPlayerTURD->RemoveEffectById(id);
+    }
 }
 
 bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, int32_t param2, int32_t param3, int32_t param4)

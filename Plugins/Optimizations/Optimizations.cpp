@@ -1,7 +1,6 @@
 #include "Optimizations.hpp"
 #include "Optimizations/AsyncLogFlush.hpp"
 #include "Optimizations/GameObjectLookup.hpp"
-#include "Optimizations/ObjectTagLookup.hpp"
 #include "Services/Config/Config.hpp"
 
 
@@ -30,12 +29,6 @@ Optimizations::Optimizations(Services::ProxyServiceList* services)
     {
         LOG_INFO("Using optimal CGameObjectArray implementation");
         m_GameObjectLookup = std::make_unique<GameObjectLookup>(GetServices()->m_hooks.get());
-    }
-
-    if (GetServices()->m_config->Get<bool>("OBJECT_TAG_LOOKUP", false))
-    {
-        LOG_INFO("Optimizing GetObjectByTag() lookup");
-        m_ObjectTagLookup = std::make_unique<ObjectTagLookup>(GetServices()->m_hooks.get());
     }
 }
 
