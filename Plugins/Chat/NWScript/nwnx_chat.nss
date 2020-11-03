@@ -124,7 +124,7 @@ object NWNX_Chat_GetSender()
 
 object NWNX_Chat_GetTarget()
 {
-    WriteTimestampedLogEntry("NWNX_Chat: GetTarget() is deprecated. This function is no longer useful since targets are only determined in tells and those have been suppressed.");
+    WriteTimestampedLogEntry("NWNX_Chat: GetTarget() is deprecated. Please use the event system (NWNX_ON_CHAT_SEND_*)");
 
     NWNX_PushArgumentString("NWNX_Events", "GetEventData", "TARGET");
     NWNX_CallFunction("NWNX_Events", "GetEventData");
