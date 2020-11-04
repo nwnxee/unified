@@ -7,12 +7,14 @@ on:
     paths-ignore:
       - '**.md'
       - 'docgen/**'
+      - .circleci/**
   pull_request:
     branches:
       - master
     paths-ignore:
       - '**.md'
       - 'docgen/**'
+      - .circleci/**
 
 env:
   CC: gcc-7 -m64

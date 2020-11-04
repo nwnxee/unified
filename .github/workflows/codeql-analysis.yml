@@ -6,11 +6,17 @@ on:
     paths:
       - '**.cpp'
       - '**.hpp'
+      - '**.inl'
+      - '**.h'
+      - '**.c'
   pull_request:
     branches: master
     paths:
       - '**.cpp'
       - '**.hpp'
+      - '**.inl'
+      - '**.h'
+      - '**.c'
   schedule:
     - cron: '31 8 * * 3'
 
