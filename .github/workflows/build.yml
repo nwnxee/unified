@@ -191,7 +191,8 @@ jobs:
           tags: |
             ${{ github.repository }}:latest
             ${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
-            ghcr.io/${{ github.repository_owner }}/nwnxee:latest
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
