@@ -48,6 +48,7 @@ extern "C" void nwnx_signal_handler(int sig)
         case SIGABRT:  err = "Program aborted";          break;
         case SIGFPE:   err = "Floating point exception"; break;
         case SIGSEGV:  err = "Segmentation fault";       break;
+        case SIGILL:   err = "Illegal instruction";      break;
         default:       err = "Unknown error";            break;
     }
 
@@ -72,12 +73,14 @@ void InitCrashHandlers()
     nwn_crash_handler = std::signal(SIGABRT, nwnx_signal_handler);
     std::signal(SIGFPE,  nwnx_signal_handler);
     std::signal(SIGSEGV, nwnx_signal_handler);
+    std::signal(SIGILL, nwnx_signal_handler);
 }
 void RestoreCrashHandlers()
 {
     std::signal(SIGABRT, nwn_crash_handler);
     std::signal(SIGFPE,  nwn_crash_handler);
     std::signal(SIGSEGV, nwn_crash_handler);
+    std::signal(SIGILL, nwn_crash_handler);
 }
 
 }
