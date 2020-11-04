@@ -2,6 +2,10 @@ name: Container Security Analysis
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**.md'
+      - 'docgen/**'
+      - .circleci/**
   pull_request:
 jobs:
   build:
