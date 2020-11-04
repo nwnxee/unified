@@ -101,7 +101,7 @@ jobs:
         execute_process(COMMAND ccache -p)
         execute_process(COMMAND ccache -z)
         execute_process(
-          COMMAND cmake --build build
+          COMMAND cmake --build build -j 4
           RESULT_VARIABLE result
         )
         if (NOT result EQUAL 0)

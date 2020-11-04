@@ -34,7 +34,7 @@ jobs:
       with:
         languages: cpp
 
-    - run: ./Scripts/buildnwnx.sh
+    - run: ./Scripts/buildnwnx.sh -j 4
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
