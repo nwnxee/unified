@@ -1350,7 +1350,8 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object o
 /// Remove oObject from the dispatch list for sEvent+sScript.
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
 
-/// @brief Toggle the whitelisting of IDs for sEvent.
+/// @brief Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are
+/// on its whitelist.
 ///
 /// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
 /// - NWNX_ON_CAST_SPELL -> SpellID
