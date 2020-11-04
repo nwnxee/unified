@@ -643,7 +643,6 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         effIcon->m_bExpose    = true;
         effIcon->m_sCustomTag = "NWNX_Object_IconEffect";
 
-        effIcon->SetNumIntegers(1);
         effIcon->m_nParamInteger[0] = nIcon;
 
         if (fDuration > 0.0)
