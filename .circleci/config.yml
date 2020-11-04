@@ -38,14 +38,6 @@ jobs:
           paths:
             - light
             - dark
-  deploy:
-    <<: *defaults
-    machine: true
-    steps:
-      - attach_workspace:
-          at: ~/nwnxee
-      - run: go get -u github.com/tcnksm/ghr
-      - run: ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME $CIRCLE_TAG ~/nwnxee/Binaries/
   docs-deploy:
     docker:
       - image: node:8.10.0
