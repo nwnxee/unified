@@ -1488,12 +1488,37 @@ ArgumentStack Player::ToggleDM(ArgumentStack&& args)
                     pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, true, true);
                     pPlayerInfo->m_bGameMasterPrivileges = true;
                     pPlayerInfo->m_bGameMasterIsPlayerLogin = true;
+
+                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+                    {
+                    	pCreature->m_pStats->m_bDMManifested = true;
+                    	pCreature->UpdateVisibleList();
+                    }
+
+                    Globals::AppManager()->m_pServerExoApp->AddToExclusionList(pPlayer->m_oidNWSObject, 1/*Timestop*/);
+                    Globals::AppManager()->m_pServerExoApp->AddToExclusionList(pPlayer->m_oidNWSObject, 2/*Pause*/);
+                    uint8_t nActivePauseState = Globals::AppManager()->m_pServerExoApp->GetActivePauseState();
+                    pMessage->SendServerToPlayerModule_SetPauseState(nActivePauseState, nActivePauseState > 0);
+
+                    pMessage->SendServerToPlayerDungeonMasterAreaList(pPlayer->m_nPlayerID);
+                    pMessage->SendServerToPlayerDungeonMasterCreatorLists(pPlayer);
                 }
                 else if (!isDM && currentlyPlayerDM)
                 {
                     pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, false, true);
                     pPlayerInfo->m_bGameMasterPrivileges = false;
                     pPlayerInfo->m_bGameMasterIsPlayerLogin = false;
+
+                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+                    {
+                        pCreature->m_pStats->m_bDMManifested = true;
+                        pCreature->UpdateVisibleList();
+                    }
+
+                    Globals::AppManager()->m_pServerExoApp->RemoveFromExclusionList(pPlayer->m_oidNWSObject, 1/*Timestop*/);
+                    Globals::AppManager()->m_pServerExoApp->RemoveFromExclusionList(pPlayer->m_oidNWSObject, 2/*Pause*/);
+                    uint8_t nActivePauseState = Globals::AppManager()->m_pServerExoApp->GetActivePauseState();
+                    pMessage->SendServerToPlayerModule_SetPauseState(nActivePauseState, nActivePauseState > 0);
                 }
             }
         }
@@ -1728,10 +1753,10 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             auto silentUpdate = Services::Events::ExtractArgument<int32_t>(args);
 
             ASSERT_OR_THROW(state >= 0);
-            ASSERT_OR_THROW(priority >= 0); 
-            ASSERT_OR_THROW(completed >= 0); 
+            ASSERT_OR_THROW(priority >= 0);
+            ASSERT_OR_THROW(completed >= 0);
             ASSERT_OR_THROW(displayed >= 0);
-            ASSERT_OR_THROW(updated >= 0); 
+            ASSERT_OR_THROW(updated >= 0);
             ASSERT_OR_THROW(silentUpdate >= 0);
 
             // If server owner leaves this 0 - the entry will be added with today's date
@@ -1769,7 +1794,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                         auto pEntry = entries.element[i];
                         if (pEntry.szPlot_Id.CStr() == tag)
                         {
-                            overwrite = i; 
+                            overwrite = i;
                             // Overwrite existing entry
                             pCreature->m_pJournal->m_lstEntries[i] = newJournal;
                             break;
@@ -1838,7 +1863,7 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
                             (int32_t)lastJournalEntry.nPriority,
                             (int32_t)lastJournalEntry.bQuestCompleted,
                             (int32_t)lastJournalEntry.bQuestDisplayed,
-                            (int32_t)lastJournalEntry.bUpdated 
+                            (int32_t)lastJournalEntry.bUpdated
                         );
                     }
                 }
