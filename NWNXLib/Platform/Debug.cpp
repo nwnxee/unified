@@ -43,12 +43,13 @@ std::string GetStackTrace(uint8_t levels)
         for (int i = 0; i < numCapturedFrames; ++i)
         {
             uintptr_t addr, addr2;
+            char path[64];
             char backtraceBuffer[2048];
             std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
-            if (std::sscanf(backtraceBuffer, "    ./nwserver-linux(+%lx) [%lx]", &addr, &addr2) == 2)
+            if (std::sscanf(backtraceBuffer, "    %63[^(](+%lx) [%lx]", path, &addr, &addr2) == 3)
             {
                 std::snprintf(backtraceBuffer, sizeof(backtraceBuffer),
-                    "    ./nwserver-linux(%s) [0x%lx]\n", ResolveAddress(addr).c_str(), addr2);
+                    "    %s(%s) [0x%lx]\n", path, ResolveAddress(addr).c_str(), addr2);
             }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }

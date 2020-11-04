@@ -61,11 +61,12 @@ void MemorySanitizer::ReportError(void *ptr)
         {
             uintptr_t addr, addr2;
             char backtraceBuffer[2048] = "";
+            char path[64];
             std::snprintf(backtraceBuffer, sizeof(backtraceBuffer), "    %s\n", resolvedFrames[i]);
-            if (std::sscanf(backtraceBuffer, "    ./nwserver-linux(+%lx) [%lx]", &addr, &addr2) == 2)
+            if (std::sscanf(backtraceBuffer, "    %63[^(](+%lx) [%lx]", path, &addr, &addr2) == 3)
             {
                 std::snprintf(backtraceBuffer, sizeof(backtraceBuffer),
-                    "    ./nwserver-linux(%s) [0x%lx]\n", Platform::Debug::ResolveAddress(addr).c_str(), addr2);
+                    "    %s(%s) [0x%lx]\n", path, Platform::Debug::ResolveAddress(addr).c_str(), addr2);
             }
             std::strncat(buffer, backtraceBuffer, sizeof(buffer)-1);
         }
