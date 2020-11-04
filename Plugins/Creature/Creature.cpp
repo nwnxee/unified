@@ -176,6 +176,7 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetWalkAnimation);
     REGISTER(SetAttackRollOverride);
     REGISTER(SetParryAllAttacks);
+    REGISTER(SendMessage);
 
 #undef REGISTER
 }
@@ -2957,5 +2958,75 @@ ArgumentStack Creature::SetParryAllAttacks(ArgumentStack&& args)
 
     return Services::Events::Arguments();
 }
+ArgumentStack Creature::SendMessage(ArgumentStack&& args)
+{
+    int32_t retVal = false;
+    const auto speaker = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto message = Services::Events::ExtractArgument<std::string>(args);
+    const auto channel = static_cast<Constants::ChatChannel::TYPE>(Services::Events::ExtractArgument<int32_t>(args));
+    const auto target = Services::Events::ExtractArgument<ObjectID>(args);
 
+    const bool hasManualPlayerId = target != Constants::OBJECT_INVALID;
+
+    const PlayerID playerId = hasManualPlayerId ?
+                              Globals::AppManager()->m_pServerExoApp->GetPlayerIDByGameObjectID(target) :
+                              Constants::PLAYERID_ALL_CLIENTS;
+
+    if (playerId != Constants::PLAYERID_INVALIDID)
+    {
+        bool sentMessage = false;
+        auto* messageDispatch = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+
+        if (hasManualPlayerId)
+        {
+            // This means we're sending this to one player only.
+            // The normal function broadcasts in an area for talk, shout, and whisper, therefore
+            // we need to call these functions directly if we are in those categories.
+            if (channel == Constants::ChatChannel::PlayerTalk)
+            {
+                messageDispatch->SendServerToPlayerChat_Talk(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::DmTalk)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Talk(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::DmDm || channel == Constants::ChatChannel::PlayerDm)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Silent_Shout(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::PlayerShout || channel == Constants::ChatChannel::DmShout)
+            {
+                messageDispatch->SendServerToPlayerChat_Shout(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::PlayerWhisper)
+            {
+                messageDispatch->SendServerToPlayerChat_Whisper(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::DmWhisper)
+            {
+                messageDispatch->SendServerToPlayerChat_DM_Whisper(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::PlayerParty || channel == Constants::ChatChannel::DmParty)
+            {
+                messageDispatch->SendServerToPlayerChat_Party(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+        }
+
+        if (!sentMessage)
+        {
+            messageDispatch->SendServerToPlayerChatMessage(static_cast<uint8_t>(channel), speaker, message.c_str(), playerId, nullptr);
+        }
+
+        retVal = true;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
 }

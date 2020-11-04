@@ -60,8 +60,9 @@ Chat::Chat(Services::ProxyServiceList* services)
     m_hearingDistances[Constants::ChatChannel::DmWhisper]     = 3.0f;
     m_hearingDistances[Constants::ChatChannel::PlayerWhisper] = 3.0f;
     m_customHearingDistances = false;
-
-    m_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
+    LOG_INFO("NWNX_Chat has been deprecated. Please use NWNX_Creature_SendMessage(), "
+             "NWNX_Player_{Get|Set}ChatHearingDistance() and the NWNX_ON_CHAT_SEND_* event for chat functionality.");
+    //m_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_>(&Chat::SendServerToPlayerChatMessage);
 }
 
 Chat::~Chat()
@@ -101,6 +102,7 @@ void Chat::SendServerToPlayerChatMessage(CNWSMessage* thisPtr, Constants::ChatCh
 
     if (plugin.m_depth > 0 || !plugin.m_skipMessage)
     {
+        // TODO: Only keep this functionality after deprecation period, it may make sense to just put it in Player
         if (g_plugin->m_customHearingDistances)
         {
             auto server = Globals::AppManager()->m_pServerExoApp;
@@ -204,7 +206,7 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     if (playerId != Constants::PLAYERID_INVALIDID)
     {
         bool sentMessage = false;
-        CNWSMessage* messageDispatch = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
+        auto* messageDispatch = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
 
         if (hasManualPlayerId)
         {
@@ -236,6 +238,16 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
                 messageDispatch->SendServerToPlayerChat_DM_Whisper(playerId, speaker, message.c_str());
                 sentMessage = true;
             }
+            else if (channel == Constants::ChatChannel::PlayerParty)
+            {
+                messageDispatch->SendServerToPlayerChat_Party(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
+            else if (channel == Constants::ChatChannel::DmParty)
+            {
+                messageDispatch->SendServerToPlayerChat_Party(playerId, speaker, message.c_str());
+                sentMessage = true;
+            }
         }
 
         if (!sentMessage)
@@ -249,6 +261,7 @@ Events::ArgumentStack Chat::SendMessage(Events::ArgumentStack&& args)
     return Events::Arguments(retVal);
 }
 
+// TODO: Remove next six functions after deprecation period
 Events::ArgumentStack Chat::RegisterChatScript(Events::ArgumentStack&& args)
 {
     m_chatScript = Events::ExtractArgument<std::string>(args);
@@ -281,6 +294,7 @@ Events::ArgumentStack Chat::GetTarget(Events::ArgumentStack&&)
     return Events::Arguments(m_activeTargetObjectId);
 }
 
+// TODO Should these be moved to Player after deprecation period?
 Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 {
     const auto distance = Services::Events::ExtractArgument<float>(args);

@@ -34,6 +34,7 @@
 #include "Events/QuickbarEvents.hpp"
 #include "Events/DebugEvents.hpp"
 #include "Events/StoreEvents.hpp"
+#include "Events/ChatEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -125,15 +126,16 @@ Events::Events(Services::ProxyServiceList* services)
     m_quickbarEvents    = std::make_unique<QuickbarEvents>(hooker);
     m_debugEvents       = std::make_unique<DebugEvents>(hooker);
     m_storeEvents       = std::make_unique<StoreEvents>(hooker);
+    m_chatEvents        = std::make_unique<ChatEvents>(hooker);
 }
 
 Events::~Events()
 {
 }
 
-void Events::PushEventData(const std::string& tag, const std::string& data)
+void Events::PushEventData(const std::string& tag, const std::string& data, bool bHideDataInLog)
 {
-    LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag, data);
+    LOG_DEBUG("Pushing event data: '%s' -> '%s'.", tag, !bHideDataInLog ? data : "<hidden>");
     g_plugin->CreateNewEventDataIfNeeded();
     g_plugin->m_eventData.top().m_EventDataMap[tag] = data;
 }

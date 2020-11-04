@@ -63,10 +63,14 @@ private:
     ArgumentStack SendDMAllCreatorLists             (ArgumentStack&& args);
     ArgumentStack AddCustomJournalEntry             (ArgumentStack&& args);
     ArgumentStack GetJournalEntry                   (ArgumentStack&& args);
+    ArgumentStack SetChatHearingDistance            (ArgumentStack&& args);
+    ArgumentStack GetChatHearingDistance            (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 
     std::unordered_map<std::string, std::pair<ObjectID, bool>> m_PersistentLocationWP;
+    bool m_customHearingDistances;
+    std::unordered_map<NWNXLib::API::Constants::ChatChannel::TYPE, float> m_hearingDistances;
 };
 
 }

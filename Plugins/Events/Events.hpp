@@ -44,6 +44,7 @@ class ResourceEvents;
 class QuickbarEvents;
 class DebugEvents;
 class StoreEvents;
+class ChatEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -68,7 +69,7 @@ public:
     virtual ~Events();
 
     // Pushes event data to the stack - won't do anything until SignalEvent is called.
-    static void PushEventData(const std::string& tag, const std::string& data);
+    static void PushEventData(const std::string& tag, const std::string& data, bool bHideDataInLog = false);
 
     // Get event data
     static std::string GetEventData(const std::string& tag);
@@ -138,6 +139,7 @@ private:
     std::unique_ptr<QuickbarEvents> m_quickbarEvents;
     std::unique_ptr<DebugEvents> m_debugEvents;
     std::unique_ptr<StoreEvents> m_storeEvents;
+    std::unique_ptr<ChatEvents> m_chatEvents;
 };
 
 }

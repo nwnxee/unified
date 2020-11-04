@@ -3,6 +3,7 @@
 /// @{
 /// @file nwnx_player.nss
 #include "nwnx"
+#include "nwnx_consts"
 
 const string NWNX_Player = "NWNX_Player"; ///< @private
 
@@ -378,6 +379,17 @@ int NWNX_Player_AddCustomJournalEntry(object oPlayer, struct NWNX_Player_Journal
 /// that is the active one that the player currently sees.
 struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, string questTag);
 
+/// @brief Sets the distance with which the player hears talks or whispers.
+/// @remark Per player settings override server wide.
+/// @param oPlayer The listener, if OBJECT_INVALID then it will be set server wide.
+/// @param fDistance The distance in meters.
+/// @param nChannel The @ref chat_channels "channel" to modify the distance heard. Only applicable for talk and whisper.
+void NWNX_Player_SetChatHearingDistance(object oPlayer, float fDistance, int nChannel);
+
+/// @brief Gets the distance with which the player hears talks or whisper
+/// @param oPlayer The listener, if OBJECT_INVALID then will return server wide setting.
+/// @param nChannel The @ref chat_channels "channel". Only applicable for talk and whisper.
+float NWNX_Player_GetChatHearingDistance(object oPlayer = OBJECT_INVALID, int nChannel = NWNX_CHAT_CHANNEL_PLAYER_TALK);
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -948,4 +960,24 @@ struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, stri
     entry.sText = NWNX_GetReturnValueString(NWNX_Player, sFunc);
     entry.sTag = questTag;
     return entry;
+}
+
+void NWNX_Player_SetChatHearingDistance(object oPlayer, float fDistance, int nChannel)
+{
+    string sFunc = "SetChatHearingDistance";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nChannel);
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, fDistance);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+}
+
+float NWNX_Player_GetChatHearingDistance(object oPlayer = OBJECT_INVALID, int nChannel = NWNX_CHAT_CHANNEL_PLAYER_TALK)
+{
+    string sFunc = "GetChatHearingDistance";
+
+    NWNX_PushArgumentInt(NWNX_Player, sFunc, nChannel);
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
+    return NWNX_GetReturnValueFloat(NWNX_Player, sFunc);
 }

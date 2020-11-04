@@ -1232,6 +1232,19 @@ _______________________________________
     PLAYER_NEW_TO_MODULE  | int    | TRUE if it's the player's first time logging into the server since a restart |
 
 _______________________________________
+    ## Chat Events
+    - NWNX_ON_CHAT_SEND_BEFORE
+    - NWNX_ON_CHAT_SEND_AFTER
+
+    `OBJECT_SELF` = The player who sent the chat message
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    CHANNEL               | int    | The channel the chat message was sent (see @ref chat_channels nwnx_consts.nss)
+    MESSAGE               | string | The message sent
+    TARGET                | object | The recipient of the message (for tells only)
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -1318,6 +1331,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Debug events
 /// - Store events
 /// - Disarm event
+/// - Chat events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

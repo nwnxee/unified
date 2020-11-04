@@ -8,10 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
+- Creature: targeted messages can now be sent on party or dm channel with updated SendMessage()
 - Events: added skippable Acquire events to ItemEvents
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Events: added Spell Interruption events to SpellEvents
+- Events: added skippable Chat events
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 - Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
@@ -28,9 +30,11 @@ The following plugins were added:
 - Creature: {Get|Set}WalkAnimation()
 - Creature: SetAttackRollOverride()
 - Creature: SetParryAllAttacks()
+- Creature: SendMessage()
 - Feat: SetFeatModifier()
 - Object: GetCurrentAnimation()
 - Player: AddCustomJournalEntry() and GetJournalEntry()
+- Player: {Get|Set}ChatHearingDistance()
 - Race: SetFavoredEnemyFeat()
 - Util: GetScriptParamIsSet()
 
@@ -46,6 +50,7 @@ The following plugins were added:
 - We now only allow builds with the `CMAKE_BUILD_TYPE=RelWithDebInfo` configuration. `Debug` builds produce unexpected behaviour and `Release` builds are generally unnecessary and mess with Assert functionality.
 
 ### Deprecated
+- Chat: NWNX_Chat has been deprecated and handled now through Chat Events (NWNX_ON_CHAT_SEND_*), NWNX_Creature_SendMessage() and NWNX_Player_{Get|Set}ChatHearingDistance().
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed
