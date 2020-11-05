@@ -1732,9 +1732,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
     int32_t retval = -1;
     if (auto *pPlayer = player(args))
     {
-        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-
-        if (pCreature && pCreature->m_pJournal)
+        if (auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))
         {
             const auto questName = Services::Events::ExtractArgument<std::string>(args);
             const auto questText = Services::Events::ExtractArgument<std::string>(args);
@@ -1759,6 +1757,9 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             ASSERT_OR_THROW(updated >= 0);
             ASSERT_OR_THROW(silentUpdate >= 0);
 
+            CNWSJournal *pJournal = pCreature->GetJournal();
+              ASSERT_OR_THROW(pJournal);// Should never happen, but still.
+
             // If server owner leaves this 0 - the entry will be added with today's date
             if (calDay <= 0)
             {
@@ -1770,10 +1771,9 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeTimeOfDay();
             }
 
-            auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
-            if (pMessage)
+            if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             {
-                auto entries = pCreature->m_pJournal->m_lstEntries;
+                auto entries = pJournal->m_lstEntries;
                 SJournalEntry newJournal; // Only instantiate the struct if the message was created
                 newJournal.szName          = Utils::CreateLocString(questName,0,0);
                 newJournal.szText          = Utils::CreateLocString(questText,0,0);
@@ -1796,7 +1796,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                         {
                             overwrite = i;
                             // Overwrite existing entry
-                            pCreature->m_pJournal->m_lstEntries[i] = newJournal;
+                            pJournal->m_lstEntries[i] = newJournal;
                             break;
                         }
                     }
@@ -1806,7 +1806,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 if(overwrite == -1)
                 {
                     // New entry added
-                    pCreature->m_pJournal->m_lstEntries.Add(newJournal);
+                    pJournal->m_lstEntries.Add(newJournal);
                 }
                 pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
                                                             newJournal.szPlot_Id,
@@ -1818,7 +1818,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                                                             newJournal.nTimeOfDay,
                                                             newJournal.szName,
                                                             newJournal.szText);
-                retval = pCreature->m_pJournal->m_lstEntries.num; // Success
+                retval = pJournal->m_lstEntries.num; // Success
 
                 //If no update message is desired, we can keep it silent.
                 if(!silentUpdate)
