@@ -30,4 +30,5 @@ add_plugin(Events
     "Events/ResourceEvents.cpp"
     "Events/QuickbarEvents.cpp"
     "Events/DebugEvents.cpp"
-    "Events/StoreEvents.cpp")
+    "Events/StoreEvents.cpp"
+    "Events/JournalEvents.cpp")

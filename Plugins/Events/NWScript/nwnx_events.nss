@@ -1232,6 +1232,18 @@ _______________________________________
     PLAYER_NEW_TO_MODULE  | int    | TRUE if it's the player's first time logging into the server since a restart |
 
 _______________________________________
+    ## Journal Open/Close Events
+    - NWNX_ON_JOURNAL_OPEN_BEFORE
+    - NWNX_ON_JOURNAL_OPEN_AFTER
+    - NWNX_ON_JOURNAL_CLOSE_BEFORE
+    - NWNX_ON_JOURNAL_CLOSE_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
