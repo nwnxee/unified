@@ -242,15 +242,16 @@ _______________________________________
     ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
 _______________________________________
-    NWNX_ON_HAS_FEAT_BEFORE
-    NWNX_ON_HAS_FEAT_AFTER
+    ## Has Feat Events
+    - NWNX_ON_HASFEAT_BEFORE
+    - NWNX_ON_HAS_FEAT_AFTER
 
-    Usage:
-        OBJECT_SELF = The player being checked for the feat
+    `OBJECT_SELF` = The player being checked for the feat
 
-    Event data:
-        Variable Name           Type        Notes
-        FEAT_ID                 int
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    FEAT_ID               | int    | |
+    HAS_FEAT              | int    |  Whether they truly have the feat or not |
 
     @note This event should definitely be used with the Event ID Whitelist, which is turned on by default
     for this event. Until you add your Feat ID to the whitelist on module load this event will not function.

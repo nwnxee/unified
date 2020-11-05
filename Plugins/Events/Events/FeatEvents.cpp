@@ -87,14 +87,16 @@ int32_t FeatEvents::HasFeatHook(
         return s_HasFeatHook->CallOriginal<int32_t>(thisPtr, featID);
     }
 
+    auto bHasFeat = s_HasFeatHook->CallOriginal<int32_t>(thisPtr, featID);
     auto PushAndSignal = [&](std::string ev) -> bool {
         Events::PushEventData("FEAT_ID", std::to_string(featID));
+        Events::PushEventData("HAS_FEAT", std::to_string(bHasFeat));
         return Events::SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf, &hasFeat);
     };
 
     if (PushAndSignal("NWNX_ON_HAS_FEAT_BEFORE"))
     {
-        retVal = s_HasFeatHook->CallOriginal<int32_t>(thisPtr, featID);
+        retVal = bHasFeat;
     }
     else
     {
