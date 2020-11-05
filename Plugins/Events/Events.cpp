@@ -34,6 +34,7 @@
 #include "Events/QuickbarEvents.hpp"
 #include "Events/DebugEvents.hpp"
 #include "Events/StoreEvents.hpp"
+#include "Events/JournalEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -128,6 +129,7 @@ Events::Events(Services::ProxyServiceList* services)
     m_quickbarEvents    = std::make_unique<QuickbarEvents>(hooker);
     m_debugEvents       = std::make_unique<DebugEvents>(hooker);
     m_storeEvents       = std::make_unique<StoreEvents>(hooker);
+    m_journalEvents     = std::make_unique<JournalEvents>(hooker);
 }
 
 Events::~Events()
