@@ -16,10 +16,8 @@ COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 RUN runDeps="hunspell \
     libmariadb3 \
     libpq5 \
-    libsqlite3-0 \
     libruby2.5 \
     luajit libluajit-5.1 \
-    libssl1.1 \
     inotify-tools \
     patch \
     unzip \
