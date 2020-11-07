@@ -23,7 +23,8 @@ RUN runDeps="hunspell \
     inotify-tools \
     patch \
     unzip \
-    dotnet-runtime-3.1" \
+    dotnet-runtime-3.1 \
+    dotnet-apphost-pack-3.1" \
     installDeps="ca-certificates wget gpg apt-transport-https" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $installDeps \
@@ -32,18 +33,14 @@ RUN runDeps="hunspell \
     && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
     && mv prod.list /etc/apt/sources.list.d/microsoft-prod.list \
     && apt-get update \
-    && apt-get -y install --no-install-recommends $runDeps
+    && apt-get -y install --no-install-recommends $runDeps \
+    && apt-get -y remove --purge wget gpg apt-transport-https \
+    && apt-get -y autoremove \
+    && rm -rf /var/cache/apt /var/lib/apt/lists/*
 
 # Patch run-server.sh with our modifications
 COPY --from=builder /nwnx/home/Scripts/Docker/run-server.patch /nwn/
 RUN patch /nwn/run-server.sh < /nwn/run-server.patch
-
-# Security upgrades and remove unneeded packages
-RUN apt-get -y upgrade \
-    && apt-get -y remove --purge wget gpg apt-transport-https unzip patch \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -r /var/cache/apt /var/lib/apt/lists
 
 # Configure nwserver to run with nwnx
 ENV NWNX_CORE_LOAD_PATH=/nwn/nwnx/
