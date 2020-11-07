@@ -14,6 +14,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Events: added Spell Interruption events to SpellEvents
 - Events: added Journal Open/Close events to JournalEvents
+- Events: Stealth Mode can now bypass or perform Hide in Plain Sight with return values of "0" or "1" respectively
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 - Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
@@ -51,6 +52,7 @@ The following plugins were added:
 - We now only allow builds with the `CMAKE_BUILD_TYPE=RelWithDebInfo` configuration. `Debug` builds produce unexpected behaviour and `Release` builds are generally unnecessary and mess with Assert functionality.
 
 ### Deprecated
+- Events: Stealth Events have had their name changed from NWNX_ON_{ENTER|EXIT}_STEALTH_* to NWNX_ON_STEALTH_{ENTER|EXIT}_*. Please update your scripts as the old names will eventually be removed.
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed

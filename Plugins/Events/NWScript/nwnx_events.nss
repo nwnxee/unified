@@ -23,13 +23,14 @@ __________________________________________
 
 _______________________________________
     ## Stealth Events
-    - NWNX_ON_ENTER_STEALTH_BEFORE
-    - NWNX_ON_ENTER_STEALTH_AFTER
-    - NWNX_ON_EXIT_STEALTH_BEFORE
-    - NWNX_ON_EXIT_STEALTH_AFTER
+    - NWNX_ON_STEALTH_ENTER_BEFORE
+    - NWNX_ON_STEALTH_ENTER_AFTER
+    - NWNX_ON_STEALTH_EXIT_BEFORE
+    - NWNX_ON_STEALTH_EXIT_AFTER
 
     `OBJECT_SELF` = The creature entering or exiting stealth.
 
+    @note NWNX_ON_{ENTER|EXIT}_STEALTH_{BEFORE|AFTER} has been deprecated. Please use these new event names.
 _______________________________________
     ## Examine Events
     - NWNX_ON_EXAMINE_OBJECT_BEFORE
@@ -1345,6 +1346,7 @@ void NWNX_Events_SkipEvent();
 /// - Trap events -> "1" or "0"
 /// - Sticky Player Name event -> "1" or "0"
 /// - Heal event -> Amount of HP to heal
+/// - Stealth event -> "1" to perform HiPS (without the feat), "0" to bypass HiPS
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name
