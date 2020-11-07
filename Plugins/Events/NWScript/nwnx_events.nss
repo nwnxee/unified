@@ -30,7 +30,6 @@ _______________________________________
 
     `OBJECT_SELF` = The creature entering or exiting stealth.
 
-
 _______________________________________
     ## Detect Events
     - NWNX_ON_DETECT_ENTER_BEFORE
