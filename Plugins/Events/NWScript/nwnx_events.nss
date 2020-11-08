@@ -31,6 +31,15 @@ _______________________________________
     `OBJECT_SELF` = The creature entering or exiting stealth.
 
 _______________________________________
+    ## Detect Events
+    - NWNX_ON_DETECT_ENTER_BEFORE
+    - NWNX_ON_DETECT_ENTER_AFTER
+    - NWNX_ON_DETECT_EXIT_BEFORE
+    - NWNX_ON_DETECT_EXIT_AFTER
+
+    `OBJECT_SELF` = The creature entering or exiting detect mode.
+
+_______________________________________
     ## Examine Events
     - NWNX_ON_EXAMINE_OBJECT_BEFORE
     - NWNX_ON_EXAMINE_OBJECT_AFTER
@@ -1351,6 +1360,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Debug events
 /// - Store events
 /// - Disarm event
+/// - {Enter|Exit}Detect events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.

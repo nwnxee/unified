@@ -10,6 +10,7 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static NWNXLib::Hooking::FunctionHook* s_SetStealthModeHook;
+static NWNXLib::Hooking::FunctionHook* s_SetDetectModeHook;
 static NWNXLib::Hooking::FunctionHook* s_DoSpotDetectionHook;
 static NWNXLib::Hooking::FunctionHook* s_DoListenDetectionHook;
 
@@ -19,6 +20,12 @@ StealthEvents::StealthEvents(Services::HooksProxy* hooker)
         s_SetStealthModeHook = hooker->RequestExclusiveHook
             <API::Functions::_ZN12CNWSCreature14SetStealthModeEh>
             (&SetStealthModeHook);
+    });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_DETECT_E.*", [hooker]() {
+        s_SetDetectModeHook = hooker->RequestExclusiveHook
+            <API::Functions::_ZN12CNWSCreature13SetDetectModeEh>
+            (&SetDetectModeHook);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_DO_LISTEN_DETECTION_.*", [hooker]() {
@@ -52,7 +59,7 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
 
         Events::SignalEvent("NWNX_ON_ENTER_STEALTH_AFTER", thisPtr->m_idSelf);
     }
-    else if(currentlyStealthed && !willBeStealthed)
+    else if (currentlyStealthed && !willBeStealthed)
     {
         if (Events::SignalEvent("NWNX_ON_EXIT_STEALTH_BEFORE", thisPtr->m_idSelf))
         {
@@ -64,6 +71,39 @@ void StealthEvents::SetStealthModeHook(CNWSCreature* thisPtr, uint8_t nStealthMo
         }
 
         Events::SignalEvent("NWNX_ON_EXIT_STEALTH_AFTER", thisPtr->m_idSelf);
+    }
+}
+
+void StealthEvents::SetDetectModeHook(CNWSCreature* thisPtr, uint8_t nDetectMode)
+{
+    const bool willBeDetecting = nDetectMode != 0;
+    const bool currentlyDetecting = thisPtr->m_nDetectMode != 0;
+
+    if (!currentlyDetecting && willBeDetecting)
+    {
+        if (Events::SignalEvent("NWNX_ON_DETECT_ENTER_BEFORE", thisPtr->m_idSelf))
+        {
+            s_SetDetectModeHook->CallOriginal<void>(thisPtr, nDetectMode);
+        }
+        else
+        {
+            thisPtr->ClearActivities(0);
+        }
+
+        Events::SignalEvent("NWNX_ON_DETECT_ENTER_AFTER", thisPtr->m_idSelf);
+    }
+    else if(currentlyDetecting && !willBeDetecting)
+    {
+        if (Events::SignalEvent("NWNX_ON_DETECT_ENTER_BEFORE", thisPtr->m_idSelf))
+        {
+            s_SetDetectModeHook->CallOriginal<void>(thisPtr, nDetectMode);
+        }
+        else
+        {
+            thisPtr->SetActivity(0, true);
+        }
+
+        Events::SignalEvent("NWNX_ON_DETECT_ENTER_AFTER", thisPtr->m_idSelf);
     }
 }
 
