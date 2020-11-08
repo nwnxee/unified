@@ -41,7 +41,7 @@
 #include "API/CExoLocString.hpp"
 #include "Utils.hpp"
 #include "API/CWorldTimer.hpp"
-
+#include <chrono>
 
 using namespace NWNXLib;
 using namespace NWNXLib::API;
@@ -857,6 +857,9 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
 ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 {
+    typedef std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds> timepoint_ms;
+    using namespace std::chrono;
+
     static bool bApplyLoopingVisualEffectToObjectHook;
 
     if (!bApplyLoopingVisualEffectToObjectHook)
@@ -867,14 +870,14 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
                     {
-                        static std::set<uint16_t> *pLoopingVisualEffectSet;
+                        static std::set<std::pair<uint16_t, timepoint_ms>> *pLoopingVisualEffectSet;
 
                         if (before)
                         {
                             if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
                                     "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
                             {
-                                pLoopingVisualEffectSet = static_cast<std::set<uint16_t> *>(*loopingVisualEffectSet);
+                                pLoopingVisualEffectSet = static_cast<std::set<std::pair<uint16_t, timepoint_ms>>*>(*loopingVisualEffectSet);
                             }
                             else
                             {
@@ -883,9 +886,22 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 
                             if (pLoopingVisualEffectSet)
                             {
+                                auto now = time_point_cast<timepoint_ms::duration>(system_clock::time_point(system_clock::now()));
+                                std::set<std::pair<uint16_t, timepoint_ms>> remove;
                                 for(auto visualEffect : *pLoopingVisualEffectSet)
                                 {
-                                    pObject->AddLoopingVisualEffect(visualEffect, Constants::OBJECT_INVALID, 0);
+                                    if (now - visualEffect.second < milliseconds{0} )
+                                    {
+                                        pObject->AddLoopingVisualEffect(visualEffect.first, Constants::OBJECT_INVALID, 0);
+                                    }
+                                    else
+                                    {
+                                        remove.insert(visualEffect);
+                                    }
+                                }
+                                for (auto const& vfxToRemove: remove)
+                                {
+                                    pLoopingVisualEffectSet->erase(vfxToRemove);
                                 }
                             }
                         }
@@ -895,7 +911,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                             {
                                 for(auto visualEffect : *pLoopingVisualEffectSet)
                                 {
-                                    pObject->RemoveLoopingVisualEffect(visualEffect);
+                                    pObject->RemoveLoopingVisualEffect(visualEffect.first);
                                 }
                             }
                         }
@@ -911,13 +927,22 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
           ASSERT_OR_THROW(oidTarget != Constants::OBJECT_INVALID);
         auto visualEffect = Services::Events::ExtractArgument<int32_t>(args);
           ASSERT_OR_THROW(visualEffect <= 65535);
+        float duration = 0.0f;
+        try
+        {
+            duration = Services::Events::ExtractArgument<float>(args);
+        }
+        catch(const std::runtime_error& e)
+        {
+            LOG_WARNING("NWNX_Player_ApplyLoopingVisualEffectToObject called from NWScript without duration parameter. Please download the latest versions of NWNX scripts.");
+        }
 
         if (visualEffect < 0)
         {
             if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidTarget,
                     "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
             {
-                auto pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
+                auto pLoopingVisualEffectSet = static_cast<std::set<std::pair<uint16_t, timepoint_ms>>*>(*loopingVisualEffectSet);
 
                 g_plugin->GetServices()->m_perObjectStorage->Remove(oidTarget, "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject));
 
@@ -926,28 +951,36 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
         }
         else
         {
-            std::set<uint16_t> *pLoopingVisualEffectSet;
+            std::set<std::pair<uint16_t, timepoint_ms>> *pLoopingVisualEffectSet;
 
             if (auto loopingVisualEffectSet = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidTarget,
                     "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
             {
-                pLoopingVisualEffectSet = static_cast<std::set<uint16_t>*>(*loopingVisualEffectSet);
+                pLoopingVisualEffectSet = static_cast<std::set<std::pair<uint16_t, timepoint_ms>>*>(*loopingVisualEffectSet);
             }
             else
             {
-                pLoopingVisualEffectSet = new std::set<uint16_t>();
+                pLoopingVisualEffectSet = new std::set<std::pair<uint16_t, timepoint_ms>>();
 
                 g_plugin->GetServices()->m_perObjectStorage->Set(oidTarget, "LVES!" + Utils::ObjectIDToString(pPlayer->m_oidNWSObject),
-                        pLoopingVisualEffectSet, [](void*p) { delete static_cast<std::set<uint16_t>*>(p); });
+                        pLoopingVisualEffectSet, [](void*p) { delete static_cast<std::set<std::pair<uint16_t, timepoint_ms>>*>(p); });
             }
 
-            if (pLoopingVisualEffectSet->find(visualEffect) != pLoopingVisualEffectSet->end())
+            bool bExisted = false;
+            for(auto const& vfxList : *pLoopingVisualEffectSet)
             {
-                pLoopingVisualEffectSet->erase(visualEffect);
+                if (vfxList.first == visualEffect)
+                {
+                    pLoopingVisualEffectSet->erase(vfxList);
+                    bExisted = true;
+                    break;
+                }
             }
-            else
+            if (!bExisted)
             {
-                pLoopingVisualEffectSet->insert(visualEffect);
+                auto now = time_point_cast<timepoint_ms::duration>(system_clock::time_point(system_clock::now()));
+                auto expiry = duration <= 0.0f ? timepoint_ms::max() : now + milliseconds(int(duration * 1000));
+                pLoopingVisualEffectSet->insert(std::make_pair(visualEffect, expiry));
             }
         }
     }

@@ -45,6 +45,7 @@ The following plugins were added:
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
 - Events: `NWNX_ON_STORE_REQUEST_*_AFTER` now provides the result as event data.
 - Events: ResourceEvents now support valid custom resource directory aliases.
+- Player: added an optional duration parameter to ApplyLoopingVisualEffectToObject()
 - Util: added an optional appearance type parameter to CreateDoor()
 - Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.
 - Visibility: added two new visibility types to always show an object regardless of range.

@@ -236,9 +236,10 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
 /// @param player The player object.
 /// @param target The target object.
 /// @param visualeffect A VFX_DUR_*. Calling again will remove an applied effect. -1 to remove all effects
+/// @param fDuration An optional duration in seconds for the effect to last, or 0.0f for forever.
 /// @note Only really works with looping effects: VFX_DUR_*. Other types *kind* of work, they'll play when
 /// reentering the area and the object is in view or when they come back in view range.
-void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect);
+void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect, float fDuration = 0.0f);
 
 /// @brief Override the name of placeable for player only
 /// @param player The player object.
@@ -707,10 +708,11 @@ void NWNX_Player_SetObjectVisualTransformOverride(object oPlayer, object oObject
     NWNX_CallFunction(NWNX_Player, sFunc);
 }
 
-void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect)
+void NWNX_Player_ApplyLoopingVisualEffectToObject(object player, object target, int visualeffect, float fDuration)
 {
     string sFunc = "ApplyLoopingVisualEffectToObject";
 
+    NWNX_PushArgumentFloat(NWNX_Player, sFunc, fDuration);
     NWNX_PushArgumentInt(NWNX_Player, sFunc, visualeffect);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, target);
     NWNX_PushArgumentObject(NWNX_Player, sFunc, player);
