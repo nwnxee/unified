@@ -503,6 +503,17 @@ _______________________________________
     You can optionally pass a reason for this in the event result.
 
 _______________________________________
+    ## CombatEnter/Exit Events
+    - NWNX_ON_COMBAT_ENTER_BEFORE
+    - NWNX_ON_COMBAT_ENTER_AFTER
+    - NWNX_ON_COMBAT_EXIT_BEFORE
+    - NWNX_ON_COMBAT_EXIT_AFTER
+
+    `OBJECT_SELF` = The player entering/exiting combat.
+
+    @note Only works for PCs.
+
+_______________________________________
     ## Combat Round Start Events
     - NWNX_ON_START_COMBAT_ROUND_BEFORE
     - NWNX_ON_START_COMBAT_ROUND_AFTER

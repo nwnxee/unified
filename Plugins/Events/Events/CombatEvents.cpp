@@ -1,6 +1,9 @@
-
 #include "Events/CombatEvents.hpp"
+#include "API/CAppManager.hpp"
+#include "API/CServerExoApp.hpp"
+#include "API/CNWSClient.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSPlayer.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/CNWSCombatRound.hpp"
@@ -23,6 +26,10 @@ CombatEvents::CombatEvents(HooksProxy* hooker)
     Events::InitOnFirstSubscribe("NWNX_ON_DISARM_*", [hooker]() {
         s_ApplyDisarmHook = hooker->RequestExclusiveHook
                 <API::Functions::_ZN21CNWSEffectListHandler13OnApplyDisarmEP10CNWSObjectP11CGameEffecti>(&ApplyDisarmHook);
+    });
+    Events::InitOnFirstSubscribe("NWNX_ON_COMBAT_ENTER.*", [hooker]() {
+        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage40SendServerToPlayerAmbientBattleMusicPlayEji, int32_t>
+                (&SendServerToPlayerAmbientBattleMusicPlayHook);
     });
 }
 
@@ -57,6 +64,17 @@ int32_t CombatEvents::ApplyDisarmHook(CNWSEffectListHandler* pEffectHandler, CNW
     PushAndSignal("NWNX_ON_DISARM_AFTER");
 
     return retVal;
+}
+
+void CombatEvents::SendServerToPlayerAmbientBattleMusicPlayHook(bool bBefore, CNWSMessage*, PlayerID playerId, int32_t bPlay)
+{
+    std::string sEvent = "NWNX_ON_COMBAT_";
+    sEvent.append(bPlay ? "ENTER_" : "EXIT_");
+    sEvent.append(bBefore ? "BEFORE" : "AFTER");
+
+    auto *pPlayer = static_cast<CNWSPlayer *>(Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(playerId, 0));
+    if(pPlayer)
+        Events::SignalEvent(sEvent, pPlayer->m_oidNWSObject);
 }
 
 }
