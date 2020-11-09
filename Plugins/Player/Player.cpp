@@ -1664,14 +1664,16 @@ ArgumentStack Player::RemoveEffectFromTURD(ArgumentStack&& args)
 
         if (pTURD && pTURD->m_oidPlayer == oidPlayer)
         {
+            std::vector<uint64_t> remove(128);
             for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
             {
                 auto *pEffect = pTURD->m_appliedEffects.element[i];
 
                 if (pEffect->m_sCustomTag == effectTag)
-                    pTURD->RemoveEffect(pEffect);
+                    remove.push_back(pEffect->m_nID);
             }
-
+            for (auto id: remove)
+                pTURD->RemoveEffectById(id);
             break;
         }
     }
