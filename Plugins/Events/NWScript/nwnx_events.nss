@@ -32,6 +32,15 @@ _______________________________________
 
     @note NWNX_ON_{ENTER|EXIT}_STEALTH_{BEFORE|AFTER} has been deprecated. Please use these new event names.
 _______________________________________
+    ## Detect Events
+    - NWNX_ON_DETECT_ENTER_BEFORE
+    - NWNX_ON_DETECT_ENTER_AFTER
+    - NWNX_ON_DETECT_EXIT_BEFORE
+    - NWNX_ON_DETECT_EXIT_AFTER
+
+    `OBJECT_SELF` = The creature entering or exiting detect mode.
+
+_______________________________________
     ## Examine Events
     - NWNX_ON_EXAMINE_OBJECT_BEFORE
     - NWNX_ON_EXAMINE_OBJECT_AFTER
@@ -493,6 +502,17 @@ _______________________________________
 
     @note Skipping the _BEFORE event will cause the client's connection to be denied.
     You can optionally pass a reason for this in the event result.
+
+_______________________________________
+    ## CombatEnter/Exit Events
+    - NWNX_ON_COMBAT_ENTER_BEFORE
+    - NWNX_ON_COMBAT_ENTER_AFTER
+    - NWNX_ON_COMBAT_EXIT_BEFORE
+    - NWNX_ON_COMBAT_EXIT_AFTER
+
+    `OBJECT_SELF` = The player entering/exiting combat.
+
+    @note Only works for PCs.
 
 _______________________________________
     ## Combat Round Start Events
@@ -1352,6 +1372,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Debug events
 /// - Store events
 /// - Disarm event
+/// - {Enter|Exit}Detect events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
