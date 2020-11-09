@@ -22,6 +22,11 @@ private:
             ObjectID oidArea,
             Vector* pvTarget
         );
+        static int32_t HasFeatHook
+        (
+            CNWSCreatureStats* thisPtr,
+            uint16_t nFeat
+        );
 };
 
 }

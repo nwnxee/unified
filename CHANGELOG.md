@@ -13,7 +13,9 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Events: added Spell Interruption events to SpellEvents
+- Events: added skippable Has Feat event to FeatEvents
 - Events: added Journal Open/Close events to JournalEvents
+- Events: added Detect Mode event to StealthEvents
 - Events: added Combat Enter/Exit events to CombatEvents
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`

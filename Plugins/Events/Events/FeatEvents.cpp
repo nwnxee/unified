@@ -1,5 +1,6 @@
 #include "Events/FeatEvents.hpp"
 #include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "Events.hpp"
@@ -13,6 +14,7 @@ using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
 static Hooking::FunctionHook* s_UseFeatHook;
+static Hooking::FunctionHook* s_HasFeatHook;
 
 FeatEvents::FeatEvents(Services::HooksProxy* hooker)
 {
@@ -27,6 +29,14 @@ FeatEvents::FeatEvents(Services::HooksProxy* hooker)
             ObjectID,
             Vector*>(FeatEvents::UseFeatHook);
     });
+    Events::InitOnFirstSubscribe("NWNX_ON_HAS_FEAT_.*", [hooker]() {
+        s_HasFeatHook = hooker->RequestExclusiveHook<
+                NWNXLib::API::Functions::_ZN17CNWSCreatureStats7HasFeatEt,
+                int32_t,
+                CNWSCreatureStats*,
+                uint16_t>(FeatEvents::HasFeatHook);
+    });
+    Events::ForceEnableWhitelist("NWNX_ON_HAS_FEAT");
 }
 
 int32_t FeatEvents::UseFeatHook(
@@ -62,6 +72,39 @@ int32_t FeatEvents::UseFeatHook(
     Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
     PushAndSignal("NWNX_ON_USE_FEAT_AFTER");
 
+    return retVal;
+}
+
+int32_t FeatEvents::HasFeatHook(
+        CNWSCreatureStats* thisPtr,
+        uint16_t featID)
+{
+    int32_t retVal;
+    std::string hasFeat;
+
+    if (!Events::IsIDInWhitelist("NWNX_ON_HAS_FEAT", featID))
+    {
+        return s_HasFeatHook->CallOriginal<int32_t>(thisPtr, featID);
+    }
+
+    auto bHasFeat = s_HasFeatHook->CallOriginal<int32_t>(thisPtr, featID);
+    auto PushAndSignal = [&](std::string ev) -> bool {
+        Events::PushEventData("FEAT_ID", std::to_string(featID));
+        Events::PushEventData("HAS_FEAT", std::to_string(bHasFeat));
+        return Events::SignalEvent(ev, thisPtr->m_pBaseCreature->m_idSelf, &hasFeat);
+    };
+
+    if (PushAndSignal("NWNX_ON_HAS_FEAT_BEFORE"))
+    {
+        retVal = bHasFeat;
+    }
+    else
+    {
+        retVal = hasFeat == "1";
+    }
+
+    Events::PushEventData("ACTION_RESULT", std::to_string(retVal));
+    PushAndSignal("NWNX_ON_HAS_FEAT_AFTER");
     return retVal;
 }
 
