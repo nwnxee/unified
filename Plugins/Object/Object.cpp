@@ -186,7 +186,7 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
         pos.x = Services::Events::ExtractArgument<float>(args);
         auto bUpdateSubareas = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
+        pObject->SetPosition(pos, false);
 
         if (bUpdateSubareas)
         {
