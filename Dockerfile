@@ -29,7 +29,6 @@ RUN runDeps="hunspell \
     && wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && apt-get update \
-    && apt search dotnet \
     && apt-get -y install --no-install-recommends $runDeps \
     && apt-get -y remove --purge wget gpg apt-transport-https \
     && apt-get -y autoremove \
