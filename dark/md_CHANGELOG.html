@@ -117,6 +117,7 @@ Added</h2>
 <li>Events: added Journal Open/Close events to JournalEvents</li>
 <li>Events: added Detect Mode event to StealthEvents</li>
 <li>Events: added Combat Enter/Exit events to CombatEvents</li>
+<li>Events: Stealth Mode can now bypass or perform Hide in Plain Sight with return values of "0" or "1" respectively</li>
 <li>Tweaks: <code>NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</code></li>
 <li>Tweaks: <code>NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE</code></li>
 <li>Tweaks: <code>NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY</code></li>
@@ -161,6 +162,7 @@ Changed</h2>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Deprecated</h2>
 <ul>
+<li>Events: Stealth Events have had their name changed from NWNX_ON_{ENTER|EXIT}_STEALTH_* to NWNX_ON_STEALTH_{ENTER|EXIT}_*. Please update your scripts as the old names will eventually be removed.</li>
 <li>Tweaks: <code>NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST</code> has been deprecated, use <code>NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST</code> now</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md14"></a>
@@ -914,7 +916,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Nov 9 2020 05:12:24 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Nov 10 2020 01:08:21 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
