@@ -21,16 +21,15 @@ RUN runDeps="hunspell \
     inotify-tools \
     patch \
     unzip \
-    dotnet-runtime-3.1 \
-    dotnet-apphost-pack-3.1" \
+    dotnet-runtime-5.0 \
+    dotnet-apphost-pack-5.0" \
     installDeps="ca-certificates wget gpg apt-transport-https" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $installDeps \
-    && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg \
-    && wget -q https://packages.microsoft.com/config/debian/10/prod.list \
-    && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
-    && mv prod.list /etc/apt/sources.list.d/microsoft-prod.list \
+    && wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb \
     && apt-get update \
+    && apt search dotnet \
     && apt-get -y install --no-install-recommends $runDeps \
     && apt-get -y remove --purge wget gpg apt-transport-https \
     && apt-get -y autoremove \
