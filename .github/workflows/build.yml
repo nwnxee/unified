@@ -22,7 +22,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
@@ -37,7 +37,7 @@ jobs:
       id: dependencies-cache
       with:
         path: "~/dependencies"
-        key: dependencies-3
+        key: dependencies-4
 
     - name: Install Cache Additional Dependencies
       env:
@@ -152,7 +152,7 @@ jobs:
            ./NWScript.zip
 
   docker:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: github.event_name == 'push'
     needs: build
     steps:
@@ -201,7 +201,7 @@ jobs:
 
   release:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: build
 
     steps:
@@ -227,7 +227,7 @@ jobs:
 
   publish:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: release
 
     steps:
