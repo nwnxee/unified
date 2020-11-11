@@ -16,21 +16,23 @@ COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 RUN runDeps="hunspell \
     libmariadb3 \
     libpq5 \
+    libsqlite3-0 \
     libruby2.5 \
     luajit libluajit-5.1 \
+    libssl1.1 \
     inotify-tools \
     patch \
     unzip \
     dotnet-runtime-5.0 \
     dotnet-apphost-pack-5.0" \
-    installDeps="ca-certificates wget gpg apt-transport-https" \
+    installDeps="ca-certificates wget" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $installDeps \
     && wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
-    && apt-get -y remove --purge wget gpg apt-transport-https \
+    && apt-get -y remove --purge ca-certificates wget \
     && apt-get -y autoremove \
     && rm -rf /var/cache/apt /var/lib/apt/lists/*
 
