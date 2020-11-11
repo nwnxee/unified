@@ -1,3 +1,6 @@
+# This image is created after a Github Actions build, we use the artifacts from
+# that build instead of rebuilding from source again then push our image to Dockerhub and GHCR.
+
 FROM beamdog/nwserver:8193.16
 RUN mkdir -p /nwn/nwnx
 COPY ./NWNX-EE.zip /nwn/nwnx

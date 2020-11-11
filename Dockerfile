@@ -1,3 +1,6 @@
+# This image is for users who wish to build their images themselves. It uses the builder factory that is created
+# via the builder.Dockerfile
+
 FROM nwnxee/builder as builder
 WORKDIR /nwnx/home
 COPY ./ .
