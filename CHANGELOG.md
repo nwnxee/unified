@@ -42,8 +42,8 @@ The following plugins were added:
 - Util: GetScriptParamIsSet()
 
 ### Changed
-- DotNET: Upgraded to Dotnet-5.
 - Area: ExportGIT() now supports valid custom resource directory aliases.
+- DotNET: Upgraded to Dotnet-5.
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
 - Events: `NWNX_ON_STORE_REQUEST_*_AFTER` now provides the result as event data.
 - Events: ResourceEvents now support valid custom resource directory aliases.
