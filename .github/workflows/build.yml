@@ -39,7 +39,7 @@ jobs:
       id: dependencies-cache
       with:
         path: "~/dependencies"
-        key: dependencies-4
+        key: dependencies-5
 
     - name: Install Cache Additional Dependencies
       env:
@@ -48,9 +48,9 @@ jobs:
         if [[ "$CACHE_HIT" == 'true' ]]; then
           sudo cp --force --recursive ~/dependencies/* /
         else
-          sudo apt-get install libhunspell-dev libluajit-5.1-dev ccache
+          sudo apt-get install libhunspell-dev libluajit-5.1-dev ccache default-libmysqlclient-dev
           mkdir -p ~/dependencies
-          for dep in libhunspell-dev libluajit-5.1-dev ccache; do
+          for dep in libhunspell-dev libluajit-5.1-dev ccache default-libmysqlclient-dev; do
               dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/dependencies/
           done
         fi
