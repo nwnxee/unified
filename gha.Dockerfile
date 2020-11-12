@@ -7,6 +7,7 @@ COPY ./NWNX-EE.zip /nwn/nwnx
 
 # Install plugin run dependencies
 RUN runDeps="hunspell \
+    libmysqlclient20 \
     libmariadb3 \
     libpq5 \
     libsqlite3-0 \
