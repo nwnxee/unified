@@ -10,6 +10,7 @@
 #include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
 #include "Events/ExamineEvents.hpp"
+#include "Events/FactionEvents.hpp"
 #include "Events/FeatEvents.hpp"
 #include "Events/ItemEvents.hpp"
 #include "Events/MapEvents.hpp"
@@ -105,6 +106,7 @@ Events::Events(Services::ProxyServiceList* services)
     m_combatEvents      = std::make_unique<CombatEvents>(hooker);
     m_dmActionEvents    = std::make_unique<DMActionEvents>(hooker);
     m_examineEvents     = std::make_unique<ExamineEvents>(hooker);
+    m_factionEvents     = std::make_unique<FactionEvents>(hooker);
     m_itemEvents        = std::make_unique<ItemEvents>(hooker);
     m_featEvents        = std::make_unique<FeatEvents>(hooker);
     m_stealthEvents     = std::make_unique<StealthEvents>(hooker);
