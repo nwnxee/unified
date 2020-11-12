@@ -7,14 +7,16 @@ on:
     paths-ignore:
       - '**.md'
       - 'docgen/**'
-      - .circleci/**
+      - '.circleci/**'
+      - 'builder.Dockerfile'
   pull_request:
     branches:
       - master
     paths-ignore:
       - '**.md'
       - 'docgen/**'
-      - .circleci/**
+      - '.circleci/**'
+      - 'builder.Dockerfile'
 
 env:
   CC: gcc-7 -m64
@@ -188,7 +190,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: ./Dockerfile-gha
+          file: ./gha.Dockerfile
           push: true
           tags: |
             ${{ github.repository }}:latest

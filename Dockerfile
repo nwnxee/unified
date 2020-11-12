@@ -1,3 +1,6 @@
+# This image is for users who wish to build their images themselves. It uses the builder factory that is created
+# via the builder.Dockerfile
+
 FROM nwnxee/builder as builder
 WORKDIR /nwnx/home
 COPY ./ .
@@ -14,6 +17,7 @@ COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 
 # Install plugin run dependencies
 RUN runDeps="hunspell \
+    libmysqlclient20 \
     libmariadb3 \
     libpq5 \
     libsqlite3-0 \
