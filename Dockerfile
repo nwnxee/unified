@@ -35,8 +35,6 @@ RUN runDeps="hunspell \
     && dpkg -i packages-microsoft-prod.deb \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
-    && apt-get -y remove --purge ca-certificates wget \
-    && apt-get -y autoremove \
     && rm -rf /var/cache/apt /var/lib/apt/lists/*
 
 # Patch run-server.sh with our modifications

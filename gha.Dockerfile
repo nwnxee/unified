@@ -25,8 +25,7 @@ RUN runDeps="hunspell \
     && dpkg -i packages-microsoft-prod.deb \
     && apt-get update \
     && apt-get -y install --no-install-recommends $runDeps \
-    && apt-get -y remove --purge ca-certificates wget \
-    && apt-get -y autoremove \
+    && ln -s /usr/lib/x86_64-linux-gnu/libmariadb.so.3 /usr/lib/x86_64-linux-gnu/libmariadbclient.so.18 \
     && rm -rf /var/cache/apt /var/lib/apt/lists/*
 
 # Unzip the built binaries from Github Actions
