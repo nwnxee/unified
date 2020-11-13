@@ -53,6 +53,20 @@ _______________________________________
     TRAP_EXAMINE_SUCCESS  | int    | For trap examine only, whether the examine succeeded
 
 _______________________________________
+    ## Faction Events
+    - NWNX_ON_SET_NPC_FACTION_REPUTATION_BEFORE
+    - NWNX_ON_SET_NPC_FACTION_REPUTATION_AFTER
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    FACTION_ID            | int    | Not the STANDARD_FACTION_* constants. See nwnx_creature->GetFaction().
+    SUBJECT_FACTION_ID    | int    | Not the STANDARD_FACTION_* constants. See nwnx_creature->GetFaction().
+    PREVIOUS_REPUTATION   | int    | 
+    NEW_REPUTATION        | int    | Not yet clamped between 0-100. In the AFTER event, this will equal the EventResult set in the BEFORE event.
+
+_______________________________________
     ## Validate Use Item Events
     - NWNX_ON_VALIDATE_USE_ITEM_BEFORE
     - NWNX_ON_VALIDATE_USE_ITEM_AFTER
@@ -1373,6 +1387,7 @@ string NWNX_Events_GetEventData(string tag);
 /// - Store events
 /// - Disarm event
 /// - {Enter|Exit}Detect events
+/// - Faction events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
@@ -1390,6 +1405,7 @@ void NWNX_Events_SkipEvent();
 /// - Heal event -> Amount of HP to heal
 /// - Has Feat event -> "1" or "0"
 /// - Stealth event -> "1" to perform HiPS (without the feat), "0" to bypass HiPS
+/// - Faction set reputation event -> The new reputation to apply instead. ("0" - "100")
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name

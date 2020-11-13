@@ -7,6 +7,7 @@ add_plugin(Events
     "Events/CombatEvents.cpp"
     "Events/DMActionEvents.cpp"
     "Events/ExamineEvents.cpp"
+    "Events/FactionEvents.cpp"
     "Events/FeatEvents.cpp"
     "Events/ItemEvents.cpp"
     "Events/MapEvents.cpp"

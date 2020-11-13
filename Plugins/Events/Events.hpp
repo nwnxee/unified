@@ -20,6 +20,7 @@ class ClientEvents;
 class CombatEvents;
 class DMActionEvents;
 class ExamineEvents;
+class FactionEvents;
 class FeatEvents;
 class ItemEvents;
 class MapEvents;
@@ -122,6 +123,7 @@ private:
     std::unique_ptr<CombatEvents> m_combatEvents;
     std::unique_ptr<DMActionEvents> m_dmActionEvents;
     std::unique_ptr<ExamineEvents> m_examineEvents;
+    std::unique_ptr<FactionEvents> m_factionEvents;
     std::unique_ptr<FeatEvents> m_featEvents;
     std::unique_ptr<ItemEvents> m_itemEvents;
     std::unique_ptr<MapEvents> m_mapEvents;

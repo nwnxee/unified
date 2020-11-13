@@ -18,6 +18,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Events: added Detect Mode event to StealthEvents
 - Events: added Combat Enter/Exit events to CombatEvents
 - Events: Stealth Mode can now bypass or perform Hide in Plain Sight with return values of "0" or "1" respectively
+- Events: Added Skippable/Result Changeable Faction Reputation event to FactionEvents
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 - Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
