@@ -17,7 +17,6 @@ COPY --from=builder /nwnx/home/Binaries/* /nwn/nwnx/
 
 # Install plugin run dependencies
 RUN runDeps="hunspell \
-    libmysqlclient20 \
     libmariadb3 \
     libpq5 \
     libsqlite3-0 \
