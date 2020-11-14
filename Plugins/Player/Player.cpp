@@ -31,6 +31,9 @@
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/CLastUpdateObject.hpp"
+#include "API/CWorldTimer.hpp"
+#include "API/CExoLocString.hpp"
+#include "API/CNWSPlayerStoreGUI.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -38,9 +41,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Encoding.hpp"
-#include "API/CExoLocString.hpp"
 #include "Utils.hpp"
-#include "API/CWorldTimer.hpp"
 
 
 using namespace NWNXLib;
@@ -107,6 +108,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(SendDMAllCreatorLists);
     REGISTER(AddCustomJournalEntry);
     REGISTER(GetJournalEntry);
+    REGISTER(CloseStore);
 
 #undef REGISTER
 
@@ -1873,6 +1875,19 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
         }
     }
     return Services::Events::Arguments(-1);
+}
+
+ArgumentStack Player::CloseStore(ArgumentStack&& args)
+{
+    if (auto *pPlayer = player(args))
+    {
+        if (auto *pPlayerStoreGUI = pPlayer->m_pStoreGUI)
+        {
+            pPlayerStoreGUI->CloseStore(pPlayer, true);
+        }
+    }
+
+    return Services::Events::Arguments();
 }
 
 }

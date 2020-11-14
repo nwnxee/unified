@@ -63,6 +63,7 @@ private:
     ArgumentStack SendDMAllCreatorLists             (ArgumentStack&& args);
     ArgumentStack AddCustomJournalEntry             (ArgumentStack&& args);
     ArgumentStack GetJournalEntry                   (ArgumentStack&& args);
+    ArgumentStack CloseStore                        (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

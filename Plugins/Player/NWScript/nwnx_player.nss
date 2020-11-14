@@ -378,6 +378,10 @@ int NWNX_Player_AddCustomJournalEntry(object oPlayer, struct NWNX_Player_Journal
 /// that is the active one that the player currently sees.
 struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, string questTag);
 
+/// @brief Closes any store oPlayer may have open.
+/// @param oPlayer The player object.
+void NWNX_Player_CloseStore(object oPlayer);
+
 /// @}
 
 void NWNX_Player_ForcePlaceableExamineWindow(object player, object placeable)
@@ -948,4 +952,12 @@ struct NWNX_Player_JournalEntry NWNX_Player_GetJournalEntry(object oPlayer, stri
     entry.sText = NWNX_GetReturnValueString(NWNX_Player, sFunc);
     entry.sTag = questTag;
     return entry;
+}
+
+void NWNX_Player_CloseStore(object oPlayer)
+{
+    string sFunc = "CloseStore";
+
+    NWNX_PushArgumentObject(NWNX_Player, sFunc, oPlayer);
+    NWNX_CallFunction(NWNX_Player, sFunc);
 }
