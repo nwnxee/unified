@@ -166,6 +166,7 @@ std::string FromUTF8(const char *str, Locale locale)
             }
             else // Special character out of bounds
             {
+                int i;
                 switch (locale)
                 {
                     case cp1252:
@@ -185,7 +186,7 @@ std::string FromUTF8(const char *str, Locale locale)
                         }
                         break;
                     case cp1250:
-                        for (int i = 0; i < 0x80; i++)
+                        for (i = 0; i < 0x80; i++)
                         {
                             if (map_cp1250[i] == codepoint)
                             {
@@ -193,7 +194,8 @@ std::string FromUTF8(const char *str, Locale locale)
                                 break;
                             }
                         }
-                        iso8859.push_back('?');
+                        if (i == 0x80)
+                            iso8859.push_back('?');
                         break;
 
                     default:
