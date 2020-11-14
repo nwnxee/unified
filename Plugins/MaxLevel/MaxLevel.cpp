@@ -53,7 +53,7 @@ MaxLevel::MaxLevel(Services::ProxyServiceList* services)
     if (m_maxLevel > CORE_MAX_LEVEL)
     {
         GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal24GetServerInfoFromIniFileEv, void, CServerExoAppInternal *>(&GetServerInfoFromIniFileHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWRules9ReloadAllEv, void, CNWRules *>(&ReloadAllHook);
+        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSModule15LoadModuleStartE10CExoStringii, void, CNWSModule*, CExoString, int32_t, int32_t>(&LoadModuleStartHook);
         GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(&CanLevelUpHook);
         GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats22GetExpNeededForLevelUpEv>(&GetExpNeededForLevelUpHook);
         m_LevelDownHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats>(&LevelDownHook);
@@ -78,9 +78,9 @@ void MaxLevel::GetServerInfoFromIniFileHook(bool before, CServerExoAppInternal* 
 }
 
 // After Rules aggregates all its information we add to our custom experience table map
-void MaxLevel::ReloadAllHook(bool before, CNWRules* pRules)
+void MaxLevel::LoadModuleStartHook(bool before, CNWSModule *pModule, CExoString, int32_t, int32_t)
 {
-    if (before || !pRules)
+    if (before || !pModule)
         return;
 
     auto *twoda = Globals::Rules()->m_p2DArrays->GetCached2DA("EXPTABLE", true);
@@ -100,6 +100,8 @@ void MaxLevel::ReloadAllHook(bool before, CNWRules* pRules)
             g_plugin->m_nExperienceTableAdded[i] = xpLevel;
         }
     }
+    if (g_plugin->m_maxLevel > CORE_MAX_LEVEL)
+        LOG_INFO("Max Level increased to %d.", g_plugin->m_maxLevel);
 }
 
 // If level is greater than 40 seek the xp_threshold from our custom map

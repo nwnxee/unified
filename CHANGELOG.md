@@ -70,6 +70,7 @@ The following plugins were added:
 - Events: fixed a nullptr deref crash in BarterEvents
 - Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
 - MaxLevel: fixed bug interfering with leveling down NPCs
+- MaxLevel: fixed an issue with the plugin failing after a restart when reload-when-empty was set to true
 - Object: fixed a possible crash in CheckFit()
 - Player: fixed bic getting overwritten when using PossessCreature() and crashing in between areas
 - Race: fixed effect clean up after level up
