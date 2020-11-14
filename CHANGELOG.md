@@ -41,6 +41,7 @@ The following plugins were added:
 - Feat: SetFeatModifier()
 - Object: GetCurrentAnimation()
 - Player: AddCustomJournalEntry() and GetJournalEntry()
+- Player: CloseStore()
 - Race: SetFavoredEnemyFeat()
 - Util: GetScriptParamIsSet()
 
