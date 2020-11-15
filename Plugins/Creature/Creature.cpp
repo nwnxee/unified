@@ -176,6 +176,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetWalkAnimation);
     REGISTER(SetAttackRollOverride);
     REGISTER(SetParryAllAttacks);
+    REGISTER(GetNoPermanentDeath);
+    REGISTER(SetNoPermanentDeath);
 
 #undef REGISTER
 }
@@ -2953,6 +2955,30 @@ ArgumentStack Creature::SetParryAllAttacks(ArgumentStack&& args)
     else
     {
         g_plugin->m_ParryAllAttacks[Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(creatureId)->m_idSelf] = bParry;
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetNoPermanentDeath(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_bNoPermDeath;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetNoPermanentDeath(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto noPermanentDeath = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        pCreature->m_bNoPermDeath = noPermanentDeath;
     }
 
     return Services::Events::Arguments();

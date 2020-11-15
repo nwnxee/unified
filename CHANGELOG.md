@@ -35,6 +35,7 @@ The following plugins were added:
 - Creature: {Get|Set}WalkAnimation()
 - Creature: SetAttackRollOverride()
 - Creature: SetParryAllAttacks()
+- Creature: {Get|Set}NoPermanentDeath()
 - Events: ToggleIDWhitelist()
 - Events: AddIDToWhitelist()
 - Events: RemoveIDFromWhitelist()
