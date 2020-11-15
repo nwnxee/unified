@@ -117,6 +117,8 @@ var nwnx__creature_8nss =
     [ "NWNX_Creature_SetWalkAnimation", "group__creature.html#ga9c46ab23cd58e1e9108f333b3f65062f", null ],
     [ "NWNX_Creature_SetAttackRollOverride", "group__creature.html#ga9d7a4887330c48425eee12a53129ca77", null ],
     [ "NWNX_Creature_SetParryAllAttacks", "group__creature.html#ga27aefe7af67628a090a0685c3e07cc9e", null ],
+    [ "NWNX_Creature_GetNoPermanentDeath", "group__creature.html#ga5597af02da766c4be868386da054b25e", null ],
+    [ "NWNX_Creature_SetNoPermanentDeath", "group__creature.html#ga4fc2b699787afb951d67736e81ddd191", null ],
     [ "NWNX_Creature", "group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
