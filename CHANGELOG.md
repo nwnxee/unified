@@ -79,6 +79,7 @@ The following plugins were added:
 - Rename: properly updates original name if NWNX_Creature_SetOriginalName() is used
 - Weapon: fixed bug in SetGreaterWeaponFocusFeat()
 - Weapon: fixed bug in offhand attack and damage bonus calculations with Greater Weapon feats and two handed weapons
+- SkillRanks: fixed skill bonus for abilities not properly calculating when ability scores were negative
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
