@@ -588,7 +588,7 @@ char SkillRanks::GetSkillRankHook(
             if (skillFeat.nKeyAbilityMask)
             {
                 bHasOverrideKeyAbilityFeat = true;
-                std::list<uint8_t> mods = {};
+                std::list<int8_t> mods = {};
                 if ((skillFeat.nKeyAbilityMask & strMask) == strMask)
                     mods.push_front(thisPtr->m_nStrengthModifier);
                 if ((skillFeat.nKeyAbilityMask & conMask) == conMask)
