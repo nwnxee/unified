@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
 - Chat: targeted messages can now be sent on the Party or DM channels
+- Core: log file and crash dumps now include version and commit sha information
 - Events: added skippable Acquire events to ItemEvents
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
@@ -78,9 +79,9 @@ The following plugins were added:
 - Race: fixed effect clean up after level up
 - Rename: community name only obfuscates once a server reset
 - Rename: properly updates original name if NWNX_Creature_SetOriginalName() is used
+- SkillRanks: fixed skill bonus for abilities not properly calculating when ability scores were negative
 - Weapon: fixed bug in SetGreaterWeaponFocusFeat()
 - Weapon: fixed bug in offhand attack and damage bonus calculations with Greater Weapon feats and two handed weapons
-- SkillRanks: fixed skill bonus for abilities not properly calculating when ability scores were negative
 
 ## 8193.16
 https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
