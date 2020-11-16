@@ -9,7 +9,8 @@ on:
       - '**docker-base.yml'
       - '**run-server.patch'
       - 'CMakeLists.txt'
-
+  schedule:
+    - cron: '5 4 15 * *'
 jobs:
   docker-base:
     runs-on: ubuntu-latest
