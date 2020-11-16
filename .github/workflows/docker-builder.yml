@@ -7,15 +7,9 @@ on:
     paths:
       - 'builder.Dockerfile'
       - '**docker-builder.yml'
-  pull_request:
-    branches:
-      - master
-    paths:
-      - 'builder.Dockerfile'
-      - '**docker-builder.yml'
 
 jobs:
-  docker:
+  docker-builder:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
@@ -25,6 +19,7 @@ jobs:
       id: vars
       run: |
         echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -49,6 +44,13 @@ jobs:
         context: ./
         file: ./builder.Dockerfile
         push: true
+        labels: |
+          org.opencontainers.image.title=NWNX:EE Builder Factory
+          org.opencontainers.image.description=This image serves as the factory for compiling the sources, and must be updated whenever the build dependencies change. This docker image created is pushed to Dockerhub and GHCR and is the base image when users build their own docker images for NWNX:EE.
+          org.opencontainers.image.author=NWNX:EE Community
+          org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+          org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+          org.opencontainers.image.revision=${{ github.sha }}
         tags: |
           ${{ github.repository_owner }}/builder:latest
           ${{ github.repository_owner }}/builder:${{ steps.vars.outputs.sha_short }}

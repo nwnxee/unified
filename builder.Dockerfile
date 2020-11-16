@@ -3,7 +3,6 @@
 # image when users build their own docker images for NWNX:EE.
 
 FROM debian:buster-slim
-LABEL maintainer "jakobknutsen@gmail.com"
 
 RUN buildDeps="build-essential \
     git \
