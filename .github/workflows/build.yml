@@ -123,6 +123,11 @@ jobs:
       working-directory: ${{runner.workspace}}/unified/Binaries
       run: cmake -E tar cfv ../NWNX-EE.zip --format=zip .
 
+    - name: Pack the Binaries for Docker
+      if: github.event_name == 'push'
+      working-directory: ${{runner.workspace}}/unified/Binaries
+      run: cmake -E tar cfv ../NWNX-EE.tar .
+
     - name: Pack the Scripts
       if: github.event_name == 'push'
       working-directory: ${{runner.workspace}}/unified
@@ -130,18 +135,25 @@ jobs:
       run: zip -j ./NWScript.zip `find . -name "*.nss" | grep -Pv '_t+[0-9]{0,1}.nss'`
 
     - name: Upload Binaries
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       if: github.event_name == 'push'
       with:
        path: ./NWNX-EE.zip
        name: NWNX-EE.zip
 
     - name: Upload Scripts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       if: github.event_name == 'push'
       with:
         path: ./NWScript.zip
         name: NWScript.zip
+
+    - name: Upload Tar Binaries for Docker
+      uses: actions/upload-artifact@v2
+      if: github.event_name == 'push'
+      with:
+        name: NWNX-EE.tar
+        path: ./NWNX-EE.tar
 
     - name: Deploy Latest Development Build
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -164,12 +176,14 @@ jobs:
 
       - name: Set outputs
         id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+          echo "::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
       - name: Download Binaries
         uses: actions/download-artifact@v2
         with:
-          name: NWNX-EE.zip
+          name: NWNX-EE.tar
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -194,6 +208,16 @@ jobs:
           context: ./
           file: ./gha.Dockerfile
           push: true
+          build-args: NWNXEE_BASE_IMAGE=ghcr.io/${{ github.repository_owner }}/nwnxee-base
+          labels: |
+              org.opencontainers.image.title=NWNX:EE
+              org.opencontainers.image.description=This is the NWNX:EE image. NWNX:EE is a framework that developers can use to modify existing hardcoded rules or inject brand new functionality into Neverwinter Nights: Enhanced edition.
+              org.opencontainers.image.author=NWNX:EE Community
+              org.opencontainers.image.vendor=NWNX:EE Community
+              org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+              org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+              org.opencontainers.image.revision=${{ github.sha }}
+              org.opencontainers.image.documentation=https://nwnxee.github.io/unified
           tags: |
             ${{ github.repository }}:latest
             ${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
