@@ -1,0 +1,68 @@
+name: Build Docker NWNXEE Base Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'base.Dockerfile'
+      - '**docker-base.yml'
+      - '**run-server.patch'
+      - 'CMakeLists.txt'
+  schedule:
+    - cron: '5 4 15 * *'
+jobs:
+  docker-base:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set outputs
+      id: vars
+      run: |
+        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        echo "::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+        echo "::set-output name=nwn_build::$(grep 'set(TARGET_NWN_BUILD ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
+        echo "::set-output name=nwn_build_revision::$(grep 'set(TARGET_NWN_BUILD_REVISION ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ secrets.GHCR_USERNAME }}
+        password: ${{ secrets.CR_PAT }}
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: ./
+        file: ./base.Dockerfile
+        build-args: BD_NWSERVER_IMAGE=beamdog/nwserver:${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}
+        push: true
+        labels: |
+          org.opencontainers.image.title=NWNX:EE Base
+          org.opencontainers.image.description=This image is the base for NWNX:EE, it includes all the dependencies required to run NWNX and all plugins. It is used as an intermediary container before the freshly built binaries are placed.
+          org.opencontainers.image.author=NWNX:EE Community
+          org.opencontainers.image.source=https://github.com/${{ github.repository_owner }}/unified
+          org.opencontainers.image.created=${{ steps.vars.outputs.created }}
+          org.opencontainers.image.revision=${{ github.sha }}
+        tags: |
+          ${{ github.repository_owner }}/nwnxee-base:latest
+          ${{ github.repository_owner }}/nwnxee-base:${{ steps.vars.outputs.sha_short }}
+          ghcr.io/${{ github.repository_owner }}/nwnxee-base:latest
+          ghcr.io/${{ github.repository_owner }}/nwnxee-base:${{ steps.vars.outputs.sha_short }}
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
