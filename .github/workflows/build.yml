@@ -33,6 +33,8 @@ jobs:
       run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           echo "/usr/lib/ccache" >> $GITHUB_PATH
+          echo "::set-output name=nwn_build::$(grep 'set(TARGET_NWN_BUILD ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
+          echo "::set-output name=nwn_build_revision::$(grep 'set(TARGET_NWN_BUILD_REVISION ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
 
     - name: Cache Additional Dependencies
       uses: actions/cache@v2
@@ -148,7 +150,7 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
         prerelease: false
-        title: "Development Build"
+        title: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-HEAD"
         files: |
            ./NWNX-EE.zip
            ./NWScript.zip
