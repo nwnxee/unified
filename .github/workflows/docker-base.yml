@@ -1,6 +1,7 @@
 name: Build Docker NWNXEE Base Image
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
