@@ -155,7 +155,19 @@ jobs:
         name: NWNX-EE.tar
         path: ./NWNX-EE.tar
 
-    - name: Deploy Latest Development Build
+    - name: Tag With Version and Release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      if: github.event_name == 'push'
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-HEAD"
+        prerelease: false
+        title: "build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}-HEAD"
+        files: |
+          ./NWNX-EE.zip
+          ./NWScript.zip
+
+    - name: Tag With Latest and Release
       uses: "marvinpinto/action-automatic-releases@latest"
       if: github.event_name == 'push'
       with:

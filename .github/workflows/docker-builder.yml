@@ -1,13 +1,15 @@
 name: Build Docker Builder Factory
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
     paths:
       - 'builder.Dockerfile'
       - '**docker-builder.yml'
-
+  schedule:
+    - cron: '5 4 14 * *'
 jobs:
   docker-builder:
     runs-on: ubuntu-latest
