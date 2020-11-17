@@ -103,12 +103,13 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <div class="textblock"><p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
 <h1><a class="anchor" id="autotoc_md8"></a>
-Unreleased</h1>
+8193.16-HEAD</h1>
 <p><a href="https://github.com/nwnxee/unified/compare/build8193.16...HEAD">https://github.com/nwnxee/unified/compare/build8193.16...HEAD</a></p>
 <h2><a class="anchor" id="autotoc_md9"></a>
 Added</h2>
 <ul>
 <li>Chat: targeted messages can now be sent on the Party or DM channels</li>
+<li>Core: added support for cp1251 (Central European) locale</li>
 <li>Events: added skippable Acquire events to ItemEvents</li>
 <li>Events: added skippable Disarm event to CombatEvents</li>
 <li>Events: added <code>ACTION_RESULT</code> to Feat/Skill/Lock events for use in the _AFTER</li>
@@ -200,7 +201,6 @@ Fixed</h2>
 Added</h2>
 <ul>
 <li>Core: added environment variable <code>NWNX_CORE_CUSTOM_RESMAN_DEFINITION</code> to specify a file with additional resource directories.</li>
-<li>Core: added support for cp1251 (Central European) locale</li>
 <li>Events: added skippable PlayerDM Login/Logout events to DMActionEvents</li>
 <li>Events: added skippable RunScript and RunScriptChunk events to DebugEvents</li>
 <li>Events: added skippable RequestBuy/Sell events to StoreEvents</li>
@@ -923,7 +923,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Nov 16 2020 18:44:22 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Nov 17 2020 00:50:39 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

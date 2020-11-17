@@ -138,7 +138,7 @@ What platforms are supported?</h2>
 <p>Only Linux is natively supported. It is possible to run NWNX:EE on Windows using Docker to emulate a Linux server environment or WSL/WSL2 when using Windows 10. At this point in time there are no plans for native Windows support of NWNX:EE.</p>
 <h2><a class="anchor" id="autotoc_md422"></a>
 How do I use it?</h2>
-<p>First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the <a href="https://github.com/nwnxee/unified/releases">Releases</a> tab at the top of the GitHub repository page. Keep in mind these are generally only updated whenever a new NWN patch is released.</p>
+<p>First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the <a href="https://github.com/nwnxee/unified/releases">Releases</a> tab at the top of the GitHub repository page.</p>
 <h2><a class="anchor" id="autotoc_md423"></a>
 Integrating NWNX:EE into your module</h2>
 <p>Each NWNX:EE <a href="https://github.com/nwnxee/unified/releases">Release</a> has a <code>NWScript.zip</code> file containing all of the scripts files, if you have built NWNX:EE yourself the <code>NWScript.zip</code> file will be in your <code>Binaries</code> folder. Simply import the scripts into your module and call the functions as you would any other scripting function. Be sure to update these scripts whenever updating NWNX, and then rebuild all your scripts in your module.</p>
@@ -168,7 +168,6 @@ Running the server (Docker)</h2>
 <li><code>[tag]</code> (for example: <code>build8193</code>)</li>
 </ul>
 <p>Due to Docker's local image cache we recommend using the <code>[commit-hash]</code> tag to explicitly state which nwnx build to run. In comparison, the <code>latest</code> tag will usually hit the image cache and return an outdated build, as you have to run <code>docker pull nwnxee/unified</code> to update the <code>latest</code> image in your cache. Using the <code>[commit-hash]</code> tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.</p>
-<p>Note, the image named <code>nwnxee/nwserver</code> exists for legacy reasons but is no longer actively maintained.</p>
 <p>Run the image exactly the same as you would run the <code>beamdog/nwserver</code> image. For any questions related to running nwserver, please refer to the nwserver <a href="https://hub.docker.com/r/beamdog/nwserver/">README</a>.</p>
 <p>nwnxee plugins are configured using environment variables passed to <code>docker run</code>. With the exception of ServerLogRedirector, all plugins are skipped by default. Plugins are activated by passing <code>n</code> to the corresponding environment variable for a given plugin in order to not skip it, e.g. <code>-e NWNX_ADMINISTRATION_SKIP=n</code>.</p>
 <p>Some plugins require additional configurations, like for instance the database plugin. To find plugin specific configurations please refer to the README of the given plugin located in its directory.</p>
@@ -228,7 +227,7 @@ Contact</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Nov 16 2020 18:44:21 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Nov 17 2020 00:50:38 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
