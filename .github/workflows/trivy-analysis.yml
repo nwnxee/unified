@@ -2,7 +2,7 @@ name: Container Security Analysis
 on:
   workflow_dispatch:
     inputs:
-      name:
+      dockerfile:
         description: 'Dockerfile'
         required: true
         default: 'Dockerfile'
