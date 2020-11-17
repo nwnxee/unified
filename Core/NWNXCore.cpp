@@ -54,10 +54,10 @@ extern "C" void nwnx_signal_handler(int sig)
 
     std::fprintf(stderr, " NWNX Signal Handler:\n"
         "==============================================================\n"
-        " NWNX has crashed. Fatal error: %s (%d).\n"
+        " NWNX %d.%d (%s) has crashed. Fatal error: %s (%d).\n"
         " Please file a bug at https://github.com/nwnxee/unified/issues\n"
         "==============================================================\n",
-        err, sig);
+        NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA, err, sig);
 
     std::fputs(NWNXLib::Platform::Debug::GetStackTrace(20).c_str(), stderr);
 
@@ -100,7 +100,7 @@ NWNXCore::NWNXCore()
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
     // crash before the version check happens.
-    std::printf("Starting NWNX...\n");
+    std::printf("Starting NWNX %d.%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA);
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 

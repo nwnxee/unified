@@ -21,8 +21,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 # -DSANITIZE_ADDRESS=On
 find_package(Sanitizers)
 
+execute_process(COMMAND git rev-parse --short HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE SHORT_HASH)
 set(TARGET_NWN_BUILD 8193)
 set(TARGET_NWN_BUILD_REVISION 16)
+set(NWNX_BUILD_SHA ${SHORT_HASH})
 set(PLUGIN_PREFIX NWNX_)
 
 # Adds the provided shared library, then builds it with a NWNX_ prefix.
@@ -58,6 +60,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${NWNX_STANDARD_FLAGS} ${WARNING_FLAGS_C
 add_definitions(-DNWNX_PLUGIN_PREFIX="${PLUGIN_PREFIX}")
 add_definitions(-DNWNX_TARGET_NWN_BUILD=${TARGET_NWN_BUILD})
 add_definitions(-DNWNX_TARGET_NWN_BUILD_REVISION=${TARGET_NWN_BUILD_REVISION})
+add_definitions(-DNWNX_BUILD_SHA="${NWNX_BUILD_SHA}")
 
 # Provides the NWN API and other useful things as a static lib.
 add_subdirectory(NWNXLib)
