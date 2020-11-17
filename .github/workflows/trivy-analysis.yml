@@ -1,5 +1,11 @@
 name: Container Security Analysis
 on:
+  workflow_dispatch:
+    inputs:
+      dockerfile:
+        description: 'Dockerfile'
+        required: true
+        default: 'Dockerfile'
   schedule:
     - cron: '31 8 * * *'
 
@@ -13,7 +19,7 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/my-organization/my-app:${{ github.sha }} --file ./Dockerfile .
+          docker build -t docker.io/my-organization/my-app:${{ github.sha }} --file ./${{ github.event.inputs.dockerfile }} .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
