@@ -49,6 +49,7 @@ private:
         SRCHARGEN          = 19,
         SRINCLEVEL         = 20,
         SPELLSAVEDC        = 21,
+        BONUSSPELL         = 22,
     };
 
     set<uint16_t> m_Feats;
@@ -58,6 +59,7 @@ private:
     unordered_map<uint16_t, int32_t>                                                  m_FeatAC;
     unordered_map<uint16_t, unordered_map<uint16_t, int32_t>>                         m_FeatACVsRace;
     unordered_map<uint16_t, int8_t>                                                   m_FeatArcaneSpellFailure;
+    unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint8_t, uint8_t>>>  m_FeatBonusSpell;
     unordered_map<uint16_t, uint8_t>                                                  m_FeatConcealment;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgImmunity;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatDmgReduction;
@@ -78,6 +80,7 @@ private:
     static void ApplyFeatEffects(CNWSCreature*, uint16_t);
     static void AddFeatEffects(CNWSCreatureStats*, uint16_t);
     static void RemoveFeatEffects(CNWSCreatureStats*, uint16_t);
+    static void AddRemoveBonusSpell(CNWSCreatureStats*, uint16_t, bool bAdd = true);
     static bool DoFeatModifier(int32_t, FeatModifier, int32_t, int32_t, int32_t, int32_t);
 
     static void AddFeatHook(bool, CNWSCreatureStats*, uint16_t);

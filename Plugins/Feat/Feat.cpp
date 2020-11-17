@@ -1,6 +1,7 @@
 #include "Feat.hpp"
 #include "API/CAppManager.hpp"
 #include "API/CServerExoApp.hpp"
+#include "API/CNWClass.hpp"
 #include "API/CNWFeat.hpp"
 #include "API/CNWRace.hpp"
 #include "API/CNWLevelStats.hpp"
@@ -155,6 +156,9 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
     {
         g_plugin->DoEffect(pCreature, nFeat, ArcaneSpellFailure, modArcaneSpellFailure);
     }
+
+    // BONUSSPELL
+    g_plugin->AddRemoveBonusSpell(pCreature->m_pStats, nFeat);
 
     // CONCEALMENT
     auto modConceal = g_plugin->m_FeatConcealment[nFeat];
@@ -474,7 +478,7 @@ void Feat::GetWeaponPowerHook(bool before, CNWSCreature *pCreature, CNWSObject *
 
 void Feat::AddFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
 {
-    if(g_plugin->m_Feats.find(featId) != g_plugin->m_Feats.end())
+    if (g_plugin->m_Feats.find(featId) != g_plugin->m_Feats.end())
     {
         if (!pCreatureStats->HasFeat(featId))
         {
@@ -485,10 +489,14 @@ void Feat::AddFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
 
 void Feat::RemoveFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
 {
-    if(g_plugin->m_Feats.find(featId) != g_plugin->m_Feats.end())
+    if (g_plugin->m_Feats.find(featId) != g_plugin->m_Feats.end())
     {
         if (pCreatureStats->HasFeat(featId))
         {
+            if (g_plugin->m_FeatBonusSpell.find(featId) != g_plugin->m_FeatBonusSpell.end())
+            {
+                g_plugin->AddRemoveBonusSpell(pCreatureStats, featId, false);
+            }
             std::vector<uint64_t> remove(128);
             for (int i = 0; i < pCreatureStats->m_pBaseCreature->m_appliedEffects.num; i++)
             {
@@ -505,17 +513,46 @@ void Feat::RemoveFeatEffects(CNWSCreatureStats *pCreatureStats, uint16_t featId)
     }
 }
 
+void Feat::AddRemoveBonusSpell(CNWSCreatureStats *pCreatureStats, uint16_t featId, bool bAdd)
+{
+    for (auto &bonusSpellMod : g_plugin->m_FeatBonusSpell[featId])
+    {
+        auto classType = bonusSpellMod.first;
+        for (auto &bonusSpellModClass : g_plugin->m_FeatBonusSpell[featId][classType])
+        {
+            uint8_t classLevel = bonusSpellModClass.first;
+            int32_t classLevelBonus = bonusSpellModClass.second;
+            if (classLevelBonus != 0)
+            {
+                int nMultiClass = -1;
+                for (int i = 0; i < pCreatureStats->m_nNumMultiClasses; i++)
+                {
+                    if (pCreatureStats->m_ClassInfo[i].m_nClass == classType)
+                    {
+                        nMultiClass = i;
+                        break;
+                    }
+                }
+                if (nMultiClass >= 0)
+                {
+                    pCreatureStats->ModifyNumberBonusSpells(nMultiClass, classLevel, (bAdd ? 1 : -1) * classLevelBonus);
+                }
+            }
+        }
+    }
+}
+
 void Feat::AddFeatHook(bool before, CNWSCreatureStats *pCreatureStats, uint16_t featId)
 {
     if (before)
         AddFeatEffects(pCreatureStats, featId);
 }
 
-void Feat::OnApplyBonusFeatHook(bool before, CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect*, int32_t featId)
+void Feat::OnApplyBonusFeatHook(bool before, CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pEffect, int32_t)
 {
     auto pCreatureStats = Utils::AsNWSCreature(pObject)->m_pStats;
     if (pCreatureStats && before)
-        AddFeatEffects(pCreatureStats, featId);
+        AddFeatEffects(pCreatureStats, pEffect->GetInteger(0));
 }
 
 void Feat::RemoveFeatHook(bool before, CNWSCreatureStats *pCreatureStats, uint16_t featId)
@@ -527,9 +564,8 @@ void Feat::RemoveFeatHook(bool before, CNWSCreatureStats *pCreatureStats, uint16
 void Feat::OnRemoveBonusFeatHook(bool before, CNWSEffectListHandler *, CNWSObject *pObject, CGameEffect *pEffect)
 {
     auto pCreatureStats = Utils::AsNWSCreature(pObject)->m_pStats;
-    auto featId = pEffect->GetInteger(0);
     if (pCreatureStats && before)
-        RemoveFeatEffects(pCreatureStats, featId);
+        RemoveFeatEffects(pCreatureStats, pEffect->GetInteger(0));
 }
 
 void Feat::EatTURDHook(bool before, CNWSPlayer*, CNWSPlayerTURD *pPlayerTURD)
@@ -614,6 +650,19 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
         {
             g_plugin->m_FeatArcaneSpellFailure[featId] = param1;
             LOG_INFO("%s: Adjusting Arcane Spell Failure by %d%%.", featName, param1);
+            break;
+        }
+        case BONUSSPELL:
+        {
+            CNWClass *pClass = param1 < Globals::Rules()->m_nNumClasses ? &Globals::Rules()->m_lstClasses[param1] : nullptr;
+            if (!pClass || !pClass->m_bIsSpellCasterClass || param2 == (int32_t)0xDEADBEEF || param3 == (int32_t)0xDEADBEEF || param2 < 0 || param2 > 9)
+            {
+                LOG_ERROR("%s: Bonus Spell modifier improperly set. Arguments should be class, level, bonus spell amount where class is a spellcasting class.", featName);
+                retVal = false;
+                break;
+            }
+            g_plugin->m_FeatBonusSpell[featId][param1][param2] = param3;
+            LOG_INFO("%s: Setting %s Bonus Spells at Level %d to %d.", featName, Constants::ClassType::ToString(param1), param2, param3);
             break;
         }
         case CONCEALMENT:

@@ -10,7 +10,7 @@ This plugin allows for the builder to define many traits for feats.
 ## Setup
 Adding new feats is beyond the scope of this documentation. The builder should know how to add new feats by adding a new entry in the `feat.2da` as well as adding the appropriate TLK reference identifiers for that new feat then adjusting the appropriate columns for that feat.
 
-Once your feat has been added (or it's also fine to modify existing feats) builders run the NWNX_Feat_SetFeatModifier() as illustrated below.
+Once your feat has been added (or it's also fine to modify existing feats) builders run the NWNX_Feat_SetFeatModifier() as illustrated below. The builder can use as many modifiers as they wish for one feat including the same modifiers with different parameters.
 
 The **NWNX_Feat plugin does not provide modifications to skill ranks**, use the NWNX_SkillRanks plugin for changing those.
 
@@ -24,6 +24,7 @@ These commands should be ran `on_module_load`.
 * [AC](#ac)
 * [ACVSRACE](#acvsrace)
 * [ARCANESPELLFAILURE](#arcanespellfailure)
+* [BONUSSPELL](#bonusspell)
 * [CONCEALMENT](#concealment)
 * [DMGREDUCTION](#dmgreduction)
 * [DMGRESIST](#dmgresist)
@@ -102,6 +103,18 @@ The `ARCANESPELLFAILURE` can modify the arcane spell failure for the creature.
 ##### Example script on_module_load
 ```c
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_ARCANESPELLFAILURE, -30);
+```
+***
+### BONUSSPELL
+The `BONUSSPELL` entry is used to grant additional spell slots to a class at a level. Param1 is the Class constant ID, param2 is the level and param3 is the amount of spells gained.
+
+* Param1 = The spellcasting class for which the bonus spells will apply.
+* Param2 = The spell level (0-9)
+* Param3 = Amount of bonus spells (+)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_BONUSSPELL, CLASS_TYPE_CLERIC, 9, 1);
 ```
 ***
 ### CONCEALMENT

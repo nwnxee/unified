@@ -32,6 +32,7 @@ const int NWNX_FEAT_MODIFIER_SPELLIMMUNITY      = 18;
 const int NWNX_FEAT_MODIFIER_SRCHARGEN          = 19;
 const int NWNX_FEAT_MODIFIER_SRINCLEVEL         = 20;
 const int NWNX_FEAT_MODIFIER_SPELLSAVEDC        = 21;
+const int NWNX_FEAT_MODIFIER_BONUSSPELL         = 22;
 ///@}
 
 /// @brief Sets a feat modifier.
