@@ -24,5 +24,6 @@ var group__feat =
     [ "NWNX_FEAT_MODIFIER_SPELLIMMUNITY", "group__feat.html#gab42c4220aff312900e04fa857da054b1", null ],
     [ "NWNX_FEAT_MODIFIER_SRCHARGEN", "group__feat.html#gafa4840505da14ddfe1e8886b3efc21f6", null ],
     [ "NWNX_FEAT_MODIFIER_SRINCLEVEL", "group__feat.html#gaa0294918b468359a753751a8af0c78cb", null ],
-    [ "NWNX_FEAT_MODIFIER_SPELLSAVEDC", "group__feat.html#ga8fbc4e3fcb4b11221f8d1eb88f2e6100", null ]
+    [ "NWNX_FEAT_MODIFIER_SPELLSAVEDC", "group__feat.html#ga8fbc4e3fcb4b11221f8d1eb88f2e6100", null ],
+    [ "NWNX_FEAT_MODIFIER_BONUSSPELL", "group__feat.html#ga987ff2851bd0a82928827661eed63e8c", null ]
 ];
