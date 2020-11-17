@@ -1,9 +1,9 @@
 [![Discord](https://img.shields.io/discord/382306806866771978.svg?colorB=7289DA&label=Discord&logo=Discord&logoColor=7289DA&style=flat-square)](https://discord.gg/hxTt8Fr)
 
-# NWNX:EE (build 8193.16 - v81 - STABLE build)
+# NWNX:EE (build 8193.16 - v81)
 
-- Latest release: [build8193.16](https://github.com/nwnxee/unified/releases/tag/build8193.16) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819316)
-- Docker tag: `nwnxee/unified:build8193.16`
+- Latest release: [build8193.16-HEAD](https://github.com/nwnxee/unified/releases/latest) - [Changelog](https://github.com/nwnxee/unified/blob/master/CHANGELOG.md#819316-HEAD)
+- Docker tag: `nwnxee/unified:latest`
 - nwserver-linux md5: `e58f839dbe21f024f94432961b38683f`
 
 @mainpage
@@ -35,7 +35,7 @@ Only Linux is natively supported. It is possible to run NWNX:EE on Windows using
 
 ## How do I use it?
 
-First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the [Releases](https://github.com/nwnxee/unified/releases) tab at the top of the GitHub repository page. Keep in mind these are generally only updated whenever a new NWN patch is released.
+First of all, you need to get the NWNX binaries. If you want to compile the binaries yourself, refer to the compiling section below. Otherwise, you can download the binaries by clicking on the [Releases](https://github.com/nwnxee/unified/releases) tab at the top of the GitHub repository page.
 
 ## Integrating NWNX:EE into your module
 
@@ -74,8 +74,6 @@ Optionally, you can use Docker to run the server with pre-built NWNX binaries. R
 * `[tag]` (for example: `build8193`)
 
 Due to Docker's local image cache we recommend using the `[commit-hash]` tag to explicitly state which nwnx build to run. In comparison, the `latest` tag will usually hit the image cache and return an outdated build, as you have to run `docker pull nwnxee/unified` to update the `latest` image in your cache. Using the `[commit-hash]` tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.
-
-Note, the image named `nwnxee/nwserver` exists for legacy reasons but is no longer actively maintained.
 
 Run the image exactly the same as you would run the `beamdog/nwserver` image. For any questions related to running nwserver, please refer to the nwserver [README](https://hub.docker.com/r/beamdog/nwserver/).
 

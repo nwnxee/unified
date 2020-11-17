@@ -4,11 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## 8193.16-HEAD
 https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 
 ### Added
 - Chat: targeted messages can now be sent on the Party or DM channels
+- Core: added support for cp1251 (Central European) locale
 - Events: added skippable Acquire events to ItemEvents
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
@@ -87,7 +88,6 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 
 ### Added
 - Core: added environment variable `NWNX_CORE_CUSTOM_RESMAN_DEFINITION` to specify a file with additional resource directories.
-- Core: added support for cp1251 (Central European) locale
 - Events: added skippable PlayerDM Login/Logout events to DMActionEvents
 - Events: added skippable RunScript and RunScriptChunk events to DebugEvents
 - Events: added skippable RequestBuy/Sell events to StoreEvents
