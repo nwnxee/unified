@@ -1,5 +1,6 @@
 name: Container Security Analysis
 on:
+  workflow_dispatch:
   schedule:
     - cron: '31 8 * * *'
 
