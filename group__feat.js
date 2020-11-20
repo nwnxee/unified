@@ -2,7 +2,7 @@ var group__feat =
 [
     [ "Readme", "group__feat.html#feat", null ],
     [ "nwnx_feat.nss", "nwnx__feat_8nss.html", null ],
-    [ "NWNX_Feat_SetFeatModifier", "group__feat.html#ga557781380276c7636a1ef08df9a3a74f", null ],
+    [ "NWNX_Feat_SetFeatModifier", "group__feat.html#ga09ada9e56c591f9ee4d91a2794f6ae8c", null ],
     [ "NWNX_FEAT_MODIFIER_INVALID", "group__feat.html#gad2027181fcf9388ec1d46fdb559bf6d9", null ],
     [ "NWNX_FEAT_MODIFIER_AB", "group__feat.html#ga80583e6668b92e91464d05a06be108f5", null ],
     [ "NWNX_FEAT_MODIFIER_ABILITY", "group__feat.html#ga310df9b0fd359e4e6da7432302b7b743", null ],
@@ -25,5 +25,10 @@ var group__feat =
     [ "NWNX_FEAT_MODIFIER_SRCHARGEN", "group__feat.html#gafa4840505da14ddfe1e8886b3efc21f6", null ],
     [ "NWNX_FEAT_MODIFIER_SRINCLEVEL", "group__feat.html#gaa0294918b468359a753751a8af0c78cb", null ],
     [ "NWNX_FEAT_MODIFIER_SPELLSAVEDC", "group__feat.html#ga8fbc4e3fcb4b11221f8d1eb88f2e6100", null ],
-    [ "NWNX_FEAT_MODIFIER_BONUSSPELL", "group__feat.html#ga987ff2851bd0a82928827661eed63e8c", null ]
+    [ "NWNX_FEAT_MODIFIER_BONUSSPELL", "group__feat.html#ga987ff2851bd0a82928827661eed63e8c", null ],
+    [ "NWNX_FEAT_MODIFIER_TRUESEEING", "group__feat.html#ga2330652ba535628c66ddf6b81f0dc726", null ],
+    [ "NWNX_FEAT_MODIFIER_SEEINVISIBLE", "group__feat.html#ga69e0fc35546e3ff5d60a5bfb515f2611", null ],
+    [ "NWNX_FEAT_MODIFIER_ULTRAVISION", "group__feat.html#gaf8b61065da94987f818070827068e625", null ],
+    [ "NWNX_FEAT_MODIFIER_HASTE", "group__feat.html#gac912c96649b21da8f4a9a25bffe3cdb6", null ],
+    [ "NWNX_FEAT_MODIFIER_VISUALEFFECT", "group__feat.html#ga874747e1595f185ee027e4dd7ed6eb87", null ]
 ];
