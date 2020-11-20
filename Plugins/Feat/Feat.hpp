@@ -50,6 +50,11 @@ private:
         SRINCLEVEL         = 20,
         SPELLSAVEDC        = 21,
         BONUSSPELL         = 22,
+        TRUESEEING         = 23,
+        SEEINVISIBLE       = 24,
+        ULTRAVISION        = 25,
+        HASTE              = 26,
+        VISUALEFFECT       = 27,
     };
 
     set<uint16_t> m_Feats;
@@ -64,19 +69,24 @@ private:
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgImmunity;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatDmgReduction;
     unordered_map<uint16_t, unordered_map<uint32_t, int32_t>>                         m_FeatDmgResist;
-    unordered_map<uint16_t, list<uint32_t>>                                           m_FeatImmunities;
+    set<uint16_t>                                                                     m_FeatHaste;
+    unordered_map<uint16_t, set<uint32_t>>                                            m_FeatImmunities;
     unordered_map<uint16_t, int32_t>                                                  m_FeatMovementSpeed;
     unordered_map<uint16_t, pair<uint8_t, uint16_t>>                                  m_FeatRegeneration;
     unordered_map<uint16_t, unordered_map<uint8_t, int32_t>>                          m_FeatSave;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_FeatSaveVsRace;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, int16_t>>> m_FeatSaveVsType;
     unordered_map<uint16_t, unordered_map<uint8_t, unordered_map<uint16_t, unordered_map<uint16_t, int16_t>>>> m_FeatSaveVsTypeRace;
+    set<uint16_t>                                                                     m_FeatSeeInvisible;
     unordered_map<uint16_t, int32_t>                                                  m_FeatSpellSaveDC;
-    unordered_map<uint16_t, list<uint32_t>>                                           m_FeatSpellImmunities;
+    unordered_map<uint16_t, set<uint32_t>>                                            m_FeatSpellImmunities;
     unordered_map<uint16_t, pair<uint8_t, uint8_t>>                                   m_FeatSRCharGen;
     unordered_map<uint16_t, tuple<uint8_t, uint8_t, uint8_t>>                         m_FeatSR;
+    set<uint16_t>                                                                     m_FeatTrueSeeing;
+    set<uint16_t>                                                                     m_FeatUltravision;
+    unordered_map<uint16_t, set<uint16_t>>                                            m_FeatVFX;
 
-    static void DoEffect(CNWSCreature*, uint16_t, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
+    static void DoEffect(CNWSCreature*, uint16_t, uint16_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
     static void ApplyFeatEffects(CNWSCreature*, uint16_t);
     static void AddFeatEffects(CNWSCreatureStats*, uint16_t);
     static void RemoveFeatEffects(CNWSCreatureStats*, uint16_t);

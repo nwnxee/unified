@@ -30,15 +30,20 @@ These commands should be ran `on_module_load`.
 * [DMGRESIST](#dmgresist)
 * [DMGIMMUNITY](#dmgimmunity)
 * [IMMUNITY](#immunity)
+* [HASTE](#haste)
 * [MOVEMENTSPEED](#movementspeed)
 * [REGENERATION](#regeneration)
 * [SAVE](#save)
 * [SAVEVSRACE](#savevsrace)
 * [SAVEVSTYPE](#savevstype)
 * [SAVEVSTYPERACE](#savevstyperace)
+* [SEEINVISIBLE](#seeinvisible)
 * [SPELLIMMUNITY](#spellimmunity)
 * [SRCHARGEN](#srchargen)
 * [SRINCLEVEL](#srinclevel)
+* [TRUESEEING](#trueseeing)
+* [ULTRAVISION](#ultravision)
+* [VISUALEFFECT](#visualeffect)
 
 ***
 
@@ -162,6 +167,17 @@ The `DMGIMMUNITY` entry gives an inate immunity to damage types
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DMGIMMUNITY, DAMAGE_TYPE_FIRE, 100);
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DMGIMMUNITY, DAMAGE_TYPE_ACID, -50);
 ```
+***
+### HASTE
+The `HASTE` entry is used to grant haste.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_HASTE);
+```
+***
 ### IMMUNITY
 The `IMMUNITY` entry is used to grant a total immunity to a variety of effects.
 
@@ -241,6 +257,16 @@ The `SAVEVSTYPERACE` entry is used to modify base save values vs a specific type
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SAVEVSTYPE, SAVING_THROW_ALL, SAVING_THROW_TYPE_SPELLS, RACIAL_TYPE_DRAGON, 3);
 ```
 ***
+### SEEINVISIBLE
+The `SEEINVISIBLE` entry is used to grant See Invisibility.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SEEINVISIBLE);
+```
+***
 ### SPELLIMMUNITY
 The `SPELLIMMUNITY` entry is used to grant a total immunity to specific spells. Note: Only spells that can be resisted can have immunities.
 
@@ -270,4 +296,34 @@ The `SRINCLEVEL` entry is used to award a spell resistance racial bonus as the c
 ##### Example script on_module_load
 ```c
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SRINCLEVEL, 1, 1, 6);
+```
+***
+### TRUESEEING
+The `TRUESEEING` entry is used to grant True Seeing.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_TRUESEEING);
+```
+***
+### ULTRAVISION
+The `ULTRAVISION` entry is used to grant Ultravision.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_ULTRAVISION);
+```
+***
+### VISUALEFFECT
+The `VISUALEFFECT` entry is used to grant a Visual Effect to the feat holder.
+
+* Param1 = The visual effect constant from visualeffects.2da (Duration Effects)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_VISUALEFFECT, VFX_DUR_GLOW_BLUE);
 ```
