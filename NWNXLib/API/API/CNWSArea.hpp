@@ -66,7 +66,6 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     CExoArrayList<OBJECT_ID> m_aSubAreas;
     int32_t * m_pnInterTileTravel;
     float * m_pfInterTileExit;
-    int32_t * m_pnInterTileRegionVisited;
     uint8_t * m_pnInterTileRegionDepths;
     int32_t m_nInterTileTravelLength;
     int32_t m_nInterTileGoalX;
@@ -117,7 +116,7 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     int32_t ComputeBestCorner(float fX1, float fY1, float fX2, float fY2, float fX3, float fY3, float fPersonalSpace, float fCreatureHeight, float * fNewX1, float * fNewY1, float * fNewX2, float * fNewY2);
     BOOL TestSafeLocationPoint(Vector vTestPosition, CPathfindInformation * pPathfindInfo);
     BOOL ComputeSafeLocation(Vector vPosition, float fSearchRadius, CPathfindInformation * pPathfindInfo, BOOL bWalkStraightLineRequired, Vector * vNewvector);
-    BOOL ComputeSafeLocationInDirection(Vector vPosition, Vector vDirection, float fSearchRadius, CPathfindInformation * pPathfindInfo, BOOL bWalkStraightLineRequired, Vector * vNewVector);
+    BOOL ComputeSafeLocationInDirection(Vector vPosition, Vector vDirection, float fSearchRadisusMin, float fSearchRadiusMax, CPathfindInformation * pPathfindInfo, BOOL bWalkStraightLineRequired, Vector * vNewVector);
     BOOL ComputeNonVisibleLocation(Vector vTargetPosition, CPathfindInformation * pPathfindInfo, BOOL bWalkStraightLineRequired, Vector * vNewPosition, float fTargetRadius);
     int32_t CountVisibleToPlayers(Vector vPosition, int32_t nMaxPlayers);
     float ComputeHeight(Vector vPosition);
@@ -163,7 +162,7 @@ struct CNWSArea : CNWArea, CResHelper<CResARE, 2012>, CGameObject
     void SmoothSelection(int32_t nOldWayPoints, float * pfOldWayPoitns, int32_t * nNewWayPoints, float * * pfNewWayPoints);
     void SmoothSelectNodes(int32_t nOldWayPoints, float * pfOldWayPoints, int32_t * nNewWayPoints, float * * pfNewWayPoints, int32_t bChopIntoMeterSegments, int32_t bSelectBestLines);
     int32_t TestDirectLine(float fStartX, float fStartY, float fEndX, float fEndY, float fPersonalSpace, float fCreatureHeight, BOOL bIgnoreClosedDoors = true);
-    int32_t TestLineWalkable(float fStartX, float fStartY, float fEndX, float fEndY, float fPersonalSpace);
+    int32_t TestLineWalkable(float fStartX, float fStartY, float fEndX, float fEndY);
     void UnloadArea();
     void PlayVisualEffect(CGameEffect * pEffect, Vector vPosition);
     BOOL PlotSoundPath(CPathfindInformation * pcPathfindInformation);

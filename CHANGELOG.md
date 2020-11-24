@@ -4,8 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.16-HEAD
-https://github.com/nwnxee/unified/compare/build8193.16...HEAD
+## 8193.19-HEAD
+https://github.com/nwnxee/unified/compare/build8193.19...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.16
+https://github.com/nwnxee/unified/compare/build8193.16...build8193.19
 
 ### Added
 - Chat: targeted messages can now be sent on the Party or DM channels
@@ -127,7 +151,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
 - Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
-- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon***Feat and will be used in addition to any set feats
+- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon****Feat and will be used in addition to any set feats
 
 ### Deprecated
 - Object: StringToObject();
