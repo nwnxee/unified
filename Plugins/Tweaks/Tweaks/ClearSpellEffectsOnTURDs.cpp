@@ -23,6 +23,9 @@ void ClearSpellEffectsOnTURDs::CNWSObject__ClearSpellEffectsOnOthers_hook(bool b
     if (before)
     {
         auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+        if (!pTURDList)
+            return;
+
         for (auto *pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
         {
             auto *pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
