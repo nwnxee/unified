@@ -24,6 +24,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 - Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
+- Tweaks: `NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS`
 
 ##### New Plugins
 The following plugins were added:

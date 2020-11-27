@@ -21,6 +21,7 @@
 #include "Tweaks/BlockDMSpawnItem.hpp"
 #include "Tweaks/FixArmorDexBonusUnderOne.hpp"
 #include "Tweaks/FixItemNullptrInCItemRepository.hpp"
+#include "Tweaks/ClearSpellEffectsOnTURDs.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -182,6 +183,12 @@ Tweaks::Tweaks(Services::ProxyServiceList* services)
     {
         LOG_INFO("Will check for invalid items in the CItemRepository List.");
         m_FixItemNullptrInCItemRepository = std::make_unique<FixItemNullptrInCItemRepository>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("CLEAR_SPELL_EFFECTS_ON_TURDS", false))
+    {
+        LOG_INFO("Effects on logged out users will be removed when a caster rests.");
+        m_ClearSpellEffectsOnTURDs = std::make_unique<ClearSpellEffectsOnTURDs>(GetServices()->m_hooks.get());
     }
 }
 
