@@ -1,8 +1,8 @@
 var NAVTREEINDEX2 =
 {
 "group__creature.html#ga34030d81dd3ff20a18a96e336a3f97ca":[4,0,2,5,0,0,141],
-"group__creature.html#ga353d84f9c3c74b5ac1ed57daca4c8be2":[0,6,14],
 "group__creature.html#ga353d84f9c3c74b5ac1ed57daca4c8be2":[4,0,2,5,0,0,10],
+"group__creature.html#ga353d84f9c3c74b5ac1ed57daca4c8be2":[0,6,14],
 "group__creature.html#ga38d29252f531846224e89b861fa3765c":[4,0,2,5,0,0,47],
 "group__creature.html#ga38d29252f531846224e89b861fa3765c":[0,6,51],
 "group__creature.html#ga38dd236e58cb6e6e33a22e04ee38bc20":[0,6,79],
