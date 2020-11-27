@@ -48,6 +48,8 @@ The following plugins were added:
 - Player: CloseStore()
 - Race: SetFavoredEnemyFeat()
 - Util: GetScriptParamIsSet()
+- Util: SetDawnHour()
+- Util: SetDuskHour()
 
 ### Changed
 - Area: ExportGIT() now supports valid custom resource directory aliases.

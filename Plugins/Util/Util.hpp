@@ -47,6 +47,8 @@ private:
     ArgumentStack SetResourceOverride           (ArgumentStack&& args);
     ArgumentStack GetResourceOverride           (ArgumentStack&& args);
     ArgumentStack GetScriptParamIsSet           (ArgumentStack&& args);
+    ArgumentStack SetDawnHour                   (ArgumentStack&& args);
+    ArgumentStack SetDuskHour                   (ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;
