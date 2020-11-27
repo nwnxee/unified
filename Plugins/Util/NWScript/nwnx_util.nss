@@ -223,6 +223,14 @@ string NWNX_Util_GetResourceOverride(int nResType, string sName);
 /// @return TRUE if the script param is set, FALSE if not or on error.
 int NWNX_Util_GetScriptParamIsSet(string sParamName);
 
+/// @brief Set the module dawn hour.
+/// @param nDawnHour The new dawn hour
+void NWNX_Util_SetDawnHour(int nDawnHour);
+
+/// @brief Set the module dusk hour.
+/// @param nDuskHour The new dusk hour
+void NWNX_Util_SetDuskHour(int nDuskHour);
+
 /// @}
 
 string NWNX_Util_GetCurrentScriptName(int depth = 0)
@@ -539,4 +547,20 @@ int NWNX_Util_GetScriptParamIsSet(string sParamName)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetDawnHour(int nDawnHour)
+{
+    string sFunc = "SetDawnHour";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nDawnHour);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetDuskHour(int nDuskHour)
+{
+    string sFunc = "SetDuskHour";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nDuskHour);
+    NWNX_CallFunction(NWNX_Util, sFunc);
 }
