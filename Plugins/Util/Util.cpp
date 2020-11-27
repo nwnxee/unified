@@ -804,8 +804,8 @@ ArgumentStack Util::GetScriptParamIsSet(ArgumentStack&& args)
 ArgumentStack Util::SetDawnHour(ArgumentStack &&args)
 {
     const auto dawnHour = Services::Events::ExtractArgument<int32_t>(args);
-      ASSERT_OR_THROW(dawnHour > 0);
-      ASSERT_OR_THROW(dawnHour <= 255);
+      ASSERT_OR_THROW(dawnHour >= 0);
+      ASSERT_OR_THROW(dawnHour <= 23);
     Utils::GetModule()->m_nDawnHour = dawnHour;
     return Services::Events::Arguments();
 }
@@ -813,8 +813,8 @@ ArgumentStack Util::SetDawnHour(ArgumentStack &&args)
 ArgumentStack Util::SetDuskHour(ArgumentStack &&args)
 {
     const auto duskHour = Services::Events::ExtractArgument<int32_t>(args);
-      ASSERT_OR_THROW(duskHour > 0);
-      ASSERT_OR_THROW(duskHour <= 255);
+      ASSERT_OR_THROW(duskHour >= 0);
+      ASSERT_OR_THROW(duskHour <= 23);
     Utils::GetModule()->m_nDuskHour = duskHour;
     return Services::Events::Arguments();
 }
