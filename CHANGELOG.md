@@ -21,6 +21,7 @@ https://github.com/nwnxee/unified/compare/build8193.16...HEAD
 - Events: added Combat Enter/Exit events to CombatEvents
 - Events: Stealth Mode can now bypass or perform Hide in Plain Sight with return values of "0" or "1" respectively
 - Events: Added Skippable/Result Changeable Faction Reputation event to FactionEvents
+- Experimental: Added `NWNX_EXPERIMENTAL_ADJUST_REPUTATION_FIX` in an effort to correct a crash with factions/reputation
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 - Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
@@ -48,6 +49,8 @@ The following plugins were added:
 - Player: CloseStore()
 - Race: SetFavoredEnemyFeat()
 - Util: GetScriptParamIsSet()
+- Util: SetDawnHour()
+- Util: SetDuskHour()
 
 ### Changed
 - Area: ExportGIT() now supports valid custom resource directory aliases.
