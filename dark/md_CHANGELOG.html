@@ -187,6 +187,7 @@ Fixed</h2>
 <li>Core: debug dumps now properly resolve nwserver functions regardless of path and binary name used</li>
 <li>Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes</li>
 <li>Events: fixed a nullptr deref crash in BarterEvents</li>
+<li>Events: fixed a nullptr deref crash in the AcquireItem event</li>
 <li>Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed</li>
 <li>MaxLevel: fixed bug interfering with leveling down NPCs</li>
 <li>MaxLevel: fixed an issue with the plugin failing after a restart when reload-when-empty was set to true</li>
@@ -928,7 +929,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Nov 27 2020 21:33:21 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Tue Dec 1 2020 14:35:10 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
