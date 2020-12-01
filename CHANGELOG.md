@@ -76,6 +76,7 @@ The following plugins were added:
 - Core: debug dumps now properly resolve nwserver functions regardless of path and binary name used
 - Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes
 - Events: fixed a nullptr deref crash in BarterEvents
+- Events: fixed a nullptr deref crash in the AcquireItem event
 - Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
 - MaxLevel: fixed bug interfering with leveling down NPCs
 - MaxLevel: fixed an issue with the plugin failing after a restart when reload-when-empty was set to true

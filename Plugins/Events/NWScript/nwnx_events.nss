@@ -241,7 +241,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    ITEM                  | object | Convert to object with StringToObject()|
+    ITEM                  | object | Convert to object with StringToObject() (May be OBJECT_INVALID in the AFTER event) |
     GIVER                 | object | Convert to object with StringToObject() (will be INVALID if picked up from ground)|
     RESULT                | int    | Returns TRUE in the _AFTER if the acquisition was successful, FALSE otherwise
 
