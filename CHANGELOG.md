@@ -128,6 +128,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 - Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
+- Administration: added an optional sKickReason parameter to DeleteCharacter()
 - Damage: damage event script now also triggered by damage to placeables
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents

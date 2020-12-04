@@ -155,6 +155,17 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     const auto objectId = Events::ExtractArgument<ObjectID>(args);
     const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
 
+    // TODO: Remove the try/catch in some later release
+    std::string kickMessage;
+    try
+    {
+        kickMessage = Events::ExtractArgument<std::string>(args);
+    }
+    catch(const std::runtime_error& e)
+    {
+        LOG_WARNING("NWNX_Administration_DeletePlayerCharacter() called from NWScript without sKickMessage parameter. Please update nwnx_admin.nss");
+    }
+
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
     CNWSPlayer* player = exoApp->GetClientObjectByObjectId(objectId);
 
@@ -197,10 +208,10 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     }
 
     GetServices()->m_tasks->QueueOnMainThread(
-        [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName]
+        [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName, kickMessage]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk
-            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, "");
+            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, kickMessage);
 
             if (bPreserveBackup)
             {
