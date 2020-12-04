@@ -1,6 +1,6 @@
 var NAVTREEINDEX1 =
 {
-"group__admin.html#gaf93d0e820feb0342c21f3b3d1143d3c8":[4,0,2,0,0,0,6],
+"group__admin.html#gaf5da81550e4fce290abfe3e1e9e240d0":[0,1,23],
 "group__appearance.html":[0,2],
 "group__appearance.html#appearance":[0,2,0],
 "group__appearance.html#ga132a6f839050229094581fe7dd7a2dc5":[4,0,2,1,0,0,14],

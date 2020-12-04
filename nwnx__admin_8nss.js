@@ -6,7 +6,7 @@ var nwnx__admin_8nss =
     [ "NWNX_Administration_GetDMPassword", "group__admin.html#ga15438a0d3b9cddad5b0fa2eedaeaabbc", null ],
     [ "NWNX_Administration_SetDMPassword", "group__admin.html#ga082d709b97251d246e7b32ede3102c1e", null ],
     [ "NWNX_Administration_ShutdownServer", "group__admin.html#ga637a42678c8d730015dba00efddef6aa", null ],
-    [ "NWNX_Administration_DeletePlayerCharacter", "group__admin.html#gaf93d0e820feb0342c21f3b3d1143d3c8", null ],
+    [ "NWNX_Administration_DeletePlayerCharacter", "group__admin.html#ga5ffc6cd386d9d57745b0cb55f0283465", null ],
     [ "NWNX_Administration_AddBannedIP", "group__admin.html#ga801c086adfe1201ad4ef8b2b3621d76f", null ],
     [ "NWNX_Administration_RemoveBannedIP", "group__admin.html#gad6a1972c912d744a163b7ea2cfd9a8c2", null ],
     [ "NWNX_Administration_AddBannedCDKey", "group__admin.html#ga3558cdfcea187863ceecb711089492fb", null ],

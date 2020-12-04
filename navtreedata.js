@@ -42,7 +42,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__admin.html#gaf93d0e820feb0342c21f3b3d1143d3c8",
+"group__admin.html#gaf5da81550e4fce290abfe3e1e9e240d0",
 "group__creature.html#ga34030d81dd3ff20a18a96e336a3f97ca",
 "group__creature.html#gafdcf540c2ebaea7ac27563d74461b57d",
 "group__encounter.html#ga1094adf1239743f918d6aaeddbdea885",

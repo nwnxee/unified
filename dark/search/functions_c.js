@@ -4,7 +4,7 @@ var searchData=
   ['nwnx_5fadministration_5faddbannedip_1893',['NWNX_Administration_AddBannedIP',['../group__admin.html#ga801c086adfe1201ad4ef8b2b3621d76f',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5faddbannedplayername_1894',['NWNX_Administration_AddBannedPlayerName',['../group__admin.html#gae43f9d70412c4dc0f67353998dec7ecb',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fclearplayerpassword_1895',['NWNX_Administration_ClearPlayerPassword',['../group__admin.html#ga27ba06328cf679ae064c186ff7776bd9',1,'nwnx_admin.nss']]],
-  ['nwnx_5fadministration_5fdeleteplayercharacter_1896',['NWNX_Administration_DeletePlayerCharacter',['../group__admin.html#gaf93d0e820feb0342c21f3b3d1143d3c8',1,'nwnx_admin.nss']]],
+  ['nwnx_5fadministration_5fdeleteplayercharacter_1896',['NWNX_Administration_DeletePlayerCharacter',['../group__admin.html#ga5ffc6cd386d9d57745b0cb55f0283465',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fdeleteturd_1897',['NWNX_Administration_DeleteTURD',['../group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fgetbannedlist_1898',['NWNX_Administration_GetBannedList',['../group__admin.html#gaaa6a636ac14964feacd44111766b7802',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fgetdebugvalue_1899',['NWNX_Administration_GetDebugValue',['../group__admin.html#ga16d786b08817407d55d982dc909ceb22',1,'nwnx_admin.nss']]],

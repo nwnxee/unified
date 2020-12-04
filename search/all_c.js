@@ -65,7 +65,7 @@ var searchData=
   ['nwnx_5fadministration_5fdebug_5fhit_5fdie_293',['NWNX_ADMINISTRATION_DEBUG_HIT_DIE',['../group__admin.html#ga1480fbbb3ea71dfe8e6c8536bba08089',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fdebug_5fmovement_5fspeed_294',['NWNX_ADMINISTRATION_DEBUG_MOVEMENT_SPEED',['../group__admin.html#ga9094a95e0bc955700c951fe4ce75bed4',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fdebug_5fsaving_5fthrow_295',['NWNX_ADMINISTRATION_DEBUG_SAVING_THROW',['../group__admin.html#ga4fb71a8cd99ccd530dbeccd89820a9df',1,'nwnx_admin.nss']]],
-  ['nwnx_5fadministration_5fdeleteplayercharacter_296',['NWNX_Administration_DeletePlayerCharacter',['../group__admin.html#gaf93d0e820feb0342c21f3b3d1143d3c8',1,'nwnx_admin.nss']]],
+  ['nwnx_5fadministration_5fdeleteplayercharacter_296',['NWNX_Administration_DeletePlayerCharacter',['../group__admin.html#ga5ffc6cd386d9d57745b0cb55f0283465',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fdeleteturd_297',['NWNX_Administration_DeleteTURD',['../group__admin.html#ga9ce1e1dc50c735de6b373a917b83a587',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fgetbannedlist_298',['NWNX_Administration_GetBannedList',['../group__admin.html#gaaa6a636ac14964feacd44111766b7802',1,'nwnx_admin.nss']]],
   ['nwnx_5fadministration_5fgetdebugvalue_299',['NWNX_Administration_GetDebugValue',['../group__admin.html#ga16d786b08817407d55d982dc909ceb22',1,'nwnx_admin.nss']]],
