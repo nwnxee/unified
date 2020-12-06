@@ -1660,6 +1660,9 @@ ArgumentStack Player::RemoveEffectFromTURD(ArgumentStack&& args)
       ASSERT_OR_THROW(!effectTag.empty());
 
     auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    if (!pTURDList)
+        return Services::Events::Arguments();
+
     for (auto *pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
     {
         auto *pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);

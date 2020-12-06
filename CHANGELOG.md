@@ -45,9 +45,11 @@ https://github.com/nwnxee/unified/compare/build8193.16...build8193.19
 - Events: added Combat Enter/Exit events to CombatEvents
 - Events: Stealth Mode can now bypass or perform Hide in Plain Sight with return values of "0" or "1" respectively
 - Events: Added Skippable/Result Changeable Faction Reputation event to FactionEvents
+- Experimental: Added `NWNX_EXPERIMENTAL_ADJUST_REPUTATION_FIX` in an effort to correct a crash with factions/reputation
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 - Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
+- Tweaks: `NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS`
 
 ##### New Plugins
 The following plugins were added:
@@ -71,6 +73,8 @@ The following plugins were added:
 - Player: CloseStore()
 - Race: SetFavoredEnemyFeat()
 - Util: GetScriptParamIsSet()
+- Util: SetDawnHour()
+- Util: SetDuskHour()
 
 ### Changed
 - Area: ExportGIT() now supports valid custom resource directory aliases.
@@ -96,6 +100,7 @@ The following plugins were added:
 - Core: debug dumps now properly resolve nwserver functions regardless of path and binary name used
 - Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes
 - Events: fixed a nullptr deref crash in BarterEvents
+- Events: fixed a nullptr deref crash in the AcquireItem event
 - Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
 - MaxLevel: fixed bug interfering with leveling down NPCs
 - MaxLevel: fixed an issue with the plugin failing after a restart when reload-when-empty was set to true
@@ -147,6 +152,7 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 - Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
+- Administration: added an optional sKickReason parameter to DeleteCharacter()
 - Damage: damage event script now also triggered by damage to placeables
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
