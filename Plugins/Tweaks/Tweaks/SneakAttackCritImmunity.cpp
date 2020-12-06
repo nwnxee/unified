@@ -154,7 +154,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature
     {
         if (pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::SneakAttack, pThis, true))
         {
-            CNWCCMessageData* pData = new CNWCCMessageData;
+            auto *pData = new CNWCCMessageData();
             pData->SetObjectID(0, pTarget->m_idSelf);
             pData->SetInteger(0, 134);
             pAttackData->m_alstPendingFeedback.Add(pData);
@@ -271,7 +271,7 @@ void SneakAttackCritImmunity::CNWSCreature__ResolveDeathAttack_hook(CNWSCreature
     {
         if (pTarget->m_pStats->GetEffectImmunity(Constants::ImmunityType::SneakAttack, pThis, true))
         {
-            CNWCCMessageData* pData = new CNWCCMessageData;
+            auto *pData = new CNWCCMessageData();
             pData->SetObjectID(0, pTarget->m_idSelf);
             pData->SetInteger(0, 134);
             pAttackData->m_alstPendingFeedback.Add(pData);
