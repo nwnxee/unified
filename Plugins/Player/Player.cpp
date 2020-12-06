@@ -1447,12 +1447,12 @@ ArgumentStack Player::FloatingTextStringOnCreature(ArgumentStack&& args)
         {
             if (auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage()))
             {
-                CNWCCMessageData messageData;
-                messageData.SetObjectID(0, pCreature->m_idSelf);
-                messageData.SetInteger(9, 94);
-                messageData.SetString(0, text);
+                auto *messageData = new CNWCCMessageData();
+                messageData->SetObjectID(0, pCreature->m_idSelf);
+                messageData->SetInteger(9, 94);
+                messageData->SetString(0, text);
 
-                pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::Feedback, &messageData, nullptr);
+                pMessage->SendServerToPlayerCCMessage(pPlayer->m_nPlayerID, Constants::MessageClientSideMsgMinor::Feedback, messageData, nullptr);
             }
         }
     }

@@ -607,7 +607,7 @@ void Race::ResolveInitiativeHook(CNWSCreature *pCreature)
         auto *pPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(pCreature->m_idSelf);
         if (pPlayer)
         {
-            auto *pData = new CNWCCMessageData;
+            auto *pData = new CNWCCMessageData();
             pData->SetInteger(0, diceRoll);
             pData->SetInteger(1, mod);
             pData->SetObjectID(0, pCreature->m_idSelf);
