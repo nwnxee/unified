@@ -218,8 +218,8 @@ void NWNXCore::InitialSetupHooks()
 
     if (!m_coreServices->m_config->Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
-        m_services->m_hooks->RequestSharedHook<API::Functions::_ZN25CNWVirtualMachineCommands32ExecuteCommandExecuteScriptChunkEii, int32_t>(
-                +[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+        m_services->m_hooks->RequestSharedHook<API::Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii, int32_t>(
+                +[](bool before, CVirtualMachine*, const CExoString&, ObjectID, int32_t, int32_t)
                 {
                     g_core->m_ScriptChunkRecursion += before ? +1 : -1;
                 });
