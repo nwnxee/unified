@@ -4,8 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## 8193.16-HEAD
-https://github.com/nwnxee/unified/compare/build8193.16...HEAD
+## 8193.20-HEAD
+https://github.com/nwnxee/unified/compare/build8193.20...HEAD
+
+### Added
+- N/A
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- N/A
+
+### Changed
+- N/A
+
+### Deprecated
+- N/A
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.16
+https://github.com/nwnxee/unified/compare/build8193.16...build8193.19
 
 ### Added
 - Chat: targeted messages can now be sent on the Party or DM channels
@@ -76,6 +100,7 @@ The following plugins were added:
 - Core: debug dumps now properly resolve nwserver functions regardless of path and binary name used
 - Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes
 - Events: fixed a nullptr deref crash in BarterEvents
+- Events: fixed a nullptr deref crash in the AcquireItem event
 - Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
 - MaxLevel: fixed bug interfering with leveling down NPCs
 - MaxLevel: fixed an issue with the plugin failing after a restart when reload-when-empty was set to true
@@ -127,11 +152,12 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 - Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
+- Administration: added an optional sKickReason parameter to DeleteCharacter()
 - Damage: damage event script now also triggered by damage to placeables
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
 - Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
-- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon***Feat and will be used in addition to any set feats
+- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon****Feat and will be used in addition to any set feats
 
 ### Deprecated
 - Object: StringToObject();

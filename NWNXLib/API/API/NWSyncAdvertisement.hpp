@@ -3,6 +3,7 @@
 
 #include "CExoString.hpp"
 #include "NWSyncAdvertisementManifest.hpp"
+#include "SHA1.hpp"
 #include <vector>
 
 
@@ -16,7 +17,7 @@ NWN_API_PROLOGUE(NWSyncAdvertisement)
 
 struct NWSyncAdvertisement
 {
-    CExoString m_primary_manifest;
+    SHA1 m_primary_manifest;
     std::vector<NWSyncAdvertisementManifest> m_additional_manifests;
     CExoString m_url;
 
