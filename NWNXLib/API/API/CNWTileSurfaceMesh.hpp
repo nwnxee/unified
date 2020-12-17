@@ -116,7 +116,7 @@ struct CNWTileSurfaceMesh : CResHelper<CResWOK, 2016>
     BOOL ClearLineOfSightOneWay(int32_t nDirectionHeuristic, Vector vSource, Vector vTarget, Vector * pImpact);
     void Initialize(int32_t x, int32_t y);
     int32_t IntersectLineSegments(Vector v1, Vector v2, Vector v3, Vector v4, Vector * vIntersect);
-    int32_t IntraTileDFS(CNWTile * pTile, CNWArea * pWalkGeometry, CPathfindInformation * pSearchInformation, int32_t level, float fDistanceTravelled, int32_t nCurrentTriangle, float fX, float fY, float fStartX, float fStartY, float fPersonalSpace, BOOL bUseAdjacencies);
+    int32_t IntraTileDFS(CNWTile * pTile, CNWArea * pWalkGeometry, CPathfindInformation * pSearchInformation, int32_t level, float fDistanceTravelled, int32_t nCurrentTriangle, float fX, float fY, float fStartX, float fStartY, float fPersonalSpace, BOOL bUseAdjacenciesOnly);
     int32_t IntraTileDFSGenerateSuccessors(BOOL bAdjacenciesOnly, CNWTile * pTile, CNWArea * pWalkGeometry, float fX, float fY, int32_t nCurrentTriangle, CPathfindInformation * pPathfindInfo, CPathfindInfoIntraTileSuccessors * * pSuccessors);
     void PrintAABBTreeToPrintLog(CNWTileSurfaceMeshAABBNode * pNode, int indentation);
     void LoadDefaultWalkMesh();
