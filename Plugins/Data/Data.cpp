@@ -16,6 +16,7 @@ namespace Data {
 Data::Data(Services::ProxyServiceList* services)
     : Plugin(services)
 {
+    LOG_WARNING("Data plugin is deprecated.  Please migrate to inc_array");
     m_arrayProvider = std::make_unique<Array>(*GetServices()->m_events);
 }
 
