@@ -35,7 +35,7 @@
 						<td id="projectlogo"><img width="80" height="74" alt="Logo" src="logo-transparent.png"/></td>
 						<td id="projectalign" style="padding-left: 0.5em;">
 							<div id="projectname">NWNX:EE
-								&#160;<span id="projectnumber">8193.16</span>
+								&#160;<span id="projectnumber">8193.20</span>
 							</div>
 						</td>
 						<td>        <div id="MSearchBox" class="MSearchBoxInactive">
@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('group__nwnx.html',''); initResizable()
 <div class="contents">
 
 
-<h3><a id="nwnx"></a>Core Functionality</h3><div class="textblock">The core of NWNX:EE that does all the things.<h2><a class="anchor" id="autotoc_md99"></a>
+<h3><a id="nwnx"></a>Core Functionality</h3><div class="textblock">The core of NWNX:EE that does all the things.<h2><a class="anchor" id="autotoc_md107"></a>
 Environment Variables</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -124,7 +124,7 @@ Environment Variables</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>NWNX_CORE_LOCALE</code> </td><td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyNone">Unset </td><td class="markdownTableBodyNone">Set the locale NWNX will use when encoding. Supported are cp1250, cp1251, cp1252 (default). Can also use two letter country codes (e.g. &lsquo;'ru&rsquo;<code>)&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowOdd"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_CRASH_ON_ASSERT_FAILURE<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 0&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Sets whether an ASSERT failure hard crashes the server.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowEven"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_SHUTDOWN_SCRIPT<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; string&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Unset&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Sets which NWScript to run when the module shuts down.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowOdd"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 0&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; When enabled, allows the ExecuteScriptChunk() function to call NWScript NWNX functions.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowEven"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PATH<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; string&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; UserDirectory/nwnx&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; The path of the /nwnx resource directory&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowOdd"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_CUSTOM_RESMAN_DEFINITION<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; string&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Unset&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; A path to a file with custom resource directory aliases, see below for more info&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowEven"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_NWNX_RESOURCE_DIRECTORY_PRIORITY<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; int&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 70000000&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Sets the resman priority of the UserDirectory/nwnx folder.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowOdd"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_LOG_TIMESTAMP<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Set whether to show timestamp in logs printed by NWNX.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowEven"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_LOG_DATE<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 0&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Set whether to show date(Y-M-D) in logs printed by NWNX. Timestamps must be enabled.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowOdd"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_LOG_PLUGIN<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Set whether to show plugin name in logs printed by NWNX.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowEven"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_LOG_SOURCE<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Set whether to show source code location in logs printed by NWNX.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowOdd"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_LOG_COLOR<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Set whether to show logs printed by NWNX in color (only when printing to a TTY).&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowEven"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_LOG_FORCE_COLOR<code>&lt;/td&gt; &lt;td class="markdownTableBodyCenter"&gt; 0-1&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; 0&lt;/td&gt; &lt;td class="markdownTableBodyNone"&gt; Sets whether to force color output.&lt;/td&gt; &lt;/tr&gt; &lt;tr class="markdownTableRowOdd"&gt; &lt;td class="markdownTableBodyNone"&gt;</code>NWNX_CORE_LOG_ASYNC` </td><td class="markdownTableBodyCenter">0-1 </td><td class="markdownTableBodyNone">0 </td><td class="markdownTableBodyNone">Sets whether to flush the log to disk in an async thread.  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md100"></a>
+<h2><a class="anchor" id="autotoc_md108"></a>
 Console Commands</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -140,16 +140,16 @@ Console Commands</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>logformat [timestamp\|notimestamp] [plugin\|noplugin] [source\|nosource] [color\|nocolor] [force\|noforce]</code> </td><td class="markdownTableBodyNone">Control the output format of logs. Example: <code>logformat color timestamp noplugin nosource</code>  </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md101"></a>
+<h2><a class="anchor" id="autotoc_md109"></a>
 Custom Resman Definition File</h2>
 <p>A file that lets you specify additional resource directories that act the same as the <code>/development</code> and <code>/nwnx</code> folders.</p>
 <p>Each line in the file must contain the following: <code>ALIASNAME /full/path/to/folder &lt;priority&gt;</code></p>
 <p>Example:</p>
 <div class="fragment"><div class="line">TEST /home/nwnx/test 70000001</div>
 <div class="line">STUFF /home/nwnx/stuff 70000002</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md102"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md110"></a>
 Plugin Management</h2>
-<h3><a class="anchor" id="autotoc_md103"></a>
+<h3><a class="anchor" id="autotoc_md111"></a>
 Environment Variable Configuration</h3>
 <p>Configuration of NWNX plugins are controlled by environment variables exported prior to starting the <code>nwserver</code> binary. Typical usage would be in the script used to start the server.</p>
 <p>Basic control of the plugin includes enabling/disabling the plugin and setting the logging level of the plugin. The following format is used for all plugins:</p>
@@ -157,7 +157,7 @@ Environment Variable Configuration</h3>
 <li>NWNX_&lt;x&gt;_LOG_LEVEL</li>
 <li>NWNX_&lt;x&gt;_SKIP</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md104"></a>
+<h3><a class="anchor" id="autotoc_md112"></a>
 Plugin Loading</h3>
 <p>Inclusion or exclusion of the plugin at server startup time is contolled by the environment variable <code>NWNX_&lt;x&gt;_SKIP</code> where &lt;x&gt; is the plugin name (all caps).</p>
 <ul>
@@ -166,16 +166,16 @@ Plugin Loading</h3>
 </ul>
 <p><b>Example</b> </p><div class="fragment"><div class="line"># Load the sql plugin at startup</div>
 <div class="line">export NWNX_SQL_SKIP=N</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md105"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md113"></a>
 Plugin Log Level</h3>
 <p>The default plugin log level is the same as the overall Core logging level.</p>
 <p>It can be changed, however, by assinging a value to <code>NWNX_&lt;x&gt;_LOG_LEVEL</code> (where &lt;x&gt; is the plugin name in all caps) in the same manner as the Core logging level. See the Core documentation for a description of available logging levels.</p>
 <p><b>Example</b> </p><div class="fragment"><div class="line"># Set the sql plugin to warning and above (warning, error, and fatal only)</div>
 <div class="line">export NWNX_SQL_LOG_LEVEL=4</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md106"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md114"></a>
 Core Functions For Plugin Developers</h2>
 <p>The core functions in <a class="el" href="nwnx_8nss.html">nwnx.nss</a> should be called by NWNX plugin developers, who should expose their own, more friendly headers.</p>
-<h4><a class="anchor" id="autotoc_md107"></a>
+<h4><a class="anchor" id="autotoc_md115"></a>
 Sample</h4>
 <p>This following function would wrap a call which passes three parameters, receives three back, and constructs a vector from the result. </p><div class="fragment"><div class="line">vector GetVectorFromCoords(<span class="keywordtype">float</span> x, <span class="keywordtype">float</span> y, <span class="keywordtype">float</span> z)</div>
 <div class="line">{</div>
@@ -820,7 +820,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Dec 4 2020 13:03:15 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Dec 17 2020 20:37:22 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
