@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Added
-- N/A
+- Experimental: Added `NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION` to disable levelup validation.
 
 ##### New Plugins
 - N/A
