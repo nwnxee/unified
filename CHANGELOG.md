@@ -29,7 +29,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - N/A
 
 ## 8193.16
-https://github.com/nwnxee/unified/compare/build8193.16...build8193.19
+https://github.com/nwnxee/unified/compare/build8193.16...build8193.20
 
 ### Added
 - Chat: targeted messages can now be sent on the Party or DM channels
