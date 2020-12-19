@@ -2,6 +2,7 @@
 
 #include "Plugin.hpp"
 #include "API/ALL_CLASSES.hpp"
+#include "API/Globals.hpp"
 
 namespace DotNET {
 
@@ -71,6 +72,7 @@ private:
     static CGameEffect* nwnxPopEffect();
     static CGameEffect* nwnxPopItemProperty();
     static void nwnxCallFunction();
+    static NWNXLib::API::Globals::NWNXExportedGlobals GetNWNXExportedGlobals();
 };
 
 
