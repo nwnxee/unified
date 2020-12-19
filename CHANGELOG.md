@@ -14,7 +14,8 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - N/A
 
 ##### New NWScript Functions
-- N/A
+- Util: GetInstructionLimit()
+- Util: {Get|Set}InstructionsExecuted();
 
 ### Changed
 - N/A
