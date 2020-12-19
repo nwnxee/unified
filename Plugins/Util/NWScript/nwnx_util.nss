@@ -158,9 +158,19 @@ int NWNX_Util_AddNSSFile(string sFileName, string sContents, string sAlias = "NW
 /// @return TRUE on success.
 int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType, string sAlias = "NWNX");
 
-/// @brief Set the NWScript instruction limit
+/// @brief Set the NWScript instruction limit.
 /// @param nInstructionLimit The new limit or -1 to reset to default.
 void NWNX_Util_SetInstructionLimit(int nInstructionLimit);
+
+/// @brief Get the NWScript instruction limit.
+int NWNX_Util_GetInstructionLimit();
+
+/// @brief Set the number of NWScript instructions currently executed.
+/// @param nInstructions The number of instructions, must be >= 0.
+void NWNX_Util_SetInstructionsExecuted(int nInstructions);
+
+/// @brief Get the number of NWScript instructions currently executed.
+int NWNX_Util_GetInstructionsExecuted();
 
 /// @brief Register a server console command that will execute a script chunk.
 /// @note Example usage: NWNX_Util_RegisterServerConsoleCommand("test", "PrintString(\"Test Command -> Args: $args\");");
@@ -432,6 +442,32 @@ void NWNX_Util_SetInstructionLimit(int nInstructionLimit)
 
     NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructionLimit);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetInstructionLimit()
+{
+    string sFunc = "GetInstructionLimit";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetInstructionsExecuted(int nInstructions)
+{
+    string sFunc = "SetInstructionsExecuted";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructions);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetInstructionsExecuted()
+{
+    string sFunc = "GetInstructionsExecuted";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
 int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk)
