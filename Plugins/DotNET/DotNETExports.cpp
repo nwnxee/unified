@@ -369,5 +369,9 @@ void DotNET::nwnxCallFunction()
     auto events = Instance->GetServices()->m_events->GetProxyBase();
     events->Call(nwnxActivePlugin, nwnxActiveFunction);
 }
+NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
+{
+    return NWNXLib::API::Globals::ExportedGlobals;
+}
 
 }
