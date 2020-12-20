@@ -125,7 +125,7 @@ void Array_Set_Str(string tag, int index, string element, object obj=OBJECT_INVA
 //
 // Local Utility Functions.
 //
-string GetTableName(string tag, object obj=OBJECT_INVALID) {
+string GetTableName(string tag, object obj=OBJECT_INVALID, int bare=FALSE) {
     if (obj == OBJECT_INVALID)
         obj = GetModule();
 
@@ -137,6 +137,12 @@ string GetTableName(string tag, object obj=OBJECT_INVALID) {
         WriteTimestampedLogEntry("WARNING:  Invalid table name detected for array with tag <" + tag + ">.  Only characters (a-zA-Z0-9), _, @, $ and # are allowed. Using <"+sCleansed+"> instead.");
 
     }
+
+    // BARE returns just the table name with no wrapping.
+    if (bare == TRUE) {
+        return sCleansed;
+    }
+
     // Table name wraped in quotes to avoid token expansion.
     return "\""+sCleansed+"\"";
 }
@@ -283,7 +289,7 @@ void Array_Erase(string tag, int index, object obj=OBJECT_INVALID)
 	    sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
 	    SqlBindInt(sqlQuery, "@ind", index);
 	    SqlStep(sqlQuery);
-	
+
 	    stmt = "UPDATE "+GetTableName(tag, obj)+" SET ind = ind - 1 WHERE ind > @ind";
 	    sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
 	    SqlBindInt(sqlQuery, "@ind", index);
@@ -400,7 +406,7 @@ void Array_Resize(string tag, int size, object obj=OBJECT_INVALID)
 ////////////////////////////////////////////////////////////////////////////////
 void Array_Shuffle(string tag, object obj=OBJECT_INVALID)
 {
-    string table = GetTableName(tag, obj);
+    string table = GetTableName(tag, obj, TRUE);
     ExecuteStatement("CREATE TABLE " +table+ "_temp AS SELECT ROW_NUMBER() OVER(ORDER BY RANDOM())-1, value FROM " +table, obj);
     ExecuteStatement("DELETE FROM " +table , obj);
     ExecuteStatement("INSERT INTO " +table+ " SELECT * FROM " +table+ "_temp", obj);
@@ -418,7 +424,7 @@ int Array_Size(string tag, object obj=OBJECT_INVALID)
 // Supplying a type allows for correct numerical sorting of integers or floats.
 void Array_Sort(string tag, string dir="ASC", int type=TYPE_STRING, object obj=OBJECT_INVALID)
 {
-    string table = GetTableName(tag, obj);
+    string table = GetTableName(tag, obj, TRUE);
     string direction = GetStringUpperCase(dir);
 
     if ( ! (direction == "ASC" || direction == "DESC") ) {
