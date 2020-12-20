@@ -178,7 +178,7 @@ Sample Include</h2>
 <div class="line">            {</div>
 <div class="line">                <a class="code" href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a>();</div>
 <div class="line">                <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oOtherPC, <a class="code" href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a>(0),</div>
-<div class="line">                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oPC);</div>
+<div class="line">                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#gafc3e340ecdad9db153e72054bbef9208">NWNX_RENAME_PLAYERNAME_DEFAULT</a>, oPC);</div>
 <div class="line">            }</div>
 <div class="line">            <a class="code" href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a>(sSQL);</div>
 <div class="line">            <a class="code" href="group__sql.html#ga7c23e812ad23b10c0906c55941edf930">NWNX_SQL_PreparedInt</a>(0, nOtherPCID);</div>
@@ -188,7 +188,7 @@ Sample Include</h2>
 <div class="line">            {</div>
 <div class="line">                <a class="code" href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a>();</div>
 <div class="line">                <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oPC, <a class="code" href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a>(0),</div>
-<div class="line">                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oOtherPC);</div>
+<div class="line">                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#gafc3e340ecdad9db153e72054bbef9208">NWNX_RENAME_PLAYERNAME_DEFAULT</a>, oOtherPC);</div>
 <div class="line">            }</div>
 <div class="line">        }</div>
 <div class="line">        oOtherPC = GetNextPC();</div>
@@ -254,7 +254,7 @@ Sample Include</h2>
 <div class="line">    {</div>
 <div class="line">        SendMessageToPC(oTarget, sMyName + <span class="stringliteral">&quot; wants you to know them as &quot;</span> + sName + <span class="stringliteral">&quot;.&quot;</span>);</div>
 <div class="line">        <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oPC, sName, RENAMED_PLAYER_PREFIX,</div>
-<div class="line">                        RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oTarget);</div>
+<div class="line">                        RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#gafc3e340ecdad9db153e72054bbef9208">NWNX_RENAME_PLAYERNAME_DEFAULT</a>, oTarget);</div>
 <div class="line">        SetDynamicNameDB(oPC, oTarget, sName);</div>
 <div class="line">    }</div>
 <div class="line">}</div>
@@ -266,7 +266,7 @@ Sample Include</h2>
 <div class="line">        sTargetName = <span class="stringliteral">&quot;Someone&quot;</span>;</div>
 <div class="line">    SendMessageToPC(oPC, sTargetName + <span class="stringliteral">&quot; will now be known as &quot;</span> + sName + <span class="stringliteral">&quot; to you.&quot;</span>);</div>
 <div class="line">    <a class="code" href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a>(oTarget, sName, RENAMED_PLAYER_PREFIX,</div>
-<div class="line">                    RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a>, oPC);</div>
+<div class="line">                    RENAMED_PLAYER_SUFFIX, <a class="code" href="group__rename.html#gafc3e340ecdad9db153e72054bbef9208">NWNX_RENAME_PLAYERNAME_DEFAULT</a>, oPC);</div>
 <div class="line">    SetDynamicNameDB(oTarget, oPC, sName, 1);</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>And a corresponding MySQL example DB structure:</p>
@@ -536,16 +536,16 @@ Functions</h2></td></tr>
 <div class="ttc" id="agroup__rename_html_gaf3b4ba16315cc38473c5285eb913737e"><div class="ttname"><a href="group__rename.html#gaf3b4ba16315cc38473c5285eb913737e">NWNX_Rename_SetPCNameOverride</a></div><div class="ttdeci">void NWNX_Rename_SetPCNameOverride(object oTarget, string sNewName, string sPrefix=&quot;&quot;, string sSuffix=&quot;&quot;, int iPlayerNameState=NWNX_RENAME_PLAYERNAME_DEFAULT, object oObserver=OBJECT_INVALID)</div><div class="ttdoc">Set a PC's character name and community name on the player list.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00046">nwnx_rename.nss:46</a></div></div>
 <div class="ttc" id="agroup__sql_html_gaefc1bce86231177b8f972a8c0dc91a0b"><div class="ttname"><a href="group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b">NWNX_SQL_ReadNextRow</a></div><div class="ttdeci">void NWNX_SQL_ReadNextRow()</div><div class="ttdoc">Reads the next row of returned data.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00141">nwnx_sql.nss:141</a></div></div>
 <div class="ttc" id="agroup__sql_html_gae2e0e27014d82accfe4a0e510720515f"><div class="ttname"><a href="group__sql.html#gae2e0e27014d82accfe4a0e510720515f">NWNX_SQL_PrepareQuery</a></div><div class="ttdeci">int NWNX_SQL_PrepareQuery(string query)</div><div class="ttdoc">Prepares the provided query for execution.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00103">nwnx_sql.nss:103</a></div></div>
-<div class="ttc" id="agroup__rename_html_ga1f09701e202d238a7d1b96b4c2e3cb2c"><div class="ttname"><a href="group__rename.html#ga1f09701e202d238a7d1b96b4c2e3cb2c">NWNX_RENAME_PLAYERNAME_OVERRIDE</a></div><div class="ttdeci">const int NWNX_RENAME_PLAYERNAME_OVERRIDE</div><div class="ttdoc">Use character name specified.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00014">nwnx_rename.nss:14</a></div></div>
 <div class="ttc" id="agroup__sql_html_ga60dd9ffe0369ff795d4e375452edec51"><div class="ttname"><a href="group__sql.html#ga60dd9ffe0369ff795d4e375452edec51">NWNX_SQL_ReadDataInActiveRow</a></div><div class="ttdeci">string NWNX_SQL_ReadDataInActiveRow(int column=0)</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00148">nwnx_sql.nss:148</a></div></div>
 <div class="ttc" id="agroup__rename_html_ga66b5aa3317d00607131d11ef25e79f2e"><div class="ttname"><a href="group__rename.html#ga66b5aa3317d00607131d11ef25e79f2e">NWNX_Rename_GetPCNameOverride</a></div><div class="ttdeci">string NWNX_Rename_GetPCNameOverride(object oTarget, object oObserver=OBJECT_INVALID)</div><div class="ttdoc">Gets a PC's name as overridden.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00060">nwnx_rename.nss:60</a></div></div>
 <div class="ttc" id="agroup__sql_html_ga38fdaf8c308512015849ac94ffede3bb"><div class="ttname"><a href="group__sql.html#ga38fdaf8c308512015849ac94ffede3bb">NWNX_SQL_ReadyToReadNextRow</a></div><div class="ttdeci">int NWNX_SQL_ReadyToReadNextRow()</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00133">nwnx_sql.nss:133</a></div></div>
+<div class="ttc" id="agroup__rename_html_gafc3e340ecdad9db153e72054bbef9208"><div class="ttname"><a href="group__rename.html#gafc3e340ecdad9db153e72054bbef9208">NWNX_RENAME_PLAYERNAME_DEFAULT</a></div><div class="ttdeci">const int NWNX_RENAME_PLAYERNAME_DEFAULT</div><div class="ttdoc">Don't rename.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__rename_8nss_source.html#l00012">nwnx_rename.nss:12</a></div></div>
 <div class="ttc" id="agroup__sql_html_ga585546f0c7907cecde5a59508cbf4535"><div class="ttname"><a href="group__sql.html#ga585546f0c7907cecde5a59508cbf4535">NWNX_SQL_PreparedString</a></div><div class="ttdeci">void NWNX_SQL_PreparedString(int position, string value)</div><div class="ttdoc">Set the string value of a prepared statement at given position.</div><div class="ttdef"><b>Definition:</b> <a href="nwnx__sql_8nss_source.html#l00166">nwnx_sql.nss:166</a></div></div>
 <!-- start footer part -->
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Dec 19 2020 20:00:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sun Dec 20 2020 03:08:39 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
