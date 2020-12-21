@@ -163,9 +163,9 @@ export NWNX_LUA_LOG_LEVEL=7 # Log level for LUA, overrides default
 Running the server (Docker)</h2>
 <p><code>nwnxee/unified</code> supports the following <a href="https://hub.docker.com/r/nwnxee/unified/tags">tags</a>:</p>
 <ul>
-<li><code>[commit-hash]</code> (7 characters and 40)</li>
+<li><code>[commit-hash]</code> (7 characters)</li>
 <li><code>latest</code></li>
-<li><code>[tag]</code> (for example: <code>build8193</code>)</li>
+<li><code>[tag]</code> (for example: <code>build8193.20</code>)</li>
 </ul>
 <p>Due to Docker's local image cache we recommend using the <code>[commit-hash]</code> tag to explicitly state which nwnx build to run. In comparison, the <code>latest</code> tag will usually hit the image cache and return an outdated build, as you have to run <code>docker pull nwnxee/unified</code> to update the <code>latest</code> image in your cache. Using the <code>[commit-hash]</code> tag removes the need to manually run docker pull on your machines, and enables you to roll back in a simple and sensible manner.</p>
 <p>Run the image exactly the same as you would run the <code>beamdog/nwserver</code> image. For any questions related to running nwserver, please refer to the nwserver <a href="https://hub.docker.com/r/beamdog/nwserver/">README</a>.</p>
@@ -227,7 +227,7 @@ Contact</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Dec 20 2020 03:08:40 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Dec 21 2020 17:56:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
