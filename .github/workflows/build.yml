@@ -191,6 +191,8 @@ jobs:
         run: |
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
           echo "::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          echo "::set-output name=nwn_build::$(grep 'set(TARGET_NWN_BUILD ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
+          echo "::set-output name=nwn_build_revision::$(grep 'set(TARGET_NWN_BUILD_REVISION ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
 
       - name: Download Binaries
         uses: actions/download-artifact@v2
@@ -232,8 +234,10 @@ jobs:
               org.opencontainers.image.documentation=https://nwnxee.github.io/unified
           tags: |
             ${{ github.repository }}:latest
+            ${{ github.repository }}:build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}
             ${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
             ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:build${{ steps.vars.outputs.nwn_build }}.${{ steps.vars.outputs.nwn_build_revision }}
             ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
 
       - name: Image digest
