@@ -36,6 +36,9 @@ private:
     ArgumentStack AddNSSFile                    (ArgumentStack&& args);
     ArgumentStack RemoveNWNXResourceFile        (ArgumentStack&& args);
     ArgumentStack SetInstructionLimit           (ArgumentStack&& args);
+    ArgumentStack GetInstructionLimit           (ArgumentStack&& args);
+    ArgumentStack SetInstructionsExecuted       (ArgumentStack&& args);
+    ArgumentStack GetInstructionsExecuted       (ArgumentStack&& args);
     ArgumentStack RegisterServerConsoleCommand  (ArgumentStack&& args);
     ArgumentStack UnregisterServerConsoleCommand(ArgumentStack&& args);
     ArgumentStack PluginExists                  (ArgumentStack&& args);

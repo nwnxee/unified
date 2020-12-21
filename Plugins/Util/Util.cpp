@@ -80,6 +80,9 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(AddNSSFile);
     REGISTER(RemoveNWNXResourceFile);
     REGISTER(SetInstructionLimit);
+    REGISTER(GetInstructionLimit);
+    REGISTER(SetInstructionsExecuted);
+    REGISTER(GetInstructionsExecuted);
     REGISTER(RegisterServerConsoleCommand);
     REGISTER(UnregisterServerConsoleCommand);
     REGISTER(PluginExists);
@@ -558,6 +561,29 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
         Globals::VirtualMachine()->m_nInstructionLimit = limit;
 
     return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetInstructionLimit(ArgumentStack&&)
+{
+    int32_t retVal = Globals::VirtualMachine()->m_nInstructionLimit;
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Util::SetInstructionsExecuted(ArgumentStack&& args)
+{
+    const auto instructions = Services::Events::ExtractArgument<int32_t>(args);
+
+    Globals::VirtualMachine()->m_nInstructionsExecuted = instructions >= 0 ? instructions : 0;
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetInstructionsExecuted(ArgumentStack&&)
+{
+    int32_t retVal = Globals::VirtualMachine()->m_nInstructionsExecuted;
+
+    return Services::Events::Arguments(retVal);
 }
 
 ArgumentStack Util::GetScriptReturnValue(ArgumentStack&&)

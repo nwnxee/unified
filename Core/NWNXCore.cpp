@@ -224,14 +224,6 @@ void NWNXCore::InitialSetupHooks()
                     g_core->m_ScriptChunkRecursion += before ? +1 : -1;
                 });
     }
-
-    // TODO-64Bit: Temp fix for POS
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN11CGameObjectC2Ehj, void>(
-            +[](bool before, CGameObject* pThis, uint8_t, uint32_t)
-            {
-                if (!before)
-                    pThis->m_pNwnxData = nullptr;
-            });
 }
 
 void NWNXCore::InitialVersionCheck()

@@ -72,7 +72,7 @@ void LoadNamesForPC(object oPC)
             {
                 NWNX_SQL_ReadNextRow();
                 NWNX_Rename_SetPCNameOverride(oOtherPC, NWNX_SQL_ReadDataInActiveRow(0),
-                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oPC);
+                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oPC);
             }
             NWNX_SQL_PrepareQuery(sSQL);
             NWNX_SQL_PreparedInt(0, nOtherPCID);
@@ -82,7 +82,7 @@ void LoadNamesForPC(object oPC)
             {
                 NWNX_SQL_ReadNextRow();
                 NWNX_Rename_SetPCNameOverride(oPC, NWNX_SQL_ReadDataInActiveRow(0),
-                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oOtherPC);
+                            RENAMED_PLAYER_PREFIX, RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oOtherPC);
             }
         }
         oOtherPC = GetNextPC();
@@ -148,7 +148,7 @@ void IntroducePlayers(object oPC, object oTarget, string sName, int iType = 0)
     {
         SendMessageToPC(oTarget, sMyName + " wants you to know them as " + sName + ".");
         NWNX_Rename_SetPCNameOverride(oPC, sName, RENAMED_PLAYER_PREFIX,
-                        RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oTarget);
+                        RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oTarget);
         SetDynamicNameDB(oPC, oTarget, sName);
     }
 }
@@ -160,7 +160,7 @@ void DubPlayer(object oPC, object oTarget, string sName)
         sTargetName = "Someone";
     SendMessageToPC(oPC, sTargetName + " will now be known as " + sName + " to you.");
     NWNX_Rename_SetPCNameOverride(oTarget, sName, RENAMED_PLAYER_PREFIX,
-                    RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_OVERRIDE, oPC);
+                    RENAMED_PLAYER_SUFFIX, NWNX_RENAME_PLAYERNAME_DEFAULT, oPC);
     SetDynamicNameDB(oTarget, oPC, sName, 1);
 }
 
