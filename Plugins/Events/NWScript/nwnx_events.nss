@@ -23,12 +23,22 @@ __________________________________________
 
 _______________________________________
     ## Stealth Events
-    - NWNX_ON_ENTER_STEALTH_BEFORE
-    - NWNX_ON_ENTER_STEALTH_AFTER
-    - NWNX_ON_EXIT_STEALTH_BEFORE
-    - NWNX_ON_EXIT_STEALTH_AFTER
+    - NWNX_ON_STEALTH_ENTER_BEFORE
+    - NWNX_ON_STEALTH_ENTER_AFTER
+    - NWNX_ON_STEALTH_EXIT_BEFORE
+    - NWNX_ON_STEALTH_EXIT_AFTER
 
     `OBJECT_SELF` = The creature entering or exiting stealth.
+
+    @note NWNX_ON_{ENTER|EXIT}_STEALTH_{BEFORE|AFTER} has been deprecated. Please use these new event names.
+_______________________________________
+    ## Detect Events
+    - NWNX_ON_DETECT_ENTER_BEFORE
+    - NWNX_ON_DETECT_ENTER_AFTER
+    - NWNX_ON_DETECT_EXIT_BEFORE
+    - NWNX_ON_DETECT_EXIT_AFTER
+
+    `OBJECT_SELF` = The creature entering or exiting detect mode.
 
 _______________________________________
     ## Examine Events
@@ -41,6 +51,20 @@ _______________________________________
     ----------------------|--------|-------
     EXAMINEE_OBJECT_ID    | object | Convert to object with StringToObject()
     TRAP_EXAMINE_SUCCESS  | int    | For trap examine only, whether the examine succeeded
+
+_______________________________________
+    ## Faction Events
+    - NWNX_ON_SET_NPC_FACTION_REPUTATION_BEFORE
+    - NWNX_ON_SET_NPC_FACTION_REPUTATION_AFTER
+
+    `OBJECT_SELF` = The module
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+    FACTION_ID            | int    | Not the STANDARD_FACTION_* constants. See nwnx_creature->GetFaction().
+    SUBJECT_FACTION_ID    | int    | Not the STANDARD_FACTION_* constants. See nwnx_creature->GetFaction().
+    PREVIOUS_REPUTATION   | int    | 
+    NEW_REPUTATION        | int    | Not yet clamped between 0-100. In the AFTER event, this will equal the EventResult set in the BEFORE event.
 
 _______________________________________
     ## Validate Use Item Events
@@ -217,7 +241,7 @@ _______________________________________
 
     Event Data Tag        | Type   | Notes |
     ----------------------|--------|-------|
-    ITEM                  | object | Convert to object with StringToObject()|
+    ITEM                  | object | Convert to object with StringToObject() (May be OBJECT_INVALID in the AFTER event) |
     GIVER                 | object | Convert to object with StringToObject() (will be INVALID if picked up from ground)|
     RESULT                | int    | Returns TRUE in the _AFTER if the acquisition was successful, FALSE otherwise
 
@@ -241,6 +265,27 @@ _______________________________________
     TARGET_POSITION_Z     | float  | |
     ACTION_RESULT         | int    | TRUE/FALSE, only in _AFTER events
 
+_______________________________________
+    ## Has Feat Events
+    - NWNX_ON_HASFEAT_BEFORE
+    - NWNX_ON_HAS_FEAT_AFTER
+
+    `OBJECT_SELF` = The player being checked for the feat
+
+    Event Data Tag        | Type   | Notes |
+    ----------------------|--------|-------|
+    FEAT_ID               | int    | |
+    HAS_FEAT              | int    |  Whether they truly have the feat or not |
+
+    @note This event should definitely be used with the Event ID Whitelist, which is turned on by default
+    for this event. Until you add your Feat ID to the whitelist on module load this event will not function.
+    For example if you wish an event to fire when nwn is checking if the creature has Epic Dodge you would perform
+    the following functions on_module_load.
+    ```c
+    NWNX_Events_SubscribeEvent("NWNX_ON_HAS_FEAT_BEFORE", "event_has_feat");
+    NWNX_Events_AddIDToWhitelist("NWNX_ON_HAS_FEAT", FEAT_EPIC_DODGE);
+    ```
+    @warning Toggling the Whitelist to be off for this event will degrade performance.
 _______________________________________
     ## DM Give Events
     - NWNX_ON_DM_GIVE_GOLD_BEFORE
@@ -471,6 +516,17 @@ _______________________________________
 
     @note Skipping the _BEFORE event will cause the client's connection to be denied.
     You can optionally pass a reason for this in the event result.
+
+_______________________________________
+    ## CombatEnter/Exit Events
+    - NWNX_ON_COMBAT_ENTER_BEFORE
+    - NWNX_ON_COMBAT_ENTER_AFTER
+    - NWNX_ON_COMBAT_EXIT_BEFORE
+    - NWNX_ON_COMBAT_EXIT_AFTER
+
+    `OBJECT_SELF` = The player entering/exiting combat.
+
+    @note Only works for PCs.
 
 _______________________________________
     ## Combat Round Start Events
@@ -1232,6 +1288,18 @@ _______________________________________
     PLAYER_NEW_TO_MODULE  | int    | TRUE if it's the player's first time logging into the server since a restart |
 
 _______________________________________
+    ## Journal Open/Close Events
+    - NWNX_ON_JOURNAL_OPEN_BEFORE
+    - NWNX_ON_JOURNAL_OPEN_AFTER
+    - NWNX_ON_JOURNAL_CLOSE_BEFORE
+    - NWNX_ON_JOURNAL_CLOSE_AFTER
+
+    `OBJECT_SELF` = The player
+
+    Event Data Tag        | Type   | Notes
+    ----------------------|--------|-------
+
+_______________________________________
 */
 /*
 const int NWNX_EVENTS_OBJECT_TYPE_CREATURE          = 5;
@@ -1318,6 +1386,8 @@ string NWNX_Events_GetEventData(string tag);
 /// - Debug events
 /// - Store events
 /// - Disarm event
+/// - {Enter|Exit}Detect events
+/// - Faction events
 void NWNX_Events_SkipEvent();
 
 /// Set the return value of the event.
@@ -1333,6 +1403,9 @@ void NWNX_Events_SkipEvent();
 /// - Trap events -> "1" or "0"
 /// - Sticky Player Name event -> "1" or "0"
 /// - Heal event -> Amount of HP to heal
+/// - Has Feat event -> "1" or "0"
+/// - Stealth event -> "1" to perform HiPS (without the feat), "0" to bypass HiPS
+/// - Faction set reputation event -> The new reputation to apply instead. ("0" - "100")
 void NWNX_Events_SetEventResult(string data);
 
 /// Returns the current event name
@@ -1349,6 +1422,30 @@ void NWNX_Events_AddObjectToDispatchList(string sEvent, string sScript, object o
 
 /// Remove oObject from the dispatch list for sEvent+sScript.
 void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, object oObject);
+
+/// @brief Toggle the whitelisting of IDs for sEvent. If whitelisting is enabled, the event will only fire for IDs that are
+/// on its whitelist.
+///
+/// ONLY WORKS WITH THE FOLLOWING EVENTS -> ID TYPES:
+/// - NWNX_ON_CAST_SPELL -> SpellID
+/// - NWNX_ON_HAS_FEAT -> FeatID (default enabled)
+///
+/// @note This enables the whitelist for ALL scripts subscribed to sEvent.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param bEnable TRUE to enable the whitelist, FALSE to disable
+void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable);
+
+/// @brief Add nID to the whitelist of sEvent.
+/// @note See NWNX_Events_ToggleIDWhitelist for valid events and ID types.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param nID The ID.
+void NWNX_Events_AddIDToWhitelist(string sEvent, int nID);
+
+/// @brief Remove nID from the whitelist of sEvent.
+/// @note See NWNX_Events_ToggleIDWhitelist for valid events and ID types.
+/// @param sEvent The event name without _BEFORE / _AFTER.
+/// @param nID The ID.
+void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID);
 
 /// @}
 
@@ -1447,6 +1544,33 @@ void NWNX_Events_RemoveObjectFromDispatchList(string sEvent, string sScript, obj
 
     NWNX_PushArgumentObject(NWNX_Events, sFunc, oObject);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sScript);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_ToggleIDWhitelist(string sEvent, int bEnable)
+{
+    string sFunc = "ToggleIDWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, bEnable);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_AddIDToWhitelist(string sEvent, int nID)
+{
+    string sFunc = "AddIDToWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, nID);
+    NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
+    NWNX_CallFunction(NWNX_Events, sFunc);
+}
+
+void NWNX_Events_RemoveIDFromWhitelist(string sEvent, int nID)
+{
+    string sFunc = "RemoveIDFromWhitelist";
+
+    NWNX_PushArgumentInt(NWNX_Events, sFunc, nID);
     NWNX_PushArgumentString(NWNX_Events, sFunc, sEvent);
     NWNX_CallFunction(NWNX_Events, sFunc);
 }

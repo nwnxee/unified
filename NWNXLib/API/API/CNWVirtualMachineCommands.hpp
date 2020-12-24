@@ -557,6 +557,7 @@ struct CNWVirtualMachineCommands : CVirtualMachineCmdImplementer
     int32_t ExecuteCommandSetCreatureBodyPart(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCreatureTailType(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCreatureWingType(int32_t nCommandId, int32_t nParameters);
+    int32_t ExecuteCommandSetCurrentHitPoints(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCustomToken(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCutsceneMode(int32_t nCommandId, int32_t nParameters);
     int32_t ExecuteCommandSetCutsceneCameraMoveRate(int32_t nCommandId, int32_t nParameters);

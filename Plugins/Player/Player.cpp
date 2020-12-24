@@ -31,6 +31,9 @@
 #include "API/C2DA.hpp"
 #include "API/ObjectVisualTransformData.hpp"
 #include "API/CLastUpdateObject.hpp"
+#include "API/CWorldTimer.hpp"
+#include "API/CExoLocString.hpp"
+#include "API/CNWSPlayerStoreGUI.hpp"
 #include "API/CExoResMan.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
@@ -38,9 +41,7 @@
 #include "Services/Events/Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Encoding.hpp"
-#include "API/CExoLocString.hpp"
 #include "Utils.hpp"
-#include "API/CWorldTimer.hpp"
 
 
 using namespace NWNXLib;
@@ -107,6 +108,7 @@ Player::Player(Services::ProxyServiceList* services)
     REGISTER(SendDMAllCreatorLists);
     REGISTER(AddCustomJournalEntry);
     REGISTER(GetJournalEntry);
+    REGISTER(CloseStore);
 
 #undef REGISTER
 
@@ -1485,15 +1487,42 @@ ArgumentStack Player::ToggleDM(ArgumentStack&& args)
 
                 if (isDM && !currentlyPlayerDM)
                 {
-                    pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, true, true);
                     pPlayerInfo->m_bGameMasterPrivileges = true;
                     pPlayerInfo->m_bGameMasterIsPlayerLogin = true;
+                    pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, true, true);
+
+                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+                    {
+                    	pCreature->m_pStats->m_bDMManifested = true;
+                    	pCreature->UpdateVisibleList();
+                    }
+
+                    Globals::AppManager()->m_pServerExoApp->AddToExclusionList(pPlayer->m_oidNWSObject, 1/*Timestop*/);
+                    Globals::AppManager()->m_pServerExoApp->AddToExclusionList(pPlayer->m_oidNWSObject, 2/*Pause*/);
+                    uint8_t nActivePauseState = Globals::AppManager()->m_pServerExoApp->GetActivePauseState();
+                    pMessage->SendServerToPlayerModule_SetPauseState(nActivePauseState, nActivePauseState > 0);
+
+                    pMessage->SendServerToPlayerDungeonMasterAreaList(pPlayer->m_nPlayerID);
+                    pMessage->SendServerToPlayerDungeonMasterCreatorLists(pPlayer);
                 }
                 else if (!isDM && currentlyPlayerDM)
                 {
-                    pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, false, true);
+                    pPlayer->PossessCreature(Constants::OBJECT_INVALID, Constants::AssociateType::None);
+
                     pPlayerInfo->m_bGameMasterPrivileges = false;
                     pPlayerInfo->m_bGameMasterIsPlayerLogin = false;
+                    pMessage->SendServerToPlayerDungeonMasterLoginState(pPlayer, false, true);
+
+                    if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(pPlayer->m_oidNWSObject)))
+                    {
+                        pCreature->m_pStats->m_bDMManifested = true;
+                        pCreature->UpdateVisibleList();
+                    }
+
+                    Globals::AppManager()->m_pServerExoApp->RemoveFromExclusionList(pPlayer->m_oidNWSObject, 1/*Timestop*/);
+                    Globals::AppManager()->m_pServerExoApp->RemoveFromExclusionList(pPlayer->m_oidNWSObject, 2/*Pause*/);
+                    uint8_t nActivePauseState = Globals::AppManager()->m_pServerExoApp->GetActivePauseState();
+                    pMessage->SendServerToPlayerModule_SetPauseState(nActivePauseState, nActivePauseState > 0);
                 }
             }
         }
@@ -1633,20 +1662,25 @@ ArgumentStack Player::RemoveEffectFromTURD(ArgumentStack&& args)
       ASSERT_OR_THROW(!effectTag.empty());
 
     auto *pTURDList = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    if (!pTURDList)
+        return Services::Events::Arguments();
+
     for (auto *pNode = pTURDList->pHead; pNode; pNode = pNode->pNext)
     {
         auto *pTURD = static_cast<CNWSPlayerTURD*>(pNode->pObject);
 
         if (pTURD && pTURD->m_oidPlayer == oidPlayer)
         {
+            std::vector<uint64_t> remove(128);
             for (int i = 0; i < pTURD->m_appliedEffects.num; i++)
             {
                 auto *pEffect = pTURD->m_appliedEffects.element[i];
 
                 if (pEffect->m_sCustomTag == effectTag)
-                    pTURD->RemoveEffect(pEffect);
+                    remove.push_back(pEffect->m_nID);
             }
-
+            for (auto id: remove)
+                pTURD->RemoveEffectById(id);
             break;
         }
     }
@@ -1707,9 +1741,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
     int32_t retval = -1;
     if (auto *pPlayer = player(args))
     {
-        auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject);
-
-        if (pCreature && pCreature->m_pJournal)
+        if (auto *pCreature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(pPlayer->m_oidNWSObject))
         {
             const auto questName = Services::Events::ExtractArgument<std::string>(args);
             const auto questText = Services::Events::ExtractArgument<std::string>(args);
@@ -1728,11 +1760,14 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
             auto silentUpdate = Services::Events::ExtractArgument<int32_t>(args);
 
             ASSERT_OR_THROW(state >= 0);
-            ASSERT_OR_THROW(priority >= 0); 
-            ASSERT_OR_THROW(completed >= 0); 
+            ASSERT_OR_THROW(priority >= 0);
+            ASSERT_OR_THROW(completed >= 0);
             ASSERT_OR_THROW(displayed >= 0);
-            ASSERT_OR_THROW(updated >= 0); 
+            ASSERT_OR_THROW(updated >= 0);
             ASSERT_OR_THROW(silentUpdate >= 0);
+
+            CNWSJournal *pJournal = pCreature->GetJournal();
+              ASSERT_OR_THROW(pJournal);// Should never happen, but still.
 
             // If server owner leaves this 0 - the entry will be added with today's date
             if (calDay <= 0)
@@ -1745,10 +1780,9 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 timeDay = Globals::AppManager()->m_pServerExoApp->GetWorldTimer()->GetWorldTimeTimeOfDay();
             }
 
-            auto *pMessage = static_cast<CNWSMessage*>(Globals::AppManager()->m_pServerExoApp->GetNWSMessage());
-            if (pMessage)
+            if (auto *pMessage = Globals::AppManager()->m_pServerExoApp->GetNWSMessage())
             {
-                auto entries = pCreature->m_pJournal->m_lstEntries;
+                auto entries = pJournal->m_lstEntries;
                 SJournalEntry newJournal; // Only instantiate the struct if the message was created
                 newJournal.szName          = Utils::CreateLocString(questName,0,0);
                 newJournal.szText          = Utils::CreateLocString(questText,0,0);
@@ -1769,9 +1803,9 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                         auto pEntry = entries.element[i];
                         if (pEntry.szPlot_Id.CStr() == tag)
                         {
-                            overwrite = i; 
+                            overwrite = i;
                             // Overwrite existing entry
-                            pCreature->m_pJournal->m_lstEntries[i] = newJournal;
+                            pJournal->m_lstEntries[i] = newJournal;
                             break;
                         }
                     }
@@ -1781,7 +1815,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                 if(overwrite == -1)
                 {
                     // New entry added
-                    pCreature->m_pJournal->m_lstEntries.Add(newJournal);
+                    pJournal->m_lstEntries.Add(newJournal);
                 }
                 pMessage->SendServerToPlayerJournalAddQuest(pPlayer,
                                                             newJournal.szPlot_Id,
@@ -1793,7 +1827,7 @@ ArgumentStack Player::AddCustomJournalEntry(ArgumentStack&& args)
                                                             newJournal.nTimeOfDay,
                                                             newJournal.szName,
                                                             newJournal.szText);
-                retval = pCreature->m_pJournal->m_lstEntries.num; // Success
+                retval = pJournal->m_lstEntries.num; // Success
 
                 //If no update message is desired, we can keep it silent.
                 if(!silentUpdate)
@@ -1838,7 +1872,7 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
                             (int32_t)lastJournalEntry.nPriority,
                             (int32_t)lastJournalEntry.bQuestCompleted,
                             (int32_t)lastJournalEntry.bQuestDisplayed,
-                            (int32_t)lastJournalEntry.bUpdated 
+                            (int32_t)lastJournalEntry.bUpdated
                         );
                     }
                 }
@@ -1846,6 +1880,19 @@ ArgumentStack Player::GetJournalEntry(ArgumentStack&& args)
         }
     }
     return Services::Events::Arguments(-1);
+}
+
+ArgumentStack Player::CloseStore(ArgumentStack&& args)
+{
+    if (auto *pPlayer = player(args))
+    {
+        if (auto *pPlayerStoreGUI = pPlayer->m_pStoreGUI)
+        {
+            pPlayerStoreGUI->CloseStore(pPlayer, true);
+        }
+    }
+
+    return Services::Events::Arguments();
 }
 
 }

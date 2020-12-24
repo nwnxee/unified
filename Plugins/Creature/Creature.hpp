@@ -130,6 +130,8 @@ private:
     ArgumentStack SetWalkAnimation              (ArgumentStack&& args);
     ArgumentStack SetAttackRollOverride         (ArgumentStack&& args);
     ArgumentStack SetParryAllAttacks            (ArgumentStack&& args);
+    ArgumentStack GetNoPermanentDeath           (ArgumentStack&& args);
+    ArgumentStack SetNoPermanentDeath           (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
     std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> m_RollModifier;

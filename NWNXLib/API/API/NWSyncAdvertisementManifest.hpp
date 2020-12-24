@@ -1,7 +1,7 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "CExoString.hpp"
+#include "SHA1.hpp"
 
 
 #ifdef NWN_API_PROLOGUE
@@ -14,7 +14,7 @@ NWN_API_PROLOGUE(NWSyncAdvertisementManifest)
 
 struct NWSyncAdvertisementManifest
 {
-    CExoString m_hash;
+    SHA1 m_hash;
     uint8_t m_flags;
     uint8_t m_languageId;
 

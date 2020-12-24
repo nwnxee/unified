@@ -181,7 +181,7 @@ void Damage::OnSignalDamage(bool before, CNWSCreature *pThis, CNWSObject *pTarge
             // m_nCurrentAttack points to the attack *after* this flurry
             uint8_t attackNumberOffset = pThis->m_pcCombatRound->m_nCurrentAttack - nAttacks;
             // trigger script once per attack in the flurry
-            for ( uint8_t i = 0; i < nAttacks; i++ )
+            for ( uint32_t i = 0; i < nAttacks; i++ )
                 OnCombatAttack(pThis, pTarget, script, attackNumberOffset + i);
         }
     }

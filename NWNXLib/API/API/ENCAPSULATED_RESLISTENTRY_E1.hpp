@@ -15,6 +15,7 @@ struct ENCAPSULATED_RESLISTENTRY_E1
 {
     uint32_t nOffsetToResource;
     uint32_t nResourceSize;
+    uint32_t nCompressionType;
     uint32_t nUncompressedSize;
 
 

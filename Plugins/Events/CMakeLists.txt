@@ -7,6 +7,7 @@ add_plugin(Events
     "Events/CombatEvents.cpp"
     "Events/DMActionEvents.cpp"
     "Events/ExamineEvents.cpp"
+    "Events/FactionEvents.cpp"
     "Events/FeatEvents.cpp"
     "Events/ItemEvents.cpp"
     "Events/MapEvents.cpp"
@@ -30,4 +31,5 @@ add_plugin(Events
     "Events/ResourceEvents.cpp"
     "Events/QuickbarEvents.cpp"
     "Events/DebugEvents.cpp"
-    "Events/StoreEvents.cpp")
+    "Events/StoreEvents.cpp"
+    "Events/JournalEvents.cpp")

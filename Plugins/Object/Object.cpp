@@ -186,7 +186,7 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
         pos.x = Services::Events::ExtractArgument<float>(args);
         auto bUpdateSubareas = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
+        pObject->SetPosition(pos, false);
 
         if (bUpdateSubareas)
         {
@@ -643,7 +643,6 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         effIcon->m_bExpose    = true;
         effIcon->m_sCustomTag = "NWNX_Object_IconEffect";
 
-        effIcon->SetNumIntegers(1);
         effIcon->m_nParamInteger[0] = nIcon;
 
         if (fDuration > 0.0)

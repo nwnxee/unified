@@ -48,15 +48,16 @@ extern "C" void nwnx_signal_handler(int sig)
         case SIGABRT:  err = "Program aborted";          break;
         case SIGFPE:   err = "Floating point exception"; break;
         case SIGSEGV:  err = "Segmentation fault";       break;
+        case SIGILL:   err = "Illegal instruction";      break;
         default:       err = "Unknown error";            break;
     }
 
     std::fprintf(stderr, " NWNX Signal Handler:\n"
         "==============================================================\n"
-        " NWNX has crashed. Fatal error: %s (%d).\n"
+        " NWNX %d.%d (%s) has crashed. Fatal error: %s (%d).\n"
         " Please file a bug at https://github.com/nwnxee/unified/issues\n"
         "==============================================================\n",
-        err, sig);
+        NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA, err, sig);
 
     std::fputs(NWNXLib::Platform::Debug::GetStackTrace(20).c_str(), stderr);
 
@@ -72,12 +73,14 @@ void InitCrashHandlers()
     nwn_crash_handler = std::signal(SIGABRT, nwnx_signal_handler);
     std::signal(SIGFPE,  nwnx_signal_handler);
     std::signal(SIGSEGV, nwnx_signal_handler);
+    std::signal(SIGILL, nwnx_signal_handler);
 }
 void RestoreCrashHandlers()
 {
     std::signal(SIGABRT, nwn_crash_handler);
     std::signal(SIGFPE,  nwn_crash_handler);
     std::signal(SIGSEGV, nwn_crash_handler);
+    std::signal(SIGILL, nwn_crash_handler);
 }
 
 }
@@ -97,7 +100,7 @@ NWNXCore::NWNXCore()
     // NOTE: We should do the version check here, but the global in the binary hasn't been initialised yet at this point.
     // This will be fixed in a future release of NWNX:EE. For now, the version check will happen *too late* - we may
     // crash before the version check happens.
-    std::printf("Starting NWNX...\n");
+    std::printf("Starting NWNX %d.%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA);
     // This sets up the base address for every hook and patch to follow.
     Platform::ASLR::CalculateBaseAddress();
 
@@ -176,8 +179,8 @@ void NWNXCore::InitialSetupHooks()
     m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CAppManager13DestroyServerEv>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopInternalHandler);
 
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObjectD0Ev, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSAreaD0Ev, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObjectD1Ev, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
+    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSAreaD1Ev, void>(&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, void>(&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSPlayer8DropTURDEv, void>(&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, void>(&Services::PerObjectStorage::CNWSUUID__SaveToGff_hook);
@@ -215,20 +218,12 @@ void NWNXCore::InitialSetupHooks()
 
     if (!m_coreServices->m_config->Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
-        m_services->m_hooks->RequestSharedHook<API::Functions::_ZN25CNWVirtualMachineCommands32ExecuteCommandExecuteScriptChunkEii, int32_t>(
-                +[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
+        m_services->m_hooks->RequestSharedHook<API::Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii, int32_t>(
+                +[](bool before, CVirtualMachine*, const CExoString&, ObjectID, int32_t, int32_t)
                 {
                     g_core->m_ScriptChunkRecursion += before ? +1 : -1;
                 });
     }
-
-    // TODO-64Bit: Temp fix for POS
-    m_services->m_hooks->RequestSharedHook<API::Functions::_ZN11CGameObjectC2Ehj, void>(
-            +[](bool before, CGameObject* pThis, uint8_t, uint32_t)
-            {
-                if (!before)
-                    pThis->m_pNwnxData = nullptr;
-            });
 }
 
 void NWNXCore::InitialVersionCheck()

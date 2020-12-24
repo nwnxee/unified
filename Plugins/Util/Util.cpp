@@ -80,6 +80,9 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(AddNSSFile);
     REGISTER(RemoveNWNXResourceFile);
     REGISTER(SetInstructionLimit);
+    REGISTER(GetInstructionLimit);
+    REGISTER(SetInstructionsExecuted);
+    REGISTER(GetInstructionsExecuted);
     REGISTER(RegisterServerConsoleCommand);
     REGISTER(UnregisterServerConsoleCommand);
     REGISTER(PluginExists);
@@ -91,6 +94,8 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(SetResourceOverride);
     REGISTER(GetResourceOverride);
     REGISTER(GetScriptParamIsSet);
+    REGISTER(SetDawnHour);
+    REGISTER(SetDuskHour);
 
 #undef REGISTER
 
@@ -558,6 +563,29 @@ ArgumentStack Util::SetInstructionLimit(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
+ArgumentStack Util::GetInstructionLimit(ArgumentStack&&)
+{
+    int32_t retVal = Globals::VirtualMachine()->m_nInstructionLimit;
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Util::SetInstructionsExecuted(ArgumentStack&& args)
+{
+    const auto instructions = Services::Events::ExtractArgument<int32_t>(args);
+
+    Globals::VirtualMachine()->m_nInstructionsExecuted = instructions >= 0 ? instructions : 0;
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetInstructionsExecuted(ArgumentStack&&)
+{
+    int32_t retVal = Globals::VirtualMachine()->m_nInstructionsExecuted;
+
+    return Services::Events::Arguments(retVal);
+}
+
 ArgumentStack Util::GetScriptReturnValue(ArgumentStack&&)
 {
     int32_t retVal = 0;
@@ -797,6 +825,24 @@ ArgumentStack Util::GetScriptParamIsSet(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Util::SetDawnHour(ArgumentStack &&args)
+{
+    const auto dawnHour = Services::Events::ExtractArgument<int32_t>(args);
+      ASSERT_OR_THROW(dawnHour >= 0);
+      ASSERT_OR_THROW(dawnHour <= 23);
+    Utils::GetModule()->m_nDawnHour = dawnHour;
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Util::SetDuskHour(ArgumentStack &&args)
+{
+    const auto duskHour = Services::Events::ExtractArgument<int32_t>(args);
+      ASSERT_OR_THROW(duskHour >= 0);
+      ASSERT_OR_THROW(duskHour <= 23);
+    Utils::GetModule()->m_nDuskHour = duskHour;
+    return Services::Events::Arguments();
 }
 
 }

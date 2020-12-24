@@ -15,9 +15,6 @@ while getopts "hcj:dst" o; do
         j) # Concurrent job count for the make command
             JOBS="-j $OPTARG"
             ;;
-        d) # Build debug configuration
-            BUILD_TYPE="Debug"
-            ;;
         s) # Enable the address and undefined behaviour sanitisers
             SANITIZE="-DSANITIZE_ADDRESS=On -DSANITIZE_UNDEFINED=On"
             ;;
@@ -28,9 +25,6 @@ while getopts "hcj:dst" o; do
     esac
 done
 shift $((OPTIND-1))
-
-CC="gcc -m64"
-CXX="g++ -m64"
 
 if [ ${CLEAN} == 0 ]; then
     if [ -d ./Binaries ]; then

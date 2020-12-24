@@ -4,22 +4,59 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
-https://github.com/nwnxee/unified/compare/build8193.16...HEAD
+## 8193.20-HEAD
+https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Added
+- Experimental: Added `NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION` to disable levelup validation.
+
+##### New Plugins
+- N/A
+
+##### New NWScript Functions
+- Util: GetInstructionLimit()
+- Util: {Get|Set}InstructionsExecuted();
+
+### Changed
+- N/A
+
+### Deprecated
+- Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
+
+### Removed
+- N/A
+
+### Fixed
+- N/A
+
+## 8193.16
+https://github.com/nwnxee/unified/compare/build8193.16...build8193.20
+
+### Added
+- Chat: targeted messages can now be sent on the Party or DM channels
+- Core: log file and crash dumps now include version and commit sha information
+- Core: added support for cp1251 (Central European) locale
 - Events: added skippable Acquire events to ItemEvents
 - Events: added skippable Disarm event to CombatEvents
 - Events: added `ACTION_RESULT` to Feat/Skill/Lock events for use in the _AFTER
 - Events: added Spell Interruption events to SpellEvents
+- Events: added skippable Has Feat event to FeatEvents
+- Events: added Journal Open/Close events to JournalEvents
+- Events: added Detect Mode event to StealthEvents
+- Events: added Combat Enter/Exit events to CombatEvents
+- Events: Stealth Mode can now bypass or perform Hide in Plain Sight with return values of "0" or "1" respectively
+- Events: Added Skippable/Result Changeable Faction Reputation event to FactionEvents
+- Experimental: Added `NWNX_EXPERIMENTAL_ADJUST_REPUTATION_FIX` in an effort to correct a crash with factions/reputation
 - Tweaks: `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST`
 - Tweaks: `NWNX_TWEAKS_FIX_ARMOR_DEX_BONUS_UNDER_ONE`
 - Tweaks: `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`
+- Tweaks: `NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS`
 
 ##### New Plugins
 The following plugins were added:
 - Feat: Allows to define a variety of effects that are granted to feat holders.
 - Tileset: An advanced plugin that exposes additional tileset and tile properties and allows builders to override the tiles of an area created with CreateArea().
+- Diagnostics: Plugin exposing diagnostic facilities to help server debugging.
 
 ##### New NWScript Functions
 - Area: GetTileInfo()
@@ -27,14 +64,22 @@ The following plugins were added:
 - Creature: {Get|Set}WalkAnimation()
 - Creature: SetAttackRollOverride()
 - Creature: SetParryAllAttacks()
+- Creature: {Get|Set}NoPermanentDeath()
+- Events: ToggleIDWhitelist()
+- Events: AddIDToWhitelist()
+- Events: RemoveIDFromWhitelist()
 - Feat: SetFeatModifier()
 - Object: GetCurrentAnimation()
 - Player: AddCustomJournalEntry() and GetJournalEntry()
+- Player: CloseStore()
+- Race: SetFavoredEnemyFeat()
 - Util: GetScriptParamIsSet()
+- Util: SetDawnHour()
+- Util: SetDuskHour()
 
 ### Changed
-- Area: ExportGIT() now supports valid custom resource directory aliases. 
-- Data:  Remove old implementation and re-implement Arrays using SQLite.  Shim include file provided for compatibility.
+- Area: ExportGIT() now supports valid custom resource directory aliases.
+- DotNET: Upgraded to Dotnet-5.
 - Events: `NWNX_ON_DM_SPAWN_OBJECT_*` now provides the resref as event data.
 - Events: `NWNX_ON_STORE_REQUEST_*_AFTER` now provides the result as event data.
 - Events: ResourceEvents now support valid custom resource directory aliases.
@@ -42,23 +87,30 @@ The following plugins were added:
 - Util: AddScript(), AddNSSFile() and RemoveNWNXResourceFile() now support valid custom resource directory aliases.
 - Visibility: added two new visibility types to always show an object regardless of range.
 - Weapon: Good Aim Feat now takes value from ruleset.2da
+- We now only allow builds with the `CMAKE_BUILD_TYPE=RelWithDebInfo` configuration. `Debug` builds produce unexpected behaviour and `Release` builds are generally unnecessary and mess with Assert functionality.
 
 ### Deprecated
+- Events: Stealth Events have had their name changed from NWNX_ON_{ENTER|EXIT}_STEALTH_* to NWNX_ON_STEALTH_{ENTER|EXIT}_*. Please update your scripts as the old names will eventually be removed.
 - Tweaks: `NWNX_TWEAKS_HIDE_DMS_ON_CHAR_LIST` has been deprecated, use `NWNX_TWEAKS_HIDE_PLAYERS_ON_CHAR_LIST` now
 
 ### Removed
-N/A
+- Optimizations: `OBJECT_TAG_LOOKUP` optimization has been removed. It caused instability and didn't really improve perf.
 
 ### Fixed
 - Administration: fix crash in DeletePlayerCharacter()
+- Core: debug dumps now properly resolve nwserver functions regardless of path and binary name used
+- Creature: removed an unnecessary free() in GetMeetsFeatRequirements() that may have led to crashes
 - Events: fixed a nullptr deref crash in BarterEvents
+- Events: fixed a nullptr deref crash in the AcquireItem event
 - Feedback: fixed a bug where global combatlog and journal feedback message overrides couldn't be removed
 - MaxLevel: fixed bug interfering with leveling down NPCs
+- MaxLevel: fixed an issue with the plugin failing after a restart when reload-when-empty was set to true
 - Object: fixed a possible crash in CheckFit()
 - Player: fixed bic getting overwritten when using PossessCreature() and crashing in between areas
 - Race: fixed effect clean up after level up
 - Rename: community name only obfuscates once a server reset
 - Rename: properly updates original name if NWNX_Creature_SetOriginalName() is used
+- SkillRanks: fixed skill bonus for abilities not properly calculating when ability scores were negative
 - Weapon: fixed bug in SetGreaterWeaponFocusFeat()
 - Weapon: fixed bug in offhand attack and damage bonus calculations with Greater Weapon feats and two handed weapons
 
@@ -101,11 +153,12 @@ https://github.com/nwnxee/unified/compare/build8193.13...build8193.16
 - Weapon: {Get|Set}OneHalfStrength()
 
 ### Changed
+- Administration: added an optional sKickReason parameter to DeleteCharacter()
 - Damage: damage event script now also triggered by damage to placeables
 - Effect: (Un)PackEffect now supports vector params
 - Events: added a `RESULT` event data tag to LearnScroll in ItemEvents
 - Weapon: SetWeapon****Feat functions may be called multiple times for the same weapon, associating a new feat each time
-- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon***Feat and will be used in addition to any set feats
+- Weapon: weapon feats defined in the 2da are no longer overridden by SetWeapon****Feat and will be used in addition to any set feats
 
 ### Deprecated
 - Object: StringToObject();

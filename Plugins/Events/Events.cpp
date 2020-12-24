@@ -10,6 +10,7 @@
 #include "Events/CombatEvents.hpp"
 #include "Events/DMActionEvents.hpp"
 #include "Events/ExamineEvents.hpp"
+#include "Events/FactionEvents.hpp"
 #include "Events/FeatEvents.hpp"
 #include "Events/ItemEvents.hpp"
 #include "Events/MapEvents.hpp"
@@ -34,6 +35,7 @@
 #include "Events/QuickbarEvents.hpp"
 #include "Events/DebugEvents.hpp"
 #include "Events/StoreEvents.hpp"
+#include "Events/JournalEvents.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
@@ -76,6 +78,9 @@ Events::Events(Services::ProxyServiceList* services)
     REGISTER(ToggleDispatchListMode);
     REGISTER(AddObjectToDispatchList);
     REGISTER(RemoveObjectFromDispatchList);
+    REGISTER(ToggleIDWhitelist);
+    REGISTER(AddIDToWhitelist);
+    REGISTER(RemoveIDFromWhitelist);
 
 #undef REGISTER
 
@@ -101,6 +106,7 @@ Events::Events(Services::ProxyServiceList* services)
     m_combatEvents      = std::make_unique<CombatEvents>(hooker);
     m_dmActionEvents    = std::make_unique<DMActionEvents>(hooker);
     m_examineEvents     = std::make_unique<ExamineEvents>(hooker);
+    m_factionEvents     = std::make_unique<FactionEvents>(hooker);
     m_itemEvents        = std::make_unique<ItemEvents>(hooker);
     m_featEvents        = std::make_unique<FeatEvents>(hooker);
     m_stealthEvents     = std::make_unique<StealthEvents>(hooker);
@@ -125,6 +131,7 @@ Events::Events(Services::ProxyServiceList* services)
     m_quickbarEvents    = std::make_unique<QuickbarEvents>(hooker);
     m_debugEvents       = std::make_unique<DebugEvents>(hooker);
     m_storeEvents       = std::make_unique<StoreEvents>(hooker);
+    m_journalEvents     = std::make_unique<JournalEvents>(hooker);
 }
 
 Events::~Events()
@@ -212,24 +219,54 @@ bool Events::SignalEvent(const std::string& eventName, const ObjectID target, st
 
 void Events::InitOnFirstSubscribe(const std::string& eventName, std::function<void(void)> init)
 {
-    g_plugin->m_initList[eventName] = init;
+    g_plugin->m_initList[eventName] = std::move(init);
+}
+
+bool Events::IsIDInWhitelist(const std::string& eventName, int32_t id)
+{
+    bool retVal = false;
+    auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
+
+    if (idWhitelist == g_plugin->m_idWhitelist.end())
+        retVal = true;// Whitelist is not enabled for eventName
+    else
+    {
+        if(idWhitelist->second.find(id) != idWhitelist->second.end())
+            retVal = true;
+    }
+
+    return retVal;
+}
+
+void Events::ForceEnableWhitelist(const std::string& eventName)
+{
+    g_plugin->m_idWhitelist[eventName];
+}
+
+void Events::CreateNewEventDataIfNeeded()
+{
+    if (m_eventData.size() <= m_eventDepth)
+    {
+        EventParams params;
+        params.m_Skipped = false;
+        m_eventData.emplace(std::move(params));
+    }
 }
 
 void Events::RunEventInit(const std::string& eventName)
 {
     std::vector<std::string> erase;
-    for (auto it: m_initList)
+    for (const auto& it: m_initList)
     {
         if (std::regex_search(eventName, std::regex(it.first)))
         {
-            LOG_DEBUG("Running init function for events '%s' (requested by event '%s')",
-                        it.first, eventName);
+            LOG_DEBUG("Running init function for events '%s' (requested by event '%s')", it.first, eventName);
             it.second();
             erase.push_back(it.first);
         }
     }
 
-    for (auto e: erase)
+    for (const auto& e: erase)
     {
         m_initList.erase(e);
     }
@@ -399,14 +436,48 @@ ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
     return Services::Events::Arguments();
 }
 
-void Events::CreateNewEventDataIfNeeded()
+ArgumentStack Events::ToggleIDWhitelist(ArgumentStack&& args)
 {
-    if (m_eventData.size() <= m_eventDepth)
+    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!eventName.empty());
+    const bool bEnable = Services::Events::ExtractArgument<int32_t>(args) != 0;
+
+    if (bEnable)
+        g_plugin->m_idWhitelist[eventName];
+    else
+        g_plugin->m_idWhitelist.erase(eventName);
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Events::AddIDToWhitelist(ArgumentStack&& args)
+{
+    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!eventName.empty());
+    const auto id = Services::Events::ExtractArgument<int32_t>(args);
+
+    auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
+    if (idWhitelist != g_plugin->m_idWhitelist.end())
     {
-        EventParams params;
-        params.m_Skipped = false;
-        m_eventData.emplace(std::move(params));
+        idWhitelist->second.insert(id);
     }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Events::RemoveIDFromWhitelist(ArgumentStack&& args)
+{
+    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+      ASSERT_OR_THROW(!eventName.empty());
+    const auto id = Services::Events::ExtractArgument<int32_t>(args);
+
+    auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
+    if (idWhitelist != g_plugin->m_idWhitelist.end())
+    {
+        idWhitelist->second.erase(id);
+    }
+
+    return Services::Events::Arguments();
 }
 
 }

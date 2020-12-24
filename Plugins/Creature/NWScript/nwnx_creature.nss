@@ -814,6 +814,16 @@ void NWNX_Creature_SetAttackRollOverride(object oCreature, int nRoll, int nModif
 /// @note Use this command on_module_load instead of the NWNX_TWEAKS_PARRY_ALL_ATTACKS tweak if using NWNX_Creature_SetAttackRollOverride()
 void NWNX_Creature_SetParryAllAttacks(object oCreature, int bParry);
 
+/// @brief Gets the NoPermanentDeath flag of oCreature.
+/// @param oCreature The target creature.
+/// @return TRUE/FALSE or -1 on error.
+int NWNX_Creature_GetNoPermanentDeath(object oCreature);
+
+/// @brief Sets the NoPermanentDeath flag of oCreature.
+/// @param oCreature The target creature.
+/// @param bNoPermanentDeath TRUE/FALSE.
+void NWNX_Creature_SetNoPermanentDeath(object oCreature, int bNoPermanentDeath);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2058,6 +2068,25 @@ void NWNX_Creature_SetParryAllAttacks(object oCreature, int bParry)
 {
     string sFunc = "SetParryAllAttacks";
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bParry);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+int NWNX_Creature_GetNoPermanentDeath(object oCreature)
+{
+    string sFunc = "GetNoPermanentDeath";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetNoPermanentDeath(object oCreature, int bNoPermanentDeath)
+{
+    string sFunc = "SetNoPermanentDeath";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bNoPermanentDeath);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

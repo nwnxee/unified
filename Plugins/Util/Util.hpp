@@ -36,6 +36,9 @@ private:
     ArgumentStack AddNSSFile                    (ArgumentStack&& args);
     ArgumentStack RemoveNWNXResourceFile        (ArgumentStack&& args);
     ArgumentStack SetInstructionLimit           (ArgumentStack&& args);
+    ArgumentStack GetInstructionLimit           (ArgumentStack&& args);
+    ArgumentStack SetInstructionsExecuted       (ArgumentStack&& args);
+    ArgumentStack GetInstructionsExecuted       (ArgumentStack&& args);
     ArgumentStack RegisterServerConsoleCommand  (ArgumentStack&& args);
     ArgumentStack UnregisterServerConsoleCommand(ArgumentStack&& args);
     ArgumentStack PluginExists                  (ArgumentStack&& args);
@@ -47,6 +50,8 @@ private:
     ArgumentStack SetResourceOverride           (ArgumentStack&& args);
     ArgumentStack GetResourceOverride           (ArgumentStack&& args);
     ArgumentStack GetScriptParamIsSet           (ArgumentStack&& args);
+    ArgumentStack SetDawnHour                   (ArgumentStack&& args);
+    ArgumentStack SetDuskHour                   (ArgumentStack&& args);
 
     size_t m_resRefIndex;
     std::vector<std::string> m_listResRefs;

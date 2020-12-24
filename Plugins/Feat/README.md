@@ -10,7 +10,7 @@ This plugin allows for the builder to define many traits for feats.
 ## Setup
 Adding new feats is beyond the scope of this documentation. The builder should know how to add new feats by adding a new entry in the `feat.2da` as well as adding the appropriate TLK reference identifiers for that new feat then adjusting the appropriate columns for that feat.
 
-Once your feat has been added (or it's also fine to modify existing feats) builders run the NWNX_Feat_SetFeatModifier() as illustrated below.
+Once your feat has been added (or it's also fine to modify existing feats) builders run the NWNX_Feat_SetFeatModifier() as illustrated below. The builder can use as many modifiers as they wish for one feat including the same modifiers with different parameters.
 
 The **NWNX_Feat plugin does not provide modifications to skill ranks**, use the NWNX_SkillRanks plugin for changing those.
 
@@ -24,20 +24,26 @@ These commands should be ran `on_module_load`.
 * [AC](#ac)
 * [ACVSRACE](#acvsrace)
 * [ARCANESPELLFAILURE](#arcanespellfailure)
+* [BONUSSPELL](#bonusspell)
 * [CONCEALMENT](#concealment)
 * [DMGREDUCTION](#dmgreduction)
 * [DMGRESIST](#dmgresist)
 * [DMGIMMUNITY](#dmgimmunity)
 * [IMMUNITY](#immunity)
+* [HASTE](#haste)
 * [MOVEMENTSPEED](#movementspeed)
 * [REGENERATION](#regeneration)
 * [SAVE](#save)
 * [SAVEVSRACE](#savevsrace)
 * [SAVEVSTYPE](#savevstype)
 * [SAVEVSTYPERACE](#savevstyperace)
+* [SEEINVISIBLE](#seeinvisible)
 * [SPELLIMMUNITY](#spellimmunity)
 * [SRCHARGEN](#srchargen)
 * [SRINCLEVEL](#srinclevel)
+* [TRUESEEING](#trueseeing)
+* [ULTRAVISION](#ultravision)
+* [VISUALEFFECT](#visualeffect)
 
 ***
 
@@ -104,6 +110,18 @@ The `ARCANESPELLFAILURE` can modify the arcane spell failure for the creature.
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_ARCANESPELLFAILURE, -30);
 ```
 ***
+### BONUSSPELL
+The `BONUSSPELL` entry is used to grant additional spell slots to a class at a level. Param1 is the Class constant ID, param2 is the level and param3 is the amount of spells gained.
+
+* Param1 = The spellcasting class for which the bonus spells will apply.
+* Param2 = The spell level (0-9)
+* Param3 = Amount of bonus spells (+)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_BONUSSPELL, CLASS_TYPE_CLERIC, 9, 1);
+```
+***
 ### CONCEALMENT
 The `CONCEALMENT` entry is used to grant an inate concealment.
 
@@ -149,6 +167,17 @@ The `DMGIMMUNITY` entry gives an inate immunity to damage types
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DMGIMMUNITY, DAMAGE_TYPE_FIRE, 100);
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_DMGIMMUNITY, DAMAGE_TYPE_ACID, -50);
 ```
+***
+### HASTE
+The `HASTE` entry is used to grant haste.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_HASTE);
+```
+***
 ### IMMUNITY
 The `IMMUNITY` entry is used to grant a total immunity to a variety of effects.
 
@@ -228,6 +257,16 @@ The `SAVEVSTYPERACE` entry is used to modify base save values vs a specific type
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SAVEVSTYPE, SAVING_THROW_ALL, SAVING_THROW_TYPE_SPELLS, RACIAL_TYPE_DRAGON, 3);
 ```
 ***
+### SEEINVISIBLE
+The `SEEINVISIBLE` entry is used to grant See Invisibility.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SEEINVISIBLE);
+```
+***
 ### SPELLIMMUNITY
 The `SPELLIMMUNITY` entry is used to grant a total immunity to specific spells. Note: Only spells that can be resisted can have immunities.
 
@@ -257,4 +296,34 @@ The `SRINCLEVEL` entry is used to award a spell resistance racial bonus as the c
 ##### Example script on_module_load
 ```c
 NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_SRINCLEVEL, 1, 1, 6);
+```
+***
+### TRUESEEING
+The `TRUESEEING` entry is used to grant True Seeing.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_TRUESEEING);
+```
+***
+### ULTRAVISION
+The `ULTRAVISION` entry is used to grant Ultravision.
+
+* No parameters required
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_ULTRAVISION);
+```
+***
+### VISUALEFFECT
+The `VISUALEFFECT` entry is used to grant a Visual Effect to the feat holder.
+
+* Param1 = The visual effect constant from visualeffects.2da (Duration Effects)
+
+##### Example script on_module_load
+```c
+NWNX_Feat_SetFeatModifier(2150, NWNX_FEAT_MODIFIER_VISUALEFFECT, VFX_DUR_GLOW_BLUE);
 ```

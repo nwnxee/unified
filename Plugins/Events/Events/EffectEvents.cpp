@@ -25,6 +25,9 @@ EffectEvents::EffectEvents(Services::HooksProxy* hooker)
 
 void EffectEvents::HandleEffectHook(const std::string& event, bool before, CNWSObject* pObject, CGameEffect* pEffect)
 {
+    if (!pObject || !pEffect)
+        return;
+
     int32_t effectDurationType = pEffect->m_nSubType & EffectDurationType::MASK;
 
     if (effectDurationType != EffectDurationType::Temporary && effectDurationType != EffectDurationType::Permanent)
