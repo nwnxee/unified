@@ -107,7 +107,11 @@ $(document).ready(function(){initNavTree('group__data.html',''); initResizable()
 <div class="contents">
 
 
-<h3><a id="data"></a>Readme</h3><div class="textblock">Provides a number of data structures for NWN code to use (simulated arrays) </div><table class="memberdecls">
+<h3><a id="data"></a>Readme</h3><div class="textblock">Provides a number of data structures for NWN code to use (simulated arrays)<h1><a class="anchor" id="autotoc_md127"></a>
+Notes</h1>
+<p>As of 8193.16, the Array provider has been re-written using the internal SQLite database instead of via the NWNX plugin.</p>
+<p>Two files are provided: <code>inc_array</code> which includes a re-implementation of the data structure into SQLite, and <code>nwnx_data</code>, which is a shim to provide backwards compatibility for people still using NWNX_Array to provide time to migrate to the new version. Included in the NWScript folder is an example implementation showing usage of Data_Array in comparison with NWNX_Data_Array. </p>
+</div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
 Function Groups</h2></td></tr>
 <tr class="memitem:group__data__array__at"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__array__at.html">Array At</a></td></tr>
@@ -133,9 +137,35 @@ Function Groups</h2></td></tr>
 Files</h2></td></tr>
 <tr class="memitem:nwnx__data_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__data_8nss.html">nwnx_data.nss</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:nwnx__data_8nss"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__data_8nss.html">nwnx_data.nss</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gaef9d5dd1dd4188569ae9af51f89d2c32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gaef9d5dd1dd4188569ae9af51f89d2c32">Array_Clear</a> (string tag, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:gaef9d5dd1dd4188569ae9af51f89d2c32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the entire array, such that size==0.  <a href="group__data.html#gaef9d5dd1dd4188569ae9af51f89d2c32">More...</a><br /></td></tr>
+<tr class="separator:gaef9d5dd1dd4188569ae9af51f89d2c32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa21086a57fbebf88a8114721cb9479d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gaa21086a57fbebf88a8114721cb9479d0">Array_Copy</a> (string tag, string otherTag, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:gaa21086a57fbebf88a8114721cb9479d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the array of name otherTag over the array of name tag.  <a href="group__data.html#gaa21086a57fbebf88a8114721cb9479d0">More...</a><br /></td></tr>
+<tr class="separator:gaa21086a57fbebf88a8114721cb9479d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05822bba9b495271c56e3a24f030370b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga05822bba9b495271c56e3a24f030370b">Array_Erase</a> (string tag, int index, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:ga05822bba9b495271c56e3a24f030370b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erases the element at index, and shuffles any elements from index size-1 to index + 1 left.  <a href="group__data.html#ga05822bba9b495271c56e3a24f030370b">More...</a><br /></td></tr>
+<tr class="separator:ga05822bba9b495271c56e3a24f030370b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e590879505d085ae351d5bd3729afd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga5e590879505d085ae351d5bd3729afd1">Array_Resize</a> (string tag, int size, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:ga5e590879505d085ae351d5bd3729afd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes the array. If the array is shrinking, it chops off elements at the ned.  <a href="group__data.html#ga5e590879505d085ae351d5bd3729afd1">More...</a><br /></td></tr>
+<tr class="separator:ga5e590879505d085ae351d5bd3729afd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7b8fb10232800641a6c9b7503b786bf6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga7b8fb10232800641a6c9b7503b786bf6">Array_Shuffle</a> (string tag, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:ga7b8fb10232800641a6c9b7503b786bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reorders the array such each possible permutation of elements has equal probability of appearance.  <a href="group__data.html#ga7b8fb10232800641a6c9b7503b786bf6">More...</a><br /></td></tr>
+<tr class="separator:ga7b8fb10232800641a6c9b7503b786bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7aa1d9e2e07b08346645cd8c3b8e923b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga7aa1d9e2e07b08346645cd8c3b8e923b">Array_Size</a> (string tag, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:ga7aa1d9e2e07b08346645cd8c3b8e923b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size of the array.  <a href="group__data.html#ga7aa1d9e2e07b08346645cd8c3b8e923b">More...</a><br /></td></tr>
+<tr class="separator:ga7aa1d9e2e07b08346645cd8c3b8e923b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacc5e8ec9aee1c37b15c53a6d67ba9a8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gacc5e8ec9aee1c37b15c53a6d67ba9a8b">Array_SortAscending</a> (string tag, int type=<a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a>, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:gacc5e8ec9aee1c37b15c53a6d67ba9a8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the collection based on descending order.  <a href="group__data.html#gacc5e8ec9aee1c37b15c53a6d67ba9a8b">More...</a><br /></td></tr>
+<tr class="separator:gacc5e8ec9aee1c37b15c53a6d67ba9a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3db2b672714b0a15ef074ce595c2d239"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga3db2b672714b0a15ef074ce595c2d239">Array_SortDescending</a> (string tag, int type=<a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a>, object obj=OBJECT_INVALID)</td></tr>
+<tr class="memdesc:ga3db2b672714b0a15ef074ce595c2d239"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the collection based on descending order.  <a href="group__data.html#ga3db2b672714b0a15ef074ce595c2d239">More...</a><br /></td></tr>
+<tr class="separator:ga3db2b672714b0a15ef074ce595c2d239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadda884088a0abed7c48eb4a6f8c4e60d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gadda884088a0abed7c48eb4a6f8c4e60d">NWNX_Data_Array_Clear</a> (int type, object obj, string tag)</td></tr>
 <tr class="memdesc:gadda884088a0abed7c48eb4a6f8c4e60d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the entire array, such that size==0.  <a href="group__data.html#gadda884088a0abed7c48eb4a6f8c4e60d">More...</a><br /></td></tr>
 <tr class="separator:gadda884088a0abed7c48eb4a6f8c4e60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,18 +193,314 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:gaf4619049336798bec6d39f1abc9194c7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gaf4619049336798bec6d39f1abc9194c7">NWNX_DATA_INVALID_INDEX</a> = -1</td></tr>
+<tr class="memitem:gacb174d5491ef99b56f9d168730999a1e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gacb174d5491ef99b56f9d168730999a1e">INVALID_INDEX</a> = -1</td></tr>
+<tr class="separator:gacb174d5491ef99b56f9d168730999a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga699c70c5d84f4e3656d6212a784d50b9"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga699c70c5d84f4e3656d6212a784d50b9">TYPE_FLOAT</a> = 0</td></tr>
+<tr class="separator:ga699c70c5d84f4e3656d6212a784d50b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad17d046a2778a7cebaf8ccc177a0a74e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gad17d046a2778a7cebaf8ccc177a0a74e">TYPE_INTEGER</a> = 1</td></tr>
+<tr class="separator:gad17d046a2778a7cebaf8ccc177a0a74e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga40949c54ff473f3989dceb6aaf09395e"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga40949c54ff473f3989dceb6aaf09395e">TYPE_OBJECT</a> = 2</td></tr>
+<tr class="separator:ga40949c54ff473f3989dceb6aaf09395e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0fa7455df78ab673fed2c0e63ec640fc"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a> = 3</td></tr>
+<tr class="separator:ga0fa7455df78ab673fed2c0e63ec640fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4619049336798bec6d39f1abc9194c7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gaf4619049336798bec6d39f1abc9194c7">NWNX_DATA_INVALID_INDEX</a> = <a class="el" href="group__data.html#gacb174d5491ef99b56f9d168730999a1e">INVALID_INDEX</a></td></tr>
 <tr class="separator:gaf4619049336798bec6d39f1abc9194c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8cae829e6180293ecb97b2d73f1613fa"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga8cae829e6180293ecb97b2d73f1613fa">NWNX_DATA_TYPE_FLOAT</a> = 0</td></tr>
+<tr class="memitem:ga8cae829e6180293ecb97b2d73f1613fa"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga8cae829e6180293ecb97b2d73f1613fa">NWNX_DATA_TYPE_FLOAT</a> = <a class="el" href="group__data.html#ga699c70c5d84f4e3656d6212a784d50b9">TYPE_FLOAT</a></td></tr>
 <tr class="separator:ga8cae829e6180293ecb97b2d73f1613fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4abeceb1d9508b282d0e8e16c6ac7743"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga4abeceb1d9508b282d0e8e16c6ac7743">NWNX_DATA_TYPE_INTEGER</a> = 1</td></tr>
+<tr class="memitem:ga4abeceb1d9508b282d0e8e16c6ac7743"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga4abeceb1d9508b282d0e8e16c6ac7743">NWNX_DATA_TYPE_INTEGER</a> = <a class="el" href="group__data.html#gad17d046a2778a7cebaf8ccc177a0a74e">TYPE_INTEGER</a></td></tr>
 <tr class="separator:ga4abeceb1d9508b282d0e8e16c6ac7743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2ca35d8e218de2b91e8c67aae53a3d23"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2ca35d8e218de2b91e8c67aae53a3d23">NWNX_DATA_TYPE_OBJECT</a> = 2</td></tr>
+<tr class="memitem:ga2ca35d8e218de2b91e8c67aae53a3d23"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2ca35d8e218de2b91e8c67aae53a3d23">NWNX_DATA_TYPE_OBJECT</a> = <a class="el" href="group__data.html#ga40949c54ff473f3989dceb6aaf09395e">TYPE_OBJECT</a></td></tr>
 <tr class="separator:ga2ca35d8e218de2b91e8c67aae53a3d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2c1be4315743deef32a6e15900ce1398"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2c1be4315743deef32a6e15900ce1398">NWNX_DATA_TYPE_STRING</a> = 3</td></tr>
+<tr class="memitem:ga2c1be4315743deef32a6e15900ce1398"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2c1be4315743deef32a6e15900ce1398">NWNX_DATA_TYPE_STRING</a> = <a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a></td></tr>
 <tr class="separator:ga2c1be4315743deef32a6e15900ce1398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gaef9d5dd1dd4188569ae9af51f89d2c32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaef9d5dd1dd4188569ae9af51f89d2c32">&#9670;&nbsp;</a></span>Array_Clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array_Clear </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clears the entire array, such that size==0. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00234">234</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="gaa21086a57fbebf88a8114721cb9479d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa21086a57fbebf88a8114721cb9479d0">&#9670;&nbsp;</a></span>Array_Copy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array_Copy </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>otherTag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copies the array of name otherTag over the array of name tag. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00276">276</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga05822bba9b495271c56e3a24f030370b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga05822bba9b495271c56e3a24f030370b">&#9670;&nbsp;</a></span>Array_Erase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array_Erase </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Erases the element at index, and shuffles any elements from index size-1 to index + 1 left. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00283">283</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga5e590879505d085ae351d5bd3729afd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5e590879505d085ae351d5bd3729afd1">&#9670;&nbsp;</a></span>Array_Resize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array_Resize </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Resizes the array. If the array is shrinking, it chops off elements at the ned. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00400">400</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7b8fb10232800641a6c9b7503b786bf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7b8fb10232800641a6c9b7503b786bf6">&#9670;&nbsp;</a></span>Array_Shuffle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array_Shuffle </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reorders the array such each possible permutation of elements has equal probability of appearance. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00407">407</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga7aa1d9e2e07b08346645cd8c3b8e923b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7aa1d9e2e07b08346645cd8c3b8e923b">&#9670;&nbsp;</a></span>Array_Size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Array_Size </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the size of the array. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00417">417</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="gacc5e8ec9aee1c37b15c53a6d67ba9a8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacc5e8ec9aee1c37b15c53a6d67ba9a8b">&#9670;&nbsp;</a></span>Array_SortAscending()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array_SortAscending </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em> = <code><a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sorts the collection based on descending order. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00451">451</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga3db2b672714b0a15ef074ce595c2d239"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3db2b672714b0a15ef074ce595c2d239">&#9670;&nbsp;</a></span>Array_SortDescending()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Array_SortDescending </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em> = <code><a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em> = <code>OBJECT_INVALID</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sorts the collection based on descending order. </p>
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00456">456</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
 <a id="gadda884088a0abed7c48eb4a6f8c4e60d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gadda884088a0abed7c48eb4a6f8c4e60d">&#9670;&nbsp;</a></span>NWNX_Data_Array_Clear()</h2>
 
@@ -209,7 +535,7 @@ Variables</h2></td></tr>
 
 <p>Clears the entire array, such that size==0. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00170">170</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00154">154</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -253,7 +579,7 @@ Variables</h2></td></tr>
 
 <p>Copies the array of name otherTag over the array of name tag. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00223">223</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00188">188</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -297,7 +623,7 @@ Variables</h2></td></tr>
 
 <p>Erases the element at index, and shuffles any elements from index size-1 to index + 1 left. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00233">233</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00195">195</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -341,7 +667,7 @@ Variables</h2></td></tr>
 
 <p>Resizes the array. If the array is shrinking, it chops off elements at the ned. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00371">371</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00284">284</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -379,7 +705,7 @@ Variables</h2></td></tr>
 
 <p>Reorders the array such each possible permutation of elements has equal probability of appearance. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00381">381</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00291">291</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -417,7 +743,7 @@ Variables</h2></td></tr>
 
 <p>Returns the size of the array. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00390">390</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00298">298</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -455,7 +781,7 @@ Variables</h2></td></tr>
 
 <p>Sorts the collection based on descending order. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00400">400</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00314">314</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -493,11 +819,91 @@ Variables</h2></td></tr>
 
 <p>Sorts the collection based on descending order. </p>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00409">409</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00320">320</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
+<a id="gacb174d5491ef99b56f9d168730999a1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacb174d5491ef99b56f9d168730999a1e">&#9670;&nbsp;</a></span>INVALID_INDEX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int INVALID_INDEX = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00008">8</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga699c70c5d84f4e3656d6212a784d50b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga699c70c5d84f4e3656d6212a784d50b9">&#9670;&nbsp;</a></span>TYPE_FLOAT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int TYPE_FLOAT = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00009">9</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="gad17d046a2778a7cebaf8ccc177a0a74e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad17d046a2778a7cebaf8ccc177a0a74e">&#9670;&nbsp;</a></span>TYPE_INTEGER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int TYPE_INTEGER = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00010">10</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga40949c54ff473f3989dceb6aaf09395e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga40949c54ff473f3989dceb6aaf09395e">&#9670;&nbsp;</a></span>TYPE_OBJECT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int TYPE_OBJECT = 2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00011">11</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga0fa7455df78ab673fed2c0e63ec640fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0fa7455df78ab673fed2c0e63ec640fc">&#9670;&nbsp;</a></span>TYPE_STRING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int TYPE_STRING = 3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="inc__array_8nss_source.html#l00012">12</a> of file <a class="el" href="inc__array_8nss_source.html">inc_array.nss</a>.</p>
+
+</div>
+</div>
 <a id="gaf4619049336798bec6d39f1abc9194c7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf4619049336798bec6d39f1abc9194c7">&#9670;&nbsp;</a></span>NWNX_DATA_INVALID_INDEX</h2>
 
@@ -505,12 +911,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const int NWNX_DATA_INVALID_INDEX = -1</td>
+          <td class="memname">const int NWNX_DATA_INVALID_INDEX = <a class="el" href="group__data.html#gacb174d5491ef99b56f9d168730999a1e">INVALID_INDEX</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00009">9</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00011">11</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -521,12 +927,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const int NWNX_DATA_TYPE_FLOAT = 0</td>
+          <td class="memname">const int NWNX_DATA_TYPE_FLOAT = <a class="el" href="group__data.html#ga699c70c5d84f4e3656d6212a784d50b9">TYPE_FLOAT</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00010">10</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00012">12</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -537,12 +943,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const int NWNX_DATA_TYPE_INTEGER = 1</td>
+          <td class="memname">const int NWNX_DATA_TYPE_INTEGER = <a class="el" href="group__data.html#gad17d046a2778a7cebaf8ccc177a0a74e">TYPE_INTEGER</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00011">11</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -553,12 +959,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const int NWNX_DATA_TYPE_OBJECT = 2</td>
+          <td class="memname">const int NWNX_DATA_TYPE_OBJECT = <a class="el" href="group__data.html#ga40949c54ff473f3989dceb6aaf09395e">TYPE_OBJECT</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00012">12</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00014">14</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -569,12 +975,12 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const int NWNX_DATA_TYPE_STRING = 3</td>
+          <td class="memname">const int NWNX_DATA_TYPE_STRING = <a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00013">13</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00015">15</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
 
 </div>
 </div>
@@ -584,7 +990,7 @@ Variables</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Mon Dec 21 2020 17:56:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Dec 24 2020 22:53:44 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>

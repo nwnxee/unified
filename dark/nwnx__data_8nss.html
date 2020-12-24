@@ -100,23 +100,23 @@ $(document).ready(function(){initNavTree('nwnx__data_8nss.html',''); initResizab
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">nwnx_data.nss File Reference<div class="ingroups"><a class="el" href="group__data.html">Data</a></div></div>  </div>
+<div class="title">nwnx_data.nss File Reference<div class="ingroups"><a class="el" href="group__data.html">Data</a> &#124; <a class="el" href="group__data.html">Data</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;nwnx&quot;</code><br />
+<div class="textblock"><code>#include &quot;inc_array&quot;</code><br />
 </div>
 <p><a href="nwnx__data_8nss_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gaa22440e1e5514cb14b8b22fef6112934"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__array__at.html#gaa22440e1e5514cb14b8b22fef6112934">NWNX_Data_Array_At_Str</a> (object obj, string tag, int index)</td></tr>
+<tr class="separator:gaa22440e1e5514cb14b8b22fef6112934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga48a0602fe79821a28a5e59e425ec6183"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__array__at.html#ga48a0602fe79821a28a5e59e425ec6183">NWNX_Data_Array_At_Flt</a> (object obj, string tag, int index)</td></tr>
 <tr class="separator:ga48a0602fe79821a28a5e59e425ec6183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadc6317a914b8bfe681a65b04999a8b66"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__array__at.html#gadc6317a914b8bfe681a65b04999a8b66">NWNX_Data_Array_At_Int</a> (object obj, string tag, int index)</td></tr>
 <tr class="separator:gadc6317a914b8bfe681a65b04999a8b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad412c7c6fe652fd1785e62f5bb5e2e1a"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__array__at.html#gad412c7c6fe652fd1785e62f5bb5e2e1a">NWNX_Data_Array_At_Obj</a> (object obj, string tag, int index)</td></tr>
 <tr class="separator:gad412c7c6fe652fd1785e62f5bb5e2e1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa22440e1e5514cb14b8b22fef6112934"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__array__at.html#gaa22440e1e5514cb14b8b22fef6112934">NWNX_Data_Array_At_Str</a> (object obj, string tag, int index)</td></tr>
-<tr class="separator:gaa22440e1e5514cb14b8b22fef6112934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadda884088a0abed7c48eb4a6f8c4e60d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gadda884088a0abed7c48eb4a6f8c4e60d">NWNX_Data_Array_Clear</a> (int type, object obj, string tag)</td></tr>
 <tr class="memdesc:gadda884088a0abed7c48eb4a6f8c4e60d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the entire array, such that size==0.  <a href="group__data.html#gadda884088a0abed7c48eb4a6f8c4e60d">More...</a><br /></td></tr>
 <tr class="separator:gadda884088a0abed7c48eb4a6f8c4e60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,20 +181,59 @@ Functions</h2></td></tr>
 <tr class="separator:ga0c359453c39765b9327c58cfd0857287"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2c31fa4bd65e281ba02c60317d023e12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data__array__set.html#ga2c31fa4bd65e281ba02c60317d023e12">NWNX_Data_Array_Set_Str</a> (object obj, string tag, int index, string element)</td></tr>
 <tr class="separator:ga2c31fa4bd65e281ba02c60317d023e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabcd822a12310ed064e09bf1d56e7f6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nwnx__data_8nss.html#aabcd822a12310ed064e09bf1d56e7f6d">NWNX_Data_Array_Sort</a> (object obj, string tag, string direction)</td></tr>
+<tr class="separator:aabcd822a12310ed064e09bf1d56e7f6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:gaf4619049336798bec6d39f1abc9194c7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gaf4619049336798bec6d39f1abc9194c7">NWNX_DATA_INVALID_INDEX</a> = -1</td></tr>
+<tr class="memitem:gaf4619049336798bec6d39f1abc9194c7"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#gaf4619049336798bec6d39f1abc9194c7">NWNX_DATA_INVALID_INDEX</a> = <a class="el" href="group__data.html#gacb174d5491ef99b56f9d168730999a1e">INVALID_INDEX</a></td></tr>
 <tr class="separator:gaf4619049336798bec6d39f1abc9194c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8cae829e6180293ecb97b2d73f1613fa"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga8cae829e6180293ecb97b2d73f1613fa">NWNX_DATA_TYPE_FLOAT</a> = 0</td></tr>
+<tr class="memitem:ga8cae829e6180293ecb97b2d73f1613fa"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga8cae829e6180293ecb97b2d73f1613fa">NWNX_DATA_TYPE_FLOAT</a> = <a class="el" href="group__data.html#ga699c70c5d84f4e3656d6212a784d50b9">TYPE_FLOAT</a></td></tr>
 <tr class="separator:ga8cae829e6180293ecb97b2d73f1613fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4abeceb1d9508b282d0e8e16c6ac7743"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga4abeceb1d9508b282d0e8e16c6ac7743">NWNX_DATA_TYPE_INTEGER</a> = 1</td></tr>
+<tr class="memitem:ga4abeceb1d9508b282d0e8e16c6ac7743"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga4abeceb1d9508b282d0e8e16c6ac7743">NWNX_DATA_TYPE_INTEGER</a> = <a class="el" href="group__data.html#gad17d046a2778a7cebaf8ccc177a0a74e">TYPE_INTEGER</a></td></tr>
 <tr class="separator:ga4abeceb1d9508b282d0e8e16c6ac7743"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2ca35d8e218de2b91e8c67aae53a3d23"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2ca35d8e218de2b91e8c67aae53a3d23">NWNX_DATA_TYPE_OBJECT</a> = 2</td></tr>
+<tr class="memitem:ga2ca35d8e218de2b91e8c67aae53a3d23"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2ca35d8e218de2b91e8c67aae53a3d23">NWNX_DATA_TYPE_OBJECT</a> = <a class="el" href="group__data.html#ga40949c54ff473f3989dceb6aaf09395e">TYPE_OBJECT</a></td></tr>
 <tr class="separator:ga2ca35d8e218de2b91e8c67aae53a3d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2c1be4315743deef32a6e15900ce1398"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2c1be4315743deef32a6e15900ce1398">NWNX_DATA_TYPE_STRING</a> = 3</td></tr>
+<tr class="memitem:ga2c1be4315743deef32a6e15900ce1398"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__data.html#ga2c1be4315743deef32a6e15900ce1398">NWNX_DATA_TYPE_STRING</a> = <a class="el" href="group__data.html#ga0fa7455df78ab673fed2c0e63ec640fc">TYPE_STRING</a></td></tr>
 <tr class="separator:ga2c1be4315743deef32a6e15900ce1398"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="aabcd822a12310ed064e09bf1d56e7f6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabcd822a12310ed064e09bf1d56e7f6d">&#9670;&nbsp;</a></span>NWNX_Data_Array_Sort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NWNX_Data_Array_Sort </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>direction</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nwnx__data_8nss_source.html#l00308">308</a> of file <a class="el" href="nwnx__data_8nss_source.html">nwnx_data.nss</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
@@ -202,7 +241,7 @@ Variables</h2></td></tr>
 			<ul>
 				<li class="navelem"><a class="el" href="dir_0b4eaef40a1fe20bedafe9e8e719ce66.html">Plugins</a></li><li class="navelem"><a class="el" href="dir_ae5d6ac362edcee64c7fbd49e8710ae7.html">Data</a></li><li class="navelem"><a class="el" href="dir_b9999ca99d978f65ac457d411698f84e.html">NWScript</a></li><li class="navelem"><a class="el" href="nwnx__data_8nss.html">nwnx_data.nss</a></li>
 				<li class="footer">
-					Generated on Mon Dec 21 2020 17:56:33 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Thu Dec 24 2020 22:53:43 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
