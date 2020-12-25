@@ -17,3 +17,4 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          repository: ${{ github.repository_owner }}/unified

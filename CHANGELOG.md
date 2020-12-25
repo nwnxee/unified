@@ -21,7 +21,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - N/A
 
 ### Deprecated
-- N/A
+- Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
 
 ### Removed
 - N/A
