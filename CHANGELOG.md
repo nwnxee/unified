@@ -9,6 +9,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Added
 - Experimental: Added `NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION` to disable levelup validation.
+- Experimental: Added `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.
 
 ##### New Plugins
 - N/A

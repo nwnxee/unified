@@ -2,6 +2,7 @@
 #include "Experimentals/SuppressPlayerLoginInfo.hpp"
 #include "Experimentals/AdjustReputationFix.hpp"
 #include "Experimentals/DisableLevelUpValidation.hpp"
+#include "Experimentals/UnhardcodeRangerDualWield.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -37,6 +38,12 @@ Experimental::Experimental(Services::ProxyServiceList* services)
     {
         LOG_INFO("EXPERIMENTAL: Disabling LevelUp Validation.");
         m_DisableLevelUpValidation = std::make_unique<DisableLevelUpValidation>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("UNHARDCODE_RANGER_DUALWIELD", false))
+    {
+        LOG_INFO("EXPERIMENTAL: Unhardcoding Ranger DualWield Feat.");
+        m_UnhardcodeRangerDualWield = std::make_unique<UnhardcodeRangerDualWield>(GetServices()->m_hooks.get());
     }
 }
 
