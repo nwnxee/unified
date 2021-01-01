@@ -824,6 +824,14 @@ int NWNX_Creature_GetNoPermanentDeath(object oCreature);
 /// @param bNoPermanentDeath TRUE/FALSE.
 void NWNX_Creature_SetNoPermanentDeath(object oCreature, int bNoPermanentDeath);
 
+/// @brief Compute a safe location for oCreature.
+/// @param oCreature The target creature.
+/// @param vPosition The starting position.
+/// @param fRadius The search radius around vPosition.
+/// @param bWalkStraightLineRequired Whether the creature must be able to walk in a straight line to the position.
+/// @return A safe location as vector, will return vPosition if one wasn't found. Returns {0.0, 0.0, 0.0} on error.
+vector NWNX_Creature_ComputeSafeLocation(object oCreature, vector vPosition, float fRadius = 20.0f, int bWalkStraightLineRequired = TRUE);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2089,4 +2097,24 @@ void NWNX_Creature_SetNoPermanentDeath(object oCreature, int bNoPermanentDeath)
     NWNX_PushArgumentInt(NWNX_Creature, sFunc, bNoPermanentDeath);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+vector NWNX_Creature_ComputeSafeLocation(object oCreature, vector vPosition, float fRadius = 20.0f, int bWalkStraightLineRequired = TRUE)
+{
+    string sFunc = "ComputeSafeLocation";
+
+    NWNX_PushArgumentInt(NWNX_Creature, sFunc, bWalkStraightLineRequired);
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fRadius);
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, vPosition.x);
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, vPosition.y);
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, vPosition.z);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    vector v;
+    v.z = NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+    v.y = NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+    v.x = NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+
+    return v;
 }

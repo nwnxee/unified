@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - N/A
 
 ##### New NWScript Functions
+- Creature: ComputeSafeLocation()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted();
 
