@@ -23,4 +23,5 @@ add_plugin(Tweaks
     "Tweaks/FixArmorDexBonusUnderOne.cpp"
     "Tweaks/FixItemNullptrInCItemRepository.cpp"
     "Tweaks/ClearSpellEffectsOnTURDs.cpp"
+    "Tweaks/AlwaysReturnFullDEXStat.cpp"
 )
