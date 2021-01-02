@@ -9,11 +9,14 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Added
 - Experimental: Added `NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION` to disable levelup validation.
+- Experimental: Added `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.
+- Tweaks: Added `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` to have GetDEXStat() always return a creature's full dexterity stat.
 
 ##### New Plugins
 - N/A
 
 ##### New NWScript Functions
+- Creature: ComputeSafeLocation()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted();
 

@@ -7,6 +7,7 @@ namespace Experimental {
 class SuppressPlayerLoginInfo;
 class AdjustReputationFix;
 class DisableLevelUpValidation;
+class UnhardcodeRangerDualWield;
 
 class Experimental : public NWNXLib::Plugin
 {
@@ -18,6 +19,7 @@ private:
     std::unique_ptr<SuppressPlayerLoginInfo> m_SuppressPlayerLoginInfo;
     std::unique_ptr<AdjustReputationFix> m_AdjustReputationFix;
     std::unique_ptr<DisableLevelUpValidation> m_DisableLevelUpValidation;
+    std::unique_ptr<UnhardcodeRangerDualWield> m_UnhardcodeRangerDualWield;
 };
 
 }
