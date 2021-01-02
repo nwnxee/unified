@@ -690,64 +690,64 @@ void NWNX_Creature_JumpToLimbo(object oCreature);
 /// @param nModifier The modifier to apply
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
 /// @param bPersist Whether the modifier should persist to .bic file if applicable
-/// @param nBaseItem Applies the.modifier only when the attack used this baseitem. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem Applies the.modifier only when the attack used this baseitem. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @note Persistence is activated each server reset by the first use of either 'SetCriticalMultiplier*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
-void NWNX_Creature_SetCriticalMultiplierModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2);
+void NWNX_Creature_SetCriticalMultiplierModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1);
 
 /// @brief Gets the critical hit multiplier modifier for the Creature
 /// @param oCreature The target creature
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
-/// @param nBaseItem The baseitem modifer to retrieve. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem The baseitem modifer to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @return the current critical hit multiplier modifier for the creature
-int NWNX_Creature_GetCriticalMultiplierModifier(object oCreature, int nHand = 0, int nBaseItem = -2);
+int NWNX_Creature_GetCriticalMultiplierModifier(object oCreature, int nHand = 0, int nBaseItem = -1);
 
 /// @brief Sets the critical hit multiplier override for the Creature.
 /// @param oCreature The target creature
 /// @param nOverride The override value to apply. -1 to clear override.
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
 /// @param bPersist Whether the modifier should persist to .bic file if applicable
-/// @param nBaseItem Applies the.Override only when the attack used this baseitem. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem Applies the.Override only when the attack used this baseitem. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @note Persistence is activated each server reset by the first use of either 'SetCriticalMultiplier*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
-void NWNX_Creature_SetCriticalMultiplierOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2);
+void NWNX_Creature_SetCriticalMultiplierOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1);
 
 /// @brief Gets the critical hit multiplier override for the Creature
 /// @param oCreature The target creature
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
-/// @param nBaseItem The baseitem Override to retrieve. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem The baseitem Override to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @return the current critical hit multiplier override for the creature. No override == -1
-int NWNX_Creature_GetCriticalMultiplierOverride(object oCreature, int nHand = 0, int nBaseItem = -2);
+int NWNX_Creature_GetCriticalMultiplierOverride(object oCreature, int nHand = 0, int nBaseItem = -1);
 
 /// @brief Sets the critical hit range modifier for the creature.
 /// @param oCreature The target creature
 /// @param nModifier The modifier to apply. Positive modifiers reduce critical chance. (I.e. From 18-20, a +1 results in crit range of 19-20)
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
 /// @param bPersist Whether the modifier should persist to .bic file if applicable
-/// @param nBaseItem Applies the.modifier only when the attack used this baseitem. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem Applies the.modifier only when the attack used this baseitem. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @note Persistence is activated each server reset by the first use of either 'SetCriticalRange*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
-void NWNX_Creature_SetCriticalRangeModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2);
+void NWNX_Creature_SetCriticalRangeModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1);
 
 /// @brief Gets the critical hit range modifier for the creature.
 /// @param oCreature The target creature
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
-/// @param nBaseItem The baseitem modifer to retrieve. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem The baseitem modifer to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @return the current critical hit range modifier for the creature
-int NWNX_Creature_GetCriticalRangeModifier(object oCreature, int nHand = 0, int nBaseItem = -2);
+int NWNX_Creature_GetCriticalRangeModifier(object oCreature, int nHand = 0, int nBaseItem = -1);
 
 /// @brief Sets the critical hit range Override for the creature.
 /// @param oCreature The target creature
 /// @param nOverride The new minimum roll to crit. i.e nOverride of 15 results in crit range of 15-20. -1 to clear override.
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
 /// @param bPersist Whether the modifier should persist to .bic file if applicable
-/// @param nBaseItem Applies the.Override only when the attack used this baseitem. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem Applies the.Override only when the attack used this baseitem. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @note Persistence is activated each server reset by the first use of either 'SetCriticalRange*' functions. Recommended to trigger on a dummy target OnModuleLoad to enable persistence.
-void NWNX_Creature_SetCriticalRangeOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2);
+void NWNX_Creature_SetCriticalRangeOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1);
 
 /// @brief Sets the critical hit range Override for the creature.
 /// @param oCreature The target creature
 /// @param nHand 0 for all attacks, 1 for Mainhand, 2 for Offhand
-/// @param nBaseItem The baseitem Override to retrieve. -1 for 'Unarmed', '-2' for 'all'
+/// @param nBaseItem The baseitem Override to retrieve. BASE_ITEM_GLOVES for Unarmed, '-1' for all
 /// @return the current critical hit range override for the creature. No override == -1
-int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0, int nBaseItem = -2);
+int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0, int nBaseItem = -1);
 
 /// @brief Add oAssociate as nAssociateType to oCreature
 /// @warning Only basic checks are done so care must be taken when using this function
@@ -1874,7 +1874,7 @@ void NWNX_Creature_JumpToLimbo(object oCreature)
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetCriticalMultiplierModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2)
+void NWNX_Creature_SetCriticalMultiplierModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1)
 {
     string sFunc = "SetCriticalMultiplierModifier";
 
@@ -1887,7 +1887,7 @@ void NWNX_Creature_SetCriticalMultiplierModifier(object oCreature, int nModifier
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetCriticalMultiplierModifier(object oCreature, int nHand = 0, int nBaseItem = -2)
+int NWNX_Creature_GetCriticalMultiplierModifier(object oCreature, int nHand = 0, int nBaseItem = -1)
 {
     string sFunc = "GetCriticalMultiplierModifier";
 
@@ -1899,7 +1899,7 @@ int NWNX_Creature_GetCriticalMultiplierModifier(object oCreature, int nHand = 0,
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetCriticalMultiplierOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2)
+void NWNX_Creature_SetCriticalMultiplierOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1)
 {
     string sFunc = "SetCriticalMultiplierOverride";
 
@@ -1912,7 +1912,7 @@ void NWNX_Creature_SetCriticalMultiplierOverride(object oCreature, int nOverride
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetCriticalMultiplierOverride(object oCreature, int nHand = 0, int nBaseItem = -2)
+int NWNX_Creature_GetCriticalMultiplierOverride(object oCreature, int nHand = 0, int nBaseItem = -1)
 {
     string sFunc = "GetCriticalMultiplierOverride";
 
@@ -1924,7 +1924,7 @@ int NWNX_Creature_GetCriticalMultiplierOverride(object oCreature, int nHand = 0,
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetCriticalRangeModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2)
+void NWNX_Creature_SetCriticalRangeModifier(object oCreature, int nModifier, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1)
 {
     string sFunc = "SetCriticalRangeModifier";
 
@@ -1937,7 +1937,7 @@ void NWNX_Creature_SetCriticalRangeModifier(object oCreature, int nModifier, int
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetCriticalRangeModifier(object oCreature, int nHand = 0, int nBaseItem = -2)
+int NWNX_Creature_GetCriticalRangeModifier(object oCreature, int nHand = 0, int nBaseItem = -1)
 {
     string sFunc = "GetCriticalRangeModifier";
 
@@ -1949,7 +1949,7 @@ int NWNX_Creature_GetCriticalRangeModifier(object oCreature, int nHand = 0, int 
     return NWNX_GetReturnValueInt(NWNX_Creature, sFunc);
 }
 
-void NWNX_Creature_SetCriticalRangeOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -2)
+void NWNX_Creature_SetCriticalRangeOverride(object oCreature, int nOverride, int nHand = 0, int bPersist = FALSE, int nBaseItem = -1)
 {
     string sFunc = "SetCriticalRangeOverride";
 
@@ -1962,7 +1962,7 @@ void NWNX_Creature_SetCriticalRangeOverride(object oCreature, int nOverride, int
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
 
-int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0, int nBaseItem = -2)
+int NWNX_Creature_GetCriticalRangeOverride(object oCreature, int nHand = 0, int nBaseItem = -1)
 {
     string sFunc = "GetCriticalRangeOverride";
 
