@@ -90,12 +90,16 @@ copyruntimeconfiguration &
 set +e
 export LD_PRELOAD=$NWN_LD_PRELOAD
 export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
+MODULE_CMD=${NWN_MODULEURL:+-moduleurl "${NWN_MODULEURL}"}
+MODULE_CMD=${MODULE_CMD:--module "${NWN_MODULE:-DockerDemo}"}
+
 exec ./nwserver-linux \
   $NWN_EXTRA_ARGS \
   -port ${NWN_PORT:-5121} \
   -interactive \
   -servername "${NWN_SERVERNAME:-I was too lazy to configure my server.}" \
-  -module "${NWN_MODULE:-DockerDemo}" \
+  $MODULE_CMD \
+  ${NWN_MODULEHASH:+-modulehash "${NWN_MODULEHASH}"} \
   -publicserver "${NWN_PUBLICSERVER:-0}" \
   -maxclients "${NWN_MAXCLIENTS:-96}" \
   -minlevel "${NWN_MINLEVEL:-1}" \
@@ -113,5 +117,5 @@ exec ./nwserver-linux \
   -dmpassword "${NWN_DMPASSWORD}" \
   -adminpassword "${NWN_ADMINPASSWORD}" \
   -reloadwhenempty "${NWN_RELOADWHENEMPTY:-0}" \
-  -nwsyncurl "${NWN_NWSYNCURL}" \
-  -nwsynchash "${NWN_NWSYNCHASH}"
+  ${NWN_NWSYNCURL:+-nwsyncurl "${NWN_NWSYNCURL}"} \
+  ${NWN_NWSYNCHASH:+-nwsynchash "${NWN_NWSYNCHASH}"}
