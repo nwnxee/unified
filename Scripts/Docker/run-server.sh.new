@@ -62,6 +62,22 @@ function backup_runtime_configuration {
 
 echo "[*] Port: ${NWN_PORT:-5121}/udp"
 
+args=()
+if [[ "${NWN_MODULEURL}" != "" ]]; then
+  args+=("-moduleurl" "${NWN_MODULEURL}")
+else
+  args+=("-module" "${NWN_MODULE:-DockerDemo}")
+fi
+if [[ "${NWN_NWSYNCURL}" != "" ]]; then
+  args+=("-nwsyncurl" "${NWN_NWSYNCURL}")
+fi
+if [[ "${NWN_NWSYNCHASH}" != "" ]]; then
+  args+=("-nwsynchash" "${NWN_NWSYNCHASH}")
+fi
+if [[ "${NWN_MODULEHASH}" != "" ]]; then
+  args+=("-modulehash" "${NWN_MODULEHASH}")
+fi
+
 copycrashlog() {
   inotifywait -mq -e moved_to -e create "$HOMEPATH" --format "%f" | while read f
   do
@@ -90,16 +106,11 @@ copyruntimeconfiguration &
 set +e
 export LD_PRELOAD=$NWN_LD_PRELOAD
 export LD_LIBRARY_PATH=$NWN_LD_LIBRARY_PATH
-MODULE_CMD=${NWN_MODULEURL:+-moduleurl "${NWN_MODULEURL}"}
-MODULE_CMD=${MODULE_CMD:--module "${NWN_MODULE:-DockerDemo}"}
-
 exec ./nwserver-linux \
   $NWN_EXTRA_ARGS \
   -port ${NWN_PORT:-5121} \
   -interactive \
   -servername "${NWN_SERVERNAME:-I was too lazy to configure my server.}" \
-  $MODULE_CMD \
-  ${NWN_MODULEHASH:+-modulehash "${NWN_MODULEHASH}"} \
   -publicserver "${NWN_PUBLICSERVER:-0}" \
   -maxclients "${NWN_MAXCLIENTS:-96}" \
   -minlevel "${NWN_MINLEVEL:-1}" \
@@ -117,5 +128,4 @@ exec ./nwserver-linux \
   -dmpassword "${NWN_DMPASSWORD}" \
   -adminpassword "${NWN_ADMINPASSWORD}" \
   -reloadwhenempty "${NWN_RELOADWHENEMPTY:-0}" \
-  ${NWN_NWSYNCURL:+-nwsyncurl "${NWN_NWSYNCURL}"} \
-  ${NWN_NWSYNCHASH:+-nwsynchash "${NWN_NWSYNCHASH}"}
+  ${args[@]}
