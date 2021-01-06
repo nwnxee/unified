@@ -34,6 +34,7 @@ Tweaks stuff. See below.
 * `NWNX_TWEAKS_FIX_ITEM_NULLPTR_IN_CITEMREPOSITORY`: true or false
 * `NWNX_TWEAKS_CLEAR_SPELL_EFFECTS_ON_TURDS`: true or false
 * `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT`: true or false
+* `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET`: true or false
 
 ## Environment variable values
 

@@ -23,6 +23,7 @@
 #include "Tweaks/FixItemNullptrInCItemRepository.hpp"
 #include "Tweaks/ClearSpellEffectsOnTURDs.hpp"
 #include "Tweaks/AlwaysReturnFullDEXStat.hpp"
+#include "Tweaks/DisplayNumAttacksOverrideInCharacterSheet.hpp"
 
 #include "Services/Config/Config.hpp"
 
@@ -196,6 +197,12 @@ Tweaks::Tweaks(Services::ProxyServiceList* services)
     {
         LOG_INFO("GetDEXStat() is always returning a creature's full Dexterity Stat.");
         m_AlwaysReturnFullDEXStat = std::make_unique<AlwaysReturnFullDEXStat>(GetServices()->m_hooks.get());
+    }
+
+    if (GetServices()->m_config->Get<bool>("DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET", false))
+    {
+        LOG_INFO("Number of attacks per round overridden by SetBaseAttackBonus() will show on the character sheet.");
+        m_DisplayNumAttacksOverrideInCharacterSheet = std::make_unique<DisplayNumAttacksOverrideInCharacterSheet>(GetServices()->m_hooks.get());
     }
 }
 
