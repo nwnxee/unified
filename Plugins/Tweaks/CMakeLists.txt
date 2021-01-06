@@ -24,4 +24,5 @@ add_plugin(Tweaks
     "Tweaks/FixItemNullptrInCItemRepository.cpp"
     "Tweaks/ClearSpellEffectsOnTURDs.cpp"
     "Tweaks/AlwaysReturnFullDEXStat.cpp"
+    "Tweaks/DisplayNumAttacksOverrideInCharacterSheet.cpp"
 )
