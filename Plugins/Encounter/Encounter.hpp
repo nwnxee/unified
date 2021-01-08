@@ -29,6 +29,8 @@ private:
     ArgumentStack GetMinNumSpawned                          (ArgumentStack&& args);
     ArgumentStack GetMaxNumSpawned                          (ArgumentStack&& args);
     ArgumentStack GetCurrentNumSpawned                      (ArgumentStack&& args);
+    ArgumentStack GetEncounterGeometry                      (ArgumentStack&& args);
+    ArgumentStack SetEncounterGeometry                      (ArgumentStack&& args);
 
     CNWSEncounter *encounter(ArgumentStack& args);
 
