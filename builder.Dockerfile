@@ -20,7 +20,8 @@ RUN buildDeps="build-essential \
     libssl-dev \
     libhunspell-dev \
     pkg-config \
-    libluajit-5.1-dev" \
+    libluajit-5.1-dev \
+    swig" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
     && apt-get clean \
