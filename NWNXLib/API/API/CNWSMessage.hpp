@@ -297,7 +297,6 @@ struct CNWSMessage : CNWMessage
     void SendServerToServerAdminServerStatus(uint32_t nPlayerId);
     void SendServerToServerAdminServerSettings(uint32_t nPlayerId);
     void SendServerToServerAdminSaveStatus(uint32_t nPlayerId, uint8_t nStatus);
-    BOOL SendMessageToAllSysAdmins(CExoString sCommand);
     BOOL ParseGetBool(uint8_t * pMsgPortion, uint32_t msgPortionSize, BOOL & pBool);
     BOOL ParseGetString(uint8_t * pMsgPortion, uint32_t msgPortionSize, CExoString & pString, uint32_t nMaxStrLength);
     BOOL ParseToken(const char * token, uint8_t * * pMsgPortion, uint32_t & msgPortionSize, BOOL bDelimeterFollowing);
