@@ -15,6 +15,9 @@ struct CNetLayerPlayerInfo;
 struct CNetLayerSessionInfo;
 struct NWSyncAdvertisement;
 
+namespace NWSync {
+    struct Advertisement; // NWSyncAdvertisement
+}
 
 typedef int BOOL;
 
@@ -54,7 +57,7 @@ struct CNetLayer
     BOOL GetAddressTranslationResult(const CExoString & sInternetAddress, CExoArrayList<uint32_t> & nIPv4);
     void EndAddressTranslation(const CExoString & sInternetAddress);
     BOOL StartEnumerateSessionsSection(uint32_t nEnumerateSection, uint32_t nSize, CExoString * sServerListToEnumerate);
-    BOOL EnumerateSessionsLoop();
+    //BOOL EnumerateSessionsLoop();
     BOOL GetAnySessionsEnumerated();
     BOOL EndEnumerateSessionsSection(uint32_t nEnumerateSection);
     BOOL EndEnumerateSessions();
@@ -113,9 +116,9 @@ struct CNetLayer
     BOOL GetConnectionsMustBeValidated();
     void SetConnectionsMustBeValidated(BOOL bValidateLoginWhileMasterServerIsNotResponding);
     BOOL GetEnumerateSpecificOverRelay();
-    void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken);
+    void SetEnumerateSpecificOverRelay(BOOL state, const char relayToken[6]);
     CExoString GetRouterPortMapDescription();
-    void SetNWSyncData(const NWSyncAdvertisement & datra);
+    void SetNWSyncData(const NWSync::Advertisement & datra);
     const NWSyncAdvertisement & GetNWSyncData() const;
     BOOL ServerSatisfiesBuild(int32_t nBuild, int32_t nRevision);
 
