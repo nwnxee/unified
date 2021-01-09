@@ -161,7 +161,6 @@ struct CNWSObject : CGameObject
     BOOL AddLockObjectAction(OBJECT_ID oidTarget);
     BOOL AnimationStationary(uint16_t nAnimation);
     virtual void AIUpdate();
-    void BindEventToHandler(uint32_t nEventId, CExoString sScriptName);
     void ClearAllActions();
     void ClearAllHostileActions(OBJECT_ID oidTarget);
     virtual BOOL ClearAction(CNWSObjectActionNode * pNode, BOOL bIsTopmostAction);

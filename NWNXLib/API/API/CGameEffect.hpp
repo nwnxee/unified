@@ -71,7 +71,6 @@ struct CGameEffect
     void UpdateLinked();
     void SaveGameEffect(CResGFF * pRes, CResStruct * pStruct);
     void LoadGameEffect(CResGFF * pRes, CResStruct * pStruct);
-    CGameEffect * CopyLinked();
 
 
 #ifdef NWN_CLASS_EXTENSION_CGameEffect

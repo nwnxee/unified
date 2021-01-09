@@ -56,7 +56,6 @@ struct CServerExoApp : CBaseExoApp
     void RemovePCFromWorld(CNWSPlayer * pPlayer);
     void Shutdown(BOOL bWarnLocals, BOOL bFromMessage = false);
     void SetGameSpyReporting(BOOL bEnabled);
-    BOOL GetIniFileName(CExoString & sName);
     class CServerInfo * GetServerInfo();
     CExoLocString GetModuleDescription();
     void GetExtendedServerInfo(class CExtendedServerInfo * pInfo);
@@ -117,7 +116,6 @@ struct CServerExoApp : CBaseExoApp
     CWorldTimer * GetPauseTimer();
     BOOL HandleMessage(uint32_t nPlayerId, uint8_t * pData, uint32_t dwSize, BOOL bRawMessage);
     BOOL Initialize();
-    void LoadAliases();
     BOOL UnloadModule();
     BOOL LoadModule(CExoString moduleResRef, BOOL bIsSaveGame = false, CNWSPlayer * pPlayer = nullptr, int32_t sourceType = 0);
     BOOL RunModule();

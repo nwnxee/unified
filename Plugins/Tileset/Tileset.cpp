@@ -3,7 +3,7 @@
 #include "API/CResStruct.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWTileSetManager.hpp"
-#include "API/CNWSTileSet.hpp"
+#include "API/CNWTileSet.hpp"
 #include "API/CNWSTile.hpp"
 #include "API/CNWTileData.hpp"
 #include "API/CAppManager.hpp"

@@ -16,6 +16,7 @@
 #include "NWMODULECUTSCENE.hpp"
 #include "NWMODULEEXPANSION.hpp"
 #include "NWPLAYERLISTITEM.hpp"
+#include "NWPlayerCharacterList_st.hpp"
 #include "NWSyncAdvertisement.hpp"
 #include "Vector.hpp"
 #include <memory>
@@ -163,7 +164,7 @@ struct CNWSModule : CResHelper<CResIFO, 2014>, CGameObject
     BOOL SaveModuleFinish(CExoString & sFilePath, CExoString & sFileName);
     uint32_t GetPlayerIndexInPlayerList(CNWSPlayer * pPlayer);
     uint32_t GetPrimaryPlayerIndex();
-    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPLAYERCHARACTERLISTITEM *> & lstChars);
+    void PackPlayerCharacterListIntoMessage(CNWSPlayer * pPlayer, CExoArrayList<NWPlayerCharacterList_st *> & lstChars);
     void SetIntraAreaGoal(CPathfindInformation * pcPathfindInformation);
     void UnloadModule();
     OBJECT_ID GetWaypoint(const CExoString & sTag);
