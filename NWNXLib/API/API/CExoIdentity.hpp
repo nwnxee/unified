@@ -15,6 +15,10 @@ typedef uint32_t STRREF;
 
 struct CExoIdentity
 {
+    enum IdentityType
+    {
+        INVALID = -1
+    };
 
     void StartIdentityFetch();
     BOOL IsIdentityFetchComplete();

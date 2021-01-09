@@ -24,7 +24,7 @@ NetLayer::NetLayer(NWNXLib::Services::HooksProxy* hooker,
         void, CNetLayer*, int32_t);
 
     DEFINE_PROFILER_TARGET(hooker,
-        NetLayerUpdateStatusLoop, API::Functions::_ZN17CNetLayerInternal16UpdateStatusLoopEj,
+        NetLayerUpdateStatusLoop, API::Functions::_ZN9CNetLayer16UpdateStatusLoopEj,
         int32_t, CNetLayer*, uint32_t);
 }
 
