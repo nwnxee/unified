@@ -8,7 +8,7 @@
 > if [[ "${NWN_MODULEURL}" != "" ]]; then
 >   args+=("-moduleurl" "${NWN_MODULEURL}")
 > else
->   args+=("-module" "${NWN_MODULE:-DockerDemo}")
+>   args+=("-module" "\"${NWN_MODULE:-DockerDemo}\"")
 > fi
 76a77,104
 > if [[ "${NWN_MODULEHASH}" != "" ]]; then
