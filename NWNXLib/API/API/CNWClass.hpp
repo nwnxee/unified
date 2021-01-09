@@ -75,7 +75,6 @@ struct CNWClass
     CExoString GetNamePluralText();
     CExoString GetDescriptionText();
     uint8_t GetAttackBonus(uint8_t nLevel);
-    uint8_t GetAttacksPerRound(uint8_t nLevel);
     uint8_t GetBonusFeats(uint8_t nLevel);
     uint8_t GetFortSaveBonus(uint8_t nLevel);
     uint8_t GetRefSaveBonus(uint8_t nLevel);

@@ -50,7 +50,6 @@ struct CNWSPlayerTURD : CNWSObject
     void SetReputation(CExoArrayList<int32_t> * pRep);
     void SetPersonalReputation(CExoArrayList<CNWSPersonalReputation> * pRep);
     void CopyEffectList(CExoArrayList<CGameEffect *> * pEffectList);
-    void CopyActionQueue(CExoLinkedList<CNWSObjectActionNode> * pActionQueue);
     void CopyAutomapData(int32_t nNumAreas, CExoArrayList<OBJECT_ID> * pAreaList, uint8_t * * pAreaData);
     void ClearAutomapData();
     void LoadAutoMapData(CResGFF * pRes, CResStruct * pStruct);

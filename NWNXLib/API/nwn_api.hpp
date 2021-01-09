@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Constants.hpp"
+#include <stdlib.h>
 
 #define NWNX_INTERNAL_EXPAND(s) #s
 #define NWNX_INTERNAL_STRINGIFY(s) NWNX_INTERNAL_EXPAND(s)
@@ -22,4 +23,5 @@ typedef uint32_t ObjectID;
 typedef uint32_t PlayerID;
 namespace NWSync { struct CNWSync { void *m_pInternal; char *m_tmp1; uint32_t m_tmp2; }; }
 
-#define DataBlockRef std::shared_ptr<void*>
+struct DataBlock { char* m_data; size_t m_used; size_t m_allocated; bool m_owning;};
+#define DataBlockRef std::shared_ptr<DataBlock>

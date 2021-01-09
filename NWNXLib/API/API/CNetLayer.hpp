@@ -37,9 +37,8 @@ struct CNetLayer
     BOOL SetPlayerPassword(CExoString sPlayerPassword);
     CExoString GetGameMasterPassword();
     BOOL SetGameMasterPassword(CExoString sGameMasterPassowrd);
-    CExoString minPassword();
-    BOOL SetServerAdminPassword(CExoString sServerAdminPassword);
     CExoString GetServerAdminPassword();
+    BOOL SetServerAdminPassword(CExoString sServerAdminPassword);
     BOOL EndServerMode();
     BOOL GetServerConnected();
     CNetLayerPlayerInfo * GetPlayerInfo(uint32_t nPlayerId);

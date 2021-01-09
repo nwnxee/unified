@@ -51,8 +51,8 @@ struct CAppManager
     void DestroyScriptDebuggerPopup();
     BOOL SetDDCipherForModule(CExoString moduleName);
     uint8_t ReadProgressFromINI(uint8_t m_nCampaign);
-    CExoLocString GetHostedModuleDescription();
-    CExoString GetHostedPublicInternetAddressAndPort();
+    // CExoLocString GetHostedModuleDescription();
+    // CExoString GetHostedPublicInternetAddressAndPort();
     void ConnectToServer(CExoString sAddress, BOOL bPasswordRequired);
 
 

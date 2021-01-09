@@ -131,10 +131,6 @@ struct CNWTileSurfaceMesh : CResHelper<CResWOK, 2016>
     BOOL TestLineForWalkableOnArea(float fSourceX, float fSourceY, float fTargetX, float fTargetY, float fClipMinZ, float fClipMaxZ, CPathfindInformation * pPathfindInfo, CNWTile * pTile, CNWArea * pArea);
     BOOL TestLineForWalkableOnTile(float fSourceX, float fSourceY, float fTargetX, float fTargetY, float * fClipMinZ, float * fClipMaxZ, CPathfindInformation * pPathfindInfo, CNWTile * pTile, BOOL bStayOnTile = false);
     int32_t PolyHit(const Vector * vert, const int32_t n, const Vector & v0, const Vector & v1, const Vector & nrml, float dist, Vector * impact);
-    int32_t IntersectCircle2d(const Vector & vCenter, float fRadius, const Vector & vLineVertex1, const Vector & vLineVertex2, Vector & vIntersect1, Vector & vIntersect2, BOOL bFindIntersections);
-    Vector LocalToWorld(Vector vSource);
-    Vector NormalWorldToLocal(Vector vSource);
-    Vector NormalLocalToWorld(Vector vSource);
     uint8_t ConvertToTileOrientation(int32_t nOrientation);
 
 
