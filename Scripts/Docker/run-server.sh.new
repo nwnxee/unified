@@ -66,7 +66,7 @@ args=()
 if [[ "${NWN_MODULEURL}" != "" ]]; then
   args+=("-moduleurl" "${NWN_MODULEURL}")
 else
-  args+=("-module" "${NWN_MODULE:-DockerDemo}")
+  args+=("-module" "\"${NWN_MODULE:-DockerDemo}\"")
 fi
 if [[ "${NWN_NWSYNCURL}" != "" ]]; then
   args+=("-nwsyncurl" "${NWN_NWSYNCURL}")
