@@ -47,6 +47,10 @@
 > exec ./nwserver-linux \
 84d113
 <   -module "${NWN_MODULE:-DockerDemo}" \
+102c131
+<   ${args[@]}
+---
+>   "${args[@]}"
 103,114d131
 < RET=$?
 < set -e
