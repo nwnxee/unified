@@ -21,5 +21,7 @@ var group__encounter =
     [ "NWNX_Encounter_GetSpawnPointByIndex", "group__encounter.html#gac7f78fea14b6484c7e2700a6b1e3054d", null ],
     [ "NWNX_Encounter_GetMinNumSpawned", "group__encounter.html#ga6f2a549f73a6609c089b8b7d2227791e", null ],
     [ "NWNX_Encounter_GetMaxNumSpawned", "group__encounter.html#gae8357f2f4fc6a232aa95e351061b3d97", null ],
-    [ "NWNX_Encounter_GetCurrentNumSpawned", "group__encounter.html#ga3b3afc41feff135f4480b596eb627e43", null ]
+    [ "NWNX_Encounter_GetCurrentNumSpawned", "group__encounter.html#ga3b3afc41feff135f4480b596eb627e43", null ],
+    [ "NWNX_Encounter_GetGeometry", "group__encounter.html#gaebb72d10375b99be9531fbbd848dccf1", null ],
+    [ "NWNX_Encounter_SetGeometry", "group__encounter.html#gab38f68612ca3cdecb42cc92999319dea", null ]
 ];

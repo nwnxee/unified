@@ -46,14 +46,14 @@ var NAVTREEINDEX =
 "group__creature.html#ga2d409d9021d548809df96419085ae480",
 "group__creature.html#gaf399bc4df45965ec3ebe46d64346dd11",
 "group__dotnet.html#autotoc_md131",
-"group__feedback.html#ga68dcbf8f5a115248b35907225ceec53a",
-"group__object.html#gafc737bc3878fa25f216d2758653d1e93",
-"group__race.html#autotoc_md351",
-"group__sql.html#gaefc1bce86231177b8f972a8c0dc91a0b",
-"group__webhook.html#autotoc_md434",
-"nwnx__redis_8nss.html#ac967fb38d5cec2dfe471374a17959e24",
-"nwnx__redis__short_8nss.html#ae306f78bd94be6b92e358adbb227acc6",
-"structNWNX__Tileset__TileEdgesAndCorners.html"
+"group__feedback.html#ga46a034a921ef6011120762dfc1b55a06",
+"group__object.html#gaf809aa376e569c45f734efa2567094b8",
+"group__race.html#autotoc_md339",
+"group__sql.html#gae2e0e27014d82accfe4a0e510720515f",
+"group__weapon.html#weapon",
+"nwnx__redis_8nss.html#ac0eb5d5cbdb5180505afe236d65652d3",
+"nwnx__redis__short_8nss.html#ae00d293d2f7c84f869c1187a46aa2535",
+"structNWNX__Tileset__TileDoorData.html#a63e63fe2cc264b297f8eec33a4972977"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
