@@ -1,7 +1,7 @@
 function(add_swig_plugin target interopfile)
     add_custom_target(
         Generate_${target}
-        COMMAND mkdir -p ./${target} && ${CMAKE_CURRENT_SOURCE_DIR}/generate.sh -v -c++ -fcompact -o ${interopfile} -outdir ./${target} -I../../NWNXLib/API ${ARGN}
+        COMMAND chmod a+x ./generate.sh && mkdir -p ./${target} && ${CMAKE_CURRENT_SOURCE_DIR}/generate.sh -v -c++ -fcompact -o ${interopfile} -outdir ./${target} -I../../NWNXLib/API ${ARGN}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
