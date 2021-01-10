@@ -18,8 +18,8 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ##### New NWScript Functions
 - Creature: ComputeSafeLocation()
-- Encounter: GetEncounterGeometry()
-- Encounter: SetEncounterGeometry()
+- Encounter: GetGeometry()
+- Encounter: SetGeometry()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted();
 
