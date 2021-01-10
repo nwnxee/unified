@@ -128,4 +128,4 @@ exec ./nwserver-linux \
   -dmpassword "${NWN_DMPASSWORD}" \
   -adminpassword "${NWN_ADMINPASSWORD}" \
   -reloadwhenempty "${NWN_RELOADWHENEMPTY:-0}" \
-  ${args[@]}
+  "${args[@]}"
