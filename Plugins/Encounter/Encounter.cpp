@@ -329,6 +329,9 @@ ArgumentStack Encounter::SetGeometry(ArgumentStack&& args)
             CNWSArea *pArea = pEncounter->GetArea();
             pEncounter->RemoveFromArea();
 
+            delete[] pEncounter->m_pvActivateVertices;
+            delete[] pEncounter->m_pnOutlineVertices;
+            
             pEncounter->m_nNumActivateVertices = vecVerts.size();
             pEncounter->m_nNumOutlineVertices = vecVerts.size();
 
