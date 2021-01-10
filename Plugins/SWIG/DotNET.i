@@ -56,14 +56,9 @@
 %ignore CResHelper<CResNCS,2010>;
 
 // Template defines
-%include "API/AurList.hpp"
 %include "API/CExoArrayList.hpp"
 %include "API/CExoLinkedList.hpp"
 %include "API/CResHelper.hpp"
-
-%template(AurListType) AurList<Type>;
-%template(AurListUInt16) AurList<uint16_t>;
-%template(AurListObjectId) AurList<OBJECT_ID>;
 
 %template(CExoArrayListCCombatInformationNodePtr) CExoArrayList<CCombatInformationNode *>;
 %template(CExoArrayListCEffectIconObjectPtr) CExoArrayList<CEffectIconObject *>;
