@@ -108,6 +108,7 @@ $(document).ready(function(){initNavTree('md_CHANGELOG.html',''); initResizable(
 <h2><a class="anchor" id="autotoc_md9"></a>
 Added</h2>
 <ul>
+<li>Events: added <code>NWNX_ON_INPUT_EMOTE_*</code> events to InputEvents, this event fires when a player uses a radial menu emote.</li>
 <li>Experimental: Added <code>NWNX_EXPERIMENTAL_DISABLE_LEVELUP_VALIDATION</code> to disable levelup validation.</li>
 <li>Experimental: Added <code>NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD</code> to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.</li>
 <li>Tweaks: Added <code>NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT</code> to have GetDEXStat() always return a creature's full dexterity stat.</li>
@@ -975,7 +976,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Jan 10 2021 10:17:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Jan 11 2021 14:12:36 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

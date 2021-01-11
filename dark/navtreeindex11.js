@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"nwnx__redis__short_8nss.html#adeb2f9a3935768c1e1f3b5d346d02b38":[4,0,2,28,0,3,24],
+"nwnx__redis__short_8nss.html#adf532e5e37cbde194b492b06d856f3d2":[4,0,2,28,0,3,207],
 "nwnx__redis__short_8nss.html#ae00d293d2f7c84f869c1187a46aa2535":[4,0,2,28,0,3,110],
 "nwnx__redis__short_8nss.html#ae05b8bc47bbf98f853c71a3d1865d724":[4,0,2,28,0,3,164],
 "nwnx__redis__short_8nss.html#ae074f94aa4e0caa434041a0edaf5eb3c":[4,0,2,28,0,3,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "structNWNX__Tileset__CustomTileData.html#a800fec1c59fd92234fa6d7cf4e4b3964":[0,39,6,8],
 "structNWNX__Tileset__CustomTileData.html#a92470763dfd5aa5b8fe4c094ef62f9b9":[0,39,6,6],
 "structNWNX__Tileset__CustomTileData.html#ad508d7c21240eec8265362cc25a891f7":[0,39,6,5],
-"structNWNX__Tileset__CustomTileData.html#ad7cc06ac7a4fb8eeca5a33810e1cf479":[0,39,6,7],
-"structNWNX__Tileset__TileDoorData.html":[0,39,5],
-"structNWNX__Tileset__TileDoorData.html#a13c99bb578bbc84c38ef0cdf68e44b8d":[0,39,5,1]
+"structNWNX__Tileset__CustomTileData.html#ad7cc06ac7a4fb8eeca5a33810e1cf479":[0,39,6,7]
 };

@@ -112,10 +112,13 @@ Files</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gaee44aad01b7468a094b310dab48ebe50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__consts.html#gaee44aad01b7468a094b310dab48ebe50">NWNX_Consts_TranslateNWScriptAnimation</a> (int nAnimation)</td></tr>
-<tr class="memdesc:gaee44aad01b7468a094b310dab48ebe50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent.  <a href="group__consts.html#gaee44aad01b7468a094b310dab48ebe50">More...</a><br /></td></tr>
+<tr class="memdesc:gaee44aad01b7468a094b310dab48ebe50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their engine equivalent.  <a href="group__consts.html#gaee44aad01b7468a094b310dab48ebe50">More...</a><br /></td></tr>
 <tr class="separator:gaee44aad01b7468a094b310dab48ebe50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga39f52ea25e872bff385666e4cd26be23"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__consts.html#ga39f52ea25e872bff385666e4cd26be23">NWNX_Consts_TranslateEngineAnimation</a> (int nAnimation)</td></tr>
+<tr class="memdesc:ga39f52ea25e872bff385666e4cd26be23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates engine animation constants to their ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* equivalent.  <a href="group__consts.html#ga39f52ea25e872bff385666e4cd26be23">More...</a><br /></td></tr>
+<tr class="separator:ga39f52ea25e872bff385666e4cd26be23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf5dad80b736ba0c80e15d1edddcdd6ae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__consts.html#gaf5dad80b736ba0c80e15d1edddcdd6ae">NWNX_Consts_TranslateNWScriptObjectType</a> (int nObjectType)</td></tr>
-<tr class="memdesc:gaf5dad80b736ba0c80e15d1edddcdd6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates OBJECT_TYPE_* constants to their NWNX equivalent.  <a href="group__consts.html#gaf5dad80b736ba0c80e15d1edddcdd6ae">More...</a><br /></td></tr>
+<tr class="memdesc:gaf5dad80b736ba0c80e15d1edddcdd6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates OBJECT_TYPE_* constants to their engine equivalent.  <a href="group__consts.html#gaf5dad80b736ba0c80e15d1edddcdd6ae">More...</a><br /></td></tr>
 <tr class="separator:gaf5dad80b736ba0c80e15d1edddcdd6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
@@ -135,16 +138,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their NWNX equivalent. </p>
+<p>Translates ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* constants to their engine equivalent. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nAnimation</td><td>The nwn animation constant </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The NWNX equivalent of the constant </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The engine equivalent of the constant </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__consts_8nss_source.html#l00018">18</a> of file <a class="el" href="nwnx__consts_8nss_source.html">nwnx_consts.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__consts_8nss_source.html#l00023">23</a> of file <a class="el" href="nwnx__consts_8nss_source.html">nwnx_consts.nss</a>.</p>
+
+</div>
+</div>
+<a id="ga39f52ea25e872bff385666e4cd26be23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga39f52ea25e872bff385666e4cd26be23">&#9670;&nbsp;</a></span>NWNX_Consts_TranslateEngineAnimation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int NWNX_Consts_TranslateEngineAnimation </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nAnimation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Translates engine animation constants to their ANIMATION_LOOPING_* and ANIMATION_FIREFORGET_* equivalent. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nAnimation</td><td>The engine animation constant </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The NWScript equivalent of the constant or -1 if a nwscript equivalent doesn't exist </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="nwnx__consts_8nss_source.html#l00093">93</a> of file <a class="el" href="nwnx__consts_8nss_source.html">nwnx_consts.nss</a>.</p>
 
 </div>
 </div>
@@ -164,16 +196,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Translates OBJECT_TYPE_* constants to their NWNX equivalent. </p>
+<p>Translates OBJECT_TYPE_* constants to their engine equivalent. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nObjectType</td><td>The nwn object type </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The NWNX equivalent of the constant </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The engine equivalent of the constant </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="nwnx__consts_8nss_source.html#l00088">88</a> of file <a class="el" href="nwnx__consts_8nss_source.html">nwnx_consts.nss</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nwnx__consts_8nss_source.html#l00163">163</a> of file <a class="el" href="nwnx__consts_8nss_source.html">nwnx_consts.nss</a>.</p>
 
 </div>
 </div>
@@ -183,7 +215,7 @@ Functions</h2></td></tr>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sun Jan 10 2021 10:17:50 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Mon Jan 11 2021 14:12:36 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
