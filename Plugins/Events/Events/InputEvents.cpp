@@ -45,7 +45,7 @@ InputEvents::InputEvents(Services::HooksProxy* hooker)
             (&AddCastSpellActionsHook);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE)_.*", [hooker]() {
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", [hooker]() {
         hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh>(&HandlePlayerToServerInputMessageHook);
         s_HandlePlayerToServerInputMessageHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh);
     });
@@ -272,6 +272,39 @@ int32_t InputEvents::HandlePlayerToServerInputMessageHook(CNWSMessage *pMessage,
             }
 
             PushAndSignal("NWNX_ON_INPUT_TOGGLE_PAUSE_AFTER");
+
+            return retVal;
+        }
+
+        case Constants::MessageInputMinor::PlayAnimation:
+        {
+            int32_t retVal;
+            int32_t offset = 0;
+
+            auto animation = Utils::PeekMessage<uint16_t>(pMessage, offset);
+            /*
+            offset += sizeof(uint16_t);
+            auto oidTarget = Utils::PeekMessage<ObjectID>(pMessage, offset);
+            offset += sizeof(ObjectID);
+            */
+
+            auto PushAndSignal = [&](const std::string& ev) -> bool {
+                Events::PushEventData("ANIMATION", std::to_string(animation));
+                //Events::PushEventData("TARGET", Utils::ObjectIDToString(oidTarget));
+
+                return Events::SignalEvent(ev, pPlayer->m_oidNWSObject);
+            };
+
+            if (PushAndSignal("NWNX_ON_INPUT_EMOTE_BEFORE"))
+            {
+                retVal = s_HandlePlayerToServerInputMessageHook->CallOriginal<int32_t>(pMessage, pPlayer, nMinor);
+            }
+            else
+            {
+                retVal = false;
+            }
+
+            PushAndSignal("NWNX_ON_INPUT_EMOTE_AFTER");
 
             return retVal;
         }
