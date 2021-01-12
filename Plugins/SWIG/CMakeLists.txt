@@ -1,15 +1,18 @@
 find_package(SWIG 4.0 COMPONENTS csharp)
 
-function(add_swig_plugin target interopfile)
+function(add_swig_plugin target)
+    set(interfaceFile ${target}.i)
+    set(interopFile ${target}Interop.cpp)
+
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${interopfile}
+        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${interopFile}
         DEPENDS Core
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/DotNET.i
-        COMMAND chmod a+x ./generate.sh && mkdir -p ./${target} && ${CMAKE_CURRENT_SOURCE_DIR}/generate.sh -v -c++ -fcompact -o ${interopfile} -outdir ./${target} -I../../NWNXLib/API ${ARGN}
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${interfaceFile}
+        COMMAND chmod a+x ./generate.sh && mkdir -p ./${target} && ./generate.sh -v -c++ -fcompact -o ${interopFile} -outdir ./${target} -I../../NWNXLib/API ${ARGN} ${interfaceFile}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
-    add_library(${target} SHARED ${interopfile})
+    add_library(${target} SHARED ${CMAKE_CURRENT_SOURCE_DIR}/${interopFile} ${CMAKE_CURRENT_SOURCE_DIR}/${target}.cpp)
     add_sanitizers(${target})
     target_link_libraries(${target} Core "-Wl,--no-undefined")
     set_target_properties(${target} PROPERTIES PREFIX "${PLUGIN_PREFIX}")
@@ -18,6 +21,5 @@ function(add_swig_plugin target interopfile)
 endfunction()
 
 if(SWIG_FOUND)
-    message("-- Found SWIG library: ${SWIG_EXECUTABLE}")
-    add_swig_plugin(SWIG_DotNET "DotNETInterop.cpp" -csharp -dllimport "${PLUGIN_PREFIX}SWIG_DotNET" -namespace "NWN.Native.API" "DotNET.i")
+    add_swig_plugin(SWIG_DotNET -csharp -dllimport "${PLUGIN_PREFIX}SWIG_DotNET" -namespace "NWN.Native.API")
 endif(SWIG_FOUND)
