@@ -55,6 +55,13 @@
 %ignore CResHelper<CResNDB,2064>;
 %ignore CResHelper<CResNCS,2010>;
 
+// Ignore template methods with missing type implementations.
+%ignore CExoArrayList::DerefContains;
+%ignore CExoArrayList::IndexOf;
+%ignore CExoArrayList::Contains;
+%ignore CExoArrayList::AddUnique;
+%ignore CExoArrayList::Remove;
+
 // Template defines
 %include "API/CExoArrayList.hpp"
 %include "API/CExoLinkedList.hpp"
