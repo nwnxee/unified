@@ -25,7 +25,8 @@ RUN buildDeps="build-essential \
     libpcre3-dev \
     autoconf \
     automake \
-    bison" \
+    bison \
+    ccache" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
     && apt-get clean \
