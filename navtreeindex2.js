@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"group__creature.html#ga2c0c8b7254d6efd2d25b700d06eda583":[4,0,2,5,0,0,120],
 "group__creature.html#ga2c76f20a0d589f398721a79468fba642":[0,6,18],
 "group__creature.html#ga2c76f20a0d589f398721a79468fba642":[4,0,2,5,0,0,14],
 "group__creature.html#ga2d409d9021d548809df96419085ae480":[0,6,108],
@@ -32,8 +33,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#ga41dc246ae5e9399a26c06d3966d8b125":[0,6,54],
 "group__creature.html#ga43289d7f208dbe759b856d1f4757dc2e":[0,6,92],
 "group__creature.html#ga43289d7f208dbe759b856d1f4757dc2e":[4,0,2,5,0,0,88],
-"group__creature.html#ga436b7ffee6a792a307f2d0a3489e4dd1":[4,0,2,5,0,0,1],
 "group__creature.html#ga436b7ffee6a792a307f2d0a3489e4dd1":[0,6,5],
+"group__creature.html#ga436b7ffee6a792a307f2d0a3489e4dd1":[4,0,2,5,0,0,1],
 "group__creature.html#ga445a30a2f40834a69ab0771d084097de":[0,6,110],
 "group__creature.html#ga445a30a2f40834a69ab0771d084097de":[4,0,2,5,0,0,106],
 "group__creature.html#ga4557ab082fc1670f9bbf1e167f653dd9":[0,6,151],
@@ -224,8 +225,8 @@ var NAVTREEINDEX2 =
 "group__creature.html#gacfe25337fd54b63488a16dc0c2f4b2b3":[4,0,2,5,0,0,68],
 "group__creature.html#gadd73aca4c6cac5a116638f7148fc6985":[0,6,143],
 "group__creature.html#gadd73aca4c6cac5a116638f7148fc6985":[4,0,2,5,0,0,140],
-"group__creature.html#gade3f03b0efb8d99a5797cf683dd3e9d0":[4,0,2,5,0,0,0],
 "group__creature.html#gade3f03b0efb8d99a5797cf683dd3e9d0":[0,6,4],
+"group__creature.html#gade3f03b0efb8d99a5797cf683dd3e9d0":[4,0,2,5,0,0,0],
 "group__creature.html#gade5a0ef07198f476d7c8ee9a0028b4f4":[4,0,2,5,0,0,49],
 "group__creature.html#gade5a0ef07198f476d7c8ee9a0028b4f4":[0,6,53],
 "group__creature.html#gadf3093add9e7bfdfe88fc37ac3354754":[4,0,2,5,0,0,26],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "group__creature.html#gaef3946aa6d3561be04d8b37f554b35b5":[4,0,2,5,0,0,6],
 "group__creature.html#gaf0464ca588c7ed2019b1c60b9d483efb":[4,0,2,5,0,0,35],
 "group__creature.html#gaf0464ca588c7ed2019b1c60b9d483efb":[0,6,39],
-"group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5":[0,6,76],
-"group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5":[4,0,2,5,0,0,72]
+"group__creature.html#gaf1b625ef87972302d67db93bee1ea4e5":[0,6,76]
 };

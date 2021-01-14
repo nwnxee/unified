@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"group__dialog.html#gaeb1527ee00e0753aa04336d6cba458fe":[0,10,15],
 "group__dotnet.html":[0,11],
 "group__dotnet.html#autotoc_md130":[9],
 "group__dotnet.html#autotoc_md131":[10],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "group__feedback.html#feedback":[0,18,0],
 "group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5":[4,0,2,17,0,0,7],
 "group__feedback.html#ga1e5a9e78de5d4d9d50f527dc245060b5":[0,18,9],
-"group__feedback.html#ga21220ae3bf760c377d8be60dfb141801":[4,0,2,17,0,0,9],
-"group__feedback.html#ga21220ae3bf760c377d8be60dfb141801":[0,18,10]
+"group__feedback.html#ga21220ae3bf760c377d8be60dfb141801":[4,0,2,17,0,0,9]
 };

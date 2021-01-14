@@ -37,6 +37,7 @@ var dir_0b4eaef40a1fe20bedafe9e8e719ce66 =
     [ "SkillRanks", "dir_066ad1d5ca09334b9c924c2d19c0a425.html", "dir_066ad1d5ca09334b9c924c2d19c0a425" ],
     [ "SpellChecker", "dir_2cb431146d89b7791aff694cfde16a4a.html", "dir_2cb431146d89b7791aff694cfde16a4a" ],
     [ "SQL", "dir_3e8b027a039a1b43efbd6770fe5625fa.html", "dir_3e8b027a039a1b43efbd6770fe5625fa" ],
+    [ "SWIG", "dir_b08f275d1c1d284b3456edbfc1dbed2f.html", null ],
     [ "ThreadWatchdog", "dir_6c4229521bb538195b33f93c97765e00.html", null ],
     [ "Tileset", "dir_8329b443c9966405f5640b3c2739d08b.html", "dir_8329b443c9966405f5640b3c2739d08b" ],
     [ "Time", "dir_6d4b8c9f0c9d19593e8d2f31e35118f8.html", "dir_6d4b8c9f0c9d19593e8d2f31e35118f8" ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"group__object.html#gaf420c6847263a7c01dc0a78edaa27f2f":[0,24,16],
 "group__object.html#gaf56cf9bf74db05bdd92f88247e13a8bd":[0,24,59],
 "group__object.html#gaf56cf9bf74db05bdd92f88247e13a8bd":[4,0,2,23,0,0,57],
 "group__object.html#gaf809aa376e569c45f734efa2567094b8":[4,0,2,23,0,0,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "group__race.html#autotoc_md321":[40],
 "group__race.html#autotoc_md322":[40,0],
 "group__race.html#autotoc_md325":[40,1],
-"group__race.html#autotoc_md328":[40,2],
-"group__race.html#autotoc_md331":[40,3]
+"group__race.html#autotoc_md328":[40,2]
 };
