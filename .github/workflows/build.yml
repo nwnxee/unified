@@ -24,7 +24,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
 
@@ -180,7 +180,7 @@ jobs:
            ./NWScript.zip
 
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.event_name == 'push'
     needs: build
     steps:
@@ -245,7 +245,7 @@ jobs:
 
   release:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: build
 
     steps:
@@ -271,7 +271,7 @@ jobs:
 
   publish:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: release
 
     steps:
