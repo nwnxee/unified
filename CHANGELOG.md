@@ -15,6 +15,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Tweaks: added `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET` to display the correct amount of attacks per round on the character sheet when overridden with SetBaseAttackBonus()
 
 ##### New Plugins
+- HTTP: Server and client functionality.
 - SWIG: Native Interop support added for DotNET.
 
 ##### New NWScript Functions
