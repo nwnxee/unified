@@ -8,6 +8,7 @@ function(add_swig_plugin target)
         OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${interopFile}
         DEPENDS Core
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${interfaceFile}
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/generate.sh
         COMMAND chmod a+x ./generate.sh && mkdir -p ./${target} && ./generate.sh -v -c++ -fcompact -o ${interopFile} -outdir ./${target} -I../../NWNXLib/API ${ARGN} ${interfaceFile}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
