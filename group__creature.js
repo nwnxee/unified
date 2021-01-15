@@ -133,6 +133,7 @@ var group__creature =
     [ "NWNX_Creature_GetNoPermanentDeath", "group__creature.html#ga5597af02da766c4be868386da054b25e", null ],
     [ "NWNX_Creature_SetNoPermanentDeath", "group__creature.html#ga4fc2b699787afb951d67736e81ddd191", null ],
     [ "NWNX_Creature_ComputeSafeLocation", "group__creature.html#ga36db232e8294ec90dc5f1203ee38ac56", null ],
+    [ "NWNX_Creature_DoPerceptionUpdateOnCreature", "group__creature.html#ga07ef1d837354f127b72d7d301555c857", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_PC", "group__creature.html#gafb79cfbb94206b01c958ff3c32f28cdb", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_IMMOBILE", "group__creature.html#ga150b50e7ba879fbbce35dda891ec0d22", null ],
     [ "NWNX_CREATURE_MOVEMENT_RATE_VERY_SLOW", "group__creature.html#ga161c4a1c39d2293d77d00ef708663650", null ],
