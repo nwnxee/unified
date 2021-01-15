@@ -840,6 +840,11 @@ void NWNX_Creature_SetNoPermanentDeath(object oCreature, int bNoPermanentDeath);
 /// @return A safe location as vector, will return vPosition if one wasn't found. Returns {0.0, 0.0, 0.0} on error.
 vector NWNX_Creature_ComputeSafeLocation(object oCreature, vector vPosition, float fRadius = 20.0f, int bWalkStraightLineRequired = TRUE);
 
+/// @brief Update oCreature's perception of oTargetCreature.
+/// @param oCreature The creature.
+/// @param oTargetCreature The target creature.
+void NWNX_Creature_DoPerceptionUpdateOnCreature(object oCreature, object oTargetCreature);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2133,4 +2138,13 @@ vector NWNX_Creature_ComputeSafeLocation(object oCreature, vector vPosition, flo
     v.x = NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
 
     return v;
+}
+
+void NWNX_Creature_DoPerceptionUpdateOnCreature(object oCreature, object oTargetCreature)
+{
+    string sFunc = "DoPerceptionUpdateOnCreature";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oTargetCreature);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
 }
