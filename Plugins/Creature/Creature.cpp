@@ -182,6 +182,7 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(GetNoPermanentDeath);
     REGISTER(SetNoPermanentDeath);
     REGISTER(ComputeSafeLocation);
+    REGISTER(DoPerceptionUpdateOnCreature);
 
 #undef REGISTER
 }
@@ -3093,6 +3094,19 @@ ArgumentStack Creature::ComputeSafeLocation(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(vNewPosition.x, vNewPosition.y, vNewPosition.z);
+}
+
+ArgumentStack Creature::DoPerceptionUpdateOnCreature(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        if (auto *pTargetCreature = creature(args))
+        {
+            pCreature->DoPerceptionUpdateOnCreature(pTargetCreature);
+        }
+    }
+
+    return Services::Events::Arguments();
 }
 
 }
