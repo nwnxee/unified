@@ -91,9 +91,9 @@ void Client::PerformRequest(const Client::Request& client_req)
         cli->second->set_connection_timeout(0, m_clientTimeout * 1000);
         auto result = GetResult(client_req);
 
-        auto clientError = result->error();
-        if (clientError)
+        if (result == nullptr || result->error())
         {
+            auto clientError = result != nullptr ? result->error() : httplib::Error::Unknown;
             m_servTasks->QueueOnMainThread([client_req, clientError]()
             {
                 auto moduleOid = NWNXLib::Utils::ObjectIDToString(((CGameObject*)Utils::GetModule())->m_idSelf);
@@ -104,57 +104,55 @@ void Client::PerformRequest(const Client::Request& client_req)
             });
             return;
         }
-        auto res = result->value();
-        m_servTasks->QueueOnMainThread([client_req, res]()
+        auto response = result->value();
+        m_servTasks->QueueOnMainThread([client_req, response]()
         {
             if (Core::g_CoreShuttingDown)
                 return;
 
             auto moduleOid = Utils::ObjectIDToString(((CGameObject*)Utils::GetModule())->m_idSelf);
-            if (res.status)
+
+            m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"STATUS", std::to_string(response.status)});
+            m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RESPONSE", response.body});
+            m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"REQUEST_ID", std::to_string(client_req.id)});
+            if (response.status == 200 || response.status == 201 || response.status == 204 || response.status == 429)
             {
-                m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"STATUS", std::to_string(res.status)});
-                m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RESPONSE", res.body});
-                m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"REQUEST_ID", std::to_string(client_req.id)});
-                if (res.status == 200 || res.status == 201 || res.status == 204 || res.status == 429)
+                // Discord sends your rate limit information even on success so you can stagger calls if you want
+                // This header also lets us know it's Discord not Slack, important because Discord sends RETRY_AFTER
+                // in milliseconds and Slack sends it as seconds.
+                if (response.has_header("X-RateLimit-Limit"))
                 {
-                    // Discord sends your rate limit information even on success so you can stagger calls if you want
-                    // This header also lets us know it's Discord not Slack, important because Discord sends RETRY_AFTER
-                    // in milliseconds and Slack sends it as seconds.
-                    if (res.has_header("X-RateLimit-Limit"))
+                    m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_LIMIT", response.get_header_value("X-RateLimit-Limit")});
+                    m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_REMAINING", response.get_header_value("X-RateLimit-Remaining")});
+                    m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_RESET", response.get_header_value("X-RateLimit-Reset")});
+                    if (response.has_header("Retry-After"))
+                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", response.get_header_value("Retry-After")});
+                    else if (response.has_header("Retry-At"))
                     {
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_LIMIT", res.get_header_value("X-RateLimit-Limit")});
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_REMAINING", res.get_header_value("X-RateLimit-Remaining")});
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RATELIMIT_RESET", res.get_header_value("X-RateLimit-Reset")});
-                        if (res.has_header("Retry-After"))
-                            m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", res.get_header_value("Retry-After")});
-                        else if (res.has_header("Retry-At"))
-                        {
-                            m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", res.get_header_value("Retry-At")});
-                        }
+                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", response.get_header_value("Retry-At")});
                     }
-                    // Slack rate limited
-                    else if (res.has_header("Retry-After"))
-                    {
-                        float fSlackRetry = stof(res.get_header_value("Retry-After")) * 1000.0f;
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", std::to_string(fSlackRetry)});
-                    }
-                    if (res.status != 429)
-                    {
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_CLIENT_SUCCESS", moduleOid});
-                        LOG_INFO("HTTP Client Request to '%s%s' succeeded.", client_req.host, client_req.path);
-                    }
-                    else
-                    {
-                        m_servMessaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_CLIENT_FAILED", moduleOid});
-                        LOG_WARNING("HTTP Client Request to '%s%s' failed, rate limited.", client_req.host, client_req.path);
-                    }
+                }
+                // Slack rate limited
+                else if (response.has_header("Retry-After"))
+                {
+                    float fSlackRetry = stof(response.get_header_value("Retry-After")) * 1000.0f;
+                    m_servMessaging->BroadcastMessage("NWNX_EVENT_PUSH_EVENT_DATA", {"RETRY_AFTER", std::to_string(fSlackRetry)});
+                }
+                if (response.status != 429)
+                {
+                    m_servMessaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_CLIENT_SUCCESS", moduleOid});
+                    LOG_INFO("HTTP Client Request to '%s%s' succeeded.", client_req.host, client_req.path);
                 }
                 else
                 {
                     m_servMessaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_CLIENT_FAILED", moduleOid});
-                    LOG_WARNING("HTTP Client Request to '%s%s' failed, status code '%d'.", client_req.host, client_req.path, res.status);
+                    LOG_WARNING("HTTP Client Request to '%s%s' failed, rate limited.", client_req.host, client_req.path);
                 }
+            }
+            else
+            {
+                m_servMessaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT", {"NWNX_ON_HTTP_CLIENT_FAILED", moduleOid});
+                LOG_WARNING("HTTP Client Request to '%s%s' failed, status code '%d'.", client_req.host, client_req.path, response.status);
             }
         });
     });
