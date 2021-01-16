@@ -302,13 +302,12 @@ void Array_Erase(string tag, int index, object obj=OBJECT_INVALID)
 // if not found, return INVALID_INDEX
 int Array_Find_Str(string tag, string element, object obj=OBJECT_INVALID)
 {
-    int tmp = -1;
-    string stmt = "SELECT MIN(ind) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
+    string stmt = "SELECT IFNULL(MIN(ind),@invalid_index) FROM "+GetTableName(tag, obj)+" WHERE value = @element";
     sqlquery sqlQuery = SqlPrepareQueryObject(GetModule(), stmt);
+    SqlBindInt(sqlQuery, "@invalid_index", INVALID_INDEX);
     SqlBindString(sqlQuery, "@element", element);
     if ( SqlStep(sqlQuery) ) {
-        tmp = SqlGetInt(sqlQuery, 0);
-        return tmp;
+        return SqlGetInt(sqlQuery, 0);
     }
     return INVALID_INDEX;
 }
