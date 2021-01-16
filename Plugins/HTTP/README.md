@@ -214,6 +214,7 @@ Here's an example of insulting a PC when they enter an area
    stInsultGen.oObject = GetEnteringObject();
    stInsultGen.sTag = "INSULT_ENTERING_PC";
    int nClientRequestId = NWNX_HTTP_Client_SendRequest(stInsultGen);
+   SetLocalObject(GetModule(), "INSULTED_" + IntToString(nClientRequestId), GetEnteringObject());
 ```
 
 Then set up an event:
@@ -225,7 +226,9 @@ Then set up an event:
         if (sRequest.sTag == "INSULT_ENTERING_PC")
         {
             string sResponse = NWNX_Events_GetEventData("RESPONSE");
-            SendMessageToPC(sRequest.oObject, sResponse);
+            object oInsulted = GetLocalObject(GetModule(), "INSULTED_" + IntToString(nClientRequestId));
+            SendMessageToPC(oInsulted, sResponse);
+            DeleteLocalObject(GetModule(), "INSULTED_" + IntToString(nClientRequestId));
         }
     }
 ```

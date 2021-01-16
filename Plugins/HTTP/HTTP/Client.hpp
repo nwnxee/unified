@@ -12,7 +12,6 @@ class Client
 {
     struct Request
     {
-        ObjectID oid;
         int id;
         HTTP::RequestMethod requestMethod;
         std::string host;
@@ -34,7 +33,6 @@ class Client
             port = 443;
             authType = HTTP::AuthenticationType::NONE;
             contentType = HTTP::ContentType::HTML;
-            oid = NWNXLib::API::Constants::OBJECT_INVALID;
         }
     };
 public:

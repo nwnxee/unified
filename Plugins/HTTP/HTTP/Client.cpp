@@ -185,7 +185,6 @@ Events::ArgumentStack Client::SendRequest(Events::ArgumentStack&& args)
 {
     auto clientReq = Request();
     clientReq.id = m_clientRequestId++;
-    clientReq.oid = Services::Events::ExtractArgument<ObjectID>(args);
     clientReq.tag =  Services::Events::ExtractArgument<std::string>(args);
     clientReq.requestMethod = static_cast<HTTP::RequestMethod>(Services::Events::ExtractArgument<int>(args));
     clientReq.host =  Services::Events::ExtractArgument<std::string>(args);
@@ -224,7 +223,6 @@ Events::ArgumentStack Client::GetRequest(Events::ArgumentStack&& args)
     Services::Events::InsertArgument(stack, clientReq.host);
     Services::Events::InsertArgument(stack, (int32_t)clientReq.requestMethod);
     Services::Events::InsertArgument(stack, clientReq.tag);
-    Services::Events::InsertArgument(stack, (ObjectID)clientReq.oid);
     return stack;
 }
 

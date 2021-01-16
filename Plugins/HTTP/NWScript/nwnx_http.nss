@@ -44,7 +44,6 @@ const int NWNX_HTTP_AUTH_TYPE_BEARER_TOKEN = 3;
 struct NWNX_HTTP_Client_Request
 {
     int nRequestMethod; ///< A @ref request_types "Request Type"
-    object oObject; ///< If this request pertains to a specific game object, can be helpful when retrieving the data in an event
     string sTag; ///< A unique tag for this request
     string sHost; ///< The host domain name/IP address
     string sPath; ///< The path for the url (include the leading /)
@@ -101,7 +100,6 @@ int NWNX_HTTP_Client_SendRequest(struct NWNX_HTTP_Client_Request s)
     NWNX_PushArgumentString(NWNX_HTTP, sFunc, s.sHost);
     NWNX_PushArgumentInt(NWNX_HTTP, sFunc, s.nRequestMethod);
     NWNX_PushArgumentString(NWNX_HTTP, sFunc, s.sTag);
-    NWNX_PushArgumentObject(NWNX_HTTP, sFunc, s.oObject);
     NWNX_CallFunction(NWNX_HTTP, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_HTTP, sFunc);
@@ -117,7 +115,6 @@ struct NWNX_HTTP_Client_Request NWNX_HTTP_Client_GetRequest(int nRequestId)
 
     struct NWNX_HTTP_Client_Request s;
 
-    s.oObject          = NWNX_GetReturnValueObject(NWNX_HTTP, sFunc);
     s.sTag             = NWNX_GetReturnValueString(NWNX_HTTP, sFunc);
     s.nRequestMethod   = NWNX_GetReturnValueInt(NWNX_HTTP, sFunc);
     s.sHost            = NWNX_GetReturnValueString(NWNX_HTTP, sFunc);
