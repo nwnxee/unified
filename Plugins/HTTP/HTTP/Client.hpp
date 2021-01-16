@@ -39,7 +39,6 @@ class Client
     };
 public:
     explicit Client(ConfigProxy*, EventsProxy*, MessagingProxy*, TasksProxy*);
-    virtual ~Client();
 private:
     static TasksProxy* m_servTasks;
     static MessagingProxy* m_servMessaging;

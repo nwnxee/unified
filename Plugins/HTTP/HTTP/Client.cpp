@@ -25,9 +25,6 @@ Client::Client(ConfigProxy* config, EventsProxy* events, MessagingProxy* messagi
     m_clientTimeout = config->Get<int>("CLIENT_REQUEST_TIMEOUT", 2000);
 }
 
-Client::~Client()
-= default;
-
 std::unique_ptr<httplib::Result> Client::GetResult(const Client::Request& client_req)
 {
     std::unique_ptr<httplib::Result> result;
