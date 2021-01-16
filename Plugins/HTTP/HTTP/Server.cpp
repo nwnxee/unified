@@ -14,10 +14,7 @@ MessagingProxy* Server::m_servMessaging;
 
 std::unique_ptr<httplib::Server> Server::m_httpServer;
 std::unique_ptr<std::thread> Server::m_httpServerThread;
-std::unordered_map<uint32_t, Server::Response> Server::m_responses;
-std::unordered_map<std::string, Server::Response> Server::m_cachedResponses;
 std::chrono::milliseconds Server::m_responseTimeout;
-uint32_t Server::m_servRequestId;
 
 Server::Server(ConfigProxy* config, EventsProxy* events, MessagingProxy* messaging, TasksProxy* tasks)
 {
@@ -25,7 +22,6 @@ Server::Server(ConfigProxy* config, EventsProxy* events, MessagingProxy* messagi
 
     m_servTasks = tasks;
     m_servMessaging = messaging;
-    m_servRequestId = 0;
     m_responseTimeout = std::chrono::milliseconds(config->Get<int>("SERVER_RESPONSE_TIMEOUT", 1000));
     auto rootHTML = config->Get<std::string>("SERVER_ROOT_HTML", "<html><head><title>Welcome to nwnx http!</title></head><body><h1>Welcome to nwnx http!</h1></body></html>");
     auto rootStatus = config->Get<int>("SERVER_ROOT_STATUS", 403);

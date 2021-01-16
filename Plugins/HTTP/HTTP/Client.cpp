@@ -16,18 +16,12 @@ namespace HTTP
 TasksProxy* Client::m_servTasks;
 MessagingProxy* Client::m_servMessaging;
 
-int Client::m_clientRequestId;
-int Client::m_clientTimeout;
-std::unordered_map<int, Client::Request> Client::m_clientRequests;
-std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> Client::m_clientHostCache;
-
 Client::Client(ConfigProxy* config, EventsProxy* events, MessagingProxy* messaging, TasksProxy* tasks)
 {
     events->RegisterEvent("Client_SendRequest", &SendRequest);
     events->RegisterEvent("Client_GetRequest", &GetRequest);
     m_servTasks = tasks;
     m_servMessaging = messaging;
-    m_clientRequestId = 0;
     m_clientTimeout = config->Get<int>("CLIENT_REQUEST_TIMEOUT", 2000);
 }
 

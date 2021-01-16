@@ -50,10 +50,10 @@ private:
     static void PerformRequest(const Client::Request&);
     static std::unique_ptr<httplib::Result> GetResult(const Client::Request&);
     static httplib::Headers ParseHeaderString(const std::string&);
-    static int m_clientRequestId;
-    static int m_clientTimeout;
-    static std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> m_clientHostCache;
-    static std::unordered_map<int, Request> m_clientRequests;
+    static inline int m_clientRequestId = 0;
+    static inline int m_clientTimeout = 2000;
+    static inline std::unordered_map<std::string, std::unique_ptr<httplib::SSLClient>> m_clientHostCache;
+    static inline std::unordered_map<int, Request> m_clientRequests;
 };
 
 }

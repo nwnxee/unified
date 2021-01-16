@@ -44,9 +44,9 @@ private:
 
     static Events::ArgumentStack SendResponse(Events::ArgumentStack&&);
 
-    static std::unordered_map<uint32_t, Response> m_responses;
-    static std::unordered_map<std::string, Response> m_cachedResponses;
-    static uint32_t m_servRequestId;
+    static inline std::unordered_map<uint32_t, Response> m_responses;
+    static inline std::unordered_map<std::string, Response> m_cachedResponses;
+    static inline uint32_t m_servRequestId = 0;
 };
 
 }
