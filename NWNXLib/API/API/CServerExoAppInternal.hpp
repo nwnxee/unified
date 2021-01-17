@@ -1,7 +1,7 @@
 #pragma once
 #include "nwn_api.hpp"
 
-#include "AurList.hpp"
+#include "CExoArrayList.hpp"
 #include "CExoArrayList.hpp"
 #include "CExoLinkedList.hpp"
 #include "CExoString.hpp"
@@ -83,8 +83,8 @@ struct CServerExoAppInternal
     CExoLinkedList<CNWSClient> * m_pNWSSysAdminList;
     CNWPlaceMeshManager * m_pPlaceMeshManager;
     BOOL m_bDebugMode;
-    AurList<OBJECT_ID> * m_lstPauseExclusionList;
-    AurList<OBJECT_ID> * m_lstTimestopExclusionList;
+    CExoArrayList<OBJECT_ID> * m_lstPauseExclusionList;
+    CExoArrayList<OBJECT_ID> * m_lstTimestopExclusionList;
     uint8_t m_nPauseState;
     BOOL m_bDoingStartNewModule;
     BOOL m_bMoveToModulePending;
@@ -210,7 +210,6 @@ struct CServerExoAppInternal
     void MovePlayerToArea(void * pPlayer);
     void InitiateModuleForPlayer(void * pPlayer);
     void UpdateWindowTitle();
-    void AddItemAppearToScratch(CNWSItem * pItem, uint32_t * scratchBufferPos);
     BOOL GetFactionOfObject(OBJECT_ID oObject, int32_t * nFaction);
     BOOL SendCharacterQuery(CNWSPlayer * pPlayer);
     BOOL SendStartStallEvent(uint32_t nStallEvent);
@@ -218,8 +217,7 @@ struct CServerExoAppInternal
     BOOL GetPauseState(uint8_t nState);
     uint8_t GetActivePauseState();
     void SetPauseState(uint8_t nState, BOOL bPause);
-    void ClearPauseState();
-    AurList<OBJECT_ID> * GetActiveExclusionList();
+    CExoArrayList<OBJECT_ID> * GetActiveExclusionList();
     void AddToExclusionList(OBJECT_ID oidExclude, uint8_t nList);
     void RemoveFromExclusionList(OBJECT_ID oidExclude, uint8_t nList);
     BOOL IsOnActiveExclusionList(OBJECT_ID oidExclude);
@@ -263,7 +261,6 @@ struct CServerExoAppInternal
     BOOL AddPendingAuthorization(uint32_t nPlayerID);
     BOOL RemovePendingAuthorization(uint32_t nPlayerID);
     void ConnectionLibMainLoop();
-    void CheckMasterServerTranslation();
     void StartShutdownTimer(uint64_t nTime, uint64_t nDelay);
     BOOL UpdateShutdownTimer(uint64_t nTime);
     BOOL UpdateLogHeartbeatTimer(uint64_t nTime);

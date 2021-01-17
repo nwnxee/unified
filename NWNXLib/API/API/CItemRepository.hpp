@@ -32,7 +32,6 @@ struct CItemRepository
     uint8_t CalculatePage(uint8_t x, uint8_t y);
     BOOL CheckFit(CNWSItem * pItem, uint8_t x, uint8_t y);
     BOOL CheckItemOverlaps(CNWSItem * pSourceItem, CNWSItem * pDroppingItem, uint8_t x, uint8_t y);
-    BOOL CheckItem(CNWSItem * pItem, uint8_t x, uint8_t y);
     OBJECT_ID FindItemWithBaseItemId(uint32_t nBaseItemId, int32_t nTh = 0);
     OBJECT_ID FindItemWithTag(CExoString * pTag);
     BOOL FindPosition(CNWSItem * pItem, uint8_t & x, uint8_t & y, BOOL bOriginatingFromScript = false);

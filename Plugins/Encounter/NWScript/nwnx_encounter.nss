@@ -89,6 +89,22 @@ int NWNX_Encounter_GetMaxNumSpawned(object encounter);
 /// @return amount of creatures
 int NWNX_Encounter_GetCurrentNumSpawned(object encounter);
 
+/// @brief Get the geometry of an encounter
+/// @param oEncounter: The encounter object.
+/// @return A string of vertex positions.
+string NWNX_Encounter_GetGeometry(object oEncounter);
+
+/// @brief Set the geometry of an encounter with a list of vertex positions
+/// @param oTrigger The encounter object.
+/// @param sGeometry Needs to be in the following format -> {x.x, y.y, z.z} or {x.x, y.y}
+/// Example Geometry: "{1.0, 1.0, 0.0}{4.0, 1.0, 0.0}{4.0, 4.0, 0.0}{1.0, 4.0, 0.0}"
+///
+/// @remark The Z position is optional and will be calculated dynamically based
+/// on terrain height if it's not provided.
+///
+/// @remark The minimum number of vertices is 3.
+void NWNX_Encounter_SetGeometry(object oTrigger, string sGeometry);
+
 /// @}
 
 int NWNX_Encounter_GetNumberOfCreaturesInEncounterList(object encounter)
@@ -247,4 +263,23 @@ int NWNX_Encounter_GetCurrentNumSpawned(object encounter)
     NWNX_CallFunction(NWNX_Encounter, sFunc);
   
     return NWNX_GetReturnValueInt(NWNX_Encounter, sFunc);
+}
+
+string NWNX_Encounter_GetGeometry(object oEncounter)
+{
+    string sFunc = "GetGeometry";
+
+    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, oEncounter);
+    NWNX_CallFunction(NWNX_Encounter, sFunc);
+
+    return NWNX_GetReturnValueString(NWNX_Encounter, sFunc);
+}
+
+void NWNX_Encounter_SetGeometry(object oEncounter, string sGeometry)
+{
+    string sFunc = "SetGeometry";
+
+    NWNX_PushArgumentString(NWNX_Encounter, sFunc, sGeometry);
+    NWNX_PushArgumentObject(NWNX_Encounter, sFunc, oEncounter);
+    NWNX_CallFunction(NWNX_Encounter, sFunc);
 }

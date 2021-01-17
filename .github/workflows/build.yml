@@ -24,7 +24,9 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+    container:
+      image: docker://nwnxee/builder:latest
     steps:
     - uses: actions/checkout@v2
 
@@ -35,27 +37,6 @@ jobs:
           echo "/usr/lib/ccache" >> $GITHUB_PATH
           echo "::set-output name=nwn_build::$(grep 'set(TARGET_NWN_BUILD ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
           echo "::set-output name=nwn_build_revision::$(grep 'set(TARGET_NWN_BUILD_REVISION ' CMakeLists.txt | cut -d' ' -f2 | sed 's/)//')"
-
-    - name: Cache Additional Dependencies
-      uses: actions/cache@v2
-      id: dependencies-cache
-      with:
-        path: "~/dependencies"
-        key: dependencies-2020-11-16
-
-    - name: Install Cache Additional Dependencies
-      env:
-        CACHE_HIT: ${{steps.dependencies-cache.outputs.cache-hit}}
-      run: |
-        if [[ "$CACHE_HIT" == 'true' ]]; then
-          sudo cp --force --recursive ~/dependencies/* /
-        else
-          sudo apt-get install libhunspell-dev libluajit-5.1-dev ccache libmariadb-dev-compat
-          mkdir -p ~/dependencies
-          for dep in libhunspell-dev libluajit-5.1-dev ccache libmariadb-dev-compat libluajit-5.1-2 libluajit-5.1-common libmariadb-dev libmariadb-dev-compat libmariadb3; do
-              dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/dependencies/
-          done
-        fi
 
     - name: Prepare ccache timestamp
       id: ccache_cache_timestamp
@@ -180,7 +161,7 @@ jobs:
            ./NWScript.zip
 
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     if: github.event_name == 'push'
     needs: build
     steps:
@@ -245,7 +226,7 @@ jobs:
 
   release:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: build
 
     steps:
@@ -271,7 +252,7 @@ jobs:
 
   publish:
     if: contains(github.ref, 'tags/build')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: release
 
     steps:

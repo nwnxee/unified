@@ -20,8 +20,20 @@ RUN buildDeps="build-essential \
     libssl-dev \
     libhunspell-dev \
     pkg-config \
-    libluajit-5.1-dev" \
+    libluajit-5.1-dev \
+    libpcre3 \
+    libpcre3-dev \
+    autoconf \
+    automake \
+    bison \
+    ccache" \
     && apt-get update \
     && apt-get install -y --no-install-recommends $buildDeps \
     && apt-get clean \
-    && rm -r /var/lib/apt/lists /var/cache/apt
+    && rm -r /var/lib/apt/lists /var/cache/apt \
+    && git clone --branch v4.0.2 --depth 1 https://github.com/swig/swig.git \
+    && cd swig \
+    && ./autogen.sh \
+    && ./configure \
+    && make \
+    && make install
