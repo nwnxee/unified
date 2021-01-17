@@ -168,15 +168,21 @@ void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Servi
     }
 }
 
+static std::unique_ptr<Hooking::FunctionHook> s_VMSetVarHook;
+static std::unique_ptr<Hooking::FunctionHook> s_VMGetVarHook;
+static std::unique_ptr<Hooking::FunctionHook> s_VMTagEffectHook;
+static std::unique_ptr<Hooking::FunctionHook> s_VMTagItemProperyHook;
+static std::unique_ptr<Hooking::FunctionHook> s_VMPlaySoundHook;
+static std::unique_ptr<Hooking::FunctionHook> s_DestroyServerHook;
 void NWNXCore::InitialSetupHooks()
 {
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii>(&SetVarHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii>(&GetVarHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii>(&TagEffectHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii>(&TagItemPropertyHandler);
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii>(&PlaySoundHandler);
+    s_VMSetVarHook         = m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandSetVarEii>(&SetVarHandler);
+    s_VMGetVarHook         = m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands20ExecuteCommandGetVarEii>(&GetVarHandler);
+    s_VMTagEffectHook      = m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandTagEffectEii>(&TagEffectHandler);
+    s_VMTagItemProperyHook = m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands29ExecuteCommandTagItemPropertyEii>(&TagItemPropertyHandler);
+    s_VMPlaySoundHook      = m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN25CNWVirtualMachineCommands23ExecuteCommandPlaySoundEii>(&PlaySoundHandler);
 
-    m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CAppManager13DestroyServerEv>(&DestroyServerHandler);
+    s_DestroyServerHook = m_services->m_hooks->RequestExclusiveHook<API::Functions::_ZN11CAppManager13DestroyServerEv>(&DestroyServerHandler);
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopInternalHandler);
 
     m_services->m_hooks->RequestSharedHook<API::Functions::_ZN10CNWSObjectD1Ev, void>(&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook);
@@ -635,8 +641,7 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
         }
     }
 
-    auto hook = g_core->m_services->m_hooks->FindHookByAddress(Functions::_ZN11CAppManager13DestroyServerEv);
-    hook->CallOriginal<void>(app);
+    s_DestroyServerHook->CallOriginal<void>(app);
 
     LOG_NOTICE("Shutting down NWNX.");
     g_core->Shutdown();

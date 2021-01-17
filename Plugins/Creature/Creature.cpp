@@ -1098,19 +1098,19 @@ ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
 
     if (!pGetMovementRateFactor_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21GetMovementRateFactorEv>(
+        pGetMovementRateFactor_hook = 
+            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21GetMovementRateFactorEv>(
             +[](CNWSCreature *pThis) -> float
             {
                 auto pRate = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR");
                 return pRate ? *pRate : pGetMovementRateFactor_hook->CallOriginal<float>(pThis);
             });
-
-        pGetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv);
     }
 
     if (!pSetMovementRateFactor_hook)
     {
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21SetMovementRateFactorEf>(
+        pSetMovementRateFactor_hook =
+            GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature21SetMovementRateFactorEf>(
             +[](CNWSCreature *pThis, float fRate) -> void
             {
                 // Always set the default so it goes back to normal if cap is reset
@@ -1123,8 +1123,6 @@ ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
                     g_plugin->GetServices()->m_perObjectStorage->Set(pThis, "MOVEMENT_RATE_FACTOR", fRate);
                 }
             });
-
-        pSetMovementRateFactor_hook = GetServices()->m_hooks->FindHookByAddress(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf);
     }
 
     if (auto *pCreature = creature(args))
@@ -2245,7 +2243,8 @@ void Creature::InitCriticalMultiplierHook()
     static NWNXLib::Hooking::FunctionHook* pGetCriticalHitMultiplier_hook;
     if (!pGetCriticalHitMultiplier_hook)
     {
-        g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi>(
+        pGetCriticalHitMultiplier_hook =
+            g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi>(
             +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
             {
                 int32_t retVal;
@@ -2315,7 +2314,6 @@ void Creature::InitCriticalMultiplierHook()
 
                 return retVal > 0 ? retVal : 0;
             });
-        pGetCriticalHitMultiplier_hook = g_plugin->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi);
     }
     s_bCriticalMultiplierHooksInitialized = true;
 }
@@ -2433,7 +2431,8 @@ void Creature::InitCriticalRangeHook()
     static NWNXLib::Hooking::FunctionHook* pGetCriticalHitRoll_hook;
     if (!pGetCriticalHitRoll_hook)
     {
-        g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi>(
+        pGetCriticalHitRoll_hook =
+            g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi>(
             +[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
             {
                 int32_t retVal;
@@ -2502,7 +2501,6 @@ void Creature::InitCriticalRangeHook()
                 }
                 return std::clamp(retVal, 0, 20);
             });
-        pGetCriticalHitRoll_hook = g_plugin->GetServices()->m_hooks->FindHookByAddress(Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi);
     }
     s_bCriticalRangeHooksInitialized = true;
 }
@@ -2953,7 +2951,8 @@ bool Creature::InitResolveAttackRollHook()
     {
         try
         {
-            g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>(
+            pResolveAttackRoll_hook = 
+                g_plugin->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject>(
                     +[](CNWSCreature *thisPtr, CNWSObject *pTarget) -> void
                     {
                         auto pTargetCreature = Utils::AsNWSCreature(pTarget);
@@ -2983,8 +2982,6 @@ bool Creature::InitResolveAttackRollHook()
                         }
 
                     });
-            pResolveAttackRoll_hook = g_plugin->GetServices()->m_hooks->FindHookByAddress(
-                    Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject);
         }
         catch (...)
         {
