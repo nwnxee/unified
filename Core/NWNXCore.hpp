@@ -41,6 +41,13 @@ private: // Structures
 
 private:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_createServerHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmSetVarHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmGetVarHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmTagEffectHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmTagItemProperyHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmPlaySoundHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_destroyServerHook;
+
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
     PluginProxyServiceMap m_pluginProxyServiceMap;
 
