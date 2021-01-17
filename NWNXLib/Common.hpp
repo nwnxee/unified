@@ -31,3 +31,28 @@ class PerObjectStorageProxy;
 class CommandsProxy;
 
 }
+#include <functional>
+
+namespace NWNXLib
+{
+struct ScopeGuard {
+    template<class C> ScopeGuard(C&& func) : f(std::forward<C>(func)) {}
+    ScopeGuard(ScopeGuard&& sg) : f(std::move(sg.f)) {
+        sg.f = nullptr;
+    }
+    ~ScopeGuard() {
+        if (f) f();
+    }
+    void dismiss() noexcept {
+        f = nullptr;
+    }
+    ScopeGuard(const ScopeGuard&) = delete;
+    void operator=(const ScopeGuard&) = delete;
+    std::function<void()> f;
+};
+
+#define CAT2(a, b) a##b
+#define CAT(a, b) CAT2(a,b)
+#define SCOPEGUARD(x) ::NWNXLib::ScopeGuard CAT(_scopeguard_, __LINE__) ([&]{x;})
+
+}
