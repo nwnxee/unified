@@ -73,6 +73,8 @@ Area::Area(Services::ProxyServiceList* services)
     REGISTER(ExportARE);
     REGISTER(GetAmbientSoundDay);
     REGISTER(GetAmbientSoundNight);
+    REGISTER(GetAmbientSoundDayVolume);
+    REGISTER(GetAmbientSoundNightVolume);
 
 #undef REGISTER
 }
@@ -1087,6 +1089,36 @@ ArgumentStack Area::GetAmbientSoundNight(ArgumentStack&& args)
         if (pArea->m_pAmbientSound != nullptr)
         {
             retVal = pArea->m_pAmbientSound->m_nSoundNightTrack;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Area::GetAmbientSoundDayVolume(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto *pArea = area(args))
+    {
+        if (pArea->m_pAmbientSound != nullptr)
+        {
+            retVal = pArea->m_pAmbientSound->m_nDayVolume;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Area::GetAmbientSoundNightVolume(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto *pArea = area(args))
+    {
+        if (pArea->m_pAmbientSound != nullptr)
+        {
+            retVal = pArea->m_pAmbientSound->m_nNightVolume;
         }
     }
 

@@ -278,6 +278,16 @@ int NWNX_Area_GetAmbientSoundDay(object oArea);
 /// @return The ambient soundtrack. See ambientsound.2da.
 int NWNX_Area_GetAmbientSoundNight(object oArea);
 
+/// @brief Get the volume of the ambient sound playing in an area during the day.
+/// @param oArea The area to get the sound volume of.
+/// @return The volume.
+int NWNX_Area_GetAmbientSoundDayVolume(object oArea);
+
+/// @brief Get the volume of the ambient sound playing in an area during the night.
+/// @param oArea The area to get the sound volume of.
+/// @return The volume.
+int NWNX_Area_GetAmbientSoundNightVolume(object oArea);
+
 /// @}
 
 int NWNX_Area_GetNumberOfPlayersInArea(object area)
@@ -682,6 +692,26 @@ int NWNX_Area_GetAmbientSoundDay(object oArea)
 int NWNX_Area_GetAmbientSoundNight(object oArea)
 {
     string sFunc = "GetAmbientSoundNight";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundDayVolume(object oArea)
+{
+    string sFunc = "GetAmbientSoundDayVolume";
+
+    NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
+    NWNX_CallFunction(NWNX_Area, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Area, sFunc);
+}
+
+int NWNX_Area_GetAmbientSoundNightVolume(object oArea)
+{
+    string sFunc = "GetAmbientSoundNightVolume";
 
     NWNX_PushArgumentObject(NWNX_Area, sFunc, oArea);
     NWNX_CallFunction(NWNX_Area, sFunc);
