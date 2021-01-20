@@ -26,6 +26,7 @@
 #include "API/CNWSCombatRound.hpp"
 #include "API/CEffectIconObject.hpp"
 #include "API/CNWSArea.hpp"
+#include "API/CPathfindInformation.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -183,6 +184,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetNoPermanentDeath);
     REGISTER(ComputeSafeLocation);
     REGISTER(DoPerceptionUpdateOnCreature);
+    REGISTER(GetPersonalSpace);
+    REGISTER(SetPersonalSpace);
 
 #undef REGISTER
 }
@@ -3100,6 +3103,36 @@ ArgumentStack Creature::DoPerceptionUpdateOnCreature(ArgumentStack&& args)
         if (auto *pTargetCreature = creature(args))
         {
             pCreature->DoPerceptionUpdateOnCreature(pTargetCreature);
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetPersonalSpace(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_pcPathfindInformation)
+        {
+            retVal = pCreature->m_pcPathfindInformation->m_fPersonalSpace;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetPersonalSpace(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fPerspace = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fPerspace >= 0);
+        if (pCreature->m_pcPathfindInformation)
+        {
+            pCreature->m_pcPathfindInformation->m_fPersonalSpace = fPerspace;
+            pCreature->m_pcPathfindInformation->ComputeStepTolerance();
         }
     }
 

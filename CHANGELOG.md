@@ -20,6 +20,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 ##### New NWScript Functions
 - Creature: ComputeSafeLocation()
 - Creature: DoPerceptionUpdateOnCreature()
+- Creature: {Get/Set}PersonalSpace()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
 - Util: GetInstructionLimit()

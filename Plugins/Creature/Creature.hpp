@@ -134,6 +134,8 @@ private:
     ArgumentStack SetNoPermanentDeath           (ArgumentStack&& args);
     ArgumentStack ComputeSafeLocation           (ArgumentStack&& args);
     ArgumentStack DoPerceptionUpdateOnCreature  (ArgumentStack&& args);
+    ArgumentStack GetPersonalSpace              (ArgumentStack&& args);
+    ArgumentStack SetPersonalSpace              (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
     std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> m_RollModifier;
