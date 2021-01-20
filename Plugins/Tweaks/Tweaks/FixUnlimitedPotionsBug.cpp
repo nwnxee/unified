@@ -13,13 +13,11 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 
 static bool s_bUsableItemRemoval = false;
-static NWNXLib::Hooking::FunctionHook* s_AddEventDeltaTimeHook = nullptr;
 
 FixUnlimitedPotionsBug::FixUnlimitedPotionsBug(Services::HooksProxy* hooker)
 {
     hooker->RequestSharedHook<Functions::_ZN12CNWSCreature21AIActionItemCastSpellEP20CNWSObjectActionNode, uint32_t>(&CNWSCreature__AIActionItemCastSpell_hook);
     hooker->RequestSharedHook<Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv, BOOL>(&CServerAIMaster__AddEventDeltaTime);
-    s_AddEventDeltaTimeHook = hooker->FindHookByAddress(Functions::_ZN15CServerAIMaster17AddEventDeltaTimeEjjjjjPv);
 }
 
 void FixUnlimitedPotionsBug::CServerAIMaster__AddEventDeltaTime(bool before, CServerAIMaster*, uint32_t, uint32_t, OBJECT_ID, OBJECT_ID nObjectId, uint32_t nEventId, void*)

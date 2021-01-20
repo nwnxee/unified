@@ -35,8 +35,7 @@ static Hooking::FunctionHook* s_AcquireItemHook;
 ItemEvents::ItemEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_USE_ITEM_.*", [hooker]() {
-            hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi>(&CanUseItemHook);
-        s_CanUseItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi);
+        s_CanUseItemHook = hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10CanUseItemEP8CNWSItemi>(&CanUseItemHook);
         });
 
     Events::InitOnFirstSubscribe("NWNX_ON_USE_ITEM_.*", [hooker]() {
@@ -70,8 +69,7 @@ ItemEvents::ItemEvents(Services::HooksProxy* hooker)
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_VALIDATE_ITEM_EQUIP_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer>(&CanEquipItemHook);
-        s_CanEquipItemHook = hooker->FindHookByAddress(API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer);
+        s_CanEquipItemHook = hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature12CanEquipItemEP8CNWSItemPjiiiP10CNWSPlayer>(&CanEquipItemHook);
         });
 
     Events::InitOnFirstSubscribe("NWNX_ON_ITEM_EQUIP_.*", [hooker]() {

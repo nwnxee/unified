@@ -15,8 +15,7 @@ static NWNXLib::Hooking::FunctionHook* m_HandlePlayerToServerGuiQuickbar_SetButt
 QuickbarEvents::QuickbarEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_QUICKBAR_SET_BUTTON_.*", [hooker]() {
-        hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage41HandlePlayerToServerGuiQuickbar_SetButtonEP10CNWSPlayerhh>(&HandlePlayerToServerGuiQuickbar_SetButtonHook);
-        m_HandlePlayerToServerGuiQuickbar_SetButtonHook = hooker->FindHookByAddress(API::Functions::_ZN11CNWSMessage41HandlePlayerToServerGuiQuickbar_SetButtonEP10CNWSPlayerhh);
+        m_HandlePlayerToServerGuiQuickbar_SetButtonHook = hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage41HandlePlayerToServerGuiQuickbar_SetButtonEP10CNWSPlayerhh>(&HandlePlayerToServerGuiQuickbar_SetButtonHook);
     });
 }
 

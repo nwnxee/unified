@@ -3,7 +3,7 @@
 #include "API/CExoBase.hpp"
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
-#include "Hooking/FunctionHook.hpp"
+#include "Services/Hooks/Hooks.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 
@@ -74,19 +74,17 @@ void FastTimer::Calibrate(const size_t runs, HooksProxy* hooks, MetricsProxy* me
     std::vector<std::chrono::nanoseconds> hookedResults;
     std::vector<std::chrono::nanoseconds> unhookedResults;
 
-    hooks->RequestSharedHook<Functions::_ZN16CExoBaseInternal10CheckForCDEj, int32_t>(&ProfilerCalibrateHookFuncWithScope);
+    for (size_t i = 0; i < runs; ++i)
+    {
+        unhookedResults.emplace_back(runTest(10));
+    }
 
+    hooks->RequestSharedHook<Functions::_ZN16CExoBaseInternal10CheckForCDEj, int32_t>(&ProfilerCalibrateHookFuncWithScope);
     for (size_t i = 0; i < runs; ++i)
     {
         hookedResults.emplace_back(runTest(10));
     }
 
-    hooks->ClearHook(Functions::_ZN16CExoBaseInternal10CheckForCDEj);
-
-    for (size_t i = 0; i < runs; ++i)
-    {
-        unhookedResults.emplace_back(runTest(10));
-    }
 
     for (size_t i = 0; i < runs; ++i)
     {
