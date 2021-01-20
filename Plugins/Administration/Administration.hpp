@@ -12,6 +12,7 @@ class Administration : public NWNXLib::Plugin
 public:
     Administration(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Administration();
+    static CExoLinkedListNode* FindTURD(std::string, std::string);
 
     ArgumentStack GetPlayerPassword         (ArgumentStack&& args);
     ArgumentStack SetPlayerPassword         (ArgumentStack&& args);

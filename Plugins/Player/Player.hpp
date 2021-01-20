@@ -4,6 +4,8 @@
 #include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "API/ObjectVisualTransformData.hpp"
+#include "API/CExoLocString.hpp"
+#include "Utils.hpp"
 #include <map>
 #include <set>
 
@@ -58,6 +60,10 @@ private:
     ArgumentStack SetObjectHiliteColorOverride      (ArgumentStack&& args);
     ArgumentStack RemoveEffectFromTURD              (ArgumentStack&& args);
     ArgumentStack SetSpawnLocation                  (ArgumentStack&& args);
+    ArgumentStack SendDMAllCreatorLists             (ArgumentStack&& args);
+    ArgumentStack AddCustomJournalEntry             (ArgumentStack&& args);
+    ArgumentStack GetJournalEntry                   (ArgumentStack&& args);
+    ArgumentStack CloseStore                        (ArgumentStack&& args);
 
     CNWSPlayer *player(ArgumentStack& args);
 

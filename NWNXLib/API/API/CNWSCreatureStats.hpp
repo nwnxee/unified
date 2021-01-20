@@ -357,7 +357,6 @@ struct CNWSCreatureStats
     void ClearMemorizedSpellSlot(uint8_t nMultiClass, uint8_t nSpellLevel, uint8_t nSpellSlot);
     void AddKnownSpell(uint8_t nMultiClass, uint32_t nSpellID);
     void RemoveKnownSpell(uint8_t nMultiClass, uint32_t nSpellID);
-    void MemorizeAllNPCSpells();
     uint8_t GetSpellsOfLevelReady(uint8_t nMultiClass, uint8_t nSpellLevel);
     void ReadySpellLevel(uint8_t nSpellLevel);
     BOOL UnReadySpell(uint32_t nSpellID, uint8_t nMultiClass, uint8_t nDomainLevel, uint8_t nMetaType);

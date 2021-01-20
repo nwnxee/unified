@@ -17,6 +17,7 @@ struct BIFFFILE_VARRESENTRY_E1
     uint32_t nOffset;
     uint32_t nSize;
     uint32_t nType;
+    uint32_t nCompressionType;
     uint32_t nUncompressedSize;
 
 

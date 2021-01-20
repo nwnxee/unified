@@ -43,6 +43,12 @@ SpellEvents::SpellEvents(Services::HooksProxy* hooker)
              <NWNXLib::API::Functions::_ZN12CNWSCreature18BroadcastSpellCastEjht>
              (&BroadcastSpellCastHook);
     });
+
+    Events::InitOnFirstSubscribe("NWNX_ON_SPELL_INTERRUPTED_.*", [hooker]() {
+        hooker->RequestSharedHook<
+                NWNXLib::API::Functions::_ZN21CNWSEffectListHandler15OnEffectAppliedEP10CNWSObjectP11CGameEffecti, int32_t>
+                (&EffectAppliedHook);
+    });
 }
 
 void SpellEvents::CastSpellHook
@@ -59,6 +65,13 @@ void SpellEvents::CastSpellHook
     bool isInstantSpell
 )
 {
+    if (!Events::IsIDInWhitelist("NWNX_ON_CAST_SPELL", spellID))
+    {
+        s_SpellCastAndImpactHook->CallOriginal<void>(thisPtr, spellID, targetPosition, oidTarget, multiClass, oidItem,
+                                                     spellCountered, counteringSpell, projectilePathType, isInstantSpell);
+        return;
+    }
+
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("SPELL_ID", std::to_string(spellID));
 
@@ -167,5 +180,22 @@ void SpellEvents::BroadcastSpellCastHook(CNWSCreature* thisPtr, uint32_t nSpellI
     }
 
     PushAndSignal("NWNX_ON_BROADCAST_CAST_SPELL_AFTER");
+}
+
+void SpellEvents::EffectAppliedHook(bool before, CNWSEffectListHandler*, CNWSObject *pObject, CGameEffect *pGameEffect, int32_t)
+{
+    // An easy way to capture a spell interrupting is when the visual effect is applied
+    // Visual Effect 292 and 293 are for a spell interruption failure (head and hand)
+    if (pGameEffect->m_nType != Constants::EffectTrueType::VisualEffect || !pGameEffect->m_nNumIntegers ||
+        (pGameEffect->m_nParamInteger[0] != 292 && pGameEffect->m_nParamInteger[0] != 293))
+        return;
+
+    Events::PushEventData("SPELL_ID", std::to_string(pObject->m_nLastSpellId));
+    Events::PushEventData("SPELL_CLASS", std::to_string(pObject->m_nLastSpellCastMulticlass));
+    Events::PushEventData("SPELL_FEAT", std::to_string(pObject->m_nLastSpellCastFeat));
+    Events::PushEventData("SPELL_DOMAIN", std::to_string(pObject->m_nLastDomainLevel));
+    Events::PushEventData("SPELL_SPONTANEOUS", std::to_string(pObject->m_bLastSpellCastSpontaneous));
+    Events::PushEventData("SPELL_METAMAGIC", std::to_string(pObject->m_nLastSpellCastMetaType));
+    Events::SignalEvent(before ? "NWNX_ON_SPELL_INTERRUPTED_BEFORE" : "NWNX_ON_SPELL_INTERRUPTED_AFTER" , pObject->m_idSelf);
 }
 }

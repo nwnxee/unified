@@ -46,6 +46,14 @@ void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 =
 /// @return The parent race if applicable, if not it just returns the race passed in.
 int NWNX_Race_GetParentRace(int iRace);
 
+/// @brief Associates the race with its favored enemy feat.
+/// @param iRace The race
+/// @param iFeat The feat
+/// @note If a creature has a race that has a parent race then favored enemy bonuses will work for either race against that creature.
+/// For example a creature is a Wild Elf which has a parent race of Elf, an attacker would benefit if they had either Favored Enemy: Elf
+/// or Favored Enemy: Wild Elf
+void NWNX_Race_SetFavoredEnemyFeat(int iRace, int iFeat);
+
 /// @}
 
 void NWNX_Race_SetRacialModifier(int iRace, int iMod, int iParam1, int iParam2 = 0xDEADBEEF, int iParam3 = 0xDEADBEEF)
@@ -69,4 +77,14 @@ int NWNX_Race_GetParentRace(int iRace)
 
     NWNX_CallFunction(NWNX_Race, sFunc);
     return NWNX_GetReturnValueInt(NWNX_Race, sFunc);
+}
+
+void NWNX_Race_SetFavoredEnemyFeat(int iRace, int iFeat)
+{
+    string sFunc = "SetFavoredEnemyFeat";
+
+    NWNX_PushArgumentInt(NWNX_Race, sFunc, iFeat);
+    NWNX_PushArgumentInt(NWNX_Race, sFunc, iRace);
+
+    NWNX_CallFunction(NWNX_Race, sFunc);
 }

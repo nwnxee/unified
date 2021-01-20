@@ -14,7 +14,7 @@ public:
 
 private:
     static void CNWSCreature__AIActionItemCastSpell_hook(bool before, CNWSCreature* thisPtr, CNWSObjectActionNode* pNode);
-    static BOOL CServerAIMaster__AddEventDeltaTime(CServerAIMaster* thisPtr, uint32_t nDaysFromNow, uint32_t nTimeFromNow, OBJECT_ID nCallerObjectId, OBJECT_ID nObjectId, uint32_t nEventId, void* pScript);
+    static void CServerAIMaster__AddEventDeltaTime(bool before, CServerAIMaster* thisPtr, uint32_t nDaysFromNow, uint32_t nTimeFromNow, OBJECT_ID nCallerObjectId, OBJECT_ID nObjectId, uint32_t nEventId, void* pScript);
 };
 
 }

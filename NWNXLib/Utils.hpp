@@ -52,6 +52,7 @@ CNWSScriptVarTable *GetScriptVarTable(CGameObject *pObject);
 void DestroyGameEffect(CGameEffect* pEffect);
 
 std::string ExtractLocString(CExoLocString& locStr, int32_t nID = 0, uint8_t bGender = 0);
+CExoLocString CreateLocString(const std::string& str, int32_t nID = 0, uint8_t bGender = 0);
 
 template <typename T>
 inline T PeekMessage(CNWSMessage *pMessage, int32_t offset)
@@ -76,6 +77,18 @@ inline std::string PeekMessage<std::string>(CNWSMessage *pMessage, int32_t offse
     return string;
 }
 
+template <>
+inline CResRef PeekMessage<CResRef>(CNWSMessage *pMessage, int32_t offset)
+{
+    std::string string;
+
+    string.reserve(16 + 1);
+    string.assign(reinterpret_cast<const char*>(pMessage->m_pnReadBuffer + pMessage->m_nReadBufferPtr + offset), 16);
+    string[16] = '\0';
+
+    return CResRef(string);
+}
+
 void AddStealthEvent(int32_t which, ObjectID oidSelf, ObjectID oidTarget);
 void AddObjectEnterAreaEvent(ObjectID oid, ObjectID oidArea);
 void AddObjectExitAreaEvent(ObjectID oid, ObjectID oidArea);
@@ -89,4 +102,5 @@ int PopScriptContext();
 
 void SetOrientation(CNWSObject *pObject, float facing);
 
+bool IsValidCustomResourceDirectoryAlias(const std::string& filename);
 }

@@ -20,7 +20,10 @@ struct CExoKeyTable;
 struct CExoKeyTable;
 struct CExoStringList;
 struct CKeyTableEntry;
-
+struct SHA1;
+namespace Hash {
+    struct SHA1;
+}
 
 typedef int BOOL;
 typedef uint16_t RESTYPE;
@@ -56,7 +59,7 @@ struct CExoResMan
     BOOL AddResourceImageFile(const CExoString & sName, uint8_t * pCipher = nullptr, uint32_t nPriority = (60*1000000));
     BOOL AddFixedKeyTableFile(const CExoString & sName, uint32_t nPriority = (1*1000000));
     BOOL AddResourceDirectory(const CExoString & sName, uint32_t nPriority, BOOL bDetectChanges = false);
-    BOOL AddManifest(const CExoString & manifestHash, uint32_t nPriority);
+    BOOL AddManifest(const Hash::SHA1 & manifestHash, uint32_t nPriority);
     void DumpAll();
     void DumpAllOfType(RESTYPE nType);
     void FreeResourceData(CRes * pRes);
@@ -72,7 +75,7 @@ struct CExoResMan
     BOOL RemoveResourceImageFile(const CExoString & sName);
     BOOL RemoveFixedKeyTableFile(const CExoString & sName);
     BOOL RemoveResourceDirectory(const CExoString & sName);
-    BOOL RemoveManifest(const CExoString & sManifestHash);
+    BOOL RemoveManifest(const Hash::SHA1 & sManifestHash);
     void ResumeServicing();
     void SetResObject(const CResRef & cResRef, RESTYPE nType, CRes * pNewRes);
     BOOL SetTotalResourceMemory(int64_t totalAvailableMemory);

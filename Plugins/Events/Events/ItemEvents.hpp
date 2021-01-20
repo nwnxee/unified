@@ -26,6 +26,7 @@ private:
     static int32_t UseLoreOnItemHook(CNWSCreature*, ObjectID);
     static void PayToIdentifyItemHook(CNWSCreature*, ObjectID, ObjectID);
     static void SplitItemHook(CNWSCreature*, CNWSItem*, int32_t);
+    static int32_t AcquireItemHook(CNWSCreature*, CNWSItem * *, ObjectID, ObjectID, uint8_t, uint8_t, int32_t, int32_t);
 };
 
 }

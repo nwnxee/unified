@@ -20,6 +20,7 @@ class ClientEvents;
 class CombatEvents;
 class DMActionEvents;
 class ExamineEvents;
+class FactionEvents;
 class FeatEvents;
 class ItemEvents;
 class MapEvents;
@@ -44,6 +45,7 @@ class ResourceEvents;
 class QuickbarEvents;
 class DebugEvents;
 class StoreEvents;
+class JournalEvents;
 
 class Events : public NWNXLib::Plugin
 {
@@ -78,6 +80,9 @@ public:
 
     static void InitOnFirstSubscribe(const std::string& eventName, std::function<void(void)> init);
 
+    static bool IsIDInWhitelist(const std::string& eventName, int32_t id);
+    static void ForceEnableWhitelist(const std::string& eventName);
+
 private: // Structures
     using EventMapType = std::unordered_map<std::string, std::vector<std::string>>;
 
@@ -93,6 +98,9 @@ private:
     ArgumentStack ToggleDispatchListMode(ArgumentStack&& args);
     ArgumentStack AddObjectToDispatchList(ArgumentStack&& args);
     ArgumentStack RemoveObjectFromDispatchList(ArgumentStack&& args);
+    ArgumentStack ToggleIDWhitelist(ArgumentStack&& args);
+    ArgumentStack AddIDToWhitelist(ArgumentStack&& args);
+    ArgumentStack RemoveIDFromWhitelist(ArgumentStack&& args);
 
     // Pushes a brand new event data onto the event data stack, set up with the correct defaults.
     // Only does it if needed though, based on the current event depth!
@@ -106,6 +114,7 @@ private:
 
     std::unordered_map<std::string, std::function<void(void)>> m_initList;
     std::unordered_map<std::string, std::set<ObjectID>> m_dispatchList;
+    std::unordered_map<std::string, std::set<int32_t>> m_idWhitelist;
 
     std::unique_ptr<AssociateEvents> m_associateEvents;
     std::unique_ptr<BarterEvents> m_barterEvents;
@@ -114,6 +123,7 @@ private:
     std::unique_ptr<CombatEvents> m_combatEvents;
     std::unique_ptr<DMActionEvents> m_dmActionEvents;
     std::unique_ptr<ExamineEvents> m_examineEvents;
+    std::unique_ptr<FactionEvents> m_factionEvents;
     std::unique_ptr<FeatEvents> m_featEvents;
     std::unique_ptr<ItemEvents> m_itemEvents;
     std::unique_ptr<MapEvents> m_mapEvents;
@@ -138,6 +148,7 @@ private:
     std::unique_ptr<QuickbarEvents> m_quickbarEvents;
     std::unique_ptr<DebugEvents> m_debugEvents;
     std::unique_ptr<StoreEvents> m_storeEvents;
+    std::unique_ptr<JournalEvents> m_journalEvents;
 };
 
 }

@@ -25,8 +25,8 @@ struct CResStruct
     BOOL m_bIncludeStringHashTable;
     CStringFieldIDType * m_pStringFieldIDs;
 
-    void SetIncludeWrittenStringHashTable(BOOL bIncludeStringTable);
-    uint32_t HashSearch(char * szFieldID);
+    //void SetIncludeWrittenStringHashTable(BOOL bIncludeStringTable);
+    //uint32_t HashSearch(char * szFieldID);
 
 
 #ifdef NWN_CLASS_EXTENSION_CResStruct

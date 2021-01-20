@@ -128,13 +128,14 @@ int NWNX_Util_GetServerTicksPerSecond();
 /// @return The last created object. On error, this returns OBJECT_INVALID.
 object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1);
 
-/// @brief Compiles and adds a script to the UserDirectory/nwnx folder.
+/// @brief Compiles and adds a script to the UserDirectory/nwnx folder, or to the location of sAlias.
 /// @note Will override existing scripts that are in the module.
 /// @param sFileName The script filename without extension, 16 or less characters.
 /// @param sScriptData The script data to compile
 /// @param bWrapIntoMain Set to TRUE to wrap sScriptData into void main(){}.
+/// @param sAlias The alias of the resource directory to add the ncs file to. Default: UserDirectory/nwnx
 /// @return "" on success, or the compilation error.
-string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE);
+string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE, string sAlias = "NWNX");
 
 /// @brief Gets the contents of a .nss script file as a string.
 /// @param sScriptName The name of the script to get the contents of.
@@ -142,22 +143,34 @@ string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMa
 /// @return The script file contents or "" on error.
 string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1);
 
-/// @brief Adds a nss file to the UserDirectory/nwnx folder.
+/// @brief Adds a nss file to the UserDirectory/nwnx folder, or to the location of sAlias.
 /// @note Will override existing nss files that are in the module
 /// @param sFileName The script filename without extension, 16 or less characters.
 /// @param sContents The contents of the nss file
+/// @param sAlias The alias of the resource directory to add the nss file to. Default: UserDirectory/nwnx
 /// @return TRUE on success.
-int NWNX_Util_AddNSSFile(string sFileName, string sContents);
+int NWNX_Util_AddNSSFile(string sFileName, string sContents, string sAlias = "NWNX");
 
-/// @brief Remove sFileName of nType from the UserDirectory/nwnx folder.
+/// @brief Remove sFileName of nType from the UserDirectory/nwnx folder, or from the location of sAlias.
 /// @param sFileName The filename without extension, 16 or less characters.
 /// @param nType The @ref resref_types "Resref Type".
+/// @param sAlias The alias of the resource directory to remove the file from. Default: UserDirectory/nwnx
 /// @return TRUE on success.
-int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType);
+int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType, string sAlias = "NWNX");
 
-/// @brief Set the NWScript instruction limit
+/// @brief Set the NWScript instruction limit.
 /// @param nInstructionLimit The new limit or -1 to reset to default.
 void NWNX_Util_SetInstructionLimit(int nInstructionLimit);
+
+/// @brief Get the NWScript instruction limit.
+int NWNX_Util_GetInstructionLimit();
+
+/// @brief Set the number of NWScript instructions currently executed.
+/// @param nInstructions The number of instructions, must be >= 0.
+void NWNX_Util_SetInstructionsExecuted(int nInstructions);
+
+/// @brief Get the number of NWScript instructions currently executed.
+int NWNX_Util_GetInstructionsExecuted();
 
 /// @brief Register a server console command that will execute a script chunk.
 /// @note Example usage: NWNX_Util_RegisterServerConsoleCommand("test", "PrintString(\"Test Command -> Args: $args\");");
@@ -188,8 +201,9 @@ int NWNX_Util_GetScriptReturnValue();
 /// @param sResRef The ResRef of the door.
 /// @param locLocation The location to create the door at.
 /// @param sNewTag An optional new tag for the door.
+/// @param nAppearanceType An optional index into doortypes.2da for appearance.
 /// @return The door, or OBJECT_INVALID on failure.
-object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "");
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1);
 
 /// @brief Set the object that will be returned by GetItemActivator.
 /// @param oObject An object.
@@ -213,6 +227,19 @@ void NWNX_Util_SetResourceOverride(int nResType, string sOldName, string sNewNam
 /// @param sName The name of the resource, 16 characters or less.
 /// @return The resource override, or "" if one is not set.
 string NWNX_Util_GetResourceOverride(int nResType, string sName);
+
+/// @brief Get if a script param is set.
+/// @param sParamName The script parameter name to check.
+/// @return TRUE if the script param is set, FALSE if not or on error.
+int NWNX_Util_GetScriptParamIsSet(string sParamName);
+
+/// @brief Set the module dawn hour.
+/// @param nDawnHour The new dawn hour
+void NWNX_Util_SetDawnHour(int nDawnHour);
+
+/// @brief Set the module dusk hour.
+/// @param nDuskHour The new dusk hour
+void NWNX_Util_SetDuskHour(int nDuskHour);
 
 /// @}
 
@@ -361,10 +388,11 @@ object NWNX_Util_GetLastCreatedObject(int nObjectType, int nNthLast = 1)
     return NWNX_GetReturnValueObject(NWNX_Util, sFunc);
 }
 
-string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE)
+string NWNX_Util_AddScript(string sFileName, string sScriptData, int bWrapIntoMain = FALSE, string sAlias = "NWNX")
 {
     string sFunc = "AddScript";
 
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sAlias);
     NWNX_PushArgumentInt(NWNX_Util, sFunc, bWrapIntoMain);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sScriptData);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
@@ -384,10 +412,11 @@ string NWNX_Util_GetNSSContents(string sScriptName, int nMaxLength = -1)
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
 }
 
-int NWNX_Util_AddNSSFile(string sFileName, string sContents)
+int NWNX_Util_AddNSSFile(string sFileName, string sContents, string sAlias = "NWNX")
 {
     string sFunc = "AddNSSFile";
 
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sAlias);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sContents);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
     NWNX_CallFunction(NWNX_Util, sFunc);
@@ -395,10 +424,11 @@ int NWNX_Util_AddNSSFile(string sFileName, string sContents)
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
-int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType)
+int NWNX_Util_RemoveNWNXResourceFile(string sFileName, int nType, string sAlias = "NWNX")
 {
     string sFunc = "RemoveNWNXResourceFile";
 
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sAlias);
     NWNX_PushArgumentInt(NWNX_Util, sFunc, nType);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sFileName);
     NWNX_CallFunction(NWNX_Util, sFunc);
@@ -412,6 +442,32 @@ void NWNX_Util_SetInstructionLimit(int nInstructionLimit)
 
     NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructionLimit);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetInstructionLimit()
+{
+    string sFunc = "GetInstructionLimit";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetInstructionsExecuted(int nInstructions)
+{
+    string sFunc = "SetInstructionsExecuted";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nInstructions);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetInstructionsExecuted()
+{
+    string sFunc = "GetInstructionsExecuted";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
 int NWNX_Util_RegisterServerConsoleCommand(string sCommand, string sScriptChunk)
@@ -457,12 +513,13 @@ int NWNX_Util_GetScriptReturnValue()
     return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
 }
 
-object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag)
+object NWNX_Util_CreateDoor(string sResRef, location locLocation, string sNewTag = "", int nAppearanceType = -1)
 {
     string sFunc = "CreateDoor";
 
     vector vPosition = GetPositionFromLocation(locLocation);
 
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nAppearanceType);
     NWNX_PushArgumentString(NWNX_Util, sFunc, sNewTag);
     NWNX_PushArgumentFloat(NWNX_Util, sFunc, GetFacingFromLocation(locLocation));
     NWNX_PushArgumentFloat(NWNX_Util, sFunc, vPosition.z);
@@ -516,4 +573,30 @@ string NWNX_Util_GetResourceOverride(int nResType, string sName)
     NWNX_CallFunction(NWNX_Util, sFunc);
 
     return NWNX_GetReturnValueString(NWNX_Util, sFunc);
+}
+
+int NWNX_Util_GetScriptParamIsSet(string sParamName)
+{
+    string sFunc = "GetScriptParamIsSet";
+
+    NWNX_PushArgumentString(NWNX_Util, sFunc, sParamName);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetDawnHour(int nDawnHour)
+{
+    string sFunc = "SetDawnHour";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nDawnHour);
+    NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+void NWNX_Util_SetDuskHour(int nDuskHour)
+{
+    string sFunc = "SetDuskHour";
+
+    NWNX_PushArgumentInt(NWNX_Util, sFunc, nDuskHour);
+    NWNX_CallFunction(NWNX_Util, sFunc);
 }

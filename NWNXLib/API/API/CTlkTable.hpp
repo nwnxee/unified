@@ -46,8 +46,8 @@ struct CTlkTable
     BOOL Reload();
     virtual void GetTokenValue(const CTlkTableToken & cTlkTableToken, CExoString & sToken);
     BOOL FetchInternal(uint32_t strId, STR_RES & strRes, BOOL bParse);
-    void CloseFile(CTlkFile * pTlkFile);
-    BOOL OpenFile(const CExoString & sFileName, CTlkFile * pTlkFile);
+    void CloseFile(CTlkFile * pTlkFile[2]);
+    BOOL OpenFile(const CExoString & sFileName, CTlkFile * pTlkFile[2]);
 
 
 #ifdef NWN_CLASS_EXTENSION_CTlkTable

@@ -4,6 +4,8 @@
 #include "API/CNetLayer.hpp"
 #include "API/CNetLayerPlayerInfo.hpp"
 #include "API/CNWSPlayer.hpp"
+#include "API/CNWSCreature.hpp"
+#include "API/CNWSCreatureStats.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CExoBase.hpp"
@@ -74,6 +76,36 @@ Administration::~Administration()
 {
 }
 
+CExoLinkedListNode* Administration::FindTURD(std::string playerName, std::string characterName)
+{
+    CExoLinkedListNode *foundNode = nullptr;
+
+    auto *turds = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
+    for (auto *node = turds->pHead; node; node = node->pNext)
+    {
+        auto *turd = static_cast<CNWSPlayerTURD*>(node->pObject);
+
+        if (turd)
+        {
+            std::string turdCharacterName = Utils::ExtractLocString(turd->m_lsFirstName);
+            std::string turdLastName = Utils::ExtractLocString(turd->m_lsLastName);
+
+            if (!turdLastName.empty())
+            {
+                turdCharacterName += turdCharacterName.empty() ? turdLastName : " " + turdLastName;
+            }
+
+            if (turd->m_sCommunityName.CStr() == playerName &&
+                characterName == turdCharacterName)
+            {
+                foundNode = node;
+                break;
+            }
+        }
+    }
+    return foundNode;
+}
+
 Events::ArgumentStack Administration::GetPlayerPassword(Events::ArgumentStack&&)
 {
     const CExoString password = Globals::AppManager()->m_pServerExoApp->GetNetLayer()->GetPlayerPassword();
@@ -123,6 +155,17 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     const auto objectId = Events::ExtractArgument<ObjectID>(args);
     const auto bPreserveBackup = static_cast<bool>(Events::ExtractArgument<int32_t>(args));
 
+    // TODO: Remove the try/catch in some later release
+    std::string kickMessage;
+    try
+    {
+        kickMessage = Events::ExtractArgument<std::string>(args);
+    }
+    catch(const std::runtime_error& e)
+    {
+        LOG_WARNING("NWNX_Administration_DeletePlayerCharacter() called from NWScript without sKickMessage parameter. Please update nwnx_admin.nss");
+    }
+
     CServerExoApp* exoApp = Globals::AppManager()->m_pServerExoApp;
     CNWSPlayer* player = exoApp->GetClientObjectByObjectId(objectId);
 
@@ -146,6 +189,7 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
     }
 
     std::string filename = servervault + playerdir + "/" + bicname + ".bic";
+    std::string playerName = player->GetPlayerName().CStr();
 
     LOG_NOTICE("Deleting %s %s", filename, bPreserveBackup ? "(backed up)" : "(no backup)");
 
@@ -155,11 +199,19 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
         return Events::Arguments();
     }
 
+    CNWSCreature* creature = Globals::AppManager()->m_pServerExoApp->GetCreatureByGameObjectID(objectId);
+    std::string characterName, characterLastName;
+    if (creature && creature->m_pStats)
+    {
+        characterName = Utils::ExtractLocString(creature->m_pStats->m_lsFirstName);
+        characterLastName = Utils::ExtractLocString(creature->m_pStats->m_lsLastName);
+    }
+
     GetServices()->m_tasks->QueueOnMainThread(
-        [filename, playerId, bPreserveBackup]
+        [filename, playerId, bPreserveBackup, playerName, characterName, characterLastName, kickMessage]
         {
             // Will show "Delete Character" message to PC. Best match from dialog.tlk
-            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, "");
+            Globals::AppManager()->m_pServerExoApp->GetNetLayer()->DisconnectPlayer(playerId, 10392, 1, kickMessage);
 
             if (bPreserveBackup)
             {
@@ -172,6 +224,21 @@ Events::ArgumentStack Administration::DeletePlayerCharacter(Events::ArgumentStac
             else
             {
                 unlink(filename.c_str());
+            }
+
+            std::string chararacterFullName = characterName;
+
+            if (!characterLastName.empty())
+            {
+                chararacterFullName += characterName.empty() ? characterLastName : " " + characterLastName;
+            }
+
+            CExoLinkedListNode *foundNode = FindTURD(playerName, chararacterFullName);
+
+            if (foundNode)
+            {
+                LOG_NOTICE("Deleted TURD of %s (%s)", chararacterFullName, playerName);
+                Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal->Remove(foundNode);
             }
         });
 
@@ -518,31 +585,7 @@ Events::ArgumentStack Administration::DeleteTURD(Events::ArgumentStack&& args)
     ASSERT_OR_THROW(!playerName.empty());
     ASSERT_OR_THROW(!characterName.empty());
 
-    CExoLinkedListNode *foundNode = nullptr;
-
-    auto *turds = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal;
-    for (auto *node = turds->pHead; node; node = node->pNext)
-    {
-        auto *turd = static_cast<CNWSPlayerTURD*>(node->pObject);
-
-        if (turd)
-        {
-            std::string turdCharacterName = Utils::ExtractLocString(turd->m_lsFirstName);
-            std::string turdLastName = Utils::ExtractLocString(turd->m_lsLastName);
-
-            if (!turdLastName.empty())
-            {
-                turdCharacterName += turdCharacterName.empty() ? turdLastName : " " + turdLastName;
-            }
-
-            if (turd->m_sCommunityName.CStr() == playerName &&
-                characterName == turdCharacterName)
-            {
-                foundNode = node;
-                break;
-            }
-        }
-    }
+    CExoLinkedListNode *foundNode = FindTURD(playerName, characterName);
 
     if (foundNode)
     {

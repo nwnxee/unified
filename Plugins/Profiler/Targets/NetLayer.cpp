@@ -11,8 +11,8 @@ using namespace NWNXLib;
 
 static Services::MetricsProxy* g_metrics;
 
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerProcessReceivedFrames, void, CNetLayer*, int32_t);
-DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerUpdateStatusLoop, int32_t, CNetLayer*, uint32_t);
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerProcessReceivedFrames, void, CNetLayer*, int32_t)
+DECLARE_PROFILE_TARGET_SIMPLE(*g_metrics, NetLayerUpdateStatusLoop, int32_t, CNetLayer*, uint32_t)
 
 NetLayer::NetLayer(NWNXLib::Services::HooksProxy* hooker,
     NWNXLib::Services::MetricsProxy* metrics)
@@ -24,7 +24,7 @@ NetLayer::NetLayer(NWNXLib::Services::HooksProxy* hooker,
         void, CNetLayer*, int32_t);
 
     DEFINE_PROFILER_TARGET(hooker,
-        NetLayerUpdateStatusLoop, API::Functions::_ZN17CNetLayerInternal16UpdateStatusLoopEj,
+        NetLayerUpdateStatusLoop, API::Functions::_ZN9CNetLayer16UpdateStatusLoopEj,
         int32_t, CNetLayer*, uint32_t);
 }
 

@@ -297,7 +297,6 @@ struct CNWSMessage : CNWMessage
     void SendServerToServerAdminServerStatus(uint32_t nPlayerId);
     void SendServerToServerAdminServerSettings(uint32_t nPlayerId);
     void SendServerToServerAdminSaveStatus(uint32_t nPlayerId, uint8_t nStatus);
-    BOOL SendMessageToAllSysAdmins(CExoString sCommand);
     BOOL ParseGetBool(uint8_t * pMsgPortion, uint32_t msgPortionSize, BOOL & pBool);
     BOOL ParseGetString(uint8_t * pMsgPortion, uint32_t msgPortionSize, CExoString & pString, uint32_t nMaxStrLength);
     BOOL ParseToken(const char * token, uint8_t * * pMsgPortion, uint32_t & msgPortionSize, BOOL bDelimeterFollowing);
@@ -362,7 +361,6 @@ struct CNWSMessage : CNWMessage
     void UpdateLastUpdateInventory(CNWSPlayer * pPlayer, uint32_t nInventorySlot, CNWSPlayerInventoryGUI * pInventoryGUI);
     void UpdateLastUpdateObject(CNWSPlayer * pPlayer, CNWSObject * pGameObject, CLastUpdateObject * pLastUpdateObject, uint32_t nObjectUpdatesRequired);
     void UpdateLastUpdateObjectAppearance(CNWSObject * pGameObject, CLastUpdateObject * pLastUpdateObject, uint32_t nObjectAppearanceUpdatesRequired);
-    void UpdateLastUpdateRepository(CNWSPlayer * pPlayer, CExoLinkedListPosition pPosition, CExoLinkedListPosition pOldPosition);
     void WriteGameObjUpdate_UpdateAppearance(CNWSObject * pAreaObject, CLastUpdateObject * pLastUpdateObject, uint32_t nUpdatesRequired, CNWSPlayer * pPlayer);
     void WriteGameObjUpdate_WriteInventorySlotAdd(CNWSCreature * pAreaCreature, CNWSItem * pItem, uint32_t nSlot);
     void WriteGameObjUpdate_WriteInventorySlotDelete(CNWSCreature * pAreaCreature, uint32_t nSlot);
@@ -375,7 +373,6 @@ struct CNWSMessage : CNWMessage
     uint32_t ComputeNumAutoMapUpdatesRequired(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject, uint32_t * pnUnexploredTiles = 0);
     void UpdateLastUpdateAutoMap(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject);
     BOOL ComputeLastUpdate_GuiFeats(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject);
-    void UpdateLastUpdate_GuiFeats(CNWSCreature * pCreature, CNWSPlayerLastUpdateObject * pLastUpdateObject);
     uint32_t ComputeLastUpdate_GuiSkills(CNWSCreature * pCreature);
     uint32_t ComputeLastUpdate_PlayerState(CNWSCreature * pCreature);
     uint16_t ComputeLastUpdate_AssociateState(CNWSCreature * pCreature);

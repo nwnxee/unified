@@ -98,6 +98,8 @@ Object::Object(Services::ProxyServiceList* services)
     REGISTER(GetIsDestroyable);
     REGISTER(DoSpellImmunity);
     REGISTER(DoSpellLevelAbsorption);
+    REGISTER(SetHasInventory);
+    REGISTER(GetCurrentAnimation);
 
 #undef REGISTER
 }
@@ -184,7 +186,7 @@ ArgumentStack Object::SetPosition(ArgumentStack&& args)
         pos.x = Services::Events::ExtractArgument<float>(args);
         auto bUpdateSubareas = !!Services::Events::ExtractArgument<int32_t>(args);
 
-        pObject->SetPosition(pos, true /*bUpdateInAreaArray*/);
+        pObject->SetPosition(pos, false);
 
         if (bUpdateSubareas)
         {
@@ -351,8 +353,16 @@ ArgumentStack Object::CheckFit(ArgumentStack&& args)
         {
             return Services::Events::Arguments(retVal);
         }
-        retVal = 0;
         const auto baseitem = Services::Events::ExtractArgument<int32_t>(args);
+
+        if (pRepo == nullptr || Globals::Rules()->m_pBaseItemArray->GetBaseItem(baseitem) == nullptr)
+        {
+            LOG_ERROR("Base Item or Object Repository not found.");
+            return Services::Events::Arguments(retVal);
+        }
+
+        retVal = 0;
+
         static CNWSItem *tmp = new CNWSItem(Constants::OBJECT_INVALID);
         tmp->m_nBaseItem = baseitem;
 
@@ -633,7 +643,6 @@ ArgumentStack Object::AddIconEffect(ArgumentStack&& args)
         effIcon->m_bExpose    = true;
         effIcon->m_sCustomTag = "NWNX_Object_IconEffect";
 
-        effIcon->SetNumIntegers(1);
         effIcon->m_nParamInteger[0] = nIcon;
 
         if (fDuration > 0.0)
@@ -965,6 +974,30 @@ ArgumentStack Object::DoSpellLevelAbsorption(ArgumentStack&& args)
     {
         if(auto *pVersus = object(args))
             retVal = pObject->DoSpellLevelAbsorption(pVersus);
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::SetHasInventory(ArgumentStack&& args)
+{
+    if (auto *pPlaceable = Utils::AsNWSPlaceable(object(args)))
+    {
+        const auto hasInventory = !!Services::Events::ExtractArgument<int32_t>(args);
+
+        pPlaceable->m_bHasInventory = hasInventory;
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Object::GetCurrentAnimation(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        retVal = pObject->m_nAnimation;
     }
 
     return Services::Events::Arguments(retVal);

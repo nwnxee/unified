@@ -16,6 +16,11 @@ struct BIFFFILE_VARRESENTRY_E1;
 typedef int BOOL;
 
 
+enum BIFFFILE_Version
+{
+    BIFFFILE_V1,
+    BIFFFILE_E1
+};
 struct CExoResFile : CExoPackedFile
 {
     BIFFFILE_Version m_nVersion;

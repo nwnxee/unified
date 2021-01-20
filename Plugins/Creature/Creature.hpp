@@ -126,14 +126,25 @@ private:
     ArgumentStack SetEncounter                  (ArgumentStack&& args);
     ArgumentStack GetEncounter                  (ArgumentStack&& args);
     ArgumentStack GetIsBartering                (ArgumentStack&& args);
+    ArgumentStack GetWalkAnimation              (ArgumentStack&& args);
+    ArgumentStack SetWalkAnimation              (ArgumentStack&& args);
+    ArgumentStack SetAttackRollOverride         (ArgumentStack&& args);
+    ArgumentStack SetParryAllAttacks            (ArgumentStack&& args);
+    ArgumentStack GetNoPermanentDeath           (ArgumentStack&& args);
+    ArgumentStack SetNoPermanentDeath           (ArgumentStack&& args);
+    ArgumentStack ComputeSafeLocation           (ArgumentStack&& args);
+    ArgumentStack DoPerceptionUpdateOnCreature  (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
+    std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> m_RollModifier;
+    std::unordered_map<ObjectID, bool> m_ParryAllAttacks;
 
 private:
     static bool s_bAdjustCasterLevel;
     static bool s_bCasterLevelHooksInitialized;
     static bool s_bCriticalMultiplierHooksInitialized;
     static bool s_bCriticalRangeHooksInitialized;
+    static bool s_bResolveAttackRollHookInitialized;
 
     static void InitCasterLevelHooks();
     static void CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
@@ -142,6 +153,8 @@ private:
     static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
     static void InitCriticalMultiplierHook();
     static void InitCriticalRangeHook();
+    static void DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget);
+    static bool InitResolveAttackRollHook();
 
 };
 

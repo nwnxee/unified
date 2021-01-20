@@ -54,7 +54,7 @@ struct ScriptVariant
     operator bool() const { return !Holds<NullArgument>(); }
 
     template <typename T>
-    T& Get() { return const_cast<T&>(const_cast<const ScriptVariant*>(this)->Get<T>()); };
+    T& Get() { return const_cast<T&>(const_cast<const ScriptVariant*>(this)->Get<T>()); }
 
     template <typename T>
     const T& Get() const

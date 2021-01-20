@@ -29,6 +29,8 @@ public:
 
     std::unique_ptr<NWNXLib::Services::ServiceList> m_services;
 
+    const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
+
 private: // Structures
     using PluginProxyServiceMap = std::map<
         NWNXLib::Services::Plugins::RegistrationToken,
@@ -39,6 +41,13 @@ private: // Structures
 
 private:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_createServerHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmSetVarHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmGetVarHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmTagEffectHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmTagItemProperyHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmPlaySoundHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_destroyServerHook;
+
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
     PluginProxyServiceMap m_pluginProxyServiceMap;
 
@@ -65,6 +74,7 @@ private:
     static void MainLoopInternalHandler(bool, CServerExoAppInternal*);
 
     int m_ScriptChunkRecursion;
+    std::vector<std::string> m_CustomResourceDirectoryAliases;
 };
 
 }

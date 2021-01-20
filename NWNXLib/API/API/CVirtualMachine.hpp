@@ -83,7 +83,6 @@ struct CVirtualMachine
     int32_t ExecuteCode(int32_t * nInstructionPointer, DataBlockRef pCode, CVirtualMachineDebuggingContext * pDebugContext = nullptr);
     BOOL Test_RunAllScriptsInDirectory(CExoString & sRunDirectoryAlias);
     BOOL DeleteScript(CVirtualMachineScript * pScript);
-    int32_t ExecuteInstructions(int32_t nRecursionLevel, int32_t nNodeLocation);
     void InitializeScript(CVirtualMachineScript * pScript, DataBlockRef pData);
     BOOL PopInstructionPtr(int32_t * nInstructionPointer);
     BOOL PushInstructionPtr(int32_t nInstructionPointer);
