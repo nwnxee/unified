@@ -14,10 +14,10 @@ namespace NWNXLib::Hooking {
 class FunctionHook final
 {
 public:
-    FunctionHook(uintptr_t originalFunction, uintptr_t newFunction)
+    FunctionHook(uintptr_t originalFunction, void* newFunction)
     {
         ASSERT(m_funchook = funchook_create());
-        ASSERT(!funchook_prepare(m_funchook, (void **)&originalFunction, (void *)newFunction));
+        ASSERT(!funchook_prepare(m_funchook, (void **)&originalFunction, newFunction));
         ASSERT(!funchook_install(m_funchook, 0));
         ASSERT(m_trampoline = (void *)originalFunction);
     }
@@ -41,10 +41,9 @@ namespace NWNXLib::Services {
 class Hooks
 {
 public:
-    template <uintptr_t Address, typename Ret, typename ... Params>
-    std::unique_ptr<Hooking::FunctionHook> RequestExclusiveHook(Ret(*funcPtr)(Params ...))
+    std::unique_ptr<Hooking::FunctionHook> Hook(uintptr_t address, void* funcPtr)
     {
-        return std::make_unique<Hooking::FunctionHook>(Platform::ASLR::GetRelocatedAddress(Address), (uintptr_t)funcPtr);
+        return std::make_unique<Hooking::FunctionHook>(Platform::ASLR::GetRelocatedAddress(address), funcPtr);
     }
 
     template <uintptr_t Address, typename Ret, typename ... Params>
@@ -56,10 +55,10 @@ public:
         static Hooking::FunctionHook *original;
         if (!original)
         {
-            original = m_sharedHooks.emplace_back(RequestExclusiveHook<Address, Ret>(
+            original = m_sharedHooks.emplace_back(Hook(Address, (void*)
                 +[](Params ... args) -> Ret
                 {
-                    SCOPEGUARD(for (auto o: observers)o(false, args...));
+                    SCOPEGUARD(for (auto o: observers) o(false, args...));
                     for (auto o : observers)
                         o(true, args...);
 
@@ -71,6 +70,7 @@ private:
     std::vector<std::unique_ptr<Hooking::FunctionHook>> m_sharedHooks;
 };
 
+// NOTE: The templated versions are deprecated, use Hook() in new code
 class HooksProxy : public ServiceProxy<Hooks>
 {
 public:
@@ -85,8 +85,13 @@ public:
     template <uintptr_t Address, typename Ret, typename ... Params>
     Hooking::FunctionHook* RequestExclusiveHook(Ret(*funcPtr)(Params ...))
     {
-        return m_hooks.emplace_back(m_proxyBase.RequestExclusiveHook<Address, Ret>(funcPtr)).get();
+        return m_hooks.emplace_back(m_proxyBase.Hook(Address, (void*)funcPtr)).get();
     }
+    Hooking::FunctionHook* Hook(uintptr_t address, void* funcPtr)
+    {
+        return m_hooks.emplace_back(m_proxyBase.Hook(address, funcPtr)).get();
+    }
+
 private:
     std::vector<std::unique_ptr<Hooking::FunctionHook>> m_hooks;
 };
