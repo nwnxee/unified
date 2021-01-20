@@ -106,8 +106,8 @@ struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nElemen
 /// @param oObject The object with the effect to replace
 /// @param nElement The array element to be replaced
 /// @param e The unpacked effect to replace it with.
-/// @note Cannot replace an effect with a different type.
-void NWNX_Effect_ReplaceEffectByElement(object oObject, int nElement, struct  NWNX_EffectUnpacked e);
+/// @note Cannot replace an effect with a different type or ID.
+void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_EffectUnpacked e);
 
 /// @brief Removes effect by ID
 /// @param oObject The object to remove the effect from
@@ -166,6 +166,11 @@ struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=T
         n.bLinkLeftValid = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
         n.eLinkLeft = NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
     }
+    else
+    {
+        n.bLinkRightValid = FALSE;
+        n.bLinkLeftValid = FALSE;
+    }
 
     n.nCasterLevel = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
     n.bShowIcon = NWNX_GetReturnValueInt(NWNX_Effect, sFunc);
@@ -184,20 +189,11 @@ struct NWNX_EffectUnpacked __NWNX_Effect_ResolveUnpack(string sFunc, int bLink=T
     return n;
 }
 
-struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
+void __NWNX_Effect_ResolvePack(string sFunc, int bReplace=FALSE)
 {
-    string sFunc = "UnpackEffect";
+    if(!bReplace)
+        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
 
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
-    NWNX_CallFunction(NWNX_Effect, sFunc);
-
-    return __NWNX_Effect_ResolveUnpack(sFunc);
-}
-effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
-{
-    string sFunc = "PackEffect";
-
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nType);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSubType);
 
     NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fDuration);
@@ -210,10 +206,13 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bShowIcon);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nCasterLevel);
 
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkLeft);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkLeftValid);
-    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkRight);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkRightValid);
+    if(!bReplace)
+    {
+        NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkLeft);
+        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkLeftValid);
+        NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e.eLinkRight);
+        NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bLinkRightValid);
+    }
 
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nNumIntegers);
     NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam0);
@@ -248,6 +247,22 @@ effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
     NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.z);
 
     NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sTag);
+}
+
+struct NWNX_EffectUnpacked NWNX_Effect_UnpackEffect(effect e)
+{
+    string sFunc = "UnpackEffect";
+
+    NWNX_PushArgumentEffect(NWNX_Effect, sFunc, e);
+    NWNX_CallFunction(NWNX_Effect, sFunc);
+
+    return __NWNX_Effect_ResolveUnpack(sFunc);
+}
+effect NWNX_Effect_PackEffect(struct NWNX_EffectUnpacked e)
+{
+    string sFunc = "PackEffect";
+
+    __NWNX_Effect_ResolvePack(sFunc);
 
     NWNX_CallFunction(NWNX_Effect, sFunc);
     return NWNX_GetReturnValueEffect(NWNX_Effect, sFunc);
@@ -316,58 +331,13 @@ struct NWNX_EffectUnpacked NWNX_Effect_GetTrueEffect(object oObject, int nElemen
     return __NWNX_Effect_ResolveUnpack(sFunc, FALSE);
 }
 
-void NWNX_Effect_ReplaceEffectByElement(object oObject, int nElement, struct  NWNX_EffectUnpacked e)
+void NWNX_Effect_ReplaceEffectByIndex(object oObject, int nIndex, struct  NWNX_EffectUnpacked e)
 {
-    string sFunc = "ReplaceEffectByElement";
+    string sFunc = "ReplaceEffectByIndex";
 
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSubType);
+    __NWNX_Effect_ResolvePack(sFunc, TRUE);
 
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fDuration);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nExpiryCalendarDay);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nExpiryTimeOfDay);
-
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oCreator);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nSpellId);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bExpose);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.bShowIcon);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nCasterLevel);
-
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam0);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam1);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam2);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam3);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam4);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam5);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam6);
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, e.nParam7);
-
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam0);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam1);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam2);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.fParam3);
-
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam0);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam1);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam2);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam3);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam4);
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sParam5);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam0);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam1);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam2);
-    NWNX_PushArgumentObject(NWNX_Effect, sFunc, e.oParam3);
-
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.x);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.y);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam0.z);
-
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.x);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.y);
-    NWNX_PushArgumentFloat(NWNX_Effect, sFunc, e.vParam1.z);
-
-    NWNX_PushArgumentString(NWNX_Effect, sFunc, e.sTag);
-
-    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nElement);
+    NWNX_PushArgumentInt(NWNX_Effect, sFunc, nIndex);
     NWNX_PushArgumentObject(NWNX_Effect, sFunc, oObject);
     NWNX_CallFunction(NWNX_Effect, sFunc);
 

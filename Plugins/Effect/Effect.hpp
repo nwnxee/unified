@@ -30,12 +30,13 @@ private:
     ArgumentStack ReplaceEffect(ArgumentStack&& args);
     ArgumentStack GetTrueEffectCount(ArgumentStack&& args);
     ArgumentStack GetTrueEffect(ArgumentStack&& args);
-    ArgumentStack ReplaceEffectByElement(ArgumentStack&& args);
+    ArgumentStack ReplaceEffectByIndex(ArgumentStack&& args);
     ArgumentStack RemoveEffectById(ArgumentStack&& args);
     ArgumentStack SetEffectImmunityBypass(ArgumentStack&& args);
     static int32_t  GetEffectImmunityHook(CNWSCreatureStats *pStats, uint8_t nType, CNWSCreature * pVersus, BOOL bConsiderFeats=true);
 
     ArgumentStack ResolveUnpack(CGameEffect *eff, bool bLink=true);
+    void ResolvePack(CGameEffect *eff, bool bReplace=false);
     void InitEffectImmHook();
 };
 
