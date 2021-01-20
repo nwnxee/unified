@@ -24,6 +24,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Encounter: SetGeometry()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
+- Area: NWNX_Area_GetAmbientSound{Day/Night}()
 
 ### Changed
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
