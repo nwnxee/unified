@@ -339,6 +339,16 @@ void NWNX_Object_SetHasInventory(object obj, int bHasInventory);
 /// @return -1 on error or the engine animation constant
 int NWNX_Object_GetCurrentAnimation(object oObject);
 
+/// @brief Gets the AI level of an object.
+/// @param oObject The object.
+/// @return The AI level (AI_LEVEL_* -1 to 4).
+int NWNX_Object_GetAILevel(object oObject);
+
+/// @brief Sets the AI level of an object.
+/// @param oObject The object.
+/// @param nLevel The level to set (AI_LEVEL_* -1 to 4).
+void NWNX_Object_SetAILevel(object oObject, int nLevel);
+
 /// @}
 
 int NWNX_Object_GetLocalVariableCount(object obj)
@@ -831,4 +841,24 @@ int NWNX_Object_GetCurrentAnimation(object oObject)
     NWNX_CallFunction(NWNX_Object, sFunc);
 
     return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+int NWNX_Object_GetAILevel(object oObject)
+{
+    string sFunc = "GetAILevel";
+
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+    NWNX_CallFunction(NWNX_Object, sFunc);
+
+    return NWNX_GetReturnValueInt(NWNX_Object, sFunc);
+}
+
+void NWNX_Object_SetAILevel(object oObject, int nLevel)
+{
+    string sFunc = "SetAILevel";
+
+    NWNX_PushArgumentInt(NWNX_Object, sFunc, nLevel);
+    NWNX_PushArgumentObject(NWNX_Object, sFunc, oObject);
+
+    NWNX_CallFunction(NWNX_Object, sFunc);
 }

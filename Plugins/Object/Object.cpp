@@ -1,6 +1,7 @@
 #include "Object.hpp"
 
 #include "API/CAppManager.hpp"
+#include "API/CServerAIMaster.hpp"
 #include "API/CServerExoApp.hpp"
 #include "API/CNWSObject.hpp"
 #include "API/CNWSScriptVar.hpp"
@@ -100,6 +101,8 @@ Object::Object(Services::ProxyServiceList* services)
     REGISTER(DoSpellLevelAbsorption);
     REGISTER(SetHasInventory);
     REGISTER(GetCurrentAnimation);
+    REGISTER(GetAILevel);
+    REGISTER(SetAILevel);
 
 #undef REGISTER
 }
@@ -1001,6 +1004,32 @@ ArgumentStack Object::GetCurrentAnimation(ArgumentStack&& args)
     }
 
     return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::GetAILevel(ArgumentStack&& args)
+{
+    int32_t retVal = -1;
+
+    if (auto *pObject = object(args))
+    {
+        retVal = pObject->m_nAILevel;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Object::SetAILevel(ArgumentStack&& args)
+{
+    if (auto *pObject = object(args))
+    {
+        const auto nLevel = Services::Events::ExtractArgument<int32_t>(args);
+        ASSERT_OR_THROW(nLevel >= -1);
+        ASSERT_OR_THROW(nLevel <= 4);
+        auto *ai = Globals::AppManager()->m_pServerExoApp->GetServerAIMaster();
+        ai->SetAILevel(pObject, nLevel);
+    }
+
+    return Services::Events::Arguments();
 }
 
 }
