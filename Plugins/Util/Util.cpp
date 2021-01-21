@@ -35,6 +35,7 @@
 #include <cstdio>
 #include <regex>
 #include <cmath>
+#include <chrono>
 
 
 using namespace NWNXLib;
@@ -96,6 +97,7 @@ Util::Util(Services::ProxyServiceList* services)
     REGISTER(GetScriptParamIsSet);
     REGISTER(SetDawnHour);
     REGISTER(SetDuskHour);
+    REGISTER(GetHighResTimeStamp);
 
 #undef REGISTER
 
@@ -843,6 +845,16 @@ ArgumentStack Util::SetDuskHour(ArgumentStack &&args)
       ASSERT_OR_THROW(duskHour <= 23);
     Utils::GetModule()->m_nDuskHour = duskHour;
     return Services::Events::Arguments();
+}
+
+ArgumentStack Util::GetHighResTimeStamp(ArgumentStack&&)
+{
+    auto now = std::chrono::system_clock::now();
+    auto dur = now.time_since_epoch();
+
+    auto count = std::chrono::duration_cast<std::chrono::microseconds>(dur).count();
+
+    return Services::Events::Arguments((int32_t)(count / 1000000), (int32_t)(count % 1000000));
 }
 
 }
