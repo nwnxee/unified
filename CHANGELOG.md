@@ -22,6 +22,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Creature: DoPerceptionUpdateOnCreature()
 - Creature: {Get/Set}PersonalSpace()
 - Creature: {Get/Set}CreaturePersonalSpace()
+- Creature: {Get/Set}Height()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
 - Util: GetInstructionLimit()

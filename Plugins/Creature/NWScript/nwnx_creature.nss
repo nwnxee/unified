@@ -865,6 +865,16 @@ float NWNX_Creature_GetCreaturePersonalSpace(object oCreature);
 /// @param fCrePerspace The creatures creature personal space.
 void NWNX_Creature_SetCreaturePersonalSpace(object oCreature, float fCrePerspace);
 
+/// @brief Get a creatures height.
+/// @param oCreature The creature.
+/// @return The creatures height.
+float NWNX_Creature_GetHeight(object oCreature);
+
+/// @brief Set a creatures height.
+/// @param oCreature The creature.
+/// @param fHeight The creatures height.
+void NWNX_Creature_SetHeight(object oCreature, float fHeight);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2203,6 +2213,25 @@ void NWNX_Creature_SetCreaturePersonalSpace(object oCreature, float fCrePerspace
     string sFunc = "SetCreaturePersonalSpace";
 
     NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fCrePerspace);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetHeight(object oCreature)
+{
+    string sFunc = "GetHeight";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetHeight(object oCreature, float fHeight)
+{
+    string sFunc = "SetHeight";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fHeight);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

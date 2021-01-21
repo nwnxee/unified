@@ -24,6 +24,9 @@ void main()
     NWNX_Creature_SetCreaturePersonalSpace(oCreature, 0.25);
     NWNX_Tests_Report("NWNX_Creature", "{Set/Get}CreaturePersonalSpace", NWNX_Creature_GetCreaturePersonalSpace(oCreature) == 0.25);
 
+    NWNX_Creature_SetHeight(oCreature, 0.4);
+    NWNX_Tests_Report("NWNX_Creature", "{Set/Get}Height", NWNX_Creature_GetHeight(oCreature) == 0.4);
+
     //
     // FEAT related functions
     //

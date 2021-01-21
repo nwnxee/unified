@@ -188,6 +188,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetPersonalSpace);
     REGISTER(GetCreaturePersonalSpace);
     REGISTER(SetCreaturePersonalSpace);
+    REGISTER(GetHeight);
+    REGISTER(SetHeight);
 
 #undef REGISTER
 }
@@ -3164,6 +3166,35 @@ ArgumentStack Creature::SetCreaturePersonalSpace(ArgumentStack&& args)
         if (pCreature->m_pcPathfindInformation)
         {
             pCreature->m_pcPathfindInformation->m_fCreaturePersonalSpace = fCrePerspace;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetHeight(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_pcPathfindInformation)
+        {
+            retVal = pCreature->m_pcPathfindInformation->m_fHeight;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetHeight(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fHeight = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fHeight >= 0);
+        if (pCreature->m_pcPathfindInformation)
+        {
+            pCreature->m_pcPathfindInformation->m_fHeight = fHeight;
         }
     }
 
