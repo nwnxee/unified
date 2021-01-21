@@ -26,6 +26,8 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Util: {Get|Set}InstructionsExecuted()
 - Area: NWNX_Area_GetAmbientSound{Day/Night}()
 - Area: NWNX_Area_GetAmbientSound{Day/Night}Volume
+- Admin: {Get/Set}MinLevel()
+- Admin: {Get/Set}MaxLevel()
 - Object: {Get|Set}AILevel()
 
 ### Changed

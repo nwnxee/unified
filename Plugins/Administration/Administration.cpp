@@ -68,6 +68,10 @@ Administration::Administration(Services::ProxyServiceList* services)
     REGISTER(GetDebugValue);
     REGISTER(SetDebugValue);
     REGISTER(ReloadRules);
+    REGISTER(GetMinLevel);
+    REGISTER(SetMinLevel);
+    REGISTER(GetMaxLevel);
+    REGISTER(SetMaxLevel);
 
 #undef REGISTER
 }
@@ -670,6 +674,40 @@ Events::ArgumentStack Administration::ReloadRules(Events::ArgumentStack&&)
 {
     LOG_NOTICE("Reloading rules!");
     Globals::Rules()->ReloadAll();
+    return Events::Arguments();
+}
+
+Events::ArgumentStack Administration::GetMinLevel(Events::ArgumentStack&&)
+{
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    return Events::Arguments(pServerInfo->m_JoiningRestrictions.nMinLevel);
+}
+
+Events::ArgumentStack Administration::SetMinLevel(Events::ArgumentStack&& args)
+{
+    const auto nLevel = Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(nLevel >= 1);
+    ASSERT_OR_THROW(nLevel <= 255);
+    LOG_NOTICE("Set minimum level to %d.", nLevel);
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    pServerInfo->m_JoiningRestrictions.nMinLevel = nLevel;
+    return Events::Arguments();
+}
+
+Events::ArgumentStack Administration::GetMaxLevel(Events::ArgumentStack&&)
+{
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    return Events::Arguments(pServerInfo->m_JoiningRestrictions.nMaxLevel);
+}
+
+Events::ArgumentStack Administration::SetMaxLevel(Events::ArgumentStack&& args)
+{
+    const auto nLevel = Events::ExtractArgument<int32_t>(args);
+    ASSERT_OR_THROW(nLevel >= 1);
+    ASSERT_OR_THROW(nLevel <= 255);
+    LOG_NOTICE("Set maximum level to %d.", nLevel);
+    auto *pServerInfo = Globals::AppManager()->m_pServerExoApp->GetServerInfo();
+    pServerInfo->m_JoiningRestrictions.nMaxLevel = nLevel;
     return Events::Arguments();
 }
 
