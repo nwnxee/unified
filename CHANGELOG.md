@@ -24,6 +24,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Encounter: SetGeometry()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
+- Util: NWNX_Util_GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
 - Area: NWNX_Area_GetAmbientSound{Day/Night}()
 - Area: NWNX_Area_GetAmbientSound{Day/Night}Volume
 
@@ -32,6 +33,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 
 ### Deprecated
 - Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
+- Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.
 
 ### Removed
 - N/A
