@@ -885,6 +885,16 @@ float NWNX_Creature_GetHitDistance(object oCreature);
 /// @param fHitDist The creatures hit distance.
 void NWNX_Creature_SetHitDistance(object oCreature, float fHitDist);
 
+/// @brief Get a creatures preferred attack distance.
+/// @param oCreature The creature.
+/// @return The creatures preferred attack distance.
+float NWNX_Creature_GetPreferredAttackDistance(object oCreature);
+
+/// @brief Set a creatures preferred attack distance.
+/// @param oCreature The creature.
+/// @param fPrefAtckDist The creatures preferred attack distance.
+void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckDist);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2261,6 +2271,25 @@ void NWNX_Creature_SetHitDistance(object oCreature, float fHitDist)
     string sFunc = "SetHitDistance";
 
     NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fHitDist);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetPreferredAttackDistance(object oCreature)
+{
+    string sFunc = "GetPreferredAttackDistance";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetPreferredAttackDistance(object oCreature, float fPrefAtckDist)
+{
+    string sFunc = "SetPreferredAttackDistance";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fPrefAtckDist);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

@@ -24,6 +24,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Creature: {Get/Set}CreaturePersonalSpace()
 - Creature: {Get/Set}Height()
 - Creature: {Get/Set}HitDistance()
+- Creature: {Get/Set}PreferredAttackDistance()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
 - Util: GetInstructionLimit()

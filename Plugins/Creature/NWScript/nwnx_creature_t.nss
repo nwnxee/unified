@@ -30,6 +30,9 @@ void main()
     NWNX_Creature_SetHitDistance(oCreature, 0.3);
     NWNX_Tests_Report("NWNX_Creature", "{Set/Get}HitDistance", NWNX_Creature_GetHitDistance(oCreature) == 0.3);
 
+    NWNX_Creature_SetPreferredAttackDistance(oCreature, 1.1);
+    NWNX_Tests_Report("NWNX_Creature", "{Set/Get}PreferredAttackDistance", NWNX_Creature_GetPreferredAttackDistance(oCreature) == 1.1);
+
     //
     // FEAT related functions
     //

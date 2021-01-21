@@ -142,6 +142,8 @@ private:
     ArgumentStack SetHeight                     (ArgumentStack&& args);
     ArgumentStack GetHitDistance                (ArgumentStack&& args);
     ArgumentStack SetHitDistance                (ArgumentStack&& args);
+    ArgumentStack GetPreferredAttackDistance    (ArgumentStack&& args);
+    ArgumentStack SetPreferredAttackDistance    (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
     std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> m_RollModifier;

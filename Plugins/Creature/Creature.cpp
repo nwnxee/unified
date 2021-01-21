@@ -192,6 +192,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetHeight);
     REGISTER(GetHitDistance);
     REGISTER(SetHitDistance);
+    REGISTER(GetPreferredAttackDistance);
+    REGISTER(SetPreferredAttackDistance);
 
 #undef REGISTER
 }
@@ -3227,6 +3229,29 @@ ArgumentStack Creature::SetHitDistance(ArgumentStack&& args)
         {
             pCreature->m_pcPathfindInformation->m_fHitDistance = fHitDist;
         }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetPreferredAttackDistance(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_fPreferredAttackDistance;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetPreferredAttackDistance(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fPrefAtckDist = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fPrefAtckDist >= 0);
+        pCreature->m_fPreferredAttackDistance = fPrefAtckDist;
     }
 
     return Services::Events::Arguments();
