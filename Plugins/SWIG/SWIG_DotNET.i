@@ -33,7 +33,7 @@
   }
 
   public override int GetHashCode() {
-    return swigCPtr.GetHashCode();
+    return swigCPtr.Handle.GetHashCode();
   }
 
   public static bool operator ==($csclassname left, $csclassname right) {
