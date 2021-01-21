@@ -21,6 +21,9 @@ void main()
     NWNX_Creature_SetPersonalSpace(oCreature, 0.5);
     NWNX_Tests_Report("NWNX_Creature", "{Set/Get}PersonalSpace", NWNX_Creature_GetPersonalSpace(oCreature) == 0.5);
 
+    NWNX_Creature_SetCreaturePersonalSpace(oCreature, 0.25);
+    NWNX_Tests_Report("NWNX_Creature", "{Set/Get}CreaturePersonalSpace", NWNX_Creature_GetCreaturePersonalSpace(oCreature) == 0.25);
+
     //
     // FEAT related functions
     //

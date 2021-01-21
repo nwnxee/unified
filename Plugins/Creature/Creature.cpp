@@ -186,6 +186,8 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(DoPerceptionUpdateOnCreature);
     REGISTER(GetPersonalSpace);
     REGISTER(SetPersonalSpace);
+    REGISTER(GetCreaturePersonalSpace);
+    REGISTER(SetCreaturePersonalSpace);
 
 #undef REGISTER
 }
@@ -3133,6 +3135,35 @@ ArgumentStack Creature::SetPersonalSpace(ArgumentStack&& args)
         {
             pCreature->m_pcPathfindInformation->m_fPersonalSpace = fPerspace;
             pCreature->m_pcPathfindInformation->ComputeStepTolerance();
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCreaturePersonalSpace(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_pcPathfindInformation)
+        {
+            retVal = pCreature->m_pcPathfindInformation->m_fCreaturePersonalSpace;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetCreaturePersonalSpace(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fCrePerspace = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fCrePerspace >= 0);
+        if (pCreature->m_pcPathfindInformation)
+        {
+            pCreature->m_pcPathfindInformation->m_fCreaturePersonalSpace = fCrePerspace;
         }
     }
 

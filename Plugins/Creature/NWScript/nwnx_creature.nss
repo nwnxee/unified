@@ -855,6 +855,16 @@ float NWNX_Creature_GetPersonalSpace(object oCreature);
 /// @param fPerspace The creatures personal space.
 void NWNX_Creature_SetPersonalSpace(object oCreature, float fPerspace);
 
+/// @brief Get a creatures creature personal space (meters from center to other creatures).
+/// @param oCreature The creature.
+/// @return The creatures creature personal space.
+float NWNX_Creature_GetCreaturePersonalSpace(object oCreature);
+
+/// @brief Set a creatures creature personal space (meters from center to other creatures).
+/// @param oCreature The creature.
+/// @param fCrePerspace The creatures creature personal space.
+void NWNX_Creature_SetCreaturePersonalSpace(object oCreature, float fCrePerspace);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2174,6 +2184,25 @@ void NWNX_Creature_SetPersonalSpace(object oCreature, float fPerspace)
     string sFunc = "SetPersonalSpace";
 
     NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fPerspace);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetCreaturePersonalSpace(object oCreature)
+{
+    string sFunc = "GetCreaturePersonalSpace";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetCreaturePersonalSpace(object oCreature, float fCrePerspace)
+{
+    string sFunc = "SetCreaturePersonalSpace";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fCrePerspace);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }
