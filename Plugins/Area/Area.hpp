@@ -52,6 +52,10 @@ private:
     ArgumentStack ExportGIT                     (ArgumentStack&& args);
     ArgumentStack GetTileInfo                   (ArgumentStack&& args);
     ArgumentStack ExportARE                     (ArgumentStack&& args);
+    ArgumentStack GetAmbientSoundDay            (ArgumentStack&& args);
+    ArgumentStack GetAmbientSoundNight          (ArgumentStack&& args);
+    ArgumentStack GetAmbientSoundDayVolume      (ArgumentStack&& args);
+    ArgumentStack GetAmbientSoundNightVolume    (ArgumentStack&& args);
 
     CNWSArea *area(ArgumentStack& args);
 
