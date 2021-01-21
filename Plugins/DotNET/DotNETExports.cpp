@@ -357,9 +357,29 @@ void DotNET::nwnxCallFunction()
     auto events = Instance->GetServices()->m_events->GetProxyBase();
     events->Call(nwnxActivePlugin, nwnxActiveFunction);
 }
+
 NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
 {
     return NWNXLib::API::Globals::ExportedGlobals;
+}
+
+void* DotNET::RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
+{
+    auto aslrAddr = Platform::ASLR::GetRelocatedAddress(address);
+    auto funchook = s_managed_hooks.emplace_back(std::make_unique<NWNXLib::Hooking::FunctionHook>(aslrAddr, managedFuncPtr, order)).get();
+    return funchook->GetOriginal();
+}
+
+void DotNET::ReturnHook(void* trampoline)
+{
+    for (auto it = s_managed_hooks.begin(); it != s_managed_hooks.end(); it++)
+    {
+        if (it->get()->GetOriginal() == trampoline)
+        {
+            s_managed_hooks.erase(it);
+            return;
+        }
+    }
 }
 
 }

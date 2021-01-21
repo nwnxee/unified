@@ -88,6 +88,9 @@
 %nodefaultctor;
 %nodefaultdtor;
 
+// Expose Managed Constructor
+SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
+
 // Typemap void* to IntPtr
 %typemap(ctype)  void* "void *"
 %typemap(imtype) void* "System.IntPtr"

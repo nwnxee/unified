@@ -4,7 +4,6 @@
 #include "API/CVirtualMachineScript.hpp"
 #include "API/Functions.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Hooks/Hooks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 
 #include <algorithm>
@@ -33,6 +32,8 @@ namespace DotNET {
 static hostfxr_initialize_for_runtime_config_fn hostfxr_initialize_for_runtime_config;
 static hostfxr_get_runtime_delegate_fn          hostfxr_get_runtime_delegate;
 static hostfxr_close_fn                         hostfxr_close;
+
+std::vector<std::unique_ptr<NWNXLib::Hooking::FunctionHook>> DotNET::s_managed_hooks;
 
 bool DotNET::InitThunks()
 {
@@ -220,6 +221,8 @@ DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
         args.push_back((void*)&nwnxPopItemProperty);
         args.push_back((void*)&nwnxCallFunction);
         args.push_back((void*)&GetNWNXExportedGlobals);
+        args.push_back((void*)&RequestHook);
+        args.push_back((void*)&ReturnHook);
     rc = bootstrap(args.data(), args.size()*sizeof(void*));
     if (rc != 0)
         LOG_FATAL("Failed to execute bootstrap function; rc=0x%x", rc);
