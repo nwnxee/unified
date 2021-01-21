@@ -875,6 +875,16 @@ float NWNX_Creature_GetHeight(object oCreature);
 /// @param fHeight The creatures height.
 void NWNX_Creature_SetHeight(object oCreature, float fHeight);
 
+/// @brief Get a creatures hit distance.
+/// @param oCreature The creature.
+/// @return The creatures hit distance.
+float NWNX_Creature_GetHitDistance(object oCreature);
+
+/// @brief Set a creatures hit distance.
+/// @param oCreature The creature.
+/// @param fHitDist The creatures hit distance.
+void NWNX_Creature_SetHitDistance(object oCreature, float fHitDist);
+
 /// @}
 
 void NWNX_Creature_AddFeat(object creature, int feat)
@@ -2232,6 +2242,25 @@ void NWNX_Creature_SetHeight(object oCreature, float fHeight)
     string sFunc = "SetHeight";
 
     NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fHeight);
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+}
+
+float NWNX_Creature_GetHitDistance(object oCreature)
+{
+    string sFunc = "GetHitDistance";
+
+    NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
+    NWNX_CallFunction(NWNX_Creature, sFunc);
+
+    return NWNX_GetReturnValueFloat(NWNX_Creature, sFunc);
+}
+
+void NWNX_Creature_SetHitDistance(object oCreature, float fHitDist)
+{
+    string sFunc = "SetHitDistance";
+
+    NWNX_PushArgumentFloat(NWNX_Creature, sFunc, fHitDist);
     NWNX_PushArgumentObject(NWNX_Creature, sFunc, oCreature);
     NWNX_CallFunction(NWNX_Creature, sFunc);
 }

@@ -27,6 +27,9 @@ void main()
     NWNX_Creature_SetHeight(oCreature, 0.4);
     NWNX_Tests_Report("NWNX_Creature", "{Set/Get}Height", NWNX_Creature_GetHeight(oCreature) == 0.4);
 
+    NWNX_Creature_SetHitDistance(oCreature, 0.3);
+    NWNX_Tests_Report("NWNX_Creature", "{Set/Get}HitDistance", NWNX_Creature_GetHitDistance(oCreature) == 0.3);
+
     //
     // FEAT related functions
     //
