@@ -78,7 +78,7 @@ private:
     unordered_map<uint16_t, pair<uint8_t, uint8_t>>                                   m_RaceSRCharGen;
     unordered_map<uint16_t, tuple<uint8_t, uint8_t, uint8_t>>                         m_RaceSR;
     unordered_map<uint16_t, std::vector<uint16_t>>                                    m_ChildRaces;
-    unordered_map<uint16_t, uint16_t>                                                 m_RaceFavoredEnemyFeat;
+    unordered_map<uint16_t, list<uint16_t>>                                           m_RaceFavoredEnemyFeat;
 
     NWNXLib::Hooking::FunctionHook* m_CheckRacialResHook;
 
