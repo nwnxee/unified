@@ -1,5 +1,13 @@
 var NAVTREEINDEX11 =
 {
+"nwnx__redis__short_8nss.html#ac496a7e38905f4ee6cdd697bfabca0fe":[4,0,2,28,0,3,150],
+"nwnx__redis__short_8nss.html#ac52cc49c02404817e46eb5079d95e8b4":[4,0,2,28,0,3,130],
+"nwnx__redis__short_8nss.html#ac66fde29ca680bb632874dbb8a4f81de":[4,0,2,28,0,3,199],
+"nwnx__redis__short_8nss.html#ac7179729f485933eab9f7e8f5924318b":[4,0,2,28,0,3,0],
+"nwnx__redis__short_8nss.html#ac9b9af45039b49536337dd61fe99b854":[4,0,2,28,0,3,201],
+"nwnx__redis__short_8nss.html#ac9e1458cdd6ab51366f5257d41d985e4":[4,0,2,28,0,3,98],
+"nwnx__redis__short_8nss.html#aca3002c3a5361f14abbb146c877bd1ac":[4,0,2,28,0,3,63],
+"nwnx__redis__short_8nss.html#acc547f11a874fd99ba81759b9e381000":[4,0,2,28,0,3,85],
 "nwnx__redis__short_8nss.html#ace13dc547d9c27caf4103b11ef14b409":[4,0,2,28,0,3,193],
 "nwnx__redis__short_8nss.html#ace3af65b7f079794df3993e993064ab8":[4,0,2,28,0,3,1],
 "nwnx__redis__short_8nss.html#ace59944b441332acf8f17224d6062438":[4,0,2,28,0,3,139],
@@ -241,13 +249,5 @@ var NAVTREEINDEX11 =
 "structNWNX__Player__QuickBarSlot.html#afcf6328e5234a277b0ba49172cdc8bb9":[0,26,3,0],
 "structNWNX__Redis__PubSubMessageData.html":[3,12],
 "structNWNX__Redis__PubSubMessageData.html#a0a7db5807f63c88cd2386c1518c42d79":[3,12,1],
-"structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,12,0],
-"structNWNX__SkillRanks__SkillFeat.html":[0,35,2],
-"structNWNX__SkillRanks__SkillFeat.html#a0e294b3acd481896cc1c7ae349aa397a":[0,35,2,1],
-"structNWNX__SkillRanks__SkillFeat.html#a1c26d25c176cfd36ce4a9007cddd7f0d":[0,35,2,10],
-"structNWNX__SkillRanks__SkillFeat.html#a22471ab7b2b7e7d3ea8b9b3a2c14fd07":[0,35,2,3],
-"structNWNX__SkillRanks__SkillFeat.html#a349f2205b03ebd3c5ed0635dff56d2d2":[0,35,2,5],
-"structNWNX__SkillRanks__SkillFeat.html#a534688bf4035fb5b6040e3c798605369":[0,35,2,7],
-"structNWNX__SkillRanks__SkillFeat.html#a73f5be9c11646af553b30000b2a72da7":[0,35,2,0],
-"structNWNX__SkillRanks__SkillFeat.html#a7dd800dcb05d188252a50c070ae71f2b":[0,35,2,9]
+"structNWNX__Redis__PubSubMessageData.html#a778deff645dba834b490c9ef2b99fcfa":[3,12,0]
 };
