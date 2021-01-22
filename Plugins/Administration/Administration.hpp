@@ -37,6 +37,10 @@ public:
     ArgumentStack GetDebugValue             (ArgumentStack&& args);
     ArgumentStack SetDebugValue             (ArgumentStack&& args);
     ArgumentStack ReloadRules               (ArgumentStack&& args);
+    ArgumentStack GetMinLevel               (ArgumentStack&& args);
+    ArgumentStack SetMinLevel               (ArgumentStack&& args);
+    ArgumentStack GetMaxLevel               (ArgumentStack&& args);
+    ArgumentStack SetMaxLevel               (ArgumentStack&& args);
 };
 
 }

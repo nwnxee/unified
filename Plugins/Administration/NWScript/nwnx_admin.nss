@@ -156,6 +156,23 @@ void NWNX_Administration_SetDebugValue(int type, int state);
 /// @warning DANGER, DRAGONS. Bad things may or may not happen.
 void NWNX_Administration_ReloadRules();
 
+/// @brief Get the servers minimum level.
+/// @return The minimum level for the server.
+int NWNX_Administration_GetMinLevel();
+
+/// @brief Set the servers minimum level.
+/// @param nLevel The minimum level for the server.
+void NWNX_Administration_SetMinLevel(int nLevel);
+
+/// @brief Get the servers maximum level.
+/// @return The maximum level for the server.
+int NWNX_Administration_GetMaxLevel();
+
+/// @brief Set the servers maximum level.
+/// @note Attention when using this and the MaxLevel plugin. They both change the same value.
+/// @param nLevel The maximum level for the server.
+void NWNX_Administration_SetMaxLevel(int nLevel);
+
 /// @}
 
 string NWNX_Administration_GetPlayerPassword()
@@ -340,5 +357,33 @@ void NWNX_Administration_ReloadRules()
 {
     string sFunc = "ReloadRules";
 
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+}
+
+int NWNX_Administration_GetMinLevel()
+{
+    string sFunc = "GetMinLevel";
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
+}
+
+void NWNX_Administration_SetMinLevel(int nLevel)
+{
+    string sFunc = "SetMinLevel";
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, nLevel);
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+}
+
+int NWNX_Administration_GetMaxLevel()
+{
+    string sFunc = "GetMaxLevel";
+    NWNX_CallFunction(NWNX_Administration, sFunc);
+    return NWNX_GetReturnValueInt(NWNX_Administration, sFunc);
+}
+
+void NWNX_Administration_SetMaxLevel(int nLevel)
+{
+    string sFunc = "SetMaxLevel";
+    NWNX_PushArgumentInt(NWNX_Administration, sFunc, nLevel);
     NWNX_CallFunction(NWNX_Administration, sFunc);
 }
