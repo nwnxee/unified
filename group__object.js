@@ -54,6 +54,8 @@ var group__object =
     [ "NWNX_Object_DoSpellLevelAbsorption", "group__object.html#ga0543152520c56d3c3d3d724a38409f7d", null ],
     [ "NWNX_Object_SetHasInventory", "group__object.html#gab63c89b09324e876db4f5417e430ea31", null ],
     [ "NWNX_Object_GetCurrentAnimation", "group__object.html#ga55f50560994dfdeb3a45fe8cf457a5b3", null ],
+    [ "NWNX_Object_GetAILevel", "group__object.html#ga73c0bae422bd3bc0f8dc1fbcfeeecdce", null ],
+    [ "NWNX_Object_SetAILevel", "group__object.html#ga0e48a65367a70d409138ea55c4c300df", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_UNKNOWN", "group__object.html#ga6b423bcdd4bb7b1a167ff5b08e84f7ab", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_INT", "group__object.html#ga17a51ea00eeb440f5b68c286dab83c39", null ],
     [ "NWNX_OBJECT_LOCALVAR_TYPE_FLOAT", "group__object.html#ga108d8b97fc769281ee4057a9a112d26f", null ],

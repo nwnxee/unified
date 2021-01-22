@@ -47,13 +47,13 @@ var NAVTREEINDEX =
 "group__creature.html#gae7e96e14504d66c72653b5d74955624e",
 "group__dialog.html#gad2f72b5b1fcec62eaa2b71efab2156e8",
 "group__feat.html#gaf8b61065da94987f818070827068e625",
-"group__object.html#gae1de0d766b2f4a005f7c7a3fdab53b0b",
-"group__race.html",
-"group__sql.html#ga66d8b47aa6f6afd6f90bfc9b16a9a474",
-"group__weapon.html#gac1feedb8c13806da113a4a8d10c8990a",
-"nwnx__redis_8nss.html#ab4f168456f285b5b657bb8f10939d33a",
-"nwnx__redis__short_8nss.html#ad122c1f6a05fdeb82f0b0cd751b40f30",
-"structNWNX__Tileset__CustomTileData.html"
+"group__object.html#gadc1a34e2cbe53faef7bd5a1fffaae8a1",
+"group__profiler.html#ga495550a915f20515c9be66513245fdb4",
+"group__sql.html#ga60dd9ffe0369ff795d4e375452edec51",
+"group__weapon.html#gac044782b4fc6b0035aa9b499c0d8aa66",
+"nwnx__redis_8nss.html#ab00e971eb58521b6635f02e47513b5bb",
+"nwnx__redis__short_8nss.html#ace13dc547d9c27caf4103b11ef14b409",
+"structNWNX__SkillRanks__SkillFeat.html#aae9925da408c3283b3fde29b1ebfec20"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
