@@ -1583,31 +1583,24 @@ ArgumentStack Creature::SetBaseSavingThrow(ArgumentStack&& args)
 
 ArgumentStack Creature::LevelUp(ArgumentStack&& args)
 {
-
-    static NWNXLib::Hooking::FunctionHook* pCanLevelUp_hook;
-    static NWNXLib::Hooking::FunctionHook* pValidateLevelUp_hook;
+    static Hooking::FunctionHook* pCanLevelUp_hook;
+    static Hooking::FunctionHook* pValidateLevelUp_hook;
     static bool bSkipLevelUpValidation = false;
-    if (!pValidateLevelUp_hook)
+    if (!pCanLevelUp_hook)
     {
-        try
-        {
-            pCanLevelUp_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(
-                    +[](CNWSCreatureStats *pThis) -> int32_t
+        pCanLevelUp_hook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
+                (void*)+[](CNWSCreatureStats *pThis) -> int32_t
+                {
+                    if (bSkipLevelUpValidation && !pThis->m_bIsPC)
                     {
-                        if (bSkipLevelUpValidation)
-                        {
-                            // NPCs can have at most 60 levels
-                            ASSERT(!pThis->m_bIsPC);
-                            return pThis->GetLevel(false) < 60;
-                        }
-                        return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
-                    });
-        }
-        catch (...)
-        {
-            LOG_NOTICE("NWNX_MaxLevel will manage CanLevelUp.");
-        }
+                        return pThis->GetLevel(false) < 60;
+                    }
+                    return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
+                }, Hooking::OrderLate);
+    }
 
+    if (pValidateLevelUp_hook)
+    {
         pValidateLevelUp_hook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh>(
                 +[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
                 {

@@ -113,7 +113,7 @@ ELC::ELC(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi>(&ValidateCharacterHook);
+    GetServices()->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooking::OrderFinal);
 
     m_elcScript = GetServices()->m_config->Get<std::string>("ELC_SCRIPT", "");
     m_enableCustomELCCheck = GetServices()->m_config->Get<bool>("CUSTOM_ELC_CHECK", false);
@@ -186,9 +186,6 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
 
         return g_plugin->m_validationFailureMessageStrRef;
     };
-
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
-            {"VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
 
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
             { "NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
@@ -1818,9 +1815,6 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
             LOG_WARNING("NWNX_ELC: Skipping Custom ELC Check because an ELC script is not set!");
         }
     }
-
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_ELC_SIGNAL",
-            {"VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject)});
 
     g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
             {"NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
