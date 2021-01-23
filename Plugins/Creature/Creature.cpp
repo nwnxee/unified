@@ -1596,7 +1596,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                         return pThis->GetLevel(false) < 60;
                     }
                     return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
-                }, Hooking::OrderLate);
+                }, Hooking::Order::Late);
     }
 
     if (pValidateLevelUp_hook)

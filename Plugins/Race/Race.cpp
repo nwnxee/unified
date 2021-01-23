@@ -102,7 +102,7 @@ Race::Race(Services::ProxyServiceList* services)
     // Check for favored enemy bonuses on either the race or parent race including custom set favored enemy feats for custom races
     GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, int32_t, CNWSCreatureStats*, CNWSCreature*>(&GetFavoredEnemyBonusHook);
 
-    m_ValidateCharacterHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooking::OrderEarly);
+    m_ValidateCharacterHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooking::Order::Early);
 }
 
 Race::~Race()
