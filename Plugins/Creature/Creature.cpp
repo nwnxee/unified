@@ -26,6 +26,7 @@
 #include "API/CNWSCombatRound.hpp"
 #include "API/CEffectIconObject.hpp"
 #include "API/CNWSArea.hpp"
+#include "API/CPathfindInformation.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
@@ -183,6 +184,16 @@ Creature::Creature(Services::ProxyServiceList* services)
     REGISTER(SetNoPermanentDeath);
     REGISTER(ComputeSafeLocation);
     REGISTER(DoPerceptionUpdateOnCreature);
+    REGISTER(GetPersonalSpace);
+    REGISTER(SetPersonalSpace);
+    REGISTER(GetCreaturePersonalSpace);
+    REGISTER(SetCreaturePersonalSpace);
+    REGISTER(GetHeight);
+    REGISTER(SetHeight);
+    REGISTER(GetHitDistance);
+    REGISTER(SetHitDistance);
+    REGISTER(GetPreferredAttackDistance);
+    REGISTER(SetPreferredAttackDistance);
 
 #undef REGISTER
 }
@@ -3101,6 +3112,146 @@ ArgumentStack Creature::DoPerceptionUpdateOnCreature(ArgumentStack&& args)
         {
             pCreature->DoPerceptionUpdateOnCreature(pTargetCreature);
         }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetPersonalSpace(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_pcPathfindInformation)
+        {
+            retVal = pCreature->m_pcPathfindInformation->m_fPersonalSpace;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetPersonalSpace(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fPerspace = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fPerspace >= 0);
+        if (pCreature->m_pcPathfindInformation)
+        {
+            pCreature->m_pcPathfindInformation->m_fPersonalSpace = fPerspace;
+            pCreature->m_pcPathfindInformation->ComputeStepTolerance();
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetCreaturePersonalSpace(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_pcPathfindInformation)
+        {
+            retVal = pCreature->m_pcPathfindInformation->m_fCreaturePersonalSpace;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetCreaturePersonalSpace(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fCrePerspace = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fCrePerspace >= 0);
+        if (pCreature->m_pcPathfindInformation)
+        {
+            pCreature->m_pcPathfindInformation->m_fCreaturePersonalSpace = fCrePerspace;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetHeight(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_pcPathfindInformation)
+        {
+            retVal = pCreature->m_pcPathfindInformation->m_fHeight;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetHeight(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fHeight = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fHeight >= 0);
+        if (pCreature->m_pcPathfindInformation)
+        {
+            pCreature->m_pcPathfindInformation->m_fHeight = fHeight;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetHitDistance(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        if (pCreature->m_pcPathfindInformation)
+        {
+            retVal = pCreature->m_pcPathfindInformation->m_fHitDistance;
+        }
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetHitDistance(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fHitDist = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fHitDist >= 0);
+        if (pCreature->m_pcPathfindInformation)
+        {
+            pCreature->m_pcPathfindInformation->m_fHitDistance = fHitDist;
+        }
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Creature::GetPreferredAttackDistance(ArgumentStack&& args)
+{
+    float retVal = 0;
+    if (auto *pCreature = creature(args))
+    {
+        retVal = pCreature->m_fPreferredAttackDistance;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Creature::SetPreferredAttackDistance(ArgumentStack&& args)
+{
+    if (auto *pCreature = creature(args))
+    {
+        const auto fPrefAtckDist = Services::Events::ExtractArgument<float>(args);
+        ASSERT_OR_THROW(fPrefAtckDist >= 0);
+        pCreature->m_fPreferredAttackDistance = fPrefAtckDist;
     }
 
     return Services::Events::Arguments();
