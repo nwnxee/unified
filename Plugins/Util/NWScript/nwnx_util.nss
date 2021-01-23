@@ -35,6 +35,13 @@ struct NWNX_Util_WorldTime
     int nTimeOfDay; ///< The time of day
 };
 
+/// @brief A high resolution timestamp
+struct NWNX_Util_HighResTimestamp
+{
+    int seconds; ///< Seconds since epoch
+    int microseconds; ///< Microseconds
+};
+
 /// @brief Gets the name of the currently executing script.
 /// @note If depth is > 0, it will return the name of the script that called this one via ExecuteScript().
 /// @param depth to seek the executing script.
@@ -240,6 +247,9 @@ void NWNX_Util_SetDawnHour(int nDawnHour);
 /// @brief Set the module dusk hour.
 /// @param nDuskHour The new dusk hour
 void NWNX_Util_SetDuskHour(int nDuskHour);
+
+/// @return Returns the number of microseconds since midnight on January 1, 1970.
+struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp();
 
 /// @}
 
@@ -599,4 +609,15 @@ void NWNX_Util_SetDuskHour(int nDuskHour)
 
     NWNX_PushArgumentInt(NWNX_Util, sFunc, nDuskHour);
     NWNX_CallFunction(NWNX_Util, sFunc);
+}
+
+struct NWNX_Util_HighResTimestamp NWNX_Util_GetHighResTimeStamp()
+{
+    struct NWNX_Util_HighResTimestamp t;
+    string sFunc = "GetHighResTimeStamp";
+
+    NWNX_CallFunction(NWNX_Util, sFunc);
+    t.microseconds = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    t.seconds = NWNX_GetReturnValueInt(NWNX_Util, sFunc);
+    return t;
 }

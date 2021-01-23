@@ -13,6 +13,7 @@ static Time::Time* g_plugin;
 
 NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 {
+    LOG_WARNING("Time plugin is deprecated.  Please migrate to inc_sqlite_time.");
     g_plugin = new Time::Time(services);
     return g_plugin;
 }
