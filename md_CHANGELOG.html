@@ -128,6 +128,7 @@ New NWScript Functions</h4>
 <li>Encounter: SetGeometry()</li>
 <li>Util: GetInstructionLimit()</li>
 <li>Util: {Get|Set}InstructionsExecuted()</li>
+<li>Util: <a class="el" href="group__util.html#gab1478de40af08e03284db6fe313f319c">NWNX_Util_GetHighResTimeStamp()</a> (in preparation for removing the now deprecated NWNX_Time)</li>
 <li>Area: NWNX_Area_GetAmbientSound{Day/Night}()</li>
 <li>Area: NWNX_Area_GetAmbientSound{Day/Night}Volume</li>
 <li>Admin: {Get/Set}MinLevel()</li>
@@ -143,6 +144,7 @@ Changed</h2>
 Deprecated</h2>
 <ul>
 <li>Data: The NWNX_Data array implementation is deprecated. SQLite implementation available. Shim include file provided for compatibility.</li>
+<li>Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Removed</h2>
@@ -982,7 +984,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Fri Jan 22 2021 22:44:53 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Jan 23 2021 08:44:18 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>

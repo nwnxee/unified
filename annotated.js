@@ -20,7 +20,9 @@ var annotated =
     [ "NWNX_Tileset_TilesetData", "structNWNX__Tileset__TilesetData.html", "structNWNX__Tileset__TilesetData" ],
     [ "NWNX_Tileset_TilesetGroupData", "structNWNX__Tileset__TilesetGroupData.html", "structNWNX__Tileset__TilesetGroupData" ],
     [ "NWNX_Time_HighResTimestamp", "structNWNX__Time__HighResTimestamp.html", "structNWNX__Time__HighResTimestamp" ],
+    [ "NWNX_Util_HighResTimestamp", "structNWNX__Util__HighResTimestamp.html", "structNWNX__Util__HighResTimestamp" ],
     [ "NWNX_Util_WorldTime", "structNWNX__Util__WorldTime.html", "structNWNX__Util__WorldTime" ],
     [ "NWNX_Weapon_DevastatingCriticalEvent_Data", "structNWNX__Weapon__DevastatingCriticalEvent__Data.html", "structNWNX__Weapon__DevastatingCriticalEvent__Data" ],
-    [ "NWNX_WebHook_Message", "structNWNX__WebHook__Message.html", "structNWNX__WebHook__Message" ]
+    [ "NWNX_WebHook_Message", "structNWNX__WebHook__Message.html", "structNWNX__WebHook__Message" ],
+    [ "SQLite_MillisecondTimeStamp", "structSQLite__MillisecondTimeStamp.html", "structSQLite__MillisecondTimeStamp" ]
 ];
