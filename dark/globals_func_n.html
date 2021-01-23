@@ -396,6 +396,9 @@ $(document).ready(function(){initNavTree('globals_func_n.html',''); initResizabl
 <li>NWNX_Creature_GetClassByLevel()
 : <a class="el" href="group__creature.html#ga9f675908b28f41658f1c1e5acfe78068">nwnx_creature.nss</a>
 </li>
+<li>NWNX_Creature_GetCreaturePersonalSpace()
+: <a class="el" href="group__creature.html#ga122ada903bb353eb480690c4f2170f36">nwnx_creature.nss</a>
+</li>
 <li>NWNX_Creature_GetCriticalMultiplierModifier()
 : <a class="el" href="group__creature.html#ga86d70c8f0727daeec07a84df9e5d353b">nwnx_creature.nss</a>
 </li>
@@ -444,8 +447,14 @@ $(document).ready(function(){initNavTree('globals_func_n.html',''); initResizabl
 <li>NWNX_Creature_GetFlatFooted()
 : <a class="el" href="group__creature.html#ga43289d7f208dbe759b856d1f4757dc2e">nwnx_creature.nss</a>
 </li>
+<li>NWNX_Creature_GetHeight()
+: <a class="el" href="group__creature.html#gac69265115bfdd7741c1844c6ac612d4a">nwnx_creature.nss</a>
+</li>
 <li>NWNX_Creature_GetHighestLevelOfFeat()
 : <a class="el" href="group__creature.html#gacfe25337fd54b63488a16dc0c2f4b2b3">nwnx_creature.nss</a>
+</li>
+<li>NWNX_Creature_GetHitDistance()
+: <a class="el" href="group__creature.html#ga4d38b26798137697a8a5ac02a6ea1eed">nwnx_creature.nss</a>
 </li>
 <li>NWNX_Creature_GetIsBartering()
 : <a class="el" href="group__creature.html#ga3dbffac4654be2a32707775255e39c15">nwnx_creature.nss</a>
@@ -488,6 +497,12 @@ $(document).ready(function(){initNavTree('globals_func_n.html',''); initResizabl
 </li>
 <li>NWNX_Creature_GetOriginalName()
 : <a class="el" href="group__creature.html#gaa2c4265518c9385e694f438ce4fb7816">nwnx_creature.nss</a>
+</li>
+<li>NWNX_Creature_GetPersonalSpace()
+: <a class="el" href="group__creature.html#ga57a72fd8445236356ec6af7ff2b54604">nwnx_creature.nss</a>
+</li>
+<li>NWNX_Creature_GetPreferredAttackDistance()
+: <a class="el" href="group__creature.html#ga5c920d130feaac48d02758af4fd9f777">nwnx_creature.nss</a>
 </li>
 <li>NWNX_Creature_GetPrePolymorphAbilityScore()
 : <a class="el" href="group__creature.html#gafdcf540c2ebaea7ac27563d74461b57d">nwnx_creature.nss</a>
@@ -597,6 +612,9 @@ $(document).ready(function(){initNavTree('globals_func_n.html',''); initResizabl
 <li>NWNX_Creature_SetCorpseDecayTime()
 : <a class="el" href="group__creature.html#ga9416ebcf6ecac41884242e6f40096100">nwnx_creature.nss</a>
 </li>
+<li>NWNX_Creature_SetCreaturePersonalSpace()
+: <a class="el" href="group__creature.html#ga5073b2d8c2f96c9b88f42340b71088e1">nwnx_creature.nss</a>
+</li>
 <li>NWNX_Creature_SetCriticalMultiplierModifier()
 : <a class="el" href="group__creature.html#gab61678215d81d3af279dc045ebbb9e43">nwnx_creature.nss</a>
 </li>
@@ -639,6 +657,12 @@ $(document).ready(function(){initNavTree('globals_func_n.html',''); initResizabl
 <li>NWNX_Creature_SetGold()
 : <a class="el" href="group__creature.html#ga4888c788f124ca985ba585677cdeaad8">nwnx_creature.nss</a>
 </li>
+<li>NWNX_Creature_SetHeight()
+: <a class="el" href="group__creature.html#ga502bc6e9e35007d7fe56266eec92dc6b">nwnx_creature.nss</a>
+</li>
+<li>NWNX_Creature_SetHitDistance()
+: <a class="el" href="group__creature.html#gaf7db82f03c9c44452a4003139c992edc">nwnx_creature.nss</a>
+</li>
 <li>NWNX_Creature_SetLastItemCasterLevel()
 : <a class="el" href="group__creature.html#gaaf4852e6a077da9128b3923ff52701df">nwnx_creature.nss</a>
 </li>
@@ -668,6 +692,12 @@ $(document).ready(function(){initNavTree('globals_func_n.html',''); initResizabl
 </li>
 <li>NWNX_Creature_SetParryAllAttacks()
 : <a class="el" href="group__creature.html#ga27aefe7af67628a090a0685c3e07cc9e">nwnx_creature.nss</a>
+</li>
+<li>NWNX_Creature_SetPersonalSpace()
+: <a class="el" href="group__creature.html#ga994ad112617ff2e246e8c45c132304b7">nwnx_creature.nss</a>
+</li>
+<li>NWNX_Creature_SetPreferredAttackDistance()
+: <a class="el" href="group__creature.html#gabc272bf0a40b296512e7963b7369ee39">nwnx_creature.nss</a>
 </li>
 <li>NWNX_Creature_SetRacialType()
 : <a class="el" href="group__creature.html#ga318adbef08926e9c47d9d4840cef6e0f">nwnx_creature.nss</a>
@@ -2524,7 +2554,7 @@ $(document).ready(function(){initNavTree('globals_func_n.html',''); initResizabl
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Sat Jan 23 2021 08:44:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Sat Jan 23 2021 16:25:04 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="../">Light version</a>
 				</li>
