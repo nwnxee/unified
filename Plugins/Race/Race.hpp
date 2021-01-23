@@ -81,6 +81,7 @@ private:
     unordered_map<uint16_t, uint16_t>                                                 m_RaceFavoredEnemyFeat;
 
     NWNXLib::Hooking::FunctionHook* m_CheckRacialResHook;
+    NWNXLib::Hooking::FunctionHook* m_ValidateCharacterHook;
 
     static void DoEffect(CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
     static void ApplyRaceEffects(CNWSCreature*);
@@ -92,8 +93,7 @@ private:
     static void LoadCharacterFinishHook(bool, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t);
     static void ResetFeatRemainingUsesHook(bool, CNWSCreatureStats*);
     static void CreateDefaultQuickButtonsHook(bool, CNWSCreature*);
-    static void HandleValidateCharacter(ObjectID, bool);
-    static void ValidateCharacterHook(bool, CNWSPlayer*, int32_t*);
+    static int32_t ValidateCharacterHook(CNWSPlayer*, int32_t*);
 
     static void SendServerToPlayerLevelUp_ConfirmationHook(bool, CNWSMessage*, PlayerID, int32_t);
     static void LevelUpAutomaticHook(bool, CNWSCreatureStats*, uint8_t, int32_t, uint8_t);

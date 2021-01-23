@@ -12,24 +12,27 @@ extern "C" {
 
 namespace NWNXLib::Hooking {
 
-constexpr int32_t OrderSharedHook = INT32_MIN;
-constexpr int32_t OrderEarliest   = -3000000;
-constexpr int32_t OrderVeryEarly  = -2000000;
-constexpr int32_t OrderEarly      = -1000000;
-constexpr int32_t OrderDefault    = 0;
-constexpr int32_t OrderLate       = 1000000;
-constexpr int32_t OrderVeryLate   = 2000000;
-constexpr int32_t OrderLatest     = 3000000;
-constexpr int32_t OrderFinal      = INT32_MAX;
+namespace Order
+{
+    constexpr int32_t SharedHook = INT32_MIN;
+    constexpr int32_t Earliest = -3000000;
+    constexpr int32_t VeryEarly = -2000000;
+    constexpr int32_t Early = -1000000;
+    constexpr int32_t Default = 0;
+    constexpr int32_t Late = 1000000;
+    constexpr int32_t VeryLate = 2000000;
+    constexpr int32_t Latest = 3000000;
+    constexpr int32_t Final = INT32_MAX;
+}
 
 class FunctionHook final
 {
 public:
-    FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order = Hooking::OrderDefault)
+    FunctionHook(uintptr_t originalFunction, void* newFunction, int32_t order = Hooking::Order::Default)
         : m_originalFunction(originalFunction), m_newFunction(newFunction), m_order(order)
     {
         auto &v = s_hooks[originalFunction];
-        if (order == OrderFinal && v.size() > 0 && v[0]->m_order == OrderFinal)
+        if (order == Order::Final && v.size() > 0 && v[0]->m_order == Order::Final)
             throw std::runtime_error("Multiple hooks with final ordering requested");
 
         int32_t insert = v.size();
@@ -96,7 +99,7 @@ namespace NWNXLib::Services {
 class Hooks
 {
 public:
-    std::unique_ptr<Hooking::FunctionHook> Hook(uintptr_t address, void* funcPtr, int32_t order = Hooking::OrderDefault)
+    std::unique_ptr<Hooking::FunctionHook> Hook(uintptr_t address, void* funcPtr, int32_t order = Hooking::Order::Default)
     {
         return std::make_unique<Hooking::FunctionHook>(Platform::ASLR::GetRelocatedAddress(address), funcPtr, order);
     }
@@ -118,7 +121,7 @@ public:
                         o(true, args...);
 
                     return original->CallOriginal<Ret>(args...);
-                }, Hooking::OrderSharedHook)).get();
+                }, Hooking::Order::SharedHook)).get();
         }
     }
 private:
@@ -142,7 +145,7 @@ public:
     {
         return m_hooks.emplace_back(m_proxyBase.Hook(Address, (void*)funcPtr)).get();
     }
-    Hooking::FunctionHook* Hook(uintptr_t address, void* funcPtr, int32_t order = Hooking::OrderDefault)
+    Hooking::FunctionHook* Hook(uintptr_t address, void* funcPtr, int32_t order = Hooking::Order::Default)
     {
         return m_hooks.emplace_back(m_proxyBase.Hook(address, funcPtr, order)).get();
     }
