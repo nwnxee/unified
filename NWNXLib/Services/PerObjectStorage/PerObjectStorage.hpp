@@ -10,9 +10,7 @@
 #include <unordered_map>
 #include <optional>
 
-namespace NWNXLib {
-
-namespace Services {
+namespace NWNXLib::Services {
 
 class PerObjectStorage
 {
@@ -36,12 +34,12 @@ public:
 
     static inline char GffFieldName[] = "NWNX_POS";
 
-    static void CNWSObject__CNWSObjectDtor__0_hook(bool, CNWSObject* thisPtr);
-    static void CNWSArea__CNWSAreaDtor__0_hook(bool, CNWSArea* thisPtr);
-    static void CNWSPlayer__EatTURD_hook(bool, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD);
-    static void CNWSPlayer__DropTURD_hook(bool, CNWSPlayer* thisPtr);
-    static void CNWSUUID__SaveToGff_hook(bool, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct);
-    static void CNWSUUID__LoadFromGff_hook(bool, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct);
+    static void CNWSObject__CNWSObjectDtor__0_hook(CNWSObject* thisPtr);
+    static void CNWSArea__CNWSAreaDtor__0_hook(CNWSArea* thisPtr);
+    static void CNWSPlayer__EatTURD_hook(CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD);
+    static void CNWSPlayer__DropTURD_hook(CNWSPlayer* thisPtr);
+    static void CNWSUUID__SaveToGff_hook(CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct);
+    static bool CNWSUUID__LoadFromGff_hook(CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct);
 private:
     class ObjectStorage
     {
@@ -140,7 +138,5 @@ private:
     std::string m_pluginName;
 };
 
-
-}
 
 }

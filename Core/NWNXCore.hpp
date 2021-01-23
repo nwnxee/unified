@@ -31,6 +31,13 @@ public:
 
     const std::vector<std::string>& GetCustomResourceDirectoryAliases() const { return m_CustomResourceDirectoryAliases; }
 
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posObjectDtorHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posAreaDtorHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posEatTURDHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posDropTURDHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posUUIDSaveToGffHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posUUIDLoadFromGffHook;
+
 private: // Structures
     using PluginProxyServiceMap = std::map<
         NWNXLib::Services::Plugins::RegistrationToken,
@@ -47,6 +54,7 @@ private:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmTagItemProperyHook;
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmPlaySoundHook;
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_destroyServerHook;
+    std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_mainLoopInternalHook;
 
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
     PluginProxyServiceMap m_pluginProxyServiceMap;
@@ -71,7 +79,7 @@ private:
 
     static void CreateServerHandler(CAppManager*);
     static void DestroyServerHandler(CAppManager*);
-    static void MainLoopInternalHandler(bool, CServerExoAppInternal*);
+    static int32_t MainLoopInternalHandler(CServerExoAppInternal*);
 
     int m_ScriptChunkRecursion;
     std::vector<std::string> m_CustomResourceDirectoryAliases;
