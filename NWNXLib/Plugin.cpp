@@ -7,6 +7,8 @@ namespace NWNXLib {
 
 void* Plugin::GetExportedSymbol(const std::string& symbolName)
 {
+    if (symbolName[0] == '_')
+        return nullptr;
     return dlsym(m_handle, symbolName.c_str());
 }
 
