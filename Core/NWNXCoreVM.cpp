@@ -119,8 +119,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             int32_t n = 0;
             if (nwnx)
             {
-                if (auto res = g_core->m_services->m_events->Pop<int32_t>(nwnx->plugin, nwnx->event))
-                    n = *res;
+                n = g_core->m_services->m_events->Pop<int32_t>().value_or(n);
             }
             else if (vartable)
             {
@@ -134,8 +133,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             float f = 0.0f;
             if (nwnx)
             {
-                if (auto res = g_core->m_services->m_events->Pop<float>(nwnx->plugin, nwnx->event))
-                    f = *res;
+                f = g_core->m_services->m_events->Pop<float>().value_or(f);
             }
             else if (vartable)
             {
@@ -149,8 +147,7 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
             CExoString str = "";
             if (nwnx)
             {
-                if (auto res = g_core->m_services->m_events->Pop<std::string>(nwnx->plugin, nwnx->event))
-                    str = res->c_str();
+                str = g_core->m_services->m_events->Pop<std::string>().value_or(str);
             }
             else if (vartable)
             {
@@ -162,11 +159,9 @@ int32_t NWNXCore::GetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
         case VMCommand::GetLocalObject:
         {
             ObjectID oid = Constants::OBJECT_INVALID;
-
             if (nwnx)
             {
-                if (auto res = g_core->m_services->m_events->Pop<ObjectID>(nwnx->plugin, nwnx->event))
-                    oid = *res;
+                oid = g_core->m_services->m_events->Pop<ObjectID>().value_or(oid);
             }
             else if (vartable)
             {
@@ -219,7 +214,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, value);
+                g_core->m_services->m_events->Push(value);
             }
             else if (vartable)
             {
@@ -235,7 +230,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, value);
+                g_core->m_services->m_events->Push(value);
             }
             else if (vartable)
             {
@@ -251,7 +246,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, std::string(value.CStr()));
+                g_core->m_services->m_events->Push(std::string(value.CStr()));
             }
             else if (vartable)
             {
@@ -267,7 +262,7 @@ int32_t NWNXCore::SetVarHandler(CNWVirtualMachineCommands* thisPtr, int32_t nCom
 
             if (nwnx)
             {
-                g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, value);
+                g_core->m_services->m_events->Push(value);
             }
             else if (vartable)
             {
@@ -314,11 +309,11 @@ int32_t NWNXCore::TagEffectHandler(CNWVirtualMachineCommands* thisPtr, int32_t n
         if (nwnx->operation == "PUSH")
         {
             bSkipDelete = true;
-            g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, pEffect);
+            g_core->m_services->m_events->Push(pEffect);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
+            if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>())
             {
                 Utils::DestroyGameEffect(pEffect);
                 pEffect = *res;
@@ -365,11 +360,11 @@ int32_t NWNXCore::TagItemPropertyHandler(CNWVirtualMachineCommands* thisPtr, int
         if (nwnx->operation == "PUSH")
         {
             bSkipDelete = true;
-            g_core->m_services->m_events->Push(nwnx->plugin, nwnx->event, pItemProperty);
+            g_core->m_services->m_events->Push(pItemProperty);
         }
         else if (nwnx->operation == "POP")
         {
-            if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>(nwnx->plugin, nwnx->event))
+            if (auto res = g_core->m_services->m_events->Pop<CGameEffect*>())
             {
                 Utils::DestroyGameEffect(pItemProperty);
                 pItemProperty = *res;
