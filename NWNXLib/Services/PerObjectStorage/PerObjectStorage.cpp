@@ -1,4 +1,5 @@
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
+#include "../../../Core/NWNXCore.hpp"
 #include "API/CGameObject.hpp"
 #include "API/CNWSArea.hpp"
 #include "API/CNWSObject.hpp"
@@ -12,6 +13,10 @@
 
 #include <sstream>
 #include <regex>
+
+namespace Core {
+extern NWNXCore* g_core;
+}
 
 namespace NWNXLib::Services {
 
@@ -417,60 +422,55 @@ void PerObjectStorage::DestroyObjectStorage(CGameObject *pGameObject)
     }
 }
 
-void PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook(bool before, CNWSObject* pThis)
+void PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook(CNWSObject* pThis)
 {
-    if (!before)
-        DestroyObjectStorage(static_cast<CGameObject*>(pThis));
+    Core::g_core->m_posObjectDtorHook->CallOriginal<void>(pThis);
+    DestroyObjectStorage(static_cast<CGameObject*>(pThis));
 }
-void PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook(bool before, CNWSArea* pThis)
+void PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook(CNWSArea* pThis)
 {
-    if (!before)
-        DestroyObjectStorage(static_cast<CGameObject*>(pThis));
+    Core::g_core->m_posAreaDtorHook->CallOriginal<void>(pThis);
+    DestroyObjectStorage(static_cast<CGameObject*>(pThis));
 }
-void PerObjectStorage::CNWSPlayer__EatTURD_hook(bool before, CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD)
+void PerObjectStorage::CNWSPlayer__EatTURD_hook(CNWSPlayer* thisPtr, CNWSPlayerTURD* pTURD)
 {
-    if (before)
+    GetObjectStorage(thisPtr->m_oidNWSObject)->CloneFrom(GetObjectStorage(pTURD));
+    Core::g_core->m_posEatTURDHook->CallOriginal<void>(thisPtr, pTURD);
+}
+void PerObjectStorage::CNWSPlayer__DropTURD_hook(CNWSPlayer* thisPtr)
+{
+    Core::g_core->m_posDropTURDHook->CallOriginal<void>(thisPtr);
+
+    // Be very, very paranoid. Bad things happen when the TURD list doesn't exist
+    // This can happen when you BootPC() the very first PC to connect to your sever
+    //     https://github.com/nwnxee/unified/issues/319
+    if (auto turdlist = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
     {
-        GetObjectStorage(thisPtr->m_oidNWSObject)->CloneFrom(GetObjectStorage(pTURD));
-    }
-}
-void PerObjectStorage::CNWSPlayer__DropTURD_hook(bool before, CNWSPlayer* thisPtr)
-{
-    if (!before)
-    {
-        // Be very, very paranoid. Bad things happen when the TURD list doesn't exist
-        // This can happen when you BootPC() the very first PC to connect to your sever
-        //     https://github.com/nwnxee/unified/issues/319
-        if (auto turdlist = Utils::GetModule()->m_lstTURDList.m_pcExoLinkedListInternal)
+        if (auto *pHead = turdlist->pHead)
         {
-            if (auto *pHead = turdlist->pHead)
+            if (auto *pTURD = static_cast<CNWSPlayerTURD*>(pHead->pObject))
             {
-                if (auto *pTURD = static_cast<CNWSPlayerTURD*>(pHead->pObject))
-                {
-                    GetObjectStorage(pTURD)->CloneFrom(GetObjectStorage(thisPtr->m_oidNWSObject));
-                }
+                GetObjectStorage(pTURD)->CloneFrom(GetObjectStorage(thisPtr->m_oidNWSObject));
             }
         }
     }
 }
 
 
-void PerObjectStorage::CNWSUUID__SaveToGff_hook(bool before, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
+void PerObjectStorage::CNWSUUID__SaveToGff_hook(CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
 {
-    if (before)
-    {
-        pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis->m_parent)->Serialize(), GffFieldName);
-    }
+    pRes->WriteFieldCExoString(pStruct, GetObjectStorage(pThis->m_parent)->Serialize(), GffFieldName);
+    Core::g_core->m_posUUIDSaveToGffHook->CallOriginal<void>(pThis, pRes, pStruct);
+
 }
-void PerObjectStorage::CNWSUUID__LoadFromGff_hook(bool before, CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
+bool PerObjectStorage::CNWSUUID__LoadFromGff_hook(CNWSUUID* pThis, CResGFF* pRes, CResStruct* pStruct)
 {
-    if (before)
-    {
-        int32_t success;
-        auto str = pRes->ReadFieldCExoString(pStruct, GffFieldName, success);
-        if (success)
-            GetObjectStorage(pThis->m_parent)->Deserialize(str.CStr());
-    }
+    int32_t success;
+    auto str = pRes->ReadFieldCExoString(pStruct, GffFieldName, success);
+    if (success)
+        GetObjectStorage(pThis->m_parent)->Deserialize(str.CStr());
+
+    return Core::g_core->m_posUUIDSaveToGffHook->CallOriginal<bool>(pThis, pRes, pStruct);
 }
 
 }
