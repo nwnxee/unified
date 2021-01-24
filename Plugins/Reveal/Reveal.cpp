@@ -41,7 +41,7 @@ Reveal::Reveal(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_DoStealthDetection = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature18DoStealthDetectionEPS_iPiS1_i, int32_t,CNWSCreature*,CNWSCreature*, int32_t, int32_t*, int32_t*, int32_t>(&HookStealthDetection);
+    m_DoStealthDetection = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature18DoStealthDetectionEPS_iPiS1_i, (void*)&HookStealthDetection, Hooking::Order::Late);
 }
 
 Reveal::~Reveal()
