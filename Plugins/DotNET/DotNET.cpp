@@ -262,29 +262,29 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     Handlers = *handlers;
 
     LOG_DEBUG("Registered main loop handler: %p", Handlers.MainLoop);
-    Instance->GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
-        +[](bool before, CServerExoAppInternal*)
+    static Hooking::FunctionHook* MainLoopHook;
+    MainLoopHook = Instance->GetServices()->m_hooks->Hook(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+        (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
         {
-            if (before)
+            static uint64_t frame = 0;
+            if (Handlers.MainLoop)
             {
-                static uint64_t frame = 0;
-                if (Handlers.MainLoop)
-                {
-                    int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
-                    Handlers.MainLoop(frame);
-                    int spAfter = Utils::PopScriptContext();
-                    ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
-                }
-                ++frame;
+                int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);
+                Handlers.MainLoop(frame);
+                int spAfter = Utils::PopScriptContext();
+                ASSERT_MSG(spBefore == spAfter, "spBefore=%x, spAfter=%x", spBefore, spAfter);
             }
-        }
-    );
+            ++frame;
+
+            return MainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
+        },
+        Hooking::Order::VeryEarly);
 
 
     LOG_DEBUG("Registered runscript handler: %p", Handlers.RunScript);
     static Hooking::FunctionHook* RunScriptHook;
-    RunScriptHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji, int32_t>(
-        +[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid)
+    RunScriptHook = Instance->GetServices()->m_hooks->Hook(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
+        (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid) -> int32_t
         {
             if (!script || *script == "")
                 return 1;
@@ -303,13 +303,13 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
                 return 1;
             }
             return RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
-        }
-    );
+        },
+        Hooking::Order::Latest);
 
     LOG_DEBUG("Registered closure handler: %p", Handlers.Closure);
     static Hooking::FunctionHook* RunScriptSituationHook;
-    RunScriptSituationHook = Instance->GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji, int32_t>(
-        +[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid)
+    RunScriptSituationHook = Instance->GetServices()->m_hooks->Hook(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
+        (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID objId, int32_t valid) -> int32_t
         {
             uint64_t eventId;
             if (script && sscanf(script->m_sScriptName.m_sString, "NWNX_DOTNET_INTERNAL %lu", &eventId) == 1)
@@ -323,8 +323,8 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
                 return 1;
             }
             return RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
-        }
-    );
+        },
+        Hooking::Order::Latest);
 
     LOG_DEBUG("Registered core signal handler: %p", Handlers.SignalHandler);
     Instance->GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
