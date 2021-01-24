@@ -37,7 +37,7 @@
 #include "Events/StoreEvents.hpp"
 #include "Events/JournalEvents.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 
 #include <algorithm>
 #include <regex>
@@ -84,14 +84,14 @@ Events::Events(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT",
+    MessageBus::Subscribe("NWNX_EVENT_SIGNAL_EVENT",
         [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
             SignalEvent(message[0], std::strtoul(message[1].c_str(), nullptr, 16));
         });
 
-    GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_PUSH_EVENT_DATA",
+    MessageBus::Subscribe("NWNX_EVENT_PUSH_EVENT_DATA",
         [](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 2);
@@ -209,8 +209,8 @@ bool Events::SignalEvent(const std::string& eventName, const ObjectID target, st
         }
     }
 
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, g_plugin->m_eventData.top().m_Result});
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED", { eventName, skipped ? "1" : "0"});
+    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT_RESULT",  { eventName, g_plugin->m_eventData.top().m_Result});
+    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT_SKIPPED", { eventName, skipped ? "1" : "0"});
 
     g_plugin->m_eventData.pop();
 

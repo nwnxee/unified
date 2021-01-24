@@ -27,7 +27,7 @@
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Tasks/Tasks.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 #include "Commands.hpp"
 
 #include <string>
@@ -123,7 +123,7 @@ Util::Util(Services::ProxyServiceList* services)
                 }
             });
 
-    GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
+    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)
         {
             if (message[0] == "ON_MODULE_LOAD_FINISH")

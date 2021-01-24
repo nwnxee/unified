@@ -22,7 +22,7 @@
 #include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 
 
 using namespace NWNXLib;
@@ -633,7 +633,7 @@ ArgumentStack Rename::SetPCNameOverride(ArgumentStack&& args)
                 targetCreature->m_pStats->m_lsFirstName,
                 targetCreature->m_pStats->m_lsLastName);
 
-        GetServices()->m_messaging->SubscribeMessage("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
+        MessageBus::Subscribe("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
              [](const std::vector<std::string>& message)
              {
                  ObjectID objectID = std::strtoul(message[0].c_str(), nullptr, 16);

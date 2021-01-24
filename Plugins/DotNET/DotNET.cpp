@@ -5,7 +5,7 @@
 #include "API/Functions.hpp"
 #include "Services/Config/Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -327,7 +327,7 @@ void DotNET::RegisterHandlers(AllHandlers *handlers, unsigned size)
     );
 
     LOG_DEBUG("Registered core signal handler: %p", Handlers.SignalHandler);
-    Instance->GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
+    MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)
         {
             int spBefore = Utils::PushScriptContext(Constants::OBJECT_INVALID, false);

@@ -11,7 +11,7 @@
 #include "API/CNWRules.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 using namespace NWNXLib;
@@ -246,7 +246,7 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
         bFirstTime = false;
         // Hooks for flurry of blows
         m_ToggleModeHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature10ToggleModeEh>(&ToggleMode);
-        g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});
+        MessageBus::Broadcast("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});
         LOG_NOTICE("Flurry of blows requires activation of CombatModes plugin");
     }
 

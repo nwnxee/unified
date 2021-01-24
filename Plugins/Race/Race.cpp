@@ -19,7 +19,7 @@
 #include "API/CNWSItem.hpp"
 #include "API/Constants/Effect.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 #include "Services/Config/Config.hpp"
 #include <cmath>
 
@@ -1052,9 +1052,8 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
                 LOG_ERROR("%s: Skill modifier improperly set.", raceName);
                 break;
             }
-            g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_SKILLRANK_SIGNAL",
-                                                                   {std::to_string(param1), sRace,
-                                                                    std::to_string(param2)});
+            MessageBus::Broadcast("NWNX_SKILLRANK_SIGNAL",
+                                         {std::to_string(param1), sRace, std::to_string(param2)});
 
             g_plugin->m_RaceSkill[raceId][param1] = param2;
             auto skillName = Globals::Rules()->m_lstSkills[param1].GetNameText();

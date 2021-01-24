@@ -14,14 +14,12 @@ class Hooks;
 class Tasks;
 class Metrics;
 class Config;
-class Messaging;
 class PerObjectStorage;
 
 class HooksProxy;
 class TasksProxy;
 class MetricsProxy;
 class ConfigProxy;
-class MessagingProxy;
 class PerObjectStorageProxy;
 
 }

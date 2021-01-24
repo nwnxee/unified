@@ -12,7 +12,7 @@
 #include "API/Functions.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "Events.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 #include <cmath>
 #include <list>
 #include <numeric>
@@ -79,14 +79,14 @@ void SkillRanks::LoadRulesetInfoHook(bool before, CNWRules* pRules)
 
     g_plugin->m_blindnessMod = pRules->GetRulesetIntEntry("BLIND_PENALTY_TO_SKILL_CHECK", 4);
 
-    g_plugin->GetServices()->m_messaging->SubscribeMessage("NWNX_SKILLRANK_SIGNAL",
-                                                           [](const std::vector<std::string>& message)
-                                                           {
-                                                               auto nSkill = std::stoi(message[0]);
-                                                               auto nRace = std::stoi(message[1]);
-                                                               auto nMod = std::stoi(message[2]);
-                                                               g_plugin->m_skillRaceMod[nSkill][nRace] = nMod;
-                                                           });
+    MessageBus::Subscribe("NWNX_SKILLRANK_SIGNAL",
+                                 [](const std::vector<std::string>& message)
+                                 {
+                                     auto nSkill = std::stoi(message[0]);
+                                     auto nRace = std::stoi(message[1]);
+                                     auto nMod = std::stoi(message[2]);
+                                     g_plugin->m_skillRaceMod[nSkill][nRace] = nMod;
+                                 });
 
     for (int featId = 0; featId < pRules->m_nNumFeats; featId++)
     {

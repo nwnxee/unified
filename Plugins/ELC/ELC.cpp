@@ -27,7 +27,7 @@
 #include "API/C2DA.hpp"
 #include "Events.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 #include "Platform/ASLR.hpp"
 
 #include <set>
@@ -187,7 +187,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
         return g_plugin->m_validationFailureMessageStrRef;
     };
 
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
+    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT",
             { "NWNX_ON_ELC_VALIDATE_CHARACTER_BEFORE", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
 
     // *** Server Restrictions **********************************************************************************************
@@ -1816,7 +1816,7 @@ int32_t ELC::ValidateCharacterHook(CNWSPlayer *pPlayer, int32_t *bFailedServerRe
         }
     }
 
-    g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_EVENT_SIGNAL_EVENT",
+    MessageBus::Broadcast("NWNX_EVENT_SIGNAL_EVENT",
             {"NWNX_ON_ELC_VALIDATE_CHARACTER_AFTER", NWNXLib::Utils::ObjectIDToString(pPlayer->m_oidNWSObject) });
 
     return 0;

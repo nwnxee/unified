@@ -20,6 +20,7 @@
 #include "Commands.hpp"
 #include "Utils.hpp"
 #include "Encoding.hpp"
+#include "MessageBus.hpp"
 
 #include <csignal>
 #include <regex>
@@ -117,7 +118,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_tasks = std::make_unique<Tasks>();
     services->m_metrics = std::make_unique<Metrics>();
     services->m_config = std::make_unique<Config>();
-    services->m_messaging = std::make_unique<Messaging>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
 
     return services;
@@ -131,7 +131,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
-    proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
@@ -198,7 +197,7 @@ void NWNXCore::InitialSetupHooks()
             API::Functions::_ZN10CNWSModule16LoadModuleFinishEv,
             (void*)+[](CNWSModule *pModule) -> uint32_t
             {
-                g_core->m_services->m_messaging->BroadcastMessage("NWNX_CORE_SIGNAL", { "ON_MODULE_LOAD_FINISH" });
+                MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_MODULE_LOAD_FINISH" });
                 return loadModuleFinishHook->CallOriginal<uint32_t>(pModule);
             }, Hooking::Order::Earliest);
 
@@ -560,7 +559,7 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
 {
     g_CoreShuttingDown = true;
 
-    g_core->m_services->m_messaging->BroadcastMessage("NWNX_CORE_SIGNAL", { "ON_DESTROY_SERVER" });
+    MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_DESTROY_SERVER" });
 
     if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
     {

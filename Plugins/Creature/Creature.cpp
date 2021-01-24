@@ -34,7 +34,7 @@
 #include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 #include "Encoding.hpp"
 
 
@@ -1854,8 +1854,8 @@ ArgumentStack Creature::SetOriginalName(ArgumentStack&& args)
 
         if (pCreature->m_bPlayerCharacter || pCreature->m_pStats->m_bIsPC || pCreature->m_pStats->m_bIsDMCharacterFile)
         {
-            g_plugin->GetServices()->m_messaging->BroadcastMessage("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
-                                                                   {NWNXLib::Utils::ObjectIDToString(pCreature->m_idSelf)});
+            MessageBus::Broadcast("NWNX_CREATURE_ORIGINALNAME_SIGNAL",
+                                         {NWNXLib::Utils::ObjectIDToString(pCreature->m_idSelf)});
         }
     }
 

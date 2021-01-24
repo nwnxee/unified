@@ -6,7 +6,7 @@
 #include "Services/Config/Config.hpp"
 #include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "Services/Messaging/Messaging.hpp"
+#include "MessageBus.hpp"
 #include "Services/Metrics/Resamplers.hpp"
 #include "Targets/AIMasterUpdates.hpp"
 #include "Targets/MainLoop.hpp"
@@ -134,14 +134,14 @@ Profiler::Profiler(Services::ProxyServiceList* services)
     GetServices()->m_metrics->SetResampler("TimingEvent", sum, std::chrono::seconds(1));
 
     {
-        GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
+        MessageBus::Subscribe("NWNX_PROFILER_SET_PERF_SCOPE_RESAMPLER",
         [this, sum](const std::vector<std::string>& message)
         {
             ASSERT(message.size() == 1);
             SetPerfScopeResampler(message[0]);
         });
 
-        GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_PUSH_PERF_SCOPE",
+        MessageBus::Subscribe("NWNX_PROFILER_PUSH_PERF_SCOPE",
             [this](const std::vector<std::string>& message)
             {
                 ASSERT(message.size() >= 1);
@@ -158,7 +158,7 @@ Profiler::Profiler(Services::ProxyServiceList* services)
                 PushPerfScope(std::move(name), std::move(tags));
             });
 
-        GetServices()->m_messaging->SubscribeMessage("NWNX_PROFILER_POP_PERF_SCOPE",
+        MessageBus::Subscribe("NWNX_PROFILER_POP_PERF_SCOPE",
             [this](const std::vector<std::string>&)
             {
                 PopPerfScope();
