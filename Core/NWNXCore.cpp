@@ -179,12 +179,12 @@ void NWNXCore::InitialSetupHooks()
     m_destroyServerHook    = m_services->m_hooks->Hook(API::Functions::_ZN11CAppManager13DestroyServerEv, (void*)&DestroyServerHandler, Hooking::Order::Final);
     m_mainLoopInternalHook = m_services->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopInternalHandler, Hooking::Order::Final);
 
-    m_posObjectDtorHook      = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSObjectD1Ev, (void*)&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook, Hooking::Order::Early);
-    m_posAreaDtorHook        = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSAreaD1Ev, (void*)&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook, Hooking::Order::Early);
-    m_posEatTURDHook         = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook, Hooking::Order::Early);
-    m_posDropTURDHook        = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer8DropTURDEv, (void*)&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook, Hooking::Order::Early);
-    m_posUUIDSaveToGffHook   = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__SaveToGff_hook, Hooking::Order::Early);
-    m_posUUIDLoadFromGffHook = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__LoadFromGff_hook, Hooking::Order::Early);
+    m_posObjectDtorHook      = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSObjectD1Ev, (void*)&Services::PerObjectStorage::CNWSObject__CNWSObjectDtor__0_hook, Hooking::Order::VeryEarly);
+    m_posAreaDtorHook        = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSAreaD1Ev, (void*)&Services::PerObjectStorage::CNWSArea__CNWSAreaDtor__0_hook, Hooking::Order::VeryEarly);
+    m_posEatTURDHook         = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&Services::PerObjectStorage::CNWSPlayer__EatTURD_hook, Hooking::Order::VeryEarly);
+    m_posDropTURDHook        = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer8DropTURDEv, (void*)&Services::PerObjectStorage::CNWSPlayer__DropTURD_hook, Hooking::Order::VeryEarly);
+    m_posUUIDSaveToGffHook   = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSUUID9SaveToGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__SaveToGff_hook, Hooking::Order::VeryEarly);
+    m_posUUIDLoadFromGffHook = m_services->m_hooks->Hook(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, (void*)&Services::PerObjectStorage::CNWSUUID__LoadFromGff_hook, Hooking::Order::VeryEarly);
 
     static std::unique_ptr<NWNXLib::Hooking::FunctionHook> loadModuleInProgressHook = m_services->m_hooks->Hook(API::Functions::_ZN10CNWSModule20LoadModuleInProgressEii,
             (void*)+[](CNWSModule *pModule, int32_t nAreasLoaded, int32_t nAreasToLoad) -> uint32_t
@@ -224,7 +224,7 @@ void NWNXCore::InitialSetupHooks()
                     auto retVal = runScriptChunkHook->CallOriginal<int32_t>(pVirtualMachine, sScriptChunk, oid, bOidValid, bWrapIntoMain);
                     g_core->m_ScriptChunkRecursion -= 1;
                     return retVal;
-                }, Hooking::Order::Early);
+                }, Hooking::Order::VeryEarly);
     }
 }
 
