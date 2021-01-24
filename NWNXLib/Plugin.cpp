@@ -1,0 +1,84 @@
+#include "Plugin.hpp"
+#include "Utils/String.hpp"
+#include <vector>
+#include <dlfcn.h>
+
+namespace NWNXLib {
+
+void* Plugin::GetExportedSymbol(const std::string& symbolName)
+{
+    return dlsym(m_handle, symbolName.c_str());
+}
+
+Plugin::Plugin(Services::ProxyServiceList* services) :
+    m_services(services) { }
+
+
+Plugin* Plugin::Find(const std::string& pluginName)
+{
+    for (auto* plugin : s_plugins)
+    {
+        if (!strcasecmp(pluginName.c_str(), plugin->m_name.c_str()))
+            return plugin;
+    }
+    return nullptr;
+}
+
+Plugin* Plugin::Load(const std::string& path, std::unique_ptr<Services::ProxyServiceList>&& services)
+{
+    auto basename = Utils::basename(path);
+
+    LOG_DEBUG("Loading plugin '%s'", basename);
+    if (Find(basename))
+    {
+        LOG_ERROR("Plugin '%s' already loaded.", basename);
+        return nullptr;
+    }
+
+    void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_NODELETE);
+    if (!handle)
+    {
+        LOG_ERROR("Unable to load plugin '%s'", path);
+        return nullptr;
+    }
+
+    auto entry = (EntryFunction) dlsym(handle, PluginEntryName);
+    if (entry == nullptr)
+    {
+        LOG_ERROR("Plugin '%s' does not expose entry function %s()", path, PluginEntryName);
+        dlclose(handle);
+        return nullptr;
+    }
+
+    Plugin* plugin = entry(services.get());
+    if (plugin == nullptr)
+    {
+        LOG_ERROR("Plugin '%s' entry function returned nullptr", path);
+        dlclose(handle);
+        return nullptr;
+    }
+    plugin->m_servicesOwning = std::move(services);
+    plugin->m_name = basename;
+    plugin->m_path = path;
+    plugin->m_handle = handle;
+    s_plugins.push_back(plugin);
+
+    LOG_INFO("Loaded plugin %s", path);
+    return plugin;
+}
+
+void Plugin::UnloadAll()
+{
+    while (!s_plugins.empty())
+    {
+        auto* plugin = s_plugins.back();
+        s_plugins.pop_back();
+        LOG_INFO("Unloading plugin %s", plugin->m_name);
+
+        auto handle = plugin->m_handle;
+        delete plugin;
+        dlclose(handle);
+    }
+}
+
+}

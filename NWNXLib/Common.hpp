@@ -12,7 +12,6 @@ namespace NWNXLib::Services {
 
 class Events;
 class Hooks;
-class Plugins;
 class Tasks;
 class Metrics;
 class Config;
@@ -22,7 +21,6 @@ class Commands;
 
 class EventsProxy;
 class HooksProxy;
-class PluginsProxy;
 class TasksProxy;
 class MetricsProxy;
 class ConfigProxy;

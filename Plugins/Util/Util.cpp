@@ -26,7 +26,6 @@
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Plugins/Plugins.hpp"
 #include "Services/Commands/Commands.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
@@ -655,9 +654,7 @@ ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
 
 ArgumentStack Util::PluginExists(ArgumentStack&& args)
 {
-    auto pluginName = Services::Events::ExtractArgument<std::string>(args);
-
-    return GetServices()->m_plugins->FindPluginByName(pluginName) ? Services::Events::Arguments(1) : Services::Events::Arguments(0);
+    return Plugin::Find(args.extract<std::string>()) ? 1 : 0;
 }
 
 ArgumentStack Util::GetUserDirectory(ArgumentStack&&)

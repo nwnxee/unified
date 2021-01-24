@@ -24,7 +24,11 @@ std::optional<Events::FunctionCallback> Events::GetEventCallback(const std::stri
 
     LOG_DEBUG("Plugin '%s', event '%s' not found, trying dlsym()", pluginName, eventName);
 
-    void* handle = Core::g_core->m_services->m_plugins->GetPluginExport(pluginName, eventName);
+    auto *plugin = NWNXLib::Plugin::Find(pluginName);
+    if (!plugin)
+        return std::optional<FunctionCallback>();
+
+    void* handle = plugin->GetExportedSymbol(eventName);
     if (!handle)
     {
         LOG_ERROR("Plugin %s does not expose a function named '%s'", pluginName, eventName);
@@ -52,7 +56,7 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     }
     else
     {
-        if (!Core::g_core->m_services->m_plugins->FindPluginByName(pluginName))
+        if (!NWNXLib::Plugin::Find(pluginName))
         {
             LOG_ERROR("Plugin '%s' is not loaded but NWScript '%s' tried to call function '%s'.",
                     pluginName, Utils::GetCurrentScript(), eventName);

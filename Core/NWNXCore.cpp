@@ -92,8 +92,7 @@ NWNXCore* g_core = nullptr; // Used to access the core class in hook or event ha
 bool g_CoreShuttingDown = false;
 
 NWNXCore::NWNXCore()
-    : m_pluginProxyServiceMap([](const auto& first, const auto& second) { return first.m_id < second.m_id; }),
-      m_ScriptChunkRecursion(0)
+    : m_ScriptChunkRecursion(0)
 {
     g_core = this;
 
@@ -121,7 +120,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
 
     services->m_events = std::make_unique<Events>();
     services->m_hooks = std::make_unique<Hooks>();
-    services->m_plugins = std::make_unique<Plugins>();
     services->m_tasks = std::make_unique<Tasks>();
     services->m_metrics = std::make_unique<Metrics>();
     services->m_config = std::make_unique<Config>();
@@ -138,7 +136,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
 
     proxyServices->m_events = std::make_unique<Services::EventsProxy>(*m_services->m_events, plugin);
     proxyServices->m_hooks = std::make_unique<Services::HooksProxy>(*m_services->m_hooks);
-    proxyServices->m_plugins = std::make_unique<Services::PluginsProxy>(*m_services->m_plugins);
     proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
@@ -269,23 +266,17 @@ void NWNXCore::InitialSetupPlugins()
     LOG_INFO("Loading plugins from: %s", pluginDir);
 
     std::vector<std::string> files;
-    DIR* dir = opendir(pluginDir.c_str());
-
-    if (dir != nullptr)
+    if (auto dir = opendir(pluginDir.c_str()))
     {
-        dirent* directoryEntry = readdir(dir);
-
-        while (directoryEntry != nullptr)
+        while (auto entry = readdir(dir))
         {
-            if (directoryEntry->d_type == DT_UNKNOWN || directoryEntry->d_type == DT_REG || directoryEntry->d_type == DT_LNK)
+            if (entry->d_type == DT_UNKNOWN || entry->d_type == DT_REG || entry->d_type == DT_LNK)
             {
-                files.emplace_back(directoryEntry->d_name);
+                files.emplace_back(entry->d_name);
             }
-            directoryEntry = readdir(dir);
         }
         closedir(dir);
     }
-
     // Sort by file name, so at least plugins are loaded in deterministic order.
     std::sort(std::begin(files), std::end(files));
 
@@ -304,29 +295,13 @@ void NWNXCore::InitialSetupPlugins()
             continue;
         }
 
-        std::unique_ptr<Services::ProxyServiceList> services = ConstructProxyServices(pluginNameWithoutExtension);
-
+        auto services = ConstructProxyServices(pluginNameWithoutExtension);
         if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
             continue;
         }
-
-        try
-        {
-            LOG_DEBUG("Loading plugin %s", pluginName);
-            std::stringstream ss;
-            ss << pluginDir << "/" << pluginName;
-            auto registrationToken = m_services->m_plugins->LoadPlugin(ss.str(), services.get());
-            auto data = *m_services->m_plugins->FindPluginById(registrationToken.m_id);
-            LOG_INFO("Loaded plugin %u (%s).", data.m_id, pluginNameWithoutExtension);
-            m_pluginProxyServiceMap.insert(std::make_pair(std::move(registrationToken), std::move(services)));
-        }
-        catch (const std::runtime_error& err)
-        {
-            LOG_ERROR("Failed to load plugin (%s) because '%s'.", pluginName, err.what());
-            throw;
-        }
+        Plugin::Load(pluginDir + "/" + pluginName, std::move(services));
     }
 }
 
@@ -462,21 +437,21 @@ void NWNXCore::InitialSetupCommands()
         if (!args.empty())
         {
             size_t space = args.find_first_of(' ');
-            std::string plugin = args.substr(0, space);
+            std::string pluginName = args.substr(0, space);
             std::string level = args.substr(space + 1);
 
-            std::string pluginName = g_core->m_services->m_plugins->GetCanonicalPluginName("NWNX_" + plugin);
+            auto* plugin = Plugin::Find("NWNX_" + pluginName);
 
-            if (!pluginName.empty())
+            if (plugin)
             {
                 if (auto logLevel = Utils::from_string<uint32_t>(level))
                 {
-                    LOG_INFO("Setting log level of plugin '%s' to '%u'", pluginName, *logLevel);
-                    Log::SetLogLevel(pluginName.c_str(), static_cast<Log::Channel::Enum>(*logLevel));
+                    LOG_INFO("Setting log level of plugin '%s' to '%u'", plugin->GetName(), *logLevel);
+                    Log::SetLogLevel(plugin->GetName().c_str(), static_cast<Log::Channel::Enum>(*logLevel));
                 }
-                else if (level == plugin) // no level given.
+                else if (level == pluginName) // no level given.
                 {
-                    LOG_INFO("Log level for %s is %u", pluginName, Log::GetLogLevel(pluginName.c_str()));
+                    LOG_INFO("Log level for %s is %u", plugin->GetName(), Log::GetLogLevel(plugin->GetName().c_str()));
                 }
                 else
                 {
@@ -485,7 +460,7 @@ void NWNXCore::InitialSetupCommands()
             }
             else
             {
-                LOG_INFO("Plugin '%s' is not loaded", plugin);
+                LOG_INFO("Plugin '%s' is not loaded", pluginName);
             }
         }
     });
@@ -518,41 +493,6 @@ void NWNXCore::InitialSetupCommands()
 
 }
 
-void NWNXCore::UnloadPlugins()
-{
-    using PairType = std::pair<Services::Plugins::RegistrationToken, std::unique_ptr<Services::ProxyServiceList>>;
-
-    std::for_each(
-        std::make_move_iterator(m_pluginProxyServiceMap.rbegin()),
-        std::make_move_iterator(m_pluginProxyServiceMap.rend()),
-        [this](PairType&& data)
-        {
-            UnloadPlugin(std::forward<PairType>(data));
-        }
-    );
-
-    m_pluginProxyServiceMap.clear();
-}
-
-void NWNXCore::UnloadPlugin(std::pair<Services::Plugins::RegistrationToken,
-    std::unique_ptr<Services::ProxyServiceList>>&& plugin)
-{
-    using namespace NWNXLib::Services;
-
-    auto data = *m_services->m_plugins->FindPluginById(plugin.first.m_id);
-
-    const Plugins::PluginID pluginId = data.m_id;
-    const std::string pluginName = Utils::basename(data.m_path);
-    try
-    {
-        m_services->m_plugins->UnloadPlugin(std::forward<Plugins::RegistrationToken>(plugin.first));
-        LOG_INFO("Unloaded plugin %d (%s).", pluginId, pluginName);
-    }
-    catch (const std::runtime_error& err)
-    {
-        LOG_ERROR("Received error '%s' when unloading plugin %d (%s).", err.what(), pluginId, pluginName);
-    }
-}
 
 void NWNXCore::UnloadServices()
 {
@@ -564,7 +504,7 @@ void NWNXCore::Shutdown()
 {
     if (g_core)
     {
-        UnloadPlugins();
+        Plugin::UnloadAll();
         UnloadServices();
         g_core = nullptr;
     }

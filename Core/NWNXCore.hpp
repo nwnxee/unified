@@ -6,7 +6,6 @@
 #include "Plugin.hpp"
 #include "Services/Services.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "Services/Plugins/Plugins.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 #include <functional>
@@ -38,14 +37,6 @@ public:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posUUIDSaveToGffHook;
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_posUUIDLoadFromGffHook;
 
-private: // Structures
-    using PluginProxyServiceMap = std::map<
-        NWNXLib::Services::Plugins::RegistrationToken,
-        std::unique_ptr<NWNXLib::Services::ProxyServiceList>,
-        std::function<bool(
-            const NWNXLib::Services::Plugins::RegistrationToken&,
-            const NWNXLib::Services::Plugins::RegistrationToken&)>>;
-
 private:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_createServerHook;
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_vmSetVarHook;
@@ -57,7 +48,6 @@ private:
     std::unique_ptr<NWNXLib::Hooking::FunctionHook> m_mainLoopInternalHook;
 
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> m_coreServices;
-    PluginProxyServiceMap m_pluginProxyServiceMap;
 
     std::unique_ptr<NWNXLib::Services::ServiceList> ConstructCoreServices();
     std::unique_ptr<NWNXLib::Services::ProxyServiceList> ConstructProxyServices(const std::string& plugin);
@@ -69,10 +59,6 @@ private:
     void InitialSetupPlugins();
     void InitialSetupResourceDirectories();
     void InitialSetupCommands();
-
-    void UnloadPlugins();
-    void UnloadPlugin(std::pair<NWNXLib::Services::Plugins::RegistrationToken,
-        std::unique_ptr<NWNXLib::Services::ProxyServiceList>>&& plugin);
 
     void UnloadServices();
     void Shutdown();
