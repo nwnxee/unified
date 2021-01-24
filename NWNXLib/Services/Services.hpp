@@ -24,7 +24,6 @@ struct ProxyServiceList;
 }
 // TODO: This all needs to go away..
 
-#include "Services/Events/Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Metrics/Metrics.hpp"
@@ -37,7 +36,6 @@ namespace NWNXLib::Services {
 // Contains the raw services. Owned by the Core.
 struct ServiceList
 {
-    std::unique_ptr<Events> m_events;
     std::unique_ptr<Hooks> m_hooks;
     std::unique_ptr<Tasks> m_tasks;
     std::unique_ptr<Metrics> m_metrics;
@@ -49,7 +47,6 @@ struct ServiceList
 // Contains proxies through which the services should be accessed.
 struct ProxyServiceList
 {
-    std::unique_ptr<EventsProxy> m_events;
     std::unique_ptr<HooksProxy> m_hooks;
     std::unique_ptr<TasksProxy> m_tasks;
     std::unique_ptr<MetricsProxy> m_metrics;

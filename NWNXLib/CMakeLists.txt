@@ -24,6 +24,7 @@ nwnxlib_add(
     "Encoding.cpp"
     "Plugin.cpp"
     "Commands.cpp"
+    "Events.cpp"
 )
 
 add_subdirectory(API)

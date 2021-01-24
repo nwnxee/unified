@@ -113,7 +113,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     using namespace NWNXLib::Services;
     std::unique_ptr<ServiceList> services = std::make_unique<ServiceList>();
 
-    services->m_events = std::make_unique<Events>();
     services->m_hooks = std::make_unique<Hooks>();
     services->m_tasks = std::make_unique<Tasks>();
     services->m_metrics = std::make_unique<Metrics>();
@@ -128,7 +127,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
 {
     std::unique_ptr<Services::ProxyServiceList> proxyServices = std::make_unique<Services::ProxyServiceList>();
 
-    proxyServices->m_events = std::make_unique<Services::EventsProxy>(*m_services->m_events, plugin);
     proxyServices->m_hooks = std::make_unique<Services::HooksProxy>(*m_services->m_hooks);
     proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);

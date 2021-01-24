@@ -1,30 +1,30 @@
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "API/CExoString.hpp"
 #include "API/CGameEffect.hpp"
 #include "Utils.hpp"
-#include "../../../Core/NWNXCore.hpp"
+#include "Plugin.hpp"
 
 #include <algorithm>
 #include <array>
 #include <cstring>
 #include <sstream>
 
-namespace Core {
-extern NWNXCore* g_core;
-}
 
-namespace NWNXLib::Services {
+namespace NWNXLib {
+
+using PluginEventMap = std::unordered_map<std::string, Events::FunctionCallback>;
+static std::unordered_map<std::string, PluginEventMap> s_eventMap;
 
 std::optional<Events::FunctionCallback> Events::GetEventCallback(const std::string& pluginName, const std::string& eventName)
 {
-    auto& events = m_eventMap[pluginName];
+    auto& events = s_eventMap[pluginName];
     auto it = events.find(eventName);
     if (it != events.end())
         return std::make_optional<FunctionCallback>(it->second);
 
     LOG_DEBUG("Plugin '%s', event '%s' not found, trying dlsym()", pluginName, eventName);
 
-    auto *plugin = NWNXLib::Plugin::Find(pluginName);
+    auto *plugin = Plugin::Find(pluginName);
     if (!plugin)
         return std::optional<FunctionCallback>();
 
@@ -47,7 +47,7 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
         LOG_DEBUG("Calling event handler. Event '%s', Plugin: '%s'.", eventName, pluginName);
         try
         {
-            m_returns = (*callback)(std::move(m_arguments));
+            s_returns = (*callback)(std::move(s_arguments));
         }
         catch (const std::exception& err)
         {
@@ -56,7 +56,7 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
     }
     else
     {
-        if (!NWNXLib::Plugin::Find(pluginName))
+        if (!Plugin::Find(pluginName))
         {
             LOG_ERROR("Plugin '%s' is not loaded but NWScript '%s' tried to call function '%s'.",
                     pluginName, Utils::GetCurrentScript(), eventName);
@@ -72,10 +72,14 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
 
 void Events::RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb)
 {
-    auto& events = m_eventMap[pluginName];
+    auto& events = s_eventMap[pluginName];
 
     if (events.count(eventName) == 1)
-        throw std::runtime_error("Tried to register an event twice with the same name.");
+    {
+        std::string str = pluginName + "::" + eventName;
+        str += " - Tried to register an event twice with the same name.";
+        throw std::runtime_error(str.c_str());
+    }
 
     events[eventName] = cb;
 }

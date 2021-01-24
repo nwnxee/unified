@@ -10,23 +10,19 @@
 
 namespace NWNXLib::Services {
 
-class Events;
 class Hooks;
 class Tasks;
 class Metrics;
 class Config;
 class Messaging;
 class PerObjectStorage;
-class Commands;
 
-class EventsProxy;
 class HooksProxy;
 class TasksProxy;
 class MetricsProxy;
 class ConfigProxy;
 class MessagingProxy;
 class PerObjectStorageProxy;
-class CommandsProxy;
 
 }
 #include <functional>
