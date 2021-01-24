@@ -3,7 +3,7 @@
 #include <map>
 #include <set>
 #include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSCreatureStats.hpp"
@@ -24,7 +24,7 @@ struct DevastatingCriticalDataStr
     bool     bBypass;
 };
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Weapon {
 

@@ -3,7 +3,7 @@
 
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Tasks/Tasks.hpp"
 
 #include "API/Functions.hpp"

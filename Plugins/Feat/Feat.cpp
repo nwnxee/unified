@@ -40,7 +40,7 @@ Feat::Feat(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetFeatModifier);
@@ -905,17 +905,17 @@ bool Feat::DoFeatModifier(int32_t featId, FeatModifier featMod, int32_t param1, 
 
 ArgumentStack Feat::SetFeatModifier(ArgumentStack&& args)
 {
-    auto featId = Services::Events::ExtractArgument<int>(args);
-    auto featMod = static_cast<FeatModifier>(Services::Events::ExtractArgument<int>(args));
-    auto param1 = Services::Events::ExtractArgument<int>(args);
-    auto param2 = Services::Events::ExtractArgument<int>(args);
-    auto param3 = Services::Events::ExtractArgument<int>(args);
-    auto param4 = Services::Events::ExtractArgument<int>(args);
+    auto featId = Events::ExtractArgument<int>(args);
+    auto featMod = static_cast<FeatModifier>(Events::ExtractArgument<int>(args));
+    auto param1 = Events::ExtractArgument<int>(args);
+    auto param2 = Events::ExtractArgument<int>(args);
+    auto param3 = Events::ExtractArgument<int>(args);
+    auto param4 = Events::ExtractArgument<int>(args);
 
     if (DoFeatModifier(featId, featMod, param1, param2, param3, param4) && !g_plugin->m_Feats.count(featId))
         g_plugin->m_Feats.insert(featId);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

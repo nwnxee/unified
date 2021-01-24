@@ -3,9 +3,9 @@
 #include "Common.hpp"
 #include "Plugin.hpp"
 #include "API/Constants/Misc.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace NWNXLib::Hooking { class FunctionHook; }
 

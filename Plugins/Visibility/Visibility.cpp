@@ -27,7 +27,7 @@ Visibility::Visibility(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetVisibilityOverride);
@@ -110,22 +110,22 @@ int32_t Visibility::GetPersonalOverride(ObjectID playerId, ObjectID targetId)
 
 ArgumentStack Visibility::GetVisibilityOverride(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(targetId != Constants::OBJECT_INVALID);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalOverride(targetId) :
                                                                GetPersonalOverride(playerId, targetId);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
 {
-    auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto targetId = Services::Events::ExtractArgument<ObjectID>(args);
+    auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto targetId = Events::ExtractArgument<ObjectID>(args);
       ASSERT_OR_THROW(targetId != Constants::OBJECT_INVALID);
-    const auto override = Services::Events::ExtractArgument<int32_t>(args);
+    const auto override = Events::ExtractArgument<int32_t>(args);
 
     std::string varName = Utils::ObjectIDToString(targetId);
 
@@ -140,7 +140,7 @@ ArgumentStack Visibility::SetVisibilityOverride(ArgumentStack&& args)
     else
         g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, override);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

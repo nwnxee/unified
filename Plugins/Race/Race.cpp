@@ -44,7 +44,7 @@ Race::Race(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SetRacialModifier);
@@ -1106,28 +1106,28 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
 
 ArgumentStack Race::SetRacialModifier(ArgumentStack&& args)
 {
-    auto raceId = Services::Events::ExtractArgument<int>(args);
-    auto raceMod = static_cast<RaceModifier>(Services::Events::ExtractArgument<int>(args));
-    auto param1 = Services::Events::ExtractArgument<int>(args);
-    auto param2 = Services::Events::ExtractArgument<int>(args);
-    auto param3 = Services::Events::ExtractArgument<int>(args);
+    auto raceId = Events::ExtractArgument<int>(args);
+    auto raceMod = static_cast<RaceModifier>(Events::ExtractArgument<int>(args));
+    auto param1 = Events::ExtractArgument<int>(args);
+    auto param2 = Events::ExtractArgument<int>(args);
+    auto param3 = Events::ExtractArgument<int>(args);
 
     SetRaceModifier(raceId, raceMod, param1, param2, param3);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Race::GetParentRace(ArgumentStack&& args)
 {
-    auto raceId = Services::Events::ExtractArgument<int>(args);
+    auto raceId = Events::ExtractArgument<int>(args);
     auto parentRace = g_plugin->m_RaceParent[raceId] == RacialType::Invalid ? raceId : g_plugin->m_RaceParent[raceId];
-    return Services::Events::Arguments(parentRace);
+    return Events::Arguments(parentRace);
 }
 
 ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
 {
-    auto raceId = Services::Events::ExtractArgument<int>(args);
-    auto featId = Services::Events::ExtractArgument<int>(args);
+    auto raceId = Events::ExtractArgument<int>(args);
+    auto featId = Events::ExtractArgument<int>(args);
 
     CNWFeat *pFeat = Globals::Rules()->GetFeat(featId);
     ASSERT_OR_THROW(pFeat);
@@ -1136,7 +1136,7 @@ ArgumentStack Race::SetFavoredEnemyFeat(ArgumentStack&& args)
 
     LOG_INFO("%s: Setting Favored Enemy Feat to %s.", Globals::Rules()->m_lstRaces[raceId].GetNameText().CStr(), pFeat->GetNameText().CStr());
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

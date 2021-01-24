@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include <map>
 #include <bitset>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Appearance {
 

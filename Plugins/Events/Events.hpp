@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "../../NWNXLib/Events.hpp"
 #include <memory>
 #include <stack>
 #include <string>
@@ -9,7 +9,7 @@
 #include <vector>
 #include <set>
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Events {
 

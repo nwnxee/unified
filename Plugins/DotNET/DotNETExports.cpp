@@ -11,7 +11,7 @@
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CWorldTimer.hpp"
 #include "Services/Services.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 
 #include "Assert.hpp"
 #include "Encoding.hpp"
@@ -305,57 +305,56 @@ void DotNET::nwnxSetFunction(const char *plugin, const char *function)
 }
 void DotNET::nwnxPushInt(int32_t n)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(n);
+    Events::Push(n);
 }
 void DotNET::nwnxPushFloat(float f)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(f);
+    Events::Push(f);
 }
 void DotNET::nwnxPushObject(uint32_t o)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push((ObjectID)o);
+    Events::Push((ObjectID)o);
 }
 void DotNET::nwnxPushString(const char *s)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(Encoding::FromUTF8(s));
+    Events::Push(Encoding::FromUTF8(s));
 }
 void DotNET::nwnxPushEffect(CGameEffect *e)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(e);
+    Events::Push(e);
 }
 void DotNET::nwnxPushItemProperty(CGameEffect *ip)
 {
-    Instance->GetServices()->m_events->GetProxyBase()->Push(ip);
+    Events::Push(ip);
 }
 int32_t DotNET::nwnxPopInt()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<int32_t>().value_or(0);
+    return Events::Pop<int32_t>().value_or(0);
 }
 float DotNET::nwnxPopFloat()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<float>().value_or(0.0f);
+    return Events::Pop<float>().value_or(0.0f);
 }
 uint32_t DotNET::nwnxPopObject()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
+    return Events::Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 const char* DotNET::nwnxPopString()
 {
-    auto str = Instance->GetServices()->m_events->GetProxyBase()->Pop<std::string>().value_or(std::string{""});
+    auto str = Events::Pop<std::string>().value_or(std::string{""});
     return strdup(Encoding::ToUTF8(str).c_str());
 }
 CGameEffect* DotNET::nwnxPopEffect()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<CGameEffect*>().value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
 CGameEffect* DotNET::nwnxPopItemProperty()
 {
-    return Instance->GetServices()->m_events->GetProxyBase()->Pop<CGameEffect*>().value_or(nullptr);
+    return Events::Pop<CGameEffect*>().value_or(nullptr);
 }
 void DotNET::nwnxCallFunction()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Call(nwnxActivePlugin, nwnxActiveFunction);
+    Events::Call(nwnxActivePlugin, nwnxActiveFunction);
 }
 NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
 {

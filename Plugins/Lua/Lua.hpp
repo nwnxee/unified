@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "API/Constants.hpp"
 extern "C" {
 #include "lua.h"

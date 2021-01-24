@@ -11,7 +11,7 @@
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include <cmath>
 #include <list>
@@ -47,7 +47,7 @@ SkillRanks::SkillRanks(Services::ProxyServiceList* services)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetSkillFeat);
@@ -733,19 +733,19 @@ char SkillRanks::GetSkillRankHook(
 
 ArgumentStack SkillRanks::GetSkillFeatCountForSkill(ArgumentStack&& args)
 {
-    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto skillId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
 
-    return Services::Events::Arguments((int32_t)g_plugin->m_skillFeatMap[skillId].size());
+    return Events::Arguments((int32_t)g_plugin->m_skillFeatMap[skillId].size());
 }
 
 ArgumentStack SkillRanks::GetSkillFeat(ArgumentStack&& args)
 {
-    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto skillId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto featId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto featId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(featId >= Constants::Feat::MIN);
     ASSERT_OR_THROW(featId < Globals::Rules()->m_nNumFeats);
 
@@ -756,7 +756,7 @@ ArgumentStack SkillRanks::GetSkillFeat(ArgumentStack&& args)
         std::string sBitClass = skillFeats[featId].bitsetClasses.to_string();
         sBitClass.erase(0, sBitClass.find_first_not_of('0'));
 
-        return Services::Events::Arguments
+        return Events::Arguments
         (
             skillFeats[featId].nKeyAbilityMask,
             skillFeats[featId].bBypassArmorCheckPenalty,
@@ -770,15 +770,15 @@ ArgumentStack SkillRanks::GetSkillFeat(ArgumentStack&& args)
         );
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack SkillRanks::GetSkillFeatForSkillByIndex(ArgumentStack&& args)
 {
-    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto skillId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto index = Services::Events::ExtractArgument<int32_t>(args);
+    const auto index = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(index >= 0);
     ASSERT_OR_THROW(index < int32_t(g_plugin->m_skillFeatMap[skillId].size()));
 
@@ -793,7 +793,7 @@ ArgumentStack SkillRanks::GetSkillFeatForSkillByIndex(ArgumentStack&& args)
             std::string sBitClass = skillFeats[featId].bitsetClasses.to_string();
             sBitClass.erase(0, sBitClass.find_first_not_of('0'));
 
-            return Services::Events::Arguments
+            return Events::Arguments
             (
                 skillFeats[featId].nKeyAbilityMask,
                 skillFeats[featId].bBypassArmorCheckPenalty,
@@ -811,34 +811,34 @@ ArgumentStack SkillRanks::GetSkillFeatForSkillByIndex(ArgumentStack&& args)
         iterCount++;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack SkillRanks::SetSkillFeat(ArgumentStack&& args)
 {
-    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto skillId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto featId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto featId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(featId >= Constants::Feat::MIN);
     ASSERT_OR_THROW(featId < Globals::Rules()->m_nNumFeats);
 
     SkillFeats skillFeats {};
-    skillFeats.nModifier = Services::Events::ExtractArgument<int32_t>(args);
-    skillFeats.nFocusFeat = Services::Events::ExtractArgument<int32_t>(args);
-    std::bitset<255> cbs(Services::Events::ExtractArgument<std::string>(args));
+    skillFeats.nModifier = Events::ExtractArgument<int32_t>(args);
+    skillFeats.nFocusFeat = Events::ExtractArgument<int32_t>(args);
+    std::bitset<255> cbs(Events::ExtractArgument<std::string>(args));
     skillFeats.bitsetClasses = cbs;
 
     // If fClassLevelMod is not 0 and bitsetClasses is unset then we set it for all classes
-    skillFeats.fClassLevelMod = Services::Events::ExtractArgument<float>(args);
+    skillFeats.fClassLevelMod = Events::ExtractArgument<float>(args);
     if (skillFeats.fClassLevelMod != 0 && skillFeats.bitsetClasses.none())
         skillFeats.bitsetClasses.set();
 
-    skillFeats.nAreaFlagsRequired = Services::Events::ExtractArgument<int32_t>(args);
-    skillFeats.nAreaFlagsForbidden = Services::Events::ExtractArgument<int32_t>(args);
-    skillFeats.nDayOrNight = Services::Events::ExtractArgument<int32_t>(args);
-    skillFeats.bBypassArmorCheckPenalty = Services::Events::ExtractArgument<int32_t>(args);
-    skillFeats.nKeyAbilityMask = Services::Events::ExtractArgument<int32_t>(args);
+    skillFeats.nAreaFlagsRequired = Events::ExtractArgument<int32_t>(args);
+    skillFeats.nAreaFlagsForbidden = Events::ExtractArgument<int32_t>(args);
+    skillFeats.nDayOrNight = Events::ExtractArgument<int32_t>(args);
+    skillFeats.bBypassArmorCheckPenalty = Events::ExtractArgument<int32_t>(args);
+    skillFeats.nKeyAbilityMask = Events::ExtractArgument<int32_t>(args);
 
     // If they supplied an ability but didn't supply a calc mask bit, use MAX
     if (skillFeats.nKeyAbilityMask &&
@@ -851,7 +851,7 @@ ArgumentStack SkillRanks::SetSkillFeat(ArgumentStack&& args)
         skillFeats.nKeyAbilityMask |= maxMask;
     }
 
-    const auto createIfNonExistent = Services::Events::ExtractArgument<int32_t>(args);
+    const auto createIfNonExistent = Events::ExtractArgument<int32_t>(args);
     if (!createIfNonExistent && !g_plugin->m_skillFeatMap[skillId].count(featId))
     {
         LOG_ERROR("Attempt to set values on a Skill Feat that doesn't exist.");
@@ -861,13 +861,13 @@ ArgumentStack SkillRanks::SetSkillFeat(ArgumentStack&& args)
         g_plugin->m_skillFeatMap[skillId][featId] = skillFeats;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
 {
-    const auto mod = Services::Events::ExtractArgument<int32_t>(args);
-    const auto epicFocus = Services::Events::ExtractArgument<int32_t>(args);
+    const auto mod = Events::ExtractArgument<int32_t>(args);
+    const auto epicFocus = Events::ExtractArgument<int32_t>(args);
 
     for (int nSkill = 0; nSkill < Globals::Rules()->m_nNumSkills; nSkill++)
     {
@@ -883,63 +883,63 @@ ArgumentStack SkillRanks::SetSkillFeatFocusModifier(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack SkillRanks::GetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto areaOid = Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {
         LOG_ERROR("GetAreaModifier function called on non-area object %x", areaOid);
-        return Services::Events::Arguments();
+        return Events::Arguments();
     }
-    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto skillId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
 
     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
     int32_t retVal = *pPOS->Get<int>(areaOid, areaModPOSKey + std::to_string(skillId));
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack SkillRanks::SetAreaModifier(ArgumentStack&& args)
 {
-    const auto areaOid = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto areaOid = Events::ExtractArgument<ObjectID>(args);
     auto *pArea = Globals::AppManager()->m_pServerExoApp->GetAreaByGameObjectID(areaOid);
     if (!pArea)
     {
         LOG_ERROR("SetAreaModifier function called on non-area object %x", areaOid);
-        return Services::Events::Arguments();
+        return Events::Arguments();
     }
-    const auto skillId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto skillId = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(skillId >= Constants::Skill::MIN);
     ASSERT_OR_THROW(skillId < Globals::Rules()->m_nNumSkills);
-    const auto modifier = Services::Events::ExtractArgument<int32_t>(args);
+    const auto modifier = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(modifier >= -127);
     ASSERT_OR_THROW(modifier < 127);
 
     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
     pPOS->Set(areaOid, areaModPOSKey + std::to_string(skillId), modifier, true);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack SkillRanks::GetBlindnessPenalty(ArgumentStack &&)
 {
-    return Services::Events::Arguments(g_plugin->m_blindnessMod);
+    return Events::Arguments(g_plugin->m_blindnessMod);
 }
 
 ArgumentStack SkillRanks::SetBlindnessPenalty(ArgumentStack &&args)
 {
-    const auto mod = Services::Events::ExtractArgument<int32_t>(args);
+    const auto mod = Events::ExtractArgument<int32_t>(args);
     ASSERT_OR_THROW(mod >= -255);
     ASSERT_OR_THROW(mod < 255);
     g_plugin->m_blindnessMod = mod;
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

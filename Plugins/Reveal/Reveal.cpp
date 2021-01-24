@@ -33,7 +33,7 @@ Reveal::Reveal(Services::ProxyServiceList* services)
   : Plugin(services)
 {
 #define REGISTER(func)              \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(RevealTo);
@@ -85,28 +85,28 @@ int32_t Reveal::HookStealthDetection(CNWSCreature* pObserverCreature, CNWSCreatu
 
 ArgumentStack Reveal::RevealTo(ArgumentStack&& args)
 {
-    auto stealtherID = Services::Events::ExtractArgument<ObjectID>(args);
-    auto observerID = Services::Events::ExtractArgument<ObjectID>(args);
-    auto detectionVector = Services::Events::ExtractArgument<int>(args);
+    auto stealtherID = Events::ExtractArgument<ObjectID>(args);
+    auto observerID = Events::ExtractArgument<ObjectID>(args);
+    auto detectionVector = Events::ExtractArgument<int>(args);
 
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
 
     pPOS->Set(stealtherID, revealKey + Utils::ObjectIDToString(observerID), true); //store stealth to observer reveal map
     pPOS->Set(stealtherID, detectionKey + Utils::ObjectIDToString(observerID), detectionVector); //store the means through which detection happens
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Reveal::SetRevealToParty(ArgumentStack&& args)
 {
-    auto stealtherID = Services::Events::ExtractArgument<ObjectID>(args);
-    auto revealToPartyState = Services::Events::ExtractArgument<int>(args);
-    auto detectionVector = Services::Events::ExtractArgument<int>(args);
+    auto stealtherID = Events::ExtractArgument<ObjectID>(args);
+    auto revealToPartyState = Events::ExtractArgument<int>(args);
+    auto detectionVector = Events::ExtractArgument<int>(args);
 
     Services::PerObjectStorageProxy* pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
 
     pPOS->Set(stealtherID, revealKey + "PARTY", revealToPartyState, true); //store party reveal state
     pPOS->Set(stealtherID, detectionKey + "PARTY", detectionVector, true); //store the means through which detection happens
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include <iostream>
 
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 using HandleType = void*;
 
 namespace SpellChecker {

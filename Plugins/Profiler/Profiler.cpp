@@ -4,7 +4,7 @@
 #include "Common.hpp"
 #include "ProfilerMacros.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/Messaging/Messaging.hpp"
 #include "Services/Metrics/Resamplers.hpp"
@@ -165,31 +165,31 @@ Profiler::Profiler(Services::ProxyServiceList* services)
             });
     }
 
-    GetServices()->m_events->RegisterEvent("PushPerfScope",
-        [this](Services::Events::ArgumentStack&& args)
+    Events::RegisterEvent(GetName(), "PushPerfScope",
+        [this](Events::ArgumentStack&& args)
         {
-            std::string scopeName = Services::Events::ExtractArgument<std::string>(args);
+            std::string scopeName = Events::ExtractArgument<std::string>(args);
 
             NWNXLib::Services::MetricData::Tags tags;
 
             while (!args.empty())
             {
                 ASSERT(args.size() >= 2);
-                std::string tag = Services::Events::ExtractArgument<std::string>(args);
-                std::string value = Services::Events::ExtractArgument<std::string>(args);
+                std::string tag = Events::ExtractArgument<std::string>(args);
+                std::string value = Events::ExtractArgument<std::string>(args);
                 tags.emplace_back(std::make_pair(std::move(tag), std::move(value)));
             }
 
             PushPerfScope(std::move(scopeName), std::move(tags));
-            return Services::Events::Arguments();
+            return Events::Arguments();
         });
 
 
-    GetServices()->m_events->RegisterEvent("PopPerfScope",
-        [this](Services::Events::ArgumentStack&&)
+    Events::RegisterEvent(GetName(), "PopPerfScope",
+        [this](Events::ArgumentStack&&)
         {
             PopPerfScope();
-            return Services::Events::Arguments();
+            return Events::Arguments();
         });
 }
 

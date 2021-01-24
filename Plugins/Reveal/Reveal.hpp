@@ -2,10 +2,10 @@
 
 #include "Plugin.hpp"
 #include "Services/Hooks/Hooks.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Common.hpp"
 
-using ArgumentStack = NWNXLib::Services::Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Reveal {
 

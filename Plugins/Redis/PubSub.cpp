@@ -2,7 +2,7 @@
 #include "Internal.hpp"
 
 #include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Tasks/Tasks.hpp"
 
 #include "API/Globals.hpp"

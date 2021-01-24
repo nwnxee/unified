@@ -29,22 +29,22 @@ CommonArgs ExtractCommonArgs(Events::ArgumentStack& args)
     return { std::move(type), std::move(oid), std::move(tag) };
 }
 
-Array::Array(EventsProxy& events)
+Array::Array()
 {
-    events.RegisterEvent("ArrayAt", &Array::ArrayAt);
-    events.RegisterEvent("ArrayClear", &Array::ArrayClear);
-    events.RegisterEvent("ArrayContains", &Array::ArrayContains);
-    events.RegisterEvent("ArrayCopy", &Array::ArrayCopy);
-    events.RegisterEvent("ArrayErase", &Array::ArrayErase);
-    events.RegisterEvent("ArrayFind", &Array::ArrayFind);
-    events.RegisterEvent("ArrayInsert", &Array::ArrayInsert);
-    events.RegisterEvent("ArrayPushBack", &Array::ArrayPushBack);
-    events.RegisterEvent("ArrayResize", &Array::ArrayResize);
-    events.RegisterEvent("ArrayShuffle", &Array::ArrayShuffle);
-    events.RegisterEvent("ArraySize", &Array::ArraySize);
-    events.RegisterEvent("ArraySortAscending", &Array::ArraySortAscending);
-    events.RegisterEvent("ArraySortDescending", &Array::ArraySortDescending);
-    events.RegisterEvent("ArraySet", &Array::ArraySet);
+    Events::RegisterEvent("NWNX_Data", "ArrayAt", &Array::ArrayAt);
+    Events::RegisterEvent("NWNX_Data", "ArrayClear", &Array::ArrayClear);
+    Events::RegisterEvent("NWNX_Data", "ArrayContains", &Array::ArrayContains);
+    Events::RegisterEvent("NWNX_Data", "ArrayCopy", &Array::ArrayCopy);
+    Events::RegisterEvent("NWNX_Data", "ArrayErase", &Array::ArrayErase);
+    Events::RegisterEvent("NWNX_Data", "ArrayFind", &Array::ArrayFind);
+    Events::RegisterEvent("NWNX_Data", "ArrayInsert", &Array::ArrayInsert);
+    Events::RegisterEvent("NWNX_Data", "ArrayPushBack", &Array::ArrayPushBack);
+    Events::RegisterEvent("NWNX_Data", "ArrayResize", &Array::ArrayResize);
+    Events::RegisterEvent("NWNX_Data", "ArrayShuffle", &Array::ArrayShuffle);
+    Events::RegisterEvent("NWNX_Data", "ArraySize", &Array::ArraySize);
+    Events::RegisterEvent("NWNX_Data", "ArraySortAscending", &Array::ArraySortAscending);
+    Events::RegisterEvent("NWNX_Data", "ArraySortDescending", &Array::ArraySortDescending);
+    Events::RegisterEvent("NWNX_Data", "ArraySet", &Array::ArraySet);
 }
 
 Events::ArgumentStack Array::ArrayAt(Events::ArgumentStack&& rawArgs)

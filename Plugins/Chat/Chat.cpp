@@ -39,7 +39,7 @@ Chat::Chat(Services::ProxyServiceList* services)
     : Plugin(services), m_skipMessage(false), m_depth(0)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SendMessage);
@@ -293,9 +293,9 @@ Events::ArgumentStack Chat::GetTarget(Events::ArgumentStack&&)
 
 Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 {
-    const auto distance = Services::Events::ExtractArgument<float>(args);
-    const auto playerOid = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
+    const auto distance = Events::ExtractArgument<float>(args);
+    const auto playerOid = Events::ExtractArgument<ObjectID>(args);
+    const auto channel = (Constants::ChatChannel::TYPE)Events::ExtractArgument<int32_t>(args);
 
     if (playerOid == Constants::OBJECT_INVALID)
     {
@@ -322,8 +322,8 @@ Events::ArgumentStack Chat::SetChatHearingDistance(Events::ArgumentStack&& args)
 
 Events::ArgumentStack Chat::GetChatHearingDistance(Events::ArgumentStack&& args)
 {
-    const auto playerOid = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto channel = (Constants::ChatChannel::TYPE)Services::Events::ExtractArgument<int32_t>(args);
+    const auto playerOid = Events::ExtractArgument<ObjectID>(args);
+    const auto channel = (Constants::ChatChannel::TYPE)Events::ExtractArgument<int32_t>(args);
     float retVal = m_hearingDistances[channel];
 
     if (playerOid != Constants::OBJECT_INVALID)

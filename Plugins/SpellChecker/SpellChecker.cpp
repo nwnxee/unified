@@ -29,7 +29,7 @@ SpellChecker::SpellChecker(Services::ProxyServiceList* services)
 {
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(FindMisspell);
@@ -82,7 +82,7 @@ void SpellChecker::Init(NWNXLib::Services::ConfigProxy* config)
 }
 ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
 {
-    std::string sentence = Services::Events::ExtractArgument<std::string>(args);
+    std::string sentence = Events::ExtractArgument<std::string>(args);
 
     std::string  word;
     std::vector <std::string> list;
@@ -106,12 +106,12 @@ ArgumentStack SpellChecker::FindMisspell(ArgumentStack&& args)
             output += list[i] + ",";
     }
 
-    return Services::Events::Arguments(output);
+    return Events::Arguments(output);
 }
 
 ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
 {
-    std::string word = Services::Events::ExtractArgument<std::string>(args);
+    std::string word = Events::ExtractArgument<std::string>(args);
 
     const char* cword;
     int sc;
@@ -131,7 +131,7 @@ ArgumentStack SpellChecker::GetSuggestSpell(ArgumentStack&& args)
             SpellChecker::free_e(SpellChecker::created, &wlst, ns);
         }
     }
-    return Services::Events::Arguments(output);
+    return Events::Arguments(output);
 }
 
 

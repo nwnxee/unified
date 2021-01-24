@@ -16,7 +16,7 @@
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Utils.hpp"
 
@@ -155,7 +155,7 @@ Dialog::Dialog(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetCurrentNodeType);
@@ -207,12 +207,12 @@ ArgumentStack Dialog::GetCurrentNodeType(ArgumentStack&&)
         default: retval = NODE_TYPE_INVALID;                              break;
     }
 
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Dialog::GetCurrentScriptType(ArgumentStack&&)
 {
-    return Services::Events::Arguments(scriptType);
+    return Events::Arguments(scriptType);
 }
 
 ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&&)
@@ -238,20 +238,20 @@ ArgumentStack Dialog::GetCurrentNodeID(ArgumentStack&&)
             break;
     }
 
-    return Services::Events::Arguments(retval);
+    return Events::Arguments(retval);
 }
 
 ArgumentStack Dialog::GetCurrentNodeIndex(ArgumentStack&&)
 {
-    return Services::Events::Arguments(loopCount);
+    return Events::Arguments(loopCount);
 }
 
 ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
 {
     CExoString str;
 
-    auto language = Services::Events::ExtractArgument<int32_t>(args);
-    auto gender = Services::Events::ExtractArgument<int32_t>(args);
+    auto language = Events::ExtractArgument<int32_t>(args);
+    auto gender = Events::ExtractArgument<int32_t>(args);
     CExoLocString *pLocString;
 
     switch (statestack[ssp])
@@ -285,14 +285,14 @@ ArgumentStack Dialog::GetCurrentNodeText(ArgumentStack&& args)
         pLocString->GetString(language, &str, gender, true);
     }
 
-    return Services::Events::Arguments(std::string(str.CStr()));
+    return Events::Arguments(std::string(str.CStr()));
 }
 
 ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
 {
-    auto str = Services::Events::ExtractArgument<std::string>(args);
-    auto language = Services::Events::ExtractArgument<int32_t>(args);
-    auto gender = Services::Events::ExtractArgument<int32_t>(args);
+    auto str = Events::ExtractArgument<std::string>(args);
+    auto language = Events::ExtractArgument<int32_t>(args);
+    auto gender = Events::ExtractArgument<int32_t>(args);
     CExoLocString *pLocString;
 
     switch (statestack[ssp])
@@ -327,12 +327,12 @@ ArgumentStack Dialog::SetCurrentNodeText(ArgumentStack&& args)
         pLocString->AddString(language, cexostr, gender);
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Dialog::End(ArgumentStack&& args)
 {
-    auto oidObject = Services::Events::ExtractArgument<ObjectID >(args);
+    auto oidObject = Events::ExtractArgument<ObjectID >(args);
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObject)))
@@ -340,7 +340,7 @@ ArgumentStack Dialog::End(ArgumentStack&& args)
         pObject->StopDialog();
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include <list>
 #include <map>
@@ -10,7 +10,7 @@ using namespace std;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-using ArgumentStack = Events::ArgumentStack;
+using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
 namespace Feat {
 

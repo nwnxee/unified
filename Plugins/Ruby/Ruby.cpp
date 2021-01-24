@@ -48,7 +48,7 @@ Ruby::~Ruby()
 
 }
 
-NWNXLib::Services::Events::ArgumentStack Ruby::Evaluate(NWNXLib::Services::Events::ArgumentStack&& args)
+Events::ArgumentStack Ruby::Evaluate(Events::ArgumentStack&& args)
 {
     const auto code = Events::ExtractArgument<std::string>(args);
 

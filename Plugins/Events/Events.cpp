@@ -64,8 +64,8 @@ Events::Events(Services::ProxyServiceList* services)
         g_plugin = this;
 
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
-        [this](ArgumentStack&& args){ return func(std::move(args)); })
+    NWNXLib::Events::RegisterEvent(PLUGIN_NAME, #func, \
+        [this](NWNXLib::Events::ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(SubscribeEvent);
     REGISTER(UnsubscribeEvent);
@@ -274,8 +274,8 @@ void Events::RunEventInit(const std::string& eventName)
 
 ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
 {
-    const auto event = Services::Events::ExtractArgument<std::string>(args);
-    auto script = Services::Events::ExtractArgument<std::string>(args);
+    const auto event = args.extract<std::string>();
+    auto script = args.extract<std::string>();
 
     RunEventInit(event);
     auto& eventVector = m_eventMap[event];
@@ -290,14 +290,14 @@ ArgumentStack Events::SubscribeEvent(ArgumentStack&& args)
         eventVector.emplace_back(std::move(script));
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::UnsubscribeEvent(ArgumentStack&& args)
 {
-    const auto event = Services::Events::ExtractArgument<std::string>(args);
+    const auto event = args.extract<std::string>();
       ASSERT_OR_THROW(!event.empty());
-    const auto script = Services::Events::ExtractArgument<std::string>(args);
+    const auto script = args.extract<std::string>();
       ASSERT_OR_THROW(!script.empty());
 
     auto& eventVector = m_eventMap[event];
@@ -313,31 +313,31 @@ ArgumentStack Events::UnsubscribeEvent(ArgumentStack&& args)
         eventVector.erase(it);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::PushEventData(ArgumentStack&& args)
 {
-    const auto tag = Services::Events::ExtractArgument<std::string>(args);
-    const auto data = Services::Events::ExtractArgument<std::string>(args);
+    const auto tag = args.extract<std::string>();
+    const auto data = args.extract<std::string>();
     PushEventData(tag, data);
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::SignalEvent(ArgumentStack&& args)
 {
-    const auto event = Services::Events::ExtractArgument<std::string>(args);
-    const auto object = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto event = args.extract<std::string>();
+    const auto object = args.extract<ObjectID>();
     bool signalled = SignalEvent(event, object);
 
-    return Services::Events::Arguments(signalled ? 1 : 0);
+    return signalled ? 1 : 0;
 }
 
 ArgumentStack Events::GetEventData(ArgumentStack&& args)
 {
-    std::string data = GetEventData(Services::Events::ExtractArgument<std::string>(args));
+    std::string data = GetEventData(args.extract<std::string>());
 
-    return Services::Events::Arguments(data);
+    return data;
 }
 
 ArgumentStack Events::SkipEvent(ArgumentStack&&)
@@ -350,7 +350,7 @@ ArgumentStack Events::SkipEvent(ArgumentStack&&)
 
     LOG_DEBUG("Skipping last event.");
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::SetEventResult(ArgumentStack&& args)
@@ -359,13 +359,13 @@ ArgumentStack Events::SetEventResult(ArgumentStack&& args)
     {
         throw std::runtime_error("Attempted to set event result in an invalid context.");
     }
-    const auto data = Services::Events::ExtractArgument<std::string>(args);
+    const auto data = args.extract<std::string>();
 
     m_eventData.top().m_Result = data;
 
     LOG_DEBUG("Received event result '%s'.", data);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::GetCurrentEvent(ArgumentStack&&)
@@ -381,32 +381,32 @@ ArgumentStack Events::GetCurrentEvent(ArgumentStack&&)
         retVal = g_plugin->m_eventData.top().m_EventName;
     }
 
-    return Services::Events::Arguments(retVal);
+    return retVal;
 }
 
 ArgumentStack Events::ToggleDispatchListMode(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = args.extract<std::string>();
       ASSERT_OR_THROW(!scriptName.empty());
-    const bool bEnable = Services::Events::ExtractArgument<int32_t>(args) != 0;
+    const bool bEnable = args.extract<int32_t>() != 0;
 
     if (bEnable)
         g_plugin->m_dispatchList[eventName+scriptName];
     else
         g_plugin->m_dispatchList.erase(eventName+scriptName);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = args.extract<std::string>();
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
@@ -415,16 +415,16 @@ ArgumentStack Events::AddObjectToDispatchList(ArgumentStack&& args)
         eventDispatchList->second.insert(oidObject);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto scriptName = Services::Events::ExtractArgument<std::string>(args);
+    const auto scriptName = args.extract<std::string>();
       ASSERT_OR_THROW(!scriptName.empty());
-    const auto oidObject = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto oidObject = args.extract<ObjectID>();
       ASSERT_OR_THROW(oidObject != Constants::OBJECT_INVALID);
 
     auto eventDispatchList = g_plugin->m_dispatchList.find(eventName+scriptName);
@@ -433,28 +433,28 @@ ArgumentStack Events::RemoveObjectFromDispatchList(ArgumentStack&& args)
         eventDispatchList->second.erase(oidObject);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::ToggleIDWhitelist(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const bool bEnable = Services::Events::ExtractArgument<int32_t>(args) != 0;
+    const bool bEnable = args.extract<int32_t>() != 0;
 
     if (bEnable)
         g_plugin->m_idWhitelist[eventName];
     else
         g_plugin->m_idWhitelist.erase(eventName);
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::AddIDToWhitelist(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto id = Services::Events::ExtractArgument<int32_t>(args);
+    const auto id = args.extract<int32_t>();
 
     auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
     if (idWhitelist != g_plugin->m_idWhitelist.end())
@@ -462,14 +462,14 @@ ArgumentStack Events::AddIDToWhitelist(ArgumentStack&& args)
         idWhitelist->second.insert(id);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 ArgumentStack Events::RemoveIDFromWhitelist(ArgumentStack&& args)
 {
-    const auto eventName = Services::Events::ExtractArgument<std::string>(args);
+    const auto eventName = args.extract<std::string>();
       ASSERT_OR_THROW(!eventName.empty());
-    const auto id = Services::Events::ExtractArgument<int32_t>(args);
+    const auto id = args.extract<int32_t>();
 
     auto idWhitelist = g_plugin->m_idWhitelist.find(eventName);
     if (idWhitelist != g_plugin->m_idWhitelist.end())
@@ -477,7 +477,7 @@ ArgumentStack Events::RemoveIDFromWhitelist(ArgumentStack&& args)
         idWhitelist->second.erase(id);
     }
 
-    return Services::Events::Arguments();
+    return {};
 }
 
 }

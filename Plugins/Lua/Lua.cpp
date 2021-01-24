@@ -129,9 +129,9 @@ namespace Lua {
         }
 
         // bind events
-        GetServices()->m_events->RegisterEvent("Eval", std::bind(&Lua::Eval, this, std::placeholders::_1));
-        GetServices()->m_events->RegisterEvent("EvalVoid", std::bind(&Lua::EvalVoid, this, std::placeholders::_1));
-        GetServices()->m_events->RegisterEvent("RunEvent", std::bind(&Lua::RunEvent, this, std::placeholders::_1));
+        Events::RegisterEvent(PLUGIN_NAME, "Eval", std::bind(&Lua::Eval, this, std::placeholders::_1));
+        Events::RegisterEvent(PLUGIN_NAME, "EvalVoid", std::bind(&Lua::EvalVoid, this, std::placeholders::_1));
+        Events::RegisterEvent(PLUGIN_NAME, "RunEvent", std::bind(&Lua::RunEvent, this, std::placeholders::_1));
 
         // RunScript hook
         if(!runScriptTable.empty())

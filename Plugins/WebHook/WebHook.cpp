@@ -50,11 +50,11 @@ std::string escape_json(const std::string &s) {
 
 ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
 {
-    auto host = Services::Events::ExtractArgument<std::string>(args);
-    auto origPath = Services::Events::ExtractArgument<std::string>(args);
-    auto message = Services::Events::ExtractArgument<std::string>(args);
-    auto username = Services::Events::ExtractArgument<std::string>(args);
-    auto mrkdwn = Services::Events::ExtractArgument<int32_t>(args);
+    auto host = Events::ExtractArgument<std::string>(args);
+    auto origPath = Events::ExtractArgument<std::string>(args);
+    auto message = Events::ExtractArgument<std::string>(args);
+    auto username = Events::ExtractArgument<std::string>(args);
+    auto mrkdwn = Events::ExtractArgument<int32_t>(args);
 
     // If it's just a simple text string, construct the JSON
     if (message.find("\"text\":") == std::string::npos)
@@ -161,7 +161,7 @@ ArgumentStack WebHook::SendWebHookHTTPS(ArgumentStack&& args)
             });
         });
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

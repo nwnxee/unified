@@ -28,7 +28,7 @@ Tileset::Tileset(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func)              \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetTilesetData);
@@ -122,7 +122,7 @@ ArgumentStack Tileset::GetTilesetData(ArgumentStack&& args)
     float heightTransition = 0.0f;
     std::string borderTerrain, defaultTerrain, floorTerrain, unlocalizedName;
 
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
 
     if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
@@ -187,7 +187,7 @@ ArgumentStack Tileset::GetTilesetData(ArgumentStack&& args)
     else
         LOG_WARNING("GetTilesetData: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(numTiles, heightTransition, numTerrain, numCrossers, numGroups, borderTerrain,
+    return Events::Arguments(numTiles, heightTransition, numTerrain, numCrossers, numGroups, borderTerrain,
                                        defaultTerrain, floorTerrain, displayNameStrRef, unlocalizedName, isInterior,
                                        hasHeightTransition);
 }
@@ -196,9 +196,9 @@ ArgumentStack Tileset::GetTilesetTerrain(ArgumentStack&& args)
 {
     std::string retVal;
 
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto terrainIndex = Services::Events::ExtractArgument<int32_t>(args);
+    const auto terrainIndex = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(terrainIndex >= 0);
 
     if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
@@ -230,16 +230,16 @@ ArgumentStack Tileset::GetTilesetTerrain(ArgumentStack&& args)
     else
         LOG_WARNING("GetTilesetTerrain: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Tileset::GetTilesetCrosser(ArgumentStack&& args)
 {
     std::string retVal;
 
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto crosserIndex = Services::Events::ExtractArgument<int32_t>(args);
+    const auto crosserIndex = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(crosserIndex >= 0);
 
     if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
@@ -271,14 +271,14 @@ ArgumentStack Tileset::GetTilesetCrosser(ArgumentStack&& args)
     else
         LOG_WARNING("GetTilesetCrosser: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Tileset::GetTilesetGroupData(ArgumentStack&& args)
 {
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto groupIndex = Services::Events::ExtractArgument<int32_t>(args);
+    const auto groupIndex = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(groupIndex >= 0);
 
     std::string name;
@@ -329,13 +329,13 @@ ArgumentStack Tileset::GetTilesetGroupData(ArgumentStack&& args)
     else
         LOG_WARNING("GetTilesetGroupData: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(name, strRef, rows, columns);
+    return Events::Arguments(name, strRef, rows, columns);
 }
 
 ArgumentStack Tileset::GetTilesetGroupTile(ArgumentStack&& args)
 {
     int32_t retVal = 0;
-    const auto tileIndex = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tileIndex = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tileIndex >= 0);
 
     if ((size_t)tileIndex < m_GroupTilesVector.size())
@@ -343,15 +343,15 @@ ArgumentStack Tileset::GetTilesetGroupTile(ArgumentStack&& args)
         retVal = m_GroupTilesVector[tileIndex];
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Tileset::GetTileModel(ArgumentStack&& args)
 {
     std::string retVal;
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto tileId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tileId = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tileId >= 0);
 
     if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
@@ -364,15 +364,15 @@ ArgumentStack Tileset::GetTileModel(ArgumentStack&& args)
     else
         LOG_WARNING("GetTileModel: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Tileset::GetTileMinimapTexture(ArgumentStack&& args)
 {
     std::string retVal;
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto tileId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tileId = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tileId >= 0);
 
     if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
@@ -385,14 +385,14 @@ ArgumentStack Tileset::GetTileMinimapTexture(ArgumentStack&& args)
     else
         LOG_WARNING("GetTileMinimapTexture: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Tileset::GetTileEdgesAndCorners(ArgumentStack&& args)
 {
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto tileId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tileId = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tileId >= 0);
 
     std::string tl, t, tr, r, br, b, bl, l;
@@ -414,15 +414,15 @@ ArgumentStack Tileset::GetTileEdgesAndCorners(ArgumentStack&& args)
     else
         LOG_WARNING("GetTileEdgesAndCorners: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(tl, t, tr, r, br, b, bl, l);
+    return Events::Arguments(tl, t, tr, r, br, b, bl, l);
 }
 
 ArgumentStack Tileset::GetTileNumDoors(ArgumentStack&& args)
 {
     int32_t retVal = 0;
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto tileId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tileId = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tileId >= 0);
 
     if (auto *pTileSet = Globals::AppManager()->m_pNWTileSetManager->RegisterTileSet(CResRef(tileset)))
@@ -435,16 +435,16 @@ ArgumentStack Tileset::GetTileNumDoors(ArgumentStack&& args)
     else
         LOG_WARNING("GetTileNumDoors: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Tileset::GetTileDoorData(ArgumentStack&& args)
 {
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto tileId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tileId = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tileId >= 0);
-    const auto doorIndex = Services::Events::ExtractArgument<int32_t>(args);
+    const auto doorIndex = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(doorIndex >= 0);
 
     int32_t type = -1;
@@ -492,34 +492,34 @@ ArgumentStack Tileset::GetTileDoorData(ArgumentStack&& args)
     else
         LOG_WARNING("GetTileDoorData: Failed to Register Tileset: %s", tileset);
 
-    return Services::Events::Arguments(type, x, y, z, orientation);
+    return Events::Arguments(type, x, y, z, orientation);
 }
 
 ArgumentStack Tileset::SetAreaTileOverride(ArgumentStack&& args)
 {
-    const auto areaResref = Services::Events::ExtractArgument<std::string>(args);
+    const auto areaResref = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!areaResref.empty());
       ASSERT_OR_THROW(areaResref.size() <= 16);
-    const auto overrideName = Services::Events::ExtractArgument<std::string>(args);
+    const auto overrideName = Events::ExtractArgument<std::string>(args);
 
     if (overrideName.empty())
         m_AreaTileOverrideMap.erase(areaResref);
     else
         m_AreaTileOverrideMap[areaResref] = overrideName;
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Tileset::CreateTileOverride(ArgumentStack&& args)
 {
-    const auto overrideName = Services::Events::ExtractArgument<std::string>(args);
+    const auto overrideName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!overrideName.empty());
-    const auto tileset = Services::Events::ExtractArgument<std::string>(args);
+    const auto tileset = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!tileset.empty());
-    const auto width = Services::Events::ExtractArgument<int32_t>(args);
+    const auto width = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(width >= 1);
       ASSERT_OR_THROW(width <= 32);
-    const auto height = Services::Events::ExtractArgument<int32_t>(args);
+    const auto height = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(height >= 1);
       ASSERT_OR_THROW(height <= 32);
 
@@ -527,47 +527,47 @@ ArgumentStack Tileset::CreateTileOverride(ArgumentStack&& args)
     m_TileOverrideMap[overrideName].width = width;
     m_TileOverrideMap[overrideName].height = height;
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Tileset::DeleteTileOverride(ArgumentStack&& args)
 {
-    const auto overrideName = Services::Events::ExtractArgument<std::string>(args);
+    const auto overrideName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!overrideName.empty());
 
     m_TileOverrideMap.erase(overrideName);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Tileset::SetOverrideTileData(ArgumentStack&& args)
 {
-    const auto overrideName = Services::Events::ExtractArgument<std::string>(args);
+    const auto overrideName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!overrideName.empty());
-    const auto tile = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tile = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(tile >= 0);
-    const auto id = Services::Events::ExtractArgument<int32_t>(args);
+    const auto id = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(id >= 0);
-    const auto orientation = Services::Events::ExtractArgument<int32_t>(args);
+    const auto orientation = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(orientation >= 0);
       ASSERT_OR_THROW(orientation <= 3);
-    const auto height = Services::Events::ExtractArgument<int32_t>(args);
+    const auto height = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(height >= 0);
-    const auto mainLightColor1 = Services::Events::ExtractArgument<int32_t>(args);
+    const auto mainLightColor1 = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(mainLightColor1 >= 0);
       ASSERT_OR_THROW(mainLightColor1 < 256);
-    const auto mainLightColor2 = Services::Events::ExtractArgument<int32_t>(args);
+    const auto mainLightColor2 = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(mainLightColor2 >= 0);
       ASSERT_OR_THROW(mainLightColor2 < 256);
-    const auto sourceLightColor1 = Services::Events::ExtractArgument<int32_t>(args);
+    const auto sourceLightColor1 = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(sourceLightColor1 >= 0);
       ASSERT_OR_THROW(sourceLightColor1 < 256);
-    const auto sourceLightColor2 = Services::Events::ExtractArgument<int32_t>(args);
+    const auto sourceLightColor2 = Events::ExtractArgument<int32_t>(args);
       ASSERT_OR_THROW(sourceLightColor2 >= 0);
       ASSERT_OR_THROW(sourceLightColor2 < 256);
-    const auto animLoop1 = !!Services::Events::ExtractArgument<int32_t>(args);
-    const auto animLoop2 = !!Services::Events::ExtractArgument<int32_t>(args);
-    const auto animLoop3 = !!Services::Events::ExtractArgument<int32_t>(args);
+    const auto animLoop1 = !!Events::ExtractArgument<int32_t>(args);
+    const auto animLoop2 = !!Events::ExtractArgument<int32_t>(args);
+    const auto animLoop3 = !!Events::ExtractArgument<int32_t>(args);
 
     auto tileOverride = m_TileOverrideMap.find(overrideName);
 
@@ -587,14 +587,14 @@ ArgumentStack Tileset::SetOverrideTileData(ArgumentStack&& args)
     else
         LOG_WARNING("SetOverrideTileData: Tile Override with name '%s' does not exist.", overrideName);
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Tileset::DeleteOverrideTileData(ArgumentStack&& args)
 {
-    const auto overrideName = Services::Events::ExtractArgument<std::string>(args);
+    const auto overrideName = Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!overrideName.empty());
-    const auto tile = Services::Events::ExtractArgument<int32_t>(args);
+    const auto tile = Events::ExtractArgument<int32_t>(args);
 
     auto tileOverride = m_TileOverrideMap.find(overrideName);
 
@@ -606,7 +606,7 @@ ArgumentStack Tileset::DeleteOverrideTileData(ArgumentStack&& args)
             tileOverride->second.tileData.erase(tile);
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

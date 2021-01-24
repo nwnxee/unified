@@ -8,7 +8,7 @@
 #include "API/CEncounterListEntry.hpp"
 #include "API/Constants.hpp"
 #include "API/Globals.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 
 
 using namespace NWNXLib;
@@ -29,7 +29,7 @@ Encounter::Encounter(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetNumberOfCreaturesInEncounterList);
@@ -58,7 +58,7 @@ Encounter::~Encounter()
 
 CNWSEncounter *Encounter::encounter(ArgumentStack& args)
 {
-    const auto encounterId = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto encounterId = Events::ExtractArgument<ObjectID>(args);
 
     if (encounterId == Constants::OBJECT_INVALID)
     {
@@ -85,7 +85,7 @@ ArgumentStack Encounter::GetNumberOfCreaturesInEncounterList(ArgumentStack&& arg
         retVal = pEncounter->m_nNumEncounterListEntries;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
@@ -97,7 +97,7 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
 
     if (auto *pEncounter = encounter(args))
     {
-        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        const auto index = Events::ExtractArgument<int32_t>(args);
         ASSERT_OR_THROW(index >= 0.0);
 
         if (index < pEncounter->m_nNumEncounterListEntries)
@@ -109,20 +109,20 @@ ArgumentStack Encounter::GetEncounterCreatureByIndex(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(resRef, cr, unique, alreadyUsed);
+    return Events::Arguments(resRef, cr, unique, alreadyUsed);
 }
 
 ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
 {
     if (auto *pEncounter = encounter(args))
     {
-        const auto index = Services::Events::ExtractArgument<int32_t>(args);
-        const auto resRef = Services::Events::ExtractArgument<std::string>(args);
-        auto cr = Services::Events::ExtractArgument<float>(args);
+        const auto index = Events::ExtractArgument<int32_t>(args);
+        const auto resRef = Events::ExtractArgument<std::string>(args);
+        auto cr = Events::ExtractArgument<float>(args);
         ASSERT_OR_THROW(cr >= 0.0);
-        auto unique = Services::Events::ExtractArgument<int32_t>(args);
+        auto unique = Events::ExtractArgument<int32_t>(args);
         unique = !!unique;
-        auto alreadyUsed = Services::Events::ExtractArgument<int32_t>(args);
+        auto alreadyUsed = Events::ExtractArgument<int32_t>(args);
         alreadyUsed = !!alreadyUsed;
 
         if (index < pEncounter->m_nNumEncounterListEntries)
@@ -135,7 +135,7 @@ ArgumentStack Encounter::SetEncounterCreatureByIndex(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Encounter::GetFactionId(ArgumentStack&& args)
@@ -147,21 +147,21 @@ ArgumentStack Encounter::GetFactionId(ArgumentStack&& args)
         retVal = pEncounter->m_nFactionId;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetFactionId(ArgumentStack&& args)
 {
     if (auto *pEncounter = encounter(args))
     {
-        auto factionId = Services::Events::ExtractArgument<int32_t>(args);
+        auto factionId = Events::ExtractArgument<int32_t>(args);
 
         ASSERT_OR_THROW(factionId >= 0);
 
         pEncounter->m_nFactionId = factionId;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Encounter::GetPlayerTriggeredOnly(ArgumentStack&& args)
@@ -173,21 +173,21 @@ ArgumentStack Encounter::GetPlayerTriggeredOnly(ArgumentStack&& args)
         retVal = pEncounter->m_bPlayerTriggeredOnly;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
 {
     if (auto *pEncounter = encounter(args))
     {
-        auto playerTriggeredOnly = Services::Events::ExtractArgument<int32_t>(args);
+        auto playerTriggeredOnly = Events::ExtractArgument<int32_t>(args);
 
         playerTriggeredOnly = !!playerTriggeredOnly;
 
         pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)
@@ -199,20 +199,20 @@ ArgumentStack Encounter::GetResetTime(ArgumentStack&& args)
         retVal = pEncounter->m_nResetTime;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetResetTime(ArgumentStack&& args)
 {
     if (auto *pEncounter = encounter(args))
     {
-        auto resetTime = Services::Events::ExtractArgument<int32_t>(args);
+        auto resetTime = Events::ExtractArgument<int32_t>(args);
         ASSERT_OR_THROW(resetTime >= 0);
 
         pEncounter->m_nResetTime = resetTime;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Encounter::GetNumberOfSpawnPoints(ArgumentStack&& args)
@@ -224,7 +224,7 @@ ArgumentStack Encounter::GetNumberOfSpawnPoints(ArgumentStack&& args)
         retVal = pEncounter->m_nNumSpawnPoints;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::GetSpawnPointByIndex(ArgumentStack&& args)
@@ -233,7 +233,7 @@ ArgumentStack Encounter::GetSpawnPointByIndex(ArgumentStack&& args)
 
     if (auto *pEncounter = encounter(args))
     {
-        const auto index = Services::Events::ExtractArgument<int32_t>(args);
+        const auto index = Events::ExtractArgument<int32_t>(args);
         ASSERT_OR_THROW(index >= 0);
 
         if (index < pEncounter->m_nNumSpawnPoints)
@@ -245,7 +245,7 @@ ArgumentStack Encounter::GetSpawnPointByIndex(ArgumentStack&& args)
         }
     }
 
-    return Services::Events::Arguments(x, y, z, o);
+    return Events::Arguments(x, y, z, o);
 }
 
 ArgumentStack Encounter::GetMinNumSpawned(ArgumentStack&& args)
@@ -256,7 +256,7 @@ ArgumentStack Encounter::GetMinNumSpawned(ArgumentStack&& args)
         retVal = pEncounter->m_nMinNumSpawnedCreatures;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::GetMaxNumSpawned(ArgumentStack&& args)
@@ -267,7 +267,7 @@ ArgumentStack Encounter::GetMaxNumSpawned(ArgumentStack&& args)
         retVal = pEncounter->m_nMaxSpawnedCreatures;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::GetCurrentNumSpawned(ArgumentStack&& args)
@@ -278,7 +278,7 @@ ArgumentStack Encounter::GetCurrentNumSpawned(ArgumentStack&& args)
         retVal = pEncounter->m_nNumSpawnedCreatures;
     }
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::GetGeometry(ArgumentStack&& args)
@@ -296,14 +296,14 @@ ArgumentStack Encounter::GetGeometry(ArgumentStack&& args)
                             std::to_string(pEncounter->m_pvActivateVertices[i].z) + "}";
         }
     }
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Encounter::SetGeometry(ArgumentStack&& args)
 {
     if (auto *pEncounter = encounter(args))
     {
-        const auto sGeometry = Services::Events::ExtractArgument<std::string>(args);
+        const auto sGeometry = Events::ExtractArgument<std::string>(args);
 
         auto str = sGeometry.c_str();
         std::vector<Vector> vecVerts;
@@ -351,7 +351,7 @@ ArgumentStack Encounter::SetGeometry(ArgumentStack&& args)
             LOG_WARNING("NWNX_Encounter_SetGeometry() called with less than 3 vertices.");
         }
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

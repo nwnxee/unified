@@ -7,7 +7,7 @@
 #include "API/Functions.hpp"
 #include "API/CNWSCreature.hpp"
 #include "API/CNWSPlayer.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 
@@ -37,7 +37,7 @@ Feedback::Feedback(Services::ProxyServiceList* services)
     : Plugin(services)
 {
 #define REGISTER(func) \
-    GetServices()->m_events->RegisterEvent(#func, \
+    Events::RegisterEvent(PLUGIN_NAME, #func, \
         [this](ArgumentStack&& args){ return func(std::move(args)); })
 
     REGISTER(GetMessageHidden);
@@ -131,22 +131,22 @@ int32_t Feedback::GetPersonalState(ObjectID playerId, int32_t messageType, int32
 
 ArgumentStack Feedback::GetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
-    const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
+    const auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto messageType = Events::ExtractArgument<int32_t>(args);
+    const auto messageId = Events::ExtractArgument<int32_t>(args);
 
     int32_t retVal = (playerId == Constants::OBJECT_INVALID) ? GetGlobalState(messageType, messageId) :
                                                                GetPersonalState(playerId, messageType, messageId);
 
-    return Services::Events::Arguments(retVal);
+    return Events::Arguments(retVal);
 }
 
 ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
 {
-    const auto playerId = Services::Events::ExtractArgument<ObjectID>(args);
-    const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
-    const auto messageId = Services::Events::ExtractArgument<int32_t>(args);
-    const auto state = Services::Events::ExtractArgument<int32_t>(args);
+    const auto playerId = Events::ExtractArgument<ObjectID>(args);
+    const auto messageType = Events::ExtractArgument<int32_t>(args);
+    const auto messageId = Events::ExtractArgument<int32_t>(args);
+    const auto state = Events::ExtractArgument<int32_t>(args);
 
     ASSERT_OR_THROW(messageId >= 0);
 
@@ -180,13 +180,13 @@ ArgumentStack Feedback::SetMessageHidden(ArgumentStack&& args)
             g_plugin->GetServices()->m_perObjectStorage->Set(playerId, varName, !!state, true);
         }
     }
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 ArgumentStack Feedback::SetFeedbackMode(ArgumentStack&& args)
 {
-    const auto messageType = Services::Events::ExtractArgument<int32_t>(args);
-    const auto state = Services::Events::ExtractArgument<int32_t>(args);
+    const auto messageType = Events::ExtractArgument<int32_t>(args);
+    const auto state = Events::ExtractArgument<int32_t>(args);
 
     if (!messageType)
     {
@@ -197,7 +197,7 @@ ArgumentStack Feedback::SetFeedbackMode(ArgumentStack&& args)
         g_plugin->m_CombatMessageWhitelist = !!state;
     }
 
-    return Services::Events::Arguments();
+    return Events::Arguments();
 }
 
 }

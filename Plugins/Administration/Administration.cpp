@@ -18,7 +18,7 @@
 #include "API/CNWSModule.hpp"
 #include "API/CNWSPlayerTURD.hpp"
 #include "Services/Tasks/Tasks.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 
 #include <unistd.h>
 #include <csignal>

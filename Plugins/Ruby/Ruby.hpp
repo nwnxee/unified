@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Plugin.hpp"
-#include "Services/Events/Events.hpp"
+#include "Events.hpp"
 
 namespace Ruby {
 
@@ -11,7 +11,7 @@ public:
     Ruby(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Ruby();
 
-    NWNXLib::Services::Events::ArgumentStack Evaluate(NWNXLib::Services::Events::ArgumentStack&& args);
+    Events::ArgumentStack Evaluate(Events::ArgumentStack&& args);
 
 private:
     bool m_evaluateMetrics;
