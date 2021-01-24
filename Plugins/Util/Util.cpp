@@ -26,9 +26,9 @@
 #include "API/Functions.hpp"
 #include "Utils.hpp"
 #include "Services/Config/Config.hpp"
-#include "Services/Commands/Commands.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "Services/Messaging/Messaging.hpp"
+#include "Commands.hpp"
 
 #include <string>
 #include <cstdio>
@@ -607,7 +607,7 @@ ArgumentStack Util::RegisterServerConsoleCommand(ArgumentStack&& args)
     const auto scriptChunk = Services::Events::ExtractArgument<std::string>(args);
       ASSERT_OR_THROW(!scriptChunk.empty());
 
-    bool registered = g_plugin->GetServices()->m_commands->RegisterCommand(command, [](std::string &command, std::string &args)
+    bool registered = Commands::RegisterCommand(command, [](std::string &command, std::string &args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -645,7 +645,7 @@ ArgumentStack Util::UnregisterServerConsoleCommand(ArgumentStack&& args)
 
     if (g_plugin->m_serverConsoleCommandMap.find(command) != g_plugin->m_serverConsoleCommandMap.end())
     {
-        g_plugin->GetServices()->m_commands->UnregisterCommand(command);
+        Commands::UnregisterCommand(command);
         g_plugin->m_serverConsoleCommandMap.erase(command);
     }
 

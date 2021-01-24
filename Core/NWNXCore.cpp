@@ -16,13 +16,8 @@
 #include "API/CScriptCompiler.hpp"
 #include "Platform/ASLR.hpp"
 #include "Platform/Debug.hpp"
-#include "Services/Config/Config.hpp"
-#include "Services/Events/Events.hpp"
-#include "Services/Metrics/Metrics.hpp"
-#include "Services/Tasks/Tasks.hpp"
-#include "Services/Messaging/Messaging.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
-#include "Services/Commands/Commands.hpp"
+#include "Services/Services.hpp"
+#include "Commands.hpp"
 #include "Utils.hpp"
 #include "Encoding.hpp"
 
@@ -125,7 +120,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_config = std::make_unique<Config>();
     services->m_messaging = std::make_unique<Messaging>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
-    services->m_commands = std::make_unique<Commands>();
 
     return services;
 }
@@ -141,7 +135,6 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_messaging = std::make_unique<Services::MessagingProxy>(*m_services->m_messaging);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
-    proxyServices->m_commands = std::make_unique<Services::CommandsProxy>(*m_services->m_commands);
 
     ConfigureLogLevel(plugin, *proxyServices->m_config);
 
@@ -374,7 +367,7 @@ void NWNXCore::InitialSetupResourceDirectories()
 
 void NWNXCore::InitialSetupCommands()
 {
-    m_services->m_commands->RegisterCommand("runscript", [](std::string&, std::string& args)
+    Commands::RegisterCommand("runscript", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -386,7 +379,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    m_services->m_commands->RegisterCommand("eval", [](std::string&, std::string& args)
+    Commands::RegisterCommand("eval", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -402,7 +395,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    m_services->m_commands->RegisterCommand("evalx", [](std::string&, std::string& args)
+    Commands::RegisterCommand("evalx", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -432,7 +425,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    m_services->m_commands->RegisterCommand("loglevel", [](std::string&, std::string& args)
+    Commands::RegisterCommand("loglevel", [](std::string&, std::string& args)
     {
         if (!args.empty())
         {
@@ -465,7 +458,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    m_services->m_commands->RegisterCommand("logformat", [](std::string&, std::string& args)
+    Commands::RegisterCommand("logformat", [](std::string&, std::string& args)
     {
         if (args.find("timestamp") != std::string::npos)
             Log::SetPrintTimestamp(args.find("notimestamp") == std::string::npos);
@@ -484,7 +477,7 @@ void NWNXCore::InitialSetupCommands()
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
 
-    m_services->m_commands->RegisterCommand("resolve", [](std::string&, std::string& args)
+    Commands::RegisterCommand("resolve", [](std::string&, std::string& args)
     {
         auto addr = Utils::from_string<uint64_t>(args);
         if (addr)
@@ -591,7 +584,7 @@ int32_t NWNXCore::MainLoopInternalHandler(CServerExoAppInternal *pServerExoAppIn
 {
     g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks.get());
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
-    g_core->m_services->m_commands->RunScheduledCommands();
+    Commands::RunScheduledCommands();
 
     return g_core->m_mainLoopInternalHook->CallOriginal<int32_t>(pServerExoAppInternal);
 }
