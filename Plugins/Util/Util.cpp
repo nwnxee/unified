@@ -101,28 +101,29 @@ Util::Util(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
-            +[](bool before, CServerExoAppInternal*)
+    static Hooking::FunctionHook *pMainLoopHook = GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+            (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
                 static int ticks;
                 static time_t previous;
 
-                if (!before)
-                {
-                    time_t current = time(nullptr);
+                auto retVal = pMainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
 
-                    if (current == previous)
-                    {
-                        ticks++;
-                    }
-                    else
-                    {
-                        g_plugin->m_tickCount = ticks;
-                        previous = current;
-                        ticks = 1;
-                    }
+                time_t current = time(nullptr);
+
+                if (current == previous)
+                {
+                    ticks++;
                 }
-            });
+                else
+                {
+                    g_plugin->m_tickCount = ticks;
+                    previous = current;
+                    ticks = 1;
+                }
+
+                return retVal;
+            }, Hooking::Order::Earliest);
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)
