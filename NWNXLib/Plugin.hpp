@@ -5,6 +5,7 @@
 namespace NWNXLib {
 
 #define NWNX_PLUGIN_ENTRY extern "C"
+#define NWNX_EXPORT       extern "C"
 
 // All plugins should extend this class if they want to use the API!
 // This class performs neccessary initialisation of shared API state.
@@ -14,7 +15,6 @@ public:
     Plugin(Services::ProxyServiceList* services) : m_services(services) {}
     virtual ~Plugin() {};
 
-protected:
     Services::ProxyServiceList* GetServices() { return m_services; }
 
 private:

@@ -154,6 +154,15 @@ std::string Plugins::GetCanonicalPluginName(const std::string& name) const
     }
     return "";
 }
+void* Plugins::GetPluginExport(const std::string& pluginName, const std::string& symbolName)
+{
+    for (auto& plugin : m_plugins)
+    {
+        if (pluginName == Utils::basename(plugin.second.m_path))
+            return dlsym(plugin.second.m_handle, symbolName.c_str());
+    }
+    return nullptr;
+}
 
 void Plugins::UnloadPluginInternal(PluginMap::iterator plugin)
 {
