@@ -49,8 +49,9 @@ Tileset::Tileset(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_LoadTileSetInfoHook = GetServices()->m_hooks->RequestExclusiveHook
-            <API::Functions::_ZN8CNWSArea15LoadTileSetInfoEP10CResStruct>(&LoadTileSetInfoHook);
+    s_LoadTileSetInfoHook = GetServices()->m_hooks->Hook(
+            API::Functions::_ZN8CNWSArea15LoadTileSetInfoEP10CResStruct,
+            (void*)&LoadTileSetInfoHook, Hooking::Order::Late);
 }
 
 int32_t Tileset::LoadTileSetInfoHook(CNWSArea *pArea, CResStruct *pStruct)

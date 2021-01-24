@@ -44,9 +44,9 @@ Damage::Damage(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_OnApplyDamageHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti>(&Damage::OnApplyDamage);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, void>(&Damage::OnSignalDamage);
-    GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, void>(&Damage::OnSignalDamage);
+    m_OnApplyDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti, (void*)&OnApplyDamage, Hooking::Order::Late);
+    m_SignalMeleeDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, (void*)&SignalMeleeDamageHook, Hooking::Order::Late);
+    m_SignalRangedDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, (void*)&SignalRangedDamageHook, Hooking::Order::Late);
 
     m_EventScripts["DAMAGE"] = "";
     m_EventScripts["ATTACK"] = "";
@@ -58,9 +58,9 @@ Damage::~Damage()
 
 ArgumentStack Damage::SetEventScript(ArgumentStack&& args)
 {
-    const std::string event = Services::Events::ExtractArgument<std::string>(args);
-    const std::string script = Services::Events::ExtractArgument<std::string>(args);
-    ObjectID oidOwner = Services::Events::ExtractArgument<ObjectID>(args);
+    const auto event = Services::Events::ExtractArgument<std::string>(args);
+    const auto script = Services::Events::ExtractArgument<std::string>(args);
+    auto oidOwner = Services::Events::ExtractArgument<ObjectID>(args);
 
     if (oidOwner == Constants::OBJECT_INVALID)
     {
@@ -117,7 +117,7 @@ ArgumentStack Damage::SetDamageEventData(ArgumentStack&& args)
     return stack;
 }
 
-int32_t Damage::OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, bool bLoadingGame)
+int32_t Damage::OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame)
 {
     std::string script = GetEventScript(pObject, "DAMAGE");
 
@@ -170,21 +170,31 @@ ArgumentStack Damage::SetAttackEventData(ArgumentStack&& args)
     return stack;
 }
 
-void Damage::OnSignalDamage(bool before, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks)
+void Damage::HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks)
 {
-    // only call once, either before or after original
-    if (before)
+    std::string script = GetEventScript(pThis, "ATTACK");
+    if ( !script.empty() )
     {
-        std::string script = GetEventScript(pThis, "ATTACK");
-        if ( !script.empty() )
-        {
-            // m_nCurrentAttack points to the attack *after* this flurry
-            uint8_t attackNumberOffset = pThis->m_pcCombatRound->m_nCurrentAttack - nAttacks;
-            // trigger script once per attack in the flurry
-            for ( uint32_t i = 0; i < nAttacks; i++ )
-                OnCombatAttack(pThis, pTarget, script, attackNumberOffset + i);
-        }
+        // m_nCurrentAttack points to the attack *after* this flurry
+        uint8_t attackNumberOffset = pThis->m_pcCombatRound->m_nCurrentAttack - nAttacks;
+        // trigger script once per attack in the flurry
+        for (int32_t i = 0; i < nAttacks; i++)
+            OnCombatAttack(pThis, pTarget, script, attackNumberOffset + i);
     }
+}
+
+void Damage::SignalMeleeDamageHook(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks)
+{
+    HandleSignalDamage(pThis, pTarget, nAttacks);
+
+    g_plugin->m_SignalMeleeDamageHook->CallOriginal<void>(pThis, pTarget, nAttacks);
+}
+
+void Damage::SignalRangedDamageHook(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks)
+{
+    HandleSignalDamage(pThis, pTarget, nAttacks);
+
+    g_plugin->m_SignalRangedDamageHook->CallOriginal<void>(pThis, pTarget, nAttacks);
 }
 
 void Damage::OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::string script, uint8_t attackNumber)
@@ -213,8 +223,8 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
     std::bitset<13> positive;
 
     // read input
-    uint32_t oidSource = Services::Events::ExtractArgument<ObjectID>(args);
-    uint32_t oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
+    auto oidSource = Services::Events::ExtractArgument<ObjectID>(args);
+    auto oidTarget = Services::Events::ExtractArgument<ObjectID>(args);
 
     for (int k = 0; k < 12; k++)
     {
@@ -253,7 +263,7 @@ ArgumentStack Damage::DealDamage(ArgumentStack&& args)
         vDamage[12] = pTarget->DoDamageReduction(pSource, vDamage[12], damagePower, false, false);
 
     // create damage effect ...
-    CGameEffect *pEffect = new CGameEffect(true);
+    auto *pEffect = new CGameEffect(true);
     pEffect->m_nType = 38;
     pEffect->SetCreator(oidSource);
     pEffect->SetNumIntegers(19);

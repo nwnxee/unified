@@ -15,8 +15,7 @@ NWNXLib::Services::TasksProxy* AsyncLogFlush::s_tasker;
 AsyncLogFlush::AsyncLogFlush(Services::HooksProxy* hooker, Services::TasksProxy* tasker)
 {
     s_tasker = tasker;
-    hooker->RequestExclusiveHook<API::Functions::_ZN17CExoDebugInternal12FlushLogFileEv>
-        (&FlushLogFile_Hook);
+    hooker->Hook(API::Functions::_ZN17CExoDebugInternal12FlushLogFileEv, (void*)&FlushLogFile_Hook, Hooking::Order::Final);
 }
 
 void AsyncLogFlush::FlushLogFile_Hook(CExoDebugInternal* pThis)

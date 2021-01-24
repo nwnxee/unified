@@ -25,6 +25,8 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Appearance {
 
+static Hooking::FunctionHook *s_ComputeGameObjectUpdateForObjectHook = nullptr;
+
 Appearance::Appearance(Services::ProxyServiceList* services)
     : Plugin(services)
 {
@@ -37,9 +39,9 @@ Appearance::Appearance(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    GetServices()->m_hooks->RequestSharedHook
-        <Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj, int32_t>
-            (&ComputeGameObjectUpdateForObjectHook);
+    s_ComputeGameObjectUpdateForObjectHook = GetServices()->m_hooks->Hook(
+        Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+        (void*)&ComputeGameObjectUpdateForObjectHook, Hooking::Order::Early);
 }
 
 Appearance::~Appearance()
@@ -65,42 +67,43 @@ CNWSPlayer *Appearance::Player(ArgumentStack& args)
     return pPlayer;
 }
 
-void Appearance::ComputeGameObjectUpdateForObjectHook(bool before, CNWSMessage*,
-        CNWSPlayer *pPlayer, CNWSObject*, CGameObjectArray*, ObjectID oidObjectToUpdate)
+void Appearance::ComputeGameObjectUpdateForObjectHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject,
+                                                      CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate)
 {
     if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
     {
-        static AppearanceOverrideData *pAOD;
-
-        if (before)
+        if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void *>
+                (oidObjectToUpdate, Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
         {
-            if (auto appearanceOverrideData = g_plugin->GetServices()->m_perObjectStorage->Get<void*>(oidObjectToUpdate,
-                    Utils::ObjectIDToString(pPlayer->m_oidNWSObject)))
-            {
-                pAOD = static_cast<AppearanceOverrideData*>(*appearanceOverrideData);
-            }
-            else
-            {
-                pAOD = nullptr;
-            }
-        }
+            auto *pAOD = static_cast<AppearanceOverrideData *>(*appearanceOverrideData);
 
-        if (pAOD)
-        {
-            SwapIntValue(pAOD->bitSet[AppearanceType], pAOD->appearanceType, pCreature->m_cAppearance.m_nAppearanceType);
-            SwapIntValue(pAOD->bitSet[Gender], pAOD->gender, pCreature->m_cAppearance.m_nGender);
-            SwapIntValue(pAOD->bitSet[HitPoints], pAOD->currentHitPoints, pCreature->m_nCurrentHitPoints);
-            SwapIntValue(pAOD->bitSet[HairColor], pAOD->hairColor, pCreature->m_cAppearance.m_nHairColor);
-            SwapIntValue(pAOD->bitSet[SkinColor], pAOD->skinColor, pCreature->m_cAppearance.m_nSkinColor);
-            SwapIntValue(pAOD->bitSet[PhenoType], pAOD->phenoType, pCreature->m_cAppearance.m_nPhenoType);
-            SwapIntValue(pAOD->bitSet[HeadType], pAOD->headType, pCreature->m_cAppearance.m_nHeadVariation);
-            SwapIntValue(pAOD->bitSet[SoundSet], pAOD->soundSet, pCreature->m_nSoundSet);
-            SwapIntValue(pAOD->bitSet[TailType], pAOD->tailType, pCreature->m_cAppearance.m_nTailVariation);
-            SwapIntValue(pAOD->bitSet[WingType], pAOD->wingType, pCreature->m_cAppearance.m_nWingVariation);
-            SwapIntValue(pAOD->bitSet[FootstepSound], pAOD->footstepSound, pCreature->m_nFootstepType);
-            SwapIntValue(pAOD->bitSet[Portrait], pAOD->portraitId, pCreature->m_nPortraitId);
+            auto SwapValues = [&]() -> void
+            {
+                SwapIntValue(pAOD->bitSet[AppearanceType], pAOD->appearanceType, pCreature->m_cAppearance.m_nAppearanceType);
+                SwapIntValue(pAOD->bitSet[Gender], pAOD->gender, pCreature->m_cAppearance.m_nGender);
+                SwapIntValue(pAOD->bitSet[HitPoints], pAOD->currentHitPoints, pCreature->m_nCurrentHitPoints);
+                SwapIntValue(pAOD->bitSet[HairColor], pAOD->hairColor, pCreature->m_cAppearance.m_nHairColor);
+                SwapIntValue(pAOD->bitSet[SkinColor], pAOD->skinColor, pCreature->m_cAppearance.m_nSkinColor);
+                SwapIntValue(pAOD->bitSet[PhenoType], pAOD->phenoType, pCreature->m_cAppearance.m_nPhenoType);
+                SwapIntValue(pAOD->bitSet[HeadType], pAOD->headType, pCreature->m_cAppearance.m_nHeadVariation);
+                SwapIntValue(pAOD->bitSet[SoundSet], pAOD->soundSet, pCreature->m_nSoundSet);
+                SwapIntValue(pAOD->bitSet[TailType], pAOD->tailType, pCreature->m_cAppearance.m_nTailVariation);
+                SwapIntValue(pAOD->bitSet[WingType], pAOD->wingType, pCreature->m_cAppearance.m_nWingVariation);
+                SwapIntValue(pAOD->bitSet[FootstepSound], pAOD->footstepSound, pCreature->m_nFootstepType);
+                SwapIntValue(pAOD->bitSet[Portrait], pAOD->portraitId, pCreature->m_nPortraitId);
+            };
+
+            SwapValues();
+
+            s_ComputeGameObjectUpdateForObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
+
+            SwapValues();
+
+            return;
         }
     }
+
+    s_ComputeGameObjectUpdateForObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
 }
 
 template <typename T>

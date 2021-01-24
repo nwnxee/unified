@@ -16,11 +16,11 @@ using namespace NWNXLib::API;
 
 GameObjectLookup::GameObjectLookup(Services::HooksProxy* hooker)
 {
-    hooker->RequestSharedHook<API::Functions::_ZN16CGameObjectArrayC1Ei, void>(
-    +[](bool before, CGameObjectArray* pThis)
-    {
-        if (!before)
+    static Hooking::FunctionHook *gameObjectArrayCtorHook = hooker->Hook(API::Functions::_ZN16CGameObjectArrayC1Ei,
+        (void*)+[](CGameObjectArray* pThis) -> void
         {
+            gameObjectArrayCtorHook->CallOriginal<void>(pThis);
+
             // Reading the config is currently.. complicated in NWNX, so just
             // let the CGOA constructor read it, and then undo the allocation.
             delete[] pThis->m_pArray;
@@ -28,26 +28,19 @@ GameObjectLookup::GameObjectLookup(Services::HooksProxy* hooker)
             pThis->m_nArraySize = 0;
             pThis->m_nGameObjectCache = 0;
             GameObjectLookup::Initialize(pThis->m_nLogGameObjectCache);
-        }
-    });
-    hooker->RequestSharedHook<API::Functions::_ZN16CGameObjectArrayD1Ev, void>(
-    +[](bool before, CGameObjectArray*)
-    {
-        if (!before)
+        }, Hooking::Order::Final);
+    static Hooking::FunctionHook *gameObjectArrayDtorHook = hooker->Hook(API::Functions::_ZN16CGameObjectArrayD1Ev,
+        (void*)+[](CGameObjectArray *pThis) -> void
+        {
+            gameObjectArrayDtorHook->CallOriginal<void>(pThis);
             GameObjectLookup::Finalize();
-    });
-    hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray14AddObjectAtPosEjP11CGameObject>
-        (GameObjectLookup::AddObjectAtPos);
-    hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray17AddExternalObjectERjP11CGameObjecti>
-        (GameObjectLookup::AddExternalObject);
-    hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray17AddInternalObjectERjP11CGameObjecti>
-        (GameObjectLookup::AddInternalObject);
-    hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray6DeleteEjPP11CGameObject>
-        (GameObjectLookup::Delete);
-    hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray6DeleteEj>
-        (+[](void* p, uint32_t id) -> uint8_t { return GameObjectLookup::Delete(p, id, nullptr); });
-    hooker->RequestExclusiveHook<API::Functions::_ZN16CGameObjectArray13GetGameObjectEjPP11CGameObject>
-        (GameObjectLookup::GetGameObject);
+        }, Hooking::Order::Final);
+    hooker->Hook(API::Functions::_ZN16CGameObjectArray14AddObjectAtPosEjP11CGameObject, (void*)&GameObjectLookup::AddObjectAtPos, Hooking::Order::Final);
+    hooker->Hook(API::Functions::_ZN16CGameObjectArray17AddExternalObjectERjP11CGameObjecti, (void*)&GameObjectLookup::AddExternalObject, Hooking::Order::Final);
+    hooker->Hook(API::Functions::_ZN16CGameObjectArray17AddInternalObjectERjP11CGameObjecti, (void*)&GameObjectLookup::AddInternalObject, Hooking::Order::Final);
+    hooker->Hook(API::Functions::_ZN16CGameObjectArray6DeleteEjPP11CGameObject, (void*)&GameObjectLookup::Delete, Hooking::Order::Final);
+    hooker->Hook(API::Functions::_ZN16CGameObjectArray6DeleteEj, (void*)+[](void* p, uint32_t id) -> uint8_t { return GameObjectLookup::Delete(p, id, nullptr); }, Hooking::Order::Final);
+    hooker->Hook(API::Functions::_ZN16CGameObjectArray13GetGameObjectEjPP11CGameObject, (void*)&GameObjectLookup::GetGameObject, Hooking::Order::Final);
 }
 
 // DO NOT REARRANGE
