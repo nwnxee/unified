@@ -3,33 +3,130 @@
 %include <stdint.i>
 
 #pragma SWIG nowarn=317
+#define NWNXLIB_FUNCTION_NO_VERSION_CHECK
+
+// Mark module class as static
+%pragma(csharp) moduleclassmodifiers="public static class"
+
+// Extensions
+%typemap(cscode) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE [], SWIGTYPE (CLASS::*) %{
+  public System.IntPtr Pointer {
+    get {
+      return swigCPtr.Handle;
+    }
+  }
+
+  public bool Equals($csclassname other) {
+    if (ReferenceEquals(null, other)) {
+      return false;
+    }
+
+    if (ReferenceEquals(this, other)) {
+      return true;
+    }
+
+    return Pointer.Equals(other.Pointer);
+  }
+
+  public override bool Equals(object obj) {
+    return ReferenceEquals(this, obj) || obj is $csclassname other && Equals(other);
+  }
+
+  public override int GetHashCode() {
+    return swigCPtr.Handle.GetHashCode();
+  }
+
+  public static bool operator ==($csclassname left, $csclassname right) {
+    return Equals(left, right);
+  }
+
+  public static bool operator !=($csclassname left, $csclassname right) {
+    return !Equals(left, right);
+  }
+%}
 
 %typemap(cscode) CExoString %{
+  public System.IntPtr Pointer {
+    get {
+      return swigCPtr.Handle;
+    }
+  }
+
+  public bool Equals($csclassname other) {
+    if (ReferenceEquals(null, other)) {
+      return false;
+    }
+
+    if (ReferenceEquals(this, other)) {
+      return true;
+    }
+
+    return Pointer.Equals(other.Pointer);
+  }
+
+  public override bool Equals(object obj) {
+    return ReferenceEquals(this, obj) || obj is $csclassname other && Equals(other);
+  }
+
+  public override int GetHashCode() {
+    return swigCPtr.GetHashCode();
+  }
+
+  public static bool operator ==($csclassname left, $csclassname right) {
+    return Equals(left, right);
+  }
+
+  public static bool operator !=($csclassname left, $csclassname right) {
+    return !Equals(left, right);
+  }
+
   public override string ToString() {
     return CStr();
   }
-%};
+%}
 
 %nodefaultctor;
 %nodefaultdtor;
+
+// Expose Managed Constructor
+SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
+
+// Typemap void* to IntPtr
+%typemap(ctype)  void* "void *"
+%typemap(imtype) void* "System.IntPtr"
+%typemap(cstype) void* "System.IntPtr"
+%typemap(csin)   void* "$csinput"
+%typemap(in)     void* %{ $1 = $input; %}
+%typemap(out)    void* %{ $result = $1; %}
+%typemap(csout, excode=SWIGEXCODE)  void* { 
+    System.IntPtr cPtr = $imcall;$excode
+    return cPtr;
+    }
+%typemap(csvarout, excode=SWIGEXCODE2) void* %{ 
+    get {
+        System.IntPtr cPtr = $imcall;$excode 
+        return cPtr; 
+    } 
+%} 
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";
 
 // Rename/ignore operators methods
-%rename(__Not) operator!;
-%rename(__Equals) operator==;
-%rename(__NotEquals) operator!=;
-%rename(__Assign) operator=;
-%rename(__Add) operator+;
-%rename(__Subtract) operator-;
-%rename(__LessThan) operator<;
-%rename(__GreaterThan) operator>;
-%rename(__LessThanOrEqual) operator<=;
-%rename(__GreaterThanOrEqual) operator>=;
-%rename(__Increment) operator+=;
-%rename(__Decrement) operator-=;
-%rename(__Index) operator[];
+%rename(_OpNot) operator!;
+%rename(_OpEquals) operator==;
+%rename(_Equals) Equals;
+%rename(_OpNotEquals) operator!=;
+%rename(_OpAssign) operator=;
+%rename(_OpAdd) operator+;
+%rename(_OpSubtract) operator-;
+%rename(_OpLessThan) operator<;
+%rename(_OpGreaterThan) operator>;
+%rename(_OpLessThanOrEqual) operator<=;
+%rename(_OpGreaterThanOrEqual) operator>=;
+%rename(_OpIncrement) operator+=;
+%rename(_OpDecrement) operator-=;
+%rename(_OpIndex) operator[];
 %ignore CExoString::operator std::string;
 
 // Ignore ambigious types.
@@ -37,6 +134,7 @@
 %ignore MAX;
 %ignore MASK;
 %ignore ToString;
+%ignore NWSync::CNWSync;
 
 // Ignore multi-inheritance types.
 %ignore CCallbackHandlerBase;
@@ -61,6 +159,8 @@
 %ignore CExoArrayList::Contains;
 %ignore CExoArrayList::AddUnique;
 %ignore CExoArrayList::Remove;
+%ignore CExoArrayList::begin() const;
+%ignore CExoArrayList::end() const;
 
 // Template defines
 %include "API/CExoArrayList.hpp"
@@ -148,5 +248,11 @@
 %template(CResHelperTLK) CResHelper<CResTLK,2018>;
 %template(CResHelperNDB) CResHelper<CResNDB,2064>;
 %template(CResHelperNCS) CResHelper<CResNCS,2010>;
+
+// Add function defines to subclass in module.
+%pragma(csharp) modulecode="public static class Functions {\n"
+%include "Functions.hpp"
+%include "FunctionsLinux.hpp"
+%pragma(csharp) modulecode="}\n"
 
 %include "NWNXLib.i"
