@@ -28,6 +28,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Creature: {Get/Set}PreferredAttackDistance()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
+- Encounter: {Get/Set}CanReset()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
 - Util: NWNX_Util_GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
