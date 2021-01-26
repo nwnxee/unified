@@ -13,13 +13,11 @@ namespace NWNXLib::Services {
 class Hooks;
 class Tasks;
 class Metrics;
-class Config;
 class PerObjectStorage;
 
 class HooksProxy;
 class TasksProxy;
 class MetricsProxy;
-class ConfigProxy;
 class PerObjectStorageProxy;
 
 }

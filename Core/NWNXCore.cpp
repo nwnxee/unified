@@ -19,6 +19,7 @@
 #include "Services/Services.hpp"
 #include "Commands.hpp"
 #include "Utils.hpp"
+#include "Config.hpp"
 #include "Encoding.hpp"
 #include "MessageBus.hpp"
 
@@ -117,7 +118,6 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     services->m_hooks = std::make_unique<Hooks>();
     services->m_tasks = std::make_unique<Tasks>();
     services->m_metrics = std::make_unique<Metrics>();
-    services->m_config = std::make_unique<Config>();
     services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
 
     return services;
@@ -130,23 +130,22 @@ std::unique_ptr<Services::ProxyServiceList> NWNXCore::ConstructProxyServices(con
     proxyServices->m_hooks = std::make_unique<Services::HooksProxy>(*m_services->m_hooks);
     proxyServices->m_tasks = std::make_unique<Services::TasksProxy>(*m_services->m_tasks);
     proxyServices->m_metrics = std::make_unique<Services::MetricsProxy>(*m_services->m_metrics, plugin);
-    proxyServices->m_config = std::make_unique<Services::ConfigProxy>(*m_services->m_config, plugin);
     proxyServices->m_perObjectStorage = std::make_unique<Services::PerObjectStorageProxy>(*m_services->m_perObjectStorage, plugin);
 
-    ConfigureLogLevel(plugin, *proxyServices->m_config);
+    ConfigureLogLevel(plugin);
 
     return proxyServices;
 }
 
-void NWNXCore::ConfigureLogLevel(const std::string& plugin, const NWNXLib::Services::ConfigProxy& config)
+void NWNXCore::ConfigureLogLevel(const std::string& plugin)
 {
     // Setup the log level. We do this first by checking if NWNX_<PLUGIN>_LOG_LEVEL is set.
-    auto logLevel = config.Get<uint32_t>("LOG_LEVEL");
+    auto logLevel = Config::Get<uint32_t>("LOG_LEVEL", plugin);
 
-    if (!logLevel && m_coreServices)
+    if (!logLevel)
     {
         // If it is not, then we check if NWNX_CORE_LOG_LEVEL is set.
-        logLevel = m_coreServices->m_config->Get<uint32_t>("LOG_LEVEL");
+        logLevel = Config::Get<uint32_t>("LOG_LEVEL");
     }
 
     if (logLevel)
@@ -201,7 +200,7 @@ void NWNXCore::InitialSetupHooks()
                 return loadModuleFinishHook->CallOriginal<uint32_t>(pModule);
             }, Hooking::Order::Earliest);
 
-    if (!m_coreServices->m_config->Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
+    if (!Config::Get<bool>("ALLOW_NWNX_FUNCTIONS_IN_EXECUTE_SCRIPT_CHUNK", false))
     {
         static std::unique_ptr<NWNXLib::Hooking::FunctionHook> runScriptChunkHook = m_services->m_hooks->Hook(
                 API::Functions::_ZN15CVirtualMachine14RunScriptChunkERK10CExoStringjii,
@@ -250,8 +249,8 @@ void NWNXCore::InitialSetupPlugins()
     char cwd[PATH_MAX];
     ASSERT(getcwd(cwd, sizeof(cwd)) != nullptr);
 
-    const auto pluginDir = m_coreServices->m_config->Get<std::string>("LOAD_PATH", cwd);
-    const bool skipAllPlugins = m_coreServices->m_config->Get<bool>("SKIP_ALL", false);
+    const auto pluginDir = Config::Get<std::string>("LOAD_PATH", cwd);
+    const bool skipAllPlugins = Config::Get<bool>("SKIP_ALL", false);
 
     LOG_INFO("Loading plugins from: %s", pluginDir);
 
@@ -280,13 +279,13 @@ void NWNXCore::InitialSetupPlugins()
             continue; // Not a plugin.
         }
 
-        if (pluginNameWithoutExtension == "NWNX_Experimental" && !m_coreServices->m_config->Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
+        if (pluginNameWithoutExtension == "NWNX_Experimental" && !Config::Get<bool>("LOAD_EXPERIMENTAL_PLUGIN", false))
         {
             continue;
         }
 
         auto services = ConstructProxyServices(pluginNameWithoutExtension);
-        if (services->m_config->Get<bool>("SKIP", (bool)skipAllPlugins))
+        if (Config::Get<bool>("SKIP", (bool)skipAllPlugins, pluginNameWithoutExtension))
         {
             LOG_INFO("Skipping plugin %s due to configuration.", pluginNameWithoutExtension);
             continue;
@@ -297,13 +296,13 @@ void NWNXCore::InitialSetupPlugins()
 
 void NWNXCore::InitialSetupResourceDirectories()
 {
-    auto nwnxResDirPath = m_coreServices->m_config->Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
-    auto nwnxResDirPriority = m_coreServices->m_config->Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
+    auto nwnxResDirPath = Config::Get<std::string>("NWNX_RESOURCE_DIRECTORY_PATH", Globals::ExoBase()->m_sUserDirectory.CStr() + std::string("/nwnx"));
+    auto nwnxResDirPriority = Config::Get<int32_t>("NWNX_RESOURCE_DIRECTORY_PRIORITY", 70000000);
 
     std::unordered_map<std::string, std::pair<std::string, int32_t>> resourceDirectories;
     resourceDirectories.emplace("NWNX", std::make_pair(nwnxResDirPath, nwnxResDirPriority));
 
-    if (auto customResmanDefinition = m_coreServices->m_config->Get<std::string>("CUSTOM_RESMAN_DEFINITION"))
+    if (auto customResmanDefinition = Config::Get<std::string>("CUSTOM_RESMAN_DEFINITION"))
     {
         std::string crdPath = *customResmanDefinition;
         FILE* file = std::fopen(crdPath.c_str(), "r");
@@ -510,27 +509,27 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
 
     // We need to set the NWNXLib log level (separate from Core now) to match the core log level.
     Log::SetLogLevel("NWNXLib", Log::GetLogLevel(NWNX_CORE_PLUGIN_NAME));
-    Log::SetPrintTimestamp(g_core->m_coreServices->m_config->Get<bool>("LOG_TIMESTAMP", true));
-    Log::SetPrintDate(g_core->m_coreServices->m_config->Get<bool>("LOG_DATE", false));
-    Log::SetPrintPlugin(g_core->m_coreServices->m_config->Get<bool>("LOG_PLUGIN", true));
-    Log::SetPrintSource(g_core->m_coreServices->m_config->Get<bool>("LOG_SOURCE", true));
-    Log::SetColorOutput(g_core->m_coreServices->m_config->Get<bool>("LOG_COLOR", true));
-    Log::SetForceColor(g_core->m_coreServices->m_config->Get<bool>("LOG_FORCE_COLOR", false));
-    if (g_core->m_coreServices->m_config->Get<bool>("LOG_ASYNC", false))
+    Log::SetPrintTimestamp(Config::Get<bool>("LOG_TIMESTAMP", true));
+    Log::SetPrintDate(Config::Get<bool>("LOG_DATE", false));
+    Log::SetPrintPlugin(Config::Get<bool>("LOG_PLUGIN", true));
+    Log::SetPrintSource(Config::Get<bool>("LOG_SOURCE", true));
+    Log::SetColorOutput(Config::Get<bool>("LOG_COLOR", true));
+    Log::SetForceColor(Config::Get<bool>("LOG_FORCE_COLOR", false));
+    if (Config::Get<bool>("LOG_ASYNC", false))
         Log::SetAsync(g_core->m_services->m_tasks.get());
 
-    if (auto locale = g_core->m_coreServices->m_config->Get<std::string>("LOCALE"))
+    if (auto locale = Config::Get<std::string>("LOCALE"))
     {
         Encoding::SetDefaultLocale(*locale);
     }
 
-    auto crashOnAssertFailure = g_core->m_coreServices->m_config->Get<bool>("CRASH_ON_ASSERT_FAILURE");
+    auto crashOnAssertFailure = Config::Get<bool>("CRASH_ON_ASSERT_FAILURE");
     if (crashOnAssertFailure)
     {
         Assert::SetCrashOnFailure(*crashOnAssertFailure);
     }
 
-    if (g_core->m_coreServices->m_config->Get<bool>("SKIP", false))
+    if (Config::Get<bool>("SKIP", false))
     {
         LOG_NOTICE("Not loading NWNX due to configuration.");
     }
@@ -561,7 +560,7 @@ void NWNXCore::DestroyServerHandler(CAppManager* app)
 
     MessageBus::Broadcast("NWNX_CORE_SIGNAL", { "ON_DESTROY_SERVER" });
 
-    if (auto shutdownScript = g_core->m_coreServices->m_config->Get<std::string>("SHUTDOWN_SCRIPT"))
+    if (auto shutdownScript = Config::Get<std::string>("SHUTDOWN_SCRIPT"))
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() == 2)
         {
