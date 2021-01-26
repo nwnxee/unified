@@ -760,7 +760,7 @@ int32_t Race::GetFavoredEnemyBonusHook(CNWSCreatureStats *pCreatureStats, CNWSCr
     }
 
     // If either the target's race or its parent race has a favored enemy feat associated with it we check the attacker for that feat
-    std::list<uint16_t> nFeatList;
+    std::vector<uint16_t> nFeatList;
     auto fi = g_plugin->m_RaceFavoredEnemyFeat.find(pTgtCreature->m_pStats->m_nRace);
     if (fi != g_plugin->m_RaceFavoredEnemyFeat.end())
         nFeatList = fi->second;
@@ -771,7 +771,7 @@ int32_t Race::GetFavoredEnemyBonusHook(CNWSCreatureStats *pCreatureStats, CNWSCr
         auto pfi = g_plugin->m_RaceFavoredEnemyFeat.find(pri->second);
         if (pfi != g_plugin->m_RaceFavoredEnemyFeat.end())
         {
-            nFeatList.merge(pfi->second);
+            nFeatList.insert(nFeatList.end(), pfi->second.begin(), pfi->second.end());
         }
     }
 
@@ -997,7 +997,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
             }
             else
             {
-                std::list<uint32_t> immunities;
+                std::vector<uint32_t> immunities;
                 immunities.push_back(param1);
                 g_plugin->m_RaceImmunities[raceId] = immunities;
             }
@@ -1096,7 +1096,7 @@ void Race::SetRaceModifier(int32_t raceId, RaceModifier raceMod, int32_t param1,
             }
             else
             {
-                std::list<uint32_t> immunities;
+                std::vector<uint32_t> immunities;
                 immunities.push_back(param1);
                 g_plugin->m_RaceSpellImmunities[raceId] = immunities;
             }
