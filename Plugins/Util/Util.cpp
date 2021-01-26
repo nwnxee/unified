@@ -25,7 +25,7 @@
 #include "API/CNWSModule.hpp"
 #include "API/Functions.hpp"
 #include "Utils.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Services/Tasks/Tasks.hpp"
 #include "MessageBus.hpp"
 #include "Commands.hpp"
@@ -128,13 +128,13 @@ Util::Util(Services::ProxyServiceList* services)
         {
             if (message[0] == "ON_MODULE_LOAD_FINISH")
             {
-                if (auto startScript = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT"))
+                if (auto startScript = Config::Get<std::string>("PRE_MODULE_START_SCRIPT"))
                 {
                     LOG_NOTICE("Running module start script: %s", *startScript);
                     Utils::ExecuteScript(*startScript, 0);
                 }
 
-                if (auto startChunk = g_plugin->GetServices()->m_config->Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
+                if (auto startChunk = Config::Get<std::string>("PRE_MODULE_START_SCRIPT_CHUNK"))
                 {
                     LOG_NOTICE("Running module start script chunk: %s", *startChunk);
 

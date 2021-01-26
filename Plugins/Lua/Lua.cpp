@@ -1,6 +1,6 @@
 #include "Lua.hpp"
 
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 #include <cstring>
@@ -61,24 +61,24 @@ namespace Lua {
 
         // get configuration
         // mandatory preload script and Token Function
-        std::string preloadScript = GetServices()->m_config->Get<std::string>("PRELOAD_SCRIPT", userDir+"/lua/preload.lua");
-        std::string tokenFunction = GetServices()->m_config->Get<std::string>("TOKEN_FUNCTION", "CallToken");
+        std::string preloadScript = Config::Get<std::string>("PRELOAD_SCRIPT", userDir+"/lua/preload.lua");
+        std::string tokenFunction = Config::Get<std::string>("TOKEN_FUNCTION", "CallToken");
 
         // if you want to use an event framework instead of use only Eval and EvalVoid, less intensive
-        std::string eventFunction = GetServices()->m_config->Get<std::string>("EVENT_FUNCTION", "RunEvent");
+        std::string eventFunction = Config::Get<std::string>("EVENT_FUNCTION", "RunEvent");
 
         // custom Set OBJECT_SELF function accepting an integer as argument (the current value of OBJECT_SELF)
         // if this configuration is not defined a global OBJECT_SELF integer wil be keeped aligned to the current value
         // This is useful if you want to write OOP code and treat nwn objects as lua classes and not as numbers
         // The other function in wich you recive a numeric object is the RunEvent Function,
         // but RunEvent is in lua code so you can modifiy as you want
-        std::string setObjSelfFunction = GetServices()->m_config->Get<std::string>("OBJSELF_FUNCTION", "");
+        std::string setObjSelfFunction = Config::Get<std::string>("OBJSELF_FUNCTION", "");
 
         // Name of the table containg the functions called in the run script hook
         // Optional; a function with the same name of the script executed will be run before
         // the script, if returning something diffferent from nil the script execution will be skipped,
         // if returns a Lua boolean is treated like a return value from a StartingConditional() in NWScript
-        std::string runScriptTable = GetServices()->m_config->Get<std::string>("RUNSCRIPT_TABLE", "");
+        std::string runScriptTable = Config::Get<std::string>("RUNSCRIPT_TABLE", "");
 
         // loading preload code
         // Dont call any NWN function in this script like SetLocalString(), GetModule() etc

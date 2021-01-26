@@ -3,7 +3,7 @@
 #include "API/Functions.hpp"
 #include "Common.hpp"
 #include "ProfilerMacros.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "MessageBus.hpp"
@@ -48,11 +48,9 @@ Profiler::Profiler(Services::ProxyServiceList* services)
     g_hooks = GetServices()->m_hooks.get();
     g_metrics = GetServices()->m_metrics.get();
 
-    auto config = GetServices()->m_config.get();
-
-    if (config->Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
+    if (Config::Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
     {
-        auto forcedOverhead = GetServices()->m_config->Get<int64_t>("OVERHEAD_COMPENSATION_FORCE");
+        auto forcedOverhead = Config::Get<int64_t>("OVERHEAD_COMPENSATION_FORCE");
 
         if (forcedOverhead)
         {
@@ -61,62 +59,62 @@ Profiler::Profiler(Services::ProxyServiceList* services)
         else
         {
             FastTimer::PrepareForCalibration();
-            g_calibrationRuns = GetServices()->m_config->Get<size_t>("OVERHEAD_COMPENSATION_RUNS", 500);
+            g_calibrationRuns = Config::Get<size_t>("OVERHEAD_COMPENSATION_RUNS", 500);
             FastTimer::Calibrate(g_calibrationRuns, GetServices()->m_hooks.get(), GetServices()->m_metrics.get());
         }
 
-        g_recalibrate = config->Get<bool>("OVERHEAD_COMPENSATION_RECALIBRATE", false);
+        g_recalibrate = Config::Get<bool>("OVERHEAD_COMPENSATION_RECALIBRATE", false);
 
         if (g_recalibrate)
         {
-            g_recalibrationPeriod = std::chrono::milliseconds(config->Get<uint32_t>("OVERHEAD_COMPENSATION_RECALIBRATION_PERIOD", 1000));
+            g_recalibrationPeriod = std::chrono::milliseconds(Config::Get<uint32_t>("OVERHEAD_COMPENSATION_RECALIBRATION_PERIOD", 1000));
         }
     }
 
-    if (config->Get<bool>("ENABLE_AI_MASTER_UPDATES", true))
+    if (Config::Get<bool>("ENABLE_AI_MASTER_UPDATES", true))
     {
-        const bool overkillMode = config->Get<bool>("AI_MASTER_UPDATES_OVERKILL", false);
+        const bool overkillMode = Config::Get<bool>("AI_MASTER_UPDATES_OVERKILL", false);
         m_aiMasterUpdates = std::make_unique<AIMasterUpdates>(overkillMode, g_hooks, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_MAIN_LOOP", true))
+    if (Config::Get<bool>("ENABLE_MAIN_LOOP", true))
     {
         m_mainLoop = std::make_unique<MainLoop>(g_hooks, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_NET_LAYER", true))
+    if (Config::Get<bool>("ENABLE_NET_LAYER", true))
     {
         m_netLayer = std::make_unique<NetLayer>(g_hooks, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_NET_MESSAGES", true))
+    if (Config::Get<bool>("ENABLE_NET_MESSAGES", true))
     {
         m_netMessages = std::make_unique<NetMessages>(g_hooks, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_OBJECT_AI_UPDATES", false))
+    if (Config::Get<bool>("ENABLE_OBJECT_AI_UPDATES", false))
     {
         m_objectAIUpdates = std::make_unique<ObjectAIUpdates>(g_hooks, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_OBJECT_EVENT_HANDLERS", false))
+    if (Config::Get<bool>("ENABLE_OBJECT_EVENT_HANDLERS", false))
     {
         m_objectEventHandlers = std::make_unique<ObjectEventHandlers>(g_hooks, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_PATHING", true))
+    if (Config::Get<bool>("ENABLE_PATHING", true))
     {
         m_pathing = std::make_unique<Pathing>(g_hooks, g_metrics);
     }
 
-    if (config->Get<bool>("ENABLE_SCRIPTS", true))
+    if (Config::Get<bool>("ENABLE_SCRIPTS", true))
     {
-        const bool areaTimings = config->Get<bool>("SCRIPTS_AREA_TIMINGS", true);
-        const bool typeTimings = config->Get<bool>("SCRIPTS_TYPE_TIMINGS", true);
+        const bool areaTimings = Config::Get<bool>("SCRIPTS_AREA_TIMINGS", true);
+        const bool typeTimings = Config::Get<bool>("SCRIPTS_TYPE_TIMINGS", true);
         m_scripts = std::make_unique<Scripts>(areaTimings, typeTimings, g_hooks, g_metrics);
     }
 
-    g_tickrate = config->Get<bool>("ENABLE_TICKRATE", true);
+    g_tickrate = Config::Get<bool>("ENABLE_TICKRATE", true);
 
     if (g_tickrate)
     {

@@ -10,7 +10,7 @@
 #include "API/CNWBaseItem.hpp"
 #include "API/CNWRules.hpp"
 #include "Utils.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "MessageBus.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
@@ -79,7 +79,7 @@ Weapon::Weapon(Services::ProxyServiceList* services)
 
     m_DCScript="";
 
-    m_GASling=GetServices()->m_config->Get<bool>("GOOD_AIM_SLING", false);
+    m_GASling=Config::Get<bool>("GOOD_AIM_SLING", false);
 }
 
 Weapon::~Weapon()

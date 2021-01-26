@@ -2,7 +2,7 @@
 #include "Targets/MySQL.hpp"
 #include "Targets/PostgreSQL.hpp"
 #include "Targets/SQLite.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Serialize.hpp"
 #include "Utils.hpp"
@@ -58,7 +58,7 @@ SQL::SQL(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_queryMetrics = GetServices()->m_config->Get<bool>("QUERY_METRICS", false);
+    m_queryMetrics = Config::Get<bool>("QUERY_METRICS", false);
 
     if (m_queryMetrics)
     {
@@ -66,7 +66,7 @@ SQL::SQL(Services::ProxyServiceList* services)
         GetServices()->m_metrics->SetResampler("SQLQueries", sum, std::chrono::seconds(1));
     }
 
-    auto type = GetServices()->m_config->Get<std::string>("TYPE", "MYSQL");
+    auto type = Config::Get<std::string>("TYPE", "MYSQL");
     std::transform(std::begin(type), std::end(type), std::begin(type), ::toupper);
 
     LOG_INFO("Connecting to type %s", type);
@@ -99,7 +99,7 @@ SQL::SQL(Services::ProxyServiceList* services)
         throw std::runtime_error("Invalid database type selected.");
     }
 
-    m_utf8 = GetServices()->m_config->Get<bool>("USE_UTF8", false);
+    m_utf8 = Config::Get<bool>("USE_UTF8", false);
 
     Reconnect(19);
 }
@@ -116,7 +116,7 @@ bool SQL::Reconnect(int32_t attempts)
     {
         try
         {
-            m_target->Connect(GetServices()->m_config.get());
+            m_target->Connect();
             LOG_NOTICE("Reconnect successful.");
             break;
         }
@@ -412,7 +412,7 @@ Events::ArgumentStack SQL::GetAffectedRows(Events::ArgumentStack&&)
 
 Events::ArgumentStack SQL::GetDatabaseType(Events::ArgumentStack&&)
 {
-    return Events::Arguments(GetServices()->m_config->Get<std::string>("TYPE", "MYSQL"));
+    return Events::Arguments(Config::Get<std::string>("TYPE", "MYSQL"));
 }
 
 Events::ArgumentStack SQL::DestroyPreparedQuery(Events::ArgumentStack&&)

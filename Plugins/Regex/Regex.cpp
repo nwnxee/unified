@@ -1,6 +1,6 @@
 #include "Regex.hpp"
 
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 
 #include <string>
 #include <stdio.h>

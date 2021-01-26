@@ -26,7 +26,7 @@
 #include "API/CTwoDimArrays.hpp"
 #include "API/C2DA.hpp"
 #include "Events.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "MessageBus.hpp"
 #include "Platform/ASLR.hpp"
 
@@ -115,10 +115,10 @@ ELC::ELC(Services::ProxyServiceList* services)
 
     GetServices()->m_hooks->Hook(API::Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooking::Order::Final);
 
-    m_elcScript = GetServices()->m_config->Get<std::string>("ELC_SCRIPT", "");
-    m_enableCustomELCCheck = GetServices()->m_config->Get<bool>("CUSTOM_ELC_CHECK", false);
-    m_enforceDefaultEventScripts = GetServices()->m_config->Get<bool>("ENFORCE_DEFAULT_EVENT_SCRIPTS", false);
-    m_enforceEmptyDialogResRef = GetServices()->m_config->Get<bool>("ENFORCE_EMPTY_DIALOG_RESREF", false);
+    m_elcScript = Config::Get<std::string>("ELC_SCRIPT", "");
+    m_enableCustomELCCheck = Config::Get<bool>("CUSTOM_ELC_CHECK", false);
+    m_enforceDefaultEventScripts = Config::Get<bool>("ENFORCE_DEFAULT_EVENT_SCRIPTS", false);
+    m_enforceEmptyDialogResRef = Config::Get<bool>("ENFORCE_EMPTY_DIALOG_RESREF", false);
 
     m_elcDepth = 0;
 }

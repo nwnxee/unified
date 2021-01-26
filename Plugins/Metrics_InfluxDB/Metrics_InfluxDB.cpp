@@ -1,6 +1,6 @@
 #include "Metrics_InfluxDB.hpp"
 #include "InfluxDBClient.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.hpp"
 
@@ -21,8 +21,8 @@ using namespace NWNXLib::Services;
 Metrics_InfluxDB::Metrics_InfluxDB(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    auto host = GetServices()->m_config->Require<std::string>("HOST");
-    auto port = GetServices()->m_config->Require<int32_t>("PORT");
+    auto host = *Config::Get<std::string>("HOST");
+    auto port = *Config::Get<int32_t>("PORT");
     m_influxDbClient = std::make_unique<InfluxDBClient>(std::move(host), static_cast<uint16_t>(port));
     GetServices()->m_metrics->Subscribe(&OnReceiveData);
 }

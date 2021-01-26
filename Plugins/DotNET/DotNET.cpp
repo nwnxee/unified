@@ -3,7 +3,7 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CVirtualMachineScript.hpp"
 #include "API/Functions.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "MessageBus.hpp"
 
@@ -39,7 +39,7 @@ bool DotNET::InitThunks()
     void *nethost = nullptr;
     void *hostfxr = nullptr;
 
-    if (auto nethost_path = Instance->GetServices()->m_config->Get<std::string>("NETHOST_PATH"))
+    if (auto nethost_path = Config::Get<std::string>("NETHOST_PATH"))
     {
         nethost = dlopen(nethost_path->c_str(), RTLD_LAZY);
         ASSERT_MSG(nethost, "NETHOST_PATH specified ('%s') but failed to open libnethost.so at that path", nethost_path->c_str());
@@ -143,8 +143,8 @@ DotNET::DotNET(Services::ProxyServiceList* services) : Plugin(services)
     if (!InitThunks())
         return;
 
-    auto assembly   = GetServices()->m_config->Get<std::string>("ASSEMBLY");
-    auto entrypoint = GetServices()->m_config->Get<std::string>("ENTRYPOINT", "NWN.Internal");
+    auto assembly   = Config::Get<std::string>("ASSEMBLY");
+    auto entrypoint = Config::Get<std::string>("ENTRYPOINT", "NWN.Internal");
 
     if (!assembly.has_value())
     {

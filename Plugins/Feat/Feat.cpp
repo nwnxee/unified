@@ -16,7 +16,7 @@
 #include "API/Constants/Effect.hpp"
 #include "API/Globals.hpp"
 #include "API/Functions.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include <cmath>
 
 using namespace NWNXLib;
@@ -47,7 +47,7 @@ Feat::Feat(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_ShowEffectIcon = GetServices()->m_config->Get<bool>("SHOW_EFFECT_ICON", false);
+    m_ShowEffectIcon = Config::Get<bool>("SHOW_EFFECT_ICON", false);
 
     // We want the feat bonuses to not count toward limits
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi, int32_t, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t>(&GetTotalEffectBonusHook);

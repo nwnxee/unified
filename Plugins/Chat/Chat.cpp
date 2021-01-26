@@ -16,7 +16,7 @@
 #include "API/Functions.hpp"
 #include "API/Globals.hpp"
 #include "API/Constants.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
@@ -54,7 +54,7 @@ Chat::Chat(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_chatScript = GetServices()->m_config->Get<std::string>("CHAT_SCRIPT", "");
+    m_chatScript = Config::Get<std::string>("CHAT_SCRIPT", "");
     m_hearingDistances[Constants::ChatChannel::DmTalk]        = 20.0f;
     m_hearingDistances[Constants::ChatChannel::PlayerTalk]    = 20.0f;
     m_hearingDistances[Constants::ChatChannel::DmWhisper]     = 3.0f;

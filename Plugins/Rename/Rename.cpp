@@ -21,7 +21,7 @@
 #include "API/CExoLinkedListNode.hpp"
 #include "API/CNWSCreatureStats.hpp"
 #include "API/Functions.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "MessageBus.hpp"
 
 
@@ -59,11 +59,11 @@ Rename::Rename(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_RenameOnModuleCharList = GetServices()->m_config->Get<int32_t>("ON_MODULE_CHAR_LIST", 0);
-    m_RenameOnPlayerList = GetServices()->m_config->Get<bool>("ON_PLAYER_LIST", true);
-    m_RenameAllowDM = GetServices()->m_config->Get<bool>("ALLOW_DM", false);
-    m_RenameAnonymousPlayerName = GetServices()->m_config->Get<std::string>("ANONYMOUS_NAME", "Someone");
-    m_RenameOverwriteDisplayName = GetServices()->m_config->Get<bool>("OVERWRITE_DISPLAY_NAME", false);
+    m_RenameOnModuleCharList = Config::Get<int32_t>("ON_MODULE_CHAR_LIST", 0);
+    m_RenameOnPlayerList = Config::Get<bool>("ON_PLAYER_LIST", true);
+    m_RenameAllowDM = Config::Get<bool>("ALLOW_DM", false);
+    m_RenameAnonymousPlayerName = Config::Get<std::string>("ANONYMOUS_NAME", "Someone");
+    m_RenameOverwriteDisplayName = Config::Get<bool>("OVERWRITE_DISPLAY_NAME", false);
 
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN11CNWSMessage31WriteGameObjUpdate_UpdateObjectEP10CNWSPlayerP10CNWSObjectP17CLastUpdateObjectjj,
             int32_t, CNWSMessage *, CNWSPlayer *, CNWSObject *, CLastUpdateObject *, uint32_t, uint32_t>(

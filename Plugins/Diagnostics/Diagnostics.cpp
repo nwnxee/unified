@@ -1,6 +1,6 @@
 #include "Diagnostics.hpp"
 #include "Diagnostics/MemorySanitizer.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 
 
 using namespace NWNXLib;
@@ -18,7 +18,7 @@ namespace Diagnostics {
 Diagnostics::Diagnostics(Services::ProxyServiceList* services)
         : Plugin(services)
 {
-    if (GetServices()->m_config->Get<bool>("MEMORY_SANITIZER", false))
+    if (Config::Get<bool>("MEMORY_SANITIZER", false))
     {
         LOG_INFO("Memory sanitizer enabled");
         m_MemorySanitizer = std::make_unique<MemorySanitizer>(GetServices()->m_hooks.get());

@@ -1,7 +1,7 @@
 #if defined(NWNX_SQL_SQLITE_SUPPORT)
 
 #include "SQLite.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 #include "Utils.hpp"
@@ -27,9 +27,9 @@ SQLite::~SQLite()
     sqlite3_close(m_dbConn);
 }
 
-void SQLite::Connect(NWNXLib::Services::ConfigProxy* config)
+void SQLite::Connect()
 {
-    if (auto database = config->Get<std::string>("DATABASE"))
+    if (auto database = Config::Get<std::string>("DATABASE"))
     {
         m_dbName = database->c_str();
 

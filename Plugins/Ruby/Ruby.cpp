@@ -1,5 +1,5 @@
 #include "Ruby.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Services/Metrics/Metrics.hpp"
 
 #include "ruby.h" // Included last because ruby redefines snprintf for reasons.
@@ -20,7 +20,7 @@ namespace Ruby {
 Ruby::Ruby(Services::ProxyServiceList* services)
     : Plugin(services), m_nextEvaluationId(0)
 {
-    m_evaluateMetrics = GetServices()->m_config->Get<bool>("EVALUATE_METRICS", false);
+    m_evaluateMetrics = Config::Get<bool>("EVALUATE_METRICS", false);
 
     int argc = 0;
     char** argv;
@@ -34,7 +34,7 @@ Ruby::Ruby(Services::ProxyServiceList* services)
     SafeRequire("enc/trans/transdb");
     SafeRequire("rubygems");
 
-    auto preloadScript = GetServices()->m_config->Get<std::string>("PRELOAD_SCRIPT");
+    auto preloadScript = Config::Get<std::string>("PRELOAD_SCRIPT");
     if (preloadScript)
     {
         SafeRequire(*preloadScript);

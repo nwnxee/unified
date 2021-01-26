@@ -2,7 +2,7 @@
 #include "API/Functions.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 
 using namespace NWNXLib;
 
@@ -27,9 +27,9 @@ ThreadWatchdog::ThreadWatchdog(Services::ProxyServiceList* services)
 {
     GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
 
-    s_watchdogPeriod = GetServices()->m_config->Get<uint32_t>("PERIOD", 15);
+    s_watchdogPeriod = Config::Get<uint32_t>("PERIOD", 15);
     // Default to effectively infinite
-    s_watchdogKillThreshold = GetServices()->m_config->Get<uint32_t>("KILL_THRESHOLD", ~0);
+    s_watchdogKillThreshold = Config::Get<uint32_t>("KILL_THRESHOLD", ~0);
 
 }
 

@@ -1,6 +1,6 @@
 #include "ServerLogRedirector.hpp"
 #include "API/CExoString.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Services/Hooks/Hooks.hpp"
 
 using namespace NWNXLib;
@@ -35,7 +35,7 @@ ServerLogRedirector::ServerLogRedirector(Services::ProxyServiceList* services)
     GetServices()->m_hooks->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandPrintStringEii,
         int32_t>(+[](bool before, CNWVirtualMachineCommands*, int32_t, int32_t){ s_printString = before; });
 
-    s_hideValidateGFFResourceMessage = GetServices()->m_config->Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
+    s_hideValidateGFFResourceMessage = Config::Get<bool>("HIDE_VALIDATEGFFRESOURCE_MESSAGES", false);
 }
 
 ServerLogRedirector::~ServerLogRedirector()

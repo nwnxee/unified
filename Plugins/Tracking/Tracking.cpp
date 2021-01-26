@@ -1,5 +1,5 @@
 #include "Tracking.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "Targets/Activity.hpp"
 
 using namespace NWNXLib;
@@ -17,7 +17,7 @@ namespace Tracking {
 Tracking::Tracking(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    if (GetServices()->m_config->Get<bool>("ENABLE_ACTIVITY_TARGET", true))
+    if (Config::Get<bool>("ENABLE_ACTIVITY_TARGET", true))
     {
         m_activityTarget = std::make_unique<Activity>(GetServices()->m_metrics.get(), GetServices()->m_hooks.get());
     }

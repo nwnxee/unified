@@ -36,7 +36,7 @@
 #include "Events/DebugEvents.hpp"
 #include "Events/StoreEvents.hpp"
 #include "Events/JournalEvents.hpp"
-#include "Services/Config/Config.hpp"
+#include "Config.hpp"
 #include "MessageBus.hpp"
 
 #include <algorithm>
