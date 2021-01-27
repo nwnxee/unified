@@ -1,6 +1,7 @@
 %module NWNXLib
 
 %include <stdint.i>
+%include <swiginterface.i>
 
 #pragma SWIG nowarn=317
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
@@ -85,9 +86,6 @@
   }
 %}
 
-%nodefaultctor;
-%nodefaultdtor;
-
 // Expose Managed Constructor
 SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 
@@ -107,7 +105,7 @@ SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
         System.IntPtr cPtr = $imcall;$excode 
         return cPtr; 
     } 
-%} 
+%}
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";
@@ -129,6 +127,18 @@ SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 %rename(_OpIndex) operator[];
 %ignore CExoString::operator std::string;
 
+// Exclude default constructors for undefined references.
+%nodefaultctor CVirtualMachineCmdImplementer;
+%nodefaultctor CGameEffectApplierRemover;
+%nodefaultctor CBaseExoApp;
+%nodefaultctor CItemPropertyApplierRemover;
+%nodefaultctor CNWAmbientSound;
+%nodefaultctor CNWSEffectListHandler;
+%nodefaultctor CNWVirtualMachineCommands;
+%nodefaultctor CVirtualMachineDebugLoader;
+%nodefaultctor CResARE;
+%nodefaultctor CResIFO;
+
 // Ignore ambigious types.
 %ignore MIN;
 %ignore MAX;
@@ -136,10 +146,12 @@ SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 %ignore ToString;
 %ignore NWSync::CNWSync;
 
-// Ignore multi-inheritance types.
+// Interfaces for multi-inheritance types.
+%interface_custom("CGameObject", "ICGameObject", CGameObject);
+%interface_custom("CNWItem", "ICNWItem", CNWItem);
+
+// Ignored multi-inheritance types.
 %ignore CCallbackHandlerBase;
-%ignore CNWArea;
-%ignore CNWItem;
 %ignore CResHelper<CRes2DA,2017>;
 %ignore CResHelper<CResDWK,2052>;
 %ignore CResHelper<CResLTR,2036>;
