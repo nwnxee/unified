@@ -16,11 +16,9 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Hooking::FunctionHook* DeadCreatureFiresOnAreaExit::pRemoveObjectFromArea_hook;
 DeadCreatureFiresOnAreaExit::DeadCreatureFiresOnAreaExit(Services::HooksProxy* hooker)
 {
-    pRemoveObjectFromArea_hook = hooker->RequestExclusiveHook
-        <Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj>(&CNWSArea__RemoveObjectFromArea_hook);
+    hooker->Hook(Functions::_ZN8CNWSArea20RemoveObjectFromAreaEj, (void*)&CNWSArea__RemoveObjectFromArea_hook, Hooking::Order::Final);
 }
 
 

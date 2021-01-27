@@ -18,23 +18,16 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-NWNXLib::Hooking::FunctionHook* DisableQuicksave::pSaveGame_hook;
+static Hooking::FunctionHook* s_SaveGame_hook;
 DisableQuicksave::DisableQuicksave(Services::HooksProxy* hooker)
 {
-    pSaveGame_hook = hooker->RequestExclusiveHook
-        <Functions::_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_>(&CServerExoAppInternal__SaveGame_hook);
+    s_SaveGame_hook = hooker->Hook(Functions::_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_,
+                                   (void*)&CServerExoAppInternal__SaveGame_hook, Hooking::Order::Late);
 }
 
-int32_t DisableQuicksave::CServerExoAppInternal__SaveGame_hook
-(
-    CServerExoAppInternal* thisPtr,
-    uint32_t nSlot,
-    CExoString& sSaveName,
-    CExoString& sModuleName,
-    CNWSPlayer* pPlayer,
-    int32_t bAutoSave,
-    CExoString& sOverwriteName
-)
+int32_t DisableQuicksave::CServerExoAppInternal__SaveGame_hook(CServerExoAppInternal* thisPtr, uint32_t nSlot, CExoString& sSaveName,
+                                                               CExoString& sModuleName, CNWSPlayer* pPlayer, int32_t bAutoSave,
+                                                               CExoString& sOverwriteName)
 {
     if (nSlot == 0 /* quicksave */)
     {
@@ -46,7 +39,7 @@ int32_t DisableQuicksave::CServerExoAppInternal__SaveGame_hook
         return 0;
     }
 
-    return pSaveGame_hook->CallOriginal<int32_t>(thisPtr, nSlot, sSaveName, sModuleName, pPlayer, bAutoSave, sOverwriteName);
+    return s_SaveGame_hook->CallOriginal<int32_t>(thisPtr, nSlot, sSaveName, sModuleName, pPlayer, bAutoSave, sOverwriteName);
 }
 
 }

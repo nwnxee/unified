@@ -12,8 +12,6 @@ public:
 
 private:
     static int32_t CNWSItem__CompareItem_hook(CNWSItem*, CNWSItem*);
-    static NWNXLib::Hooking::FunctionHook* pCompareItem_hook;
-
 };
 
 }

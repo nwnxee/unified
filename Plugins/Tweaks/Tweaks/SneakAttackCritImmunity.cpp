@@ -21,8 +21,10 @@ using namespace NWNXLib::API;
 
 SneakAttackCritImmunity::SneakAttackCritImmunity(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_>(&CNWSCreature__ResolveSneakAttack_hook);
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_>(&CNWSCreature__ResolveDeathAttack_hook);
+    hooker->Hook(Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_,
+                 (void*)&CNWSCreature__ResolveSneakAttack_hook, Hooking::Order::Final);
+    hooker->Hook(Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_,
+                 (void*)&CNWSCreature__ResolveDeathAttack_hook, Hooking::Order::Final);
 }
 
 void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)

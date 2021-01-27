@@ -22,8 +22,8 @@ using namespace NWNXLib::API;
 
 FixItemNullptrInCItemRepository::FixItemNullptrInCItemRepository(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN15CItemRepository23CalculateContentsWeightEv>
-                                    (&CItemRepository__CalculateContentsWeight_hook);
+    hooker->Hook(Functions::_ZN15CItemRepository23CalculateContentsWeightEv,
+                 (void*)&CItemRepository__CalculateContentsWeight_hook, Hooking::Order::Final);
 }
 
 int32_t FixItemNullptrInCItemRepository::CItemRepository__CalculateContentsWeight_hook(CItemRepository *pThis)

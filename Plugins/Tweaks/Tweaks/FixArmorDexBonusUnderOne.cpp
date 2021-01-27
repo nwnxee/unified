@@ -18,8 +18,7 @@ using namespace NWNXLib::API;
 
 FixArmorDexBonusUnderOne::FixArmorDexBonusUnderOne(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats9GetDEXModEi>
-                                    (&CNWSCreatureStats__GetDEXMod_hook);
+    hooker->Hook(Functions::_ZN17CNWSCreatureStats9GetDEXModEi, (void*)&CNWSCreatureStats__GetDEXMod_hook, Hooking::Order::Final);
 }
 
 uint8_t FixArmorDexBonusUnderOne::CNWSCreatureStats__GetDEXMod_hook(CNWSCreatureStats *pThis, int32_t bArmorDexCap)
