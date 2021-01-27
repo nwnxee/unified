@@ -29,12 +29,13 @@ MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
         LOG_WARNING("Please see Diagnostics/README.md for instructions");
         return;
     }
-    hooker->RequestSharedHook<Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(
-            +[](bool before, CServerExoAppInternal*)
+    static Hooking::FunctionHook *pMainLoopHook = hooker->Hook(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+            (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
-                if (!before)
-                    FreePending();
-            });
+                auto retVal = pMainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
+                FreePending();
+                return retVal;
+            }, Hooking::Order::Earliest);
     enabled = true;
 }
 MemorySanitizer::~MemorySanitizer()
