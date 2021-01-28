@@ -1,5 +1,9 @@
 var NAVTREEINDEX11 =
 {
+"nwnx__redis__short_8nss.html#a941c378174461fc7c838922c172b6650":[4,0,2,28,0,3,102],
+"nwnx__redis__short_8nss.html#a98da7d5716f13127cb481d86d06fb42c":[4,0,2,28,0,3,48],
+"nwnx__redis__short_8nss.html#a995f39f4ef381e638ca531afe9ee0b94":[4,0,2,28,0,3,81],
+"nwnx__redis__short_8nss.html#a9b56e5eecfc569eb527d3bafcdddc96c":[4,0,2,28,0,3,116],
 "nwnx__redis__short_8nss.html#a9b811303e0835cdacf528183a73a790f":[4,0,2,28,0,3,69],
 "nwnx__redis__short_8nss.html#a9bb9950bcae0fe831be1850e9cc8ce0b":[4,0,2,28,0,3,209],
 "nwnx__redis__short_8nss.html#a9c5d692d4663f557fa84c71b0fe76732":[4,0,2,28,0,3,115],
@@ -245,9 +249,5 @@ var NAVTREEINDEX11 =
 "structNWNX__IPUnpacked.html#a28d5dd1ff936a69a03304c96ee3f1f5a":[0,20,2,1],
 "structNWNX__IPUnpacked.html#a40f155e0ea3624566d16be67a0647062":[0,20,2,5],
 "structNWNX__IPUnpacked.html#a812ab3e4d434a6e636613446bc23d005":[0,20,2,11],
-"structNWNX__IPUnpacked.html#a9bc37d8e686ed58efc4481fc6ced2619":[0,20,2,9],
-"structNWNX__IPUnpacked.html#aaa2c8bc13b51d3f6ceaf64e3b7fd5326":[0,20,2,8],
-"structNWNX__IPUnpacked.html#ab280d7238552e633946cfc1cc1bf2571":[0,20,2,2],
-"structNWNX__IPUnpacked.html#ad0a17e958cb47f9e3c5e182784bfe5a0":[0,20,2,4],
-"structNWNX__IPUnpacked.html#ad8edb88bbe3a1b0195ff9fab79242c3a":[0,20,2,10]
+"structNWNX__IPUnpacked.html#a9bc37d8e686ed58efc4481fc6ced2619":[0,20,2,9]
 };

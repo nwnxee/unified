@@ -1,5 +1,9 @@
 var NAVTREEINDEX7 =
 {
+"group__player.html#gacfe74084d5751ac57a20e450e2e81301":[0,26,36],
+"group__player.html#gad4b53329b786cc1bd0a8ba82e67f6779":[0,26,27],
+"group__player.html#gad4b53329b786cc1bd0a8ba82e67f6779":[4,0,2,25,0,0,22],
+"group__player.html#gad6af04a6f0f5796d727c7aeaa04f0c02":[4,0,2,25,0,0,16],
 "group__player.html#gad6af04a6f0f5796d727c7aeaa04f0c02":[0,26,21],
 "group__player.html#gadd7e638820452402763d64737369bde8":[4,0,2,25,0,0,73],
 "group__player.html#gadd7e638820452402763d64737369bde8":[0,26,92],
@@ -236,18 +240,14 @@ var NAVTREEINDEX7 =
 "group__skillranks.html#gac34e2d7aa9cfa7330914732fa6392e10":[4,0,2,34,0,0,3],
 "group__skillranks.html#gac47488975fb36ec044386895c765f5ff":[0,35,15],
 "group__skillranks.html#gac47488975fb36ec044386895c765f5ff":[4,0,2,34,0,0,13],
-"group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df":[4,0,2,34,0,0,18],
 "group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df":[0,35,20],
+"group__skillranks.html#gacd135cb7afcf82c95e6ab9ffc5b294df":[4,0,2,34,0,0,18],
 "group__skillranks.html#gad83eb78b6cff3bac273bb17c32159f0d":[0,35,7],
 "group__skillranks.html#gad83eb78b6cff3bac273bb17c32159f0d":[4,0,2,34,0,0,4],
-"group__skillranks.html#gade61f23332c91cd4c5b15b63472d4041":[4,0,2,34,0,0,7],
 "group__skillranks.html#gade61f23332c91cd4c5b15b63472d4041":[0,35,10],
-"group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea":[4,0,2,34,0,0,1],
+"group__skillranks.html#gade61f23332c91cd4c5b15b63472d4041":[4,0,2,34,0,0,7],
 "group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea":[0,35,4],
+"group__skillranks.html#gaf46fd7507a97f894f3e17b0d2c0e8eea":[4,0,2,34,0,0,1],
 "group__skillranks.html#skillranks":[0,35,0],
-"group__spellchecker.html":[0,36],
-"group__spellchecker.html#autotoc_md405":[51],
-"group__spellchecker.html#autotoc_md406":[52],
-"group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639":[0,36,2],
-"group__spellchecker.html#ga327dc28981e28b40ba9ca34447e4d639":[4,0,2,35,0,0,0]
+"group__spellchecker.html":[0,36]
 };
