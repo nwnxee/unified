@@ -324,9 +324,9 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
         static NWNXLib::Hooking::FunctionHook* pCalculateSpellSaveDC_hook;
         if (!pCalculateSpellSaveDC_hook)
         {
-            pCalculateSpellSaveDC_hook = g_plugin->GetServices()->m_hooks->RequestExclusiveHook
-                    <Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi>(
-                    +[](CNWSCreature *pThis, int32_t nSpellID) -> int
+            pCalculateSpellSaveDC_hook = g_plugin->GetServices()->m_hooks->Hook(
+                    Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi,
+                    (void*)+[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
                     {
                         int iMods = 0;
                         for (auto &spellSaveDCMod : g_plugin->m_FeatSpellSaveDC)
