@@ -50,7 +50,7 @@ AddPrestigeclassCasterLevels::AddPrestigeclassCasterLevels(Services::HooksProxy*
             s_bAdjustCasterLevel = false;
             return retVal;
         }, Hooking::Order::Early);
-    s_ExecuteCommandResistSpellHook = hooker->Hook(Functions::_ZN11CGameEffect10SetCreatorEj,
+    s_SetCreatorHook = hooker->Hook(Functions::_ZN11CGameEffect10SetCreatorEj,
         (void*)+[](CGameEffect *thisPtr, ObjectID oidCreator)
         {
             s_bAdjustCasterLevel = true;
@@ -89,40 +89,43 @@ uint8_t AddPrestigeclassCasterLevels::CNWSCreatureStats__GetClassLevel(CNWSCreat
 
     if (s_bAdjustCasterLevel && nMultiClass < thisPtr->m_nNumMultiClasses)
     {
-        int32_t nModifier = 0;
         auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
 
-        s_bAdjustCasterLevel = false;
-
-        if (auto nCasterType = s_classCasterType[nClass])
+        if (nClass != Constants::ClassType::Invalid)
         {
-            for (int i = 0; i < thisPtr->m_nNumMultiClasses; i++)
-            {
-                if (i == nMultiClass) continue;
-                auto nMultiClassType = thisPtr->m_ClassInfo[i].m_nClass;
-                uint8_t nClassMod = 0;
-                if (nCasterType == CasterType::Divine)
-                    nClassMod = s_divModClasses[nMultiClassType];
-                else if (nCasterType == CasterType::Arcane)
-                    nClassMod = s_arcModClasses[nMultiClassType];
+            int32_t nModifier = 0;
+            s_bAdjustCasterLevel = false;
 
-                if(nClassMod > 0)
+            if (auto nCasterType = s_classCasterType[nClass])
+            {
+                for (int i = 0; i < thisPtr->m_nNumMultiClasses; i++)
                 {
-                    auto nClassLevel = thisPtr->GetClassLevel(i, bUseNegativeLevel);
-                    if (nClassLevel > 0)
-                        nModifier += (nClassLevel - 1) / nClassMod + 1;
+                    if (i == nMultiClass) continue;
+                    auto nMultiClassType = thisPtr->m_ClassInfo[i].m_nClass;
+                    uint8_t nClassMod = 0;
+                    if (nCasterType == CasterType::Divine)
+                        nClassMod = s_divModClasses[nMultiClassType];
+                    else if (nCasterType == CasterType::Arcane)
+                        nClassMod = s_arcModClasses[nMultiClassType];
+
+                    if (nClassMod > 0)
+                    {
+                        auto nClassLevel = thisPtr->GetClassLevel(i, bUseNegativeLevel);
+                        if (nClassLevel > 0)
+                            nModifier += (nClassLevel - 1) / nClassMod + 1;
+                    }
                 }
             }
+
+            s_bAdjustCasterLevel = true;
+
+            //Make sure m_nLevel doesn't over/underflow
+            nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
+            if (nModifier < 0)
+                nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
+
+            retVal += nModifier;
         }
-
-        s_bAdjustCasterLevel = true;
-
-        //Make sure m_nLevel doesn't over/underflow
-        nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
-        if (nModifier < 0)
-            nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
-
-        retVal += nModifier;
     }
 
     return retVal;
