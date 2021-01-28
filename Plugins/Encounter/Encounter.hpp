@@ -22,6 +22,8 @@ private:
     ArgumentStack SetFactionId                              (ArgumentStack&& args);
     ArgumentStack GetPlayerTriggeredOnly                    (ArgumentStack&& args);
     ArgumentStack SetPlayerTriggeredOnly                    (ArgumentStack&& args);
+    ArgumentStack GetCanReset                               (ArgumentStack&& args);
+    ArgumentStack SetCanReset                               (ArgumentStack&& args);
     ArgumentStack GetResetTime                              (ArgumentStack&& args);
     ArgumentStack SetResetTime                              (ArgumentStack&& args);
     ArgumentStack GetNumberOfSpawnPoints                    (ArgumentStack&& args);
