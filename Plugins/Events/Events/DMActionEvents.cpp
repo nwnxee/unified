@@ -21,14 +21,14 @@ using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 using namespace NWNXLib::Platform;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerDungeonMasterMessageHook;
+static Hooking::FunctionHook* s_HandlePlayerToServerDungeonMasterMessageHook;
 
 DMActionEvents::DMActionEvents(NWNXLib::Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_DM_.*", [hooker]() {
-        s_HandlePlayerToServerDungeonMasterMessageHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi>
-            (&HandleDMMessageHook);
+        s_HandlePlayerToServerDungeonMasterMessageHook = hooker->Hook(
+                Functions::_ZN11CNWSMessage40HandlePlayerToServerDungeonMasterMessageEP10CNWSPlayerhi,
+                (void*)&HandleDMMessageHook, Hooking::Order::Early);
     });
 }
 
