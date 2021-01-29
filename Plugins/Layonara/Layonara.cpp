@@ -249,7 +249,7 @@ ArgumentStack Layonara::SetDuelistCannyDefense(ArgumentStack&& args)
         eff->m_nType              = EffectTrueType::ACIncrease;
         eff->m_nSubType           = EffectSubType::Supernatural | EffectDurationType::Innate;
         eff->m_bShowIcon          = 0;
-        eff->m_nParamInteger[0]   = ACBonus::Dodge;
+        eff->m_nParamInteger[0]   = ACBonus::Natural;
         eff->m_nParamInteger[1]   = nBonus;
         eff->m_nParamInteger[2]   = RacialType::Invalid;
         eff->m_nParamInteger[3]   = 0;
