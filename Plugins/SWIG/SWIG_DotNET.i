@@ -7,7 +7,49 @@
 #define NWNXLIB_FUNCTION_NO_VERSION_CHECK
 
 // Mark module class as static
-%pragma(csharp) moduleclassmodifiers="public static class"
+%pragma(csharp) moduleclassmodifiers="public static unsafe class"
+%pragma(csharp) imclassclassmodifiers="public unsafe class"
+%typemap(csclassmodifiers) SWIGTYPE "public unsafe class"
+
+#undef SWIG_CSBODY_PROXY
+%define SWIG_CSBODY_PROXY(PTRCTOR_VISIBILITY, CPTR_VISIBILITY, TYPE...)
+// Proxy classes (base classes, ie, not derived classes)
+%typemap(csbody) TYPE %{
+  private global::System.Runtime.InteropServices.HandleRef swigCPtr;
+  protected bool swigCMemOwn;
+
+  PTRCTOR_VISIBILITY $csclassname(global::System.IntPtr cPtr, bool cMemoryOwn) {
+    swigCMemOwn = cMemoryOwn;
+    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
+  }
+
+  PTRCTOR_VISIBILITY $csclassname(void* cPtr, bool cMemoryOwn) {
+    swigCMemOwn = cMemoryOwn;
+    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, (global::System.IntPtr)cPtr);
+  }
+
+  CPTR_VISIBILITY static global::System.Runtime.InteropServices.HandleRef getCPtr($csclassname obj) {
+    return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
+  }
+%}
+
+// Derived proxy classes
+%typemap(csbody_derived) TYPE %{
+  private global::System.Runtime.InteropServices.HandleRef swigCPtr;
+
+  PTRCTOR_VISIBILITY $csclassname(global::System.IntPtr cPtr, bool cMemoryOwn) : base($imclassname.$csclazznameSWIGUpcast(cPtr), cMemoryOwn) {
+    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
+  }
+
+  PTRCTOR_VISIBILITY $csclassname(void* cPtr, bool cMemoryOwn) : base($imclassname.$csclazznameSWIGUpcast((global::System.IntPtr)cPtr), cMemoryOwn) {
+    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, (global::System.IntPtr)cPtr);
+  }
+
+  CPTR_VISIBILITY static global::System.Runtime.InteropServices.HandleRef getCPtr($csclassname obj) {
+    return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
+  }
+%}
+%enddef
 
 // Extensions
 %typemap(cscode) SWIGTYPE, SWIGTYPE *, SWIGTYPE &, SWIGTYPE [], SWIGTYPE (CLASS::*) %{
@@ -90,22 +132,56 @@
 SWIG_CSBODY_PROXY(public, internal, SWIGTYPE)
 
 // Typemap void* to IntPtr
-%typemap(ctype)  void* "void *"
-%typemap(imtype) void* "System.IntPtr"
-%typemap(cstype) void* "System.IntPtr"
-%typemap(csin)   void* "$csinput"
-%typemap(in)     void* %{ $1 = $input; %}
-%typemap(out)    void* %{ $result = $1; %}
-%typemap(csout, excode=SWIGEXCODE)  void* { 
-    System.IntPtr cPtr = $imcall;$excode
-    return cPtr;
-    }
-%typemap(csvarout, excode=SWIGEXCODE2) void* %{ 
+%define MarshalType(CTYPE, CSTYPE)
+%typemap(ctype)  CTYPE*,CTYPE&,CTYPE[ANY] "CTYPE*"
+%typemap(imtype) CTYPE*,CTYPE& "global::System.IntPtr"
+%typemap(imtype, inattributes="[global::System.Runtime.InteropServices.In, global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.LPArray)]") CTYPE[ANY] "CSTYPE[]"
+%typemap(cstype) CTYPE*,CTYPE& "CSTYPE*"
+%typemap(cstype) CTYPE[ANY] "CSTYPE[]"
+%typemap(csin)   CTYPE*,CTYPE& "(global::System.IntPtr)$csinput"
+%typemap(csin)   CTYPE[ANY] "$csinput"
+%typemap(in)     CTYPE*,CTYPE&,CTYPE[ANY] %{ $1 = $input; %}
+%typemap(out)    CTYPE*,CTYPE& %{ $result = $1; %}
+
+%typemap(csout, excode=SWIGEXCODE) CTYPE*,CTYPE& { 
+    System.IntPtr retVal = $imcall;$excode
+    return (CSTYPE*)retVal;
+  }
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE*,CTYPE& %{ 
     get {
-        System.IntPtr cPtr = $imcall;$excode 
-        return cPtr; 
-    } 
+        System.IntPtr retVal = $imcall;$excode 
+        return (CSTYPE*)retVal; 
+    }
 %}
+%typemap(csout, excode=SWIGEXCODE) CTYPE[ANY] { 
+    CSTYPE[] retVal = $imcall;$excode
+    return retVal;
+  }
+%typemap(csvarout, excode=SWIGEXCODE2) CTYPE[ANY] %{ 
+    get {
+        CSTYPE[] retVal = $imcall;$excode
+        return retVal;
+    }
+%}
+%enddef
+
+MarshalType(void, void)
+MarshalType(void*, void*) // void**
+MarshalType(signed char, sbyte)
+MarshalType(char*, char*) // char**
+MarshalType(short int, short)
+MarshalType(int, int)
+MarshalType(int*, int*) // int**
+MarshalType(float, float)
+MarshalType(float*, float*) //float**
+MarshalType(float**, float**) //float***
+MarshalType(long, long)
+MarshalType(unsigned char, byte)
+MarshalType(unsigned char*, byte*) //unsigned char**
+MarshalType(unsigned short int, ushort)
+MarshalType(unsigned int, uint)
+MarshalType(unsigned int*, uint*) //unsigned int**
+MarshalType(unsigned long, ulong)
 
 // Rename constants to unique classes.
 %rename("%(regex:/(?:NWNXLib::API::Constants)::\s*(\w+)(?:.+)$/\\1/)s", regextarget=1, fullname=1, %$isenum) "NWNXLib::API::Constants::*";
