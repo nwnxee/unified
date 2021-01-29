@@ -22,5 +22,5 @@ function(add_swig_plugin target)
 endfunction()
 
 if(SWIG_FOUND)
-    add_swig_plugin(SWIG_DotNET -csharp -dllimport "${PLUGIN_PREFIX}SWIG_DotNET" -namespace "NWN.Native.API")
+    add_swig_plugin(SWIG_DotNET -DSWIGWORDSIZE64 -csharp -dllimport "${PLUGIN_PREFIX}SWIG_DotNET" -namespace "NWN.Native.API")
 endif(SWIG_FOUND)
