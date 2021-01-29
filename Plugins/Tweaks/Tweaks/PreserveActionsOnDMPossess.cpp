@@ -18,12 +18,10 @@ using namespace NWNXLib::API::Constants;
 
 PreserveActionsOnDMPossess::PreserveActionsOnDMPossess(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN12CNWSCreature17PossessCreatureDMEjh>
-                                    (&CNWSCreature__PossessCreatureDM_hook);
+    hooker->Hook(Functions::_ZN12CNWSCreature17PossessCreatureDMEjh, (void*)&CNWSCreature__PossessCreatureDM_hook, Hooking::Order::Final);
 }
 
-void PreserveActionsOnDMPossess::CNWSCreature__PossessCreatureDM_hook(
-        CNWSCreature* thisPtr, ObjectID nObjectId, uint8_t nMode)
+void PreserveActionsOnDMPossess::CNWSCreature__PossessCreatureDM_hook(CNWSCreature* thisPtr, ObjectID nObjectId, uint8_t nMode)
 {
     if (nObjectId != Constants::OBJECT_INVALID)
     {

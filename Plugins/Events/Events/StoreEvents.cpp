@@ -19,11 +19,11 @@ static NWNXLib::Hooking::FunctionHook* s_RequestSellHook;
 StoreEvents::StoreEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_BUY_.*", [hooker]() {
-        s_RequestBuyHook = hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature10RequestBuyEjjj>(&RequestBuyHook);
+        s_RequestBuyHook = hooker->Hook(API::Functions::_ZN12CNWSCreature10RequestBuyEjjj, (void*)&RequestBuyHook, Hooking::Order::Early);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_STORE_REQUEST_SELL_.*", [hooker]() {
-        s_RequestSellHook = hooker->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature11RequestSellEjj>(&RequestSellHook);
+        s_RequestSellHook = hooker->Hook(API::Functions::_ZN12CNWSCreature11RequestSellEjj, (void*)&RequestSellHook, Hooking::Order::Early);
     });
 }
 

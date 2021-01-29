@@ -18,9 +18,9 @@ static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerCheatMessageHook;
 DebugEvents::DebugEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_DEBUG_.*", [hooker]() {
-        s_HandlePlayerToServerCheatMessageHook = hooker->RequestExclusiveHook
-                <API::Functions::_ZN11CNWSMessage32HandlePlayerToServerCheatMessageEP10CNWSPlayerh>
-                (&HandlePlayerToServerCheatMessageHook);
+        s_HandlePlayerToServerCheatMessageHook = hooker->Hook(
+                API::Functions::_ZN11CNWSMessage32HandlePlayerToServerCheatMessageEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerCheatMessageHook, Hooking::Order::Early);
     });
 }
 

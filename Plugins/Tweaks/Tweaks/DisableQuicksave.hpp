@@ -13,7 +13,6 @@ public:
 private:
     static int32_t CServerExoAppInternal__SaveGame_hook(CServerExoAppInternal*, uint32_t,
         CExoString&, CExoString&, CNWSPlayer*, int32_t, CExoString&);
-    static NWNXLib::Hooking::FunctionHook* pSaveGame_hook;
 };
 
 }

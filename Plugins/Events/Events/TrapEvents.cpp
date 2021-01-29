@@ -22,34 +22,23 @@ static NWNXLib::Hooking::FunctionHook* s_OnEnterTrapHook;
 TrapEvents::TrapEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_TRAP_.*", [hooker]() {
-        s_AIActionDisarmTrapHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature18AIActionDisarmTrapEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
-            (&AIActionDisarmTrapHook);
-        s_AIActionExamineTrapHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature19AIActionExamineTrapEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
-            (&AIActionExamineTrapHook);
-        s_AIActionFlagTrapHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature16AIActionFlagTrapEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
-            (&AIActionFlagTrapHook);
-        s_AIActionRecoverTrapHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature19AIActionRecoverTrapEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
-            (&AIActionRecoverTrapHook);
-        s_AIActionSetTrapHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN12CNWSCreature15AIActionSetTrapEP20CNWSObjectActionNode, uint32_t, CNWSCreature*, CNWSObjectActionNode*>
-            (&AIActionSetTrapHook);
-        s_OnEnterTrapHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN11CNWSTrigger11OnEnterTrapEi, void, CNWSTrigger*, int32_t>
-            (&OnEnterTrapHook);
+        s_AIActionDisarmTrapHook = hooker->Hook(API::Functions::_ZN12CNWSCreature18AIActionDisarmTrapEP20CNWSObjectActionNode,
+                                                (void*)&AIActionDisarmTrapHook, Hooking::Order::Early);
+        s_AIActionExamineTrapHook = hooker->Hook(API::Functions::_ZN12CNWSCreature19AIActionExamineTrapEP20CNWSObjectActionNode,
+                                                 (void*)&AIActionExamineTrapHook, Hooking::Order::Early);
+        s_AIActionFlagTrapHook = hooker->Hook(API::Functions::_ZN12CNWSCreature16AIActionFlagTrapEP20CNWSObjectActionNode,
+                                              (void*)&AIActionFlagTrapHook, Hooking::Order::Early);
+        s_AIActionRecoverTrapHook = hooker->Hook(API::Functions::_ZN12CNWSCreature19AIActionRecoverTrapEP20CNWSObjectActionNode,
+                                                 (void*)&AIActionRecoverTrapHook, Hooking::Order::Early);
+        s_AIActionSetTrapHook = hooker->Hook(API::Functions::_ZN12CNWSCreature15AIActionSetTrapEP20CNWSObjectActionNode,
+                                             (void*)&AIActionSetTrapHook, Hooking::Order::Early);
+        s_OnEnterTrapHook = hooker->Hook(API::Functions::_ZN11CNWSTrigger11OnEnterTrapEi,
+                                         (void*)&OnEnterTrapHook, Hooking::Order::Early);
     });
 }
 
-uint32_t TrapEvents::HandleTrapHook(
-        const std::string& event,
-        NWNXLib::Hooking::FunctionHook* originalTrapHook,
-        CNWSCreature *pCreature,
-        CNWSObjectActionNode *pNode)
+uint32_t TrapEvents::HandleTrapHook(const std::string& event, Hooking::FunctionHook* originalTrapHook, CNWSCreature *pCreature, CNWSObjectActionNode *pNode)
 {
-
     uint32_t retVal;
     std::string sAux;
 
@@ -73,37 +62,27 @@ uint32_t TrapEvents::HandleTrapHook(
     return retVal;
 }
 
-uint32_t TrapEvents::AIActionDisarmTrapHook(
-    CNWSCreature *pCreature,
-    CNWSObjectActionNode *pNode)
+uint32_t TrapEvents::AIActionDisarmTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode)
 {
     return HandleTrapHook("DISARM", s_AIActionDisarmTrapHook, pCreature, pNode);
 }
 
-uint32_t TrapEvents::AIActionExamineTrapHook(
-        CNWSCreature *pCreature,
-        CNWSObjectActionNode *pNode)
+uint32_t TrapEvents::AIActionExamineTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode)
 {
     return HandleTrapHook("EXAMINE", s_AIActionExamineTrapHook, pCreature, pNode);
 }
 
-uint32_t TrapEvents::AIActionFlagTrapHook(
-        CNWSCreature *pCreature,
-        CNWSObjectActionNode *pNode)
+uint32_t TrapEvents::AIActionFlagTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode)
 {
     return HandleTrapHook("FLAG", s_AIActionFlagTrapHook, pCreature, pNode);
 }
 
-uint32_t TrapEvents::AIActionRecoverTrapHook(
-        CNWSCreature *pCreature,
-        CNWSObjectActionNode *pNode)
+uint32_t TrapEvents::AIActionRecoverTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode)
 {
     return HandleTrapHook("RECOVER", s_AIActionRecoverTrapHook, pCreature, pNode);
 }
 
-uint32_t TrapEvents::AIActionSetTrapHook(
-        CNWSCreature *pCreature,
-        CNWSObjectActionNode *pNode)
+uint32_t TrapEvents::AIActionSetTrapHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode)
 {
     return HandleTrapHook("SET", s_AIActionSetTrapHook, pCreature, pNode);
 }

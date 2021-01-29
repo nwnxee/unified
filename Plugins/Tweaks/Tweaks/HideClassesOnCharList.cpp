@@ -16,12 +16,12 @@ using namespace NWNXLib::API;
 
 HideClassesOnCharList::HideClassesOnCharList(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji>
-        (&SendServerToPlayerPlayModuleCharacterListResponseHook);
+    hooker->Hook(API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji,
+                 (void*)&SendServerToPlayerPlayModuleCharacterListResponseHook, Hooking::Order::Final);
 }
 
-int32_t HideClassesOnCharList::SendServerToPlayerPlayModuleCharacterListResponseHook(
-    CNWSMessage* thisPtr, PlayerID playerId, ObjectID charId, int32_t add)
+int32_t HideClassesOnCharList::SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage* thisPtr, PlayerID playerId,
+                                                                                     ObjectID charId, int32_t add)
 {
     thisPtr->CreateWriteMessage(sizeof(playerId), playerId, true);
 

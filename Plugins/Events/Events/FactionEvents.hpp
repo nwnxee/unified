@@ -5,13 +5,13 @@
 
 namespace Events {
 
-    class FactionEvents
-    {
-    public:
-        FactionEvents(NWNXLib::Services::HooksProxy* hooker);
+class FactionEvents
+{
+public:
+    FactionEvents(NWNXLib::Services::HooksProxy* hooker);
 
-    private:
-        static void HandleSetNPCFactionReputationHook(CFactionManager*, int32_t, int32_t, int32_t);
-    };
+private:
+    static void HandleSetNPCFactionReputationHook(CFactionManager*, int32_t, int32_t, int32_t);
+};
 
 }

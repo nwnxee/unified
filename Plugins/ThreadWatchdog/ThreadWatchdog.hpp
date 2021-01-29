@@ -14,7 +14,7 @@ public:
     virtual ~ThreadWatchdog();
 
 private:
-    static void MainLoopUpdate(bool, CServerExoAppInternal*);
+    static int32_t MainLoopUpdate(CServerExoAppInternal*);
     std::unique_ptr<std::thread> m_watchdog;
 };
 

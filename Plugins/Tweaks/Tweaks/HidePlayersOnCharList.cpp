@@ -28,12 +28,11 @@ HidePlayersOnCharList::HidePlayersOnCharList(Services::HooksProxy* hooker, int m
         LOG_INFO("Unknown value for HIDE_PLAYERS_ON_CHAR_LIST.");
         return;
     }
-    hooker->RequestExclusiveHook<API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer>
-        (&HandlePlayerToServerPlayModuleCharacterList_StartHook);
+    hooker->Hook(API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer,
+                 (void*)&HandlePlayerToServerPlayModuleCharacterList_StartHook, Hooking::Order::Final);
 }
 
-int32_t HidePlayersOnCharList::HandlePlayerToServerPlayModuleCharacterList_StartHook(
-    CNWSMessage* pThis, CNWSPlayer* pPlayer)
+int32_t HidePlayersOnCharList::HandlePlayerToServerPlayModuleCharacterList_StartHook(CNWSMessage* pThis, CNWSPlayer* pPlayer)
 {
     if (pThis->MessageReadOverflow(true) || pThis->MessageReadUnderflow(true))
         return false;

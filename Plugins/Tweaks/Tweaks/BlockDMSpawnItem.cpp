@@ -12,8 +12,8 @@ static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerGameObjectUpdateHoo
 BlockDMSpawnItem::BlockDMSpawnItem(Services::HooksProxy* hooker)
 {
     s_HandlePlayerToServerGameObjectUpdateHook =
-            hooker->RequestExclusiveHook<Functions::_ZN11CNWSMessage36HandlePlayerToServerGameObjectUpdateEP10CNWSPlayerh>
-                    (&HandlePlayerToServerGameObjectUpdateHook);
+            hooker->Hook(Functions::_ZN11CNWSMessage36HandlePlayerToServerGameObjectUpdateEP10CNWSPlayerh,
+                         (void*)&HandlePlayerToServerGameObjectUpdateHook, Hooking::Order::Late);
 }
 
 int32_t BlockDMSpawnItem::HandlePlayerToServerGameObjectUpdateHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)

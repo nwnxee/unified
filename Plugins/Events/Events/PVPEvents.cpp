@@ -16,10 +16,11 @@ using namespace NWNXLib::Services;
 static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerPVPListOperationsHook;
 
 PVPEvents::PVPEvents(HooksProxy* hooker)
-{    Events::InitOnFirstSubscribe("NWNX_ON_PVP_ATTITUDE_CHANGE_.*", [hooker]() {
-        s_HandlePlayerToServerPVPListOperationsHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage37HandlePlayerToServerPVPListOperationsEP10CNWSPlayerh>
-            (&HandlePlayerToServerPVPListOperationsHook);
+{
+    Events::InitOnFirstSubscribe("NWNX_ON_PVP_ATTITUDE_CHANGE_.*", [hooker]() {
+        s_HandlePlayerToServerPVPListOperationsHook = hooker->Hook(
+                Functions::_ZN11CNWSMessage37HandlePlayerToServerPVPListOperationsEP10CNWSPlayerh,
+                (void*)&HandlePlayerToServerPVPListOperationsHook, Hooking::Order::Early);
     });
 }
 

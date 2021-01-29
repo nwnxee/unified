@@ -13,14 +13,14 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Platform;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerPartyHook;
+static Hooking::FunctionHook* s_HandlePlayerToServerPartyHook;
 
 PartyEvents::PartyEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_PARTY_.*", [hooker]() {
-        s_HandlePlayerToServerPartyHook = hooker->RequestExclusiveHook
-            <Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh, int32_t, CNWSMessage*, CNWSPlayer*, uint8_t>
-            (&HandlePartyMessageHook);
+        s_HandlePlayerToServerPartyHook = hooker->Hook(
+                Functions::_ZN11CNWSMessage25HandlePlayerToServerPartyEP10CNWSPlayerh,
+                (void*)&HandlePartyMessageHook, Hooking::Order::Early);
     });
 }
 

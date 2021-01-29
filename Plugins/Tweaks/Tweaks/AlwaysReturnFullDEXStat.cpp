@@ -12,7 +12,7 @@ using namespace NWNXLib::API;
 
 AlwaysReturnFullDEXStat::AlwaysReturnFullDEXStat(Services::HooksProxy* hooker)
 {
-    hooker->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10GetDEXStatEv>(&GetDEXStatHook);
+    hooker->Hook(Functions::_ZN17CNWSCreatureStats10GetDEXStatEv, (void*)&GetDEXStatHook, Hooking::Order::Final);
 }
 
 uint8_t AlwaysReturnFullDEXStat::GetDEXStatHook(CNWSCreatureStats *pCreatureStats)
