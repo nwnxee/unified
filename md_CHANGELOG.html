@@ -146,6 +146,7 @@ New NWScript Functions</h4>
 Changed</h2>
 <ul>
 <li>Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem &gt; Specified Hand &gt; non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). <em><b>ABI breaking:</b> You will need to update <a class="el" href="nwnx__creature_8nss.html">nwnx_creature.nss</a> if you are using these functions</em>.</li>
+<li>Rename: NWNX_Rename can now co-exist with <code>NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST</code>, as such NWNX_Rename's handling of said tweak has been removed.</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md13"></a>
 Deprecated</h2>
@@ -991,7 +992,7 @@ Fixed</h2>
 		<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
 			<ul>
 				<li class="footer">
-					Generated on Thu Jan 28 2021 08:20:19 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
+					Generated on Fri Jan 29 2021 08:44:14 for NWNX:EE by <a href="http://www.doxygen.org/index.html">
 					<img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17.
 					<a href="dark/">Dark version</a>
 				</li>
