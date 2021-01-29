@@ -337,7 +337,7 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
                             }
                         }
                         return iMods + pCalculateSpellSaveDC_hook->CallOriginal<int32_t>(pThis, nSpellID);
-                    });
+                    }, Hooking::Order::Late);
         }
     }
 
