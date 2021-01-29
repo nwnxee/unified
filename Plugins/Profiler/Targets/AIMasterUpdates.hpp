@@ -13,7 +13,7 @@ public:
         NWNXLib::Services::MetricsProxy* metrics);
 
 private:
-    static void AIMasterUpdate(bool, CServerAIMaster* thisPtr);
+    static void AIMasterUpdate(CServerAIMaster*);
 };
 
 }
