@@ -1,6 +1,5 @@
 #pragma once
-#include "Platform/ASLR.hpp"
-#include "Services/Services.hpp"
+#include "nwnx.hpp"
 
 #include <algorithm>
 #include <memory>
@@ -101,7 +100,7 @@ class Hooks
 public:
     std::unique_ptr<Hooking::FunctionHook> Hook(uintptr_t address, void* funcPtr, int32_t order = Hooking::Order::Default)
     {
-        return std::make_unique<Hooking::FunctionHook>(Platform::ASLR::GetRelocatedAddress(address), funcPtr, order);
+        return std::make_unique<Hooking::FunctionHook>(Platform::GetRelocatedAddress(address), funcPtr, order);
     }
 
     template <uintptr_t Address, typename Ret, typename ... Params>

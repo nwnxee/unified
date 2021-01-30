@@ -1,6 +1,4 @@
-#include "Log.hpp"
-#include "Assert.hpp"
-#include "Platform/Debug.hpp"
+#include "nwnx.hpp"
 #include "API/Globals.hpp"
 #include "API/CExoBase.hpp"
 

@@ -1,8 +1,6 @@
-#include "Events.hpp"
+#include "nwnx.hpp"
 #include "API/CExoString.hpp"
 #include "API/CGameEffect.hpp"
-#include "Utils.hpp"
-#include "Plugin.hpp"
 
 #include <algorithm>
 #include <array>
@@ -10,12 +8,15 @@
 #include <sstream>
 
 
-namespace NWNXLib {
+namespace NWNXLib::Events
+{
+ArgumentStack s_arguments;
+ArgumentStack s_returns;
 
 using PluginEventMap = std::unordered_map<std::string, Events::FunctionCallback>;
 static std::unordered_map<std::string, PluginEventMap> s_eventMap;
 
-std::optional<Events::FunctionCallback> Events::GetEventCallback(const std::string& pluginName, const std::string& eventName)
+std::optional<Events::FunctionCallback> GetEventCallback(const std::string& pluginName, const std::string& eventName)
 {
     auto& events = s_eventMap[pluginName];
     auto it = events.find(eventName);
@@ -35,12 +36,13 @@ std::optional<Events::FunctionCallback> Events::GetEventCallback(const std::stri
         return std::optional<FunctionCallback>();
     }
 
+    using FunctionCallbackPtr = ArgumentStack(*)(ArgumentStack&&);
     auto cb = FunctionCallback{reinterpret_cast<FunctionCallbackPtr>(handle)};
     RegisterEvent(pluginName, eventName, std::move(cb));
     return std::make_optional<FunctionCallback>(cb);
 }
 
-void Events::Call(const std::string& pluginName, const std::string& eventName)
+void Call(const std::string& pluginName, const std::string& eventName)
 {
     if (auto callback = GetEventCallback(pluginName, eventName))
     {
@@ -70,7 +72,7 @@ void Events::Call(const std::string& pluginName, const std::string& eventName)
 }
 
 
-void Events::RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb)
+void RegisterEvent(const std::string& pluginName, const std::string& eventName, FunctionCallback&& cb)
 {
     auto& events = s_eventMap[pluginName];
 

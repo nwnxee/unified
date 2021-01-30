@@ -1,10 +1,9 @@
+#include "nwnx.hpp"
 #include "NWNXCore.hpp"
 
 #include "API/CAppManager.hpp"
 #include "API/CExoString.hpp"
 #include "API/CServerExoApp.hpp"
-#include "API/Functions.hpp"
-#include "API/Globals.hpp"
 #include "API/CNWSModule.hpp"
 #include "API/CExoLinkedListInternal.hpp"
 #include "API/CExoLinkedListNode.hpp"
@@ -14,14 +13,6 @@
 #include "API/CVirtualMachine.hpp"
 #include "API/CExoStringList.hpp"
 #include "API/CScriptCompiler.hpp"
-#include "Platform/ASLR.hpp"
-#include "Platform/Debug.hpp"
-#include "Services/Services.hpp"
-#include "Commands.hpp"
-#include "Utils.hpp"
-#include "Config.hpp"
-#include "Encoding.hpp"
-#include "MessageBus.hpp"
 
 #include <csignal>
 #include <regex>
@@ -56,7 +47,7 @@ extern "C" void nwnx_signal_handler(int sig)
         "==============================================================\n",
         NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA, err, sig);
 
-    std::fputs(NWNXLib::Platform::Debug::GetStackTrace(20).c_str(), stderr);
+    std::fputs(NWNXLib::Platform::GetStackTrace(20).c_str(), stderr);
 
     std::fflush(stderr);
 
@@ -98,10 +89,10 @@ NWNXCore::NWNXCore()
     // crash before the version check happens.
     std::printf("Starting NWNX %d.%d [%s]\n", NWNX_TARGET_NWN_BUILD, NWNX_TARGET_NWN_BUILD_REVISION, NWNX_BUILD_SHA);
     // This sets up the base address for every hook and patch to follow.
-    Platform::ASLR::CalculateBaseAddress();
+    Platform::CalculateBaseAddress();
 
     m_createServerHook = std::make_unique<FunctionHook>(
-        Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN11CAppManager12CreateServerEv),
+        Platform::GetRelocatedAddress(API::Functions::_ZN11CAppManager12CreateServerEv),
         (void*)&CreateServerHandler);
 }
 
@@ -115,10 +106,10 @@ std::unique_ptr<Services::ServiceList> NWNXCore::ConstructCoreServices()
     using namespace NWNXLib::Services;
     std::unique_ptr<ServiceList> services = std::make_unique<ServiceList>();
 
-    services->m_hooks = std::make_unique<Hooks>();
-    services->m_tasks = std::make_unique<Tasks>();
-    services->m_metrics = std::make_unique<Metrics>();
-    services->m_perObjectStorage = std::make_unique<PerObjectStorage>();
+    services->m_hooks = std::make_unique<Services::Hooks>();
+    services->m_tasks = std::make_unique<Services::Tasks>();
+    services->m_metrics = std::make_unique<Services::Metrics>();
+    services->m_perObjectStorage = std::make_unique<Services::PerObjectStorage>();
 
     return services;
 }
@@ -272,7 +263,7 @@ void NWNXCore::InitialSetupPlugins()
     for (auto& dynamicLibrary : files)
     {
         const std::string& pluginName = dynamicLibrary;
-        const std::string pluginNameWithoutExtension = Utils::basename(pluginName);
+        const std::string pluginNameWithoutExtension = String::Basename(pluginName);
 
         if (pluginNameWithoutExtension == NWNX_CORE_PLUGIN_NAME || pluginNameWithoutExtension.compare(0, prefix.size(), prefix) != 0)
         {
@@ -325,7 +316,7 @@ void NWNXCore::InitialSetupResourceDirectories()
                 else
                 {
                     std::string errorLine = std::string(line);
-                    LOG_WARNING("Invalid Custom Resman Definition Line: %s", Utils::trim(errorLine));
+                    LOG_WARNING("Invalid Custom Resman Definition Line: %s", String::Trim(errorLine));
                 }
             }
 
@@ -363,7 +354,7 @@ void NWNXCore::InitialSetupResourceDirectories()
 
 void NWNXCore::InitialSetupCommands()
 {
-    Commands::RegisterCommand("runscript", [](std::string&, std::string& args)
+    Commands::Register("runscript", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -375,7 +366,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    Commands::RegisterCommand("eval", [](std::string&, std::string& args)
+    Commands::Register("eval", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -391,7 +382,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    Commands::RegisterCommand("evalx", [](std::string&, std::string& args)
+    Commands::Register("evalx", [](std::string&, std::string& args)
     {
         if (Globals::AppManager()->m_pServerExoApp->GetServerMode() != 2)
             return;
@@ -421,7 +412,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    Commands::RegisterCommand("loglevel", [](std::string&, std::string& args)
+    Commands::Register("loglevel", [](std::string&, std::string& args)
     {
         if (!args.empty())
         {
@@ -433,7 +424,7 @@ void NWNXCore::InitialSetupCommands()
 
             if (plugin)
             {
-                if (auto logLevel = Utils::from_string<uint32_t>(level))
+                if (auto logLevel = String::FromString<uint32_t>(level))
                 {
                     LOG_INFO("Setting log level of plugin '%s' to '%u'", plugin->GetName(), *logLevel);
                     Log::SetLogLevel(plugin->GetName().c_str(), static_cast<Log::Channel::Enum>(*logLevel));
@@ -454,7 +445,7 @@ void NWNXCore::InitialSetupCommands()
         }
     });
 
-    Commands::RegisterCommand("logformat", [](std::string&, std::string& args)
+    Commands::Register("logformat", [](std::string&, std::string& args)
     {
         if (args.find("timestamp") != std::string::npos)
             Log::SetPrintTimestamp(args.find("notimestamp") == std::string::npos);
@@ -473,11 +464,11 @@ void NWNXCore::InitialSetupCommands()
                  Log::GetPrintSource(), Log::GetColorOutput(), Log::GetForceColor());
     });
 
-    Commands::RegisterCommand("resolve", [](std::string&, std::string& args)
+    Commands::Register("resolve", [](std::string&, std::string& args)
     {
-        auto addr = Utils::from_string<uint64_t>(args);
+        auto addr = String::FromString<uint64_t>(args);
         if (addr)
-            LOG_NOTICE("%s", NWNXLib::Platform::Debug::ResolveAddress(*addr));
+            LOG_NOTICE("%s", NWNXLib::Platform::ResolveAddress(*addr));
     });
 
 }
@@ -515,18 +506,12 @@ void NWNXCore::CreateServerHandler(CAppManager* app)
     Log::SetPrintSource(Config::Get<bool>("LOG_SOURCE", true));
     Log::SetColorOutput(Config::Get<bool>("LOG_COLOR", true));
     Log::SetForceColor(Config::Get<bool>("LOG_FORCE_COLOR", false));
-    if (Config::Get<bool>("LOG_ASYNC", false))
-        Log::SetAsync(g_core->m_services->m_tasks.get());
+    //if (Config::Get<bool>("LOG_ASYNC", false))
+    //    Log::SetAsync(g_core->m_services->m_tasks.get());
 
     if (auto locale = Config::Get<std::string>("LOCALE"))
     {
-        Encoding::SetDefaultLocale(*locale);
-    }
-
-    auto crashOnAssertFailure = Config::Get<bool>("CRASH_ON_ASSERT_FAILURE");
-    if (crashOnAssertFailure)
-    {
-        Assert::SetCrashOnFailure(*crashOnAssertFailure);
+        String::SetDefaultLocale(*locale);
     }
 
     if (Config::Get<bool>("SKIP", false))
@@ -580,7 +565,7 @@ int32_t NWNXCore::MainLoopInternalHandler(CServerExoAppInternal *pServerExoAppIn
 {
     g_core->m_services->m_metrics->Update(g_core->m_services->m_tasks.get());
     g_core->m_services->m_tasks->ProcessWorkOnMainThread();
-    Commands::RunScheduledCommands();
+    Commands::RunScheduled();
 
     return g_core->m_mainLoopInternalHook->CallOriginal<int32_t>(pServerExoAppInternal);
 }

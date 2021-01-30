@@ -13,4 +13,5 @@ namespace NWNXLib::API::Functions {
     #include "API/FunctionsLinux.hpp"
 #endif
 
+#undef NWNXLIB_FUNCTION
 }

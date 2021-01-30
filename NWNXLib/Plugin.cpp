@@ -1,9 +1,10 @@
-#include "Plugin.hpp"
-#include "Utils/String.hpp"
-#include <vector>
+#include "nwnx.hpp"
 #include <dlfcn.h>
 
-namespace NWNXLib {
+namespace NWNXLib
+{
+
+constexpr char PluginEntryName[] = "PluginLoad";
 
 void* Plugin::GetExportedSymbol(const std::string& symbolName)
 {
@@ -28,7 +29,7 @@ Plugin* Plugin::Find(const std::string& pluginName)
 
 Plugin* Plugin::Load(const std::string& path, std::unique_ptr<Services::ProxyServiceList>&& services)
 {
-    auto basename = Utils::basename(path);
+    auto basename = String::Basename(path);
 
     LOG_DEBUG("Loading plugin '%s'", basename);
     if (Find(basename))
@@ -40,14 +41,14 @@ Plugin* Plugin::Load(const std::string& path, std::unique_ptr<Services::ProxySer
     void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_NODELETE);
     if (!handle)
     {
-        LOG_ERROR("Unable to load plugin '%s'", path);
+        LOG_ERROR("Unable to load plugin '%s': %s", path, dlerror());
         return nullptr;
     }
 
     auto entry = (EntryFunction) dlsym(handle, PluginEntryName);
     if (entry == nullptr)
     {
-        LOG_ERROR("Plugin '%s' does not expose entry function %s()", path, PluginEntryName);
+        LOG_ERROR("Plugin '%s' does not expose entry function %s(): %s", path, PluginEntryName, dlerror());
         dlclose(handle);
         return nullptr;
     }

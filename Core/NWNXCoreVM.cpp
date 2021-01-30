@@ -1,3 +1,4 @@
+#include "nwnx.hpp"
 #include "NWNXCore.hpp"
 
 #include "API/CAppManager.hpp"
@@ -12,9 +13,6 @@
 #include "API/CGameEffect.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
 #include "API/CNWSObject.hpp"
-#include "Platform/Debug.hpp"
-#include "Events.hpp"
-#include "Utils.hpp"
 
 #include <cstring>
 #include <optional>

@@ -1,12 +1,8 @@
 #pragma once
 
+#include "nwnx.hpp"
 #include "API/CServerExoAppInternal.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
-#include "Common.hpp"
-#include "Plugin.hpp"
-#include "Services/Services.hpp"
-#include "Services/Hooks/Hooks.hpp"
-#include "Services/PerObjectStorage/PerObjectStorage.hpp"
 
 #include <functional>
 #include <map>

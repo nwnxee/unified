@@ -1,3 +1,4 @@
+#include "nwnx.hpp"
 #include "Services/Metrics/Metrics.hpp"
 #include "Services/Tasks/Tasks.cpp"
 

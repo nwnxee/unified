@@ -1,19 +1,21 @@
-#include "Commands.hpp"
+#include "nwnx.hpp"
 #include <stdio.h>
 #include <dlfcn.h>
 #include <unordered_map>
 #include <deque>
 #include <set>
 #include <mutex>
-#include "Log.hpp"
 
-namespace NWNXLib {
+namespace NWNXLib::Commands
+{
 
-static std::unordered_map<std::string, Commands::CommandFunc> s_commandMap;
+using CommandFunc = std::function<void(std::string&, std::string&)>;
+
+static std::unordered_map<std::string, CommandFunc> s_commandMap;
 static std::deque<std::pair<std::string,std::string>> s_commandQueue;
 static std::mutex s_queueLock;
 
-bool Commands::RegisterCommand(const std::string& cmd, CommandFunc func)
+bool Register(const std::string& cmd, CommandFunc func)
 {
     auto it = s_commandMap.find(cmd);
     if (it == s_commandMap.end())
@@ -29,14 +31,14 @@ bool Commands::RegisterCommand(const std::string& cmd, CommandFunc func)
     }
 }
 
-void Commands::UnregisterCommand(const std::string& cmd)
+void Unregister(const std::string& cmd)
 {
     LOG_INFO("Unregistering command '%s'", cmd);
     s_commandMap.erase(cmd);
 }
 
 // This runs on a side thread that processes input.
-bool Commands::ScheduleCommand(std::string&& cmdline)
+bool Schedule(std::string&& cmdline)
 {
     auto trim = [](std::string &s)
     {
@@ -65,7 +67,7 @@ bool Commands::ScheduleCommand(std::string&& cmdline)
     return false;
 }
 
-void Commands::RunScheduledCommands()
+void RunScheduled()
 {
     std::lock_guard<std::mutex> guard(s_queueLock);
     for (auto item: s_commandQueue)
@@ -94,7 +96,7 @@ extern "C" char *fgets(char * str, int num, FILE *stream)
     char *ret = real(str, num, stream);
     if (ret && stream == stdin && num == 1024)
     {
-        if (NWNXLib::Commands::ScheduleCommand(std::string(str)))
+        if (NWNXLib::Commands::Schedule(std::string(str)))
         {
             // Clear command line so server doesn't run it.
             str[0] = '\0';

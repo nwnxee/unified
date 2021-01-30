@@ -1,3 +1,4 @@
+#include "nwnx.hpp"
 #include "Services/PerObjectStorage/PerObjectStorage.hpp"
 #include "../../../Core/NWNXCore.hpp"
 #include "API/CGameObject.hpp"
