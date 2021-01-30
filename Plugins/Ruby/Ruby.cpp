@@ -38,7 +38,7 @@ Ruby::Ruby(Services::ProxyServiceList* services)
         SafeRequire(*preloadScript);
     }
 
-    GetServices()->m_events->RegisterEvent("Evaluate", std::bind(&Ruby::Evaluate, this, std::placeholders::_1));
+    Events::RegisterEvent(PLUGIN_NAME, "Evaluate", std::bind(&Ruby::Evaluate, this, std::placeholders::_1));
 }
 
 Ruby::~Ruby()

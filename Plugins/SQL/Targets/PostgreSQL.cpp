@@ -1,11 +1,12 @@
 #if defined(NWNX_SQL_POSTGRESQL_SUPPORT)
 
+#include "nwnx.hpp"
 #include <iostream>
 #include <cstdlib>
 #include <regex>
 
 #include "PostgreSQL.hpp"
-
+using namespace NWNXLib;
 namespace SQL {
 
 PostgreSQL::PostgreSQL()

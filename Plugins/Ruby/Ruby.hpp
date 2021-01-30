@@ -9,7 +9,7 @@ public:
     Ruby(NWNXLib::Services::ProxyServiceList* services);
     virtual ~Ruby();
 
-    Events::ArgumentStack Evaluate(Events::ArgumentStack&& args);
+    NWNXLib::Events::ArgumentStack Evaluate(NWNXLib::Events::ArgumentStack&& args);
 
 private:
     bool m_evaluateMetrics;
