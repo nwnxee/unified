@@ -5,6 +5,7 @@
 #include "API/CExoBase.hpp"
 #include <cstring>
 //for Hooks
+#include "Events.hpp"
 #include "Services/Hooks/Hooks.hpp"
 #include "API/Functions.hpp"
 #include "API/CNWVirtualMachineCommands.hpp"
@@ -29,6 +30,7 @@ namespace Lua {
 
     using namespace NWNXLib::Services;
     using namespace NWNXLib::API;
+    using namespace NWNXLib;
 
     static Hooking::FunctionHook* s_RunScriptHook;
     static Hooking::FunctionHook* s_RunScriptSituationHook;

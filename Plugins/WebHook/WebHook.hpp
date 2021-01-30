@@ -12,7 +12,7 @@ class WebHook : public NWNXLib::Plugin
 public:
     WebHook(NWNXLib::Services::ProxyServiceList* services);
     virtual ~WebHook();
-    static ArgumentStack SendWebHookHTTPS(Events::ArgumentStack&&);
+    static ArgumentStack SendWebHookHTTPS(ArgumentStack&&);
 };
 
 }

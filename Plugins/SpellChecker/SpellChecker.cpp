@@ -34,7 +34,7 @@ SpellChecker::SpellChecker(Services::ProxyServiceList* services)
 
     REGISTER(FindMisspell);
     REGISTER(GetSuggestSpell);
-    SpellChecker::Init(GetServices()->m_config.get());
+    SpellChecker::Init();
 #undef REGISTER
 
 }
@@ -55,7 +55,7 @@ uintptr_t SpellChecker::EstbSymFunction(const std::string& symbol)
     }
     return var;
 }
-void SpellChecker::Init(NWNXLib::Services::ConfigProxy* config)
+void SpellChecker::Init()
 {
     SpellChecker::handle = dlopen("libhunspell.so", RTLD_NOW | RTLD_NODELETE);
 
@@ -74,8 +74,8 @@ void SpellChecker::Init(NWNXLib::Services::ConfigProxy* config)
 
     SpellChecker::free_e = reinterpret_cast<SpellChecker::Free_Exp>(EstbSymFunction( "Hunspell_free_list"));
 
-    SpellChecker::dic = config->Get<std::string>("PATH_DIC", "/usr/share/hunspell/en_US.dic");
-    SpellChecker::aff = config->Get<std::string>("PATH_AFF", "/usr/share/hunspell/en_US.aff");
+    SpellChecker::dic = Config::Get<std::string>("PATH_DIC", "/usr/share/hunspell/en_US.dic");
+    SpellChecker::aff = Config::Get<std::string>("PATH_AFF", "/usr/share/hunspell/en_US.aff");
 
     SpellChecker::created = setcreate(SpellChecker::aff.c_str(), SpellChecker::dic.c_str());
 

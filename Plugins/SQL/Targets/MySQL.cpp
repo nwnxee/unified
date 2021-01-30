@@ -5,6 +5,8 @@
 
 #include <string.h>
 
+using namespace NWNXLib;
+
 namespace SQL {
 
 MySQL::MySQL()
@@ -41,7 +43,7 @@ void MySQL::Connect()
         throw std::runtime_error(std::string(mysql_error(&m_mysql)));
     }
 
-    if (auto charset = config->Get<std::string>("CHARACTER_SET"))
+    if (auto charset = Config::Get<std::string>("CHARACTER_SET"))
     {
         LOG_INFO("Connection character set is '%s'", *charset);
         if (mysql_set_character_set(&m_mysql, charset->c_str()))

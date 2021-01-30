@@ -16,6 +16,7 @@ extern "C" {
 namespace Lua {
 	using namespace NWNXLib::Services;
 	using namespace NWNXLib::API;
+	using namespace NWNXLib;
 	class Lua : public NWNXLib::Plugin
 	{
 	public:

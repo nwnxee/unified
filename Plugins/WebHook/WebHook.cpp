@@ -29,7 +29,7 @@ namespace WebHook {
 WebHook::WebHook(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    GetServices()->m_events->RegisterEvent("SendWebHookHTTPS", &SendWebHookHTTPS);
+    Events::RegisterEvent(PLUGIN_NAME, "SendWebHookHTTPS", &SendWebHookHTTPS);
 }
 
 WebHook::~WebHook()

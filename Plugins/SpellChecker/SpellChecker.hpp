@@ -29,7 +29,7 @@ private:
     ArgumentStack GetSuggestSpell                   (ArgumentStack&& args);
     std::string dic;
     std::string aff;
-    void Init(NWNXLib::Services::ConfigProxy* config);
+    void Init();
     uintptr_t EstbSymFunction(const std::string& symbol);
     Create_Exp setcreate;
     SplHandle* created;
