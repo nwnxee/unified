@@ -11,11 +11,11 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook *s_ClearSpellEffectsOnOthersHook;
+static Hooks::Hook s_ClearSpellEffectsOnOthersHook;
 
-ClearSpellEffectsOnTURDs::ClearSpellEffectsOnTURDs(Services::HooksProxy* hooker)
+ClearSpellEffectsOnTURDs::ClearSpellEffectsOnTURDs()
 {
-    s_ClearSpellEffectsOnOthersHook = hooker->Hook(Functions::_ZN10CNWSObject25ClearSpellEffectsOnOthersEv, (void*)&CNWSObject__ClearSpellEffectsOnOthers_hook, Hooking::Order::Early);
+    s_ClearSpellEffectsOnOthersHook = Hooks::HookFunction(Functions::_ZN10CNWSObject25ClearSpellEffectsOnOthersEv, (void*)&CNWSObject__ClearSpellEffectsOnOthers_hook, Hooks::Order::Early);
 }
 
 

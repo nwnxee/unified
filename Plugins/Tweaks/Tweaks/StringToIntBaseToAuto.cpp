@@ -13,10 +13,10 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-StringToIntBaseToAuto::StringToIntBaseToAuto(Services::HooksProxy* hooker)
+StringToIntBaseToAuto::StringToIntBaseToAuto()
 {
-    hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands31ExecuteCommandStringConversionsEii,
-                 (void*)&CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands31ExecuteCommandStringConversionsEii,
+                 (void*)&CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook, Hooks::Order::Final);
 }
 
 int32_t StringToIntBaseToAuto::CNWVirtualMachineCommands__ExecuteCommandStringConversions_hook(CNWVirtualMachineCommands* thisPtr,

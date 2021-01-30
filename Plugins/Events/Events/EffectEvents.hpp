@@ -8,7 +8,7 @@ namespace Events {
 class EffectEvents
 {
 public:
-    EffectEvents(NWNXLib::Services::HooksProxy* hooker);
+    EffectEvents();
 
 private:
     static void HandleEffectHook(const std::string&, bool, CNWSObject*, CGameEffect*);

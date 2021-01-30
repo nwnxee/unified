@@ -9,17 +9,17 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Hooking::FunctionHook *s_SendServerToPlayerGuiTimingEventHook;
-static Hooking::FunctionHook *s_HandlePlayerToServerInputCancelGuiTimingEventHook;
+static Hooks::Hook s_SendServerToPlayerGuiTimingEventHook;
+static Hooks::Hook s_HandlePlayerToServerInputCancelGuiTimingEventHook;
 
-TimingBarEvents::TimingBarEvents(HooksProxy* hooker)
+TimingBarEvents::TimingBarEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_TIMING_BAR_.*", [hooker]() {
-        s_SendServerToPlayerGuiTimingEventHook = hooker->Hook(API::Functions::_ZN11CNWSMessage32SendServerToPlayerGuiTimingEventEP10CNWSPlayerihj,
-                                                              (void*)&SendServerToPlayerGuiTimingEventHook, Hooking::Order::Earliest);
-        s_HandlePlayerToServerInputCancelGuiTimingEventHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_TIMING_BAR_.*", []() {
+        s_SendServerToPlayerGuiTimingEventHook = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage32SendServerToPlayerGuiTimingEventEP10CNWSPlayerihj,
+                                                              (void*)&SendServerToPlayerGuiTimingEventHook, Hooks::Order::Earliest);
+        s_HandlePlayerToServerInputCancelGuiTimingEventHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer,
-                (void*)&HandlePlayerToServerInputCancelGuiTimingEventHook, Hooking::Order::Earliest);
+                (void*)&HandlePlayerToServerInputCancelGuiTimingEventHook, Hooks::Order::Earliest);
     });
 }
 

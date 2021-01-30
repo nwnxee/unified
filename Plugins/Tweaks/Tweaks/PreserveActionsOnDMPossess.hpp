@@ -7,7 +7,7 @@ namespace Tweaks {
 class PreserveActionsOnDMPossess
 {
 public:
-    PreserveActionsOnDMPossess(NWNXLib::Services::HooksProxy* hooker);
+    PreserveActionsOnDMPossess();
 
 private:
     static void CNWSCreature__PossessCreatureDM_hook(CNWSCreature*, ObjectID, uint8_t);

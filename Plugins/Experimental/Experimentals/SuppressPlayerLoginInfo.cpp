@@ -12,26 +12,26 @@ namespace Experimental {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerPlayerList_AddHook;
-static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerPlayerList_AllHook;
-static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerPlayerList_DeleteHook;
+static NWNXLib::Hooks::Hook s_SendServerToPlayerPlayerList_AddHook;
+static NWNXLib::Hooks::Hook s_SendServerToPlayerPlayerList_AllHook;
+static NWNXLib::Hooks::Hook s_SendServerToPlayerPlayerList_DeleteHook;
 
-SuppressPlayerLoginInfo::SuppressPlayerLoginInfo(Services::HooksProxy* hooker)
+SuppressPlayerLoginInfo::SuppressPlayerLoginInfo()
 {
-    s_SendServerToPlayerPlayerList_AddHook = hooker->Hook(
+    s_SendServerToPlayerPlayerList_AddHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer,
-            (void*)&SendServerToPlayerPlayerList_AddHook, Hooking::Order::Late);
+            (void*)&SendServerToPlayerPlayerList_AddHook, Hooks::Order::Late);
 
-    s_SendServerToPlayerPlayerList_AllHook = hooker->Hook(
+    s_SendServerToPlayerPlayerList_AllHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AllEP10CNWSPlayer,
-            (void*)&SendServerToPlayerPlayerList_AllHook, Hooking::Order::Late);
+            (void*)&SendServerToPlayerPlayerList_AllHook, Hooks::Order::Late);
 
-    s_SendServerToPlayerPlayerList_DeleteHook = hooker->Hook(
+    s_SendServerToPlayerPlayerList_DeleteHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage35SendServerToPlayerPlayerList_DeleteEjP10CNWSPlayer,
-            (void*)&SendServerToPlayerPlayerList_DeleteHook, Hooking::Order::Late);
+            (void*)&SendServerToPlayerPlayerList_DeleteHook, Hooks::Order::Late);
 
-    hooker->Hook(API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer,
-                 (void*)&HandlePlayerToServerPlayModuleCharacterList_StartHook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer,
+                 (void*)&HandlePlayerToServerPlayModuleCharacterList_StartHook, Hooks::Order::Final);
 }
 
 int32_t SuppressPlayerLoginInfo::SendServerToPlayerPlayerList_AddHook(CNWSMessage *pThis, uint32_t nPlayerId, CNWSPlayer *pNewPlayer)

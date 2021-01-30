@@ -7,7 +7,7 @@ namespace Optimizations {
 class GameObjectLookup
 {
 public:
-    GameObjectLookup(NWNXLib::Services::HooksProxy* hooker);
+    GameObjectLookup();
 
     static constexpr uint32_t ObjectsInNode = 4;
     static constexpr uint32_t L0CacheSize = 5;

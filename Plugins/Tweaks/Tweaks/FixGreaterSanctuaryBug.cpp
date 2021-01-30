@@ -10,10 +10,10 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-FixGreaterSanctuaryBug::FixGreaterSanctuaryBug(Services::HooksProxy* hooker)
+FixGreaterSanctuaryBug::FixGreaterSanctuaryBug()
 {
-    hooker->Hook(Functions::_ZN12CNWSCreature31RemoveCombatInvisibilityEffectsEv,
-                 (void*)&CNWSCreature__RemoveCombatInvisibilityEffects_hook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN12CNWSCreature31RemoveCombatInvisibilityEffectsEv,
+                 (void*)&CNWSCreature__RemoveCombatInvisibilityEffects_hook, Hooks::Order::Final);
 }
 
 void FixGreaterSanctuaryBug::CNWSCreature__RemoveCombatInvisibilityEffects_hook(CNWSCreature *pThis)

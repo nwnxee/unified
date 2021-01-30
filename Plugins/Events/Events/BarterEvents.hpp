@@ -7,7 +7,7 @@ namespace Events {
 class BarterEvents
 {
 public:
-    BarterEvents(NWNXLib::Services::HooksProxy* hooker);
+    BarterEvents();
 
 private:
     static int32_t HandlePlayerToServerBarter_StartBarterHook(CNWSMessage*, CNWSPlayer*);

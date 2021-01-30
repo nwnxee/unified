@@ -9,12 +9,12 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Hooking::FunctionHook *s_UpdateTimeHook;
+static Hooks::Hook s_UpdateTimeHook;
 
-CalendarEvents::CalendarEvents(Services::HooksProxy* hooker)
+CalendarEvents::CalendarEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_CALENDAR_.*", [hooker]() {
-        s_UpdateTimeHook = hooker->Hook(Functions::_ZN10CNWSModule10UpdateTimeEjjj, (void*)&HandleUpdateTimeHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_CALENDAR_.*", []() {
+        s_UpdateTimeHook = Hooks::HookFunction(Functions::_ZN10CNWSModule10UpdateTimeEjjj, (void*)&HandleUpdateTimeHook, Hooks::Order::Earliest);
     });
 }
 

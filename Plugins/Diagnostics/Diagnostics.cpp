@@ -20,7 +20,7 @@ Diagnostics::Diagnostics(Services::ProxyServiceList* services)
     if (Config::Get<bool>("MEMORY_SANITIZER", false))
     {
         LOG_INFO("Memory sanitizer enabled");
-        m_MemorySanitizer = std::make_unique<MemorySanitizer>(GetServices()->m_hooks.get());
+        m_MemorySanitizer = std::make_unique<MemorySanitizer>();
     }
 }
 

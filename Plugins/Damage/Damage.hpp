@@ -36,9 +36,9 @@ private:
     ArgumentStack SetAttackEventData(ArgumentStack&& args);
     ArgumentStack DealDamage(ArgumentStack&& args);
 
-    NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
-    NWNXLib::Hooking::FunctionHook* m_SignalMeleeDamageHook;
-    NWNXLib::Hooking::FunctionHook* m_SignalRangedDamageHook;
+    NWNXLib::Hooks::Hook m_OnApplyDamageHook;
+    NWNXLib::Hooks::Hook m_SignalMeleeDamageHook;
+    NWNXLib::Hooks::Hook m_SignalRangedDamageHook;
 
     static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame);
     static void HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);

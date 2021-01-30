@@ -53,38 +53,38 @@ Weapon::Weapon(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_GetWeaponFocusHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem, (void*)&Weapon::GetWeaponFocus, Hooking::Order::Late);
-    m_GetEpicWeaponFocusHook = GetServices()->m_hooks->Hook(
+    m_GetWeaponFocusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats14GetWeaponFocusEP8CNWSItem, (void*)&Weapon::GetWeaponFocus, Hooks::Order::Late);
+    m_GetEpicWeaponFocusHook = Hooks::HookFunction(
             Functions::_ZN17CNWSCreatureStats18GetEpicWeaponFocusEP8CNWSItem, (void*)&Weapon::GetEpicWeaponFocus);
-    GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats16GetWeaponFinesseEP8CNWSItem, (void*)&GetWeaponFinesse, Hooking::Order::Final);
+    Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats16GetWeaponFinesseEP8CNWSItem, (void*)&GetWeaponFinesse, Hooks::Order::Final);
 
-    m_GetWeaponImprovedCriticalHook = GetServices()->m_hooks->Hook
-            (Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem, (void*)&Weapon::GetWeaponImprovedCritical, Hooking::Order::Late);
-    m_GetWeaponSpecializationHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetWeaponSpecialization, Hooking::Order::Late);
-    m_GetEpicWeaponSpecializationHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetEpicWeaponSpecialization, Hooking::Order::Late);
-    m_GetEpicWeaponOverwhelmingCriticalHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponOverwhelmingCritical, Hooking::Order::Late);
-    m_GetEpicWeaponDevastatingCriticalHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponDevastatingCritical, Hooking::Order::Late);
-    m_GetIsWeaponOfChoiceHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj, (void*)&Weapon::GetIsWeaponOfChoice, Hooking::Order::Late);
-    m_GetMeleeDamageBonusHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih, (void*)&Weapon::GetMeleeDamageBonus, Hooking::Order::Late);
-    m_GetDamageBonusHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei, (void*)&Weapon::GetDamageBonus, Hooking::Order::Late);
-    m_GetRangedDamageBonusHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv, (void*)&Weapon::GetRangedDamageBonus, Hooking::Order::Late);
-    m_GetAttackModifierVersusHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Weapon::GetAttackModifierVersus, Hooking::Order::Late);
-    m_GetMeleeAttackBonusHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii, (void*)&Weapon::GetMeleeAttackBonus, Hooking::Order::Late);
-    m_GetRangedAttackBonusHook = GetServices()->m_hooks->Hook(
-            Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii, (void*)&Weapon::GetRangedAttackBonus, Hooking::Order::Late);
-    GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats22GetUseMonkAttackTablesEi, (void*)&GetUseMonkAttackTables, Hooking::Order::Final);
+    m_GetWeaponImprovedCriticalHook = Hooks::HookFunction
+            (Functions::_ZN17CNWSCreatureStats25GetWeaponImprovedCriticalEP8CNWSItem, (void*)&Weapon::GetWeaponImprovedCritical, Hooks::Order::Late);
+    m_GetWeaponSpecializationHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats23GetWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetWeaponSpecialization, Hooks::Order::Late);
+    m_GetEpicWeaponSpecializationHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats27GetEpicWeaponSpecializationEP8CNWSItem, (void*)&Weapon::GetEpicWeaponSpecialization, Hooks::Order::Late);
+    m_GetEpicWeaponOverwhelmingCriticalHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats33GetEpicWeaponOverwhelmingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponOverwhelmingCritical, Hooks::Order::Late);
+    m_GetEpicWeaponDevastatingCriticalHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats32GetEpicWeaponDevastatingCriticalEP8CNWSItem, (void*)&Weapon::GetEpicWeaponDevastatingCritical, Hooks::Order::Late);
+    m_GetIsWeaponOfChoiceHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats19GetIsWeaponOfChoiceEj, (void*)&Weapon::GetIsWeaponOfChoice, Hooks::Order::Late);
+    m_GetMeleeDamageBonusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats19GetMeleeDamageBonusEih, (void*)&Weapon::GetMeleeDamageBonus, Hooks::Order::Late);
+    m_GetDamageBonusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats14GetDamageBonusEP12CNWSCreaturei, (void*)&Weapon::GetDamageBonus, Hooks::Order::Late);
+    m_GetRangedDamageBonusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats20GetRangedDamageBonusEv, (void*)&Weapon::GetRangedDamageBonus, Hooks::Order::Late);
+    m_GetAttackModifierVersusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats23GetAttackModifierVersusEP12CNWSCreature, (void*)&Weapon::GetAttackModifierVersus, Hooks::Order::Late);
+    m_GetMeleeAttackBonusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats19GetMeleeAttackBonusEiii, (void*)&Weapon::GetMeleeAttackBonus, Hooks::Order::Late);
+    m_GetRangedAttackBonusHook = Hooks::HookFunction(
+            Functions::_ZN17CNWSCreatureStats20GetRangedAttackBonusEii, (void*)&Weapon::GetRangedAttackBonus, Hooks::Order::Late);
+    Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats22GetUseMonkAttackTablesEi, (void*)&GetUseMonkAttackTables, Hooks::Order::Final);
 
     m_WeaponFinesseSizeMap.insert({Constants::BaseItem::Rapier, (uint8_t) Constants::CreatureSize::Medium});
 
@@ -256,7 +256,7 @@ ArgumentStack Weapon::SetWeaponIsMonkWeapon(ArgumentStack&& args)
     {
         bFirstTime = false;
         // Hooks for flurry of blows
-        m_ToggleModeHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature10ToggleModeEh, (void*)&ToggleMode, Hooking::Order::Late);
+        m_ToggleModeHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature10ToggleModeEh, (void*)&ToggleMode, Hooks::Order::Late);
         MessageBus::Broadcast("NWNX_WEAPON_SIGNAL", {"FLURRY_OF_BLOWS_REQUIRED"});
         LOG_NOTICE("Flurry of blows requires activation of CombatModes plugin");
     }

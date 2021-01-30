@@ -20,7 +20,7 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Visibility {
 
-static NWNXLib::Hooking::FunctionHook* s_TestObjectVisibleHook;
+static NWNXLib::Hooks::Hook s_TestObjectVisibleHook;
 
 Visibility::Visibility(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -34,9 +34,9 @@ Visibility::Visibility(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_TestObjectVisibleHook = GetServices()->m_hooks->Hook(
+    s_TestObjectVisibleHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage17TestObjectVisibleEP10CNWSObjectS1_,
-            (void*)&Visibility::TestObjectVisibleHook, Hooking::Order::Late);
+            (void*)&Visibility::TestObjectVisibleHook, Hooks::Order::Late);
 }
 
 Visibility::~Visibility()

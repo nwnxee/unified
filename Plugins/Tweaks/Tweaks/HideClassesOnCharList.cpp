@@ -13,10 +13,10 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-HideClassesOnCharList::HideClassesOnCharList(Services::HooksProxy* hooker)
+HideClassesOnCharList::HideClassesOnCharList()
 {
-    hooker->Hook(API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji,
-                 (void*)&SendServerToPlayerPlayModuleCharacterListResponseHook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji,
+                 (void*)&SendServerToPlayerPlayModuleCharacterListResponseHook, Hooks::Order::Final);
 }
 
 int32_t HideClassesOnCharList::SendServerToPlayerPlayModuleCharacterListResponseHook(CNWSMessage* thisPtr, PlayerID playerId,

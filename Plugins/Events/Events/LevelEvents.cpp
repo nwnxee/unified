@@ -10,23 +10,23 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Hooking::FunctionHook *s_LevelUpHook;
-static Hooking::FunctionHook *s_LevelUpAutomaticHook;
-static Hooking::FunctionHook *s_LevelDownHook;
+static Hooks::Hook s_LevelUpHook;
+static Hooks::Hook s_LevelUpAutomaticHook;
+static Hooks::Hook s_LevelDownHook;
 
-LevelEvents::LevelEvents(HooksProxy* hooker)
+LevelEvents::LevelEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", [hooker]() {
-        s_LevelUpHook = hooker->Hook(API::Functions::_ZN17CNWSCreatureStats7LevelUpEP13CNWLevelStatshhhi,
-                                     (void*)&LevelUpHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_.*", []() {
+        s_LevelUpHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats7LevelUpEP13CNWLevelStatshhhi,
+                                     (void*)&LevelUpHook, Hooks::Order::Earliest);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_AUTOMATIC_.*", [hooker]() {
-        s_LevelUpAutomaticHook= hooker->Hook(API::Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih,
-                                             (void*)&LevelUpAutomaticHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_UP_AUTOMATIC_.*", []() {
+        s_LevelUpAutomaticHook= Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih,
+                                             (void*)&LevelUpAutomaticHook, Hooks::Order::Earliest);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", [hooker]() {
-        s_LevelDownHook = hooker->Hook(API::Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats,
-                                       (void*)&LevelDownHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_LEVEL_DOWN_.*", []() {
+        s_LevelDownHook = Hooks::HookFunction(API::Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats,
+                                       (void*)&LevelDownHook, Hooks::Order::Earliest);
     });
 }
 

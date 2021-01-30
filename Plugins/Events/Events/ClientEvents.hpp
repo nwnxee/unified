@@ -7,7 +7,7 @@ namespace Events {
 class ClientEvents
 {
 public:
-    ClientEvents(NWNXLib::Services::HooksProxy* hooker);
+    ClientEvents();
 
 private:
     static void RemovePCFromWorldHook(CServerExoAppInternal*, CNWSPlayer*);

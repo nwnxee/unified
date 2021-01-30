@@ -18,12 +18,12 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-SneakAttackCritImmunity::SneakAttackCritImmunity(Services::HooksProxy* hooker)
+SneakAttackCritImmunity::SneakAttackCritImmunity()
 {
-    hooker->Hook(Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_,
-                 (void*)&CNWSCreature__ResolveSneakAttack_hook, Hooking::Order::Final);
-    hooker->Hook(Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_,
-                 (void*)&CNWSCreature__ResolveDeathAttack_hook, Hooking::Order::Final);
+    static auto s_ResolveSneakAttack = Hooks::HookFunction(Functions::_ZN12CNWSCreature18ResolveSneakAttackEPS_,
+                 (void*)&CNWSCreature__ResolveSneakAttack_hook, Hooks::Order::Final);
+    static auto s_ResolveDeathAttack = Hooks::HookFunction(Functions::_ZN12CNWSCreature18ResolveDeathAttackEPS_,
+                 (void*)&CNWSCreature__ResolveDeathAttack_hook, Hooks::Order::Final);
 }
 
 void SneakAttackCritImmunity::CNWSCreature__ResolveSneakAttack_hook(CNWSCreature *pThis, CNWSCreature *pTarget)

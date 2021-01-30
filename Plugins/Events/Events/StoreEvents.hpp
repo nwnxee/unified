@@ -7,7 +7,7 @@ namespace Events {
 class StoreEvents
 {
 public:
-    StoreEvents(NWNXLib::Services::HooksProxy* hooker);
+    StoreEvents();
 
 private:
     static int32_t RequestBuyHook(CNWSCreature*, ObjectID, ObjectID, ObjectID);

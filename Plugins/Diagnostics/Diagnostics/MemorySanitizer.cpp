@@ -18,7 +18,7 @@ struct MetaFunction
     ~MetaFunction() { meta = oldmeta; }
 };
 
-MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
+MemorySanitizer::MemorySanitizer()
 {
     if (real_malloc == nullptr)
     {
@@ -26,13 +26,13 @@ MemorySanitizer::MemorySanitizer(Services::HooksProxy* hooker)
         LOG_WARNING("Please see Diagnostics/README.md for instructions");
         return;
     }
-    static Hooking::FunctionHook *pMainLoopHook = hooker->Hook(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv,
             (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
                 auto retVal = pMainLoopHook->CallOriginal<int32_t>(pServerExoAppInternal);
                 FreePending();
                 return retVal;
-            }, Hooking::Order::Earliest);
+            }, Hooks::Order::Earliest);
     enabled = true;
 }
 MemorySanitizer::~MemorySanitizer()

@@ -7,7 +7,7 @@ namespace Tracking {
 class Activity
 {
 public:
-    Activity(NWNXLib::Services::MetricsProxy* metrics, NWNXLib::Services::HooksProxy* hooks);
+    Activity(NWNXLib::Services::MetricsProxy* metrics);
 
 private:
     static int32_t MainLoopUpdate(CServerExoAppInternal*);

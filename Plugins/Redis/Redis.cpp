@@ -18,12 +18,11 @@ namespace Redis
 {
 
 using namespace NWNXLib::Services;
-using namespace NWNXLib::Hooking;
 
 Redis::Redis(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    m_ClearStackHook = GetServices()->m_hooks->Hook(Functions::_ZN20CVirtualMachineStack10ClearStackEv, (void*)&CleanState, Hooking::Order::Early);
+    m_ClearStackHook = Hooks::HookFunction(Functions::_ZN20CVirtualMachineStack10ClearStackEv, (void*)&CleanState, Hooks::Order::Early);
 
     m_internal = new Internal(std::bind(&Redis::PoolMakeFunc, this));
 

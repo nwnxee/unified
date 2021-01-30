@@ -7,21 +7,21 @@ namespace Events {
 
 using namespace NWNXLib;
 
-static Hooking::FunctionHook *s_SendServerToPlayerExamineGui_TrapDataHook;
+static Hooks::Hook s_SendServerToPlayerExamineGui_TrapDataHook;
 
-ExamineEvents::ExamineEvents(Services::HooksProxy* hooker)
+ExamineEvents::ExamineEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", [hooker]() {
+    Events::InitOnFirstSubscribe("NWNX_ON_EXAMINE_OBJECT_.*", []() {
 
         #define HOOK_EXAMINE(_address) \
-            static Hooking::FunctionHook* CAT(pExamineHook, __LINE__) = hooker->Hook(_address, \
+            static Hooks::Hook CAT(pExamineHook, __LINE__) = Hooks::HookFunction(_address, \
             (void*)+[](CNWSMessage *pMessage, CNWSPlayer* pPlayer, ObjectID oidObject) -> int32_t \
             { \
                 HandleExamine(true, pPlayer->m_oidNWSObject, oidObject); \
                 auto retVal = CAT(pExamineHook, __LINE__)->CallOriginal<int32_t>(pMessage, pPlayer, oidObject); \
                 HandleExamine(false, pPlayer->m_oidNWSObject, oidObject);  \
                 return retVal; \
-            }, Hooking::Order::Earliest)
+            }, Hooks::Order::Earliest)
 
                 HOOK_EXAMINE(API::Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj);
                 HOOK_EXAMINE(API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_DoorDataEP10CNWSPlayerj);
@@ -30,9 +30,9 @@ ExamineEvents::ExamineEvents(Services::HooksProxy* hooker)
 
         #undef HOOK_EXAMINE
 
-        s_SendServerToPlayerExamineGui_TrapDataHook = hooker->Hook(
+        s_SendServerToPlayerExamineGui_TrapDataHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage37SendServerToPlayerExamineGui_TrapDataEP10CNWSPlayerjP12CNWSCreaturei,
-                (void*)&ExamineTrapHook, Hooking::Order::Earliest);
+                (void*)&ExamineTrapHook, Hooks::Order::Earliest);
     });
 }
 

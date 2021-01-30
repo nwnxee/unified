@@ -18,13 +18,13 @@ static uint64_t s_mainThreadCounter = 0;
 static uint64_t s_watchdogLastObservedCounter = 0;
 static uint32_t s_watchdogPeriod;
 static uint32_t s_watchdogKillThreshold;
-static Hooking::FunctionHook *s_MainLoopHook;
+static Hooks::Hook s_MainLoopHook;
 
 ThreadWatchdog::ThreadWatchdog(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    s_MainLoopHook = GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-                                                  (void*)&MainLoopUpdate, Hooking::Order::Earliest);
+    s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+                                                  (void*)&MainLoopUpdate, Hooks::Order::Earliest);
 
     s_watchdogPeriod = Config::Get<uint32_t>("PERIOD", 15);
     // Default to effectively infinite

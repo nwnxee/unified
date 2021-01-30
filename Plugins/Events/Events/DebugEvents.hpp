@@ -7,7 +7,7 @@ namespace Events {
 class DebugEvents
 {
 public:
-    DebugEvents(NWNXLib::Services::HooksProxy* hooker);
+    DebugEvents();
 
 private:
     static int32_t HandlePlayerToServerCheatMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);

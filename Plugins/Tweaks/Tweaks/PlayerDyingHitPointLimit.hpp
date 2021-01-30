@@ -7,7 +7,7 @@ namespace Tweaks {
 class PlayerDyingHitPointLimit
 {
 public:
-    PlayerDyingHitPointLimit(NWNXLib::Services::HooksProxy* hooker, int16_t hplimit);
+    PlayerDyingHitPointLimit(int16_t hplimit);
 
 
 private:

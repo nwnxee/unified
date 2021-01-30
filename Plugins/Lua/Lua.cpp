@@ -27,8 +27,8 @@ namespace Lua {
     using namespace NWNXLib::API;
     using namespace NWNXLib;
 
-    static Hooking::FunctionHook* s_RunScriptHook;
-    static Hooking::FunctionHook* s_RunScriptSituationHook;
+    static Hooks::Hook s_RunScriptHook;
+    static Hooks::Hook s_RunScriptSituationHook;
 
     Lua::Lua(Services::ProxyServiceList* services) : Plugin(services)
     {
@@ -137,17 +137,17 @@ namespace Lua {
             lua_getglobal(m_luaInstance, runScriptTable.c_str());
             m_runScriptTable = luaL_ref(m_luaInstance, LUA_REGISTRYINDEX);
 
-            s_RunScriptHook = GetServices()->m_hooks->Hook(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
+            s_RunScriptHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine9RunScriptEP10CExoStringji,
                 (void*)+[](CVirtualMachine* thisPtr, CExoString* script, ObjectID objId, int32_t valid)
                 {
                     bool skip = script->m_sString && g_plugin->OnScript(script->m_sString, objId, !!valid);
                     return skip ? 1 : s_RunScriptHook->CallOriginal<int32_t>(thisPtr, script, objId, valid);
                 },
-                Hooking::Order::Latest);
+                Hooks::Order::Latest);
         }
 
         // RunScriptSituation hook
-        s_RunScriptSituationHook = GetServices()->m_hooks->Hook(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
+        s_RunScriptSituationHook = Hooks::HookFunction(Functions::_ZN15CVirtualMachine18RunScriptSituationEPvji,
             (void*)+[](CVirtualMachine* thisPtr, CVirtualMachineScript* script, ObjectID oid, int32_t oidValid)
             {
                 if (strstr(script->m_sScriptName.m_sString, "NWNX_LUA_INTERNAL"))
@@ -163,7 +163,7 @@ namespace Lua {
 
                 return s_RunScriptSituationHook->CallOriginal<int32_t>(thisPtr, script, oid, oidValid);
             },
-            Hooking::Order::Latest);
+            Hooks::Order::Latest);
     }
 
     Lua::~Lua()

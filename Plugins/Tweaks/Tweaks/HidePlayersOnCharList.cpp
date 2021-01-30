@@ -19,7 +19,7 @@ using namespace NWNXLib::API;
 
 int HidePlayersOnCharList::s_hideCharBehavior = 0;
 
-HidePlayersOnCharList::HidePlayersOnCharList(Services::HooksProxy* hooker, int mode)
+HidePlayersOnCharList::HidePlayersOnCharList(int mode)
 {
     s_hideCharBehavior = mode;
     if (mode < 1 || mode > 3)
@@ -27,8 +27,8 @@ HidePlayersOnCharList::HidePlayersOnCharList(Services::HooksProxy* hooker, int m
         LOG_INFO("Unknown value for HIDE_PLAYERS_ON_CHAR_LIST.");
         return;
     }
-    hooker->Hook(API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer,
-                 (void*)&HandlePlayerToServerPlayModuleCharacterList_StartHook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(API::Functions::_ZN11CNWSMessage49HandlePlayerToServerPlayModuleCharacterList_StartEP10CNWSPlayer,
+                 (void*)&HandlePlayerToServerPlayModuleCharacterList_StartHook, Hooks::Order::Final);
 }
 
 int32_t HidePlayersOnCharList::HandlePlayerToServerPlayModuleCharacterList_StartHook(CNWSMessage* pThis, CNWSPlayer* pPlayer)

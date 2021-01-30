@@ -95,7 +95,7 @@ Util::Util(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    static Hooking::FunctionHook *pMainLoopHook = GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+    static Hooks::Hook pMainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
             (void*)+[](CServerExoAppInternal *pServerExoAppInternal) -> int32_t
             {
                 static int ticks;
@@ -117,7 +117,7 @@ Util::Util(Services::ProxyServiceList* services)
                 }
 
                 return retVal;
-            }, Hooking::Order::Earliest);
+            }, Hooks::Order::Earliest);
 
     MessageBus::Subscribe("NWNX_CORE_SIGNAL",
         [](const std::vector<std::string>& message)

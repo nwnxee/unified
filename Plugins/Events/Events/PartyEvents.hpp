@@ -7,7 +7,7 @@ namespace Events {
 class PartyEvents
 {
 public:
-    PartyEvents(NWNXLib::Services::HooksProxy* hooker);
+    PartyEvents();
 
 private:
     static int32_t HandlePartyMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);

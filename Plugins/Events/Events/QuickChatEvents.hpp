@@ -8,7 +8,7 @@ namespace Events {
 class QuickChatEvents
 {
 public:
-    QuickChatEvents(NWNXLib::Services::HooksProxy* hooker);
+    QuickChatEvents();
 
 private:
     static int32_t HandlePlayerToServerQuickChatMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);

@@ -42,9 +42,9 @@ Damage::Damage(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    m_OnApplyDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti, (void*)&OnApplyDamage, Hooking::Order::Late);
-    m_SignalMeleeDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, (void*)&SignalMeleeDamageHook, Hooking::Order::Late);
-    m_SignalRangedDamageHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, (void*)&SignalRangedDamageHook, Hooking::Order::Late);
+    m_OnApplyDamageHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler13OnApplyDamageEP10CNWSObjectP11CGameEffecti, (void*)&OnApplyDamage, Hooks::Order::Late);
+    m_SignalMeleeDamageHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature17SignalMeleeDamageEP10CNWSObjecti, (void*)&SignalMeleeDamageHook, Hooks::Order::Late);
+    m_SignalRangedDamageHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature18SignalRangedDamageEP10CNWSObjecti, (void*)&SignalRangedDamageHook, Hooks::Order::Late);
 
     m_EventScripts["DAMAGE"] = "";
     m_EventScripts["ATTACK"] = "";

@@ -43,14 +43,14 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Rename {
 
-static Hooking::FunctionHook *s_WriteGameObjUpdate_UpdateObjectHook;
-static Hooking::FunctionHook *s_SendServerToPlayerExamineGui_CreatureDataHook;
-static Hooking::FunctionHook *s_SendServerToPlayerPlayModuleCharacterListResponseHook;
-static Hooking::FunctionHook *s_SendServerToPlayerPlayerList_AllHook;
-static Hooking::FunctionHook *s_SendServerToPlayerPlayerList_AddHook;
-static Hooking::FunctionHook *s_SendServerToPlayerPlayerList_DeleteHook;
-static Hooking::FunctionHook *s_SendServerToPlayerDungeonMasterUpdatePartyList;
-static Hooking::FunctionHook* s_SendServerToPlayerPopUpGUIPanelHook;
+static Hooks::Hook s_WriteGameObjUpdate_UpdateObjectHook;
+static Hooks::Hook s_SendServerToPlayerExamineGui_CreatureDataHook;
+static Hooks::Hook s_SendServerToPlayerPlayModuleCharacterListResponseHook;
+static Hooks::Hook s_SendServerToPlayerPlayerList_AllHook;
+static Hooks::Hook s_SendServerToPlayerPlayerList_AddHook;
+static Hooks::Hook s_SendServerToPlayerPlayerList_DeleteHook;
+static Hooks::Hook s_SendServerToPlayerDungeonMasterUpdatePartyList;
+static Hooks::Hook s_SendServerToPlayerPopUpGUIPanelHook;
 
 Rename::Rename(Services::ProxyServiceList* services)
   : Plugin(services)
@@ -70,15 +70,15 @@ Rename::Rename(Services::ProxyServiceList* services)
     m_RenameAnonymousPlayerName = Config::Get<std::string>("ANONYMOUS_NAME", "Someone");
     m_RenameOverwriteDisplayName = Config::Get<bool>("OVERWRITE_DISPLAY_NAME", false);
 
-    s_WriteGameObjUpdate_UpdateObjectHook = GetServices()->m_hooks->Hook(
+    s_WriteGameObjUpdate_UpdateObjectHook = Hooks::HookFunction(
             Functions::_ZN11CNWSMessage31WriteGameObjUpdate_UpdateObjectEP10CNWSPlayerP10CNWSObjectP17CLastUpdateObjectjj,
-            (void*)&WriteGameObjUpdate_UpdateObjectHook, Hooking::Order::Early);
-    s_SendServerToPlayerExamineGui_CreatureDataHook = GetServices()->m_hooks->Hook(
+            (void*)&WriteGameObjUpdate_UpdateObjectHook, Hooks::Order::Early);
+    s_SendServerToPlayerExamineGui_CreatureDataHook = Hooks::HookFunction(
             Functions::_ZN11CNWSMessage41SendServerToPlayerExamineGui_CreatureDataEP10CNWSPlayerj,
-            (void*)&SendServerToPlayerExamineGui_CreatureDataHook, Hooking::Order::Early);
+            (void*)&SendServerToPlayerExamineGui_CreatureDataHook, Hooks::Order::Early);
 
 #define HOOK_CHAT(_address) \
-    static Hooking::FunctionHook* CAT(pChatHook, __LINE__) = GetServices()->m_hooks->Hook(_address, \
+    static Hooks::Hook CAT(pChatHook, __LINE__) = Hooks::HookFunction(_address, \
     (void*)+[](CNWSMessage *thisPtr, uint32_t nPlayerID, OBJECT_ID oidSpeaker, CExoString sSpeakerMessage) -> int32_t \
     { \
         auto *targetPlayer = Globals::AppManager()->m_pServerExoApp->GetClientObjectByObjectId(oidSpeaker); \
@@ -88,7 +88,7 @@ Rename::Rename(Services::ProxyServiceList* services)
         auto retVal = CAT(pChatHook, __LINE__)->CallOriginal<int32_t>(thisPtr, nPlayerID, oidSpeaker, sSpeakerMessage);       \
         SetOrRestorePlayerName(false, targetPlayer, observerPlayer); \
         return retVal; \
-    }, Hooking::Order::Early)
+    }, Hooks::Order::Early)
 
     HOOK_CHAT(Functions::_ZN11CNWSMessage28SendServerToPlayerChat_PartyEjj10CExoString);
     HOOK_CHAT(Functions::_ZN11CNWSMessage28SendServerToPlayerChat_ShoutEjj10CExoString);
@@ -98,38 +98,38 @@ Rename::Rename(Services::ProxyServiceList* services)
 
     if (m_RenameOnModuleCharList)
     {
-        s_SendServerToPlayerPlayModuleCharacterListResponseHook = GetServices()->m_hooks->Hook(
+        s_SendServerToPlayerPlayModuleCharacterListResponseHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage49SendServerToPlayerPlayModuleCharacterListResponseEjji,
-                (void*)&SendServerToPlayerPlayModuleCharacterListResponseHook, Hooking::Order::Early);
+                (void*)&SendServerToPlayerPlayModuleCharacterListResponseHook, Hooks::Order::Early);
     }
 
     if (m_RenameOnPlayerList)
     {
-        s_SendServerToPlayerPlayerList_AllHook = GetServices()->m_hooks->Hook(
+        s_SendServerToPlayerPlayerList_AllHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AllEP10CNWSPlayer,
-                (void*)&SendServerToPlayerPlayerList_AllHook, Hooking::Order::Early);
-        s_SendServerToPlayerPlayerList_AddHook = GetServices()->m_hooks->Hook(
+                (void*)&SendServerToPlayerPlayerList_AllHook, Hooks::Order::Early);
+        s_SendServerToPlayerPlayerList_AddHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage32SendServerToPlayerPlayerList_AddEjP10CNWSPlayer,
-                (void*)&SendServerToPlayerPlayerList_AddHook, Hooking::Order::Early);
-        s_SendServerToPlayerPlayerList_DeleteHook = GetServices()->m_hooks->Hook(
+                (void*)&SendServerToPlayerPlayerList_AddHook, Hooks::Order::Early);
+        s_SendServerToPlayerPlayerList_DeleteHook = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage35SendServerToPlayerPlayerList_DeleteEjP10CNWSPlayer,
-                (void*)&SendServerToPlayerPlayerList_DeleteHook, Hooking::Order::Early);
+                (void*)&SendServerToPlayerPlayerList_DeleteHook, Hooks::Order::Early);
     }
     else
         LOG_INFO("Not renaming PCs in the player list.");
 
     if (m_RenameAllowDM)
     {
-        s_SendServerToPlayerDungeonMasterUpdatePartyList = GetServices()->m_hooks->Hook(
+        s_SendServerToPlayerDungeonMasterUpdatePartyList = Hooks::HookFunction(
                 Functions::_ZN11CNWSMessage46SendServerToPlayerDungeonMasterUpdatePartyListEj,
-                (void*)&SendServerToPlayerDungeonMasterUpdatePartyListHook, Hooking::Order::Early);
+                (void*)&SendServerToPlayerDungeonMasterUpdatePartyListHook, Hooks::Order::Early);
         LOG_INFO("DMs will be included with rename logic.");
     }
 
     // TODO: When shared hooks are executed by exclusive hooks change this to HandlePlayerToServerParty
-    s_SendServerToPlayerPopUpGUIPanelHook = GetServices()->m_hooks->Hook(
+    s_SendServerToPlayerPopUpGUIPanelHook = Hooks::HookFunction(
             Functions::_ZN11CNWSMessage31SendServerToPlayerPopUpGUIPanelEjiiii10CExoString,
-            (void*)&SendServerToPlayerPopUpGUIPanelHook, Hooking::Order::Early);
+            (void*)&SendServerToPlayerPopUpGUIPanelHook, Hooks::Order::Early);
 }
 
 Rename::~Rename()

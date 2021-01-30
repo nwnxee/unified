@@ -18,7 +18,7 @@ enum TYPE
 class AddPrestigeclassCasterLevels
 {
 public:
-    AddPrestigeclassCasterLevels(NWNXLib::Services::HooksProxy* hooker);
+    AddPrestigeclassCasterLevels();
 
 private:
     static uint8_t s_classCasterType[NWNXLib::API::Constants::ClassType::MAX + 1];

@@ -37,17 +37,17 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Race {
 
-static Hooking::FunctionHook *s_LoadCharacterFinishHook;
-static Hooking::FunctionHook *s_GetTotalEffectBonusHook;
-static Hooking::FunctionHook *s_SavingThrowRollHook;
-static Hooking::FunctionHook *s_GetWeaponPowerHook;
-static Hooking::FunctionHook *s_ResetFeatRemainingUsesHook;
-static Hooking::FunctionHook *s_SendServerToPlayerLevelUp_ConfirmationHook;
-static Hooking::FunctionHook *s_CreateDefaultQuickButtonsHook;
-static Hooking::FunctionHook *s_LevelUpAutomaticHook;
-static Hooking::FunctionHook *s_GetMeetsPrestigeClassRequirementsHook;
-static Hooking::FunctionHook *s_LoadRaceInfoHook;
-static Hooking::FunctionHook *s_ValidateCharacterHook;
+static Hooks::Hook s_LoadCharacterFinishHook;
+static Hooks::Hook s_GetTotalEffectBonusHook;
+static Hooks::Hook s_SavingThrowRollHook;
+static Hooks::Hook s_GetWeaponPowerHook;
+static Hooks::Hook s_ResetFeatRemainingUsesHook;
+static Hooks::Hook s_SendServerToPlayerLevelUp_ConfirmationHook;
+static Hooks::Hook s_CreateDefaultQuickButtonsHook;
+static Hooks::Hook s_LevelUpAutomaticHook;
+static Hooks::Hook s_GetMeetsPrestigeClassRequirementsHook;
+static Hooks::Hook s_LoadRaceInfoHook;
+static Hooks::Hook s_ValidateCharacterHook;
 
 Race::Race(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -65,24 +65,24 @@ Race::Race(Services::ProxyServiceList* services)
     m_ShowEffectIcon = Config::Get<bool>("SHOW_EFFECT_ICON", false);
 
     // Most racial adjustments are done here using effects only once per server reset or after a level up
-    s_LoadCharacterFinishHook = GetServices()->m_hooks->Hook(Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii,
-                                                             (void*)&LoadCharacterFinishHook, Hooking::Order::Early);
+    s_LoadCharacterFinishHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii,
+                                                             (void*)&LoadCharacterFinishHook, Hooks::Order::Early);
 
     // We want the racial bonuses to not count toward limits
-    s_GetTotalEffectBonusHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
-                                                             (void*)&GetTotalEffectBonusHook, Hooking::Order::Early);
-    s_SavingThrowRollHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti,
-                                                         (void*)&SavingThrowRollHook, Hooking::Order::Early);
-    s_GetWeaponPowerHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
-                                                        (void*)&GetWeaponPowerHook, Hooking::Order::Early);
+    s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
+                                                             (void*)&GetTotalEffectBonusHook, Hooks::Order::Early);
+    s_SavingThrowRollHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti,
+                                                         (void*)&SavingThrowRollHook, Hooks::Order::Early);
+    s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
+                                                        (void*)&GetWeaponPowerHook, Hooks::Order::Early);
 
 #define HOOK_APPLY_EFFECT(_address) \
-    static Hooking::FunctionHook* CAT(pOnApplyHook, __LINE__) = GetServices()->m_hooks->Hook(_address, \
+    static Hooks::Hook CAT(pOnApplyHook, __LINE__) = Hooks::HookFunction(_address, \
     (void*)+[](CNWSEffectListHandler *thisPtr, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame) -> int32_t \
     { \
         ApplyEffectHook(pObject, pEffect);  \
         return CAT(pOnApplyHook, __LINE__)->CallOriginal<int32_t>(thisPtr, pObject, pEffect, bLoadingGame);  \
-    }, Hooking::Order::Early)
+    }, Hooks::Order::Early)
 
     // Make effects applied to parent races effect every child race
     HOOK_APPLY_EFFECT(Functions::_ZN21CNWSEffectListHandler21OnApplyAttackIncreaseEP10CNWSObjectP11CGameEffecti);
@@ -103,34 +103,34 @@ Race::Race(Services::ProxyServiceList* services)
 #undef HOOK_APPLY_EFFECT
 
     // Special hook for resetting the feat usages after rest etc.
-    s_ResetFeatRemainingUsesHook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats22ResetFeatRemainingUsesEv,
-                                                                (void*)&ResetFeatRemainingUsesHook, Hooking::Order::Early);
+    s_ResetFeatRemainingUsesHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats22ResetFeatRemainingUsesEv,
+                                                                (void*)&ResetFeatRemainingUsesHook, Hooks::Order::Early);
 
     // Completely rewritten in NWNX for Race plugin so we can add our Initiative changes
-    GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17ResolveInitiativeEv, (void*)&ResolveInitiativeHook, Hooking::Order::Final);
+    Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveInitiativeEv, (void*)&ResolveInitiativeHook, Hooks::Order::Final);
 
     // If a level up has been confirmed we rerun the racial applications in case of new feats, level based adjustments etc.
-    s_SendServerToPlayerLevelUp_ConfirmationHook = GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji,
-                                                                                (void*)&SendServerToPlayerLevelUp_ConfirmationHook, Hooking::Order::Early);
+    s_SendServerToPlayerLevelUp_ConfirmationHook = Hooks::HookFunction(Functions::_ZN11CNWSMessage38SendServerToPlayerLevelUp_ConfirmationEji,
+                                                                                (void*)&SendServerToPlayerLevelUp_ConfirmationHook, Hooks::Order::Early);
 
     // Swap race with parent race due to hardcoded checks here
-    s_CreateDefaultQuickButtonsHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature25CreateDefaultQuickButtonsEv,
-                                                                   (void*)&CreateDefaultQuickButtonsHook, Hooking::Order::Early);
-    s_LevelUpAutomaticHook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih,
-                                                          (void*)&LevelUpAutomaticHook, Hooking::Order::Early);
-    s_GetMeetsPrestigeClassRequirementsHook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats33GetMeetsPrestigeClassRequirementsEP8CNWClass,
-                                                                           (void*)&GetMeetsPrestigeClassRequirementsHook, Hooking::Order::Early);
+    s_CreateDefaultQuickButtonsHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature25CreateDefaultQuickButtonsEv,
+                                                                   (void*)&CreateDefaultQuickButtonsHook, Hooks::Order::Early);
+    s_LevelUpAutomaticHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats16LevelUpAutomaticEhih,
+                                                          (void*)&LevelUpAutomaticHook, Hooks::Order::Early);
+    s_GetMeetsPrestigeClassRequirementsHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats33GetMeetsPrestigeClassRequirementsEP8CNWClass,
+                                                                           (void*)&GetMeetsPrestigeClassRequirementsHook, Hooks::Order::Early);
 
     //Don't swap, check as both parent and child race
-    GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem, (void*)&CheckItemRaceRestrictionsHook, Hooking::Order::Final);
+    Hooks::HookFunction(Functions::_ZN12CNWSCreature25CheckItemRaceRestrictionsEP8CNWSItem, (void*)&CheckItemRaceRestrictionsHook, Hooks::Order::Final);
 
     // Need to set up default parent race to invalid before the on module load sets up the parents
-    s_LoadRaceInfoHook = GetServices()->m_hooks->Hook(Functions::_ZN8CNWRules12LoadRaceInfoEv, (void*)&LoadRaceInfoHook, Hooking::Order::Early);
+    s_LoadRaceInfoHook = Hooks::HookFunction(Functions::_ZN8CNWRules12LoadRaceInfoEv, (void*)&LoadRaceInfoHook, Hooks::Order::Early);
 
     // Check for favored enemy bonuses on either the race or parent race including custom set favored enemy feats for custom races
-    GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, (void*)&GetFavoredEnemyBonusHook, Hooking::Order::Final);
+    Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats20GetFavoredEnemyBonusEP12CNWSCreature, (void*)&GetFavoredEnemyBonusHook, Hooks::Order::Final);
 
-    s_ValidateCharacterHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooking::Order::Early);
+    s_ValidateCharacterHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer17ValidateCharacterEPi, (void*)&ValidateCharacterHook, Hooks::Order::Early);
 }
 
 Race::~Race()

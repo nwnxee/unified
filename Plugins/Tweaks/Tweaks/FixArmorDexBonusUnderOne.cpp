@@ -14,9 +14,9 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-FixArmorDexBonusUnderOne::FixArmorDexBonusUnderOne(Services::HooksProxy* hooker)
+FixArmorDexBonusUnderOne::FixArmorDexBonusUnderOne()
 {
-    hooker->Hook(Functions::_ZN17CNWSCreatureStats9GetDEXModEi, (void*)&CNWSCreatureStats__GetDEXMod_hook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats9GetDEXModEi, (void*)&CNWSCreatureStats__GetDEXMod_hook, Hooks::Order::Final);
 }
 
 uint8_t FixArmorDexBonusUnderOne::CNWSCreatureStats__GetDEXMod_hook(CNWSCreatureStats *pThis, int32_t bArmorDexCap)

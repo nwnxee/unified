@@ -9,14 +9,14 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerGuiQuickbar_SetButtonHook = nullptr;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerGuiQuickbar_SetButtonHook = nullptr;
 
-QuickbarEvents::QuickbarEvents(Services::HooksProxy* hooker)
+QuickbarEvents::QuickbarEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_QUICKBAR_SET_BUTTON_.*", [hooker]() {
-        s_HandlePlayerToServerGuiQuickbar_SetButtonHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_QUICKBAR_SET_BUTTON_.*", []() {
+        s_HandlePlayerToServerGuiQuickbar_SetButtonHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage41HandlePlayerToServerGuiQuickbar_SetButtonEP10CNWSPlayerhh,
-                (void*)&HandlePlayerToServerGuiQuickbar_SetButtonHook, Hooking::Order::Early);
+                (void*)&HandlePlayerToServerGuiQuickbar_SetButtonHook, Hooks::Order::Early);
     });
 }
 

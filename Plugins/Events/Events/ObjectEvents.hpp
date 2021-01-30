@@ -8,7 +8,7 @@ namespace Events {
 class ObjectEvents
 {
 public:
-    ObjectEvents(NWNXLib::Services::HooksProxy* hooker);
+    ObjectEvents();
 
 private:
     static int32_t AddLockObjectActionHook(CNWSObject*, ObjectID);

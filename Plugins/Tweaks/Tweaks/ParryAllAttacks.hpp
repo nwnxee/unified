@@ -7,7 +7,7 @@ namespace Tweaks {
 class ParryAllAttacks
 {
 public:
-    ParryAllAttacks(NWNXLib::Services::HooksProxy* hooker);
+    ParryAllAttacks();
 
 private:
     static void CNWSCreature__ResolveAttackRoll_hook(CNWSCreature*, CNWSObject*);

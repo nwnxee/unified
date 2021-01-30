@@ -9,13 +9,13 @@ namespace Events {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static NWNXLib::Hooking::FunctionHook* s_HandleSetNPCFactionReputationHook;
+static NWNXLib::Hooks::Hook s_HandleSetNPCFactionReputationHook;
 
-FactionEvents::FactionEvents(Services::HooksProxy* hooker)
+FactionEvents::FactionEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_SET_NPC_FACTION_REPUTATION_.*", [hooker]() {
-        s_HandleSetNPCFactionReputationHook = hooker->Hook(API::Functions::_ZN15CFactionManager23SetNPCFactionReputationEiii,
-                                                           (void*)&HandleSetNPCFactionReputationHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_SET_NPC_FACTION_REPUTATION_.*", []() {
+        s_HandleSetNPCFactionReputationHook = Hooks::HookFunction(API::Functions::_ZN15CFactionManager23SetNPCFactionReputationEiii,
+                                                           (void*)&HandleSetNPCFactionReputationHook, Hooks::Order::Early);
         });
 }
 

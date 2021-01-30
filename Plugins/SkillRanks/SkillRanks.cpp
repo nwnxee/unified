@@ -39,7 +39,7 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace SkillRanks {
 
-static Hooking::FunctionHook *s_LoadRulesetInfoHook;
+static Hooks::Hook s_LoadRulesetInfoHook;
 
 SkillRanks::SkillRanks(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -61,8 +61,8 @@ SkillRanks::SkillRanks(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_LoadRulesetInfoHook = GetServices()->m_hooks->Hook(Functions::_ZN8CNWRules15LoadRulesetInfoEv, (void*)&LoadRulesetInfoHook, Hooking::Order::Earliest);
-    GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti, (void*)&GetSkillRankHook, Hooking::Order::Final);
+    s_LoadRulesetInfoHook = Hooks::HookFunction(Functions::_ZN8CNWRules15LoadRulesetInfoEv, (void*)&LoadRulesetInfoHook, Hooks::Order::Earliest);
+    Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats12GetSkillRankEhP10CNWSObjecti, (void*)&GetSkillRankHook, Hooks::Order::Final);
 }
 
 SkillRanks::~SkillRanks()

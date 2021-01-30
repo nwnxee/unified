@@ -22,7 +22,7 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Tileset {
 
-static NWNXLib::Hooking::FunctionHook* s_LoadTileSetInfoHook = nullptr;
+static NWNXLib::Hooks::Hook s_LoadTileSetInfoHook = nullptr;
 
 Tileset::Tileset(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -49,9 +49,9 @@ Tileset::Tileset(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_LoadTileSetInfoHook = GetServices()->m_hooks->Hook(
+    s_LoadTileSetInfoHook = Hooks::HookFunction(
             API::Functions::_ZN8CNWSArea15LoadTileSetInfoEP10CResStruct,
-            (void*)&LoadTileSetInfoHook, Hooking::Order::Late);
+            (void*)&LoadTileSetInfoHook, Hooks::Order::Late);
 }
 
 int32_t Tileset::LoadTileSetInfoHook(CNWSArea *pArea, CResStruct *pStruct)

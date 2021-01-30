@@ -7,8 +7,7 @@ namespace Profiler {
 class ObjectAIUpdates
 {
 public:
-    ObjectAIUpdates(NWNXLib::Services::HooksProxy* hooker,
-        NWNXLib::Services::MetricsProxy* metrics);
+    ObjectAIUpdates(NWNXLib::Services::MetricsProxy* metrics);
 };
 
 }

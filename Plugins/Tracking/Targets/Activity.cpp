@@ -18,12 +18,12 @@ using namespace NWNXLib::API;
 namespace Tracking {
 
 static Services::MetricsProxy* g_metrics;
-static Hooking::FunctionHook *s_MainLoopHook;
+static Hooks::Hook s_MainLoopHook;
 
-Activity::Activity(Services::MetricsProxy* metrics, Services::HooksProxy* hooks)
+Activity::Activity(Services::MetricsProxy* metrics)
 {
     g_metrics = metrics;
-    s_MainLoopHook = hooks->Hook(Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopUpdate, Hooking::Order::Earliest);
+    s_MainLoopHook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8MainLoopEv, (void*)&MainLoopUpdate, Hooks::Order::Earliest);
     Services::Resamplers::ResamplerFuncPtr resampler = &Services::Resamplers::template Sum<uint32_t>;
     metrics->SetResampler("Activity", resampler, std::chrono::seconds(1));
 }

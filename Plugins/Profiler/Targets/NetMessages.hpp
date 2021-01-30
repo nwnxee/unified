@@ -7,7 +7,7 @@ namespace Profiler {
 class NetMessages
 {
 public:
-    NetMessages(NWNXLib::Services::HooksProxy* hooker, NWNXLib::Services::MetricsProxy* metrics);
+    NetMessages(NWNXLib::Services::MetricsProxy* metrics);
 
 private:
     static int32_t ComputeGameObjectUpdateForCategoryHook(CNWSMessage*, uint32_t, uint32_t, CNWSPlayer*, CNWSObject*,

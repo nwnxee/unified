@@ -8,7 +8,7 @@ namespace Events {
 class PolymorphEvents
 {
 public:
-    PolymorphEvents(NWNXLib::Services::HooksProxy* hooker);
+    PolymorphEvents();
 
 private:
     static int32_t OnApplyPolymorphHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);

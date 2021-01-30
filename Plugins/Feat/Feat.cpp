@@ -35,14 +35,14 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Feat {
 
-static Hooking::FunctionHook *s_GetTotalEffectBonusHook;
-static Hooking::FunctionHook *s_SavingThrowRollHook;
-static Hooking::FunctionHook *s_GetWeaponPowerHook;
-static Hooking::FunctionHook *s_AddFeatHook;
-static Hooking::FunctionHook *s_RemoveFeatHook;
-static Hooking::FunctionHook *s_OnApplyBonusFeatHook;
-static Hooking::FunctionHook *s_OnRemoveBonusFeatHook;
-static Hooking::FunctionHook *s_EatTURDHook;
+static Hooks::Hook s_GetTotalEffectBonusHook;
+static Hooks::Hook s_SavingThrowRollHook;
+static Hooks::Hook s_GetWeaponPowerHook;
+static Hooks::Hook s_AddFeatHook;
+static Hooks::Hook s_RemoveFeatHook;
+static Hooks::Hook s_OnApplyBonusFeatHook;
+static Hooks::Hook s_OnRemoveBonusFeatHook;
+static Hooks::Hook s_EatTURDHook;
 
 Feat::Feat(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -58,20 +58,20 @@ Feat::Feat(Services::ProxyServiceList* services)
     m_ShowEffectIcon = Config::Get<bool>("SHOW_EFFECT_ICON", false);
 
     // We want the feat bonuses to not count toward limits
-    s_GetTotalEffectBonusHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
-                                                             (void*)&GetTotalEffectBonusHook, Hooking::Order::Early);
-    s_SavingThrowRollHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti,
-                                                         (void*)&SavingThrowRollHook, Hooking::Order::Early);
-    s_GetWeaponPowerHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
-                                                        (void*)&GetWeaponPowerHook, Hooking::Order::Early);
+    s_GetTotalEffectBonusHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature19GetTotalEffectBonusEhP10CNWSObjectiihhhhi,
+                                                             (void*)&GetTotalEffectBonusHook, Hooks::Order::Early);
+    s_SavingThrowRollHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature15SavingThrowRollEhthjiti,
+                                                         (void*)&SavingThrowRollHook, Hooks::Order::Early);
+    s_GetWeaponPowerHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature14GetWeaponPowerEP10CNWSObjecti,
+                                                        (void*)&GetWeaponPowerHook, Hooks::Order::Early);
 
-    s_AddFeatHook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats7AddFeatEt, (void*)&AddFeatHook, Hooking::Order::Early);
-    s_RemoveFeatHook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, (void*)&RemoveFeatHook, Hooking::Order::Early);
-    s_OnApplyBonusFeatHook = GetServices()->m_hooks->Hook(Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti,
-                                                          (void*)&OnApplyBonusFeatHook, Hooking::Order::Early);
-    s_OnRemoveBonusFeatHook = GetServices()->m_hooks->Hook(Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect,
-                                                           (void*)&OnRemoveBonusFeatHook, Hooking::Order::Early);
-    s_EatTURDHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&EatTURDHook, Hooking::Order::Early);
+    s_AddFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7AddFeatEt, (void*)&AddFeatHook, Hooks::Order::Early);
+    s_RemoveFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10RemoveFeatEt, (void*)&RemoveFeatHook, Hooks::Order::Early);
+    s_OnApplyBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler16OnApplyBonusFeatEP10CNWSObjectP11CGameEffecti,
+                                                          (void*)&OnApplyBonusFeatHook, Hooks::Order::Early);
+    s_OnRemoveBonusFeatHook = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler17OnRemoveBonusFeatEP10CNWSObjectP11CGameEffect,
+                                                           (void*)&OnRemoveBonusFeatHook, Hooks::Order::Early);
+    s_EatTURDHook = Hooks::HookFunction(Functions::_ZN10CNWSPlayer7EatTURDEP14CNWSPlayerTURD, (void*)&EatTURDHook, Hooks::Order::Early);
 }
 
 Feat::~Feat()
@@ -320,10 +320,10 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
     // SPELLSAVEDC
     if (g_plugin->m_FeatSpellSaveDC[nFeat] != 0)
     {
-        static NWNXLib::Hooking::FunctionHook* pCalculateSpellSaveDC_hook;
+        static NWNXLib::Hooks::Hook pCalculateSpellSaveDC_hook;
         if (!pCalculateSpellSaveDC_hook)
         {
-            pCalculateSpellSaveDC_hook = g_plugin->GetServices()->m_hooks->Hook(
+            pCalculateSpellSaveDC_hook = Hooks::HookFunction(
                     Functions::_ZN12CNWSCreature20CalculateSpellSaveDCEi,
                     (void*)+[](CNWSCreature *pThis, int32_t nSpellID) -> int32_t
                     {
@@ -336,7 +336,7 @@ void Feat::ApplyFeatEffects(CNWSCreature *pCreature, uint16_t nFeat)
                             }
                         }
                         return iMods + pCalculateSpellSaveDC_hook->CallOriginal<int32_t>(pThis, nSpellID);
-                    }, Hooking::Order::Late);
+                    }, Hooks::Order::Late);
         }
     }
 

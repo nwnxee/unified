@@ -8,7 +8,7 @@ namespace Tweaks
 class FixDispelEffectLevels
 {
 public:
-    FixDispelEffectLevels(NWNXLib::Services::HooksProxy* hooker);
+    FixDispelEffectLevels();
 
 private:
     static int32_t CNWSEffectListHandler__OnApplyDispelAllMagic(CNWSEffectListHandler* thisPtr, CNWSObject* pObject, CGameEffect* pEffect, BOOL bLoadingGame);

@@ -9,7 +9,7 @@ namespace Events {
 class FeatEvents
 {
 public:
-    FeatEvents(NWNXLib::Services::HooksProxy* hooker);
+    FeatEvents();
 
 private:
         static int32_t UseFeatHook(CNWSCreature*, uint16_t, uint16_t, ObjectID, ObjectID, Vector*);

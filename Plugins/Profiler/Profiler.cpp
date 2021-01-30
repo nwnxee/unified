@@ -28,7 +28,6 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Profiler {
 
-static Services::HooksProxy* g_hooks;
 static Services::MetricsProxy* g_metrics;
 
 static size_t g_calibrationRuns;
@@ -37,12 +36,11 @@ static std::chrono::milliseconds g_recalibrationPeriod;
 static bool g_recalibrate = false;
 static bool g_tickrate = false;
 
-static Hooking::FunctionHook *s_MainLoopHook;
+static Hooks::Hook s_MainLoopHook;
 
 Profiler::Profiler(Services::ProxyServiceList* services)
     : Plugin(services)
 {
-    g_hooks = GetServices()->m_hooks.get();
     g_metrics = GetServices()->m_metrics.get();
 
     if (Config::Get<bool>("ENABLE_OVERHEAD_COMPENSATION", true))
@@ -57,7 +55,7 @@ Profiler::Profiler(Services::ProxyServiceList* services)
         {
             FastTimer::PrepareForCalibration();
             g_calibrationRuns = Config::Get<size_t>("OVERHEAD_COMPENSATION_RUNS", 500);
-            FastTimer::Calibrate(g_calibrationRuns, GetServices()->m_hooks.get(), GetServices()->m_metrics.get());
+            FastTimer::Calibrate(g_calibrationRuns, GetServices()->m_metrics.get());
         }
 
         g_recalibrate = Config::Get<bool>("OVERHEAD_COMPENSATION_RECALIBRATE", false);
@@ -71,44 +69,44 @@ Profiler::Profiler(Services::ProxyServiceList* services)
     if (Config::Get<bool>("ENABLE_AI_MASTER_UPDATES", true))
     {
         const bool overkillMode = Config::Get<bool>("AI_MASTER_UPDATES_OVERKILL", false);
-        m_aiMasterUpdates = std::make_unique<AIMasterUpdates>(overkillMode, g_hooks, g_metrics);
+        m_aiMasterUpdates = std::make_unique<AIMasterUpdates>(overkillMode, g_metrics);
     }
 
     if (Config::Get<bool>("ENABLE_MAIN_LOOP", true))
     {
-        m_mainLoop = std::make_unique<MainLoop>(g_hooks, g_metrics);
+        m_mainLoop = std::make_unique<MainLoop>(g_metrics);
     }
 
     if (Config::Get<bool>("ENABLE_NET_LAYER", true))
     {
-        m_netLayer = std::make_unique<NetLayer>(g_hooks, g_metrics);
+        m_netLayer = std::make_unique<NetLayer>(g_metrics);
     }
 
     if (Config::Get<bool>("ENABLE_NET_MESSAGES", true))
     {
-        m_netMessages = std::make_unique<NetMessages>(g_hooks, g_metrics);
+        m_netMessages = std::make_unique<NetMessages>(g_metrics);
     }
 
     if (Config::Get<bool>("ENABLE_OBJECT_AI_UPDATES", false))
     {
-        m_objectAIUpdates = std::make_unique<ObjectAIUpdates>(g_hooks, g_metrics);
+        m_objectAIUpdates = std::make_unique<ObjectAIUpdates>(g_metrics);
     }
 
     if (Config::Get<bool>("ENABLE_OBJECT_EVENT_HANDLERS", false))
     {
-        m_objectEventHandlers = std::make_unique<ObjectEventHandlers>(g_hooks, g_metrics);
+        m_objectEventHandlers = std::make_unique<ObjectEventHandlers>(g_metrics);
     }
 
     if (Config::Get<bool>("ENABLE_PATHING", true))
     {
-        m_pathing = std::make_unique<Pathing>(g_hooks, g_metrics);
+        m_pathing = std::make_unique<Pathing>(g_metrics);
     }
 
     if (Config::Get<bool>("ENABLE_SCRIPTS", true))
     {
         const bool areaTimings = Config::Get<bool>("SCRIPTS_AREA_TIMINGS", true);
         const bool typeTimings = Config::Get<bool>("SCRIPTS_TYPE_TIMINGS", true);
-        m_scripts = std::make_unique<Scripts>(areaTimings, typeTimings, g_hooks, g_metrics);
+        m_scripts = std::make_unique<Scripts>(areaTimings, typeTimings, g_metrics);
     }
 
     g_tickrate = Config::Get<bool>("ENABLE_TICKRATE", true);
@@ -121,8 +119,8 @@ Profiler::Profiler(Services::ProxyServiceList* services)
 
     if (g_recalibrate || g_tickrate)
     {
-        s_MainLoopHook = GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
-                                                      (void*)&MainLoopUpdate, Hooking::Order::Earliest);
+        s_MainLoopHook = Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+                                                      (void*)&MainLoopUpdate, Hooks::Order::Earliest);
     }
 
     // Resamples all of the automated timing data.
@@ -239,7 +237,7 @@ void Profiler::HandleRecalibration(const std::chrono::time_point<std::chrono::hi
         // We don't call the above function here because the goal is to "home in" on the lowest possible overhead value as the game progresses.
         // This will just run the test again and and, if a lower result is made available, it will use it.
 
-        FastTimer::Calibrate(g_calibrationRuns, g_hooks, g_metrics);
+        FastTimer::Calibrate(g_calibrationRuns, g_metrics);
     }
 }
 

@@ -7,7 +7,7 @@ namespace Events {
 class PVPEvents
 {
 public:
-    PVPEvents(NWNXLib::Services::HooksProxy* hooker);
+    PVPEvents();
 
 private:
     static int32_t HandlePlayerToServerPVPListOperationsHook(CNWSMessage*, CNWSPlayer*, uint8_t);

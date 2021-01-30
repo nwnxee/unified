@@ -7,7 +7,7 @@ namespace Tweaks {
 class HidePlayersOnCharList
 {
 public:
-    HidePlayersOnCharList(NWNXLib::Services::HooksProxy* hooker, int mode);
+    HidePlayersOnCharList(int mode);
 
 private:
     static int s_hideCharBehavior;

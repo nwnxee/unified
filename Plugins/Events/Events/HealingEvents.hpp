@@ -8,7 +8,7 @@ namespace Events {
 class HealingEvents
 {
 public:
-    HealingEvents(NWNXLib::Services::HooksProxy* hooker);
+    HealingEvents();
 
 private:
     static uint32_t AIActionHealHook(CNWSCreature *pCreature, CNWSObjectActionNode *pNode);

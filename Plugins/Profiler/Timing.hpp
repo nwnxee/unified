@@ -21,9 +21,7 @@ public:
 public: // Calibration
     static void PrepareForCalibration(const std::chrono::nanoseconds val = std::chrono::nanoseconds(std::numeric_limits<int64_t>::max()));
 
-    static void Calibrate(const size_t runs,
-        NWNXLib::Services::HooksProxy* hooks,
-        NWNXLib::Services::MetricsProxy* metrics);
+    static void Calibrate(const size_t runs, NWNXLib::Services::MetricsProxy* metrics);
 
 private:
     static uint8_t s_head;

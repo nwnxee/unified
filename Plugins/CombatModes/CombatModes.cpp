@@ -19,12 +19,12 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace CombatModes {
 
-static Hooking::FunctionHook* s_SetCombatModeHook;
+static Hooks::Hook s_SetCombatModeHook;
 
 CombatModes::CombatModes(Services::ProxyServiceList* services)
     : Plugin(services), m_Skipped(false), m_FlurryOfBlows(false)
 {
-    s_SetCombatModeHook = GetServices()->m_hooks->Hook(API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, (void*)&SetCombatModeHook, Hooking::Order::Early);
+    s_SetCombatModeHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, (void*)&SetCombatModeHook, Hooks::Order::Early);
 
     MessageBus::Subscribe("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
         [this](const std::vector<std::string>& message)

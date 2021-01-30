@@ -7,7 +7,7 @@ namespace Tweaks {
 class ClearSpellEffectsOnTURDs
 {
 public:
-    ClearSpellEffectsOnTURDs(NWNXLib::Services::HooksProxy* hooker);
+    ClearSpellEffectsOnTURDs();
 
 private:
     static void CNWSObject__ClearSpellEffectsOnOthers_hook(CNWSObject*);

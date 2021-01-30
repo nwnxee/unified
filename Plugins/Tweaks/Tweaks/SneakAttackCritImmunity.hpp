@@ -7,7 +7,7 @@ namespace Tweaks {
 class SneakAttackCritImmunity
 {
 public:
-    SneakAttackCritImmunity(NWNXLib::Services::HooksProxy* hooker);
+    SneakAttackCritImmunity();
 
 private:
     static void CNWSCreature__ResolveSneakAttack_hook(CNWSCreature*, CNWSCreature*);

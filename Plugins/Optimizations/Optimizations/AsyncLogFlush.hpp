@@ -7,7 +7,7 @@ namespace Optimizations {
 class AsyncLogFlush
 {
 public:
-    AsyncLogFlush(NWNXLib::Services::HooksProxy* hooker, NWNXLib::Services::TasksProxy* tasker);
+    AsyncLogFlush(NWNXLib::Services::TasksProxy* tasker);
 
 private:
     static void FlushLogFile_Hook(CExoDebugInternal*);

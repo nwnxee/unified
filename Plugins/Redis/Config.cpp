@@ -7,7 +7,6 @@ namespace Redis
 
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
-using namespace NWNXLib::Hooking;
 
 std::unique_ptr<cpp_redis::redis_client> Redis::PoolMakeFunc()
 {

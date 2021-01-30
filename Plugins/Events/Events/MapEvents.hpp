@@ -7,7 +7,7 @@ namespace Events {
 class MapEvents
 {
 public:
-    MapEvents(NWNXLib::Services::HooksProxy* hooker);
+    MapEvents();
 
 private:
     static int32_t HandleMapPinSetMapPinAtMessageHook(CNWSMessage*, CNWSPlayer*);

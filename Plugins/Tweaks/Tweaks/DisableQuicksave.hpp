@@ -7,7 +7,7 @@ namespace Tweaks {
 class DisableQuicksave
 {
 public:
-    DisableQuicksave(NWNXLib::Services::HooksProxy* hooker);
+    DisableQuicksave();
 
 private:
     static int32_t CServerExoAppInternal__SaveGame_hook(CServerExoAppInternal*, uint32_t,

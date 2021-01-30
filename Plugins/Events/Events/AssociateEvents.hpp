@@ -7,7 +7,7 @@ namespace Events {
 class AssociateEvents
 {
 public:
-    AssociateEvents(NWNXLib::Services::HooksProxy* hooker);
+    AssociateEvents();
 
 private:
     static void AddAssociateHook(CNWSCreature*, ObjectID, uint16_t);

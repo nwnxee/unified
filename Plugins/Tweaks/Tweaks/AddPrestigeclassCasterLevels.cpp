@@ -22,39 +22,39 @@ uint8_t AddPrestigeclassCasterLevels::s_divModClasses[Constants::ClassType::MAX 
 uint8_t AddPrestigeclassCasterLevels::s_arcModClasses[Constants::ClassType::MAX + 1];
 bool AddPrestigeclassCasterLevels::s_bAdjustCasterLevel = false;
 
-static Hooking::FunctionHook *s_LoadClassInfoHook;
-static Hooking::FunctionHook *s_GetClassLevelHook;
-static Hooking::FunctionHook *s_ExecuteCommandGetCasterLevelHook;
-static Hooking::FunctionHook *s_ExecuteCommandResistSpellHook;
-static Hooking::FunctionHook *s_SetCreatorHook;
+static Hooks::Hook s_LoadClassInfoHook;
+static Hooks::Hook s_GetClassLevelHook;
+static Hooks::Hook s_ExecuteCommandGetCasterLevelHook;
+static Hooks::Hook s_ExecuteCommandResistSpellHook;
+static Hooks::Hook s_SetCreatorHook;
 
-AddPrestigeclassCasterLevels::AddPrestigeclassCasterLevels(Services::HooksProxy* hooker)
+AddPrestigeclassCasterLevels::AddPrestigeclassCasterLevels()
 {
-    s_LoadClassInfoHook = hooker->Hook(Functions::_ZN8CNWRules13LoadClassInfoEv, (void*)&CNWRules__LoadClassInfo, Hooking::Order::Early);
-    s_GetClassLevelHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, (void*)&CNWSCreatureStats__GetClassLevel, Hooking::Order::Early);
-    s_ExecuteCommandGetCasterLevelHook = hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
+    s_LoadClassInfoHook = Hooks::HookFunction(Functions::_ZN8CNWRules13LoadClassInfoEv, (void*)&CNWRules__LoadClassInfo, Hooks::Order::Early);
+    s_GetClassLevelHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, (void*)&CNWSCreatureStats__GetClassLevel, Hooks::Order::Early);
+    s_ExecuteCommandGetCasterLevelHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
         (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
         {
             s_bAdjustCasterLevel = true;
             auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
             s_bAdjustCasterLevel = false;
             return retVal;
-        }, Hooking::Order::Early);
-    s_ExecuteCommandResistSpellHook = hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
+        }, Hooks::Order::Early);
+    s_ExecuteCommandResistSpellHook = Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
         (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
         {
             s_bAdjustCasterLevel = true;
             auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
             s_bAdjustCasterLevel = false;
             return retVal;
-        }, Hooking::Order::Early);
-    s_SetCreatorHook = hooker->Hook(Functions::_ZN11CGameEffect10SetCreatorEj,
+        }, Hooks::Order::Early);
+    s_SetCreatorHook = Hooks::HookFunction(Functions::_ZN11CGameEffect10SetCreatorEj,
         (void*)+[](CGameEffect *thisPtr, ObjectID oidCreator)
         {
             s_bAdjustCasterLevel = true;
             s_SetCreatorHook->CallOriginal<void>(thisPtr, oidCreator);
             s_bAdjustCasterLevel = false;
-        }, Hooking::Order::Early);
+        }, Hooks::Order::Early);
 }
 
 void AddPrestigeclassCasterLevels::CNWRules__LoadClassInfo(CNWRules* thisPtr)

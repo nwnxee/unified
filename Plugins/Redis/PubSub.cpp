@@ -14,7 +14,6 @@ namespace Redis
 
 using namespace NWNXLib;
 using namespace NWNXLib::Services;
-using namespace NWNXLib::Hooking;
 using namespace NWNXLib::API;
 
 void Redis::OnPubsub(const std::string& channel, const std::string& message)

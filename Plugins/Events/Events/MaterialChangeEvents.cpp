@@ -13,13 +13,13 @@ namespace Events {
 using namespace NWNXLib;
 
 static std::unordered_map<ObjectID, int32_t> m_objectCurrentMaterial;
-static Hooking::FunctionHook *s_SetPositionHook;
+static Hooks::Hook s_SetPositionHook;
 
-MaterialChangeEvents::MaterialChangeEvents(Services::HooksProxy* hooker)
+MaterialChangeEvents::MaterialChangeEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", [hooker]() {
-        s_SetPositionHook = hooker->Hook(API::Functions::_ZN10CNWSObject11SetPositionE6Vectori,
-                                         (void*)&SetPositionHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_MATERIALCHANGE_.*", []() {
+        s_SetPositionHook = Hooks::HookFunction(API::Functions::_ZN10CNWSObject11SetPositionE6Vectori,
+                                         (void*)&SetPositionHook, Hooks::Order::Earliest);
     });
 }
 

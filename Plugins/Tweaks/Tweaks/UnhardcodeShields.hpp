@@ -9,7 +9,7 @@ namespace Tweaks {
 class UnhardcodeShields
 {
 public:
-    UnhardcodeShields(NWNXLib::Services::HooksProxy* hooker);
+    UnhardcodeShields();
 
 private:
     static int32_t CNWSItem__ComputeArmorClass(CNWSItem* thisPtr);

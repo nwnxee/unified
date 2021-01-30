@@ -7,7 +7,7 @@ namespace Events {
 class ExamineEvents
 {
 public:
-    ExamineEvents(NWNXLib::Services::HooksProxy* hooker);
+    ExamineEvents();
 
 private:
     static void HandleExamine(bool, ObjectID, ObjectID);

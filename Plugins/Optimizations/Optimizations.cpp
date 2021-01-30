@@ -21,13 +21,13 @@ Optimizations::Optimizations(Services::ProxyServiceList* services)
     if (Config::Get<bool>("ASYNC_LOG_FLUSH", false))
     {
         LOG_INFO("Game logs will be flushed asynchronously");
-        m_AsyncLogFlush = std::make_unique<AsyncLogFlush>(GetServices()->m_hooks.get(), GetServices()->m_tasks.get());
+        m_AsyncLogFlush = std::make_unique<AsyncLogFlush>(GetServices()->m_tasks.get());
     }
 
     if (Config::Get<bool>("GAME_OBJECT_LOOKUP", false))
     {
         LOG_INFO("Using optimal CGameObjectArray implementation");
-        m_GameObjectLookup = std::make_unique<GameObjectLookup>(GetServices()->m_hooks.get());
+        m_GameObjectLookup = std::make_unique<GameObjectLookup>();
     }
 }
 

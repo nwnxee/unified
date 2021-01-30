@@ -7,19 +7,19 @@ namespace Events {
 
 using namespace NWNXLib;
 
-static Hooking::FunctionHook *s_AddAssociateHook;
-static Hooking::FunctionHook *s_RemoveAssociateHook;
+static Hooks::Hook s_AddAssociateHook;
+static Hooks::Hook s_RemoveAssociateHook;
 
-AssociateEvents::AssociateEvents(Services::HooksProxy* hooker)
+AssociateEvents::AssociateEvents()
 {
-     Events::InitOnFirstSubscribe("NWNX_ON_ADD_ASSOCIATE_.*", [hooker]() {
-         s_AddAssociateHook = hooker->Hook(API::Functions::_ZN12CNWSCreature12AddAssociateEjt,
-                                           (void*)&AddAssociateHook, Hooking::Order::Earliest);
+     Events::InitOnFirstSubscribe("NWNX_ON_ADD_ASSOCIATE_.*", []() {
+         s_AddAssociateHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature12AddAssociateEjt,
+                                           (void*)&AddAssociateHook, Hooks::Order::Earliest);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_REMOVE_ASSOCIATE_.*", [hooker]() {
-        s_RemoveAssociateHook = hooker->Hook(API::Functions::_ZN12CNWSCreature15RemoveAssociateEj,
-                                             (void*)&RemoveAssociateHook, Hooking::Order::Earliest);
+    Events::InitOnFirstSubscribe("NWNX_ON_REMOVE_ASSOCIATE_.*", []() {
+        s_RemoveAssociateHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature15RemoveAssociateEj,
+                                             (void*)&RemoveAssociateHook, Hooks::Order::Earliest);
     });
 }
 

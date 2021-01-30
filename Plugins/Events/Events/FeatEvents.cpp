@@ -12,16 +12,16 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Hooking::FunctionHook* s_UseFeatHook;
-static Hooking::FunctionHook* s_HasFeatHook;
+static Hooks::Hook s_UseFeatHook;
+static Hooks::Hook s_HasFeatHook;
 
-FeatEvents::FeatEvents(Services::HooksProxy* hooker)
+FeatEvents::FeatEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", [hooker]() {
-        s_UseFeatHook = hooker->Hook(Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector, (void*)&UseFeatHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_USE_FEAT_.*", []() {
+        s_UseFeatHook = Hooks::HookFunction(Functions::_ZN12CNWSCreature7UseFeatEttjjP6Vector, (void*)&UseFeatHook, Hooks::Order::Early);
     });
-    Events::InitOnFirstSubscribe("NWNX_ON_HAS_FEAT_.*", [hooker]() {
-        s_HasFeatHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats7HasFeatEt, (void*)&HasFeatHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_HAS_FEAT_.*", []() {
+        s_HasFeatHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats7HasFeatEt, (void*)&HasFeatHook, Hooks::Order::Early);
     });
     Events::ForceEnableWhitelist("NWNX_ON_HAS_FEAT");
 }

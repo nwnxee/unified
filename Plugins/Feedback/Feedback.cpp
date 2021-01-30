@@ -22,9 +22,9 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Feedback {
 
-static NWNXLib::Hooking::FunctionHook* s_SendFeedbackMessageHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerCCMessageHook = nullptr;
-static NWNXLib::Hooking::FunctionHook* s_SendServerToPlayerJournalUpdatedHook = nullptr;
+static NWNXLib::Hooks::Hook s_SendFeedbackMessageHook = nullptr;
+static NWNXLib::Hooks::Hook s_SendServerToPlayerCCMessageHook = nullptr;
+static NWNXLib::Hooks::Hook s_SendServerToPlayerJournalUpdatedHook = nullptr;
 
 const int32_t FEEDBACK_MESSAGE = 0;
 const int32_t COMBATLOG_MESSAGE = 1;
@@ -43,17 +43,17 @@ Feedback::Feedback(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_SendFeedbackMessageHook = GetServices()->m_hooks->Hook(
+    s_SendFeedbackMessageHook = Hooks::HookFunction(
             API::Functions::_ZN12CNWSCreature19SendFeedbackMessageEtP16CNWCCMessageDataP10CNWSPlayer,
-            (void*)&SendFeedbackMessageHook, Hooking::Order::Late);
+            (void*)&SendFeedbackMessageHook, Hooks::Order::Late);
 
-    s_SendServerToPlayerCCMessageHook = GetServices()->m_hooks->Hook(
+    s_SendServerToPlayerCCMessageHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage27SendServerToPlayerCCMessageEjhP16CNWCCMessageDataP20CNWSCombatAttackData,
-            (void*)&SendServerToPlayerCCMessageHook, Hooking::Order::Late);
+            (void*)&SendServerToPlayerCCMessageHook, Hooks::Order::Late);
 
-    s_SendServerToPlayerJournalUpdatedHook = GetServices()->m_hooks->Hook(
+    s_SendServerToPlayerJournalUpdatedHook = Hooks::HookFunction(
             API::Functions::_ZN11CNWSMessage32SendServerToPlayerJournalUpdatedEP10CNWSPlayerii13CExoLocString,
-            (void*)&SendServerToPlayerJournalUpdatedHook, Hooking::Order::Late);
+            (void*)&SendServerToPlayerJournalUpdatedHook, Hooks::Order::Late);
 }
 
 Feedback::~Feedback()

@@ -50,7 +50,7 @@ bool Creature::s_bCasterLevelHooksInitialized = false;
 bool Creature::s_bCriticalMultiplierHooksInitialized = false;
 bool Creature::s_bCriticalRangeHooksInitialized = false;
 bool Creature::s_bResolveAttackRollHookInitialized = false;
-static Hooking::FunctionHook *s_GetClassLevelHook = nullptr;
+static Hooks::Hook s_GetClassLevelHook = nullptr;
 
 Creature::Creature(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -1098,16 +1098,16 @@ ArgumentStack Creature::SetMovementRateFactor(ArgumentStack&& args)
 
 ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pGetMovementRateFactor_hook =
-        GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv,
+    static Hooks::Hook pGetMovementRateFactor_hook =
+        Hooks::HookFunction(Functions::_ZN12CNWSCreature21GetMovementRateFactorEv,
         (void*)+[](CNWSCreature *pThis) -> float
         {
             auto pRate = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "MOVEMENT_RATE_FACTOR");
             return pRate ? *pRate : pGetMovementRateFactor_hook->CallOriginal<float>(pThis);
-        }, Hooking::Order::Late);
+        }, Hooks::Order::Late);
 
-    static Hooking::FunctionHook *pSetMovementRateFactor_hook =
-        GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf,
+    static Hooks::Hook pSetMovementRateFactor_hook =
+        Hooks::HookFunction(Functions::_ZN12CNWSCreature21SetMovementRateFactorEf,
         (void*)+[](CNWSCreature *pThis, float fRate) -> void
         {
             // Always set the default so it goes back to normal if cap is reset
@@ -1119,7 +1119,7 @@ ArgumentStack Creature::SetMovementRateFactorCap(ArgumentStack&& args)
                 if (fRate > *pCap) { fRate = *pCap; }
                 g_plugin->GetServices()->m_perObjectStorage->Set(pThis, "MOVEMENT_RATE_FACTOR", fRate);
             }
-        }, Hooking::Order::Late);
+        }, Hooks::Order::Late);
 
     if (auto *pCreature = creature(args))
     {
@@ -1466,8 +1466,8 @@ ArgumentStack Creature::GetMovementType(ArgumentStack&& args)
 
 ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pGetWalkRate_hook =
-        GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature11GetWalkRateEv,
+    static Hooks::Hook pGetWalkRate_hook =
+        Hooks::HookFunction(Functions::_ZN12CNWSCreature11GetWalkRateEv,
         (void*)+[](CNWSCreature *pThis) -> float
         {
             float fWalkRate = pGetWalkRate_hook->CallOriginal<float>(pThis);
@@ -1475,7 +1475,7 @@ ArgumentStack Creature::SetWalkRateCap(ArgumentStack&& args)
             auto cap = g_plugin->GetServices()->m_perObjectStorage->Get<float>(pThis, "WALK_RATE_CAP");
             return (cap && *cap < fWalkRate) ? *cap : fWalkRate;
 
-        }, Hooking::Order::Late);
+        }, Hooks::Order::Late);
 
     if (auto *pCreature = creature(args))
     {
@@ -1577,7 +1577,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
 {
     static bool bSkipLevelUpValidation = false;
 
-    static Hooking::FunctionHook *pCanLevelUp_hook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
+    static Hooks::Hook pCanLevelUp_hook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv,
         (void*)+[](CNWSCreatureStats *pThis) -> int32_t
         {
             if (bSkipLevelUpValidation && !pThis->m_bIsPC)
@@ -1585,10 +1585,10 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                 return pThis->GetLevel(false) < 60;
             }
             return pCanLevelUp_hook->CallOriginal<int32_t>(pThis);
-        }, Hooking::Order::Late);
+        }, Hooks::Order::Late);
 
-    static Hooking::FunctionHook *pValidateLevelUp_hook =
-        GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh,
+    static Hooks::Hook pValidateLevelUp_hook =
+        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats15ValidateLevelUpEP13CNWLevelStatshhh,
         (void*)+[](CNWSCreatureStats *pThis, CNWLevelStats *pLevelStats, uint8_t nDomain1, uint8_t nDomain2, uint8_t nSchool) -> uint32_t
         {
             if (bSkipLevelUpValidation)
@@ -1599,7 +1599,7 @@ ArgumentStack Creature::LevelUp(ArgumentStack&& args)
                 return 0;
             }
             return pValidateLevelUp_hook->CallOriginal<uint32_t>(pThis, pLevelStats, nDomain1, nDomain2, nSchool);
-        }, Hooking::Order::Late);
+        }, Hooks::Order::Late);
 
     if (auto *pCreature = creature(args))
     {
@@ -2058,37 +2058,35 @@ ArgumentStack Creature::DeserializeQuickbar(ArgumentStack&& args)
 
 void Creature::InitCasterLevelHooks()
 {
-    auto *hooker = g_plugin->GetServices()->m_hooks.get();
+    s_GetClassLevelHook = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi,
+                                       (void*)&CNWSCreatureStats__GetClassLevel, Hooks::Order::Early);
 
-    s_GetClassLevelHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi,
-                                       (void*)&CNWSCreatureStats__GetClassLevel, Hooking::Order::Early);
-
-    static Hooking::FunctionHook *s_ExecuteCommandGetCasterLevelHook =
-            hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
+    static Hooks::Hook s_ExecuteCommandGetCasterLevelHook =
+            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
                 (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
                     s_bAdjustCasterLevel = false;
                     return retVal;
-                }, Hooking::Order::Early);
-    static Hooking::FunctionHook *s_ExecuteCommandResistSpellHook =
-            hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
+                }, Hooks::Order::Early);
+    static Hooks::Hook s_ExecuteCommandResistSpellHook =
+            Hooks::HookFunction(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
                 (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
                 {
                     s_bAdjustCasterLevel = true;
                     auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
                     s_bAdjustCasterLevel = false;
                     return retVal;
-                }, Hooking::Order::Early);
-    static Hooking::FunctionHook *s_SetCreatorHook =
-            hooker->Hook(Functions::_ZN11CGameEffect10SetCreatorEj,
+                }, Hooks::Order::Early);
+    static Hooks::Hook s_SetCreatorHook =
+            Hooks::HookFunction(Functions::_ZN11CGameEffect10SetCreatorEj,
         (void*)+[](CGameEffect *thisPtr, ObjectID oidCreator)
                 {
                     s_bAdjustCasterLevel = true;
                     s_SetCreatorHook->CallOriginal<void>(thisPtr, oidCreator);
                     s_bAdjustCasterLevel = false;
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     s_bCasterLevelHooksInitialized = true;
 }
@@ -2224,8 +2222,8 @@ ArgumentStack Creature::JumpToLimbo(ArgumentStack&& args)
 
 void Creature::InitCriticalMultiplierHook()
 {
-    static Hooking::FunctionHook *pGetCriticalHitMultiplier_hook =
-        g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi,
+    static Hooks::Hook pGetCriticalHitMultiplier_hook =
+        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats24GetCriticalHitMultiplierEi,
         (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
         {
             int32_t retVal;
@@ -2294,7 +2292,7 @@ void Creature::InitCriticalMultiplierHook()
             }
 
             return retVal > 0 ? retVal : 0;
-        }, Hooking::Order::Late);
+        }, Hooks::Order::Late);
 
     s_bCriticalMultiplierHooksInitialized = true;
 }
@@ -2409,8 +2407,8 @@ ArgumentStack Creature::GetCriticalMultiplierOverride(ArgumentStack&& args)
 
 void Creature::InitCriticalRangeHook()
 {
-    static NWNXLib::Hooking::FunctionHook *pGetCriticalHitRoll_hook =
-        g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi,
+    static NWNXLib::Hooks::Hook pGetCriticalHitRoll_hook =
+        Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats18GetCriticalHitRollEi,
         (void*)+[](CNWSCreatureStats *pThis, int32_t bOffHand = false) -> int32_t
         {
             int32_t retVal;
@@ -2636,12 +2634,12 @@ ArgumentStack Creature::SetEffectIconFlashing(ArgumentStack&& args)
 
 ArgumentStack Creature::OverrideDamageLevel(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pGetDamageLevelHook = g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN10CNWSObject14GetDamageLevelEv,
+    static Hooks::Hook pGetDamageLevelHook = Hooks::HookFunction(Functions::_ZN10CNWSObject14GetDamageLevelEv,
         (void*)+[](CNWSObject *thisPtr) -> uint8_t
         {
             auto damageLevel = g_plugin->GetServices()->m_perObjectStorage->Get<int>(thisPtr->m_idSelf, "CREATURE_DAMAGE_LEVEL_OVERRIDE");
             return damageLevel ? *damageLevel : pGetDamageLevelHook->CallOriginal<uint8_t>(thisPtr);
-        }, Hooking::Order::Late);
+        }, Hooks::Order::Late);
 
     if (auto* pCreature = creature(args))
     {
@@ -2920,7 +2918,7 @@ void Creature::DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget)
 
 void Creature::InitResolveAttackRollHook()
 {
-    g_plugin->GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
+    Hooks::HookFunction(Functions::_ZN12CNWSCreature17ResolveAttackRollEP10CNWSObject,
     (void*)+[](CNWSCreature *thisPtr, CNWSObject *pTarget) -> void
     {
         auto pTargetCreature = Utils::AsNWSCreature(pTarget);
@@ -2948,7 +2946,7 @@ void Creature::InitResolveAttackRollHook()
             if (bRoundPaused)
                 pTargetCreature->m_pcCombatRound->m_bRoundPaused = true;
         }
-    }, Hooking::Order::Final);
+    }, Hooks::Order::Final);
 
     s_bResolveAttackRollHookInitialized = true;
 }

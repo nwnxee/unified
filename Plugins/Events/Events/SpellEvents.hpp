@@ -8,7 +8,7 @@ namespace Events {
 class SpellEvents
 {
 public:
-    SpellEvents(NWNXLib::Services::HooksProxy* hooker);
+    SpellEvents();
 
 private:
     static void SpellCastAndImpactHook(CNWSObject*, uint32_t, Vector, ObjectID, uint8_t, ObjectID, int32_t, int32_t, uint8_t, int32_t);

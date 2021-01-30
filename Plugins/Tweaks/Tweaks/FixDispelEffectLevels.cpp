@@ -19,12 +19,12 @@ namespace Tweaks
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-FixDispelEffectLevels::FixDispelEffectLevels(Services::HooksProxy* hooker)
+FixDispelEffectLevels::FixDispelEffectLevels()
 {
-    hooker->Hook(Functions::_ZN21CNWSEffectListHandler21OnApplyDispelAllMagicEP10CNWSObjectP11CGameEffecti,
-                 (void*)&CNWSEffectListHandler__OnApplyDispelAllMagic, Hooking::Order::Final);
-    hooker->Hook(Functions::_ZN21CNWSEffectListHandler22OnApplyDispelBestMagicEP10CNWSObjectP11CGameEffecti,
-                 (void*)&CNWSEffectListHandler__OnApplyDispelBestMagic, Hooking::Order::Final);
+    static auto s_ApplyDispelAllMagic  = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler21OnApplyDispelAllMagicEP10CNWSObjectP11CGameEffecti,
+                 (void*)&CNWSEffectListHandler__OnApplyDispelAllMagic, Hooks::Order::Final);
+    static auto s_ApplyDispelBestMagic = Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler22OnApplyDispelBestMagicEP10CNWSObjectP11CGameEffecti,
+                 (void*)&CNWSEffectListHandler__OnApplyDispelBestMagic, Hooks::Order::Final);
 }
 
 int32_t FixDispelEffectLevels::CNWSEffectListHandler__OnApplyDispelAllMagic(CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect, BOOL)

@@ -8,7 +8,7 @@ namespace Events {
 class InventoryEvents
 {
 public:
-    InventoryEvents(NWNXLib::Services::HooksProxy* hooker);
+    InventoryEvents();
 
 private:
     static int32_t HandlePlayerToServerGuiInventoryMessageHook(CNWSMessage*, CNWSPlayer*, uint8_t);

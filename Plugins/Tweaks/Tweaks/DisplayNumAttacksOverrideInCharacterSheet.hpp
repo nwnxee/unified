@@ -7,7 +7,7 @@ namespace Tweaks {
 class DisplayNumAttacksOverrideInCharacterSheet
 {
 public:
-    DisplayNumAttacksOverrideInCharacterSheet(NWNXLib::Services::HooksProxy* hooker);
+    DisplayNumAttacksOverrideInCharacterSheet();
 
 private:
     static uint8_t GetAttacksPerRoundHook(CNWSCreatureStats*);

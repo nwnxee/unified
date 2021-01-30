@@ -19,13 +19,13 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook *s_ComputeArmourClass;
+static Hooks::Hook s_ComputeArmourClass;
 
-UnhardcodeShields::UnhardcodeShields(Services::HooksProxy* hooker)
+UnhardcodeShields::UnhardcodeShields()
 {
-    hooker->Hook(Functions::_ZN8CNWSItem17ComputeArmorClassEv, (void*)&CNWSItem__ComputeArmorClass, Hooking::Order::Final);
-    s_ComputeArmourClass = hooker->Hook(Functions::_ZN12CNWSCreature18ComputeArmourClassEP8CNWSItemii,
-                                        (void*)&CNWSCreature__ComputeArmourClass, Hooking::Order::Late);
+    static auto s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN8CNWSItem17ComputeArmorClassEv, (void*)&CNWSItem__ComputeArmorClass, Hooks::Order::Final);
+    s_ComputeArmourClass = Hooks::HookFunction(Functions::_ZN12CNWSCreature18ComputeArmourClassEP8CNWSItemii,
+                                        (void*)&CNWSCreature__ComputeArmourClass, Hooks::Order::Late);
 }
 
 int32_t UnhardcodeShields::CNWSItem__ComputeArmorClass(CNWSItem* thisPtr)

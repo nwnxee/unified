@@ -12,7 +12,7 @@ public:
     virtual ~Reveal();
 
 private:
-    NWNXLib::Hooking::FunctionHook* m_DoStealthDetection;
+    NWNXLib::Hooks::Hook m_DoStealthDetection;
 
     static int32_t HookStealthDetection(CNWSCreature* thisCreature, CNWSCreature* pHidingCreature, int32_t bClearLOS, int32_t* bSeen, int32_t* bHeard, int32_t bTargetInvisible);
 

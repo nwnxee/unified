@@ -8,7 +8,7 @@ namespace Events {
 class InputEvents
 {
 public:
-    InputEvents(NWNXLib::Services::HooksProxy* hooker);
+    InputEvents();
 
 private:
     static int32_t HandlePlayerToServerInputWalkToWaypointHook(CNWSMessage*, CNWSPlayer*);

@@ -8,7 +8,7 @@ namespace Events {
 class QuickbarEvents
 {
 public:
-    QuickbarEvents(NWNXLib::Services::HooksProxy* hooker);
+    QuickbarEvents();
 
 private:
     static int32_t HandlePlayerToServerGuiQuickbar_SetButtonHook(CNWSMessage*, CNWSPlayer*, uint8_t, uint8_t);

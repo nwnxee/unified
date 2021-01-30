@@ -9,9 +9,9 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-AlwaysReturnFullDEXStat::AlwaysReturnFullDEXStat(Services::HooksProxy* hooker)
+AlwaysReturnFullDEXStat::AlwaysReturnFullDEXStat()
 {
-    hooker->Hook(Functions::_ZN17CNWSCreatureStats10GetDEXStatEv, (void*)&GetDEXStatHook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN17CNWSCreatureStats10GetDEXStatEv, (void*)&GetDEXStatHook, Hooks::Order::Final);
 }
 
 uint8_t AlwaysReturnFullDEXStat::GetDEXStatHook(CNWSCreatureStats *pCreatureStats)

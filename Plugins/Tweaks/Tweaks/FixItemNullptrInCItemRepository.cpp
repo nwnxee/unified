@@ -18,10 +18,10 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-FixItemNullptrInCItemRepository::FixItemNullptrInCItemRepository(Services::HooksProxy* hooker)
+FixItemNullptrInCItemRepository::FixItemNullptrInCItemRepository()
 {
-    hooker->Hook(Functions::_ZN15CItemRepository23CalculateContentsWeightEv,
-                 (void*)&CItemRepository__CalculateContentsWeight_hook, Hooking::Order::Final);
+    static auto s_ReplacedFunc = Hooks::HookFunction(Functions::_ZN15CItemRepository23CalculateContentsWeightEv,
+                 (void*)&CItemRepository__CalculateContentsWeight_hook, Hooks::Order::Final);
 }
 
 int32_t FixItemNullptrInCItemRepository::CItemRepository__CalculateContentsWeight_hook(CItemRepository *pThis)

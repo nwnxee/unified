@@ -13,7 +13,7 @@ struct Backtrace { void *bt[8]; };
 class MemorySanitizer
 {
 public:
-    MemorySanitizer(NWNXLib::Services::HooksProxy* hooker);
+    MemorySanitizer();
     ~MemorySanitizer();
 
     static void *malloc(size_t size);

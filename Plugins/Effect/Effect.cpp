@@ -194,8 +194,8 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
 
 ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pOnEffectRemovedHook =
-            GetServices()->m_hooks->Hook(API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
+    static Hooks::Hook pOnEffectRemovedHook =
+            Hooks::HookFunction(API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
             (void*)+[](CNWSEffectListHandler *pEffectListHandler, CNWSObject* pObject, CGameEffect* pEffect) -> int32_t
             {
                 CExoString &sScriptName = pEffect->m_sParamString[4];
@@ -212,7 +212,7 @@ ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
                     --g_plugin->m_effectExpiredDepth;
                 }
                 return pOnEffectRemovedHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect);
-            }, Hooking::Order::Early);
+            }, Hooks::Order::Early);
 
     auto effect = Events::ExtractArgument<CGameEffect*>(args);
 

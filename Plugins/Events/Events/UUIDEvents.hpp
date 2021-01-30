@@ -8,7 +8,7 @@ namespace Events {
 class UUIDEvents
 {
 public:
-    UUIDEvents(NWNXLib::Services::HooksProxy* hooker);
+    UUIDEvents();
 
 private:
     static bool LoadFromGffHook(CNWSUUID*, CResGFF*, CResStruct*);

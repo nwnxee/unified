@@ -32,7 +32,7 @@ using namespace NWNXLib::Services;
 
 namespace Chat {
 
-static Hooking::FunctionHook *s_SendServerToPlayerChatMessageHook = nullptr;
+static Hooks::Hook s_SendServerToPlayerChatMessageHook = nullptr;
 
 Chat::Chat(Services::ProxyServiceList* services)
         : Plugin(services), m_skipMessage(false), m_depth(0)
@@ -60,9 +60,9 @@ Chat::Chat(Services::ProxyServiceList* services)
     m_hearingDistances[Constants::ChatChannel::PlayerWhisper] = 3.0f;
     m_customHearingDistances = false;
 
-    s_SendServerToPlayerChatMessageHook = GetServices()->m_hooks->Hook(
+    s_SendServerToPlayerChatMessageHook = Hooks::HookFunction(
             Functions::_ZN11CNWSMessage29SendServerToPlayerChatMessageEhj10CExoStringjRKS0_,
-            (void*)&SendServerToPlayerChatMessage, Hooking::Order::Late);
+            (void*)&SendServerToPlayerChatMessage, Hooks::Order::Late);
 }
 
 Chat::~Chat()

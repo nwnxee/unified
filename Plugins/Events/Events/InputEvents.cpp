@@ -15,40 +15,40 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Hooking::FunctionHook* s_HandlePlayerToServerInputWalkToWaypointHook;
-static Hooking::FunctionHook* s_AddAttackActionsHook;
-static Hooking::FunctionHook* s_AddMoveToPointActionToFrontHook;
-static Hooking::FunctionHook* s_AddCastSpellActionsHook;
-static Hooking::FunctionHook* s_HandlePlayerToServerInputMessageHook;
+static Hooks::Hook s_HandlePlayerToServerInputWalkToWaypointHook;
+static Hooks::Hook s_AddAttackActionsHook;
+static Hooks::Hook s_AddMoveToPointActionToFrontHook;
+static Hooks::Hook s_AddCastSpellActionsHook;
+static Hooks::Hook s_HandlePlayerToServerInputMessageHook;
 
-InputEvents::InputEvents(Services::HooksProxy* hooker)
+InputEvents::InputEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", [hooker]() {
-        s_HandlePlayerToServerInputWalkToWaypointHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_WALK_TO_WAYPOINT_.*", []() {
+        s_HandlePlayerToServerInputWalkToWaypointHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage39HandlePlayerToServerInputWalkToWaypointEP10CNWSPlayer,
-                (void*)&HandlePlayerToServerInputWalkToWaypointHook, Hooking::Order::Early);
+                (void*)&HandlePlayerToServerInputWalkToWaypointHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", [hooker]() {
-        s_AddAttackActionsHook = hooker->Hook(API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii,
-                                              (void*)&AddAttackActionsHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_ATTACK_OBJECT_.*", []() {
+        s_AddAttackActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature16AddAttackActionsEjiii,
+                                              (void*)&AddAttackActionsHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", [hooker]() {
-        s_AddMoveToPointActionToFrontHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_FORCE_MOVE_TO_OBJECT_.*", []() {
+        s_AddMoveToPointActionToFrontHook = Hooks::HookFunction(
                 API::Functions::_ZN12CNWSCreature27AddMoveToPointActionToFrontEt6Vectorjjiffiiiiii,
-                (void*)&AddMoveToPointActionToFrontHook, Hooking::Order::Early);
+                (void*)&AddMoveToPointActionToFrontHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", [hooker]() {
-        s_AddCastSpellActionsHook = hooker->Hook(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih,
-                                                 (void*)&AddCastSpellActionsHook, Hooking::Order::Early);
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_CAST_SPELL_.*", []() {
+        s_AddCastSpellActionsHook = Hooks::HookFunction(API::Functions::_ZN12CNWSCreature19AddCastSpellActionsEjiiii6Vectorjiiihiiih,
+                                                 (void*)&AddCastSpellActionsHook, Hooks::Order::Early);
     });
 
-    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", [hooker]() {
-        s_HandlePlayerToServerInputMessageHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_INPUT_(KEYBOARD|TOGGLE_PAUSE|EMOTE)_.*", []() {
+        s_HandlePlayerToServerInputMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage32HandlePlayerToServerInputMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerInputMessageHook, Hooking::Order::Early);
+                (void*)&HandlePlayerToServerInputMessageHook, Hooks::Order::Early);
     });
 }
 

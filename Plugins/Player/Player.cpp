@@ -165,8 +165,8 @@ ArgumentStack Player::ForcePlaceableInventoryWindow(ArgumentStack&& args)
 
 ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pHandlePlayerToServerInputCancelGuiTimingEventHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer,
+    static Hooks::Hook pHandlePlayerToServerInputCancelGuiTimingEventHook =
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage45HandlePlayerToServerInputCancelGuiTimingEventEP10CNWSPlayer,
                 (void*)+[](CNWSMessage* pMessage, CNWSPlayer* pPlayer) -> int32_t
                 {
                     CNWSScriptVarTable *pScriptVarTable = Utils::GetScriptVarTable(Utils::GetGameObject(pPlayer->m_oidPCObject));
@@ -185,7 +185,7 @@ ArgumentStack Player::StartGuiTimingBar(ArgumentStack&& args)
                     }
 
                     return pHandlePlayerToServerInputCancelGuiTimingEventHook->CallOriginal<int32_t>(pMessage, pPlayer);
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -219,8 +219,8 @@ ArgumentStack Player::StopGuiTimingBar(ArgumentStack&& args)
 
 ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
 {
-    static NWNXLib::Hooking::FunctionHook* pOnRemoveLimitMovementSpeed_hook =
-            GetServices()->m_hooks->Hook(Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect,
+    static NWNXLib::Hooks::Hook pOnRemoveLimitMovementSpeed_hook =
+            Hooks::HookFunction(Functions::_ZN21CNWSEffectListHandler26OnRemoveLimitMovementSpeedEP10CNWSObjectP11CGameEffect,
                 (void*)+[](CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect) -> int32_t
                 {
                     // Don't remove the forced walk flag when various slowdown effects expire
@@ -229,7 +229,7 @@ ArgumentStack Player::SetAlwaysWalk(ArgumentStack&& args)
                         return 1;
 
                     return pOnRemoveLimitMovementSpeed_hook->CallOriginal<int32_t>(pThis, pObject, pEffect);
-                }, Hooking::Order::Late);
+                }, Hooks::Order::Late);
 
     if (auto *pPlayer = player(args))
     {
@@ -490,8 +490,8 @@ ArgumentStack Player::SetPlaceableUsable(ArgumentStack&& args)
 
 ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pAIActionRestHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode,
+    static Hooks::Hook pAIActionRestHook =
+            Hooks::HookFunction(Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode,
     (void*)+[](CNWSCreature* pCreature, CNWSObjectActionNode *pNode) -> uint32_t
             {
                 if (auto restDuration = g_plugin->GetServices()->m_perObjectStorage->Get<int>(pCreature->m_idSelf, "REST_DURATION"))
@@ -506,7 +506,7 @@ ArgumentStack Player::SetRestDuration(ArgumentStack&& args)
                 }
                 else
                     return pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
-            }, Hooking::Order::Late);
+            }, Hooks::Order::Late);
 
     if (auto *pPlayer = player(args))
     {
@@ -655,8 +655,8 @@ ArgumentStack Player::SetAreaExplorationState(ArgumentStack&& args)
 
 ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pAIActionRestHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode,
+    static Hooks::Hook pAIActionRestHook =
+            Hooks::HookFunction(Functions::_ZN12CNWSCreature12AIActionRestEP20CNWSObjectActionNode,
             (void*)+[](CNWSCreature* pCreature, CNWSObjectActionNode *pNode) -> uint32_t
             {
                 auto retVal = pAIActionRestHook->CallOriginal<uint32_t>(pCreature, pNode);
@@ -668,7 +668,7 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
                 }
 
                 return retVal;
-            }, Hooking::Order::Late);
+            }, Hooks::Order::Late);
 
     if (auto *pPlayer = player(args))
     {
@@ -690,8 +690,8 @@ ArgumentStack Player::SetRestAnimation(ArgumentStack&& args)
 
 ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pSetObjectVisualTransformOverrideHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+    static Hooks::Hook pSetObjectVisualTransformOverrideHook =
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
                 (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
@@ -715,7 +715,7 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
                         }
                     }
                     pSetObjectVisualTransformOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -803,8 +803,8 @@ ArgumentStack Player::SetObjectVisualTransformOverride(ArgumentStack&& args)
 
 ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pApplyLoopingVisualEffectToObjectHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+    static Hooks::Hook pApplyLoopingVisualEffectToObjectHook =
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
                 (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
@@ -830,7 +830,7 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
                             }
                     }
                     pApplyLoopingVisualEffectToObjectHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -883,8 +883,8 @@ ArgumentStack Player::ApplyLoopingVisualEffectToObject(ArgumentStack&& args)
 
 ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pSetPlaceableNameOverrideHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+    static Hooks::Hook pSetPlaceableNameOverrideHook =
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
                 (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pPlaceable = Utils::AsNWSPlaceable(Utils::GetGameObject(oidObjectToUpdate)))
@@ -901,7 +901,7 @@ ArgumentStack Player::SetPlaceableNameOverride(ArgumentStack&& args)
                         }
                     }
                     pSetPlaceableNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -961,8 +961,8 @@ ArgumentStack Player::GetQuestCompleted(ArgumentStack&& args)
 
 ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pSetPersistentLocationHook =
-        GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii,
+    static Hooks::Hook pSetPersistentLocationHook =
+        Hooks::HookFunction(API::Functions::_ZN21CServerExoAppInternal19LoadCharacterFinishEP10CNWSPlayerii,
                 (void*)+[](CServerExoAppInternal *pServerExoAppInternal, CNWSPlayer *pPlayer, int32_t bUseSaveGameCharacter, int32_t bUseStateDataInSaveGame ) -> int32_t
                 {
                     auto retVal = pSetPersistentLocationHook->CallOriginal<int32_t>(pServerExoAppInternal, pPlayer, bUseSaveGameCharacter, bUseStateDataInSaveGame);
@@ -1013,7 +1013,7 @@ ArgumentStack Player::SetPersistentLocation(ArgumentStack&& args)
                         }
                     }
                     return retVal;
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     const auto sCDKeyOrCommunityName = Events::ExtractArgument<std::string>(args);
     const auto sBicFileName = Events::ExtractArgument<std::string>(args);
@@ -1083,8 +1083,8 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
     }
 
     // When a PC is logging off we don't want this creature to unsummon themselves (unless crashed in AT)
-    static NWNXLib::Hooking::FunctionHook* pUnsummonMyselfHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature14UnsummonMyselfEv,
+    static NWNXLib::Hooks::Hook pUnsummonMyselfHook =
+            Hooks::HookFunction(Functions::_ZN12CNWSCreature14UnsummonMyselfEv,
             (void*)+[](CNWSCreature *pPossessed) -> void
             {
                 auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
@@ -1120,10 +1120,10 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                         }
                     }
                 }
-            }, Hooking::Order::Late);
+            }, Hooks::Order::Late);
 
-    static NWNXLib::Hooking::FunctionHook* pPossessFamiliarHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature15PossessFamiliarEv,
+    static NWNXLib::Hooks::Hook pPossessFamiliarHook =
+            Hooks::HookFunction(Functions::_ZN12CNWSCreature15PossessFamiliarEv,
                 (void*)+[](CNWSCreature *pPossessor) -> void
                 {
                     auto *pPOS = g_plugin->GetServices()->m_perObjectStorage.get();
@@ -1136,10 +1136,10 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                     {
                         pPossessFamiliarHook->CallOriginal<void>(pPossessor);
                     }
-                }, Hooking::Order::Late);
+                }, Hooks::Order::Late);
 
-    static NWNXLib::Hooking::FunctionHook* pUnpossessFamiliarHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature17UnpossessFamiliarEv,
+    static NWNXLib::Hooks::Hook pUnpossessFamiliarHook =
+            Hooks::HookFunction(Functions::_ZN12CNWSCreature17UnpossessFamiliarEv,
                 (void*)+[](CNWSCreature *pPossessor) -> void
                 {
                     pUnpossessFamiliarHook->CallOriginal<void>(pPossessor);
@@ -1159,7 +1159,7 @@ ArgumentStack Player::PossessCreature(ArgumentStack&& args)
                             pPOS->Remove(pPossessor->m_idSelf, "possessedAssociateType");
                         }
                     }
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     // Save previous associate type so it can be set back after unpossess
     pPOS->Set(possessorId, "possessedAssociateType", (int32_t)pPossessed->m_nAssociateType);
@@ -1267,8 +1267,8 @@ ArgumentStack Player::SetCustomToken(ArgumentStack&& args)
 
 ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pSetCreatureNameOverrideHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+    static Hooks::Hook pSetCreatureNameOverrideHook =
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
                  (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                  {
                      if (auto *pCreature = Utils::AsNWSCreature(Utils::GetGameObject(oidObjectToUpdate)))
@@ -1284,7 +1284,7 @@ ArgumentStack Player::SetCreatureNameOverride(ArgumentStack&& args)
                          }
                      }
                      pSetCreatureNameOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                 }, Hooking::Order::Early);
+                 }, Hooks::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -1411,8 +1411,8 @@ ArgumentStack Player::ToggleDM(ArgumentStack&& args)
 
 ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pSetObjectMouseCursorOverrideHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+    static Hooks::Hook pSetObjectMouseCursorOverrideHook =
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
                 (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
@@ -1426,7 +1426,7 @@ ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
                         }
                     }
                     pSetObjectMouseCursorOverrideHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     if (auto *pPlayer = player(args))
     {
@@ -1451,8 +1451,8 @@ ArgumentStack Player::SetObjectMouseCursorOverride(ArgumentStack&& args)
 
 ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
 {
-    static Hooking::FunctionHook *pSetObjectHiliteColorHook =
-            GetServices()->m_hooks->Hook(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
+    static Hooks::Hook pSetObjectHiliteColorHook =
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
                 (void*)+[](CNWSMessage *pMessage, CNWSPlayer *pPlayer, CNWSObject *pPlayerGameObject, CGameObjectArray *pGameObjectArray, ObjectID oidObjectToUpdate) -> void
                 {
                     if (auto *pObject = Utils::AsNWSObject(Utils::GetGameObject(oidObjectToUpdate)))
@@ -1471,7 +1471,7 @@ ArgumentStack Player::SetObjectHiliteColorOverride(ArgumentStack&& args)
                         }
                     }
                     pSetObjectHiliteColorHook->CallOriginal<void>(pMessage, pPlayer, pPlayerGameObject, pGameObjectArray, oidObjectToUpdate);
-                }, Hooking::Order::Early);
+                }, Hooks::Order::Early);
 
     if (auto *pPlayer = player(args))
     {

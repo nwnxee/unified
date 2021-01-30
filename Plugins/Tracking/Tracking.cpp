@@ -18,7 +18,7 @@ Tracking::Tracking(Services::ProxyServiceList* services)
 {
     if (Config::Get<bool>("ENABLE_ACTIVITY_TARGET", true))
     {
-        m_activityTarget = std::make_unique<Activity>(GetServices()->m_metrics.get(), GetServices()->m_hooks.get());
+        m_activityTarget = std::make_unique<Activity>(GetServices()->m_metrics.get());
     }
 }
 

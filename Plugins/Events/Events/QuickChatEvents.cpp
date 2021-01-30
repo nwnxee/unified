@@ -13,14 +13,14 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
-static Hooking::FunctionHook* s_HandlePlayerToServerQuickChatMessageHook = nullptr;
+static Hooks::Hook s_HandlePlayerToServerQuickChatMessageHook = nullptr;
 
-QuickChatEvents::QuickChatEvents(Services::HooksProxy* hooker)
+QuickChatEvents::QuickChatEvents()
 {
-    Events::InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", [hooker]() {
-        s_HandlePlayerToServerQuickChatMessageHook = hooker->Hook(
+    Events::InitOnFirstSubscribe("NWNX_ON_QUICKCHAT_.*", []() {
+        s_HandlePlayerToServerQuickChatMessageHook = Hooks::HookFunction(
                 API::Functions::_ZN11CNWSMessage36HandlePlayerToServerQuickChatMessageEP10CNWSPlayerh,
-                (void*)&HandlePlayerToServerQuickChatMessageHook, Hooking::Order::Early);
+                (void*)&HandlePlayerToServerQuickChatMessageHook, Hooks::Order::Early);
     });
 }
 

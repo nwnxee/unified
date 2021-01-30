@@ -4,8 +4,6 @@
 #include "API/Constants/Misc.hpp"
 using ArgumentStack = NWNXLib::Events::ArgumentStack;
 
-namespace NWNXLib::Hooking { class FunctionHook; }
-
 namespace Chat {
 
 class Chat : public NWNXLib::Plugin
@@ -15,7 +13,7 @@ public:
     virtual ~Chat();
 
 private:
-    NWNXLib::Hooking::FunctionHook* m_hook;
+    NWNXLib::Hooks::Hook m_hook;
 
     uint8_t m_activeChannel;
     std::string m_activeMessage;

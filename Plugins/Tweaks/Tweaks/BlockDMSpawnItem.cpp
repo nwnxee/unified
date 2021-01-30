@@ -6,13 +6,13 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static NWNXLib::Hooking::FunctionHook* s_HandlePlayerToServerGameObjectUpdateHook;
+static NWNXLib::Hooks::Hook s_HandlePlayerToServerGameObjectUpdateHook;
 
-BlockDMSpawnItem::BlockDMSpawnItem(Services::HooksProxy* hooker)
+BlockDMSpawnItem::BlockDMSpawnItem()
 {
     s_HandlePlayerToServerGameObjectUpdateHook =
-            hooker->Hook(Functions::_ZN11CNWSMessage36HandlePlayerToServerGameObjectUpdateEP10CNWSPlayerh,
-                         (void*)&HandlePlayerToServerGameObjectUpdateHook, Hooking::Order::Late);
+            Hooks::HookFunction(Functions::_ZN11CNWSMessage36HandlePlayerToServerGameObjectUpdateEP10CNWSPlayerh,
+                         (void*)&HandlePlayerToServerGameObjectUpdateHook, Hooks::Order::Late);
 }
 
 int32_t BlockDMSpawnItem::HandlePlayerToServerGameObjectUpdateHook(CNWSMessage *pMessage, CNWSPlayer *pPlayer, uint8_t nMinor)

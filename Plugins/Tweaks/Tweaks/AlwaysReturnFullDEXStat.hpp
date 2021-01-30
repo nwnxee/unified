@@ -7,7 +7,7 @@ namespace Tweaks {
 class AlwaysReturnFullDEXStat
 {
 public:
-    AlwaysReturnFullDEXStat(NWNXLib::Services::HooksProxy* hooker);
+    AlwaysReturnFullDEXStat();
 
 private:
     static uint8_t GetDEXStatHook(CNWSCreatureStats*);

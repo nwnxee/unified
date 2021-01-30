@@ -8,7 +8,7 @@ namespace Events {
 class ItemEvents
 {
 public:
-    ItemEvents(NWNXLib::Services::HooksProxy* hooker);
+    ItemEvents();
 
 private:
     static int32_t CanUseItemHook(CNWSCreature*, CNWSItem*, int32_t);

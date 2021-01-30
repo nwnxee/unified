@@ -7,7 +7,7 @@ namespace Events {
 class MaterialChangeEvents
 {
 public:
-    MaterialChangeEvents(NWNXLib::Services::HooksProxy* hooker);
+    MaterialChangeEvents();
 
 private:
     static void SetPositionHook(CNWSObject*, Vector, int32_t);

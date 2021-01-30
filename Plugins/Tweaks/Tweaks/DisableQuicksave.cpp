@@ -16,11 +16,11 @@ namespace Tweaks {
 using namespace NWNXLib;
 using namespace NWNXLib::API;
 
-static Hooking::FunctionHook* s_SaveGame_hook;
-DisableQuicksave::DisableQuicksave(Services::HooksProxy* hooker)
+static Hooks::Hook s_SaveGame_hook;
+DisableQuicksave::DisableQuicksave()
 {
-    s_SaveGame_hook = hooker->Hook(Functions::_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_,
-                                   (void*)&CServerExoAppInternal__SaveGame_hook, Hooking::Order::Late);
+    s_SaveGame_hook = Hooks::HookFunction(Functions::_ZN21CServerExoAppInternal8SaveGameEjR10CExoStringS1_P10CNWSPlayeriS1_,
+                                   (void*)&CServerExoAppInternal__SaveGame_hook, Hooks::Order::Late);
 }
 
 int32_t DisableQuicksave::CServerExoAppInternal__SaveGame_hook(CServerExoAppInternal* thisPtr, uint32_t nSlot, CExoString& sSaveName,

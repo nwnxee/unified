@@ -22,7 +22,7 @@ NWNX_PLUGIN_ENTRY Plugin* PluginLoad(Services::ProxyServiceList* services)
 
 namespace Appearance {
 
-static Hooking::FunctionHook *s_ComputeGameObjectUpdateForObjectHook = nullptr;
+static Hooks::Hook s_ComputeGameObjectUpdateForObjectHook = nullptr;
 
 Appearance::Appearance(Services::ProxyServiceList* services)
     : Plugin(services)
@@ -36,9 +36,9 @@ Appearance::Appearance(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_ComputeGameObjectUpdateForObjectHook = GetServices()->m_hooks->Hook(
+    s_ComputeGameObjectUpdateForObjectHook = Hooks::HookFunction(
         Functions::_ZN11CNWSMessage32ComputeGameObjectUpdateForObjectEP10CNWSPlayerP10CNWSObjectP16CGameObjectArrayj,
-        (void*)&ComputeGameObjectUpdateForObjectHook, Hooking::Order::Early);
+        (void*)&ComputeGameObjectUpdateForObjectHook, Hooks::Order::Early);
 }
 
 Appearance::~Appearance()

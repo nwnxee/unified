@@ -52,13 +52,13 @@ uint32_t Dialog::idxReply;
 int32_t  Dialog::scriptType;
 int32_t  Dialog::loopCount;
 
-static Hooking::FunctionHook *s_GetStartEntryHook;
-static Hooking::FunctionHook *s_GetStartEntryOneLinerHook;
-static Hooking::FunctionHook *s_SendDialogEntryHook;
-static Hooking::FunctionHook *s_SendDialogRepliesHook;
-static Hooking::FunctionHook *s_HandleReplyHook;
-static Hooking::FunctionHook *s_CheckScriptHook;
-static Hooking::FunctionHook *s_RunScriptHook;
+static NWNXLib::Hooks::Hook s_GetStartEntryHook;
+static NWNXLib::Hooks::Hook s_GetStartEntryOneLinerHook;
+static NWNXLib::Hooks::Hook s_SendDialogEntryHook;
+static NWNXLib::Hooks::Hook s_SendDialogRepliesHook;
+static NWNXLib::Hooks::Hook s_HandleReplyHook;
+static NWNXLib::Hooks::Hook s_CheckScriptHook;
+static NWNXLib::Hooks::Hook s_RunScriptHook;
 
 uint32_t Dialog::Hooks::GetStartEntry(CNWSDialog *pThis, CNWSObject *pNWSObjectOwner)
 {
@@ -175,21 +175,21 @@ Dialog::Dialog(Services::ProxyServiceList* services)
 
 #undef REGISTER
 
-    s_GetStartEntryHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog13GetStartEntryEP10CNWSObject,
-                                                       (void*)&Hooks::GetStartEntry, Hooking::Order::Early);
-    s_GetStartEntryOneLinerHook = GetServices()->m_hooks->Hook(
+    s_GetStartEntryHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog13GetStartEntryEP10CNWSObject,
+                                                       (void*)&Hooks::GetStartEntry, NWNXLib::Hooks::Order::Early);
+    s_GetStartEntryOneLinerHook = NWNXLib::Hooks::HookFunction(
             Functions::_ZN10CNWSDialog21GetStartEntryOneLinerEP10CNWSObjectR13CExoLocStringR7CResRefS5_R13CExoArrayListI11ScriptParamE,
-            (void*)&Hooks::GetStartEntryOneLiner, Hooking::Order::Early);
-    s_SendDialogEntryHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog15SendDialogEntryEP10CNWSObjectjji,
-                                                         (void*)&Hooks::SendDialogEntry, Hooking::Order::Early);
-    s_SendDialogRepliesHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog17SendDialogRepliesEP10CNWSObjectj,
-                                                           (void*)&Hooks::SendDialogReplies, Hooking::Order::Early);
-    s_HandleReplyHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog11HandleReplyEjP10CNWSObjectjij,
-                                                     (void*)&Hooks::HandleReply, Hooking::Order::Early);
-    s_CheckScriptHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog11CheckScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
-                                                     (void*)&Hooks::CheckScript, Hooking::Order::Early);
-    s_RunScriptHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSDialog9RunScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
-                                                   (void*)&Hooks::RunScript, Hooking::Order::Early);
+            (void*)&Hooks::GetStartEntryOneLiner, NWNXLib::Hooks::Order::Early);
+    s_SendDialogEntryHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog15SendDialogEntryEP10CNWSObjectjji,
+                                                         (void*)&Hooks::SendDialogEntry, NWNXLib::Hooks::Order::Early);
+    s_SendDialogRepliesHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog17SendDialogRepliesEP10CNWSObjectj,
+                                                           (void*)&Hooks::SendDialogReplies, NWNXLib::Hooks::Order::Early);
+    s_HandleReplyHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog11HandleReplyEjP10CNWSObjectjij,
+                                                     (void*)&Hooks::HandleReply, NWNXLib::Hooks::Order::Early);
+    s_CheckScriptHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog11CheckScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
+                                                     (void*)&Hooks::CheckScript, NWNXLib::Hooks::Order::Early);
+    s_RunScriptHook = NWNXLib::Hooks::HookFunction(Functions::_ZN10CNWSDialog9RunScriptEP10CNWSObjectRK7CResRefRK13CExoArrayListI11ScriptParamE,
+                                                   (void*)&Hooks::RunScript, NWNXLib::Hooks::Order::Early);
 }
 
 Dialog::~Dialog()
