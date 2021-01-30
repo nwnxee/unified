@@ -56,6 +56,7 @@ public:
     std::optional<PluginData> FindPluginByPath(const std::string& path) const;
     std::vector<PluginData> GetPlugins() const;
     std::string GetCanonicalPluginName(const std::string& name) const;
+    void* GetPluginExport(const std::string& pluginName, const std::string& symbolName);
 
 private:
     PluginMap m_plugins;

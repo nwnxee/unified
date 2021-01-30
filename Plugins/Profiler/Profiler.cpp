@@ -42,6 +42,8 @@ static std::chrono::milliseconds g_recalibrationPeriod;
 static bool g_recalibrate = false;
 static bool g_tickrate = false;
 
+static Hooking::FunctionHook *s_MainLoopHook;
+
 Profiler::Profiler(Services::ProxyServiceList* services)
     : Plugin(services)
 {
@@ -126,7 +128,8 @@ Profiler::Profiler(Services::ProxyServiceList* services)
 
     if (g_recalibrate || g_tickrate)
     {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CServerExoAppInternal8MainLoopEv, int32_t>(&MainLoopUpdate);
+        s_MainLoopHook = GetServices()->m_hooks->Hook(API::Functions::_ZN21CServerExoAppInternal8MainLoopEv,
+                                                      (void*)&MainLoopUpdate, Hooking::Order::Earliest);
     }
 
     // Resamples all of the automated timing data.
@@ -247,13 +250,8 @@ void Profiler::HandleRecalibration(const std::chrono::time_point<std::chrono::hi
     }
 }
 
-void Profiler::MainLoopUpdate(bool before, CServerExoAppInternal*)
+int32_t Profiler::MainLoopUpdate(CServerExoAppInternal *thisPtr)
 {
-    if (!before)
-    {
-        return;
-    }
-
     auto now = std::chrono::high_resolution_clock::now();
 
     if (g_recalibrate)
@@ -265,6 +263,8 @@ void Profiler::MainLoopUpdate(bool before, CServerExoAppInternal*)
     {
         HandleTickrateReporting(now);
     }
+
+    return s_MainLoopHook->CallOriginal<int32_t>(thisPtr);
 }
 
 }

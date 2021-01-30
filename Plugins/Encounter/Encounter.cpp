@@ -39,6 +39,8 @@ Encounter::Encounter(Services::ProxyServiceList* services)
     REGISTER(SetFactionId);
     REGISTER(GetPlayerTriggeredOnly);
     REGISTER(SetPlayerTriggeredOnly);
+    REGISTER(GetCanReset);
+    REGISTER(SetCanReset);
     REGISTER(GetResetTime);
     REGISTER(SetResetTime);
     REGISTER(GetNumberOfSpawnPoints);
@@ -185,6 +187,29 @@ ArgumentStack Encounter::SetPlayerTriggeredOnly(ArgumentStack&& args)
         playerTriggeredOnly = !!playerTriggeredOnly;
 
         pEncounter->m_bPlayerTriggeredOnly = playerTriggeredOnly;
+    }
+
+    return Services::Events::Arguments();
+}
+
+ArgumentStack Encounter::GetCanReset(ArgumentStack&& args)
+{
+    int32_t retVal = 0;
+
+    if (auto *pEncounter = encounter(args))
+    {
+        retVal = pEncounter->m_bReset;
+    }
+
+    return Services::Events::Arguments(retVal);
+}
+
+ArgumentStack Encounter::SetCanReset(ArgumentStack&& args)
+{
+    if (auto *pEncounter = encounter(args))
+    {
+        auto reset = Services::Events::ExtractArgument<int32_t>(args);
+        pEncounter->m_bReset = !!reset;
     }
 
     return Services::Events::Arguments();

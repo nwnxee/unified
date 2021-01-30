@@ -17,17 +17,14 @@ static NWNXLib::Hooking::FunctionHook* s_AddUnlockObjectActionHook;
 ObjectEvents::ObjectEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_LOCK_.*", [hooker]() {
-        s_AddLockObjectActionHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN10CNWSObject19AddLockObjectActionEj>
-            (&AddLockObjectActionHook);
+        s_AddLockObjectActionHook = hooker->Hook(API::Functions::_ZN10CNWSObject19AddLockObjectActionEj,
+                                                 (void*)&AddLockObjectActionHook, Hooking::Order::Early);
     });
 
     Events::InitOnFirstSubscribe("NWNX_ON_OBJECT_UNLOCK_.*", [hooker]() {
-        s_AddUnlockObjectActionHook = hooker->RequestExclusiveHook
-            <API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji>
-            (&AddUnlockObjectActionHook);
+        s_AddUnlockObjectActionHook = hooker->Hook(API::Functions::_ZN10CNWSObject21AddUnlockObjectActionEjji,
+                                                   (void*)&AddUnlockObjectActionHook, Hooking::Order::Early);
     });
-
 }
 
 int32_t ObjectEvents::AddLockObjectActionHook(CNWSObject *thisPtr, ObjectID oidDoor)

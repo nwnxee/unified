@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Common.hpp"
@@ -12,9 +11,9 @@ public:
     CombatEvents(NWNXLib::Services::HooksProxy* hooker);
 
 private:
-    static void StartCombatRoundHook(bool, CNWSCombatRound*, uint32_t);
+    static void StartCombatRoundHook(CNWSCombatRound*, ObjectID);
     static int32_t ApplyDisarmHook(CNWSEffectListHandler*, CNWSObject *, CGameEffect *, BOOL);
-    static void SendServerToPlayerAmbientBattleMusicPlayHook(bool, CNWSMessage*, PlayerID oidPlayer, BOOL bPlay);
+    static int32_t SendServerToPlayerAmbientBattleMusicPlayHook(CNWSMessage*, PlayerID oidPlayer, BOOL bPlay);
 };
 
 }

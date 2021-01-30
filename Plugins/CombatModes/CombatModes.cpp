@@ -27,7 +27,7 @@ static Hooking::FunctionHook* s_SetCombatModeHook;
 CombatModes::CombatModes(Services::ProxyServiceList* services)
     : Plugin(services), m_Skipped(false), m_FlurryOfBlows(false)
 {
-    s_SetCombatModeHook = GetServices()->m_hooks->RequestExclusiveHook<API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, void, CNWSCreature*, uint8_t, int32_t>(&SetCombatModeHook);
+    s_SetCombatModeHook = GetServices()->m_hooks->Hook(API::Functions::_ZN12CNWSCreature13SetCombatModeEhi, (void*)&SetCombatModeHook, Hooking::Order::Early);
 
     GetServices()->m_messaging->SubscribeMessage("NWNX_EVENT_SIGNAL_EVENT_SKIPPED",
         [this](const std::vector<std::string>& message)

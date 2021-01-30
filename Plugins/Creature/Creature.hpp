@@ -134,6 +134,16 @@ private:
     ArgumentStack SetNoPermanentDeath           (ArgumentStack&& args);
     ArgumentStack ComputeSafeLocation           (ArgumentStack&& args);
     ArgumentStack DoPerceptionUpdateOnCreature  (ArgumentStack&& args);
+    ArgumentStack GetPersonalSpace              (ArgumentStack&& args);
+    ArgumentStack SetPersonalSpace              (ArgumentStack&& args);
+    ArgumentStack GetCreaturePersonalSpace      (ArgumentStack&& args);
+    ArgumentStack SetCreaturePersonalSpace      (ArgumentStack&& args);
+    ArgumentStack GetHeight                     (ArgumentStack&& args);
+    ArgumentStack SetHeight                     (ArgumentStack&& args);
+    ArgumentStack GetHitDistance                (ArgumentStack&& args);
+    ArgumentStack SetHitDistance                (ArgumentStack&& args);
+    ArgumentStack GetPreferredAttackDistance    (ArgumentStack&& args);
+    ArgumentStack SetPreferredAttackDistance    (ArgumentStack&& args);
 
     CNWSCreature *creature(ArgumentStack& args);
     std::unordered_map<uint8_t, std::unordered_map<ObjectID, int16_t>> m_RollModifier;
@@ -147,14 +157,11 @@ private:
     static bool s_bResolveAttackRollHookInitialized;
 
     static void InitCasterLevelHooks();
-    static void CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel);
-    static void CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
-    static void CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t);
-    static void CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID);
+    static uint8_t CNWSCreatureStats__GetClassLevel(CNWSCreatureStats*, uint8_t, BOOL);
     static void InitCriticalMultiplierHook();
     static void InitCriticalRangeHook();
     static void DoResolveAttackHook(CNWSCreature* thisPtr, CNWSObject* pTarget);
-    static bool InitResolveAttackRollHook();
+    static void InitResolveAttackRollHook();
 
 };
 

@@ -13,49 +13,49 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
+static Hooking::FunctionHook *s_UUIDLoadFromGffHook;
+
 UUIDEvents::UUIDEvents(Services::HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_UUID_COLLISION_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct, bool>(&LoadFromGffHook);
+        s_UUIDLoadFromGffHook = hooker->Hook(API::Functions::_ZN8CNWSUUID11LoadFromGffEP7CResGFFP10CResStruct,
+                                             (void*)&LoadFromGffHook, Hooking::Order::Earliest);
     });
 }
 
-void UUIDEvents::LoadFromGffHook(bool bBefore, CNWSUUID *thisPtr, CResGFF *pResGFF, CResStruct *pResStruct)
+bool UUIDEvents::LoadFromGffHook(CNWSUUID *thisPtr, CResGFF *pResGFF, CResStruct *pResStruct)
 {
-    static CExoString uuid;
-    static bool bCollided;
+    bool bCollided;
+    int32_t success;
+    CExoString uuid = pResGFF->ReadFieldCExoString(pResStruct, UUIDGffFieldName, success);
 
-    if (bBefore)
+    if (success && !uuid.IsEmpty())
     {
-        int32_t success;
-        uuid = pResGFF->ReadFieldCExoString(pResStruct, UUIDGffFieldName, success);
+        auto LookupObjectIdByUUID = reinterpret_cast<ObjectID(*)(CExoString&)>(
+                Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID20LookupObjectIdByUUIDERK10CExoString));
 
-        if (success && !uuid.IsEmpty())
+        bCollided = LookupObjectIdByUUID(uuid) != Constants::OBJECT_INVALID;
+
+        if (bCollided)
         {
-            auto LookupObjectIdByUUID = reinterpret_cast<ObjectID(*)(CExoString&)>(
-                    Platform::ASLR::GetRelocatedAddress(API::Functions::_ZN8CNWSUUID20LookupObjectIdByUUIDERK10CExoString));
-
-            bCollided = LookupObjectIdByUUID(uuid) != Constants::OBJECT_INVALID;
-
-            if (bCollided)
-            {
-                Events::PushEventData("UUID", uuid.CStr());
-                Events::SignalEvent("NWNX_ON_UUID_COLLISION_BEFORE", thisPtr->m_parent->m_idSelf);
-            }
-        }
-        else
-        {
-            bCollided = false;
+            Events::PushEventData("UUID", uuid.CStr());
+            Events::SignalEvent("NWNX_ON_UUID_COLLISION_BEFORE", thisPtr->m_parent->m_idSelf);
         }
     }
     else
     {
-        if (bCollided)
-        {
-            Events::PushEventData("UUID", uuid.CStr());
-            Events::SignalEvent("NWNX_ON_UUID_COLLISION_AFTER", thisPtr->m_parent->m_idSelf);
-        }
+        bCollided = false;
     }
+
+    auto retVal = s_UUIDLoadFromGffHook->CallOriginal<bool>(thisPtr, pResGFF, pResStruct);
+
+    if (bCollided)
+    {
+        Events::PushEventData("UUID", uuid.CStr());
+        Events::SignalEvent("NWNX_ON_UUID_COLLISION_AFTER", thisPtr->m_parent->m_idSelf);
+    }
+
+    return retVal;
 }
 
 }

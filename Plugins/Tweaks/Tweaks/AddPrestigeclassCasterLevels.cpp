@@ -24,18 +24,46 @@ uint8_t AddPrestigeclassCasterLevels::s_divModClasses[Constants::ClassType::MAX 
 uint8_t AddPrestigeclassCasterLevels::s_arcModClasses[Constants::ClassType::MAX + 1];
 bool AddPrestigeclassCasterLevels::s_bAdjustCasterLevel = false;
 
+static Hooking::FunctionHook *s_LoadClassInfoHook;
+static Hooking::FunctionHook *s_GetClassLevelHook;
+static Hooking::FunctionHook *s_ExecuteCommandGetCasterLevelHook;
+static Hooking::FunctionHook *s_ExecuteCommandResistSpellHook;
+static Hooking::FunctionHook *s_SetCreatorHook;
+
 AddPrestigeclassCasterLevels::AddPrestigeclassCasterLevels(Services::HooksProxy* hooker)
 {
-    hooker->RequestSharedHook<Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, uint8_t>(&CNWSCreatureStats__GetClassLevel);
-    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel);
-    hooker->RequestSharedHook<Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii, int32_t>(&CNWVirtualMachineCommands__ExecuteCommandResistSpell);
-    hooker->RequestSharedHook<Functions::_ZN11CGameEffect10SetCreatorEj, void>(&CGameEffect__SetCreator);
-    hooker->RequestSharedHook<Functions::_ZN8CNWRules13LoadClassInfoEv, void>(&CNWRules__LoadClassInfo);
+    s_LoadClassInfoHook = hooker->Hook(Functions::_ZN8CNWRules13LoadClassInfoEv, (void*)&CNWRules__LoadClassInfo, Hooking::Order::Early);
+    s_GetClassLevelHook = hooker->Hook(Functions::_ZN17CNWSCreatureStats13GetClassLevelEhi, (void*)&CNWSCreatureStats__GetClassLevel, Hooking::Order::Early);
+    s_ExecuteCommandGetCasterLevelHook = hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands28ExecuteCommandGetCasterLevelEii,
+        (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+        {
+            s_bAdjustCasterLevel = true;
+            auto retVal = s_ExecuteCommandGetCasterLevelHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
+            s_bAdjustCasterLevel = false;
+            return retVal;
+        }, Hooking::Order::Early);
+    s_ExecuteCommandResistSpellHook = hooker->Hook(Functions::_ZN25CNWVirtualMachineCommands25ExecuteCommandResistSpellEii,
+        (void*)+[](CNWVirtualMachineCommands *thisPtr, int32_t nCommandId, int32_t nParameters)
+        {
+            s_bAdjustCasterLevel = true;
+            auto retVal = s_ExecuteCommandResistSpellHook->CallOriginal<int32_t>(thisPtr, nCommandId, nParameters);
+            s_bAdjustCasterLevel = false;
+            return retVal;
+        }, Hooking::Order::Early);
+    s_SetCreatorHook = hooker->Hook(Functions::_ZN11CGameEffect10SetCreatorEj,
+        (void*)+[](CGameEffect *thisPtr, ObjectID oidCreator)
+        {
+            s_bAdjustCasterLevel = true;
+            s_SetCreatorHook->CallOriginal<void>(thisPtr, oidCreator);
+            s_bAdjustCasterLevel = false;
+        }, Hooking::Order::Early);
 }
 
-void AddPrestigeclassCasterLevels::LoadCasterLevelModifiers(CNWRules* pRules)
+void AddPrestigeclassCasterLevels::CNWRules__LoadClassInfo(CNWRules* thisPtr)
 {
-    auto p2DA = pRules->m_p2DArrays->GetCached2DA("classes", true);
+    s_LoadClassInfoHook->CallOriginal<void>(thisPtr);
+
+    auto p2DA = thisPtr->m_p2DArrays->GetCached2DA("classes", true);
     p2DA->Load2DArray();
     for (int i = 0; i < p2DA->m_nNumRows; i++)
     {
@@ -55,76 +83,52 @@ void AddPrestigeclassCasterLevels::LoadCasterLevelModifiers(CNWRules* pRules)
     }
 }
 
-void AddPrestigeclassCasterLevels::CNWRules__LoadClassInfo(bool before, CNWRules* thisPtr)
+uint8_t AddPrestigeclassCasterLevels::CNWSCreatureStats__GetClassLevel(CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel)
 {
-    if (!before)
-        LoadCasterLevelModifiers(thisPtr);
-}
+    auto retVal = s_GetClassLevelHook->CallOriginal<uint8_t>(thisPtr, nMultiClass, bUseNegativeLevel);
 
-void AddPrestigeclassCasterLevels::CNWSCreatureStats__GetClassLevel(bool before, CNWSCreatureStats* thisPtr, uint8_t nMultiClass, BOOL bUseNegativeLevel)
-{
-    static int32_t nModifier;
-
-    if (!s_bAdjustCasterLevel || nMultiClass >= thisPtr->m_nNumMultiClasses)
-        return;
-
-    auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
-    if (nClass > Constants::ClassType::MAX)
-        return;
-
-    if (!before)
+    if (s_bAdjustCasterLevel && nMultiClass < thisPtr->m_nNumMultiClasses)
     {
-        thisPtr->m_ClassInfo[nMultiClass].m_nLevel -= nModifier;
-        return;
-    }
+        auto nClass = thisPtr->m_ClassInfo[nMultiClass].m_nClass;
 
-    s_bAdjustCasterLevel = false;
-
-    nModifier = 0;
-    if (auto nCasterType = s_classCasterType[nClass])
-    {
-        for (int i = 0; i < thisPtr->m_nNumMultiClasses; i++)
+        if (nClass != Constants::ClassType::Invalid)
         {
-            if (i == nMultiClass) continue;
-            auto nMultiClassType = thisPtr->m_ClassInfo[i].m_nClass;
-            uint8_t nClassMod = 0;
-            if (nCasterType == CasterType::Divine)
-                nClassMod = s_divModClasses[nMultiClassType];
-            else if (nCasterType == CasterType::Arcane)
-                nClassMod = s_arcModClasses[nMultiClassType];
+            int32_t nModifier = 0;
+            s_bAdjustCasterLevel = false;
 
-            if(nClassMod > 0)
+            if (auto nCasterType = s_classCasterType[nClass])
             {
-                auto nClassLevel = thisPtr->GetClassLevel(i, bUseNegativeLevel);
-                if (nClassLevel > 0)
-                    nModifier += (nClassLevel - 1) / nClassMod + 1;
+                for (int i = 0; i < thisPtr->m_nNumMultiClasses; i++)
+                {
+                    if (i == nMultiClass) continue;
+                    auto nMultiClassType = thisPtr->m_ClassInfo[i].m_nClass;
+                    uint8_t nClassMod = 0;
+                    if (nCasterType == CasterType::Divine)
+                        nClassMod = s_divModClasses[nMultiClassType];
+                    else if (nCasterType == CasterType::Arcane)
+                        nClassMod = s_arcModClasses[nMultiClassType];
+
+                    if (nClassMod > 0)
+                    {
+                        auto nClassLevel = thisPtr->GetClassLevel(i, bUseNegativeLevel);
+                        if (nClassLevel > 0)
+                            nModifier += (nClassLevel - 1) / nClassMod + 1;
+                    }
+                }
             }
+
+            s_bAdjustCasterLevel = true;
+
+            //Make sure m_nLevel doesn't over/underflow
+            nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
+            if (nModifier < 0)
+                nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
+
+            retVal += nModifier;
         }
     }
 
-    s_bAdjustCasterLevel = true;
-
-    //Make sure m_nLevel doesn't over/underflow
-    nModifier = std::min(nModifier, 255 - thisPtr->m_ClassInfo[nMultiClass].m_nLevel);
-    if (nModifier < 0)
-        nModifier = -std::min(-nModifier, static_cast<int32_t>(thisPtr->m_ClassInfo[nMultiClass].m_nLevel));
-
-    thisPtr->m_ClassInfo[nMultiClass].m_nLevel += nModifier;
-}
-
-void AddPrestigeclassCasterLevels::CNWVirtualMachineCommands__ExecuteCommandGetCasterLevel(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
-{
-    s_bAdjustCasterLevel = before;
-}
-
-void AddPrestigeclassCasterLevels::CNWVirtualMachineCommands__ExecuteCommandResistSpell(bool before, CNWVirtualMachineCommands*, int32_t, int32_t)
-{
-    s_bAdjustCasterLevel = before;
-}
-
-void AddPrestigeclassCasterLevels::CGameEffect__SetCreator(bool before, CGameEffect*, OBJECT_ID)
-{
-    s_bAdjustCasterLevel = before;
+    return retVal;
 }
 
 }

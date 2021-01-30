@@ -40,9 +40,13 @@ private:
     ArgumentStack DealDamage(ArgumentStack&& args);
 
     NWNXLib::Hooking::FunctionHook* m_OnApplyDamageHook;
+    NWNXLib::Hooking::FunctionHook* m_SignalMeleeDamageHook;
+    NWNXLib::Hooking::FunctionHook* m_SignalRangedDamageHook;
 
-    static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, bool bLoadingGame);
-    static void OnSignalDamage(bool, CNWSCreature *pThis, CNWSObject *pTarget, uint32_t nAttacks);
+    static int32_t OnApplyDamage(CNWSEffectListHandler *pThis, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame);
+    static void HandleSignalDamage(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);
+    static void SignalMeleeDamageHook(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);
+    static void SignalRangedDamageHook(CNWSCreature *pThis, CNWSObject *pTarget, int32_t nAttacks);
     static void OnCombatAttack(CNWSCreature *pThis, CNWSObject *pTarget, std::string script, uint8_t attackNumber);
 
     static std::string GetEventScript(CNWSObject *pObject, const std::string &event);

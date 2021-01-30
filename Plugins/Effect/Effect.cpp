@@ -195,33 +195,25 @@ ArgumentStack Effect::UnpackEffect(ArgumentStack&& args)
 
 ArgumentStack Effect::SetEffectExpiredScript(ArgumentStack&& args)
 {
-    static bool bOnEffectRemovedHook;
-
-    if (!bOnEffectRemovedHook)
-    {
-        GetServices()->m_hooks->RequestSharedHook<API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect, int32_t>(
-            +[](bool before, CNWSEffectListHandler*, CNWSObject* pObject, CGameEffect* pEffect) -> void
+    static Hooking::FunctionHook *pOnEffectRemovedHook =
+            GetServices()->m_hooks->Hook(API::Functions::_ZN21CNWSEffectListHandler15OnEffectRemovedEP10CNWSObjectP11CGameEffect,
+            (void*)+[](CNWSEffectListHandler *pEffectListHandler, CNWSObject* pObject, CGameEffect* pEffect) -> int32_t
             {
-                if (before)
+                CExoString &sScriptName = pEffect->m_sParamString[4];
+                if (!sScriptName.IsEmpty())
                 {
-                    CExoString &sScriptName = pEffect->m_sParamString[4];
-                    if (!sScriptName.IsEmpty())
-                    {
-                        g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
-                        g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
+                    g_plugin->m_effectExpiredData = std::string(pEffect->m_sParamString[5].CStr());
+                    g_plugin->m_effectExpiredCreator = pEffect->m_oidCreator;
 
-                        LOG_DEBUG("Running script '%s' on object '%x' with data '%s'",
-                            sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData);
+                    LOG_DEBUG("(SetEffectExpiredScript) Running script '%s' on object '%x' with data '%s'",
+                        sScriptName.CStr(), pObject->m_idSelf, g_plugin->m_effectExpiredData);
 
-                        ++g_plugin->m_effectExpiredDepth;
-                        Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
-                        --g_plugin->m_effectExpiredDepth;
-                    }
+                    ++g_plugin->m_effectExpiredDepth;
+                    Globals::VirtualMachine()->RunScript(&sScriptName, pObject->m_idSelf, 1);
+                    --g_plugin->m_effectExpiredDepth;
                 }
-            });
-
-        bOnEffectRemovedHook = true;
-    }
+                return pOnEffectRemovedHook->CallOriginal<int32_t>(pEffectListHandler, pObject, pEffect);
+            }, Hooking::Order::Early);
 
     auto effect = Services::Events::ExtractArgument<CGameEffect*>(args);
 

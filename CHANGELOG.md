@@ -13,6 +13,7 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 - Experimental: Added `NWNX_EXPERIMENTAL_UNHARDCODE_RANGER_DUALWIELD` to remove the hardcoded effects of the Ranger's Dual-wield feat. This functionality is not compatible with the NWNX_ON_HAS_FEAT_* event.
 - Tweaks: Added `NWNX_TWEAKS_ALWAYS_RETURN_FULL_DEX_STAT` to have GetDEXStat() always return a creature's full dexterity stat.
 - Tweaks: added `NWNX_TWEAKS_DISPLAY_NUM_ATTACKS_OVERRIDE_IN_CHARACTER_SHEET` to display the correct amount of attacks per round on the character sheet when overridden with SetBaseAttackBonus()
+- DotNET: Added native function hook support.
 
 ##### New Plugins
 - SWIG: Native Interop support added for DotNET.
@@ -20,20 +21,31 @@ https://github.com/nwnxee/unified/compare/build8193.20...HEAD
 ##### New NWScript Functions
 - Creature: ComputeSafeLocation()
 - Creature: DoPerceptionUpdateOnCreature()
+- Creature: {Get/Set}PersonalSpace()
+- Creature: {Get/Set}CreaturePersonalSpace()
+- Creature: {Get/Set}Height()
+- Creature: {Get/Set}HitDistance()
+- Creature: {Get/Set}PreferredAttackDistance()
 - Encounter: GetGeometry()
 - Encounter: SetGeometry()
+- Encounter: {Get/Set}CanReset()
 - Util: GetInstructionLimit()
 - Util: {Get|Set}InstructionsExecuted()
+- Util: NWNX_Util_GetHighResTimeStamp() (in preparation for removing the now deprecated NWNX_Time)
 - Area: NWNX_Area_GetAmbientSound{Day/Night}()
 - Area: NWNX_Area_GetAmbientSound{Day/Night}Volume
+- Admin: {Get/Set}MinLevel()
+- Admin: {Get/Set}MaxLevel()
 - Object: {Get|Set}AILevel()
 
 ### Changed
 - Creature: Functions for CriticalMultipler and CriticalRange extended to allow declaration of nBaseItem. Order of Overrides is Specified Baseitem > Specified Hand > non-Specified. Modifiers now apply in addition to overrides (rather than only in the absence of overrides). _**ABI breaking:** You will need to update nwnx_creature.nss if you are using these functions_.
 - Race: SetFavoredEnemyFeat() now supports multiple feats per race.
+- Rename: NWNX_Rename can now co-exist with `NWNX_TWEAKS_HIDE_CLASSES_ON_CHAR_LIST`, as such NWNX_Rename's handling of said tweak has been removed.
 
 ### Deprecated
 - Data: The NWNX_Data array implementation is deprecated. SQLite implementation available.  Shim include file provided for compatibility.
+- Time: The NWNX_Time implementation is deprecated. A SQLite implementation is now in use. The include file inc_sqlite_time is provided.
 
 ### Removed
 - N/A

@@ -16,33 +16,39 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::Services;
 
-static Hooking::FunctionHook* s_ApplyDisarmHook;
+static Hooking::FunctionHook *s_StartCombatRoundHook;
+static Hooking::FunctionHook *s_ApplyDisarmHook;
+static Hooking::FunctionHook *s_SendServerToPlayerAmbientBattleMusicPlayHook;
 
 CombatEvents::CombatEvents(HooksProxy* hooker)
 {
     Events::InitOnFirstSubscribe("NWNX_ON_START_COMBAT_ROUND_.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN15CNWSCombatRound16StartCombatRoundEj, int32_t>(&StartCombatRoundHook);
+        s_StartCombatRoundHook = hooker->Hook(API::Functions::_ZN15CNWSCombatRound16StartCombatRoundEj,
+                                              (void*)&StartCombatRoundHook, Hooking::Order::Earliest);
     });
     Events::InitOnFirstSubscribe("NWNX_ON_DISARM_*", [hooker]() {
-        s_ApplyDisarmHook = hooker->RequestExclusiveHook
-                <API::Functions::_ZN21CNWSEffectListHandler13OnApplyDisarmEP10CNWSObjectP11CGameEffecti>(&ApplyDisarmHook);
+        s_ApplyDisarmHook = hooker->Hook(Functions::_ZN21CNWSEffectListHandler13OnApplyDisarmEP10CNWSObjectP11CGameEffecti,
+                                         (void*)&ApplyDisarmHook, Hooking::Order::Early);
     });
     Events::InitOnFirstSubscribe("NWNX_ON_COMBAT_ENTER.*", [hooker]() {
-        hooker->RequestSharedHook<API::Functions::_ZN11CNWSMessage40SendServerToPlayerAmbientBattleMusicPlayEji, int32_t>
-                (&SendServerToPlayerAmbientBattleMusicPlayHook);
+        s_SendServerToPlayerAmbientBattleMusicPlayHook = hooker->Hook(
+                API::Functions::_ZN11CNWSMessage40SendServerToPlayerAmbientBattleMusicPlayEji,
+                (void*)&SendServerToPlayerAmbientBattleMusicPlayHook, Hooking::Order::Earliest);
     });
 }
 
-void CombatEvents::StartCombatRoundHook(bool before, CNWSCombatRound* thisPtr, uint32_t oidTarget)
+void CombatEvents::StartCombatRoundHook(CNWSCombatRound* thisPtr, ObjectID oidTarget)
 {
     Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
-    Events::SignalEvent(before ? "NWNX_ON_START_COMBAT_ROUND_BEFORE" : "NWNX_ON_START_COMBAT_ROUND_AFTER" , thisPtr->m_pBaseCreature->m_idSelf);
+    Events::SignalEvent("NWNX_ON_START_COMBAT_ROUND_BEFORE" , thisPtr->m_pBaseCreature->m_idSelf);
+    s_StartCombatRoundHook->CallOriginal<void>(thisPtr, oidTarget);
+    Events::PushEventData("TARGET_OBJECT_ID", Utils::ObjectIDToString(oidTarget));
+    Events::SignalEvent("NWNX_ON_START_COMBAT_ROUND_AFTER" , thisPtr->m_pBaseCreature->m_idSelf);
 }
 
 int32_t CombatEvents::ApplyDisarmHook(CNWSEffectListHandler* pEffectHandler, CNWSObject *pObject, CGameEffect *pEffect, BOOL bLoadingGame)
 {
-
-    int32_t retVal = false;
+    int32_t retVal;
 
     auto PushAndSignal = [&](const std::string& ev) -> bool {
         Events::PushEventData("DISARMER_OBJECT_ID", Utils::ObjectIDToString(pEffect->m_oidCreator));
@@ -66,15 +72,27 @@ int32_t CombatEvents::ApplyDisarmHook(CNWSEffectListHandler* pEffectHandler, CNW
     return retVal;
 }
 
-void CombatEvents::SendServerToPlayerAmbientBattleMusicPlayHook(bool bBefore, CNWSMessage*, PlayerID playerId, int32_t bPlay)
+int32_t CombatEvents::SendServerToPlayerAmbientBattleMusicPlayHook(CNWSMessage *pMessage, PlayerID nPlayer, int32_t bPlay)
 {
-    std::string sEvent = "NWNX_ON_COMBAT_";
-    sEvent.append(bPlay ? "ENTER_" : "EXIT_");
-    sEvent.append(bBefore ? "BEFORE" : "AFTER");
+    if (auto *pPlayer = static_cast<CNWSPlayer *>(Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(nPlayer)))
+    {
+        if (bPlay)
+        {
+            Events::SignalEvent("NWNX_ON_COMBAT_ENTER_BEFORE", pPlayer->m_oidNWSObject);
+            auto retVal = s_SendServerToPlayerAmbientBattleMusicPlayHook->CallOriginal<int32_t>(pMessage, nPlayer, bPlay);
+            Events::SignalEvent("NWNX_ON_COMBAT_ENTER_AFTER", pPlayer->m_oidNWSObject);
+            return retVal;
+        }
+        else
+        {
+            Events::SignalEvent("NWNX_ON_COMBAT_EXIT_BEFORE", pPlayer->m_oidNWSObject);
+            auto retVal = s_SendServerToPlayerAmbientBattleMusicPlayHook->CallOriginal<int32_t>(pMessage, nPlayer, bPlay);
+            Events::SignalEvent("NWNX_ON_COMBAT_EXIT_AFTER", pPlayer->m_oidNWSObject);
+            return retVal;
+        }
+    }
 
-    auto *pPlayer = static_cast<CNWSPlayer *>(Globals::AppManager()->m_pServerExoApp->GetClientObjectByPlayerId(playerId, 0));
-    if(pPlayer)
-        Events::SignalEvent(sEvent, pPlayer->m_oidNWSObject);
+    return s_SendServerToPlayerAmbientBattleMusicPlayHook->CallOriginal<int32_t>(pMessage, nPlayer, bPlay);
 }
 
 }

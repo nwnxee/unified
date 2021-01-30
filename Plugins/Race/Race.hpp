@@ -80,7 +80,6 @@ private:
     unordered_map<uint16_t, vector<uint16_t>>                                         m_ChildRaces;
     unordered_map<uint16_t, vector<uint16_t>>                                         m_RaceFavoredEnemyFeat;
 
-    NWNXLib::Hooking::FunctionHook* m_CheckRacialResHook;
 
     static void DoEffect(CNWSCreature*, uint16_t, int32_t, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0, int32_t = 0);
     static void ApplyRaceEffects(CNWSCreature*);
@@ -89,20 +88,19 @@ private:
 
     static void ResolveInitiativeHook(CNWSCreature*);
 
-    static void LoadCharacterFinishHook(bool, CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t);
-    static void ResetFeatRemainingUsesHook(bool, CNWSCreatureStats*);
-    static void CreateDefaultQuickButtonsHook(bool, CNWSCreature*);
-    static void HandleValidateCharacter(ObjectID, bool);
-    static void ValidateCharacterHook(bool, CNWSPlayer*, int32_t*);
+    static int32_t LoadCharacterFinishHook(CServerExoAppInternal*, CNWSPlayer*, int32_t, int32_t);
+    static void ResetFeatRemainingUsesHook(CNWSCreatureStats*);
+    static void CreateDefaultQuickButtonsHook(CNWSCreature*);
+    static int32_t ValidateCharacterHook(CNWSPlayer*, int32_t*);
 
-    static void SendServerToPlayerLevelUp_ConfirmationHook(bool, CNWSMessage*, PlayerID, int32_t);
-    static void LevelUpAutomaticHook(bool, CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
-    static void GetMeetsPrestigeClassRequirementsHook(bool, CNWSCreatureStats*, CNWClass*);
-    static void GetTotalEffectBonusHook(bool, CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
-    static void ApplyEffectHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
-    static void SavingThrowRollHook(bool, CNWSCreature*, uint8_t, uint16_t, uint8_t, uint32_t, int32_t, uint16_t, int32_t);
-    static void GetWeaponPowerHook(bool, CNWSCreature*, CNWSObject*, int32_t);
-    static void LoadRaceInfoHook(bool, CNWRules*);
+    static int32_t SendServerToPlayerLevelUp_ConfirmationHook(CNWSMessage*, PlayerID, int32_t);
+    static int32_t LevelUpAutomaticHook(CNWSCreatureStats*, uint8_t, int32_t, uint8_t);
+    static int32_t GetMeetsPrestigeClassRequirementsHook(CNWSCreatureStats*, CNWClass*);
+    static int32_t GetTotalEffectBonusHook(CNWSCreature*, uint8_t, CNWSObject*, int32_t, int32_t, uint8_t, uint8_t, uint8_t, uint8_t, int32_t);
+    static void ApplyEffectHook(CNWSObject*, CGameEffect*);
+    static uint8_t SavingThrowRollHook(CNWSCreature*, uint8_t, uint16_t, uint8_t, ObjectID, int32_t, uint16_t, int32_t);
+    static int32_t GetWeaponPowerHook(CNWSCreature*, CNWSObject*, int32_t);
+    static void LoadRaceInfoHook(CNWRules*);
     static int32_t CheckItemRaceRestrictionsHook(CNWSCreature*, CNWSItem*);
     static int32_t GetFavoredEnemyBonusHook(CNWSCreatureStats*, CNWSCreature*);
 };

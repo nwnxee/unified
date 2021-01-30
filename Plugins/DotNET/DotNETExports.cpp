@@ -305,73 +305,81 @@ void DotNET::nwnxSetFunction(const char *plugin, const char *function)
 }
 void DotNET::nwnxPushInt(int32_t n)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, n);
+    Instance->GetServices()->m_events->GetProxyBase()->Push(n);
 }
 void DotNET::nwnxPushFloat(float f)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, f);
+    Instance->GetServices()->m_events->GetProxyBase()->Push(f);
 }
 void DotNET::nwnxPushObject(uint32_t o)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, (ObjectID)o);
+    Instance->GetServices()->m_events->GetProxyBase()->Push((ObjectID)o);
 }
 void DotNET::nwnxPushString(const char *s)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, Encoding::FromUTF8(s));
+    Instance->GetServices()->m_events->GetProxyBase()->Push(Encoding::FromUTF8(s));
 }
 void DotNET::nwnxPushEffect(CGameEffect *e)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, e);
+    Instance->GetServices()->m_events->GetProxyBase()->Push(e);
 }
 void DotNET::nwnxPushItemProperty(CGameEffect *ip)
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    events->Push(nwnxActivePlugin, nwnxActiveFunction, ip);
+    Instance->GetServices()->m_events->GetProxyBase()->Push(ip);
 }
 int32_t DotNET::nwnxPopInt()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<int32_t>(nwnxActivePlugin, nwnxActiveFunction).value_or(0);
+    return Instance->GetServices()->m_events->GetProxyBase()->Pop<int32_t>().value_or(0);
 }
 float DotNET::nwnxPopFloat()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<float>(nwnxActivePlugin, nwnxActiveFunction).value_or(0.0f);
+    return Instance->GetServices()->m_events->GetProxyBase()->Pop<float>().value_or(0.0f);
 }
 uint32_t DotNET::nwnxPopObject()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<ObjectID>(nwnxActivePlugin, nwnxActiveFunction).value_or(Constants::OBJECT_INVALID);
+    return Instance->GetServices()->m_events->GetProxyBase()->Pop<ObjectID>().value_or(Constants::OBJECT_INVALID);
 }
 const char* DotNET::nwnxPopString()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    auto str = events->Pop<std::string>(nwnxActivePlugin, nwnxActiveFunction).value_or(std::string{""});
+    auto str = Instance->GetServices()->m_events->GetProxyBase()->Pop<std::string>().value_or(std::string{""});
     return strdup(Encoding::ToUTF8(str).c_str());
 }
 CGameEffect* DotNET::nwnxPopEffect()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<CGameEffect*>(nwnxActivePlugin, nwnxActiveFunction).value_or(nullptr);
+    return Instance->GetServices()->m_events->GetProxyBase()->Pop<CGameEffect*>().value_or(nullptr);
 }
 CGameEffect* DotNET::nwnxPopItemProperty()
 {
-    auto events = Instance->GetServices()->m_events->GetProxyBase();
-    return events->Pop<CGameEffect*>(nwnxActivePlugin, nwnxActiveFunction).value_or(nullptr);
+    return Instance->GetServices()->m_events->GetProxyBase()->Pop<CGameEffect*>().value_or(nullptr);
 }
 void DotNET::nwnxCallFunction()
 {
     auto events = Instance->GetServices()->m_events->GetProxyBase();
     events->Call(nwnxActivePlugin, nwnxActiveFunction);
 }
+
 NWNXLib::API::Globals::NWNXExportedGlobals DotNET::GetNWNXExportedGlobals()
 {
     return NWNXLib::API::Globals::ExportedGlobals;
+}
+
+void* DotNET::RequestHook(uintptr_t address, void* managedFuncPtr, int32_t order)
+{
+    auto aslrAddr = Platform::ASLR::GetRelocatedAddress(address);
+    auto funchook = s_managed_hooks.emplace_back(std::make_unique<NWNXLib::Hooking::FunctionHook>(aslrAddr, managedFuncPtr, order)).get();
+    return funchook->GetOriginal();
+}
+
+void DotNET::ReturnHook(void* trampoline)
+{
+    for (auto it = s_managed_hooks.begin(); it != s_managed_hooks.end(); it++)
+    {
+        if (it->get()->GetOriginal() == trampoline)
+        {
+            s_managed_hooks.erase(it);
+            return;
+        }
+    }
 }
 
 }

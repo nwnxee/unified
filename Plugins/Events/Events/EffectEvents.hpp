@@ -13,8 +13,8 @@ public:
 
 private:
     static void HandleEffectHook(const std::string&, bool, CNWSObject*, CGameEffect*);
-    static void OnEffectAppliedHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
-    static void OnEffectRemovedHook(bool, CNWSEffectListHandler*, CNWSObject*, CGameEffect*);
+    static int32_t OnEffectAppliedHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*, int32_t);
+    static int32_t OnEffectRemovedHook(CNWSEffectListHandler*, CNWSObject*, CGameEffect*);
 };
 
 }

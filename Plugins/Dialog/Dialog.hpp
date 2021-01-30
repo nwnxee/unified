@@ -16,13 +16,13 @@ public:
 
 private:
     struct Hooks {
-        static void GetStartEntry(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner);
-        static void GetStartEntryOneLiner(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, CExoLocString* sOneLiner, CResRef* sSound, CResRef* sScript, const CExoArrayList<ScriptParam>&);
-        static void SendDialogEntry(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly, uint32_t iEntry, int32_t bPlayHelloSound);
-        static void SendDialogReplies(bool, CNWSDialog *pThis, CNWSObject* pNWSObjectOwner, uint32_t nPlayerIdGUIOnly);
-        static void HandleReply(bool, CNWSDialog *pThis, uint32_t nPlayerID, CNWSObject* pNWSObjectOwner, uint32_t nReplyIndex, int32_t bEscapeDialog, uint32_t currentEntryIndex);
-        static void CheckScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*, const CExoArrayList<ScriptParam>&);
-        static void RunScript(bool, CNWSDialog *pThis, CNWSObject*, const CResRef*, const CExoArrayList<ScriptParam>&);
+        static uint32_t GetStartEntry(CNWSDialog*, CNWSObject*);
+        static int32_t GetStartEntryOneLiner(CNWSDialog*, CNWSObject*, CExoLocString*, CResRef*, CResRef*, const CExoArrayList<ScriptParam>&);
+        static int32_t SendDialogEntry(CNWSDialog*, CNWSObject*, uint32_t, uint32_t, int32_t);
+        static int32_t SendDialogReplies(CNWSDialog*, CNWSObject*, uint32_t);
+        static int32_t HandleReply(CNWSDialog*, uint32_t, CNWSObject* pNWSObjectOwner, uint32_t, int32_t, uint32_t);
+        static int32_t CheckScript(CNWSDialog*, CNWSObject*, const CResRef*, const CExoArrayList<ScriptParam>&);
+        static void RunScript(CNWSDialog*, CNWSObject*, const CResRef*, const CExoArrayList<ScriptParam>&);
     };
     static enum State {
         DIALOG_STATE_INVALID,

@@ -42,6 +42,12 @@ using namespace NWNXLib;
 using namespace NWNXLib::API;
 using namespace NWNXLib::API::Constants;
 
+static Hooking::FunctionHook *s_GetServerInfoFromIniFileHook;
+static Hooking::FunctionHook *s_LoadModuleStartHook;
+static Hooking::FunctionHook *s_LevelDownHook;
+static Hooking::FunctionHook *s_SummonAssociateHook;
+static Hooking::FunctionHook *s_LoadSpellGainTableHook;
+static Hooking::FunctionHook *s_LoadSpellKnownTableHook;
 
 MaxLevel::MaxLevel(Services::ProxyServiceList* services)
         : Plugin(services)
@@ -52,16 +58,20 @@ MaxLevel::MaxLevel(Services::ProxyServiceList* services)
 
     if (m_maxLevel > CORE_MAX_LEVEL)
     {
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN21CServerExoAppInternal24GetServerInfoFromIniFileEv, void, CServerExoAppInternal *>(&GetServerInfoFromIniFileHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN10CNWSModule15LoadModuleStartE10CExoStringii, void, CNWSModule*, CExoString, int32_t, int32_t>(&LoadModuleStartHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats10CanLevelUpEv>(&CanLevelUpHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats22GetExpNeededForLevelUpEv>(&GetExpNeededForLevelUpHook);
-        m_LevelDownHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats>(&LevelDownHook);
-        m_SummonAssociateHook = GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt>(&SummonAssociateHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWClass18LoadSpellGainTableE10CExoString, void, CNWClass *, CExoString *>(&LoadSpellGainTableHook);
-        GetServices()->m_hooks->RequestSharedHook<Functions::_ZN8CNWClass19LoadSpellKnownTableE10CExoString, void, CNWClass *, CExoString *>(&LoadSpellKnownTableHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN8CNWClass12GetSpellGainEhh>(&GetSpellGainHook);
-        GetServices()->m_hooks->RequestExclusiveHook<Functions::_ZN8CNWClass22GetSpellsKnownPerLevelEhhhth>( &GetSpellsKnownPerLevelHook);
+        s_GetServerInfoFromIniFileHook = GetServices()->m_hooks->Hook(Functions::_ZN21CServerExoAppInternal24GetServerInfoFromIniFileEv,
+                                                                      (void*)&GetServerInfoFromIniFileHook, Hooking::Order::Early);
+        s_LoadModuleStartHook = GetServices()->m_hooks->Hook(Functions::_ZN10CNWSModule15LoadModuleStartE10CExoStringii,
+                                                             (void*)&LoadModuleStartHook, Hooking::Order::Early);
+        GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats10CanLevelUpEv, (void*)&CanLevelUpHook, Hooking::Order::Final);
+        GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats22GetExpNeededForLevelUpEv, (void*)&GetExpNeededForLevelUpHook, Hooking::Order::Final);
+        s_LevelDownHook = GetServices()->m_hooks->Hook(Functions::_ZN17CNWSCreatureStats9LevelDownEP13CNWLevelStats, (void*)&LevelDownHook, Hooking::Order::Late);
+        s_SummonAssociateHook = GetServices()->m_hooks->Hook(Functions::_ZN12CNWSCreature15SummonAssociateE7CResRef10CExoStringt, (void*)&SummonAssociateHook, Hooking::Order::Late);
+        s_LoadSpellGainTableHook = GetServices()->m_hooks->Hook(Functions::_ZN8CNWClass18LoadSpellGainTableE10CExoString,
+                                                                (void*)&LoadSpellGainTableHook, Hooking::Order::Early);
+        s_LoadSpellKnownTableHook = GetServices()->m_hooks->Hook(Functions::_ZN8CNWClass19LoadSpellKnownTableE10CExoString,
+                                                                 (void*)&LoadSpellKnownTableHook, Hooking::Order::Early);
+        GetServices()->m_hooks->Hook(Functions::_ZN8CNWClass12GetSpellGainEhh, (void*)&GetSpellGainHook, Hooking::Order::Final);
+        GetServices()->m_hooks->Hook(Functions::_ZN8CNWClass22GetSpellsKnownPerLevelEhhhth, (void*)&GetSpellsKnownPerLevelHook, Hooking::Order::Final);
     }
 }
 
@@ -69,19 +79,16 @@ MaxLevel::~MaxLevel()
 {
 }
 
-void MaxLevel::GetServerInfoFromIniFileHook(bool before, CServerExoAppInternal* pServer)
+void MaxLevel::GetServerInfoFromIniFileHook(CServerExoAppInternal* pServerExoAppInternal)
 {
-    if (!before)
-    {
-        pServer->m_pServerInfo->m_JoiningRestrictions.nMaxLevel = g_plugin->m_maxLevel;
-    }
+    s_GetServerInfoFromIniFileHook->CallOriginal<void>(pServerExoAppInternal);
+    pServerExoAppInternal->m_pServerInfo->m_JoiningRestrictions.nMaxLevel = g_plugin->m_maxLevel;
 }
 
 // After Rules aggregates all its information we add to our custom experience table map
-void MaxLevel::LoadModuleStartHook(bool before, CNWSModule *pModule, CExoString, int32_t, int32_t)
+uint32_t MaxLevel::LoadModuleStartHook(CNWSModule *pModule, CExoString sModuleName, int32_t bIsSaveGame, int32_t nSourceType)
 {
-    if (before || !pModule)
-        return;
+    auto retVal = s_LoadModuleStartHook->CallOriginal<uint32_t>(pModule, sModuleName, bIsSaveGame, nSourceType);
 
     auto *twoda = Globals::Rules()->m_p2DArrays->GetCached2DA("EXPTABLE", true);
     twoda->Load2DArray();
@@ -93,7 +100,7 @@ void MaxLevel::LoadModuleStartHook(bool before, CNWSModule *pModule, CExoString,
         {
             LOG_ERROR("No xp threshold set for level %d!. Max level reverted to 40.", 1 + i);
             g_plugin->m_maxLevel = CORE_MAX_LEVEL;
-            return;
+            return retVal;
         }
         else
         {
@@ -102,6 +109,8 @@ void MaxLevel::LoadModuleStartHook(bool before, CNWSModule *pModule, CExoString,
     }
     if (g_plugin->m_maxLevel > CORE_MAX_LEVEL)
         LOG_INFO("Max Level increased to %d.", g_plugin->m_maxLevel);
+
+    return retVal;
 }
 
 // If level is greater than 40 seek the xp_threshold from our custom map
@@ -158,7 +167,7 @@ void MaxLevel::LevelDownHook(CNWSCreatureStats *pStats, CNWLevelStats *pLevelSta
 {
     if (!pStats->m_bIsPC)
     {
-        g_plugin->m_LevelDownHook->CallOriginal<void>(pStats, pLevelStats);
+        s_LevelDownHook->CallOriginal<void>(pStats, pLevelStats);
         return;
     }
     auto nXP = pStats->m_nExperience;
@@ -173,14 +182,13 @@ void MaxLevel::LevelDownHook(CNWSCreatureStats *pStats, CNWLevelStats *pLevelSta
         xp_threshold = g_plugin->m_nExperienceTableAdded[totalLevels - 1];
     }
     if (nXP < xp_threshold)
-        g_plugin->m_LevelDownHook->CallOriginal<void>(pStats, pLevelStats);
+        s_LevelDownHook->CallOriginal<void>(pStats, pLevelStats);
 }
 
 // The resref passed into SummonAssociate has the template utc with the character's level appended to it, just
 // swap that level back to 40 if that utc doesn't exist. This is easier than rewriting SummonFamilar and
 // SummonAnimalCompanion completely
-void MaxLevel::SummonAssociateHook(CNWSCreature *pCreature, CResRef cResRef, CExoString *p_sAssociateName,
-                                   uint16_t nAssociateType)
+void MaxLevel::SummonAssociateHook(CNWSCreature *pCreature, CResRef cResRef, CExoString p_sAssociateName, uint16_t nAssociateType)
 {
     auto cUsedResRef = cResRef;
     std::string sResRef = cResRef.GetResRef();
@@ -190,16 +198,15 @@ void MaxLevel::SummonAssociateHook(CNWSCreature *pCreature, CResRef cResRef, CEx
         std::string sNewResRef = std::regex_replace(sResRef,re,"$0140");
         cUsedResRef = CResRef(sNewResRef.c_str());
     }
-    g_plugin->m_SummonAssociateHook->CallOriginal<void>(pCreature, cUsedResRef, p_sAssociateName, nAssociateType);
+    s_SummonAssociateHook->CallOriginal<void>(pCreature, cUsedResRef, p_sAssociateName, nAssociateType);
 }
 
 // After the server loads 1-40 we populate our map with the values for 41+
-void MaxLevel::LoadSpellGainTableHook(bool before, CNWClass* pClass, CExoString *pTable)
+void MaxLevel::LoadSpellGainTableHook(CNWClass* pClass, CExoString sTable)
 {
-    if (before)
-        return;
+    s_LoadSpellGainTableHook->CallOriginal<void>(pClass, sTable);
 
-    C2DA twoda(pTable->CStr(), true);
+    C2DA twoda(sTable, true);
     twoda.Load2DArray();
 
     for (int i = CORE_MAX_LEVEL; i < g_plugin->m_maxLevel; i++)
@@ -259,12 +266,11 @@ uint8_t MaxLevel::GetSpellGainHook(CNWClass *pClass, uint8_t nLevel, uint8_t nSp
 }
 
 // After the server loads 1-40 we populate our map with the values for 41+
-void MaxLevel::LoadSpellKnownTableHook(bool before, CNWClass* pClass, CExoString *pTable)
+void MaxLevel::LoadSpellKnownTableHook(CNWClass* pClass, CExoString sTable)
 {
-    if (before)
-        return;
+    s_LoadSpellKnownTableHook->CallOriginal<void>(pClass, sTable);
 
-    C2DA twoda(pTable->CStr(), true);
+    C2DA twoda(sTable, true);
     twoda.Load2DArray();
 
     for (int i = CORE_MAX_LEVEL; i < g_plugin->m_maxLevel; i++)
